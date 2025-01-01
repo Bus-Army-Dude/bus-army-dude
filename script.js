@@ -381,7 +381,7 @@ function detectDetailedDevice() {
     // New Year countdown
     function updateNewYearCountdown() {
         const now = new Date();
-        const newYear = new Date('2025-01-01T00:00:00');
+        const newYear = new Date('2025-02-27T03:00:00');
         const diff = newYear - now;
 
         const countdownSection = document.querySelector('.countdown-section');
