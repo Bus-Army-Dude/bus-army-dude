@@ -163,10 +163,10 @@ function detectDetailedDevice() {
     // Time update function
     function updateTime() {
         const now = new Date();
-        const timestamp = now.toISOString().replace('T', ' ').slice(0, 19);
+        const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
         const timeElement = document.querySelector('.update-time');
         if (timeElement) {
-            timeElement.textContent = `Current Date and Time (UTC): ${timestamp}`;
+            timeElement.textContent = `Current Date and Time: ${timestamp}`;
         }
     }
 
