@@ -229,7 +229,7 @@ function detectDetailedDevice() {
             {
                 username: 'mrfatcheeto',
                 isVerified: false,
-                followers: '456.4K',
+                followers: '457.4K',
                 nickname: 'Mr Fat Cheeto',
                 bio: 'OH YEAH!',
                 profilePic: 'images/mrfatcheeto.jpeg'
@@ -237,26 +237,26 @@ function detectDetailedDevice() {
             {
                 username: 'trafficlightdoctor',
                 isVerified: false,
-                followers: '382.6K',
+                followers: '382.8K',
                 nickname: '🚦 Traffic Light Doctor 🚦',
                 bio: '🚦Traffic Signal Tech🚦, Traffic Lights, Family, Food, and Comedy!, Mississippi',
                 profilePic: 'images/trafficlightdoctor.jpeg'
             },
             {
-                username: 'aggressiveafterdark',
-                isVerified: false,
-                followers: '293.4K',
-                nickname: 'ApplesauceandADHD_AfterDark',
-                bio: 'Shhhhhhh. Its a secret, @Jess|Aggressive Tutorials Official Back-Up',
-                profilePic: 'images/aggressiveafterdark.jpeg'
-            },
-            {
                 username: 'badge502',
                 isVerified: false,
-                followers: '797.9K',
+                followers: '798K',
                 nickname: 'Badge502',
                 bio: 'NREMT - 911/EMD, PO Box 775, Belleville, NJ 07109',
                 profilePic: 'images/badge502.jpeg'
+            },
+            {
+                username: 'aggressiveafterdark',
+                isVerified: false,
+                followers: '295.2K',
+                nickname: 'ApplesauceandADHD_AfterDark',
+                bio: 'Shhhhhhh. Its a secret, @Jess|Aggressive Tutorials Official Back-Up',
+                profilePic: 'images/aggressiveafterdark.jpeg'
             },
             {
                 username: 'badge5022',
@@ -277,7 +277,7 @@ function detectDetailedDevice() {
             {
                 username: 'busarmydude',
                 isVerified: false,
-                followers: '1,232',
+                followers: '1,234',
                 nickname: 'Bus Army Dude',
                 bio: 'Hello, my name is River, I am 19. I am autistic. I love technology',
                 profilePic: 'images/busarmydude.jpg'
@@ -301,7 +301,7 @@ function detectDetailedDevice() {
             {
                 username: 'elvirablack8',
                 isVerified: false,
-                followers: '962',
+                followers: '965',
                 nickname: 'elvirablack8',
                 bio: 'I love my friends and my family all so much even my followers',
                 profilePic: 'images/elvirablack8.jpeg'
@@ -309,7 +309,7 @@ function detectDetailedDevice() {
             {
                 username: 'jerridc4',
                 isVerified: false,
-                followers: '414',
+                followers: '415',
                 nickname: 'Jerrid Cook',
                 bio: '@raisingramsey2023, @benz.the beard',
                 profilePic: 'images/jerridc4.jpeg'
