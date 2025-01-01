@@ -390,7 +390,7 @@ function detectDetailedDevice() {
         if (diff <= 0) {
             countdownSection.innerHTML = `
                 <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    HAPPY NEW YEAR'S IT'S OFFICIALLY 2025!
+                    HAPPY BIRTHDAY ITS OFFICALLY YOUR 20TH BIRTHDAY ENJOY IT
                 </h2>
                 <div style="font-size: 1.5em; color: var(--text-color);">
                     🎉 🎊 🎆 🎈
