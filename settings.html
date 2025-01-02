@@ -6,62 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
-    <meta http-equiv="refresh" content="60">
-    <!-- Favicons and Icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="images/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration for pinned tiles -->
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
-    <meta name="msapplication-config" content="/browserconfig.xml">
 </head>
-
-    <!-- Navigation -->
-    <nav>
-    <a href="index.html">Home</a> | 
-    <a href="settings.html">Settings</a>
-</nav>
-    
 <body>
     <div class="settings-page">
-        <h1>Settings</h1>
+        <h1 class="settings-header">Settings</h1>
 
         <!-- Appearance Section -->
         <div class="settings-section">
-            <h2>Appearance</h2>
-            <button id="light-mode-btn" class="mode-btn">Light Mode</button>
-            <button id="dark-mode-btn" class="mode-btn">Dark Mode</button>
+            <h2 class="section-title">Appearance</h2>
+            <div class="mode-buttons">
+                <button id="light-mode-btn" class="mode-btn active">Light Mode</button>
+                <button id="dark-mode-btn" class="mode-btn">Dark Mode</button>
+            </div>
         </div>
 
         <!-- Accessibility Section -->
         <div class="settings-section">
-            <h2>Accessibility</h2>
+            <h2 class="section-title">Accessibility</h2>
             <div class="accessibility-option">
                 <label for="text-size">Text Size:</label>
-                <input type="range" id="text-size" min="12" max="32" value="16">
+                <input type="range" id="text-size" min="12" max="32" value="16" class="text-size-range">
                 <span id="text-size-label">16px</span>
             </div>
 
             <div class="accessibility-option">
-                <label for="contrast-toggle-btn">
+                <label for="contrast-toggle-btn" class="switch">
                     <input type="checkbox" id="contrast-toggle-btn">
-                    High Contrast Mode
+                    <span class="slider"></span>
                 </label>
+                <span>High Contrast Mode</span>
             </div>
         </div>
     </div>
