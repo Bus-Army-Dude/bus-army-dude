@@ -26,6 +26,13 @@ Access to view this Software is granted solely for:
 - Reference purposes
 - Educational viewing
 - Demonstration of functionality
+
+# License Notice
+
+This repository is protected by copyright laws. You may not clone, fork, or redistribute this repository in any form. Unauthorized use of the repository may result in legal action.
+
+**Copyright (c) 2025 BusArmyDude. All rights reserved.**
+
   
 ### Enforcement
 Any violation of these terms will be subject to legal action and prosecution to the fullest extent of the law.
