@@ -323,6 +323,14 @@ function detectDetailedDevice() {
                 profilePic: 'images/souldragon912.jpeg'
             },
             {
+                username: 'prettymomma37',
+                isVerified: false,
+                followers: '68',
+                nickname: 'Andrea',
+                bio: 'No bio yet',
+                profilePic: 'images/prettymomma37.jpeg'
+            },
+            {
                 username: 'missfoxy0142',
                 isVerified: false,
                 followers: '24',
