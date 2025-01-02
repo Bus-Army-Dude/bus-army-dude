@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Settings</h1>
+        <nav>
+            <a href="index.html">Home</a> | 
+            <a href="settings.html">Settings</a>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Appearance & Accessibility</h2>
+        <form id="appearanceForm">
+            <div>
+                <label for="fontSize">Text Size:</label>
+                <input type="range" id="fontSize" name="fontSize" min="10" max="30" value="16">
+            </div>
+
+            <div>
+                <label for="colorScheme">Color Scheme:</label>
+                <select id="colorScheme" name="colorScheme">
+                    <option value="light">Light Mode</option>
+                    <option value="dark">Dark Mode</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="highContrast">Enable High Contrast:</label>
+                <input type="checkbox" id="highContrast" name="highContrast">
+            </div>
+
+            <button type="submit">Save Settings</button>
+        </form>
+    </section>
+
+    <script src="settings.js"></script>
+</body>
+</html>
