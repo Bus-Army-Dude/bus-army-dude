@@ -259,6 +259,14 @@ function detectDetailedDevice() {
                 profilePic: 'images/trafficlightdoctor.jpeg'
             },
             {
+                username: 'houseofhughes_',
+                isVerified: false,
+                followers: '303.3K',
+                nickname: 'Rachel Hughes',
+                bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES',
+                profilePic: 'images/houseofhughes.jpeg'
+            },
+            {
                 username: 'aggressiveafterdark',
                 isVerified: false,
                 followers: '296.4K',
