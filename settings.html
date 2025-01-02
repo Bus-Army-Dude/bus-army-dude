@@ -1,42 +1,41 @@
+<!-- settings.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
 </head>
 <body>
-    <header>
+    <div class="settings-page">
         <h1>Settings</h1>
-        <nav>
-            <a href="index.html">Home</a> | 
-            <a href="settings.html">Settings</a>
-        </nav>
-    </header>
 
-   <!-- Settings Page Structure -->
+        <!-- Appearance Section -->
+        <div class="settings-section">
+            <h2>Appearance</h2>
+            <button id="light-mode-btn" class="mode-btn">Light Mode</button>
+            <button id="dark-mode-btn" class="mode-btn">Dark Mode</button>
+        </div>
 
-<!-- Appearance Section -->
-    <div class="settings-section">
-    <h2>Appearance</h2>
-    <label for="theme-toggle-btn">
-        <input type="checkbox" id="theme-toggle-btn">
-        <span id="mode-label">Light Mode</span>
-    </label>
-</div>
+        <!-- Accessibility Section -->
+        <div class="settings-section">
+            <h2>Accessibility</h2>
+            <div class="accessibility-option">
+                <label for="text-size">Text Size:</label>
+                <input type="range" id="text-size" min="12" max="32" value="16">
+                <span id="text-size-label">16px</span>
+            </div>
 
-<!-- Accessibility Section -->
-<section id="accessibility-section">
-    <h2>Accessibility</h2>
-    <!-- Text Size Adjustment -->
-    <label for="increase-text-btn">Increase Text Size:</label>
-    <button id="increase-text-btn">Increase</button>
-    
-    <label for="decrease-text-btn">Decrease Text Size:</label>
-    <button id="decrease-text-btn">Decrease</button>
-</section>
+            <div class="accessibility-option">
+                <label for="contrast-toggle-btn">
+                    <input type="checkbox" id="contrast-toggle-btn">
+                    High Contrast Mode
+                </label>
+            </div>
+        </div>
+    </div>
 
-    <script src="settings.js"></script>
+    <script src="settings.js"></script> <!-- Link to your JS -->
 </body>
 </html>
