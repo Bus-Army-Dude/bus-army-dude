@@ -788,10 +788,45 @@ body {
     font-size: 16px; /* Default text size */
 }
 
+body {
+    font-size: 16px; /* Default text size */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#textSizeControl {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
 #textSizeControl button {
-    padding: 5px 10px;
-    margin: 5px;
-    font-size: 14px;
+    padding: 10px 15px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#textSizeControl button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+#textSizeControl button:focus {
+    outline: none;
+}
+
+#textSizeControl button:active {
+    transform: translateY(1px);
 }
 
 /* Footer */
