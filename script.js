@@ -466,11 +466,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const increaseButton = document.getElementById('increaseText');
     const decreaseButton = document.getElementById('decreaseText');
     
+    // Check if a saved font size exists in localStorage and apply it
+    const savedFontSize = localStorage.getItem('fontSize');
+    if (savedFontSize) {
+        document.body.style.fontSize = savedFontSize;
+    }
+    
     // Function to increase text size
     increaseButton.addEventListener('click', () => {
         const currentFontSize = window.getComputedStyle(document.body).fontSize;
         const newFontSize = parseFloat(currentFontSize) * 1.2; // Increase by 20%
         document.body.style.fontSize = `${newFontSize}px`;
+        // Save the new font size to localStorage
+        localStorage.setItem('fontSize', `${newFontSize}px`);
     });
 
     // Function to decrease text size
@@ -478,5 +486,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentFontSize = window.getComputedStyle(document.body).fontSize;
         const newFontSize = parseFloat(currentFontSize) / 1.2; // Decrease by 20%
         document.body.style.fontSize = `${newFontSize}px`;
+        // Save the new font size to localStorage
+        localStorage.setItem('fontSize', `${newFontSize}px`);
     });
 });
+
