@@ -464,19 +464,34 @@ function changeTextSize(size) {
     localStorage.setItem('text-size', size); // Save text size in localStorage
 }
 
-// Apply saved theme and text size on page load
-function applySavedSettings() {
-    const savedTheme = localStorage.getItem('theme');
-    const savedTextSize = localStorage.getItem('text-size');
+// Function to toggle dark mode
+function toggleDarkMode() {
+  const body = document.body;
+  body.classList.toggle('dark-mode');
+}
 
-    // Apply saved theme
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        document.body.classList.remove('light-mode');
-    } else {
-        document.body.classList.add('light-mode');
-        document.body.classList.remove('dark-mode');
-    }
+// Event listener for a button or switch to toggle dark mode
+document.querySelector('#dark-mode-toggle').addEventListener('click', toggleDarkMode);
+
+// Call toggleDarkMode() if you want to save the dark mode preference using localStorage
+window.onload = function() {
+  if (localStorage.getItem('darkMode') === 'enabled') {
+    document.body.classList.add('dark-mode');
+  }
+};
+
+// Function to save dark mode preference
+function saveDarkModePreference() {
+  const body = document.body;
+  if (body.classList.contains('dark-mode')) {
+    localStorage.setItem('darkMode', 'enabled');
+  } else {
+    localStorage.setItem('darkMode', 'disabled');
+  }
+}
+
+// Save preference when user toggles dark mode
+document.querySelector('#dark-mode-toggle').addEventListener('click', saveDarkModePreference);
 
     // Apply saved text size
     if (savedTextSize) {
