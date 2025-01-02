@@ -210,6 +210,14 @@ function detectDetailedDevice() {
                 bio: '🔥 Tech Tips from Nick B 🔥Enquiries: 📧 hello@TheGoldStudios.com',
                 profilePic: 'images/tatechtips.jpeg'
             },
+            {
+                username: 'kennedylawfirm',
+                isVerified: false,
+                followers: '1.9M',
+                nickname: 'Lawyer Kevin Kennedy',
+                bio: "The Kennedy Law Firm, PLLC Clarksvill, TN Kev's got you covered™️",
+                profilePic: 'images/kennedylawfirm.jpeg'
+            },
              {
                 username: 'badge502',
                 isVerified: false,
