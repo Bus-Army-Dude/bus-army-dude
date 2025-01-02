@@ -195,6 +195,14 @@ function detectDetailedDevice() {
                 profilePic: 'images/teamtrump.jpeg'
             },
             {
+                username: 'carterpcs',
+                isVerified: true,
+                followers: '5.5M',
+                nickname: 'Carterpcs',
+                bio: 'Making Tech Less Of A Snoozefest, LA, carterpcs@rakugomedia.com',
+                profilePic: 'images/carterpcs.jpeg'
+            },
+            {
                 username: 'applesauceandadhd',
                 isVerified: true,
                 followers: '3.5M',
