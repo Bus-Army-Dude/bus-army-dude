@@ -270,6 +270,39 @@ h1, h2 {
     color: white;
 }
 
+/* TikTok Creator Shoutouts */
+.creator {
+  border: 2px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 250px;
+  text-align: center;
+}
+
+.creator .profile-picture img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.creator .username .verified-check {
+  color: #1da1f2;
+}
+
+.creator .profile-button {
+  display: block;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #1da1f2;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.creator .profile-button:hover {
+  background-color: #0d8ebf;
+}
+
 /* Footer Section */
 .footer {
     background-color: var(--content-bg);
