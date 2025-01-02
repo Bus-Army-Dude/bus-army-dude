@@ -245,7 +245,7 @@ function detectDetailedDevice() {
             {
                 username: 'mrfatcheeto',
                 isVerified: false,
-                followers: '458.2K',
+                followers: '458.3K',
                 nickname: 'Mr Fat Cheeto',
                 bio: 'OH YEAH!',
                 profilePic: 'images/mrfatcheeto.jpeg'
@@ -269,7 +269,7 @@ function detectDetailedDevice() {
             {
                 username: 'aggressiveafterdark',
                 isVerified: false,
-                followers: '296.4K',
+                followers: '296.6K',
                 nickname: 'ApplesauceandADHD_AfterDark',
                 bio: 'Shhhhhhh. Its a secret, @Jess|Aggressive Tutorials Official Back-Up',
                 profilePic: 'images/aggressiveafterdark.jpeg'
@@ -357,7 +357,7 @@ function detectDetailedDevice() {
             {
                 username: 'playing.with.litt',
                 isVerified: false,
-                followers: '75',
+                followers: '76',
                 nickname: 'dylanmancini1',
                 bio: 'Hey everyone I wish I could have my main account and thanks for the views',
                 profilePic: 'images/playing.with.litt.jpeg'
