@@ -219,6 +219,14 @@ function detectDetailedDevice() {
                 profilePic: 'images/tatechtips.jpeg'
             },
             {
+                username: 'imparkerburton',
+                isVerified: false,
+                followers: '2.8M',
+                nickname: 'Parker Burton',
+                bio: 'That Android Guy, Business: parker@imparkerburton.com',
+                profilePic: 'images/imparkerburton.jpeg'
+            },
+            {
                 username: 'kennedylawfirm',
                 isVerified: false,
                 followers: '1.9M',
