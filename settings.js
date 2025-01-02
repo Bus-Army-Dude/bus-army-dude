@@ -12,20 +12,51 @@ document.getElementById('decrease-text-btn').addEventListener('click', function(
 // Function to toggle between light and dark mode
 function toggleTheme() {
     const body = document.body;
-    // Check current theme
     const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+    const modeLabel = document.getElementById('mode-label'); // Get the label element
 
-    // Toggle theme
+    // Toggle between light and dark modes
     if (currentTheme === 'light') {
         body.classList.add('dark-mode');
         body.classList.remove('light-mode');
-        localStorage.setItem('theme', 'dark'); // Save theme in localStorage
+        localStorage.setItem('theme', 'dark'); // Save dark theme preference in localStorage
+        modeLabel.textContent = 'Dark Mode'; // Update label text to Dark Mode
     } else {
         body.classList.add('light-mode');
         body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light'); // Save theme in localStorage
+        localStorage.setItem('theme', 'light'); // Save light theme preference in localStorage
+        modeLabel.textContent = 'Light Mode'; // Update label text to Light Mode
     }
 }
+
+// Function to apply saved theme preference on page load
+function applySavedTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const body = document.body;
+    const modeLabel = document.getElementById('mode-label'); // Get the label element
+    const toggleButton = document.getElementById('theme-toggle-btn'); // Get the toggle button
+
+    // Apply saved theme to body
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        body.classList.remove('light-mode');
+        toggleButton.checked = true; // Sync checkbox with saved theme
+        modeLabel.textContent = 'Dark Mode'; // Update label text to Dark Mode
+    } else {
+        body.classList.add('light-mode');
+        body.classList.remove('dark-mode');
+        toggleButton.checked = false; // Sync checkbox with saved theme
+        modeLabel.textContent = 'Light Mode'; // Update label text to Light Mode
+    }
+}
+
+// Event listener for theme toggle button (only on settings page)
+if (document.getElementById('theme-toggle-btn')) {
+    document.getElementById('theme-toggle-btn').addEventListener('change', toggleTheme);
+}
+
+// Apply saved theme on page load (across all pages)
+window.onload = applySavedTheme;
 
 // Function to change the text size
 function changeTextSize(size) {
