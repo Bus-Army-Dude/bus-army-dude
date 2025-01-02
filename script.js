@@ -186,14 +186,6 @@ function detectDetailedDevice() {
     // TikTok Shoutouts
     const tiktokShoutouts = {
         accounts: [
-             {
-                username: 'tiktok',
-                isVerified: true,
-                followers: '83.7M',
-                nickname: 'TikTok',
-                bio: 'One TikTok can make a big impact',
-                profilePic: 'images/tiktok.jpeg'
-            },
             {
                 username: 'teamtrump',
                 isVerified: true,
@@ -201,14 +193,6 @@ function detectDetailedDevice() {
                 nickname: 'Team Trump',
                 bio: 'The offical TikTok page for the Trump Campaign',
                 profilePic: 'images/teamtrump.jpeg'
-            },
-            {
-                username: 'tiktokglobal',
-                isVerified: true,
-                followers: '4.8M',
-                nickname: 'tiktokglobal',
-                bio: 'No bio yet',
-                profilePic: 'images/tiktokglobal.jpeg'
             },
             {
                 username: 'applesauceandadhd',
@@ -226,10 +210,18 @@ function detectDetailedDevice() {
                 bio: '🔥 Tech Tips from Nick B 🔥Enquiries: 📧 hello@TheGoldStudios.com',
                 profilePic: 'images/tatechtips.jpeg'
             },
+             {
+                username: 'badge502',
+                isVerified: false,
+                followers: '798.2K',
+                nickname: 'Badge502',
+                bio: 'NREMT - 911/EMD, PO Box 775, Belleville, NJ 07109',
+                profilePic: 'images/badge502.jpeg'
+            },
             {
                 username: 'mrfatcheeto',
                 isVerified: false,
-                followers: '457.4K',
+                followers: '458.2K',
                 nickname: 'Mr Fat Cheeto',
                 bio: 'OH YEAH!',
                 profilePic: 'images/mrfatcheeto.jpeg'
@@ -237,23 +229,15 @@ function detectDetailedDevice() {
             {
                 username: 'trafficlightdoctor',
                 isVerified: false,
-                followers: '382.8K',
+                followers: '383K',
                 nickname: '🚦 Traffic Light Doctor 🚦',
                 bio: '🚦Traffic Signal Tech🚦, Traffic Lights, Family, Food, and Comedy!, Mississippi',
                 profilePic: 'images/trafficlightdoctor.jpeg'
             },
             {
-                username: 'badge502',
-                isVerified: false,
-                followers: '798K',
-                nickname: 'Badge502',
-                bio: 'NREMT - 911/EMD, PO Box 775, Belleville, NJ 07109',
-                profilePic: 'images/badge502.jpeg'
-            },
-            {
                 username: 'aggressiveafterdark',
                 isVerified: false,
-                followers: '295.2K',
+                followers: '296.4K',
                 nickname: 'ApplesauceandADHD_AfterDark',
                 bio: 'Shhhhhhh. Its a secret, @Jess|Aggressive Tutorials Official Back-Up',
                 profilePic: 'images/aggressiveafterdark.jpeg'
@@ -277,7 +261,7 @@ function detectDetailedDevice() {
             {
                 username: 'busarmydude',
                 isVerified: false,
-                followers: '1,234',
+                followers: '1,235',
                 nickname: 'Bus Army Dude',
                 bio: 'Hello, my name is River, I am 19. I am autistic. I love technology',
                 profilePic: 'images/busarmydude.jpg'
@@ -293,7 +277,7 @@ function detectDetailedDevice() {
             {
                 username: 'lust__ryze',
                 isVerified: false,
-                followers: '1,040',
+                followers: '1,039',
                 nickname: 'Ryze',
                 bio: 'Google Pixel,Samsung,Apple Owner, Spam likes =Blocked',
                 profilePic: 'images/lust_ryze.jpeg'
@@ -301,7 +285,7 @@ function detectDetailedDevice() {
             {
                 username: 'elvirablack8',
                 isVerified: false,
-                followers: '965',
+                followers: '966',
                 nickname: 'elvirablack8',
                 bio: 'I love my friends and my family all so much even my followers',
                 profilePic: 'images/elvirablack8.jpeg'
@@ -317,7 +301,7 @@ function detectDetailedDevice() {
             {
                 username: 'jerridonthelot',
                 isVerified: false,
-                followers: '116',
+                followers: '117',
                 nickname: 'Jerrid on the Lot',
                 bio: 'Your friendly neighborhood Car Salesman and Boy Dad',
                 profilePic: 'images/jerridonthelot.jpeg'
