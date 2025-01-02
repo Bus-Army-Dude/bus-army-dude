@@ -14,24 +14,91 @@
     --dark-content-bg: #2d2d2d;
 }
 
-/* Theme Classes */
-.light-mode {
-    --bg-color: var(--light-bg);
-    --text-color: var(--light-text);
-    --secondary-text: var(--light-secondary-text);
-    --border-color: var(--light-border);
-    --accent-color: var(--light-accent);
-    --content-bg: var(--light-content-bg);
+/* Default Light Mode */
+body {
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s, font-size 0.3s;
 }
 
-.dark-mode {
-    --bg-color: var(--dark-bg);
-    --text-color: var(--dark-text);
-    --secondary-text: var(--dark-secondary-text);
-    --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --content-bg: var(--dark-content-bg);
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
 }
+
+/* High Contrast Mode */
+body.high-contrast {
+    background-color: black;
+    color: yellow;
+}
+
+/* Styling for Buttons */
+.mode-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#light-mode-btn {
+    background-color: lightgray;
+}
+
+#dark-mode-btn {
+    background-color: darkgray;
+}
+
+#light-mode-btn:hover, #dark-mode-btn:hover {
+    background-color: #3a3a3a;
+}
+
+/* Accessibility Text Size */
+body {
+    font-size: 16px; /* Default font size */
+}
+
+body.high-contrast {
+    font-size: 18px; /* Larger text in high contrast mode */
+}
+
+/* Styling for the Accessibility Section */
+#text-size {
+    width: 100%;
+}
+
+#text-size-label {
+    font-size: 1em;
+    margin-top: 5px;
+}
+
+/* Styling for the Settings Page */
+.settings-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+.accessibility-option {
+    margin-bottom: 20px;
+}
+
 
 /* Profile Section */
 .profile-section {
@@ -786,99 +853,6 @@ img {
 
 body {
     font-size: 16px; /* Default text size */
-}
-
-/* General Styles */
-section {
-    margin: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Appearance Section */
-#appearance-section {
-    background-color: #dbe8f1;
-}
-
-/* Accessibility Section */
-#accessibility-section {
-    background-color: #f0e1d9;
-}
-
-/* Button Styles */
-button {
-    padding: 5px 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-/* Toggle Styles */
-input[type="checkbox"] {
-    margin-left: 10px;
-}
-
-/* Default Light Mode Styles */
-body {
-    background-color: #ffffff; /* Light mode background */
-    color: #000000; /* Light mode text color */
-    font-size: 16px; /* Default text size */
-}
-
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: #333333; /* Dark mode background */
-    color: #ffffff; /* Dark mode text color */
-}
-
-/* Section Styling for Settings */
-section {
-    margin: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Appearance Section */
-#appearance-section {
-    background-color: #dbe8f1;
-}
-
-/* Accessibility Section */
-#accessibility-section {
-    background-color: #f0e1d9;
-}
-
-/* Button Styles */
-button {
-    padding: 5px 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-/* Toggle Styles */
-input[type="checkbox"] {
-    margin-left: 10px;
 }
 
 /* Footer */
