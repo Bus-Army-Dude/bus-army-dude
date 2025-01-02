@@ -214,7 +214,7 @@ function detectDetailedDevice() {
              {
                 username: 'badge502',
                 isVerified: false,
-                followers: '798.2K',
+                followers: '798.1K',
                 nickname: 'Badge502',
                 bio: 'NREMT - 911/EMD, PO Box 775, Belleville, NJ 07109',
                 profilePic: 'images/badge502.jpeg'
@@ -222,7 +222,7 @@ function detectDetailedDevice() {
             {
                 username: 'mrfatcheeto',
                 isVerified: false,
-                followers: '458.3K',
+                followers: '458.4K',
                 nickname: 'Mr Fat Cheeto',
                 bio: 'OH YEAH!',
                 profilePic: 'images/mrfatcheeto.jpeg'
@@ -238,7 +238,7 @@ function detectDetailedDevice() {
             {
                 username: 'houseofhughes_',
                 isVerified: false,
-                followers: '303.3K',
+                followers: '303.4K',
                 nickname: 'Rachel Hughes',
                 bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES',
                 profilePic: 'images/houseofhughes.jpeg'
@@ -246,7 +246,7 @@ function detectDetailedDevice() {
             {
                 username: 'aggressiveafterdark',
                 isVerified: false,
-                followers: '296.6K',
+                followers: '296.8K',
                 nickname: 'ApplesauceandADHD_AfterDark',
                 bio: 'Shhhhhhh. Its a secret, @Jess|Aggressive Tutorials Official Back-Up',
                 profilePic: 'images/aggressiveafterdark.jpeg'
@@ -270,7 +270,7 @@ function detectDetailedDevice() {
             {
                 username: 'busarmydude',
                 isVerified: false,
-                followers: '1,235',
+                followers: '1,236',
                 nickname: 'Bus Army Dude',
                 bio: 'Hello, my name is River, I am 19. I am autistic. I love technology',
                 profilePic: 'images/busarmydude.jpg'
@@ -278,7 +278,7 @@ function detectDetailedDevice() {
             {
                 username: 'raisingramsey2023',
                 isVerified: false,
-                followers: '1,151',
+                followers: '1,150',
                 nickname: 'RaisingRamsey2023',
                 bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn',
                 profilePic: 'images/raisingramsey2023.jpeg'
@@ -294,7 +294,7 @@ function detectDetailedDevice() {
             {
                 username: 'elvirablack8',
                 isVerified: false,
-                followers: '966',
+                followers: '967',
                 nickname: 'elvirablack8',
                 bio: 'I love my friends and my family all so much even my followers',
                 profilePic: 'images/elvirablack8.jpeg'
@@ -318,7 +318,7 @@ function detectDetailedDevice() {
             {
                 username: '_jano_142_',
                 isVerified: false,
-                followers: '99',
+                followers: '100',
                 nickname: 'Jano_142',
                 bio: 'I am a guy who loves cars... Want to support my passion? My Cashapp is @Jano142',
                 profilePic: 'images/jano142.jpeg'
