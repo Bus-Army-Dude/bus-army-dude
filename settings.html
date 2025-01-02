@@ -7,8 +7,8 @@
     <title>Settings</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
 </head>
-    
-     <!-- Navigation -->
+
+    <!-- Navigation -->
     <nav>
     <a href="index.html">Home</a> | 
     <a href="settings.html">Settings</a>
@@ -16,32 +16,29 @@
     
 <body>
     <div class="settings-page">
-        <h1 class="settings-header">Settings</h1>
+        <h1>Settings</h1>
 
         <!-- Appearance Section -->
         <div class="settings-section">
-            <h2 class="section-title">Appearance</h2>
-            <div class="mode-buttons">
-                <button id="light-mode-btn" class="mode-btn active">Light Mode</button>
-                <button id="dark-mode-btn" class="mode-btn">Dark Mode</button>
-            </div>
+            <h2>Appearance</h2>
+            <button id="light-mode-btn" class="mode-btn">Light Mode</button>
+            <button id="dark-mode-btn" class="mode-btn">Dark Mode</button>
         </div>
 
         <!-- Accessibility Section -->
         <div class="settings-section">
-            <h2 class="section-title">Accessibility</h2>
+            <h2>Accessibility</h2>
             <div class="accessibility-option">
                 <label for="text-size">Text Size:</label>
-                <input type="range" id="text-size" min="12" max="32" value="16" class="text-size-range">
+                <input type="range" id="text-size" min="12" max="32" value="16">
                 <span id="text-size-label">16px</span>
             </div>
 
             <div class="accessibility-option">
-                <label for="contrast-toggle-btn" class="switch">
+                <label for="contrast-toggle-btn">
                     <input type="checkbox" id="contrast-toggle-btn">
-                    <span class="slider"></span>
+                    High Contrast Mode
                 </label>
-                <span>High Contrast Mode</span>
             </div>
         </div>
     </div>
