@@ -57,7 +57,7 @@ To report a security vulnerability, please follow these steps:
 - The website undergoes regular security updates
 - Security patches are implemented as soon as vulnerabilities are discovered
 - Users are notified of significant security updates through the version info section
-- Current stable version is v1.4.0-beta.2
+- Current stable version is v1.4.0
 
 ## Security Best Practices
 
