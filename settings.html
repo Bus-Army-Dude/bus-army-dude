@@ -15,30 +15,26 @@
         </nav>
     </header>
 
-    <section>
-        <h2>Appearance & Accessibility</h2>
-        <form id="appearanceForm">
-            <div>
-                <label for="fontSize">Text Size:</label>
-                <input type="range" id="fontSize" name="fontSize" min="10" max="30" value="16">
-            </div>
+   <!-- Settings Page Structure -->
 
-            <div>
-                <label for="colorScheme">Color Scheme:</label>
-                <select id="colorScheme" name="colorScheme">
-                    <option value="light">Light Mode</option>
-                    <option value="dark">Dark Mode</option>
-                </select>
-            </div>
+<!-- Appearance Section -->
+<section id="appearance-section">
+    <h2>Appearance</h2>
+    <!-- Light/Dark Mode Toggle -->
+    <label for="theme-toggle">Toggle Light/Dark Mode:</label>
+    <input type="checkbox" id="theme-toggle-btn">
+</section>
 
-            <div>
-                <label for="highContrast">Enable High Contrast:</label>
-                <input type="checkbox" id="highContrast" name="highContrast">
-            </div>
-
-            <button type="submit">Save Settings</button>
-        </form>
-    </section>
+<!-- Accessibility Section -->
+<section id="accessibility-section">
+    <h2>Accessibility</h2>
+    <!-- Text Size Adjustment -->
+    <label for="increase-text-btn">Increase Text Size:</label>
+    <button id="increase-text-btn">Increase</button>
+    
+    <label for="decrease-text-btn">Decrease Text Size:</label>
+    <button id="decrease-text-btn">Decrease</button>
+</section>
 
     <script src="settings.js"></script>
 </body>
