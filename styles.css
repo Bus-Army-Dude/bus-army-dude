@@ -828,6 +828,59 @@ input[type="checkbox"] {
     margin-left: 10px;
 }
 
+/* Default Light Mode Styles */
+body {
+    background-color: #ffffff; /* Light mode background */
+    color: #000000; /* Light mode text color */
+    font-size: 16px; /* Default text size */
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #333333; /* Dark mode background */
+    color: #ffffff; /* Dark mode text color */
+}
+
+/* Section Styling for Settings */
+section {
+    margin: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Appearance Section */
+#appearance-section {
+    background-color: #dbe8f1;
+}
+
+/* Accessibility Section */
+#accessibility-section {
+    background-color: #f0e1d9;
+}
+
+/* Button Styles */
+button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Toggle Styles */
+input[type="checkbox"] {
+    margin-left: 10px;
+}
+
 /* Footer */
 footer {
     text-align: center;
