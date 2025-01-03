@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
-    // Category sections
-    const categories = document.querySelectorAll('.categories-list li a');
+    // Category dropdown element
+    const categorySelect = document.getElementById('categorySelect');
     const productsGrid = document.querySelector('.products-grid');
     const saleGrid = document.querySelector('.sale-grid');
 
@@ -106,38 +106,31 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the function to display all products initially
     displayAllProducts();
 
-    // Handle category click and filter products
-    categories.forEach(category => {
-        category.addEventListener('click', function (e) {
-            e.preventDefault();
-            const categoryName = category.textContent.trim();
-
-            // Filter products based on selected category
-            const filteredOnSaleProducts = newProductData.filter(product => product.onSale && (categoryName === "All Products" || product.category === categoryName));
-            const filteredProducts = newProductData.filter(product => !product.onSale && (categoryName === "All Products" || product.category === categoryName));
-
-            // Display filtered products in their respective sections
-            displayProducts(filteredOnSaleProducts, saleGrid);
-            displayProducts(filteredProducts, productsGrid);
+    // Get unique categories from product data and populate the dropdown
+    function populateCategoryDropdown() {
+        const categories = new Set();
+        newProductData.forEach(product => categories.add(product.category));
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
         });
-    });
-
-    // Function to force the layout to adjust after dynamic content load
-    function updateCategoryLayout() {
-        const categoryCards = document.querySelectorAll('.category-card');
-        const categoriesGrid = document.querySelector('.categories-grid');
-        
-        // This will trigger reflow, ensuring the grid adjusts properly
-        categoriesGrid.style.display = 'none';
-        categoriesGrid.offsetHeight; // Trigger reflow
-        categoriesGrid.style.display = 'flex';
     }
 
-    // Ensure categories grid adjusts properly after page load
-    updateCategoryLayout();  // Initial layout adjustment on load
+    // Call the function to populate dropdown
+    populateCategoryDropdown();
 
-    // Re-adjust layout if the window is resized
-    window.addEventListener('resize', function() {
-        updateCategoryLayout();
+    // Handle category selection and filter products
+    categorySelect.addEventListener('change', function () {
+        const selectedCategory = categorySelect.value;
+
+        // Filter products based on selected category
+        const filteredOnSaleProducts = newProductData.filter(product => product.onSale && (selectedCategory === "all" || product.category === selectedCategory));
+        const filteredProducts = newProductData.filter(product => !product.onSale && (selectedCategory === "all" || product.category === selectedCategory));
+
+        // Display filtered products in their respective sections
+        displayProducts(filteredOnSaleProducts, saleGrid);
+        displayProducts(filteredProducts, productsGrid);
     });
 });
