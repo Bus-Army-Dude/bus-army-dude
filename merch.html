@@ -3,95 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchandise - Bus Army Dude's Profile</title>
+    <title>Merchandise</title>
     <link rel="stylesheet" href="merch.css">
-    <meta http-equiv="refresh" content="60">
-    <!-- Favicons and Icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="images/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration for pinned tiles -->
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
-    <meta name="msapplication-config" content="/browserconfig.xml">
 </head>
 <body>
     <header>
-        <h1>Bus Army Merch</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="settings.html">Settings</a></li>
-                <li><a href="merch.html">Merch Store</a></li>
+                <li><a href="merch.html">Merchandise</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="new-products">
-        <h2>New Products</h2>
-        <div class="product-grid">
-            <!-- New Product 1 -->
-            <div class="product-card">
-                <img src="product1.jpg" alt="Product 1">
-                <div class="product-info">
-                    <h3>Product 1</h3>
-                    <p>Product description goes here.</p>
-                    <span>$29.99</span>
-                    <a href="https://example.com/buy-product1" class="buy-btn">Buy Now</a>
-                </div>
-            </div>
-            <!-- More products -->
-        </div>
-    </section>
-
     <section id="on-sale">
         <h2>On Sale</h2>
-        <div class="product-grid">
-            <!-- Sale Product 1 -->
-            <div class="product-card">
-                <img src="sale1.jpg" alt="Sale Product 1">
-                <div class="product-info">
-                    <h3>Sale Product 1</h3>
-                    <p>Description of the sale product.</p>
-                    <span class="discount">$19.99</span>
-                    <a href="https://example.com/buy-sale1" class="buy-btn">Buy Now</a>
-                </div>
-            </div>
-            <!-- More sale products -->
+        <div class="product-grid sale-grid">
+            <!-- On Sale products will be added dynamically here -->
         </div>
     </section>
 
-    <section id="categories">
+    <section id="product-categories">
         <h2>Product Categories</h2>
         <ul class="categories-list">
             <li><a href="#" class="category-link">All</a></li>
             <li><a href="#" class="category-link">T-shirts</a></li>
             <li><a href="#" class="category-link">Hats</a></li>
             <li><a href="#" class="category-link">Accessories</a></li>
-            <li><a href="#" class="category-link">Stickers</a></li>
         </ul>
     </section>
 
-    <footer>
-        <p>&copy; 2025 Bus Army. All rights reserved.</p>
-    </footer>
+    <section id="new-products">
+        <h2>New Products</h2>
+        <div class="product-grid new-product-grid">
+            <!-- New products will be added dynamically here -->
+        </div>
+    </section>
 
     <script src="merch.js"></script>
-    <script src="script.js"></script>
-    <script src="settings.js"></script>
 </body>
 </html>
