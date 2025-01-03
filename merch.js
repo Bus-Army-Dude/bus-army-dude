@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Prevent right-click and certain keyboard shortcuts for dev tools
     document.addEventListener('contextmenu', function (e) {
-        e.preventDefault(); // Disable right-click menu
+        e.preventDefault();
     });
 
     // Prevent image dragging and right-click
     const images = document.querySelectorAll('img');
     images.forEach(image => {
         image.addEventListener('dragstart', function (e) {
-            e.preventDefault(); // Disable image drag
+            e.preventDefault();
         });
         image.addEventListener('contextmenu', function (e) {
-            e.preventDefault(); // Disable right-click context menu on images
+            e.preventDefault();
         });
     });
 
@@ -29,66 +29,19 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault(); // Disable paste
     });
 
-    // Prevent F12, Ctrl+Shift+I/J, and other dev tool access for all OS versions (including mobile)
+    // Prevent F12 and Ctrl+Shift+I/J to disable dev tools access
     document.addEventListener('keydown', function (e) {
-        // Disable F12, Ctrl+Shift+I/J, and Cmd+Shift+I/J on any OS (macOS, Linux, Windows, and mobile)
-        if (e.key === 'F12' || 
-            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
-            (e.metaKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
-            e.preventDefault();
-        }
-
-        // Disable common keyboard shortcuts for copy/cut/paste
-        if (e.ctrlKey || e.metaKey) {
-            if (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || 
-                e.key === 'v' || e.key === 'V' || e.key === 'a' || e.key === 'A') {
-                e.preventDefault();
-            }
-        }
-    });
-
-    // Prevent saving images via drag, right-click, or saving
-    images.forEach(image => {
-        image.addEventListener('dragstart', function (e) {
-            e.preventDefault(); // Disable image drag
-        });
-
-        image.addEventListener('contextmenu', function (e) {
-            e.preventDefault(); // Disable right-click context menu on images
-        });
-    });
-
-    // Disable all text selection and prevent any other default actions (copy/paste)
-    document.body.addEventListener('keydown', function (e) {
-        // Disable select-all on macOS/Linux/Windows and Mobile
-        if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
             e.preventDefault();
         }
     });
 
-    // Disable pinch to zoom on mobile devices (if needed)
-    document.addEventListener('touchstart', function (e) {
-        if (e.touches.length > 1) {
-            e.preventDefault(); // Prevent pinch-to-zoom
-        }
-    }, { passive: false });
-
-    // Prevent double tap zooming on mobile
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (e) {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-            e.preventDefault(); // Prevent double tap zoom
-        }
-        lastTouchEnd = now;
-    });
-document.addEventListener('DOMContentLoaded', function () {
-    // Sample Product Data
+    // Product data (replace with your actual product data)
     const newProductData = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
             price: '$14.82', 
-            imgSrc: 'product_images/clear-cases.jpg', 
+            imgSrc: 'product_images/clear-cases.jpg', // Path to image in product_images folder
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
@@ -100,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
             imgSrc: 'product_images/impact-resistant-cases.jpg', 
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
-            onSale: true,
+            onSale: false,
             link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
         },
         { 
@@ -114,33 +67,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
-    // Get category select dropdown and product grid elements
+    // Category sections
+    const categories = document.querySelectorAll('.categories-list li a');
+    const productsGrid = document.querySelector('.products-grid');
+    const saleGrid = document.querySelector('.sale-grid');
     const categorySelect = document.getElementById('categorySelect');
-    const productsGrid = document.getElementById('products-grid');
-    const saleGrid = document.getElementById('sale-grid');
 
-    // Function to create and display product cards dynamically
-    function displayProducts(products, container) {
-        container.innerHTML = ''; // Clear the container before adding new products
-        products.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card');
-            productCard.setAttribute('data-category', product.category);
-
-            productCard.innerHTML = `
-                <img src="${product.imgSrc}" alt="${product.name}">
-                <div class="product-info">
-                    <h3>${product.name}</h3>
-                    <p>${product.description}</p>
-                    <span>${product.price}</span>
-                    <a href="${product.link}" class="buy-btn" target="_blank">Buy Now</a>
-                </div>
-            `;
-            container.appendChild(productCard);
-        });
-    }
-
-    // Function to populate the category dropdown dynamically
+    // Populate category dropdown dynamically
     function populateCategoryDropdown() {
         const categories = [...new Set(newProductData.map(product => product.category))];
         categories.forEach(category => {
@@ -151,27 +84,38 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Initially display all products in their respective sections
+    // Generate product cards dynamically for both sale and products
+    function displayProducts(products, container) {
+        container.innerHTML = ''; // Clear the container before adding new products
+        products.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.classList.add('product-card');
+            productCard.setAttribute('data-category', product.category); // Add category as data attribute
+
+            productCard.innerHTML = `
+                <img src="${product.imgSrc}" alt="${product.name}">
+                <div class="product-info">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <span>${product.price}</span>
+                    <a href="${product.link}" class="buy-btn" target="_blank">Buy Now</a>
+                </div>
+            `;
+            container.appendChild(productCard); // Append product card to respective container (Sale or Products)
+        });
+    }
+
+    // Initially display all products, split into Products and On Sale
     function displayAllProducts() {
         const onSaleProducts = newProductData.filter(product => product.onSale);
         const products = newProductData.filter(product => !product.onSale);
 
+        // Display products in their respective sections
         displayProducts(onSaleProducts, saleGrid);
         displayProducts(products, productsGrid);
     }
 
-    // Display all products and populate categories on page load
+    // Call the function to display all products initially
     displayAllProducts();
     populateCategoryDropdown();
-
-    // Handle category selection and filter products
-    categorySelect.addEventListener('change', function () {
-        const selectedCategory = categorySelect.value;
-
-        const filteredOnSaleProducts = newProductData.filter(product => product.onSale && (selectedCategory === 'all' || product.category === selectedCategory));
-        const filteredProducts = newProductData.filter(product => !product.onSale && (selectedCategory === 'all' || product.category === selectedCategory));
-
-        displayProducts(filteredOnSaleProducts, saleGrid);
-        displayProducts(filteredProducts, productsGrid);
-    });
 });
