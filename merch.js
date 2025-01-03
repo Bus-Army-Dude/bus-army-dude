@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const categories = document.querySelectorAll('.categories-list li a');
-    const productGrid = document.querySelector('.product-grid');
+    const productsGrid = document.querySelector('.products-grid');
+    const saleGrid = document.querySelector('.sale-grid');
 
     // Product data (replace with your actual product data)
     const newProductData = [
@@ -33,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
-    // Generate product cards dynamically
-    function displayProducts(products) {
-        productGrid.innerHTML = ''; // Clear current product grid
+    // Generate product cards dynamically for both sale and products
+    function displayProducts(products, container) {
+        container.innerHTML = ''; // Clear the container before adding new products
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
@@ -50,12 +51,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     <a href="${product.link}" class="buy-btn" target="_blank">Buy Now</a>
                 </div>
             `;
-            productGrid.appendChild(productCard); // Append product card to grid
+            container.appendChild(productCard); // Append product card to respective container (Sale or Products)
         });
     }
 
-    // Initially display all products
-    displayProducts(newProductData);
+    // Initially display all products, split into Products and On Sale
+    function displayAllProducts() {
+        const onSaleProducts = newProductData.filter(product => product.onSale);
+        const products = newProductData.filter(product => !product.onSale);
+
+        // Display products in their respective sections
+        displayProducts(onSaleProducts, saleGrid);
+        displayProducts(products, productsGrid);
+    }
+
+    // Call the function to display all products initially
+    displayAllProducts();
 
     // Handle category click and filter products
     categories.forEach(category => {
@@ -64,12 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const categoryName = category.textContent.trim();
 
             // Filter products based on selected category
-            if (categoryName === "All Products") {
-                displayProducts(newProductData); // Show all products
-            } else {
-                const filteredProducts = newProductData.filter(product => product.category === categoryName);
-                displayProducts(filteredProducts); // Show filtered products
-            }
+            const filteredOnSaleProducts = newProductData.filter(product => product.onSale && (categoryName === "All Products" || product.category === categoryName));
+            const filteredProducts = newProductData.filter(product => !product.onSale && (categoryName === "All Products" || product.category === categoryName));
+
+            // Display filtered products in their respective sections
+            displayProducts(filteredOnSaleProducts, saleGrid);
+            displayProducts(filteredProducts, productsGrid);
         });
     });
 });
