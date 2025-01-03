@@ -49,6 +49,38 @@ button:disabled {
     cursor: not-allowed;
 }
 
+/* Header and Navigation Styles */
+header {
+    background-color: #007bff;
+    padding: 15px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    font-size: 24px;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
 /* Product Grid Layout */
 .products-grid {
     display: grid;
