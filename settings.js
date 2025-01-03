@@ -1,73 +1,31 @@
-// Function to switch to Light Mode
-function setLightMode() {
-    const body = document.body;
-    body.classList.add('light-mode');
-    body.classList.remove('dark-mode');
-    localStorage.setItem('theme', 'light'); // Save light theme preference in localStorage
-    updateModeButtonLabel('Light Mode');
-}
+document.addEventListener('DOMContentLoaded', function () {
+    // Get saved theme and text size from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'light';  // Default to light mode
+    const savedTextSize = localStorage.getItem('textSize') || '16px';  // Default text size
 
-// Function to switch to Dark Mode
-function setDarkMode() {
-    const body = document.body;
-    body.classList.add('dark-mode');
-    body.classList.remove('light-mode');
-    localStorage.setItem('theme', 'dark'); // Save dark theme preference in localStorage
-    updateModeButtonLabel('Dark Mode');
-}
+    // Apply saved theme and text size
+    document.body.classList.add(savedTheme);
+    document.body.style.fontSize = savedTextSize;
 
-// Function to update the label text of the buttons
-function updateModeButtonLabel(mode) {
-    const lightModeButton = document.getElementById('light-mode-btn');
-    const darkModeButton = document.getElementById('dark-mode-btn');
-    
-    if (mode === 'Light Mode') {
-        lightModeButton.style.display = 'none';
-        darkModeButton.style.display = 'inline-block';
-    } else {
-        darkModeButton.style.display = 'none';
-        lightModeButton.style.display = 'inline-block';
-    }
-}
+    // Theme change event listeners
+    document.getElementById('light-mode').addEventListener('click', () => {
+        document.body.classList.replace('dark', 'light');
+        localStorage.setItem('theme', 'light');
+    });
 
-// Function to apply saved settings
-function applySavedSettings() {
-    // Apply saved theme
-    const savedTheme = localStorage.getItem('theme');
-    const body = document.body;
-    
-    if (savedTheme === 'dark') {
-        body.classList.add('dark-mode');
-        body.classList.remove('light-mode');
-        updateModeButtonLabel('Dark Mode');
-    } else {
-        body.classList.add('light-mode');
-        body.classList.remove('dark-mode');
-        updateModeButtonLabel('Light Mode');
-    }
+    document.getElementById('dark-mode').addEventListener('click', () => {
+        document.body.classList.replace('light', 'dark');
+        localStorage.setItem('theme', 'dark');
+    });
 
-    // Apply saved text size
-    const savedTextSize = localStorage.getItem('text-size');
-    if (savedTextSize) {
-        document.body.style.fontSize = `${savedTextSize}px`;
-        document.getElementById('text-size').value = savedTextSize;
-        document.getElementById('text-size-label').textContent = `${savedTextSize}px`;
-    }
+    // Text size change listener
+    const textSizeSlider = document.getElementById('text-size-slider');
+    textSizeSlider.addEventListener('input', (event) => {
+        const newSize = event.target.value + 'px';  // Get new size in pixels
+        document.body.style.fontSize = newSize;  // Apply new text size
+        localStorage.setItem('textSize', newSize);  // Save new size to localStorage
+    });
 
-
-// Event listeners for the buttons and other settings
-document.getElementById('light-mode-btn').addEventListener('click', setLightMode);
-document.getElementById('dark-mode-btn').addEventListener('click', setDarkMode);
-document.getElementById('text-size').addEventListener('input', updateTextSize);
-
-// Function to update text size based on user preference
-function updateTextSize() {
-    const textSize = document.getElementById('text-size').value;
-    const textSizeLabel = document.getElementById('text-size-label');
-    document.body.style.fontSize = `${textSize}px`;
-    textSizeLabel.textContent = `${textSize}px`; // Update text size label
-    localStorage.setItem('text-size', textSize); // Save text size preference in localStorage
-}
-
-// Apply saved settings on page load (across all pages)
-window.onload = applySavedSettings;
+    // Set the slider value to reflect the current text size
+    textSizeSlider.value = parseInt(savedTextSize);
+});
