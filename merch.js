@@ -1,88 +1,37 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Disable right-click (context menu) across the entire page
-    document.addEventListener('contextmenu', function (e) {
-        e.preventDefault(); // Disable right-click
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    // Enhanced Copy Protection
+    const enhancedCopyProtection = {
+        init() {
+            // Disable right-click context menu
+            document.addEventListener('contextmenu', e => e.preventDefault());
 
-    // Prevent image dragging and right-click on images
-    const images = document.querySelectorAll('img');
-    images.forEach(image => {
-        image.addEventListener('dragstart', function (e) {
-            e.preventDefault(); // Disable image dragging
-        });
-        image.addEventListener('contextmenu', function (e) {
-            e.preventDefault(); // Disable right-click on images
-        });
-    });
+            // Disable text selection
+            document.addEventListener('selectstart', e => e.preventDefault());
 
-    // Disable text selection (for copy-pasting protection)
-    document.body.addEventListener('selectstart', function (e) {
-        e.preventDefault(); // Disable text selection
-    });
+            // Disable copying
+            document.addEventListener('copy', e => e.preventDefault());
 
-    // Disable copy and paste actions
-    document.body.addEventListener('copy', function (e) {
-        e.preventDefault(); // Disable copy
-    });
+            // Disable cutting
+            document.addEventListener('cut', e => e.preventDefault());
 
-    document.body.addEventListener('paste', function (e) {
-        e.preventDefault(); // Disable paste
-    });
+            // Disable paste
+            document.addEventListener('paste', e => e.preventDefault());
 
-    // Disable printing (Ctrl + P, etc.)
-    document.addEventListener('keydown', function (e) {
-        // Block Ctrl+P (Print), Ctrl+C (Copy), Ctrl+V (Paste), Ctrl+S (Save)
-        if ((e.ctrlKey && (e.key === 'p' || e.key === 'c' || e.key === 'v' || e.key === 's')) || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
-            e.preventDefault(); // Prevent key combinations
+            // Disable drag
+            document.addEventListener('dragstart', e => e.preventDefault());
+            document.addEventListener('drop', e => e.preventDefault());
         }
-    });
+    };
 
-    // Disable long press (on mobile devices) to prevent copy/paste actions
-    document.body.addEventListener('touchstart', function (e) {
-        e.preventDefault(); // Disable touch events like long-press (for mobile)
-    });
+    // Initialize copy protection
+    enhancedCopyProtection.init();
 
-    // Disable the ability to save images via the right-click context menu
-    images.forEach(image => {
-        image.addEventListener('touchstart', function (e) {
-            e.preventDefault(); // Disable touch events like long-press (for mobile)
-        });
-    });
-
-    // Prevent "Save as" context menu action across mobile and desktop
-    document.body.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-    });
-
-    // Disable double-tap for text selection on mobile devices
-    document.body.addEventListener('touchstart', function (e) {
-        if (e.target && e.target.tagName === 'P') {
-            e.preventDefault(); // Prevent double-tap on text to select
-        }
-    });
-
-    // Disable any clipboard actions such as cut, copy, paste
-    document.addEventListener('cut', function (e) {
-        e.preventDefault(); // Disable cutting text
-    });
-
-    // Disable right-click, copying, and saving of images
-    images.forEach(image => {
-        image.addEventListener('contextmenu', function (e) {
-            e.preventDefault(); // Disable context menu on images
-        });
-
-        image.addEventListener('dragstart', function (e) {
-            e.preventDefault(); // Disable drag to save image
-        });
-    });
-    
-    // Handle the product data dynamically
-    const newProductData = [
+    // Your Actual Product Data
+    const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
             price: '$14.82', 
-            imgSrc: 'product_images/clear-cases.jpg', // Path to image in product_images folder
+            imgSrc: 'product_images/clear-cases.jpg', 
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
@@ -108,47 +57,47 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
-    // Category dropdown setup
-    const categorySelect = document.getElementById('categorySelect');
-    const categories = Array.from(new Set(newProductData.map(product => product.category))); // Get unique categories
-    categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categorySelect.appendChild(option);
-    });
-
-    // Function to display products
-    function displayProducts(products, container) {
-        container.innerHTML = ''; // Clear existing products
-        products.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card');
-            productCard.setAttribute('data-category', product.category); // Add category as data attribute
-
-            productCard.innerHTML = `
-                <img src="${product.imgSrc}" alt="${product.name}">
-                <div class="product-info">
-                    <h3>${product.name}</h3>
-                    <p>${product.description}</p>
-                    <span>${product.price}</span>
-                    <a href="${product.link}" class="buy-btn" target="_blank">Buy Now</a>
-                </div>
-            `;
-            container.appendChild(productCard); // Append product card to the container
+    // Populate categories dropdown dynamically
+    function populateCategories() {
+        const categorySelect = document.getElementById('categorySelect');
+        const categories = Array.from(new Set(products.map(product => product.category)));
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            categorySelect.appendChild(option);
         });
     }
 
-    // Initially display all products
-    const productsGrid = document.querySelector('.products-grid');
-    const saleGrid = document.querySelector('.sale-grid');
-    displayProducts(newProductData, productsGrid);
-    displayProducts(newProductData.filter(product => product.onSale), saleGrid);
+    // Display products based on selected category
+    function displayProducts(category = 'all') {
+        const productGrid = document.querySelector('.products-grid');
+        productGrid.innerHTML = '';
 
-    // Handle category selection
-    categorySelect.addEventListener('change', function () {
-        const selectedCategory = categorySelect.value;
-        const filteredProducts = selectedCategory === 'all' ? newProductData : newProductData.filter(product => product.category === selectedCategory);
-        displayProducts(filteredProducts, productsGrid); // Display filtered products
+        const filteredProducts = category === 'all' ? products : products.filter(product => product.category === category);
+        filteredProducts.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.classList.add('product-card');
+            productCard.innerHTML = `
+                <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-name">${product.name}</h3>
+                    <p class="product-price">${product.price}</p>
+                    <p class="product-description">${product.description}</p>
+                    <a href="${product.link}" target="_blank" class="view-product">View Product</a>
+                </div>
+            `;
+            productGrid.appendChild(productCard);
+        });
+    }
+
+    // Initialize categories and products on page load
+    populateCategories();
+    displayProducts();
+
+    // Event listener for category selection
+    document.getElementById('categorySelect').addEventListener('change', (event) => {
+        const selectedCategory = event.target.value;
+        displayProducts(selectedCategory);
     });
 });
