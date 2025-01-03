@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
+            salePrice: null, // No sale price when not on sale
             link: 'https://rivers-merch-store.printify.me/product/13136298/clear-cases?category=accessories' 
         },
         { 
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
             category: 'Kids', 
             onSale: false,
+            salePrice: null, // No sale price when not on sale
             link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
         }
     ];
@@ -101,9 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="product-details">
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-price">
-                        ${product.onSale ? 
+                        ${product.onSale && product.salePrice ? 
                             `<span class="sale-price">${product.salePrice}</span> <span class="original-price">${product.price}</span>` :
-                            product.price
+                            `<span class="regular-price">${product.price}</span>`
                         }
                     </p>
                     <p class="product-description">${product.description}</p>
