@@ -28,12 +28,6 @@ body.dark-mode {
     color: white;
 }
 
-/* High Contrast Mode */
-body.high-contrast {
-    background-color: black;
-    color: yellow;
-}
-
 /* Styling for Buttons */
 .mode-btn {
     padding: 10px 20px;
@@ -60,10 +54,6 @@ body.high-contrast {
 /* Accessibility Text Size */
 body {
     font-size: 16px; /* Default font size */
-}
-
-body.high-contrast {
-    font-size: 18px; /* Larger text in high contrast mode */
 }
 
 /* Styling for the Accessibility Section */
