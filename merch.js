@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Prevent right-click and certain keyboard shortcuts for dev tools
+    // Disable right-click (context menu)
     document.addEventListener('contextmenu', function (e) {
         e.preventDefault(); // Disable right-click
     });
 
-    // Prevent image dragging and right-click
+    // Prevent image dragging and right-click on images
     const images = document.querySelectorAll('img');
     images.forEach(image => {
         image.addEventListener('dragstart', function (e) {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Prevent text selection (for copy-pasting protection)
+    // Disable text selection (for copy-pasting protection)
     document.body.addEventListener('selectstart', function (e) {
         e.preventDefault(); // Disable text selection
     });
@@ -33,33 +33,33 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('keydown', function (e) {
         // Block Ctrl+P (Print), Ctrl+C (Copy), Ctrl+V (Paste), Ctrl+S (Save)
         if ((e.ctrlKey && (e.key === 'p' || e.key === 'c' || e.key === 'v' || e.key === 's')) || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent key combinations
         }
     });
 
-    // Prevent right-click, select, copy/paste and dev tools on mobile devices
-    document.addEventListener('touchstart', function (e) {
-        e.preventDefault(); // Disable touch interaction (like selection and copy)
+    // Disable long press (on mobile devices) to prevent copy/paste actions
+    document.body.addEventListener('touchstart', function (e) {
+        e.preventDefault(); // Disable touch events like long-press (for mobile)
     });
 
-    // Prevent print (Ctrl + P) and right-click in the body
-    document.addEventListener('keydown', function (e) {
-        if ((e.ctrlKey && e.key === 'p') || e.key === 'F12') {
-            e.preventDefault(); // Disable printing on Windows
-        }
+    // Disable the ability to save images via the right-click context menu
+    images.forEach(image => {
+        image.addEventListener('touchstart', function (e) {
+            e.preventDefault(); // Disable touch events like long-press (for mobile)
+        });
     });
 
-    // Prevent right-click and keyboard shortcuts for copy/paste
-    document.addEventListener('contextmenu', function (e) {
-        e.preventDefault(); // Disable right-click on any element
+    // Prevent "Save as" context menu action across mobile and desktop
+    document.body.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
     });
 
-    // Product data with images included (replace with your actual product data)
+    // Example of how to log the product images to ensure correct paths (useful for debugging)
     const productData = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
             price: '$14.82', 
-            imgSrc: 'product_images/clear-cases.jpg', // Path to the product image
+            imgSrc: 'product_images/clear-cases.jpg', 
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { 
             name: 'Impact-Resistant Cases (ADHD Awareness)', 
             price: '$19.75 - $17.77', 
-            imgSrc: 'product_images/impact-resistant-cases.jpg', // Path to the product image
+            imgSrc: 'product_images/impact-resistant-cases.jpg', 
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
             onSale: false,
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { 
             name: 'Toddler Long Sleeve Tee', 
             price: '$20.62', 
-            imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', // Path to the product image
+            imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', 
             description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
             category: 'Kids', 
             onSale: false,
@@ -85,42 +85,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
-    const categorySelect = document.getElementById('categorySelect');
-    const productsGrid = document.querySelector('.products-grid');
-    const saleGrid = document.querySelector('.sale-grid');
+    // Logic for displaying product information
+    function displayProducts(products) {
+        const productsGrid = document.querySelector('.products-grid');
+        productsGrid.innerHTML = ''; // Clear the grid before adding new products
 
-    // Function to populate the category dropdown dynamically, ensuring no duplicates
-    function populateCategoryDropdown() {
-        const categories = new Set();
-        productData.forEach(product => {
-            categories.add(product.category);
-        });
-
-        // Clear existing options, if any
-        categorySelect.innerHTML = '';
-
-        // Add "All Categories" as the first option
-        const allOption = document.createElement('option');
-        allOption.value = 'all';
-        allOption.textContent = 'All Categories';
-        categorySelect.appendChild(allOption);
-
-        // Add each unique category to the dropdown
-        categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category;
-            categorySelect.appendChild(option);
-        });
-    }
-
-    // Function to display products dynamically
-    function displayProducts(products, container) {
-        container.innerHTML = ''; // Clear the container before adding new products
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
             productCard.setAttribute('data-category', product.category); // Add category as data attribute
+
+            const productImage = new Image();
+            productImage.src = product.imgSrc;
+
+            // Check for image load or error
+            productImage.onload = function () {
+                console.log('Image loaded successfully:', product.imgSrc);
+            };
+
+            productImage.onerror = function () {
+                console.error('Image failed to load:', product.imgSrc);
+            };
 
             productCard.innerHTML = `
                 <img src="${product.imgSrc}" alt="${product.name}">
@@ -131,36 +116,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     <a href="${product.link}" class="buy-btn" target="_blank">Buy Now</a>
                 </div>
             `;
-            container.appendChild(productCard); // Append product card to respective container (Sale or Products)
+            productsGrid.appendChild(productCard);
         });
     }
 
-    // Call the function to populate the categories
-    populateCategoryDropdown();
-
-    // Display all products initially
-    function displayAllProducts() {
-        const onSaleProducts = productData.filter(product => product.onSale);
-        const products = productData.filter(product => !product.onSale);
-
-        // Display products in their respective sections
-        displayProducts(onSaleProducts, saleGrid);
-        displayProducts(products, productsGrid);
-    }
-
-    // Call the function to display all products initially
-    displayAllProducts();
-
-    // Handle category click and filter products
-    categorySelect.addEventListener('change', function (e) {
-        const categoryName = categorySelect.value;
-
-        // Filter products based on selected category
-        const filteredOnSaleProducts = productData.filter(product => product.onSale && (categoryName === "all" || product.category === categoryName));
-        const filteredProducts = productData.filter(product => !product.onSale && (categoryName === "all" || product.category === categoryName));
-
-        // Display filtered products in their respective sections
-        displayProducts(filteredOnSaleProducts, saleGrid);
-        displayProducts(filteredProducts, productsGrid);
-    });
+    // Initial call to display products
+    displayProducts(productData);
 });
