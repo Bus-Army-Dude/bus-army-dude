@@ -214,7 +214,7 @@ function detectDetailedDevice() {
              {
                 username: 'badge502',
                 isVerified: false,
-                followers: '798.1K',
+                followers: '798.3K',
                 nickname: 'Badge502',
                 bio: 'NREMT - 911/EMD, PO Box 775, Belleville, NJ 07109',
                 profilePic: 'images/badge502.jpeg'
@@ -222,7 +222,7 @@ function detectDetailedDevice() {
             {
                 username: 'mrfatcheeto',
                 isVerified: false,
-                followers: '458.4K',
+                followers: '459.5K',
                 nickname: 'Mr Fat Cheeto',
                 bio: 'OH YEAH!',
                 profilePic: 'images/mrfatcheeto.jpeg'
@@ -230,7 +230,7 @@ function detectDetailedDevice() {
             {
                 username: 'trafficlightdoctor',
                 isVerified: false,
-                followers: '383K',
+                followers: '383.1K',
                 nickname: '🚦 Traffic Light Doctor 🚦',
                 bio: '🚦Traffic Signal Tech🚦, Traffic Lights, Family, Food, and Comedy!, Mississippi',
                 profilePic: 'images/trafficlightdoctor.jpeg'
@@ -238,7 +238,7 @@ function detectDetailedDevice() {
             {
                 username: 'houseofhughes_',
                 isVerified: false,
-                followers: '303.4K',
+                followers: '303.5K',
                 nickname: 'Rachel Hughes',
                 bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES',
                 profilePic: 'images/houseofhughes.jpeg'
@@ -246,7 +246,7 @@ function detectDetailedDevice() {
             {
                 username: 'aggressiveafterdark',
                 isVerified: false,
-                followers: '296.8K',
+                followers: '298.7K',
                 nickname: 'ApplesauceandADHD_AfterDark',
                 bio: 'Shhhhhhh. Its a secret, @Jess|Aggressive Tutorials Official Back-Up',
                 profilePic: 'images/aggressiveafterdark.jpeg'
@@ -254,7 +254,7 @@ function detectDetailedDevice() {
             {
                 username: 'badge5022',
                 isVerified: false,
-                followers: '15.5K',
+                followers: '15.6K',
                 nickname: 'Badge502',
                 bio: 'Backup Account',
                 profilePic: 'images/badge5022.jpeg'
@@ -278,7 +278,7 @@ function detectDetailedDevice() {
             {
                 username: 'raisingramsey2023',
                 isVerified: false,
-                followers: '1,150',
+                followers: '1,151',
                 nickname: 'RaisingRamsey2023',
                 bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn',
                 profilePic: 'images/raisingramsey2023.jpeg'
@@ -334,7 +334,7 @@ function detectDetailedDevice() {
             {
                 username: 'playing.with.litt',
                 isVerified: false,
-                followers: '76',
+                followers: '77',
                 nickname: 'dylanmancini1',
                 bio: 'Hey everyone I wish I could have my main account and thanks for the views',
                 profilePic: 'images/playing.with.litt.jpeg'
