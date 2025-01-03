@@ -76,18 +76,19 @@ document.addEventListener('DOMContentLoaded', function () {
     // Populate category dropdown dynamically
     function populateCategoryDropdown() {
         const categories = [...new Set(newProductData.map(product => product.category))];
+        
+        // Add 'All Categories' option
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'All Categories';
+        categorySelect.appendChild(allOption);
+        
         categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category;
             option.textContent = category;
             categorySelect.appendChild(option);
         });
-
-        // Add 'All Categories' option
-        const allOption = document.createElement('option');
-        allOption.value = 'all';
-        allOption.textContent = 'All Categories';
-        categorySelect.prepend(allOption);
     }
 
     // Generate product cards dynamically for both sale and products
