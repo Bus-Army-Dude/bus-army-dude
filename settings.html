@@ -31,15 +31,12 @@
     <meta name="msapplication-config" content="/browserconfig.xml">
 </head>
 
-   <header class="header">
-  <h1>LinkStream by Bus Army Dude</h1>
-  <nav class="navbar">
-    <ul>
-      <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
-    </ul>
-  </nav>
-</header>
+   <nav class="navbar">
+  <ul>
+    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+  </ul>
+</nav>
     
 <body>
     <div class="settings-page">
@@ -59,6 +56,13 @@
                 <label for="text-size">Text Size:</label>
                 <input type="range" id="text-size" min="12" max="32" value="16">
                 <span id="text-size-label">16px</span>
+            </div>
+
+            <div class="accessibility-option">
+                <label for="contrast-toggle-btn">
+                    <input type="checkbox" id="contrast-toggle-btn">
+                    High Contrast Mode
+                </label>
             </div>
         </div>
     </div>
