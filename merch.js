@@ -82,6 +82,12 @@ document.addEventListener('DOMContentLoaded', function () {
             option.textContent = category;
             categorySelect.appendChild(option);
         });
+
+        // Add 'All Categories' option
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'All Categories';
+        categorySelect.prepend(allOption);
     }
 
     // Generate product cards dynamically for both sale and products
@@ -118,4 +124,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the function to display all products initially
     displayAllProducts();
     populateCategoryDropdown();
+
+    // Handle category selection and filter products based on category
+    categorySelect.addEventListener('change', function () {
+        const selectedCategory = categorySelect.value;
+
+        if (selectedCategory === 'all') {
+            // Display all products if 'All Categories' is selected
+            displayAllProducts();
+        } else {
+            // Filter products by selected category
+            const filteredProducts = newProductData.filter(product => product.category === selectedCategory);
+            const filteredOnSaleProducts = filteredProducts.filter(product => product.onSale);
+            const regularProducts = filteredProducts.filter(product => !product.onSale);
+
+            // Display filtered products
+            displayProducts(filteredOnSaleProducts, saleGrid);
+            displayProducts(regularProducts, productsGrid);
+        }
+    });
 });
