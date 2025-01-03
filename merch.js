@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Disable right-click (context menu)
+    // Disable right-click (context menu) across the entire page
     document.addEventListener('contextmenu', function (e) {
         e.preventDefault(); // Disable right-click
     });
@@ -54,12 +54,35 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
     });
 
-    // Example of how to log the product images to ensure correct paths (useful for debugging)
-    const productData = [
+    // Disable double-tap for text selection on mobile devices
+    document.body.addEventListener('touchstart', function (e) {
+        if (e.target && e.target.tagName === 'P') {
+            e.preventDefault(); // Prevent double-tap on text to select
+        }
+    });
+
+    // Disable any clipboard actions such as cut, copy, paste
+    document.addEventListener('cut', function (e) {
+        e.preventDefault(); // Disable cutting text
+    });
+
+    // Disable right-click, copying, and saving of images
+    images.forEach(image => {
+        image.addEventListener('contextmenu', function (e) {
+            e.preventDefault(); // Disable context menu on images
+        });
+
+        image.addEventListener('dragstart', function (e) {
+            e.preventDefault(); // Disable drag to save image
+        });
+    });
+    
+    // Handle the product data dynamically
+    const newProductData = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
             price: '$14.82', 
-            imgSrc: 'product_images/clear-cases.jpg', 
+            imgSrc: 'product_images/clear-cases.jpg', // Path to image in product_images folder
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
@@ -85,27 +108,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
-    // Logic for displaying product information
-    function displayProducts(products) {
-        const productsGrid = document.querySelector('.products-grid');
-        productsGrid.innerHTML = ''; // Clear the grid before adding new products
+    // Category dropdown setup
+    const categorySelect = document.getElementById('categorySelect');
+    const categories = Array.from(new Set(newProductData.map(product => product.category))); // Get unique categories
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
 
+    // Function to display products
+    function displayProducts(products, container) {
+        container.innerHTML = ''; // Clear existing products
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
             productCard.setAttribute('data-category', product.category); // Add category as data attribute
-
-            const productImage = new Image();
-            productImage.src = product.imgSrc;
-
-            // Check for image load or error
-            productImage.onload = function () {
-                console.log('Image loaded successfully:', product.imgSrc);
-            };
-
-            productImage.onerror = function () {
-                console.error('Image failed to load:', product.imgSrc);
-            };
 
             productCard.innerHTML = `
                 <img src="${product.imgSrc}" alt="${product.name}">
@@ -116,10 +135,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     <a href="${product.link}" class="buy-btn" target="_blank">Buy Now</a>
                 </div>
             `;
-            productsGrid.appendChild(productCard);
+            container.appendChild(productCard); // Append product card to the container
         });
     }
 
-    // Initial call to display products
-    displayProducts(productData);
+    // Initially display all products
+    const productsGrid = document.querySelector('.products-grid');
+    const saleGrid = document.querySelector('.sale-grid');
+    displayProducts(newProductData, productsGrid);
+    displayProducts(newProductData.filter(product => product.onSale), saleGrid);
+
+    // Handle category selection
+    categorySelect.addEventListener('change', function () {
+        const selectedCategory = categorySelect.value;
+        const filteredProducts = selectedCategory === 'all' ? newProductData : newProductData.filter(product => product.category === selectedCategory);
+        displayProducts(filteredProducts, productsGrid); // Display filtered products
+    });
 });
