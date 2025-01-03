@@ -20,13 +20,47 @@ document.addEventListener('DOMContentLoaded', () => {
             // Disable drag and drop
             document.addEventListener('dragstart', e => e.preventDefault());
             document.addEventListener('drop', e => e.preventDefault());
+
+            // Disable image drag & drop (prevent saving images)
+            const images = document.querySelectorAll('img');
+            images.forEach(image => {
+                image.setAttribute('draggable', 'false'); // Disable image drag
+            });
         }
     };
 
     // Initialize copy protection
     enhancedCopyProtection.init();
+
+    // Detect device type (optional)
+    function detectDetailedDevice() {
+        const ua = navigator.userAgent;
+        let deviceInfo = '';
+
+        if (/iPhone|iPad|iPod/.test(ua)) {
+            deviceInfo = 'Apple Device (iOS)';
+        } else if (/Android/.test(ua)) {
+            deviceInfo = 'Android Device';
+        } else if (/Windows/.test(ua)) {
+            deviceInfo = 'Windows Device';
+        } else if (/Macintosh/.test(ua)) {
+            deviceInfo = 'macOS Device';
+        } else {
+            deviceInfo = 'Unknown Device';
+        }
+
+        // Optional: Display device info on the page (add a <div class="device-info"></div> to HTML to show this)
+        const deviceElement = document.querySelector('.device-info');
+        if (deviceElement) {
+            deviceElement.textContent = `Device: ${deviceInfo}`;
+        }
+    }
+
+    // Call the function to detect device
+    detectDetailedDevice();
 });
 
+  // Your Actual Product Data
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
@@ -57,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // Populate categories dynamically
+    // Populate categories dropdown dynamically
     function populateCategories() {
         const categorySelect = document.getElementById('categorySelect');
         const categories = Array.from(new Set(products.map(product => product.category)));
@@ -67,14 +101,19 @@ document.addEventListener('DOMContentLoaded', () => {
             option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
             categorySelect.appendChild(option);
         });
+        // Add the "All Products" option
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'All Products';
+        categorySelect.insertBefore(allOption, categorySelect.firstChild);
     }
 
-    // Display products based on selected category
+    // Display products based on selected category with modern layout
     function displayProducts(category = 'all') {
         const productGrid = document.querySelector('.products-grid');
         productGrid.innerHTML = '';
+
         const filteredProducts = category === 'all' ? products : products.filter(product => product.category === category);
-        
         filteredProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
@@ -95,14 +134,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Initialize categories and products on page load
     populateCategories();
     displayProducts();
 
+    // Event listener for category selection
     document.getElementById('categorySelect').addEventListener('change', (event) => {
         const selectedCategory = event.target.value;
         displayProducts(selectedCategory);
     });
 
+    // Hamburger menu functionality
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
