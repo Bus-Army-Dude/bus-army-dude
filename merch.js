@@ -121,4 +121,23 @@ document.addEventListener('DOMContentLoaded', function () {
             displayProducts(filteredProducts, productsGrid);
         });
     });
+
+    // Function to force the layout to adjust after dynamic content load
+    function updateCategoryLayout() {
+        const categoryCards = document.querySelectorAll('.category-card');
+        const categoriesGrid = document.querySelector('.categories-grid');
+        
+        // This will trigger reflow, ensuring the grid adjusts properly
+        categoriesGrid.style.display = 'none';
+        categoriesGrid.offsetHeight; // Trigger reflow
+        categoriesGrid.style.display = 'flex';
+    }
+
+    // Ensure categories grid adjusts properly after page load
+    updateCategoryLayout();  // Initial layout adjustment on load
+
+    // Re-adjust layout if the window is resized
+    window.addEventListener('resize', function() {
+        updateCategoryLayout();
+    });
 });
