@@ -77,6 +77,8 @@ nav a {
     color: white;
     font-size: 18px;
     text-transform: uppercase;
+    font-weight: bold;
+    padding: 10px;
     transition: color 0.3s ease;
 }
 
@@ -85,27 +87,76 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* Navigation Menu Styling - Ensuring Horizontal Layout */
+/* Modern Horizontal Navigation Menu */
 nav {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
     list-style: none;
 }
 
 nav a {
-    padding: 10px;
+    padding: 12px;
     margin: 0 10px;
     font-size: 18px;
     text-transform: uppercase;
     font-weight: bold;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
 nav a:hover {
     color: #f7f7f7;
     text-decoration: underline;
+}
+
+/* Add hover effects and active states */
+nav a.active {
+    border-bottom: 2px solid #f7f7f7;
+}
+
+nav a:hover, nav a.active {
+    color: #f7f7f7;
+}
+
+/* Responsive: Mobile menu (hamburger menu) */
+@media (max-width: 768px) {
+    nav {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: block;
+        cursor: pointer;
+        font-size: 30px;
+        color: white;
+    }
+
+    .mobile-nav {
+        display: none;
+        background-color: #007bff;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .mobile-nav a {
+        display: block;
+        padding: 10px;
+        font-size: 20px;
+        text-transform: none;
+    }
+
+    .mobile-nav a:hover {
+        background-color: #0056b3;
+    }
+
+    .mobile-nav.open {
+        display: block;
+    }
 }
 
 /* Product Grid Layout */
@@ -137,12 +188,11 @@ nav a:hover {
     align-items: center;
 }
 
-/* Fix image cut off - Ensure they fit properly inside the wrapper */
+/* Fix image cut off - Make sure images fit fully without cutting */
 .product-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;  /* This ensures the image fully covers the area without being cut off */
-    object-position: center;  /* Ensures the center of the image is kept visible */
+    object-fit: contain;  /* This ensures the entire image is visible without cutting it */
 }
 
 .product-details {
@@ -238,6 +288,18 @@ footer a:hover {
 @media (max-width: 768px) {
     .products-grid {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
+
+    .mobile-nav {
+        display: none;
+    }
+
+    .mobile-nav.open {
+        display: block;
     }
 }
 
