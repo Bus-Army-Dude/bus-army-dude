@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Example: If you want to dynamically add products to the grid
     const newProductData = [
-        { name: 'Clear Cases (for Samsung & Apple)', price: '$14.82', imgSrc: 'product_images/clear-cases.jpeg', description: 'Clear phone case protects phone surface and aesthetics.  Made of durable polycarbonate with TPU cushioned edges, it offers scratch and bump protection while maintaining a slim profile.', category: 'Cases', onSale: false },
+        { name: 'Clear Cases (for Samsung & Apple)', price: '$14.82', imgSrc: 'product_images/clear-cases.jpg', description: 'Clear phone case protects phone surface and aesthetics.  Made of durable polycarbonate with TPU cushioned edges, it offers scratch and bump protection while maintaining a slim profile.', category: 'Cases', onSale: false },
         // Add more products as needed
     ];
 
