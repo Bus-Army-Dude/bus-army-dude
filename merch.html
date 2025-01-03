@@ -29,39 +29,49 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="msapplication-config" content="/browserconfig.xml">
-
 </head>
 <body>
+    <!-- Header with Navigation and Hamburger Menu -->
     <header>
         <nav class="navbar">
-            <ul>
+            <div class="brand">My Merch Store</div>
+            <ul id="navLinks" class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="merch.html">Merch Store</a></li>
             </ul>
+            <div id="hamburger" class="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
         </nav>
-        <div class="category-dropdown">
-            <select id="categorySelect">
-                <!-- Categories will be populated dynamically -->
-            </select>
-        </div>
     </header>
 
+    <!-- Category Dropdown Filter -->
+    <div class="category-dropdown">
+        <select id="categorySelect">
+            <!-- Categories will be populated dynamically -->
+        </select>
+    </div>
+
+    <!-- Products Section -->
     <section>
         <h2>Products</h2>
         <div class="products-grid"></div>
     </section>
 
+    <!-- On Sale Section -->
     <section>
         <h2>On Sale</h2>
         <div class="sale-grid"></div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2025 Bus Army Dude. All rights reserved.</p>
     </footer>
 
-    <noscript>
-        <p>Please enable JavaScript to view the website properly.</p>
-    </noscript>
+    <!-- JavaScript for functionality -->
+    <script src="merch.js"></script>
 </body>
 </html>
