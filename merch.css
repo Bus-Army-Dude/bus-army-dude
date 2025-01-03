@@ -1,3 +1,4 @@
+/* Base Styles (for desktops and tablets) */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -11,7 +12,6 @@ header {
     color: #fff;
     padding: 1rem;
     text-align: center;
-    position: relative;
 }
 
 .navbar {
@@ -118,9 +118,6 @@ footer {
     color: #fff;
     text-align: center;
     padding: 1rem;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
 }
 
 .copy-protection-message {
@@ -133,7 +130,7 @@ footer {
     margin-top: 1rem;
 }
 
-/* Hamburger menu responsive style */
+/* Responsive Styles for Mobile Devices */
 @media (max-width: 768px) {
     .hamburger-icon {
         display: block;
@@ -153,5 +150,14 @@ footer {
 
     .nav-links.active {
         display: flex;
+    }
+
+    .products-grid, .on-sale-grid {
+        grid-template-columns: 1fr; /* Stack product cards vertically on mobile */
+        padding: 1rem;
+    }
+
+    .category-dropdown select {
+        width: 100%; /* Make dropdown full-width on mobile */
     }
 }
