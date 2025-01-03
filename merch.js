@@ -34,14 +34,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const newProductData = [
         { name: 'Product 1', price: '$29.99', imgSrc: 'product1.jpg', description: 'Product description goes here.', category: 'T-shirts', onSale: true },
         { name: 'Product 2', price: '$39.99', imgSrc: 'product2.jpg', description: 'Product description goes here.', category: 'Hats', onSale: false },
-        { name: 'Product 3', price: '$19.99', imgSrc: 'product3.jpg', description: 'Product description goes here.', category: 'Accessories', onSale: true },
+        { name: 'Product 3', price: '$19.99', imgSrc: 'product3.jpg', description: 'Product description goes here.', category: 'Accessories', onSale: false },
         // Add more products as needed
     ];
 
     const productGrid = document.querySelector('.product-grid');
     const saleGrid = document.querySelector('.sale-grid');  // For On Sale products
+    const newProductGrid = document.querySelector('.new-product-grid');  // For New Products
 
-    // Dynamically add products to the general grid and On Sale grid
+    // Dynamically add products to the grids
     newProductData.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
@@ -61,7 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (product.onSale) {
             saleGrid.appendChild(productCard);
         } else {
-            productGrid.appendChild(productCard); // Add to regular product grid
+            // If not on sale, add it to the New Products section
+            newProductGrid.appendChild(productCard);
         }
     });
 });
