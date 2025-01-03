@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Enhanced Copy Protection
+    // Enhanced Copy Protection: Disable all copying, pasting, and other interactions
     const enhancedCopyProtection = {
         init() {
             // Disable right-click context menu
@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Disable cutting
             document.addEventListener('cut', e => e.preventDefault());
 
-            // Disable paste
+            // Disable pasting
             document.addEventListener('paste', e => e.preventDefault());
 
-            // Disable drag
+            // Disable drag and drop
             document.addEventListener('dragstart', e => e.preventDefault());
             document.addEventListener('drop', e => e.preventDefault());
         }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Display products based on selected category
+    // Display products based on selected category with modern layout
     function displayProducts(category = 'all') {
         const productGrid = document.querySelector('.products-grid');
         productGrid.innerHTML = '';
@@ -79,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
             productCard.innerHTML = `
-                <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
+                <div class="product-image-wrapper">
+                    <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
+                </div>
                 <div class="product-details">
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-price">${product.price}</p>
