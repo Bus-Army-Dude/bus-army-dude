@@ -202,3 +202,18 @@ body.dark-mode .buy-btn {
         padding: 8px 16px;
     }
 }
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center; /* Centers text horizontally */
+}
+
+footer .footer-content {
+    display: flex;
+    justify-content: center; /* Centers the content horizontally */
+    align-items: center; /* Vertically centers the content */
+    gap: 20px; /* Optional gap between items */
+}
