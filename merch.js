@@ -26,6 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
             images.forEach(image => {
                 image.setAttribute('draggable', 'false'); // Disable image drag
             });
+
+            // Disable double-click text selection
+            document.addEventListener('dblclick', e => e.preventDefault());
+
+            // Prevent user from saving images or content through long-press on mobile
+            document.body.style.userSelect = "none"; // Disables text selection globally
+            document.body.style.webkitTouchCallout = "none"; // Disables iOS long press menu
+            document.body.style.webkitUserSelect = "none"; // Disables text selection on webkit browsers (including iOS)
+            document.body.style.msUserSelect = "none"; // Disables text selection on IE/Edge
         }
     };
 
@@ -49,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
             deviceInfo = 'Unknown Device';
         }
 
-        // Optional: Display device info on the page (add a <div class="device-info"></div> to HTML to show this)
         const deviceElement = document.querySelector('.device-info');
         if (deviceElement) {
             deviceElement.textContent = `Device: ${deviceInfo}`;
@@ -58,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Call the function to detect device
     detectDetailedDevice();
-});
+}); 
+
 
   // Your Actual Product Data
     const products = [
