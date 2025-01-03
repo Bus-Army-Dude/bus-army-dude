@@ -8,17 +8,16 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const categoryName = category.textContent.trim();
 
+            // Loop through each product card
             allProducts.forEach(product => {
                 const productCategory = product.getAttribute('data-category');
+                // Show product if it matches category, otherwise hide it
                 if (categoryName === "All Products" || productCategory === categoryName) {
-                    product.style.display = "block"; // Show the product
+                    product.style.display = "block"; // Show matching category product
                 } else {
-                    product.style.display = "none"; // Hide the product
+                    product.style.display = "none"; // Hide non-matching category products
                 }
             });
-
-            // Optionally, you can add an alert or change page content based on selected category
-            alert('Filter products by ' + categoryName);
         });
     });
 
