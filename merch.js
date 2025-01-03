@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Prevent right-click and certain keyboard shortcuts for dev tools
     document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
+        e.preventDefault(); // Disable right-click
     });
 
     // Prevent image dragging and right-click
     const images = document.querySelectorAll('img');
     images.forEach(image => {
         image.addEventListener('dragstart', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Disable image dragging
         });
         image.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Disable right-click on images
         });
     });
 
@@ -29,60 +29,59 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault(); // Disable paste
     });
 
-    // Prevent F12 and Ctrl+Shift+I/J to disable dev tools access
+    // Disable printing (Ctrl + P, etc.)
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+        // Block Ctrl+P (Print), Ctrl+C (Copy), Ctrl+V (Paste), Ctrl+S (Save)
+        if ((e.ctrlKey && (e.key === 'p' || e.key === 'c' || e.key === 'v' || e.key === 's')) || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
             e.preventDefault();
         }
     });
 
-    // Product data (replace with your actual product data)
-    const newProductData = [
-        { 
-            name: 'Clear Case (Samsung & Apple)', 
-            price: '$14.82', 
-            imgSrc: 'product_images/clear-cases.jpg', // Path to image in product_images folder
-            description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
-            category: 'Accessories', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13136298/clear-cases?category=accessories' 
-        },
-        { 
-            name: 'Impact-Resistant Cases (ADHD Awareness)', 
-            price: '$19.75 - $17.77', 
-            imgSrc: 'product_images/impact-resistant-cases.jpg', 
-            description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
-            category: 'Accessories', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
-        },
-        { 
-            name: 'Toddler Long Sleeve Tee', 
-            price: '$20.62', 
-            imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', 
-            description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
-            category: 'Kids', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
+    // Prevent right-click, select, copy/paste and dev tools on mobile devices
+    document.addEventListener('touchstart', function (e) {
+        e.preventDefault(); // Disable touch interaction (like selection and copy)
+    });
+
+    // Prevent print (Ctrl + P) and right-click in the body
+    document.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey && e.key === 'p') || e.key === 'F12') {
+            e.preventDefault(); // Disable printing on Windows
         }
+    });
+
+    // Prevent right-click and keyboard shortcuts for copy/paste
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault(); // Disable right-click on any element
+    });
+
+    // Product data (replace with your actual product data)
+    const productData = [
+        { name: 'Clear Case (Samsung & Apple)', price: '$14.82', category: 'Accessories' },
+        { name: 'Impact-Resistant Cases (ADHD Awareness)', price: '$19.75 - $17.77', category: 'Accessories' },
+        { name: 'Toddler Long Sleeve Tee', price: '$20.62', category: 'Kids' }
     ];
 
-    // Category sections
-    const categories = document.querySelectorAll('.categories-list li a');
+    const categorySelect = document.getElementById('categorySelect');
     const productsGrid = document.querySelector('.products-grid');
     const saleGrid = document.querySelector('.sale-grid');
-    const categorySelect = document.getElementById('categorySelect');
 
-    // Populate category dropdown dynamically
+    // Function to populate the category dropdown dynamically, ensuring no duplicates
     function populateCategoryDropdown() {
-        const categories = [...new Set(newProductData.map(product => product.category))];
-        
-        // Add 'All Categories' option
+        const categories = new Set();
+        productData.forEach(product => {
+            categories.add(product.category);
+        });
+
+        // Clear existing options, if any
+        categorySelect.innerHTML = '';
+
+        // Add "All Categories" as the first option
         const allOption = document.createElement('option');
         allOption.value = 'all';
         allOption.textContent = 'All Categories';
         categorySelect.appendChild(allOption);
-        
+
+        // Add each unique category to the dropdown
         categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category;
@@ -91,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Generate product cards dynamically for both sale and products
+    // Function to display products dynamically
     function displayProducts(products, container) {
         container.innerHTML = ''; // Clear the container before adding new products
         products.forEach(product => {
@@ -112,10 +111,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Initially display all products, split into Products and On Sale
+    // Call the function to populate the categories
+    populateCategoryDropdown();
+
+    // Display all products initially
     function displayAllProducts() {
-        const onSaleProducts = newProductData.filter(product => product.onSale);
-        const products = newProductData.filter(product => !product.onSale);
+        const onSaleProducts = productData.filter(product => product.onSale);
+        const products = productData.filter(product => !product.onSale);
 
         // Display products in their respective sections
         displayProducts(onSaleProducts, saleGrid);
@@ -124,24 +126,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Call the function to display all products initially
     displayAllProducts();
-    populateCategoryDropdown();
 
-    // Handle category selection and filter products based on category
-    categorySelect.addEventListener('change', function () {
-        const selectedCategory = categorySelect.value;
+    // Handle category click and filter products
+    categorySelect.addEventListener('change', function (e) {
+        const categoryName = categorySelect.value;
 
-        if (selectedCategory === 'all') {
-            // Display all products if 'All Categories' is selected
-            displayAllProducts();
-        } else {
-            // Filter products by selected category
-            const filteredProducts = newProductData.filter(product => product.category === selectedCategory);
-            const filteredOnSaleProducts = filteredProducts.filter(product => product.onSale);
-            const regularProducts = filteredProducts.filter(product => !product.onSale);
+        // Filter products based on selected category
+        const filteredOnSaleProducts = productData.filter(product => product.onSale && (categoryName === "all" || product.category === categoryName));
+        const filteredProducts = productData.filter(product => !product.onSale && (categoryName === "all" || product.category === categoryName));
 
-            // Display filtered products
-            displayProducts(filteredOnSaleProducts, saleGrid);
-            displayProducts(regularProducts, productsGrid);
-        }
+        // Display filtered products in their respective sections
+        displayProducts(filteredOnSaleProducts, saleGrid);
+        displayProducts(filteredProducts, productsGrid);
     });
 });
