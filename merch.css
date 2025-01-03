@@ -1,218 +1,190 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     color: #333; /* Default text color */
+    transition: background-color 0.3s, color 0.3s;
 }
 
 header {
     background-color: #333;
     color: white;
-    padding: 10px 0;
+    padding: 20px;
     text-align: center;
 }
 
-nav ul {
-    list-style-type: none;
+header nav ul {
+    list-style: none;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap; /* Allow items to wrap if they don't fit */
 }
 
-nav ul li {
-    display: inline-block;
+header nav ul li {
+    display: inline;
+    margin: 0 10px;
 }
 
-nav ul li a {
-    color: white; /* Text color for light mode */
+header nav ul li a {
+    color: white; /* Default text color for nav links */
     text-decoration: none;
-    font-size: 18px;
-    padding: 8px 16px;
-    transition: background-color 0.3s;
 }
 
-nav ul li a:hover {
-    background-color: #575757;
+header nav ul li a:hover {
+    text-decoration: underline;
 }
 
 /* Dark Mode Styles */
 body.dark-mode {
     background-color: #121212;
+    color: white; /* Text color for dark mode */
+}
+
+body.dark-mode header {
+    background-color: #1f1f1f;
+}
+
+body.dark-mode header nav ul li a {
+    color: #f1f1f1; /* Lighter text color for navigation in dark mode */
+}
+
+body.dark-mode .product-card {
+    background-color: #2c2c2c;
+    color: white; /* Adjust product card text color for dark mode */
+}
+
+body.dark-mode .product-info span {
+    color: #ff9800; /* Price color in dark mode */
+}
+
+body.dark-mode .buy-btn {
+    background-color: #6200ea;
     color: white;
 }
 
-header.dark-mode {
-    background-color: #1c1c1c;
+body.dark-mode .buy-btn:hover {
+    background-color: #3700b3;
 }
 
-nav ul.dark-mode li a {
-    color: white; /* Keep white text in dark mode */
+/* Section Styles */
+section {
+    padding: 40px 20px;
 }
 
-nav ul.dark-mode li a:hover {
-    background-color: #575757;
-}
-
-section h2 {
+h2 {
     text-align: center;
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
-/* Product Grid */
-.products-grid, .sale-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Create responsive grid */
-    gap: 20px;
-    padding: 20px;
-}
-
+/* Product Card Styles */
 .product-card {
     background-color: white;
-    border: 1px solid #ddd; /* Add border around each product */
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    text-align: center;
     overflow: hidden;
-    height: 100%; /* Ensure all cards are of equal height */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Ensure buy button is at the bottom */
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 20px; /* Add space between product cards */
 }
 
 .product-card img {
-    width: 100%; /* Ensures images are responsive */
+    width: 100%;
     height: auto;
-    max-height: 250px; /* Set a max-height for images to prevent them from getting too big */
-    object-fit: contain; /* Maintain aspect ratio */
-    border-radius: 5px;
 }
 
 .product-info {
-    margin-top: 10px;
+    padding: 15px;
 }
 
 .product-info h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 1.2em;
+    margin: 10px 0;
 }
 
 .product-info p {
-    font-size: 14px;
     color: #555;
 }
 
 .product-info span {
-    display: block;
     font-weight: bold;
-    margin: 10px 0;
+    color: #333; /* Default color for price */
 }
 
+body.dark-mode .product-info span {
+    color: #ff9800; /* Price color in dark mode */
+}
+
+.product-info .discount {
+    color: red;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* Buy Button */
 .buy-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #28a745;
+    display: block;
+    background-color: #007BFF;
     color: white;
-    text-decoration: none;
-    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
     margin-top: 15px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .buy-btn:hover {
-    background-color: #218838;
+    background-color: #0056b3;
 }
 
 /* Category Styles */
 .categories-list {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    text-align: center;
     display: flex;
-    flex-wrap: wrap; /* Allow categories to wrap if they overflow */
-    justify-content: center; /* Center the categories */
-    gap: 20px; /* Space between categories */
-    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .categories-list li {
     display: inline-block;
+    margin: 10px;
 }
 
 .categories-list li a {
-    color: #333;
     text-decoration: none;
-    padding: 10px 20px;
-    background-color: #ddd;
-    border-radius: 20px;
+    color: #333;
     font-weight: bold;
-    transition: background-color 0.3s;
+}
+
+body.dark-mode .categories-list li a {
+    color: #f1f1f1; /* Lighter color for category links in dark mode */
 }
 
 .categories-list li a:hover {
-    background-color: #007BFF;
-    color: white;
+    color: #007BFF;
 }
 
-/* Prevent image dragging */
-img {
-    pointer-events: none;
-}
-
-/* Prevent text selection */
-body {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version for modern browsers */
-}
-
-/* Optional: Hide text selection highlight */
-::selection {
-    background: transparent;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    nav ul {
-        flex-direction: column; /* Stack the navigation items on mobile */
-    }
-
-    .product-card {
-        padding: 15px; /* Less padding on smaller screens */
-    }
-
-    .product-info h3 {
-        font-size: 14px;
-    }
-
-    .product-info p {
-        font-size: 12px;
-    }
-
-    .categories-list {
-        flex-direction: column; /* Stack categories on mobile */
-    }
-
-    /* Increase space between products on mobile */
-    .products-grid, .sale-grid {
-        gap: 25px; /* Increased gap between products on mobile */
-    }
-}
-
+/* Footer Styles */
 footer {
-    text-align: center; /* Centers the text horizontally */
-    padding: 20px; /* Add some padding for spacing */
-    background-color: #333; /* Background color for the footer */
-    color: white; /* Text color */
-    width: 100%; /* Make sure footer takes full width */
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    width: 100%;
     position: relative;
     bottom: 0;
-    margin-top: 20px; /* Optional space above the footer */
 }
 
 footer p {
-    margin: 0; /* Remove default margin for the <p> */
+    margin: 0;
+}
+
+/* Hover effect for navigation links */
+header nav ul li a:hover {
+    text-decoration: underline;
 }
