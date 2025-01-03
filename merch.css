@@ -16,17 +16,25 @@ header {
 nav ul {
     list-style-type: none;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 nav ul li {
     display: inline-block;
-    margin: 0 15px;
 }
 
 nav ul li a {
     color: white;
     text-decoration: none;
     font-size: 18px;
+    padding: 8px 16px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #575757;
 }
 
 section h2 {
@@ -35,9 +43,8 @@ section h2 {
 }
 
 .products-grid, .sale-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Create responsive grid */
     gap: 20px;
     padding: 20px;
 }
@@ -46,13 +53,13 @@ section h2 {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 200px;
     padding: 20px;
     text-align: center;
+    overflow: hidden;
 }
 
 .product-card img {
-    max-width: 100%;
+    width: 100%; /* Ensures images are responsive */
     height: auto;
     border-radius: 5px;
 }
@@ -106,4 +113,23 @@ body {
 /* Optional: Hide text selection highlight */
 ::selection {
     background: transparent;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column; /* Stack the navigation items on mobile */
+    }
+
+    .product-card {
+        padding: 15px; /* Less padding on smaller screens */
+    }
+
+    .product-info h3 {
+        font-size: 14px;
+    }
+
+    .product-info p {
+        font-size: 12px;
+    }
 }
