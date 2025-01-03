@@ -1,12 +1,12 @@
-<!-- settings.html -->
+<!-- Settings Page (settings.html) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
-     <meta http-equiv="refresh" content="60">
+    <link rel="stylesheet" href="styles.css">
+        <meta http-equiv="refresh" content="60">
     <!-- Favicons and Icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
@@ -30,44 +30,34 @@
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="msapplication-config" content="/browserconfig.xml">
 </head>
-
-   <nav class="navbar">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="settings.html">Settings</a></li>
-    <li><a href="merch.html">Merch Store</a></li>
-  </ul>
-</nav>
-    
 <body>
-    <div class="settings-page">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="merch.html">Merchandise</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="settings-container">
         <h1>Settings</h1>
 
-        <!-- Appearance Section -->
-        <div class="settings-section">
-            <h2>Appearance</h2>
-            <button id="light-mode-btn" class="mode-btn">Light Mode</button>
-            <button id="dark-mode-btn" class="mode-btn">Dark Mode</button>
+        <!-- Dark Mode Toggle -->
+        <div class="dark-mode-toggle">
+            <label for="dark-mode-toggle">Dark Mode:</label>
+            <input type="checkbox" id="dark-mode-toggle" />
         </div>
 
-        <!-- Accessibility Section -->
-        <div class="settings-section">
-            <h2>Accessibility</h2>
-            <div class="accessibility-option">
-                <label for="text-size">Text Size:</label>
-                <input type="range" id="text-size" min="12" max="32" value="16">
-                <span id="text-size-label">16px</span>
-            </div>
-
-            <div class="accessibility-option">
-                <label for="contrast-toggle-btn">
-                    <input type="checkbox" id="contrast-toggle-btn">
-                    High Contrast Mode
-                </label>
-            </div>
+        <!-- Text Size Changer -->
+        <div class="text-size-changer">
+            <label for="text-size">Text Size:</label>
+            <input type="range" id="text-size" min="12" max="24" value="16" step="1" />
+            <span id="text-size-value">16px</span>
         </div>
     </div>
 
-    <script src="settings.js"></script> <!-- Link to your JS -->
+    <script src="settings.js"></script>
 </body>
 </html>
