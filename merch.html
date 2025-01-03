@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="dark-mode"> <!-- Default dark mode applied -->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merch Store</title>
+    <title>Merch Store - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="merch.css">
     <script src="script.js" defer></script>
     <meta http-equiv="refresh" content="60">
-
     <!-- Favicons and Icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
@@ -31,9 +30,7 @@
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="msapplication-config" content="/browserconfig.xml">
 </head>
-
 <body>
-    <!-- Header & Navigation Bar -->
     <header>
         <nav>
             <ul>
@@ -41,34 +38,29 @@
                 <li><a href="merch.html">Merch Store</a></li>
             </ul>
         </nav>
-        <h1>Welcome to the Merch Store</h1>
-
-        <!-- Category Dropdown (will be populated dynamically) -->
-        <div class="category-dropdown">
-            <select id="categorySelect">
-                <option value="all">All Categories</option>
-                <!-- Categories will be populated dynamically by JavaScript -->
-            </select>
-        </div>
     </header>
 
-    <!-- Products Section -->
-    <section>
-        <h2>Products</h2>
-        <div class="products-grid" id="products-grid">
-            <!-- Products will be dynamically added here -->
-        </div>
-    </section>
+    <main>
+        <header>
+            <h1>Welcome to the Merch Store</h1>
+            <div class="category-dropdown">
+                <select id="categorySelect">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+        </header>
 
-    <!-- On Sale Section -->
-    <section>
-        <h2>On Sale</h2>
-        <div class="sale-grid" id="sale-grid">
-            <!-- Sale products will be dynamically added here -->
-        </div>
-    </section>
+        <section class="products-section">
+            <h2>Products</h2>
+            <div class="products-grid"></div>
+        </section>
 
-    <!-- Footer -->
+        <section class="sale-section">
+            <h2>On Sale</h2>
+            <div class="sale-grid"></div>
+        </section>
+    </main>
+
     <footer>
         <p>&copy; 2025 Bus Army Dude. All rights reserved.</p>
     </footer>
@@ -77,7 +69,6 @@
         <p>Please enable JavaScript to view the website properly.</p>
     </noscript>
 
-    <!-- Include JavaScript for dynamic content -->
     <script src="merch.js"></script>
 </body>
 </html>
