@@ -1,6 +1,6 @@
-/* General styles */
+/* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -9,157 +9,101 @@ body {
 header {
     background-color: #333;
     color: white;
-    padding: 20px;
+    padding: 10px 0;
     text-align: center;
 }
 
-header nav ul {
-    list-style: none;
+nav ul {
+    list-style-type: none;
     padding: 0;
 }
 
-header nav ul li {
-    display: inline;
-    margin: 0 10px;
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
 }
 
-header nav ul li a {
+nav ul li a {
     color: white;
     text-decoration: none;
+    font-size: 18px;
 }
 
-/* Section styles */
-section {
-    padding: 40px 20px;
-}
-
-h2 {
+section h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
-/* Horizontal Layout (Default) */
-.product-cards-container {
+.products-grid, .sale-grid {
     display: flex;
-    flex-wrap: nowrap; /* Keep products in a single row */
-    overflow-x: auto;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
-    padding: 20px 0;
+    padding: 20px;
 }
 
 .product-card {
     background-color: white;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    overflow: hidden;
-    width: 250px;
-    flex-shrink: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-}
-
-.product-card:hover {
-    transform: scale(1.05);
+    width: 200px;
+    padding: 20px;
+    text-align: center;
 }
 
 .product-card img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
+    border-radius: 5px;
 }
 
 .product-info {
-    padding: 15px;
+    margin-top: 10px;
 }
 
 .product-info h3 {
-    font-size: 1.2em;
-    margin: 10px 0;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .product-info p {
+    font-size: 14px;
     color: #555;
 }
 
 .product-info span {
-    font-weight: bold;
-    color: #333;
-}
-
-.discount {
-    color: red;
-    font-size: 1.1em;
-    font-weight: bold;
-}
-
-/* Buy Button */
-.buy-btn {
     display: block;
-    background-color: #007BFF;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    margin-top: 15px;
-    text-decoration: none;
     font-weight: bold;
+    margin: 10px 0;
+}
+
+.buy-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
 }
 
 .buy-btn:hover {
-    background-color: #0056b3;
+    background-color: #218838;
 }
 
-/* Category styles */
-.categories-list {
-    list-style: none;
-    padding: 0;
-    text-align: center;
+/* Prevent image dragging */
+img {
+    pointer-events: none;
 }
 
-.categories-list li {
-    display: inline-block;
-    margin: 10px;
+/* Prevent text selection */
+body {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version for modern browsers */
 }
 
-.categories-list li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-}
-
-.categories-list li a:hover {
-    color: #007BFF;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #333;
-    color: white;
-}
-
-/* Hover effect for navigation links */
-header nav ul li a:hover {
-    text-decoration: underline;
-}
-
-/* Media Query for Mobile (Max-width: 768px) */
-@media (max-width: 768px) {
-    /* Switch product container to vertical layout */
-    .product-cards-container {
-        display: block; /* Make products stack vertically */
-        padding-left: 0;
-        gap: 15px; /* Adjust gap for vertical display */
-    }
-
-    .product-card {
-        width: 100%; /* Make product cards full width on mobile */
-        margin-bottom: 15px; /* Add space between product cards */
-    }
-
-    /* Optional: Adjust margins, padding for mobile-friendly layout */
-    section {
-        padding: 20px 10px;
-    }
+/* Optional: Hide text selection highlight */
+::selection {
+    background: transparent;
 }
