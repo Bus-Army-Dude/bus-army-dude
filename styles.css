@@ -911,6 +911,20 @@ body {
   }
 }
 
+/* Style for the copying and pasting disabled message */
+.copy-paste-message {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    z-index: 1000;
+}
+
 /* Footer */
 footer {
     text-align: center;
