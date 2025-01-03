@@ -39,3 +39,26 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('textSize', textSize); // Save text size to localStorage
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Apply saved theme and text size on page load
+    function applySavedSettings() {
+        const savedTheme = localStorage.getItem('darkMode');
+        const savedTextSize = localStorage.getItem('textSize');
+
+        // Apply saved dark mode
+        if (savedTheme === 'enabled') {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+
+        // Apply saved text size
+        if (savedTextSize) {
+            document.body.style.fontSize = savedTextSize + 'px';
+        }
+    }
+
+    // Call the function to apply saved settings
+    applySavedSettings();
+});
