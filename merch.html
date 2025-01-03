@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchandise</title>
-    <link rel="stylesheet" href="merch.css">
+    <title>Merch Store</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
     <meta http-equiv="refresh" content="60">
     <!-- Favicons and Icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
@@ -28,50 +29,40 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="msapplication-config" content="/browserconfig.xml">
+
 </head>
 <body>
     <header>
+        <h1>Welcome to the Merch Store</h1>
         <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="settings.html">Settings</a></li>
-                <li><a href="merch.html">Merchandise</a></li>
+            <ul class="categories-list">
+                <li><a href="#" class="category">All Products</a></li>
+                <li><a href="#" class="category">Home & Living</a></li>
+                <li><a href="#" class="category">Men</a></li>
+                <li><a href="#" class="category">Accessories</a></li>
+                <li><a href="#" class="category">Women</a></li>
+                <li><a href="#" class="category">Kids</a></li>
+                <li><a href="#" class="category">On Sale</a></li>
             </ul>
         </nav>
     </header>
 
-<section id="product-categories">
-    <h2>Product Categories</h2>
-    <ul class="categories-list">
-    <li><a href="#">All Products</a></li>
-    <li><a href="#">Accessories</a></li>
-    <li><a href="#">Home & Living</a></li>
-    <li><a href="#">Men</a></li>
-    <li><a href="#">Women</a></li>
-    <li><a href="#">Kids</a></li>
-    <!-- Add other categories as necessary -->
-</ul>
-</section>
+    <section>
+        <h2>Products</h2>
+        <div class="products-grid"></div>
+    </section>
 
-<!-- On Sale Section -->
-<section class="product-grid" id="on-sale">
-    <h2>On Sale</h2>
-    <div class="product-cards-container" id="on-sale-products">
-        <!-- On Sale Products will be inserted here by JavaScript -->
-    </div>
-</section>
+    <section>
+        <h2>On Sale</h2>
+        <div class="sale-grid"></div>
+    </section>
 
-<!-- Products Section -->
-<section class="product-grid" id="products">
-    <h2>Products</h2>
-    <div class="product-cards-container" id="all-products">
-        <!-- All Products will be inserted here by JavaScript -->
-    </div>
-</section>
+    <footer>
+        <p>&copy; 2025 Merch Store. All Rights Reserved.</p>
+    </footer>
 
-
-    <script src="merch.js"></script>
-    <script src="script.js"></script>
-    <script src="settings.js"></script>
+    <noscript>
+        <p>Please enable JavaScript to view the website properly.</p>
+    </noscript>
 </body>
 </html>
