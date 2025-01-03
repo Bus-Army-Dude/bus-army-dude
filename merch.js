@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Prevent right-click and certain keyboard shortcuts for dev tools
     document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
+        e.preventDefault(); // Disable right-click menu
     });
 
     // Prevent image dragging and right-click
     const images = document.querySelectorAll('img');
     images.forEach(image => {
         image.addEventListener('dragstart', function (e) {
-            e.preventDefault(); // Disable drag
+            e.preventDefault(); // Disable image drag
         });
         image.addEventListener('contextmenu', function (e) {
-            e.preventDefault(); // Disable right-click context menu
+            e.preventDefault(); // Disable right-click context menu on images
         });
     });
 
@@ -29,14 +29,15 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault(); // Disable paste
     });
 
-    // Prevent F12, Ctrl+Shift+I/J, and other dev tool access for all OS versions
+    // Prevent F12, Ctrl+Shift+I/J, and other dev tool access for all OS versions (including mobile)
     document.addEventListener('keydown', function (e) {
-        // Disable F12 and Ctrl+Shift+I/J on any OS (macOS, Linux, Windows)
+        // Disable F12, Ctrl+Shift+I/J, and Cmd+Shift+I/J on any OS (macOS, Linux, Windows, and mobile)
         if (e.key === 'F12' || 
             (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
             (e.metaKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
             e.preventDefault();
         }
+
         // Disable common keyboard shortcuts for copy/cut/paste
         if (e.ctrlKey || e.metaKey) {
             if (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || 
@@ -59,10 +60,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Disable all text selection and prevent any other default actions (copy/paste)
     document.body.addEventListener('keydown', function (e) {
-        // Disable select-all on macOS/Linux/Windows
+        // Disable select-all on macOS/Linux/Windows and Mobile
         if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
             e.preventDefault();
         }
+    });
+
+    // Disable pinch to zoom on mobile devices (if needed)
+    document.addEventListener('touchstart', function (e) {
+        if (e.touches.length > 1) {
+            e.preventDefault(); // Prevent pinch-to-zoom
+        }
+    }, { passive: false });
+
+    // Prevent double tap zooming on mobile
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault(); // Prevent double tap zoom
+        }
+        lastTouchEnd = now;
     });
 
     // Product data (replace with your actual product data)
