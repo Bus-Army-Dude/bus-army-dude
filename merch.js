@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const categories = document.querySelectorAll('.categories-list li a');
-    const productsGrid = document.querySelector('.products-grid');
-    const saleGrid = document.querySelector('.sale-grid');
+    const saleGrid = document.getElementById('on-sale-products');
+    const productsGrid = document.getElementById('all-products');
 
     // Product data (replace with your actual product data)
     const newProductData = [
