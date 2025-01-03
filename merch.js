@@ -104,4 +104,4 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCategory = event.target.value;
         displayProducts(selectedCategory);
     });
-});
+}); 
