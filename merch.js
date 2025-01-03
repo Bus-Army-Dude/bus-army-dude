@@ -41,35 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-    // Detect device type (optional)
-    function detectDetailedDevice() {
-        const ua = navigator.userAgent;
-        let deviceInfo = '';
-
-        if (/iPhone|iPad|iPod/.test(ua)) {
-            deviceInfo = 'Apple Device (iOS)';
-        } else if (/Android/.test(ua)) {
-            deviceInfo = 'Android Device';
-        } else if (/Windows/.test(ua)) {
-            deviceInfo = 'Windows Device';
-        } else if (/Macintosh/.test(ua)) {
-            deviceInfo = 'macOS Device';
-        } else {
-            deviceInfo = 'Unknown Device';
-        }
-
-        const deviceElement = document.querySelector('.device-info');
-        if (deviceElement) {
-            deviceElement.textContent = `Device: ${deviceInfo}`;
-        }
-    }
-
-    // Call the function to detect device
-    detectDetailedDevice();
-}); 
-
-
-  // Your Actual Product Data
+    // Your Actual Product Data (including "on sale" section)
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
@@ -82,11 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Impact-Resistant Cases (ADHD Awareness)', 
-            price: '$19.75 - $17.77', 
+            price: '$19.75', 
             imgSrc: 'product_images/impact-resistant-cases.jpg', 
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
-            onSale: false,
+            onSale: true,
+            salePrice: '$17.77',
             link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
         },
         { 
@@ -110,11 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
             categorySelect.appendChild(option);
         });
-        // Add the "All Products" option
-        const allOption = document.createElement('option');
-        allOption.value = 'all';
-        allOption.textContent = 'All Products';
-        categorySelect.insertBefore(allOption, categorySelect.firstChild);
     }
 
     // Display products based on selected category with modern layout
@@ -132,7 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="product-details">
                     <h3 class="product-name">${product.name}</h3>
-                    <p class="product-price">${product.price}</p>
+                    <p class="product-price">
+                        ${product.onSale ? 
+                            `<span class="sale-price">${product.salePrice}</span> <span class="original-price">${product.price}</span>` :
+                            product.price
+                        }
+                    </p>
                     <p class="product-description">${product.description}</p>
                     <a href="${product.link}" target="_blank" class="view-product">
                         <button class="view-button">View Product</button>
@@ -160,4 +133,30 @@ document.addEventListener('DOMContentLoaded', () => {
     hamburger.addEventListener('click', () => {
         navLinks.classList.toggle('active');
     });
+
+    // Detect device type (optional)
+    function detectDetailedDevice() {
+        const ua = navigator.userAgent;
+        let deviceInfo = '';
+
+        if (/iPhone|iPad|iPod/.test(ua)) {
+            deviceInfo = 'Apple Device (iOS)';
+        } else if (/Android/.test(ua)) {
+            deviceInfo = 'Android Device';
+        } else if (/Windows/.test(ua)) {
+            deviceInfo = 'Windows Device';
+        } else if (/Macintosh/.test(ua)) {
+            deviceInfo = 'macOS Device';
+        } else {
+            deviceInfo = 'Unknown Device';
+        }
+
+        const deviceElement = document.querySelector('.device-info');
+        if (deviceElement) {
+            deviceElement.textContent = `Device: ${deviceInfo}`;
+        }
+    }
+
+    // Call the function to detect device
+    detectDetailedDevice();
 });
