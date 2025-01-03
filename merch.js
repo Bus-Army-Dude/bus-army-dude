@@ -2,17 +2,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Enhanced Copy Protection: Disable all copying, pasting, and other interactions
     const enhancedCopyProtection = {
         init() {
+            // Disable right-click context menu
             document.addEventListener('contextmenu', e => e.preventDefault());
+
+            // Disable text selection
             document.addEventListener('selectstart', e => e.preventDefault());
+
+            // Disable copying
             document.addEventListener('copy', e => e.preventDefault());
+
+            // Disable cutting
             document.addEventListener('cut', e => e.preventDefault());
+
+            // Disable pasting
             document.addEventListener('paste', e => e.preventDefault());
+
+            // Disable drag and drop
             document.addEventListener('dragstart', e => e.preventDefault());
             document.addEventListener('drop', e => e.preventDefault());
         }
     };
-    
+
+    // Initialize copy protection
     enhancedCopyProtection.init();
+});
 
     const products = [
         { 
