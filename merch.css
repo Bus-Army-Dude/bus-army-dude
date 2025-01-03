@@ -45,6 +45,16 @@ h2 {
     justify-items: center;
 }
 
+/* Products Grid */
+.sale-grid,
+.products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Product Card */
 .product-card {
     background-color: white;
     border: 1px solid #ddd;
