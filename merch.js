@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-    // Your Actual Product Data (including "on sale" section)
+    // Your Product Data (including "on sale" section)
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
