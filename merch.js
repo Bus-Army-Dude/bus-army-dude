@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const images = document.querySelectorAll('img');
     images.forEach(image => {
         image.addEventListener('dragstart', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Disable drag
         });
         image.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Disable right-click context menu
         });
     });
 
@@ -29,9 +29,38 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault(); // Disable paste
     });
 
-    // Prevent F12 and Ctrl+Shift+I/J to disable dev tools access
+    // Prevent F12, Ctrl+Shift+I/J, and other dev tool access for all OS versions
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+        // Disable F12 and Ctrl+Shift+I/J on any OS (macOS, Linux, Windows)
+        if (e.key === 'F12' || 
+            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
+            (e.metaKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+            e.preventDefault();
+        }
+        // Disable common keyboard shortcuts for copy/cut/paste
+        if (e.ctrlKey || e.metaKey) {
+            if (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || 
+                e.key === 'v' || e.key === 'V' || e.key === 'a' || e.key === 'A') {
+                e.preventDefault();
+            }
+        }
+    });
+
+    // Prevent saving images via drag, right-click, or saving
+    images.forEach(image => {
+        image.addEventListener('dragstart', function (e) {
+            e.preventDefault(); // Disable image drag
+        });
+
+        image.addEventListener('contextmenu', function (e) {
+            e.preventDefault(); // Disable right-click context menu on images
+        });
+    });
+
+    // Disable all text selection and prevent any other default actions (copy/paste)
+    document.body.addEventListener('keydown', function (e) {
+        // Disable select-all on macOS/Linux/Windows
+        if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
             e.preventDefault();
         }
     });
