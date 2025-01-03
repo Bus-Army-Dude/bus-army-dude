@@ -101,18 +101,19 @@ nav ul li a:hover {
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-.product-image-wrapper {
+/* Product images fix */
+.product-card .product-image-wrapper {
     position: relative;
-    overflow: hidden;
     width: 100%;
-    height: 200px;
+    height: 250px; /* Adjust the height based on your design */
+    overflow: hidden; /* Ensure the image does not overflow */
 }
 
-.product-image {
+.product-card .product-image {
+    object-fit: cover; /* This ensures the image covers the area without stretching */
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    object-position: center; /* Center the image if it needs to be cropped */
 }
 
 .product-image-wrapper:hover .product-image {
