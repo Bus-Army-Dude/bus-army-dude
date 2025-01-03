@@ -38,22 +38,21 @@ h2 {
     margin-bottom: 20px;
 }
 
-.product-grid {
+/* Updated for Horizontal Scrolling */
+.product-cards-container {
     display: flex;
-    flex-wrap: nowrap;  /* Prevent items from wrapping to the next line */
+    overflow-x: auto;
     gap: 20px;
-    justify-content: flex-start;  /* Align to the left */
-    overflow-x: auto;  /* Enable horizontal scrolling if products overflow */
-    padding-bottom: 20px;  /* Prevent products from touching the bottom */
+    padding: 20px 0;
 }
 
-/* Product Card */
 .product-card {
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    width: 250px;  /* Fixed width for horizontal layout */
+    width: 250px;
+    flex-shrink: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
 }
