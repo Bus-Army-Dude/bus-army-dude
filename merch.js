@@ -109,7 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
+    // Ensure navLinks is present before adding event listener
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 });
