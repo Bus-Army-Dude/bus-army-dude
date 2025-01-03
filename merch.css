@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    color: #333; /* Default text color */
 }
 
 header {
@@ -27,7 +28,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: white;
+    color: white; /* Text color for light mode */
     text-decoration: none;
     font-size: 18px;
     padding: 8px 16px;
@@ -38,11 +39,30 @@ nav ul li a:hover {
     background-color: #575757;
 }
 
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+header.dark-mode {
+    background-color: #1c1c1c;
+}
+
+nav ul.dark-mode li a {
+    color: white; /* Keep white text in dark mode */
+}
+
+nav ul.dark-mode li a:hover {
+    background-color: #575757;
+}
+
 section h2 {
     text-align: center;
     margin: 20px 0;
 }
 
+/* Product Grid */
 .products-grid, .sale-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Create responsive grid */
@@ -174,5 +194,10 @@ body {
 
     .categories-list {
         flex-direction: column; /* Stack categories on mobile */
+    }
+
+    /* Increase space between products on mobile */
+    .products-grid, .sale-grid {
+        gap: 25px; /* Increased gap between products on mobile */
     }
 }
