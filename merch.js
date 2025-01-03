@@ -104,4 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCategory = event.target.value;
         displayProducts(selectedCategory);
     });
-}); 
+
+    // Hamburger menu functionality
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        hamburger.classList.toggle('toggle');
+    });
+});
