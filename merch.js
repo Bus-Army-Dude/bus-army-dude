@@ -2,31 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Enhanced Copy Protection: Disable all copying, pasting, and other interactions
     const enhancedCopyProtection = {
         init() {
-            // Disable right-click context menu
             document.addEventListener('contextmenu', e => e.preventDefault());
-
-            // Disable text selection
             document.addEventListener('selectstart', e => e.preventDefault());
-
-            // Disable copying
             document.addEventListener('copy', e => e.preventDefault());
-
-            // Disable cutting
             document.addEventListener('cut', e => e.preventDefault());
-
-            // Disable pasting
             document.addEventListener('paste', e => e.preventDefault());
-
-            // Disable drag and drop
             document.addEventListener('dragstart', e => e.preventDefault());
             document.addEventListener('drop', e => e.preventDefault());
         }
     };
-
-    // Initialize copy protection
+    
     enhancedCopyProtection.init();
 
-    // Your Actual Product Data
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
@@ -57,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // Populate categories dropdown dynamically
+    // Populate categories dynamically
     function populateCategories() {
         const categorySelect = document.getElementById('categorySelect');
         const categories = Array.from(new Set(products.map(product => product.category)));
@@ -69,12 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Display products based on selected category with modern layout
+    // Display products based on selected category
     function displayProducts(category = 'all') {
         const productGrid = document.querySelector('.products-grid');
         productGrid.innerHTML = '';
-
         const filteredProducts = category === 'all' ? products : products.filter(product => product.category === category);
+        
         filteredProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
@@ -95,24 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialize categories and products on page load
     populateCategories();
     displayProducts();
 
-    // Event listener for category selection
     document.getElementById('categorySelect').addEventListener('change', (event) => {
         const selectedCategory = event.target.value;
         displayProducts(selectedCategory);
     });
 
-    // Hamburger menu functionality
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
-    // Ensure navLinks is present before adding event listener
-    if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-    }
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 });
