@@ -54,23 +54,11 @@ function applySavedSettings() {
         document.getElementById('text-size-label').textContent = `${savedTextSize}px`;
     }
 
-    // Apply saved contrast setting
-    const savedContrast = localStorage.getItem('contrast');
-    const contrastToggle = document.getElementById('contrast-toggle-btn');
-    if (savedContrast === 'high') {
-        body.classList.add('high-contrast');
-        contrastToggle.checked = true;
-    } else {
-        body.classList.remove('high-contrast');
-        contrastToggle.checked = false;
-    }
-}
 
 // Event listeners for the buttons and other settings
 document.getElementById('light-mode-btn').addEventListener('click', setLightMode);
 document.getElementById('dark-mode-btn').addEventListener('click', setDarkMode);
 document.getElementById('text-size').addEventListener('input', updateTextSize);
-document.getElementById('contrast-toggle-btn').addEventListener('change', toggleContrast);
 
 // Function to update text size based on user preference
 function updateTextSize() {
@@ -79,20 +67,6 @@ function updateTextSize() {
     document.body.style.fontSize = `${textSize}px`;
     textSizeLabel.textContent = `${textSize}px`; // Update text size label
     localStorage.setItem('text-size', textSize); // Save text size preference in localStorage
-}
-
-// Function to toggle high contrast mode
-function toggleContrast() {
-    const body = document.body;
-    const contrastToggle = document.getElementById('contrast-toggle-btn');
-    
-    if (contrastToggle.checked) {
-        body.classList.add('high-contrast');
-        localStorage.setItem('contrast', 'high'); // Save high contrast preference in localStorage
-    } else {
-        body.classList.remove('high-contrast');
-        localStorage.setItem('contrast', 'normal'); // Save normal contrast preference in localStorage
-    }
 }
 
 // Apply saved settings on page load (across all pages)
