@@ -911,18 +911,13 @@ body {
   }
 }
 
-/* Style for the copying and pasting disabled message */
-.copy-paste-message {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: red;
-    color: white;
+/* Copy Protection Message */
+.copy-protection-message {
     text-align: center;
+    background-color: #f44336;
+    color: white;
     padding: 10px;
     font-size: 16px;
-    z-index: 1000;
 }
 
 /* Footer */
