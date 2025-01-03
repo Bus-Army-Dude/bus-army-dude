@@ -24,17 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // Disable image drag & drop (prevent saving images)
             const images = document.querySelectorAll('img');
             images.forEach(image => {
-                image.setAttribute('draggable', 'false'); // Disable image drag
+                image.setAttribute('draggable', 'false');
             });
 
             // Disable double-click text selection
             document.addEventListener('dblclick', e => e.preventDefault());
 
             // Prevent user from saving images or content through long-press on mobile
-            document.body.style.userSelect = "none"; // Disables text selection globally
-            document.body.style.webkitTouchCallout = "none"; // Disables iOS long press menu
-            document.body.style.webkitUserSelect = "none"; // Disables text selection on webkit browsers (including iOS)
-            document.body.style.msUserSelect = "none"; // Disables text selection on IE/Edge
+            document.body.style.userSelect = "none"; 
+            document.body.style.webkitTouchCallout = "none";
+            document.body.style.webkitUserSelect = "none";
+            document.body.style.msUserSelect = "none";
         }
     };
 
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
-            salePrice: null, // No sale price when not on sale
+            salePrice: null,
             link: 'https://rivers-merch-store.printify.me/product/13136298/clear-cases?category=accessories' 
         },
         { 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
             category: 'Kids', 
             onSale: false,
-            salePrice: null, // No sale price when not on sale
+            salePrice: null,
             link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
         }
     ];
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Display products based on selected category with modern layout
+    // Display products based on selected category
     function displayProducts(category = 'all') {
         const productGrid = document.querySelector('.products-grid');
         productGrid.innerHTML = '';
@@ -118,9 +118,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Display products on sale in a separate section
+    function displayOnSaleProducts() {
+        const onSaleSection = document.querySelector('.on-sale-grid');
+        onSaleSection.innerHTML = ''; // Clear previous content
+
+        const onSaleProducts = products.filter(product => product.onSale);
+        if (onSaleProducts.length > 0) {
+            onSaleProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                    <div class="product-image-wrapper">
+                        <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">
+                            <span class="sale-price">${product.salePrice}</span> 
+                            <span class="original-price">${product.price}</span>
+                        </p>
+                        <p class="product-description">${product.description}</p>
+                        <a href="${product.link}" target="_blank" class="view-product">
+                            <button class="view-button">View Product</button>
+                        </a>
+                    </div>
+                `;
+                onSaleSection.appendChild(productCard);
+            });
+        } else {
+            onSaleSection.innerHTML = '<p>No products are currently on sale.</p>';
+        }
+    }
+
     // Initialize categories and products on page load
     populateCategories();
     displayProducts();
+    displayOnSaleProducts(); // Populate the on-sale section
 
     // Event listener for category selection
     document.getElementById('categorySelect').addEventListener('change', (event) => {
