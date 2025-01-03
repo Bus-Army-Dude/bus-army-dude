@@ -54,11 +54,35 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault(); // Disable right-click on any element
     });
 
-    // Product data (replace with your actual product data)
+    // Product data with images included (replace with your actual product data)
     const productData = [
-        { name: 'Clear Case (Samsung & Apple)', price: '$14.82', category: 'Accessories' },
-        { name: 'Impact-Resistant Cases (ADHD Awareness)', price: '$19.75 - $17.77', category: 'Accessories' },
-        { name: 'Toddler Long Sleeve Tee', price: '$20.62', category: 'Kids' }
+        { 
+            name: 'Clear Case (Samsung & Apple)', 
+            price: '$14.82', 
+            imgSrc: 'images/clear-cases.jpg', // Path to the product image
+            description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
+            category: 'Accessories', 
+            onSale: false,
+            link: 'https://rivers-merch-store.printify.me/product/13136298/clear-cases?category=accessories' 
+        },
+        { 
+            name: 'Impact-Resistant Cases (ADHD Awareness)', 
+            price: '$19.75 - $17.77', 
+            imgSrc: 'images/impact-resistant-cases.jpg', // Path to the product image
+            description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
+            category: 'Accessories', 
+            onSale: false,
+            link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
+        },
+        { 
+            name: 'Toddler Long Sleeve Tee', 
+            price: '$20.62', 
+            imgSrc: 'images/toddler-long-sleeve-tee.jpg', // Path to the product image
+            description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
+            category: 'Kids', 
+            onSale: false,
+            link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
+        }
     ];
 
     const categorySelect = document.getElementById('categorySelect');
