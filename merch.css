@@ -9,8 +9,9 @@ body {
 header {
     background-color: #333;
     color: white;
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Navigation Bar */
@@ -18,22 +19,28 @@ header nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex; /* Flexbox to align items horizontally */
-    justify-content: center; /* Center the items */
+    display: flex; /* Flexbox for horizontal alignment */
+    justify-content: center; /* Center items */
+    align-items: center;
 }
 
 header nav ul li {
-    margin-right: 20px;
+    margin: 0 15px; /* Spacing between links */
 }
 
 header nav ul li a {
     color: white;
     text-decoration: none;
     font-weight: bold;
+    padding: 8px 16px;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
 }
 
 header nav ul li a:hover {
-    text-decoration: underline;
+    background-color: #ff9800; /* Hover effect */
+    color: #333;
 }
 
 /* Product Categories */
@@ -45,7 +52,7 @@ header nav ul li a:hover {
 .categories-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center items */
+    justify-content: center;
     gap: 20px;
     margin-top: 30px;
 }
