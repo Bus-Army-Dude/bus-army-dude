@@ -84,7 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-price">${product.price}</p>
                     <p class="product-description">${product.description}</p>
-                    <a href="${product.link}" target="_blank" class="view-product">View Product</a>
+                    <a href="${product.link}" target="_blank" class="view-product">
+                        <button class="view-button">View Product</button>
+                    </a>
                 </div>
             `;
             productGrid.appendChild(productCard);
