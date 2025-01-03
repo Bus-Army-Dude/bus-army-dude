@@ -22,31 +22,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const newProductData = [
         { 
-            name: 'Product 1', 
-            price: '$29.99', 
-            imgSrc: 'product_images/product1.jpg', // Path to image in product_images folder
-            description: 'Product description goes here.', 
-            category: 'T-shirts', 
-            onSale: true,
-            link: 'https://example.com/buy-product1' 
-        },
-        { 
-            name: 'Product 2', 
-            price: '$39.99', 
-            imgSrc: 'product_images/product2.jpg', // Path to image in product_images folder
-            description: 'Product description goes here.', 
-            category: 'Hats', 
-            onSale: false,
-            link: 'https://example.com/buy-product2' 
-        },
-        { 
-            name: 'Product 3', 
-            price: '$19.99', 
-            imgSrc: 'product_images/product3.jpg', // Path to image in product_images folder
-            description: 'Product description goes here.', 
+            name: 'Clear Case (Samsung & Apple)', 
+            price: '$14.82', 
+            imgSrc: 'product_images/clear-cases.jpg', // Path to image in product_images folder
+            description: 'Clear phone case protects phone surface and aesthetics.  Made of durable polycarbonate with TPU cushioned edges, it offers scratch and bump protection while maintaining a slim profile.', 
             category: 'Accessories', 
             onSale: false,
-            link: 'https://example.com/buy-product3' 
+            link: 'https://rivers-merch-store.printify.me/product/13136298/clear-cases?category=accessories' 
+        },
+        { 
+            name: 'Impact-Resistant Cases (ADHD Awareness)', 
+            price: '$19.75 - $17.77', 
+            imgSrc: 'product_images/impact-resistant-cases.jpg', // Path to image in product_images folder
+            description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support, and removable inner TPU layer. Available in matte or glossy finish.', 
+            category: 'Accessories', 
+            onSale: false,
+            link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
+        },
+        { 
+            name: 'Toddler Long Sleeve Tee', 
+            price: '$20.62', 
+            imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', // Path to image in product_images folder
+            description: 'Custom toddler long-sleeve tee made from 100% combed ringspun cotton. Features durable construction, comfortable fit, and tear-away label for sensitive skin.', 
+            category: 'Kids', 
+            onSale: false,
+            link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
         }
     ];
 
