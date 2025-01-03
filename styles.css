@@ -28,6 +28,12 @@ body.dark-mode {
     color: white;
 }
 
+/* High Contrast Mode */
+body.high-contrast {
+    background-color: black;
+    color: yellow;
+}
+
 /* Styling for Buttons */
 .mode-btn {
     padding: 10px 20px;
@@ -54,6 +60,10 @@ body.dark-mode {
 /* Accessibility Text Size */
 body {
     font-size: 16px; /* Default font size */
+}
+
+body.high-contrast {
+    font-size: 18px; /* Larger text in high contrast mode */
 }
 
 /* Styling for the Accessibility Section */
@@ -898,96 +908,6 @@ body {
 
   .navbar ul li {
     margin: 10px 0;
-  }
-}
-
-/* Define variables for light and dark mode */
-:root {
-  --background-color: #fff;
-  --text-color: #333;
-  --border-color: #ccc;
-  --hover-color: #007bff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-color: #121212;
-    --text-color: #e0e0e0;
-    --border-color: #333;
-    --hover-color: #80bfff;
-  }
-}
-
-/* Accessibility: Font scaling */
-html {
-  font-size: 100%; /* Default 16px */
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 112.5%; /* Larger font size on bigger screens */
-  }
-}
-
-.header {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  text-align: center;
-  padding: 1em 0;
-}
-
-.navbar {
-  background-color: var(--background-color);
-  border-bottom: 2px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.navbar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.navbar ul li {
-  margin: 0 1.5em;
-}
-
-.navbar ul li a {
-  text-decoration: none;
-  color: var(--text-color);
-  font-size: 1.125em; /* Scale text size with accessibility */
-  padding: 0.625em;
-  display: flex;
-  align-items: center;
-  transition: color 0.3s ease;
-}
-
-.navbar ul li a i {
-  margin-right: 0.5em;
-  font-size: 1.25em; /* Icon size adapts based on user text size */
-  transition: transform 0.3s ease;
-}
-
-.navbar ul li a:hover {
-  color: var(--hover-color);
-}
-
-.navbar ul li a:hover i {
-  transform: rotate(360deg);
-}
-
-/* Responsive for smaller screens */
-@media (max-width: 768px) {
-  .navbar ul {
-    flex-direction: column;
-  }
-
-  .navbar ul li {
-    margin: 1em 0;
   }
 }
 
