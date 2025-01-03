@@ -58,8 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             imgSrc: 'product_images/impact-resistant-cases.jpg', 
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
-            onSale: true,
-            salePrice: '$17.77',
+            onSale: false,
             link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
         },
         { 
