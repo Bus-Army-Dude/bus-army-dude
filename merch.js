@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { 
             name: 'Clear Case (Samsung & Apple)', 
             price: '$14.82', 
-            imgSrc: 'images/clear-cases.jpg', // Path to the product image
+            imgSrc: 'product_images/clear-cases.jpg', // Path to the product image
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { 
             name: 'Impact-Resistant Cases (ADHD Awareness)', 
             price: '$19.75 - $17.77', 
-            imgSrc: 'images/impact-resistant-cases.jpg', // Path to the product image
+            imgSrc: 'product_images/impact-resistant-cases.jpg', // Path to the product image
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
             onSale: false,
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { 
             name: 'Toddler Long Sleeve Tee', 
             price: '$20.62', 
-            imgSrc: 'images/toddler-long-sleeve-tee.jpg', // Path to the product image
+            imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', // Path to the product image
             description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
             category: 'Kids', 
             onSale: false,
