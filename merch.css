@@ -13,14 +13,16 @@ header {
     text-align: center;
 }
 
+/* Navigation Bar */
 header nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: flex; /* Flexbox to align items horizontally */
+    justify-content: center; /* Center the items */
 }
 
 header nav ul li {
-    display: inline;
     margin-right: 20px;
 }
 
