@@ -1,99 +1,41 @@
-// Function to switch to Light Mode
-function setLightMode() {
+document.addEventListener('DOMContentLoaded', function () {
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
     const body = document.body;
-    body.classList.add('light-mode');
-    body.classList.remove('dark-mode');
-    localStorage.setItem('theme', 'light'); // Save light theme preference in localStorage
-    updateModeButtonLabel('Light Mode');
-}
+    const textSizeInput = document.getElementById('text-size');
+    const textSizeValue = document.getElementById('text-size-value');
 
-// Function to switch to Dark Mode
-function setDarkMode() {
-    const body = document.body;
-    body.classList.add('dark-mode');
-    body.classList.remove('light-mode');
-    localStorage.setItem('theme', 'dark'); // Save dark theme preference in localStorage
-    updateModeButtonLabel('Dark Mode');
-}
-
-// Function to update the label text of the buttons
-function updateModeButtonLabel(mode) {
-    const lightModeButton = document.getElementById('light-mode-btn');
-    const darkModeButton = document.getElementById('dark-mode-btn');
-    
-    if (mode === 'Light Mode') {
-        lightModeButton.style.display = 'none';
-        darkModeButton.style.display = 'inline-block';
-    } else {
-        darkModeButton.style.display = 'none';
-        lightModeButton.style.display = 'inline-block';
-    }
-}
-
-// Function to apply saved settings
-function applySavedSettings() {
-    // Apply saved theme
-    const savedTheme = localStorage.getItem('theme');
-    const body = document.body;
-    
-    if (savedTheme === 'dark') {
+    // Load and apply saved settings
+    if (localStorage.getItem('darkMode') === 'enabled') {
         body.classList.add('dark-mode');
-        body.classList.remove('light-mode');
-        updateModeButtonLabel('Dark Mode');
+        darkModeToggle.checked = true;
     } else {
-        body.classList.add('light-mode');
         body.classList.remove('dark-mode');
-        updateModeButtonLabel('Light Mode');
+        darkModeToggle.checked = false;
     }
 
-    // Apply saved text size
-    const savedTextSize = localStorage.getItem('text-size');
+    const savedTextSize = localStorage.getItem('textSize');
     if (savedTextSize) {
-        document.body.style.fontSize = `${savedTextSize}px`;
-        document.getElementById('text-size').value = savedTextSize;
-        document.getElementById('text-size-label').textContent = `${savedTextSize}px`;
+        body.style.fontSize = savedTextSize + 'px'; // Apply saved text size
+        textSizeInput.value = savedTextSize; // Sync the slider with saved value
+        textSizeValue.textContent = savedTextSize + 'px';
     }
 
-    // Apply saved contrast setting
-    const savedContrast = localStorage.getItem('contrast');
-    const contrastToggle = document.getElementById('contrast-toggle-btn');
-    if (savedContrast === 'high') {
-        body.classList.add('high-contrast');
-        contrastToggle.checked = true;
-    } else {
-        body.classList.remove('high-contrast');
-        contrastToggle.checked = false;
-    }
-}
+    // Dark Mode functionality
+    darkModeToggle.addEventListener('change', function() {
+        if (darkModeToggle.checked) {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    });
 
-// Event listeners for the buttons and other settings
-document.getElementById('light-mode-btn').addEventListener('click', setLightMode);
-document.getElementById('dark-mode-btn').addEventListener('click', setDarkMode);
-document.getElementById('text-size').addEventListener('input', updateTextSize);
-document.getElementById('contrast-toggle-btn').addEventListener('change', toggleContrast);
-
-// Function to update text size based on user preference
-function updateTextSize() {
-    const textSize = document.getElementById('text-size').value;
-    const textSizeLabel = document.getElementById('text-size-label');
-    document.body.style.fontSize = `${textSize}px`;
-    textSizeLabel.textContent = `${textSize}px`; // Update text size label
-    localStorage.setItem('text-size', textSize); // Save text size preference in localStorage
-}
-
-// Function to toggle high contrast mode
-function toggleContrast() {
-    const body = document.body;
-    const contrastToggle = document.getElementById('contrast-toggle-btn');
-    
-    if (contrastToggle.checked) {
-        body.classList.add('high-contrast');
-        localStorage.setItem('contrast', 'high'); // Save high contrast preference in localStorage
-    } else {
-        body.classList.remove('high-contrast');
-        localStorage.setItem('contrast', 'normal'); // Save normal contrast preference in localStorage
-    }
-}
-
-// Apply saved settings on page load (across all pages)
-window.onload = applySavedSettings;
+    // Text Size functionality
+    textSizeInput.addEventListener('input', function() {
+        const textSize = textSizeInput.value;
+        textSizeValue.textContent = textSize + 'px';
+        body.style.fontSize = textSize + 'px'; // Apply the text size to body
+        localStorage.setItem('textSize', textSize); // Save text size to localStorage
+    });
+});
