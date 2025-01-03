@@ -82,13 +82,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         lastTouchEnd = now;
     });
-
-    // Product data (replace with your actual product data)
+document.addEventListener('DOMContentLoaded', function () {
+    // Sample Product Data
     const newProductData = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
             price: '$14.82', 
-            imgSrc: 'product_images/clear-cases.jpg', // Path to image in product_images folder
+            imgSrc: 'product_images/clear-cases.jpg', 
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
             onSale: false,
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             imgSrc: 'product_images/impact-resistant-cases.jpg', 
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
-            onSale: false,
+            onSale: true,
             link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
         },
         { 
@@ -114,18 +114,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ];
 
-    // Category dropdown element
+    // Get category select dropdown and product grid elements
     const categorySelect = document.getElementById('categorySelect');
-    const productsGrid = document.querySelector('.products-grid');
-    const saleGrid = document.querySelector('.sale-grid');
+    const productsGrid = document.getElementById('products-grid');
+    const saleGrid = document.getElementById('sale-grid');
 
-    // Generate product cards dynamically for both sale and products
+    // Function to create and display product cards dynamically
     function displayProducts(products, container) {
         container.innerHTML = ''; // Clear the container before adding new products
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
-            productCard.setAttribute('data-category', product.category); // Add category as data attribute
+            productCard.setAttribute('data-category', product.category);
 
             productCard.innerHTML = `
                 <img src="${product.imgSrc}" alt="${product.name}">
@@ -136,27 +136,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     <a href="${product.link}" class="buy-btn" target="_blank">Buy Now</a>
                 </div>
             `;
-            container.appendChild(productCard); // Append product card to respective container (Sale or Products)
+            container.appendChild(productCard);
         });
     }
 
-    // Initially display all products, split into Products and On Sale
-    function displayAllProducts() {
-        const onSaleProducts = newProductData.filter(product => product.onSale);
-        const products = newProductData.filter(product => !product.onSale);
-
-        // Display products in their respective sections
-        displayProducts(onSaleProducts, saleGrid);
-        displayProducts(products, productsGrid);
-    }
-
-    // Call the function to display all products initially
-    displayAllProducts();
-
-    // Get unique categories from product data and populate the dropdown
+    // Function to populate the category dropdown dynamically
     function populateCategoryDropdown() {
-        const categories = new Set();
-        newProductData.forEach(product => categories.add(product.category));
+        const categories = [...new Set(newProductData.map(product => product.category))];
         categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category;
@@ -165,18 +151,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Call the function to populate dropdown
+    // Initially display all products in their respective sections
+    function displayAllProducts() {
+        const onSaleProducts = newProductData.filter(product => product.onSale);
+        const products = newProductData.filter(product => !product.onSale);
+
+        displayProducts(onSaleProducts, saleGrid);
+        displayProducts(products, productsGrid);
+    }
+
+    // Display all products and populate categories on page load
+    displayAllProducts();
     populateCategoryDropdown();
 
     // Handle category selection and filter products
     categorySelect.addEventListener('change', function () {
         const selectedCategory = categorySelect.value;
 
-        // Filter products based on selected category
-        const filteredOnSaleProducts = newProductData.filter(product => product.onSale && (selectedCategory === "all" || product.category === selectedCategory));
-        const filteredProducts = newProductData.filter(product => !product.onSale && (selectedCategory === "all" || product.category === selectedCategory));
+        const filteredOnSaleProducts = newProductData.filter(product => product.onSale && (selectedCategory === 'all' || product.category === selectedCategory));
+        const filteredProducts = newProductData.filter(product => !product.onSale && (selectedCategory === 'all' || product.category === selectedCategory));
 
-        // Display filtered products in their respective sections
         displayProducts(filteredOnSaleProducts, saleGrid);
         displayProducts(filteredProducts, productsGrid);
     });
