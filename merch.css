@@ -19,6 +19,7 @@ nav ul {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap; /* Allow items to wrap if they don't fit */
 }
 
 nav ul li {
@@ -51,16 +52,23 @@ section h2 {
 
 .product-card {
     background-color: white;
+    border: 1px solid #ddd; /* Add border around each product */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     overflow: hidden;
+    height: 100%; /* Ensure all cards are of equal height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensure buy button is at the bottom */
 }
 
 .product-card img {
     width: 100%; /* Ensures images are responsive */
     height: auto;
+    max-height: 250px; /* Set a max-height for images to prevent them from getting too big */
+    object-fit: contain; /* Maintain aspect ratio */
     border-radius: 5px;
 }
 
@@ -91,10 +99,41 @@ section h2 {
     color: white;
     text-decoration: none;
     border-radius: 5px;
+    margin-top: 15px;
 }
 
 .buy-btn:hover {
     background-color: #218838;
+}
+
+/* Category Styles */
+.categories-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap; /* Allow categories to wrap if they overflow */
+    justify-content: center; /* Center the categories */
+    gap: 20px; /* Space between categories */
+    margin-bottom: 30px;
+}
+
+.categories-list li {
+    display: inline-block;
+}
+
+.categories-list li a {
+    color: #333;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #ddd;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.categories-list li a:hover {
+    background-color: #007BFF;
+    color: white;
 }
 
 /* Prevent image dragging */
@@ -131,5 +170,9 @@ body {
 
     .product-info p {
         font-size: 12px;
+    }
+
+    .categories-list {
+        flex-direction: column; /* Stack categories on mobile */
     }
 }
