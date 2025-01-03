@@ -201,3 +201,18 @@ body {
         gap: 25px; /* Increased gap between products on mobile */
     }
 }
+
+footer {
+    text-align: center; /* Centers the text horizontally */
+    padding: 20px; /* Add some padding for spacing */
+    background-color: #333; /* Background color for the footer */
+    color: white; /* Text color */
+    width: 100%; /* Make sure footer takes full width */
+    position: relative;
+    bottom: 0;
+    margin-top: 20px; /* Optional space above the footer */
+}
+
+footer p {
+    margin: 0; /* Remove default margin for the <p> */
+}
