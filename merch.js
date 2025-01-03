@@ -1,7 +1,40 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const categories = document.querySelectorAll('.categories-list li a');
-    const saleGrid = document.getElementById('on-sale-products');
-    const productsGrid = document.getElementById('all-products');
+    // Prevent right-click and certain keyboard shortcuts for dev tools
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    });
+
+    // Prevent image dragging and right-click
+    const images = document.querySelectorAll('img');
+    images.forEach(image => {
+        image.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+        });
+        image.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+    });
+
+    // Prevent text selection (for copy-pasting protection)
+    document.body.addEventListener('selectstart', function (e) {
+        e.preventDefault(); // Disable text selection
+    });
+
+    // Disable copy and paste actions
+    document.body.addEventListener('copy', function (e) {
+        e.preventDefault(); // Disable copy
+    });
+
+    document.body.addEventListener('paste', function (e) {
+        e.preventDefault(); // Disable paste
+    });
+
+    // Prevent F12 and Ctrl+Shift+I/J to disable dev tools access
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+            e.preventDefault();
+        }
+    });
 
     // Product data (replace with your actual product data)
     const newProductData = [
@@ -33,6 +66,11 @@ document.addEventListener('DOMContentLoaded', function () {
             link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
         }
     ];
+
+    // Category sections
+    const categories = document.querySelectorAll('.categories-list li a');
+    const productsGrid = document.querySelector('.products-grid');
+    const saleGrid = document.querySelector('.sale-grid');
 
     // Generate product cards dynamically for both sale and products
     function displayProducts(products, container) {
