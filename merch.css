@@ -1,92 +1,101 @@
-/* Base Styles (for desktops and tablets) */
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    user-select: none; /* Disable text selection */
+    background-color: #f4f4f4;
 }
 
+/* Header Styles */
 header {
     background-color: #333;
     color: #fff;
-    padding: 1rem;
-    text-align: center;
+    padding: 10px 0;
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
+}
+
+#hamburger {
+    font-size: 30px;
+    cursor: pointer;
 }
 
 .nav-links {
-    list-style: none;
     display: flex;
-    gap: 1rem;
-    padding: 0;
+    list-style-type: none;
 }
 
 .nav-links li {
-    margin: 0;
+    margin-right: 20px;
 }
 
 .nav-links a {
     color: #fff;
     text-decoration: none;
-    font-weight: bold;
-}
-
-.hamburger-icon {
-    display: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+    font-size: 18px;
 }
 
 .category-dropdown {
-    margin: 1rem 0;
+    margin-top: 10px;
     text-align: center;
 }
 
 .category-dropdown select {
-    padding: 0.5rem;
-    font-size: 1rem;
+    padding: 10px;
+    font-size: 16px;
 }
 
-.products-grid, .on-sale-grid {
+/* Product Grid Styles */
+section {
+    padding: 20px;
+    background-color: #fff;
+}
+
+.products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
 }
 
 .product-card {
     background-color: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
     text-align: center;
 }
 
 .product-image-wrapper {
-    height: 200px;
+    width: 100%;
+    height: 250px;
     overflow: hidden;
-    margin-bottom: 1rem;
 }
 
 .product-image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    display: block;
+}
+
+.product-details {
+    padding: 15px;
 }
 
 .product-name {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 .product-price {
-    margin-bottom: 0.5rem;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 .sale-price {
@@ -99,65 +108,75 @@ header {
     color: #999;
 }
 
+.product-description {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.view-product {
+    text-decoration: none;
+}
+
 .view-button {
-    padding: 0.5rem 1rem;
     background-color: #333;
     color: #fff;
+    padding: 10px 20px;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
-    border-radius: 4px;
 }
 
-.view-button:hover {
-    background-color: #555;
-}
-
+/* Footer Styles */
 footer {
     background-color: #333;
     color: #fff;
+    padding: 20px;
     text-align: center;
-    padding: 1rem;
-}
-
-.copy-protection-message {
-    text-align: center;
-    margin: 2rem 0;
 }
 
 .device-info {
-    text-align: center;
-    margin-top: 1rem;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ccc;
 }
 
-/* Responsive Styles for Mobile Devices */
+/* Copy Protection Message */
+.copy-protection-message {
+    text-align: center;
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Hamburger Menu Styles */
+.nav-links.active {
+    display: block;
+}
+
+#hamburger {
+    display: none;
+}
+
 @media (max-width: 768px) {
-    .hamburger-icon {
-        display: block;
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .nav-links {
         display: none;
+        width: 100%;
         flex-direction: column;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        right: 0;
-        background-color: #333;
-        text-align: center;
-        gap: 1rem;
+        margin-top: 10px;
     }
 
     .nav-links.active {
         display: flex;
     }
 
-    .products-grid, .on-sale-grid {
-        grid-template-columns: 1fr; /* Stack product cards vertically on mobile */
-        padding: 1rem;
-    }
-
-    .category-dropdown select {
-        width: 100%; /* Make dropdown full-width on mobile */
+    #hamburger {
+        display: block;
     }
 }
