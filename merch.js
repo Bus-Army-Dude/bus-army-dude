@@ -159,62 +159,54 @@ document.addEventListener('DOMContentLoaded', () => {
             category: 'Home & Living', 
             onSale: false,
             link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
+        },
+        { 
+            name: 'Round Sticker Label Rolls (2x2, 100 PCS)', 
+            price: '$99.33', 
+            imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
+            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
+            category: 'Home & Living', 
+            onSale: false,
+            link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
+        },
+        { 
+            name: 'Round Sticker Label Rolls (2x2, 250 PCS)', 
+            price: '$138.42', 
+            imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
+            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
+            category: 'Home & Living', 
+            onSale: false,
+            link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
         }
     ];
 
-    // Populate categories dropdown dynamically
-    function populateCategories() {
-        const categorySelect = document.getElementById('categorySelect');
-        categorySelect.innerHTML = ''; // Clear existing options
+    // Dynamically display products
+    const productsContainer = document.getElementById('products-container');
 
-        // Add "All Products" as the first option
-        const allOption = document.createElement('option');
-        allOption.value = 'all';
-        allOption.textContent = 'All Products';
-        allOption.selected = true; // Make this the default selected option
-        categorySelect.appendChild(allOption);
+    products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
 
-        // Get unique categories from products
-        const categories = Array.from(new Set(products.map(product => product.category)));
+        productCard.innerHTML = `
+            <div class="product-image-wrapper">
+                <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-price">
+                    ${product.onSale ? 
+                        `<span class="sale-price">${product.salePrice}</span> <span class="original-price">${product.price}</span>` :
+                        product.price
+                    }
+                </p>
+                <p class="product-description">${product.description}</p>
+                <button class="product-link-button" onclick="window.open('${product.link}', '_blank')">View Product</button>
+            </div>
+        `;
 
-        // Add the remaining categories
-        categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-            categorySelect.appendChild(option);
-        });
-    }
-
-    // Display products based on selected category with modern layout
-    function displayProducts(category = 'all') {
-        const productGrid = document.querySelector('.products-grid');
-        productGrid.innerHTML = '';
-
-        // Filter products based on the selected category
-        const filteredProducts = category === 'all' ? products : products.filter(product => product.category === category);
-        filteredProducts.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card');
-            productCard.innerHTML = `
-                <div class="product-image-wrapper">
-                    <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
-                </div>
-                <div class="product-details">
-                    <h3 class="product-name">${product.name}</h3>
-                    <p class="product-price">
-                        ${product.onSale ? 
-                            `<span class="sale-price">${product.salePrice}</span> <span class="original-price">${product.price}</span>` :
-                            product.price
-                        }
-                    </p>
-                    <p class="product-description">${product.description}</p>
-                    <a href="${product.link}" target="_blank" class="product-link">View Product</a>
-                </div>
-            `;
-            productGrid.appendChild(productCard);
-        });
-    }
+        productsContainer.appendChild(productCard);
+    });
+});
 
     // Event listener for category selection
     document.getElementById('categorySelect').addEventListener('change', (event) => {
