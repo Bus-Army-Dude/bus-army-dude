@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { username: 'aggressiveafterdark', isVerified: false, followers: '300.2K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
             { username: 'souldragon912', isVerified: false, followers: '84', nickname: 'Soul Dragon', bio: "I'm in Network Security. i play Höfner club bass and love 80s rock. 18", profilePic: 'images/souldragon912.jpeg' },
             { username: 'prettymomma37', isVerified: false, followers: '68', nickname: 'Andrea', bio: 'No bio yet', profilePic: 'images/prettymomma37.jpeg' },
-            { username: 'tatechtips', isVerified: true, followers: '3M', nickname: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
+            { username: 'tatechtips', isVerified: true, followers: '3M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
             // Add more shoutouts here...
         ],
         init() {
