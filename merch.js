@@ -122,3 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Product container not found');
     }
 });
+
+// JavaScript for the hamburger menu toggle
+document.getElementById('hamburger').addEventListener('click', function () {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+});
