@@ -1,5 +1,5 @@
 ### Proprietary License
-Copyright (c) 2024 BusArmyDude. All rights reserved.
+Copyright (c) 2025 Bus Army Dude. All rights reserved.
 
 ### Terms of Use
 This software, including its source code, documentation, designs, and all associated materials (collectively, the "Software") is the proprietary property of BusArmyDude.
@@ -31,12 +31,12 @@ Access to view this Software is granted solely for:
 
 This repository is protected by copyright laws. You may not clone, fork, or redistribute this repository in any form. Unauthorized use of the repository may result in legal action.
 
-**Copyright (c) 2025 BusArmyDude. All rights reserved.**
+**Copyright (c) 2025 Bus Army Dude. All rights reserved.**
 
   
 ### Enforcement
 Any violation of these terms will be subject to legal action and prosecution to the fullest extent of the law.
 
-**Last Updated:** 12-29-2024 11:34 AM EST
+**Last Updated:** 01-03-2025 11:54 PM EST
 
 **Updated By:** Bus Army Dude
