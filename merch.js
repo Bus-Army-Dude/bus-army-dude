@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     enhancedCopyProtection.init();
 
    document.addEventListener('DOMContentLoaded', () => {
-    // Array containing all the products
+// Array containing all the products
 const products = [
     { 
         name: 'Clear Case (Samsung & Apple)', 
@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     displayProducts(products);    // Display all products by default
     document.getElementById('categorySelect').addEventListener('change', handleCategoryChange); // Add event listener for category selection
 });
+
 
 // JavaScript for the hamburger menu toggle
 document.getElementById('hamburger').addEventListener('click', function () {
