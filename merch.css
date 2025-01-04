@@ -98,43 +98,21 @@ section {
     color: #333;
 }
 
-.sale-price {
-    color: red;
-    font-weight: bold;
-}
-
-.original-price {
-    text-decoration: line-through;
-    color: #999;
-}
-
-.product-description {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 10px;
-}
-
-.view-product {
-    text-decoration: none;
-}
-
 .product-link-button {
-    background-color: #4CAF50; /* Button background color */
-    color: white; /* Text color */
-    border: none; /* Remove border */
-    padding: 10px 20px; /* Padding for the button */
-    text-align: center; /* Center text */
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Inline display */
-    font-size: 16px; /* Font size */
-    margin: 10px 0; /* Margin */
-    cursor: pointer; /* Pointer cursor on hover */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Transition effect */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .product-link-button:hover {
-    background-color: #45a049; /* Darker shade of green on hover */
+    background-color: #45a049;
 }
 
 /* Footer Styles */
@@ -143,12 +121,6 @@ footer {
     color: #fff;
     padding: 20px;
     text-align: center;
-}
-
-.device-info {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #ccc;
 }
 
 /* Copy Protection Message */
