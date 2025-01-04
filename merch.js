@@ -41,8 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-   document.addEventListener('DOMContentLoaded', () => {
-// Array containing all the products
+// Define the product data
 const products = [
     { 
         name: 'Clear Case (Samsung & Apple)', 
@@ -91,15 +90,15 @@ const products = [
     }
 ];
 
-// Extracting categories dynamically
+// Get unique categories
 const categories = ['All Products', ...new Set(products.map(product => product.category))];
 
-// Function to display the products dynamically
-function displayProducts(productsToDisplay) {
+// Display products in the grid
+function displayProducts(filteredProducts) {
     const productsGrid = document.querySelector('.products-grid');
-    productsGrid.innerHTML = ''; // Clear the grid before appending new products
+    productsGrid.innerHTML = ''; // Clear the grid
 
-    productsToDisplay.forEach(product => {
+    filteredProducts.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
 
@@ -114,11 +113,12 @@ function displayProducts(productsToDisplay) {
                 <a href="${product.link}" class="product-link-button">View Product</a>
             </div>
         `;
+
         productsGrid.appendChild(productCard);
     });
 }
 
-// Function to handle category changes
+// Filter products based on selected category
 function handleCategoryChange(event) {
     const selectedCategory = event.target.value;
     const filteredProducts = selectedCategory === 'All Products' 
@@ -128,7 +128,7 @@ function handleCategoryChange(event) {
     displayProducts(filteredProducts);
 }
 
-// Function to populate the category dropdown menu
+// Populate category dropdown dynamically
 function populateCategoryDropdown() {
     const categorySelect = document.getElementById('categorySelect');
     categories.forEach(category => {
@@ -139,11 +139,13 @@ function populateCategoryDropdown() {
     });
 }
 
-// Initializing the page once the DOM is loaded
+// Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
-    populateCategoryDropdown();  // Populate the category dropdown
-    displayProducts(products);    // Display all products by default
-    document.getElementById('categorySelect').addEventListener('change', handleCategoryChange); // Add event listener for category selection
+    populateCategoryDropdown();
+    displayProducts(products); // Display all products by default
+
+    // Event listener for category selection
+    document.getElementById('categorySelect').addEventListener('change', handleCategoryChange);
 });
 
 
