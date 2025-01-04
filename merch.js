@@ -159,31 +159,25 @@ document.addEventListener('DOMContentLoaded', () => {
             category: 'Home & Living', 
             onSale: false,
             link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Round Sticker Label Rolls (2x2, 100 PCS)', 
-            price: '$99.33', 
-            imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Round Sticker Label Rolls (2x2, 250 PCS)', 
-            price: '$138.42', 
-            imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
         }
     ];
 
     // Populate categories dropdown dynamically
     function populateCategories() {
         const categorySelect = document.getElementById('categorySelect');
+        categorySelect.innerHTML = ''; // Clear existing options
+
+        // Add "All Products" as the first option
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'All Products';
+        allOption.selected = true; // Make this the default selected option
+        categorySelect.appendChild(allOption);
+
+        // Get unique categories from products
         const categories = Array.from(new Set(products.map(product => product.category)));
+
+        // Add the remaining categories
         categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category;
@@ -197,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const productGrid = document.querySelector('.products-grid');
         productGrid.innerHTML = '';
 
+        // Filter products based on the selected category
         const filteredProducts = category === 'all' ? products : products.filter(product => product.category === category);
         filteredProducts.forEach(product => {
             const productCard = document.createElement('div');
@@ -214,18 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     </p>
                     <p class="product-description">${product.description}</p>
-                    <a href="${product.link}" target="_blank" class="view-product">
-                        <button class="view-button">View Product</button>
-                    </a>
+                    <a href="${product.link}" target="_blank" class="product-link">View Product</a>
                 </div>
             `;
             productGrid.appendChild(productCard);
         });
     }
-
-    // Initialize categories and products on page load
-    populateCategories();
-    displayProducts();
 
     // Event listener for category selection
     document.getElementById('categorySelect').addEventListener('change', (event) => {
@@ -233,37 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayProducts(selectedCategory);
     });
 
-    // Hamburger menu functionality
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-
-    // Detect device type (optional)
-    function detectDetailedDevice() {
-        const ua = navigator.userAgent;
-        let deviceInfo = '';
-
-        if (/iPhone|iPad|iPod/.test(ua)) {
-            deviceInfo = 'Apple Device (iOS)';
-        } else if (/Android/.test(ua)) {
-            deviceInfo = 'Android Device';
-        } else if (/Windows/.test(ua)) {
-            deviceInfo = 'Windows Device';
-        } else if (/Macintosh/.test(ua)) {
-            deviceInfo = 'macOS Device';
-        } else {
-            deviceInfo = 'Unknown Device';
-        }
-
-        const deviceElement = document.querySelector('.device-info');
-        if (deviceElement) {
-            deviceElement.textContent = `Device: ${deviceInfo}`;
-        }
-    }
-
-    // Call the function to detect device
-    detectDetailedDevice();
+    // Initialize categories and product display
+    populateCategories();
+    displayProducts();
 });
