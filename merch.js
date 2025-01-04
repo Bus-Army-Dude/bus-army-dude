@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-// Define the product data
+// Sample products array with your data
 const products = [
     { 
         name: 'Clear Case (Samsung & Apple)', 
@@ -90,67 +90,65 @@ const products = [
     }
 ];
 
-// Get unique categories
-const categories = ['All Products', ...new Set(products.map(product => product.category))];
+// Categories (you can add more categories if needed)
+const categories = ['All Products', 'Accessories', 'Kids', 'Home & Living'];
 
-// Display products in the grid
+// Get the elements from HTML
+const productContainer = document.querySelector('.products-grid');
+const categorySelect = document.querySelector('#categorySelect');
+
+// Function to display the products
 function displayProducts(filteredProducts) {
-    const productsGrid = document.querySelector('.products-grid');
-    productsGrid.innerHTML = ''; // Clear the grid
-
+    productContainer.innerHTML = ''; // Clear current products
     filteredProducts.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
 
         productCard.innerHTML = `
             <div class="product-image-wrapper">
-                <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
+                <img src="${product.imgSrc}" alt="${product.name}" class="product-image" />
             </div>
             <div class="product-details">
                 <h3 class="product-name">${product.name}</h3>
-                <p class="product-price">${product.price}</p>
                 <p class="product-description">${product.description}</p>
+                <p class="product-price">${product.price}</p>
                 <a href="${product.link}" class="product-link-button">View Product</a>
             </div>
         `;
 
-        productsGrid.appendChild(productCard);
+        productContainer.appendChild(productCard);
     });
 }
 
-// Filter products based on selected category
+// Function to handle category changes
 function handleCategoryChange(event) {
     const selectedCategory = event.target.value;
-    const filteredProducts = selectedCategory === 'All Products' 
-        ? products 
-        : products.filter(product => product.category === selectedCategory);
-
-    displayProducts(filteredProducts);
+    if (selectedCategory === 'All Products') {
+        displayProducts(products);
+    } else {
+        const filteredProducts = products.filter(product => product.category === selectedCategory);
+        displayProducts(filteredProducts);
+    }
 }
 
-// Populate category dropdown dynamically
-function populateCategoryDropdown() {
-    const categorySelect = document.getElementById('categorySelect');
-    categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categorySelect.appendChild(option);
-    });
-}
-
-// Initialize the page
-document.addEventListener('DOMContentLoaded', () => {
-    populateCategoryDropdown();
-    displayProducts(products); // Display all products by default
-
-    // Event listener for category selection
-    document.getElementById('categorySelect').addEventListener('change', handleCategoryChange);
+// Add categories to the dropdown
+categories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    categorySelect.appendChild(option);
 });
 
+// Display all products by default
+displayProducts(products);
 
-// JavaScript for the hamburger menu toggle
-document.getElementById('hamburger').addEventListener('click', function () {
-    const navLinks = document.querySelector('.nav-links');
+// Listen for category change
+categorySelect.addEventListener('change', handleCategoryChange);
+
+// Hamburger Menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('active');
 });
