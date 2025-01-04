@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     enhancedCopyProtection.init();
 
    document.addEventListener('DOMContentLoaded', () => {
-    // Product data with categories and links
+    // Your product data with categories and links
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
@@ -83,33 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { 
             name: 'Square Sticker Label Rolls (1x1, 100 PCS)', 
             price: '$83.05', 
-            imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Square Sticker Label Rolls (1x1, 250 PCS)', 
-            price: '$104.22', 
-            imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Square Sticker Label Rolls (2x2, 50 PCS)', 
-            price: '$84.28', 
-            imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Square Sticker Label Rolls (2x2, 100 PCS)', 
-            price: '$99.33', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -187,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Display all products by default when page loads
     displayProducts('All Products');
 });
+
 
 // JavaScript for the hamburger menu toggle
 document.getElementById('hamburger').addEventListener('click', function () {
