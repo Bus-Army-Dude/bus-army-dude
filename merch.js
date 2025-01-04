@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-    // Your actual product data
+   document.addEventListener('DOMContentLoaded', () => {
+    // Product data with categories and links
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
@@ -117,15 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // Add event listener for category selection
-    const categorySelect = document.getElementById('categorySelect');
-    categorySelect.addEventListener('change', (event) => {
-        const selectedCategory = event.target.value;
-        displayProducts(selectedCategory);
-    });
-
     // Function to display products based on selected category
-    function displayProducts(category) {
+    const displayProducts = (category) => {
         const productsContainer = document.querySelector('.products-grid');
         productsContainer.innerHTML = ''; // Clear existing products
 
@@ -172,9 +166,25 @@ document.addEventListener('DOMContentLoaded', () => {
             productCard.appendChild(productDetails);
             productsContainer.appendChild(productCard);
         });
-    }
+    };
 
-    // Display all products by default
+    // Dynamically populate the category dropdown
+    const categories = ['All Products', ...new Set(products.map(product => product.category))];
+    const categorySelect = document.getElementById('categorySelect');
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
+
+    // Add event listener for category selection
+    categorySelect.addEventListener('change', (event) => {
+        const selectedCategory = event.target.value;
+        displayProducts(selectedCategory);
+    });
+
+    // Display all products by default when page loads
     displayProducts('All Products');
 });
 
