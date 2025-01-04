@@ -42,107 +42,94 @@ document.addEventListener('DOMContentLoaded', () => {
     enhancedCopyProtection.init();
 
    document.addEventListener('DOMContentLoaded', () => {
-    // Your product data with categories and links
-    const products = [
-        { 
-            name: 'Clear Case (Samsung & Apple)', 
-            price: '$14.82', 
-            imgSrc: 'product_images/clear-cases.jpg', 
-            description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
-            category: 'Accessories', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13136298/clear-cases?category=accessories' 
-        },
-        { 
-            name: 'Impact-Resistant Cases (ADHD Awareness)', 
-            price: '$19.75', 
-            imgSrc: 'product_images/impact-resistant-cases.jpg', 
-            description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
-            category: 'Accessories', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
-        },
-        { 
-            name: 'Toddler Long Sleeve Tee', 
-            price: '$20.62', 
-            imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', 
-            description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
-            category: 'Kids', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
-        },
-        { 
-            name: 'Square Sticker Label Rolls (1x1, 50 PCS)', 
-            price: '$74.90', 
-            imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Square Sticker Label Rolls (1x1, 100 PCS)', 
-            price: '$83.05', 
-            imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
-        }
-    ];
+    // Array containing all the products
+const products = [
+    { 
+        name: 'Clear Case (Samsung & Apple)', 
+        price: '$14.82', 
+        imgSrc: 'product_images/clear-cases.jpg', 
+        description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
+        category: 'Accessories', 
+        onSale: false,
+        link: 'https://rivers-merch-store.printify.me/product/13136298/clear-cases?category=accessories' 
+    },
+    { 
+        name: 'Impact-Resistant Cases (ADHD Awareness)', 
+        price: '$19.75', 
+        imgSrc: 'product_images/impact-resistant-cases.jpg', 
+        description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
+        category: 'Accessories', 
+        onSale: false,
+        link: 'https://rivers-merch-store.printify.me/product/13888139/impact-resistant-cases?category=accessories' 
+    },
+    { 
+        name: 'Toddler Long Sleeve Tee', 
+        price: '$20.62', 
+        imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', 
+        description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
+        category: 'Kids', 
+        onSale: false,
+        link: 'https://rivers-merch-store.printify.me/product/13392485/toddler-long-sleeve-tee?category=kids-clothing' 
+    },
+    { 
+        name: 'Square Sticker Label Rolls (1x1, 50 PCS)', 
+        price: '$74.90', 
+        imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
+        description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
+        category: 'Home & Living', 
+        onSale: false,
+        link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
+    },
+    { 
+        name: 'Square Sticker Label Rolls (1x1, 100 PCS)', 
+        price: '$83.05', 
+        imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
+        description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
+        category: 'Home & Living', 
+        onSale: false,
+        link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
+    }
+];
 
-    // Function to display products based on selected category
-    const displayProducts = (category) => {
-        const productsContainer = document.querySelector('.products-grid');
-        productsContainer.innerHTML = ''; // Clear existing products
+// Extracting categories dynamically
+const categories = ['All Products', ...new Set(products.map(product => product.category))];
 
-        const filteredProducts = category === 'All Products' ? products : products.filter(product => product.category === category);
+// Function to display the products dynamically
+function displayProducts(productsToDisplay) {
+    const productsGrid = document.querySelector('.products-grid');
+    productsGrid.innerHTML = ''; // Clear the grid before appending new products
 
-        filteredProducts.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card');
+    productsToDisplay.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
 
-            const productImageWrapper = document.createElement('div');
-            productImageWrapper.classList.add('product-image-wrapper');
-            const productImage = document.createElement('img');
-            productImage.classList.add('product-image');
-            productImage.src = product.imgSrc;
-            productImage.alt = product.name;
-            productImageWrapper.appendChild(productImage);
+        productCard.innerHTML = `
+            <div class="product-image-wrapper">
+                <img src="${product.imgSrc}" alt="${product.name}" class="product-image">
+            </div>
+            <div class="product-details">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-price">${product.price}</p>
+                <p class="product-description">${product.description}</p>
+                <a href="${product.link}" class="product-link-button">View Product</a>
+            </div>
+        `;
+        productsGrid.appendChild(productCard);
+    });
+}
 
-            const productDetails = document.createElement('div');
-            productDetails.classList.add('product-details');
+// Function to handle category changes
+function handleCategoryChange(event) {
+    const selectedCategory = event.target.value;
+    const filteredProducts = selectedCategory === 'All Products' 
+        ? products 
+        : products.filter(product => product.category === selectedCategory);
 
-            const productName = document.createElement('h3');
-            productName.classList.add('product-name');
-            productName.textContent = product.name;
+    displayProducts(filteredProducts);
+}
 
-            const productPrice = document.createElement('p');
-            productPrice.classList.add('product-price');
-            productPrice.textContent = product.price;
-
-            const productDescription = document.createElement('p');
-            productDescription.classList.add('product-description');
-            productDescription.textContent = product.description;
-
-            const viewProductButton = document.createElement('a');
-            viewProductButton.classList.add('product-link-button');
-            viewProductButton.href = product.link;
-            viewProductButton.textContent = 'View Product';
-
-            productDetails.appendChild(productName);
-            productDetails.appendChild(productPrice);
-            productDetails.appendChild(productDescription);
-            productDetails.appendChild(viewProductButton);
-
-            productCard.appendChild(productImageWrapper);
-            productCard.appendChild(productDetails);
-            productsContainer.appendChild(productCard);
-        });
-    };
-
-    // Dynamically populate the category dropdown
-    const categories = ['All Products', ...new Set(products.map(product => product.category))];
+// Function to populate the category dropdown menu
+function populateCategoryDropdown() {
     const categorySelect = document.getElementById('categorySelect');
     categories.forEach(category => {
         const option = document.createElement('option');
@@ -150,17 +137,14 @@ document.addEventListener('DOMContentLoaded', () => {
         option.textContent = category;
         categorySelect.appendChild(option);
     });
+}
 
-    // Add event listener for category selection
-    categorySelect.addEventListener('change', (event) => {
-        const selectedCategory = event.target.value;
-        displayProducts(selectedCategory);
-    });
-
-    // Display all products by default when page loads
-    displayProducts('All Products');
+// Initializing the page once the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    populateCategoryDropdown();  // Populate the category dropdown
+    displayProducts(products);    // Display all products by default
+    document.getElementById('categorySelect').addEventListener('change', handleCategoryChange); // Add event listener for category selection
 });
-
 
 // JavaScript for the hamburger menu toggle
 document.getElementById('hamburger').addEventListener('click', function () {
