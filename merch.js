@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
-            price: '$14.82', 
+            price: '14.82', 
             imgSrc: 'product_images/clear-cases.jpg', 
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Impact-Resistant Cases (ADHD Awareness)', 
-            price: '$19.75', 
+            price: '19.75', 
             imgSrc: 'product_images/impact-resistant-cases.jpg', 
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Toddler Long Sleeve Tee', 
-            price: '$20.62', 
+            price: '20.62', 
             imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', 
             description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
             category: 'Kids', 
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (1x1, 50 PCS)', 
-            price: '$74.90', 
+            price: '74.90', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (1x1, 100 PCS)', 
-            price: '$83.05', 
+            price: '83.05', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (1x1, 250 PCS)', 
-            price: '$104.22', 
+            price: '104.22', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (2x2, 50 PCS)', 
-            price: '$84.28', 
+            price: '84.28', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (2x2, 250 PCS)', 
-            price: '$138.42', 
+            price: '138.42', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Round Sticker Label Rolls (1x1, 50 PCS)', 
-            price: '$74.90', 
+            price: '74.90', 
             imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Round Sticker Label Rolls (1x1, 100 PCS)', 
-            price: '$83.05', 
+            price: '83.05', 
             imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Round Sticker Label Rolls (1x1, 250 PCS)', 
-            price: '$104.22', 
+            price: '104.22', 
             imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
