@@ -9,7 +9,6 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Comprehensive tech specifications
 - Real-time battery status
 - Software version tracking
-- Purchase verification system
 - Accessibility Resources
 - Verified medical resources
 - NIMH/NINDS integration
@@ -36,7 +35,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Stable internet connection
 
 ### 🔄 Version Information
-**Current Version:** v1.4.0
+**Current Version:** v1.5.0
 
 ### 📱 Browser Support
 - Chrome (Latest)
