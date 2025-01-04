@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const products = [
         { 
             name: 'Clear Case (Samsung & Apple)', 
-            price: '14.82', 
+            price: '$14.82', 
             imgSrc: 'product_images/clear-cases.jpg', 
             description: 'Clear phone case protects phone surface and aesthetics. Made of durable polycarbonate with TPU cushioned edges.', 
             category: 'Accessories', 
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Impact-Resistant Cases (ADHD Awareness)', 
-            price: '19.75', 
+            price: '$19.75', 
             imgSrc: 'product_images/impact-resistant-cases.jpg', 
             description: 'Dual-layer polycarbonate phone cases with full-wrap print, wireless charging support.', 
             category: 'Accessories', 
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Toddler Long Sleeve Tee', 
-            price: '20.62', 
+            price: '$20.62', 
             imgSrc: 'product_images/toddler-long-sleeve-tee.jpg', 
             description: 'Custom toddler long-sleeve tee made from 100% cotton.', 
             category: 'Kids', 
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (1x1, 50 PCS)', 
-            price: '74.90', 
+            price: '$74.90', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (1x1, 100 PCS)', 
-            price: '83.05', 
+            price: '$83.05', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (1x1, 250 PCS)', 
-            price: '104.22', 
+            price: '$104.22', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         { 
             name: 'Square Sticker Label Rolls (2x2, 50 PCS)', 
-            price: '84.28', 
+            price: '$84.28', 
             imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
             description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
             category: 'Home & Living', 
@@ -114,62 +114,24 @@ document.addEventListener('DOMContentLoaded', () => {
             category: 'Home & Living', 
             onSale: false,
             link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Square Sticker Label Rolls (2x2, 250 PCS)', 
-            price: '138.42', 
-            imgSrc: 'product_images/square-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13150202/square-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Round Sticker Label Rolls (1x1, 50 PCS)', 
-            price: '74.90', 
-            imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Round Sticker Label Rolls (1x1, 100 PCS)', 
-            price: '83.05', 
-            imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
-        },
-        { 
-            name: 'Round Sticker Label Rolls (1x1, 250 PCS)', 
-            price: '104.22', 
-            imgSrc: 'product_images/round-sticker-label-rolls.jpg', 
-            description: 'Custom sticker rolls are available in two sizes with a glossy finish and are durable against various elements. They come in rolls of 50, 100, or 250 pieces.', 
-            category: 'Home & Living', 
-            onSale: false,
-            link: 'https://rivers-merch-store.printify.me/product/13166845/round-sticker-label-rolls?category=home-and-living' 
         }
     ];
 
-    // Populate categories dropdown dynamically
-    function populateCategories() {
-        const categorySelect = document.getElementById('categorySelect');
-        const categories = Array.from(new Set(products.map(product => product.category)));
-        categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-            categorySelect.appendChild(option);
-        });
-    }
+    // Add event listener for category selection
+    const categorySelect = document.getElementById('categorySelect');
+    categorySelect.addEventListener('change', (event) => {
+        const selectedCategory = event.target.value;
+        displayProducts(selectedCategory);
+    });
 
-    // Render products dynamically
-    function renderProducts() {
-        const productGrid = document.querySelector('.products-grid');
-        productGrid.innerHTML = '';
-        products.forEach(product => {
+    // Function to display products based on selected category
+    function displayProducts(category) {
+        const productsContainer = document.querySelector('.products-grid');
+        productsContainer.innerHTML = ''; // Clear existing products
+
+        const filteredProducts = category === 'All Products' ? products : products.filter(product => product.category === category);
+
+        filteredProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
 
@@ -190,9 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const productPrice = document.createElement('p');
             productPrice.classList.add('product-price');
-            productPrice.textContent = product.onSale 
-                ? `$${product.salePrice} (Was: $${product.price})` 
-                : `$${product.price}`;
+            productPrice.textContent = product.price;
 
             const productDescription = document.createElement('p');
             productDescription.classList.add('product-description');
@@ -210,14 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             productCard.appendChild(productImageWrapper);
             productCard.appendChild(productDetails);
-
-            productGrid.appendChild(productCard);
+            productsContainer.appendChild(productCard);
         });
     }
 
-    // Initialize categories and products
-    populateCategories();
-    renderProducts();
+    // Display all products by default
+    displayProducts('All Products');
 });
 
 // JavaScript for the hamburger menu toggle
