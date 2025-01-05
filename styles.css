@@ -166,7 +166,7 @@ body {
     margin-left: 5px;
     width: 14px;  /* Reduced checkmark size */
     height: 14px;
-    background-image: url('path-to-checkmark-icon.png');
+    background-image: url('check.png');
     background-size: contain;
     background-repeat: no-repeat;
     transform: translateY(-50%);  /* Aligns the checkmark with the middle of the username */
