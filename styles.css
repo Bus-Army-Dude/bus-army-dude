@@ -129,17 +129,15 @@ body {
 .creator-card {
     display: inline-block;
     width: 200px;
-    padding: 10px;
+    padding: 15px;
     margin: 10px;
     background-color: #fff;
     border: 2px solid #ccc;
     border-radius: 10px;
-    transition: transform 0.3s ease, border-color 0.3s ease;
     text-align: center;
     cursor: pointer;
     box-sizing: border-box;
-    transition: transform 0.3s ease, border 0.3s ease;
-    height: auto !important;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .creator-card:hover {
@@ -148,8 +146,8 @@ body {
 }
 
 .profile-picture {
-    width: 50px !important;
-    height: 50px !important;
+    width: 60px !important;
+    height: 60px !important;
     border-radius: 50% !important;
     object-fit: cover !important;
     margin-bottom: 10px !important;
@@ -159,17 +157,18 @@ body {
     font-size: 18px !important;
     font-weight: bold !important;
     margin-bottom: 5px !important;
+    display: inline-block !important;
 }
 
 .verified {
-    width: 14px !important;
-    height: 14px !important;
+    width: 16px !important;
+    height: 16px !important;
     background-image: url('checkmark-icon.png') !important; /* Replace with actual checkmark image URL */
     background-size: contain !important;
     background-repeat: no-repeat !important;
-    display: inline-block !important;
     vertical-align: middle !important;
     margin-left: 5px !important;
+    display: inline-block !important;
 }
 
 .name {
