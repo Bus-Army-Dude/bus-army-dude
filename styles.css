@@ -141,8 +141,8 @@ body {
 }
 
 .creator-card .profile-picture {
-    width: 70px;
-    height: 70px;
+    width: 50px;  /* Reduced profile picture size */
+    height: 50px;  /* Reduced profile picture size */
     border-radius: 50%;  /* Ensures the profile picture is round */
     object-fit: cover;
     margin-bottom: 10px;
@@ -164,9 +164,9 @@ body {
     top: 50%;
     left: 100%;
     margin-left: 5px;
-    width: 14px;  /* Reduced checkmark size */
-    height: 14px;
-    background-image: url('check.png');
+    width: 12px;  /* Reduced checkmark size */
+    height: 12px;
+    background-image: url('path-to-checkmark-icon.png');
     background-size: contain;
     background-repeat: no-repeat;
     transform: translateY(-50%);  /* Aligns the checkmark with the middle of the username */
@@ -195,7 +195,7 @@ body {
     padding: 10px 20px;
     font-size: 14px;
     border: none;
-    border-radius: 50px;  /* Proper pill shape */
+    border-radius: 25px;  /* Fixed pill shape button */
     cursor: pointer;
     text-decoration: none;
     transition: opacity 0.3s ease;
