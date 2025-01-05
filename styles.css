@@ -847,6 +847,41 @@ body {
     margin-top: 20px;  /* Adds space between Copy Protection and Legal Protection Notices */
 }
 
+/* Add this in your CSS file (e.g., style.css) */
+body {
+  background-color: #fff;
+  color: #000;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #fff;
+}
+
+header, footer {
+  background-color: #f1f1f1;
+}
+
+header.dark-mode, footer.dark-mode {
+  background-color: #333;
+}
+
+/* Style for the Mode Toggle button */
+.mode-toggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #007BFF;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.mode-toggle:hover {
+  background-color: #0056b3;
+}
+
 /* Footer */
 footer {
     text-align: center;
