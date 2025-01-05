@@ -153,6 +153,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+document.addEventListener("DOMContentLoaded", function() {
+    const lastUpdatedElement = document.getElementById('last-updated-date');
+    
+    // Manually set the last updated date and time (use 12-hour format time)
+    const lastUpdatedDate = new Date("01/05/2025 02:30:00 PM"); // Format: MM/DD/YYYY HH:MM:SS AM/PM
+
+    // Format date as MM/DD/YYYY
+    const formattedDate = lastUpdatedDate.toLocaleDateString('en-US');
+
+    // Format time in 12-hour format (AM/PM)
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const formattedTime = lastUpdatedDate.toLocaleTimeString('en-US', options);
+
+    // Get the user's local timezone (doesn't change unless you update it)
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    // Set the content for the Last Updated section
+    lastUpdatedElement.textContent = `${formattedDate} ${formattedTime} (${userTimezone})`;
+});
+    
     // New Year countdown
     function updateNewYearCountdown() {
         const now = new Date();
