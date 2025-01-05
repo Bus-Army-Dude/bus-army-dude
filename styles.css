@@ -311,6 +311,19 @@ body {
     opacity: 0.9;
 }
 
+/* Styling for the Last Updated text */
+.last-updated {
+    font-size: 0.9em;
+    color: var(--text-color);
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.last-updated span {
+    font-weight: bold;
+    color: var(--highlight-color); /* Highlight color to make the date stand out */
+}
+
 :root {
     --light-bg: #ffffff;
     --light-text: #000000;
