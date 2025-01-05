@@ -16,6 +16,19 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Default Light Mode Styles (Won't be used) */
+body {
+  background-color: white;
+  color: black;
+  font-family: Arial, sans-serif;
+}
+
+/* Dark Mode Styles (Always applied) */
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
 /* Profile Section */
 .profile-section {
     text-align: center;
