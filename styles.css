@@ -183,12 +183,13 @@ body {
 .creator-card .visit-button {
     background-color: var(--accent);
     color: #fff;
-    padding: 10px 15px;
+    padding: 10px 20px; /* Increased horizontal padding for pill shape */
     font-size: 14px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px; /* Full rounded corners for pill shape */
     cursor: pointer;
     text-decoration: none;
+    transition: opacity 0.3s ease;
 }
 
 .creator-card .visit-button:hover {
