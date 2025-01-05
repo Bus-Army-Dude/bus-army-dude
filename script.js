@@ -153,25 +153,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-document.addEventListener("DOMContentLoaded", function() {
-    const lastUpdatedElement = document.getElementById('last-updated-date');
+// Set the manually updated last updated date and time
+let lastUpdatedDate = '01/05/2025'; // Change this date manually
+let lastUpdatedTime = '3:00 PM'; // Change this time manually
+
+// Function to update the last updated date and time
+function updateLastUpdated() {
+    const lastUpdatedElement = document.getElementById('last-updated');
     
-    // Manually set the last updated date and time (use 12-hour format time)
-    const lastUpdatedDate = new Date("01/05/2025 02:30:00 PM"); // Format: MM/DD/YYYY HH:MM:SS AM/PM
-
-    // Format date as MM/DD/YYYY
-    const formattedDate = lastUpdatedDate.toLocaleDateString('en-US');
-
-    // Format time in 12-hour format (AM/PM)
-    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
-    const formattedTime = lastUpdatedDate.toLocaleTimeString('en-US', options);
-
-    // Get the user's local timezone (doesn't change unless you update it)
+    // Get the current user's local timezone
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Get the user's current date and time in local timezone
+    const localDateTime = new Date();
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+    }).format(localDateTime);
+    const formattedTime = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+    }).format(localDateTime);
 
-    // Set the content for the Last Updated section
-    lastUpdatedElement.textContent = `${formattedDate} ${formattedTime} (${userTimezone})`;
-});
+    // Display the last updated info with user timezone
+    lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate} at ${lastUpdatedTime} (Local: ${formattedDate} at ${formattedTime} ${userTimezone})`;
+}
+
+// Call the function to update the last updated date and time when the page loads
+window.onload = updateLastUpdated;
     
     // New Year countdown
     function updateNewYearCountdown() {
