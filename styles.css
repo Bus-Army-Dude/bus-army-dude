@@ -135,6 +135,12 @@ body {
     width: 200px;
     display: inline-block;
     box-sizing: border-box;
+    border: 2px solid transparent; /* Default border */
+    transition: border 0.3s ease; /* Smooth transition */
+}
+
+.creator-card:hover {
+    border: 2px solid #00d8ff; /* Border color when hovered */
 }
 
 .creator-card img {
@@ -148,6 +154,9 @@ body {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .creator-card .username .checkmark {
