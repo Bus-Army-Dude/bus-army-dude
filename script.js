@@ -193,66 +193,36 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateNewYearCountdown, 1000);
 });
 
-// Function to toggle between light and dark mode
-function toggleTheme() {
-    const body = document.body;
-    const currentTheme = localStorage.getItem('theme') || 'light';
-
-    // Toggle theme
-    if (currentTheme === 'light') {
-        body.classList.add('dark-mode');
-        body.classList.remove('light-mode');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        body.classList.add('light-mode');
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-    }
-}
-
-// Function to change text size
-function changeTextSize(size) {
-    document.body.style.fontSize = size + 'px';
-    localStorage.setItem('text-size', size);
-}
-
-// Apply saved theme and text size on page load
-function applySavedSettings() {
-    const savedTheme = localStorage.getItem('theme');
-    const savedTextSize = localStorage.getItem('text-size');
-
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        document.body.classList.remove('light-mode');
-    } else {
-        document.body.classList.add('light-mode');
-        document.body.classList.remove('dark-mode');
-    }
-
-    if (savedTextSize) {
-        document.body.style.fontSize = savedTextSize + 'px';
-    }
-}
-
-// Apply settings when the page loads
-window.addEventListener('load', applySavedSettings);
-
-// Add this to your script.js file or in a <script> tag at the end of your HTML
+// Get the mode toggle button and footer
 const modeToggle = document.getElementById('mode-toggle');
 
-// Check if dark mode is already enabled in localStorage
-if (localStorage.getItem('mode') === 'dark') {
+// Function to apply dark mode
+function applyDarkMode() {
   document.body.classList.add('dark-mode');
+  document.querySelector('footer').classList.add('dark-mode');
+  localStorage.setItem('mode', 'dark'); // Save dark mode preference
 }
 
-// Toggle mode on button click
-modeToggle.addEventListener('click', function() {
-  document.body.classList.toggle('dark-mode');
+// Function to apply light mode
+function applyLightMode() {
+  document.body.classList.remove('dark-mode');
+  document.querySelector('footer').classList.remove('dark-mode');
+  localStorage.setItem('mode', 'light'); // Save light mode preference
+}
 
-  // Save the mode preference in localStorage
+// Check if there's a mode preference saved in localStorage
+if (localStorage.getItem('mode') === 'light') {
+  applyLightMode();
+} else {
+  // Default to dark mode if no preference or dark mode is saved
+  applyDarkMode();
+}
+
+// Toggle mode when the button is clicked
+modeToggle.addEventListener('click', function() {
   if (document.body.classList.contains('dark-mode')) {
-    localStorage.setItem('mode', 'dark');
+    applyLightMode();
   } else {
-    localStorage.setItem('mode', 'light');
+    applyDarkMode();
   }
 });
