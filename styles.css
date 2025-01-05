@@ -125,85 +125,93 @@ body {
     transform: scale(1.1);
 }
 
-/* TikTok Creator Layout */
+/* TikTok Creator Shoutouts Layout */
 .creator-card {
-    background-color: var(--card-background);
-    padding: 15px;
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #fff;
+    border: 2px solid #ccc;
     border-radius: 10px;
-    border: 2px solid var(--border-color);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
     text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.3s ease, border 0.3s ease;
+    height: auto !important;
 }
 
 .creator-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-color: #0099ff;
 }
 
-.creator-card .profile-picture {
-    width: 50px;  /* Reduced profile picture size */
-    height: 50px;  /* Reduced profile picture size */
-    border-radius: 50%;  /* Ensures the profile picture is round */
-    object-fit: cover;
-    margin-bottom: 10px;
+.profile-picture {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    margin-bottom: 10px !important;
 }
 
-.creator-card .creator-info {
-    text-align: center;
+.username {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    margin-bottom: 5px !important;
 }
 
-.creator-card .creator-info .username {
-    font-size: 18px;
-    font-weight: bold;
-    display: inline-block;
-    position: relative;
+.verified {
+    width: 14px !important;
+    height: 14px !important;
+    background-image: url('checkmark-icon.png') !important; /* Replace with actual checkmark image URL */
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-left: 5px !important;
 }
 
-.creator-card .creator-info .verified {
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    margin-left: 5px;
-    width: 12px;  /* Reduced checkmark size */
-    height: 12px;
-    background-image: url('path-to-checkmark-icon.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    transform: translateY(-50%);  /* Aligns the checkmark with the middle of the username */
+.name {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
 }
 
-.creator-card .creator-info .name {
-    font-size: 16px;
-    margin-top: 5px;
+.bio {
+    font-style: italic !important;
+    color: #666 !important;
+    margin-bottom: 10px !important;
 }
 
-.creator-card .creator-info .bio {
-    font-size: 14px;
-    margin-top: 5px;
-    font-style: italic;
+.followers {
+    font-size: 14px !important;
+    color: gray !important;
+    margin-bottom: 15px !important;
 }
 
-.creator-card .creator-info .followers {
-    font-size: 14px;
-    margin-top: 5px;
-    color: var(--text-muted);
+.visit-button {
+    padding: 8px 15px !important;
+    background-color: #0099ff !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    border-radius: 50px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    display: inline-block !important;
+    transition: background-color 0.3s ease !important;
 }
 
-.creator-card .visit-button {
-    background-color: var(--accent);
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    border-radius: 25px;  /* Fixed pill shape button */
-    cursor: pointer;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-    margin-top: 10px;
+.visit-button:hover {
+    background-color: #007acc !important;
 }
 
-.creator-card .visit-button:hover {
-    opacity: 0.8;
+.creator-info {
+    display: block;
+}
+
+/* Hover effects for the creator card */
+.creator-card:hover .visit-button {
+    background-color: #007acc !important;
 }
 
 /* Links Section */
