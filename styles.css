@@ -146,71 +146,68 @@ body {
 }
 
 .profile-picture {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 50% !important;
-    object-fit: cover !important;
-    margin-bottom: 10px !important;
+    width: 60px; /* Adjust size as necessary */
+    height: 60px; /* Adjust size as necessary */
+    border-radius: 50%; /* This makes the picture circular */
+    object-fit: cover; /* Ensures the image fits the circle */
+    margin-bottom: 10px;
 }
 
 .username {
-    font-size: 18px !important;
-    font-weight: bold !important;
-    margin-bottom: 5px !important;
-    display: inline-block !important;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
 }
 
 .verified {
-    width: 16px !important;
-    height: 16px !important;
-    background-image: url('checkmark-icon.png') !important; /* Replace with actual checkmark image URL */
-    background-size: contain !important;
-    background-repeat: no-repeat !important;
-    vertical-align: middle !important;
-    margin-left: 5px !important;
-    display: inline-block !important;
+    width: 16px; /* Adjust size of checkmark */
+    height: 16px;
+    background-image: url('checkmark-icon.png'); /* Replace with your checkmark image */
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    right: -20px; /* Adjust position next to the username */
+    display: inline-block;
 }
 
-.name {
-    font-size: 16px !important;
-    margin-bottom: 10px !important;
+.creator-name {
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
-.bio {
-    font-style: italic !important;
-    color: #666 !important;
-    margin-bottom: 10px !important;
+.creator-bio {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #555;
 }
 
-.followers {
-    font-size: 14px !important;
-    color: gray !important;
-    margin-bottom: 15px !important;
+.creator-followers {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-.visit-button {
-    padding: 8px 15px !important;
-    background-color: #0099ff !important;
-    color: #fff !important;
-    text-decoration: none !important;
-    border-radius: 50px !important;
-    font-size: 14px !important;
-    font-weight: bold !important;
-    display: inline-block !important;
-    transition: background-color 0.3s ease !important;
+.visit-profile-btn {
+    background-color: #0099ff;
+    color: white;
+    font-size: 14px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px; /* This makes the button pill-shaped */
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
 }
 
-.visit-button:hover {
-    background-color: #007acc !important;
+.visit-profile-btn:hover {
+    background-color: #0077cc;
 }
 
-.creator-info {
-    display: block;
-}
-
-/* Hover effects for the creator card */
-.creator-card:hover .visit-button {
-    background-color: #007acc !important;
+.creator-card:hover .visit-profile-btn {
+    background-color: #0077cc; /* Change color on hover */
 }
 
 /* Links Section */
