@@ -385,3 +385,19 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked + .theme-toggle::before {
     transform: translateX(30px);
 }
+
+/* Legal Action Section */
+.legal-action {
+    text-align: center;
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+    color: red; /* Change color to red to emphasize legal importance */
+}
+
+.legal-action p {
+    margin: 5px 0;
+}
