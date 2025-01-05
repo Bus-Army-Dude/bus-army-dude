@@ -3,9 +3,10 @@
     --dark-bg: #121212;
     --dark-text: #E0E0E0;
     --dark-link: #BB86FC;
+    --content-bg: #1a1a1a;
 }
 
-/* Apply dark mode styles to the body */
+/* Apply dark mode styles to the body by default */
 body {
     background-color: var(--dark-bg);
     color: var(--dark-text);
@@ -16,17 +17,19 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Default Light Mode Styles (Won't be used) */
-body {
-  background-color: white;
-  color: black;
-  font-family: Arial, sans-serif;
+/* Content sections (Apply dark background and white text) */
+.profile-section, .social-section, .links-section, .tech-section, .disabilities-section, .version-info-section, .countdown-section {
+    background-color: var(--content-bg);
+    color: var(--dark-text);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark Mode Styles (Always applied) */
-body.dark-mode {
-  background-color: #121212;
-  color: white;
+/* Links */
+a {
+    color: var(--dark-link);
 }
 
 /* Profile Section */
