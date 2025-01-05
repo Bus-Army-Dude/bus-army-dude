@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-// Manually set the date and time you want for "Last Updated" in your time zone (e.g., EST)
+// Manually set the last updated date and time in your preferred timezone (example in EST).
 const lastUpdatedDate = "01/05/2025";  // Set the date here (mm/dd/yyyy)
 const lastUpdatedTime = "3:00 PM";    // Set the time here (12-hour format)
 
@@ -164,8 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const lastUpdatedElement = document.querySelector("#lastUpdated");
 
   if (lastUpdatedElement) {
-    // Create a Date object with the manually set date and time
-    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`); // Example for EST, adjust for your time zone if needed
+    // Create a Date object with the manually set date and time, for example, GMT-0500 (EST)
+    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
 
     // Convert the time to the user's local time zone
     const options = {
