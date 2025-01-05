@@ -882,6 +882,20 @@ header.dark-mode, footer.dark-mode {
   background-color: #0056b3;
 }
 
+/* Light Mode (default) */
+footer {
+  background-color: #f1f1f1;
+  color: #000;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Dark Mode */
+footer.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
 /* Footer */
 footer {
     text-align: center;
