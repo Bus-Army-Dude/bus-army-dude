@@ -3,12 +3,16 @@
     --dark-bg: #121212;
     --dark-text: #E0E0E0;
     --dark-link: #BB86FC;
+    --dark-secondary-text: #A0A0A0;
+    --dark-border: #333333;
+    --dark-accent: #4CAF50;
+    --dark-content-bg: #2d2d2d;
 }
 
 /* Apply dark mode styles to the body */
 body {
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
+    background-color: var(--dark-bg);  /* Dark background */
+    color: var(--dark-text);           /* Light text */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
