@@ -836,6 +836,69 @@ body {
     font-size: 16px;
 }
 
+/* Legal Protection Notice */
+.legal-protection-message {
+    background-color: #d9534f; /* Red background */
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;  /* Adds space between Copy Protection and Legal Protection Notices */
+}
+
+/* Force dark mode on all devices */
+body {
+    background-color: #121212;  /* Dark background */
+    color: #E0E0E0;             /* Light text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Example styles for links and buttons */
+a {
+    color: #BB86FC; /* Dark mode link color */
+}
+
+button {
+    background-color: #121212;
+    color: #E0E0E0;
+    border: 2px solid #BB86FC;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #BB86FC;
+    color: #121212;
+}
+
+/* If you want to override system preferences and force dark mode */
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: #121212 !important; /* Force dark background */
+        color: #E0E0E0 !important;            /* Force light text */
+    }
+
+    a {
+        color: #BB86FC !important;            /* Force dark mode link color */
+    }
+
+    button {
+        background-color: #121212 !important;
+        color: #E0E0E0 !important;
+        border: 2px solid #BB86FC !important;
+    }
+
+    button:hover {
+        background-color: #BB86FC !important;
+        color: #121212 !important;
+    }
+}
+
 /* Footer */
 footer {
     text-align: center;
