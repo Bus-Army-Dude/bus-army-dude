@@ -311,17 +311,12 @@ body {
     opacity: 0.9;
 }
 
-/* Styling for the Last Updated text */
-.last-updated {
-    font-size: 0.9em;
-    color: var(--text-color);
-    margin-top: 5px;
-    font-style: italic;
-}
-
-.last-updated span {
-    font-weight: bold;
-    color: var(--highlight-color); /* Highlight color to make the date stand out */
+/* Ensure this matches your design and adds padding or styling as needed */
+#lastUpdated {
+  font-size: 14px;
+  color: #888; /* Light gray color */
+  margin-top: 10px;
+  font-style: italic;
 }
 
 :root {
