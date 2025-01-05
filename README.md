@@ -20,6 +20,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Image security measures
 - Content control system
 - Selection management
+- Last Updated Feature for TikTok Followers count
 ### 💻 Supported Operating Systems
 - iOS
 - iPadOS
@@ -35,7 +36,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Stable internet connection
 
 ### 🔄 Version Information
-**Current Version:** v1.5.0
+**Current Version:** v1.5.1
 
 ### 📱 Browser Support
 - Chrome (Latest)
