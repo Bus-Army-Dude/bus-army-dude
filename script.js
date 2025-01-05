@@ -153,36 +153,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-// Set the manually updated last updated date and time
-let lastUpdatedDate = '01/05/2025'; // Change this date manually
-let lastUpdatedTime = '3:00 PM'; // Change this time manually
+// Manually set the date and time you want for "Last Updated" in your time zone (e.g., EST)
+const lastUpdatedDate = "01/05/2025";  // Set the date here (mm/dd/yyyy)
+const lastUpdatedTime = "3:00 PM";    // Set the time here (12-hour format)
 
-// Function to update the last updated date and time
-function updateLastUpdated() {
-    const lastUpdatedElement = document.getElementById('last-updated');
-    
-    // Get the current user's local timezone
-    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    
-    // Get the user's current date and time in local timezone
-    const localDateTime = new Date();
-    const formattedDate = new Intl.DateTimeFormat('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric',
-    }).format(localDateTime);
-    const formattedTime = new Intl.DateTimeFormat('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-    }).format(localDateTime);
+// Combine the date and time into a single string
+const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
 
-    // Display the last updated info with user timezone
-    lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate} at ${lastUpdatedTime} (Local: ${formattedDate} at ${formattedTime} ${userTimezone})`;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const lastUpdatedElement = document.querySelector("#lastUpdated");
 
-// Call the function to update the last updated date and time when the page loads
-window.onload = updateLastUpdated;
+  if (lastUpdatedElement) {
+    // Create a Date object with the manually set date and time
+    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`); // Example for EST, adjust for your time zone if needed
+
+    // Convert the time to the user's local time zone
+    const options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+
+    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
+
+    // Display the converted "Last Updated" timestamp in the user's local time zone
+    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
+  }
+});
     
     // New Year countdown
     function updateNewYearCountdown() {
