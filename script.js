@@ -152,39 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     };
-
-// Manually set the last updated date and time in your preferred timezone (example in EST).
-const lastUpdatedDate = "01/05/2025";  // Set the date here (mm/dd/yyyy)
-const lastUpdatedTime = "3:00 PM";    // Set the time here (12-hour format)
-
-// Combine the date and time into a single string
-const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const lastUpdatedElement = document.querySelector("#lastUpdated");
-
-  if (lastUpdatedElement) {
-    // Create a Date object with the manually set date and time, for example, GMT-0500 (EST)
-    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
-
-    // Convert the time to the user's local time zone
-    const options = {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true
-    };
-
-    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
-
-    // Display the converted "Last Updated" timestamp in the user's local time zone
-    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
-  }
-});
     
     // New Year countdown
     function updateNewYearCountdown() {
@@ -226,46 +193,36 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateNewYearCountdown, 1000);
 });
 
-// Function to toggle between light and dark mode
-function toggleTheme() {
-    const body = document.body;
-    const currentTheme = localStorage.getItem('theme') || 'light';
+// Manually set the last updated date and time (example in EST timezone)
+const lastUpdatedDate = "01/05/2025";  // Set the date here (mm/dd/yyyy)
+const lastUpdatedTime = "3:00 PM";    // Set the time here (12-hour format)
 
-    // Toggle theme
-    if (currentTheme === 'light') {
-        body.classList.add('dark-mode');
-        body.classList.remove('light-mode');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        body.classList.add('light-mode');
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-    }
-}
+// Combine the date and time into a single string for parsing
+const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
 
-// Function to change text size
-function changeTextSize(size) {
-    document.body.style.fontSize = size + 'px';
-    localStorage.setItem('text-size', size);
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const lastUpdatedElement = document.querySelector("#lastUpdated");
 
-// Apply saved theme and text size on page load
-function applySavedSettings() {
-    const savedTheme = localStorage.getItem('theme');
-    const savedTextSize = localStorage.getItem('text-size');
+  if (lastUpdatedElement) {
+    // Create a Date object with the manually set date and time, example for EST (GMT-0500)
+    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
 
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        document.body.classList.remove('light-mode');
-    } else {
-        document.body.classList.add('light-mode');
-        document.body.classList.remove('dark-mode');
-    }
+    // Convert the manually set date and time to the user's local time zone
+    const options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
 
-    if (savedTextSize) {
-        document.body.style.fontSize = savedTextSize + 'px';
-    }
-}
+    // Format and display the converted time
+    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
 
-// Apply settings when the page loads
-window.addEventListener('load', applySavedSettings);
+    // Set the content of the "Last Updated" text
+    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
+  }
+});
