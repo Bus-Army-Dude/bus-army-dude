@@ -1,3 +1,34 @@
+/* Define dark mode variables */
+:root {
+    --dark-bg: #121212;
+    --dark-text: #E0E0E0;
+    --dark-link: #BB86FC;
+}
+
+/* Apply dark mode styles to the body */
+body {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Default Light Mode Styles (Won't be used) */
+body {
+  background-color: white;
+  color: black;
+  font-family: Arial, sans-serif;
+}
+
+/* Dark Mode Styles (Always applied) */
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
 /* Profile Section */
 .profile-section {
     text-align: center;
@@ -307,6 +338,25 @@ body {
     --dark-border: #333333;
     --dark-accent: #4CAF50;
     --dark-content-bg: #2d2d2d;
+}
+
+/* Theme Classes */
+.light-mode {
+    --bg-color: var(--light-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary-text);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --content-bg: var(--light-content-bg);
+}
+
+.dark-mode {
+    --bg-color: var(--dark-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --content-bg: var(--dark-content-bg);
 }
 
 /* Base Styles */
@@ -682,6 +732,17 @@ img {
 
 body {
     font-size: 16px; /* Default text size */
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+  .navbar ul {
+    flex-direction: column;
+  }
+
+  .navbar ul li {
+    margin: 10px 0;
+  }
 }
 
 /* Copy Protection Notice */
