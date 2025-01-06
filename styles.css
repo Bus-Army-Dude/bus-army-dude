@@ -322,6 +322,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
     min-height: 320px; /* Ensure cards have the same minimum height */
+    padding-bottom: 30px; /* Add padding at the bottom */
 }
 
 .instagram-creator-card:hover {
