@@ -196,8 +196,10 @@ const instagramShoutouts = {
 
         // Add more Instagram creators as needed
     ],
+    lastUpdatedTime: '2025-01-06T00:43:28', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
+        this.setLastUpdatedTime(); // Set the manually set last updated time
     },
     createShoutoutCards() {
         const container = document.querySelector('.instagram-creator-grid');
@@ -228,38 +230,19 @@ const instagramShoutouts = {
 };
 
 instagramShoutouts.init();
-
-document.addEventListener("DOMContentLoaded", () => {
-    const lastUpdatedInstagramElement = document.querySelector("#lastUpdatedInstagram");
-
-    if (lastUpdatedElement) {
-        // Manually set the date and time (same format as in the HTML)
-        const lastUpdatedInstagramDate = "01/05/2025";  // Update this manually when needed
-        const lastUpdatedInstagramTime = "6:54 PM";    // Update this manually when needed
-        const lastUpdatedInstagramString = `${lastUpdatedDate} ${lastUpdatedTime} GMT-0500`; // Assuming EST, you can update GMT offset based on your needs
-
-        // Create a Date object with the manually set date and time
-        const lastUpdatedInstagramDateObj = new Date(lastUpdatedString);
-
-        // Convert the manually set date and time to the user's local time zone
-        const options = {
-            weekday: 'short',
+setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('last-updated-time-instagram'); // Make sure this matches your HTML ID
+        const utcTime = this.lastUpdatedTime;
+        const localTime = new Date(utcTime).toLocaleString([], {
             year: 'numeric',
-            month: 'numeric',
+            month: 'short',
             day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        };
-
-        // Format and display the converted time
-        const localLastUpdatedInstagram = lastUpdatedInstagramDateObj.toLocaleString('en-US', options);
-
-        // Set the content of the "Last Updated" text
-        lastUpdatedInstagramElement.textContent = `Last Updated: ${localLastUpdated}`;
-    }
-});
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZoneName: 'short'
+        });
+        lastUpdatedElement.textContent = `Last Updated: ${localTime}`;
 
 const youtubeShoutouts = {
     accounts: [
