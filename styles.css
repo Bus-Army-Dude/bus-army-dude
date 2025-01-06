@@ -414,6 +414,14 @@ body {
     padding: 20px;
 }
 
+/* YouTube Creator Grid Layout */
+.youtube-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
 /* YouTube Creator Card Styles */
 .youtube-creator-card {
     background-color: var(--content-bg);
