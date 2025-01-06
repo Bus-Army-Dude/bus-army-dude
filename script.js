@@ -261,6 +261,66 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+const youtubeShoutouts = {
+    accounts: [
+        { username: 'channelName1', isVerified: true, subscribers: '2.1M', nickname: 'John Youtuber', bio: 'Tech Reviewer and Vlogger', profilePic: 'youtube_photos/channelName1.jpg' },
+        { username: 'channelName2', isVerified: false, subscribers: '830K', nickname: 'Jane Vlogger', bio: 'Travel and Lifestyle Blogger', profilePic: 'youtube_photos/channelName2.jpg' },
+        // Add more YouTube creators as needed
+    ],
+    lastUpdatedTime: '2025-01-05T12:00:00', // Manually set the last updated date and time
+    init() {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+    },
+    createShoutoutCards() {
+        const container = document.querySelector('.youtube-creator-grid');
+        if (!container) return;
+
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'youtube-creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="youtube-creator-info">
+                    <div class="youtube-creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="youtube-verified-badge">' : ''}
+                    </div>
+                    <p class="youtube-creator-username">@${account.username}</p>
+                    <p class="youtube-creator-bio">${account.bio || ''}</p>
+                    <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
+                    <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
+                        Visit Channel
+                    </a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    },
+    setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('lastUpdatedYouTube');
+        if (!lastUpdatedElement) return;
+
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+            timeZone: userTimeZone,
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+    }
+};
+
+youtubeShoutouts.init();
+    
     // New Year countdown
     function updateNewYearCountdown() {
         const now = new Date();
