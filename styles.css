@@ -311,7 +311,7 @@ body {
     opacity: 0.9;
 }
 
-/* Creator Card Styles for Instagram Shoutouts */
+/* Instagram Creator Card Styles */
 .instagram-creator-card {
     background-color: var(--content-bg);
     border-radius: 10px;
@@ -321,6 +321,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
+    min-height: 320px; /* Ensure cards have the same minimum height */
 }
 
 .instagram-creator-card:hover {
@@ -338,6 +339,9 @@ body {
 
 .instagram-creator-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute space evenly */
 }
 
 .instagram-creator-header {
@@ -375,6 +379,7 @@ body {
     font-size: 0.9em;
     line-height: 1.4;
     word-break: break-word;
+    flex-grow: 1; /* Fill available space */
 }
 
 .instagram-follower-count {
@@ -397,21 +402,6 @@ body {
 
 .instagram-visit-profile:hover {
     opacity: 0.9;
-}
-
-/* Last Updated Section Styling */
-#lastUpdatedInstagram {
-    font-size: 0.9em;
-    color: var(--secondary-text);
-    margin-bottom: 20px;
-}
-
-/* Grid Layout for Instagram Shoutouts */
-.instagram-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 20px;
-    padding: 20px;
 }
 
 /* YouTube Creator Grid Layout */
