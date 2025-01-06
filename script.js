@@ -194,8 +194,10 @@ const instagramShoutouts = {
         { username: 'username2', isVerified: false, followers: '2.3M', nickname: 'Jane Doe', bio: 'Fashion Enthusiast', profilePic: 'instagram_photos/username2.jpg' },
         // Add more Instagram creators as needed
     ],
+    lastUpdatedTime: '2025-01-05T12:00:00', // Manually set the date and time here
     init() {
         this.createShoutoutCards();
+        this.setLastUpdatedTime();
     },
     createShoutoutCards() {
         const container = document.querySelector('.instagram-creator-grid');
@@ -222,6 +224,25 @@ const instagramShoutouts = {
             `;
             container.appendChild(card);
         });
+
+          setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('lastUpdatedInstagram');
+        if (!lastUpdatedElement) return;
+
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+            timeZone: userTimeZone,
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
     }
 };
 
