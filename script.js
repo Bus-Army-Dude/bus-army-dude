@@ -169,7 +169,7 @@ const instagramShoutouts = {
         { username: 'mrbeast', isVerified: true, followers: '64.4M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-01-06T14:55:02', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-06T15:15:00', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
