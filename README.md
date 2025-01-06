@@ -36,7 +36,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Stable internet connection
 
 ### 🔄 Version Information
-**Current Version:** v1.5.1
+**Current Version:** v1.6.0
 
 ### 📱 Browser Support
 - Chrome (Latest)
