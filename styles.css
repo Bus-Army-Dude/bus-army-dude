@@ -311,14 +311,6 @@ body {
     opacity: 0.9;
 }
 
-/* Creator Grid Layout (Instagram Shoutouts) */
-.creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px; /* This creates the space between the creator cards */
-    padding: 20px 0;
-}
-
 /* Instagram Creator Card Styles */
 .instagram-creator-card {
     background-color: var(--content-bg);
