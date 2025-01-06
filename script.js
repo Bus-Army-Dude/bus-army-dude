@@ -269,7 +269,7 @@ const youtubeShoutouts = {
         { username: 'BeastPhilanthrophy', isVerified: true, subscribers: '27.1M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-01-06T00:43:28', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-06T01:39:46', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
