@@ -187,53 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-const instagramShoutouts = {
-    accounts: [
-        { username: 'busarmydude', isVerified: false, followers: '3', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'instagram_photos/busarmydude.jpg' },
-        { username: 'riverkritzar', isVerified: false, followers: '82', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'instagram_photos/riverkritzar.jpg' },
-        { username: 'rose_the_fox24', isVerified: false, followers: '81', nickname: 'Rose Haydu', bio: 'I’m 19 Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
-        { username: '_jano_142_', isVerified: false, followers: '47', nickname: 'Nathan Haydu', bio: "Cars are love, cars are life., Taken by @rose_the_fox24 ❤️(3/1/24)❤️, #bncr33gtr:Best Skyline/🔰Dream car🚗, #c7zr1:Last TRUE Vette/🇺🇸Dream car🏎", profilePic: 'instagram_photos/jano142.jpg' },
-        // Add more Instagram creators as needed
-    ],
-    init() {
-        this.createShoutoutCards();
-    },
-    createShoutoutCards() {
-        const container = document.querySelector('.instagram-creator-grid');
-        if (!container) return;
-
-        container.innerHTML = '';
-        this.accounts.forEach(account => {
-            const card = document.createElement('div');
-            card.className = 'instagram-creator-card';
-            card.innerHTML = `
-                <img src="${account.profilePic}" alt="@${account.username}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="instagram-creator-info">
-                    <div class="instagram-creator-header">
-                        <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="instagram-verified-badge">' : ''}
-                    </div>
-                    <p class="instagram-creator-username">@${account.username}</p>
-                    <p class="instagram-creator-bio">${account.bio || ''}</p>
-                    <p class="instagram-follower-count">${account.followers} Followers</p>
-                    <a href="https://instagram.com/${account.username}" target="_blank" class="instagram-visit-profile">
-                        Visit Profile
-                    </a>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-};
-
-instagramShoutouts.init();
-
 document.addEventListener("DOMContentLoaded", function() {
     // Manually set the last updated time (in UTC or specific timezone)
-    const lastUpdatedTime = "2025-01-06T15:30:00Z"; // Example: UTC time (change to your time)
+    const instagramLastUpdatedTime = "2025-01-06T15:30:00Z"; // Example: UTC time (change to your time)
 
     // Create a new Date object from the manually set UTC time
-    const date = new Date(lastUpdatedTime);
+    const date = new Date(instagramLastUpdatedTime);
 
     // Format the date to match the user's local timezone
     const options = {
@@ -250,10 +209,44 @@ document.addEventListener("DOMContentLoaded", function() {
     const formatter = new Intl.DateTimeFormat([], options);
 
     // Get the element to display the timestamp
-    const lastUpdatedElement = document.getElementById('last-updated-timestamp');
+    const instagramLastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
 
     // Set the formatted timestamp to match the user's timezone
-    lastUpdatedElement.textContent = formatter.format(date);
+    instagramLastUpdatedElement.textContent = formatter.format(date);
+
+    // Instagram Creator Shoutouts Data (Example Data)
+    const creators = [
+        {
+            username: "rose_the_fox24",
+            profileImage: "instagram_photoes/rosethefox24.jpg",
+            bio: "I'm 19, Drp/rp open, I'm taken by the love of my life @_jano_142_ 💜3/1/24💜",
+            followers: "82",
+            instagramUrl: "https://instagram.com/rose_the_fox24"
+        },
+        {
+            username: "_jano_142_",
+            profileImage: "instagram_photoes/jano142.jpg",
+            bio: "Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️,#bncr33gtr:Best Skyline/🔰Dream car🚗, #c7zr1:Last TRUE Vette/🇺🇸Dream car🏎",
+            followers: "48",
+            instagramUrl: "https://instagram.com/_jano_142_"
+        }
+    ];
+
+    // Dynamically generate Instagram creator shoutouts
+    const shoutoutGrid = document.querySelector('.instagram-creator-grid');
+    creators.forEach(creator => {
+        const creatorCard = document.createElement('div');
+        creatorCard.classList.add('creator-card');
+        creatorCard.innerHTML = `
+            <img src="${creator.profileImage}" alt="${creator.username}" class="profile-image">
+            <h3>${creator.username}</h3>
+            <p>${creator.bio}</p>
+            <p>Followers: ${creator.followers}</p>
+            <a href="${creator.instagramUrl}" target="_blank" class="instagram-link">View Profile</a>
+        `;
+        shoutoutGrid.appendChild(creatorCard);
+    });
+});
 
 const youtubeShoutouts = {
     accounts: [
