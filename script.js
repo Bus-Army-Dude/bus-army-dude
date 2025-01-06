@@ -228,31 +228,32 @@ const instagramShoutouts = {
 
 instagramShoutouts.init();
 
-// Manually set the last updated time (in UTC or specific timezone)
-const lastUpdatedTime = "2025-01-06T15:30:00Z"; // Example: UTC time (change to your time)
+document.addEventListener("DOMContentLoaded", function() {
+    // Manually set the last updated time (in UTC or specific timezone)
+    const lastUpdatedTime = "2025-01-06T15:30:00Z"; // Example: UTC time (change to your time)
 
-// Create a new Date object from the manually set UTC time
-const date = new Date(lastUpdatedTime);
+    // Create a new Date object from the manually set UTC time
+    const date = new Date(lastUpdatedTime);
 
-// Format the date to match the user's local timezone
-const options = {
-    weekday: 'long', // e.g., "Monday"
-    year: 'numeric', // e.g., "2025"
-    month: 'long', // e.g., "January"
-    day: 'numeric', // e.g., "6"
-    hour: 'numeric', // e.g., "3"
-    minute: 'numeric', // e.g., "30"
-    second: 'numeric', // e.g., "00"
-    hour12: true, // 12-hour format (AM/PM)
-};
+    // Format the date to match the user's local timezone
+    const options = {
+        weekday: 'long', // e.g., "Monday"
+        year: 'numeric', // e.g., "2025"
+        month: 'long', // e.g., "January"
+        day: 'numeric', // e.g., "6"
+        hour: 'numeric', // e.g., "3"
+        minute: 'numeric', // e.g., "30"
+        second: 'numeric', // e.g., "00"
+        hour12: true, // 12-hour format (AM/PM)
+    };
 
-const formatter = new Intl.DateTimeFormat([], options);
+    const formatter = new Intl.DateTimeFormat([], options);
 
-// Get the element to display the timestamp
-const lastUpdatedElement = document.getElementById('last-updated-timestamp');
+    // Get the element to display the timestamp
+    const lastUpdatedElement = document.getElementById('last-updated-timestamp');
 
-// Set the formatted timestamp to match the user's timezone
-lastUpdatedElement.textContent = formatter.format(date);
+    // Set the formatted timestamp to match the user's timezone
+    lastUpdatedElement.textContent = formatter.format(date);
 
 const youtubeShoutouts = {
     accounts: [
