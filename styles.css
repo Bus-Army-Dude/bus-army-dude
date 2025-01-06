@@ -311,57 +311,100 @@ body {
     opacity: 0.9;
 }
 
-.creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.shoutout {
-    border: 1px solid #ccc;
+/* Creator Card Styles for Instagram Shoutouts */
+.instagram-creator-card {
+    background-color: var(--content-bg);
     border-radius: 10px;
-    overflow: hidden;
-    text-align: center;
-    padding: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
-.profile-pic {
-    width: 100px;
-    height: 100px;
+.instagram-creator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.instagram-creator-pic {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
 }
 
-.username {
-    font-weight: bold;
-    margin-top: 10px;
+.instagram-creator-info {
+    flex: 1;
 }
 
-.verified-check {
+.instagram-creator-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.instagram-creator-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--text-color);
+    word-break: break-word;
+    line-height: 1.3;
+    max-width: 100%;
+}
+
+.instagram-verified-badge {
     width: 16px;
     height: 16px;
-    margin-left: 5px;
+    flex-shrink: 0;
 }
 
-.bio {
-    font-style: italic;
-    margin-top: 10px;
+.instagram-creator-username {
+    color: var(--secondary-text);
+    margin: 5px 0;
+    word-break: break-word;
+    font-size: 0.9em;
 }
 
-.followers {
-    margin-top: 10px;
+.instagram-creator-bio {
+    color: var(--secondary-text);
+    margin: 10px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+    word-break: break-word;
 }
 
-.visit-profile-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #008CBA;
+.instagram-follower-count {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.instagram-visit-profile {
+    display: inline-block;
+    background-color: var(--accent-color);
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-top: 10px;
+    transition: opacity 0.3s ease;
+    text-align: center;
 }
 
-.visit-profile-button:hover {
-    background-color: #005f73;
+.instagram-visit-profile:hover {
+    opacity: 0.9;
+}
+
+/* Grid Layout for Instagram Shoutouts */
+.instagram-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    padding: 20px;
 }
 
 :root {
