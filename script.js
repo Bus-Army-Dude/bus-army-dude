@@ -289,7 +289,7 @@ const youtubeShoutouts = {
                         <h3>${account.nickname}</h3>
                         ${account.isVerified ? '<img src="check.png" alt="Verified" class="youtube-verified-badge">' : ''}
                     </div>
-                    <p class="youtube-creator-username">@${account.username}</p>
+                    <p class="youtube-creator-username">${account.username}</p>
                     <p class="youtube-creator-bio">${account.bio || ''}</p>
                     <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
                     <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
