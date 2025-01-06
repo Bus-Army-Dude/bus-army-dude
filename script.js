@@ -227,16 +227,16 @@ const instagramShoutouts = {
 instagramShoutouts.init();
 
 document.addEventListener("DOMContentLoaded", () => {
-    const lastUpdatedElement = document.querySelector("#lastUpdatedInstagram");
+    const lastUpdatedInstagramElement = document.querySelector("#lastUpdatedInstagram");
 
     if (lastUpdatedElement) {
         // Manually set the date and time (same format as in the HTML)
-        const lastUpdatedDate = "01/05/2025";  // Update this manually when needed
-        const lastUpdatedTime = "6:54 PM";    // Update this manually when needed
-        const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime} GMT-0500`; // Assuming EST, you can update GMT offset based on your needs
+        const lastUpdatedInstagramDate = "01/05/2025";  // Update this manually when needed
+        const lastUpdatedInstagramTime = "6:54 PM";    // Update this manually when needed
+        const lastUpdatedInstagramString = `${lastUpdatedDate} ${lastUpdatedTime} GMT-0500`; // Assuming EST, you can update GMT offset based on your needs
 
         // Create a Date object with the manually set date and time
-        const lastUpdatedDateObj = new Date(lastUpdatedString);
+        const lastUpdatedInstagramDateObj = new Date(lastUpdatedString);
 
         // Convert the manually set date and time to the user's local time zone
         const options = {
@@ -251,10 +251,10 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         // Format and display the converted time
-        const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
+        const localLastUpdatedInstagram = lastUpdatedInstagramDateObj.toLocaleString('en-US', options);
 
         // Set the content of the "Last Updated" text
-        lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
+        lastUpdatedInstagramElement.textContent = `Last Updated: ${localLastUpdated}`;
     }
 });
 
