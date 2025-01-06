@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (lastUpdatedElement) {
         // Manually set the date and time (same format as in the HTML)
         const lastUpdatedInstagramDate = "01/05/2025";  // Update this manually when needed
-        const lastUpdatedInstagramTime = "6:54 PM";    // Update this manually when needed
+        const lastUpdatedInstagramTime = "09:49:00";    // Update this manually when needed
         const lastUpdatedInstagramString = `${lastUpdatedDate} ${lastUpdatedTime} GMT-0500`; // Assuming EST, you can update GMT offset based on your needs
 
         // Create a Date object with the manually set date and time
