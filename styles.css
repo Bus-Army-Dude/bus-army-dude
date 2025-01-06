@@ -311,6 +311,14 @@ body {
     opacity: 0.9;
 }
 
+/* Creator Grid Layout (Instagram Shoutouts) */
+.creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px; /* This creates the space between the creator cards */
+    padding: 20px 0;
+}
+
 /* Instagram Creator Card Styles */
 .instagram-creator-card {
     background-color: var(--content-bg);
@@ -321,8 +329,8 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
-    min-height: 320px; /* Ensure cards have the same minimum height */
-    padding-bottom: 30px; /* Add padding at the bottom */
+    min-height: 320px; /* Ensure consistent minimum height */
+    padding-bottom: 30px; /* Consistent bottom padding */
 }
 
 .instagram-creator-card:hover {
@@ -330,7 +338,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.instagram-creator-pic {
+.creator-pic {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -338,21 +346,18 @@ body {
     margin-bottom: 15px;
 }
 
-.instagram-creator-info {
+.creator-info {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Distribute space evenly */
 }
 
-.instagram-creator-header {
+.creator-header {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
 }
 
-.instagram-creator-header h3 {
+.creator-header h3 {
     margin: 0;
     font-size: 1.1em;
     color: var(--text-color);
@@ -361,35 +366,34 @@ body {
     max-width: 100%;
 }
 
-.instagram-verified-badge {
+.verified-badge {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
 }
 
-.instagram-creator-username {
+.creator-username {
     color: var(--secondary-text);
     margin: 5px 0;
     word-break: break-word;
     font-size: 0.9em;
 }
 
-.instagram-creator-bio {
+.creator-bio {
     color: var(--secondary-text);
     margin: 10px 0;
     font-size: 0.9em;
     line-height: 1.4;
     word-break: break-word;
-    flex-grow: 1; /* Fill available space */
 }
 
-.instagram-follower-count {
+.follower-count {
     color: var(--accent-color);
     font-weight: bold;
     margin: 10px 0;
 }
 
-.instagram-visit-profile {
+.visit-profile {
     display: inline-block;
     background-color: var(--accent-color);
     color: white;
@@ -401,7 +405,7 @@ body {
     text-align: center;
 }
 
-.instagram-visit-profile:hover {
+.visit-profile:hover {
     opacity: 0.9;
 }
 
