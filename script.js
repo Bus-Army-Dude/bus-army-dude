@@ -189,8 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const instagramShoutouts = {
     accounts: [
-        { username: 'username1', isVerified: true, followers: '5M', nickname: 'John Doe', bio: 'Travel Blogger, Photographer', profilePic: 'instagram_photos/username1.jpg' },
-        { username: 'username2', isVerified: false, followers: '2.3M', nickname: 'Jane Doe', bio: 'Fashion Enthusiast', profilePic: 'instagram_photos/username2.jpg' },
+        { username: 'busarmydude', isVerified: true, followers: '1', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'instagram_photos/busarmydude.jpg' },
         // Add more Instagram creators as needed
     ],
     init() {
