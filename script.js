@@ -187,81 +187,51 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Instagram shoutouts data (dynamically generated)
-const instagramShoutouts = [
-    {
-        profilePic: 'instagram_photos/profile1.jpg',
-        username: 'username1',
-        verified: true,
-        bio: 'This is the bio for username1.',
-        followers: '10K',
-        profileLink: 'https://instagram.com/username1'
+// Instagram Shoutouts
+const instagramShoutouts = {
+    accounts: [
+        { username: 'teamtrump', isVerified: true, followers: '8.3M', nickname: 'Team Trump', bio: 'The official Instagram page for the Trump Campaign', profilePic: 'instagram_photos/teamtrump.jpeg' },
+        { username: 'carterpcs', isVerified: true, followers: '5.6M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'instagram_photos/carterpcs.jpeg' },
+        { username: 'applesauceandadhd', isVerified: true, followers: '3.6M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },
+        { username: 'houseofhughes_', isVerified: false, followers: '303.5K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'instagram_photos/houseofhughes.jpeg' },
+        { username: 'lust_ryze', isVerified: false, followers: '11.4K', nickname: 'Ryze', bio: 'Google pixel, Samsung, Apple Owner, Other social links below', profilePic: 'instagram_photos/lust_ryze.jpeg' },
+        { username: 'lust__ryze', isVerified: false, followers: '1,038', nickname: 'Ryze', bio: 'Google pixel, Samsung, Apple Owner, Spam likes=Blocked', profilePic: 'instagram_photos/lust_ryze.jpeg' },
+        { username: 'busarmydude', isVerified: false, followers: '1,234', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'instagram_photos/busarmydude.jpg' },
+        // Add more Instagram shoutouts here...
+    ],
+    init() {
+        this.createShoutoutCards();
     },
-    {
-        profilePic: 'instagram_photos/profile2.jpg',
-        username: 'username2',
-        verified: false,
-        bio: 'This is the bio for username2.',
-        followers: '20K',
-        profileLink: 'https://instagram.com/username2'
-    },
-    {
-        profilePic: 'instagram_photos/profile3.jpg',
-        username: 'username3',
-        verified: true,
-        bio: 'This is the bio for username3.',
-        followers: '15K',
-        profileLink: 'https://instagram.com/username3'
-    },
-    // Add more Instagram shoutouts as needed
-];
+    createShoutoutCards() {
+        const container = document.querySelector('.creator-grid');
+        if (!container) return;
 
-const instagramContainer = document.querySelector('.creator-grid');
-
-// Dynamically create Instagram shoutouts
-instagramShoutouts.forEach(shoutout => {
-    const shoutoutElement = document.createElement('div');
-    shoutoutElement.classList.add('shoutout');
-    
-    const profilePic = document.createElement('img');
-    profilePic.src = shoutout.profilePic;
-    profilePic.alt = 'Profile Image';
-    profilePic.classList.add('profile-pic');
-    
-    const usernameDiv = document.createElement('div');
-    usernameDiv.classList.add('username');
-    usernameDiv.textContent = shoutout.username;
-
-    if (shoutout.verified) {
-        const checkMark = document.createElement('img');
-        checkMark.src = 'check.png';  // Use the check.png image for verification
-        checkMark.alt = 'Verified';
-        checkMark.classList.add('verified-check');
-        usernameDiv.appendChild(checkMark);
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='instagram_photos/default-profile.jpg'">
+                <div class="creator-info">
+                    <div class="creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                    </div>
+                    <p class="creator-username">@${account.username}</p>
+                    <p class="creator-bio">${account.bio || ''}</p>
+                    <p class="follower-count">${account.followers} Followers</p>
+                    <a href="https://instagram.com/${account.username}" target="_blank" class="visit-profile">
+                        Visit Profile
+                    </a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
     }
-    
-    const bioDiv = document.createElement('div');
-    bioDiv.classList.add('bio');
-    bioDiv.textContent = shoutout.bio;
+};
 
-    const followersDiv = document.createElement('div');
-    followersDiv.classList.add('followers');
-    followersDiv.textContent = `Followers: ${shoutout.followers}`;
-    
-    const visitProfileButton = document.createElement('a');
-    visitProfileButton.href = shoutout.profileLink;
-    visitProfileButton.classList.add('visit-profile-button');
-    visitProfileButton.textContent = 'Visit Profile';
-    visitProfileButton.target = '_blank';
-
-    shoutoutElement.appendChild(profilePic);
-    shoutoutElement.appendChild(usernameDiv);
-    shoutoutElement.appendChild(bioDiv);
-    shoutoutElement.appendChild(followersDiv);
-    shoutoutElement.appendChild(visitProfileButton);
-
-    instagramContainer.appendChild(shoutoutElement);
-});
+// Initialize the Instagram Shoutouts
+instagramShoutouts.init();
 
 // Update the 'Last Updated' time dynamically for Instagram section
 const updateInstagramTime = () => {
