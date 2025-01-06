@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const youtubeShoutouts = {
     accounts: [
-        { username: 'MrBeast', isVerified: true, subscribers: '341M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photos/mrbeast.jpg' },
+        { username: 'MrBeast', isVerified: true, subscribers: '341M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
         // Add more YouTube creators as needed
     ],
     lastUpdatedTime: '2025-01-06T00:43:28', // Manually set the last updated date and time
