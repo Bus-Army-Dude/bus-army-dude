@@ -266,7 +266,7 @@ const youtubeShoutouts = {
         { username: 'MrBeast', isVerified: true, subscribers: '341M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photos/mrbeast.jpg' },
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-01-06T12:38 AM', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-06T12:38:00', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
