@@ -228,37 +228,31 @@ const instagramShoutouts = {
 
 instagramShoutouts.init();
 
-document.addEventListener("DOMContentLoaded", () => {
-    const lastUpdatedInstagramElement = document.querySelector("#lastUpdatedInstagram");
+// Manually set the last updated time (in UTC or specific timezone)
+const lastUpdatedTime = "2025-01-06T15:30:00Z"; // Example: UTC time (change to your time)
 
-    if (lastUpdatedElement) {
-        // Manually set the date and time (same format as in the HTML)
-        const lastUpdatedInstagramDate = "01/06/2025";  // Update this manually when needed
-        const lastUpdatedInstagramTime = "09:49:00";    // Update this manually when needed
-        const lastUpdatedInstagramString = `${lastUpdatedDate} ${lastUpdatedTime} GMT-0500`; // Assuming EST, you can update GMT offset based on your needs
+// Create a new Date object from the manually set UTC time
+const date = new Date(lastUpdatedTime);
 
-        // Create a Date object with the manually set date and time
-        const lastUpdatedInstagramDateObj = new Date(lastUpdatedString);
+// Format the date to match the user's local timezone
+const options = {
+    weekday: 'long', // e.g., "Monday"
+    year: 'numeric', // e.g., "2025"
+    month: 'long', // e.g., "January"
+    day: 'numeric', // e.g., "6"
+    hour: 'numeric', // e.g., "3"
+    minute: 'numeric', // e.g., "30"
+    second: 'numeric', // e.g., "00"
+    hour12: true, // 12-hour format (AM/PM)
+};
 
-        // Convert the manually set date and time to the user's local time zone
-        const options = {
-            weekday: 'short',
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        };
+const formatter = new Intl.DateTimeFormat([], options);
 
-        // Format and display the converted time
-        const localLastUpdatedInstagram = lastUpdatedInstagramDateObj.toLocaleString('en-US', options);
+// Get the element to display the timestamp
+const lastUpdatedElement = document.getElementById('last-updated-timestamp');
 
-        // Set the content of the "Last Updated" text
-        lastUpdatedInstagramElement.textContent = `Last Updated: ${localLastUpdated}`;
-    }
-});
+// Set the formatted timestamp to match the user's timezone
+lastUpdatedElement.textContent = formatter.format(date);
 
 const youtubeShoutouts = {
     accounts: [
