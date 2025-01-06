@@ -399,6 +399,13 @@ body {
     opacity: 0.9;
 }
 
+/* Last Updated Section Styling */
+#lastUpdatedInstagram {
+    font-size: 0.9em;
+    color: var(--secondary-text);
+    margin-bottom: 20px;
+}
+
 /* Grid Layout for Instagram Shoutouts */
 .instagram-creator-grid {
     display: grid;
