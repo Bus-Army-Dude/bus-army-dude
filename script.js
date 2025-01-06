@@ -161,14 +161,17 @@ const lastUpdatedTime = "9:49:00";    // Set the time here (12-hour format)
 const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Manually set the last updated time (in UTC or your preferred timezone)
-    const instagramLastUpdatedTime = "2025-01-06T15:30:00Z"; // Example: UTC time (adjust to your date)
+    // Manually set the last updated time (in UTC)
+    const instagramLastUpdatedTime = "2025-01-06T15:30:00Z"; // Example date, adjust to your value
+
+    // Get the element to display the timestamp
+    const instagramLastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
 
     try {
         // Create a new Date object from the manually set UTC time
         const date = new Date(instagramLastUpdatedTime);
 
-        // Ensure date parsing worked
+        // Check if the date is valid
         if (!isNaN(date.getTime())) {
             // Format the date to match the user's local timezone
             const options = {
@@ -182,11 +185,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 hour12: true,
             };
 
-            const formatter = new Intl.DateTimeFormat([], options);
-            const formattedDate = formatter.format(date);
-
-            // Get the element to display the timestamp
-            const instagramLastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
+            const formattedDate = new Intl.DateTimeFormat([], options).format(date);
 
             // Set the formatted timestamp to match the user's timezone
             instagramLastUpdatedElement.textContent = formattedDate;
@@ -195,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     } catch (error) {
         console.error("Error formatting Instagram Last Updated timestamp: ", error);
-        document.getElementById('instagram-last-updated-timestamp').textContent = 'N/A';
+        instagramLastUpdatedElement.textContent = 'N/A';
     }
 
     // Instagram Creator Shoutouts Data (Example Data)
