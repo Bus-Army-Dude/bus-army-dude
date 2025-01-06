@@ -168,7 +168,7 @@ const instagramShoutouts = {
         { username: '@_jano_142_', isVerified: false, followers: '47', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-01-06T14:49:45', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-06T14:52:40', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
