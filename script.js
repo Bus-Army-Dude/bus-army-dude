@@ -193,7 +193,6 @@ const instagramShoutouts = {
         { username: 'riverkritzar', isVerified: false, followers: '82', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'instagram_photos/riverkritzar.jpg' },
         { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19 Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
         { username: '_jano_142_', isVerified: false, followers: '47', nickname: 'Nathan Haydu', bio: "Cars are love, cars are life., Taken by @rose_the_fox24 ❤️(3/1/24)❤️, #bncr33gtr:Best Skyline/🔰Dream car🚗, #c7zr1:Last TRUE Vette/🇺🇸Dream car🏎", profilePic: 'instagram_photos/jano142.jpg' },
-
         // Add more Instagram creators as needed
     ],
     init() {
@@ -264,6 +263,10 @@ document.addEventListener("DOMContentLoaded", () => {
 const youtubeShoutouts = {
     accounts: [
         { username: 'MrBeast', isVerified: true, subscribers: '341M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
+        { username: 'BeastReacts', isVerified: true, subscribers: '35.2M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
+        { username: 'MrBeastGaming', isVerified: true, subscribers: '46.2M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
+        { username: 'MrBeast2', isVerified: true, subscribers: '48.2M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
+        { username: 'BeastPhilanthrophy', isVerified: true, subscribers: '27.1M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
         // Add more YouTube creators as needed
     ],
     lastUpdatedTime: '2025-01-06T00:43:28', // Manually set the last updated date and time
