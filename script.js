@@ -203,7 +203,7 @@ const instagramShoutouts = {
         this.createShoutoutCards();
     },
     createShoutoutCards() {
-        const container = document.querySelector('.creator-grid');
+        const container = document.querySelector('.creator-grid-instagram'); // Changed to Instagram specific grid
         if (!container) return;
 
         container.innerHTML = '';
