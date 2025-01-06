@@ -233,25 +233,37 @@ const instagramShoutouts = {
 // Initialize the Instagram Shoutouts
 instagramShoutouts.init();
 
-// Update the 'Last Updated' time dynamically for Instagram section
-const updateInstagramTime = () => {
-    const now = new Date();
-    const options = { 
-        month: '2-digit', 
-        day: '2-digit', 
-        year: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit',
-        hour12: true,
-        timeZoneName: 'short'
-    };
-    const formattedTime = now.toLocaleString(undefined, options);
-    document.getElementById('lastUpdatedInstagram').textContent = `Last Updated: ${formattedTime}`;
-};
+document.addEventListener("DOMContentLoaded", () => {
+    const lastUpdatedElement = document.querySelector("#lastUpdatedInstagram");
 
-// Update time on page load
-updateInstagramTime();
+    if (lastUpdatedElement) {
+        // Manually set the date and time (same format as in the HTML)
+        const lastUpdatedDate = "01/05/2025";  // Update this manually when needed
+        const lastUpdatedTime = "6:54 PM";    // Update this manually when needed
+        const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime} GMT-0500`; // Assuming EST, you can update GMT offset based on your needs
+
+        // Create a Date object with the manually set date and time
+        const lastUpdatedDateObj = new Date(lastUpdatedString);
+
+        // Convert the manually set date and time to the user's local time zone
+        const options = {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        };
+
+        // Format and display the converted time
+        const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
+
+        // Set the content of the "Last Updated" text
+        lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
+    }
+});
 
     // New Year countdown
     function updateNewYearCountdown() {
