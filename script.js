@@ -190,37 +190,32 @@ document.addEventListener("DOMContentLoaded", () => {
 // Instagram Shoutouts
 const instagramShoutouts = {
     accounts: [
-        { username: 'teamtrump', isVerified: true, followers: '8.3M', nickname: 'Team Trump', bio: 'The official Instagram page for the Trump Campaign', profilePic: 'instagram_photos/teamtrump.jpeg' },
-        { username: 'carterpcs', isVerified: true, followers: '5.6M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'instagram_photos/carterpcs.jpeg' },
-        { username: 'applesauceandadhd', isVerified: true, followers: '3.6M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },
-        { username: 'houseofhughes_', isVerified: false, followers: '303.5K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'instagram_photos/houseofhughes.jpeg' },
-        { username: 'lust_ryze', isVerified: false, followers: '11.4K', nickname: 'Ryze', bio: 'Google pixel, Samsung, Apple Owner, Other social links below', profilePic: 'instagram_photos/lust_ryze.jpeg' },
-        { username: 'lust__ryze', isVerified: false, followers: '1,038', nickname: 'Ryze', bio: 'Google pixel, Samsung, Apple Owner, Spam likes=Blocked', profilePic: 'instagram_photos/lust_ryze.jpeg' },
-        { username: 'busarmydude', isVerified: false, followers: '1,234', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'instagram_photos/busarmydude.jpg' },
-        // Add more Instagram shoutouts here...
+        { username: 'username1', isVerified: true, followers: '5M', nickname: 'John Doe', bio: 'Travel Blogger, Photographer', profilePic: 'instagram_photos/username1.jpg' },
+        { username: 'username2', isVerified: false, followers: '2.3M', nickname: 'Jane Doe', bio: 'Fashion Enthusiast', profilePic: 'instagram_photos/username2.jpg' },
+        // Add more Instagram creators as needed
     ],
     init() {
         this.createShoutoutCards();
     },
     createShoutoutCards() {
-        const container = document.querySelector('.creator-grid-instagram'); // Changed to Instagram specific grid
+        const container = document.querySelector('.instagram-creator-grid');
         if (!container) return;
 
         container.innerHTML = '';
         this.accounts.forEach(account => {
             const card = document.createElement('div');
-            card.className = 'creator-card';
+            card.className = 'instagram-creator-card';
             card.innerHTML = `
-                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='instagram_photos/default-profile.jpg'">
-                <div class="creator-info">
-                    <div class="creator-header">
+                <img src="${account.profilePic}" alt="@${account.username}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="instagram-creator-info">
+                    <div class="instagram-creator-header">
                         <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="instagram-verified-badge">' : ''}
                     </div>
-                    <p class="creator-username">@${account.username}</p>
-                    <p class="creator-bio">${account.bio || ''}</p>
-                    <p class="follower-count">${account.followers} Followers</p>
-                    <a href="https://instagram.com/${account.username}" target="_blank" class="visit-profile">
+                    <p class="instagram-creator-username">@${account.username}</p>
+                    <p class="instagram-creator-bio">${account.bio || ''}</p>
+                    <p class="instagram-follower-count">${account.followers} Followers</p>
+                    <a href="https://instagram.com/${account.username}" target="_blank" class="instagram-visit-profile">
                         Visit Profile
                     </a>
                 </div>
@@ -230,7 +225,6 @@ const instagramShoutouts = {
     }
 };
 
-// Initialize the Instagram Shoutouts
 instagramShoutouts.init();
 
 document.addEventListener("DOMContentLoaded", () => {
