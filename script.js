@@ -152,7 +152,102 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     };
+
+const instagramShoutouts = [
+    {
+        profilePic: 'instagram_photos/profile1.jpg',
+        username: 'username1',
+        verified: true,
+        bio: 'This is the bio for username1.',
+        followers: '10K',
+        profileLink: 'https://instagram.com/username1'
+    },
+    {
+        profilePic: 'instagram_photos/profile2.jpg',
+        username: 'username2',
+        verified: false,
+        bio: 'This is the bio for username2.',
+        followers: '20K',
+        profileLink: 'https://instagram.com/username2'
+    },
+    {
+        profilePic: 'instagram_photos/profile3.jpg',
+        username: 'username3',
+        verified: true,
+        bio: 'This is the bio for username3.',
+        followers: '15K',
+        profileLink: 'https://instagram.com/username3'
+    },
+    // Add more Instagram shoutouts as needed
+];
+
+const instagramContainer = document.querySelector('.creator-grid');
+
+// Dynamically create Instagram shoutouts
+instagramShoutouts.forEach(shoutout => {
+    const shoutoutElement = document.createElement('div');
+    shoutoutElement.classList.add('shoutout');
     
+    const profilePic = document.createElement('img');
+    profilePic.src = shoutout.profilePic;
+    profilePic.alt = 'Profile Image';
+    profilePic.classList.add('profile-pic');
+    
+    const usernameDiv = document.createElement('div');
+    usernameDiv.classList.add('username');
+    usernameDiv.textContent = shoutout.username;
+
+    if (shoutout.verified) {
+        const checkMark = document.createElement('img');
+        checkMark.src = 'check.png';  // Use the check.png image for verification
+        checkMark.alt = 'Verified';
+        checkMark.classList.add('verified-check');
+        usernameDiv.appendChild(checkMark);
+    }
+    
+    const bioDiv = document.createElement('div');
+    bioDiv.classList.add('bio');
+    bioDiv.textContent = shoutout.bio;
+
+    const followersDiv = document.createElement('div');
+    followersDiv.classList.add('followers');
+    followersDiv.textContent = `Followers: ${shoutout.followers}`;
+    
+    const visitProfileButton = document.createElement('a');
+    visitProfileButton.href = shoutout.profileLink;
+    visitProfileButton.classList.add('visit-profile-button');
+    visitProfileButton.textContent = 'Visit Profile';
+    visitProfileButton.target = '_blank';
+
+    shoutoutElement.appendChild(profilePic);
+    shoutoutElement.appendChild(usernameDiv);
+    shoutoutElement.appendChild(bioDiv);
+    shoutoutElement.appendChild(followersDiv);
+    shoutoutElement.appendChild(visitProfileButton);
+
+    instagramContainer.appendChild(shoutoutElement);
+});
+
+// Update the 'Last Updated' time dynamically for Instagram section
+const updateInstagramTime = () => {
+    const now = new Date();
+    const options = { 
+        month: '2-digit', 
+        day: '2-digit', 
+        year: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: true,
+        timeZoneName: 'short'
+    };
+    const formattedTime = now.toLocaleString(undefined, options);
+    document.getElementById('lastUpdatedInstagram').textContent = `Last Updated: ${formattedTime}`;
+};
+
+// Update time on page load
+updateInstagramTime();
+
     // New Year countdown
     function updateNewYearCountdown() {
         const now = new Date();
