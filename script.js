@@ -160,83 +160,67 @@ const lastUpdatedTime = "9:49:00";    // Set the time here (12-hour format)
 // Combine the date and time into a single string for parsing
 const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Manually set the last updated time (in UTC)
-    const instagramLastUpdatedTime = "2025-01-06T15:30:00Z"; // Example date, adjust to your value
+const instagramShoutouts = {
+    accounts: [
+        { username: '@creator1', isVerified: true, followers: '500K', nickname: 'Creator One', bio: 'This is creator 1 bio.', profilePic: 'instagram_photos/creator1.jpg' },
+        { username: '@creator2', isVerified: true, followers: '1M', nickname: 'Creator Two', bio: 'This is creator 2 bio.', profilePic: 'instagram_photos/creator2.jpg' },
+        { username: '@creator3', isVerified: false, followers: '300K', nickname: 'Creator Three', bio: 'This is creator 3 bio.', profilePic: 'instagram_photos/creator3.jpg' },
+        // Add more Instagram creators as needed
+    ],
+    lastUpdatedTime: '2025-01-06T09:51:00', // Manually set the last updated date and time
+    init() {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+    },
+    createShoutoutCards() {
+        const container = document.querySelector('.instagram-creator-grid');
+        if (!container) return;
 
-    // Get the element to display the timestamp
-    const instagramLastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'instagram-creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="${account.nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="instagram-creator-info">
+                    <div class="instagram-creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="instagram-verified-badge">' : ''}
+                    </div>
+                    <p class="instagram-creator-username">${account.username}</p>
+                    <p class="instagram-creator-bio">${account.bio || ''}</p>
+                    <p class="instagram-follower-count">${account.followers} Followers</p>
+                    <a href="https://instagram.com/${account.username}" target="_blank" class="instagram-visit-profile">
+                        Visit Profile
+                    </a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    },
+    setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
+        if (!lastUpdatedElement) return;
 
-    try {
-        // Create a new Date object from the manually set UTC time
-        const date = new Date(instagramLastUpdatedTime);
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+            timeZone: userTimeZone,
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
 
-        // Check if the date is valid
-        if (!isNaN(date.getTime())) {
-            // Format the date to match the user's local timezone
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                hour12: true,
-            };
-
-            const formattedDate = new Intl.DateTimeFormat([], options).format(date);
-
-            // Set the formatted timestamp to match the user's timezone
-            instagramLastUpdatedElement.textContent = formattedDate;
-        } else {
-            throw new Error("Invalid date format");
-        }
-    } catch (error) {
-        console.error("Error formatting Instagram Last Updated timestamp: ", error);
-        instagramLastUpdatedElement.textContent = 'N/A';
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
     }
+};
 
-    // Instagram Creator Shoutouts Data (Example Data)
-    const creators = [
-        {
-            username: "creator1",
-            profileImage: "image1.jpg",
-            bio: "This is creator 1 bio.",
-            followers: "500K",
-            instagramUrl: "https://instagram.com/creator1"
-        },
-        {
-            username: "creator2",
-            profileImage: "image2.jpg",
-            bio: "This is creator 2 bio.",
-            followers: "1M",
-            instagramUrl: "https://instagram.com/creator2"
-        },
-        {
-            username: "creator3",
-            profileImage: "image3.jpg",
-            bio: "This is creator 3 bio.",
-            followers: "300K",
-            instagramUrl: "https://instagram.com/creator3"
-        }
-    ];
-
-    // Dynamically generate Instagram creator shoutouts
-    const shoutoutGrid = document.querySelector('.instagram-creator-grid');
-    creators.forEach(creator => {
-        const creatorCard = document.createElement('div');
-        creatorCard.classList.add('creator-card');
-        creatorCard.innerHTML = `
-            <img src="${creator.profileImage}" alt="${creator.username}" class="profile-image">
-            <h3>${creator.username}</h3>
-            <p>${creator.bio}</p>
-            <p>Followers: ${creator.followers}</p>
-            <a href="${creator.instagramUrl}" target="_blank" class="instagram-link">View Profile</a>
-        `;
-        shoutoutGrid.appendChild(creatorCard);
-    });
-});
+// Initialize the Instagram shoutouts
+instagramShoutouts.init();
 
 const youtubeShoutouts = {
     accounts: [
