@@ -400,10 +400,10 @@ body {
 }
 
 /* Last Updated Section Styling */
-#lastUpdatedInstagram {
-    font-size: 0.9em;
-    color: var(--secondary-text);
-    margin-bottom: 20px;
+.last-updated {
+  font-size: 14px;
+  color: #888;
+  margin-top: 5px;
 }
 
 /* Grid Layout for Instagram Shoutouts */
