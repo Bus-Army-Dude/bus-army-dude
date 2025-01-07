@@ -369,7 +369,7 @@ youtubeShoutouts.init();
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "01/07/2025";  // Set the date here (mm/dd/yyyy)
-const lastUpdatedTime = "9:56 AM";    // Set the time here (12-hour format)
+const lastUpdatedTime = "4:02 PM";    // Set the time here (12-hour format)
 
 // Combine the date and time into a single string for parsing
 const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
