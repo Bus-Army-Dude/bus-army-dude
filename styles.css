@@ -1066,26 +1066,39 @@ body {
 
 /* Hide watermark by default */
 .watermark {
-    display: none; /* Ensure it is hidden on regular view */
+    display: none; /* Ensure it's hidden on regular view */
 }
 
 /* Show watermark only during printing */
 @media print {
-    .watermark {
-        display: block; /* Make the watermark visible only when printing */
-        position: fixed; /* Fix it in a position on the page */
-        top: 50%; /* Center vertically */
-        left: 50%; /* Center horizontally */
-        transform: translate(-50%, -50%); /* Ensure it's perfectly centered */
-        font-size: 72px; /* Adjust the size */
+    /* Create a page-level watermark that repeats on every page */
+    body::after {
+        content: "Watermark Text"; /* The watermark text */
+        display: block;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 72px;
         font-weight: bold;
         color: rgba(0, 0, 0, 0.1); /* Semi-transparent */
-        pointer-events: none; /* Avoid interfering with printing */
-        z-index: 9999; /* Ensure it's on top of all content */
-        white-space: nowrap; /* Prevent line breaks in the watermark */
+        pointer-events: none;
+        z-index: 9999;
+        white-space: nowrap;
+        user-select: none; /* Prevent user selection */
+    }
+
+    /* Ensure the watermark appears on every printed page */
+    @page {
+        margin: 0; /* Remove any default margin */
+        size: auto; /* Use auto size for the page */
+    }
+
+    /* Make sure the watermark doesn't interfere with content */
+    body {
+        position: relative;
     }
 }
-
 
 /* Footer */
 footer {
