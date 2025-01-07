@@ -4,25 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification Requests</title>
-    <link rel="stylesheet" href="style.css"> <!-- If you have any styles -->
+    <link rel="stylesheet" href="style.css"> <!-- Link to external stylesheet -->
 </head>
 <body>
     <header>
         <h1>Verification Requests</h1>
     </header>
-    
+
     <main>
         <div id="requests-list">
-            <!-- Pending requests will be listed here -->
+            <!-- Pending Requests Section -->
             <h2>Pending Requests</h2>
-            <p>No pending requests.</p> <!-- Placeholder message -->
+            <div class="request pending" id="pending1">
+                <p>Creator: @tiktokCreator1</p>
+                <p class="status pending">Status: Pending</p>
+                <button class="approve-btn" data-request-id="1">Approve</button>
+                <button class="deny-btn" data-request-id="1">Deny</button>
+            </div>
+            <!-- More pending requests can be added here -->
+
+            <!-- Approved Requests Section -->
+            <h2>Approved Requests</h2>
+            <div class="request approved" id="approved1">
+                <p>Creator: @instaCreator1</p>
+                <p class="status approved">Status: Approved</p>
+                <button class="remove-btn" data-request-id="1">Remove Verified Badge</button>
+            </div>
+            <!-- More approved requests can be added here -->
+
+            <!-- Denied Requests Section -->
+            <h2>Denied Requests</h2>
+            <div class="request denied" id="denied1">
+                <p>Creator: @ytCreator1</p>
+                <p class="status denied">Status: Denied</p>
+            </div>
+            <!-- More denied requests can be added here -->
         </div>
     </main>
-    
+
     <footer>
-        <p>&copy; 2025 Bus Army Dude. All Rights Reserved.</p>
+        <p>&copy; 2025 Bus Army Dude. All rights Reserved</p>
     </footer>
-    
-    <script src="script.js"></script> <!-- Link to your existing JavaScript -->
+
+    <script src="script.js"></script> <!-- Link to external JS file -->
 </body>
 </html>
