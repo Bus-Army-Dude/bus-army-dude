@@ -54,38 +54,41 @@ body {
 }
 
 /* Social Section - Updated */
-.social-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
+.social-links-section {
+    text-align: center;
     padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.social-icons {
+.social-links-container {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    gap: 25px;
-    padding: 15px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin: 10px 0;
+    justify-content: center;
+    gap: 15px;
 }
 
-.social-icons a {
-    display: inline-block;
-    transition: transform 0.2s;
+.social-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #333;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s ease;
 }
 
-.social-icons img {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+.social-button:hover {
+    background-color: #555;
 }
 
-.social-icons a:hover {
-    transform: scale(1.1);
+.social-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.social-button span {
+    font-size: 16px;
 }
 
 /* Links Section */
