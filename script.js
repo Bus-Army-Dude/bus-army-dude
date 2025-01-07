@@ -12,85 +12,87 @@ document.addEventListener('DOMContentLoaded', () => {
     enhancedCopyProtection.init();
 
     // Device detection function
-    function detectDetailedDevice() {
-        const ua = navigator.userAgent;
-        let deviceInfo = '';
+function detectDeviceInfo() {
+    const ua = navigator.userAgent;
+    let deviceInfo = 'Unknown Device';
 
-        const operatingSystems = {
-            apple: {
-                iOS: ['18', '17'],
-                iPadOS: ['18', '17'],
-                macOS: ['15', '14']
-            },
-            microsoft: {
-                Windows: ['11', '10']
-            },
-            android: ['15', '14'],
-            linux: [
-                'Fedora', 'Arch Linux', 'Red Hat Enterprise Linux', 'Kali Linux', 'Manjaro', 'Ubuntu', 'Linux Mint'
-            ]
-        };
+    const osVersions = {
+        iOS: ['18', '17', '16', '15'],
+        iPadOS: ['18', '17', '16', '15'],
+        macOS: ['15', '14', '13', '12'],
+        Windows: ['11', '10', '8.1', '8', '7'],
+        Android: ['15', '14', '13', '12', '11', '10'],
+        Linux: ['Fedora', 'Arch Linux', 'Red Hat', 'Ubuntu', 'Linux Mint', 'Debian', 'Kali Linux', 'Manjaro'],
+        ChromeOS: ['91', '90', '89'],
+        WindowsPhone: ['8.1', '8'],
+        BlackBerry: ['10', '7.1'],
+        WebOS: ['3.0', '2.2'],
+    };
 
-        const getLatestVersion = (platform) => {
-            switch(platform) {
-                case 'iOS': return operatingSystems.apple.iOS[0];
-                case 'iPadOS': return operatingSystems.apple.iPadOS[0];
-                case 'macOS': return operatingSystems.apple.macOS[0];
-                case 'Windows': return operatingSystems.microsoft.Windows[0];
-                case 'Android': return operatingSystems.android[0];
-                default: return '';
-            }
-        };
+    const getLatestVersion = (platform) => {
+        return osVersions[platform]?.[0] || 'Unknown';
+    };
 
-        if (/iPhone/.test(ua)) {
-            const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
-            deviceInfo = `iPhone (iOS ${version})`;
-        } else if (/iPad/.test(ua)) {
-            const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
-            deviceInfo = `iPad (iPadOS ${version})`;
-        } else if (/Android/.test(ua)) {
-            const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
-            deviceInfo = `Android ${version}`;
-        } else if (/Windows/.test(ua)) {
-            const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] === '10.0' ? '11/10' : getLatestVersion('Windows');
-            deviceInfo = `Windows ${version}`;
-        } else if (/Macintosh/.test(ua)) {
-            const version = ua.match(/Mac OS X (\d+[._]\d+)/)?.[1].replace('_', '.') || getLatestVersion('macOS');
-            deviceInfo = `macOS ${version}`;
-        } else if (/Linux/.test(ua)) {
-            deviceInfo = 'Linux (Unknown Distribution)';
-        } else {
-            deviceInfo = 'Unknown Device';
-        }
-
-        const deviceElement = document.querySelector('.device-info');
-        if (deviceElement) {
-            deviceElement.textContent = `Device: ${deviceInfo}`;
-        }
+    if (/iPhone/.test(ua)) {
+        const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
+        deviceInfo = `iPhone (iOS ${version})`;
+    } else if (/iPad/.test(ua)) {
+        const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
+        deviceInfo = `iPad (iPadOS ${version})`;
+    } else if (/Android/.test(ua)) {
+        const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
+        deviceInfo = `Android ${version}`;
+    } else if (/Windows/.test(ua)) {
+        const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
+        deviceInfo = `Windows ${version}`;
+    } else if (/Macintosh/.test(ua)) {
+        const version = ua.match(/Mac OS X (\d+[._]\d+)/)?.[1].replace('_', '.') || getLatestVersion('macOS');
+        deviceInfo = `macOS ${version}`;
+    } else if (/Linux/.test(ua)) {
+        const distribution = ua.match(/Linux\s*(\w+)/)?.[1] || 'Unknown Distribution';
+        deviceInfo = `Linux (${distribution})`;
+    } else if (/CrOS/.test(ua)) {
+        const version = ua.match(/Chrome\/(\d+)/)?.[1] || getLatestVersion('ChromeOS');
+        deviceInfo = `ChromeOS ${version}`;
+    } else if (/Windows Phone/.test(ua)) {
+        const version = ua.match(/Windows Phone (\d+)/)?.[1] || getLatestVersion('WindowsPhone');
+        deviceInfo = `Windows Phone ${version}`;
+    } else if (/BlackBerry/.test(ua)) {
+        const version = ua.match(/BlackBerry\s*(\d+)/)?.[1] || getLatestVersion('BlackBerry');
+        deviceInfo = `BlackBerry ${version}`;
+    } else if (/webOS/.test(ua)) {
+        const version = ua.match(/webOS\/(\d+)/)?.[1] || getLatestVersion('WebOS');
+        deviceInfo = `webOS ${version}`;
     }
 
-    // Time update function
-    function updateTime() {
-        const now = new Date();
-        const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
-        const timeElement = document.querySelector('.update-time');
-        if (timeElement) {
-            timeElement.textContent = `Current Date and Time: ${timestamp}`;
-        }
-    }
+    document.querySelector('.device-info').textContent = `Device: ${deviceInfo}`;
+}
 
-    // Page refresh countdown
-    let timeLeft = 60;
-    function updateCountdown() {
-        const countdownElement = document.querySelector('.countdown');
-        if (countdownElement && timeLeft >= 0) {
-            countdownElement.textContent = `Page refreshing in: ${timeLeft} seconds`;
-            timeLeft--;
-            if (timeLeft < 0) {
-                location.reload();
-            }
-        }
+// Update the current time in the panel
+function updateDateTime() {
+    const now = new Date();
+    const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
+    document.querySelector('.update-time').textContent = `Current Date and Time: ${timestamp}`;
+}
+
+// Countdown timer for page refresh
+let countdownTime = 60;
+
+function updateCountdown() {
+    const countdownElement = document.querySelector('.countdown');
+    countdownElement.textContent = `Page refreshing in: ${countdownTime--} seconds`;
+
+    if (countdownTime < 0) {
+        location.reload();
     }
+}
+
+// Initialize functions on page load
+document.addEventListener('DOMContentLoaded', () => {
+    detectDeviceInfo();
+    updateDateTime();
+    setInterval(updateCountdown, 1000); // Update countdown every second
+});
 
     // TikTok Shoutouts
     const tiktokShoutouts = {
