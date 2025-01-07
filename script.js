@@ -369,55 +369,58 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    loadVerificationRequests(); // Load requests when the page is ready
+    // Select all action buttons
+    const approveButtons = document.querySelectorAll('.approve-btn');
+    const denyButtons = document.querySelectorAll('.deny-btn');
+    const removeButtons = document.querySelectorAll('.remove-btn');
+
+    // Approve request handler
+    approveButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const requestId = this.getAttribute('data-request-id');
+            updateRequestStatus(requestId, 'approved');
+        });
+    });
+
+    // Deny request handler
+    denyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const requestId = this.getAttribute('data-request-id');
+            updateRequestStatus(requestId, 'denied');
+        });
+    });
+
+    // Remove verified badge handler for approved requests
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const requestId = this.getAttribute('data-request-id');
+            updateRequestStatus(requestId, 'removed');
+        });
+    });
 });
 
-function loadVerificationRequests() {
-    const requests = JSON.parse(localStorage.getItem('verificationRequests')) || [];
-    const requestsList = document.getElementById('requests-list');
-    
-    // Clear the existing list
-    requestsList.innerHTML = '<h2>Pending Requests</h2>';
+function updateRequestStatus(requestId, status) {
+    const requestElement = document.getElementById(`request${requestId}`);
+    const statusElement = requestElement.querySelector('.status');
 
-    // If there are no requests
-    if (requests.length === 0) {
-        requestsList.innerHTML += '<p>No pending requests.</p>';
-    } else {
-        // Otherwise, loop through requests and display them
-        requests.forEach(request => {
-            const requestDiv = document.createElement('div');
-            requestDiv.classList.add('request');
-            requestDiv.innerHTML = `
-                <p><strong>${request.creator}</strong> on ${request.platform} - Status: <span class="status">${request.status}</span></p>
-                <button onclick="approveVerification(${JSON.stringify(request)})">Approve</button>
-                <button onclick="denyVerification(${JSON.stringify(request)})">Deny</button>
-            `;
-            requestsList.appendChild(requestDiv);
-        });
+    switch (status) {
+        case 'approved':
+            requestElement.classList.remove('pending', 'denied');
+            requestElement.classList.add('approved');
+            statusElement.textContent = 'Status: Approved';
+            statusElement.className = 'status approved';
+            break;
+        case 'denied':
+            requestElement.classList.remove('pending', 'approved');
+            requestElement.classList.add('denied');
+            statusElement.textContent = 'Status: Denied';
+            statusElement.className = 'status denied';
+            break;
+        case 'removed':
+            requestElement.classList.remove('approved');
+            requestElement.classList.add('pending');
+            statusElement.textContent = 'Status: Pending';
+            statusElement.className = 'status pending';
+            break;
     }
-}
-
-function approveVerification(request) {
-    request.status = 'approved';
-    console.log(`${request.creator} has been verified on ${request.platform}`);
-    updateRequest(request);
-    alert(`${request.creator} has been approved.`);
-}
-
-function denyVerification(request) {
-    request.status = 'denied';
-    console.log(`${request.creator} has been denied verification on ${request.platform}`);
-    updateRequest(request);
-    alert(`${request.creator} has been denied.`);
-}
-
-function updateRequest(updatedRequest) {
-    const requests = JSON.parse(localStorage.getItem('verificationRequests')) || [];
-    const index = requests.findIndex(request => request.creator === updatedRequest.creator && request.platform === updatedRequest.platform);
-    
-    if (index !== -1) {
-        requests[index] = updatedRequest; // Update the request
-    }
-    
-    localStorage.setItem('verificationRequests', JSON.stringify(requests));
 }
