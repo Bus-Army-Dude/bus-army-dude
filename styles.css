@@ -809,22 +809,35 @@ input[type="checkbox"]:checked + .theme-toggle::before {
     transform: translateX(30px);
 }
 
-/* Modern Version Info Section */
+/* Version Info Section */
 .version-info-section {
     background-color: var(--content-bg);
     border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    font-family: 'Roboto', sans-serif; /* More modern font */
-    font-size: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
+    color: var(--text-color);
 }
 
-.version-info-section div {
-    margin: 12px 0;
-    line-height: 1.6;
-    color: var(--text-color);
-    font-weight: 500; /* Slightly bolder text for readability */
+.version-header {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.version-number, .build-number, .device-info, .update-time, .current-user, .countdown {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.device-info, .update-time {
+    font-style: italic;
+}
+
+.countdown {
+    font-weight: bold;
+    color: var(--accent-color);
 }
 
 /* Copy Protection */
