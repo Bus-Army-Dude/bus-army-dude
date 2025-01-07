@@ -266,7 +266,7 @@ const youtubeShoutouts = {
         { username: '@Badge502', isVerified: false, subscribers: '55.6K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-01-07T14:16:05', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-07T16:16:05', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
