@@ -192,7 +192,7 @@ const instagramShoutouts = {
                 <div class="instagram-creator-info">
                     <div class="instagram-creator-header">
                         <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="instagram-verified-badge">' : ''}
+                        ${account.isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''}
                     </div>
                     <p class="instagram-creator-username">${account.username}</p>
                     <p class="instagram-creator-bio">${account.bio || ''}</p>
@@ -258,7 +258,7 @@ const youtubeShoutouts = {
                 <div class="youtube-creator-info">
                     <div class="youtube-creator-header">
                         <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="youtube-verified-badge">' : ''}
+                        ${account.isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''}
                     </div>
                     <p class="youtube-creator-username">${account.username}</p>
                     <p class="youtube-creator-bio">${account.bio || ''}</p>
