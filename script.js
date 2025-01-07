@@ -11,88 +11,119 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-    // Device detection function
-function detectDeviceInfo() {
+// Device detection function
+function detectDetailedDevice() {
     const ua = navigator.userAgent;
-    let deviceInfo = 'Unknown Device';
+    let deviceInfo = '';
 
-    const osVersions = {
-        iOS: ['18', '17', '16', '15'],
-        iPadOS: ['18', '17', '16', '15'],
-        macOS: ['15', '14', '13', '12'],
-        Windows: ['11', '10', '8.1', '8', '7'],
-        Android: ['15', '14', '13', '12', '11', '10'],
-        Linux: ['Fedora', 'Arch Linux', 'Red Hat', 'Ubuntu', 'Linux Mint', 'Debian', 'Kali Linux', 'Manjaro'],
-        ChromeOS: ['91', '90', '89'],
-        WindowsPhone: ['8.1', '8'],
-        BlackBerry: ['10', '7.1'],
-        WebOS: ['3.0', '2.2'],
+    const operatingSystems = {
+        apple: {
+            iOS: ['18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
+            iPadOS: ['18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
+            macOS: ['15', '14', '13', '12', '11', '10.15', '10.14', '10.13', '10.12', '10.11', '10.10', '10.9', '10.8', '10.7', '10.6', '10.5', '10.4', '10.3', '10.2', '10.1', '10.0']
+        },
+        microsoft: {
+            Windows: ['11', '10', '8.1', '8', '7']
+        },
+        android: ['15', '14', '13', '12', '11', '10'],
+        linux: [
+            'Fedora', 'Arch Linux', 'Red Hat Enterprise Linux', 'Kali Linux', 'Manjaro', 'Ubuntu', 'Linux Mint'
+        ],
+        unix: ['FreeBSD', 'OpenBSD', 'NetBSD'],
+        chrome: ['Chrome OS'],
+        blackberry: ['BlackBerry OS'],
+        webos: ['webOS'],
+        other: ['Unknown Device']
     };
 
     const getLatestVersion = (platform) => {
-        return osVersions[platform]?.[0] || 'Unknown';
+        switch(platform) {
+            case 'iOS': return operatingSystems.apple.iOS[0];
+            case 'iPadOS': return operatingSystems.apple.iPadOS[0];
+            case 'macOS': return operatingSystems.apple.macOS[0];
+            case 'Windows': return operatingSystems.microsoft.Windows[0];
+            case 'Android': return operatingSystems.android[0];
+            case 'Linux': return operatingSystems.linux[0];
+            case 'FreeBSD': return operatingSystems.unix[0];
+            case 'OpenBSD': return operatingSystems.unix[1];
+            case 'NetBSD': return operatingSystems.unix[2];
+            case 'Chrome OS': return operatingSystems.chrome[0];
+            case 'BlackBerry OS': return operatingSystems.blackberry[0];
+            case 'webOS': return operatingSystems.webos[0];
+            default: return operatingSystems.other[0];
+        }
     };
 
+    // Check iPhone
     if (/iPhone/.test(ua)) {
         const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
         deviceInfo = `iPhone (iOS ${version})`;
-    } else if (/iPad/.test(ua)) {
+    }
+    // Check iPad
+    else if (/iPad/.test(ua)) {
         const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
         deviceInfo = `iPad (iPadOS ${version})`;
-    } else if (/Android/.test(ua)) {
+    }
+    // Check Android
+    else if (/Android/.test(ua)) {
         const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
         deviceInfo = `Android ${version}`;
-    } else if (/Windows/.test(ua)) {
+    }
+    // Check Windows
+    else if (/Windows/.test(ua)) {
         const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
         deviceInfo = `Windows ${version}`;
-    } else if (/Macintosh/.test(ua)) {
-        const version = ua.match(/Mac OS X (\d+[._]\d+)/)?.[1].replace('_', '.') || getLatestVersion('macOS');
+    }
+    // Check macOS
+    else if (/Macintosh/.test(ua)) {
+        const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1] || getLatestVersion('macOS');
         deviceInfo = `macOS ${version}`;
-    } else if (/Linux/.test(ua)) {
-        const distribution = ua.match(/Linux\s*(\w+)/)?.[1] || 'Unknown Distribution';
-        deviceInfo = `Linux (${distribution})`;
-    } else if (/CrOS/.test(ua)) {
-        const version = ua.match(/Chrome\/(\d+)/)?.[1] || getLatestVersion('ChromeOS');
-        deviceInfo = `ChromeOS ${version}`;
-    } else if (/Windows Phone/.test(ua)) {
-        const version = ua.match(/Windows Phone (\d+)/)?.[1] || getLatestVersion('WindowsPhone');
-        deviceInfo = `Windows Phone ${version}`;
-    } else if (/BlackBerry/.test(ua)) {
-        const version = ua.match(/BlackBerry\s*(\d+)/)?.[1] || getLatestVersion('BlackBerry');
-        deviceInfo = `BlackBerry ${version}`;
-    } else if (/webOS/.test(ua)) {
-        const version = ua.match(/webOS\/(\d+)/)?.[1] || getLatestVersion('WebOS');
-        deviceInfo = `webOS ${version}`;
+    }
+    // Check other platforms
+    else {
+        deviceInfo = 'Unknown Device';
     }
 
-    document.querySelector('.device-info').textContent = `Device: ${deviceInfo}`;
+    return deviceInfo;
 }
 
-// Update the current time in the panel
-function updateDateTime() {
+// Time update function
+function updateTime() {
     const now = new Date();
     const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
-    document.querySelector('.update-time').textContent = `Current Date and Time: ${timestamp}`;
-}
-
-// Countdown timer for page refresh
-let countdownTime = 60;
-
-function updateCountdown() {
-    const countdownElement = document.querySelector('.countdown');
-    countdownElement.textContent = `Page refreshing in: ${countdownTime--} seconds`;
-
-    if (countdownTime < 0) {
-        location.reload();
+    const timeElement = document.querySelector('.update-time');
+    if (timeElement) {
+        timeElement.textContent = `Current Date and Time: ${timestamp}`;
     }
 }
 
-// Initialize functions on page load
-document.addEventListener('DOMContentLoaded', () => {
-    detectDeviceInfo();
-    updateDateTime();
+// Page refresh countdown
+let timeLeft = 60;
+function updateCountdown() {
+    const countdownElement = document.querySelector('.countdown');
+    if (countdownElement && timeLeft >= 0) {
+        countdownElement.textContent = `Page refreshing in: ${timeLeft} seconds`;
+        timeLeft--;
+        if (timeLeft < 0) {
+            location.reload();
+        }
+    }
+}
+
+// Update version panel with device info
+function updateVersionPanel() {
+    const deviceElement = document.querySelector('.device-info');
+    if (deviceElement) {
+        deviceElement.textContent = `Device: ${detectDetailedDevice()}`;
+    }
+}
+
+// Call the functions on page load
+window.onload = function() {
+    updateVersionPanel();
+    updateTime();
     setInterval(updateCountdown, 1000); // Update countdown every second
-});
+};
 
     // TikTok Shoutouts
     const tiktokShoutouts = {
