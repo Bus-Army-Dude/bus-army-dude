@@ -1073,15 +1073,15 @@ body {
 @media print {
     /* Create a page-level watermark that repeats on every page */
     body::after {
-        content: "DO NOT COPY WILL RESULT IN A LAWSUIT"; /* The watermark text */
+        content: "DO NOT COPY WILL RESULT IN A LAWSUIT"; /* The updated watermark text */
         display: block;
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-200%, -20%);
-        font-size: 72px;
+        transform: translate(-20%, -20%) rotate(-45deg); /* Adjusted translation and rotation */
+        font-size: 120px; /* Larger font size for better visibility */
         font-weight: bold;
-        color: rgba(0, 0, 0, 0.1); /* Semi-transparent */
+        color: rgba(255, 0, 0, 0.7); /* Red color with some transparency */
         pointer-events: none;
         z-index: 9999;
         white-space: nowrap;
