@@ -236,9 +236,11 @@ const youtubeShoutouts = {
         { username: '@MrBeastGaming', isVerified: true, subscribers: '46.3M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
         { username: '@MrBeast2', isVerified: true, subscribers: '48.2M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
         { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.1M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
+        { username: '@mrfatcheeto', isVerified: false, subscribers: '88.1K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
+        { username: '@Badge502', isVerified: false, subscribers: '55.6K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-01-07T10:01:00', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-07T10:09:25', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
