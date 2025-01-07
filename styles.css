@@ -1064,31 +1064,28 @@ body {
     margin-top: 20px;  /* Adds space between Copy Protection and Legal Protection Notices */
 }
 
-/* Add watermark to the body */
-body {
-    position: relative;
-}
-
-/* Watermark styling */
+/* Hide watermark by default */
 .watermark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 72px;                /* Adjust size of watermark text */
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.1);      /* Semi-transparent text */
-    pointer-events: none;           /* Make sure watermark doesn’t block interactions */
-    z-index: 9999;                  /* Ensure watermark appears above content */
-    white-space: nowrap;            /* Prevent text from wrapping */
+    display: none; /* Ensure it is hidden on regular view */
 }
 
-/* Watermark for printing (makes sure it's visible on print) */
+/* Show watermark only during printing */
 @media print {
     .watermark {
-        display: block;  /* Show watermark during printing */
+        display: block; /* Make the watermark visible only when printing */
+        position: fixed; /* Fix it in a position on the page */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Ensure it's perfectly centered */
+        font-size: 72px; /* Adjust the size */
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.1); /* Semi-transparent */
+        pointer-events: none; /* Avoid interfering with printing */
+        z-index: 9999; /* Ensure it's on top of all content */
+        white-space: nowrap; /* Prevent line breaks in the watermark */
     }
 }
+
 
 /* Footer */
 footer {
