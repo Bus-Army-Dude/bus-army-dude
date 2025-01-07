@@ -1064,6 +1064,15 @@ body {
     margin-top: 20px;  /* Adds space between Copy Protection and Legal Protection Notices */
 }
 
+@media print {
+    body {
+        background-image: url('watermark.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
 /* Footer */
 footer {
     text-align: center;
