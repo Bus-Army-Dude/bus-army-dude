@@ -1073,12 +1073,12 @@ body {
 @media print {
     /* Create a page-level watermark that repeats on every page */
     body::after {
-        content: "Watermark Text"; /* The watermark text */
+        content: "DO NOT COPY WILL RESULT IN A LAWSUIT"; /* The watermark text */
         display: block;
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-200%, -20%);
         font-size: 72px;
         font-weight: bold;
         color: rgba(0, 0, 0, 0.1); /* Semi-transparent */
