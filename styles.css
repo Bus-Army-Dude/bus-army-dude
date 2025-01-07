@@ -809,20 +809,22 @@ input[type="checkbox"]:checked + .theme-toggle::before {
     transform: translateX(30px);
 }
 
-/* Version Info Section */
+/* Modern Version Info Section */
 .version-info-section {
     background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: 'Courier New', monospace;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    font-family: 'Roboto', sans-serif; /* More modern font */
+    font-size: 16px;
 }
 
 .version-info-section div {
-    margin: 8px 0;
-    line-height: 1.4;
+    margin: 12px 0;
+    line-height: 1.6;
     color: var(--text-color);
+    font-weight: 500; /* Slightly bolder text for readability */
 }
 
 /* Copy Protection */
