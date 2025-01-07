@@ -393,3 +393,32 @@ document.addEventListener("DOMContentLoaded", () => {
     lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
   }
 });
+
+document.addEventListener('keydown', function(e) {
+    // Disable F12 key and Ctrl+Shift+I, Ctrl+Shift+J keys
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+        e.preventDefault();
+    }
+});
+
+setInterval(function() {
+    const devtools = /./;
+    devtools.toString = function() {
+        this.opened = true;
+    };
+
+    if (devtools.opened) {
+        location.reload();  // Reload the page if developer tools are detected
+    }
+}, 1000);
+
+(function() {
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    setInterval(function() {
+        if (window.innerWidth !== width || window.innerHeight !== height) {
+            alert('Developer Tools detected!');
+            window.location.reload();  // Reload the page to discourage dev tools usage
+        }
+    }, 1000);
+})();
