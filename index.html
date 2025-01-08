@@ -39,12 +39,10 @@
             </div>
             <p>Hello, my name is River, I am 19. I am autistic. I love technology.</p>
         </div>
- 
-    <div id="widgetContainer">
+
         <!-- Social Links Section -->
-    <div class="widget" id="social-links-section" draggable="true">
+        <div class="social-links-section">
     <h2>Connect with Me</h2>
-    <div class="widget" id="socialWidget">
     <div class="social-links-container">
         <a href="https://tiktok.com/@busarmydude" class="social-button">
             <img src="logo-tiktok.png" alt="TikTok" class="social-icon">
@@ -102,7 +100,7 @@
 </div>
 
 <!-- TikTok Shoutouts Section -->
-<div class="widget" id="shoutouts-section section" draggable="true">
+    <div class="shoutouts-section section">
         <div id="tiktok-shoutouts">
         <h2>TikTok Creator Shoutouts</h2>
         <p id="lastUpdated"></p> <!-- Display last updated date and time here -->
@@ -115,7 +113,7 @@
     </div>
 
 <!-- Instagram Shoutouts Section -->
-<div class="widget" id="shoutouts-section section" draggable="true">
+<div class="shoutouts-section section">
     <div id="instagram-shoutouts">
         <h2>Instagram Creator Shoutouts</h2>
         <!-- Last Updated Timestamp -->
@@ -128,7 +126,7 @@
 </div>
 
 <!-- YouTube Shoutouts Section -->
-    <div class="widget" id="shoutouts-section section" draggable="true">
+<div class="shoutouts-section section">
     <div id="youtube-shoutouts">
         <h2>YouTube Creator Shoutouts</h2>
         <p id="lastUpdatedYouTube"></p> <!-- Display last updated date and time here -->
@@ -140,8 +138,8 @@
 </div>
         
 <!-- Latest TikTok Video Section -->
-<div class="widget" id="latest-tiktok-section section" draggable="true">
-    <h2>My Latest TikTok</h2>
+        <div class="latest-tiktok-section section">
+            <h2>My Latest TikTok</h2>
             <div class="tiktok-embed-container">
                 <blockquote class="tiktok-embed" 
                     cite="https://www.tiktok.com/@busarmydude/video/7456651075861482798" 
@@ -155,10 +153,8 @@
                 <script async src="https://www.tiktok.com/embed.js"></script>
             </div>
         </div>
-        
         <!-- Links Section -->
-        <div class="widget" id="links-section section" draggable="true">
-            <h3>Links</h3>
+        <div class="links-section section">
             <div class="links">
                 <a href="https://riverstechstore24.wordpress.com/" target="_blank">River's Tech Blog</a>
                 <a href="https://rivers-merch-store.printify.me/products" target="_blank">Merch Store (Printify)</a>
@@ -169,9 +165,8 @@
             </div>
         </div>
 
-<div class="widget" id="countdown-section" draggable="true">
+<div class="countdown-section">
     <h2>Countdown to my 20th birthday</h2>
-
     <div class="countdown-container">
         <div class="countdown-item">
             <span id="countdown-days" class="countdown-number">0</span>
@@ -193,9 +188,9 @@
 </div>
         
         <!-- Tech Section -->
-         <div class="widget" id="tech-section" draggable="true">
+        <div class="tech-section section">
             <h2>Tech Information</h2>
-                
+            
             <!-- iPhone Section -->
             <div class="tech-item">
                 <h3>iPhone 16 Pro</h3>
@@ -244,7 +239,7 @@
         </div>
 
         <!-- Disabilities Section -->
-        <div class="widget" id="disabilities-section" draggable="true">
+        <div class="disabilities-section section">
             <h2>Disabilities</h2>
             <p>I have the following disabilities:</p>
             <ul>
@@ -260,48 +255,47 @@
     </div>
 
 <!-- Random Facts Section -->
-<div class="widget" id="random-facts-section" draggable="true">
+<section id="randomFacts">
   <h2>Random Fun Fact / Quote</h2>
-  <div class="widget" id="randomFacts">
   <p id="randomFactText">Loading...</p>
 </section>
     
 <!-- Version Panel Section (Add this just before your footer) -->
-<div class="widget" id="version-info-section" draggable="false">
+<div class="version-info-section">
     <div class="version-header">Version Information</div>
-    <div class="version-number">Version: v1.7.0</div>
-    <div class="build-number">Build: 2025.1.8</div>
+    <div class="version-number">Version: v1.6.0</div>
+    <div class="build-number">Build: 2025.1.6</div>
     <div class="device-info">Device: Loading...</div>
     <div class="update-time">Current Date and Time: Loading...</div>
     <div class="current-user">Current User's Login: BusArmyDude</div>
     <div class="countdown">Page refreshing in: 60 seconds</div>
 </div>
-    
-    <!-- Footer -->
-      <div id="footer" class="widget no-drag">
-    <p>&copy; 2025 Bus Army Dude. All Rights Reserved</p>
-  </div>
 
-    <script src="script.js"></script>
-    <body class="dark-mode">
-</body>
-</html>
-      
 <!-- Copy Protection Notice -->
-<div class="widget no-drag" id="copy-protection-notice">
-    <p>Copying and pasting is disabled on this website.</p>
-</div>
+    <div class="copy-protection-message">
+        <p>Copying and pasting is disabled on this website.</p>
+    </div>
 
 <!-- Legal Protection Notice -->
-<div class="widget no-drag" id="legal-notice">
+<div class="legal-protection-message">
     <p>This repository is protected by copyright laws. You may not clone, fork, or redistribute this repository in any form. Unauthorized use of the repository may result in legal action. Any violation of these terms will be subject to legal action and prosecution to the fullest extent of the law.</p>
 </div>
 
 
 <!-- Watermark text (hidden by default, only appears when printing) -->
     <div class="watermark">Watermark Text</div>
-    <div class="widget no-drag" id="watermark">
+
     <div class="content">
         <h1>Welcome to My Website</h1>
         <p>This content is protected by a watermark. Unauthorized use is prohibited.</p>
     </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Bus Army Dude. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <body class="dark-mode">
+</body>
+</html>
