@@ -361,7 +361,7 @@ youtubeShoutouts.init();
 });
 
 // Manually set the last updated date and time (example in EST timezone)
-const lastUpdatedDate = "Wed, Jan 8, 2025";  // Set the date here (Day of the Weeek, Month, Day, Year)
+const lastUpdatedDate = "Wed, Jan 8, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
 const lastUpdatedTime = "9:53 AM";    // Set the time here (12-hour format)
 
 // Combine the date and time into a single string for parsing
@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const options = {
       weekday: 'short',
       year: 'numeric',
-      month: 'numeric',
+      month: 'short',
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
       hour12: true
     };
 
-    // Format and display the converted time
+    // Format and display the converted time as "Wed, Jan 8, 2025, 9:51:01 AM"
     const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
 
     // Set the content of the "Last Updated" text
