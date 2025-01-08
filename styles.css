@@ -1078,13 +1078,13 @@ body {
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-20%, -20%) rotate(-45deg); /* Adjusted translation and rotation */
-        font-size: 120px; /* Larger font size for better visibility */
+        transform: translate(-50%, -50%) rotate(-45deg); /* Center and rotate */
+        font-size: 80px; /* Adjust font size for fitting diagonally */
         font-weight: bold;
-        color: rgba(255, 0, 0, 0.7); /* Red color with some transparency */
+        color: rgba(255, 0, 0, 0.1); /* Red color with higher transparency */
         pointer-events: none;
         z-index: 9999;
-        white-space: nowrap;
+        white-space: nowrap; /* Ensure the text stays in one line */
         user-select: none; /* Prevent user selection */
     }
 
