@@ -1100,6 +1100,25 @@ body {
     }
 }
 
+/* Random Facts Styling */
+#randomFacts {
+  background-color: var(--content-bg);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#randomFacts h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+#randomFactText {
+  font-size: 1.2em;
+  font-style: italic;
+}
+
 /* Footer */
 footer {
     text-align: center;
