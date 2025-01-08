@@ -393,3 +393,23 @@ document.addEventListener("DOMContentLoaded", () => {
     lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Define an array of fun facts or quotes
+  const factsAndQuotes = [
+    "Did you know? Honey never spoils.",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "A day without laughter is a day wasted. - Charlie Chaplin",
+    "Be the change that you wish to see in the world. - Mahatma Gandhi",
+    "Did you know? The Eiffel Tower can be 15 cm taller during the summer."
+  ];
+
+  // Get a random fact or quote from the array
+  const randomFact = factsAndQuotes[Math.floor(Math.random() * factsAndQuotes.length)];
+
+  // Display the random fact/quote in the HTML element
+  const randomFactTextElement = document.querySelector("#randomFactText");
+  if (randomFactTextElement) {
+    randomFactTextElement.textContent = randomFact;
+  }
+});
