@@ -155,8 +155,10 @@ window.onload = function() {
             { username: 'tatechtips', isVerified: true, followers: '3.1M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
             // Add more shoutouts here...
         ],
+        lastUpdatedTime: '2025-01-08T09:49:20', // Manually set the last updated date and time
         init() {
             this.createShoutoutCards();
+            this.setLastUpdatedTime();
         },
         createShoutoutCards() {
             const container = document.querySelector('.creator-grid');
@@ -184,6 +186,26 @@ window.onload = function() {
                 container.appendChild(card);
             });
         }
+        setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('last-updated-timestamp');
+        if (!lastUpdatedElement) return;
+
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+            timeZone: userTimeZone,
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+    }
+};
     };
 
 const instagramShoutouts = {
