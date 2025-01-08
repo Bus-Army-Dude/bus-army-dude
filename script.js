@@ -413,3 +413,35 @@ document.addEventListener("DOMContentLoaded", () => {
     randomFactTextElement.textContent = randomFact;
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const widgets = document.querySelectorAll('.widget');
+  let draggedWidget = null;
+
+  widgets.forEach(widget => {
+    widget.setAttribute('draggable', true);
+
+    widget.addEventListener('dragstart', (event) => {
+      draggedWidget = widget;
+      event.dataTransfer.setData('text/plain', widget.id);
+    });
+
+    widget.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    });
+
+    widget.addEventListener('drop', (event) => {
+      event.preventDefault();
+      if (draggedWidget !== widget) {
+        let draggedIndex = Array.from(widgets).indexOf(draggedWidget);
+        let targetIndex = Array.from(widgets).indexOf(widget);
+
+        if (draggedIndex < targetIndex) {
+          widget.parentNode.insertBefore(draggedWidget, widget.nextSibling);
+        } else {
+          widget.parentNode.insertBefore(draggedWidget, widget);
+        }
+      }
+    });
+  });
+});
