@@ -415,33 +415,39 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  const widgets = document.querySelectorAll('.widget');
-  let draggedWidget = null;
+  const widgetSections = document.querySelectorAll('.widget-section');
+  
+  widgetSections.forEach(section => {
+    const widgets = section.querySelectorAll('.widget');
+    let draggedWidget = null;
 
-  widgets.forEach(widget => {
-    widget.setAttribute('draggable', true);
+    widgets.forEach(widget => {
+      widget.setAttribute('draggable', true);
 
-    widget.addEventListener('dragstart', (event) => {
-      draggedWidget = widget;
-      event.dataTransfer.setData('text/plain', widget.id);
-    });
+      widget.addEventListener('dragstart', (event) => {
+        draggedWidget = widget;
+        event.dataTransfer.setData('text/plain', widget.id);
+      });
 
-    widget.addEventListener('dragover', (event) => {
-      event.preventDefault();
-    });
+      section.addEventListener('dragover', (event) => {
+        event.preventDefault();
+      });
 
-    widget.addEventListener('drop', (event) => {
-      event.preventDefault();
-      if (draggedWidget !== widget) {
-        let draggedIndex = Array.from(widgets).indexOf(draggedWidget);
-        let targetIndex = Array.from(widgets).indexOf(widget);
+      section.addEventListener('drop', (event) => {
+        event.preventDefault();
+        const targetWidget = event.target.closest('.widget');
+        if (draggedWidget !== targetWidget && targetWidget) {
+          let draggedIndex = Array.from(widgets).indexOf(draggedWidget);
+          let targetIndex = Array.from(widgets).indexOf(targetWidget);
 
-        if (draggedIndex < targetIndex) {
-          widget.parentNode.insertBefore(draggedWidget, widget.nextSibling);
-        } else {
-          widget.parentNode.insertBefore(draggedWidget, widget);
+          if (draggedIndex < targetIndex) {
+            targetWidget.parentNode.insertBefore(draggedWidget, targetWidget.nextSibling);
+          } else {
+            targetWidget.parentNode.insertBefore(draggedWidget, targetWidget);
+          }
         }
-      }
+      });
     });
   });
 });
+
