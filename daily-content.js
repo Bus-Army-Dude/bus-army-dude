@@ -1,136 +1,115 @@
-// Facts "On This Day" (365 entries, 1 per day)
+// Function to check if it's a leap year
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+// Function to get the day of the year
+function getDayOfYear(date) {
+    const start = new Date(date.getFullYear(), 0, 0);
+    const diff = date - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.floor(diff / oneDay);
+}
+
+// Fact and Quote arrays for 365 (or 366) days
 const facts = [
-  "On This Day (Jan 1): The first-ever Rose Bowl football game is played in Pasadena, California in 1902.",
-  "On This Day (Jan 2): Georgia is admitted to the United States as the 4th state in 1788.",
-  // Add more facts for each day of the year...
+    "Did you know? The longest recorded flight of a chicken is 13 seconds.",
+    "A panda’s diet consists of 99% bamboo.",
+    "Bananas are berries, but strawberries aren't.",
+    "The Eiffel Tower can be 15 cm taller during the summer.",
+    "Octopuses have three hearts.",
+    // Add 365 or 366 facts here
 ];
 
-// Motivational and Disability-related Quotes (grouped by disability types)
-const disabilityQuotes = {
-  autism: [
-    "Autism: 'Autism is not a disability, it’s a different ability.'",
-    "Autism: 'I see people with autism as a bright rainbow with many hues.'",
-    // Add more Autism quotes...
-  ],
-  adhd: [
-    "ADHD: 'ADHD is not about knowing what to do but about doing what you know.'",
-    "ADHD: 'Focus on progress, not perfection.'",
-    // Add more ADHD quotes...
-  ],
-  anxiety: [
-    "Anxiety: 'You are stronger than your anxiety, even on the days it feels overwhelming.'",
-    "Anxiety: 'Your anxiety is lying to you.'",
-    // Add more Anxiety quotes...
-  ],
-  depression: [
-    "Depression: 'Even the darkest night will end, and the sun will rise.'",
-    "Depression: 'Your struggle today will make you stronger tomorrow.'",
-    // Add more Depression quotes...
-  ],
-  ptsd: [
-    "PTSD: 'Your trauma does not define you, it is your strength to keep moving that does.'",
-    "PTSD: 'Healing takes time, and asking for help is a brave step.'",
-    // Add more PTSD quotes...
-  ],
-  ocd: [
-    "OCD: 'OCD is a challenge, not a choice.'",
-    "OCD: 'Embrace your unique mind, even with its quirks.'",
-    // Add more OCD quotes...
-  ],
-  bipolar: [
-    "Bipolar Disorder: 'Bipolar disorder is not a weakness, it’s just a part of the journey.'",
-    "Bipolar Disorder: 'You are not your highs or lows, you are the balance in between.'",
-    // Add more Bipolar Disorder quotes...
-  ],
-  learningDisabilities: [
-    "Learning Disabilities: 'Dyslexia doesn’t define you. It gives you a unique way to view the world.'",
-    "Learning Disabilities: 'Everyone learns differently. Embrace your strengths.'",
-    // Add more Learning Disabilities quotes...
-  ],
-  epilepsy: [
-    "Epilepsy: 'You are not defined by your seizures, you are defined by your resilience.'",
-    "Epilepsy: 'Strength is not the absence of seizures, but the courage to live despite them.'",
-    // Add more Epilepsy quotes...
-  ],
-  physicalDisabilities: [
-    "Physical Disability: 'Your strength is seen in how you adapt, not in what you can’t do.'",
-    "Physical Disability: 'Your wheelchair, crutches, or braces don’t define you, your spirit does.'",
-    // Add more Physical Disabilities quotes...
-  ],
-  chronicIllness: [
-    "Chronic Illness: 'Even on the hardest days, your perseverance shines.'",
-    "Chronic Illness: 'Fibromyalgia is a part of you, but it doesn’t define all of you.'",
-    // Add more Chronic Illness quotes...
-  ],
-  hearingImpairment: [
-    "Hearing Impairment: 'Your voice is strong even when it’s quiet.'",
-    "Hearing Impairment: 'The world needs to listen more than speak.'",
-    // Add more Hearing Impairment quotes...
-  ],
-  visualImpairment: [
-    "Visual Impairment: 'Vision loss doesn’t dim your light; it brightens your perspective.'",
-    "Visual Impairment: 'True vision comes from within.'",
-    // Add more Visual Impairment quotes...
-  ],
-  speechImpairment: [
-    "Speech Impairment: 'The power of your words is not in how they are spoken but in their meaning.'",
-    "Speech Impairment: 'Everyone has a voice. Let yours be heard in your own way.'",
-    // Add more Speech Impairment quotes...
-  ]
-  // Add more categories for other disabilities...
+const quotes = [
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "It always seems impossible until it's done. - Nelson Mandela",
+    // Add 365 or 366 quotes here
+];
+
+// Disability Sections (can be expanded with more details for each type)
+const disabilities = {
+    "Learning Disabilities": [
+        "Learning disabilities affect the brain's ability to process information.",
+        "Common learning disabilities include dyslexia, dyscalculia, and dysgraphia."
+    ],
+    "Intellectual Disabilities": [
+        "Intellectual disabilities can impact an individual's cognitive abilities and adaptive behavior.",
+        "They can be caused by genetic conditions, brain injury, or environmental factors."
+    ],
+    "Speech Impairments": [
+        "Speech impairments can affect the clarity of speech or the ability to produce sounds correctly.",
+        "Common speech impairments include stuttering and apraxia of speech."
+    ],
+    "Visual Impairments": [
+        "Visual impairments can range from partial blindness to total blindness.",
+        "It affects an individual's ability to see, which can impact daily activities and mobility."
+    ],
+    "Autism": [
+        "Autism is a neurodevelopmental disorder that affects social interactions, communication, and behavior.",
+        "Individuals with autism may have unique strengths, such as attention to detail."
+    ],
+    "Asperger Syndrome": [
+        "Asperger syndrome is a form of autism spectrum disorder characterized by challenges in social interaction.",
+        "Individuals with Asperger syndrome often have average to above-average intelligence."
+    ],
+    "Deafness or Hard of Hearing": [
+        "Deafness or hearing impairments affect an individual's ability to perceive sounds.",
+        "There are different degrees of hearing loss, ranging from mild to profound."
+    ],
+    "Mental Health Conditions": [
+        "Mental health conditions can affect a person's thoughts, emotions, and behaviors.",
+        "Common mental health conditions include anxiety disorders, depression, and schizophrenia."
+    ],
+    "Acquired Brain Injury": [
+        "Acquired brain injuries are brain injuries that occur after birth, typically from trauma or illness.",
+        "Symptoms can include cognitive, physical, and emotional changes."
+    ],
+    "Physical Disabilities": [
+        "Physical disabilities affect a person's ability to perform physical tasks or movements.",
+        "They may be caused by conditions such as paralysis, amputation, or cerebral palsy."
+    ],
+    "Attention Deficit Hyperactivity Disorder (ADHD)": [
+        "ADHD is characterized by inattention, hyperactivity, and impulsivity.",
+        "Individuals with ADHD may have difficulty staying focused and managing impulses."
+    ],
+    "Neurodevelopmental Motor Disorders": [
+        "Neurodevelopmental motor disorders affect an individual's movement skills.",
+        "Conditions such as cerebral palsy and developmental coordination disorder are examples."
+    ]
 };
 
-// Function to check if a year is a leap year
-function isLeapYear(year) {
-  return (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0));
+// Function to update the fact, quote, and disability section for the day
+function updateFactQuoteAndDisability() {
+    const currentDate = new Date();
+    const dayOfYear = getDayOfYear(currentDate);
+
+    // Adjust for leap year if needed
+    const isLeap = isLeapYear(currentDate.getFullYear());
+    const totalDays = isLeap ? 366 : 365;
+
+    // Ensure the day of the year is within the bounds of available facts and quotes
+    const factOfTheDay = facts[(dayOfYear - 1) % totalDays];
+    const quoteOfTheDay = quotes[(dayOfYear - 1) % totalDays];
+
+    // Get a random disability to display
+    const disabilityKeys = Object.keys(disabilities);
+    const randomDisability = disabilityKeys[Math.floor(Math.random() * disabilityKeys.length)];
+    const disabilityFacts = disabilities[randomDisability];
+
+    // Update the HTML content
+    document.getElementById("dailyFact").innerText = factOfTheDay;
+    document.getElementById("dailyQuote").innerText = quoteOfTheDay;
+    document.getElementById("disabilityTitle").innerText = randomDisability;
+    document.getElementById("disabilityFacts").innerHTML = disabilityFacts.map(fact => `<li>${fact}</li>`).join("");
+
+    // Store the date so we can update again tomorrow
+    localStorage.setItem('lastUpdatedDate', currentDate.toISOString());
+    document.getElementById("currentDate").innerText = currentDate.toLocaleDateString();
 }
 
-// Function to get the daily index, considering leap years
-function getDailyIndex() {
-  const startDate = new Date('2025-01-01'); // Starting date (January 1, 2025)
-  const currentDate = new Date();
-
-  // Calculate the number of days between the two dates
-  const timeDifference = currentDate - startDate;
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-  // Adjust for leap years
-  let leapYearAdjustment = 0;
-
-  // Count leap years between start date and current date
-  for (let year = 2025; year <= currentDate.getFullYear(); year++) {
-    if (isLeapYear(year)) {
-      leapYearAdjustment += 1;
-    }
-  }
-
-  // Account for leap years and loop every 365 or 366 days
-  const totalDays = daysDifference + leapYearAdjustment;
-  return totalDays % 365; // Loop every 365 days (ignoring Feb 29 after this)
-}
-
-// Function to get today's fact
-function getTodaysFact() {
-  const index = getDailyIndex();
-  return facts[index];
-}
-
-// Function to get a random quote from all disability categories
-function getRandomDisabilityQuote() {
-  const categories = Object.values(disabilityQuotes);
-  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-  const randomQuote = randomCategory[Math.floor(Math.random() * randomCategory.length)];
-  return randomQuote;
-}
-
-// Function to get today's date and time based on user's timezone
-function getTodaysDate() {
-  const currentDate = new Date();
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'short' };
-  return currentDate.toLocaleDateString('en-US', options);
-}
-
-// Display the date, fact, and quote
-document.getElementById('currentDate').innerText = getTodaysDate();
-document.getElementById('dailyFact').innerText = getTodaysFact();
-document.getElementById('dailyQuote').innerText = getRandomDisabilityQuote();
+// Initialize the daily content
+updateFactQuoteAndDisability();
