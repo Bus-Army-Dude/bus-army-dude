@@ -111,10 +111,12 @@ function updateFactQuoteAndDisability() {
         const disabilityFacts = disabilities[randomDisability];
 
         // Update the HTML content
-        document.getElementById("dailyFact").innerText = factOfTheDay;
-        document.getElementById("dailyQuote").innerText = quoteOfTheDay;
-        document.getElementById("disabilityTitle").innerText = randomDisability;
-        document.getElementById("disabilityFacts").innerHTML = disabilityFacts.map(fact => `<li>${fact}</li>`).join("");
+        document.getElementById("dailyFact").innerText = factOfTheDay || "No fact available for today.";
+        document.getElementById("dailyQuote").innerText = quoteOfTheDay || "No quote available for today.";
+        document.getElementById("disabilityTitle").innerText = randomDisability || "No disability of the day.";
+        document.getElementById("disabilityFacts").innerHTML = disabilityFacts && disabilityFacts.length > 0 
+            ? disabilityFacts.map(fact => `<li>${fact}</li>`).join("")
+            : "<li>No facts available for today.</li>";
 
         // Store the date so we can update again tomorrow
         localStorage.setItem('lastUpdatedDate', currentDate.toISOString());
