@@ -395,22 +395,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Define an array of fun facts or quotes
-  const factsAndQuotes = [
-    "Did you know? Honey never spoils.",
-    "The only way to do great work is to love what you do. - Steve Jobs",
-    "A day without laughter is a day wasted. - Charlie Chaplin",
-    "Be the change that you wish to see in the world. - Mahatma Gandhi",
-    "Did you know? The Eiffel Tower can be 15 cm taller during the summer."
-  ];
+// Function to fetch and display useful random fact (from Numbers API)
+async function fetchUsefulFact() {
+    try {
+        const response = await fetch('http://numbersapi.com/random/trivia');
+        const fact = await response.text();
+        document.getElementById('random-fact').textContent = fact;
+    } catch (error) {
+        console.error('Error fetching useful fact:', error);
+        document.getElementById('random-fact').textContent = 'Failed to fetch a useful fact.';
+    }
+}
 
-  // Get a random fact or quote from the array
-  const randomFact = factsAndQuotes[Math.floor(Math.random() * factsAndQuotes.length)];
+// Function to fetch and display random quote (same as before)
+async function fetchRandomQuote() {
+    try {
+        const response = await fetch('https://api.quotable.io/random');
+        const data = await response.json();
+        document.getElementById('random-quote').textContent = `"${data.content}" - ${data.author}`;
+    } catch (error) {
+        console.error('Error fetching quote:', error);
+        document.getElementById('random-quote').textContent = 'Failed to fetch a quote.';
+    }
+}
 
-  // Display the random fact/quote in the HTML element
-  const randomFactTextElement = document.querySelector("#randomFactText");
-  if (randomFactTextElement) {
-    randomFactTextElement.textContent = randomFact;
-  }
+// Automatically fetch fact and quote when page loads
+window.addEventListener('load', () => {
+    fetchUsefulFact();
+    fetchRandomQuote();
 });
+
