@@ -997,7 +997,7 @@ body {
 /* Facts and Quotes CSS */
 .daily-section {
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--bg-color);
     border: 1px solid #ddd;
     border-radius: 8px;
     margin: 20px 0;
