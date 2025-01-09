@@ -82,32 +82,45 @@ const disabilities = {
     ]
 };
 
+// Function to check if it's a new day
+function isNewDay(lastUpdated) {
+    const currentDate = new Date();
+    return currentDate.toDateString() !== new Date(lastUpdated).toDateString();
+}
+
 // Function to update the fact, quote, and disability section for the day
 function updateFactQuoteAndDisability() {
     const currentDate = new Date();
-    const dayOfYear = getDayOfYear(currentDate);
+    const lastUpdatedDate = localStorage.getItem('lastUpdatedDate');
+    
+    // If it's a new day, update the content
+    if (!lastUpdatedDate || isNewDay(lastUpdatedDate)) {
+        const dayOfYear = getDayOfYear(currentDate);
+        
+        // Adjust for leap year if needed
+        const isLeap = isLeapYear(currentDate.getFullYear());
+        const totalDays = isLeap ? 366 : 365;
 
-    // Adjust for leap year if needed
-    const isLeap = isLeapYear(currentDate.getFullYear());
-    const totalDays = isLeap ? 366 : 365;
+        // Ensure the day of the year is within the bounds of available facts and quotes
+        const factOfTheDay = facts[(dayOfYear - 1) % totalDays];
+        const quoteOfTheDay = quotes[(dayOfYear - 1) % totalDays];
 
-    // Ensure the day of the year is within the bounds of available facts and quotes
-    const factOfTheDay = facts[(dayOfYear - 1) % totalDays];
-    const quoteOfTheDay = quotes[(dayOfYear - 1) % totalDays];
+        // Get a random disability to display
+        const disabilityKeys = Object.keys(disabilities);
+        const randomDisability = disabilityKeys[Math.floor(Math.random() * disabilityKeys.length)];
+        const disabilityFacts = disabilities[randomDisability];
 
-    // Get a random disability to display
-    const disabilityKeys = Object.keys(disabilities);
-    const randomDisability = disabilityKeys[Math.floor(Math.random() * disabilityKeys.length)];
-    const disabilityFacts = disabilities[randomDisability];
+        // Update the HTML content
+        document.getElementById("dailyFact").innerText = factOfTheDay;
+        document.getElementById("dailyQuote").innerText = quoteOfTheDay;
+        document.getElementById("disabilityTitle").innerText = randomDisability;
+        document.getElementById("disabilityFacts").innerHTML = disabilityFacts.map(fact => `<li>${fact}</li>`).join("");
 
-    // Update the HTML content
-    document.getElementById("dailyFact").innerText = factOfTheDay;
-    document.getElementById("dailyQuote").innerText = quoteOfTheDay;
-    document.getElementById("disabilityTitle").innerText = randomDisability;
-    document.getElementById("disabilityFacts").innerHTML = disabilityFacts.map(fact => `<li>${fact}</li>`).join("");
+        // Store the date so we can update again tomorrow
+        localStorage.setItem('lastUpdatedDate', currentDate.toISOString());
+    }
 
-    // Store the date so we can update again tomorrow
-    localStorage.setItem('lastUpdatedDate', currentDate.toISOString());
+    // Display current date
     document.getElementById("currentDate").innerText = currentDate.toLocaleDateString();
 }
 
