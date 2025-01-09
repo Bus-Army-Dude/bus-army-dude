@@ -1100,68 +1100,6 @@ body {
     }
 }
 
-/* Reset default styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
-  padding: 20px;
-}
-
-/* Container for all content */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Style for the date section */
-.date-section {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.date-section h2 {
-  font-size: 28px;
-  color: #2a2a2a;
-  margin-bottom: 15px;
-}
-
-/* Style for each fact and quote section */
-.fact-quote-section {
-  margin-bottom: 30px;
-}
-
-.fact-quote-section h2 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #2a2a2a;
-  margin-bottom: 10px;
-}
-
-.daily-text {
-  font-size: 18px;
-  line-height: 1.6;
-  color: #555;
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
-
-.daily-text:hover {
-  background-color: #e8e8e8;
-}
-
 /* Footer */
 footer {
     text-align: center;
