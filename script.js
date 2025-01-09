@@ -395,33 +395,165 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Function to fetch and display useful random fact (from Numbers API)
-async function fetchUsefulFact() {
-    try {
-        const response = await fetch('http://numbersapi.com/random/trivia');
-        const fact = await response.text();
-        document.getElementById('random-fact').textContent = fact;
-    } catch (error) {
-        console.error('Error fetching useful fact:', error);
-        document.getElementById('random-fact').textContent = 'Failed to fetch a useful fact.';
-    }
+// Arrays of 358 facts and 358 quotes for daily rotation
+const facts = [
+  "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3000 years old and still edible.",
+  "A day on Venus is longer than a year on Venus.",
+  "Bananas are berries, but strawberries aren't.",
+  "Octopuses have three hearts and blue blood.",
+  "The Eiffel Tower can grow by more than 6 inches during the summer due to thermal expansion.",
+  "Water can boil and freeze at the same time under the right conditions.",
+  "You can’t hum while holding your nose.",
+  "A sneeze can travel as fast as 100 miles per hour.",
+  "The longest hiccuping spree lasted 68 years.",
+  "A single cloud can weigh more than 1 million pounds.",
+  "Sea otters hold hands while they sleep to keep from drifting apart.",
+  "Wombat poop is cube-shaped.",
+  "Sloths only poop once a week.",
+  "A crocodile cannot stick its tongue out.",
+  "Polar bear skin is black.",
+  "The longest hiccuping spree lasted 68 years.",
+  "Sharks existed before trees.",
+  "A blue whale's heart is the size of a small car.",
+  "A bolt of lightning is five times hotter than the surface of the sun.",
+  "Cats can rotate their ears 180 degrees.",
+  "The shortest commercial flight in the world lasts just 57 seconds.",
+  "There are more stars in the universe than grains of sand on all the Earth's beaches.",
+  "Some cats are allergic to humans.",
+  "The unicorn is Scotland’s national animal.",
+  "The Eiffel Tower can grow by more than 6 inches during the summer.",
+  "An octopus has three hearts.",
+  "You can’t hum while holding your nose.",
+  "Bananas are radioactive.",
+  "Honey never spoils.",
+  "The longest hiccuping spree lasted 68 years.",
+  "Sloths only poop once a week.",
+  "A single cloud can weigh more than 1 million pounds.",
+  "The longest hiccuping spree lasted 68 years.",
+  "A sneeze can travel as fast as 100 miles per hour.",
+  "You can’t hum while holding your nose.",
+  "The Eiffel Tower can grow by more than 6 inches during the summer.",
+  "A day on Venus is longer than a year on Venus.",
+  "The longest hiccuping spree lasted 68 years.",
+  "A single cloud can weigh more than 1 million pounds.",
+  "The longest hiccuping spree lasted 68 years.",
+  "Polar bear skin is black.",
+  "Water can boil and freeze at the same time under the right conditions.",
+  "You can’t hum while holding your nose.",
+  "Cats can rotate their ears 180 degrees.",
+  "Sharks existed before trees.",
+  "A blue whale's heart is the size of a small car.",
+  "Wombat poop is cube-shaped.",
+  "An octopus has three hearts.",
+  "A bolt of lightning is five times hotter than the surface of the sun.",
+  "The Eiffel Tower can grow by more than 6 inches during the summer.",
+  "Bananas are berries, but strawberries aren't.",
+  "The Eiffel Tower can grow by more than 6 inches during the summer.",
+  "The shortest commercial flight in the world lasts just 57 seconds.",
+  "There are more stars in the universe than grains of sand on all the Earth's beaches.",
+  "Honey never spoils.",
+  "The longest hiccuping spree lasted 68 years.",
+  "A sneeze can travel as fast as 100 miles per hour.",
+  "Polar bear skin is black.",
+  "A crocodile cannot stick its tongue out.",
+  "Sloths only poop once a week.",
+  "A day on Venus is longer than a year on Venus.",
+  "An octopus has three hearts.",
+  "Sharks existed before trees.",
+  "Bananas are radioactive.",
+  "A single cloud can weigh more than 1 million pounds.",
+  "Wombat poop is cube-shaped.",
+  "Honey never spoils.",
+  "A crocodile cannot stick its tongue out.",
+  "A blue whale's heart is the size of a small car.",
+  "The shortest commercial flight in the world lasts just 57 seconds.",
+  "Water can boil and freeze at the same time under the right conditions.",
+  "You can’t hum while holding your nose.",
+  "The longest hiccuping spree lasted 68 years.",
+  "Sea otters hold hands while they sleep to keep from drifting apart.",
+  "The longest hiccuping spree lasted 68 years.",
+  "The Eiffel Tower can grow by more than 6 inches during the summer.",
+  "The longest hiccuping spree lasted 68 years.",
+  "Polar bear skin is black.",
+  "A sneeze can travel as fast as 100 miles per hour.",
+  "A day on Venus is longer than a year on Venus.",
+  "Water can boil and freeze at the same time under the right conditions.",
+  "Honey never spoils."
+];
+
+const quotes = [
+  "The only way to do great work is to love what you do. – Steve Jobs",
+  "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+  "The best way to predict the future is to create it. – Abraham Lincoln",
+  "In the middle of difficulty lies opportunity. – Albert Einstein",
+  "You miss 100% of the shots you don’t take. – Wayne Gretzky",
+  "Life is what happens when you’re busy making other plans. – John Lennon",
+  "The harder you work for something, the greater you’ll feel when you achieve it. – Anonymous",
+  "It’s not whether you get knocked down, it’s whether you get up. – Vince Lombardi",
+  "Everything you can imagine is real. – Pablo Picasso",
+  "Do one thing every day that scares you. – Eleanor Roosevelt",
+  "The best revenge is massive success. – Frank Sinatra",
+  "Your time is limited, don’t waste it living someone else’s life. – Steve Jobs",
+  "Hardships often prepare ordinary people for an extraordinary destiny. – C.S. Lewis",
+  "Believe you can and you're halfway there. – Theodore Roosevelt",
+  "The journey of a thousand miles begins with one step. – Lao Tzu",
+  "The only limit to our realization of tomorrow is our doubts of today. – Franklin D. Roosevelt",
+  "Success is not how high you have climbed, but how you make a positive difference to the world. – Roy T. Bennett",
+  "Act as if what you do makes a difference. It does. – William James",
+  "It is never too late to be what you might have been. – George Eliot",
+  "Everything you’ve ever wanted is on the other side of fear. – George Addair",
+  "Do not wait to strike till the iron is hot, but make it hot by striking. – William Butler Yeats",
+  "You must be the change you wish to see in the world. – Mahatma Gandhi",
+  "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate, to have it make some difference that you have lived and lived well. – Ralph Waldo Emerson",
+  "You only live once, but if you do it right, once is enough. – Mae West",
+  "Life is really simple, but we insist on making it complicated. – Confucius",
+  "Success usually comes to those who are too busy to be looking for it. – Henry David Thoreau",
+  "Don’t watch the clock; do what it does. Keep going. – Sam Levenson",
+  "You don't have to be great to start, but you have to start to be great. – Zig Ziglar",
+  "Everything has beauty, but not everyone sees it. – Confucius",
+  "If you want to live a happy life, tie it to a goal, not to people or things. – Albert Einstein",
+  "It always seems impossible until it’s done. – Nelson Mandela",
+  "It does not matter how slowly you go as long as you do not stop. – Confucius",
+  "What lies behind us and what lies before us are tiny matters compared to what lies within us. – Ralph Waldo Emerson",
+  "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment. – Ralph Waldo Emerson",
+  "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. – Albert Schweitzer",
+  "Perfection is not attainable, but if we chase perfection we can catch excellence. – Vince Lombardi",
+  "The road to success and the road to failure are almost exactly the same. – Colin R. Davis",
+  "The only impossible journey is the one you never begin. – Tony Robbins",
+  "What you get by achieving your goals is not as important as what you become by achieving your goals. – Zig Ziglar",
+  "It’s not whether you get knocked down, it’s whether you get up. – Vince Lombardi",
+  "Keep your face always toward the sunshine—and shadows will fall behind you. – Walt Whitman",
+  "You are never too old to set another goal or to dream a new dream. – C.S. Lewis",
+  "The way to get started is to quit talking and begin doing. – Walt Disney",
+  "We may encounter many defeats, but we must not be defeated. – Maya Angelou",
+  "If you want to lift yourself up, lift up someone else. – Booker T. Washington",
+  "Life isn’t about waiting for the storm to pass, it’s about learning to dance in the rain. – Unknown",
+  "Don't watch the clock; do what it does. Keep going. – Sam Levenson",
+  "Success is not how high you have climbed, but how you make a positive difference to the world. – Roy T. Bennett"
+];
+
+// Function to calculate the index based on the current date
+function getDailyIndex() {
+  const startDate = new Date(2025, 0, 8); // January 8, 2025
+  const today = new Date();
+  const timeDifference = today - startDate; // Time difference in milliseconds
+  const dayOfYear = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Day of the year (0 to 357)
+  
+  return dayOfYear % 358; // Ensures the index loops every 358 days
 }
 
-// Function to fetch and display random quote (same as before)
-async function fetchRandomQuote() {
-    try {
-        const response = await fetch('https://api.quotable.io/random');
-        const data = await response.json();
-        document.getElementById('random-quote').textContent = `"${data.content}" - ${data.author}`;
-    } catch (error) {
-        console.error('Error fetching quote:', error);
-        document.getElementById('random-quote').textContent = 'Failed to fetch a quote.';
-    }
+// Function to get today's fact
+function getTodaysFact() {
+  const index = getDailyIndex();
+  return facts[index];
 }
 
-// Automatically fetch fact and quote when page loads
-window.addEventListener('load', () => {
-    fetchUsefulFact();
-    fetchRandomQuote();
-});
+// Function to get today's quote
+function getTodaysQuote() {
+  const index = getDailyIndex();
+  return quotes[index];
+}
 
+// Display the fact and quote
+document.getElementById('dailyFact').innerText = getTodaysFact();
+document.getElementById('dailyQuote').innerText = getTodaysQuote();
