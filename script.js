@@ -266,9 +266,10 @@ const youtubeShoutouts = {
         { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.1M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
         { username: '@mrfatcheeto', isVerified: false, subscribers: '89K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
         { username: '@Badge502', isVerified: false, subscribers: '55.8K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
+        { username: '@Trafficlightdoctor', isVerified: false, subscribers: '150K', nickname: 'Badge502', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-01-09T12:03:33', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-09T12:14:00', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
