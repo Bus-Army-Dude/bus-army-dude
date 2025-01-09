@@ -11,7 +11,7 @@ function getDayOfYear(date) {
     return Math.floor(diff / oneDay);
 }
 
-// Fact and Quote arrays for 365 (or 366) days
+// Arrays of facts and quotes
 const facts = [
     "Did you know? The longest recorded flight of a chicken is 13 seconds.",
     "A panda’s diet consists of 99% bamboo.",
@@ -30,7 +30,7 @@ const quotes = [
     // Add 365 or 366 quotes here
 ];
 
-// Disability Sections (can be expanded with more details for each type)
+// Disability categories with facts
 const disabilities = {
     "Learning Disabilities": [
         "Learning disabilities affect the brain's ability to process information.",
@@ -92,7 +92,7 @@ function isNewDay(lastUpdated) {
 function updateFactQuoteAndDisability() {
     const currentDate = new Date();
     const lastUpdatedDate = localStorage.getItem('lastUpdatedDate');
-    
+
     // If it's a new day, update the content
     if (!lastUpdatedDate || isNewDay(lastUpdatedDate)) {
         const dayOfYear = getDayOfYear(currentDate);
@@ -116,7 +116,7 @@ function updateFactQuoteAndDisability() {
         document.getElementById("disabilityTitle").innerText = randomDisability || "No disability of the day.";
         document.getElementById("disabilityFacts").innerHTML = disabilityFacts && disabilityFacts.length > 0 
             ? disabilityFacts.map(fact => `<li>${fact}</li>`).join("")
-            : "<li>No facts available for today.</li>";
+            : "<li>No facts available for today.";
 
         // Store the date so we can update again tomorrow
         localStorage.setItem('lastUpdatedDate', currentDate.toISOString());
