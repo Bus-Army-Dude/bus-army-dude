@@ -137,6 +137,7 @@ window.onload = function() {
             { username: 'lust__ryze', isVerified: false, followers: '1,038', nickname: 'Ryze', bio: 'Google pixel,Samsung, Apple Owner, Spam likes=Blocked', profilePic: 'images/lust_ryze.jpeg' },
             { username: 'busarmydude', isVerified: false, followers: '1,238', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
             { username: 'raisingramsey2023', isVerified: false, followers: '1,156', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
+            { username: 'trafficlightdoctor', isVerified: false, followers: '383.3K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
             { username: 'jerridc4', isVerified: false, followers: '417', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
             { username: 'jerridonthelot', isVerified: false, followers: '120', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
             { username: 'imparkerburton', isVerified: false, followers: '2.8M', nickname: 'Parker Burton', bio: 'That Android Guy, Business: parker@imparkerburton.com', profilePic: 'images/imparkerburton.jpeg' },
@@ -363,7 +364,7 @@ youtubeShoutouts.init();
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 9, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
-const lastUpdatedTime = "12:00 PM";    // Set the time here (12-hour format)
+const lastUpdatedTime = "12:08 PM";    // Set the time here (12-hour format)
 
 // Combine the date and time into a single string for parsing
 const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
