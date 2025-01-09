@@ -200,6 +200,7 @@ const instagramShoutouts = {
         { username: 'kaylee_mertens_', isVerified: false, followers: '787', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },    
         { username: 'meetmeinthemediacenter', isVerified: true, followers: '17K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },    
         { username: 'mrfattcheeto', isVerified: true, followers: '237K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },    
+        { username: 'trafficlightdoctor', isVerified: true, followers: '300K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },            
         // Add more Instagram creators as needed
     ],
     lastUpdatedTime: '2025-01-09T12:02:15', // Manually set the last updated date and time
