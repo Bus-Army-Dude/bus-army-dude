@@ -837,50 +837,50 @@ const quotes = [
 
 // Function to check if a year is a leap year
 function isLeapYear(year) {
-  return (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0));
+    return (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0));
 }
 
 // Function to get the daily index, considering leap years
 function getDailyIndex() {
-  const startDate = new Date('2025-01-01'); // Starting date (January 8, 2025)
-  const currentDate = new Date();
+    const startDate = new Date('2025-01-01'); // Starting date (January 1, 2025)
+    const currentDate = new Date();
 
-  // Calculate the number of days between the two dates
-  const timeDifference = currentDate - startDate;
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    // Calculate the number of days between the two dates
+    const timeDifference = currentDate - startDate;
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-  // Adjust for leap years
-  let leapYearAdjustment = 0;
+    // Adjust for leap years
+    let leapYearAdjustment = 0;
 
-  // Count leap years between start date and current date
-  for (let year = 2025; year <= currentDate.getFullYear(); year++) {
-    if (isLeapYear(year)) {
-      leapYearAdjustment += 1;
+    // Count leap years between start date and current date
+    for (let year = 2025; year <= currentDate.getFullYear(); year++) {
+        if (isLeapYear(year)) {
+            leapYearAdjustment += 1;
+        }
     }
-  }
 
-  // Account for leap years and loop every 365 or 366 days
-  const totalDays = daysDifference + leapYearAdjustment;
-  return totalDays % 365; // Loop every 365 days (ignoring Feb 29 after this)
+    // Account for leap years and loop every 365 or 366 days
+    const totalDays = daysDifference + leapYearAdjustment;
+    return totalDays % 365; // Loop every 365 days (ignoring Feb 29 after this)
 }
 
 // Function to get today's fact
 function getTodaysFact() {
-  const index = getDailyIndex();
-  return facts[index];
+    const index = getDailyIndex();
+    return facts[index];
 }
 
 // Function to get today's quote
 function getTodaysQuote() {
-  const index = getDailyIndex();
-  return quotes[index];
+    const index = getDailyIndex();
+    return quotes[index];
 }
 
 // Function to get today's date
 function getTodaysDate() {
-  const currentDate = new Date();
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  return currentDate.toLocaleDateString('en-US', options);
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return currentDate.toLocaleDateString('en-US', options);
 }
 
 // Display the date, fact, and quote
