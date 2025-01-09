@@ -1100,6 +1100,67 @@ body {
     }
 }
 
+/* General styling for both Quote of the Day and Daily Fact */
+#quote-of-the-day, #daily-fact {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #2c2f38; /* Dark background for consistency */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#quote-of-the-day h2, #daily-fact h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff; /* White text for titles */
+  margin-bottom: 10px;
+}
+
+#quote-of-the-day p, #daily-fact p {
+  font-size: 18px;
+  color: #e0e0e0; /* Light grey text for content */
+  line-height: 1.6;
+}
+
+/* Styling for Quote of the Day */
+#quote-of-the-day {
+  background-color: #37474f; /* Slightly darker grey-blue for quote section */
+  border-left: 6px solid #00838f; /* Teal accent border */
+}
+
+#quote-of-the-day p {
+  font-style: italic;
+  text-align: center;
+}
+
+/* Styling for Daily Fact */
+#daily-fact {
+  background-color: #424242; /* Dark grey for fact section */
+  border-left: 6px solid #ff7043; /* Warm orange accent border */
+}
+
+#daily-fact p {
+  text-align: center;
+}
+
+/* Hover effect for both sections */
+#quote-of-the-day:hover, #daily-fact:hover {
+  background-color: #333; /* Slightly lighter background on hover */
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+  #quote-of-the-day h2, #daily-fact h2 {
+    font-size: 20px;
+  }
+
+  #quote-of-the-day p, #daily-fact p {
+    font-size: 16px;
+  }
+}
+
 /* Footer */
 footer {
     text-align: center;
