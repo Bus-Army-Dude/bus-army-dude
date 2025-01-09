@@ -883,7 +883,10 @@ function getTodaysDate() {
     return currentDate.toLocaleDateString('en-US', options);
 }
 
-// Display the date, fact, and quote
-document.getElementById('currentDate').innerText = getTodaysDate();
-document.getElementById('dailyFact').innerText = getTodaysFact();
-document.getElementById('dailyQuote').innerText = getTodaysQuote();
+// Ensure the content loads after the page is fully loaded
+window.onload = function() {
+    // Display the date, fact, and quote after page loads
+    document.getElementById('currentDate').innerText = getTodaysDate();
+    document.getElementById('dailyFact').innerText = getTodaysFact();
+    document.getElementById('dailyQuote').innerText = getTodaysQuote();
+};
