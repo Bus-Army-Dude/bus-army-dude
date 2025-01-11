@@ -5,7 +5,7 @@
     right: 20px; /* 20px from the right of the page */
     width: 300px; /* Set the width of the chatbox */
     height: 400px; /* Set the height of the chatbox */
-    background-color: #fff; /* White background for the chatbox */
+    background-color: var(--dark-bg); /* White background for the chatbox */
     border: 1px solid #ccc; /* Light grey border around the chatbox */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to make it stand out */
     display: none; /* Initially hidden, will be shown when the button is clicked */
