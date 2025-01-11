@@ -1,35 +1,86 @@
-#chatbox {
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+body.dark-mode a {
+    color: lightblue;
+}
+
+/* Accessibility - Large Text Mode */
+body.large-text {
+    font-size: 18px;
+}
+
+/* Cookie Consent Banner */
+div.cookie-consent {
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 300px;
-    height: 400px;
-    background-color: var(--dark-bg);
-    border: 1px solid #ccc;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
     padding: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 1000;
 }
 
-#chatlog {
-    max-height: 350px;
-    overflow-y: auto;
-    margin-bottom: 10px;
+div.cookie-consent button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
-input[type="text"] {
-    width: 100%;
-    padding: 5px;
+div.cookie-consent button:hover {
+    background-color: #0056b3;
 }
 
+/* Media Protection */
+img {
+    pointer-events: none; /* Disable right-click on images */
+    user-select: none; /* Disable text selection on images */
+}
+
+img[oncontextmenu] {
+    pointer-events: auto; /* Allow images with specific oncontextmenu to have right-click */
+}
+
+/* Add custom styles for button clicks */
 button {
-    width: 100%;
     padding: 10px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Accessibility mode buttons */
+button#darkModeToggle {
+    margin: 10px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+button#darkModeToggle:hover {
+    background-color: #444;
+}
+
+button#largeTextToggle {
+    margin: 10px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+button#largeTextToggle:hover {
+    background-color: #444;
 }
