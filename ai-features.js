@@ -1,18 +1,7 @@
-<!-- Chatbot Button -->
-<button onclick="openChat()">Chat with us!</button>
-
-<!-- Chatbox -->
-<div id="chatbox" style="display: none;">
-    <div id="chatlog"></div>
-    <input type="text" id="userMessage" placeholder="Type your message..." onkeyup="checkInput(event)">
-    <button onclick="sendMessage()">Send</button>
-</div>
-
-<script>
 // Open the chatbox when the user clicks the button
 function openChat() {
     const chatBox = document.getElementById("chatbox");
-    if (chatBox.style.display === "none") {
+    if (chatBox.style.display === "none" || chatBox.style.display === "") {
         chatBox.style.display = "block";  // Show the chatbox
     } else {
         chatBox.style.display = "none";  // Hide the chatbox if already open
@@ -65,4 +54,3 @@ function getBotResponse(userMessage) {
     // Keep the chat scrolled to the bottom
     document.getElementById("chatlog").scrollTop = document.getElementById("chatlog").scrollHeight;
 }
-</script>
