@@ -44,6 +44,6 @@ html {
 
 /* Allow scrolling while keeping restrictions for mobile */
 html, body {
-    touch-action: auto;  /* Allow touch actions like scrolling on mobile */
-    overflow: auto;      /* Allow scrolling */
+    touch-action: true;  /* Allow touch actions like scrolling on mobile */
+    overflow: true;      /* Allow scrolling */
 }
