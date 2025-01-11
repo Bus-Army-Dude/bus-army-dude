@@ -13,7 +13,11 @@ function sendMessage() {
     var userMessage = document.getElementById("userMessage").value;
     if (userMessage.trim() !== "") {
         // Display the user's message
-        document.getElementById("chatlog").innerHTML += "<p><b>You:</b> " + userMessage + "</p>";
+        addMessageToChatLog("You", userMessage);
+
+        // Save the chat history
+        saveChatHistory();
+
         document.getElementById("userMessage").value = "";  // Clear the input field
 
         // Get bot's response
@@ -49,8 +53,30 @@ function getBotResponse(userMessage) {
     }
 
     // Display the bot's response
-    document.getElementById("chatlog").innerHTML += "<p><b>Bot:</b> " + botMessage + "</p>";
+    addMessageToChatLog("Bot", botMessage);
 
     // Keep the chat scrolled to the bottom
     document.getElementById("chatlog").scrollTop = document.getElementById("chatlog").scrollHeight;
 }
+
+// Add a message to the chat log
+function addMessageToChatLog(sender, message) {
+    document.getElementById("chatlog").innerHTML += "<p><b>" + sender + ":</b> " + message + "</p>";
+}
+
+// Save the chat history to localStorage
+function saveChatHistory() {
+    const chatHistory = document.getElementById("chatlog").innerHTML;
+    localStorage.setItem("chatHistory", chatHistory);
+}
+
+// Load the chat history from localStorage when the page is loaded
+function loadChatHistory() {
+    const chatHistory = localStorage.getItem("chatHistory");
+    if (chatHistory) {
+        document.getElementById("chatlog").innerHTML = chatHistory;
+    }
+}
+
+// Load chat history on page load
+window.onload = loadChatHistory;
