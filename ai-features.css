@@ -41,3 +41,9 @@ html {
     -ms-user-select: none;      /* Disable text selection */
     user-select: none;          /* Disable text selection */
 }
+
+/* Allow scrolling while keeping restrictions for mobile */
+html, body {
+    touch-action: auto;  /* Allow touch actions like scrolling on mobile */
+    overflow: auto;      /* Allow scrolling */
+}
