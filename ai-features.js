@@ -50,7 +50,7 @@ document.body.style.mozUserSelect = 'none';
 document.body.style.msUserSelect = 'none';
 
 // Prevent zoom and pinch gestures on mobile
-document.body.style.touchAction = 'none';
+document.body.style.touchAction = 'auto';  // Allow scrolling
 
 // Prevent right-click on images and other elements
 document.addEventListener('contextmenu', function(event) {
@@ -59,8 +59,9 @@ document.addEventListener('contextmenu', function(event) {
 
 // Prevent saving images on touch devices by disabling touch actions
 document.querySelectorAll('img').forEach(function(img) {
-    img.style.pointerEvents = 'none';
-    img.setAttribute('draggable', false); // Disable drag for all images
+    img.addEventListener('touchstart', function(event) {
+        event.preventDefault();  // Prevent touch actions like saving images
+    });
 });
 
 // Prevent video controls for mobile devices
