@@ -101,10 +101,10 @@
 </div>
 
 <!-- Chatbot Button -->
-<button onclick="openChat()">Chat with us!</button>
+<button id="chatButton" onclick="openChat()">Chat with us!</button>
 
 <!-- Chatbox -->
-<div id="chatbox" style="display: none;">
+<div id="chatbox">
     <div id="chatlog"></div>
     <input type="text" id="userMessage" placeholder="Type your message..." onkeyup="checkInput(event)">
     <button onclick="sendMessage()">Send</button>
