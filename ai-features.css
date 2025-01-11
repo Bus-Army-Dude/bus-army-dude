@@ -9,17 +9,9 @@ body {
 /* Prevent right-click on images */
 img {
     pointer-events: none;
-    touch-action: none;
     -webkit-user-drag: none;
     user-drag: none;
     -webkit-touch-callout: none;  /* Prevents 'copy image' on iOS */
-}
-
-/* Hide media controls for video on mobile */
-@media (max-width: 768px) {
-    video::-webkit-media-controls {
-        display: none !important;
-    }
 }
 
 /* Prevent zoom on mobile */
@@ -44,6 +36,7 @@ html {
 
 /* Allow scrolling while keeping restrictions for mobile */
 html, body {
-    touch-action: true;  /* Allow touch actions like scrolling on mobile */
-    overflow: true;      /* Allow scrolling */
+    touch-action: manipulation;  /* Allow scroll and swipe gestures */
+    overflow: auto;              /* Ensure scrolling is enabled */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
