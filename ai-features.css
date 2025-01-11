@@ -1,14 +1,52 @@
-/* Dark Mode */
+/* Default Light Mode (base styles) */
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: Arial, sans-serif;
+}
+
+a {
+    color: #007bff; /* Blue links */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+button {
+    padding: 10px;
+    background-color: #4CAF50; /* Green buttons */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Dark Mode Styles */
 body.dark-mode {
     background-color: #121212;
     color: white;
 }
 
 body.dark-mode a {
-    color: lightblue;
+    color: lightblue; /* Lighter blue links for dark mode */
 }
 
-/* Accessibility - Large Text Mode */
+body.dark-mode button {
+    background-color: #4CAF50; /* Green buttons in dark mode */
+    color: white;
+}
+
+body.dark-mode button:hover {
+    background-color: #45a049; /* Darker green on hover in dark mode */
+}
+
+/* Large Text Mode */
 body.large-text {
     font-size: 18px;
 }
@@ -27,7 +65,7 @@ div.cookie-consent {
 }
 
 div.cookie-consent button {
-    background-color: #007bff;
+    background-color: #4CAF50; /* Green button for consent */
     color: white;
     border: none;
     padding: 5px 10px;
@@ -35,7 +73,7 @@ div.cookie-consent button {
 }
 
 div.cookie-consent button:hover {
-    background-color: #0056b3;
+    background-color: #45a049; /* Darker green on hover */
 }
 
 /* Media Protection */
@@ -48,39 +86,14 @@ img[oncontextmenu] {
     pointer-events: auto; /* Allow images with specific oncontextmenu to have right-click */
 }
 
-/* Add custom styles for button clicks */
-button {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
 /* Accessibility mode buttons */
-button#darkModeToggle {
+button#darkModeToggle, button#largeTextToggle {
     margin: 10px;
     padding: 10px;
-    background-color: #333;
+    background-color: #4CAF50; /* Green button */
     color: white;
 }
 
-button#darkModeToggle:hover {
-    background-color: #444;
-}
-
-button#largeTextToggle {
-    margin: 10px;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-}
-
-button#largeTextToggle:hover {
-    background-color: #444;
+button#darkModeToggle:hover, button#largeTextToggle:hover {
+    background-color: #45a049; /* Darker green on hover */
 }
