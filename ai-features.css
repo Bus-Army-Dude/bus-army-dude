@@ -1,99 +1,69 @@
-/* Default Light Mode (base styles) */
+/* Disable text selection to prevent copying */
 body {
-    background-color: #ffffff;
-    color: #000000;
+    -webkit-user-select: none; /* For Webkit-based browsers (Chrome, Safari) */
+    -moz-user-select: none; /* For Firefox */
+    -ms-user-select: none; /* For Internet Explorer */
+    user-select: none; /* Standard for all browsers */
+    -webkit-touch-callout: none; /* Disable the callout menu on mobile (iOS) */
+}
+
+/* Prevent media (images, videos) from being clicked or saved */
+img, video {
+    pointer-events: none; /* Disable click/tap interactions on media */
+    touch-action: none; /* Disable touch gestures (zooming) on media */
+}
+
+/* Disable right-click on the page */
+* {
+    -webkit-user-drag: none; /* Prevent image dragging on Webkit browsers */
+    user-drag: none; /* Standard for all browsers */
+}
+
+/* Prevent users from using the right-click menu */
+body {
+    user-select: none; /* Disable text selection */
+}
+
+img, video {
+    pointer-events: none; /* Disable click interactions with images/videos */
+}
+
+/* Block the ability to take a screenshot using PrintScreen or similar keys */
+body {
+    background-color: #fff;
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-a {
-    color: #007bff; /* Blue links */
-    text-decoration: none;
+/* Prevent printing of the page */
+@media print {
+    body {
+        display: none; /* Hide the entire body on print */
+    }
 }
 
-a:hover {
-    color: #0056b3; /* Darker blue on hover */
-}
-
-button {
-    padding: 10px;
-    background-color: #4CAF50; /* Green buttons */
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: #121212;
-    color: white;
-}
-
-body.dark-mode a {
-    color: lightblue; /* Lighter blue links for dark mode */
-}
-
-body.dark-mode button {
-    background-color: #4CAF50; /* Green buttons in dark mode */
-    color: white;
-}
-
-body.dark-mode button:hover {
-    background-color: #45a049; /* Darker green on hover in dark mode */
-}
-
-/* Large Text Mode */
-body.large-text {
-    font-size: 18px;
-}
-
-/* Cookie Consent Banner */
-div.cookie-consent {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
-    text-align: center;
-    z-index: 1000;
-}
-
-div.cookie-consent button {
-    background-color: #4CAF50; /* Green button for consent */
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-div.cookie-consent button:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-/* Media Protection */
+/* Prevent saving of images on touch devices */
 img {
-    pointer-events: none; /* Disable right-click on images */
-    user-select: none; /* Disable text selection on images */
+    pointer-events: none; /* Disable click and save features */
+    touch-action: none;
 }
 
-img[oncontextmenu] {
-    pointer-events: auto; /* Allow images with specific oncontextmenu to have right-click */
+/* Block right-click menu */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-/* Accessibility mode buttons */
-button#darkModeToggle, button#largeTextToggle {
-    margin: 10px;
-    padding: 10px;
-    background-color: #4CAF50; /* Green button */
-    color: white;
+/* Disable dragging images */
+img {
+    -webkit-user-drag: none;
+    user-drag: none;
 }
 
-button#darkModeToggle:hover, button#largeTextToggle:hover {
-    background-color: #45a049; /* Darker green on hover */
+/* Prevent video controls on mobile */
+video::-webkit-media-controls {
+    display: none !important;
 }
