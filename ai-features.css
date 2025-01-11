@@ -18,7 +18,7 @@
     padding: 10px;
     height: 350px;
     overflow-y: auto; /* Enable scrolling inside the chatlog */
-    background-color: #f9f9f9; /* Light background for the chat area */
+    background-color: var(--dark-bg); /* Light background for the chat area */
     margin-bottom: 10px; /* Space below the chatlog */
 }
 
