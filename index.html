@@ -100,14 +100,15 @@
     </div>
 </div>
 
-<!-- AI Chat Bot Section -->
-<div id="chatbot-container">
-    <div id="chatbot-header">Chat with us</div>
-    <div id="chatbot-messages"></div>
-    <input id="chatbot-input" type="text" placeholder="Ask a question...">
-    <button id="chatbot-send">Send</button>
-</div>
+<!-- Chatbot Button -->
+<button onclick="openChat()">Chat with us!</button>
 
+<!-- Chatbox -->
+<div id="chatbox" style="display: none;">
+    <div id="chatlog"></div>
+    <input type="text" id="userMessage" placeholder="Type your message..." onkeyup="checkInput(event)">
+    <button onclick="sendMessage()">Send</button>
+</div>
         
 <!-- TikTok Shoutouts Section -->
     <div class="shoutouts-section section">
