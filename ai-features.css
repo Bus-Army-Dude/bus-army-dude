@@ -1,69 +1,43 @@
-/* Disable text selection to prevent copying */
+/* Disable text selection */
 body {
-    -webkit-user-select: none; /* For Webkit-based browsers (Chrome, Safari) */
-    -moz-user-select: none; /* For Firefox */
-    -ms-user-select: none; /* For Internet Explorer */
-    user-select: none; /* Standard for all browsers */
-    -webkit-touch-callout: none; /* Disable the callout menu on mobile (iOS) */
+    -webkit-user-select: none;  /* iOS, Android */
+    -moz-user-select: none;     /* Firefox on Linux, Android */
+    -ms-user-select: none;      /* Older IE, Edge */
+    user-select: none;          /* General disabling */
 }
 
-/* Prevent media (images, videos) from being clicked or saved */
-img, video {
-    pointer-events: none; /* Disable click/tap interactions on media */
-    touch-action: none; /* Disable touch gestures (zooming) on media */
+/* Prevent right-click on images */
+img {
+    pointer-events: none;
+    touch-action: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none;  /* Prevents 'copy image' on iOS */
 }
 
-/* Disable right-click on the page */
-* {
-    -webkit-user-drag: none; /* Prevent image dragging on Webkit browsers */
-    user-drag: none; /* Standard for all browsers */
-}
-
-/* Prevent users from using the right-click menu */
-body {
-    user-select: none; /* Disable text selection */
-}
-
-img, video {
-    pointer-events: none; /* Disable click interactions with images/videos */
-}
-
-/* Block the ability to take a screenshot using PrintScreen or similar keys */
-body {
-    background-color: #fff;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-/* Prevent printing of the page */
-@media print {
-    body {
-        display: none; /* Hide the entire body on print */
+/* Hide media controls for video on mobile */
+@media (max-width: 768px) {
+    video::-webkit-media-controls {
+        display: none !important;
     }
 }
 
-/* Prevent saving of images on touch devices */
-img {
-    pointer-events: none; /* Disable click and save features */
-    touch-action: none;
+/* Prevent zoom on mobile */
+video {
+    touch-action: none;  /* Disable touch zoom and interactions */
 }
 
-/* Block right-click menu */
-body {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Disable dragging images */
+/* Prevent dragging images */
 img {
+    pointer-events: none;
     -webkit-user-drag: none;
     user-drag: none;
 }
 
-/* Prevent video controls on mobile */
-video::-webkit-media-controls {
-    display: none !important;
+/* Prevent right-click on the page */
+html {
+    -webkit-user-select: none;  /* Disable text selection */
+    -moz-user-select: none;     /* Disable text selection */
+    -ms-user-select: none;      /* Disable text selection */
+    user-select: none;          /* Disable text selection */
 }
