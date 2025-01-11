@@ -201,7 +201,7 @@ const instagramShoutouts = {
         { username: 'lisa.remillard', isVerified: true, followers: '74.7K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },                    
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-01-11T10:30:26', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-11T10:36:05', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
