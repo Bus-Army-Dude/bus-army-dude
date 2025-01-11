@@ -5,37 +5,6 @@
     --dark-link: #BB86FC;
 }
 
-/* Light Mode Button Styles */
-.light-mode .social-button {
-    background-color: #333; /* Dark background for better contrast */
-    color: #fff; /* White text for better visibility */
-}
-
-.light-mode .social-button:hover {
-    background-color: #555; /* Darker hover effect for better contrast */
-}
-
-/* Dark Mode Button Styles */
-.dark-mode .social-button {
-    background-color: #BB86FC; /* Lighter color for contrast in dark mode */
-    color: #000; /* Black text for better readability */
-}
-
-.dark-mode .social-button:hover {
-    background-color: #9b66cc; /* Slightly darker for hover effect */
-}
-
-/* Apply dark mode styles to the body */
-body {
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 20px;
-    line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 /* Profile Section */
 .profile-section {
     text-align: center;
