@@ -15,7 +15,7 @@ function sendMessage() {
         // Display the user's message
         addMessageToChatLog("You", userMessage);
 
-        // Save the chat history
+        // Save the chat history to localStorage
         saveChatHistory();
 
         document.getElementById("userMessage").value = "";  // Clear the input field
@@ -67,14 +67,14 @@ function addMessageToChatLog(sender, message) {
 // Save the chat history to localStorage
 function saveChatHistory() {
     const chatHistory = document.getElementById("chatlog").innerHTML;
-    localStorage.setItem("chatHistory", chatHistory);
+    localStorage.setItem("chatHistory", chatHistory);  // Store chat history in localStorage
 }
 
 // Load the chat history from localStorage when the page is loaded
 function loadChatHistory() {
     const chatHistory = localStorage.getItem("chatHistory");
     if (chatHistory) {
-        document.getElementById("chatlog").innerHTML = chatHistory;
+        document.getElementById("chatlog").innerHTML = chatHistory;  // Display saved chat history
     }
 }
 
