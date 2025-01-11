@@ -72,7 +72,7 @@ document.getElementById("chatbot-send").addEventListener("click", function() {
         fetch('https://api.openai.com/v1/completions', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer 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`,
+                'Authorization': `Bearer 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`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
