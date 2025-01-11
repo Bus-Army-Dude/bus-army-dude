@@ -1,80 +1,48 @@
-// Prevent Print Screen and Print (for Windows, macOS, and Linux)
+// Detecting PrintScreen on Desktop (Windows, Linux)
 document.addEventListener('keydown', function(event) {
-    // Block PrintScreen key for all devices (Windows, macOS, Linux)
     if (event.key === 'PrintScreen' || event.key === 'PrtScn') {
-        event.preventDefault();
-        alert("Screenshots are disabled on this page.");
-    }
+        event.preventDefault(); // Prevent the default PrintScreen action
 
-    // Block printing (Ctrl+P or Cmd+P)
-    if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-        event.preventDefault();
-        alert("Printing is disabled on this page.");
-    }
-
-    // Block copy (Ctrl+C or Cmd+C)
-    if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
-        event.preventDefault();
-        alert("Copying is disabled on this page.");
-    }
-
-    // Block cut (Ctrl+X or Cmd+X)
-    if ((event.ctrlKey || event.metaKey) && event.key === 'x') {
-        event.preventDefault();
-        alert("Cutting is disabled on this page.");
-    }
-
-    // Block paste (Ctrl+V or Cmd+V)
-    if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
-        event.preventDefault();
-        alert("Pasting is disabled on this page.");
+        // Apply blur effect to the page
+        document.body.classList.add('blurred');
+        
+        // Optional: Show a warning alert to the user
+        alert("Screenshot detected! Please refrain from taking screenshots.");
+        
+        // Remove the blur effect after a short delay (e.g., 2 seconds)
+        setTimeout(function() {
+            document.body.classList.remove('blurred');
+        }, 2000); // 2-second delay before removing blur
     }
 });
 
-// Disable right-click for all devices (Windows, macOS, Android, iOS)
+// Detecting touch events (e.g., 3-finger swipe on mobile devices) to simulate screenshot detection
+document.addEventListener('touchstart', function(event) {
+    if (event.touches.length === 3) {  // Assuming 3-finger touch as a screenshot gesture
+        event.preventDefault(); // Prevent the default action
+        
+        // Apply blur effect to the page
+        document.body.classList.add('blurred');
+        
+        // Optional: Show a warning alert to the user
+        alert("Screenshot detected! Please refrain from taking screenshots.");
+        
+        // Remove the blur effect after a short delay (e.g., 2 seconds)
+        setTimeout(function() {
+            document.body.classList.remove('blurred');
+        }, 2000); // 2-second delay before removing blur
+    }
+});
+
+// Block right-click on the page to prevent saving images or media
 document.addEventListener('contextmenu', function(event) {
-    event.preventDefault();
-    alert("Right-click is disabled on this page.");
+    event.preventDefault(); // Disable right-click
+    alert("Right-click disabled to prevent saving media.");
 });
 
-// Disable drag and drop for images
-document.querySelectorAll('img').forEach(function(img) {
-    img.style.pointerEvents = 'none';
-    img.setAttribute('draggable', false);  // Disable drag for all images
-});
-
-// Prevent text selection for all devices
-document.body.style.userSelect = 'none';
-document.body.style.webkitUserSelect = 'none';
-document.body.style.mozUserSelect = 'none';
-document.body.style.msUserSelect = 'none';
-
-// Prevent zoom and pinch gestures on mobile
-document.body.style.touchAction = 'auto';  // Allow scrolling
-
-// Prevent right-click on images and other elements
-document.addEventListener('contextmenu', function(event) {
-    event.preventDefault();
-});
-
-// Prevent saving images on touch devices by disabling touch actions
-document.querySelectorAll('img').forEach(function(img) {
-    img.addEventListener('touchstart', function(event) {
-        event.preventDefault();  // Prevent touch actions like saving images
-    });
-});
-
-// Prevent video controls for mobile devices
-if (window.innerWidth <= 768) {
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => {
-        video.setAttribute('controls', false); // Disable controls for videos
-    });
-}
-
-// Disable image right-click on touch devices
+// Disable dragging of images to prevent saving them
 document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('touchstart', function(event) {
-        event.preventDefault();  // Prevent touch actions like saving images
+    img.addEventListener('dragstart', function(event) {
+        event.preventDefault(); // Prevent dragging of images
     });
 });
