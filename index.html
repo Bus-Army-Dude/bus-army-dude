@@ -6,6 +6,7 @@
     <title>Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ai-features.css">
+    <script type="module" src="firebase-config.js"></script>
     <meta http-equiv="refresh" content="60">
     
     <!-- Google tag (gtag.js) -->
@@ -40,7 +41,27 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="msapplication-config" content="/browserconfig.xml">
-    
+
+  <h1>User Authentication</h1>
+
+  <div>
+    <h2>Sign Up</h2>
+    <form id="sign-up-form">
+      <input type="email" id="sign-up-email" placeholder="Email" required>
+      <input type="password" id="sign-up-password" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <div>
+    <h2>Sign In</h2>
+    <form id="sign-in-form">
+      <input type="email" id="sign-in-email" placeholder="Email" required>
+      <input type="password" id="sign-in-password" placeholder="Password" required>
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+
     <div class="container">
         <!-- Profile Section -->
         <div class="profile-section section">
@@ -307,6 +328,7 @@
 
     <script src="script.js"></script>
     <script src="ai-features.js"></script>
+    <script src="app.js"></script>
     <body class="dark-mode">
 </body>
 </html>
