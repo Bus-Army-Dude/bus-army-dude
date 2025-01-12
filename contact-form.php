@@ -1,46 +1,38 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $message = htmlspecialchars($_POST['message']);
+    // Sanitize and collect form data
+    $name = htmlspecialchars(trim($_POST["name"]));
+    $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+    $message = htmlspecialchars(trim($_POST["message"]));
 
-    // Email recipient
+    // Check if the fields are empty
+    if (empty($name) || empty($email) || empty($message)) {
+        echo "Please fill in all fields.";
+        exit;
+    }
+
+    // Check if email is valid
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email format.";
+        exit;
+    }
+
+    // Set up email variables
     $to = "rkritzar53@gmail.com";  // Replace with your email address
-    $subject = "New Contact Form Submission from " . $name;
+    $subject = "New Contact Form Submission";
+    $body = "You have received a new message from your website contact form:\n\n".
+            "Name: $name\n".
+            "Email: $email\n".
+            "Message:\n$message";
 
-    // Email body content
-    $body = "
-    Name: $name\n
-    Email: $email\n
-    Message:\n
-    $message
-    ";
-
-    // Email headers
     $headers = "From: $email";
 
-    // Sending email
+    // Send the email
     if (mail($to, $subject, $body, $headers)) {
-        // Redirect to homepage after successful submission
-        header("Location: https://bus-army-dude.github.io/bus-army-dude/"); // Redirect to your homepage
+        header("Location: https://bus-army-dude.github.io/bus-army-dude/#");  // Redirect back to homepage or a confirmation page
         exit;
     } else {
-        echo "There was an error submitting your form. Please try again.";
+        echo "Sorry, there was an error sending your message. Please try again later.";
     }
 }
 ?>
-
-<!-- Contact Form HTML -->
-<form action="" method="POST" class="contact-form">
-    <h2>Contact Me</h2>
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-
-    <label for="message">Message:</label>
-    <textarea id="message" name="message" rows="4" required></textarea>
-
-    <button type="submit">Send Message</button>
-</form>
