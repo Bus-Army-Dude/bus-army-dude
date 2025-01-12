@@ -988,9 +988,9 @@ body {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ddd;
+    border: 2px solid #ccc; /* Updated border color */
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: var(--content-bg); /* Use var(--content-bg) for background color */
 }
 
 .contact-form h2 {
@@ -1010,6 +1010,7 @@ body {
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box; /* Ensures padding and border do not affect width */
 }
 
 .contact-form button {
