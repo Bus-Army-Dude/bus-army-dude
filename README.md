@@ -13,14 +13,15 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Verified medical resources
 - NIMH/NINDS integration
 - Comprehensive conditions list
-- TikTok creator shoutouts
+- Instagram creator shoutouts
+- YouTube creator shoutouts
 - Profile information display
 - Content Protection
 - Enhanced copy protection
 - Image security measures
 - Content control system
 - Selection management
-- Last Updated Feature for TikTok Followers count
+- Last Updated Feature for Follower/Subscriber count
 ### 💻 Supported Operating Systems
 - iOS
 - iPadOS
