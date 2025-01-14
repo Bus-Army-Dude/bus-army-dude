@@ -892,8 +892,6 @@ body {
   max-width: 900px;  /* Prevents form from exceeding 900px */
   width: 100%;  /* Makes form responsive */
   margin: 0 auto;  /* Centers the form */
-  padding: 20px;
-  background-color: #222; /* Dark background color to match your theme */
 }
 
 .form-container iframe {
