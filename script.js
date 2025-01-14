@@ -97,18 +97,35 @@ function updateTime() {
     }
 }
 
-// Page refresh countdown
-let timeLeft = 60;
+// Set the refresh time (5 minutes from now)
+let refreshTime = new Date().getTime() + 5 * 60 * 1000; // 5 minutes from now
+
+// Function to update the countdown every second
 function updateCountdown() {
-    const countdownElement = document.querySelector('.countdown');
-    if (countdownElement && timeLeft >= 0) {
-        countdownElement.textContent = `Page refreshing in: ${timeLeft} seconds`;
-        timeLeft--;
-        if (timeLeft < 0) {
+    // Get the current time
+    let now = new Date().getTime();
+
+    // Calculate the remaining time until the page refreshes
+    let timeLeft = refreshTime - now;
+
+    if (timeLeft <= 0) {
+        // If the time is up, refresh the page
+        document.getElementById("countdown-display").innerHTML = "Refreshing now!";
+        setTimeout(() => {
             location.reload();
-        }
+        }, 1000); // Refresh after 1 second
+    } else {
+        // Calculate the remaining minutes and seconds
+        let minutes = Math.floor(timeLeft / (1000 * 60));
+        let seconds = Math.floor((timeLeft / 1000) % 60);
+
+        // Update the countdown display in minutes and seconds
+        document.getElementById("countdown-display").innerHTML = `Page will refresh in ${minutes}m ${seconds}s`;
     }
 }
+
+// Update the countdown every second
+setInterval(updateCountdown, 1000);
 
 // Update version panel with device info
 function updateVersionPanel() {
