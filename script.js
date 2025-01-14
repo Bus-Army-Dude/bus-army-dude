@@ -124,9 +124,6 @@ function updateCountdown() {
     }
 }
 
-// Update the countdown every second
-setInterval(updateCountdown, 1000);
-
 // Update version panel with device info
 function updateVersionPanel() {
     const deviceElement = document.querySelector('.device-info');
@@ -139,8 +136,11 @@ function updateVersionPanel() {
 window.onload = function() {
     updateVersionPanel();
     updateTime();
-    setInterval(updateCountdown, 1000); // Update countdown every second
+    updateCountdown(); // Make sure the countdown starts
 };
+
+// Update the countdown every second
+setInterval(updateCountdown, 1000); // Update countdown every second
     
 // Instagram Shoutouts
 const instagramShoutouts = {
