@@ -129,7 +129,7 @@ window.onload = function() {
 const instagramShoutouts = {
     accounts: [
         { username: 'riverkritzar', isVerified: false, followers: '84', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/riverkritzar.jpg' },
-        { username: 'busarmydude', isVerified: false, followers: '10', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
+        { username: 'busarmydude', isVerified: false, followers: '11', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
         { username: 'rose_the_fox24', isVerified: false, followers: '81', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
         { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
         { username: 'mrbeast', isVerified: true, followers: '64.8M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
@@ -146,9 +146,10 @@ const instagramShoutouts = {
         { username: 'imparkerburton', isVerified: true, followers: '277K', nickname: 'Parker Burton', bio: 'That Android Guy Business: parker@imparkerburton.com', profilePic: 'instagram_photos/imparkerburton.jpeg' },                    
         { username: 'kennedylawfirm', isVerified: false, followers: '23.4K', nickname: 'Lawyer Kevin Kennedy', bio: 'Clarksville, TN Kevs got you covered', profilePic: 'instagram_photos/kennedylawfirm.jpeg' },                    
         { username: 'ta.techtips', isVerified: false, followers: '267K', nickname: 'TA Tech Tips', bio: '🔥 Tech Tips 🔥 📱TikTok | TATechTips📧 hello@thegoldstudios.com', profilePic: 'instagram_photos/tatechtips.jpeg' },                    
+        { username: 'lust_ryze', isVerified: false, followers: '24', nickname: 'hi everyone this will be my official Instagram account for my tiktok account you can find my other social bellow', profilePic: 'instagram_photos/lustryze.jpeg' },                    
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-01-14T12:59:55', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-14T13:07:38', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
