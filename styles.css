@@ -894,16 +894,11 @@ body {
   margin: 0 auto;  /* Centers the form */
   padding: 20px;
   background-color: #222; /* Dark background color to match your theme */
-  border-radius: 5px;  /* Reduced the border radius for a more subtle curve */
-  border: 1px solid rgba(255, 255, 255, 0.1);  /* Light border with slight transparency */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Adds subtle shadow */
 }
 
 .form-container iframe {
   width: 100%;  /* Makes iframe responsive */
   height: 1600px;  /* Adjusted for ample space */
-  border-radius: 5px;  /* Reduced the border radius to match the container */
-  border: none;  /* Removed the iframe border */
 }
 
 /* Footer */
