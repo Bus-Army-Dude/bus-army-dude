@@ -207,20 +207,24 @@ body {
     font-family: monospace;
 }
 
-/* Creator Card Styles for Instagram Shoutouts */
+/* Instagram Creator Grid Layout */
+.instagram-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Instagram Creator Card Styles */
 .instagram-creator-card {
     background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align items to the left to ensure they match the section's left side */
-    justify-content: flex-start; /* Align content from the top */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
-    width: 100%; /* Ensure the cards use the full width of their container */
-    box-sizing: border-box; /* Ensure padding doesn't stretch the card beyond its container */
 }
 
 .instagram-creator-card:hover {
@@ -297,25 +301,6 @@ body {
 
 .instagram-visit-profile:hover {
     opacity: 0.9;
-}
-
-/* Last Updated Section Styling */
-.last-updated {
-  font-size: 18px;
-  color: #FFFFFF;
-  margin-top: 5px;
-}
-
-/* Grid Layout for Instagram Shoutouts */
-.instagram-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 20px;
-    margin-left: 20px; /* Align grid to match the "L" in Last Updated */
-    padding-left: 0; /* Remove extra padding */
-    padding-right: 0; /* Remove extra padding */
-    max-width: 100%; /* Ensure it doesn't go beyond the section width */
-    box-sizing: border-box; /* Ensure padding doesn't stretch grid */
 }
 
 /* YouTube Creator Grid Layout */
