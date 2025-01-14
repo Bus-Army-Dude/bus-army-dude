@@ -214,9 +214,13 @@ body {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    align-items: flex-start; /* Align items to the left to ensure they match the section's left side */
+    justify-content: flex-start; /* Align content from the top */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
+    width: 100%; /* Ensure the cards use the full width of their container */
+    box-sizing: border-box; /* Ensure padding doesn't stretch the card beyond its container */
 }
 
 .instagram-creator-card:hover {
@@ -307,7 +311,11 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
     gap: 20px;
-    padding: 20px;
+    margin-left: 20px; /* Align grid to match the "L" in Last Updated */
+    padding-left: 0; /* Remove extra padding */
+    padding-right: 0; /* Remove extra padding */
+    max-width: 100%; /* Ensure it doesn't go beyond the section width */
+    box-sizing: border-box; /* Ensure padding doesn't stretch grid */
 }
 
 /* YouTube Creator Grid Layout */
