@@ -124,67 +124,8 @@ window.onload = function() {
     updateTime();
     setInterval(updateCountdown, 1000); // Update countdown every second
 };
-
-    // TikTok Shoutouts
-    const tiktokShoutouts = {
-        accounts: [
-            { username: 'mrbeast', isVerified: true, followers: '107.8M', nickname: 'MrBeast', bio: 'GO WATCH MY NEW SHOW', profilePic: 'images/mrbeast.jpeg' },     
-            { username: 'teamtrump', isVerified: true, followers: '8.4M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
-            { username: 'carterpcs', isVerified: true, followers: '5.6M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'images/carterpcs.jpeg' },
-            { username: 'applesauceandadhd', isVerified: true, followers: '3.6M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'images/applesauceandadhd.jpeg' },
-            { username: 'houseofhughes_', isVerified: false, followers: '308.8K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,243', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-            { username: 'raisingramsey2023', isVerified: false, followers: '1,190', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
-            { username: 'trafficlightdoctor', isVerified: false, followers: '383.5K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
-            { username: 'jerridc4', isVerified: false, followers: '472', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
-            { username: 'jerridonthelot', isVerified: false, followers: '122', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
-            { username: 'imparkerburton', isVerified: false, followers: '2.9M', nickname: 'Parker Burton', bio: 'That Android Guy, Business: parker@imparkerburton.com', profilePic: 'images/imparkerburton.jpeg' },
-            { username: 'kaylee_mertens_', isVerified: false, followers: '674.4K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
-            { username: 'kennedylawfirm', isVerified: false, followers: '1.9M', nickname: 'Lawyer Kevin Kennedy', bio: "The Kennedy Law Firm, PLLC, Clarksville, TN, Kev's got you covered™️", profilePic: 'images/kennedylawfirm.jpeg' },
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '689.4K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'missfoxy0142', isVerified: false, followers: '24', nickname: 'miss_foxy142', bio: 'No bio yet.', profilePic: 'images/missfoxy0142.jpeg' },
-            { username: 'mrfatcheeto', isVerified: false, followers: '473.1K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
-            { username: '_jano_142_', isVerified: false, followers: '100', nickname: 'Jano_142', bio: "I'm a guy who loves cars... Want to support my passion? My Cashapp is @Jano142", profilePic: 'images/jano142.jpeg' },
-            { username: 'elvirablack8', isVerified: false, followers: '968', nickname: 'elvirablack8', bio: 'I love my friends and my family all so much even my followers', profilePic: 'images/elvirablack8.jpeg' },
-            { username: 'badge502', isVerified: false, followers: '802K', nickname: 'Badge502', bio: 'NREMT - 911/EMD PO Box 775 Belleville, NJ 07109 *I DONT HAVE A BACKUP ACCOUNT*', profilePic: 'images/badge502.jpeg' },
-            { username: 'badge5022', isVerified: false, followers: '17.9K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
-            { username: 'aggressiveafterdark', isVerified: false, followers: '318.2K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
-            { username: 'souldragon912', isVerified: false, followers: '81', nickname: 'Soul Dragon', bio: "I'm in Network Security. i play Höfner club bass and love 80s rock. 18", profilePic: 'images/souldragon912.jpeg' },
-            { username: 'prettymomma37', isVerified: false, followers: '68', nickname: 'Andrea', bio: 'No bio yet', profilePic: 'images/prettymomma37.jpeg' },
-            { username: 'tatechtips', isVerified: true, followers: '3.1M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
-            // Add more shoutouts here...
-        ],
-        init() {
-            this.createShoutoutCards();
-        },
-        createShoutoutCards() {
-            const container = document.querySelector('.creator-grid');
-            if (!container) return;
-
-            container.innerHTML = '';
-            this.accounts.forEach(account => {
-                const card = document.createElement('div');
-                card.className = 'creator-card';
-                card.innerHTML = `
-                    <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
-                    <div class="creator-info">
-                        <div class="creator-header">
-                            <h3>${account.nickname}</h3>
-                            ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
-                        </div>
-                        <p class="creator-username">@${account.username}</p>
-                        <p class="creator-bio">${account.bio || ''}</p>
-                        <p class="follower-count">${account.followers} Followers</p>
-                        <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">
-                            Visit Profile
-                        </a>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-    };
-
+    
+// Instagram Shoutouts
 const instagramShoutouts = {
     accounts: [
         { username: 'riverkritzar', isVerified: false, followers: '83', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/riverkritzar.jpg' },
@@ -354,48 +295,9 @@ youtubeShoutouts.init();
     // Initialize everything
     detectDetailedDevice();
     updateTime();
-    tiktokShoutouts.init();
     updateNewYearCountdown();
 
     setInterval(updateTime, 1000);
     setInterval(updateCountdown, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
-
-// Manually set the last updated date and time (example in EST timezone)
-const lastUpdatedDate = "Mon, Jan 13, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
-const lastUpdatedTime = "9:29 AM";    // Set the time here (12-hour format)
-
-// Combine the date and time into a single string for parsing
-const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const lastUpdatedElement = document.querySelector("#lastUpdated");
-
-  if (lastUpdatedElement) {
-    // Create a Date object with the manually set date and time, example for EST (GMT-0500)
-    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
-
-    // Convert the manually set date and time to the user's local time zone
-    const options = {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true
-    };
-
-    // Format and display the converted time as "Wed, Jan 8, 2025, 9:51:01 AM"
-    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
-
-    // Set the content of the "Last Updated" text
-    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
-  }
-});
-
-if (window.location.protocol !== 'https:') {
-    window.location.href = "https://" + window.location.host + window.location.pathname;
-}
