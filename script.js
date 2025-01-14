@@ -322,6 +322,5 @@ youtubeShoutouts.init();
     updateNewYearCountdown();
 
     setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
