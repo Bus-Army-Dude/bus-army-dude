@@ -8,10 +8,10 @@
 /* Profile Section */
 .profile-section {
     text-align: center;
-    color: #ffffff; /* Ensure text color contrasts */
+    color: #000000; /* Ensure text color contrasts */
     margin-bottom: 30px;
     padding: 20px;
-    background-color: #5A5A5A; /* Adjusted to keep the dark theme */
+    background-color: var(--accent-color); /* Adjusted to keep the dark theme */
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
