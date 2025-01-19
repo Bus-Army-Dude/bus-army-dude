@@ -394,6 +394,9 @@ youtubeShoutouts.init();
 });
 
 
+// Set this to `false` when TikTok is unbanned in the U.S.
+const isTikTokBannedInUS = true;  // Change this to `false` when TikTok is unbanned
+
 // Function to detect the user's country and display the correct sections using GeoJS API
 function checkLocation() {
     fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
@@ -408,7 +411,7 @@ function checkLocation() {
                 localStorage.setItem('lastUpdated', lastUpdated);
             }
 
-            if (country === 'US') {
+            if (country === 'US' && isTikTokBannedInUS) {
                 // Show message indicating TikTok is banned in the U.S.
                 document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message for U.S. users
                 document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide TikTok creator shoutouts for other regions
