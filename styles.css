@@ -949,6 +949,8 @@ p.last-updated {
     margin-bottom: 30px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 100%; /* Ensure the section is responsive */
+    width: 100%;
 }
 
 .countdown-section h2 {
@@ -960,24 +962,26 @@ p.last-updated {
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    width: 100%; /* Make sure the container is 100% width */
+    box-sizing: border-box;
 }
 
 .countdown-item {
     background-color: rgba(0, 0, 0, 0.2); /* Slightly dark background for each unit */
-    padding: 15px 25px;
+    padding: 12px 18px; /* Adjust padding for better fitting */
     border-radius: 8px;
     border: 1px solid var(--border-color, #444444); /* Dark border */
     text-align: center;
-    flex: 1 1 100px; /* Allow the items to take full width if needed */
-    margin-bottom: 15px;
-    max-width: 150px; /* Limit max width for each item */
+    flex: 1 1 120px; /* Allow the items to be flexible and fit better */
+    margin-bottom: 10px;
     box-sizing: border-box; /* Ensure padding and border are included in the width calculation */
+    max-width: 140px; /* Limit the max width of each item */
 }
 
 .countdown-number {
-    font-size: 36px;
+    font-size: 30px;
     color: #ffffff; /* White text for numbers */
     font-weight: bold;
     display: block;
@@ -990,6 +994,22 @@ p.last-updated {
 }
 
 /* Mobile Responsive */
+@media (max-width: 1024px) {
+    .countdown-section h2 {
+        font-size: 22px;
+    }
+
+    .countdown-item {
+        flex: 1 1 22%; /* Four items per row on tablets */
+        max-width: 100px; /* Smaller max width for tablet screens */
+        padding: 10px 15px; /* Adjust padding for smaller screens */
+    }
+
+    .countdown-container {
+        gap: 10px; /* Reduced gap between items on tablets */
+    }
+}
+
 @media (max-width: 768px) {
     .countdown-section h2 {
         font-size: 20px;
@@ -997,11 +1017,12 @@ p.last-updated {
 
     .countdown-item {
         flex: 1 1 45%; /* Two items per row on smaller screens */
-        max-width: 120px; /* Smaller max width for mobile */
+        max-width: 110px; /* Slightly smaller max width */
+        padding: 10px 15px; /* Adjust padding for smaller screens */
     }
 
     .countdown-container {
-        gap: 10px; /* Reduced gap between items on mobile */
+        gap: 10px; /* Reduced gap between items */
     }
 }
 
@@ -1011,8 +1032,9 @@ p.last-updated {
     }
 
     .countdown-item {
-        flex: 1 1 100%; /* Each item takes up full width on small screens */
-        max-width: 100%; /* Ensure no item exceeds full width */
+        flex: 1 1 48%; /* Each item takes almost half width on mobile */
+        max-width: 110px; /* Smaller max width for mobile */
+        padding: 8px 12px; /* Smaller padding for even smaller screens */
     }
 
     .countdown-container {
@@ -1021,17 +1043,22 @@ p.last-updated {
 }
 
 @media (max-width: 375px) {
+    .countdown-section h2 {
+        font-size: 16px;
+    }
+
     .countdown-container {
-        gap: 3px; /* Further reduce gap in portrait mode */
+        gap: 5px; /* Further reduce gap in portrait mode */
     }
 
     .countdown-item {
-        padding: 10px 15px; /* Reduced padding to save space */
-        font-size: 14px; /* Adjust text size for portrait mode */
+        flex: 1 1 100%; /* Each item takes up full width on small screens */
+        max-width: 100%; /* Ensure no item exceeds full width */
+        padding: 8px 12px; /* Further reduced padding to save space */
     }
 
     .countdown-number {
-        font-size: 30px; /* Adjust number size to fit on smaller screens */
+        font-size: 24px; /* Adjust number size to fit on smaller screens */
     }
 
     .countdown-label {
