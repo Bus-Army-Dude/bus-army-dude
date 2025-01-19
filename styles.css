@@ -408,6 +408,12 @@ body {
     opacity: 0.9;
 }
 
+.last-updated {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
 :root {
     --light-bg: #ffffff;
     --light-text: #000000;
