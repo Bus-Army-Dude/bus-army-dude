@@ -400,28 +400,36 @@ function checkLocation() {
         .then(response => response.json())
         .then(data => {
             const country = data.country;
-            const currentDate = new Date().toLocaleString();  // Get the current date and time
+            // Check if there's a stored "Last Updated" value
+            let lastUpdated = localStorage.getItem('lastUpdated');
+            
+            // If no "Last Updated" value is stored, use a default date
+            if (!lastUpdated) {
+                lastUpdated = new Date().toLocaleString();
+                // Store the current timestamp in local storage
+                localStorage.setItem('lastUpdated', lastUpdated);
+            }
 
             if (country === 'US') {
                 // Show U.S. message if TikTok is banned
                 document.getElementById('us-shoutouts').style.display = 'block';
-                document.getElementById('us-last-updated').innerText = currentDate;  // Set Last Updated for U.S.
+                document.getElementById('us-last-updated').innerText = lastUpdated;  // Set Last Updated for U.S.
             } else if (country === 'CA') {
                 // Show Canada section if TikTok is available
                 document.getElementById('other-regions-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-last-updated').innerText = currentDate;  // Set Last Updated for Canada
+                document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for Canada
                 // Add creators for Canada
                 addCreators('Canada');
             } else if (country === 'GB') {
                 // Show UK section if TikTok is available
                 document.getElementById('other-regions-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-last-updated').innerText = currentDate;  // Set Last Updated for UK
+                document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for UK
                 // Add creators for the UK
                 addCreators('UK');
             } else {
                 // Add more regions as needed, and display appropriate section
                 document.getElementById('other-regions-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-last-updated').innerText = currentDate;  // Set Last Updated for other regions
+                document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for other regions
                 addCreators('Other');
             }
         })
@@ -475,4 +483,4 @@ function addCreators(region) {
 }
 
 // Call the function when the page loads
-checkLocation();
+checkLocation(); 
