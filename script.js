@@ -392,3 +392,87 @@ youtubeShoutouts.init();
     setInterval(updateTime, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
+
+
+// Function to detect the user's country and display the correct sections
+function checkLocation() {
+    fetch('https://ipinfo.io?token=e7b5cfd07f11cd')  // Replace with your API token
+        .then(response => response.json())
+        .then(data => {
+            const country = data.country;
+            const currentDate = new Date().toLocaleString();  // Get the current date and time
+
+            if (country === 'US') {
+                // Show U.S. message if TikTok is banned
+                document.getElementById('us-shoutouts').style.display = 'block';
+                document.getElementById('us-last-updated').innerText = currentDate;  // Set Last Updated for U.S.
+            } else if (country === 'CA') {
+                // Show Canada section if TikTok is available
+                document.getElementById('other-regions-shoutouts').style.display = 'block';
+                document.getElementById('other-regions-last-updated').innerText = currentDate;  // Set Last Updated for Canada
+                // Add creators for Canada
+                addCreators('Canada');
+            } else if (country === 'GB') {
+                // Show UK section if TikTok is available
+                document.getElementById('other-regions-shoutouts').style.display = 'block';
+                document.getElementById('other-regions-last-updated').innerText = currentDate;  // Set Last Updated for UK
+                // Add creators for the UK
+                addCreators('UK');
+            } else {
+                // Add more regions as needed, and display appropriate section
+                document.getElementById('other-regions-shoutouts').style.display = 'block';
+                document.getElementById('other-regions-last-updated').innerText = currentDate;  // Set Last Updated for other regions
+                addCreators('Other');
+            }
+        })
+        .catch(error => console.error('Error fetching location data:', error));
+}
+
+// Function to add creators based on region
+function addCreators(region) {
+    const container = document.querySelector('.creator-grid');
+    if (!container) return;
+    
+    let creators = [];
+
+    // Add creators based on the region
+    if (region === 'Canada') {
+        creators = [
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        ];
+    } else if (region === 'UK') {
+        creators = [
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        ];
+    } else {
+        // Add creators for other regions
+        creators = [
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        ];
+    }
+
+    // Create creator cards dynamically
+    creators.forEach(creator => {
+        const card = document.createElement('div');
+        card.className = 'creator-card';
+        card.innerHTML = `
+            <img src="${creator.profilePic}" alt="@${creator.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+            <div class="creator-info">
+                <div class="creator-header">
+                    <h3>${creator.nickname}</h3>
+                    ${creator.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                </div>
+                <p class="creator-username">@${creator.username}</p>
+                <p class="creator-bio">${creator.bio || ''}</p>
+                <p class="follower-count">${creator.followers} Followers</p>
+                <a href="https://tiktok.com/@${creator.username}" target="_blank" class="visit-profile">
+                    Visit Profile
+                </a>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Call the function when the page loads
+checkLocation();
