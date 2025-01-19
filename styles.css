@@ -892,6 +892,81 @@ body {
   height: 1600px;  /* Adjusted for ample space */
 }
 
+/* RedNote Creator Shoutouts */
+#rednote-shoutouts {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+#rednote-shoutouts h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.creators-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.creator-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+}
+
+.creator-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.creator-card .username {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.creator-card .name {
+    font-size: 16px;
+    color: #555;
+}
+
+.creator-card .bio {
+    font-size: 14px;
+    color: #777;
+    margin-top: 10px;
+}
+
+.creator-card .fans {
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.creator-card .btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.creator-card .btn:hover {
+    background-color: #0056b3;
+}
+
+#rednote-last-updated {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
 /* Footer */
 footer {
     text-align: center;
