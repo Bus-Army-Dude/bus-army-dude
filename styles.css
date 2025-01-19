@@ -961,6 +961,7 @@ p.last-updated {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .countdown-item {
@@ -969,6 +970,9 @@ p.last-updated {
     border-radius: 8px;
     border: 1px solid var(--border-color, #444444); /* Dark border */
     text-align: center;
+    flex: 1 1 100px; /* Allow the items to take full width if needed */
+    margin-bottom: 15px;
+    max-width: 150px; /* Limit max width for each item */
 }
 
 .countdown-number {
@@ -982,6 +986,33 @@ p.last-updated {
     font-size: 14px;
     color: #ffffff; /* White text for labels */
     margin-top: 5px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .countdown-section h2 {
+        font-size: 20px;
+    }
+
+    .countdown-item {
+        flex: 1 1 45%; /* Two items per row on smaller screens */
+        max-width: 120px; /* Smaller max width for mobile */
+    }
+
+    .countdown-container {
+        gap: 10px; /* Reduced gap between items on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-item {
+        flex: 1 1 100%; /* Each item takes up full width on small screens */
+        max-width: 100%; /* Ensure no item exceeds full width */
+    }
+
+    .countdown-container {
+        gap: 5px; /* Reduce gap further for very small screens */
+    }
 }
 
 /* Footer */
