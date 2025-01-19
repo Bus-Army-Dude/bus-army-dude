@@ -10,7 +10,7 @@
     text-align: center;
     margin-bottom: 30px;
     padding: 20px;
-    background-color: var(--content-bg);
+    background-color: #5A5A5A;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
