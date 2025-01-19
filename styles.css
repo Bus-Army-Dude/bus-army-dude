@@ -945,6 +945,12 @@ body {
     max-width: 100%;
 }
 
+.rednote-verified-badge {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
 .rednote-creator-username {
     color: var(--secondary-text);
     margin: 5px 0;
