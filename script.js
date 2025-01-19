@@ -395,7 +395,7 @@ youtubeShoutouts.init();
 
 
 // Set this to `false` when TikTok is unbanned in the U.S.
-const isTikTokBannedInUS = true;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
 
 // Function to detect the user's country and display the correct sections using GeoJS API
 function checkLocation() {
