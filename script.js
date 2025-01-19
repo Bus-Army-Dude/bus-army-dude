@@ -146,25 +146,15 @@ setInterval(updateCountdown, 1000); // Update countdown every second
 const creators = {
     rednote: [
         {
-            profilePic: "path_to_image_1.jpg",
-            username: "@rednoteUser1",
-            name: "RedNote Creator 1",
-            bio: "Bio of RedNote Creator 1",
-            fans: 500,
+            profilePic: "rednote/basge502.webp",
+            username: "@Basge502",
+            name: "63893018335",
+            bio: "No introduction yet",
+            fans: '20,000',
             userId: "67853e92000000000801ee5d", // Xiaohongshu user ID
             token: "ABy8b3MUGXD9mTh_DRUWGuurbnUrwIMswnddTO9cI1Gjg%3D", // Token for the link
             profileLinkBase: "https://www.xiaohongshu.com/user/profile",
         },
-        {
-            profilePic: "path_to_image_2.jpg",
-            username: "@rednoteUser2",
-            name: "RedNote Creator 2",
-            bio: "Bio of RedNote Creator 2",
-            fans: 1200,
-            userId: "12345abcde67890fghij", // Xiaohongshu user ID
-            token: "sampleToken1234567890", // Token for the link
-            profileLinkBase: "https://www.xiaohongshu.com/user/profile",
-        }
     ]
 };
 
