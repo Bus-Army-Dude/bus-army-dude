@@ -403,12 +403,15 @@ function checkLocation() {
         .then(response => response.json())
         .then(data => {
             const country = data.country;
-            let lastUpdated = localStorage.getItem('lastUpdated');
-            
+
+            // Manually update the 'lastUpdated' value here
+            let lastUpdated = 'January 19, 2025, 3:41 PM';  // Set your custom date here
+            localStorage.setItem('lastUpdated', lastUpdated);  // Optionally store the value in localStorage
+
             // If no "Last Updated" value is stored, use a default date
             if (!lastUpdated) {
                 lastUpdated = new Date().toLocaleString();
-                localStorage.setItem('lastUpdated', 'January 19, 2025, 3:09 PM');  // Replace with your desired date and time
+                localStorage.setItem('lastUpdated', lastUpdated);
             }
 
             if (country === 'US' && isTikTokBannedInUS) {
