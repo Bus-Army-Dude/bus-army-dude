@@ -995,65 +995,63 @@ body {
 }
 
 /* General Section Styling */
-#us-shoutouts, #other-regions-shoutouts {
-    padding: 20px;
+.section {
+    margin: 20px auto;
+    padding: 15px;
     background-color: #f9f9f9;
     border-radius: 8px;
-    margin-bottom: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: 90%;
 }
 
 h2 {
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 24px;
     color: #333;
     margin-bottom: 10px;
-    text-align: center;
 }
 
-.last-updated {
+p.last-updated {
     font-size: 14px;
-    color: #777;
-    text-align: center;
-    margin-bottom: 20px;
+    color: #888;
 }
 
+/* Styling for the message container when TikTok is banned in the US */
 .message-container {
-    background-color: #ffe2e2;
-    padding: 15px;
-    border-radius: 8px;
     text-align: center;
+    padding: 20px;
+    background-color: #f8d7da;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
 }
 
 .message-container h3 {
-    font-size: 22px;
-    color: #d9534f;
+    font-size: 20px;
     margin-bottom: 10px;
 }
 
 .message-container p {
     font-size: 16px;
-    color: #333;
-    line-height: 1.5;
+    margin-bottom: 15px;
 }
 
 .learn-more-button {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #1da1f2;
-    color: #fff;
-    font-size: 16px;
-    border-radius: 5px;
+    font-size: 14px;
+    color: #004085;
     text-decoration: none;
-    transition: background-color 0.3s;
+    border: 1px solid #004085;
+    padding: 8px 15px;
+    border-radius: 5px;
+    background-color: #cce5ff;
 }
 
 .learn-more-button:hover {
-    background-color: #007bff;
+    background-color: #0056b3;
+    color: white;
 }
 
-/* Creator Card Styling */
+/* Creator Grid Styling */
 .creator-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1062,23 +1060,25 @@ h2 {
 }
 
 .creator-card {
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.creator-card:hover {
+    transform: translateY(-10px);
 }
 
 .creator-pic {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
 }
 
 .creator-info {
-    text-align: center;
+    padding: 15px;
 }
 
 .creator-header {
@@ -1089,60 +1089,70 @@ h2 {
 }
 
 .creator-header h3 {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
     color: #333;
     margin: 0;
 }
 
 .verified-badge {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 .creator-username {
-    font-size: 16px;
-    color: #007bff;
-    margin: 5px 0;
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
 }
 
 .creator-bio {
     font-size: 14px;
     color: #555;
-    line-height: 1.4;
-    margin-bottom: 15px;
+    margin-top: 10px;
 }
 
 .follower-count {
     font-size: 14px;
-    color: #777;
-    margin-bottom: 15px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 .visit-profile {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #1da1f2;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
     font-size: 14px;
-    transition: background-color 0.3s;
+    color: #007bff;
+    text-decoration: none;
+    border: 1px solid #007bff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    background-color: #e9f7fe;
+    display: inline-block;
+    margin-top: 10px;
 }
 
 .visit-profile:hover {
-    background-color: #007bff;
+    background-color: #0056b3;
+    color: white;
 }
 
-@media (max-width: 768px) {
-    .creator-grid {
-        grid-template-columns: 1fr 1fr;
-    }
+/* Visibility of TikTok sections */
+#us-shoutouts,
+#other-regions-shoutouts {
+    display: none;
 }
 
-@media (max-width: 480px) {
-    .creator-grid {
-        grid-template-columns: 1fr;
-    }
+#us-shoutouts {
+    background-color: #fff3cd;
+    padding: 20px;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+}
+
+#other-regions-shoutouts {
+    background-color: #e7f9f9;
+    padding: 20px;
+    border: 1px solid #d1ecf1;
+    border-radius: 8px;
 }
 
 /* Footer */
