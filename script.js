@@ -145,8 +145,7 @@ setInterval(updateCountdown, 1000); // Update countdown every second
 // RedNote Shoutouts
 const redNoteShoutouts = {
     accounts: [
-        { username: 'rednoteUser1', fans: '300', nickname: 'RedNote Creator 1', bio: 'This is RedNote creator 1 bio.', profilePic: 'rednote_photos/rednoteuser1.jpg', userId: '67853e92000000000801ee5d', token: 'ABy8b3MUGXD9mTh_DRUWGuurbnUrwIMswnddTO9cI1Gjg%3D' },
-        { username: 'rednoteUser2', fans: '500', nickname: 'RedNote Creator 2', bio: 'This is RedNote creator 2 bio.', profilePic: 'rednote_photos/rednoteuser2.jpg', userId: '12345abcde67890fghij', token: 'sampleToken1234567890' }
+        { username: 'Basge502', fans: '300', nickname: '63893018335', bio: 'This is RedNote creator 1 bio.', profilePic: 'rednote/basge502.webp', userId: '67853e92000000000801ee5d', token: 'ABy8b3MUGXD9mTh_DRUWGuurbnUrwIMswnddTO9cI1Gjg%3D' },
         // Add more RedNote creators as needed
     ],
     lastUpdatedTime: '2025-01-19T09:26:25', // Manually set the last updated date and time
