@@ -145,11 +145,11 @@ setInterval(updateCountdown, 1000); // Update countdown every second
 // RedNote Shoutouts
 const redNoteShoutouts = {
     accounts: [
-        { username: '63893018335', isVerified: true, fans: '20,000', nickname: 'Basge502', bio: 'No introduction yet', profilePic: 'rednote/basge502.webp', userId: '67853e92000000000801ee5d', token: 'ABy8b3MUGXD9mTh_DRUWGuurbnUrwIMswnddTO9cI1Gjg%3D' },
+        { username: '63893018335', isVerified: true, fans: '21,000', nickname: 'Basge502', bio: 'No introduction yet', profilePic: 'rednote/basge502.webp', userId: '67853e92000000000801ee5d', token: 'ABy8b3MUGXD9mTh_DRUWGuurbnUrwIMswnddTO9cI1Gjg%3D' },
         { username: 'busarmydude', isVerified: false, fans: '15', nickname: 'River Kritzar', bio: 'https://bus-army-dude.github.io/bus-army-dude/', profilePic: 'rednote/busarmydude.webp', userId: '6784c343000000000803cd8c', token: 'ABArWuAlrqd-0XrSwW8448qhsXeAp_QX9ZiVo8H17' },
         // Add more RedNote creators as needed
     ],
-    lastUpdatedTime: '2025-01-19T10:25:00', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-19T11:19:05', // Manually set the last updated date and time
     profileLinkBase: "https://www.xiaohongshu.com/user/profile",
     init() {
         this.createShoutoutCards();
