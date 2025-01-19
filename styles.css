@@ -8,10 +8,10 @@
 /* Profile Section */
 .profile-section {
     text-align: center;
-    color: #0a0a0a; /* Ensure text color contrasts */
+    color: ##ffffff; /* Ensure text color contrasts */
     margin-bottom: 30px;
     padding: 20px;
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
+    background-color: #5A5A5A; /* Adjusted to keep the dark theme */
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -45,8 +45,8 @@
 
 /* Social Section */
 .social-links-section {
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
-    color: var(--text-color); /* Ensure text color contrasts */
+    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
+    color: ##ffffff; /* Ensure text color contrasts */
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -87,8 +87,8 @@
 
 /* Links Section */
 .links {
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
-    color: var(--text-color); /* Ensure text color contrasts */    
+    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
+    color: ##ffffff; /* Ensure text color contrasts */
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -112,7 +112,7 @@
 
 /* Tech Section */
 .tech-section {
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
+    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -120,8 +120,8 @@
 }
 
 .tech-item {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: var(--text-color); /* Ensure text color contrasts */
+    background-color: #5A5A5A;
+    color: ##ffffff; /* Ensure text color contrasts */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 20px; /* Increased padding for readability */
@@ -134,7 +134,7 @@
 
 /* Disabilities Section */
 .disabilities-section {
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
+    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -149,7 +149,7 @@
 
 .disabilities-section li {
     background-color: rgba(0, 0, 0, 0.1);
-    color: var(--text-color); /* Ensure text color contrasts */
+    color: ##ffffff; /* Ensure text color contrasts */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-bottom: 10px;
@@ -202,7 +202,7 @@ body {
 
 /* Instagram Creator Grid Layout */
 .instagram-creator-grid {
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
+    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -211,7 +211,7 @@ body {
 
 /* Instagram Creator Card Styles */
 .instagram-creator-card {
-    background-color: var(--content-bg);
+    background-color: #5A5A5A;
     border-radius: 10px;
     padding: 20px;
     display: flex;
@@ -248,7 +248,7 @@ body {
 .instagram-creator-header h3 {
     margin: 0;
     font-size: 1.1em;
-    color: var(--text-color);
+    color: ##ffffff; /* Ensure text color contrasts */    
     word-break: break-word;
     line-height: 1.3;
     max-width: 100%;
