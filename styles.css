@@ -50,6 +50,13 @@
     border-radius: 10px;
 }
 
+/* Title of the Section */
+.social-links-section h2 {
+    color: white; /* Ensures the title text is white */
+    font-size: 24px; /* Adjust size as necessary */
+    margin-bottom: 20px; /* Adds spacing below the title */
+}
+
 .social-links-container {
     display: flex;
     flex-wrap: wrap;
@@ -119,7 +126,7 @@
 }
 
 .tech-item {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background for the items */
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 15px;
@@ -162,7 +169,7 @@
 }
 
 .disabilities-section li {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background for the items */
     border: 1px solid var(--border-color, #444444); /* Dark border color */
     border-radius: 8px;
     margin-bottom: 10px;
@@ -171,7 +178,7 @@
 
 .disabilities-section a {
     display: block;
-    color: var(--text-color, #ffffff); /* White text for contrast on dark background */
+    color: #ffffff; /* White text for contrast on dark background */
     text-decoration: none;
     padding: 15px;
     transition: all 0.3s ease;
