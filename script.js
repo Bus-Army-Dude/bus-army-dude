@@ -149,7 +149,7 @@ const redNoteShoutouts = {
         { username: 'busarmydude', fans: '15', nickname: 'River Kritzar', bio: 'https://bus-army-dude.github.io/bus-army-dude/', profilePic: 'rednote/busarmydude.webp', userId: '6784c343000000000803cd8c', token: 'ABArWuAlrqd-0XrSwW8448qhsXeAp_QX9ZiVo8H17' },
         // Add more RedNote creators as needed
     ],
-    lastUpdatedTime: '2025-01-19T09:26:25', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-19T10:25:00', // Manually set the last updated date and time
     profileLinkBase: "https://www.xiaohongshu.com/user/profile",
     init() {
         this.createShoutoutCards();
