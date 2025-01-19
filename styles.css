@@ -973,6 +973,7 @@ p.last-updated {
     flex: 1 1 100px; /* Allow the items to take full width if needed */
     margin-bottom: 15px;
     max-width: 150px; /* Limit max width for each item */
+    box-sizing: border-box; /* Ensure padding and border are included in the width calculation */
 }
 
 .countdown-number {
@@ -1005,6 +1006,10 @@ p.last-updated {
 }
 
 @media (max-width: 480px) {
+    .countdown-section h2 {
+        font-size: 18px;
+    }
+
     .countdown-item {
         flex: 1 1 100%; /* Each item takes up full width on small screens */
         max-width: 100%; /* Ensure no item exceeds full width */
@@ -1012,6 +1017,25 @@ p.last-updated {
 
     .countdown-container {
         gap: 5px; /* Reduce gap further for very small screens */
+    }
+}
+
+@media (max-width: 375px) {
+    .countdown-container {
+        gap: 3px; /* Further reduce gap in portrait mode */
+    }
+
+    .countdown-item {
+        padding: 10px 15px; /* Reduced padding to save space */
+        font-size: 14px; /* Adjust text size for portrait mode */
+    }
+
+    .countdown-number {
+        font-size: 30px; /* Adjust number size to fit on smaller screens */
+    }
+
+    .countdown-label {
+        font-size: 12px; /* Adjust label size */
     }
 }
 
