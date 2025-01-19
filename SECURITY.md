@@ -77,8 +77,9 @@ To report a security vulnerability, please follow these steps:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.7.x   | :white_check_mark: |
-| 1.6.x   | :white_check_mark: |
+| 1.8.x   | :white_check_mark: |
+| 1.7.x   | :x: |
+| 1.6.x   | :x: |
 | 1.5.x   | :x: |
 | 1.4.x   | :x: |
 | 1.3.x   | :x: |
@@ -93,10 +94,10 @@ For any security-related concerns, please contact:
 ## Repository Information
 - Repository: BusArmyDude/busarmydude
 - Language Composition:
-  - **JavaScript:** 35.8%
-  - **CSS:** 36.7%
-  - **HTML:** 25.2%
-  - **PHP:** 2.3%
+  - **JavaScript:** 40.5%
+  - **CSS:** 34.8%
+  - **HTML:** 22.7%
+  - **PHP:** 2.0%
 
 ## Acknowledgments
 
@@ -104,7 +105,7 @@ We appreciate the security community's efforts in responsibly disclosing vulnera
 
 ## Version Control
 
-This security policy is version 1.7.0 and was last updated on 2025-1-14 11:01 AM
+This security policy is version 1.8.0 and was last updated on 2025-1-19 11:32 AM
 
 ---
 
