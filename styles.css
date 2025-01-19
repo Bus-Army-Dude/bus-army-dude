@@ -199,10 +199,11 @@ body {
 
 /* Instagram Creator Grid Layout */
 .instagram-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
+    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Instagram Creator Card Styles */
@@ -295,10 +296,11 @@ body {
 
 /* YouTube Creator Grid Layout */
 .youtube-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
+    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* YouTube Creator Card Styles */
@@ -891,14 +893,11 @@ body {
 
 /* RedNote Creator Card Styles */
 .rednote-creator-card {
-    background-color: var(--content-bg);
+    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
     border-radius: 10px;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative;
 }
 
 .rednote-creator-card:hover {
