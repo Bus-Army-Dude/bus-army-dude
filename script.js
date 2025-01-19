@@ -231,6 +231,7 @@ const instagramShoutouts = {
         { username: 'imparkerburton', isVerified: true, followers: '280K', nickname: 'Parker Burton', bio: 'That Android Guy Business: parker@imparkerburton.com', profilePic: 'instagram_photos/imparkerburton.jpeg' },                    
         { username: 'kennedylawfirm', isVerified: false, followers: '24K', nickname: 'Lawyer Kevin Kennedy', bio: 'Clarksville, TN Kevs got you covered', profilePic: 'instagram_photos/kennedylawfirm.jpeg' },                    
         { username: 'ta.techtips', isVerified: false, followers: '269K', nickname: 'TA Tech Tips', bio: '🔥 Tech Tips 🔥 📱TikTok | TATechTips📧 hello@thegoldstudios.com', profilePic: 'instagram_photos/tatechtips.jpeg' },                    
+        { username: 'lust_ryze', isVerified: false, followers: '38', nickname: '𝚁𝚢𝚉𝚎 ツ', bio: 'hi everyone this will be my official Instagram account for my tiktok account you can find my other social bellow', profilePic: 'instagram_photos/lustryze.jpeg' },                    
         // Add more Instagram creators as needed
     ],
     lastUpdatedTime: '2025-01-19T09:26:25', // Manually set the last updated date and time
@@ -393,25 +394,11 @@ youtubeShoutouts.init();
 });
 
 
-// Set these flags to `false` when TikTok is unbanned in the respective regions
-const isTikTokBannedInUS = true;  // Change this to `false` when TikTok is unbanned in the U.S.
-const isTikTokBannedInCA = false;  // Change this to `false` when TikTok is unbanned in Canada
-const isTikTokBannedInGB = false;  // Change this to `false` when TikTok is unbanned in the UK
-const isTikTokBannedInEU = false;  // Change this to `false` when TikTok is unbanned in the European Union
-const isTikTokBannedInIN = false;  // Change this to `false` when TikTok is unbanned in India
-const isTikTokBannedInAU = false;  // Change this to `false` when TikTok is unbanned in Australia
-const isTikTokBannedInSG = false;  // Change this to `false` when TikTok is unbanned in Singapore
-const isTikTokBannedInBR = false;  // Change this to `false` when TikTok is unbanned in Brazil
-const isTikTokBannedInZA = false;  // Change this to `false` when TikTok is unbanned in South Africa
-const isTikTokBannedInJP = false;  // Change this to `false` when TikTok is unbanned in Japan
-const isTikTokBannedInKR = false;  // Change this to `false` when TikTok is unbanned in South Korea
-const isTikTokBannedInCN = true;  // Change this to `false` when TikTok is unbanned in China (no TikTok in mainland China)
-const isTikTokBannedInRU = false;  // Change this to `false` when TikTok is unbanned in Russia
-const isTikTokBannedInMY = false;  // Change this to `false` when TikTok is unbanned in Malaysia
-const isTikTokBannedInPH = false;  // Change this to `false` when TikTok is unbanned in the Philippines
+// Set this to `false` when TikTok is unbanned in the U.S.
+const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
 
 // Manually set the "Last Updated" timestamp here (adjust as needed)
-let manualLastUpdated = 'January 19, 2025, 4:41 PM';  // Replace with your desired timestamp
+let manualLastUpdated = 'January 19, 2025, 4:14 PM';  // Replace with your desired timestamp
 
 // Function to detect the user's country and display the correct sections using GeoJS API
 function checkLocation() {
@@ -426,85 +413,17 @@ function checkLocation() {
             // Optionally store the value in localStorage for later use
             localStorage.setItem('lastUpdated', lastUpdated);
 
+            // You can replace `manualLastUpdated` with `new Date().toLocaleString()` if you want to use the current timestamp
             if (country === 'US' && isTikTokBannedInUS) {
+                // Show message indicating TikTok is banned in the U.S.
                 document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message for U.S. users
                 document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide TikTok creator shoutouts for other regions
-                document.getElementById('us-last-updated').innerText = lastUpdated;
-            } else if (country === 'CA' && isTikTokBannedInCA) {
-                document.getElementById('ca-shoutouts').style.display = 'block'; 
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('ca-last-updated').innerText = lastUpdated;
-            } else if (country === 'GB' && isTikTokBannedInGB) {
-                document.getElementById('gb-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('gb-last-updated').innerText = lastUpdated;
-            } else if (country === 'EU' && isTikTokBannedInEU) {
-                document.getElementById('eu-shoutouts').style.display = 'block'; 
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('eu-last-updated').innerText = lastUpdated;
-            } else if (country === 'IN' && isTikTokBannedInIN) {
-                document.getElementById('in-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('in-last-updated').innerText = lastUpdated;
-            } else if (country === 'AU' && isTikTokBannedInAU) {
-                document.getElementById('au-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('au-last-updated').innerText = lastUpdated;
-            } else if (country === 'SG' && isTikTokBannedInSG) {
-                document.getElementById('sg-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('sg-last-updated').innerText = lastUpdated;
-            } else if (country === 'BR' && isTikTokBannedInBR) {
-                document.getElementById('br-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('br-last-updated').innerText = lastUpdated;
-            } else if (country === 'ZA' && isTikTokBannedInZA) {
-                document.getElementById('za-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('za-last-updated').innerText = lastUpdated;
-            } else if (country === 'JP' && isTikTokBannedInJP) {
-                document.getElementById('jp-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('jp-last-updated').innerText = lastUpdated;
-            } else if (country === 'KR' && isTikTokBannedInKR) {
-                document.getElementById('kr-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('kr-last-updated').innerText = lastUpdated;
-            } else if (country === 'CN' && isTikTokBannedInCN) {
-                document.getElementById('cn-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('cn-last-updated').innerText = lastUpdated;
-            } else if (country === 'RU' && isTikTokBannedInRU) {
-                document.getElementById('ru-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('ru-last-updated').innerText = lastUpdated;
-            } else if (country === 'MY' && isTikTokBannedInMY) {
-                document.getElementById('my-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('my-last-updated').innerText = lastUpdated;
-            } else if (country === 'PH' && isTikTokBannedInPH) {
-                document.getElementById('ph-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-                document.getElementById('ph-last-updated').innerText = lastUpdated;
+                document.getElementById('us-last-updated').innerText = lastUpdated;  // Set Last Updated for U.S.
             } else {
                 // Show creator shoutouts for other regions
                 document.getElementById('other-regions-shoutouts').style.display = 'block'; 
                 document.getElementById('us-shoutouts').style.display = 'none'; // Hide U.S. banned message
-                document.getElementById('ca-shoutouts').style.display = 'none'; // Hide Canada banned message
-                document.getElementById('gb-shoutouts').style.display = 'none'; // Hide UK banned message
-                document.getElementById('eu-shoutouts').style.display = 'none'; // Hide EU banned message
-                document.getElementById('in-shoutouts').style.display = 'none'; // Hide India banned message
-                document.getElementById('au-shoutouts').style.display = 'none'; // Hide Australia banned message
-                document.getElementById('sg-shoutouts').style.display = 'none'; // Hide Singapore banned message
-                document.getElementById('br-shoutouts').style.display = 'none'; // Hide Brazil banned message
-                document.getElementById('za-shoutouts').style.display = 'none'; // Hide South Africa banned message
-                document.getElementById('jp-shoutouts').style.display = 'none'; // Hide Japan banned message
-                document.getElementById('kr-shoutouts').style.display = 'none'; // Hide South Korea banned message
-                document.getElementById('cn-shoutouts').style.display = 'none'; // Hide China banned message
-                document.getElementById('ru-shoutouts').style.display = 'none'; // Hide Russia banned message
-                document.getElementById('my-shoutouts').style.display = 'none'; // Hide Malaysia banned message
-                document.getElementById('ph-shoutouts').style.display = 'none'; // Hide Philippines banned message
-                document.getElementById('other-regions-last-updated').innerText = lastUpdated;
+                document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for other regions
                 addCreators(); // Call function to add creators dynamically
             }
         })
@@ -525,6 +444,7 @@ function addCreators() {
         // Add more creators as necessary
     ];
 
+    // Add creators dynamically
     creators.forEach(creator => {
         const card = document.createElement('div');
         card.className = 'creator-card';
