@@ -395,7 +395,7 @@ youtubeShoutouts.init();
 
 
 // Set this to `false` when TikTok is unbanned in the U.S.
-const isTikTokBannedInUS = true;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
 
 // Manually set the "Last Updated" timestamp here (adjust as needed)
 let manualLastUpdated = 'January 19, 2025, 3:44 PM';  // Replace with your desired timestamp
