@@ -397,6 +397,9 @@ youtubeShoutouts.init();
 // Set this to `false` when TikTok is unbanned in the U.S.
 const isTikTokBannedInUS = true;  // Change this to `false` when TikTok is unbanned
 
+// Manually set the "Last Updated" timestamp here (adjust as needed)
+let manualLastUpdated = 'January 19, 2025, 3:44 PM';  // Replace with your desired timestamp
+
 // Function to detect the user's country and display the correct sections using GeoJS API
 function checkLocation() {
     fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
@@ -404,16 +407,13 @@ function checkLocation() {
         .then(data => {
             const country = data.country;
 
-            // Manually update the 'lastUpdated' value here
-            let lastUpdated = 'January 19, 2025, 3:41 PM';  // Set your custom date here
-            localStorage.setItem('lastUpdated', lastUpdated);  // Optionally store the value in localStorage
+            // If you want to use the manually set timestamp, use `manualLastUpdated`
+            let lastUpdated = manualLastUpdated;
 
-            // If no "Last Updated" value is stored, use a default date
-            if (!lastUpdated) {
-                lastUpdated = new Date().toLocaleString();
-                localStorage.setItem('lastUpdated', lastUpdated);
-            }
+            // Optionally store the value in localStorage for later use
+            localStorage.setItem('lastUpdated', lastUpdated);
 
+            // You can replace `manualLastUpdated` with `new Date().toLocaleString()` if you want to use the current timestamp
             if (country === 'US' && isTikTokBannedInUS) {
                 // Show message indicating TikTok is banned in the U.S.
                 document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message for U.S. users
