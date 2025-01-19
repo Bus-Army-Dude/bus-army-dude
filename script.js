@@ -141,6 +141,66 @@ window.onload = function() {
 
 // Update the countdown every second
 setInterval(updateCountdown, 1000); // Update countdown every second
+
+// RedNote Creator Shoutouts
+const creators = {
+    rednote: [
+        {
+            profilePic: "path_to_image_1.jpg",
+            username: "@rednoteUser1",
+            name: "RedNote Creator 1",
+            bio: "Bio of RedNote Creator 1",
+            fans: 500,
+            userId: "67853e92000000000801ee5d", // Xiaohongshu user ID
+            token: "ABy8b3MUGXD9mTh_DRUWGuurbnUrwIMswnddTO9cI1Gjg%3D", // Token for the link
+            profileLinkBase: "https://www.xiaohongshu.com/user/profile",
+        },
+        {
+            profilePic: "path_to_image_2.jpg",
+            username: "@rednoteUser2",
+            name: "RedNote Creator 2",
+            bio: "Bio of RedNote Creator 2",
+            fans: 1200,
+            userId: "12345abcde67890fghij", // Xiaohongshu user ID
+            token: "sampleToken1234567890", // Token for the link
+            profileLinkBase: "https://www.xiaohongshu.com/user/profile",
+        }
+    ]
+};
+
+// Function to dynamically generate RedNote creator cards
+function renderRedNoteShoutouts() {
+    const container = document.querySelector('#rednote-shoutouts .creators-container');
+    creators.rednote.forEach(creator => {
+        const card = document.createElement('div');
+        card.className = 'creator-card';
+        
+        // Create the profile link using the Xiaohongshu format
+        const profileLink = `${creator.profileLinkBase}/${creator.userId}?xsec_token=${creator.token}&xsec_source=pc_search`;
+
+        card.innerHTML = `
+            <img src="${creator.profilePic}" alt="${creator.name}">
+            <div class="username">${creator.username}</div>
+            <div class="name">${creator.name}</div>
+            <div class="bio">${creator.bio}</div>
+            <div class="fans">${creator.fans} fans</div>
+            <a href="${profileLink}" class="btn" target="_blank">Visit Profile</a>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Function to set last updated date
+function setRedNoteLastUpdated(date) {
+    document.getElementById('rednote-last-updated').textContent = `Last updated: ${date}`;
+}
+
+// Rendering the RedNote shoutouts
+renderRedNoteShoutouts();
+
+// Setting the last updated date for RedNote
+const today = new Date().toLocaleDateString();
+setRedNoteLastUpdated(today);
     
 // Instagram Shoutouts
 const instagramShoutouts = {
