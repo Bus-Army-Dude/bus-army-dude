@@ -900,25 +900,25 @@ p.last-updated {
 
 .follower-count {
     font-size: 14px;
+    color: var(--accent-color);
     font-weight: bold;
     margin-top: 10px;
 }
 
 .visit-profile {
-    font-size: 14px;
-    color: #007bff;
-    text-decoration: none;
-    border: 1px solid #007bff;
-    padding: 8px 15px;
-    border-radius: 5px;
-    background-color: #e9f7fe;
     display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
     margin-top: 10px;
+    transition: opacity 0.3s ease;
+    text-align: center;
 }
 
 .visit-profile:hover {
-    background-color: #0056b3;
-    color: white;
+    opacity: 0.9;
 }
 
 /* Visibility of TikTok sections */
