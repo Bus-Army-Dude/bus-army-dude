@@ -8,14 +8,12 @@
 /* Profile Section */
 .profile-section {
     text-align: center;
-    color: #000000; /* Ensure text color contrasts */
     margin-bottom: 30px;
     padding: 20px;
-    background-color: var(--accent-color); /* Adjusted to keep the dark theme */
+    background-color: var(--content-bg);
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -43,14 +41,10 @@
     margin-left: 5px;
 }
 
-/* Social Section */
+/* Social Section - Updated */
 .social-links-section {
-    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
-    color: ##ffffff; /* Ensure text color contrasts */
-    border-radius: 10px;
+    text-align: center;
     padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .social-links-container {
@@ -87,12 +81,11 @@
 
 /* Links Section */
 .links {
-    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
-    color: ##ffffff; /* Ensure text color contrasts */
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .links a {
@@ -112,7 +105,7 @@
 
 /* Tech Section */
 .tech-section {
-    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
+    background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -120,21 +113,35 @@
 }
 
 .tech-item {
-    background-color: #5A5A5A;
-    color: ##ffffff; /* Ensure text color contrasts */
-    border: 1px solid var(--border-color);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    padding: 20px; /* Increased padding for readability */
+    padding: 15px;
     margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.tech-item:last-child {
+    margin-bottom: 0;
 }
 
 .tech-item h3 {
+    margin-top: 0;
     color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.tech-item p {
+    margin: 5px 0;
+}
+
+.tech-item p span {
+    font-weight: bold;
+    margin-right: 8px;
 }
 
 /* Disabilities Section */
 .disabilities-section {
-    background-color: #5A5A5A; /* Adjusted to keep the dark theme */    
+    background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -149,7 +156,6 @@
 
 .disabilities-section li {
     background-color: rgba(0, 0, 0, 0.1);
-    color: ##ffffff; /* Ensure text color contrasts */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-bottom: 10px;
@@ -209,9 +215,17 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Instagram Creator Grid Layout */
+.instagram-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
 /* Instagram Creator Card Styles */
 .instagram-creator-card {
-    background-color: #5A5A5A;
+    background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
     display: flex;
@@ -248,7 +262,7 @@ body {
 .instagram-creator-header h3 {
     margin: 0;
     font-size: 1.1em;
-    color: ##ffffff; /* Ensure text color contrasts */    
+    color: var(--text-color);
     word-break: break-word;
     line-height: 1.3;
     max-width: 100%;
@@ -299,11 +313,10 @@ body {
 
 /* YouTube Creator Grid Layout */
 .youtube-creator-grid {
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
 }
 
 /* YouTube Creator Card Styles */
@@ -545,11 +558,12 @@ body {
 /* Countdown Section */
 .countdown-section {
     text-align: center;
-    background-color: var(--content-bg); /* Adjusted to keep the dark theme */
+    background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
     margin: 20px auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
 }
 
 .countdown-container {
@@ -580,63 +594,6 @@ body {
 .countdown-label {
     font-size: 1em;
     color: var(--secondary-text);
-}
-
-/* Tech Section */
-.tech-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.tech-item {
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.tech-item:last-child {
-    margin-bottom: 0;
-}
-
-/* Disabilities Section */
-.disabilities-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.disabilities-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.disabilities-section li {
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 10px;
-    overflow: hidden;
-}
-
-.disabilities-section a {
-    display: block;
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 15px;
-    transition: all 0.3s ease;
-}
-
-.disabilities-section a:hover {
-    background-color: var(--accent-color);
-    color: white;
 }
 
 /* Version Info Section */
