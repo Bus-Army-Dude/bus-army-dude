@@ -102,21 +102,127 @@ section {
 }
 
 /* Shoutouts Section */
-.shoutouts-section {
-    background-color: #1e1e1e;
-    padding: 20px;
+.shoutouts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.shoutout-card {
+    background-color: #1f1f1f;
     border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    border: 2px solid #333;
+    transition: transform 0.3s ease;
 }
 
-.shoutouts-section h2 {
-    font-size: 26px;
-    margin-bottom: 20px;
+.shoutout-card:hover {
+    transform: scale(1.05);
 }
 
-.last-updated {
+.profile-pic {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.creator-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.creator-name .verified {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.username {
+    font-size: 16px;
     color: #aaa;
-    font-size: 14px;
+    margin-bottom: 10px;
 }
+
+.account-name {
+    font-size: 16px;
+    color: #bbb;
+    margin-bottom: 10px;
+}
+
+.bio {
+    font-size: 14px;
+    color: #bbb;
+    margin-bottom: 10px;
+    max-height: 60px;
+    overflow: hidden;
+}
+
+.follower-count {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.visit-link {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.visit-link:hover {
+    background-color: #444;
+}
+
+/* TikTok Specific */
+.tiktok-card .visit-link {
+    background-color: #00f2ea;
+}
+
+.tiktok-card .visit-link:hover {
+    background-color: #00c8b2;
+}
+
+/* Instagram Specific */
+.instagram-card .visit-link {
+    background-color: #E4405F;
+}
+
+.instagram-card .visit-link:hover {
+    background-color: #c13584;
+}
+
+/* RedNote Specific */
+.rednote-card .visit-link {
+    background-color: #FF0000;
+}
+
+.rednote-card .visit-link:hover {
+    background-color: #cc0000;
+}
+
+/* YouTube Specific */
+.youtube-card .visit-link {
+    background-color: #FF0000;
+}
+
+.youtube-card .visit-link:hover {
+    background-color: #cc0000;
+}
+
 
 /* Countdown Section */
 .countdown-section {
