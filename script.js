@@ -441,7 +441,7 @@ function addCreators() {
 
     const creators = [
         { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-        { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpeg' },
+        { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
         
         // Add more creators as necessary
     ];
