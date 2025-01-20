@@ -394,41 +394,54 @@ youtubeShoutouts.init();
 });
 
 
-// Set this to `false` when TikTok is unbanned in the U.S.
-const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
-
-// Manually set the "Last Updated" timestamp here (adjust as needed)
+// Manually set the "Last Updated" timestamp
 let manualLastUpdated = 'Monday, January 20, 2025, 10:54 AM';  // Replace with your desired timestamp
 
 // Function to detect the user's country and display the correct sections using GeoJS API
 function checkLocation() {
-    fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
+    // First, fetch the banned regions JSON
+    fetch('banned_regions.json')
         .then(response => response.json())
-        .then(data => {
-            const country = data.country;
+        .then(bannedRegions => {
+            // Fetch user's country using GeoJS API
+            return fetch('https://get.geojs.io/v1/ip/country.json')
+                .then(response => response.json())
+                .then(data => {
+                    const country = data.country;
 
-            // If you want to use the manually set timestamp, use `manualLastUpdated`
-            let lastUpdated = manualLastUpdated;
+                    // Function to check if TikTok is available in a region
+                    const isTikTokAvailable = (countryName) => {
+                        for (let region of bannedRegions.regions) {
+                            for (let c of region.countries) {
+                                if (c.name === countryName) {
+                                    return c.isAvailable;
+                                }
+                            }
+                        }
+                        return false; // Return false if country not found in the list
+                    };
 
-            // Optionally store the value in localStorage for later use
-            localStorage.setItem('lastUpdated', lastUpdated);
+                    // If you want to use the manually set timestamp, use `manualLastUpdated`
+                    let lastUpdated = manualLastUpdated;
 
-            // You can replace `manualLastUpdated` with `new Date().toLocaleString()` if you want to use the current timestamp
-            if (country === 'US' && isTikTokBannedInUS) {
-                // Show message indicating TikTok is banned in the U.S.
-                document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message for U.S. users
-                document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide TikTok creator shoutouts for other regions
-                document.getElementById('us-last-updated').innerText = lastUpdated;  // Set Last Updated for U.S.
-            } else {
-                // Show creator shoutouts for other regions
-                document.getElementById('other-regions-shoutouts').style.display = 'block'; 
-                document.getElementById('us-shoutouts').style.display = 'none'; // Hide U.S. banned message
-                document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for other regions
-                addCreators(); // Call function to add creators dynamically
-            }
+                    // Optionally store the value in localStorage for later use
+                    localStorage.setItem('lastUpdated', lastUpdated);
+
+                    // Display sections based on TikTok availability in the user's country
+                    if (!isTikTokAvailable(country)) {
+                        document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message
+                        document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide creator shoutouts
+                        document.getElementById('us-last-updated').innerText = lastUpdated;  // Set "Last Updated" for U.S.
+                    } else {
+                        document.getElementById('other-regions-shoutouts').style.display = 'block'; 
+                        document.getElementById('us-shoutouts').style.display = 'none'; // Hide TikTok banned message
+                        document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set "Last Updated" for available regions
+                        addCreators(); // Call function to add creators dynamically
+                    }
+                })
         })
         .catch(error => {
-            console.error('Error fetching location data:', error);
+            console.error('Error fetching location or region data:', error);
             // Fallback if the API fails
             document.getElementById('location-error').style.display = 'block';
         });
@@ -469,3 +482,4 @@ function addCreators() {
 
 // Call checkLocation function on page load
 checkLocation();
+
