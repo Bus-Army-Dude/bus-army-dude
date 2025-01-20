@@ -107,7 +107,7 @@ function updateCountdown() {
     const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);
 
     if (countdownElement) {
-        countdownElement.textContent = `Page refreshing in: ${timeLeft} seconds`;
+        countdownElement.textContent = `Page refreshing in: ${timeLeft} mintues`;
     }
 
     // Smooth reload when timeLeft reaches 0
