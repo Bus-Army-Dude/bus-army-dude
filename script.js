@@ -398,7 +398,7 @@ youtubeShoutouts.init();
 const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
 
 // Manually set the "Last Updated" timestamp here (adjust as needed)
-let manualLastUpdated = 'January 20, 2025, 10:50 PM';  // Replace with your desired timestamp
+let manualLastUpdated = 'Monday, January 20, 2025, 10:50 AM';  // Replace with your desired timestamp
 
 // Function to detect the user's country and display the correct sections using GeoJS API
 function checkLocation() {
