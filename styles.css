@@ -1,385 +1,286 @@
-/* Global Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+/* Base Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
 }
 
-body {
-  background-color: #121212; /* Dark Background */
-  color: #f5f5f5; /* Light Text */
-  line-height: 1.6;
+h1, h2, h3, h4, p {
+    margin: 0;
+    padding: 0;
 }
 
 a {
-  text-decoration: none;
-  color: #ff5722; /* Accent color for links */
-}
-
-button {
-  background-color: #ff5722; /* Accent color for buttons */
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: #ff7043;
+    text-decoration: none;
+    color: inherit;
 }
 
 .container {
-  width: 90%;
-  margin: 0 auto;
-  max-width: 1200px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-/* 1. Profile Section */
-.profile {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
-  background-color: #1c1c1c;
-  border-radius: 10px;
+section {
+    margin-bottom: 40px;
 }
 
-.profile img {
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  margin-right: 20px;
+/* Profile Section */
+.profile-section {
+    text-align: center;
+    margin-bottom: 40px;
 }
 
-.profile .name {
-  font-size: 24px;
-  font-weight: bold;
-  color: #00bcd4;
+.profile-pic {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
 }
 
-.profile .bio {
-  color: #f5f5f5;
+.username-checkmark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 }
 
-/* 2. Connect With Me */
-.connect {
-  display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
+.username-checkmark h1 {
+    font-size: 28px;
+    margin-right: 10px;
 }
 
-.connect a {
-  background-color: #333;
-  padding: 15px;
-  border-radius: 5px;
-  display: inline-block;
-  color: #fff;
-  text-align: center;
+.verified {
+    width: 24px;
+    height: 24px;
 }
 
-.connect a:hover {
-  background-color: #ff5722;
+.profile-section p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #aaa;
 }
 
-/* 3. TikTok Creator Shoutouts */
-.tiktok-shoutouts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+/* Social Links */
+.social-links-section h2 {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 20px;
 }
 
-.tiktok-shoutouts .creator {
-  background-color: #1c1c1c;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
+.social-links-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
 }
 
-.tiktok-shoutouts .creator img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+.social-button {
+    background-color: #1f1f1f;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
-.tiktok-shoutouts .creator .name {
-  font-size: 18px;
-  font-weight: bold;
+.social-button:hover {
+    background-color: #333;
 }
 
-.tiktok-shoutouts .creator .followers {
-  color: #ff5722;
+.social-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
 }
 
-.tiktok-shoutouts .creator .verification {
-  color: #ff7043;
+.social-button span {
+    display: block;
+    color: #fff;
+    font-size: 14px;
 }
 
-/* 4. Rednote */
-.rednote-shoutouts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+/* Shoutouts Section */
+.shoutouts-section {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-.rednote-shoutouts .creator {
-  background-color: #1c1c1c;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
+.shoutouts-section h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
 }
 
-.rednote-shoutouts .creator img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+.last-updated {
+    color: #aaa;
+    font-size: 14px;
 }
 
-.rednote-shoutouts .creator .name {
-  font-size: 18px;
-  font-weight: bold;
+/* Countdown Section */
+.countdown-section {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-.rednote-shoutouts .creator .fans {
-  color: #ff5722;
+.countdown-container {
+    display: flex;
+    justify-content: space-around;
 }
 
-/* 5. Instagram Creator Shoutouts */
-.instagram-shoutouts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+.countdown-item {
+    text-align: center;
+    color: #fff;
 }
 
-.instagram-shoutouts .creator {
-  background-color: #1c1c1c;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
+.countdown-number {
+    font-size: 48px;
+    font-weight: bold;
 }
 
-.instagram-shoutouts .creator img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+.countdown-label {
+    font-size: 14px;
+    color: #aaa;
 }
 
-.instagram-shoutouts .creator .name {
-  font-size: 18px;
-  font-weight: bold;
+/* Tech Section */
+.tech-section h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #fff;
 }
 
-.instagram-shoutouts .creator .followers {
-  color: #ff5722;
+.tech-item {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
-.instagram-shoutouts .creator .verification {
-  color: #ff7043;
+.tech-item h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
 }
 
-/* 6. YouTube Creator Shoutouts */
-.youtube-shoutouts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+.tech-item p {
+    margin-bottom: 10px;
 }
 
-.youtube-shoutouts .creator {
-  background-color: #1c1c1c;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
+.tech-item span {
+    font-weight: bold;
+    color: #aaa;
 }
 
-.youtube-shoutouts .creator img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+/* Disabilities Section */
+.disabilities-section {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-.youtube-shoutouts .creator .name {
-  font-size: 18px;
-  font-weight: bold;
+.disabilities-section h2 {
+    font-size: 26px;
+    color: #fff;
+    margin-bottom: 20px;
 }
 
-.youtube-shoutouts .creator .subscribers {
-  color: #ff5722;
+.disabilities-section ul {
+    list-style: none;
+    padding: 0;
 }
 
-.youtube-shoutouts .creator .verification {
-  color: #ff7043;
+.disabilities-section ul li {
+    margin-bottom: 10px;
 }
 
-/* 7. Links Section */
-.links {
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0;
+.disabilities-section a {
+    color: #00bcd4;
 }
 
-.links a {
-  background-color: #333;
-  padding: 15px;
-  border-radius: 5px;
-  margin: 10px 0;
-  color: #fff;
-  text-align: center;
+.disabilities-section a:hover {
+    text-decoration: underline;
 }
 
-.links a:hover {
-  background-color: #ff5722;
+/* Links Section */
+.links-section {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-/* 8. Countdown */
-.countdown {
-  background-color: #1c1c1c;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
+.links-section .links a {
+    display: block;
+    color: #00bcd4;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
-.countdown h2 {
-  font-size: 32px;
+.links-section .links a:hover {
+    text-decoration: underline;
 }
 
-.countdown .time {
-  font-size: 48px;
-  font-weight: bold;
-  color: #ff5722;
+/* Footer */
+footer {
+    background-color: #1e1e1e;
+    padding: 20px;
+    text-align: center;
+    color: #bbb;
 }
 
-/* 9. Tech Information */
-.tech-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
+footer p {
+    font-size: 14px;
 }
 
-.tech-info .item {
-  background-color: #1c1c1c;
-  padding: 15px;
-  border-radius: 10px;
+/* Version Panel Section */
+.version-info-section {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    color: #fff;
+    margin-bottom: 40px;
 }
 
-.tech-info .item img {
-  width: 100%;
-  border-radius: 10px;
+.version-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-.tech-info .item .name {
-  font-size: 18px;
-  font-weight: bold;
+.version-number, .build-number, .device-info, .update-time, .current-user {
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
-/* 10. Disabilities Section */
-.disabilities {
-  padding: 20px;
-  background-color: #1c1c1c;
-  border-radius: 10px;
+#countdown-display {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #bbb;
 }
 
-.disabilities p {
-  font-size: 18px;
+/* Legal & Copy Protection Messages */
+.copy-protection-message, .legal-protection-message {
+    background-color: #333;
+    padding: 10px;
+    color: #e0e0e0;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
 }
 
-/* 11. Contact Me (Google Form) */
-.contact-form {
-  background-color: #1c1c1c;
-  padding: 20px;
-  border-radius: 10px;
-  width: 50%;
-  margin: 0 auto;
-}
-
-.contact-form input, .contact-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #333;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-}
-
-.contact-form button {
-  width: 100%;
-  padding: 15px;
-  background-color: #00bcd4;
-  border-radius: 5px;
-}
-
-.contact-form button:hover {
-  background-color: #00acc1;
-}
-
-/* 12. Version Information */
-.version-info {
-  padding: 20px;
-  background-color: #1c1c1c;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.version-info p {
-  font-size: 18px;
-}
-
-/* 13. Copy Protection Notice */
-.copy-protection {
-  background-color: #1c1c1c;
-  padding: 10px;
-  text-align: center;
-  color: #f5f5f5;
-}
-
-.copy-protection p {
-  font-size: 14px;
-}
-
-/* 14. Legal Protection Notice */
-.legal-protection {
-  padding: 20px;
-  background-color: #1c1c1c;
-  border-radius: 10px;
-}
-
-.legal-protection p {
-  font-size: 16px;
-}
-
-/* 15. Watermark Message */
+/* Watermark */
 .watermark {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.1);
-  pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    color: rgba(255, 255, 255, 0.1);
+    display: none;
 }
 
-/* 16. Footer */
-.footer {
-  background-color: #1c1c1c;
-  padding: 20px;
-  text-align: center;
-}
-
-.footer a {
-  color: #ff5722;
-}
-
-.footer a:hover {
-  color: #ff7043;
-}
-
-.footer p {
-  font-size: 14px;
+/* Dark Mode Overrides */
+body.dark-mode {
+    background-color: #121212;
 }
