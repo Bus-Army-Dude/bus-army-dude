@@ -106,30 +106,22 @@
     </div>
 </div>
         
-        <!-- TikTok Creator Shoutouts (For U.S. users) -->
-        <div class="section" id="us-shoutouts" style="display: none;">
-            <h2>TikTok Creator Shoutouts (U.S.)</h2>
-            <p class="last-updated">Last Updated: <span id="us-last-updated"></span></p>
-            <div class="creator-grid" id="us-creators">
-                <!-- Creator cards for U.S. users will be dynamically inserted here -->
-            </div>
-        </div>
+        <!-- Last Updated Section -->
+    <div class="last-updated-section">
+        <p>Last Updated: <span id="last-updated"></span></p>
+    </div>
 
-        <!-- TikTok Creator Shoutouts (For other regions like UK, Canada) -->
-        <div class="section" id="other-regions-shoutouts" style="display: none;">
-            <h2>TikTok Creator Shoutouts</h2>
-            <p class="last-updated">Last Updated: <span id="other-regions-last-updated"></span></p>
-            <div class="creator-grid" id="other-regions-creators">
-                <!-- Creator cards for other regions will be dynamically inserted here -->
-            </div>
+    <!-- TikTok Region Content -->
+    <div id="region-content" style="display: none;">
+        <h2>TikTok Creators</h2>
+        <div id="creator-container">
+            <!-- Creator cards will be dynamically added here -->
         </div>
+    </div>
 
-        <!-- Section for displaying the error message if TikTok is not available in the user's region -->
-        <div id="location-error" style="display: none;">
-            <h3 class="error-title">Warning: This content is currently unavailable in your platform or region.</h3>
-            <p>Unfortunately, TikTok is not available in your region. Please check again later or use other platforms for similar content.</p>
-        </div>
-
+    <!-- Message for unavailable regions -->
+    <div id="region-message" style="display: none;">
+        <!-- This message will show if TikTok is unavailable in the user's region -->
     </div>
         
 <!-- RedNote Shoutouts Section -->
