@@ -314,6 +314,42 @@ body {
     opacity: 0.9;
 }
 
+/* Wrapper for the title, last updated, and grid */
+.instagram-shoutouts-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Center content horizontally */
+    padding: 20px;
+    width: 100%;
+}
+
+/* Title Styling */
+.instagram-shoutouts-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Last Updated Section Styling */
+.last-updated {
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-top: 5px;
+    margin-bottom: 20px;  /* Add margin to create space between 'Last Updated' and grid */
+    text-align: center;
+}
+
+/* Grid Layout for Instagram Shoutouts */
+.instagram-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    width: 100%;  /* Ensure the grid takes full width */
+    max-width: 1200px; /* Optional: Limit the max width for better alignment */
+}
+
 /* Creator Card Styles for Instagram Shoutouts */
 .instagram-creator-card {
     background-color: var(--content-bg);
@@ -400,21 +436,6 @@ body {
 
 .instagram-visit-profile:hover {
     opacity: 0.9;
-}
-
-/* Last Updated Section Styling */
-.last-updated {
-  font-size: 18px;
-  color: #FFFFFF;
-  margin-top: 5px;
-}
-
-/* Grid Layout for Instagram Shoutouts */
-.instagram-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 20px;
-    padding: 20px;
 }
 
 /* YouTube Creator Grid Layout */
