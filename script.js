@@ -394,7 +394,10 @@ youtubeShoutouts.init();
 });
 
 
-// Function to detect the user's country and check if TikTok is available in their country
+// Manually set the "Last Updated" timestamp
+const manualLastUpdated = 'Monday, January 20, 2025, 10:54 AM';  // Set the desired timestamp manually
+
+// Function to detect the user's country and display the correct sections
 function checkLocation() {
     fetch('banned_regions.json')  // Fetch the banned regions JSON
         .then(response => response.json())
@@ -418,12 +421,12 @@ function checkLocation() {
                     if (isAvailable) {
                         document.getElementById('other-regions-shoutouts').style.display = 'block';
                         document.getElementById('us-shoutouts').style.display = 'none';
-                        document.getElementById('other-regions-last-updated').innerText = new Date().toLocaleString();
+                        document.getElementById('other-regions-last-updated').innerText = manualLastUpdated;  // Use manually set timestamp
                         addCreators();  // Dynamically add creators for available regions
                     } else {
                         document.getElementById('us-shoutouts').style.display = 'block';  // Show banned message
                         document.getElementById('other-regions-shoutouts').style.display = 'none';  // Hide shoutouts for banned regions
-                        document.getElementById('us-last-updated').innerText = new Date().toLocaleString();
+                        document.getElementById('us-last-updated').innerText = manualLastUpdated;  // Use manually set timestamp
                     }
                 })
                 .catch(error => {
