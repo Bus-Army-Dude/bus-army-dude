@@ -404,24 +404,24 @@ const bannedRegionsData = {
           "name": "United States", 
           "isAvailable": false, 
           "creators": [
-            { "username": "creator1", "nickname": "Creator One", "followers": "1M", "bio": "American bio", "profilePic": "images/creator1.jpg" },
-            { "username": "creator2", "nickname": "Creator Two", "followers": "800K", "bio": "American bio", "profilePic": "images/creator2.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "Canada", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator3", "nickname": "Creator Three", "followers": "750K", "bio": "Canadian bio", "profilePic": "images/creator3.jpg" },
-            { "username": "creator4", "nickname": "Creator Four", "followers": "600K", "bio": "Canadian bio", "profilePic": "images/creator4.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "Mexico", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator5", "nickname": "Creator Five", "followers": "450K", "bio": "Mexican bio", "profilePic": "images/creator5.jpg" },
-            { "username": "creator6", "nickname": "Creator Six", "followers": "550K", "bio": "Mexican bio", "profilePic": "images/creator6.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         }
       ]
@@ -433,32 +433,31 @@ const bannedRegionsData = {
           "name": "United Kingdom", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator7", "nickname": "Creator Seven", "followers": "500K", "bio": "Spanish bio", "profilePic": "images/creator7.jpg" },
-            { "username": "creator8", "nickname": "Creator Eight", "followers": "400K", "bio": "English bio", "profilePic": "images/creator8.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "Germany", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator9", "nickname": "Creator Nine", "followers": "600K", "bio": "German bio", "profilePic": "images/creator9.jpg" },
-            { "username": "creator10", "nickname": "Creator Ten", "followers": "700K", "bio": "German bio", "profilePic": "images/creator10.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "France", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator11", "nickname": "Creator Eleven", "followers": "800K", "bio": "French bio", "profilePic": "images/creator11.jpg" },
-            { "username": "creator12", "nickname": "Creator Twelve", "followers": "750K", "bio": "French bio", "profilePic": "images/creator12.jpg" }
-          ]
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
         },
         {
           "name": "Poland", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator13", "nickname": "Creator Thirteen", "followers": "850K", "bio": "Polish bio", "profilePic": "images/creator13.jpg" },
-            { "username": "creator14", "nickname": "Creator Fourteen", "followers": "600K", "bio": "Polish bio", "profilePic": "images/creator14.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         }
       ]
@@ -480,16 +479,16 @@ const bannedRegionsData = {
           "name": "Japan", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator15", "nickname": "Creator Fifteen", "followers": "900K", "bio": "Japanese bio", "profilePic": "images/creator15.jpg" },
-            { "username": "creator16", "nickname": "Creator Sixteen", "followers": "700K", "bio": "Japanese bio", "profilePic": "images/creator16.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "South Korea", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator17", "nickname": "Creator Seventeen", "followers": "950K", "bio": "Korean bio", "profilePic": "images/creator17.jpg" },
-            { "username": "creator18", "nickname": "Creator Eighteen", "followers": "800K", "bio": "Korean bio", "profilePic": "images/creator18.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         }
       ]
@@ -501,16 +500,16 @@ const bannedRegionsData = {
           "name": "Saudi Arabia", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator19", "nickname": "Creator Nineteen", "followers": "600K", "bio": "Saudi bio", "profilePic": "images/creator19.jpg" },
-            { "username": "creator20", "nickname": "Creator Twenty", "followers": "450K", "bio": "Saudi bio", "profilePic": "images/creator20.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "United Arab Emirates", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator21", "nickname": "Creator Twenty One", "followers": "750K", "bio": "UAE bio", "profilePic": "images/creator21.jpg" },
-            { "username": "creator22", "nickname": "Creator Twenty Two", "followers": "500K", "bio": "UAE bio", "profilePic": "images/creator22.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
@@ -527,24 +526,24 @@ const bannedRegionsData = {
           "name": "Nigeria", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator23", "nickname": "Creator Twenty Three", "followers": "1M", "bio": "Nigerian bio", "profilePic": "images/creator23.jpg" },
-            { "username": "creator24", "nickname": "Creator Twenty Four", "followers": "850K", "bio": "Nigerian bio", "profilePic": "images/creator24.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "South Africa", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator25", "nickname": "Creator Twenty Five", "followers": "600K", "bio": "South African bio", "profilePic": "images/creator25.jpg" },
-            { "username": "creator26", "nickname": "Creator Twenty Six", "followers": "700K", "bio": "South African bio", "profilePic": "images/creator26.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "Egypt", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator27", "nickname": "Creator Twenty Seven", "followers": "500K", "bio": "Egyptian bio", "profilePic": "images/creator27.jpg" },
-            { "username": "creator28", "nickname": "Creator Twenty Eight", "followers": "550K", "bio": "Egyptian bio", "profilePic": "images/creator28.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         }
       ]
@@ -556,16 +555,16 @@ const bannedRegionsData = {
           "name": "Australia", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator29", "nickname": "Creator Twenty Nine", "followers": "900K", "bio": "Australian bio", "profilePic": "images/creator29.jpg" },
-            { "username": "creator30", "nickname": "Creator Thirty", "followers": "950K", "bio": "Australian bio", "profilePic": "images/creator30.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "New Zealand", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator31", "nickname": "Creator Thirty One", "followers": "500K", "bio": "New Zealand bio", "profilePic": "images/creator31.jpg" },
-            { "username": "creator32", "nickname": "Creator Thirty Two", "followers": "400K", "bio": "New Zealand bio", "profilePic": "images/creator32.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         }
       ]
@@ -577,16 +576,16 @@ const bannedRegionsData = {
           "name": "Brazil", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator33", "nickname": "Creator Thirty Three", "followers": "1.2M", "bio": "Brazilian bio", "profilePic": "images/creator33.jpg" },
-            { "username": "creator34", "nickname": "Creator Thirty Four", "followers": "800K", "bio": "Brazilian bio", "profilePic": "images/creator34.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         },
         {
           "name": "Argentina", 
           "isAvailable": true, 
           "creators": [
-            { "username": "creator35", "nickname": "Creator Thirty Five", "followers": "700K", "bio": "Argentine bio", "profilePic": "images/creator35.jpg" },
-            { "username": "creator36", "nickname": "Creator Thirty Six", "followers": "600K", "bio": "Argentine bio", "profilePic": "images/creator36.jpg" }
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
           ]
         }
       ]
