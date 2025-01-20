@@ -394,8 +394,7 @@ youtubeShoutouts.init();
 });
 
 
-// Banned regions JSON (can be stored separately or within the script)
-const bannedRegions = {
+const regionsData = {
   "regions": [
     {
       "name": "North America",
@@ -461,68 +460,79 @@ const bannedRegions = {
   ]
 };
 
-// List of creators setup
 const creators = [
-  { "username": "creator1", "nickname": "Creator One", "followers": "500K", "bio": "Bio 1", "profilePic": "images/creator1.jpg" },
-  { "username": "creator2", "nickname": "Creator Two", "followers": "300K", "bio": "Bio 2", "profilePic": "images/creator2.jpg" },
-  { "username": "creator3", "nickname": "Creator Three", "followers": "750K", "bio": "Bio 3", "profilePic": "images/creator3.jpg" }
+  { "username": "creator1", "nickname": "Creator One", "followers": "1M", "bio": "Bio of creator one", "profilePic": "images/creator1.jpg", "isVerified": true },
+  { "username": "creator2", "nickname": "Creator Two", "followers": "500K", "bio": "Bio of creator two", "profilePic": "images/creator2.jpg", "isVerified": false },
+  // Add more creators here...
 ];
 
-// Automatically fetch user's region
-function getUserRegion() {
-  const userRegion = window.navigator.language.split('-')[1]; // Example for US being en-US
-  return userRegion;
+const lastUpdated = "2025-01-20";  // Manually update this
+
+function getUserRegionFromIP() {
+  return new Promise((resolve, reject) => {
+    // Use ip-api.com for IP-based geolocation
+    const url = 'http://ip-api.com/json'; // Free tier, no API key required
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const region = data.country;  // Country code from the API (like "US" for United States)
+        resolve(region);
+      })
+      .catch(error => reject('Unable to detect region via IP'));
+  });
 }
 
-// Update region info
-function updateRegionContent(region) {
-  const regionContent = document.getElementById('region-content');
-  const regionMessage = document.getElementById('region-message');
-  const creatorContainer = document.getElementById('creator-container');
-  const regionData = bannedRegions.regions.find(r => r.countries.some(c => c.name === region));
-  const countryData = regionData ? regionData.countries.find(c => c.name === region) : null;
-  
-  if (countryData && countryData.isAvailable) {
-    regionContent.style.display = 'block';
-    creatorContainer.innerHTML = creators.map(creator => `
-      <div class="creator-card">
-        <img src="${creator.profilePic}" alt="${creator.nickname}">
-        <h3>${creator.nickname}</h3>
-        <p>${creator.followers} followers</p>
-        <p>${creator.bio}</p>
+function displaySection(region) {
+  const regionData = findRegionData(region);
+
+  // Display the "Last Updated" information
+  document.getElementById('lastUpdated').innerHTML = `Last Updated: ${lastUpdated}`;
+
+  if (regionData && regionData.isAvailable) {
+    // Show the creators in the section
+    const creatorCards = creators.map(creator => {
+      return `
+        <div class="creator-card">
+          <img src="${creator.profilePic}" alt="${creator.nickname}">
+          <h4>${creator.nickname}</h4>
+          <p>${creator.bio}</p>
+          <p>${creator.followers} followers</p>
+          ${creator.isVerified ? '<img src="check.png" alt="Verified">' : ''}
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('section').innerHTML = `
+      <h2>TikTok Creator Shoutouts</h2>
+      <div class="creator-list">
+        ${creatorCards}
       </div>
-    `).join('');
-    regionMessage.style.display = 'none';
+    `;
   } else {
-    regionContent.style.display = 'none';
-    regionMessage.innerHTML = `<h3 style="color: red;">This content is currently unavailable in your platform or region.</h3><p>${countryData ? countryData.message : 'Unable to detect region.'}</p>`;
-    regionMessage.style.display = 'block';
+    document.getElementById('section').innerHTML = `
+      <h3>This content is currently unavailable in your platform or region.</h3>
+      <p>${regionData ? regionData.message : "Location data not found."}</p>
+    `;
   }
 }
 
-// Set the Last Updated date manually (stored in localStorage to persist across page refreshes)
-function setLastUpdated(date) {
-  // Save to localStorage so it persists across page reloads
-  localStorage.setItem('lastUpdated', date);
-  document.getElementById('last-updated').textContent = date;
-}
-
-// Initialize the page
-function initialize() {
-  const userRegion = getUserRegion();
-  updateRegionContent(userRegion);
-
-  // Display the "Last Updated" date from localStorage (if it exists)
-  const lastUpdated = localStorage.getItem('lastUpdated');
-  if (lastUpdated) {
-    document.getElementById('last-updated').textContent = lastUpdated;
-  } else {
-    // If no last updated date, you can set a default one manually
-    const defaultLastUpdated = "January 20, 2025"; // Example manual input
-    setLastUpdated(defaultLastUpdated);
+function findRegionData(region) {
+  for (const regionGroup of regionsData.regions) {
+    const countryData = regionGroup.countries.find(country => country.name === region);
+    if (countryData) return countryData;
   }
+  return null;
 }
 
-// Call initialization function on load
-initialize();
-
+// Initialize the process
+getUserRegionFromIP()
+  .then(region => {
+    displaySection(region);
+  })
+  .catch(error => {
+    console.error(error);
+    document.getElementById('section').innerHTML = `
+      <h3>Error: Unable to detect your region.</h3>
+    `;
+  });
