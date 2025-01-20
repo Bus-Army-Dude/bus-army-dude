@@ -3,59 +3,62 @@
     {
       "name": "North America",
       "countries": [
-        { "name": "United States", "isAvailable": false },
-        { "name": "Canada", "isAvailable": true },
-        { "name": "Mexico", "isAvailable": true }
+        { "name": "United States", "isAvailable": true, "message": "TikTok is currently available in the United States." },
+        { "name": "Canada", "isAvailable": true, "message": "TikTok is currently available in Canada." },
+        { "name": "Mexico", "isAvailable": true, "message": "TikTok is currently available in Mexico." }
       ]
     },
     {
       "name": "Europe",
       "countries": [
-        { "name": "United Kingdom", "isAvailable": true },
-        { "name": "Germany", "isAvailable": true },
-        { "name": "France", "isAvailable": true },
-        { "name": "Italy", "isAvailable": true },
-        { "name": "Spain", "isAvailable": true }
+        { "name": "United Kingdom", "isAvailable": true, "message": "TikTok is currently available in the United Kingdom." },
+        { "name": "Germany", "isAvailable": true, "message": "TikTok is currently available in Germany." },
+        { "name": "France", "isAvailable": true, "message": "TikTok is currently available in France." },
+        { "name": "Italy", "isAvailable": true, "message": "TikTok is currently available in Italy." },
+        { "name": "Spain", "isAvailable": true, "message": "TikTok is currently available in Spain." },
+        { "name": "Netherlands", "isAvailable": true, "message": "TikTok is currently available in the Netherlands." },
+        { "name": "Belgium", "isAvailable": true, "message": "TikTok is currently available in Belgium." },
+        { "name": "Switzerland", "isAvailable": true, "message": "TikTok is currently available in Switzerland." }
       ]
     },
     {
       "name": "Asia",
       "countries": [
-        { "name": "China", "isAvailable": false },
-        { "name": "India", "isAvailable": false },
-        { "name": "Japan", "isAvailable": true },
-        { "name": "South Korea", "isAvailable": true }
+        { "name": "China", "isAvailable": false, "message": "TikTok is banned in China." },
+        { "name": "India", "isAvailable": false, "message": "TikTok is banned in India." },
+        { "name": "Japan", "isAvailable": true, "message": "TikTok is currently available in Japan." },
+        { "name": "South Korea", "isAvailable": true, "message": "TikTok is currently available in South Korea." }
       ]
     },
     {
       "name": "Middle East",
       "countries": [
-        { "name": "Saudi Arabia", "isAvailable": true },
-        { "name": "United Arab Emirates", "isAvailable": true },
-        { "name": "Iran", "isAvailable": false }
+        { "name": "Saudi Arabia", "isAvailable": true, "message": "TikTok is currently available in Saudi Arabia." },
+        { "name": "United Arab Emirates", "isAvailable": true, "message": "TikTok is currently available in the UAE." },
+        { "name": "Iran", "isAvailable": false, "message": "TikTok is banned in Iran." }
       ]
     },
     {
       "name": "Africa",
       "countries": [
-        { "name": "Nigeria", "isAvailable": true },
-        { "name": "South Africa", "isAvailable": true },
-        { "name": "Egypt", "isAvailable": true }
+        { "name": "Nigeria", "isAvailable": true, "message": "TikTok is currently available in Nigeria." },
+        { "name": "South Africa", "isAvailable": true, "message": "TikTok is currently available in South Africa." },
+        { "name": "Egypt", "isAvailable": true, "message": "TikTok is currently available in Egypt." }
       ]
     },
     {
       "name": "Oceania",
       "countries": [
-        { "name": "Australia", "isAvailable": true },
-        { "name": "New Zealand", "isAvailable": true }
+        { "name": "Australia", "isAvailable": true, "message": "TikTok is currently available in Australia." },
+        { "name": "New Zealand", "isAvailable": true, "message": "TikTok is currently available in New Zealand." }
       ]
     },
     {
       "name": "South America",
       "countries": [
-        { "name": "Brazil", "isAvailable": true },
-        { "name": "Argentina", "isAvailable": true },
-        { "name": "Colombia", "isAvailable": true }
+        { "name": "Brazil", "isAvailable": true, "message": "TikTok is currently available in Brazil." },
+        { "name": "Argentina", "isAvailable": true, "message": "TikTok is currently available in Argentina." },
+        { "name": "Colombia", "isAvailable": true, "message": "TikTok is currently available in Colombia." }
       ]
     }
   ]
