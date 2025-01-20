@@ -141,74 +141,6 @@ window.onload = function() {
 
 // Update the countdown every second
 setInterval(updateCountdown, 1000); // Update countdown every second
-
-// RedNote Shoutouts
-const redNoteShoutouts = {
-    accounts: [
-        { username: '63893018335', isVerified: false, fans: '21,000', nickname: 'Basge502', bio: 'No introduction yet', profilePic: 'rednote/basge502.webp', userId: '67853e92000000000801ee5d', token: 'ABy8b3MUGXD9mTh_DRUWGuurbnUrwIMswnddTO9cI1Gjg%3D' },
-        { username: 'busarmydude', isVerified: false, fans: '15', nickname: 'River Kritzar', bio: 'https://bus-army-dude.github.io/bus-army-dude/', profilePic: 'rednote/busarmydude.webp', userId: '6784c343000000000803cd8c', token: 'ABArWuAlrqd-0XrSwW8448qhsXeAp_QX9ZiVo8H17' },
-        // Add more RedNote creators as needed
-    ],
-    lastUpdatedTime: '2025-01-19T11:19:05', // Manually set the last updated date and time
-    profileLinkBase: "https://www.xiaohongshu.com/user/profile",
-    init() {
-        this.createShoutoutCards();
-        this.setLastUpdatedTime();
-    },
-    createShoutoutCards() {
-        const container = document.querySelector('.rednote-creator-grid');
-        if (!container) return;
-
-        container.innerHTML = '';
-        this.accounts.forEach(account => {
-            const card = document.createElement('div');
-            card.className = 'rednote-creator-card';
-
-            // Create the profile link using the Xiaohongshu format
-            const profileLink = `${this.profileLinkBase}/${account.userId}?xsec_token=${account.token}&xsec_source=pc_search`;
-
-            card.innerHTML = `
-                <img src="${account.profilePic}" alt="${account.nickname}" class="rednote-creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="rednote-creator-info">
-                    <div class="rednote-creator-header">
-                        <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="rednotecheck.png" alt="Verified" class="rednote-verified-badge">' : ''}
-                    </div>
-                    <p class="rednote-creator-username">${account.username}</p>
-                    <p class="rednote-creator-bio">${account.bio || ''}</p>
-                    <p class="rednote-fan-count">${account.fans} Fans</p>
-                    <a href="${profileLink}" target="_blank" class="rednote-visit-profile">
-                        Visit Profile
-                    </a>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    },
-    setLastUpdatedTime() {
-        const lastUpdatedElement = document.getElementById('rednote-last-updated-timestamp');
-        if (!lastUpdatedElement) return;
-
-        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-            timeZone: userTimeZone,
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        });
-
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
-    }
-};
-
-// Initialize the RedNote shoutouts
-redNoteShoutouts.init();
-
     
 // Instagram Shoutouts
 const instagramShoutouts = {
@@ -231,6 +163,7 @@ const instagramShoutouts = {
         { username: 'imparkerburton', isVerified: true, followers: '280K', nickname: 'Parker Burton', bio: 'That Android Guy Business: parker@imparkerburton.com', profilePic: 'instagram_photos/imparkerburton.jpeg' },                    
         { username: 'kennedylawfirm', isVerified: false, followers: '24K', nickname: 'Lawyer Kevin Kennedy', bio: 'Clarksville, TN Kevs got you covered', profilePic: 'instagram_photos/kennedylawfirm.jpeg' },                    
         { username: 'ta.techtips', isVerified: false, followers: '269K', nickname: 'TA Tech Tips', bio: '🔥 Tech Tips 🔥 📱TikTok | TATechTips📧 hello@thegoldstudios.com', profilePic: 'instagram_photos/tatechtips.jpeg' },                    
+        { username: 'lust_ryze', isVerified: false, followers: '38', nickname: '𝚁𝚢𝚉𝚎 ツ', bio: 'hi everyone this will be my official Instagram account for my tiktok account you can find my other social bellow', profilePic: 'instagram_photos/lustryze.jpeg' },                    
         // Add more Instagram creators as needed
     ],
     lastUpdatedTime: '2025-01-19T09:26:25', // Manually set the last updated date and time
@@ -391,104 +324,3 @@ youtubeShoutouts.init();
     setInterval(updateTime, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
-
-
-// Set this to `false` when TikTok is unbanned in the U.S.
-const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInUK = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInIndia = true;  // Example, change as needed
-const isTikTokBannedInEU = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInAustralia = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInCanada = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInNewZealand = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInRussia = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInChina = true;  // TikTok is not available in China, instead Douyin is used
-const isTikTokBannedInBrazil = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInIndonesia = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInPakistan = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInUAE = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInSaudiArabia = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInBangladesh = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInTurkey = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInMexico = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInSouthKorea = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInJapan = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInPhilippines = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInSingapore = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInMalaysia = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInVietnam = false;  // Change this to `false` when TikTok is unbanned
-
-// Manually set the "Last Updated" timestamp here (adjust as needed)
-let manualLastUpdated = 'January 19, 2025, 4:41 PM';  // Replace with your desired timestamp
-
-function checkLocation() {
-    fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
-        .then(response => response.json())
-        .then(data => {
-            const country = data.country;
-            console.log("Detected country: ", country);  // Debugging: check which country is detected
-
-            // If you want to use the manually set timestamp, use `manualLastUpdated`
-            let lastUpdated = manualLastUpdated;
-
-            // Optionally store the value in localStorage for later use
-            localStorage.setItem('lastUpdated', lastUpdated);
-
-            // Debugging: Check if TikTok is banned in the region
-            console.log(`isTikTokBannedIn${country}: `, eval(`isTikTokBannedIn${country}`)); 
-
-            if (country === 'US' && isTikTokBannedInUS) {
-                // Show message indicating TikTok is banned in the U.S.
-                console.log("TikTok is banned in the US");
-                document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message for U.S. users
-                document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide TikTok creator shoutouts for other regions
-                document.getElementById('us-last-updated').innerText = lastUpdated;  // Set Last Updated for U.S.
-            } else {
-                // Show creator shoutouts for other regions
-                console.log("TikTok is available in this region");
-                document.getElementById('other-regions-shoutouts').style.display = 'block'; 
-                document.getElementById('us-shoutouts').style.display = 'none'; // Hide U.S. banned message
-                document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for other regions
-                addCreators(); // Call function to add creators dynamically
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching location data:', error);
-            // Fallback if the API fails
-            document.getElementById('location-error').style.display = 'block';
-        });
-}
-
-// Function to dynamically add creators for other regions
-function addCreators() {
-    const container = document.querySelector('.creator-grid');
-    if (!container) return;
-
-    const creators = [
-        { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-        // Add more creators as necessary
-    ];
-
-    // Add creators dynamically
-    creators.forEach(creator => {
-        const card = document.createElement('div');
-        card.className = 'creator-card';
-        card.innerHTML = `
-            <img src="${creator.profilePic}" alt="@${creator.username}" class="creator-pic" onerror="this.src='default-profile.jpg'">
-            <div class="creator-info">
-                <div class="creator-header">
-                    <h3>${creator.nickname}</h3>
-                    ${creator.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
-                </div>
-                <p class="creator-username">@${creator.username}</p>
-                <p class="creator-bio">${creator.bio}</p>
-                <p class="follower-count">${creator.followers} Followers</p>
-                <a href="https://tiktok.com/@${creator.username}" target="_blank" class="visit-profile">Visit Profile</a>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-}
-
-// Call checkLocation function on page load
-checkLocation();
