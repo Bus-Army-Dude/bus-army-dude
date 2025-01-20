@@ -97,30 +97,16 @@ function updateTime() {
     }
 }
 
-// Set the refresh time (5 minutes from now)
-let refreshTime = new Date().getTime() + 5 * 60 * 1000; // 5 minutes from now
-
-// Function to update the countdown every second
+// Page refresh countdown
+let timeLeft = 60;
 function updateCountdown() {
-    // Get the current time
-    let now = new Date().getTime();
-
-    // Calculate the remaining time until the page refreshes
-    let timeLeft = refreshTime - now;
-
-    if (timeLeft <= 0) {
-        // If the time is up, refresh the page
-        document.getElementById("countdown-display").innerHTML = "Refreshing now!";
-        setTimeout(() => {
+    const countdownElement = document.querySelector('.countdown');
+    if (countdownElement && timeLeft >= 0) {
+        countdownElement.textContent = `Page refreshing in: ${timeLeft} seconds`;
+        timeLeft--;
+        if (timeLeft < 0) {
             location.reload();
-        }, 1000); // Refresh after 1 second
-    } else {
-        // Calculate the remaining minutes and seconds
-        let minutes = Math.floor(timeLeft / (1000 * 60));
-        let seconds = Math.floor((timeLeft / 1000) % 60);
-
-        // Update the countdown display in minutes and seconds
-        document.getElementById("countdown-display").innerHTML = `Page will refresh in ${minutes}m ${seconds}s`;
+        }
     }
 }
 
@@ -136,37 +122,86 @@ function updateVersionPanel() {
 window.onload = function() {
     updateVersionPanel();
     updateTime();
-    updateCountdown(); // Make sure the countdown starts
+    setInterval(updateCountdown, 1000); // Update countdown every second
 };
 
-// Update the countdown every second
-setInterval(updateCountdown, 1000); // Update countdown every second
-    
-// Instagram Shoutouts
+    // TikTok Shoutouts
+    const tiktokShoutouts = {
+        accounts: [
+            { username: 'mrbeast', isVerified: true, followers: '107.8M', nickname: 'MrBeast', bio: 'GO WATCH MY NEW SHOW', profilePic: 'images/mrbeast.jpeg' },     
+            { username: 'teamtrump', isVerified: true, followers: '8.4M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
+            { username: 'carterpcs', isVerified: true, followers: '5.6M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'images/carterpcs.jpeg' },
+            { username: 'applesauceandadhd', isVerified: true, followers: '3.6M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'images/applesauceandadhd.jpeg' },
+            { username: 'houseofhughes_', isVerified: false, followers: '308.4K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
+            { username: 'busarmydude', isVerified: false, followers: '1,242', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
+            { username: 'raisingramsey2023', isVerified: false, followers: '1,163', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
+            { username: 'trafficlightdoctor', isVerified: false, followers: '383.3K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
+            { username: 'jerridc4', isVerified: false, followers: '458', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
+            { username: 'jerridonthelot', isVerified: false, followers: '122', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
+            { username: 'imparkerburton', isVerified: false, followers: '2.9M', nickname: 'Parker Burton', bio: 'That Android Guy, Business: parker@imparkerburton.com', profilePic: 'images/imparkerburton.jpeg' },
+            { username: 'kaylee_mertens_', isVerified: false, followers: '674.2K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
+            { username: 'kennedylawfirm', isVerified: false, followers: '1.9M', nickname: 'Lawyer Kevin Kennedy', bio: "The Kennedy Law Firm, PLLC, Clarksville, TN, Kev's got you covered™️", profilePic: 'images/kennedylawfirm.jpeg' },
+            { username: 'meetmeinthemediacenter', isVerified: true, followers: '688.7K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+            { username: 'missfoxy0142', isVerified: false, followers: '24', nickname: 'miss_foxy142', bio: 'No bio yet.', profilePic: 'images/missfoxy0142.jpeg' },
+            { username: 'mrfatcheeto', isVerified: false, followers: '470.6K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
+            { username: '_jano_142_', isVerified: false, followers: '100', nickname: 'Jano_142', bio: "I'm a guy who loves cars... Want to support my passion? My Cashapp is @Jano142", profilePic: 'images/jano142.jpeg' },
+            { username: 'elvirablack8', isVerified: false, followers: '969', nickname: 'elvirablack8', bio: 'I love my friends and my family all so much even my followers', profilePic: 'images/elvirablack8.jpeg' },
+            { username: 'badge502', isVerified: false, followers: '801.7K', nickname: 'Badge502', bio: 'NREMT - 911/EMD PO Box 775 Belleville, NJ 07109 *I DONT HAVE A BACKUP ACCOUNT*', profilePic: 'images/badge502.jpeg' },
+            { username: 'badge5022', isVerified: false, followers: '17.9K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
+            { username: 'aggressiveafterdark', isVerified: false, followers: '316.1K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
+            { username: 'souldragon912', isVerified: false, followers: '81', nickname: 'Soul Dragon', bio: "I'm in Network Security. i play Höfner club bass and love 80s rock. 18", profilePic: 'images/souldragon912.jpeg' },
+            { username: 'prettymomma37', isVerified: false, followers: '68', nickname: 'Andrea', bio: 'No bio yet', profilePic: 'images/prettymomma37.jpeg' },
+            { username: 'tatechtips', isVerified: true, followers: '3.1M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
+            // Add more shoutouts here...
+        ],
+        init() {
+            this.createShoutoutCards();
+        },
+        createShoutoutCards() {
+            const container = document.querySelector('.creator-grid');
+            if (!container) return;
+
+            container.innerHTML = '';
+            this.accounts.forEach(account => {
+                const card = document.createElement('div');
+                card.className = 'creator-card';
+                card.innerHTML = `
+                    <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+                    <div class="creator-info">
+                        <div class="creator-header">
+                            <h3>${account.nickname}</h3>
+                            ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                        </div>
+                        <p class="creator-username">@${account.username}</p>
+                        <p class="creator-bio">${account.bio || ''}</p>
+                        <p class="follower-count">${account.followers} Followers</p>
+                        <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">
+                            Visit Profile
+                        </a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    };
+
 const instagramShoutouts = {
     accounts: [
-        { username: 'riverkritzar', isVerified: false, followers: '84', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/riverkritzar.jpg' },
-        { username: 'busarmydude', isVerified: false, followers: '13', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
-        { username: 'rose_the_fox24', isVerified: false, followers: '81', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
-        { username: '_jano_142_', isVerified: false, followers: '47', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
-        { username: 'mrbeast', isVerified: true, followers: '65.2M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
-        { username: 'applesauceandadhd', isVerified: true, followers: '699K', nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },    
-        { username: 'emtbadge502', isVerified: true, followers: '482K', nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },    
-        { username: 'kaylee_mertens_', isVerified: false, followers: '3,084', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },    
-        { username: 'meetmeinthemediacenter', isVerified: true, followers: '50.1K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },    
-        { username: 'mrfattcheeto', isVerified: true, followers: '259K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },    
-        { username: 'trafficlightdoctor', isVerified: true, followers: '307K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },            
-        { username: 'lisa.remillard', isVerified: true, followers: '89.4K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },                    
-        { username: 'teamtrump', isVerified: true, followers: '5M', nickname: 'Team Trump', bio: 'Political Organization MAKE AMERICA GREAT AGAIN! 🇺🇸 Text TRUMP to 88022', profilePic: 'instagram_photos/teamtrump.jpeg' },                    
-        { username: 'carterpcs_', isVerified: true, followers: '500K', nickname: 'Carter Smith', bio: 'Tech Creator & Reviewer Business: carterpcs@rakugomedia.com✉️', profilePic: 'instagram_photos/carterpc.jpg' },                    
-        { username: 'houseofhughes_', isVerified: false, followers: '99.2K', nickname: 'Rachel Hughes', bio: 'Personal blog YouTube + TikTok: House of Hughes, All Inquiries: houseofhughes@thestation.io, 20% off Bucked Up: RACHELHUGHES', profilePic: 'instagram_photos/houseofhughes.jpeg' },                    
-        { username: 'imparkerburton', isVerified: true, followers: '280K', nickname: 'Parker Burton', bio: 'That Android Guy Business: parker@imparkerburton.com', profilePic: 'instagram_photos/imparkerburton.jpeg' },                    
-        { username: 'kennedylawfirm', isVerified: false, followers: '24K', nickname: 'Lawyer Kevin Kennedy', bio: 'Clarksville, TN Kevs got you covered', profilePic: 'instagram_photos/kennedylawfirm.jpeg' },                    
-        { username: 'ta.techtips', isVerified: false, followers: '269K', nickname: 'TA Tech Tips', bio: '🔥 Tech Tips 🔥 📱TikTok | TATechTips📧 hello@thegoldstudios.com', profilePic: 'instagram_photos/tatechtips.jpeg' },                    
-        { username: 'lust_ryze', isVerified: false, followers: '38', nickname: '𝚁𝚢𝚉𝚎 ツ', bio: 'hi everyone this will be my official Instagram account for my tiktok account you can find my other social bellow', profilePic: 'instagram_photos/lustryze.jpeg' },                    
+        { username: 'riverkritzar', isVerified: false, followers: '83', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/riverkritzar.jpg' },
+        { username: 'busarmydude', isVerified: false, followers: '6', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
+        { username: 'rose_the_fox24', isVerified: false, followers: '82', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
+        { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
+        { username: 'mrbeast', isVerified: true, followers: '64.7M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
+        { username: 'applesauceandadhd', isVerified: true, followers: '570K', nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },    
+        { username: 'emtbadge502', isVerified: true, followers: '469K', nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },    
+        { username: 'kaylee_mertens_', isVerified: false, followers: '860', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },    
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '19.2K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },    
+        { username: 'mrfattcheeto', isVerified: true, followers: '241K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },    
+        { username: 'trafficlightdoctor', isVerified: true, followers: '302K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },            
+        { username: 'lisa.remillard', isVerified: true, followers: '75.4K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },                    
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-01-19T09:26:25', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-12T10:22:42', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -223,17 +258,17 @@ instagramShoutouts.init();
 
 const youtubeShoutouts = {
     accounts: [
-        { username: '@MrBeast', isVerified: true, subscribers: '346M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
+        { username: '@MrBeast', isVerified: true, subscribers: '343M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
         { username: '@BeastReacts', isVerified: true, subscribers: '35.2M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
-        { username: '@MrBeastGaming', isVerified: true, subscribers: '46.4M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
-        { username: '@MrBeast2', isVerified: true, subscribers: '48.4M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
-        { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.2M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
-        { username: '@mrfatcheeto', isVerified: false, subscribers: '95K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
-        { username: '@Badge502', isVerified: false, subscribers: '60.1K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
-        { username: '@Trafficlightdoctor', isVerified: false, subscribers: '151K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
+        { username: '@MrBeastGaming', isVerified: true, subscribers: '46.3M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
+        { username: '@MrBeast2', isVerified: true, subscribers: '48.3M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
+        { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.1M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
+        { username: '@mrfatcheeto', isVerified: false, subscribers: '90.4K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
+        { username: '@Badge502', isVerified: false, subscribers: '57.2K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
+        { username: '@Trafficlightdoctor', isVerified: false, subscribers: '150K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-01-19T09:28:02', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-12T10:24:18', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -319,8 +354,48 @@ youtubeShoutouts.init();
     // Initialize everything
     detectDetailedDevice();
     updateTime();
+    tiktokShoutouts.init();
     updateNewYearCountdown();
 
     setInterval(updateTime, 1000);
+    setInterval(updateCountdown, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
+
+// Manually set the last updated date and time (example in EST timezone)
+const lastUpdatedDate = "Sun, Jan 12, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
+const lastUpdatedTime = "10:20 AM";    // Set the time here (12-hour format)
+
+// Combine the date and time into a single string for parsing
+const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lastUpdatedElement = document.querySelector("#lastUpdated");
+
+  if (lastUpdatedElement) {
+    // Create a Date object with the manually set date and time, example for EST (GMT-0500)
+    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
+
+    // Convert the manually set date and time to the user's local time zone
+    const options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+
+    // Format and display the converted time as "Wed, Jan 8, 2025, 9:51:01 AM"
+    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
+
+    // Set the content of the "Last Updated" text
+    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
+  }
+});
+
+if (window.location.protocol !== 'https:') {
+    window.location.href = "https://" + window.location.host + window.location.pathname;
+}
