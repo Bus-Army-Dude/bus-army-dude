@@ -394,249 +394,128 @@ youtubeShoutouts.init();
 });
 
 
-// Data structure for regions, countries, and creators
-const bannedRegionsData = {
-  "regions": [
-    {
-      "name": "North America",
-      "countries": [
+document.addEventListener("DOMContentLoaded", function() {
+    const creators = [
         {
-          "name": "United States", 
-          "isAvailable": false, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
+            "username": "creator7",
+            "nickname": "Creator Seven",
+            "followers": "500K",
+            "bio": "Spanish bio",
+            "profilePic": "images/creator7.jpg"
         },
         {
-          "name": "Canada", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "Mexico", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
+            "username": "creator8",
+            "nickname": "Creator Eight",
+            "followers": "1M",
+            "bio": "English bio",
+            "profilePic": "images/creator8.jpg"
         }
-      ]
-    },
-    {
-      "name": "Europe",
-      "countries": [
-        {
-          "name": "United Kingdom", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "Germany", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "France", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-        },
-        {
-          "name": "Poland", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Asia",
-      "countries": [
-        {
-          "name": "China", 
-          "isAvailable": false, 
-          "creators": []
-        },
-        {
-          "name": "India", 
-          "isAvailable": false, 
-          "creators": []
-        },
-        {
-          "name": "Japan", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "South Korea", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Middle East",
-      "countries": [
-        {
-          "name": "Saudi Arabia", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "United Arab Emirates", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "Iran", 
-          "isAvailable": false, 
-          "creators": []
-        }
-      ]
-    },
-    {
-      "name": "Africa",
-      "countries": [
-        {
-          "name": "Nigeria", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "South Africa", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "Egypt", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Oceania",
-      "countries": [
-        {
-          "name": "Australia", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "New Zealand", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        }
-      ]
-    },
-    {
-      "name": "South America",
-      "countries": [
-        {
-          "name": "Brazil", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        },
-        {
-          "name": "Argentina", 
-          "isAvailable": true, 
-          "creators": [
-            { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-            { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-          ]
-        }
-      ]
+    ];
+
+    // Get user's location using the geolocation API
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const userLatitude = position.coords.latitude;
+            const userLongitude = position.coords.longitude;
+
+            // Use the ip-api service to get the country and region
+            fetch(`https://ip-api.com/json/?lat=${userLatitude}&lon=${userLongitude}`)
+                .then(response => response.json())
+                .then(data => {
+                    const userRegion = data.regionName;
+                    const userCountry = data.country;
+
+                    // Check if TikTok is available in the user's region and country
+                    checkTikTokAvailability(userRegion, userCountry);
+                })
+                .catch(error => {
+                    console.error("Error fetching geolocation data:", error);
+                    // Fallback if geolocation or API fails
+                    showError("Unable to detect location.");
+                });
+        }, function() {
+            showError("Unable to get your location.");
+        });
+    } else {
+        showError("Geolocation is not supported by this browser.");
     }
-  ]
-};
 
-// Function to update last updated manually based on user's timezone
-function updateLastUpdated() {
-  const lastUpdatedElement = document.getElementById('last-updated');
-  const date = new Date();
-  const timezoneOffset = date.getTimezoneOffset() * 60000;
-  const localDate = new Date(date.getTime() - timezoneOffset);
-  const formattedDate = localDate.toLocaleString();
-  
-  lastUpdatedElement.innerHTML = `Last Updated: ${formattedDate}`;
-}
+    // Function to check TikTok availability
+    function checkTikTokAvailability(region, country) {
+        fetch("banned_regions.json")
+            .then(response => response.json())
+            .then(data => {
+                const regionData = data.regions.find(r => r.name === region);
+                if (!regionData) {
+                    console.error("Region not found.");
+                    return;
+                }
 
-// Function to show a message when the section is unavailable
-function showUnavailableMessage(region) {
-  const messageContainer = document.getElementById('message-container');
-  const section = document.getElementById('unavailable-section');
-  section.style.display = "block";
-  messageContainer.innerHTML = `<h3>This section isn't available in your ${region} right now</h3><p>Unfortunately, this section is not available due to restrictions in your region.</p>`;
-}
+                const isAvailable = regionData.countries.some(c => c.name === country && c.isAvailable);
 
-// Function to render the creators for a region if available
-function renderCreators(region, country) {
-  const section = document.getElementById(`${country.toLowerCase()}-shoutouts`);
-  const creatorsContainer = section.querySelector('.creator-grid');
-  creatorsContainer.innerHTML = "";
-  
-  const regionData = bannedRegionsData.regions.find(r => r.name === region);
-  const countryData = regionData.countries.find(c => c.name === country);
-  
-  if (countryData && countryData.isAvailable) {
-    countryData.creators.forEach(creator => {
-      const creatorCard = document.createElement('div');
-      creatorCard.classList.add('creator-card');
-      creatorCard.innerHTML = `
-        <img src="${creator.profilePic}" alt="${creator.nickname}" class="creator-img">
-        <h3>${creator.nickname}</h3>
-        <p>${creator.bio}</p>
-        <p>Followers: ${creator.followers}</p>
-      `;
-      creatorsContainer.appendChild(creatorCard);
-    });
-  } else {
-    showUnavailableMessage(country);
-  }
-}
+                if (isAvailable) {
+                    displayCreators(creators); // Show creators if TikTok is available
+                } else {
+                    showNotAvailableMessage(region, country); // Show message if not available
+                }
 
-// Manually update the last updated time
-updateLastUpdated();
+                // Manually update last updated time
+                const lastUpdatedElement = document.getElementById("last-updated");
+                const lastUpdatedTime = "January 20, 2025 12:00 PM"; // Manually set this
+                lastUpdatedElement.textContent = lastUpdatedTime;
+            })
+            .catch(error => console.error("Error fetching region data:", error));
+    }
+
+    // Display creators if TikTok is available
+    function displayCreators(creators) {
+        const creatorGrid = document.querySelector(".creator-grid");
+
+        creators.forEach(creator => {
+            const creatorCard = document.createElement("div");
+            creatorCard.classList.add("creator-card");
+
+            creatorCard.innerHTML = `
+                <img src="${creator.profilePic}" alt="${creator.nickname}" class="creator-pic">
+                <div class="creator-info">
+                    <div class="creator-header">
+                        <h3>${creator.nickname}</h3>
+                        <span class="follower-count">${creator.followers}</span>
+                    </div>
+                    <p class="creator-username">@${creator.username}</p>
+                    <p class="creator-bio">${creator.bio}</p>
+                    <a href="https://www.tiktok.com/@${creator.username}" class="visit-profile" target="_blank">Visit Profile</a>
+                </div>
+            `;
+            creatorGrid.appendChild(creatorCard);
+        });
+
+        document.getElementById("creator-shoutouts").style.display = "block";
+    }
+
+    // Show the "not available" message if TikTok is not available in the region
+    function showNotAvailableMessage(region, country) {
+        const section = document.getElementById("creator-shoutouts");
+        section.innerHTML = `
+            <h2>TikTok Creator Shoutouts</h2>
+            <p class="last-updated">Last Updated: <span id="last-updated"></span></p>
+            <div class="message-container">
+                <h3>This section isn't available in your ${region}, ${country} right now</h3>
+                <p>Unfortunately, TikTok is not available in your region. We hope it will be reinstated soon!</p>
+            </div>
+        `;
+        section.style.display = "block";
+    }
+
+    // Handle errors
+    function showError(message) {
+        const section = document.getElementById("creator-shoutouts");
+        section.innerHTML = `
+            <h2>TikTok Creator Shoutouts</h2>
+            <div class="message-container">
+                <h3>${message}</h3>
+            </div>
+        `;
+        section.style.display = "block";
+    }
+});
