@@ -1,0 +1,62 @@
+{
+  "regions": [
+    {
+      "name": "North America",
+      "countries": [
+        { "name": "United States", "isAvailable": true },
+        { "name": "Canada", "isAvailable": true },
+        { "name": "Mexico", "isAvailable": true }
+      ]
+    },
+    {
+      "name": "Europe",
+      "countries": [
+        { "name": "United Kingdom", "isAvailable": true },
+        { "name": "Germany", "isAvailable": true },
+        { "name": "France", "isAvailable": true },
+        { "name": "Italy", "isAvailable": true },
+        { "name": "Spain", "isAvailable": true }
+      ]
+    },
+    {
+      "name": "Asia",
+      "countries": [
+        { "name": "China", "isAvailable": false },
+        { "name": "India", "isAvailable": false },
+        { "name": "Japan", "isAvailable": true },
+        { "name": "South Korea", "isAvailable": true }
+      ]
+    },
+    {
+      "name": "Middle East",
+      "countries": [
+        { "name": "Saudi Arabia", "isAvailable": true },
+        { "name": "United Arab Emirates", "isAvailable": true },
+        { "name": "Iran", "isAvailable": false }
+      ]
+    },
+    {
+      "name": "Africa",
+      "countries": [
+        { "name": "Nigeria", "isAvailable": true },
+        { "name": "South Africa", "isAvailable": true },
+        { "name": "Egypt", "isAvailable": true }
+      ]
+    },
+    {
+      "name": "Oceania",
+      "countries": [
+        { "name": "Australia", "isAvailable": true },
+        { "name": "New Zealand", "isAvailable": true }
+      ]
+    },
+    {
+      "name": "South America",
+      "countries": [
+        { "name": "Brazil", "isAvailable": true },
+        { "name": "Argentina", "isAvailable": true },
+        { "name": "Colombia", "isAvailable": true }
+      ]
+    }
+  ]
+}
