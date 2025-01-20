@@ -394,72 +394,66 @@ youtubeShoutouts.init();
 });
 
 
-// Manually set the "Last Updated" timestamp
-const manualLastUpdated = 'Monday, January 20, 2025, 10:54 AM';  // Set the desired timestamp manually
+// Manually set the "Last Updated" timestamp here (adjust as needed)
+let manualLastUpdated = 'January 20, 2025, 10:54 AM';  // Replace with your desired timestamp
 
-// Function to detect the user's country and display the correct sections
-function checkLocation() {
-    fetch('banned_regions.json')  // Fetch the banned regions JSON
+// Fetch the banned regions data from the JSON file
+fetch('banned_regions.json')
+    .then(response => response.json())
+    .then(data => {
+        checkLocation(data);  // Pass the data into your location checking function
+    })
+    .catch(error => {
+        console.error('Error loading banned regions data:', error);
+    });
+
+// Function to detect the user's country and display the correct sections using GeoJS API
+function checkLocation(bannedRegions) {
+    fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
         .then(response => response.json())
-        .then(data => {
-            fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
-                .then(response => response.json())
-                .then(locationData => {
-                    const userCountry = locationData.country;  // Country of the user
-                    let isAvailable = false;
+        .then(locationData => {
+            const country = locationData.country;
 
-                    // Iterate over all regions to check if the user's country is available
-                    let countryFound = false;  // Flag to check if country is found in the JSON
+            // Set "Last Updated" timestamp
+            document.getElementById('us-last-updated').innerText = manualLastUpdated;
+            document.getElementById('other-regions-last-updated').innerText = manualLastUpdated;
 
-                    data.regions.forEach(region => {
-                        region.countries.forEach(country => {
-                            if (country.name === userCountry) {
-                                countryFound = true;
-                                isAvailable = country.isAvailable;  // Set availability based on the country
-                            }
-                        });
-                    });
-
-                    // Check if country was found in the JSON data
-                    if (!countryFound) {
-                        console.error('Country not found in the banned_regions.json file.');
+            // Look for the country in the banned regions data
+            let isAvailable = true;
+            bannedRegions.regions.forEach(region => {
+                region.countries.forEach(countryData => {
+                    if (countryData.name === country) {
+                        isAvailable = countryData.isAvailable;
                     }
-
-                    // Show or hide TikTok creator shoutouts based on availability
-                    if (isAvailable) {
-                        document.getElementById('other-regions-shoutouts').style.display = 'block';
-                        document.getElementById('us-shoutouts').style.display = 'none';
-                        document.getElementById('other-regions-last-updated').innerText = manualLastUpdated;  // Use manually set timestamp
-                        addCreators();  // Dynamically add creators for available regions
-                    } else {
-                        document.getElementById('us-shoutouts').style.display = 'block';  // Show banned message
-                        document.getElementById('other-regions-shoutouts').style.display = 'none';  // Hide shoutouts for banned regions
-                        document.getElementById('us-last-updated').innerText = manualLastUpdated;  // Use manually set timestamp
-                    }
-                })
-                .catch(error => {
-                    console.error('Error detecting location:', error);
-                    document.getElementById('location-error').style.display = 'block';
                 });
+            });
+
+            // Show or hide sections based on availability
+            if (isAvailable) {
+                document.getElementById('us-shoutouts').style.display = 'none';
+                document.getElementById('other-regions-shoutouts').style.display = 'block';
+                addCreators();
+            } else {
+                document.getElementById('us-shoutouts').style.display = 'block';
+                document.getElementById('other-regions-shoutouts').style.display = 'none';
+            }
         })
         .catch(error => {
-            console.error('Error fetching banned regions:', error);
+            console.error('Error detecting location:', error);
             document.getElementById('location-error').style.display = 'block';
         });
 }
 
-// Function to dynamically add creators for other regions
+// Function to dynamically add creators for available regions
 function addCreators() {
     const container = document.querySelector('.creator-grid');
     if (!container) return;
 
     const creators = [
-        { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-        { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' }
-        // Add more creators as necessary
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River. I am 19. I am autistic.', profilePic: 'images/busarmydude.jpg' }
     ];
 
-    // Add creators dynamically
     creators.forEach(creator => {
         const card = document.createElement('div');
         card.className = 'creator-card';
@@ -479,6 +473,3 @@ function addCreators() {
         container.appendChild(card);
     });
 }
-
-// Call checkLocation function on page load
-checkLocation();
