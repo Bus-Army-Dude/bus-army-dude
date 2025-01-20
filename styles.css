@@ -858,7 +858,7 @@ p.last-updated {
 }
 
 .creator-pic {
-   width: 80px;
+    width: 80px;
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
@@ -941,6 +941,26 @@ p.last-updated {
     padding: 20px;
     border: 1px solid #d1ecf1;
     border-radius: 8px;
+}
+
+/* Error message styling */
+#location-error {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    color: #721c24;
+}
+
+#location-error p {
+    font-size: 16px;
+}
+
+/* Styling for the last updated section */
+#last-updated {
+    font-size: 14px;
+    color: #888;
 }
 
 /* Countdown Section */
