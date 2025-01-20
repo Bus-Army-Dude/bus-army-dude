@@ -394,88 +394,250 @@ youtubeShoutouts.init();
 });
 
 
-// Manually update last updated date here
-const lastUpdatedDate = "January 20, 2025"; // Customize manually as per your needs
-
-// Set the last updated timestamp in the HTML for all regions
-document.querySelectorAll('.last-updated').forEach(element => {
-  element.innerHTML = lastUpdatedDate;
-});
-
-// Define creators for available regions
-const creators = [
-  { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-  { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-  // Add more creators as necessary
-];
-
-// Fetch the banned regions JSON
-fetch('banned_regions.json')
-  .then(response => response.json())
-  .then(data => {
-    // Get the user's region (you can implement your own method of getting this, e.g. using geolocation)
-    const userRegion = 'United States'; // Example: You would get this dynamically, but using 'United States' for testing
-
-    // Go through all regions and check availability
-    let regionFound = false;
-    data.regions.forEach(region => {
-      region.countries.forEach(country => {
-        if (country.name === userRegion) {
-          regionFound = true;
-
-          // Select the corresponding section based on the country availability
-          const sectionId = country.isAvailable ? 'other-regions-shoutouts' : 'us-shoutouts';
-          const section = document.getElementById(sectionId);
-          
-          // Show the section if available or display a message if unavailable
-          if (country.isAvailable) {
-            section.style.display = 'block'; // Show the section for available regions
-            addCreatorsToSection(section);  // Add creators to the section for available regions
-          } else {
-            section.style.display = 'block'; // Show the section but with a custom message for unavailable regions
-            const messageContainer = section.querySelector('.message-container');
-            messageContainer.innerHTML = `
-              <h3>This section isn't available right now</h3>
-              <p>A law banning TikTok has been enacted in ${userRegion}. Unfortunately, this means that the TikTok app is currently unavailable. Please stay tuned for updates.</p>
-            `;
-          }
+// Data structure for regions, countries, and creators
+const bannedRegionsData = {
+  "regions": [
+    {
+      "name": "North America",
+      "countries": [
+        {
+          "name": "United States", 
+          "isAvailable": false, 
+          "creators": [
+            { "username": "creator1", "nickname": "Creator One", "followers": "1M", "bio": "American bio", "profilePic": "images/creator1.jpg" },
+            { "username": "creator2", "nickname": "Creator Two", "followers": "800K", "bio": "American bio", "profilePic": "images/creator2.jpg" }
+          ]
+        },
+        {
+          "name": "Canada", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator3", "nickname": "Creator Three", "followers": "750K", "bio": "Canadian bio", "profilePic": "images/creator3.jpg" },
+            { "username": "creator4", "nickname": "Creator Four", "followers": "600K", "bio": "Canadian bio", "profilePic": "images/creator4.jpg" }
+          ]
+        },
+        {
+          "name": "Mexico", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator5", "nickname": "Creator Five", "followers": "450K", "bio": "Mexican bio", "profilePic": "images/creator5.jpg" },
+            { "username": "creator6", "nickname": "Creator Six", "followers": "550K", "bio": "Mexican bio", "profilePic": "images/creator6.jpg" }
+          ]
         }
-      });
-    });
-
-    // If no matching region found, display error message
-    if (!regionFound) {
-      document.getElementById('location-error').style.display = 'block';
+      ]
+    },
+    {
+      "name": "Europe",
+      "countries": [
+        {
+          "name": "United Kingdom", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator7", "nickname": "Creator Seven", "followers": "500K", "bio": "Spanish bio", "profilePic": "images/creator7.jpg" },
+            { "username": "creator8", "nickname": "Creator Eight", "followers": "400K", "bio": "English bio", "profilePic": "images/creator8.jpg" }
+          ]
+        },
+        {
+          "name": "Germany", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator9", "nickname": "Creator Nine", "followers": "600K", "bio": "German bio", "profilePic": "images/creator9.jpg" },
+            { "username": "creator10", "nickname": "Creator Ten", "followers": "700K", "bio": "German bio", "profilePic": "images/creator10.jpg" }
+          ]
+        },
+        {
+          "name": "France", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator11", "nickname": "Creator Eleven", "followers": "800K", "bio": "French bio", "profilePic": "images/creator11.jpg" },
+            { "username": "creator12", "nickname": "Creator Twelve", "followers": "750K", "bio": "French bio", "profilePic": "images/creator12.jpg" }
+          ]
+        },
+        {
+          "name": "Poland", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator13", "nickname": "Creator Thirteen", "followers": "850K", "bio": "Polish bio", "profilePic": "images/creator13.jpg" },
+            { "username": "creator14", "nickname": "Creator Fourteen", "followers": "600K", "bio": "Polish bio", "profilePic": "images/creator14.jpg" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Asia",
+      "countries": [
+        {
+          "name": "China", 
+          "isAvailable": false, 
+          "creators": []
+        },
+        {
+          "name": "India", 
+          "isAvailable": false, 
+          "creators": []
+        },
+        {
+          "name": "Japan", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator15", "nickname": "Creator Fifteen", "followers": "900K", "bio": "Japanese bio", "profilePic": "images/creator15.jpg" },
+            { "username": "creator16", "nickname": "Creator Sixteen", "followers": "700K", "bio": "Japanese bio", "profilePic": "images/creator16.jpg" }
+          ]
+        },
+        {
+          "name": "South Korea", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator17", "nickname": "Creator Seventeen", "followers": "950K", "bio": "Korean bio", "profilePic": "images/creator17.jpg" },
+            { "username": "creator18", "nickname": "Creator Eighteen", "followers": "800K", "bio": "Korean bio", "profilePic": "images/creator18.jpg" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Middle East",
+      "countries": [
+        {
+          "name": "Saudi Arabia", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator19", "nickname": "Creator Nineteen", "followers": "600K", "bio": "Saudi bio", "profilePic": "images/creator19.jpg" },
+            { "username": "creator20", "nickname": "Creator Twenty", "followers": "450K", "bio": "Saudi bio", "profilePic": "images/creator20.jpg" }
+          ]
+        },
+        {
+          "name": "United Arab Emirates", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator21", "nickname": "Creator Twenty One", "followers": "750K", "bio": "UAE bio", "profilePic": "images/creator21.jpg" },
+            { "username": "creator22", "nickname": "Creator Twenty Two", "followers": "500K", "bio": "UAE bio", "profilePic": "images/creator22.jpg" }
+          ]
+        },
+        {
+          "name": "Iran", 
+          "isAvailable": false, 
+          "creators": []
+        }
+      ]
+    },
+    {
+      "name": "Africa",
+      "countries": [
+        {
+          "name": "Nigeria", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator23", "nickname": "Creator Twenty Three", "followers": "1M", "bio": "Nigerian bio", "profilePic": "images/creator23.jpg" },
+            { "username": "creator24", "nickname": "Creator Twenty Four", "followers": "850K", "bio": "Nigerian bio", "profilePic": "images/creator24.jpg" }
+          ]
+        },
+        {
+          "name": "South Africa", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator25", "nickname": "Creator Twenty Five", "followers": "600K", "bio": "South African bio", "profilePic": "images/creator25.jpg" },
+            { "username": "creator26", "nickname": "Creator Twenty Six", "followers": "700K", "bio": "South African bio", "profilePic": "images/creator26.jpg" }
+          ]
+        },
+        {
+          "name": "Egypt", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator27", "nickname": "Creator Twenty Seven", "followers": "500K", "bio": "Egyptian bio", "profilePic": "images/creator27.jpg" },
+            { "username": "creator28", "nickname": "Creator Twenty Eight", "followers": "550K", "bio": "Egyptian bio", "profilePic": "images/creator28.jpg" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Oceania",
+      "countries": [
+        {
+          "name": "Australia", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator29", "nickname": "Creator Twenty Nine", "followers": "900K", "bio": "Australian bio", "profilePic": "images/creator29.jpg" },
+            { "username": "creator30", "nickname": "Creator Thirty", "followers": "950K", "bio": "Australian bio", "profilePic": "images/creator30.jpg" }
+          ]
+        },
+        {
+          "name": "New Zealand", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator31", "nickname": "Creator Thirty One", "followers": "500K", "bio": "New Zealand bio", "profilePic": "images/creator31.jpg" },
+            { "username": "creator32", "nickname": "Creator Thirty Two", "followers": "400K", "bio": "New Zealand bio", "profilePic": "images/creator32.jpg" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "South America",
+      "countries": [
+        {
+          "name": "Brazil", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator33", "nickname": "Creator Thirty Three", "followers": "1.2M", "bio": "Brazilian bio", "profilePic": "images/creator33.jpg" },
+            { "username": "creator34", "nickname": "Creator Thirty Four", "followers": "800K", "bio": "Brazilian bio", "profilePic": "images/creator34.jpg" }
+          ]
+        },
+        {
+          "name": "Argentina", 
+          "isAvailable": true, 
+          "creators": [
+            { "username": "creator35", "nickname": "Creator Thirty Five", "followers": "700K", "bio": "Argentine bio", "profilePic": "images/creator35.jpg" },
+            { "username": "creator36", "nickname": "Creator Thirty Six", "followers": "600K", "bio": "Argentine bio", "profilePic": "images/creator36.jpg" }
+          ]
+        }
+      ]
     }
-  })
-  .catch(error => {
-    console.error('Error loading banned regions:', error);
-    document.getElementById('location-error').style.display = 'block';
-  });
+  ]
+};
 
-// Function to dynamically add creators to the available region section
-function addCreatorsToSection(section) {
-  const container = section.querySelector('.creator-grid');
-  if (!container) return;
-
-  // Add creators dynamically to the section
-  creators.forEach(creator => {
-    const card = document.createElement('div');
-    card.className = 'creator-card';
-    card.innerHTML = `
-      <img src="${creator.profilePic}" alt="@${creator.username}" class="creator-pic" onerror="this.src='default-profile.jpg'">
-      <div class="creator-info">
-        <div class="creator-header">
-          <h3>${creator.nickname}</h3>
-          ${creator.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
-        </div>
-        <p class="creator-username">@${creator.username}</p>
-        <p class="creator-bio">${creator.bio}</p>
-        <p class="follower-count">${creator.followers} Followers</p>
-        <a href="https://tiktok.com/@${creator.username}" target="_blank" class="visit-profile">Visit Profile</a>
-      </div>
-    `;
-    container.appendChild(card);
-  });
+// Function to update last updated manually based on user's timezone
+function updateLastUpdated() {
+  const lastUpdatedElement = document.getElementById('last-updated');
+  const date = new Date();
+  const timezoneOffset = date.getTimezoneOffset() * 60000;
+  const localDate = new Date(date.getTime() - timezoneOffset);
+  const formattedDate = localDate.toLocaleString();
+  
+  lastUpdatedElement.innerHTML = `Last Updated: ${formattedDate}`;
 }
 
+// Function to show a message when the section is unavailable
+function showUnavailableMessage(region) {
+  const messageContainer = document.getElementById('message-container');
+  const section = document.getElementById('unavailable-section');
+  section.style.display = "block";
+  messageContainer.innerHTML = `<h3>This section isn't available in your ${region} right now</h3><p>Unfortunately, this section is not available due to restrictions in your region.</p>`;
+}
+
+// Function to render the creators for a region if available
+function renderCreators(region, country) {
+  const section = document.getElementById(`${country.toLowerCase()}-shoutouts`);
+  const creatorsContainer = section.querySelector('.creator-grid');
+  creatorsContainer.innerHTML = "";
+  
+  const regionData = bannedRegionsData.regions.find(r => r.name === region);
+  const countryData = regionData.countries.find(c => c.name === country);
+  
+  if (countryData && countryData.isAvailable) {
+    countryData.creators.forEach(creator => {
+      const creatorCard = document.createElement('div');
+      creatorCard.classList.add('creator-card');
+      creatorCard.innerHTML = `
+        <img src="${creator.profilePic}" alt="${creator.nickname}" class="creator-img">
+        <h3>${creator.nickname}</h3>
+        <p>${creator.bio}</p>
+        <p>Followers: ${creator.followers}</p>
+      `;
+      creatorsContainer.appendChild(creatorCard);
+    });
+  } else {
+    showUnavailableMessage(country);
+  }
+}
+
+// Manually update the last updated time
+updateLastUpdated();
