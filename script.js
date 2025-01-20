@@ -97,17 +97,22 @@ function updateTime() {
     }
 }
 
-// Page refresh countdown
-let timeLeft = 60;
+// Page refresh countdown using real time
+const refreshInterval = 60000;  // 60 seconds in milliseconds
+let startTime = Date.now();
+
 function updateCountdown() {
     const countdownElement = document.querySelector('.countdown');
+    const timeElapsed = Date.now() - startTime;
+    const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);
+
     if (countdownElement) {
         countdownElement.textContent = `Page refreshing in: ${timeLeft} seconds`;
     }
-    timeLeft--;
-    
-    if (timeLeft < 0) {
-        smoothReload();  // Smooth reload when countdown ends
+
+    // Smooth reload when timeLeft reaches 0
+    if (timeLeft <= 0) {
+        smoothReload();
     }
 }
 
@@ -136,7 +141,7 @@ window.onload = function() {
     updateTime();
     updateCountdown();
     
-    // Synchronize both time and countdown updates to run every second
+    // Synchronize both time and countdown updates every second
     setInterval(() => {
         updateTime();
         updateCountdown();
