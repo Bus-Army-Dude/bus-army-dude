@@ -412,7 +412,7 @@ const isTikTokBannedInBangladesh = false;  // Change this to `false` when TikTok
 const isTikTokBannedInTurkey = false;  // Change this to `false` when TikTok is unbanned
 const isTikTokBannedInMexico = false;  // Change this to `false` when TikTok is unbanned
 const isTikTokBannedInSouthKorea = false;  // Change this to `false` when TikTok is unbanned
-const isTikTokBannedInJapan = true;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInJapan = false;  // Change this to `false` when TikTok is unbanned
 const isTikTokBannedInPhilippines = false;  // Change this to `false` when TikTok is unbanned
 const isTikTokBannedInSingapore = false;  // Change this to `false` when TikTok is unbanned
 const isTikTokBannedInMalaysia = false;  // Change this to `false` when TikTok is unbanned
@@ -421,12 +421,12 @@ const isTikTokBannedInVietnam = false;  // Change this to `false` when TikTok is
 // Manually set the "Last Updated" timestamp here (adjust as needed)
 let manualLastUpdated = 'January 19, 2025, 4:41 PM';  // Replace with your desired timestamp
 
-// Function to detect the user's country and display the correct sections using GeoJS API
 function checkLocation() {
     fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
         .then(response => response.json())
         .then(data => {
             const country = data.country;
+            console.log("Detected country: ", country);  // Debugging: check which country is detected
 
             // If you want to use the manually set timestamp, use `manualLastUpdated`
             let lastUpdated = manualLastUpdated;
@@ -434,14 +434,18 @@ function checkLocation() {
             // Optionally store the value in localStorage for later use
             localStorage.setItem('lastUpdated', lastUpdated);
 
-            // You can replace `manualLastUpdated` with `new Date().toLocaleString()` if you want to use the current timestamp
+            // Debugging: Check if TikTok is banned in the region
+            console.log(`isTikTokBannedIn${country}: `, eval(`isTikTokBannedIn${country}`)); 
+
             if (country === 'US' && isTikTokBannedInUS) {
                 // Show message indicating TikTok is banned in the U.S.
+                console.log("TikTok is banned in the US");
                 document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message for U.S. users
                 document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide TikTok creator shoutouts for other regions
                 document.getElementById('us-last-updated').innerText = lastUpdated;  // Set Last Updated for U.S.
             } else {
                 // Show creator shoutouts for other regions
+                console.log("TikTok is available in this region");
                 document.getElementById('other-regions-shoutouts').style.display = 'block'; 
                 document.getElementById('us-shoutouts').style.display = 'none'; // Hide U.S. banned message
                 document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for other regions
