@@ -394,128 +394,160 @@ youtubeShoutouts.init();
 });
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    const creators = [
-        {
-            "username": "creator7",
-            "nickname": "Creator Seven",
-            "followers": "500K",
-            "bio": "Spanish bio",
-            "profilePic": "images/creator7.jpg"
-        },
-        {
-            "username": "creator8",
-            "nickname": "Creator Eight",
-            "followers": "1M",
-            "bio": "English bio",
-            "profilePic": "images/creator8.jpg"
-        }
-    ];
+document.addEventListener('DOMContentLoaded', function () {
+    // Your banned regions JSON data
+    const bannedRegions = {
+        "regions": [
+            {
+                "name": "North America",
+                "countries": [
+                    { "name": "United States", "isAvailable": true, "message": "TikTok is currently available in the United States." },
+                    { "name": "Canada", "isAvailable": true, "message": "TikTok is currently available in Canada." },
+                    { "name": "Mexico", "isAvailable": true, "message": "TikTok is currently available in Mexico." }
+                ]
+            },
+            {
+                "name": "Europe",
+                "countries": [
+                    { "name": "United Kingdom", "isAvailable": true, "message": "TikTok is currently available in the United Kingdom." },
+                    { "name": "Germany", "isAvailable": true, "message": "TikTok is currently available in Germany." },
+                    { "name": "France", "isAvailable": true, "message": "TikTok is currently available in France." },
+                    { "name": "Italy", "isAvailable": true, "message": "TikTok is currently available in Italy." },
+                    { "name": "Spain", "isAvailable": true, "message": "TikTok is currently available in Spain." }
+                ]
+            },
+            {
+                "name": "Asia",
+                "countries": [
+                    { "name": "China", "isAvailable": false, "message": "TikTok is banned in China." },
+                    { "name": "India", "isAvailable": false, "message": "TikTok is banned in India." },
+                    { "name": "Japan", "isAvailable": true, "message": "TikTok is currently available in Japan." },
+                    { "name": "South Korea", "isAvailable": true, "message": "TikTok is currently available in South Korea." }
+                ]
+            },
+            {
+                "name": "Middle East",
+                "countries": [
+                    { "name": "Saudi Arabia", "isAvailable": true, "message": "TikTok is currently available in Saudi Arabia." },
+                    { "name": "United Arab Emirates", "isAvailable": true, "message": "TikTok is currently available in the UAE." },
+                    { "name": "Iran", "isAvailable": false, "message": "TikTok is banned in Iran." }
+                ]
+            },
+            {
+                "name": "Africa",
+                "countries": [
+                    { "name": "Nigeria", "isAvailable": true, "message": "TikTok is currently available in Nigeria." },
+                    { "name": "South Africa", "isAvailable": true, "message": "TikTok is currently available in South Africa." },
+                    { "name": "Egypt", "isAvailable": true, "message": "TikTok is currently available in Egypt." }
+                ]
+            },
+            {
+                "name": "Oceania",
+                "countries": [
+                    { "name": "Australia", "isAvailable": true, "message": "TikTok is currently available in Australia." },
+                    { "name": "New Zealand", "isAvailable": true, "message": "TikTok is currently available in New Zealand." }
+                ]
+            },
+            {
+                "name": "South America",
+                "countries": [
+                    { "name": "Brazil", "isAvailable": true, "message": "TikTok is currently available in Brazil." },
+                    { "name": "Argentina", "isAvailable": true, "message": "TikTok is currently available in Argentina." },
+                    { "name": "Colombia", "isAvailable": true, "message": "TikTok is currently available in Colombia." }
+                ]
+            }
+        ]
+    };
 
-    // Get user's location using the geolocation API
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const userLatitude = position.coords.latitude;
-            const userLongitude = position.coords.longitude;
+    // Function to detect the user's region and country
+    function detectUserLocation() {
+        return new Promise((resolve, reject) => {
+            // Use the browser's geolocation API
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
 
-            // Use the ip-api service to get the country and region
-            fetch(`https://ip-api.com/json/?lat=${userLatitude}&lon=${userLongitude}`)
-                .then(response => response.json())
-                .then(data => {
-                    const userRegion = data.regionName;
-                    const userCountry = data.country;
-
-                    // Check if TikTok is available in the user's region and country
-                    checkTikTokAvailability(userRegion, userCountry);
-                })
-                .catch(error => {
-                    console.error("Error fetching geolocation data:", error);
-                    // Fallback if geolocation or API fails
-                    showError("Unable to detect location.");
+                    // Use an IP-based geolocation service to get the country based on latitude and longitude (free APIs can be used)
+                    fetch(`https://geocode.xyz/${lat},${lon}?json=1`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const country = data.country;
+                            resolve(country);
+                        })
+                        .catch(err => reject(err));
+                }, function (error) {
+                    reject(error);
                 });
-        }, function() {
-            showError("Unable to get your location.");
+            } else {
+                reject('Geolocation not available');
+            }
         });
-    } else {
-        showError("Geolocation is not supported by this browser.");
     }
 
-    // Function to check TikTok availability
-    function checkTikTokAvailability(region, country) {
-        fetch("banned_regions.json")
-            .then(response => response.json())
-            .then(data => {
-                const regionData = data.regions.find(r => r.name === region);
-                if (!regionData) {
-                    console.error("Region not found.");
-                    return;
-                }
+    // Detect the user's location and update the page
+    detectUserLocation().then(userCountry => {
+        console.log(`User's Country: ${userCountry}`);
+        
+        // Find the region and country in the bannedRegions JSON
+        const region = bannedRegions.regions.find(r => r.countries.some(c => c.name === userCountry));
+        const country = region ? region.countries.find(c => c.name === userCountry) : null;
 
-                const isAvailable = regionData.countries.some(c => c.name === country && c.isAvailable);
+        // Section for TikTok creators
+        const shoutoutsSection = document.getElementById("creator-shoutouts");
+        const errorSection = document.getElementById("location-error");
 
-                if (isAvailable) {
-                    displayCreators(creators); // Show creators if TikTok is available
-                } else {
-                    showNotAvailableMessage(region, country); // Show message if not available
-                }
+        // Check if the country is available
+        if (country && country.isAvailable) {
+            // Show the creator shoutouts section
+            shoutoutsSection.style.display = "block";
 
-                // Manually update last updated time
-                const lastUpdatedElement = document.getElementById("last-updated");
-                const lastUpdatedTime = "January 20, 2025 12:00 PM"; // Manually set this
-                lastUpdatedElement.textContent = lastUpdatedTime;
-            })
-            .catch(error => console.error("Error fetching region data:", error));
-    }
+            // Populate the last updated info manually
+            const lastUpdated = document.getElementById("last-updated");
+            lastUpdated.textContent = "January 20, 2025"; // Example: Manually update the date
 
-    // Display creators if TikTok is available
-    function displayCreators(creators) {
-        const creatorGrid = document.querySelector(".creator-grid");
+            // Here, you can populate the creators dynamically (example creator data)
+            const creatorGrid = document.querySelector(".creator-grid");
+            const creators = [
+                { "username": "creator1", "nickname": "Creator One", "followers": "500K", "bio": "Bio 1", "profilePic": "images/creator1.jpg" },
+                { "username": "creator2", "nickname": "Creator Two", "followers": "1M", "bio": "Bio 2", "profilePic": "images/creator2.jpg" }
+                // Add more creators here...
+            ];
 
-        creators.forEach(creator => {
-            const creatorCard = document.createElement("div");
-            creatorCard.classList.add("creator-card");
-
-            creatorCard.innerHTML = `
-                <img src="${creator.profilePic}" alt="${creator.nickname}" class="creator-pic">
-                <div class="creator-info">
-                    <div class="creator-header">
+            creators.forEach(creator => {
+                const creatorCard = document.createElement("div");
+                creatorCard.classList.add("creator-card");
+                creatorCard.innerHTML = `
+                    <img src="${creator.profilePic}" alt="${creator.nickname}">
+                    <div class="creator-info">
                         <h3>${creator.nickname}</h3>
-                        <span class="follower-count">${creator.followers}</span>
+                        <p class="follower-count">${creator.followers} followers</p>
+                        <p class="creator-username">@${creator.username}</p>
+                        <p class="creator-bio">${creator.bio}</p>
+                        <a href="https://www.tiktok.com/@${creator.username}" class="visit-profile" target="_blank">Visit Profile</a>
                     </div>
-                    <p class="creator-username">@${creator.username}</p>
-                    <p class="creator-bio">${creator.bio}</p>
-                    <a href="https://www.tiktok.com/@${creator.username}" class="visit-profile" target="_blank">Visit Profile</a>
-                </div>
-            `;
-            creatorGrid.appendChild(creatorCard);
-        });
+                `;
+                creatorGrid.appendChild(creatorCard);
+            });
+        } else {
+            // If the region is not available, show the error message
+            errorSection.style.display = "block";
+            const errorMessage = document.querySelector("#location-error h3");
+            const errorDescription = document.querySelector("#location-error p");
 
-        document.getElementById("creator-shoutouts").style.display = "block";
-    }
-
-    // Show the "not available" message if TikTok is not available in the region
-    function showNotAvailableMessage(region, country) {
-        const section = document.getElementById("creator-shoutouts");
-        section.innerHTML = `
-            <h2>TikTok Creator Shoutouts</h2>
-            <p class="last-updated">Last Updated: <span id="last-updated"></span></p>
-            <div class="message-container">
-                <h3>This section isn't available in your ${region}, ${country} right now</h3>
-                <p>Unfortunately, TikTok is not available in your region. We hope it will be reinstated soon!</p>
-            </div>
-        `;
-        section.style.display = "block";
-    }
-
-    // Handle errors
-    function showError(message) {
-        const section = document.getElementById("creator-shoutouts");
-        section.innerHTML = `
-            <h2>TikTok Creator Shoutouts</h2>
-            <div class="message-container">
-                <h3>${message}</h3>
-            </div>
-        `;
-        section.style.display = "block";
-    }
+            // Show the custom message from the bannedRegions JSON
+            if (country) {
+                errorMessage.textContent = `This section isn't available in your ${region.name} right now`;
+                errorDescription.textContent = country.message || "TikTok is not available in your region.";
+            } else {
+                errorMessage.textContent = "This section isn't available in your region right now";
+                errorDescription.textContent = "TikTok is not available in your region.";
+            }
+        }
+    }).catch(error => {
+        console.error("Location detection failed", error);
+        // Fallback error handling
+        document.getElementById("location-error").style.display = "block";
+        document.querySelector("#location-error p").textContent = "Unable to detect your location.";
+    });
 });
