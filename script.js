@@ -99,6 +99,8 @@ function updateTime() {
 
 // Page refresh countdown
 let timeLeft = 60;
+let countdownInterval;
+
 function updateCountdown() {
     const countdownElement = document.querySelector('.countdown');
     if (countdownElement) {
@@ -106,11 +108,9 @@ function updateCountdown() {
     }
     timeLeft--;
     
-    if (timeLeft >= 0) {
-        // Call updateCountdown again after 1 second
-        setTimeout(updateCountdown, 1000);
-    } else {
-        smoothReload(); // Smoothly reload when countdown reaches 0
+    if (timeLeft < 0) {
+        clearInterval(countdownInterval);  // Stop the interval when timeLeft is below 0
+        smoothReload();  // Smooth reload after countdown ends
     }
 }
 
@@ -137,7 +137,9 @@ function updateVersionPanel() {
 window.onload = function() {
     updateVersionPanel();
     updateTime();
-    updateCountdown(); // Start countdown
+    
+    // Start countdown with setInterval to update once per second
+    countdownInterval = setInterval(updateCountdown, 1000); 
 };
     
     // TikTok Shoutouts
