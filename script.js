@@ -104,10 +104,23 @@ function updateCountdown() {
     if (countdownElement && timeLeft >= 0) {
         countdownElement.textContent = `Page refreshing in: ${timeLeft} seconds`;
         timeLeft--;
+        
+        // Smooth reload when timeLeft reaches 0
         if (timeLeft < 0) {
-            location.reload();
+            smoothReload();
         }
     }
+}
+
+// Smoothly reload the page with a fade-out effect
+function smoothReload() {
+    const body = document.body;
+    body.style.transition = 'opacity 0.5s ease';
+    body.style.opacity = '0';
+
+    setTimeout(function() {
+        location.reload();
+    }, 500); // Delay the reload to allow fade-out
 }
 
 // Update version panel with device info
@@ -124,7 +137,6 @@ window.onload = function() {
     updateTime();
     setInterval(updateCountdown, 1000); // Update countdown every second
 };
-
     // TikTok Shoutouts
     const tiktokShoutouts = {
         accounts: [
