@@ -153,7 +153,7 @@ window.onload = function() {
     // TikTok Shoutouts
     const tiktokShoutouts = {
         accounts: [
-            { username: 'mrbeast', isVerified: true, followers: '111.3M', nickname: 'MrBeast', bio: 'GO WATCH MY NEW SHOW', profilePic: 'images/mrbeast.jpeg' },     
+            { username: 'mrbeast', isVerified: true, followers: '111.3M', nickname: 'MrBeast', bio: 'New CEO of Tiktok?', profilePic: 'images/mrbeast.jpeg' },     
             { username: 'teamtrump', isVerified: true, followers: '8.7M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
             { username: 'carterpcs', isVerified: true, followers: '5.6M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'images/carterpcs.jpeg' },
             { username: 'applesauceandadhd', isVerified: true, followers: '3.8M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'images/applesauceandadhd.jpeg' },
