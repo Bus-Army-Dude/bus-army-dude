@@ -394,55 +394,45 @@ youtubeShoutouts.init();
 });
 
 
-// Manually set the "Last Updated" timestamp
-let manualLastUpdated = 'Monday, January 20, 2025, 10:54 AM';  // Replace with your desired timestamp
-
-// Function to detect the user's country and display the correct sections using GeoJS API
+// Function to detect the user's country and check if TikTok is available in their country
 function checkLocation() {
-    // First, fetch the banned regions JSON
-    fetch('banned_regions.json')
+    fetch('banned_regions.json')  // Fetch the banned regions JSON
         .then(response => response.json())
-        .then(bannedRegions => {
-            // Fetch user's country using GeoJS API
-            return fetch('https://get.geojs.io/v1/ip/country.json')
+        .then(data => {
+            fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
                 .then(response => response.json())
-                .then(data => {
-                    const country = data.country;
+                .then(locationData => {
+                    const userCountry = locationData.country;  // Country of the user
+                    let isAvailable = false;
 
-                    // Function to check if TikTok is available in a region
-                    const isTikTokAvailable = (countryName) => {
-                        for (let region of bannedRegions.regions) {
-                            for (let c of region.countries) {
-                                if (c.name === countryName) {
-                                    return c.isAvailable;
-                                }
+                    // Iterate over all regions to check if the user's country is available
+                    data.regions.forEach(region => {
+                        region.countries.forEach(country => {
+                            if (country.name === userCountry && country.isAvailable) {
+                                isAvailable = true;
                             }
-                        }
-                        return false; // Return false if country not found in the list
-                    };
+                        });
+                    });
 
-                    // If you want to use the manually set timestamp, use `manualLastUpdated`
-                    let lastUpdated = manualLastUpdated;
-
-                    // Optionally store the value in localStorage for later use
-                    localStorage.setItem('lastUpdated', lastUpdated);
-
-                    // Display sections based on TikTok availability in the user's country
-                    if (!isTikTokAvailable(country)) {
-                        document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message
-                        document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide creator shoutouts
-                        document.getElementById('us-last-updated').innerText = lastUpdated;  // Set "Last Updated" for U.S.
+                    // Show or hide TikTok creator shoutouts based on availability
+                    if (isAvailable) {
+                        document.getElementById('other-regions-shoutouts').style.display = 'block';
+                        document.getElementById('us-shoutouts').style.display = 'none';
+                        document.getElementById('other-regions-last-updated').innerText = new Date().toLocaleString();
+                        addCreators();  // Dynamically add creators for available regions
                     } else {
-                        document.getElementById('other-regions-shoutouts').style.display = 'block'; 
-                        document.getElementById('us-shoutouts').style.display = 'none'; // Hide TikTok banned message
-                        document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set "Last Updated" for available regions
-                        addCreators(); // Call function to add creators dynamically
+                        document.getElementById('us-shoutouts').style.display = 'block';  // Show banned message
+                        document.getElementById('other-regions-shoutouts').style.display = 'none';  // Hide shoutouts for banned regions
+                        document.getElementById('us-last-updated').innerText = new Date().toLocaleString();
                     }
                 })
+                .catch(error => {
+                    console.error('Error detecting location:', error);
+                    document.getElementById('location-error').style.display = 'block';
+                });
         })
         .catch(error => {
-            console.error('Error fetching location or region data:', error);
-            // Fallback if the API fails
+            console.error('Error fetching banned regions:', error);
             document.getElementById('location-error').style.display = 'block';
         });
 }
@@ -454,8 +444,7 @@ function addCreators() {
 
     const creators = [
         { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-        { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
-        
+        { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' }
         // Add more creators as necessary
     ];
 
@@ -482,4 +471,3 @@ function addCreators() {
 
 // Call checkLocation function on page load
 checkLocation();
-
