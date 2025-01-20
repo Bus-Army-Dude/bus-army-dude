@@ -5,6 +5,17 @@
     --dark-link: #BB86FC;
 }
 
+/* Apply dark mode styles to the body */
+body {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Profile Section */
 .profile-section {
     text-align: center;
@@ -981,23 +992,6 @@ body {
     body {
         position: relative;
     }
-}
-
-/* Google Form Contact Me */
-.form-container {
-  max-width: 900px;  /* Prevents form from exceeding 900px */
-  width: 100%;  /* Makes form responsive */
-  margin: 0 auto;  /* Centers the form */
-  padding: 20px;
-  background-color: #222; /* Dark background color to match your theme */
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Adds subtle shadow */
-}
-
-.form-container iframe {
-  width: 100%;  /* Makes iframe responsive */
-  height: 1600px;  /* Adjusted for ample space */
-  border-radius: 10px;
 }
 
 /* Footer */
