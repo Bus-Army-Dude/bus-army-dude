@@ -56,9 +56,6 @@
         <div class="social-links-section">
     <h2>Connect with Me</h2>
     <div class="social-links-container">
-        <a href="https://www.tiktok.com/@busarmydude" class="social-button">
-            <img src="tiktok.png" alt="TikTok" class="social-icon">
-            <span>TikTok</span>
         <a href="https://www.xiaohongshu.com/user/profile/6784c343000000000803cd8c?xsec_token=YB4EhMAgFddZj1YnrXXzxso90G2VKQhAUlgIySG8Uofhw=&xsec_source=app_share&xhsshare=CopyLink&appuid=6784c343000000000803cd8c&apptime=1736798901&share_id=5a1717e3dbfb4561b93f2caa50d5a097" class="social-button">
             <img src="rednote.png" alt="Rednote" class="social-icon">
             <span>Rednote</span>
@@ -106,42 +103,11 @@
     </div>
 </div>
         
-<!-- TikTok Creator Shoutouts (For U.S. users) -->
-<div class="section" id="us-shoutouts" style="display: none;">
-    <h2>TikTok Creator Shoutouts (U.S.)</h2>
-    <p class="last-updated">Last Updated: <span id="us-last-updated"></span></p>
-    <div class="message-container">
-        <h3>This section isn't available right now</h3>
-        <p>A law banning TikTok has been enacted in the U.S. Unfortunately, this means that the TikTok app is currently unavailable. However, you can still access the TikTok website. We are hopeful that President Trump will work on a solution to reinstate the app once he takes office. Please stay tuned!</p>
-    </div>
-</div>
-
-<!-- TikTok Creator Shoutouts (For other regions like UK, Canada) -->
-<div class="section" id="other-regions-shoutouts" style="display: none;">
-    <h2>TikTok Creator Shoutouts</h2>
-    <p class="last-updated">Last Updated: <span id="other-regions-last-updated"></span></p>
-    <!-- Creator cards will be dynamically inserted here -->
-    <div class="creator-grid">
-        <!-- Creator Card 1, 2, 3... -->
-    </div>
-</div>
-
-<!-- Error message (if location detection fails) -->
-<div id="location-error" style="display: none;">
-    <p>Unable to detect location. Please try again later.</p>
-</div>
-        
 <!-- RedNote Shoutouts Section -->
-<div class="shoutouts-section section">
-    <div id="rednote-shoutouts">
-        <h2>RedNote Creator Shoutouts</h2>
-        <!-- Last Updated Timestamp -->
-        <p class="last-updated"> <span id="rednote-last-updated-timestamp">N/A</span></p>
-    </div>
-
-    <div class="rednote-creator-grid">
-        <!-- RedNote creator cards will be dynamically generated here -->
-    </div>
+<div id="rednote-shoutouts">
+    <h2>RedNote Creator Shoutouts</h2>
+    <div class="creators-container"></div>
+    <div id="rednote-last-updated">Last updated: </div>
 </div>
 
 
@@ -162,6 +128,7 @@
 <div class="shoutouts-section section">
     <div id="youtube-shoutouts">
         <h2>YouTube Creator Shoutouts</h2>
+        <p id="lastUpdatedYouTube"></p> <!-- Display last updated date and time here -->
     </div>
 
     <div class="youtube-creator-grid">
@@ -220,7 +187,7 @@
                 <p><span>Date Bought:</span> November 08, 2024</p>
                 <p><span>OS Version:</span> iOS 18.3 (22D5040d)</p>
                 <p><span>Battery Capacity %:</span> 100%</p>
-                <p><span>Battery Charge Cycles:</span> 112</p>
+                <p><span>Battery Charge Cycles:</span> 108</p>
             </div>
 
             <!-- Apple Watch Section -->
@@ -277,8 +244,8 @@
 <!-- Version Panel Section (Add this just before your footer) -->
 <div class="version-info-section">
     <div class="version-header">Version Information</div>
-    <div class="version-number">Version: v1.8.0</div>
-    <div class="build-number">Build: 2025.1.19</div>
+    <div class="version-number">Version: v1.7.0</div>
+    <div class="build-number">Build: 2025.1.11</div>
     <div class="device-info">Device: Loading...</div>
     <div class="update-time">Current Date and Time: Loading...</div>
     <div class="current-user">Current User's Login: BusArmyDude</div>
