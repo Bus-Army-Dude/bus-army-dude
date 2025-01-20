@@ -318,7 +318,7 @@ body {
 .instagram-shoutouts-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;  /* Center content horizontally */
+    align-items: flex-start;  /* Align items to the left */
     padding: 20px;
     width: 100%;
 }
@@ -328,9 +328,8 @@ body {
     font-size: 24px;
     font-weight: bold;
     color: var(--text-color);
-    margin-bottom: 10px;
-    text-align: center;
-    width: 100%;  /* Ensure it spans the same width as the grid */
+    margin-bottom: 5px;
+    width: 100%;  /* Make sure title is the same width as grid */
 }
 
 /* Last Updated Section Styling */
@@ -338,10 +337,9 @@ body {
     font-size: 18px;
     color: #FFFFFF;
     margin-top: 5px;
-    margin-bottom: 20px;  /* Space between last updated and the grid */
-    text-align: center;
-    width: 100%;  /* Match the width of the grid */
-    max-width: 1200px;  /* Optional: Keep the max width constraint */
+    margin-bottom: 20px;  /* Space between 'Last Updated' and grid */
+    width: 100%;  /* Same width as grid */
+    text-align: left;  /* Align left with title */
 }
 
 /* Grid Layout for Instagram Shoutouts */
