@@ -106,19 +106,30 @@
     </div>
 </div>
         
-        <!-- TikTok Creator Shoutouts Section -->
-    <div id="creator-shoutouts" style="display: none;">
-        <h2>TikTok Creator Shoutouts</h2>
-        <p class="last-updated">Last Updated: <span id="last-updated"></span></p>
-        <div class="creator-grid">
-            <!-- Creator cards will be dynamically inserted here -->
+        <!-- TikTok Creator Shoutouts (For U.S. users) -->
+        <div class="section" id="us-shoutouts" style="display: none;">
+            <h2>TikTok Creator Shoutouts (U.S.)</h2>
+            <p class="last-updated">Last Updated: <span id="us-last-updated"></span></p>
+            <div class="creator-grid" id="us-creators">
+                <!-- Creator cards for U.S. users will be dynamically inserted here -->
+            </div>
         </div>
-    </div>
 
-    <!-- Error message for when TikTok isn't available in the region -->
-    <div id="location-error" style="display: none;">
-        <h3>This section isn't available in your region right now</h3>
-        <p>Unfortunately, TikTok is not available in your region. We hope it will be reinstated soon!</p>
+        <!-- TikTok Creator Shoutouts (For other regions like UK, Canada) -->
+        <div class="section" id="other-regions-shoutouts" style="display: none;">
+            <h2>TikTok Creator Shoutouts</h2>
+            <p class="last-updated">Last Updated: <span id="other-regions-last-updated"></span></p>
+            <div class="creator-grid" id="other-regions-creators">
+                <!-- Creator cards for other regions will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Section for displaying the error message if TikTok is not available in the user's region -->
+        <div id="location-error" style="display: none;">
+            <h3 class="error-title">Warning: This content is currently unavailable in your platform or region.</h3>
+            <p>Unfortunately, TikTok is not available in your region. Please check again later or use other platforms for similar content.</p>
+        </div>
+
     </div>
         
 <!-- RedNote Shoutouts Section -->
