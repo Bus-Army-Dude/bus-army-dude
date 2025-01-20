@@ -780,134 +780,67 @@ img {
     color: #555;
 }
 
-/* General styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
     margin: 0;
     padding: 0;
+    background-color: #f4f4f4;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+.last-updated-section {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+#region-content {
+    display: block;
     padding: 20px;
+    background-color: #fff;
 }
 
-/* Section styles */
-.section {
-    margin-bottom: 40px;
-}
-
-h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.last-updated {
-    font-size: 1rem;
-    color: #666;
-}
-
-.creator-grid {
+#creator-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
 }
 
 .creator-card {
     background-color: #fff;
+    padding: 10px;
     border: 1px solid #ddd;
-    padding: 20px;
     text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .creator-card img {
     width: 100%;
-    max-width: 100px;
-    height: 100px;
-    object-fit: cover;
+    height: auto;
     border-radius: 50%;
-    margin-bottom: 15px;
 }
 
 .creator-card h3 {
-    font-size: 1.2rem;
     margin: 10px 0;
-    color: #333;
+    font-size: 1.2em;
 }
 
 .creator-card p {
-    font-size: 1rem;
-    color: #777;
+    font-size: 0.9em;
+    color: #555;
 }
 
-/* Error Message styles */
-#error-message {
-    background-color: #ffdddd;
-    border: 1px solid #ff0000;
-    color: #d8000c;
+#region-message {
+    display: block;
     padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    display: none;
-}
-
-.error-title {
-    font-size: 1.5rem;
-    color: #ff0000;
-    margin-bottom: 10px;
-}
-
-.error-message {
-    font-size: 1rem;
-    color: #d8000c;
-}
-
-/* Location error message */
-#location-error {
-    background-color: #ffcccb;
-    padding: 20px;
-    border-radius: 8px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
     margin-top: 20px;
-    display: none;
 }
 
-#location-error h3 {
-    font-size: 1.8rem;
-    color: #d8000c;
-    margin-bottom: 10px;
-}
-
-#location-error p {
-    font-size: 1.2rem;
-    color: #333;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .creator-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .creator-card {
-        padding: 15px;
-    }
-
-    .creator-card img {
-        width: 80px;
-        height: 80px;
-    }
-}
-
-@media (max-width: 480px) {
-    .creator-grid {
-        grid-template-columns: 1fr;
-    }
+#region-message h3 {
+    color: red;
 }
 
 /* Countdown Section */
