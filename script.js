@@ -395,64 +395,85 @@ youtubeShoutouts.init();
 
 
 // Manually set the "Last Updated" timestamp here (adjust as needed)
-let manualLastUpdated = 'January 20, 2025, 10:54 AM';  // Replace with your desired timestamp
+let manualLastUpdated = 'Monday, January 20, 2025, 10:54 AM';  // Replace with your desired timestamp
 
-// Fetch the banned regions data from the JSON file
-fetch('banned_regions.json')
-    .then(response => response.json())
-    .then(data => {
-        checkLocation(data);  // Pass the data into your location checking function
-    })
-    .catch(error => {
-        console.error('Error loading banned regions data:', error);
-    });
+// Sample data for creators
+const creators = [
+    { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+    { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology', profilePic: 'images/busarmydude.jpg' },
+    // Add more creators as necessary
+];
 
-// Function to detect the user's country and display the correct sections using GeoJS API
-function checkLocation(bannedRegions) {
-    fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
+// Function to check location and display the relevant message
+function checkLocation() {
+    // Fetch the banned_regions.json file containing region and country data
+    fetch('banned_regions.json')
         .then(response => response.json())
-        .then(locationData => {
-            const country = locationData.country;
+        .then(data => {
+            // Fetch user's country using a location detection API (GeoJS)
+            fetch('https://get.geojs.io/v1/ip/country.json')
+                .then(response => response.json())
+                .then(locationData => {
+                    const userCountry = locationData.country;  // Get the user's country
 
-            // Set "Last Updated" timestamp
-            document.getElementById('us-last-updated').innerText = manualLastUpdated;
-            document.getElementById('other-regions-last-updated').innerText = manualLastUpdated;
+                    // Find the region that includes the user's country
+                    const region = data.regions.find(region => region.countries.some(country => country.name === userCountry));
 
-            // Look for the country in the banned regions data
-            let isAvailable = true;
-            bannedRegions.regions.forEach(region => {
-                region.countries.forEach(countryData => {
-                    if (countryData.name === country) {
-                        isAvailable = countryData.isAvailable;
+                    if (region) {
+                        // Find the specific country in the region
+                        const country = region.countries.find(country => country.name === userCountry);
+
+                        if (country) {
+                            // Update "Last Updated" field
+                            document.getElementById('last-updated').innerText = manualLastUpdated;
+
+                            // If the country is available, show the available message and creators
+                            if (country.isAvailable) {
+                                document.getElementById('content').innerHTML = `
+                                    <h2>TikTok Creator Shoutouts</h2>
+                                    <p>${country.message}</p>
+                                    <div class="creator-grid">
+                                        <!-- Creator cards will be dynamically inserted here -->
+                                    </div>
+                                `;
+                                addCreators();  // Add creator shoutouts
+                            } else {
+                                // If the country is not available, show the section not available message
+                                document.getElementById('content').innerHTML = `
+                                    <h2>This section isn't available right now</h2>
+                                    <p>${country.message}</p>
+                                `;
+                            }
+                        }
+                    } else {
+                        // If the user's country is not found in the regions, display an error
+                        document.getElementById('content').innerHTML = `
+                            <h2>Location not detected</h2>
+                            <p>Unable to determine TikTok availability for your location.</p>
+                        `;
                     }
+                })
+                .catch(error => {
+                    console.error('Error fetching location data:', error);
+                    document.getElementById('content').innerHTML = `
+                        <h2>Location Error</h2>
+                        <p>Unable to determine your location. Please try again later.</p>
+                    `;
                 });
-            });
-
-            // Show or hide sections based on availability
-            if (isAvailable) {
-                document.getElementById('us-shoutouts').style.display = 'none';
-                document.getElementById('other-regions-shoutouts').style.display = 'block';
-                addCreators();
-            } else {
-                document.getElementById('us-shoutouts').style.display = 'block';
-                document.getElementById('other-regions-shoutouts').style.display = 'none';
-            }
         })
         .catch(error => {
-            console.error('Error detecting location:', error);
-            document.getElementById('location-error').style.display = 'block';
+            console.error('Error fetching banned regions:', error);
+            document.getElementById('content').innerHTML = `
+                <h2>Error loading TikTok availability information</h2>
+                <p>There was an issue loading the TikTok availability data. Please try again later.</p>
+            `;
         });
 }
 
-// Function to dynamically add creators for available regions
+// Function to dynamically add creator shoutouts
 function addCreators() {
     const container = document.querySelector('.creator-grid');
     if (!container) return;
-
-    const creators = [
-        { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-        { username: 'busarmydude', isVerified: false, followers: '1,248', nickname: 'Bus Army Dude', bio: 'Hello, my name is River. I am 19. I am autistic.', profilePic: 'images/busarmydude.jpg' }
-    ];
 
     creators.forEach(creator => {
         const card = document.createElement('div');
@@ -473,3 +494,6 @@ function addCreators() {
         container.appendChild(card);
     });
 }
+
+// Call checkLocation when the page is loaded
+window.onload = checkLocation;
