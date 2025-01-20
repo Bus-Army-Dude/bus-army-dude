@@ -3,7 +3,7 @@
     {
       "name": "North America",
       "countries": [
-        { "name": "United States", "isAvailable": true },
+        { "name": "United States", "isAvailable": false },
         { "name": "Canada", "isAvailable": true },
         { "name": "Mexico", "isAvailable": true }
       ]
@@ -13,7 +13,7 @@
       "countries": [
         { "name": "United Kingdom", "isAvailable": true },
         { "name": "Germany", "isAvailable": true },
-        { "name": "France", "isAvailable": false },
+        { "name": "France", "isAvailable": true },
         { "name": "Italy", "isAvailable": true },
         { "name": "Spain", "isAvailable": true }
       ]
