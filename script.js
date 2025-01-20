@@ -498,51 +498,55 @@ document.addEventListener('DOMContentLoaded', function () {
         const errorSection = document.getElementById("location-error");
 
         // Check if the country is available
-        if (country && country.isAvailable) {
-            // Show the creator shoutouts section
-            shoutoutsSection.style.display = "block";
+        if (country) {
+            if (country.isAvailable) {
+                // Show the creator shoutouts section
+                shoutoutsSection.style.display = "block";
 
-            // Populate the last updated info manually
-            const lastUpdated = document.getElementById("last-updated");
-            lastUpdated.textContent = "January 20, 2025"; // Example: Manually update the date
+                // Populate the last updated info manually
+                const lastUpdated = document.getElementById("last-updated");
+                lastUpdated.textContent = "January 20, 2025"; // Example: Manually update the date
 
-            // Here, you can populate the creators dynamically (example creator data)
-            const creatorGrid = document.querySelector(".creator-grid");
-            const creators = [
-                { "username": "creator1", "nickname": "Creator One", "followers": "500K", "bio": "Bio 1", "profilePic": "images/creator1.jpg" },
-                { "username": "creator2", "nickname": "Creator Two", "followers": "1M", "bio": "Bio 2", "profilePic": "images/creator2.jpg" }
-                // Add more creators here...
-            ];
+                // Here, you can populate the creators dynamically (example creator data)
+                const creatorGrid = document.querySelector(".creator-grid");
+                const creators = [
+                    { "username": "creator1", "nickname": "Creator One", "followers": "500K", "bio": "Bio 1", "profilePic": "images/creator1.jpg" },
+                    { "username": "creator2", "nickname": "Creator Two", "followers": "1M", "bio": "Bio 2", "profilePic": "images/creator2.jpg" }
+                    // Add more creators here...
+                ];
 
-            creators.forEach(creator => {
-                const creatorCard = document.createElement("div");
-                creatorCard.classList.add("creator-card");
-                creatorCard.innerHTML = `
-                    <img src="${creator.profilePic}" alt="${creator.nickname}">
-                    <div class="creator-info">
-                        <h3>${creator.nickname}</h3>
-                        <p class="follower-count">${creator.followers} followers</p>
-                        <p class="creator-username">@${creator.username}</p>
-                        <p class="creator-bio">${creator.bio}</p>
-                        <a href="https://www.tiktok.com/@${creator.username}" class="visit-profile" target="_blank">Visit Profile</a>
-                    </div>
-                `;
-                creatorGrid.appendChild(creatorCard);
-            });
+                creators.forEach(creator => {
+                    const creatorCard = document.createElement("div");
+                    creatorCard.classList.add("creator-card");
+                    creatorCard.innerHTML = `
+                        <img src="${creator.profilePic}" alt="${creator.nickname}">
+                        <div class="creator-info">
+                            <h3>${creator.nickname}</h3>
+                            <p class="follower-count">${creator.followers} followers</p>
+                            <p class="creator-username">@${creator.username}</p>
+                            <p class="creator-bio">${creator.bio}</p>
+                            <a href="https://www.tiktok.com/@${creator.username}" class="visit-profile" target="_blank">Visit Profile</a>
+                        </div>
+                    `;
+                    creatorGrid.appendChild(creatorCard);
+                });
+            } else {
+                // If the region is not available, show the error message
+                errorSection.style.display = "block";
+                const errorMessage = document.querySelector("#location-error h3");
+                const errorDescription = document.querySelector("#location-error p");
+
+                // Show the custom message from the bannedRegions JSON
+                errorMessage.textContent = `This section isn't available in your ${region.name} right now`;
+                errorDescription.textContent = country.message || "TikTok is not available in your region.";
+            }
         } else {
-            // If the region is not available, show the error message
+            // Handle case when region is not found or location is unknown
             errorSection.style.display = "block";
             const errorMessage = document.querySelector("#location-error h3");
             const errorDescription = document.querySelector("#location-error p");
-
-            // Show the custom message from the bannedRegions JSON
-            if (country) {
-                errorMessage.textContent = `This section isn't available in your ${region.name} right now`;
-                errorDescription.textContent = country.message || "TikTok is not available in your region.";
-            } else {
-                errorMessage.textContent = "This section isn't available in your region right now";
-                errorDescription.textContent = "TikTok is not available in your region.";
-            }
+            errorMessage.textContent = "This section isn't available in your region right now";
+            errorDescription.textContent = "Unable to detect TikTok availability in your region.";
         }
     }).catch(error => {
         console.error("Location detection failed", error);
@@ -551,3 +555,4 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector("#location-error p").textContent = "Unable to detect your location.";
     });
 });
+
