@@ -13,7 +13,7 @@
       "countries": [
         { "name": "United Kingdom", "isAvailable": true },
         { "name": "Germany", "isAvailable": true },
-        { "name": "France", "isAvailable": true },
+        { "name": "France", "isAvailable": false },
         { "name": "Italy", "isAvailable": true },
         { "name": "Spain", "isAvailable": true }
       ]
