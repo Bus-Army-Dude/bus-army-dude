@@ -409,13 +409,21 @@ function checkLocation() {
                     let isAvailable = false;
 
                     // Iterate over all regions to check if the user's country is available
+                    let countryFound = false;  // Flag to check if country is found in the JSON
+
                     data.regions.forEach(region => {
                         region.countries.forEach(country => {
-                            if (country.name === userCountry && country.isAvailable) {
-                                isAvailable = true;
+                            if (country.name === userCountry) {
+                                countryFound = true;
+                                isAvailable = country.isAvailable;  // Set availability based on the country
                             }
                         });
                     });
+
+                    // Check if country was found in the JSON data
+                    if (!countryFound) {
+                        console.error('Country not found in the banned_regions.json file.');
+                    }
 
                     // Show or hide TikTok creator shoutouts based on availability
                     if (isAvailable) {
