@@ -330,6 +330,7 @@ body {
     color: var(--text-color);
     margin-bottom: 10px;
     text-align: center;
+    width: 100%;  /* Ensure it spans the same width as the grid */
 }
 
 /* Last Updated Section Styling */
@@ -337,8 +338,10 @@ body {
     font-size: 18px;
     color: #FFFFFF;
     margin-top: 5px;
-    margin-bottom: 20px;  /* Add margin to create space between 'Last Updated' and grid */
+    margin-bottom: 20px;  /* Space between last updated and the grid */
     text-align: center;
+    width: 100%;  /* Match the width of the grid */
+    max-width: 1200px;  /* Optional: Keep the max width constraint */
 }
 
 /* Grid Layout for Instagram Shoutouts */
