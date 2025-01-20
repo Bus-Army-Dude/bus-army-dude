@@ -394,145 +394,177 @@ youtubeShoutouts.init();
 });
 
 
-const regionsData = {
-  "regions": [
-    {
-      "name": "North America",
-      "countries": [
-        { "name": "United States", "isAvailable": true, "message": "TikTok is currently available in the United States." },
-        { "name": "Canada", "isAvailable": true, "message": "TikTok is currently available in Canada." },
-        { "name": "Mexico", "isAvailable": true, "message": "TikTok is currently available in Mexico." }
-      ]
-    },
-    {
-      "name": "Europe",
-      "countries": [
-        { "name": "United Kingdom", "isAvailable": true, "message": "TikTok is currently available in the United Kingdom." },
-        { "name": "Germany", "isAvailable": true, "message": "TikTok is currently available in Germany." },
-        { "name": "France", "isAvailable": true, "message": "TikTok is currently available in France." },
-        { "name": "Italy", "isAvailable": true, "message": "TikTok is currently available in Italy." },
-        { "name": "Spain", "isAvailable": true, "message": "TikTok is currently available in Spain." },
-        { "name": "Netherlands", "isAvailable": true, "message": "TikTok is currently available in the Netherlands." },
-        { "name": "Belgium", "isAvailable": true, "message": "TikTok is currently available in Belgium." },
-        { "name": "Switzerland", "isAvailable": true, "message": "TikTok is currently available in Switzerland." }
-      ]
-    },
-    {
-      "name": "Asia",
-      "countries": [
-        { "name": "China", "isAvailable": false, "message": "TikTok is banned in China." },
-        { "name": "India", "isAvailable": false, "message": "TikTok is banned in India." },
-        { "name": "Japan", "isAvailable": true, "message": "TikTok is currently available in Japan." },
-        { "name": "South Korea", "isAvailable": true, "message": "TikTok is currently available in South Korea." }
-      ]
-    },
-    {
-      "name": "Middle East",
-      "countries": [
-        { "name": "Saudi Arabia", "isAvailable": true, "message": "TikTok is currently available in Saudi Arabia." },
-        { "name": "United Arab Emirates", "isAvailable": true, "message": "TikTok is currently available in the UAE." },
-        { "name": "Iran", "isAvailable": false, "message": "TikTok is banned in Iran." }
-      ]
-    },
-    {
-      "name": "Africa",
-      "countries": [
-        { "name": "Nigeria", "isAvailable": true, "message": "TikTok is currently available in Nigeria." },
-        { "name": "South Africa", "isAvailable": true, "message": "TikTok is currently available in South Africa." },
-        { "name": "Egypt", "isAvailable": true, "message": "TikTok is currently available in Egypt." }
-      ]
-    },
-    {
-      "name": "Oceania",
-      "countries": [
-        { "name": "Australia", "isAvailable": true, "message": "TikTok is currently available in Australia." },
-        { "name": "New Zealand", "isAvailable": true, "message": "TikTok is currently available in New Zealand." }
-      ]
-    },
-    {
-      "name": "South America",
-      "countries": [
-        { "name": "Brazil", "isAvailable": true, "message": "TikTok is currently available in Brazil." },
-        { "name": "Argentina", "isAvailable": true, "message": "TikTok is currently available in Argentina." },
-        { "name": "Colombia", "isAvailable": true, "message": "TikTok is currently available in Colombia." }
-      ]
-    }
+// Define regions and countries with availability status and messages
+const regions = {
+  "North America": [
+    { "name": "United States", "isAvailable": true, "message": "TikTok is currently available in the United States." },
+    { "name": "Canada", "isAvailable": true, "message": "TikTok is currently available in Canada." },
+    { "name": "Mexico", "isAvailable": true, "message": "TikTok is currently available in Mexico." }
+  ],
+  "Europe": [
+    { "name": "United Kingdom", "isAvailable": true, "message": "TikTok is currently available in the United Kingdom." },
+    { "name": "Germany", "isAvailable": true, "message": "TikTok is currently available in Germany." },
+    { "name": "France", "isAvailable": true, "message": "TikTok is currently available in France." },
+    { "name": "Italy", "isAvailable": true, "message": "TikTok is currently available in Italy." },
+    { "name": "Spain", "isAvailable": true, "message": "TikTok is currently available in Spain." }
+  ],
+  "Asia": [
+    { "name": "China", "isAvailable": false, "message": "TikTok is banned in China." },
+    { "name": "India", "isAvailable": false, "message": "TikTok is banned in India." },
+    { "name": "Japan", "isAvailable": true, "message": "TikTok is currently available in Japan." },
+    { "name": "South Korea", "isAvailable": true, "message": "TikTok is currently available in South Korea." }
+  ],
+  "Middle East": [
+    { "name": "Saudi Arabia", "isAvailable": true, "message": "TikTok is currently available in Saudi Arabia." },
+    { "name": "United Arab Emirates", "isAvailable": true, "message": "TikTok is currently available in the UAE." },
+    { "name": "Iran", "isAvailable": false, "message": "TikTok is banned in Iran." }
+  ],
+  "Africa": [
+    { "name": "Nigeria", "isAvailable": true, "message": "TikTok is currently available in Nigeria." },
+    { "name": "South Africa", "isAvailable": true, "message": "TikTok is currently available in South Africa." }
+  ],
+  "Oceania": [
+    { "name": "Australia", "isAvailable": true, "message": "TikTok is currently available in Australia." },
+    { "name": "New Zealand", "isAvailable": true, "message": "TikTok is currently available in New Zealand." }
+  ],
+  "South America": [
+    { "name": "Brazil", "isAvailable": true, "message": "TikTok is currently available in Brazil." },
+    { "name": "Argentina", "isAvailable": true, "message": "TikTok is currently available in Argentina." },
+    { "name": "Colombia", "isAvailable": true, "message": "TikTok is currently available in Colombia." }
   ]
 };
 
+// Example creators data with verification
 const creators = [
-  { "username": "creator1", "nickname": "Creator One", "followers": "1M", "bio": "Bio of creator one", "profilePic": "images/creator1.jpg", "isVerified": true },
-  { "username": "creator2", "nickname": "Creator Two", "followers": "500K", "bio": "Bio of creator two", "profilePic": "images/creator2.jpg", "isVerified": false },
-  // Add more creators here...
+  { "username": "creator7", "nickname": "Creator Seven", "followers": "500K", "bio": "Spanish bio", "profilePic": "images/creator7.jpg", "isVerified": true }
 ];
 
-const lastUpdated = "2025-01-20";  // Manually update this
-
-function getUserRegionFromIP() {
-  return new Promise((resolve, reject) => {
-    // Use ip-api.com for IP-based geolocation
-    const url = 'http://ip-api.com/json'; // Free tier, no API key required
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const region = data.country;  // Country code from the API (like "US" for United States)
-        resolve(region);
-      })
-      .catch(error => reject('Unable to detect region via IP'));
-  });
-}
-
-function displaySection(region) {
-  const regionData = findRegionData(region);
-
-  // Display the "Last Updated" information
-  document.getElementById('lastUpdated').innerHTML = `Last Updated: ${lastUpdated}`;
-
-  if (regionData && regionData.isAvailable) {
-    // Show the creators in the section
-    const creatorCards = creators.map(creator => {
-      return `
-        <div class="creator-card">
-          <img src="${creator.profilePic}" alt="${creator.nickname}">
-          <h4>${creator.nickname}</h4>
-          <p>${creator.bio}</p>
-          <p>${creator.followers} followers</p>
-          ${creator.isVerified ? '<img src="check.png" alt="Verified">' : ''}
-        </div>
-      `;
-    }).join('');
-
-    document.getElementById('section').innerHTML = `
-      <h2>TikTok Creator Shoutouts</h2>
-      <div class="creator-list">
-        ${creatorCards}
-      </div>
-    `;
+// Function to detect user's region based on their geolocation
+function getUserRegion(callback) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const region = getRegionFromCoordinates(latitude, longitude);
+      callback(region);
+    });
   } else {
-    document.getElementById('section').innerHTML = `
-      <h3>This content is currently unavailable in your platform or region.</h3>
-      <p>${regionData ? regionData.message : "Location data not found."}</p>
-    `;
+    alert("Geolocation is not supported by this browser.");
   }
 }
 
-function findRegionData(region) {
-  for (const regionGroup of regionsData.regions) {
-    const countryData = regionGroup.countries.find(country => country.name === region);
-    if (countryData) return countryData;
-  }
-  return null;
+// Simple mock-up of region detection based on latitude and longitude
+function getRegionFromCoordinates(lat, lon) {
+  // Logic for detecting region from lat/lon (this is just a placeholder, you can use an API for real detection)
+  if (lat > 20 && lon > -100) return "North America"; // Example logic
+  return "Unknown Region";
 }
 
-// Initialize the process
-getUserRegionFromIP()
-  .then(region => {
-    displaySection(region);
-  })
-  .catch(error => {
-    console.error(error);
-    document.getElementById('section').innerHTML = `
-      <h3>Error: Unable to detect your region.</h3>
-    `;
-  });
+// Function to render the creator section based on the region
+function renderCreatorSection(region) {
+  const regionData = regions[region];
+  const section = document.getElementById('creator-section');
+  const lastUpdated = document.getElementById('last-updated');
+  
+// Manually set the "Last Updated" time in UTC
+let lastUpdatedUTC = new Date('2025-01-20T19:29:00Z'); // Example: January 20, 2025, 2:29 PM EST in UTC
+
+// Function to format the "Last Updated" field in the user's local timezone
+function formatLastUpdatedTime() {
+  // Get the user's local timezone using Intl.DateTimeFormat
+  const options = {
+    weekday: 'long', // long format for weekday
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true
+  };
+
+  // Format the "Last Updated" time in the user's local timezone
+  const localDate = new Intl.DateTimeFormat('en-US', options).format(lastUpdatedUTC);
+
+  return `Last Updated: ${localDate}`;
+}
+
+// Function to detect the user's region based on their geolocation
+function getUserRegion(callback) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const region = getRegionFromCoordinates(latitude, longitude);
+      callback(region);
+    });
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+// Simple mock-up of region detection based on latitude and longitude
+function getRegionFromCoordinates(lat, lon) {
+  // Logic for detecting region from lat/lon (this is just a placeholder, you can use an API for real detection)
+  if (lat > 20 && lon > -100) return "North America"; // Example logic
+  return "Unknown Region";
+}
+
+// Function to render the creator section based on the region
+function renderCreatorSection(region) {
+  const regionData = regions[region];
+  const section = document.getElementById('creator-section');
+  const lastUpdatedElement = document.getElementById('last-updated');
+  
+  // Display the manually updated Last Updated field
+  lastUpdatedElement.textContent = formatLastUpdatedTime();
+
+  // Check if the region has available creators
+  if (regionData && regionData.isAvailable) {
+    section.style.display = 'block';
+    const creatorGrid = document.getElementById('creator-grid');
+    creatorGrid.innerHTML = '';
+
+    // Loop through creators and display them
+    creators.forEach(creator => {
+      const creatorCard = document.createElement('div');
+      creatorCard.classList.add('creator-card');
+      
+      const profilePic = document.createElement('img');
+      profilePic.src = creator.profilePic;
+      profilePic.alt = creator.nickname;
+
+      const name = document.createElement('h3');
+      name.textContent = creator.nickname;
+
+      const followers = document.createElement('p');
+      followers.textContent = `${creator.followers} Followers`;
+
+      const bio = document.createElement('p');
+      bio.textContent = creator.bio;
+
+      creatorCard.appendChild(profilePic);
+      creatorCard.appendChild(name);
+      creatorCard.appendChild(followers);
+      creatorCard.appendChild(bio);
+
+      // Add verification check if the creator is verified
+      if (creator.isVerified) {
+        const verificationBadge = document.createElement('img');
+        verificationBadge.src = 'check.png'; // Path to the verification image
+        verificationBadge.alt = 'Verified';
+        creatorCard.appendChild(verificationBadge);
+      }
+
+      creatorGrid.appendChild(creatorCard);
+    });
+  } else {
+    section.style.display = 'none';
+    const message = document.getElementById('region-message');
+    message.textContent = "This content is currently unavailable in your platform or region.";
+    message.style.color = 'red';
+  }
+}
+
+// Initialize the region detection
+getUserRegion(renderCreatorSection);
