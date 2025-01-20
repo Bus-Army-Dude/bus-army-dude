@@ -395,6 +395,28 @@ youtubeShoutouts.init();
 
 // Set this to `false` when TikTok is unbanned in the U.S.
 const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInUK = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInIndia = true;  // Example, change as needed
+const isTikTokBannedInEU = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInAustralia = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInCanada = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInNewZealand = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInRussia = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInChina = true;  // TikTok is not available in China, instead Douyin is used
+const isTikTokBannedInBrazil = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInIndonesia = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInPakistan = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInUAE = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInSaudiArabia = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInBangladesh = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInTurkey = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInMexico = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInSouthKorea = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInJapan = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInPhilippines = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInSingapore = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInMalaysia = false;  // Change this to `false` when TikTok is unbanned
+const isTikTokBannedInVietnam = false;  // Change this to `false` when TikTok is unbanned
 
 // Manually set the "Last Updated" timestamp here (adjust as needed)
 let manualLastUpdated = 'January 19, 2025, 4:41 PM';  // Replace with your desired timestamp
