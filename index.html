@@ -106,23 +106,30 @@
     </div>
 </div>
         
- <div class="container">
-    <!-- Last Updated Section -->
-    <div id="last-updated-container">
-      <p id="last-updated">Loading Last Updated...</p>
+<!-- TikTok Creator Shoutouts (For U.S. users) -->
+<div class="section" id="us-shoutouts" style="display: none;">
+    <h2>TikTok Creator Shoutouts (U.S.)</h2>
+    <p class="last-updated">Last Updated: <span id="us-last-updated"></span></p>
+    <div class="message-container">
+        <h3>This section isn't available right now</h3>
+        <p>A law banning TikTok has been enacted in the U.S. Unfortunately, this means that the TikTok app is currently unavailable. However, you can still access the TikTok website. We are hopeful that President Trump will work on a solution to reinstate the app once he takes office. Please stay tuned!</p>
     </div>
+</div>
 
-    <!-- Section for Creator Shoutouts -->
-    <div id="creator-section" style="display: none;">
-      <h2>Creator Shoutouts</h2>
-      <div id="creator-grid" class="creator-grid"></div>
+<!-- TikTok Creator Shoutouts (For other regions like UK, Canada) -->
+<div class="section" id="other-regions-shoutouts" style="display: none;">
+    <h2>TikTok Creator Shoutouts</h2>
+    <p class="last-updated">Last Updated: <span id="other-regions-last-updated"></span></p>
+    <!-- Creator cards will be dynamically inserted here -->
+    <div class="creator-grid">
+        <!-- Creator Card 1, 2, 3... -->
     </div>
+</div>
 
-    <!-- Message for Unavailable Regions -->
-    <div id="region-message" style="display: none;">
-      <p>This content is currently unavailable in your platform or region.</p>
-    </div>
-  </div>
+<!-- Error message (if location detection fails) -->
+<div id="location-error" style="display: none;">
+    <p>Unable to detect location. Please try again later.</p>
+</div>
         
 <!-- RedNote Shoutouts Section -->
 <div class="shoutouts-section section">
