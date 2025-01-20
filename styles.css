@@ -5,6 +5,7 @@ body {
     color: #e0e0e0;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 h1, h2, h3, h4, p {
@@ -82,11 +83,12 @@ section {
     padding: 10px;
     border-radius: 8px;
     text-align: center;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .social-button:hover {
     background-color: #333;
+    transform: scale(1.05);
 }
 
 .social-icon {
@@ -111,15 +113,16 @@ section {
 
 .shoutout-card {
     background-color: #1f1f1f;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 20px;
     text-align: center;
     border: 2px solid #333;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .shoutout-card:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .profile-pic {
@@ -180,11 +183,12 @@ section {
     text-decoration: none;
     border-radius: 5px;
     margin-top: 10px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .visit-link:hover {
     background-color: #444;
+    transform: translateY(-2px);
 }
 
 /* TikTok Specific */
@@ -223,12 +227,12 @@ section {
     background-color: #cc0000;
 }
 
-
 /* Countdown Section */
 .countdown-section {
     background-color: #333;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .countdown-container {
