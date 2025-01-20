@@ -98,7 +98,7 @@ function updateTime() {
 }
 
 // Page refresh countdown using real time
-const refreshInterval = 60000;  // 60 seconds in milliseconds
+const refreshInterval = 300000;  // 60 seconds in milliseconds
 let startTime = Date.now();
 
 function updateCountdown() {
