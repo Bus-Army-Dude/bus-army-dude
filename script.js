@@ -231,7 +231,6 @@ const instagramShoutouts = {
         { username: 'imparkerburton', isVerified: true, followers: '280K', nickname: 'Parker Burton', bio: 'That Android Guy Business: parker@imparkerburton.com', profilePic: 'instagram_photos/imparkerburton.jpeg' },                    
         { username: 'kennedylawfirm', isVerified: false, followers: '24K', nickname: 'Lawyer Kevin Kennedy', bio: 'Clarksville, TN Kevs got you covered', profilePic: 'instagram_photos/kennedylawfirm.jpeg' },                    
         { username: 'ta.techtips', isVerified: false, followers: '269K', nickname: 'TA Tech Tips', bio: '🔥 Tech Tips 🔥 📱TikTok | TATechTips📧 hello@thegoldstudios.com', profilePic: 'instagram_photos/tatechtips.jpeg' },                    
-        { username: 'lust_ryze', isVerified: false, followers: '38', nickname: '𝚁𝚢𝚉𝚎 ツ', bio: 'hi everyone this will be my official Instagram account for my tiktok account you can find my other social bellow', profilePic: 'instagram_photos/lustryze.jpeg' },                    
         // Add more Instagram creators as needed
     ],
     lastUpdatedTime: '2025-01-19T09:26:25', // Manually set the last updated date and time
@@ -394,177 +393,76 @@ youtubeShoutouts.init();
 });
 
 
-// Define regions and countries with availability status and messages
-const regions = {
-  "North America": [
-    { "name": "United States", "isAvailable": true, "message": "TikTok is currently available in the United States." },
-    { "name": "Canada", "isAvailable": true, "message": "TikTok is currently available in Canada." },
-    { "name": "Mexico", "isAvailable": true, "message": "TikTok is currently available in Mexico." }
-  ],
-  "Europe": [
-    { "name": "United Kingdom", "isAvailable": true, "message": "TikTok is currently available in the United Kingdom." },
-    { "name": "Germany", "isAvailable": true, "message": "TikTok is currently available in Germany." },
-    { "name": "France", "isAvailable": true, "message": "TikTok is currently available in France." },
-    { "name": "Italy", "isAvailable": true, "message": "TikTok is currently available in Italy." },
-    { "name": "Spain", "isAvailable": true, "message": "TikTok is currently available in Spain." }
-  ],
-  "Asia": [
-    { "name": "China", "isAvailable": false, "message": "TikTok is banned in China." },
-    { "name": "India", "isAvailable": false, "message": "TikTok is banned in India." },
-    { "name": "Japan", "isAvailable": true, "message": "TikTok is currently available in Japan." },
-    { "name": "South Korea", "isAvailable": true, "message": "TikTok is currently available in South Korea." }
-  ],
-  "Middle East": [
-    { "name": "Saudi Arabia", "isAvailable": true, "message": "TikTok is currently available in Saudi Arabia." },
-    { "name": "United Arab Emirates", "isAvailable": true, "message": "TikTok is currently available in the UAE." },
-    { "name": "Iran", "isAvailable": false, "message": "TikTok is banned in Iran." }
-  ],
-  "Africa": [
-    { "name": "Nigeria", "isAvailable": true, "message": "TikTok is currently available in Nigeria." },
-    { "name": "South Africa", "isAvailable": true, "message": "TikTok is currently available in South Africa." }
-  ],
-  "Oceania": [
-    { "name": "Australia", "isAvailable": true, "message": "TikTok is currently available in Australia." },
-    { "name": "New Zealand", "isAvailable": true, "message": "TikTok is currently available in New Zealand." }
-  ],
-  "South America": [
-    { "name": "Brazil", "isAvailable": true, "message": "TikTok is currently available in Brazil." },
-    { "name": "Argentina", "isAvailable": true, "message": "TikTok is currently available in Argentina." },
-    { "name": "Colombia", "isAvailable": true, "message": "TikTok is currently available in Colombia." }
-  ]
-};
+// Set this to `false` when TikTok is unbanned in the U.S.
+const isTikTokBannedInUS = false;  // Change this to `false` when TikTok is unbanned
 
-// Example creators data with verification
-const creators = [
-  { "username": "creator7", "nickname": "Creator Seven", "followers": "500K", "bio": "Spanish bio", "profilePic": "images/creator7.jpg", "isVerified": true }
-];
+// Manually set the "Last Updated" timestamp here (adjust as needed)
+let manualLastUpdated = 'January 19, 2025, 4:41 PM';  // Replace with your desired timestamp
 
-// Function to detect user's region based on their geolocation
-function getUserRegion(callback) {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const region = getRegionFromCoordinates(latitude, longitude);
-      callback(region);
-    });
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
+// Function to detect the user's country and display the correct sections using GeoJS API
+function checkLocation() {
+    fetch('https://get.geojs.io/v1/ip/country.json')  // GeoJS API for detecting country
+        .then(response => response.json())
+        .then(data => {
+            const country = data.country;
+
+            // If you want to use the manually set timestamp, use `manualLastUpdated`
+            let lastUpdated = manualLastUpdated;
+
+            // Optionally store the value in localStorage for later use
+            localStorage.setItem('lastUpdated', lastUpdated);
+
+            // You can replace `manualLastUpdated` with `new Date().toLocaleString()` if you want to use the current timestamp
+            if (country === 'US' && isTikTokBannedInUS) {
+                // Show message indicating TikTok is banned in the U.S.
+                document.getElementById('us-shoutouts').style.display = 'block'; // Show TikTok banned message for U.S. users
+                document.getElementById('other-regions-shoutouts').style.display = 'none'; // Hide TikTok creator shoutouts for other regions
+                document.getElementById('us-last-updated').innerText = lastUpdated;  // Set Last Updated for U.S.
+            } else {
+                // Show creator shoutouts for other regions
+                document.getElementById('other-regions-shoutouts').style.display = 'block'; 
+                document.getElementById('us-shoutouts').style.display = 'none'; // Hide U.S. banned message
+                document.getElementById('other-regions-last-updated').innerText = lastUpdated;  // Set Last Updated for other regions
+                addCreators(); // Call function to add creators dynamically
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching location data:', error);
+            // Fallback if the API fails
+            document.getElementById('location-error').style.display = 'block';
+        });
 }
 
-// Simple mock-up of region detection based on latitude and longitude
-function getRegionFromCoordinates(lat, lon) {
-  // Logic for detecting region from lat/lon (this is just a placeholder, you can use an API for real detection)
-  if (lat > 20 && lon > -100) return "North America"; // Example logic
-  return "Unknown Region";
-}
+// Function to dynamically add creators for other regions
+function addCreators() {
+    const container = document.querySelector('.creator-grid');
+    if (!container) return;
 
-// Function to render the creator section based on the region
-function renderCreatorSection(region) {
-  const regionData = regions[region];
-  const section = document.getElementById('creator-section');
-  const lastUpdated = document.getElementById('last-updated');
-  
-// Manually set the "Last Updated" time in UTC
-let lastUpdatedUTC = new Date('2025-01-20T19:29:00Z'); // Example: January 20, 2025, 2:29 PM EST in UTC
+    const creators = [
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '692.6K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks 📚Middle School Librarian,💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        // Add more creators as necessary
+    ];
 
-// Function to format the "Last Updated" field in the user's local timezone
-function formatLastUpdatedTime() {
-  // Get the user's local timezone using Intl.DateTimeFormat
-  const options = {
-    weekday: 'long', // long format for weekday
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    hour12: true
-  };
-
-  // Format the "Last Updated" time in the user's local timezone
-  const localDate = new Intl.DateTimeFormat('en-US', options).format(lastUpdatedUTC);
-
-  return `Last Updated: ${localDate}`;
-}
-
-// Function to detect the user's region based on their geolocation
-function getUserRegion(callback) {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const region = getRegionFromCoordinates(latitude, longitude);
-      callback(region);
-    });
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
-}
-
-// Simple mock-up of region detection based on latitude and longitude
-function getRegionFromCoordinates(lat, lon) {
-  // Logic for detecting region from lat/lon (this is just a placeholder, you can use an API for real detection)
-  if (lat > 20 && lon > -100) return "North America"; // Example logic
-  return "Unknown Region";
-}
-
-// Function to render the creator section based on the region
-function renderCreatorSection(region) {
-  const regionData = regions[region];
-  const section = document.getElementById('creator-section');
-  const lastUpdatedElement = document.getElementById('last-updated');
-  
-  // Display the manually updated Last Updated field
-  lastUpdatedElement.textContent = formatLastUpdatedTime();
-
-  // Check if the region has available creators
-  if (regionData && regionData.isAvailable) {
-    section.style.display = 'block';
-    const creatorGrid = document.getElementById('creator-grid');
-    creatorGrid.innerHTML = '';
-
-    // Loop through creators and display them
+    // Add creators dynamically
     creators.forEach(creator => {
-      const creatorCard = document.createElement('div');
-      creatorCard.classList.add('creator-card');
-      
-      const profilePic = document.createElement('img');
-      profilePic.src = creator.profilePic;
-      profilePic.alt = creator.nickname;
-
-      const name = document.createElement('h3');
-      name.textContent = creator.nickname;
-
-      const followers = document.createElement('p');
-      followers.textContent = `${creator.followers} Followers`;
-
-      const bio = document.createElement('p');
-      bio.textContent = creator.bio;
-
-      creatorCard.appendChild(profilePic);
-      creatorCard.appendChild(name);
-      creatorCard.appendChild(followers);
-      creatorCard.appendChild(bio);
-
-      // Add verification check if the creator is verified
-      if (creator.isVerified) {
-        const verificationBadge = document.createElement('img');
-        verificationBadge.src = 'check.png'; // Path to the verification image
-        verificationBadge.alt = 'Verified';
-        creatorCard.appendChild(verificationBadge);
-      }
-
-      creatorGrid.appendChild(creatorCard);
+        const card = document.createElement('div');
+        card.className = 'creator-card';
+        card.innerHTML = `
+            <img src="${creator.profilePic}" alt="@${creator.username}" class="creator-pic" onerror="this.src='default-profile.jpg'">
+            <div class="creator-info">
+                <div class="creator-header">
+                    <h3>${creator.nickname}</h3>
+                    ${creator.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                </div>
+                <p class="creator-username">@${creator.username}</p>
+                <p class="creator-bio">${creator.bio}</p>
+                <p class="follower-count">${creator.followers} Followers</p>
+                <a href="https://tiktok.com/@${creator.username}" target="_blank" class="visit-profile">Visit Profile</a>
+            </div>
+        `;
+        container.appendChild(card);
     });
-  } else {
-    section.style.display = 'none';
-    const message = document.getElementById('region-message');
-    message.textContent = "This content is currently unavailable in your platform or region.";
-    message.style.color = 'red';
-  }
 }
 
-// Initialize the region detection
-getUserRegion(renderCreatorSection);
+// Call checkLocation function on page load
+checkLocation();
