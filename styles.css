@@ -1125,6 +1125,41 @@ body {
   background-color: #555;
 }
 
+  #cookieConsent {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+    width: 90%;
+    text-align: center;
+    z-index: 1000;
+  }
+
+  #cookieConsent a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+
+  #cookieConsent .cookie-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+
+  #cookieConsent .cookie-btn:hover {
+    background-color: #45a049;
+  }
+
 /* Footer */
 footer {
     text-align: center;
