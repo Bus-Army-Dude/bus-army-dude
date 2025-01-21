@@ -57,7 +57,7 @@ To report a security vulnerability, please follow these steps:
 - The website undergoes regular security updates
 - Security patches are implemented as soon as vulnerabilities are discovered
 - Users are notified of significant security updates through the version info section
-- Current stable version is v1.7.0
+- Current stable version is v1.9.0
 
 ## Security Best Practices
 
@@ -77,7 +77,8 @@ To report a security vulnerability, please follow these steps:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.8.x   | :white_check_mark: |
+| 1.9.x   | :white_check_mark: |
+| 1.8.x   | :x: |
 | 1.7.x   | :x: |
 | 1.6.x   | :x: |
 | 1.5.x   | :x: |
