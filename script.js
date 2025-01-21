@@ -461,15 +461,15 @@ window.addEventListener('load', function() {
 });
 
 function getWeather(lat, lon) {
-    const apiKey = '852033aa68de4c61bbd211007252101';  // Replace with your WeatherAPI key
-    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}`;
+    const apiKey = 'yourAPIkey';  // Replace with your OpenWeatherAPI key
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            const weather = data.current.condition.text;
-            const temp = data.current.temp_c;  // Temperature in Celsius
-            const location = data.location.name; // City name
+            const weather = data.weather[0].description;
+            const temp = data.main.temp;  // Temperature in Fahrenheit
+            const location = data.name; // City name
             document.getElementById('weather-info').innerHTML = `
                 <h2>Weather in ${location}</h2>
                 <p>${temp}°F, ${weather}</p>
