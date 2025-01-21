@@ -1182,6 +1182,21 @@ body.loaded #loading-spinner {
     display: none;
 }
 
+.weather-widget {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.weather-widget h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.weather-widget p {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 /* Footer */
 footer {
     text-align: center;
