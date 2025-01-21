@@ -425,8 +425,6 @@ if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
 
-// script.js
-
 function authenticate() {
     gapi.auth2.getAuthInstance().signIn().then(function() {
         loadClient();
@@ -440,16 +438,18 @@ function loadClient() {
 }
 
 function getActiveUsers() {
-    gapi.client.analytics.data.realtime.get({
-        'ids': 'ga:472488328', // Replace with your Google Analytics View ID
-        'metrics': 'rt:activeUsers'
+    gapi.client.analyticsdata.properties.runRealtimeReport({
+        'property': '472488328',  // Replace with your GA4 Property ID
+        'dimensions': [{'name': 'activeUsers'}]
     }).then(function(response) {
         const activeUsers = response.result.rows[0][0];
         document.getElementById('live-visitor-count').innerText = `${activeUsers} people are currently on the site.`;
+    }).catch(function(error) {
+        console.error("Error fetching data: ", error);
+        document.getElementById('live-visitor-count').innerText = "Error fetching live visitor count.";
     });
 }
 
-// Load the API client
 function loadAPI() {
     gapi.load("client:auth2", function() {
         gapi.auth2.init({
@@ -457,3 +457,4 @@ function loadAPI() {
         });
     });
 }
+
