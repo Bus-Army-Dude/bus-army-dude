@@ -424,37 +424,3 @@ document.addEventListener("DOMContentLoaded", () => {
 if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
-
-function authenticate() {
-    gapi.auth2.getAuthInstance().signIn().then(function() {
-        loadClient();
-    });
-}
-
-function loadClient() {
-    gapi.client.load("https://analytics.googleapis.com/$discovery/rest?version=v3").then(function() {
-        getActiveUsers();
-    });
-}
-
-function getActiveUsers() {
-    gapi.client.analyticsdata.properties.runRealtimeReport({
-        'property': '472488328',  // Replace with your GA4 Property ID
-        'dimensions': [{'name': 'activeUsers'}]
-    }).then(function(response) {
-        const activeUsers = response.result.rows[0][0];
-        document.getElementById('live-visitor-count').innerText = `${activeUsers} people are currently on the site.`;
-    }).catch(function(error) {
-        console.error("Error fetching data: ", error);
-        document.getElementById('live-visitor-count').innerText = "Error fetching live visitor count.";
-    });
-}
-
-function loadAPI() {
-    gapi.load("client:auth2", function() {
-        gapi.auth2.init({
-            client_id: '279353965960-0jr4bbnrv2ie3urm4eu5uggcr9dstqt7.apps.googleusercontent.com' // Replace with your OAuth Client ID
-        });
-    });
-}
-
