@@ -1016,6 +1016,36 @@ body {
     }
 }
 
+#current-president {
+  color: #ffffff;
+  background-color: #333333;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.president-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.president-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.president-details h3 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+.president-details p {
+  margin: 5px 0;
+}
+
 /* Footer */
 footer {
     text-align: center;
