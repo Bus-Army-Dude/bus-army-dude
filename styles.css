@@ -1215,120 +1215,160 @@ p {
     color: #ffcc00; /* Bright color for the loading message */
 }
 
-/* Global settings */
-body {
-  font-family: Arial, sans-serif;
+/* General Reset and Base Styles */
+* {
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  box-sizing: border-box;
 }
 
-/* Dark mode (default) */
+/* Global styles */
 body {
-  background-color: #121212;
-  color: #f0f0f0;
+  font-family: 'Arial', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-a {
-  color: #bb86fc;
-  text-decoration: none;
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #181818; /* Dark background */
+  color: #f4f4f4; /* Light text for contrast */
 }
 
-a:hover {
-  color: #ff79c6;
+/* Adjust text color for headers and other elements in dark mode */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+  color: #f4f4f4; /* Light color for headings */
 }
 
-/* Light mode */
-body.light-mode {
-  background-color: #ffffff;
-  color: #121212;
-}
-
-a.light-mode {
-  color: #6200ea;
-}
-
-a.light-mode:hover {
-  color: #d500f9;
-}
-
-/* Button or switch style for mode toggle */
-#mode-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(145deg, #0066cc, #0055aa);  /* Gradient background for a modern look */
-  color: white;
+/* Button styles for dark mode */
+body.dark-mode button {
+  background-color: #007bff; /* Blue button */
+  color: white; /* White text on button */
   border: none;
-  padding: 12px 24px;  /* Larger padding for better usability */
-  font-size: 16px;
-  font-weight: 600;  /* Slightly bold text */
-  border-radius: 30px; /* Rounded corners for a sleek look */
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.2);  /* Subtle shadow effect */
-  cursor: pointer;
-  transition: all 0.3s ease;  /* Smooth transition for effects */
-}
-
-/* Hover effect */
-#mode-toggle:hover {
-  background: linear-gradient(145deg, #0055aa, #004499);  /* Slightly darker gradient */
-  transform: translateY(-2px);  /* Slightly raise the button on hover */
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3), -4px -4px 12px rgba(255, 255, 255, 0.3);  /* Enhanced shadow on hover */
-}
-
-/* Active state (when clicked) */
-#mode-toggle:active {
-  transform: translateY(2px);  /* Button pressed down */
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.1);  /* Inner shadow */
-}
-
-/* Header styles */
-header {
-  background-color: #1f1f1f;
-  padding: 15px 30px;
-  text-align: center;
-}
-
-header h1 {
-  font-size: 32px;
-  color: #f0f0f0;
-}
-
-/* Text and input styles */
-input, textarea {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #444;
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 5px;
-  font-size: 16px;
-}
-
-input.light-mode, textarea.light-mode {
-  background-color: #fff;
-  color: #121212;
-  border: 1px solid #ccc;
-}
-
-button {
-  background-color: #6200ea;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #3700b3;
-  transform: translateY(-2px);
+body.dark-mode button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
-button:active {
-  background-color: #6200ea;
-  transform: translateY(2px);
+/* Links in dark mode */
+body.dark-mode a {
+  color: #1e90ff; /* Bright blue links */
+}
+
+body.dark-mode a:hover {
+  color: #3a6ea5; /* Darker blue on hover */
+}
+
+/* Footer in dark mode */
+body.dark-mode footer {
+  background-color: #333; /* Dark footer */
+  color: white;
+}
+
+/* Main content styles */
+body.dark-mode .main-content {
+  padding: 20px;
+  font-size: 16px; /* Readable text size */
+}
+
+/* Card and container styles in dark mode */
+body.dark-mode .card, body.dark-mode .container {
+  background-color: #222; /* Slightly lighter dark background for containers */
+  border: 1px solid #444; /* Subtle border */
+}
+
+/* Light mode styles */
+body.light-mode {
+  background-color: #f4f4f4; /* Lighter background */
+  color: #333; /* Dark text for contrast */
+}
+
+/* Adjust text color for headers and other elements in light mode */
+body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode h4, body.light-mode h5, body.light-mode h6 {
+  color: #222; /* Darker color for headings */
+}
+
+/* Button styles for light mode */
+body.light-mode button {
+  background-color: #007bff; /* Blue button */
+  color: white; /* White text on button */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+body.light-mode button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Links in light mode */
+body.light-mode a {
+  color: #007bff; /* Blue links */
+}
+
+body.light-mode a:hover {
+  color: #0056b3; /* Darker blue on hover */
+}
+
+/* Footer in light mode */
+body.light-mode footer {
+  background-color: #333; /* Dark footer */
+  color: white;
+}
+
+/* Main content styles */
+body.light-mode .main-content {
+  padding: 20px;
+  font-size: 16px; /* Readable text size */
+}
+
+/* Card and container styles in light mode */
+body.light-mode .card, body.light-mode .container {
+  background-color: #ffffff; /* White background for containers */
+  border: 1px solid #ddd; /* Subtle border */
+}
+
+/* Accessibility and appearance-related styles */
+button, a {
+  outline: none; /* Remove outlines for buttons and links */
+}
+
+button:focus, a:focus {
+  outline: 2px solid #ffbf47; /* Focus outline for accessibility */
+}
+
+/* Adjustments for text size and readability */
+body, p, .main-content, .card, .container {
+  font-size: 16px;
+  line-height: 1.5; /* Improved line height for readability */
+}
+
+/* Improved readability for screen readers */
+[aria-live] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  clip: rect(0 0 0 0);
+}
+
+/* Dark Mode/Light Mode Switch Styles */
+button.theme-toggle {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #f4f4f4;
+}
+
+button.theme-toggle:hover {
+  color: #007bff;
 }
 
 /* Footer will stick to the bottom */
