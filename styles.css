@@ -1182,30 +1182,45 @@ body.loaded #loading-spinner {
     display: none;
 }
 
+/* Global Body Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #121212; /* Dark background color */
+    color: #e0e0e0; /* Light text color for readability */
     padding: 20px;
     text-align: center;
+    margin: 0;
 }
 
+/* Weather Container Styling */
 #weather-info {
-    background-color: #fff;
+    background-color: #1e1e1e; /* Dark background for the weather widget */
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); /* Soft glow effect */
     display: inline-block;
+    max-width: 400px;
+    width: 100%;
 }
 
+/* Header Styling */
 h2 {
     font-size: 24px;
     margin-bottom: 10px;
+    color: #ffffff; /* White color for header */
 }
 
+/* Weather Description and Temperature Styling */
 p {
     font-size: 18px;
     margin: 0;
+    color: #cccccc; /* Light gray text for the weather info */
+}
+
+/* Loading Message Styling */
+#weather-info p {
+    font-style: italic;
+    color: #ffcc00; /* Bright color for the loading message */
 }
 
 /* Footer */
