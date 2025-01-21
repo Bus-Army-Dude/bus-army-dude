@@ -1294,17 +1294,6 @@ header h1 {
   color: #f0f0f0;
 }
 
-/* Footer styles */
-footer {
-  background-color: #1f1f1f;
-  color: #f0f0f0;
-  text-align: center;
-  padding: 20px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
 /* Text and input styles */
 input, textarea {
   background-color: #333;
@@ -1342,11 +1331,13 @@ button:active {
   transform: translateY(2px);
 }
 
-/* Footer */
+/* Footer will stick to the bottom */
 footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
-    color: var(--secondary-text);
-    border-top: 1px solid var(--border-color);
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  bottom: 0;
 }
