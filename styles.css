@@ -1018,32 +1018,91 @@ body {
 
 #current-president {
   color: #ffffff;
-  background-color: #333333;
-  padding: 20px;
-  border-radius: 10px;
+  background-color: #181818; /* Dark background with more contrast */
+  padding: 30px;
+  border-radius: 25px; /* More rounded corners for a softer look */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* More intense shadow for depth */
+  max-width: 900px;
+  margin: 30px auto;
+  transition: all 0.3s ease; /* Smooth transition effect */
+}
+
+#current-president:hover {
+  transform: scale(1.02); /* Subtle zoom on hover */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); /* Deepens shadow when hovered */
+}
+
+#current-president h2 {
+  font-size: 2.4em;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern sans-serif font */
+  letter-spacing: 2px; /* More space between letters for a clean look */
+  color: #f39c12; /* Gold accent for the heading */
 }
 
 .president-info {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
+  gap: 30px;
 }
 
 .president-photo {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
-  margin-bottom: 20px;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); /* Shadow around the image for a floating effect */
+  transition: transform 0.3s ease; /* Smooth zoom effect */
+}
+
+.president-photo:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.president-details {
+  text-align: left;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #ecf0f1; /* Lighter text color */
+  max-width: 60%;
 }
 
 .president-details h3 {
-  margin: 0;
-  font-size: 1.8em;
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #ecf0f1;
+  letter-spacing: 1px; /* Slightly spaced letters */
 }
 
 .president-details p {
-  margin: 5px 0;
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+.president-details strong {
+  color: #f39c12;
+}
+
+@media (max-width: 768px) {
+  #current-president {
+    padding: 20px;
+  }
+
+  .president-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .president-details {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .president-photo {
+    width: 180px;
+    height: 180px;
+  }
 }
 
 /* Footer */
