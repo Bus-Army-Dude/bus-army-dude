@@ -1182,17 +1182,7 @@ body.loaded #loading-spinner {
     display: none;
 }
 
-/* Global Body Styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #121212; /* Dark background color */
-    color: #e0e0e0; /* Light text color for readability */
-    padding: 20px;
-    text-align: center;
-    margin: 0;
-}
-
-/* Weather Container Styling */
+/* Weather Widget Styling */
 #weather-info {
     background-color: #1e1e1e; /* Dark background for the weather widget */
     border-radius: 8px;
@@ -1201,6 +1191,8 @@ body {
     display: inline-block;
     max-width: 400px;
     width: 100%;
+    margin-bottom: 40px; /* Space from the bottom */
+    margin-top: 20px; /* Some space from the top */
 }
 
 /* Header Styling */
