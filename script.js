@@ -424,3 +424,23 @@ document.addEventListener("DOMContentLoaded", () => {
 if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
+
+// Get the button
+const backToTopButton = document.getElementById("back-to-top-btn");
+
+// When the user scrolls down 100px from the top of the document, show the button
+window.onscroll = function () {
+  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    backToTopButton.style.display = "block"; // Show the button
+  } else {
+    backToTopButton.style.display = "none"; // Hide the button
+  }
+};
+
+// When the user clicks on the button, scroll to the top of the document
+backToTopButton.onclick = function () {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth", // Smooth scroll animation
+  });
+};
