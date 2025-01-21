@@ -1282,13 +1282,18 @@ body.dark-mode .card, body.dark-mode .container {
 
 /* Light mode styles */
 body.light-mode {
-  background-color: #f4f4f4; /* Lighter background */
+  background-color: #ffffff; /* White background */
   color: #333; /* Dark text for contrast */
 }
 
 /* Adjust text color for headers and other elements in light mode */
 body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode h4, body.light-mode h5, body.light-mode h6 {
   color: #222; /* Darker color for headings */
+}
+
+/* Increase contrast for better readability in light mode */
+body.light-mode p, body.light-mode .main-content, body.light-mode .card, body.light-mode .container {
+  color: #444; /* Darker text color */
 }
 
 /* Button styles for light mode */
@@ -1371,13 +1376,13 @@ button.theme-toggle:hover {
   color: #007bff;
 }
 
-/* Footer will stick to the bottom */
+/* Ensure footer stays at the bottom of the page */
 footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
   background-color: #333;
   color: white;
-  padding: 20px;
   text-align: center;
-  width: 100%;
-  position: relative;
-  bottom: 0;
 }
