@@ -497,35 +497,3 @@ if (navigator.geolocation) {
 } else {
     document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
 }
-
-  // Function to toggle between light and dark mode
-  function toggleMode() {
-    const currentMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-
-    if (currentMode === 'dark') {
-      document.body.classList.remove('dark-mode');
-      document.body.classList.add('light-mode');
-      document.getElementById('mode-toggle').textContent = 'Switch to Dark Mode';
-      localStorage.setItem('theme', 'light');  // Save the preference in localStorage
-    } else {
-      document.body.classList.remove('light-mode');
-      document.body.classList.add('dark-mode');
-      document.getElementById('mode-toggle').textContent = 'Switch to Light Mode';
-      localStorage.setItem('theme', 'dark');  // Save the preference in localStorage
-    }
-  }
-
-  // Check if the theme preference is already stored in localStorage
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-mode');
-      document.getElementById('mode-toggle').textContent = 'Switch to Dark Mode';
-    } else {
-      document.body.classList.add('dark-mode');
-      document.getElementById('mode-toggle').textContent = 'Switch to Light Mode';
-    }
-
-    // Add event listener to the toggle button
-    document.getElementById('mode-toggle').addEventListener('click', toggleMode);
-  });
