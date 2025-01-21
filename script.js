@@ -472,7 +472,7 @@ function getWeather(lat, lon) {
             const location = data.location.name; // City name
             document.getElementById('weather-info').innerHTML = `
                 <h2>Weather in ${location}</h2>
-                <p>${temp}°C, ${weather}</p>
+                <p>${temp}°F, ${weather}</p>
             `;
         })
         .catch(err => {
@@ -497,4 +497,3 @@ if (navigator.geolocation) {
 } else {
     document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
 }
-
