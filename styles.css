@@ -1223,3 +1223,42 @@ footer {
     color: var(--secondary-text);
     border-top: 1px solid var(--border-color);
 }
+
+/* Language Selector Styling */
+#language-selector {
+    background-color: #1e1e1e; /* Dark background to match the theme */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); /* Subtle glow effect */
+    display: inline-block;
+    max-width: 300px;
+    width: 100%;
+    margin: 20px 0; /* Margin to separate from other sections */
+    text-align: center;
+}
+
+#language-selector label {
+    display: block;
+    color: #ffffff; /* White text for the label */
+    margin-bottom: 10px;
+}
+
+#language-dropdown {
+    background-color: #2a2a2a; /* Dark background for the dropdown */
+    color: #ffffff; /* White text for the options */
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+}
+
+#language-dropdown option {
+    background-color: #2a2a2a; /* Dark background for the options */
+    color: #ffffff; /* White text for options */
+}
+
+#language-dropdown:focus {
+    outline: none; /* Remove the default outline when focused */
+    box-shadow: 0 0 10px #ffcc00; /* Glowing outline when focused */
+}
