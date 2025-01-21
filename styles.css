@@ -1215,22 +1215,41 @@ p {
     color: #ffcc00; /* Bright color for the loading message */
 }
 
-/* Default to dark mode */
+/* Global settings */
 body {
-  background-color: #121212;  /* Dark background */
-  color: #f0f0f0;  /* Light text */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Light mode styles */
+/* Dark mode (default) */
+body {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+a {
+  color: #bb86fc;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff79c6;
+}
+
+/* Light mode */
 body.light-mode {
-  background-color: #ffffff;  /* Light background */
-  color: #000000;  /* Dark text */
+  background-color: #ffffff;
+  color: #121212;
 }
 
-/* Dark mode styles */
-body.dark-mode {
-  background-color: #121212;  /* Dark background */
-  color: #f0f0f0;  /* Light text */
+a.light-mode {
+  color: #6200ea;
+}
+
+a.light-mode:hover {
+  color: #d500f9;
 }
 
 /* Button or switch style for mode toggle */
@@ -1238,16 +1257,89 @@ body.dark-mode {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #0066cc;
+  background: linear-gradient(145deg, #0066cc, #0055aa);  /* Gradient background for a modern look */
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;  /* Larger padding for better usability */
+  font-size: 16px;
+  font-weight: 600;  /* Slightly bold text */
+  border-radius: 30px; /* Rounded corners for a sleek look */
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.2);  /* Subtle shadow effect */
   cursor: pointer;
+  transition: all 0.3s ease;  /* Smooth transition for effects */
+}
+
+/* Hover effect */
+#mode-toggle:hover {
+  background: linear-gradient(145deg, #0055aa, #004499);  /* Slightly darker gradient */
+  transform: translateY(-2px);  /* Slightly raise the button on hover */
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3), -4px -4px 12px rgba(255, 255, 255, 0.3);  /* Enhanced shadow on hover */
+}
+
+/* Active state (when clicked) */
+#mode-toggle:active {
+  transform: translateY(2px);  /* Button pressed down */
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.1);  /* Inner shadow */
+}
+
+/* Header styles */
+header {
+  background-color: #1f1f1f;
+  padding: 15px 30px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 32px;
+  color: #f0f0f0;
+}
+
+/* Footer styles */
+footer {
+  background-color: #1f1f1f;
+  color: #f0f0f0;
+  text-align: center;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Text and input styles */
+input, textarea {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 5px;
   font-size: 16px;
 }
 
-#mode-toggle:hover {
-  background-color: #0055aa;
+input.light-mode, textarea.light-mode {
+  background-color: #fff;
+  color: #121212;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #3700b3;
+  transform: translateY(-2px);
+}
+
+button:active {
+  background-color: #6200ea;
+  transform: translateY(2px);
 }
 
 /* Footer */
