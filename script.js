@@ -461,24 +461,28 @@ window.addEventListener('load', function() {
 });
 
 function getWeather(lat, lon) {
-    const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4'; // Replace with your OpenWeather API key
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+    const apiKey = '852033aa68de4c61bbd211007252101';  // Replace with your WeatherAPI key
+    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            const weather = data.weather[0].description;
-            const temp = data.main.temp;
-            document.getElementById('weather-info').textContent = `${temp}°C, ${weather}`;
+            const weather = data.current.condition.text;
+            const temp = data.current.temp_c;  // Temperature in Celsius
+            const location = data.location.name; // City name
+            document.getElementById('weather-info').innerHTML = `
+                <h2>Weather in ${location}</h2>
+                <p>${temp}°C, ${weather}</p>
+            `;
         })
         .catch(err => {
-            document.getElementById('weather-info').textContent = 'Unable to retrieve weather data';
+            document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
             console.error(err);
         });
 }
 
 function handleLocationError() {
-    document.getElementById('weather-info').textContent = 'Unable to get location for weather';
+    document.getElementById('weather-info').innerHTML = 'Unable to get location for weather.';
 }
 
 if (navigator.geolocation) {
@@ -491,6 +495,6 @@ if (navigator.geolocation) {
         handleLocationError
     );
 } else {
-    document.getElementById('weather-info').textContent = 'Geolocation is not supported by this browser';
+    document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
 }
 
