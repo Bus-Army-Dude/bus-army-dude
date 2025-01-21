@@ -13,7 +13,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Verified medical resources
 - NIMH/NINDS integration
 - Comprehensive conditions list
-- RedNote creator shoutouts
+- TikTok creator shoutouts
 - Instagram creator shoutouts
 - YouTube creator shoutouts
 - Profile information display
@@ -38,7 +38,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Stable internet connection
 
 ### 🔄 Version Information
-**Current Version:** v1.8.0
+**Current Version:** v1.9.0
 
 ### 📱 Browser Support
 - Chrome (Latest)
