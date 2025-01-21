@@ -1215,6 +1215,41 @@ p {
     color: #ffcc00; /* Bright color for the loading message */
 }
 
+/* Default to dark mode */
+body {
+  background-color: #121212;  /* Dark background */
+  color: #f0f0f0;  /* Light text */
+}
+
+/* Light mode styles */
+body.light-mode {
+  background-color: #ffffff;  /* Light background */
+  color: #000000;  /* Dark text */
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #121212;  /* Dark background */
+  color: #f0f0f0;  /* Light text */
+}
+
+/* Button or switch style for mode toggle */
+#mode-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#mode-toggle:hover {
+  background-color: #0055aa;
+}
+
 /* Footer */
 footer {
     text-align: center;
