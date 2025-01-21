@@ -459,3 +459,38 @@ backToTopButton.onclick = function () {
 window.addEventListener('load', function() {
     document.body.classList.add('loaded');
 });
+
+function getWeather(lat, lon) {
+    const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4'; // Replace with your OpenWeather API key
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const weather = data.weather[0].description;
+            const temp = data.main.temp;
+            document.getElementById('weather-info').textContent = `${temp}°C, ${weather}`;
+        })
+        .catch(err => {
+            document.getElementById('weather-info').textContent = 'Unable to retrieve weather data';
+            console.error(err);
+        });
+}
+
+function handleLocationError() {
+    document.getElementById('weather-info').textContent = 'Unable to get location for weather';
+}
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            getWeather(lat, lon);
+        },
+        handleLocationError
+    );
+} else {
+    document.getElementById('weather-info').textContent = 'Geolocation is not supported by this browser';
+}
+
