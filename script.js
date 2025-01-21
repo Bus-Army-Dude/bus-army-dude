@@ -455,3 +455,7 @@ backToTopButton.onclick = function () {
     localStorage.setItem('cookieAccepted', 'true');
     document.getElementById('cookieConsent').style.display = 'none';
   };
+
+window.addEventListener('load', function() {
+    document.body.classList.add('loaded');
+});
