@@ -424,3 +424,98 @@ document.addEventListener("DOMContentLoaded", () => {
 if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
+
+<script>
+ // Fetch Printify Products
+async function fetchPrintifyProducts() {
+  const response = await fetch('https://api.printify.com/v1/products.json', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjlkYTUxZGU2ZWY3ZTAzNGRiNTk2NmQ0ZGUxYWM3ZGJkNjE4N2IyYjc0MWJmZDhhNTY0ZjhkMDFlM2M4M2VlOGQ4ZDdhMmE0YTlhYzg5YWZhIiwiaWF0IjoxNzM3NDgyNDY4LjYxMzk3NywibmJmIjoxNzM3NDgyNDY4LjYxMzk3OSwiZXhwIjoxNzY5MDE4NDY4LjU5NDc1LCJzdWIiOiIxOTc0NTY5OSIsInNjb3BlcyI6WyJzaG9wcy5tYW5hZ2UiLCJzaG9wcy5yZWFkIiwiY2F0YWxvZy5yZWFkIiwib3JkZXJzLnJlYWQiLCJvcmRlcnMud3JpdGUiLCJwcm9kdWN0cy5yZWFkIiwicHJvZHVjdHMud3JpdGUiLCJ3ZWJob29rcy5yZWFkIiwid2ViaG9va3Mud3JpdGUiLCJ1cGxvYWRzLnJlYWQiLCJ1cGxvYWRzLndyaXRlIiwicHJpbnRfcHJvdmlkZXJzLnJlYWQiLCJ1c2VyLmluZm8iXX0.AQ0ra9bxtlNjy88zu_eUYGyOpptXXH6skkksiew4wDF5cynBeSp3plP57PglIMOhrKwhK_YsHjxlVnIM8io'  // Your Printify API token here
+    }
+  });
+
+  const products = await response.json();
+  displayPrintifyProducts(products);
+}
+
+// Display Printify Products
+function displayPrintifyProducts(products) {
+  const productContainer = document.getElementById('printify-product-container');
+
+  products.forEach(product => {
+    const productElement = document.createElement('div');
+    productElement.classList.add('product');
+
+    const price = product.price || 'Price not available';
+    const salePrice = product.sale_price || price;
+    const inStock = product.stock > 0 ? 'In Stock' : 'Out of Stock';
+    const stockClass = product.stock > 0 ? '' : 'out-of-stock';
+
+    productElement.innerHTML = `
+      <img src="${product.image_url}" alt="${product.name}">
+      <p>${product.name}</p>
+      <p class="price">
+        <span class="original-price">$${price}</span>
+        <span class="sale-price">$${salePrice}</span>
+      </p>
+      ${product.sale_price ? `<p class="sale-label">Sale</p>` : ''}
+      <p class="stock ${stockClass}">${inStock}</p>
+      <a href="${product.url}" target="_blank">
+        <button>Buy Now</button>
+      </a>
+    `;
+
+    productContainer.appendChild(productElement);
+  });
+}
+
+// Fetch Fourthwall Products
+async function fetchFourthwallProducts() {
+  const response = await fetch('https://api.fourthwall.com/v1/products', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ptkn_06ba1132-9d0b-4296-8717-83cc73432d14'  // Your Fourthwall Storefront token here
+    }
+  });
+
+  const products = await response.json();
+  displayFourthwallProducts(products);
+}
+
+// Display Fourthwall Products
+function displayFourthwallProducts(products) {
+  const productContainer = document.getElementById('fourthwall-product-container');
+
+  products.forEach(product => {
+    const productElement = document.createElement('div');
+    productElement.classList.add('product');
+
+    const price = product.price || 'Price not available';
+    const salePrice = product.sale_price || price;
+    const inStock = product.stock > 0 ? 'In Stock' : 'Out of Stock';
+    const stockClass = product.stock > 0 ? '' : 'out-of-stock';
+
+    productElement.innerHTML = `
+      <img src="${product.image_url}" alt="${product.name}">
+      <p>${product.name}</p>
+      <p class="price">
+        <span class="original-price">$${price}</span>
+        <span class="sale-price">$${salePrice}</span>
+      </p>
+      ${product.sale_price ? `<p class="sale-label">Sale</p>` : ''}
+      <p class="stock ${stockClass}">${inStock}</p>
+      <a href="${product.url}" target="_blank">
+        <button>Buy Now</button>
+      </a>
+    `;
+
+    productContainer.appendChild(productElement);
+  });
+}
+
+// Fetch products from both Printify and Fourthwall
+window.onload = function() {
+  fetchPrintifyProducts();
+  fetchFourthwallProducts();
+};
