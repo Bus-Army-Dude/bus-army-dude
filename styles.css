@@ -1215,111 +1215,11 @@ p {
     color: #ffcc00; /* Bright color for the loading message */
 }
 
-/* General Reset and Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Global styles */
-body {
-  font-family: 'Arial', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-/* Dark mode styles */
-body.dark-mode {
-  background-color: #181818; /* Dark background */
-  color: #f4f4f4; /* Light text for contrast */
-}
-
-/* Light mode styles */
-body.light-mode {
-  background-color: #ffffff; /* White background */
-  color: #333333; /* Dark text for contrast */
-}
-
-/* Main content section */
-.main-content {
-  flex-grow: 1; /* Ensures content area grows and pushes footer to the bottom */
-  padding: 20px;
-  font-size: 16px;
-  line-height: 1.5;
-  background-color: #ffffff; /* White background */
-}
-
-/* Light Mode text adjustments */
-body.light-mode .main-content {
-  color: #333333; /* Darker text */
-  background-color: #fafafa; /* Slightly off-white background to reduce glare */
-}
-
-body.light-mode h1, body.light-mode h2, body.light-mode h3 {
-  color: #111111; /* Darker headers for better visibility */
-}
-
-body.light-mode p, body.light-mode li {
-  color: #444444; /* Darker paragraph and list text */
-}
-
-/* Footer styles */
+/* Footer */
 footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  position: relative;
-  width: 100%;
-  font-size: 14px;
-}
-
-/* Dark Mode Footer */
-body.dark-mode footer {
-  background-color: #444;
-}
-
-/* Light Mode Footer */
-body.light-mode footer {
-  background-color: #222;
-  color: #f4f4f4;
-}
-
-/* Button and link styles */
-button, a {
-  outline: none;
-  color: inherit;
-}
-
-button:focus, a:focus {
-  outline: 2px solid #ffbf47;
-}
-
-button.theme-toggle {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  color: #f4f4f4;
-}
-
-button.theme-toggle:hover {
-  color: #007bff;
-}
-
-/* Ensuring content is spaced properly from the footer */
-body {
-  padding-bottom: 50px;
-}
-
-/* Accessibility and appearance-related styles */
-button, a {
-  outline: none;
-}
-
-button:focus, a:focus {
-  outline: 2px solid #ffbf47;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: var(--secondary-text);
+    border-top: 1px solid var(--border-color);
 }
