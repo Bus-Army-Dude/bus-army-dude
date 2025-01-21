@@ -426,24 +426,30 @@ if (window.location.protocol !== 'https:') {
 }
 
 <script>
- // Fetch Printify Products
+// Fetch Printify Products
 async function fetchPrintifyProducts() {
   const response = await fetch('https://api.printify.com/v1/products.json', {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjlkYTUxZGU2ZWY3ZTAzNGRiNTk2NmQ0ZGUxYWM3ZGJkNjE4N2IyYjc0MWJmZDhhNTY0ZjhkMDFlM2M4M2VlOGQ4ZDdhMmE0YTlhYzg5YWZhIiwiaWF0IjoxNzM3NDgyNDY4LjYxMzk3NywibmJmIjoxNzM3NDgyNDY4LjYxMzk3OSwiZXhwIjoxNzY5MDE4NDY4LjU5NDc1LCJzdWIiOiIxOTc0NTY5OSIsInNjb3BlcyI6WyJzaG9wcy5tYW5hZ2UiLCJzaG9wcy5yZWFkIiwiY2F0YWxvZy5yZWFkIiwib3JkZXJzLnJlYWQiLCJvcmRlcnMud3JpdGUiLCJwcm9kdWN0cy5yZWFkIiwicHJvZHVjdHMud3JpdGUiLCJ3ZWJob29rcy5yZWFkIiwid2ViaG9va3Mud3JpdGUiLCJ1cGxvYWRzLnJlYWQiLCJ1cGxvYWRzLndyaXRlIiwicHJpbnRfcHJvdmlkZXJzLnJlYWQiLCJ1c2VyLmluZm8iXX0.AQ0ra9bxtlNjy88zu_eUYGyOpptXXH6skkksiew4wDF5cynBeSp3plP57PglIMOhrKwhK_YsHjxlVnIM8io'  // Your Printify API token here
+      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjcwNDM3NTQzYWVlMTExZjEyNDg0Nzg1YjZjZDI2Y2E1ZDI4NDc3N2ZjNWZkOTcxMjJmZTg3MWY3NGExMjE5MDFhZDczMmVkMTQwN2RjNjBmIiwiaWF0IjoxNzM3NDgzMTAyLjUwMTgwOCwibmJmIjoxNzM3NDgzMTAyLjUwMTgxLCJleHAiOjE3NjkwMTkxMDIuNDk0MTUsInN1YiI6IjE5NzQ1Njk5Iiwic2NvcGVzIjpbInNob3BzLm1hbmFnZSIsInNob3BzLnJlYWQiLCJjYXRhbG9nLnJlYWQiLCJvcmRlcnMucmVhZCIsIm9yZGVycy53cml0ZSIsInByb2R1Y3RzLnJlYWQiLCJwcm9kdWN0cy53cml0ZSIsIndlYmhvb2tzLnJlYWQiLCJ3ZWJob29rcy53cml0ZSIsInVwbG9hZHMucmVhZCIsInVwbG9hZHMud3JpdGUiLCJwcmludF9wcm92aWRlcnMucmVhZCIsInVzZXIuaW5mbyJdfQ.AVTVH5-DW7FYKunOJwGr4pzvKItqSbFFEbN87S7aNTt7bypwmGUUzW-AcxjW61iy5HI0Pp4mha7tx9UwuxQ'  // Replace with your actual Printify API token
     }
   });
 
   const products = await response.json();
+  console.log('Printify Products:', products); // Log the response for debugging
   displayPrintifyProducts(products);
 }
 
 // Display Printify Products
-function displayPrintifyProducts(products) {
+function displayPrintifyProducts(data) {
   const productContainer = document.getElementById('printify-product-container');
+  
+  if (!data || !data.products) {
+    console.error("Printify products not found.");
+    return;
+  }
 
-  products.forEach(product => {
+  data.products.forEach(product => {
     const productElement = document.createElement('div');
     productElement.classList.add('product');
 
@@ -475,19 +481,25 @@ async function fetchFourthwallProducts() {
   const response = await fetch('https://api.fourthwall.com/v1/products', {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer ptkn_06ba1132-9d0b-4296-8717-83cc73432d14'  // Your Fourthwall Storefront token here
+      'Authorization': 'Bearer ptkn_5804b353-0388-4130-bc12-0fd0d02da65f'  // Replace with your actual Fourthwall API token
     }
   });
 
   const products = await response.json();
+  console.log('Fourthwall Products:', products); // Log the response for debugging
   displayFourthwallProducts(products);
 }
 
 // Display Fourthwall Products
-function displayFourthwallProducts(products) {
+function displayFourthwallProducts(data) {
   const productContainer = document.getElementById('fourthwall-product-container');
+  
+  if (!data || !data.products) {
+    console.error("Fourthwall products not found.");
+    return;
+  }
 
-  products.forEach(product => {
+  data.products.forEach(product => {
     const productElement = document.createElement('div');
     productElement.classList.add('product');
 
