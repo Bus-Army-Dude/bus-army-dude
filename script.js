@@ -424,19 +424,3 @@ document.addEventListener("DOMContentLoaded", () => {
 if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
-
-<script>
-    setInterval(function() {
-        // Reload the counter div every 10 seconds
-        document.getElementById('counter-container').innerHTML = 
-            '<div id="sfcdfzfn5k18r7he7kpcmtngbkskcfqww46"></div>' +
-            '<script type="text/javascript" src="https://counter6.optistats.ovh/private/counter.js?c=dfzfn5k18r7he7kpcmtngbkskcfqww46&down=async" async></script>' +
-            '<br>' +
-            '<a href="https://www.freecounterstat.com">website hit counter</a>' +
-            '<noscript>' +
-                '<a href="https://www.freecounterstat.com" title="website hit counter">' +
-                    '<img src="https://counter6.optistats.ovh/private/freecounterstat.php?c=dfzfn5k18r7he7kpcmtngbkskcfqww46" border="0" title="website hit counter" alt="website hit counter">' +
-                '</a>' +
-            '</noscript>';
-    }, 10000); // Refresh every 10,000 milliseconds (10 seconds)
-</script>
