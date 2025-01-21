@@ -1376,7 +1376,7 @@ button.theme-toggle:hover {
   color: #007bff;
 }
 
-/* Ensure footer stays at the bottom of the page */
+/* Footer styles to keep it at the bottom */
 footer {
   position: fixed;
   bottom: 0;
@@ -1385,4 +1385,10 @@ footer {
   background-color: #333;
   color: white;
   text-align: center;
+  z-index: 10; /* Ensure it stays above other content */
+}
+
+/* Ensure content doesn't overlap footer */
+body {
+  padding-bottom: 40px; /* Add space to avoid content overlap */
 }
