@@ -1105,6 +1105,26 @@ body {
   }
 }
 
+/* Style the back-to-top button */
+#back-to-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 10px;
+  display: none; /* Hidden by default */
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#back-to-top-btn:hover {
+  background-color: #555;
+}
+
 /* Footer */
 footer {
     text-align: center;
