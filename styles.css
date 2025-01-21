@@ -1105,6 +1105,103 @@ body {
   }
 }
 
+/* General Styling */
+#merchandise {
+  padding: 40px;
+  background-color: #222;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2em;
+  color: #e74c3c;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.product {
+  background-color: #333;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.product:hover {
+  transform: scale(1.05);
+}
+
+.product img {
+  width: 100%;
+  border-radius: 10px;
+  height: auto;
+}
+
+.product p {
+  margin: 10px 0;
+}
+
+.product .price {
+  font-size: 1.4em;
+  margin: 10px 0;
+}
+
+.product .original-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1.2em;
+}
+
+.product .sale-price {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.product .sale-label {
+  background-color: #e74c3c;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.product .stock {
+  margin-top: 10px;
+  font-size: 1.1em;
+  color: #2ecc71; /* Green for in-stock, red for out-of-stock */
+}
+
+.product .stock.out-of-stock {
+  color: #e74c3c; /* Red color for out of stock */
+}
+
+.product button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #f39c12;
+  border: none;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.product button:hover {
+  background-color: #e67e22;
+}
+
 /* Footer */
 footer {
     text-align: center;
