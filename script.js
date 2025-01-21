@@ -461,7 +461,7 @@ window.addEventListener('load', function() {
 });
 
 function getWeather(lat, lon) {
-    const apiKey = 'yourAPIkey';  // Replace with your OpenWeatherAPI key
+    const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4';  // Replace with your OpenWeatherAPI key
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
 
     fetch(url)
