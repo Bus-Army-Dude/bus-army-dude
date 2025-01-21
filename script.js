@@ -444,3 +444,14 @@ backToTopButton.onclick = function () {
     behavior: "smooth", // Smooth scroll animation
   });
 };
+
+  // Check if the user has already accepted cookies
+  if (!localStorage.getItem('cookieAccepted')) {
+    document.getElementById('cookieConsent').style.display = 'block';
+  }
+
+  // Accept cookies button functionality
+  document.getElementById('acceptCookies').onclick = function() {
+    localStorage.setItem('cookieAccepted', 'true');
+    document.getElementById('cookieConsent').style.display = 'none';
+  };
