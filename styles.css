@@ -1293,6 +1293,28 @@ p {
     transform: rotate(180deg);
 }
 
+/* Fun Fact Section */
+.fun-fact {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.fun-fact h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.fun-fact p {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
 /* Footer */
 footer {
     text-align: center;
