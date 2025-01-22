@@ -1293,32 +1293,53 @@ p {
     transform: rotate(180deg);
 }
 
-/* Fun Fact of the Day, Quote of the Day, and Today in History section styles */
+/* General Section Styling */
 .section {
+    background-color: #333; /* Dark background to match the website */
+    color: #f5f5f5; /* Light text for readability */
     padding: 20px;
-    border: 1px solid #444; /* Match theme */
-    background-color: #222;
-    color: #fff;
-    margin: 20px 0;
+    margin-bottom: 20px;
     border-radius: 8px;
+    border: 1px solid #444; /* Slightly lighter border */
 }
 
-.section p, .section ul {
-    margin: 0;
-    padding: 10px;
-    background-color: #333;
-    border-radius: 5px;
-    color: #fff;
+h2 {
+    color: #f5f5f5; /* Matching text color for the title */
+    font-size: 1.5rem;
 }
 
-/* Ensure Today in History list looks good */
-#history-events {
-    list-style: none;
-    padding: 0;
+p, li {
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
-#history-events li {
-    margin: 5px 0;
+ul {
+    list-style-type: none; /* Remove bullets for historical events */
+    padding-left: 0;
+}
+
+/* Fun Fact of the Day Section */
+.fun-fact-section {
+    background-color: #2c2f33; /* Slightly lighter dark background */
+}
+
+/* Quote of the Day Section */
+.quote-of-the-day-section {
+    background-color: #2c2f33; /* Same as Fun Fact section */
+}
+
+/* Today in History Section */
+.history-section {
+    background-color: #2c2f33; /* Consistent background color */
+}
+
+li {
+    padding: 10px 0;
+}
+
+p {
+    font-size: 1rem;
+    padding-top: 10px;
 }
 
 /* Footer */
