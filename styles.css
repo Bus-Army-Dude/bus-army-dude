@@ -1182,17 +1182,31 @@ body.loaded #loading-spinner {
     display: none;
 }
 
-/* Weather Widget Styling */
+/* Adjust Weather Widget for Section Alignment */
 #weather-info {
     background-color: #1e1e1e; /* Dark background for the weather widget */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); /* Soft glow effect */
     display: inline-block;
-    max-width: 400px;
+    max-width: 100%; /* Adjust to match section width */
     width: 100%;
     margin-bottom: 40px; /* Space from the bottom */
     margin-top: 20px; /* Some space from the top */
+    box-sizing: border-box; /* Ensure padding doesn't exceed max width */
+}
+
+/* Make sure sections like Printify and Fourthwall have similar widths */
+#current-president, 
+#printify-merch, 
+#fourthwall-merch, 
+#weather-info {
+    max-width: 100%; /* Ensure all sections align */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
 }
 
 /* Header Styling */
