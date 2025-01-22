@@ -1293,9 +1293,9 @@ p {
     transform: rotate(180deg);
 }
 
-/* Fun Fact Section */
-.fun-fact {
-    background-color: #333;
+/* Fun Fact of the Day Section */
+.fun-fact-of-the-day {
+    background-color: #444;
     color: #fff;
     padding: 15px;
     border-radius: 8px;
@@ -1304,12 +1304,12 @@ p {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.fun-fact h3 {
+.fun-fact-of-the-day h3 {
     font-size: 22px;
     margin-bottom: 10px;
 }
 
-.fun-fact p {
+.fun-fact-of-the-day p {
     font-size: 18px;
     line-height: 1.5;
     font-weight: 400;
