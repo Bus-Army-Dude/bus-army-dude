@@ -535,7 +535,7 @@ function generateCalendar(monthYear) {
     calendarGrid.innerHTML = '';
 
     // Days of the week header
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let headerRow = document.createElement('div');
     headerRow.classList.add('calendar-days-header');
     daysOfWeek.forEach(day => {
@@ -590,3 +590,4 @@ document.getElementById('next-month').addEventListener('click', () => {
 
 // Initial calendar load
 generateCalendar(currentMonthYear);
+
