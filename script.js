@@ -511,7 +511,7 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Events data (you can replace this with your own event data or fetch it dynamically)
+// Events data (replace this with your actual event data or fetch it dynamically)
 const events = [
     { date: '2025-01-15', name: 'Live Stream 1', time: '2:00 PM', description: 'Join us for an exciting live stream!' },
     { date: '2025-01-22', name: 'Live Stream 2', time: '6:00 PM', description: 'Another live stream to catch!' },
