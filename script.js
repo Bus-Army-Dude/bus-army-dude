@@ -514,19 +514,19 @@ faqQuestions.forEach((question) => {
 // Function to fetch and display Fun Fact of the Day
 function loadFunFactOfTheDay() {
     const factElement = document.getElementById('fun-fact-text');
+    factElement.textContent = 'Loading...'; // Show loading state
 
-    // Set loading state
-    factElement.textContent = 'Loading...';
-
-    // Fetch a random fun fact (adjust the URL to your data source)
+    // Fetch fun fact
     fetch('https://random-data-api.com/api/v2/fun_facts')
         .then(response => {
+            console.log('Fun Fact API Response:', response); // Log the response
             if (!response.ok) {
                 throw new Error('Failed to fetch Fun Fact');
             }
             return response.json();
         })
         .then(data => {
+            console.log('Fun Fact Data:', data); // Log the actual data
             factElement.textContent = data.fact || 'No fun fact available today.';
         })
         .catch(error => {
@@ -538,19 +538,19 @@ function loadFunFactOfTheDay() {
 // Function to fetch and display Quote of the Day
 function loadQuoteOfTheDay() {
     const quoteElement = document.getElementById('quote-of-the-day-text');
+    quoteElement.textContent = 'Loading...'; // Show loading state
 
-    // Set loading state
-    quoteElement.textContent = 'Loading...';
-
-    // Fetch a random quote (adjust the URL to your data source)
+    // Fetch quote of the day
     fetch('https://api.quotable.io/random')
         .then(response => {
+            console.log('Quote API Response:', response); // Log the response
             if (!response.ok) {
                 throw new Error('Failed to fetch Quote of the Day');
             }
             return response.json();
         })
         .then(data => {
+            console.log('Quote Data:', data); // Log the actual data
             quoteElement.textContent = `"${data.content}" - ${data.author}`;
         })
         .catch(error => {
@@ -562,19 +562,19 @@ function loadQuoteOfTheDay() {
 // Function to fetch and display Today in History
 function loadTodayInHistory() {
     const historyElement = document.getElementById('history-events');
+    historyElement.innerHTML = '<li>Loading...</li>'; // Show loading state
 
-    // Set loading state
-    historyElement.innerHTML = '<li>Loading...</li>';
-
-    // Fetch historical events (adjust the URL to your data source)
+    // Fetch historical events
     fetch('https://history.muffinlabs.com/date')
         .then(response => {
+            console.log('History API Response:', response); // Log the response
             if (!response.ok) {
                 throw new Error('Failed to fetch Today in History');
             }
             return response.json();
         })
         .then(data => {
+            console.log('History Data:', data); // Log the actual data
             const events = data.data.Events;
             historyElement.innerHTML = '';
 
@@ -590,3 +590,10 @@ function loadTodayInHistory() {
             console.error('Error fetching Today in History:', error);
         });
 }
+
+// Initialize the data fetching once page is loaded
+window.onload = function() {
+    loadFunFactOfTheDay();
+    loadQuoteOfTheDay();
+    loadTodayInHistory();
+};
