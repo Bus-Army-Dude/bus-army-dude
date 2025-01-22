@@ -1311,11 +1311,14 @@ body {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding around calendar */
 }
 
+/* Header Styles (Previous/Next buttons) */
 .calendar-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
@@ -1327,6 +1330,7 @@ body {
     border: none;
     padding: 10px;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .calendar-header button:hover {
@@ -1336,8 +1340,10 @@ body {
 #month-year {
     font-size: 24px;
     margin: 0 20px;
+    text-align: center;
 }
 
+/* Days of the Week */
 .calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -1351,14 +1357,17 @@ body {
     font-weight: bold;
 }
 
+/* Calendar Grid */
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
     margin-top: 10px;
     padding: 10px;
+    width: 100%;
 }
 
+/* Calendar Day Style */
 .calendar-grid div {
     text-align: center;
     padding: 10px;
@@ -1372,7 +1381,6 @@ body {
     background-color: #555;
 }
 
-/* Event Indicator */
 .event {
     position: absolute;
     top: 5px;
@@ -1418,6 +1426,65 @@ body {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .calendar-grid {
+        grid-template-columns: repeat(5, 1fr); /* 5 columns on smaller screens */
+    }
+
+    .calendar-days {
+        grid-template-columns: repeat(5, 1fr); /* Adjust days of the week for smaller screens */
+    }
+
+    .calendar-header button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    #month-year {
+        font-size: 18px; /* Smaller month/year text */
+    }
+
+    .calendar-grid div {
+        font-size: 14px; /* Smaller date text */
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns on very small screens */
+    }
+
+    .calendar-days {
+        grid-template-columns: repeat(4, 1fr); /* Adjust days of the week for very small screens */
+    }
+
+    .calendar-header {
+        flex-direction: column; /* Stack the buttons above the month/year */
+        align-items: center;
+    }
+
+    .calendar-header button {
+        width: 100%; /* Full width buttons */
+        margin: 5px 0;
+    }
+
+    #month-year {
+        font-size: 16px; /* Smaller month/year text */
+    }
+
+    .calendar-grid div {
+        font-size: 12px; /* Even smaller date text */
+        padding: 6px;
+    }
+
+    .event {
+        width: 8px;
+        height: 8px; /* Smaller event indicator */
+    }
 }
 
 /* Footer */
