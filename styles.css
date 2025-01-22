@@ -1293,77 +1293,32 @@ p {
     transform: rotate(180deg);
 }
 
-/* Global theme colors */
-:root {
-    --primary-bg-color: #121212; /* Dark mode background */
-    --primary-text-color: #f0f0f0; /* Light text for contrast */
-    --border-color: #444; /* Border color for sections */
-    --section-bg-color: #1c1c1c; /* Slightly lighter background for sections */
-    --section-padding: 20px;
-    --border-radius: 10px; /* Rounded corners for sections */
-}
-
-/* Global website styling */
-body {
-    background-color: var(--primary-bg-color);
-    color: var(--primary-text-color);
-    font-family: Arial, sans-serif;
-}
-
-/* Section styling for fun fact and quote */
+/* Fun Fact of the Day, Quote of the Day, and Today in History section styles */
 .section {
-    background-color: var(--section-bg-color);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: var(--section-padding);
-    margin-bottom: 20px; /* Spacing between sections */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Section headings */
-.section h2 {
-    color: var(--primary-text-color);
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-/* Fun fact specific styling */
-.fun-fact-section p {
-    font-size: 1.2em;
-    line-height: 1.6;
-    color: var(--primary-text-color);
-}
-
-/* Quote specific styling */
-.quote-of-the-day-section p {
-    font-size: 1.2em;
-    font-style: italic;
-    line-height: 1.6;
-    color: var(--primary-text-color);
-}
-
-/* Today in History Section */
-#today-in-history-section {
     padding: 20px;
-    border: 1px solid #444; /* Match the border theme of the website */
+    border: 1px solid #444; /* Match theme */
+    background-color: #222;
+    color: #fff;
     margin: 20px 0;
-    background-color: #222; /* Match the website's background color */
-    color: #fff; /* Ensure text is readable */
     border-radius: 8px;
 }
 
-/* Styling for the list of history events */
+.section p, .section ul {
+    margin: 0;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    color: #fff;
+}
+
+/* Ensure Today in History list looks good */
 #history-events {
-    list-style-type: none;
-    padding-left: 0;
+    list-style: none;
+    padding: 0;
 }
 
 #history-events li {
-    margin: 10px 0;
-    padding: 10px;
-    background-color: #333; /* Match the website theme */
-    color: #fff;
-    border-radius: 5px;
+    margin: 5px 0;
 }
 
 /* Footer */
