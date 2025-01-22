@@ -226,8 +226,28 @@
         <button id="next-month">Next</button>
     </div>
 
+    <!-- Days of the Week -->
+    <div class="calendar-days">
+        <div>Sunday</div>
+        <div>Monday</div>
+        <div>Tuesday</div>
+        <div>Wednesday</div>
+        <div>Thursday</div>
+        <div>Friday</div>
+        <div>Saturday</div>
+    </div>
+
     <!-- Calendar Grid -->
-    <div id="calendar-grid"></div>
+    <div id="calendar-grid" class="calendar-grid"></div>
+</div>
+
+<!-- Event Modal (Hidden by default) -->
+<div id="event-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2>Event Details</h2>
+        <p id="event-details"></p>
+    </div>
 </div>
         
 <!-- Weather Section -->        
