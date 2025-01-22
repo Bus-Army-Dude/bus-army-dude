@@ -1447,15 +1447,19 @@ body {
     }
 
     .calendar-days {
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(7, 1fr); /* Ensures days of the week fit in columns */
     }
 
     .calendar-grid {
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(7, 1fr); /* 7 columns */
     }
 
     .calendar-grid div {
         padding: 10px;
+    }
+
+    .calendar-days div {
+        font-size: 12px; /* Smaller font size to fit text */
     }
 }
 
@@ -1472,6 +1476,7 @@ body {
 
     .calendar-days {
         grid-template-columns: repeat(7, 1fr);
+        font-size: 10px; /* Smaller font size */
     }
 
     .calendar-grid div {
