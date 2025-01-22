@@ -512,13 +512,11 @@ faqQuestions.forEach((question) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the current date (for daily updates)
     const currentDate = new Date().toLocaleDateString();
 
     // Function to fetch Fun Fact of the Day
     async function getFunFact() {
         try {
-            // Check if fun fact data is already stored for today
             const storedDate = localStorage.getItem('funFactDate');
             const storedFact = localStorage.getItem('funFactText');
 
@@ -528,6 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+            console.log("Fun Fact Response:", response); // Log response for debugging
             if (!response.ok) throw new Error('Failed to fetch Fun Fact');
             const data = await response.json();
             const fact = data.text;
@@ -546,7 +545,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch Quote of the Day
     async function getQuoteOfTheDay() {
         try {
-            // Check if quote data is already stored for today
             const storedDate = localStorage.getItem('quoteDate');
             const storedQuote = localStorage.getItem('quoteText');
 
@@ -556,6 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const response = await fetch('https://api.quotable.io/random');
+            console.log("Quote of the Day Response:", response); // Log response for debugging
             if (!response.ok) throw new Error('Failed to fetch Quote of the Day');
             const data = await response.json();
             const quote = data.content;
@@ -574,7 +573,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch Today in History
     async function getTodayInHistory() {
         try {
-            // Check if history data is already stored for today
             const storedDate = localStorage.getItem('historyDate');
             const storedHistory = localStorage.getItem('historyText');
 
@@ -586,6 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const today = new Date();
             const dateStr = `${today.getMonth() + 1}-${today.getDate()}`;
             const response = await fetch(`https://api.history.muffinlabs.com/date/${dateStr}`);
+            console.log("Today in History Response:", response); // Log response for debugging
             if (!response.ok) throw new Error('Failed to fetch Today in History');
             const data = await response.json();
             let historyText = 'No events found for today.';
