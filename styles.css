@@ -1229,6 +1229,46 @@ p {
     color: #ffcc00; /* Bright color for the loading message */
 }
 
+/* Winter Theme */
+body.winter {
+    background-color: #E0F7FA; /* Light blue background */
+    color: #1C1C1C; /* Dark text color */
+}
+
+.winter .header {
+    background-image: url('images/winter-header.jpg');
+}
+
+/* Spring Theme */
+body.spring {
+    background-color: #A5D6A7; /* Fresh green background */
+    color: #2C6B2F; /* Dark green text */
+}
+
+.spring .header {
+    background-image: url('images/spring-header.png');
+}
+
+/* Summer Theme */
+body.summer {
+    background-color: #FFF59D; /* Light yellow background */
+    color: #01579B; /* Dark blue text */
+}
+
+.summer .header {
+    background-image: url('images/summer-header.jpg');
+}
+
+/* Autumn Theme */
+body.autumn {
+    background-color: #FFEB3B; /* Golden yellow background */
+    color: #5D4037; /* Dark brown text */
+}
+
+.autumn .header {
+    background-image: url('images/autumn-header.jpg');
+}
+
 /* Footer */
 footer {
     text-align: center;
