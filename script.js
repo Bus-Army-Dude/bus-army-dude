@@ -512,31 +512,53 @@ faqQuestions.forEach((question) => {
 });
 
 const funFacts = [
-    "Did you know? Honey never spoils.",
-    "Fun Fact: A group of flamingos is called a 'flamboyance.'",
-    "Did you know? The Eiffel Tower can be 15 cm taller during the summer due to heat expansion.",
-    "Fun Fact: Wombat poop is cube-shaped.",
-    "Did you know? Bananas are berries, but strawberries aren't."
+    "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3,000 years old and still edible.",
+    "Bananas are berries, but strawberries are not!",
+    "Sharks have been around longer than trees, having existed for around 400 million years.",
+    "Octopuses have three hearts and blue blood.",
+    "A cloud can weigh more than a million pounds."
 ];
-
-// Get the current day of the year (1 to 365)
-const currentDay = new Date().getDate();
-
-// Get the fun fact of the day by using the current day number
-const dailyFact = funFacts[currentDay % funFacts.length];
 
 const quotes = [
-    { quote: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-    { quote: "In the end, we will remember not the words of our enemies, but the silence of our friends.", author: "Martin Luther King Jr." },
-    { quote: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
-    { quote: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
-    { quote: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" }
+    "The only way to do great work is to love what you do. – Steve Jobs",
+    "Success is not the key to happiness. Happiness is the key to success. – Albert Schweitzer",
+    "Life is what happens when you’re busy making other plans. – John Lennon",
+    "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment. – Ralph Waldo Emerson",
+    "You only live once, but if you do it right, once is enough. – Mae West"
 ];
 
-// Select a random quote from the array
-const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+// Function to get today's date in 'YYYY-MM-DD' format
+function getTodayDate() {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // Returns the date in format YYYY-MM-DD
+}
 
-// Display the selected quote and author
-document.getElementById('quote-text').textContent = `"${randomQuote.quote}"`;
-document.getElementById('quote-author').textContent = `— ${randomQuote.author}`;
+// Set the Fun Fact of the Day (only changes once per day)
+function setFunFactOfTheDay() {
+    const todayDate = getTodayDate();
+    const lastUpdatedDate = localStorage.getItem('lastFunFactDate');
 
+    if (lastUpdatedDate !== todayDate) {
+        // Set a new fun fact if the date has changed
+        const randomFact = funFacts[Math.floor(Math.random() * funFacts.length)];
+        document.getElementById('fun-fact-text').textContent = randomFact;
+        localStorage.setItem('lastFunFactDate', todayDate); // Store today's date
+    }
+}
+
+// Set the Quote of the Day (only changes once per day)
+function setQuoteOfTheDay() {
+    const todayDate = getTodayDate();
+    const lastUpdatedDate = localStorage.getItem('lastQuoteDate');
+
+    if (lastUpdatedDate !== todayDate) {
+        // Set a new quote if the date has changed
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quote-of-the-day-text').textContent = randomQuote;
+        localStorage.setItem('lastQuoteDate', todayDate); // Store today's date
+    }
+}
+
+// Run the functions to set the daily updates
+setFunFactOfTheDay();
+setQuoteOfTheDay();
