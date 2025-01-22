@@ -526,6 +526,7 @@ function loadDailyContent() {
 
         // Check if the data exists in localStorage
         if (funFact && quote && history) {
+            console.log("Displaying stored data...");
             document.getElementById("fun-fact-text").innerText = funFact;
             document.getElementById("quote-of-the-day-text").innerText = quote;
             document.getElementById("today-in-history-text").innerText = history;
