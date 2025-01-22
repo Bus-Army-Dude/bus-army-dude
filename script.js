@@ -510,3 +510,20 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
+
+const funFacts = [
+    "Did you know? Honey never spoils.",
+    "Fun Fact: A group of flamingos is called a 'flamboyance.'",
+    "Did you know? The Eiffel Tower can be 15 cm taller during the summer due to heat expansion.",
+    "Fun Fact: Wombat poop is cube-shaped.",
+    "Did you know? Bananas are berries, but strawberries aren't."
+];
+
+// Get the current day of the year (1 to 365)
+const currentDay = new Date().getDate();
+
+// Get the fun fact of the day by using the current day number
+const dailyFact = funFacts[currentDay % funFacts.length];
+
+// Display the fact in the HTML
+document.getElementById('fact-text').textContent = dailyFact;
