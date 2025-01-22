@@ -1336,12 +1336,6 @@ p {
     margin-top: 30px;
 }
 
-/* Hover Effect for Section Headers (optional) */
-.section:hover {
-    border-color: #ccc;
-    background-color: #2a2a2a;
-}
-
 /* Add padding inside sections for a better layout */
 .section p {
     padding: 10px;
