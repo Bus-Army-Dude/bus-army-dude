@@ -514,77 +514,48 @@ faqQuestions.forEach((question) => {
 document.addEventListener('DOMContentLoaded', () => {
     const currentDate = new Date().toLocaleDateString();
 
+    // Fallback data
+    const fallbackFunFact = 'Did you know? Honey never spoils.';
+    const fallbackQuote = 'The only way to do great work is to love what you do. – Steve Jobs';
+    const fallbackHistory = 'In 1969, Apollo 11 successfully landed the first humans on the moon.';
+
     // Function to fetch Fun Fact of the Day
     async function getFunFact() {
         try {
-            const storedDate = localStorage.getItem('funFactDate');
-            const storedFact = localStorage.getItem('funFactText');
-
-            if (storedDate === currentDate && storedFact) {
-                document.getElementById('fun-fact-text').textContent = storedFact;
-                return;
-            }
-
             const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-            console.log("Fun Fact Response:", response); // Log response for debugging
             if (!response.ok) throw new Error('Failed to fetch Fun Fact');
             const data = await response.json();
             const fact = data.text;
 
-            // Store the fact and date in localStorage
-            localStorage.setItem('funFactDate', currentDate);
-            localStorage.setItem('funFactText', fact);
-
             document.getElementById('fun-fact-text').textContent = fact;
         } catch (error) {
             console.error('Error fetching Fun Fact:', error);
-            document.getElementById('fun-fact-text').textContent = 'Could not load fact. Please try again later.';
+            document.getElementById('fun-fact-text').textContent = fallbackFunFact;
         }
     }
 
     // Function to fetch Quote of the Day
     async function getQuoteOfTheDay() {
         try {
-            const storedDate = localStorage.getItem('quoteDate');
-            const storedQuote = localStorage.getItem('quoteText');
-
-            if (storedDate === currentDate && storedQuote) {
-                document.getElementById('quote-of-the-day-text').textContent = `"${storedQuote}"`;
-                return;
-            }
-
             const response = await fetch('https://api.quotable.io/random');
-            console.log("Quote of the Day Response:", response); // Log response for debugging
             if (!response.ok) throw new Error('Failed to fetch Quote of the Day');
             const data = await response.json();
             const quote = data.content;
 
-            // Store the quote and date in localStorage
-            localStorage.setItem('quoteDate', currentDate);
-            localStorage.setItem('quoteText', quote);
-
             document.getElementById('quote-of-the-day-text').textContent = `"${quote}"`;
         } catch (error) {
             console.error('Error fetching Quote of the Day:', error);
-            document.getElementById('quote-of-the-day-text').textContent = 'Could not load quote. Please try again later.';
+            // Fallback quote if the API fails
+            document.getElementById('quote-of-the-day-text').textContent = fallbackQuote;
         }
     }
 
     // Function to fetch Today in History
     async function getTodayInHistory() {
         try {
-            const storedDate = localStorage.getItem('historyDate');
-            const storedHistory = localStorage.getItem('historyText');
-
-            if (storedDate === currentDate && storedHistory) {
-                document.getElementById('today-in-history-text').textContent = storedHistory;
-                return;
-            }
-
             const today = new Date();
             const dateStr = `${today.getMonth() + 1}-${today.getDate()}`;
             const response = await fetch(`https://api.history.muffinlabs.com/date/${dateStr}`);
-            console.log("Today in History Response:", response); // Log response for debugging
             if (!response.ok) throw new Error('Failed to fetch Today in History');
             const data = await response.json();
             let historyText = 'No events found for today.';
@@ -593,14 +564,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 historyText = data.data.Events[0].text;
             }
 
-            // Store the history and date in localStorage
-            localStorage.setItem('historyDate', currentDate);
-            localStorage.setItem('historyText', historyText);
-
             document.getElementById('today-in-history-text').textContent = historyText;
         } catch (error) {
             console.error('Error fetching Today in History:', error);
-            document.getElementById('today-in-history-text').textContent = 'Could not load history. Please try again later.';
+            // Fallback history if the API fails
+            document.getElementById('today-in-history-text').textContent = fallbackHistory;
         }
     }
 
