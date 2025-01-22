@@ -527,3 +527,21 @@ const dailyFact = funFacts[currentDay % funFacts.length];
 
 // Display the fact in the HTML
 document.getElementById('fact-text').textContent = dailyFact;
+
+const quotes = [
+    { quote: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { quote: "In the end, we will remember not the words of our enemies, but the silence of our friends.", author: "Martin Luther King Jr." },
+    { quote: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+    { quote: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+    { quote: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" }
+];
+
+// Get the current day of the year (1 to 365)
+const currentDay = new Date().getDate();
+
+// Get the quote of the day by using the current day number
+const dailyQuote = quotes[currentDay % quotes.length];
+
+// Display the quote and author in the HTML
+document.getElementById('quote-text').textContent = `"${dailyQuote.quote}"`;
+document.getElementById('quote-author').textContent = `— ${dailyQuote.author}`;
