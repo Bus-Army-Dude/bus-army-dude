@@ -549,7 +549,7 @@ const historyEvents = {
 function loadFunFactOfTheDay() {
     const factElement = document.getElementById('fun-fact-text');
     const today = new Date();
-    const factIndex = today.getDate() % funFacts.length;
+    const factIndex = today.getDate() % funFacts.length; // Use the day of the month to index the facts
     factElement.textContent = funFacts[factIndex];
 }
 
@@ -557,7 +557,7 @@ function loadFunFactOfTheDay() {
 function loadQuoteOfTheDay() {
     const quoteElement = document.getElementById('quote-of-the-day-text');
     const today = new Date();
-    const quoteIndex = today.getDate() % quotes.length;
+    const quoteIndex = today.getDate() % quotes.length; // Use the day of the month to index the quotes
     quoteElement.textContent = `"${quotes[quoteIndex]}"`;
 }
 
