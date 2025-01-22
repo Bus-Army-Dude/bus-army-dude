@@ -511,59 +511,54 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Static data for Fun Fact of the Day
-const funFacts = [
-    "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible.",
-    "Bananas are berries, but strawberries are not.",
-    "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion."
-    // Add more facts as needed
-];
+document.addEventListener('DOMContentLoaded', () => {
+    // Function to fetch Fun Fact of the Day
+    async function getFunFact() {
+        try {
+            const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+            if (!response.ok) throw new Error('Failed to fetch Fun Fact');
+            const data = await response.json();
+            document.getElementById('fun-fact-text').textContent = data.text;
+        } catch (error) {
+            console.error('Error fetching Fun Fact:', error);
+            document.getElementById('fun-fact-text').textContent = 'Could not load fact. Please try again later.';
+        }
+    }
 
-// Static data for Quote of the Day
-const quotes = [
-    "The only way to do great work is to love what you do. - Steve Jobs",
-    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
-    "In the middle of every difficulty lies opportunity. - Albert Einstein"
-    // Add more quotes as needed
-];
+    // Function to fetch Quote of the Day
+    async function getQuoteOfTheDay() {
+        try {
+            const response = await fetch('https://api.quotable.io/random');
+            if (!response.ok) throw new Error('Failed to fetch Quote of the Day');
+            const data = await response.json();
+            document.getElementById('quote-of-the-day-text').textContent = `"${data.content}" — ${data.author}`;
+        } catch (error) {
+            console.error('Error fetching Quote of the Day:', error);
+            document.getElementById('quote-of-the-day-text').textContent = 'Could not load quote. Please try again later.';
+        }
+    }
 
-// Static data for Today in History
-const historyEvents = {
-    "01/22": [
-        "In 1901, the first Australian parliament opened.",
-        "In 1973, President Nixon announced the end of the Vietnam War."
-    ],
-    // Add more dates as needed
-};
+    // Function to fetch Today in History
+    async function getTodayInHistory() {
+        try {
+            const today = new Date();
+            const dateStr = `${today.getMonth() + 1}-${today.getDate()}`;
+            const response = await fetch(`https://api.history.muffinlabs.com/date/${dateStr}`);
+            if (!response.ok) throw new Error('Failed to fetch Today in History');
+            const data = await response.json();
+            if (data.data.Events.length > 0) {
+                document.getElementById('today-in-history-text').textContent = data.data.Events[0].text;
+            } else {
+                document.getElementById('today-in-history-text').textContent = 'No events found for today.';
+            }
+        } catch (error) {
+            console.error('Error fetching Today in History:', error);
+            document.getElementById('today-in-history-text').textContent = 'Could not load history. Please try again later.';
+        }
+    }
 
-// Log the arrays and what we're trying to display
-function loadFunFactOfTheDay() {
-    const factElement = document.getElementById('fun-fact-text');
-    const today = new Date();
-    const factIndex = today.getDate() % funFacts.length;
-    console.log("Fun Fact of the Day: ", funFacts[factIndex]);
-    factElement.textContent = funFacts[factIndex];
-}
-
-function loadQuoteOfTheDay() {
-    const quoteElement = document.getElementById('quote-of-the-day-text');
-    const today = new Date();
-    const quoteIndex = today.getDate() % quotes.length;
-    console.log("Quote of the Day: ", quotes[quoteIndex]);
-    quoteElement.textContent = `"${quotes[quoteIndex]}"`;
-}
-
-function loadTodayInHistory() {
-    const historyElement = document.getElementById('history-events');
-    const today = new Date();
-    const todayStr = `${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getDate().toString().padStart(2, '0')}`;
-    console.log("Today: ", todayStr);
-    const events = historyEvents[todayStr] || ["No historical events found for today."];
-    
-    historyElement.innerHTML = ''; // Clear previous events
-    events.forEach(event => {
-        const listItem = document.createElement('li');
-        listItem.textContent = event;
-        historyElement.appendChild(listItem);
-    });
-}
+    // Fetch data for each section
+    getFunFact();
+    getQuoteOfTheDay();
+    getTodayInHistory();
+});
