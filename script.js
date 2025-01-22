@@ -512,8 +512,8 @@ faqQuestions.forEach((question) => {
 });
 
 const events = {
-    "2025-01-22": [{ time: "10:00 AM", description: "Event 1" }],
-    "2025-01-25": [{ time: "2:00 PM", description: "Event 2" }]
+    "2025-01-22": [{ time: "10:00 AM", description: "Meeting with team" }],
+    "2025-01-25": [{ time: "2:00 PM", description: "Doctor's Appointment" }]
 };
 
 let currentDate = new Date();
@@ -530,7 +530,7 @@ function renderCalendar(date) {
     // Display current month and year
     monthYear.textContent = `${date.toLocaleString('default', { month: 'long' })} ${year}`;
 
-    // Get first day of the month
+    // Get first day of the month and the total number of days in the month
     const firstDay = new Date(year, month, 1).getDay();
     const lastDate = new Date(year, month + 1, 0).getDate();
 
@@ -587,7 +587,7 @@ function showEvents(date) {
         eventDetails.innerHTML += "<p>No events for this day.</p>";
     }
 
-    document.getElementById('event-modal').style.display = "block";
+    document.getElementById('event-modal').style.display = "flex";
 }
 
 document.getElementById('close-modal').onclick = function() {
