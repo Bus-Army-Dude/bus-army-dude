@@ -1323,6 +1323,7 @@ body {
     width: 100%;
     margin-bottom: 20px;
     position: relative;
+    justify-content: center; /* Centering the buttons and the month-year */
 }
 
 .calendar-header button {
@@ -1347,16 +1348,21 @@ body {
     font-size: 24px;
     text-align: center;
     margin: 0;
+    width: 100%; /* Take full width */
+    display: flex;
+    justify-content: center;
 }
 
 /* Days of the Week */
 .calendar-days {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* Default to 7 columns */
+    grid-template-columns: repeat(7, 1fr); /* 7 columns */
     width: 100%;
     text-align: center;
     background-color: #333;
     padding: 10px 0;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
 }
 
 .calendar-days div {
@@ -1384,6 +1390,7 @@ body {
     cursor: pointer;
     position: relative;
     transition: background-color 0.3s ease;
+    border: 1px solid #555; /* Add border for clarity */
 }
 
 .calendar-grid div:hover {
@@ -1438,12 +1445,13 @@ body {
     text-decoration: none;
 }
 
-/* Make sure the calendar grid and days fit on mobile */
+/* For mobile devices, adjust font sizes and layout to fit screen */
 @media (max-width: 768px) {
     .calendar-header {
         flex-direction: column;
         align-items: center;
         position: relative;
+        justify-content: center; /* Center the buttons and the month-year */
     }
 
     .calendar-days {
@@ -1467,6 +1475,8 @@ body {
 @media (max-width: 480px) {
     #month-year {
         font-size: 18px;
+        text-align: center;
+        margin: 0;
     }
 
     .calendar-header button {
