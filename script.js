@@ -511,11 +511,11 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Event Data (with time added to each event)
+// Events data (you can replace this with your own event data or fetch it dynamically)
 const events = [
-    { date: '2025-01-15', name: 'Live Stream 1', link: '#', description: 'Join us for an exciting live stream!', time: '2:00 PM' },
-    { date: '2025-01-22', name: 'Live Stream 2', link: '#', description: 'Another live stream to catch!', time: '6:00 PM' },
-    { date: '2025-01-28', name: 'Update Event', link: '#', description: 'Important update about the website.', time: '1:00 PM' }
+    { date: '2025-01-15', name: 'Live Stream 1', time: '2:00 PM', description: 'Join us for an exciting live stream!' },
+    { date: '2025-01-22', name: 'Live Stream 2', time: '6:00 PM', description: 'Another live stream to catch!' },
+    { date: '2025-01-28', name: 'Update Event', time: '1:00 PM', description: 'Important update about the website.' }
 ];
 
 // Get current date and format it as YYYY-MM
@@ -534,17 +534,17 @@ function generateCalendar(monthYear) {
     let calendarGrid = document.getElementById('calendar-grid');
     calendarGrid.innerHTML = '';
 
-    // Days of the week header
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    let headerRow = document.createElement('div');
-    headerRow.classList.add('calendar-days-header');
+    // Generate Days of the Week header (Full names)
+    let daysHeader = document.createElement('div');
+    daysHeader.classList.add('calendar-days-header');
+    let daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     daysOfWeek.forEach(day => {
         let dayElement = document.createElement('div');
         dayElement.classList.add('calendar-day');
         dayElement.innerText = day;
-        headerRow.appendChild(dayElement);
+        daysHeader.appendChild(dayElement);
     });
-    calendarGrid.appendChild(headerRow);
+    calendarGrid.appendChild(daysHeader);
 
     // Generate empty days before the first day of the month
     for (let i = 0; i < startDay; i++) {
@@ -555,7 +555,7 @@ function generateCalendar(monthYear) {
     // Generate the days of the month
     for (let day = 1; day <= daysInMonth; day++) {
         let calendarDay = document.createElement('div');
-        calendarDay.classList.add('calendar-day');
+        calendarDay.classList.add('calendar-day-cell');
         calendarDay.innerHTML = `<span>${day}</span>`;
 
         // Add events to the day
@@ -564,7 +564,7 @@ function generateCalendar(monthYear) {
         dayEvents.forEach(event => {
             let eventElement = document.createElement('div');
             eventElement.classList.add('event');
-            eventElement.innerHTML = `${event.name} - <a href="${event.link}" target="_blank">Details</a> <br> Time: ${event.time}`;
+            eventElement.innerHTML = `${event.name} <br> <span class="event-time">${event.time}</span>`;
             calendarDay.appendChild(eventElement);
         });
 
@@ -590,4 +590,3 @@ document.getElementById('next-month').addEventListener('click', () => {
 
 // Initial calendar load
 generateCalendar(currentMonthYear);
-
