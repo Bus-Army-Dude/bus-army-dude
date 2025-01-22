@@ -1353,10 +1353,9 @@ button:hover {
 /* Calendar Grid Layout */
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns */
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for each day */
     gap: 5px;
     margin-top: 10px;
-    grid-auto-rows: minmax(100px, auto); /* Ensures each day cell has at least 100px height */
 }
 
 /* Calendar Day Cell */
