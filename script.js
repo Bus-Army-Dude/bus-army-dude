@@ -511,8 +511,11 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Event Data (for now, add some sample events)
+// Event Data (with time added to each event)
 const events = [
+    { date: '2025-01-15', name: 'Live Stream 1', link: '#', description: 'Join us for an exciting live stream!', time: '2:00 PM' },
+    { date: '2025-01-22', name: 'Live Stream 2', link: '#', description: 'Another live stream to catch!', time: '6:00 PM' },
+    { date: '2025-01-28', name: 'Update Event', link: '#', description: 'Important update about the website.', time: '1:00 PM' }
 ];
 
 // Get current date and format it as YYYY-MM
@@ -531,6 +534,18 @@ function generateCalendar(monthYear) {
     let calendarGrid = document.getElementById('calendar-grid');
     calendarGrid.innerHTML = '';
 
+    // Days of the week header
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    let headerRow = document.createElement('div');
+    headerRow.classList.add('calendar-header');
+    daysOfWeek.forEach(day => {
+        let dayElement = document.createElement('div');
+        dayElement.classList.add('calendar-day');
+        dayElement.innerText = day;
+        headerRow.appendChild(dayElement);
+    });
+    calendarGrid.appendChild(headerRow);
+
     // Generate empty days before the first day of the month
     for (let i = 0; i < startDay; i++) {
         let emptyDay = document.createElement('div');
@@ -541,7 +556,7 @@ function generateCalendar(monthYear) {
     for (let day = 1; day <= daysInMonth; day++) {
         let calendarDay = document.createElement('div');
         calendarDay.classList.add('calendar-day');
-        calendarDay.innerHTML = day;
+        calendarDay.innerHTML = `<span>${day}</span>`;
 
         // Add events to the day
         let dateString = `${year}-${month.padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -549,7 +564,7 @@ function generateCalendar(monthYear) {
         dayEvents.forEach(event => {
             let eventElement = document.createElement('div');
             eventElement.classList.add('event');
-            eventElement.innerHTML = `${event.name} - <a href="${event.link}" target="_blank">Details</a>`;
+            eventElement.innerHTML = `${event.name} - <a href="${event.link}" target="_blank">Details</a> <br> Time: ${event.time}`;
             calendarDay.appendChild(eventElement);
         });
 
