@@ -1293,101 +1293,103 @@ p {
     transform: rotate(180deg);
 }
 
-/* Style for the calendar container */
+/* General Calendar Styling */
 .calendar-container {
-    margin: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #2e2e2e;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
 }
 
-/* Style for the calendar navigation header */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 600px;
-    margin: 10px 0;
-    align-items: center;
+    margin-bottom: 10px;
 }
 
-/* Style for the header showing the month and year */
 #month-year {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    flex: 1;
+    flex-grow: 1;
 }
 
-/* Style for the previous and next month buttons */
+/* Styling for buttons */
 button {
     padding: 10px;
     background-color: #333;
     color: white;
     border: none;
+    font-size: 1rem;
     cursor: pointer;
-    font-size: 1rem;
 }
 
-/* Style for the calendar grid */
-#calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    max-width: 600px;
-    margin-top: 20px;
+button:hover {
+    background-color: #444;
 }
 
-/* Style for each day cell */
-.calendar-day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-/* Style for the days of the week header */
+/* Calendar Days Header (Full Names) */
 .calendar-days-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
+    width: 100%;
     margin-bottom: 10px;
+    background-color: #444;
+    padding: 10px 0;
+    border-radius: 5px;
+}
+
+.calendar-day {
+    text-align: center;
     font-weight: bold;
-    background-color: #222;
+}
+
+/* Calendar Grid Layout */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.calendar-day-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #555;
     padding: 10px;
     border-radius: 5px;
+    font-size: 1.2rem;
+    position: relative;
 }
 
-/* Style for the event labels inside each day */
+.calendar-day-cell span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Event Styling */
 .event {
-    background-color: #ff5733;
+    background-color: #FF5733;
     color: white;
     padding: 5px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    margin-top: 8px;
+    font-size: 0.8rem;
     text-align: center;
+    border-radius: 5px;
 }
 
-/* Style for the time part of the event */
-.event .event-time {
-    font-size: 0.8rem;
+/* Styling for Event Time */
+.event-time {
+    font-size: 0.7rem;
     font-weight: 400;
     color: #f0f0f0;
     margin-top: 5px;
-}
-
-.event a {
-    color: white;
-    text-decoration: none;
-}
-
-.event a:hover {
-    text-decoration: underline;
 }
 
 /* Footer */
