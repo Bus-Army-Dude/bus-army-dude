@@ -22,7 +22,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Image security measures
 - Content control system
 - Selection management
-- Last Updated Feature for Follower/Subscriber/Fan count
+- Last Updated Feature for Follower/Subscriber
 ### 💻 Supported Operating Systems
 - iOS
 - iPadOS
