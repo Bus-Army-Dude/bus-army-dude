@@ -95,9 +95,9 @@ For any security-related concerns, please contact:
 ## Repository Information
 - Repository: BusArmyDude/busarmydude
 - Language Composition:
-  - **JavaScript:** 42.4%
-  - **CSS:** 36.3%
-  - **HTML:** 21.3%
+  - **JavaScript:** 42.2%
+  - **CSS:** 36.1%
+  - **HTML:** 21.7%
 
 ## Acknowledgments
 
@@ -105,7 +105,7 @@ We appreciate the security community's efforts in responsibly disclosing vulnera
 
 ## Version Control
 
-This security policy is version 1.9.0 and was last updated on 2025-1-21 6:05 PM
+This security policy is version 1.9.0 and was last updated on 2025-1-22 9:39 AM
 
 ---
 
