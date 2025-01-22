@@ -1293,33 +1293,37 @@ p {
     transform: rotate(180deg);
 }
 
-/* General Section Styling */
+/* Common Section Styles */
 .section {
-    background-color: #333;
-    color: #f5f5f5;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    border: 1px solid #444;
+    margin: 20px 0;
+    padding: 15px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    background-color: #1e1e1e;
+    color: white;
 }
 
-h2 {
-    color: #f5f5f5;
-    font-size: 1.5rem;
+.section h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
 
-p, li {
-    font-size: 1rem;
-    line-height: 1.5;
+.section p {
+    font-size: 1.2em;
+    margin: 0;
 }
 
-ul {
-    list-style-type: none;
-    padding-left: 0;
+/* Section-specific styles */
+.fun-fact-section {
+    background-color: #3a3a3a;
 }
 
-.fun-fact-section, .quote-of-the-day-section, .history-section {
-    background-color: #2c2f33;
+.quote-of-the-day-section {
+    background-color: #4a4a4a;
+}
+
+.today-in-history-section {
+    background-color: #5a5a5a;
 }
 
 /* Footer */
