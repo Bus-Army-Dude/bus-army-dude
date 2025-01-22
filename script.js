@@ -514,61 +514,50 @@ faqQuestions.forEach((question) => {
 // Static data for Fun Fact of the Day
 const funFacts = [
     "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible.",
-    "A group of flamingos is called a 'flamboyance.'",
-    "Octopuses have three hearts and blue blood.",
-    "Bananas are berries, but strawberries are not!",
-    "Sharks have been around longer than trees."
+    "Bananas are berries, but strawberries are not.",
+    "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion."
+    // Add more facts as needed
 ];
 
 // Static data for Quote of the Day
 const quotes = [
-    "The only way to do great work is to love what you do. – Steve Jobs",
-    "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
-    "It does not matter how slowly you go as long as you do not stop. – Confucius",
-    "In the end, we will remember not the words of our enemies, but the silence of our friends. – Martin Luther King Jr.",
-    "The best time to plant a tree was 20 years ago. The second best time is now. – Chinese Proverb"
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "In the middle of every difficulty lies opportunity. - Albert Einstein"
+    // Add more quotes as needed
 ];
 
 // Static data for Today in History
 const historyEvents = {
-    '01/22': [
-        "In 1973, the Supreme Court of the United States issued its landmark decision in Roe v. Wade, which legalized abortion nationwide.",
-        "In 1901, Queen Victoria of the United Kingdom passed away, marking the end of the Victorian Era."
+    "01/22": [
+        "In 1901, the first Australian parliament opened.",
+        "In 1973, President Nixon announced the end of the Vietnam War."
     ],
-    '01/23': [
-        "In 1957, the United States successfully tested the first hydrogen bomb.",
-        "In 1968, the Tet Offensive began during the Vietnam War."
-    ],
-    '01/24': [
-        "In 1848, the California Gold Rush began after gold was discovered at Sutter's Mill in Coloma, California.",
-        "In 1984, Apple launched the Macintosh computer."
-    ]
+    // Add more dates as needed
 };
 
-// Function to display Fun Fact of the Day
+// Log the arrays and what we're trying to display
 function loadFunFactOfTheDay() {
     const factElement = document.getElementById('fun-fact-text');
     const today = new Date();
-    const factIndex = today.getDate() % funFacts.length; // Use the day of the month to index the facts
-    console.log("Fun Fact of the Day: ", funFacts[factIndex]); // Log the fact
+    const factIndex = today.getDate() % funFacts.length;
+    console.log("Fun Fact of the Day: ", funFacts[factIndex]);
     factElement.textContent = funFacts[factIndex];
 }
 
-// Function to display Quote of the Day
 function loadQuoteOfTheDay() {
     const quoteElement = document.getElementById('quote-of-the-day-text');
     const today = new Date();
-    const quoteIndex = today.getDate() % quotes.length; // Use the day of the month to index the quotes
-    console.log("Quote of the Day: ", quotes[quoteIndex]); // Log the quote
+    const quoteIndex = today.getDate() % quotes.length;
+    console.log("Quote of the Day: ", quotes[quoteIndex]);
     quoteElement.textContent = `"${quotes[quoteIndex]}"`;
 }
 
-// Function to display Today in History
 function loadTodayInHistory() {
     const historyElement = document.getElementById('history-events');
     const today = new Date();
     const todayStr = `${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getDate().toString().padStart(2, '0')}`;
-    console.log("Today: ", todayStr); // Log today's date
+    console.log("Today: ", todayStr);
     const events = historyEvents[todayStr] || ["No historical events found for today."];
     
     historyElement.innerHTML = ''; // Clear previous events
@@ -578,11 +567,3 @@ function loadTodayInHistory() {
         historyElement.appendChild(listItem);
     });
 }
-
-// Initialize the data once the page is loaded
-window.onload = function() {
-    loadFunFactOfTheDay();
-    loadQuoteOfTheDay();
-    loadTodayInHistory();
-};
-
