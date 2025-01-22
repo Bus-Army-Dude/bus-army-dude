@@ -511,63 +511,52 @@ faqQuestions.forEach((question) => {
     });
 });
 
+// Fun Fact of the Day and Quote of the Day data (you can add more fun facts and quotes)
 const funFacts = [
-    "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3,000 years old and still edible.",
-    "Bananas are berries, but strawberries are not!",
-    "Sharks have been around longer than trees, having existed for around 400 million years.",
+    "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old!",
+    "Bananas are berries, but strawberries aren’t!",
     "Octopuses have three hearts and blue blood.",
-    "A cloud can weigh more than a million pounds."
+    "A day on Venus is longer than a year on Venus.",
+    "Sharks existed before trees did."
 ];
 
 const quotes = [
-    "The only way to do great work is to love what you do. – Steve Jobs",
-    "Success is not the key to happiness. Happiness is the key to success. – Albert Schweitzer",
-    "Life is what happens when you’re busy making other plans. – John Lennon",
-    "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment. – Ralph Waldo Emerson",
-    "You only live once, but if you do it right, once is enough. – Mae West"
+    "The best way to get started is to quit talking and begin doing. – Walt Disney",
+    "The pessimist sees difficulty in every opportunity. The optimist sees opportunity in every difficulty. – Winston Churchill",
+    "Don’t let yesterday take up too much of today. – Will Rogers",
+    "You learn more from failure than from success. Don’t let it stop you. Failure builds character.",
+    "It’s not whether you get knocked down, it’s whether you get up. – Vince Lombardi"
 ];
 
-// Function to get today's date in 'YYYY-MM-DD' format
-function getTodayDate() {
+// Function to get today's index based on the date
+function getTodayIndex(max) {
     const today = new Date();
-    return today.toISOString().split('T')[0]; // Returns the date in format YYYY-MM-DD
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    return dayOfYear % max;
 }
 
-// Set the Fun Fact of the Day (only changes once per day)
-function setFunFactOfTheDay() {
-    const todayDate = getTodayDate();
-    const lastUpdatedDate = localStorage.getItem('lastFunFactDate');
-
-    if (lastUpdatedDate !== todayDate) {
-        // Set a new fun fact if the date has changed
-        const randomFact = funFacts[Math.floor(Math.random() * funFacts.length)];
-        document.getElementById('fun-fact-text').textContent = randomFact;
-        localStorage.setItem('lastFunFactDate', todayDate); // Store today's date
-    } else {
-        // If it's already been set, ensure the content is loaded
-        const lastFact = localStorage.getItem('lastFunFactContent');
-        document.getElementById('fun-fact-text').textContent = lastFact;
-    }
+// Fun Fact of the Day
+function displayFunFact() {
+    const funFactElement = document.getElementById('fun-fact-text');
+    const factIndex = getTodayIndex(funFacts.length);
+    const funFact = funFacts[factIndex];
+    funFactElement.textContent = funFact;
 }
 
-// Set the Quote of the Day (only changes once per day)
-function setQuoteOfTheDay() {
-    const todayDate = getTodayDate();
-    const lastUpdatedDate = localStorage.getItem('lastQuoteDate');
-
-    if (lastUpdatedDate !== todayDate) {
-        // Set a new quote if the date has changed
-        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        document.getElementById('quote-of-the-day-text').textContent = randomQuote;
-        localStorage.setItem('lastQuoteDate', todayDate); // Store today's date
-        localStorage.setItem('lastQuoteContent', randomQuote); // Store quote for the day
-    } else {
-        // If it's already been set, ensure the content is loaded
-        const lastQuote = localStorage.getItem('lastQuoteContent');
-        document.getElementById('quote-of-the-day-text').textContent = lastQuote;
-    }
+// Quote of the Day
+function displayQuoteOfTheDay() {
+    const quoteElement = document.getElementById('quote-text');
+    const quoteIndex = getTodayIndex(quotes.length);
+    const quote = quotes[quoteIndex];
+    quoteElement.textContent = quote;
 }
 
-// Run the functions to set the daily updates
-setFunFactOfTheDay();
-setQuoteOfTheDay();
+// Function to load both the fun fact and quote of the day
+function loadDailyContent() {
+    displayFunFact();
+    displayQuoteOfTheDay();
+}
+
+// Load the content when the page is ready
+document.addEventListener('DOMContentLoaded', loadDailyContent);
+
