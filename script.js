@@ -512,93 +512,87 @@ faqQuestions.forEach((question) => {
 });
 
 const events = {
-    "2025-01-22": [{ time: "10:00 AM", title: "Live Stream Event" }],
-    "2025-01-23": [{ time: "2:00 PM", title: "Workshop: Web Development" }]
+    "2025-01-22": [{ time: "10:00 AM", description: "Event 1" }],
+    "2025-01-25": [{ time: "2:00 PM", description: "Event 2" }]
 };
 
-let currentMonth;
-let currentYear;
+let currentDate = new Date();
 
-function generateCalendar() {
-    const calendarGrid = document.getElementById('calendar-grid');
+function renderCalendar(date) {
     const monthYear = document.getElementById('month-year');
-    const date = new Date(currentYear, currentMonth);
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const calendarGrid = document.getElementById('calendar-grid');
+    const prevButton = document.getElementById('prev-month');
+    const nextButton = document.getElementById('next-month');
 
-    // Set Month and Year
-    monthYear.textContent = `${date.toLocaleString('default', { month: 'long' })} ${currentYear}`;
+    const month = date.getMonth();
+    const year = date.getFullYear();
 
-    // Clear previous grid content
-    calendarGrid.innerHTML = '';
+    // Display current month and year
+    monthYear.textContent = `${date.toLocaleString('default', { month: 'long' })} ${year}`;
 
-    // Create empty divs for the initial empty days in the month
+    // Get first day of the month
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    // Clear previous calendar grid
+    calendarGrid.innerHTML = "";
+
+    // Add empty spaces for days before the start of the month
     for (let i = 0; i < firstDay; i++) {
         const emptyDiv = document.createElement('div');
         calendarGrid.appendChild(emptyDiv);
     }
 
-    // Generate the days in the calendar grid
-    for (let i = 1; i <= daysInMonth; i++) {
+    // Add days to the grid
+    for (let day = 1; day <= lastDate; day++) {
         const dayDiv = document.createElement('div');
-        const currentDate = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+        const dayString = `${year}-${month + 1}-${day < 10 ? '0' : ''}${day}`;
 
-        dayDiv.textContent = i;
-        dayDiv.classList.add('day'); // Add a class to style individual days
+        dayDiv.textContent = day;
 
-        if (events[currentDate]) {
-            dayDiv.classList.add('event'); // Add event class if there's an event
+        // Check if there's an event on that day
+        if (events[dayString]) {
+            dayDiv.classList.add('event');
+            dayDiv.setAttribute('title', events[dayString].map(e => `${e.time}: ${e.description}`).join('\n'));
         }
 
-        // Click event to show details for days with events
-        dayDiv.onclick = function () {
-            if (events[currentDate]) {
-                showEventDetails(currentDate);
-            }
-        };
+        // Add event listener to show events
+        dayDiv.addEventListener('click', () => showEvents(dayString));
 
         calendarGrid.appendChild(dayDiv);
     }
+
+    // Button functionality
+    prevButton.onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
+    };
+    nextButton.onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
+    };
 }
 
-function showEventDetails(date) {
+function showEvents(date) {
     const eventDetails = document.getElementById('event-details');
-    eventDetails.innerHTML = '';
+    eventDetails.innerHTML = `<h3>Events for ${date}</h3>`;
+    
+    if (events[date]) {
+        events[date].forEach(event => {
+            const eventElement = document.createElement('p');
+            eventElement.textContent = `${event.time} - ${event.description}`;
+            eventDetails.appendChild(eventElement);
+        });
+    } else {
+        eventDetails.innerHTML += "<p>No events for this day.</p>";
+    }
 
-    events[date].forEach(event => {
-        const eventDiv = document.createElement('div');
-        eventDiv.textContent = `${event.time} - ${event.title}`;
-        eventDetails.appendChild(eventDiv);
-    });
-
-    document.getElementById('event-modal').style.display = 'block';
+    document.getElementById('event-modal').style.display = "block";
 }
 
-document.getElementById('close-modal').onclick = function () {
-    document.getElementById('event-modal').style.display = 'none';
+document.getElementById('close-modal').onclick = function() {
+    document.getElementById('event-modal').style.display = "none";
 };
 
-document.getElementById('prev-month').onclick = function () {
-    currentMonth--;
-    if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-    }
-    generateCalendar();
-};
-
-document.getElementById('next-month').onclick = function () {
-    currentMonth++;
-    if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-    }
-    generateCalendar();
-};
-
-window.onload = function () {
-    const today = new Date();
-    currentMonth = today.getMonth();
-    currentYear = today.getFullYear();
-    generateCalendar();
-};
+// Initial render
+renderCalendar(currentDate);
