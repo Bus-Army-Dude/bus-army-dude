@@ -550,6 +550,7 @@ function loadFunFactOfTheDay() {
     const factElement = document.getElementById('fun-fact-text');
     const today = new Date();
     const factIndex = today.getDate() % funFacts.length; // Use the day of the month to index the facts
+    console.log("Fun Fact of the Day: ", funFacts[factIndex]); // Log the fact
     factElement.textContent = funFacts[factIndex];
 }
 
@@ -558,6 +559,7 @@ function loadQuoteOfTheDay() {
     const quoteElement = document.getElementById('quote-of-the-day-text');
     const today = new Date();
     const quoteIndex = today.getDate() % quotes.length; // Use the day of the month to index the quotes
+    console.log("Quote of the Day: ", quotes[quoteIndex]); // Log the quote
     quoteElement.textContent = `"${quotes[quoteIndex]}"`;
 }
 
@@ -566,8 +568,7 @@ function loadTodayInHistory() {
     const historyElement = document.getElementById('history-events');
     const today = new Date();
     const todayStr = `${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getDate().toString().padStart(2, '0')}`;
-    
-    // Get history for today or default to "No events found"
+    console.log("Today: ", todayStr); // Log today's date
     const events = historyEvents[todayStr] || ["No historical events found for today."];
     
     historyElement.innerHTML = ''; // Clear previous events
@@ -584,3 +585,4 @@ window.onload = function() {
     loadQuoteOfTheDay();
     loadTodayInHistory();
 };
+
