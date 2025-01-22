@@ -1334,30 +1334,32 @@ button:hover {
     background-color: #444;
 }
 
-/* Calendar Days Header (Full Names) */
+/* Days of the Week Header */
 .calendar-days-header {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for each day */
     width: 100%;
     margin-bottom: 10px;
     background-color: #444;
     padding: 10px 0;
     border-radius: 5px;
+    text-align: center;
 }
 
 .calendar-day {
-    text-align: center;
     font-weight: bold;
 }
 
 /* Calendar Grid Layout */
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr); /* 7 columns */
     gap: 5px;
     margin-top: 10px;
+    grid-auto-rows: minmax(100px, auto); /* Ensures each day cell has at least 100px height */
 }
 
+/* Calendar Day Cell */
 .calendar-day-cell {
     display: flex;
     flex-direction: column;
