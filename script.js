@@ -512,13 +512,31 @@ faqQuestions.forEach((question) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Get the current date (for daily updates)
+    const currentDate = new Date().toLocaleDateString();
+
     // Function to fetch Fun Fact of the Day
     async function getFunFact() {
         try {
+            // Check if fun fact data is already stored for today
+            const storedDate = localStorage.getItem('funFactDate');
+            const storedFact = localStorage.getItem('funFactText');
+
+            if (storedDate === currentDate && storedFact) {
+                document.getElementById('fun-fact-text').textContent = storedFact;
+                return;
+            }
+
             const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
             if (!response.ok) throw new Error('Failed to fetch Fun Fact');
             const data = await response.json();
-            document.getElementById('fun-fact-text').textContent = data.text;
+            const fact = data.text;
+
+            // Store the fact and date in localStorage
+            localStorage.setItem('funFactDate', currentDate);
+            localStorage.setItem('funFactText', fact);
+
+            document.getElementById('fun-fact-text').textContent = fact;
         } catch (error) {
             console.error('Error fetching Fun Fact:', error);
             document.getElementById('fun-fact-text').textContent = 'Could not load fact. Please try again later.';
@@ -528,10 +546,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch Quote of the Day
     async function getQuoteOfTheDay() {
         try {
+            // Check if quote data is already stored for today
+            const storedDate = localStorage.getItem('quoteDate');
+            const storedQuote = localStorage.getItem('quoteText');
+
+            if (storedDate === currentDate && storedQuote) {
+                document.getElementById('quote-of-the-day-text').textContent = `"${storedQuote}"`;
+                return;
+            }
+
             const response = await fetch('https://api.quotable.io/random');
             if (!response.ok) throw new Error('Failed to fetch Quote of the Day');
             const data = await response.json();
-            document.getElementById('quote-of-the-day-text').textContent = `"${data.content}" — ${data.author}`;
+            const quote = data.content;
+
+            // Store the quote and date in localStorage
+            localStorage.setItem('quoteDate', currentDate);
+            localStorage.setItem('quoteText', quote);
+
+            document.getElementById('quote-of-the-day-text').textContent = `"${quote}"`;
         } catch (error) {
             console.error('Error fetching Quote of the Day:', error);
             document.getElementById('quote-of-the-day-text').textContent = 'Could not load quote. Please try again later.';
@@ -541,16 +574,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch Today in History
     async function getTodayInHistory() {
         try {
+            // Check if history data is already stored for today
+            const storedDate = localStorage.getItem('historyDate');
+            const storedHistory = localStorage.getItem('historyText');
+
+            if (storedDate === currentDate && storedHistory) {
+                document.getElementById('today-in-history-text').textContent = storedHistory;
+                return;
+            }
+
             const today = new Date();
             const dateStr = `${today.getMonth() + 1}-${today.getDate()}`;
             const response = await fetch(`https://api.history.muffinlabs.com/date/${dateStr}`);
             if (!response.ok) throw new Error('Failed to fetch Today in History');
             const data = await response.json();
+            let historyText = 'No events found for today.';
+
             if (data.data.Events.length > 0) {
-                document.getElementById('today-in-history-text').textContent = data.data.Events[0].text;
-            } else {
-                document.getElementById('today-in-history-text').textContent = 'No events found for today.';
+                historyText = data.data.Events[0].text;
             }
+
+            // Store the history and date in localStorage
+            localStorage.setItem('historyDate', currentDate);
+            localStorage.setItem('historyText', historyText);
+
+            document.getElementById('today-in-history-text').textContent = historyText;
         } catch (error) {
             console.error('Error fetching Today in History:', error);
             document.getElementById('today-in-history-text').textContent = 'Could not load history. Please try again later.';
