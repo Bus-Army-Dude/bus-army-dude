@@ -1370,11 +1370,6 @@ button:hover {
     position: relative;
 }
 
-.calendar-day-cell span {
-    display: block;
-    margin-bottom: 5px;
-}
-
 /* Event Styling */
 .event {
     background-color: #FF5733;
