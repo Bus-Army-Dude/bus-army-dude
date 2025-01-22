@@ -511,18 +511,22 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Function to load content for the day
 function loadDailyContent() {
     const todayDate = new Date().toISOString().split('T')[0]; // Get today's date (YYYY-MM-DD)
+    console.log("Today's Date:", todayDate); // Debugging line to check today's date
 
     // Check if data for today is already in localStorage
     if (localStorage.getItem('lastFetchedDate') === todayDate) {
         // If today's data is found, use stored values
+        console.log("Fetching data from localStorage...");
+
         document.getElementById("fun-fact-text").innerText = localStorage.getItem('funFact');
         document.getElementById("quote-of-the-day-text").innerText = localStorage.getItem('quoteOfTheDay');
         document.getElementById("today-in-history-text").innerText = localStorage.getItem('todayInHistory');
     } else {
         // If no data for today, set hardcoded values and store them in localStorage
+        console.log("Setting new data for today...");
+
         const funFact = "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion of the metal.";
         const quote = "The only way to do great work is to love what you do. – Steve Jobs";
         const history = "On this day in 1963, France and Germany signed the Élysée Treaty.";
@@ -542,3 +546,4 @@ function loadDailyContent() {
 
 // Call the function to load content on page load
 window.onload = loadDailyContent;
+
