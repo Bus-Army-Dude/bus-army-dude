@@ -1342,6 +1342,30 @@ body {
     color: var(--primary-text-color);
 }
 
+/* Today in History Section */
+#today-in-history-section {
+    padding: 20px;
+    border: 1px solid #444; /* Match the border theme of the website */
+    margin: 20px 0;
+    background-color: #222; /* Match the website's background color */
+    color: #fff; /* Ensure text is readable */
+    border-radius: 8px;
+}
+
+/* Styling for the list of history events */
+#history-events {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#history-events li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #333; /* Match the website theme */
+    color: #fff;
+    border-radius: 5px;
+}
+
 /* Footer */
 footer {
     text-align: center;
