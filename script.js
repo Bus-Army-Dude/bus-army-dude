@@ -498,14 +498,15 @@ if (navigator.geolocation) {
     document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
 }
 
-// JavaScript for toggling the FAQ answers
-document.addEventListener('DOMContentLoaded', function() {
-    const faqQuestions = document.querySelectorAll('.faq-question');
+// Get all the FAQ question buttons
+const faqQuestions = document.querySelectorAll('.faq-question');
 
-    faqQuestions.forEach(function(question) {
-        question.addEventListener('click', function() {
-            const faqItem = this.parentElement;
-            faqItem.classList.toggle('active'); // Toggle visibility of the answer
-        });
+// Add event listeners to each button
+faqQuestions.forEach((question) => {
+    question.addEventListener('click', () => {
+        const faqItem = question.parentElement;
+
+        // Toggle the active class to show or hide the answer
+        faqItem.classList.toggle('active');
     });
 });
