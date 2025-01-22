@@ -511,83 +511,96 @@ faqQuestions.forEach((question) => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const currentDate = new Date().toLocaleDateString();
+// Function to fetch and display the Fun Fact of the Day
+function getFunFact() {
+    // Check if we already have a fun fact for today
+    const lastFetched = localStorage.getItem('lastFetchedFactDate');
+    const currentDate = new Date().toISOString().split('T')[0]; // Get current date (YYYY-MM-DD)
 
-    // Fallback data
-    const fallbackFunFact = 'Did you know? Honey never spoils.';
-    const fallbackQuote = 'The only way to do great work is to love what you do. – Steve Jobs';
-    const fallbackHistory = 'In 1969, Apollo 11 successfully landed the first humans on the moon.';
-
-    // Function to fetch Fun Fact of the Day
-    async function getFunFact() {
-        const storedDate = localStorage.getItem('funFactDate');
-        const storedFact = localStorage.getItem('funFact');
-
-        // Check if the fact was already fetched today
-        if (storedDate === currentDate && storedFact) {
-            document.getElementById('fun-fact-text').textContent = storedFact;
-            return; // Exit if fact already stored for today
-        }
-
-        try {
-            const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-            if (!response.ok) throw new Error('Failed to fetch Fun Fact');
-            const data = await response.json();
-            const fact = data.text;
-
-            // Store the fact and date in local storage
-            localStorage.setItem('funFact', fact);
-            localStorage.setItem('funFactDate', currentDate);
-
-            document.getElementById('fun-fact-text').textContent = fact;
-        } catch (error) {
-            console.error('Error fetching Fun Fact:', error);
-            // Fallback fact if the API fails
-            document.getElementById('fun-fact-text').textContent = fallbackFunFact;
-        }
-    }
-
-    // Function to fetch Quote of the Day
-    async function getQuoteOfTheDay() {
-        try {
-            const response = await fetch('https://api.quotable.io/random');
-            if (!response.ok) throw new Error('Failed to fetch Quote of the Day');
-            const data = await response.json();
-            const quote = data.content;
-
-            document.getElementById('quote-of-the-day-text').textContent = `"${quote}"`;
-        } catch (error) {
-            console.error('Error fetching Quote of the Day:', error);
-            // Fallback quote if the API fails
-            document.getElementById('quote-of-the-day-text').textContent = fallbackQuote;
-        }
-    }
-
-    // Function to fetch Today in History
-    async function getTodayInHistory() {
-        try {
-            const today = new Date();
-            const dateStr = `${today.getMonth() + 1}-${today.getDate()}`;
-            const response = await fetch(`https://api.history.muffinlabs.com/date/${dateStr}`);
-            if (!response.ok) throw new Error('Failed to fetch Today in History');
-            const data = await response.json();
-            let historyText = 'No events found for today.';
-
-            if (data.data.Events.length > 0) {
-                historyText = data.data.Events[0].text;
+    if (lastFetched === currentDate) {
+        // If already fetched today, display the cached fun fact
+        document.getElementById("fun-fact-text").innerText = localStorage.getItem('funFact');
+    } else {
+        // Fetch a new fun fact from the API
+        fetch('https://api.api-ninjas.com/v1/facts?limit=1', {
+            method: 'GET',
+            headers: {
+                'X-Api-Key': '9I6lmICtg5u9AEZUkfZteQ==1y4tVPUwfj5l07Bp' // Replace with your API key
             }
-
-            document.getElementById('today-in-history-text').textContent = historyText;
-        } catch (error) {
-            console.error('Error fetching Today in History:', error);
-            // Fallback history if the API fails
-            document.getElementById('today-in-history-text').textContent = fallbackHistory;
-        }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const funFact = data[0].fact;
+            document.getElementById("fun-fact-text").innerText = funFact;
+            
+            // Store the fun fact and the date it was fetched
+            localStorage.setItem('funFact', funFact);
+            localStorage.setItem('lastFetchedFactDate', currentDate);
+        })
+        .catch(error => {
+            console.error("Error fetching Fun Fact:", error);
+            document.getElementById("fun-fact-text").innerText = "Could not load Fun Fact. Please try again later.";
+        });
     }
+}
 
-    // Fetch data for each section
+// Function to fetch and display the Quote of the Day
+function getQuoteOfTheDay() {
+    const lastFetched = localStorage.getItem('lastFetchedQuoteDate');
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    if (lastFetched === currentDate) {
+        document.getElementById("quote-of-the-day-text").innerText = localStorage.getItem('quoteOfTheDay');
+    } else {
+        fetch('https://api.quotable.io/random')
+        .then(response => response.json())
+        .then(data => {
+            const quote = data.content;
+            document.getElementById("quote-of-the-day-text").innerText = `"${quote}"`;
+
+            localStorage.setItem('quoteOfTheDay', quote);
+            localStorage.setItem('lastFetchedQuoteDate', currentDate);
+        })
+        .catch(error => {
+            console.error("Error fetching Quote of the Day:", error);
+            document.getElementById("quote-of-the-day-text").innerText = "Could not load Quote of the Day. Please try again later.";
+        });
+    }
+}
+
+// Function to fetch and display Today in History
+function getTodayInHistory() {
+    const lastFetched = localStorage.getItem('lastFetchedHistoryDate');
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    if (lastFetched === currentDate) {
+        document.getElementById("today-in-history-text").innerText = localStorage.getItem('todayInHistory');
+    } else {
+        fetch('https://api.api-ninjas.com/v1/facts?limit=1', {
+            method: 'GET',
+            headers: {
+                'X-Api-Key': '9I6lmICtg5u9AEZUkfZteQ==1y4tVPUwfj5l07Bp' // Replace with your API key
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const historyFact = data[0].fact;
+            document.getElementById("today-in-history-text").innerText = historyFact;
+
+            localStorage.setItem('todayInHistory', historyFact);
+            localStorage.setItem('lastFetchedHistoryDate', currentDate);
+        })
+        .catch(error => {
+            console.error("Error fetching Today in History:", error);
+            document.getElementById("today-in-history-text").innerText = "Could not load Today in History. Please try again later.";
+        });
+    }
+}
+
+// Call the functions on page load
+window.onload = function() {
     getFunFact();
     getQuoteOfTheDay();
     getTodayInHistory();
-});
+};
+
