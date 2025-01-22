@@ -511,33 +511,34 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Function to check if the data is already in localStorage for today
+// Function to load content for the day
 function loadDailyContent() {
     const todayDate = new Date().toISOString().split('T')[0]; // Get today's date (YYYY-MM-DD)
 
-    // Check if today's data is stored in localStorage
+    // Check if data for today is already in localStorage
     if (localStorage.getItem('lastFetchedDate') === todayDate) {
-        // If data is stored, use it
+        // If today's data is found, use stored values
         document.getElementById("fun-fact-text").innerText = localStorage.getItem('funFact');
         document.getElementById("quote-of-the-day-text").innerText = localStorage.getItem('quoteOfTheDay');
         document.getElementById("today-in-history-text").innerText = localStorage.getItem('todayInHistory');
     } else {
-        // If no data in localStorage, set hardcoded values and store them for today
+        // If no data for today, set hardcoded values and store them in localStorage
         const funFact = "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion of the metal.";
         const quote = "The only way to do great work is to love what you do. – Steve Jobs";
         const history = "On this day in 1963, France and Germany signed the Élysée Treaty.";
 
+        // Set content in HTML
         document.getElementById("fun-fact-text").innerText = funFact;
         document.getElementById("quote-of-the-day-text").innerText = quote;
         document.getElementById("today-in-history-text").innerText = history;
 
-        // Store today's data in localStorage
+        // Store content in localStorage with today's date
         localStorage.setItem('funFact', funFact);
         localStorage.setItem('quoteOfTheDay', quote);
         localStorage.setItem('todayInHistory', history);
-        localStorage.setItem('lastFetchedDate', todayDate); // Store the date so it won't refresh until the next day
+        localStorage.setItem('lastFetchedDate', todayDate); // Save the date to avoid refreshing the content
     }
 }
 
-// Call the function when the page loads
+// Call the function to load content on page load
 window.onload = loadDailyContent;
