@@ -525,9 +525,6 @@ const currentDay = new Date().getDate();
 // Get the fun fact of the day by using the current day number
 const dailyFact = funFacts[currentDay % funFacts.length];
 
-// Display the fact in the HTML
-document.getElementById('fact-text').textContent = dailyFact;
-
 const quotes = [
     { quote: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
     { quote: "In the end, we will remember not the words of our enemies, but the silence of our friends.", author: "Martin Luther King Jr." },
@@ -536,12 +533,10 @@ const quotes = [
     { quote: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" }
 ];
 
-// Get the current day of the year (1 to 365)
-const currentDay = new Date().getDate();
+// Select a random quote from the array
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-// Get the quote of the day by using the current day number
-const dailyQuote = quotes[currentDay % quotes.length];
+// Display the selected quote and author
+document.getElementById('quote-text').textContent = `"${randomQuote.quote}"`;
+document.getElementById('quote-author').textContent = `— ${randomQuote.author}`;
 
-// Display the quote and author in the HTML
-document.getElementById('quote-text').textContent = `"${dailyQuote.quote}"`;
-document.getElementById('quote-author').textContent = `— ${dailyQuote.author}`;
