@@ -1229,91 +1229,175 @@ p {
     color: #ffcc00; /* Bright color for the loading message */
 }
 
-/* General Text Styles */
+/* Base Style */
 body {
-    font-family: 'Arial', sans-serif; /* Simple and easy-to-read font */
-    font-size: 16px; /* Larger base font size */
-    line-height: 1.6; /* Increase line height for better readability */
-    color: #F5F5F5; /* Light text for dark background */
-    background-color: #333333; /* Dark background for contrast */
-    letter-spacing: 0.5px; /* Slight letter spacing for clarity */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: #2E2E2E; /* Default background (dark grey) */
+    color: #FFFFFF; /* White text for readability */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* Headings */
-h1, h2, h3, h4 {
-    font-family: 'Roboto', sans-serif; /* Use a clean and modern font */
-    font-weight: bold;
-    color: #FFFFFF; /* White for clear headings */
-    letter-spacing: 1px;
+/* Winter Season - Applied dynamically */
+body.winter {
+    background-color: #A9C9FF; /* Soft icy blue */
+    color: #FFFFFF; /* White text for readability */
 }
 
-/* Paragraphs */
-p {
-    font-size: 18px; /* Increase paragraph font size */
-    color: #E0E0E0; /* Light gray text for better contrast */
+body.winter header {
+    background-color: #1A1A1A; /* Dark header for contrast */
+}
+
+body.winter footer {
+    background-color: #1E3A5F; /* Deep navy */
+}
+
+body.winter .seasonal-banner {
+    display: block;
+    background-color: #A9C9FF;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.5em;
+}
+
+/* Spring Season - Applied dynamically */
+body.spring {
+    background-color: #A0E4A3; /* Light green for spring */
+    color: #333333; /* Darker text for better readability */
+}
+
+body.spring header {
+    background-color: #3B8A57; /* Medium green for header */
+}
+
+body.spring footer {
+    background-color: #2D5F3A; /* Darker green for footer */
+}
+
+body.spring .seasonal-banner {
+    display: block;
+    background-color: #A0E4A3;
+    color: #333333;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.5em;
+}
+
+/* Summer Season - Applied dynamically */
+body.summer {
+    background-color: #FFD700; /* Bright yellow for summer */
+    color: #1E1E1E; /* Dark text for readability */
+}
+
+body.summer header {
+    background-color: #FF8C00; /* Orange for header */
+}
+
+body.summer footer {
+    background-color: #E65100; /* Darker orange for footer */
+}
+
+body.summer .seasonal-banner {
+    display: block;
+    background-color: #FFD700;
+    color: #1E1E1E;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.5em;
+}
+
+/* Fall Season - Applied dynamically */
+body.fall {
+    background-color: #FF6F00; /* Warm orange for fall */
+    color: #F4F4F4; /* Light text for contrast */
+}
+
+body.fall header {
+    background-color: #D84315; /* Deep red-orange for header */
+}
+
+body.fall footer {
+    background-color: #BF360C; /* Dark brown for footer */
+}
+
+body.fall .seasonal-banner {
+    display: block;
+    background-color: #FF6F00;
+    color: #F4F4F4;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.5em;
+}
+
+/* Header Style */
+header {
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2em;
+    color: #FFFFFF; /* White text in header */
+}
+
+/* Main Content */
+main {
+    padding: 20px;
+}
+
+h2, h3 {
+    color: #FFFFFF; /* Light text for headings */
+}
+
+/* Sections */
+section {
+    background-color: #333333; /* Dark background for sections */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+section h2 {
+    color: #FFFFFF;
+}
+
+section p {
+    color: #D8E8F3; /* Light grayish-blue text for readability */
 }
 
 /* Links */
 a {
-    color: #FFEB3B; /* Bright yellow link color */
-    text-decoration: none;
+    color: #1E90FF; /* Link color */
 }
 
 a:hover {
-    color: #FFF59D; /* Lighter yellow when hovering */
-    text-decoration: underline;
+    color: #FFD700; /* Gold color on hover */
 }
 
-/* Buttons */
+/* Footer */
+footer {
+    color: #D8E8F3; /* Light text in footer */
+    padding: 20px;
+    text-align: center;
+}
+
+footer p {
+    font-size: 0.9em;
+}
+
+/* Button Styles */
 button {
-    font-size: 18px;
-    color: #FFF;
-    background-color: #007BFF; /* Blue button color */
+    background-color: #1E90FF; /* Blue button */
+    color: #FFFFFF;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
-}
-
-/* Header and Footer */
-header, footer {
-    font-size: 14px;
-    color: #BDBDBD; /* Slightly muted text color */
-}
-
-/* Accessibility: Focus on links for better visibility */
-a:focus, button:focus {
-    outline: 3px solid #FFEB3B; /* Bright outline for focus visibility */
-}
-
-/* Seasonal Backgrounds */
-body.summer {
-    background-color: #F2A900; /* Summer theme - warm yellow */
-}
-
-body.winter {
-    background-color: #6EC5E9; /* Winter theme - light blue */
-}
-
-body.spring {
-    background-color: #C1E3A1; /* Spring theme - soft green */
-}
-
-body.fall {
-    background-color: #E57737; /* Fall theme - warm orange */
-}
-
-/* Seasonal Specifics for text and layout (unchanged) */
-h1, h2, h3, h4 {
-    color: #FFF; /* Headings will stay white across all seasons */
-}
-
-p, a, button, header, footer {
-    color: #E0E0E0; /* Maintain text color across all seasons */
+    background-color: #FFD700; /* Gold on hover */
 }
 
 /* Footer */
