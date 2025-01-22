@@ -1293,52 +1293,23 @@ p {
     transform: rotate(180deg);
 }
 
-/* Common Section Styles */
+/* Style for sections */
 .section {
+    padding: 20px;
     margin: 20px 0;
-    padding: 15px;
-    border: 2px solid #333;
-    border-radius: 10px;
-    background-color: #1e1e1e; /* Keep consistent with the dark theme */
+    border: 2px solid #555;
+    background-color: #333;
     color: white;
+    border-radius: 8px;
 }
 
-/* Section Headers */
-.section h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    font-weight: bold;
+h2 {
+    font-size: 24px;
 }
 
-/* Section Content */
-.section p {
-    font-size: 1.2em;
-    margin: 0;
-}
-
-/* Fun Fact of the Day Section */
-.fun-fact-section {
-    background-color: #333; /* Slightly lighter for distinction */
-}
-
-/* Quote of the Day Section */
-.quote-of-the-day-section {
-    background-color: #444; /* Slightly lighter for distinction */
-}
-
-/* Today in History Section */
-.today-in-history-section {
-    background-color: #555; /* Slightly lighter for distinction */
-}
-
-/* Add some spacing for clarity */
-.fun-fact-section, .quote-of-the-day-section, .today-in-history-section {
-    margin-top: 30px;
-}
-
-/* Add padding inside sections for a better layout */
-.section p {
-    padding: 10px;
+p {
+    font-size: 18px;
+    line-height: 1.5;
 }
 
 /* Footer */
