@@ -1293,24 +1293,29 @@ p {
     transform: rotate(180deg);
 }
 
-/* General Section Styling */
+/* Styling for each section */
 .section {
-    background-color: #1e1e1e;
-    padding: 20px;
-    border: 1px solid #444;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    background-color: #2e2e2e; /* Dark background */
+    color: white; /* Text color */
+    padding: 15px;
+    margin-bottom: 20px; /* Add space between sections */
+    border: 2px solid #444; /* Border around each section */
+    border-radius: 8px; /* Rounded corners */
 }
 
-h2 {
-    color: #fff;
-    font-size: 1.5rem;
+/* Specific styling for the Fun Fact section */
+.fun-fact-section {
+    background-color: #1e1e1e; /* Darker background */
 }
 
-p {
-    color: #ccc;
-    font-size: 1rem;
-    margin-top: 10px;
+/* Specific styling for the Quote section */
+.quote-section {
+    background-color: #3e3e3e; /* Slightly lighter background */
+}
+
+/* Specific styling for the History section */
+.today-in-history-section {
+    background-color: #4e4e4e; /* Another variant */
 }
 
 /* Footer */
