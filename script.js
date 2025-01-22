@@ -557,9 +557,6 @@ function loadDailyContent() {
     displayQuoteOfTheDay();
 }
 
-// Load the content when the page is ready
-document.addEventListener('DOMContentLoaded', loadDailyContent);
-
 // Function to fetch and display Today in History events securely
 function loadTodayInHistory() {
     const historyElement = document.getElementById('history-events');
@@ -599,3 +596,4 @@ function loadTodayInHistory() {
 
 // Load the "Today in History" data when the page loads
 window.onload = loadTodayInHistory;
+
