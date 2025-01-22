@@ -1299,31 +1299,52 @@ p {
     padding: 15px;
     border: 2px solid #333;
     border-radius: 10px;
-    background-color: #1e1e1e;
+    background-color: #1e1e1e; /* Keep consistent with the dark theme */
     color: white;
 }
 
+/* Section Headers */
 .section h2 {
     font-size: 1.5em;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
+/* Section Content */
 .section p {
     font-size: 1.2em;
     margin: 0;
 }
 
-/* Section-specific styles */
+/* Fun Fact of the Day Section */
 .fun-fact-section {
-    background-color: #3a3a3a;
+    background-color: #333; /* Slightly lighter for distinction */
 }
 
+/* Quote of the Day Section */
 .quote-of-the-day-section {
-    background-color: #4a4a4a;
+    background-color: #444; /* Slightly lighter for distinction */
 }
 
+/* Today in History Section */
 .today-in-history-section {
-    background-color: #5a5a5a;
+    background-color: #555; /* Slightly lighter for distinction */
+}
+
+/* Add some spacing for clarity */
+.fun-fact-section, .quote-of-the-day-section, .today-in-history-section {
+    margin-top: 30px;
+}
+
+/* Hover Effect for Section Headers (optional) */
+.section:hover {
+    border-color: #ccc;
+    background-color: #2a2a2a;
+}
+
+/* Add padding inside sections for a better layout */
+.section p {
+    padding: 10px;
 }
 
 /* Footer */
