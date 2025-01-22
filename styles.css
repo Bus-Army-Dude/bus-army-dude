@@ -1293,94 +1293,62 @@ p {
     transform: rotate(180deg);
 }
 
-/* Modern Event Calendar Section */
-.event-calendar-section {
-    background-color: #222; /* Dark theme for the calendar section */
-    color: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    max-width: 900px;
-    margin: 0 auto;
-    overflow: hidden;
-}
-
-.event-calendar-section h2 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: #00c6ff; /* Accent color for headings */
-}
-
-#event-calendar {
+/* Style for the calendar container */
+.calendar-container {
+    margin: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Header with buttons */
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
+/* Style for the header showing the month and year */
 #month-year {
-    font-size: 1.8rem;
-    font-weight: 500;
-    color: #00c6ff;
-    letter-spacing: 1px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px;
 }
 
+/* Style for the previous and next month buttons */
 button {
+    padding: 10px;
     background-color: #333;
     color: white;
-    padding: 10px 15px;
     border: none;
-    border-radius: 5px;
-    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    margin: 5px;
+    font-size: 1rem;
 }
 
-button:hover {
-    background-color: #555;
-}
-
-/* Grid for days of the month */
+/* Style for the calendar grid */
 #calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
-    width: 100%;
+    max-width: 600px;
     margin-top: 20px;
 }
 
-/* Style for each day */
+/* Style for each day cell */
 .calendar-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
     background-color: #333;
-    padding: 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease-in-out;
-    position: relative;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
 }
 
-.calendar-day:hover {
-    background-color: #444;
+/* Style for the days of the week header */
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-.calendar-day span {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-/* Event labels inside each day */
+/* Style for the event labels inside each day */
 .event {
     background-color: #ff5733;
     color: white;
@@ -1391,6 +1359,14 @@ button:hover {
     text-align: center;
 }
 
+/* Style for the time part of the event */
+.event .event-time {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #f0f0f0;
+    margin-top: 5px;
+}
+
 .event a {
     color: white;
     text-decoration: none;
@@ -1398,28 +1374,6 @@ button:hover {
 
 .event a:hover {
     text-decoration: underline;
-}
-
-/* Mobile responsiveness */
-@media screen and (max-width: 768px) {
-    #calendar-grid {
-        grid-template-columns: repeat(4, 1fr); /* Adjust number of columns for smaller screens */
-    }
-
-    button {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-    }
-
-    #month-year {
-        font-size: 1.5rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    #calendar-grid {
-        grid-template-columns: repeat(3, 1fr); /* Further reduce columns for very small screens */
-    }
 }
 
 /* Footer */
