@@ -1229,44 +1229,91 @@ p {
     color: #ffcc00; /* Bright color for the loading message */
 }
 
-/* Winter Theme */
-body.winter {
-    background-color: #E0F7FA; /* Light blue background */
-    color: #1C1C1C; /* Dark text color */
+/* General Text Styles */
+body {
+    font-family: 'Arial', sans-serif; /* Simple and easy-to-read font */
+    font-size: 16px; /* Larger base font size */
+    line-height: 1.6; /* Increase line height for better readability */
+    color: #F5F5F5; /* Light text for dark background */
+    background-color: #333333; /* Dark background for contrast */
+    letter-spacing: 0.5px; /* Slight letter spacing for clarity */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.winter .header {
-    background-image: url('images/winter-header.jpg');
+/* Headings */
+h1, h2, h3, h4 {
+    font-family: 'Roboto', sans-serif; /* Use a clean and modern font */
+    font-weight: bold;
+    color: #FFFFFF; /* White for clear headings */
+    letter-spacing: 1px;
 }
 
-/* Spring Theme */
-body.spring {
-    background-color: #A5D6A7; /* Fresh green background */
-    color: #2C6B2F; /* Dark green text */
+/* Paragraphs */
+p {
+    font-size: 18px; /* Increase paragraph font size */
+    color: #E0E0E0; /* Light gray text for better contrast */
 }
 
-.spring .header {
-    background-image: url('images/spring-header.png');
+/* Links */
+a {
+    color: #FFEB3B; /* Bright yellow link color */
+    text-decoration: none;
 }
 
-/* Summer Theme */
+a:hover {
+    color: #FFF59D; /* Lighter yellow when hovering */
+    text-decoration: underline;
+}
+
+/* Buttons */
+button {
+    font-size: 18px;
+    color: #FFF;
+    background-color: #007BFF; /* Blue button color */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Header and Footer */
+header, footer {
+    font-size: 14px;
+    color: #BDBDBD; /* Slightly muted text color */
+}
+
+/* Accessibility: Focus on links for better visibility */
+a:focus, button:focus {
+    outline: 3px solid #FFEB3B; /* Bright outline for focus visibility */
+}
+
+/* Seasonal Themes */
 body.summer {
-    background-color: #FFF59D; /* Light yellow background */
-    color: #01579B; /* Dark blue text */
+    background-color: #FFEB3B; /* Summer theme - yellow background */
+    color: #333333; /* Dark text for summer */
 }
 
-.summer .header {
-    background-image: url('images/summer-header.jpg');
+body.winter {
+    background-color: #00A9E0; /* Winter theme - light blue background */
+    color: #FFFFFF; /* White text for winter */
 }
 
-/* Autumn Theme */
-body.autumn {
-    background-color: #FFEB3B; /* Golden yellow background */
-    color: #5D4037; /* Dark brown text */
+body.spring {
+    background-color: #A8E06A; /* Spring theme - green background */
+    color: #333333; /* Dark text for spring */
 }
 
-.autumn .header {
-    background-image: url('images/autumn-header.jpg');
+body.fall {
+    background-color: #F27D3D; /* Fall theme - orange background */
+    color: #FFFFFF; /* White text for fall */
+}
+
+/* Seasonal Specifics */
+h1, h2, h3, h4 {
+    color: #FFF; /* Headings will stay white across all seasons */
 }
 
 /* Footer */
