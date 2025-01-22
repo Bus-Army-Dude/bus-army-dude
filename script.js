@@ -511,89 +511,82 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Fun Fact of the Day and Quote of the Day data (you can add more fun facts and quotes)
-const funFacts = [
-    "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old!",
-    "Bananas are berries, but strawberries aren’t!",
-    "Octopuses have three hearts and blue blood.",
-    "A day on Venus is longer than a year on Venus.",
-    "Sharks existed before trees did."
-];
+// Function to fetch and display Fun Fact of the Day
+function loadFunFactOfTheDay() {
+    const factElement = document.getElementById('fun-fact-text');
 
-const quotes = [
-    "The best way to get started is to quit talking and begin doing. – Walt Disney",
-    "The pessimist sees difficulty in every opportunity. The optimist sees opportunity in every difficulty. – Winston Churchill",
-    "Don’t let yesterday take up too much of today. – Will Rogers",
-    "You learn more from failure than from success. Don’t let it stop you. Failure builds character.",
-    "It’s not whether you get knocked down, it’s whether you get up. – Vince Lombardi"
-];
+    // Set loading state
+    factElement.textContent = 'Loading...';
 
-// Function to get today's index based on the date
-function getTodayIndex(max) {
-    const today = new Date();
-    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    return dayOfYear % max;
+    // Fetch a random fun fact (adjust the URL to your data source)
+    fetch('https://random-data-api.com/api/v2/fun_facts')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch Fun Fact');
+            }
+            return response.json();
+        })
+        .then(data => {
+            factElement.textContent = data.fact || 'No fun fact available today.';
+        })
+        .catch(error => {
+            factElement.textContent = 'Failed to load fun fact.';
+            console.error('Error fetching Fun Fact:', error);
+        });
 }
 
-// Fun Fact of the Day
-function displayFunFact() {
-    const funFactElement = document.getElementById('fun-fact-text');
-    const factIndex = getTodayIndex(funFacts.length);
-    const funFact = funFacts[factIndex];
-    funFactElement.textContent = funFact;
+// Function to fetch and display Quote of the Day
+function loadQuoteOfTheDay() {
+    const quoteElement = document.getElementById('quote-of-the-day-text');
+
+    // Set loading state
+    quoteElement.textContent = 'Loading...';
+
+    // Fetch a random quote (adjust the URL to your data source)
+    fetch('https://api.quotable.io/random')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch Quote of the Day');
+            }
+            return response.json();
+        })
+        .then(data => {
+            quoteElement.textContent = `"${data.content}" - ${data.author}`;
+        })
+        .catch(error => {
+            quoteElement.textContent = 'Failed to load quote.';
+            console.error('Error fetching Quote of the Day:', error);
+        });
 }
 
-// Quote of the Day
-function displayQuoteOfTheDay() {
-    const quoteElement = document.getElementById('quote-text');
-    const quoteIndex = getTodayIndex(quotes.length);
-    const quote = quotes[quoteIndex];
-    quoteElement.textContent = quote;
-}
-
-// Function to load both the fun fact and quote of the day
-function loadDailyContent() {
-    displayFunFact();
-    displayQuoteOfTheDay();
-}
-
-// Function to fetch and display Today in History events securely
+// Function to fetch and display Today in History
 function loadTodayInHistory() {
     const historyElement = document.getElementById('history-events');
-    
-    // Display loading state
+
+    // Set loading state
     historyElement.innerHTML = '<li>Loading...</li>';
-    
-    // Fetch data from the secure "Today in History" API
+
+    // Fetch historical events (adjust the URL to your data source)
     fetch('https://history.muffinlabs.com/date')
         .then(response => {
-            // Ensure the response is ok and secure
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Failed to fetch Today in History');
             }
             return response.json();
         })
         .then(data => {
             const events = data.data.Events;
-
-            // Clear the loading text
             historyElement.innerHTML = '';
 
-            // Loop through the first 5 historical events and display them
-            for (let i = 0; i < Math.min(events.length, 5); i++) {
-                const event = events[i];
+            // Display up to 5 historical events
+            events.slice(0, 5).forEach(event => {
                 const listItem = document.createElement('li');
                 listItem.textContent = `${event.year}: ${event.text}`;
                 historyElement.appendChild(listItem);
-            }
+            });
         })
         .catch(error => {
-            // Display an error message if something goes wrong
-            historyElement.innerHTML = '<li>Failed to load events. Please try again later.</li>';
-            console.error('There was a problem with the fetch operation:', error);
+            historyElement.innerHTML = '<li>Failed to load historical events.</li>';
+            console.error('Error fetching Today in History:', error);
         });
 }
-
-// Load the "Today in History" data when the page loads
-window.onload = loadTodayInHistory;
-
