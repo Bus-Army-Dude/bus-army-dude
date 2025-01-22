@@ -498,56 +498,35 @@ if (navigator.geolocation) {
     document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
 }
 
-// Function to determine the season based on the user's hemisphere
-function getSeasonBasedOnLocation(latitude) {
-    const currentMonth = new Date().getMonth();
-    let season = '';
-
-    // Northern Hemisphere: March (2) - May (4) = Spring, June (5) - August (7) = Summer, etc.
-    if (latitude > 0) {
-        // Northern Hemisphere
-        if (currentMonth >= 2 && currentMonth <= 4) { // Spring
-            season = 'spring';
-        } else if (currentMonth >= 5 && currentMonth <= 7) { // Summer
-            season = 'summer';
-        } else if (currentMonth >= 8 && currentMonth <= 10) { // Fall
-            season = 'fall';
-        } else { // Winter
-            season = 'winter';
-        }
+// Function to determine the current season based on the month
+function getSeason(month) {
+    if (month === 11 || month === 0 || month === 1) {
+        return 'winter'; // December, January, February
+    } else if (month === 2 || month === 3 || month === 4) {
+        return 'spring'; // March, April, May
+    } else if (month === 5 || month === 6 || month === 7) {
+        return 'summer'; // June, July, August
     } else {
-        // Southern Hemisphere (Seasons are reversed)
-        if (currentMonth >= 2 && currentMonth <= 4) { // Spring
-            season = 'fall'; // Fall in the Southern Hemisphere
-        } else if (currentMonth >= 5 && currentMonth <= 7) { // Winter
-            season = 'winter';
-        } else if (currentMonth >= 8 && currentMonth <= 10) { // Summer
-            season = 'summer';
-        } else { // Fall
-            season = 'spring'; // Spring in the Southern Hemisphere
-        }
-    }
-
-    return season;
-}
-
-// Function to apply the season class to the body based on location
-function setSeason() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const latitude = position.coords.latitude;
-            const season = getSeasonBasedOnLocation(latitude);
-
-            // Remove all possible seasonal classes
-            document.body.classList.remove('summer', 'winter', 'spring', 'fall');
-
-            // Add the appropriate seasonal class
-            document.body.classList.add(season);
-        });
-    } else {
-        console.error("Geolocation is not supported by this browser.");
+        return 'fall'; // September, October, November
     }
 }
 
-// Call the function to apply the season based on user's location
-window.onload = setSeason;
+// Function to apply the correct seasonal theme based on the season
+function applySeason() {
+    // Get current month (0-based index, January is 0)
+    const month = new Date().getMonth();
+    
+    // Get the current season
+    const season = getSeason(month);
+    
+    // Remove any previously applied seasonal classes
+    document.body.classList.remove('winter', 'spring', 'summer', 'fall');
+    
+    // Add the new seasonal class to the body
+    document.body.classList.add(season);
+}
+
+// Call the function to apply the season on page load
+window.onload = function() {
+    applySeason();
+};
