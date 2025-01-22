@@ -562,3 +562,4 @@ function setQuoteOfTheDay() {
 // Run the functions to set the daily updates
 setFunFactOfTheDay();
 setQuoteOfTheDay();
+
