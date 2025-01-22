@@ -520,6 +520,7 @@ const events = {
     "2025-01-30": [{ time: "3:00 PM", description: "Project Deadline" }],
     "2025-02-01": [{ time: "8:00 AM", description: "Morning workout" }]
 };
+
 let currentDate = new Date();
 
 function renderCalendar(date) {
