@@ -560,3 +560,42 @@ function loadDailyContent() {
 // Load the content when the page is ready
 document.addEventListener('DOMContentLoaded', loadDailyContent);
 
+// Function to fetch and display Today in History events securely
+function loadTodayInHistory() {
+    const historyElement = document.getElementById('history-events');
+    
+    // Display loading state
+    historyElement.innerHTML = '<li>Loading...</li>';
+    
+    // Fetch data from the secure "Today in History" API
+    fetch('https://history.muffinlabs.com/date')
+        .then(response => {
+            // Ensure the response is ok and secure
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const events = data.data.Events;
+
+            // Clear the loading text
+            historyElement.innerHTML = '';
+
+            // Loop through the first 5 historical events and display them
+            for (let i = 0; i < Math.min(events.length, 5); i++) {
+                const event = events[i];
+                const listItem = document.createElement('li');
+                listItem.textContent = `${event.year}: ${event.text}`;
+                historyElement.appendChild(listItem);
+            }
+        })
+        .catch(error => {
+            // Display an error message if something goes wrong
+            historyElement.innerHTML = '<li>Failed to load events. Please try again later.</li>';
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+// Load the "Today in History" data when the page loads
+window.onload = loadTodayInHistory;
