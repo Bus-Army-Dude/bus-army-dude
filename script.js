@@ -513,9 +513,13 @@ faqQuestions.forEach((question) => {
 
 const events = {
     "2025-01-22": [{ time: "10:00 AM", description: "Meeting with team" }],
-    "2025-01-25": [{ time: "2:00 PM", description: "Doctor's Appointment" }]
+    "2025-01-25": [
+        { time: "9:00 AM", description: "Team Meeting" },
+        { time: "7:00 PM", description: "Dinner with friends" }
+    ],
+    "2025-01-30": [{ time: "3:00 PM", description: "Project Deadline" }],
+    "2025-02-01": [{ time: "8:00 AM", description: "Morning workout" }]
 };
-
 let currentDate = new Date();
 
 function renderCalendar(date) {
