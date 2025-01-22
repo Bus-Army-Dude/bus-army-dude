@@ -1322,6 +1322,7 @@ body {
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
+    position: relative;
 }
 
 .calendar-header button {
@@ -1331,16 +1332,21 @@ body {
     padding: 10px;
     cursor: pointer;
     font-size: 14px;
+    position: absolute;
 }
 
-.calendar-header button:hover {
-    background-color: #444;
+#prev-month {
+    left: 10px; /* Left button */
+}
+
+#next-month {
+    right: 10px; /* Right button */
 }
 
 #month-year {
     font-size: 24px;
-    margin: 0 20px;
     text-align: center;
+    margin: 0;
 }
 
 /* Days of the Week */
@@ -1437,6 +1443,7 @@ body {
     .calendar-header {
         flex-direction: column;
         align-items: center;
+        position: relative;
     }
 
     .calendar-days {
