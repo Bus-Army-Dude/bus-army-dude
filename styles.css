@@ -1290,30 +1290,30 @@ a:focus, button:focus {
     outline: 3px solid #FFEB3B; /* Bright outline for focus visibility */
 }
 
-/* Seasonal Themes */
+/* Seasonal Backgrounds */
 body.summer {
-    background-color: #FFEB3B; /* Summer theme - yellow background */
-    color: #333333; /* Dark text for summer */
+    background-color: #F2A900; /* Summer theme - warm yellow */
 }
 
 body.winter {
-    background-color: #00A9E0; /* Winter theme - light blue background */
-    color: #FFFFFF; /* White text for winter */
+    background-color: #6EC5E9; /* Winter theme - light blue */
 }
 
 body.spring {
-    background-color: #A8E06A; /* Spring theme - green background */
-    color: #333333; /* Dark text for spring */
+    background-color: #C1E3A1; /* Spring theme - soft green */
 }
 
 body.fall {
-    background-color: #F27D3D; /* Fall theme - orange background */
-    color: #FFFFFF; /* White text for fall */
+    background-color: #E57737; /* Fall theme - warm orange */
 }
 
-/* Seasonal Specifics */
+/* Seasonal Specifics for text and layout (unchanged) */
 h1, h2, h3, h4 {
     color: #FFF; /* Headings will stay white across all seasons */
+}
+
+p, a, button, header, footer {
+    color: #E0E0E0; /* Maintain text color across all seasons */
 }
 
 /* Footer */
