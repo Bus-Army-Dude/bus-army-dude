@@ -543,6 +543,10 @@ function setFunFactOfTheDay() {
         const randomFact = funFacts[Math.floor(Math.random() * funFacts.length)];
         document.getElementById('fun-fact-text').textContent = randomFact;
         localStorage.setItem('lastFunFactDate', todayDate); // Store today's date
+    } else {
+        // If it's already been set, ensure the content is loaded
+        const lastFact = localStorage.getItem('lastFunFactContent');
+        document.getElementById('fun-fact-text').textContent = lastFact;
     }
 }
 
@@ -556,10 +560,14 @@ function setQuoteOfTheDay() {
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         document.getElementById('quote-of-the-day-text').textContent = randomQuote;
         localStorage.setItem('lastQuoteDate', todayDate); // Store today's date
+        localStorage.setItem('lastQuoteContent', randomQuote); // Store quote for the day
+    } else {
+        // If it's already been set, ensure the content is loaded
+        const lastQuote = localStorage.getItem('lastQuoteContent');
+        document.getElementById('quote-of-the-day-text').textContent = lastQuote;
     }
 }
 
 // Run the functions to set the daily updates
 setFunFactOfTheDay();
 setQuoteOfTheDay();
-
