@@ -513,16 +513,25 @@ faqQuestions.forEach((question) => {
 
 function loadDailyContent() {
     const todayDate = new Date().toISOString().split('T')[0]; // Get today's date (YYYY-MM-DD)
-    console.log("Today's Date:", todayDate); // Debugging line to check today's date
+    console.log("Today's Date:", todayDate); // Log today's date for debugging
 
     // Check if data for today is already in localStorage
     if (localStorage.getItem('lastFetchedDate') === todayDate) {
         // If today's data is found, use stored values
         console.log("Fetching data from localStorage...");
 
-        document.getElementById("fun-fact-text").innerText = localStorage.getItem('funFact');
-        document.getElementById("quote-of-the-day-text").innerText = localStorage.getItem('quoteOfTheDay');
-        document.getElementById("today-in-history-text").innerText = localStorage.getItem('todayInHistory');
+        const funFact = localStorage.getItem('funFact');
+        const quote = localStorage.getItem('quoteOfTheDay');
+        const history = localStorage.getItem('todayInHistory');
+
+        // Check if the data exists in localStorage
+        if (funFact && quote && history) {
+            document.getElementById("fun-fact-text").innerText = funFact;
+            document.getElementById("quote-of-the-day-text").innerText = quote;
+            document.getElementById("today-in-history-text").innerText = history;
+        } else {
+            console.log("One or more items are missing from localStorage.");
+        }
     } else {
         // If no data for today, set hardcoded values and store them in localStorage
         console.log("Setting new data for today...");
@@ -545,5 +554,7 @@ function loadDailyContent() {
 }
 
 // Call the function to load content on page load
-window.onload = loadDailyContent;
-
+window.onload = function() {
+    loadDailyContent();
+    console.log("Page loaded.");
+};
