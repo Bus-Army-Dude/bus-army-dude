@@ -1235,7 +1235,8 @@ p {
     color: #fff;
     padding: 20px;
     border-radius: 8px;
-    margin-top: 20px;
+    margin-top: 40px;  /* Added space above FAQ section */
+    margin-bottom: 40px;  /* Added space below FAQ section */
 }
 
 .faq-section h2 {
@@ -1245,7 +1246,7 @@ p {
 }
 
 .faq-item {
-    margin-bottom: 20px; /* Added more space between FAQ items */
+    margin-bottom: 20px;
 }
 
 .faq-question {
