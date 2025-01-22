@@ -517,14 +517,11 @@ function loadDailyContent() {
 
     // Check if data for today is already in localStorage
     if (localStorage.getItem('lastFetchedDate') === todayDate) {
-        // If today's data is found, use stored values
         console.log("Fetching data from localStorage...");
-
         const funFact = localStorage.getItem('funFact');
         const quote = localStorage.getItem('quoteOfTheDay');
         const history = localStorage.getItem('todayInHistory');
 
-        // Check if the data exists in localStorage
         if (funFact && quote && history) {
             console.log("Displaying stored data...");
             document.getElementById("fun-fact-text").innerText = funFact;
@@ -534,19 +531,24 @@ function loadDailyContent() {
             console.log("One or more items are missing from localStorage.");
         }
     } else {
-        // If no data for today, set hardcoded values and store them in localStorage
         console.log("Setting new data for today...");
 
         const funFact = "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion of the metal.";
         const quote = "The only way to do great work is to love what you do. – Steve Jobs";
         const history = "On this day in 1963, France and Germany signed the Élysée Treaty.";
 
+        // Log the data before storing in localStorage
+        console.log("Storing data in localStorage:");
+        console.log("Fun Fact:", funFact);
+        console.log("Quote:", quote);
+        console.log("History:", history);
+
         // Set content in HTML
         document.getElementById("fun-fact-text").innerText = funFact;
         document.getElementById("quote-of-the-day-text").innerText = quote;
         document.getElementById("today-in-history-text").innerText = history;
 
-        // Store content in localStorage with today's date
+        // Store content in localStorage
         localStorage.setItem('funFact', funFact);
         localStorage.setItem('quoteOfTheDay', quote);
         localStorage.setItem('todayInHistory', history);
@@ -554,7 +556,6 @@ function loadDailyContent() {
     }
 }
 
-// Call the function to load content on page load
 window.onload = function() {
     loadDailyContent();
     console.log("Page loaded.");
