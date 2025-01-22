@@ -1293,29 +1293,44 @@ p {
     transform: rotate(180deg);
 }
 
-/* Styling for each section */
+/* General styling for all sections to match the dark theme */
 .section {
-    background-color: #2e2e2e; /* Dark background */
-    color: white; /* Text color */
+    background-color: #2e2e2e; /* Dark background to match existing theme */
+    color: white; /* Text color for readability */
     padding: 15px;
-    margin-bottom: 20px; /* Add space between sections */
-    border: 2px solid #444; /* Border around each section */
+    margin-bottom: 20px; /* Space between sections */
     border-radius: 8px; /* Rounded corners */
+    border: 1px solid #444; /* Subtle border color */
 }
 
-/* Specific styling for the Fun Fact section */
+/* Fun Fact section with a slightly different background */
 .fun-fact-section {
-    background-color: #1e1e1e; /* Darker background */
+    background-color: #323232; /* Darker shade for this section */
 }
 
-/* Specific styling for the Quote section */
+/* Quote section with a slightly lighter shade */
 .quote-section {
-    background-color: #3e3e3e; /* Slightly lighter background */
+    background-color: #3e3e3e; /* Medium dark shade */
 }
 
-/* Specific styling for the History section */
+/* Today in History section with a unique dark shade */
 .today-in-history-section {
-    background-color: #4e4e4e; /* Another variant */
+    background-color: #484848; /* Lighter than the Fun Fact section */
+}
+
+/* Heading style to match the website theme */
+h2 {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #fff; /* White for the headings to stand out */
+    margin-bottom: 10px;
+}
+
+/* Paragraph text for the sections */
+p {
+    font-size: 1.2em;
+    color: #ddd; /* Lighter text for readability */
+    line-height: 1.6;
 }
 
 /* Footer */
