@@ -511,7 +511,6 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Event data (can be dynamically generated or hardcoded for testing purposes)
 const events = {
     "2025-01-22": [{ time: "10:00 AM", title: "Live Stream Event" }],
     "2025-01-23": [{ time: "2:00 PM", title: "Workshop: Web Development" }]
@@ -527,23 +526,31 @@ function generateCalendar() {
     const firstDay = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
+    // Set Month and Year
     monthYear.textContent = `${date.toLocaleString('default', { month: 'long' })} ${currentYear}`;
 
+    // Clear previous grid content
     calendarGrid.innerHTML = '';
+
+    // Create empty divs for the initial empty days in the month
     for (let i = 0; i < firstDay; i++) {
         const emptyDiv = document.createElement('div');
         calendarGrid.appendChild(emptyDiv);
     }
 
+    // Generate the days in the calendar grid
     for (let i = 1; i <= daysInMonth; i++) {
         const dayDiv = document.createElement('div');
         const currentDate = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
 
         dayDiv.textContent = i;
+        dayDiv.classList.add('day'); // Add a class to style individual days
+
         if (events[currentDate]) {
-            dayDiv.classList.add('event');
+            dayDiv.classList.add('event'); // Add event class if there's an event
         }
 
+        // Click event to show details for days with events
         dayDiv.onclick = function () {
             if (events[currentDate]) {
                 showEventDetails(currentDate);
