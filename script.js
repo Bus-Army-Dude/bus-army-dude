@@ -513,32 +513,31 @@ faqQuestions.forEach((question) => {
 
 // Fun Fact of the Day Data
 const funFactOfTheDay = {
-    "2025-01-22": "Did you know? The Eiffel Tower can be 15 cm taller during the summer.",
-    "2025-01-23": "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3,000 years old and still edible."
+    "2025-01-22": "Did you know? The Eiffel Tower can be 15 cm taller during the summer."
 };
 
 // Quote of the Day Data
 const quoteOfTheDay = {
-    "2025-01-22": "The only way to do great work is to love what you do. – Steve Jobs",
-    "2025-01-23": "Life is what happens when you're busy making other plans. – John Lennon"
+    "2025-01-22": "The only way to do great work is to love what you do. – Steve Jobs"
 };
 
 // Today in History Data
 const todayInHistory = {
-    "2025-01-22": "On this day in 1963, France and Germany signed the Élysée Treaty, marking the start of cooperation between the two countries.",
-    "2025-01-23": "In 1957, the first American satellite, Explorer 1, was launched into orbit."
+    "2025-01-22": "On this day in 1963, France and Germany signed the Élysée Treaty, marking the start of cooperation between the two countries."
 };
 
 // Get today's date in YYYY-MM-DD format
 function getTodayDate() {
     const date = new Date();
-    return date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+    const todayDate = date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+    console.log("Formatted Today's Date: ", todayDate); // Check the date
+    return todayDate;
 }
 
-// Function to load content based on today's date
 function loadDailyContent() {
     const todayDate = getTodayDate();
-    
+    console.log("Today’s Date: ", todayDate); // Add this to check if the function is running
+
     // Check if today's data is already fetched
     if (localStorage.getItem('lastFetchedDate') === todayDate) {
         // Display the stored content from localStorage
