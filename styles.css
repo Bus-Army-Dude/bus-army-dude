@@ -1301,11 +1301,22 @@ p {
     align-items: center;
 }
 
+/* Style for the calendar navigation header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    margin: 10px 0;
+    align-items: center;
+}
+
 /* Style for the header showing the month and year */
 #month-year {
     font-size: 1.5rem;
     font-weight: bold;
-    margin: 10px;
+    text-align: center;
+    flex: 1;
 }
 
 /* Style for the previous and next month buttons */
@@ -1315,7 +1326,6 @@ button {
     color: white;
     border: none;
     cursor: pointer;
-    margin: 5px;
     font-size: 1rem;
 }
 
@@ -1341,11 +1351,15 @@ button {
 }
 
 /* Style for the days of the week header */
-.calendar-header {
+.calendar-days-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
     margin-bottom: 10px;
+    font-weight: bold;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 /* Style for the event labels inside each day */
