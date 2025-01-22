@@ -513,9 +513,6 @@ faqQuestions.forEach((question) => {
 
 // Event Data (for now, add some sample events)
 const events = [
-    { date: '2025-01-15', name: 'Live Stream 1', link: '#', description: 'Join us for an exciting live stream!' },
-    { date: '2025-01-22', name: 'Live Stream 2', link: '#', description: 'Another live stream to catch!' },
-    { date: '2025-01-28', name: 'Update Event', link: '#', description: 'Important update about the website.' }
 ];
 
 // Get current date and format it as YYYY-MM
