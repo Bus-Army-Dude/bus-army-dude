@@ -217,38 +217,37 @@
     </div>
 </div>
 
-<!-- Calendar Section -->
-<div class="calendar-container">
-    <!-- Navigation buttons -->
-    <div class="calendar-header">
-        <button id="prev-month">Previous</button>
-        <div id="month-year"></div>
-        <button id="next-month">Next</button>
+    <!-- Calendar Section -->
+    <div class="calendar-container">
+        <!-- Navigation buttons -->
+        <div class="calendar-header">
+            <button id="prev-month">Previous</button>
+            <div id="month-year"></div>
+            <button id="next-month">Next</button>
+        </div>
+
+        <!-- Days of the Week -->
+        <div class="calendar-days">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+
+        <!-- Calendar Grid -->
+        <div id="calendar-grid" class="calendar-grid"></div>
     </div>
 
-    <!-- Days of the Week -->
-    <div class="calendar-days">
-        <div>Sunday</div>
-        <div>Monday</div>
-        <div>Tuesday</div>
-        <div>Wednesday</div>
-        <div>Thursday</div>
-        <div>Friday</div>
-        <div>Saturday</div>
+    <!-- Modal for Event Details -->
+    <div id="event-modal" class="modal">
+        <div id="event-modal-content" class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <div id="event-details"></div>
+        </div>
     </div>
-
-    <!-- Calendar Grid -->
-    <div id="calendar-grid" class="calendar-grid"></div>
-</div>
-
-<!-- Event Modal (Hidden by default) -->
-<div id="event-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h2>Event Details</h2>
-        <p id="event-details"></p>
-    </div>
-</div>
         
 <!-- Weather Section -->        
 <div id="weather-info">
