@@ -497,36 +497,3 @@ if (navigator.geolocation) {
 } else {
     document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
 }
-
-// Function to determine the current season based on the month
-function getSeason(month) {
-    if (month === 11 || month === 0 || month === 1) {
-        return 'winter'; // December, January, February
-    } else if (month === 2 || month === 3 || month === 4) {
-        return 'spring'; // March, April, May
-    } else if (month === 5 || month === 6 || month === 7) {
-        return 'summer'; // June, July, August
-    } else {
-        return 'fall'; // September, October, November
-    }
-}
-
-// Function to apply the correct seasonal theme based on the season
-function applySeason() {
-    // Get current month (0-based index, January is 0)
-    const month = new Date().getMonth();
-    
-    // Get the current season
-    const season = getSeason(month);
-    
-    // Remove any previously applied seasonal classes
-    document.body.classList.remove('winter', 'spring', 'summer', 'fall');
-    
-    // Add the new seasonal class to the body
-    document.body.classList.add(season);
-}
-
-// Call the function to apply the season on page load
-window.onload = function() {
-    applySeason();
-};
