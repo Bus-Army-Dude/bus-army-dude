@@ -537,7 +537,7 @@ function generateCalendar(monthYear) {
     // Days of the week header
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     let headerRow = document.createElement('div');
-    headerRow.classList.add('calendar-header');
+    headerRow.classList.add('calendar-days-header');
     daysOfWeek.forEach(day => {
         let dayElement = document.createElement('div');
         dayElement.classList.add('calendar-day');
