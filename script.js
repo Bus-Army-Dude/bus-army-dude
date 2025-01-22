@@ -521,15 +521,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to fetch Fun Fact of the Day
     async function getFunFact() {
+        const storedDate = localStorage.getItem('funFactDate');
+        const storedFact = localStorage.getItem('funFact');
+
+        // Check if the fact was already fetched today
+        if (storedDate === currentDate && storedFact) {
+            document.getElementById('fun-fact-text').textContent = storedFact;
+            return; // Exit if fact already stored for today
+        }
+
         try {
             const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
             if (!response.ok) throw new Error('Failed to fetch Fun Fact');
             const data = await response.json();
             const fact = data.text;
 
+            // Store the fact and date in local storage
+            localStorage.setItem('funFact', fact);
+            localStorage.setItem('funFactDate', currentDate);
+
             document.getElementById('fun-fact-text').textContent = fact;
         } catch (error) {
             console.error('Error fetching Fun Fact:', error);
+            // Fallback fact if the API fails
             document.getElementById('fun-fact-text').textContent = fallbackFunFact;
         }
     }
