@@ -511,57 +511,33 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Fun Fact of the Day Data
-const funFactOfTheDay = {
-    "2025-01-22": "Did you know? The Eiffel Tower can be 15 cm taller during the summer."
-};
-
-// Quote of the Day Data
-const quoteOfTheDay = {
-    "2025-01-22": "The only way to do great work is to love what you do. – Steve Jobs"
-};
-
-// Today in History Data
-const todayInHistory = {
-    "2025-01-22": "On this day in 1963, France and Germany signed the Élysée Treaty, marking the start of cooperation between the two countries."
-};
-
-// Get today's date in YYYY-MM-DD format
-function getTodayDate() {
-    const date = new Date();
-    const todayDate = date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
-    console.log("Formatted Today's Date: ", todayDate); // Check the date
-    return todayDate;
-}
-
+// Function to check if the data is already in localStorage for today
 function loadDailyContent() {
-    const todayDate = getTodayDate();
-    console.log("Today’s Date: ", todayDate); // Add this to check if the function is running
+    const todayDate = new Date().toISOString().split('T')[0]; // Get today's date (YYYY-MM-DD)
 
-    // Check if today's data is already fetched
+    // Check if today's data is stored in localStorage
     if (localStorage.getItem('lastFetchedDate') === todayDate) {
-        // Display the stored content from localStorage
+        // If data is stored, use it
         document.getElementById("fun-fact-text").innerText = localStorage.getItem('funFact');
         document.getElementById("quote-of-the-day-text").innerText = localStorage.getItem('quoteOfTheDay');
         document.getElementById("today-in-history-text").innerText = localStorage.getItem('todayInHistory');
     } else {
-        // If not fetched, get data and display it
-        const funFact = funFactOfTheDay[todayDate] || "No fun fact available for today.";
-        const quote = quoteOfTheDay[todayDate] || "No quote available for today.";
-        const history = todayInHistory[todayDate] || "No historical events available for today.";
+        // If no data in localStorage, set hardcoded values and store them for today
+        const funFact = "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion of the metal.";
+        const quote = "The only way to do great work is to love what you do. – Steve Jobs";
+        const history = "On this day in 1963, France and Germany signed the Élysée Treaty.";
 
-        // Update the content on the page
         document.getElementById("fun-fact-text").innerText = funFact;
         document.getElementById("quote-of-the-day-text").innerText = quote;
         document.getElementById("today-in-history-text").innerText = history;
 
-        // Store the content in localStorage for later use
+        // Store today's data in localStorage
         localStorage.setItem('funFact', funFact);
         localStorage.setItem('quoteOfTheDay', quote);
         localStorage.setItem('todayInHistory', history);
-        localStorage.setItem('lastFetchedDate', todayDate); // Store today's date to ensure it doesn't refresh
+        localStorage.setItem('lastFetchedDate', todayDate); // Store the date so it won't refresh until the next day
     }
 }
 
-// Run the function when the page loads
+// Call the function when the page loads
 window.onload = loadDailyContent;
