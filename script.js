@@ -497,3 +497,24 @@ if (navigator.geolocation) {
 } else {
     document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
 }
+
+// Get the current month (0 = January, 1 = February, ..., 11 = December)
+const currentMonth = new Date().getMonth();
+
+// Remove any previous seasonal classes
+document.body.classList.remove('winter', 'spring', 'summer', 'autumn');
+
+// Add the correct seasonal class
+if (currentMonth >= 11 || currentMonth <= 1) {
+    // Winter (December, January, February)
+    document.body.classList.add('winter');
+} else if (currentMonth >= 2 && currentMonth <= 4) {
+    // Spring (March, April, May)
+    document.body.classList.add('spring');
+} else if (currentMonth >= 5 && currentMonth <= 7) {
+    // Summer (June, July, August)
+    document.body.classList.add('summer');
+} else {
+    // Autumn (September, October, November)
+    document.body.classList.add('autumn');
+}
