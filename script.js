@@ -511,95 +511,114 @@ faqQuestions.forEach((question) => {
     });
 });
 
-let currentDate = new Date();
-const monthYear = document.getElementById("month-year");
-const calendarGrid = document.getElementById("calendar-grid");
-
-// Sample events with date and time: { "YYYY-MM-DD": [{ time: "HH:MM", name: "Event Name", description: "Event Description" }] }
+// Event data (can be dynamically generated or hardcoded for testing purposes)
 const events = {
-    "2023-08-15": [{ time: "10:00 AM", name: "Morning Meeting", description: "This is a meeting on August 15th at 10:00 AM." }],
-    "2023-08-23": [{ time: "1:00 PM", name: "Lunch with Team", description: "This is a lunch with the team on August 23rd at 1:00 PM." }],
-    "2023-08-30": [{ time: "5:00 PM", name: "Evening Party", description: "Join us for an evening party on August 30th at 5:00 PM." }]
+    "2025-01-22": [
+        { time: "10:00 AM", description: "Live Stream Event 1" },
+        { time: "2:00 PM", description: "Live Stream Event 2" }
+    ],
+    "2025-01-23": [
+        { time: "11:00 AM", description: "Live Stream Event 3" }
+    ]
 };
 
-// Function to format the month and year
-function updateMonthYear() {
-    const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    monthYear.innerText = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-}
+// Function to generate the calendar
+function generateCalendar(month, year) {
+    const calendarGrid = document.getElementById('calendar-grid');
+    const monthYearDisplay = document.getElementById('month-year');
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];  // Abbreviated days of the week
+    
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    const daysInMonth = lastDayOfMonth.getDate();
+    const firstDayOfWeek = firstDayOfMonth.getDay();
+    
+    // Update the Month-Year Display
+    monthYearDisplay.textContent = `${firstDayOfMonth.toLocaleString('default', { month: 'long' })} ${year}`;
+    
+    // Clear previous grid
+    calendarGrid.innerHTML = '';
 
-// Function to generate the calendar grid
-function generateCalendar() {
-    calendarGrid.innerHTML = "";
-    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-    const firstDayIndex = firstDayOfMonth.getDay();
-    const lastDate = lastDayOfMonth.getDate();
+    // Add Days of the Week
+    const daysHeader = document.createElement('div');
+    daysOfWeek.forEach(day => {
+        const dayElement = document.createElement('div');
+        dayElement.textContent = day;  // Abbreviated day
+        daysHeader.appendChild(dayElement);
+    });
+    calendarGrid.appendChild(daysHeader);
 
-    // Create empty boxes before the first date
-    for (let i = 0; i < firstDayIndex; i++) {
-        const emptyBox = document.createElement("div");
-        calendarGrid.appendChild(emptyBox);
+    // Add empty cells before the first day of the month
+    for (let i = 0; i < firstDayOfWeek; i++) {
+        const emptyCell = document.createElement('div');
+        calendarGrid.appendChild(emptyCell);
     }
 
-    // Create the day boxes for each date
-    for (let i = 1; i <= lastDate; i++) {
-        const dayBox = document.createElement("div");
-        dayBox.innerText = i;
-
-        // Get the formatted date for the event check
-        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-
-        // Check if there's an event for this date
-        if (events[formattedDate]) {
-            const eventIndicator = document.createElement("div");
-            eventIndicator.classList.add("event");
-            dayBox.appendChild(eventIndicator);
-
-            // Add event details to day box
-            dayBox.addEventListener('click', () => showEventDetails(formattedDate));
+    // Add the days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.textContent = day;
+        const currentDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        
+        // Check if the day has events
+        if (events[currentDate]) {
+            const eventIndicator = document.createElement('div');
+            eventIndicator.classList.add('event-indicator');
+            dayCell.appendChild(eventIndicator);
+            
+            // Add event listener for modal popup
+            dayCell.addEventListener('click', () => showEventDetails(currentDate));
         }
 
-        calendarGrid.appendChild(dayBox);
+        calendarGrid.appendChild(dayCell);
     }
 }
 
-// Function to go to the previous month
-document.getElementById("prev-month").addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    updateMonthYear();
-    generateCalendar();
-});
-
-// Function to go to the next month
-document.getElementById("next-month").addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    updateMonthYear();
-    generateCalendar();
-});
-
-// Function to show event details in a modal
+// Show event details in a modal
 function showEventDetails(date) {
-    const eventDetails = events[date].map(event => {
-        return `
-            <strong>${event.name}</strong><br>
-            <em>${event.time}</em><br>
-            <p>${event.description}</p>
-        `;
-    }).join("<br><br>");
-
-    document.getElementById("event-details").innerHTML = eventDetails;
-    document.getElementById("event-modal").style.display = "block";
+    const modal = document.getElementById('event-modal');
+    const modalContent = document.getElementById('event-modal-content');
+    modal.style.display = 'block';
+    
+    const eventDetails = events[date] || [];
+    modalContent.innerHTML = `<h3>Events for ${date}</h3>`;
+    
+    eventDetails.forEach(event => {
+        const eventDetail = document.createElement('p');
+        eventDetail.textContent = `${event.time} - ${event.description}`;
+        modalContent.appendChild(eventDetail);
+    });
 }
 
-// Function to close the event details modal
+// Close the modal
 function closeModal() {
-    document.getElementById("event-modal").style.display = "none";
+    document.getElementById('event-modal').style.display = 'none';
 }
 
-// Initial load
-updateMonthYear();
-generateCalendar();
+// Event Listeners for previous and next month navigation
+document.getElementById('prev').addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+    generateCalendar(currentMonth, currentYear);
+});
+
+document.getElementById('next').addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    generateCalendar(currentMonth, currentYear);
+});
+
+// Initial setup
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+generateCalendar(currentMonth, currentYear);
+
+// Modal close button
+document.getElementById('close-modal').addEventListener('click', closeModal);
+
