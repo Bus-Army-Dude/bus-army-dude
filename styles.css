@@ -162,11 +162,11 @@ body {
 
 /* Disabilities Section */
 .disabilities-section {
-    background-color: var(--content-bg); /* Matches website dark theme */
-    border-radius: 12px; /* Rounded corners for consistency */
+    background-color: var(--content-bg); /* Matches dark theme */
+    border-radius: 12px; /* Rounded corners */
     padding: 20px;
     margin-bottom: 30px; /* Space from other sections */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
 /* List Styling */
@@ -178,11 +178,11 @@ body {
 
 /* List Items Styling */
 .disabilities-section li {
-    background-color: rgba(0, 0, 0, 0.1); /* Light dark background */
-    border: 1px solid var(--border-color); /* Light border for separation */
-    border-radius: 8px; /* Rounded corners for items */
+    background-color: var(--bg-dark); /* Darker background for list items */
+    border: 1px solid var(--border-color); /* Light border for items */
+    border-radius: 8px; /* Rounded corners */
     margin-bottom: 10px;
-    overflow: hidden; /* Cleaned up layout */
+    overflow: hidden;
 }
 
 /* Link Styling */
@@ -191,20 +191,28 @@ body {
     color: var(--text-color); /* Light text color */
     text-decoration: none;
     padding: 15px;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    background-color: var(--bg-dark); /* Make sure the background is consistent */
 }
 
 /* Link Hover Effect */
 .disabilities-section a:hover {
-    background-color: var(--accent-color); /* Accent background color */
+    background-color: var(--accent-color); /* Accent color on hover */
     color: white; /* White text on hover */
     transform: translateY(-2px); /* Slight lift effect */
 }
 
-/* Add extra padding to the section */
-.disabilities-section {
-    padding-top: 30px;
-    padding-bottom: 30px;
+/* Fix grey issue when highlighting text */
+.disabilities-section a:focus {
+    background-color: var(--accent-color); /* Same accent color on focus */
+    color: white;
+    outline: none; /* Remove default outline */
+}
+
+.disabilities-section a:active {
+    background-color: var(--accent-color); /* Same accent color when clicked */
+    color: white;
+    transform: translateY(1px); /* Slight "pressing" effect */
 }
 
 /* Base Styles */
