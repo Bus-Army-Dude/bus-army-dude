@@ -593,3 +593,4 @@ document.getElementById("next-month").addEventListener("click", () => {
 
 // Initialize calendar on page load
 window.onload = loadCalendar;
+
