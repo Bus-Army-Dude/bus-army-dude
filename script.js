@@ -482,20 +482,41 @@ window.addEventListener('load', function() {
 });
 
 function getWeather(lat, lon) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
 
-    fetch(url)
+    // Use OpenCage Geocoder for reverse geocoding to get city, state, and country
+    const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=YOUR_OPENCAGE_API_KEY`;
+
+    // Fetch weather data
+    fetch(weatherUrl)
         .then(response => response.json())
-        .then(data => {
-            const weather = data.current_weather.weathercode;  // Weather description (from Open-Meteo)
-            const temp = data.current_weather.temperature;      // Temperature in Fahrenheit
-            const location = `${lat}, ${lon}`;                  // You can customize this to show a more human-readable location
+        .then(weatherData => {
+            const weather = weatherData.current_weather.weathercode;  // Weather description
+            const temp = weatherData.current_weather.temperature;      // Temperature in Fahrenheit
+            const iconCode = weatherData.current_weather.weathercode;  // Weather icon code
 
-            // Update the UI with the weather data
-            document.getElementById('weather-info').innerHTML = `
-                <h2>Weather at ${location}</h2>
-                <p>${temp}°F, ${weather}</p>
-            `;
+            // Fetch location data
+            fetch(geocodeUrl)
+                .then(response => response.json())
+                .then(locationData => {
+                    const city = locationData.results[0].components.city;
+                    const state = locationData.results[0].components.state;
+                    const country = locationData.results[0].components.country;
+
+                    // Get the appropriate weather icon URL
+                    const weatherIconUrl = `https://open-meteo.com/static/icons/${iconCode}.png`;
+
+                    // Update the UI with the weather data and location
+                    document.getElementById('weather-info').innerHTML = `
+                        <h2>Weather in ${city}, ${state}, ${country}</h2>
+                        <p>${temp}°F, <span class="weather-description">${weather}</span></p>
+                        <img src="${weatherIconUrl}" alt="Weather icon" class="weather-icon" />
+                    `;
+                })
+                .catch(err => {
+                    document.getElementById('weather-info').innerHTML = 'Unable to retrieve location data.';
+                    console.error(err);
+                });
         })
         .catch(err => {
             document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
@@ -507,7 +528,6 @@ function handleLocationError() {
     document.getElementById('weather-info').innerHTML = 'Unable to get location for weather.';
 }
 
-// Get user's location and fetch weather data
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         position => {
