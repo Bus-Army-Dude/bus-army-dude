@@ -1561,7 +1561,7 @@ p {
     width: 90%; /* Ensure it looks good on mobile */
     text-align: center;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    border: 2px solid var(--accent-color); /* Add border around the modal */
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle grey border to match the theme */
     transform: scale(0.95);
     transition: transform 0.3s ease, opacity 0.3s ease;
     overflow: hidden; /* To make sure nothing spills out */
@@ -1578,12 +1578,14 @@ p {
     font-size: 24px;
     margin-bottom: 15px;
     font-weight: 600;
+    color: var(--accent-color); /* Accent color for title */
 }
 
 /* Description Text */
 .event-content p {
     font-size: 16px;
     margin-bottom: 20px;
+    color: var(--text-color); /* Light text color */
 }
 
 /* Close button for modal */
