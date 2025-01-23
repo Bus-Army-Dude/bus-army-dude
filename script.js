@@ -342,44 +342,38 @@ const youtubeShoutouts = {
 youtubeShoutouts.init();
     
     // New Year countdown
-    function updateNewYearCountdown() {
-        const now = new Date();
-        const newYear = new Date('2025-03-18T00:00:00');
-        const diff = newYear - now;
+    function updateCountdown() {
+    const countdownDate = new Date("Feb 27, 2025 03:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
 
-        const countdownSection = document.querySelector('.countdown-section');
-        if (!countdownSection) return;
+    // Calculate days, hours, minutes, and seconds
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        if (diff <= 0) {
-            countdownSection.innerHTML = `
-                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
-                </h2>
-                <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
-            `;
-        } else {
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    // Update the countdown values
+    document.getElementById("days").textContent = String(days).padStart(2, '0');
+    document.getElementById("hours").textContent = String(hours).padStart(2, '0');
+    document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
+    document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
 
-            document.getElementById('countdown-days').textContent = days;
-            document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-    }
+    // Add flip effect by applying a class for animation
+    document.querySelectorAll(".countdown-value").forEach(function(el) {
+        el.classList.add("flip");
+    });
 
-    // Initialize everything
-    detectDetailedDevice();
-    updateTime();
-    tiktokShoutouts.init();
-    updateNewYearCountdown();
+    // Remove flip effect class after animation
+    setTimeout(() => {
+        document.querySelectorAll(".countdown-value").forEach(function(el) {
+            el.classList.remove("flip");
+        });
+    }, 1000); // Timing for flip animation
+}
 
-    setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 1000);
-    setInterval(updateNewYearCountdown, 1000);
-});
+// Update countdown every second
+setInterval(updateCountdown, 1000);
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 23, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
