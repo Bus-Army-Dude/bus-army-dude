@@ -643,19 +643,6 @@ function generateArticles() {
         
         container.appendChild(articleElement);
 
-        // Modal setup
-        const modalElement = document.createElement("div");
-        modalElement.classList.add("modal");
-        modalElement.id = `modal-${article.id}`;
-        modalElement.innerHTML = `
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeModal(${article.id})">&times;</span>
-                <h2>${article.title}</h2>
-                <p>${article.content}</p>
-            </div>
-        `;
-        container.appendChild(modalElement);
-
         // Learn More button
         articleElement.querySelector(".learn-more-btn").addEventListener("click", () => {
             openModal(article.id);
@@ -663,15 +650,18 @@ function generateArticles() {
     });
 }
 
-// Open Modal
+// Open Modal with full content
 function openModal(articleId) {
-    const modal = document.getElementById(`modal-${articleId}`);
+    const article = articles.find(a => a.id === articleId);
+    document.getElementById("modal-title").innerText = article.title;
+    document.getElementById("modal-content").innerText = article.content;
+    const modal = document.getElementById("modal-template");
     modal.style.display = "block";
 }
 
 // Close Modal
-function closeModal(articleId) {
-    const modal = document.getElementById(`modal-${articleId}`);
+function closeModal() {
+    const modal = document.getElementById("modal-template");
     modal.style.display = "none";
 }
 
