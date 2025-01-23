@@ -686,7 +686,7 @@ body {
 /* Countdown Section */
 .countdown-section {
     text-align: center;
-    background-color: #1e1e1e;  /* Matching your theme */
+    background-color: #1e1e1e;  /* Background color matching your theme */
     border-radius: 10px;
     padding: 20px;
     margin: 20px auto;
@@ -700,7 +700,6 @@ body {
     gap: 20px;
     flex-wrap: wrap;
     margin: 20px auto;
-    padding: 0 10px;
 }
 
 .countdown-item {
@@ -721,7 +720,7 @@ body {
 
 .countdown-label {
     font-size: 1em;
-    color: #ccc;  /* Lighter color */
+    color: #ccc;  /* Light color for the label */
 }
 
 /* Tech Section */
