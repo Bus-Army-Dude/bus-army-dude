@@ -1476,16 +1476,18 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #121212; /* Dark background for dark mode */
+    color: #e0e0e0; /* Light text for readability */
 }
 
 /* News Filter */
 #news-filter {
     padding: 20px;
     text-align: center;
-    background-color: #fff;
+    background-color: #333; /* Dark background for the filter section */
     margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
 }
 
 #category-filter, #tag-search {
@@ -1493,7 +1495,14 @@ body {
     font-size: 16px;
     margin: 5px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #555; /* Darker border for the inputs */
+    background-color: #222; /* Darker input background */
+    color: #e0e0e0; /* Light text color */
+}
+
+/* Input placeholder styling */
+#tag-search::placeholder {
+    color: #777;
 }
 
 /* Article Container */
@@ -1507,34 +1516,34 @@ body {
 
 /* Individual Article Style */
 .article {
-    border: 1px solid #ddd;
+    border: 1px solid #444; /* Dark border for articles */
     padding: 20px;
     width: 100%;
     max-width: 600px;
-    background-color: #fff;
+    background-color: #222; /* Dark background for articles */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     margin-bottom: 20px;
 }
 
 /* Title Style */
 .article h2 {
     font-size: 24px;
-    color: #333;
+    color: #fff; /* Light title color */
     margin-bottom: 10px;
 }
 
 /* Content Style */
 .article p {
     font-size: 16px;
-    color: #555;
+    color: #bbb; /* Lighter text for content */
     margin-bottom: 15px;
 }
 
 /* Date Style */
 .date {
     font-size: 14px;
-    color: #888;
+    color: #888; /* Light gray date text */
     margin-bottom: 10px;
 }
 
@@ -1547,7 +1556,7 @@ body {
 }
 
 .category, .tag {
-    background-color: #e0f7fa;
+    background-color: #e0f7fa; /* Light background for tags */
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 14px;
@@ -1557,8 +1566,8 @@ body {
 }
 
 .category:hover, .tag:hover {
-    background-color: #00796b;
-    color: #fff;
+    background-color: #00796b; /* Darker hover effect */
+    color: #fff; /* Light text on hover */
 }
 
 /* Tag Search */
@@ -1567,9 +1576,11 @@ body {
     padding: 10px;
     font-size: 16px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
+    background-color: #222;
     margin-bottom: 20px;
     max-width: 500px;
+    color: #e0e0e0;
 }
 
 /* Responsive Styles */
@@ -1577,6 +1588,10 @@ body {
     #articles-container {
         flex-direction: column;
         align-items: center;
+    }
+
+    #news-filter {
+        padding: 15px;
     }
 }
 
