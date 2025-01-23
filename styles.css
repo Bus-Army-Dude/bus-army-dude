@@ -686,19 +686,12 @@ body {
 /* Countdown Section */
 .countdown-section {
     text-align: center;
-    background-color: var(--content-bg);
+    background-color: #1e1e1e;  /* Matching your theme */
     border-radius: 10px;
     padding: 20px;
     margin: 20px auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 800px;
-}
-
-.countdown-title {
-    font-size: 2.2em;
-    color: var(--primary-color); /* Adjust this color based on your theme */
-    font-weight: bold;
-    margin-bottom: 20px;
 }
 
 .countdown-container {
@@ -707,6 +700,7 @@ body {
     gap: 20px;
     flex-wrap: wrap;
     margin: 20px auto;
+    padding: 0 10px;
 }
 
 .countdown-item {
@@ -715,39 +709,19 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
-    position: relative;
 }
 
 .countdown-value {
     font-size: 2.5em;
     font-weight: bold;
-    color: var(--accent-color);
+    color: #ff5722;  /* Accent color */
     display: block;
     margin-bottom: 5px;
-    transition: transform 0.5s;
 }
 
 .countdown-label {
     font-size: 1em;
-    color: var(--secondary-text);
-}
-
-.countdown-value.flip {
-    transform: rotateX(180deg);
-}
-
-.countdown-value:not(.flip) {
-    transform: rotateX(0);
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    .countdown-title {
-        font-size: 1.8em;
-    }
-    .countdown-value {
-        font-size: 2em;
-    }
+    color: #ccc;  /* Lighter color */
 }
 
 /* Tech Section */
