@@ -687,41 +687,81 @@ body {
 .countdown-section {
     text-align: center;
     background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 900px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.countdown-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     flex-wrap: wrap;
     margin: 20px auto;
-    padding: 0 10px;
+    padding: 0 15px;
 }
 
 .countdown-item {
-    min-width: 120px;
-    padding: 15px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    min-width: 130px;
+    padding: 25px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
     text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.countdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
 }
 
 .countdown-value {
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: bold;
     color: var(--accent-color);
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.countdown-item:hover .countdown-value {
+    color: #ffeb3b; /* Bright accent color on hover */
 }
 
 .countdown-label {
-    font-size: 1em;
+    font-size: 1.2em;
     color: var(--secondary-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .countdown-container {
+        gap: 15px;
+    }
+
+    .countdown-item {
+        min-width: 100px;
+        padding: 20px;
+    }
+
+    .countdown-value {
+        font-size: 2.2em;
+    }
+
+    .countdown-label {
+        font-size: 1em;
+    }
 }
 
 /* Tech Section */
