@@ -343,27 +343,27 @@ youtubeShoutouts.init();
     
  // Function to update the countdown
 function updateNewYearCountdown() {
-    const now = new Date(); // Get current date and time
-    const targetDate = new Date('2025-03-18T00:00:00'); // Target date in UTC
-    
-    // Convert target date to user's local timezone
-    const userLocalDate = targetDate.toLocaleString("en-US", { timeZoneName: "short" });
-    const targetDateLocal = new Date(userLocalDate);
+    // Get current date and time
+    const now = new Date();
 
-    const diff = targetDateLocal - now; // Calculate the difference
+    // Define the target date (March 18, 2025 at 00:00:00)
+    const targetDate = new Date(2025, 2, 18, 0, 0, 0); // Note: Month is 0-based (March = 2)
 
+    // Calculate the difference in milliseconds
+    const diff = targetDate - now;
+
+    // If the countdown has finished, display a celebration message
     if (diff <= 0) {
-        // If the countdown is over, display a message
         document.querySelector('.countdown-section').innerHTML = `
-            <h2 style="color: #ff5722; font-size: 2.5em; margin-bottom: 20px;">
+            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
                 TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
             </h2>
-            <div style="font-size: 1.5em; color: #ccc;">🎉 🎊 🎆 🎈</div>
+            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
         `;
         return;
     }
 
-    // Calculate days, hours, minutes, and seconds
+    // Calculate remaining days, hours, minutes, and seconds
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
