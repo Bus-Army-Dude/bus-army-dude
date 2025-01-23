@@ -341,12 +341,16 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
-  // Function to update the countdown
+ // Function to update the countdown
 function updateNewYearCountdown() {
-    const now = Date.now(); // Current time in milliseconds
-    const targetDate = new Date('2025-03-18T00:00:00').getTime(); // Target date in milliseconds
+    const now = new Date(); // Get current date and time
+    const targetDate = new Date('2025-03-18T00:00:00'); // Target date in UTC
+    
+    // Convert target date to user's local timezone
+    const userLocalDate = targetDate.toLocaleString("en-US", { timeZoneName: "short" });
+    const targetDateLocal = new Date(userLocalDate);
 
-    const diff = targetDate - now; // Time difference between now and target date
+    const diff = targetDateLocal - now; // Calculate the difference
 
     if (diff <= 0) {
         // If the countdown is over, display a message
