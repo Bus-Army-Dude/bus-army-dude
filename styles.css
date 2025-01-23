@@ -1562,14 +1562,14 @@ p {
 /* Close button for modal */
 .event-content button {
     margin-top: 20px;
-    padding: 10px;
+    padding: 12px 24px; /* Pill-shaped button */
     background-color: var(--button-bg); /* Same background as the other buttons */
     color: white;
     border: none;
-    border-radius: 50%;
-    font-size: 20px;
+    border-radius: 50px; /* Pill shape */
+    font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Matching the button shadow style */
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
@@ -1582,6 +1582,11 @@ p {
 /* Active effect */
 .event-content button:active {
     transform: scale(0.95);
+}
+
+/* Prevent background from being transparent */
+#event-modal {
+    background-color: rgba(0, 0, 0, 0.95); /* Darker background with no transparency */
 }
 
 /* Darken the background when modal is active */
