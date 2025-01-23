@@ -1547,30 +1547,51 @@ p {
     background-color: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
+    z-index: 1000; /* Ensure it's on top of other content */
+    transition: opacity 0.3s ease-in-out;
 }
 
 .event-content {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 400px;
+    background-color: var(--content-bg); /* Use the theme's background color */
+    color: var(--text-color); /* Text color to match the theme */
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 480px;
     text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.event-content.show {
+    transform: scale(1);
+    opacity: 1;
 }
 
 /* Close button for modal */
 .event-content button {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #ff5722;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: var(--accent-color);
     color: #fff;
     border: none;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .event-content button:hover {
-    background-color: #e64a19;
+    background-color: var(--accent-color-dark);
+    transform: scale(1.05);
+}
+
+.event-content button:focus {
+    outline: none;
+}
+
+.event-content button:active {
+    transform: scale(0.98);
 }
 
 /* General Styles */
