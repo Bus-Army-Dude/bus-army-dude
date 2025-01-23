@@ -594,54 +594,59 @@ document.getElementById("next-month").addEventListener("click", () => {
 // Initialize calendar on page load
 window.onload = loadCalendar;
 
-// Sample data for articles
+// Sample article data
 const articles = [
     {
         id: 1,
         title: "Tech News: AI in 2025",
-        content: "Artificial Intelligence is revolutionizing industries in 2025. This article explores the implications of AI in various sectors...",
+        content: "Artificial Intelligence is revolutionizing industries in 2025. This article explores the implications of AI in various sectors.",
         date: "January 1, 2025",
-        categories: ["Tech", "AI"],
+        category: "Tech",
         tags: ["AI", "2025"]
     },
     {
         id: 2,
         title: "Politics: The Future of Elections",
-        content: "Election systems are evolving with technology. In this article, we discuss the potential changes in voting systems...",
+        content: "Election systems are evolving with technology. In this article, we discuss the potential changes in voting systems.",
         date: "January 2, 2025",
-        categories: ["Politics"],
+        category: "Politics",
         tags: ["Elections", "2025"]
+    },
+    {
+        id: 3,
+        title: "Entertainment: New Movies in 2025",
+        content: "2025 is set to be an exciting year for movie lovers. This article covers the anticipated releases for the year.",
+        date: "January 3, 2025",
+        category: "Entertainment",
+        tags: ["Movies", "2025"]
     }
-    // Add more articles as needed
 ];
 
-// Function to generate modals and articles dynamically
+// Function to generate articles dynamically
 function generateArticles() {
     const container = document.getElementById("articles-container");
-    container.innerHTML = ""; // Clear the container
-    
+    container.innerHTML = ""; // Clear existing articles
+
     articles.forEach(article => {
-        // Create article elements
         const articleElement = document.createElement("div");
         articleElement.classList.add("article");
-        articleElement.dataset.articleId = article.id;
-
+        articleElement.dataset.category = article.category;
+        articleElement.dataset.tags = article.tags.join(", ");
+        
         articleElement.innerHTML = `
             <h2>${article.title}</h2>
             <p>${article.content.slice(0, 150)}...</p>
             <p class="date">Published: ${article.date}</p>
-            <div class="categories">${article.categories.map(cat => `<div class="category">${cat}</div>`).join('')}</div>
-            <div class="tags">${article.tags.map(tag => `<div class="tag">${tag}</div>`).join('')}</div>
+            <div class="tags">${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
             <button class="learn-more-btn">Learn More</button>
         `;
         
         container.appendChild(articleElement);
 
-        // Create modal for each article
+        // Modal setup
         const modalElement = document.createElement("div");
         modalElement.classList.add("modal");
         modalElement.id = `modal-${article.id}`;
-        
         modalElement.innerHTML = `
             <div class="modal-content">
                 <span class="close-btn" onclick="closeModal(${article.id})">&times;</span>
@@ -649,13 +654,12 @@ function generateArticles() {
                 <p>${article.content}</p>
             </div>
         `;
-        
         container.appendChild(modalElement);
-    });
 
-    // Add event listeners to the "Learn More" buttons
-    document.querySelectorAll(".learn-more-btn").forEach((btn, index) => {
-        btn.addEventListener("click", () => openModal(index + 1)); // Index starts at 0, but modal ids start at 1
+        // Learn More button
+        articleElement.querySelector(".learn-more-btn").addEventListener("click", () => {
+            openModal(article.id);
+        });
     });
 }
 
@@ -671,14 +675,27 @@ function closeModal(articleId) {
     modal.style.display = "none";
 }
 
-// Close modal if clicked outside of content
-window.onclick = function(event) {
-    document.querySelectorAll(".modal").forEach(modal => {
-        if (event.target === modal) {
-            modal.style.display = "none";
+// Filtering Function
+function filterArticles() {
+    const categoryFilter = document.getElementById("category-filter").value;
+    const tagSearch = document.getElementById("tag-search").value.toLowerCase();
+
+    const articles = document.querySelectorAll(".article");
+    articles.forEach(article => {
+        const category = article.dataset.category;
+        const tags = article.dataset.tags.toLowerCase();
+        
+        if ((categoryFilter === "" || category === categoryFilter) && (tags.includes(tagSearch))) {
+            article.style.display = "block";
+        } else {
+            article.style.display = "none";
         }
     });
 }
 
-// Generate Articles on page load
+// Event Listeners for Filters
+document.getElementById("category-filter").addEventListener("change", filterArticles);
+document.getElementById("tag-search").addEventListener("input", filterArticles);
+
+// Generate articles on page load
 window.onload = generateArticles;
