@@ -343,16 +343,12 @@ youtubeShoutouts.init();
     
  // Function to update the countdown
 function updateNewYearCountdown() {
-    // Get current date and time
     const now = new Date();
+    const targetDate = new Date(2025, 2, 18, 0, 0, 0); // March 18, 2025, 00:00:00
 
-    // Define the target date (March 18, 2025 at 00:00:00)
-    const targetDate = new Date(2025, 2, 18, 0, 0, 0); // Note: Month is 0-based (March = 2)
-
-    // Calculate the difference in milliseconds
     const diff = targetDate - now;
 
-    // If the countdown has finished, display a celebration message
+    // If the countdown is over, display the celebration message
     if (diff <= 0) {
         document.querySelector('.countdown-section').innerHTML = `
             <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
@@ -363,23 +359,31 @@ function updateNewYearCountdown() {
         return;
     }
 
-    // Calculate remaining days, hours, minutes, and seconds
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    // Update the countdown values in the HTML
+    // Update the countdown values smoothly
     document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
     document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
     document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
     document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
+
+    // Trigger animation effect for smooth number transition
+    const countdownItems = document.querySelectorAll('.countdown-value');
+    countdownItems.forEach(item => {
+        item.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            item.style.transform = 'scale(1)';
+        }, 300);
+    });
 }
 
-// Call the countdown function once when the page loads
+// Initialize countdown on page load
 updateNewYearCountdown();
 
-// Set an interval to update the countdown every second
+// Update the countdown every second
 setInterval(updateNewYearCountdown, 1000);
 
 // Manually set the last updated date and time (example in EST timezone)
