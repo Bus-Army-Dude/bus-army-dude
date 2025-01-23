@@ -1256,24 +1256,24 @@ body.loaded #loading-spinner {
 
 /* Adjust Weather Widget for Section Alignment */
 #weather-info {
-    background-color: #1e1e1e; /* Dark background for the weather widget */
+    background-color: var(--content-bg); /* Match background color of the website */
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); /* Soft glow effect */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Soft, subtle shadow */
     display: inline-block;
-    max-width: 100%; /* Adjust to match section width */
+    max-width: 100%;
     width: 100%;
-    margin-bottom: 40px; /* Space from the bottom */
-    margin-top: 20px; /* Some space from the top */
-    box-sizing: border-box; /* Ensure padding doesn't exceed max width */
+    margin-bottom: 30px; /* Space from the bottom section */
+    margin-top: 20px; /* Space from the top */
+    box-sizing: border-box;
 }
 
-/* Make sure sections like Printify and Fourthwall have similar widths */
+/* Ensure all sections align */
 #current-president, 
 #printify-merch, 
 #fourthwall-merch, 
 #weather-info {
-    max-width: 100%; /* Ensure all sections align */
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     padding-left: 20px;
@@ -1285,20 +1285,37 @@ body.loaded #loading-spinner {
 h2 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #ffffff; /* White color for header */
+    color: var(--accent-color); /* Accent color to match the theme */
+    font-weight: bold;
 }
 
 /* Weather Description and Temperature Styling */
 p {
     font-size: 18px;
     margin: 0;
-    color: #cccccc; /* Light gray text for the weather info */
+    color: var(--text-color); /* Light gray text matching the theme */
 }
 
 /* Loading Message Styling */
 #weather-info p {
     font-style: italic;
-    color: #ffcc00; /* Bright color for the loading message */
+    color: var(--highlight-color); /* Bright color for the loading message */
+}
+
+/* Ensure consistent spacing between sections */
+#weather-info {
+    margin-bottom: 40px; /* More space from the bottom */
+}
+
+/* Adjust padding for the weather info to avoid it looking too cramped */
+#weather-info p, h2 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* For better contrast and visibility */
+#weather-info h2, #weather-info p {
+    color: var(--text-color); /* Ensure readability with dark text */
 }
 
 /* FAQ Section Styling */
