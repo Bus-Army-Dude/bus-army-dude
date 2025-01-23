@@ -481,59 +481,41 @@ window.addEventListener('load', function() {
     document.body.classList.add('loaded');
 });
 
-// weather.js
-
-// Replace with your AccuWeather API key
-const apiKey = '3BpacvKrd0RFVTv3rTdBHIGskCnE7npR';  
-
 function getWeather(lat, lon) {
-    // AccuWeather API requires a location key, so we'll first fetch the key based on latitude and longitude
-    const locationKeyUrl = `https://api.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat},${lon}`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
 
-    fetch(locationKeyUrl)
+    fetch(url)
         .then(response => response.json())
-        .then(locationData => {
-            const locationKey = locationData.Key;  // Get location key for the city
-            // Now, use the locationKey to get weather data
-            const weatherUrl = `https://api.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}&details=true`;
+        .then(data => {
+            const weather = data.current_weather.weathercode;  // Weather description (from Open-Meteo)
+            const temp = data.current_weather.temperature;      // Temperature in Fahrenheit
+            const location = `${lat}, ${lon}`;                  // You can customize this to show a more human-readable location
 
-            fetch(weatherUrl)
-                .then(response => response.json())
-                .then(weatherData => {
-                    const weather = weatherData[0];  // Weather data in an array
-                    const temp = weather.Temperature.Imperial.Value;  // Temperature in Fahrenheit
-                    const description = weather.WeatherText;  // Weather description
-                    const location = weather.LocalizedName;  // Location name
-
-                    // Update the UI with weather info
-                    document.getElementById('weather-location').textContent = location;
-                    document.getElementById('weather-info').innerHTML = `
-                        <p class="temp">${temp}°F</p>
-                        <p class="description">${description}</p>
-                    `;
-                })
-                .catch(err => {
-                    document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
-                    console.error(err);
-                });
+            // Update the UI with the weather data
+            document.getElementById('weather-info').innerHTML = `
+                <h2>Weather at ${location}</h2>
+                <p>${temp}°F, ${weather}</p>
+            `;
         })
         .catch(err => {
-            document.getElementById('weather-info').innerHTML = 'Unable to get location for weather.';
+            document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
             console.error(err);
         });
 }
 
-// Get the user's location using Geolocation API
+function handleLocationError() {
+    document.getElementById('weather-info').innerHTML = 'Unable to get location for weather.';
+}
+
+// Get user's location and fetch weather data
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         position => {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
-            getWeather(lat, lon);  // Pass latitude and longitude to get weather
+            getWeather(lat, lon);
         },
-        () => {
-            document.getElementById('weather-info').innerHTML = 'Unable to retrieve location for weather.';
-        }
+        handleLocationError
     );
 } else {
     document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by this browser.';
