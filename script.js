@@ -344,7 +344,7 @@ youtubeShoutouts.init();
     // New Year countdown function
 function updateNewYearCountdown() {
     const now = new Date();
-    const newYear = new Date('2025-03-18T00:00:00');
+    const newYear = new Date('2025-03-18T00:00:00'); // Target date (adjust as needed)
     const diff = newYear - now;
 
     const countdownSection = document.querySelector('.countdown-section');
@@ -358,6 +358,7 @@ function updateNewYearCountdown() {
             <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
         `;
     } else {
+        // Calculate the time remaining
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -375,17 +376,23 @@ function updateNewYearCountdown() {
 function updateCountdownValue(id, value) {
     const countdownElement = document.getElementById(id);
     if (countdownElement) {
-        countdownElement.classList.add('flip');
-        setTimeout(() => {
-            countdownElement.classList.remove('flip');
-            countdownElement.textContent = value.toString().padStart(2, '0');
-        }, 500);  // Match flip animation timing with the text update
+        // Check if the new value is different from the current value to trigger the flip
+        const currentValue = countdownElement.textContent;
+        const newValue = value.toString().padStart(2, '0');
+        
+        if (currentValue !== newValue) {
+            countdownElement.classList.add('flip'); // Add flip class to trigger animation
+            setTimeout(() => {
+                countdownElement.classList.remove('flip'); // Remove the flip class after the animation
+                countdownElement.textContent = newValue; // Update the text content
+            }, 500);  // Match flip animation duration
+        }
     }
 }
 
-// Initialize countdown
+// Initialize countdown on page load
 updateNewYearCountdown();
-setInterval(updateNewYearCountdown, 1000);
+setInterval(updateNewYearCountdown, 1000); // Update every second
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 23, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
