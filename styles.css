@@ -1330,20 +1330,15 @@ body {
     margin: 0;
 }
 
-#weather-info .weather-description {
+.weather-description {
     font-size: 1.1rem;
     color: #f39c12;  /* Golden color for weather description to stand out */
 }
 
-#weather-note {
-    background-color: #f39c12;  /* Golden background for the note */
-    color: black;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 20px;
-    font-size: 1.1rem;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.weather-icon {
+    margin-top: 15px;
+    width: 50px;  /* Adjust the icon size */
+    height: 50px; /* Adjust the icon size */
 }
 
 /* FAQ Section Styling */
