@@ -481,7 +481,7 @@ window.addEventListener('load', function() {
     document.body.classList.add('loaded');
 });
 
-// Function to fetch weather data based on latitude and longitude
+// Function to get weather data based on latitude and longitude
 function getWeather(lat, lon) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit&daily=temperature_2m_max,temperature_2m_min&timezone=America/New_York`;
 
@@ -489,7 +489,8 @@ function getWeather(lat, lon) {
         .then(response => response.json())
         .then(data => {
             if (data && data.current_weather) {
-                const city = data.latitude ? `${data.latitude.toFixed(2)}, ${data.longitude.toFixed(2)}` : 'Unknown City'; // Fallback for city if not provided
+                const location = data.timezone.split('/')[1].replace('_', ' '); // Extract city and state/country from timezone
+                const time = new Date().toLocaleString("en-US", { timeZone: "America/New_York" }); // Get the current time in EST
                 const temp = data.current_weather.temperature; // Current temperature in Fahrenheit
                 const condition = data.current_weather.weathercode; // Weather condition code
                 const icon = getWeatherIcon(condition); // Get the icon based on weather code
@@ -499,16 +500,27 @@ function getWeather(lat, lon) {
 
                 document.getElementById('weather-info').innerHTML = `
                     <div class="weather-container">
-                        <div class="weather-left">
-                            <h2>Weather in ${city}</h2>
-                            <p>${temp}°F</p>
-                            <p>Conditions: ${conditionsText}</p>
+                        <!-- Cloud Icon -->
+                        <div class="weather-top">
+                            <img src="https://api.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon" class="weather-icon">
+                        </div>
+                        
+                        <!-- Location and Time -->
+                        <div class="weather-middle-left">
+                            <p>Weather in ${location}</p>
+                            <p>${time}</p>
+                        </div>
+                        
+                        <!-- Temperature and Condition -->
+                        <div class="weather-middle-center">
+                            <h2>${temp}°</h2>
+                            <p>${conditionsText}</p>
+                        </div>
+                        
+                        <!-- Day/Night Temps -->
+                        <div class="weather-bottom-left">
                             <p>Day: ${dayTemp}°F • Night: ${nightTemp}°F</p>
                         </div>
-                        <div class="weather-right">
-                            <img src="https://www.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon" class="weather-icon">
-                        </div>
-                    </div>
                 `;
             } else {
                 document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
@@ -586,16 +598,16 @@ function getWeatherIcon(code) {
         80: 'r01d', // Light Showers of Rain
         81: 'r02d', // Moderate Showers of Rain
         82: 'r03d', // Heavy Showers of Rain
-        85: 's02d', // Light Showers of Snow
-        86: 's03d', // Heavy Showers of Snow
-        95: 't01d', // Thunderstorms
-        96: 't02d', // Thunderstorms with Light Hail
-        99: 't03d', // Thunderstorms with Heavy Hail
+        85: 's01d', // Light Showers of Snow
+        86: 's02d', // Heavy Showers of Snow
+        95: 't01d', // Thunderstorm
+        96: 't02d', // Thunderstorm with Hail
+        99: 't03d', // Thunderstorm with Heavy Hail
     };
-    return iconMap[code] || 'd01d'; // Default to 'clear sky' icon if no match
+    return iconMap[code] || 'c01d'; // Default to clear sky icon if no match
 }
 
-// Get user's location and fetch weather data
+// Check if geolocation is available and fetch the user's location
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         position => {
