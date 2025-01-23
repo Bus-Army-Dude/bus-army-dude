@@ -1437,6 +1437,15 @@ p {
     background-color: #e64a19;
 }
 
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Dark background for dark mode */
+    color: #e0e0e0; /* Light text for readability */
+}
+
 /* Footer */
 footer {
     text-align: center;
