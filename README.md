@@ -10,21 +10,30 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Real-time battery status
 - Software version tracking
 - Accessibility Resources
-- Verified medical resources
-- NIMH/NINDS integration
-- Comprehensive conditions list
+  - Verified medical resources
+  - NIMH/NINDS integration
+  - Comprehensive conditions list
 - TikTok creator shoutouts
 - Instagram creator shoutouts
 - YouTube creator shoutouts
 - Profile information display
 - Content Protection
-- Event Calendar
-- Weather Based on Location
-- Enhanced copy protection
-- Image security measures
-- Content control system
-- Selection management
-- Last Updated Feature for Follower/Subscriber
+  - Event Calendar
+  - Weather Based on Location
+  - Enhanced copy protection
+  - Image security measures
+  - Content control system
+  - Selection management
+  - Last Updated Feature for Follower/Subscriber
+- **Current Day Highlighting in Calendar**
+  - Automatically highlights the current day based on the user's local timezone.
+- **Enhanced Event Modal**
+  - Refined design and functionality for viewing event details.
+- **Calendar Event Indicators**
+  - Improved visibility of event indicators on the calendar.
+- **Theme Consistency Across Sections**
+  - All sections now reflect the unified website theme for a cohesive user experience.
+
 ### 💻 Supported Operating Systems
 - iOS
 - iPadOS
@@ -40,7 +49,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Stable internet connection
 
 ### 🔄 Version Information
-**Current Version:** v1.10.0
+**Current Version:** v1.10.1
 
 ### 📱 Browser Support
 - Chrome (Latest)
