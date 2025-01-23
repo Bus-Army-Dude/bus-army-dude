@@ -1524,13 +1524,13 @@ p {
 
 /* Modal for events */
 #event-modal {
-    display: none;
+    display: none; /* Hidden by default */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(128, 128, 128, 0.95); /* Grey background with opacity */
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -1539,8 +1539,8 @@ p {
 
 /* Event Content Box */
 .event-content {
-    background-color: var(--content-bg);
-    color: var(--text-color);
+    background-color: #333; /* Dark background to match the theme */
+    color: #fff;
     padding: 30px;
     border-radius: 12px;
     max-width: 480px;
@@ -1559,45 +1559,35 @@ p {
     opacity: 1;
 }
 
-/* Title Styling */
-.event-content h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    font-weight: 600;
-    color: var(--accent-color);
-}
-
-/* Description Text */
-.event-content p {
-    font-size: 16px;
-    margin-bottom: 20px;
-    color: var(--text-color);
-}
-
 /* Close button for modal */
 .event-content button {
     margin-top: 20px;
-    padding: 12px 24px;
-    background-color: var(--accent-color);
-    color: #fff;
+    padding: 10px;
+    background-color: var(--button-bg); /* Same background as the other buttons */
+    color: white;
     border: none;
+    border-radius: 50%;
+    font-size: 20px;
     cursor: pointer;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+/* Hover effect */
 .event-content button:hover {
-    background-color: var(--accent-color-dark);
+    background-color: var(--button-hover-bg); /* Matching the hover effect of other buttons */
     transform: scale(1.05);
 }
 
-.event-content button:focus {
-    outline: none;
+/* Active effect */
+.event-content button:active {
+    transform: scale(0.95);
 }
 
-.event-content button:active {
-    transform: scale(0.98);
+/* Darken the background when modal is active */
+#event-modal.active {
+    display: flex; /* Show modal */
+    opacity: 1;
 }
 
 /* Mobile responsiveness */
