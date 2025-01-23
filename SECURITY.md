@@ -40,6 +40,19 @@
 - Protected follower counts
 - Verified badge protection
 
+### 7. Calendar and Event Security
+- Secure event modal functionality
+- Event details protection to prevent unauthorized access
+- Highlighting current day securely based on the user’s timezone
+
+### 8. Theme and UI Consistency
+- Consistent styling and theming across all sections for improved security against UI manipulation
+- Protected layout components to prevent unauthorized alteration
+
+### 9. Event Interaction Security
+- Prevent unauthorized interaction with event calendar details
+- Protected event data and indicators from tampering
+
 ## Reporting a Vulnerability
 
 To report a security vulnerability, please follow these steps:
@@ -57,7 +70,7 @@ To report a security vulnerability, please follow these steps:
 - The website undergoes regular security updates
 - Security patches are implemented as soon as vulnerabilities are discovered
 - Users are notified of significant security updates through the version info section
-- Current stable version is v1.10.0
+- Current stable version is v1.10.1
 
 ## Security Best Practices
 
@@ -66,6 +79,10 @@ To report a security vulnerability, please follow these steps:
    - Use secure and up-to-date operating systems
    - Report any suspicious activity
    - Do not attempt to circumvent security measures
+   - **Enable JavaScript**, **Location**, and **Cookies** for features to work properly on the website.
+   - For users accessing the website on TikTok, please follow these steps to access the weather feature:
+     1. Tap the three dots in the right-hand corner of the TikTok app.
+     2. Select "Open in Browser" to enable location access for the weather feature, as the TikTok browser prevents location detection.
 
 2. **For Contributors:**
    - Follow secure coding practices
@@ -75,17 +92,18 @@ To report a security vulnerability, please follow these steps:
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.9.x   | :white_check_mark: |
-| 1.9.x   | :x: |
-| 1.8.x   | :x: |
-| 1.7.x   | :x: |
-| 1.6.x   | :x: |
-| 1.5.x   | :x: |
-| 1.4.x   | :x: |
-| 1.3.x   | :x: |
-| < 1.3   | :x: |
+| Version  | Supported          |
+| -------- | ------------------ |
+| 1.10.1   | :white_check_mark: |
+| 1.10.0   | :x:                |
+| 1.9.x    | :x:                |
+| 1.8.x    | :x:                |
+| 1.7.x    | :x:                |
+| 1.6.x    | :x:                |
+| 1.5.x    | :x:                |
+| 1.4.x    | :x:                |
+| 1.3.x    | :x:                |
+| < 1.3    | :x:                |
 
 ## Security Contact
 
@@ -96,9 +114,9 @@ For any security-related concerns, please contact:
 ## Repository Information
 - Repository: BusArmyDude/busarmydude
 - Language Composition:
-  - **JavaScript:** 41.5%
-  - **CSS:** 37.5%
-  - **HTML:** 21.0%
+  - **JavaScript:** 41.0%
+  - **CSS:** 40.2%
+  - **HTML:** 18.8%
 
 ## Acknowledgments
 
@@ -106,7 +124,7 @@ We appreciate the security community's efforts in responsibly disclosing vulnera
 
 ## Version Control
 
-This security policy is version 1.9.0 and was last updated on 2025-1-22 9:39 AM
+This security policy is version 1.10.1 and was last updated on 2025-1-23 at 2:31 PM.
 
 ---
 
