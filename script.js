@@ -490,12 +490,14 @@ function getWeather(lat, lon) {
         .then(data => {
             if (data && data.current_weather) {
                 // Reverse Geocoding to get city and state
-                const reverseGeoUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=2b9a9eb3498342f78eee9b3cfe478725`;
+                const reverseGeoUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=98c161dcd71a4617a50b67ac8cb2a56d`;
                 
                 fetch(reverseGeoUrl)
                     .then(res => res.json())
                     .then(geoData => {
-                        // Ensure that city and state are properly parsed
+                        console.log('Reverse Geocoding Response:', geoData); // Log the response
+
+                        // Check if the city and state are available in the response
                         const city = geoData.results[0]?.components.city || 'Unknown City';
                         const state = geoData.results[0]?.components.state || 'Unknown State';
                         const location = city + ', ' + state;
@@ -538,6 +540,10 @@ function getWeather(lat, lon) {
                                 </div>
                             </div>
                         `;
+                    })
+                    .catch(err => {
+                        console.error('Error with reverse geocoding:', err);
+                        document.getElementById('weather-info').innerHTML = 'Unable to retrieve location data.';
                     });
             } else {
                 document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
