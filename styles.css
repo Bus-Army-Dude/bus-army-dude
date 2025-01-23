@@ -1298,9 +1298,10 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 100%; /* Ensure it doesn't overflow the container */
+    width: 100%; /* Set to 100% of the parent container */
+    max-width: 1200px; /* You can adjust this value to match your website's container width */
     padding: 10px;
-    margin: 20px; /* Added margin to create space around the calendar */
+    margin: 20px auto; /* Center it horizontally */
     box-sizing: border-box;
     background-color: #333; /* Matches your dark theme */
     color: #fff; /* White text to contrast with dark background */
