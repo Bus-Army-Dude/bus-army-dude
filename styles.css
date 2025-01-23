@@ -1496,6 +1496,7 @@ body {
     font-size: 14px;
 }
 
+/* Article styling */
 .article {
     padding: 10px;
     margin: 15px;
@@ -1533,6 +1534,7 @@ body {
     background-color: #45a049;
 }
 
+/* Modal Styling */
 .modal {
     display: none;
     position: fixed;
