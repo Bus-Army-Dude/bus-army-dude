@@ -341,14 +341,12 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
-   // Function to update the countdown
+  // Function to update the countdown
 function updateNewYearCountdown() {
-    const now = new Date(); // Current time
-    const targetDate = new Date('2025-03-18T00:00:00'); // Target date (your special day)
-    
-    const diff = targetDate - now; // Time difference between now and target date
+    const now = Date.now(); // Current time in milliseconds
+    const targetDate = new Date('2025-03-18T00:00:00').getTime(); // Target date in milliseconds
 
-    console.log("Time Difference: " + diff); // Log the time difference to the console
+    const diff = targetDate - now; // Time difference between now and target date
 
     if (diff <= 0) {
         // If the countdown is over, display a message
@@ -374,11 +372,11 @@ function updateNewYearCountdown() {
     document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
 }
 
-// Start the countdown immediately and update every second
-setInterval(updateNewYearCountdown, 1000); // Update every second
-
-// Initial call to populate the countdown immediately when page loads
+// Call the countdown function once when the page loads
 updateNewYearCountdown();
+
+// Set an interval to update the countdown every second
+setInterval(updateNewYearCountdown, 1000);
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 23, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
