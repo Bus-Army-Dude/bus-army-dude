@@ -1611,6 +1611,15 @@ p {
     }
 }
 
+/* Highlight the current day */
+.calendar-day.current-day {
+    background-color: var(--accent-color); /* Use your theme's accent color */
+    color: white;
+    font-weight: bold;
+    border: 2px solid var(--accent-color-dark); /* Optional border for emphasis */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Slight shadow to make it pop */
+}
+
 /* General Styles */
 body {
     font-family: Arial, sans-serif;
