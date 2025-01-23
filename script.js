@@ -483,45 +483,59 @@ window.addEventListener('load', function() {
 
 // Function to get weather data based on latitude and longitude
 function getWeather(lat, lon) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit&daily=temperature_2m_max,temperature_2m_min&timezone=America/New_York`;
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit&daily=temperature_2m_max,temperature_2m_min&timezone=America/New_York`;
 
-    fetch(url)
+    fetch(weatherUrl)
         .then(response => response.json())
         .then(data => {
             if (data && data.current_weather) {
-                const location = data.timezone.split('/')[1].replace('_', ' '); // Extract city and state/country from timezone
-                const time = new Date().toLocaleString("en-US", { timeZone: "America/New_York" }); // Get the current time in EST
-                const temp = data.current_weather.temperature; // Current temperature in Fahrenheit
-                const condition = data.current_weather.weathercode; // Weather condition code
-                const icon = getWeatherIcon(condition); // Get the icon based on weather code
-                const dayTemp = data.daily.temperature_2m_max[0]; // Max temperature for the day
-                const nightTemp = data.daily.temperature_2m_min[0]; // Min temperature for the night
-                const conditionsText = getConditionText(condition); // Get conditions text based on weather code
+                // Reverse Geocoding to get city and state
+                const reverseGeoUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=2b9a9eb3498342f78eee9b3cfe478725`;
+                
+                fetch(reverseGeoUrl)
+                    .then(res => res.json())
+                    .then(geoData => {
+                        const location = geoData.results[0].components.city + ', ' + geoData.results[0].components.state;
+                        
+                        const time = new Date().toLocaleString("en-US", { timeZone: "America/New_York" }); // Get the current time in EST
+                        const temp = data.current_weather.temperature; // Current temperature in Fahrenheit
+                        const condition = data.current_weather.weathercode; // Weather condition code
+                        const icon = getWeatherIcon(condition); // Get the icon based on weather code
+                        const dayTemp = data.daily.temperature_2m_max[0]; // Max temperature for the day
+                        const nightTemp = data.daily.temperature_2m_min[0]; // Min temperature for the night
+                        const conditionsText = getConditionText(condition); // Get conditions text based on weather code
 
-                document.getElementById('weather-info').innerHTML = `
-                    <div class="weather-container">
-                        <!-- Cloud Icon -->
-                        <div class="weather-top">
-                            <img src="https://api.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon" class="weather-icon">
-                        </div>
-                        
-                        <!-- Location and Time -->
-                        <div class="weather-middle-left">
-                            <p>Weather in ${location}</p>
-                            <p>${time}</p>
-                        </div>
-                        
-                        <!-- Temperature and Condition -->
-                        <div class="weather-middle-center">
-                            <h2>${temp}°</h2>
-                            <p>${conditionsText}</p>
-                        </div>
-                        
-                        <!-- Day/Night Temps -->
-                        <div class="weather-bottom-left">
-                            <p>Day: ${dayTemp}°F • Night: ${nightTemp}°F</p>
-                        </div>
-                `;
+                        document.getElementById('weather-info').innerHTML = `
+                            <div class="weather-container">
+                                <!-- Cloud Icon -->
+                                <div class="weather-top">
+                                    <img src="https://api.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon" class="weather-icon">
+                                </div>
+
+                                <!-- Location and Time -->
+                                <div class="weather-middle-left">
+                                    <p>Weather in ${location}</p>
+                                    <p>${time}</p>
+                                </div>
+
+                                <!-- Temperature and Condition -->
+                                <div class="weather-middle-center">
+                                    <h2>${temp}°</h2>
+                                    <p>${conditionsText}</p>
+                                </div>
+
+                                <!-- Day/Night Temps -->
+                                <div class="weather-bottom-left">
+                                    <p>Day: ${dayTemp}°F • Night: ${nightTemp}°F</p>
+                                </div>
+
+                                <!-- Weather Watch -->
+                                <div class="weather-bottom-right">
+                                    <p>Weather Watch: Temperature Outlook for Feb-Apr: Mild with chances of rain.</p>
+                                </div>
+                            </div>
+                        `;
+                    });
             } else {
                 document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
             }
