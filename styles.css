@@ -1104,6 +1104,14 @@ body {
     margin: 5px 0;
 }
 
+/* Adjust Presidential Term to display inline */
+.presidential-term {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 5px 0;
+    color: var(--accent-color); /* You can change this to any accent color */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .president-info {
