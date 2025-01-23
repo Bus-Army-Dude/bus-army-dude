@@ -485,7 +485,7 @@ function getWeather(lat, lon) {
     const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
 
     // Use OpenCage Geocoder for reverse geocoding to get city, state, and country
-    const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=YOUR_OPENCAGE_API_KEY`;
+    const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=2b9a9eb3498342f78eee9b3cfe478725`;
 
     // Fetch weather data
     fetch(weatherUrl)
