@@ -594,109 +594,91 @@ document.getElementById("next-month").addEventListener("click", () => {
 // Initialize calendar on page load
 window.onload = loadCalendar;
 
-// Sample Articles Data (can be dynamically loaded from an API)
+// Sample data for articles
 const articles = [
     {
-        "id": 1,
-        "title": "The Future of AI and Technology",
-        "content": "Artificial Intelligence is changing the tech industry. Machine learning algorithms are being used to improve automation and software.",
-        "author": "John Doe",
-        "date": "2025-01-20",
-        "category": ["Tech"],
-        "tags": ["AI", "Technology", "Automation"]
+        id: 1,
+        title: "Tech News: AI in 2025",
+        content: "Artificial Intelligence is revolutionizing industries in 2025. This article explores the implications of AI in various sectors...",
+        date: "January 1, 2025",
+        categories: ["Tech", "AI"],
+        tags: ["AI", "2025"]
     },
     {
-        "id": 2,
-        "title": "Elections and the Future of Politics",
-        "content": "The 2025 elections are critical for shaping the future. Voter turnout is expected to be higher than ever before.",
-        "author": "Jane Smith",
-        "date": "2025-01-21",
-        "category": ["Politics"],
-        "tags": ["Elections", "Voter", "Campaign"]
-    },
-    {
-        "id": 3,
-        "title": "Entertainment in the Digital Age",
-        "content": "Streaming platforms and digital content are changing the way we consume media. From movies to music, everything is moving online.",
-        "author": "Alice Johnson",
-        "date": "2025-01-22",
-        "category": ["Entertainment"],
-        "tags": ["Streaming", "Digital", "Media"]
+        id: 2,
+        title: "Politics: The Future of Elections",
+        content: "Election systems are evolving with technology. In this article, we discuss the potential changes in voting systems...",
+        date: "January 2, 2025",
+        categories: ["Politics"],
+        tags: ["Elections", "2025"]
     }
+    // Add more articles as needed
 ];
 
-// Function to render articles dynamically
-function renderArticles(articles) {
-    let articlesContainer = document.getElementById("articles-container");
-    articlesContainer.innerHTML = '';  // Clear the container before re-rendering
-
+// Function to generate modals and articles dynamically
+function generateArticles() {
+    const container = document.getElementById("articles-container");
+    container.innerHTML = ""; // Clear the container
+    
     articles.forEach(article => {
-        // Create article div
-        let articleDiv = document.createElement("div");
-        articleDiv.classList.add("article");
+        // Create article elements
+        const articleElement = document.createElement("div");
+        articleElement.classList.add("article");
+        articleElement.dataset.articleId = article.id;
 
-        // Create title
-        let title = document.createElement("h2");
-        title.innerText = article.title;
-        articleDiv.appendChild(title);
+        articleElement.innerHTML = `
+            <h2>${article.title}</h2>
+            <p>${article.content.slice(0, 150)}...</p>
+            <p class="date">Published: ${article.date}</p>
+            <div class="categories">${article.categories.map(cat => `<div class="category">${cat}</div>`).join('')}</div>
+            <div class="tags">${article.tags.map(tag => `<div class="tag">${tag}</div>`).join('')}</div>
+            <button class="learn-more-btn">Learn More</button>
+        `;
+        
+        container.appendChild(articleElement);
 
-        // Create content (you can truncate it or show the whole content)
-        let content = document.createElement("p");
-        content.innerText = article.content.length > 200 ? article.content.substring(0, 200) + "..." : article.content;
-        articleDiv.appendChild(content);
+        // Create modal for each article
+        const modalElement = document.createElement("div");
+        modalElement.classList.add("modal");
+        modalElement.id = `modal-${article.id}`;
+        
+        modalElement.innerHTML = `
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal(${article.id})">&times;</span>
+                <h2>${article.title}</h2>
+                <p>${article.content}</p>
+            </div>
+        `;
+        
+        container.appendChild(modalElement);
+    });
 
-        // Create date
-        let date = document.createElement("p");
-        date.classList.add("date");
-        date.innerText = `Published on: ${article.date}`;
-        articleDiv.appendChild(date);
-
-        // Create categories
-        let categoriesDiv = document.createElement("div");
-        categoriesDiv.classList.add("categories");
-        article.category.forEach(cat => {
-            let category = document.createElement("span");
-            category.classList.add("category");
-            category.innerText = cat;
-            categoriesDiv.appendChild(category);
-        });
-        articleDiv.appendChild(categoriesDiv);
-
-        // Create tags
-        let tagsDiv = document.createElement("div");
-        tagsDiv.classList.add("tags");
-        article.tags.forEach(tag => {
-            let tagElement = document.createElement("span");
-            tagElement.classList.add("tag");
-            tagElement.innerText = tag;
-            tagsDiv.appendChild(tagElement);
-        });
-        articleDiv.appendChild(tagsDiv);
-
-        // Append the article to the container
-        articlesContainer.appendChild(articleDiv);
+    // Add event listeners to the "Learn More" buttons
+    document.querySelectorAll(".learn-more-btn").forEach((btn, index) => {
+        btn.addEventListener("click", () => openModal(index + 1)); // Index starts at 0, but modal ids start at 1
     });
 }
 
-// Function to filter articles by category
-document.getElementById("category-filter").addEventListener("change", function (e) {
-    const categoryFilter = e.target.value.toLowerCase();
-    const filteredArticles = articles.filter(article => {
-        return categoryFilter === "" || article.category.some(cat => cat.toLowerCase() === categoryFilter);
-    });
-    renderArticles(filteredArticles);
-});
+// Open Modal
+function openModal(articleId) {
+    const modal = document.getElementById(`modal-${articleId}`);
+    modal.style.display = "block";
+}
 
-// Function to filter articles by tag
-document.getElementById("tag-search").addEventListener("input", function (e) {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredArticles = articles.filter(article => {
-        return article.tags.some(tag => tag.toLowerCase().includes(searchTerm)) || 
-               article.title.toLowerCase().includes(searchTerm) ||
-               article.content.toLowerCase().includes(searchTerm);
-    });
-    renderArticles(filteredArticles);
-});
+// Close Modal
+function closeModal(articleId) {
+    const modal = document.getElementById(`modal-${articleId}`);
+    modal.style.display = "none";
+}
 
-// Call this function after loading the articles
-renderArticles(articles);
+// Close modal if clicked outside of content
+window.onclick = function(event) {
+    document.querySelectorAll(".modal").forEach(modal => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+}
+
+// Generate Articles on page load
+window.onload = generateArticles;
