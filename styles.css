@@ -1309,61 +1309,49 @@ body {
     color: #fff; /* White text for contrast */
 }
 
-/* General Weather Section Styles */
-#weather-info {
-    text-align: center;
-    font-family: 'Arial', sans-serif; /* Use your website's default font */
-    margin: 20px;
+/* Weather Section Styling */
+.weather-container {
+    background-color: #333; /* Dark background for consistency with theme */
+    color: #fff; /* Light text color */
     padding: 20px;
-    background-color: #2c2c2c; /* Dark background to match your theme */
-    color: white; /* White text for readability */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    width: 90%; /* Responsive width */
-    max-width: 400px; /* Maximum width */
-    margin-left: auto;
-    margin-right: auto;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
 }
 
-#weather-info h2 {
-    font-size: 1.5rem; /* Font size for the header */
+.weather-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.weather-container .temperature {
+    font-size: 32px;
     font-weight: bold;
+    margin: 10px 0;
+}
+
+.weather-container .weather-description {
+    font-size: 20px;
     margin-bottom: 10px;
 }
 
-#weather-info p {
-    font-size: 1.2rem; /* Font size for weather info */
-    margin-bottom: 10px;
+.weather-container .weather-icon {
+    width: 50px; /* Icon size */
+    height: 50px;
+    margin-top: 10px;
 }
 
-.weather-icon {
-    width: 60px; /* Set a reasonable icon size */
-    height: 60px;
-    margin-top: 15px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+/* Optional: Add hover effect for better interactivity */
+.weather-container:hover {
+    background-color: #444;
+    cursor: pointer;
 }
 
-/* Additional Styling for Mobile */
-@media (max-width: 600px) {
-    #weather-info {
-        padding: 15px; /* Reduced padding on small screens */
-        width: 95%; /* Increase width on mobile */
-    }
-
-    #weather-info h2 {
-        font-size: 1.3rem; /* Smaller header on mobile */
-    }
-
-    #weather-info p {
-        font-size: 1rem; /* Smaller text for weather info */
-    }
-
-    .weather-icon {
-        width: 50px; /* Adjust icon size for mobile */
-        height: 50px;
-    }
+.weather-container img {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
 }
 
 /* FAQ Section Styling */
