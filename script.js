@@ -341,39 +341,56 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
+    document.addEventListener("DOMContentLoaded", function () {
     // New Year countdown
-    function updateCountdown() {
-    const countdownDate = new Date("Feb 27, 2025 03:00:00").getTime();
-    const now = new Date().getTime();
-    const distance = countdownDate - now;
+    function updateNewYearCountdown() {
+        const now = new Date();
+        const newYear = new Date('2025-03-18T00:00:00');
+        const diff = newYear - now;
 
-    // Calculate days, hours, minutes, and seconds
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        const countdownSection = document.querySelector('.countdown-section');
+        if (!countdownSection) return;
 
-    // Update the countdown values
-    document.getElementById("days").textContent = String(days).padStart(2, '0');
-    document.getElementById("hours").textContent = String(hours).padStart(2, '0');
-    document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
-    document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
+        if (diff <= 0) {
+            countdownSection.innerHTML = `
+                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                    YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
+                </h2>
+                <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+            `;
+        } else {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    // Add flip effect by applying a class for animation
-    document.querySelectorAll(".countdown-value").forEach(function(el) {
-        el.classList.add("flip");
-    });
+            // Update the countdown values with a flip effect
+            updateCountdownValue('countdown-days', days);
+            updateCountdownValue('countdown-hours', hours);
+            updateCountdownValue('countdown-minutes', minutes);
+            updateCountdownValue('countdown-seconds', seconds);
+        }
+    }
 
-    // Remove flip effect class after animation
-    setTimeout(() => {
-        document.querySelectorAll(".countdown-value").forEach(function(el) {
-            el.classList.remove("flip");
-        });
-    }, 1000); // Timing for flip animation
-}
+    function updateCountdownValue(id, newValue) {
+        const element = document.getElementById(id);
+        const currentValue = element.textContent;
 
-// Update countdown every second
-setInterval(updateCountdown, 1000);
+        // Only apply the flip effect if the value has changed
+        if (currentValue !== newValue.toString().padStart(2, '0')) {
+            element.classList.add('flipped');
+            setTimeout(() => {
+                element.classList.remove('flipped');
+                element.textContent = newValue.toString().padStart(2, '0');
+            }, 600); // Match the animation duration
+        }
+    }
+
+    // Initialize countdown
+    updateNewYearCountdown();
+
+    setInterval(updateNewYearCountdown, 1000); // Update countdown every second
+});
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 23, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
