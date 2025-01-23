@@ -1309,38 +1309,20 @@ body {
     color: #fff; /* White text for contrast */
 }
 
-/* Style for the weather section */
-#weather-info {
-    background-color: #1e1e1e; /* Dark theme */
+/* General Weather Layout */
+.weather-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #333;
     color: white;
     padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-family: Arial, sans-serif;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border-radius: 10px;
 }
 
-.weather-left {
-    max-width: 60%;
-}
-
-.weather-left h2 {
-    font-size: 24px;
+.weather-top {
+    text-align: center;
     margin-bottom: 10px;
-}
-
-.weather-left p {
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-
-.weather-right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .weather-icon {
@@ -1348,21 +1330,28 @@ body {
     height: 80px;
 }
 
-/* Responsive layout for smaller screens */
-@media (max-width: 768px) {
-    .weather-container {
-        flex-direction: column;
-        align-items: center;
-    }
+.weather-middle-left {
+    text-align: left;
+    margin-bottom: 10px;
+}
 
-    .weather-left {
-        text-align: center;
-        margin-bottom: 15px;
-    }
+.weather-middle-center h2 {
+    font-size: 48px;
+    margin: 0;
+}
 
-    .weather-right {
-        margin-top: 10px;
-    }
+.weather-middle-center p {
+    font-size: 18px;
+}
+
+.weather-bottom-left,
+.weather-bottom-right {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.weather-bottom-right p {
+    font-size: 14px;
 }
 
 /* FAQ Section Styling */
