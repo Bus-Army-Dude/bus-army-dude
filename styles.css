@@ -162,38 +162,49 @@ body {
 
 /* Disabilities Section */
 .disabilities-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
+    background-color: var(--content-bg); /* Matches website dark theme */
+    border-radius: 12px; /* Rounded corners for consistency */
     padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px; /* Space from other sections */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
 }
 
+/* List Styling */
 .disabilities-section ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
+/* List Items Styling */
 .disabilities-section li {
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.1); /* Light dark background */
+    border: 1px solid var(--border-color); /* Light border for separation */
+    border-radius: 8px; /* Rounded corners for items */
     margin-bottom: 10px;
-    overflow: hidden;
+    overflow: hidden; /* Cleaned up layout */
 }
 
+/* Link Styling */
 .disabilities-section a {
     display: block;
-    color: var(--text-color);
+    color: var(--text-color); /* Light text color */
     text-decoration: none;
     padding: 15px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
 }
 
+/* Link Hover Effect */
 .disabilities-section a:hover {
-    background-color: var(--accent-color);
-    color: white;
+    background-color: var(--accent-color); /* Accent background color */
+    color: white; /* White text on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Add extra padding to the section */
+.disabilities-section {
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 /* Base Styles */
