@@ -1300,6 +1300,7 @@ p {
     align-items: center;
     max-width: 100%; /* Ensure it doesn't overflow the container */
     padding: 10px;
+    margin: 20px; /* Added margin to create space around the calendar */
     box-sizing: border-box;
     background-color: #333; /* Matches your dark theme */
     color: #fff; /* White text to contrast with dark background */
