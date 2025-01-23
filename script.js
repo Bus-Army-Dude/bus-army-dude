@@ -482,15 +482,36 @@ window.addEventListener('load', function() {
 });
 
 function getWeather(lat, lon) {
-    const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4';  // Replace with your OpenWeatherAPI key
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+    const apiKey = '3BpacvKrd0RFVTv3rTdBHIGskCnE7npR';  // Replace with your AccuWeather API key
+    const apiBaseURL = 'http://dataservice.accuweather.com';
+    
+    // First, get the location key from AccuWeather API
+    const locationUrl = `${apiBaseURL}/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat},${lon}`;
 
-    fetch(url)
+    fetch(locationUrl)
         .then(response => response.json())
-        .then(data => {
-            const weather = data.weather[0].description;
-            const temp = data.main.temp;  // Temperature in Fahrenheit
-            const location = data.name; // City name
+        .then(locationData => {
+            const locationKey = locationData.Key;  // Get location key for current position
+            getWeatherDetails(locationKey);  // Fetch weather details using location key
+        })
+        .catch(err => {
+            document.getElementById('weather-info').innerHTML = 'Unable to retrieve location data.';
+            console.error(err);
+        });
+}
+
+function getWeatherDetails(locationKey) {
+    const apiKey = '3BpacvKrd0RFVTv3rTdBHIGskCnE7npR';  // Replace with your AccuWeather API key
+    const apiBaseURL = 'http://dataservice.accuweather.com';
+    const weatherUrl = `${apiBaseURL}/currentconditions/v1/${locationKey}?apikey=${apiKey}`;
+
+    fetch(weatherUrl)
+        .then(response => response.json())
+        .then(weatherData => {
+            const weather = weatherData[0].WeatherText;  // Description of weather
+            const temp = weatherData[0].Temperature.Imperial.Value;  // Temperature in Fahrenheit
+            const location = weatherData[0].LocalizedName;  // City name
+            
             document.getElementById('weather-info').innerHTML = `
                 <h2>Weather in ${location}</h2>
                 <p>${temp}°F, ${weather}</p>
