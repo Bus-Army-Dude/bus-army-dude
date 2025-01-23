@@ -1551,21 +1551,39 @@ p {
     transition: opacity 0.3s ease-in-out;
 }
 
+/* Event Content Box */
 .event-content {
-    background-color: var(--content-bg); /* Use the theme's background color */
-    color: var(--text-color); /* Text color to match the theme */
+    background-color: var(--content-bg); /* Background matching the theme */
+    color: var(--text-color); /* Text color matching the theme */
     padding: 30px;
     border-radius: 12px;
     max-width: 480px;
+    width: 90%; /* Ensure it looks good on mobile */
     text-align: center;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--accent-color); /* Add border around the modal */
     transform: scale(0.95);
     transition: transform 0.3s ease, opacity 0.3s ease;
+    overflow: hidden; /* To make sure nothing spills out */
 }
 
+/* Show the modal with smooth scaling effect */
 .event-content.show {
     transform: scale(1);
     opacity: 1;
+}
+
+/* Title Styling */
+.event-content h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Description Text */
+.event-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
 /* Close button for modal */
