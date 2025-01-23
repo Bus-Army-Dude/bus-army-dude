@@ -341,56 +341,51 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
-    document.addEventListener("DOMContentLoaded", function () {
-    // New Year countdown
-    function updateNewYearCountdown() {
-        const now = new Date();
-        const newYear = new Date('2025-03-18T00:00:00');
-        const diff = newYear - now;
+    // New Year countdown function
+function updateNewYearCountdown() {
+    const now = new Date();
+    const newYear = new Date('2025-03-18T00:00:00');
+    const diff = newYear - now;
 
-        const countdownSection = document.querySelector('.countdown-section');
-        if (!countdownSection) return;
+    const countdownSection = document.querySelector('.countdown-section');
+    if (!countdownSection) return;
 
-        if (diff <= 0) {
-            countdownSection.innerHTML = `
-                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
-                </h2>
-                <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
-            `;
-        } else {
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    if (diff <= 0) {
+        countdownSection.innerHTML = `
+            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
+            </h2>
+            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+        `;
+    } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Update the countdown values with a flip effect
-            updateCountdownValue('countdown-days', days);
-            updateCountdownValue('countdown-hours', hours);
-            updateCountdownValue('countdown-minutes', minutes);
-            updateCountdownValue('countdown-seconds', seconds);
-        }
+        // Update countdown values
+        updateCountdownValue('countdown-days', days);
+        updateCountdownValue('countdown-hours', hours);
+        updateCountdownValue('countdown-minutes', minutes);
+        updateCountdownValue('countdown-seconds', seconds);
     }
+}
 
-    function updateCountdownValue(id, newValue) {
-        const element = document.getElementById(id);
-        const currentValue = element.textContent;
-
-        // Only apply the flip effect if the value has changed
-        if (currentValue !== newValue.toString().padStart(2, '0')) {
-            element.classList.add('flipped');
-            setTimeout(() => {
-                element.classList.remove('flipped');
-                element.textContent = newValue.toString().padStart(2, '0');
-            }, 600); // Match the animation duration
-        }
+// Update countdown value and trigger flip effect
+function updateCountdownValue(id, value) {
+    const countdownElement = document.getElementById(id);
+    if (countdownElement) {
+        countdownElement.classList.add('flip');
+        setTimeout(() => {
+            countdownElement.classList.remove('flip');
+            countdownElement.textContent = value.toString().padStart(2, '0');
+        }, 500);  // Match flip animation timing with the text update
     }
+}
 
-    // Initialize countdown
-    updateNewYearCountdown();
-
-    setInterval(updateNewYearCountdown, 1000); // Update countdown every second
-});
+// Initialize countdown
+updateNewYearCountdown();
+setInterval(updateNewYearCountdown, 1000);
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 23, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
