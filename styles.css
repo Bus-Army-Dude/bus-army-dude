@@ -1585,60 +1585,59 @@ body {
 /* Latest TikTok Video Section */
 .latest-tiktok-section {
     background-color: var(--content-bg); /* Matches dark theme */
-    border-radius: 10px; /* Rounded corners */
+    border-radius: 12px;
     padding: 20px;
-    margin-bottom: 30px; /* Space below the section */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
-/* Section Title */
 .latest-tiktok-section h2 {
-    font-size: 2em; /* Larger title for emphasis */
-    color: var(--primary-color); /* Matches the theme color */
-    margin-bottom: 20px; /* Space below the title */
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 20px;
 }
 
-/* TikTok Embed Container */
+/* Adjust TikTok Embed Container */
 .tiktok-embed-container {
-    display: inline-block;
-    width: 100%;
-    max-width: 605px; /* Max width for larger screens */
-    min-width: 325px; /* Ensures the video doesn't get too small */
-    background-color: #1e1e1e; /* Dark background to match theme */
-    border-radius: 12px; /* Rounded corners for the embed */
-    overflow: hidden;
-    padding: 20px; /* Add padding to give it some space */
-}
-
-/* Ensure the TikTok embed doesn't overflow */
-.tiktok-embed {
+    background-color: transparent; /* Remove the white background */
+    padding: 0;
+    max-width: 100%;
+    margin: 0 auto;
     border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
-}
-
-/* Link Styling inside TikTok Embed */
-.tiktok-embed a {
-    color: var(--accent-color); /* Accent color for links */
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.tiktok-embed a:hover {
-    color: #81c784; /* Lighter green on hover */
-}
-
-/* Optional: Add spacing between hashtags and title inside the embed */
-.tiktok-embed section {
-    margin-top: 10px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
 }
 
-.tiktok-embed section a {
-    margin-right: 10px;
-    margin-bottom: 5px;
+.tiktok-embed-container blockquote {
+    background-color: transparent; /* Remove white background */
+    border: none; /* Remove any border */
+    margin: 0;
+    padding: 0;
+}
+
+/* TikTok Embed Links Styling */
+.tiktok-embed-container blockquote section a {
+    color: var(--accent-color);
+    font-size: 14px;
+    margin-right: 8px;
+    text-decoration: none;
+}
+
+.tiktok-embed-container blockquote section a:hover {
+    color: var(--primary-color); /* Change link color on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .latest-tiktok-section {
+        padding: 15px;
+    }
+
+    .tiktok-embed-container {
+        max-width: 90%;
+    }
 }
 
 /* Footer */
