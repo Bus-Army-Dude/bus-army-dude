@@ -686,28 +686,26 @@ body {
 /* Countdown Section */
 .countdown-section {
     text-align: center;
-    background-color: var(--content-bg);
-    border-radius: 15px;
-    padding: 30px;
-    margin: 30px auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: #333; /* Dark background */
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 900px;
 }
 
+/* Flex container to align countdown items */
 .countdown-container {
     display: flex;
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
     margin: 20px auto;
-    padding: 0 15px;
 }
 
+/* Individual countdown item */
 .countdown-item {
-    min-width: 130px;
-    padding: 25px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
+    min-width: 120px;
     text-align: center;
 }
 
@@ -715,46 +713,34 @@ body {
     font-size: 3em;
     font-weight: bold;
     color: var(--accent-color);
-    display: block;
-    margin-bottom: 5px;
+    background-color: #444; /* Dark background */
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: transform 0.5s ease-in-out;
     position: relative;
 }
 
-.countdown-value span {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    backface-visibility: hidden;
-}
-
-.countdown-value span.current {
+.countdown-value.flip {
     animation: flip 1s infinite;
-}
-
-@keyframes flip {
-    0% {
-        transform: rotateX(0deg);
-    }
-    25% {
-        transform: rotateX(90deg);
-    }
-    50% {
-        transform: rotateX(180deg);
-    }
-    75% {
-        transform: rotateX(270deg);
-    }
-    100% {
-        transform: rotateX(360deg);
-    }
 }
 
 .countdown-label {
     font-size: 1em;
     color: var(--secondary-text);
+    margin-top: 10px;
+}
+
+/* Flip animation */
+@keyframes flip {
+    0% {
+        transform: rotateX(0deg);
+    }
+    50% {
+        transform: rotateX(90deg);
+    }
+    100% {
+        transform: rotateX(180deg);
+    }
 }
 
 /* Tech Section */
