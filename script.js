@@ -483,20 +483,32 @@ window.addEventListener('load', function() {
 
 // Function to fetch weather data based on latitude and longitude
 function getWeather(lat, lon) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit&daily=temperature_2m_max,temperature_2m_min&timezone=America/New_York`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
             if (data && data.current_weather) {
-                const temp = data.current_weather.temperature; // Temperature in Fahrenheit
+                const city = data.latitude ? `${data.latitude.toFixed(2)}, ${data.longitude.toFixed(2)}` : 'Unknown City'; // Fallback for city if not provided
+                const temp = data.current_weather.temperature; // Current temperature in Fahrenheit
                 const condition = data.current_weather.weathercode; // Weather condition code
                 const icon = getWeatherIcon(condition); // Get the icon based on weather code
-                const location = `${data.latitude}, ${data.longitude}`; // Can be replaced with detailed location if needed
+                const dayTemp = data.daily.temperature_2m_max[0]; // Max temperature for the day
+                const nightTemp = data.daily.temperature_2m_min[0]; // Min temperature for the night
+                const conditionsText = getConditionText(condition); // Get conditions text based on weather code
+
                 document.getElementById('weather-info').innerHTML = `
-                    <h2>Weather in ${location}</h2>
-                    <p>${temp}°F, ${getConditionText(condition)}</p>
-                    <img src="https://www.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon">
+                    <div class="weather-container">
+                        <div class="weather-left">
+                            <h2>Weather in ${city}</h2>
+                            <p>${temp}°F</p>
+                            <p>Conditions: ${conditionsText}</p>
+                            <p>Day: ${dayTemp}°F • Night: ${nightTemp}°F</p>
+                        </div>
+                        <div class="weather-right">
+                            <img src="https://www.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon" class="weather-icon">
+                        </div>
+                    </div>
                 `;
             } else {
                 document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
