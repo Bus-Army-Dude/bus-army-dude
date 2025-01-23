@@ -499,6 +499,7 @@ const events = [
     { date: '2025-01-01', title: "New Year's Day", time: '12:00 AM', description: 'Celebration of the first day of the year', timezone: 'UTC' },
     { date: '2025-01-20', title: "Martin Luther King Jr. Day", time: '12:00 AM', description: 'Celebrating the birthday and legacy of Martin Luther King Jr.', timezone: 'UTC' },
     { date: '2025-01-22', title: "National Polka Dot Day", time: '12:00 AM', description: 'A day to celebrate the iconic polka dot pattern', timezone: 'UTC' },
+    { date: '2025-01-31', title: "Bus Army Dude Gets AFO Braces", time: '2:30 PM', description: 'I get my AFO Braces', timezone: 'UTC' },
 
     // February Events
     { date: '2025-02-14', title: "Valentine's Day", time: '12:00 AM', description: 'A day to celebrate love and affection between intimate partners', timezone: 'UTC' },
