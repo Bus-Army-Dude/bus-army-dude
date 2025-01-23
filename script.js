@@ -344,14 +344,18 @@ youtubeShoutouts.init();
    // New Year countdown function
 function updateNewYearCountdown() {
     const now = new Date();
-    const newYear = new Date('2025-03-18T00:00:00'); // Target date (adjust as needed)
+    const newYear = new Date('2025-03-18T00:00:00'); // Adjust target date if necessary
     const diff = newYear - now;
+
+    console.log("Time Difference:", diff);  // Log time difference for debugging
 
     // Calculate the time remaining
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    console.log(`Days: ${days}, Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`);  // Log values for debugging
 
     // Update countdown values
     updateCountdownValue('countdown-days', days);
@@ -362,27 +366,22 @@ function updateNewYearCountdown() {
     // If countdown is done
     if (diff <= 0) {
         document.querySelector('.countdown-section').innerHTML = `
-            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+            <h2 style="color: #ff5722; font-size: 2.5em; margin-bottom: 20px;">
                 YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
             </h2>
-            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+            <div style="font-size: 1.5em; color: #ccc;">🎉 🎊 🎆 🎈</div>
         `;
     }
 }
 
-// Update countdown value and trigger flip effect
+// Update countdown value and log it
 function updateCountdownValue(id, value) {
     const countdownElement = document.getElementById(id);
     if (countdownElement) {
         const newValue = value.toString().padStart(2, '0'); // Ensure value is always 2 digits
-        
-        if (countdownElement.textContent !== newValue) {
-            countdownElement.classList.add('flip'); // Add flip class to trigger animation
-            setTimeout(() => {
-                countdownElement.classList.remove('flip'); // Remove flip class after animation
-                countdownElement.textContent = newValue; // Update text content
-            }, 500); // Duration of the flip animation
-        }
+        console.log(`Updating ${id}: ${newValue}`);  // Log value update
+
+        countdownElement.textContent = newValue; // Update text content
     }
 }
 
