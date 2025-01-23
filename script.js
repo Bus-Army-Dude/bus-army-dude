@@ -359,7 +359,7 @@ youtubeShoutouts.init();
         if (diff <= 0) {
             countdownSection.innerHTML = `
                 <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    HAPPY BIRTHDAY! IT'S OFFICIALLY YOUR 20TH BIRTHDAY, ENJOY IT!
+                    YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
                 </h2>
                 <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
             `;
