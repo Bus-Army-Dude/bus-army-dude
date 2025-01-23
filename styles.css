@@ -1309,49 +1309,30 @@ body {
     color: #fff; /* White text for contrast */
 }
 
-/* Weather Section Styling */
-.weather-container {
-    background-color: #333; /* Dark background for consistency with theme */
-    color: #fff; /* Light text color */
+/* Style for the weather section */
+#weather-info {
+    background-color: #1e1e1e; /* Dark theme */
+    color: white;
     padding: 20px;
-    border-radius: 10px;
-    margin: 20px 0;
-    text-align: center;
+    border-radius: 8px;
+    margin-top: 20px;
     font-family: Arial, sans-serif;
+    text-align: center;
 }
 
-.weather-container h2 {
+#weather-info h2 {
     font-size: 24px;
     margin-bottom: 10px;
 }
 
-.weather-container .temperature {
-    font-size: 32px;
-    font-weight: bold;
-    margin: 10px 0;
+#weather-info p {
+    font-size: 18px;
+    margin-bottom: 15px;
 }
 
-.weather-container .weather-description {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.weather-container .weather-icon {
-    width: 50px; /* Icon size */
-    height: 50px;
-    margin-top: 10px;
-}
-
-/* Optional: Add hover effect for better interactivity */
-.weather-container:hover {
-    background-color: #444;
-    cursor: pointer;
-}
-
-.weather-container img {
-    display: inline-block;
-    vertical-align: middle;
-    max-width: 100%;
+#weather-info img {
+    width: 80px;
+    height: 80px;
 }
 
 /* FAQ Section Styling */
