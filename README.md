@@ -18,6 +18,8 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - YouTube creator shoutouts
 - Profile information display
 - Content Protection
+- Event Calendar
+- Weather Based on Location
 - Enhanced copy protection
 - Image security measures
 - Content control system
@@ -38,7 +40,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Stable internet connection
 
 ### 🔄 Version Information
-**Current Version:** v1.9.0
+**Current Version:** v1.10.0
 
 ### 📱 Browser Support
 - Chrome (Latest)
