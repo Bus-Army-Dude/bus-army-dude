@@ -191,33 +191,35 @@ body {
     color: var(--text-color); /* Light text color */
     text-decoration: none;
     padding: 15px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    background-color: var(--bg-dark); /* Make sure the background is consistent */
-    border-radius: 8px; /* Ensure the corners are rounded on hover */
-    width: 100%; /* Ensure the entire space is clickable */
-    box-sizing: border-box; /* Account for padding inside */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--bg-dark); /* Ensure background color is consistent */
+    border-radius: 8px; /* Ensure rounded corners */
+    width: 100%; /* Make sure the entire space is clickable */
+    box-sizing: border-box; /* Properly include padding */
     position: relative; /* Needed for absolute positioning */
 }
 
 /* Link Hover Effect */
 .disabilities-section a:hover {
-    background-color: var(--accent-color); /* Accent color on hover */
+    background-color: #81c784; /* Lighter green background on hover */
     color: white; /* White text on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-    z-index: 1; /* Ensure the hover effect is above other content */
+    box-shadow: 0 4px 15px rgba(129, 199, 132, 0.8); /* Lighter green shadow to match the hover */
+    transform: translateY(-4px); /* Slightly lift the button */
 }
 
 /* Fix grey issue when highlighting text */
 .disabilities-section a:focus {
-    background-color: var(--accent-color); /* Same accent color on focus */
+    background-color: #81c784; /* Same lighter green on focus */
     color: white;
     outline: none; /* Remove default outline */
 }
 
+/* Active State */
 .disabilities-section a:active {
-    background-color: var(--accent-color); /* Same accent color when clicked */
+    background-color: #66bb6a; /* Even lighter green on click */
     color: white;
-    transform: translateY(1px); /* Slight "pressing" effect */
+    transform: translateY(0px); /* Keep the button in place */
+    box-shadow: 0 4px 15px rgba(129, 199, 132, 0.8); /* Keep the shadow effect */
 }
 
 /* Base Styles */
