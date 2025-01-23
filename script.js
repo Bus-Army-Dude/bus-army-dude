@@ -514,7 +514,7 @@ faqQuestions.forEach((question) => {
 const events = [
     { date: '2025-01-20', title: "Trump's Inauguration", time: '12:00 PM', description: 'Donald Trump takes office' },
     { date: '2025-02-27', title: "Bus Army Dude's Birthday", time: '3:00 AM', description: "Bus Army Dude's 20th Birthday" },
-    { date: '2025-04-05', title: 'TikTok Ban Decision', time: 'TBD', description: 'Discussion wether TikTok gets banned or it stays in the US' }
+    { date: '2025-04-05', title: 'TikTok Ban Decision', time: 'TBD', description: 'Discussion whether TikTok gets banned or stays in the US' }
 ];
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -592,5 +592,5 @@ document.getElementById("next-month").addEventListener("click", () => {
 });
 
 // Initialize calendar on page load
-window.onload = loadCalendar;
+document.addEventListener("DOMContentLoaded", loadCalendar);
 
