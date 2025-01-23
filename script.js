@@ -341,50 +341,45 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
- // Function to update the countdown
-function updateNewYearCountdown() {
-    const now = new Date();
-    const targetDate = new Date(2025, 2, 18, 0, 0, 0); // March 18, 2025, 00:00:00
+  // New Year countdown
+    function updateNewYearCountdown() {
+        const now = new Date();
+        const newYear = new Date('2025-03-18T00:00:00');
+        const diff = newYear - now;
 
-    const diff = targetDate - now;
+        const countdownSection = document.querySelector('.countdown-section');
+        if (!countdownSection) return;
 
-    // If the countdown is over, display the celebration message
-    if (diff <= 0) {
-        document.querySelector('.countdown-section').innerHTML = `
-            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
-            </h2>
-            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
-        `;
-        return;
+        if (diff <= 0) {
+            countdownSection.innerHTML = `
+                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                    YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
+                </h2>
+                <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+            `;
+        } else {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown-days').textContent = days;
+            document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
+        }
     }
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    // Initialize everything
+    detectDetailedDevice();
+    updateTime();
+    tiktokShoutouts.init();
+    updateNewYearCountdown();
 
-    // Update the countdown values smoothly
-    document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
-    document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
-    document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
-    document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
-
-    // Trigger animation effect for smooth number transition
-    const countdownItems = document.querySelectorAll('.countdown-value');
-    countdownItems.forEach(item => {
-        item.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-            item.style.transform = 'scale(1)';
-        }, 300);
-    });
-}
-
-// Initialize countdown on page load
-updateNewYearCountdown();
-
-// Update the countdown every second
-setInterval(updateNewYearCountdown, 1000);
+    setInterval(updateTime, 1000);
+    setInterval(updateCountdown, 1000);
+    setInterval(updateNewYearCountdown, 1000);
+});
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 23, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
