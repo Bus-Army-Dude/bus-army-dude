@@ -341,34 +341,60 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
-  // New Year countdown
-    function updateNewYearCountdown() {
-        const now = new Date();
-        const newYear = new Date('2025-03-18T00:00:00');
-        const diff = newYear - now;
+// New Year countdown
+function updateNewYearCountdown() {
+    const now = new Date();
+    const newYear = new Date('2025-03-18T00:00:00');
+    const diff = newYear - now;
 
-        const countdownSection = document.querySelector('.countdown-section');
-        if (!countdownSection) return;
+    const countdownSection = document.querySelector('.countdown-section');
+    if (!countdownSection) return;
 
-        if (diff <= 0) {
-            countdownSection.innerHTML = `
-                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
-                </h2>
-                <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
-            `;
-        } else {
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    if (diff <= 0) {
+        countdownSection.innerHTML = `
+            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
+            </h2>
+            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+        `;
+    } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById('countdown-days').textContent = days;
-            document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
-        }
+        // Update flip clock for days
+        updateFlipClock('countdown-days', days);
+
+        // Update flip clock for hours
+        updateFlipClock('countdown-hours', hours);
+
+        // Update flip clock for minutes
+        updateFlipClock('countdown-minutes', minutes);
+
+        // Update flip clock for seconds
+        updateFlipClock('countdown-seconds', seconds);
     }
+}
+
+// Function to update flip clock value
+function updateFlipClock(id, value) {
+    const clock = document.getElementById(id);
+    const front = clock.querySelector('.flip-clock-front');
+    const back = clock.querySelector('.flip-clock-back');
+    const valueStr = value.toString().padStart(2, '0');
+
+    if (front.textContent !== valueStr) {
+        front.textContent = valueStr;
+        back.textContent = valueStr;
+
+        clock.querySelector('.flip-clock-inner').classList.add('flip');
+
+        setTimeout(() => {
+            clock.querySelector('.flip-clock-inner').classList.remove('flip');
+        }, 500);
+    }
+}
 
     // Initialize everything
     detectDetailedDevice();
