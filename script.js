@@ -511,101 +511,85 @@ faqQuestions.forEach((question) => {
     });
 });
 
-const events = {
-    "2025-01-22": [{ time: "10:00 AM", description: "Meeting with team" }],
-    "2025-01-25": [
-        { time: "9:00 AM", description: "Team Meeting" },
-        { time: "7:00 PM", description: "Dinner with friends" }
-    ],
-    "2025-01-30": [{ time: "3:00 PM", description: "Project Deadline" }],
-    "2025-02-01": [{ time: "8:00 AM", description: "Morning workout" }]
-};
+const events = [
+    { date: '2025-01-25', title: 'Tech Talk', time: '2:00 PM', description: 'Discussion about the latest tech trends.' },
+    { date: '2025-01-30', title: 'Meeting', time: '4:00 PM', description: 'Team meeting for project updates.' }
+];
 
-// Function to display the calendar with events
-function renderCalendar() {
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+// Function to load the calendar grid
+function loadCalendar() {
+    const monthYearDisplay = document.getElementById("month-year");
+    monthYearDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
     const calendarGrid = document.getElementById("calendar-grid");
-    const monthYear = document.getElementById("month-year");
-    const date = new Date();
+    calendarGrid.innerHTML = ''; // Clear previous grid content
 
-    const month = date.getMonth();
-    const year = date.getFullYear();
+    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); // Get the first day of the month
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Get the number of days in the month
 
-    const firstDay = new Date(year, month, 1);
-    const lastDate = new Date(year, month + 1, 0).getDate();
-    const startingDay = firstDay.getDay(); // Get the day of the week the month starts on
-
-    // Clear previous calendar
-    calendarGrid.innerHTML = "";
-
-    // Update month and year display
-    monthYear.textContent = `${firstDay.toLocaleString('default', { month: 'long' })} ${year}`;
-
-    // Create empty cells until the first date of the month
-    for (let i = 0; i < startingDay; i++) {
+    // Create empty grid cells before the first day of the month
+    for (let i = 0; i < firstDayOfMonth; i++) {
         const emptyCell = document.createElement("div");
         calendarGrid.appendChild(emptyCell);
     }
 
-    // Add days with event indicators
-    for (let day = 1; day <= lastDate; day++) {
+    // Create day cells with numbers and event indicators
+    for (let day = 1; day <= daysInMonth; day++) {
         const dayCell = document.createElement("div");
         dayCell.classList.add("calendar-day");
         dayCell.textContent = day;
 
-        // Check if there are events for this day
-        const eventDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        if (events[eventDate]) {
-            // Add event indicator (circle or square)
-            const eventIndicator = document.createElement("span");
+        // Check if there's an event on this day
+        const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        const event = events.find(event => event.date === dateStr);
+        
+        if (event) {
+            const eventIndicator = document.createElement("div");
             eventIndicator.classList.add("event-indicator");
             dayCell.appendChild(eventIndicator);
-
-            // Add click event listener to show modal with event details
-            dayCell.addEventListener("click", () => showEventModal(eventDate));
+            dayCell.addEventListener("click", () => showEventDetails(event));
         }
 
         calendarGrid.appendChild(dayCell);
     }
 }
 
-// Function to show the modal with events for the selected date
-function showEventModal(date) {
-    const modal = document.getElementById("event-modal");
-    const modalContent = document.getElementById("event-modal-content");
-
-    // Clear existing content
-    modalContent.innerHTML = `<h2>Events for ${date}</h2>`;
-
-    // Get events for the selected date
-    const dayEvents = events[date];
-
-    // Display the events in the modal
-    dayEvents.forEach(event => {
-        const eventDetails = document.createElement("div");
-        eventDetails.classList.add("event-details");
-
-        const eventTime = document.createElement("p");
-        eventTime.textContent = `${event.time}`;
-        eventDetails.appendChild(eventTime);
-
-        const eventDescription = document.createElement("p");
-        eventDescription.textContent = event.description;
-        eventDetails.appendChild(eventDescription);
-
-        modalContent.appendChild(eventDetails);
-    });
-
-    // Show the modal
-    modal.style.display = "block";
+// Function to show event details in a modal
+function showEventDetails(event) {
+    document.getElementById("event-title").textContent = event.title;
+    document.getElementById("event-time").textContent = `Time: ${event.time}`;
+    document.getElementById("event-description").textContent = event.description;
+    document.getElementById("event-modal").style.display = "flex";
 }
 
-// Close the modal when clicked outside of it
-window.addEventListener("click", function(event) {
-    const modal = document.getElementById("event-modal");
-    if (event.target === modal) {
-        modal.style.display = "none";
+// Function to close the event modal
+function closeModal() {
+    document.getElementById("event-modal").style.display = "none";
+}
+
+// Navigation to previous month
+document.getElementById("prev-month").addEventListener("click", () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
     }
+    loadCalendar();
 });
 
-// Call renderCalendar when the page loads
-window.onload = renderCalendar;
+// Navigation to next month
+document.getElementById("next-month").addEventListener("click", () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    loadCalendar();
+});
+
+// Initialize calendar on page load
+window.onload = loadCalendar;
+
