@@ -1317,22 +1317,52 @@ body {
     border-radius: 8px;
     margin-top: 20px;
     font-family: Arial, sans-serif;
-    text-align: center;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#weather-info h2 {
+.weather-left {
+    max-width: 60%;
+}
+
+.weather-left h2 {
     font-size: 24px;
     margin-bottom: 10px;
 }
 
-#weather-info p {
+.weather-left p {
     font-size: 18px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
-#weather-info img {
+.weather-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.weather-icon {
     width: 80px;
     height: 80px;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+    .weather-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .weather-left {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .weather-right {
+        margin-top: 10px;
+    }
 }
 
 /* FAQ Section Styling */
