@@ -19,6 +19,7 @@ body {
 /* Profile Section */
 .profile-section {
     text-align: center;
+    margin-top: 20px; /* Added margin-top */
     margin-bottom: 30px;
     padding: 20px;
     background-color: var(--content-bg);
