@@ -341,53 +341,44 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
-   // New Year countdown function
+   // Function to update the countdown
 function updateNewYearCountdown() {
-    const now = new Date();
-    const newYear = new Date('2025-03-18T00:00:00'); // Adjust target date if necessary
-    const diff = newYear - now;
+    const now = new Date(); // Current time
+    const targetDate = new Date('2025-03-18T00:00:00'); // Target date (your special day)
+    
+    const diff = targetDate - now; // Time difference between now and target date
 
-    console.log("Time Difference:", diff);  // Log time difference for debugging
+    console.log("Time Difference: " + diff); // Log the time difference to the console
 
-    // Calculate the time remaining
+    if (diff <= 0) {
+        // If the countdown is over, display a message
+        document.querySelector('.countdown-section').innerHTML = `
+            <h2 style="color: #ff5722; font-size: 2.5em; margin-bottom: 20px;">
+                TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
+            </h2>
+            <div style="font-size: 1.5em; color: #ccc;">🎉 🎊 🎆 🎈</div>
+        `;
+        return;
+    }
+
+    // Calculate days, hours, minutes, and seconds
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    console.log(`Days: ${days}, Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`);  // Log values for debugging
-
-    // Update countdown values
-    updateCountdownValue('countdown-days', days);
-    updateCountdownValue('countdown-hours', hours);
-    updateCountdownValue('countdown-minutes', minutes);
-    updateCountdownValue('countdown-seconds', seconds);
-
-    // If countdown is done
-    if (diff <= 0) {
-        document.querySelector('.countdown-section').innerHTML = `
-            <h2 style="color: #ff5722; font-size: 2.5em; margin-bottom: 20px;">
-                YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
-            </h2>
-            <div style="font-size: 1.5em; color: #ccc;">🎉 🎊 🎆 🎈</div>
-        `;
-    }
+    // Update the countdown values in the HTML
+    document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
+    document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
 }
 
-// Update countdown value and log it
-function updateCountdownValue(id, value) {
-    const countdownElement = document.getElementById(id);
-    if (countdownElement) {
-        const newValue = value.toString().padStart(2, '0'); // Ensure value is always 2 digits
-        console.log(`Updating ${id}: ${newValue}`);  // Log value update
+// Start the countdown immediately and update every second
+setInterval(updateNewYearCountdown, 1000); // Update every second
 
-        countdownElement.textContent = newValue; // Update text content
-    }
-}
-
-// Initialize countdown
+// Initial call to populate the countdown immediately when page loads
 updateNewYearCountdown();
-setInterval(updateNewYearCountdown, 1000); // Update countdown every second
 
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Thu, Jan 23, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
