@@ -1309,39 +1309,41 @@ body {
     color: #fff; /* White text for contrast */
 }
 
-.weather-container {
-    width: 300px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #333; /* Dark background for the container */
-    border-radius: 10px;
-    text-align: center;
-}
-
-h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-
 #weather-info {
-    font-size: 1.2rem;
-    margin-top: 10px;
+    background-color: #3c3c3c;  /* Slightly lighter grey to match dark theme */
+    color: white;               /* White text for visibility */
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Subtle shadow for better visibility */
+}
+
+#weather-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;  /* Make the heading stand out */
 }
 
 #weather-info p {
-    font-size: 1rem;
-    color: #bbb; /* Lighter color for secondary text */
-}
-
-#weather-info .temp {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ffcc00; /* Yellow for temperature */
-}
-
-#weather-info .description {
     font-size: 1.2rem;
-    color: #ddd; /* Light gray for weather description */
+    margin: 0;
+}
+
+#weather-info .weather-description {
+    font-size: 1.1rem;
+    color: #f39c12;  /* Golden color for weather description to stand out */
+}
+
+#weather-note {
+    background-color: #f39c12;  /* Golden background for the note */
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* FAQ Section Styling */
