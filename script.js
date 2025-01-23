@@ -552,7 +552,12 @@ function loadCalendar() {
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); // Get the first day of the month
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Get the number of days in the month
 
-    // Create empty grid cells before the first day of the month
+    const today = new Date(); // Get the current date to highlight the current day
+    const currentDay = today.getDate();
+    const currentMonthToday = today.getMonth();
+    const currentYearToday = today.getFullYear();
+
+        // Create empty grid cells before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
         const emptyCell = document.createElement("div");
         calendarGrid.appendChild(emptyCell);
@@ -563,6 +568,11 @@ function loadCalendar() {
         const dayCell = document.createElement("div");
         dayCell.classList.add("calendar-day");
         dayCell.textContent = day;
+
+        // Check if this is the current day and highlight it
+        if (currentYear === currentYearToday && currentMonth === currentMonthToday && day === currentDay) {
+            dayCell.classList.add("current-day"); // Add a class for highlighting the current day
+        }
 
         // Check if there's an event on this day
         const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
