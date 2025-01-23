@@ -1213,7 +1213,7 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #333;
+  background-color: #333; /* Matches the dark theme */
   color: white;
   border: none;
   border-radius: 50%;
@@ -1221,11 +1221,26 @@ body {
   padding: 10px;
   display: none; /* Hidden by default */
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
 }
 
 #back-to-top-btn:hover {
-  background-color: #555;
+  background-color: #81c784; /* Lighter green background on hover */
+  box-shadow: 0 4px 15px rgba(129, 199, 132, 0.8); /* Lighter green shadow for hover effect */
+  transform: translateY(-4px); /* Slight lift effect when hovered */
+}
+
+#back-to-top-btn:focus {
+  background-color: #81c784; /* Same lighter green on focus */
+  color: white;
+  outline: none; /* Remove default outline */
+}
+
+#back-to-top-btn:active {
+  background-color: #66bb6a; /* Even lighter green when clicked */
+  box-shadow: 0 4px 15px rgba(129, 199, 132, 0.8); /* Keep the shadow effect */
+  transform: translateY(0px); /* Keep button in place on click */
 }
 
   #cookieConsent {
