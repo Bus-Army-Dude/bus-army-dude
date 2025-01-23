@@ -781,6 +781,14 @@ body {
     color: white;
 }
 
+/* General container to align with other content */
+.version-info-container {
+    max-width: 1200px; /* Set to the same width as other content */
+    margin: 0 auto; /* Center the section */
+    padding: 20px; /* Consistent padding with other sections */
+    box-sizing: border-box;
+}
+
 /* Version Info Section */
 .version-info-section {
     background-color: var(--content-bg);
@@ -790,10 +798,7 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-family: 'Arial', sans-serif;
     color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Spacing between each item */
-    align-items: flex-start; /* Aligns content to the start (left) */
+    box-sizing: border-box; /* Ensures padding is handled correctly */
 }
 
 .version-header {
@@ -802,12 +807,9 @@ body {
     color: var(--primary-color);
 }
 
-.version-number, .build-number, .device-info, .update-time, .current-user, .countdown {
+.version-number, .build-number, .device-info, .update-time, .countdown {
+    margin: 10px 0;
     font-size: 1.1em;
-    width: 100%; /* Ensures all items stretch the width of the container */
-    display: flex;
-    justify-content: space-between; /* Space between the label and the data */
-    align-items: center; /* Centers vertically */
 }
 
 .device-info, .update-time {
