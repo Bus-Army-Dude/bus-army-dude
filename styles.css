@@ -695,11 +695,6 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.countdown-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
 .countdown-container {
     display: flex;
     justify-content: center;
