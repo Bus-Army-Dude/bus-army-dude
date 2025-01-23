@@ -495,8 +495,11 @@ function getWeather(lat, lon) {
                 fetch(reverseGeoUrl)
                     .then(res => res.json())
                     .then(geoData => {
-                        const location = geoData.results[0].components.city + ', ' + geoData.results[0].components.state;
-                        
+                        // Ensure that city and state are properly parsed
+                        const city = geoData.results[0]?.components.city || 'Unknown City';
+                        const state = geoData.results[0]?.components.state || 'Unknown State';
+                        const location = city + ', ' + state;
+
                         const time = new Date().toLocaleString("en-US", { timeZone: "America/New_York" }); // Get the current time in EST
                         const temp = data.current_weather.temperature; // Current temperature in Fahrenheit
                         const condition = data.current_weather.weathercode; // Weather condition code
@@ -509,7 +512,7 @@ function getWeather(lat, lon) {
                             <div class="weather-container">
                                 <!-- Cloud Icon -->
                                 <div class="weather-top">
-                                    <img src="https://api.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon" class="weather-icon">
+                                    <img src="https://openweathermap.org/img/wn/${icon}.png" alt="Weather Icon" class="weather-icon">
                                 </div>
 
                                 <!-- Location and Time -->
@@ -589,36 +592,36 @@ function getConditionText(code) {
 // Function to get weather icon based on condition code
 function getWeatherIcon(code) {
     const iconMap = {
-        0: 'c01d', // Clear Sky
-        1: 'c02d', // Mainly Clear
-        2: 'c03d', // Partly Cloudy
-        3: 'c04d', // Cloudy
-        45: 'd01d', // Fog
-        48: 'd01d', // Depositing Rime Fog
-        51: 'r01d', // Light Drizzle
-        53: 'r02d', // Moderate Drizzle
-        55: 'r03d', // Heavy Drizzle
-        56: 'r04d', // Light Freezing Drizzle
-        57: 'r05d', // Heavy Freezing Drizzle
-        61: 'r01d', // Light Rain
-        63: 'r02d', // Moderate Rain
-        65: 'r03d', // Heavy Rain
-        66: 'r04d', // Light Freezing Rain
-        67: 'r05d', // Heavy Freezing Rain
-        71: 's01d', // Light Snow
-        73: 's02d', // Moderate Snow
-        75: 's03d', // Heavy Snow
-        77: 's04d', // Snow Grains
-        80: 'r01d', // Light Showers of Rain
-        81: 'r02d', // Moderate Showers of Rain
-        82: 'r03d', // Heavy Showers of Rain
-        85: 's01d', // Light Showers of Snow
-        86: 's02d', // Heavy Showers of Snow
-        95: 't01d', // Thunderstorm
-        96: 't02d', // Thunderstorm with Hail
-        99: 't03d', // Thunderstorm with Heavy Hail
+        0: '01d', // Clear Sky
+        1: '02d', // Mainly Clear
+        2: '03d', // Partly Cloudy
+        3: '04d', // Cloudy
+        45: '50d', // Fog
+        48: '50d', // Depositing Rime Fog
+        51: '09d', // Light Drizzle
+        53: '09d', // Moderate Drizzle
+        55: '09d', // Heavy Drizzle
+        56: '13d', // Light Freezing Drizzle
+        57: '13d', // Heavy Freezing Drizzle
+        61: '10d', // Light Rain
+        63: '10d', // Moderate Rain
+        65: '10d', // Heavy Rain
+        66: '13d', // Light Freezing Rain
+        67: '13d', // Heavy Freezing Rain
+        71: '13d', // Light Snow
+        73: '13d', // Moderate Snow
+        75: '13d', // Heavy Snow
+        77: '13d', // Snow Grains
+        80: '09d', // Light Showers of Rain
+        81: '09d', // Moderate Showers of Rain
+        82: '09d', // Heavy Showers of Rain
+        85: '13d', // Light Showers of Snow
+        86: '13d', // Heavy Showers of Snow
+        95: '11d', // Thunderstorm
+        96: '11d', // Thunderstorm with Light Hail
+        99: '11d', // Thunderstorm with Heavy Hail
     };
-    return iconMap[code] || 'c01d'; // Default to clear sky icon if no match
+    return iconMap[code] || '01d'; // Default to clear sky icon if no match
 }
 
 // Check if geolocation is available and fetch the user's location
