@@ -1300,68 +1300,48 @@ body.loaded #loading-spinner {
     display: none;
 }
 
-/* Adjust Weather Widget for Section Alignment */
-#weather-info {
-    background-color: var(--content-bg); /* Match background color of the website */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Soft, subtle shadow */
-    display: inline-block;
-    max-width: 100%;
-    width: 100%;
-    margin-bottom: 30px; /* Space from the bottom section */
-    margin-top: 20px; /* Space from the top */
-    box-sizing: border-box;
-}
-
-/* Ensure all sections align */
-#current-president, 
-#printify-merch, 
-#fourthwall-merch, 
-#weather-info {
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    box-sizing: border-box;
-}
-
-/* Header Styling */
-h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: var(--accent-color); /* Accent color to match the theme */
-    font-weight: bold;
-}
-
-/* Weather Description and Temperature Styling */
-p {
-    font-size: 18px;
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
-    color: var(--text-color); /* Light gray text matching the theme */
+    padding: 0;
+    background-color: #121212; /* Dark background */
+    color: #fff; /* White text for contrast */
 }
 
-/* Loading Message Styling */
-#weather-info p {
-    font-style: italic;
-    color: var(--highlight-color); /* Bright color for the loading message */
+.weather-container {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #333; /* Dark background for the container */
+    border-radius: 10px;
+    text-align: center;
 }
 
-/* Ensure consistent spacing between sections */
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
 #weather-info {
-    margin-bottom: 40px; /* More space from the bottom */
+    font-size: 1.2rem;
+    margin-top: 10px;
 }
 
-/* Adjust padding for the weather info to avoid it looking too cramped */
-#weather-info p, h2 {
-    padding-left: 20px;
-    padding-right: 20px;
+#weather-info p {
+    font-size: 1rem;
+    color: #bbb; /* Lighter color for secondary text */
 }
 
-/* For better contrast and visibility */
-#weather-info h2, #weather-info p {
-    color: var(--text-color); /* Ensure readability with dark text */
+#weather-info .temp {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffcc00; /* Yellow for temperature */
+}
+
+#weather-info .description {
+    font-size: 1.2rem;
+    color: #ddd; /* Light gray for weather description */
 }
 
 /* FAQ Section Styling */
