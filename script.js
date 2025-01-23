@@ -512,8 +512,9 @@ faqQuestions.forEach((question) => {
 });
 
 const events = [
-    { date: '2025-01-25', title: 'Tech Talk', time: '2:00 PM', description: 'Discussion about the latest tech trends.' },
-    { date: '2025-01-30', title: 'Meeting', time: '4:00 PM', description: 'Team meeting for project updates.' }
+    { date: '2025-01-20', title: "Trump's Inauguration", time: '12:00 PM', description: 'Donald Trump takes office' },
+    { date: '2025-02-27', title: "Bus Army Dude's Birthday", time: '3:00 AM', description: "Bus Army Dude's 20th Birthday" },
+    { date: '2025-04-05', title: 'TikTok Ban Decision', time: 'TBD', description: 'Discussion wether TikTok gets banned or it stays in the US' }
 ];
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
