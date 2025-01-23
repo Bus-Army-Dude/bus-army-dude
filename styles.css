@@ -967,31 +967,37 @@ body {
     font-size: 16px; /* Default text size */
 }
 
+/* General container to match other content */
+.notice-container {
+    max-width: 1200px; /* Ensure it matches the width of your main content */
+    margin: 0 auto; /* Center the notices */
+    padding: 20px; /* Add padding for consistency */
+    box-sizing: border-box;
+}
+
 /* Copy Protection Notice */
 .copy-protection-message {
     background-color: #d9534f; /* Red background */
     color: #ffffff;
-    padding: 15px; /* Slightly increased padding for better readability */
+    padding: 15px; /* Padding for readability */
     text-align: center;
     font-size: 14px;
-    margin-bottom: 30px; /* Increased margin to create more space below */
-    border-radius: 8px; /* Adds rounded corners for a smoother look */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
-    max-width: 100%; /* Ensures it fits within the container's width */
-    box-sizing: border-box; /* Ensures padding and margins are included in width calculation */
+    margin-bottom: 30px; /* Space between this and next section */
+    border-radius: 8px; /* Smooth corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-sizing: border-box; /* Ensure proper padding and margin behavior */
 }
 
 /* Legal Protection Notice */
 .legal-protection-message {
-    background-color: #d9534f; /* Same red background for consistency */
+    background-color: #d9534f; /* Red background */
     color: #ffffff;
     padding: 15px;
     text-align: center;
     font-size: 14px;
-    margin-top: 30px;  /* Increased margin for better spacing */
-    border-radius: 8px; /* Rounded corners */
+    margin-top: 30px;  /* Space from the previous section */
+    border-radius: 8px; /* Smooth corners */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 100%;
     box-sizing: border-box;
 }
 
