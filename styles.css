@@ -1428,6 +1428,100 @@ p {
     transform: rotate(180deg);
 }
 
+/* General calendar container styles */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Full width */
+    max-width: 1200px; /* Adjust as needed */
+    padding: 10px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Header (Month and Year display) */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#month-year {
+    font-size: 1.5em; /* Larger font size */
+    font-weight: bold;
+}
+
+/* Navigation buttons */
+#prev-month, #next-month {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#prev-month:hover, #next-month:hover {
+    background-color: #777;
+}
+
+/* Days of the week (abbreviated) */
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns */
+    gap: 5px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 10px;
+}
+
+/* Calendar grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns */
+    gap: 5px;
+    width: 100%;
+}
+
+/* Individual day cell */
+.calendar-day {
+    background-color: #444;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: #666;
+    transform: scale(1.05); /* Slight scaling effect on hover */
+}
+
+/* Event indicator inside day */
+.event-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: #ff5722; /* Highlight event days */
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 /* Modal for events */
 #event-modal {
     display: none;
@@ -1436,30 +1530,30 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    background-color: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it's on top of other content */
+    z-index: 1000;
     transition: opacity 0.3s ease-in-out;
 }
 
 /* Event Content Box */
 .event-content {
-    background-color: var(--content-bg); /* Background matching the theme */
-    color: var(--text-color); /* Text color matching the theme */
+    background-color: var(--content-bg);
+    color: var(--text-color);
     padding: 30px;
     border-radius: 12px;
     max-width: 480px;
-    width: 90%; /* Ensure it looks good on mobile */
+    width: 90%;
     text-align: center;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle grey border to match the theme */
+    border: 2px solid rgba(255, 255, 255, 0.2);
     transform: scale(0.95);
     transition: transform 0.3s ease, opacity 0.3s ease;
-    overflow: hidden; /* To make sure nothing spills out */
+    overflow: hidden;
 }
 
-/* Modal content appearance (when shown) */
+/* Show the modal with smooth scaling effect */
 .event-content.show {
     transform: scale(1);
     opacity: 1;
@@ -1470,14 +1564,14 @@ p {
     font-size: 24px;
     margin-bottom: 15px;
     font-weight: 600;
-    color: var(--accent-color); /* Accent color for title */
+    color: var(--accent-color);
 }
 
 /* Description Text */
 .event-content p {
     font-size: 16px;
     margin-bottom: 20px;
-    color: var(--text-color); /* Light text color */
+    color: var(--text-color);
 }
 
 /* Close button for modal */
@@ -1504,6 +1598,22 @@ p {
 
 .event-content button:active {
     transform: scale(0.98);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .calendar-day {
+        padding: 8px;
+        font-size: 0.8em;
+    }
+
+    #month-year {
+        font-size: 1.2em;
+    }
+
+    .calendar-days {
+        font-size: 0.75em;
+    }
 }
 
 /* General Styles */
