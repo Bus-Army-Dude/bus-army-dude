@@ -1055,93 +1055,74 @@ body {
     }
 }
 
+/* Current President Section */
 #current-president {
-  color: #ffffff;
-  background-color: #181818; /* Dark background with more contrast */
-  padding: 30px;
-  border-radius: 25px; /* More rounded corners for a softer look */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* More intense shadow for depth */
-  max-width: 900px;
-  margin: 30px auto;
-  transition: all 0.3s ease; /* Smooth transition effect */
+    background-color: #333; /* Matches dark theme */
+    color: #fff; /* White text for readability */
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#current-president:hover {
-  transform: scale(1.02); /* Subtle zoom on hover */
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); /* Deepens shadow when hovered */
+.president-section .section-title {
+    font-size: 1.8em; /* Larger title */
+    font-weight: bold;
+    color: var(--primary-color); /* Matches other section titles */
+    margin-bottom: 20px;
 }
 
-#current-president h2 {
-  font-size: 2.4em;
-  margin-bottom: 20px;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern sans-serif font */
-  letter-spacing: 2px; /* More space between letters for a clean look */
-  color: #f39c12; /* Gold accent for the heading */
-}
-
+/* President Info */
 .president-info {
-  display: flex;
-  align-items: center;
-  gap: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
+/* Photo Styling */
 .president-photo {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); /* Shadow around the image for a floating effect */
-  transition: transform 0.3s ease; /* Smooth zoom effect */
+    width: 150px;
+    height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #444;
 }
 
-.president-photo:hover {
-  transform: scale(1.05); /* Slight zoom effect on hover */
-}
-
+/* President Details */
 .president-details {
-  text-align: left;
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  color: #ecf0f1; /* Lighter text color */
-  max-width: 60%;
+    flex: 1;
 }
 
-.president-details h3 {
-  font-size: 2em;
-  margin-bottom: 10px;
-  color: #ecf0f1;
-  letter-spacing: 1px; /* Slightly spaced letters */
+.president-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .president-details p {
-  margin: 10px 0;
-  font-size: 1.2em;
+    font-size: 1.1em;
+    margin: 5px 0;
 }
 
-.president-details strong {
-  color: #f39c12;
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
-  #current-president {
-    padding: 20px;
-  }
+    .president-info {
+        flex-direction: column;
+        align-items: center;
+    }
 
-  .president-info {
-    flex-direction: column;
-    align-items: center;
-  }
+    .president-photo {
+        width: 120px;
+        height: 160px;
+    }
 
-  .president-details {
-    text-align: center;
-    max-width: 100%;
-  }
+    .president-name {
+        font-size: 1.3em;
+    }
 
-  .president-photo {
-    width: 180px;
-    height: 180px;
-  }
+    .president-details p {
+        font-size: 1em;
+    }
 }
 
 /* Style the back-to-top button */
