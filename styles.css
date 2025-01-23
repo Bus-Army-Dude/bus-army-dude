@@ -712,10 +712,11 @@ body {
     position: relative;
 }
 
+/* Flip Clock Styles */
 .flip-clock {
     position: relative;
-    width: 70px;
-    height: 100px;
+    width: 80px;
+    height: 120px;
     perspective: 1000px;
 }
 
@@ -753,7 +754,7 @@ body {
     margin-top: 5px;
 }
 
-/* Flip animation */
+/* Flip Animation */
 .flip-clock.flip {
     transform: rotateX(180deg);
 }
