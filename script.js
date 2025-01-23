@@ -388,11 +388,12 @@ function updateFlipClock(id, value) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
+        // Trigger the flip animation
         clock.querySelector('.flip-clock-inner').classList.add('flip');
 
         setTimeout(() => {
             clock.querySelector('.flip-clock-inner').classList.remove('flip');
-        }, 500);
+        }, 600); // match the animation duration
     }
 }
 
