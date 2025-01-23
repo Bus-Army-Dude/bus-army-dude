@@ -594,3 +594,109 @@ document.getElementById("next-month").addEventListener("click", () => {
 // Initialize calendar on page load
 window.onload = loadCalendar;
 
+// Sample Articles Data (can be dynamically loaded from an API)
+const articles = [
+    {
+        "id": 1,
+        "title": "The Future of AI and Technology",
+        "content": "Artificial Intelligence is changing the tech industry. Machine learning algorithms are being used to improve automation and software.",
+        "author": "John Doe",
+        "date": "2025-01-20",
+        "category": ["Tech"],
+        "tags": ["AI", "Technology", "Automation"]
+    },
+    {
+        "id": 2,
+        "title": "Elections and the Future of Politics",
+        "content": "The 2025 elections are critical for shaping the future. Voter turnout is expected to be higher than ever before.",
+        "author": "Jane Smith",
+        "date": "2025-01-21",
+        "category": ["Politics"],
+        "tags": ["Elections", "Voter", "Campaign"]
+    },
+    {
+        "id": 3,
+        "title": "Entertainment in the Digital Age",
+        "content": "Streaming platforms and digital content are changing the way we consume media. From movies to music, everything is moving online.",
+        "author": "Alice Johnson",
+        "date": "2025-01-22",
+        "category": ["Entertainment"],
+        "tags": ["Streaming", "Digital", "Media"]
+    }
+];
+
+// Function to render articles dynamically
+function renderArticles(articles) {
+    let articlesContainer = document.getElementById("articles-container");
+    articlesContainer.innerHTML = '';  // Clear the container before re-rendering
+
+    articles.forEach(article => {
+        // Create article div
+        let articleDiv = document.createElement("div");
+        articleDiv.classList.add("article");
+
+        // Create title
+        let title = document.createElement("h2");
+        title.innerText = article.title;
+        articleDiv.appendChild(title);
+
+        // Create content (you can truncate it or show the whole content)
+        let content = document.createElement("p");
+        content.innerText = article.content.length > 200 ? article.content.substring(0, 200) + "..." : article.content;
+        articleDiv.appendChild(content);
+
+        // Create date
+        let date = document.createElement("p");
+        date.classList.add("date");
+        date.innerText = `Published on: ${article.date}`;
+        articleDiv.appendChild(date);
+
+        // Create categories
+        let categoriesDiv = document.createElement("div");
+        categoriesDiv.classList.add("categories");
+        article.category.forEach(cat => {
+            let category = document.createElement("span");
+            category.classList.add("category");
+            category.innerText = cat;
+            categoriesDiv.appendChild(category);
+        });
+        articleDiv.appendChild(categoriesDiv);
+
+        // Create tags
+        let tagsDiv = document.createElement("div");
+        tagsDiv.classList.add("tags");
+        article.tags.forEach(tag => {
+            let tagElement = document.createElement("span");
+            tagElement.classList.add("tag");
+            tagElement.innerText = tag;
+            tagsDiv.appendChild(tagElement);
+        });
+        articleDiv.appendChild(tagsDiv);
+
+        // Append the article to the container
+        articlesContainer.appendChild(articleDiv);
+    });
+}
+
+// Function to filter articles by category
+document.getElementById("category-filter").addEventListener("change", function (e) {
+    const categoryFilter = e.target.value.toLowerCase();
+    const filteredArticles = articles.filter(article => {
+        return categoryFilter === "" || article.category.some(cat => cat.toLowerCase() === categoryFilter);
+    });
+    renderArticles(filteredArticles);
+});
+
+// Function to filter articles by tag
+document.getElementById("tag-search").addEventListener("input", function (e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredArticles = articles.filter(article => {
+        return article.tags.some(tag => tag.toLowerCase().includes(searchTerm)) || 
+               article.title.toLowerCase().includes(searchTerm) ||
+               article.content.toLowerCase().includes(searchTerm);
+    });
+    renderArticles(filteredArticles);
+});
+
+// Call this function after loading the articles
+renderArticles(articles);
