@@ -1101,35 +1101,36 @@ body {
 
 /* Current President Section */
 #current-president {
-    background-color: #333; /* Matches dark theme */
-    color: #fff; /* White text for readability */
+    background-color: var(--content-bg); /* Matches website dark theme */
+    color: var(--text-color); /* Light text color for readability */
     padding: 20px;
     margin-bottom: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
 }
 
+/* Section Title */
 .president-section .section-title {
     font-size: 1.8em; /* Larger title */
     font-weight: bold;
-    color: var(--primary-color); /* Matches other section titles */
+    color: var(--primary-color); /* Accent color for section title */
     margin-bottom: 20px;
 }
 
-/* President Info */
+/* President Info (Flexbox for layout) */
 .president-info {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-/* Photo Styling */
+/* Profile Picture Styling - Make it Circular */
 .president-photo {
     width: 150px;
-    height: 200px;
-    border-radius: 8px;
-    object-fit: cover;
-    border: 2px solid #444;
+    height: 150px; /* Equal width and height for circle */
+    border-radius: 50%; /* Circular shape */
+    object-fit: cover; /* Ensures the photo fits inside the circle */
+    border: 3px solid var(--accent-color); /* Accent border color around the photo */
 }
 
 /* President Details */
@@ -1137,26 +1138,30 @@ body {
     flex: 1;
 }
 
+/* Name Styling */
 .president-name {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 10px;
+    color: var(--text-color); /* Consistent text color */
 }
 
+/* General President Info Styling */
 .president-details p {
     font-size: 1.1em;
     margin: 5px 0;
+    color: var(--text-color); /* Ensures readability */
 }
 
-/* Adjust Presidential Term to display inline */
+/* Presidential Term Styling */
 .presidential-term {
     font-size: 1.1em;
     font-weight: bold;
     margin: 5px 0;
-    color: var(--accent-color); /* You can change this to any accent color */
+    color: var(--accent-color); /* Accent color for the presidential term */
 }
 
-/* Responsive Design */
+/* Responsive Design for smaller screens */
 @media (max-width: 768px) {
     .president-info {
         flex-direction: column;
@@ -1165,7 +1170,7 @@ body {
 
     .president-photo {
         width: 120px;
-        height: 160px;
+        height: 120px; /* Maintain circle shape */
     }
 
     .president-name {
