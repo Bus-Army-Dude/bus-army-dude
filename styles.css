@@ -57,24 +57,31 @@ body {
 /* Social Section - Updated */
 .social-links-section {
     text-align: center;
-    padding: 20px;
+    padding: 30px 20px; /* Added top/bottom padding for even spacing */
+    background-color: var(--content-bg); /* Match website theme */
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Optional: adds margin from other sections */
 }
 
 .social-links-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 20px; /* Adjusted gap between buttons */
+    align-items: center; /* Ensures vertical centering */
+    margin-top: 20px; /* Adds spacing between top section and buttons */
 }
 
 .social-button {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
-    background-color: #333;
+    padding: 12px 18px; /* Increased padding for better button size */
+    background-color: var(--accent-color); /* Match theme color */
     border-radius: 30px;
     text-decoration: none;
     color: #fff;
+    font-weight: bold; /* Makes the text bold */
     transition: background-color 0.3s ease;
 }
 
@@ -85,7 +92,7 @@ body {
 .social-icon {
     width: 30px;
     height: 30px;
-    margin-right: 10px;
+    margin-right: 12px; /* Adjusted spacing between icon and text */
 }
 
 .social-button span {
