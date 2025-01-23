@@ -1003,39 +1003,55 @@ body {
     box-sizing: border-box;
 }
 
-/* Hide watermark by default */
-.watermark {
-    display: none; /* Ensure it's hidden on regular view */
+/* General container to align with other content */
+.welcome-container {
+    max-width: 1200px; /* Align with the rest of the content width */
+    margin: 0 auto; /* Center the section */
+    padding: 20px; /* Consistent padding with other sections */
+    box-sizing: border-box;
 }
 
-/* Show watermark only during printing */
+/* Welcome Content styling */
+.welcome-content {
+    background-color: var(--content-bg); /* Matches the dark theme background */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Softer shadow for modern feel */
+    text-align: center; /* Center align text for a modern look */
+    color: var(--text-color); /* Matches the rest of your site's text color */
+}
+
+.welcome-content h1 {
+    font-size: 2em;
+    color: var(--primary-color); /* Emphasize heading */
+    margin-bottom: 15px;
+}
+
+.welcome-content p {
+    font-size: 1.1em;
+    line-height: 1.6; /* Improve readability */
+    margin-bottom: 0; /* Remove extra margin */
+}
+
+/* Watermark styling (hidden by default, shown on print) */
+.watermark {
+    display: none; /* Hidden normally */
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.7; /* Semi-transparent for watermark feel */
+    font-size: 1.2em;
+    color: #555; /* Lighter gray color for watermark */
+    z-index: 999;
+}
+
 @media print {
-    /* Create a page-level watermark that repeats on every page */
-    body::after {
-        content: "DO NOT COPY WILL RESULT IN A LAWSUIT"; /* The updated watermark text */
-        display: block;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-45deg); /* Center and rotate */
-        font-size: 80px; /* Adjust font size for fitting diagonally */
-        font-weight: bold;
-        color: rgba(255, 0, 0, 0.1); /* Red color with higher transparency */
-        pointer-events: none;
-        z-index: 9999;
-        white-space: nowrap; /* Ensure the text stays in one line */
-        user-select: none; /* Prevent user selection */
+    .watermark {
+        display: block; /* Only show on print */
     }
 
-    /* Ensure the watermark appears on every printed page */
-    @page {
-        margin: 0; /* Remove any default margin */
-        size: auto; /* Use auto size for the page */
-    }
-
-    /* Make sure the watermark doesn't interfere with content */
-    body {
-        position: relative;
+    .welcome-content {
+        display: none; /* Hide main content on print */
     }
 }
 
