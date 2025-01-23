@@ -1480,119 +1480,95 @@ body {
     color: #e0e0e0; /* Light text for readability */
 }
 
-/* News Filter */
-#news-filter {
-    padding: 20px;
-    text-align: center;
-    background-color: #333; /* Dark background for the filter section */
+/* Style for Filters */
+#news-filters {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+}
+
+.filter {
+    margin-right: 20px;
 }
 
 #category-filter, #tag-search {
-    padding: 10px;
-    font-size: 16px;
-    margin: 5px;
-    border-radius: 5px;
-    border: 1px solid #555; /* Darker border for the inputs */
-    background-color: #222; /* Darker input background */
-    color: #e0e0e0; /* Light text color */
-}
-
-/* Input placeholder styling */
-#tag-search::placeholder {
-    color: #777;
-}
-
-/* Article Container */
-#articles-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
-}
-
-/* Individual Article Style */
-.article {
-    border: 1px solid #444; /* Dark border for articles */
-    padding: 20px;
-    width: 100%;
-    max-width: 600px;
-    background-color: #222; /* Dark background for articles */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    margin-bottom: 20px;
-}
-
-/* Title Style */
-.article h2 {
-    font-size: 24px;
-    color: #fff; /* Light title color */
-    margin-bottom: 10px;
-}
-
-/* Content Style */
-.article p {
-    font-size: 16px;
-    color: #bbb; /* Lighter text for content */
-    margin-bottom: 15px;
-}
-
-/* Date Style */
-.date {
+    padding: 5px;
     font-size: 14px;
-    color: #888; /* Light gray date text */
-    margin-bottom: 10px;
 }
 
-/* Categories and Tags Style */
-.categories, .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+.article {
+    padding: 10px;
+    margin: 15px;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    cursor: pointer;
+}
+
+.article h2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.article p {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.article .tags {
     margin-top: 10px;
 }
 
-.category, .tag {
-    background-color: #e0f7fa; /* Light background for tags */
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #00796b;
+.article .tags .tag {
+    background-color: #4CAF50;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.category:hover, .tag:hover {
-    background-color: #00796b; /* Darker hover effect */
-    color: #fff; /* Light text on hover */
+.article .tags .tag:hover {
+    background-color: #45a049;
 }
 
-/* Tag Search */
-#tag-search {
-    width: 80%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #222;
-    margin-bottom: 20px;
-    max-width: 500px;
-    color: #e0e0e0;
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 50px;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    #articles-container {
-        flex-direction: column;
-        align-items: center;
-    }
+.modal-content {
+    background-color: #333;
+    color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+}
 
-    #news-filter {
-        padding: 15px;
-    }
+.close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* Footer */
