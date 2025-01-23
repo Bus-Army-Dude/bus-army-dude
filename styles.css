@@ -1293,129 +1293,150 @@ p {
     transform: rotate(180deg);
 }
 
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1e1e1e;
-    color: white;
-    margin: 0;
-    padding: 0;
-}
-
+/* Calendar Container */
 .calendar-container {
-    max-width: 90%;
-    margin: 20px auto;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #1a1a1a;
     border-radius: 10px;
-    background-color: #2a2a2a;
-    border: 1px solid #444;
 }
 
+/* Calendar Header */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    color: white;
 }
 
-#month-year {
-    font-size: 1.5em;
-    font-weight: bold;
-    text-align: center;
-}
-
-button {
-    background-color: #4CAF50;
+.calendar-header button {
+    background-color: #444;
     color: white;
     border: none;
     padding: 10px;
-    font-size: 1em;
     cursor: pointer;
     border-radius: 5px;
+    font-size: 14px;
 }
 
-button:hover {
-    background-color: #45a049;
+.calendar-header button:hover {
+    background-color: #555;
 }
 
+/* Month and Year Display */
+#month-year {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Days of the Week */
 .calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    font-weight: bold;
-    text-align: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    color: white;
 }
 
+.calendar-days div {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Calendar Grid (Days) */
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(5, 50px);
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for each day of the week */
     gap: 5px;
-    margin-top: 10px;
 }
 
-.calendar-grid div {
-    background-color: #3c3c3c;
+/* Individual Day Cells */
+.calendar-day {
+    padding: 10px;
     text-align: center;
-    line-height: 50px;
+    background-color: #333;
+    color: #fff;
     cursor: pointer;
+    position: relative;
     border-radius: 5px;
 }
 
-.calendar-grid div.event {
-    background-color: #4CAF50;
+.calendar-day:hover {
+    background-color: #555;
 }
 
-.calendar-grid div:hover {
-    background-color: #575757;
+/* Event Indicators */
+.event-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%; /* Circle style */
+    background-color: red;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-/* Modal styling */
-.event-modal {
+/* Event Modal */
+#event-modal {
     display: none;
     position: fixed;
-    z-index: 1;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-    padding-top: 60px;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-.modal-content {
-    background-color: #3c3c3c;
-    margin: 5% auto;
+/* Modal Content */
+#event-modal-content {
+    background-color: white;
     padding: 20px;
-    border: 1px solid #444;
-    width: 80%;
-    max-width: 600px;
+    max-width: 400px;
+    width: 90%;
     border-radius: 10px;
+    overflow-y: auto;
 }
 
-.close-btn {
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 25px;
+/* Event Details */
+.event-details {
+    margin-bottom: 15px;
 }
 
-.close-btn:hover,
-.close-btn:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
+.event-details p {
+    margin: 5px 0;
 }
 
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Responsive Styles */
 @media screen and (max-width: 600px) {
+    .calendar-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .calendar-grid {
         grid-template-columns: repeat(7, 1fr);
+    }
+
+    .calendar-days div {
+        font-size: 12px;
+    }
+
+    .calendar-day {
+        font-size: 12px;
+        padding: 8px;
     }
 }
 
