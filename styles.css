@@ -1303,6 +1303,16 @@ p {
     border-radius: 10px;
 }
 
+/* Calendar Container */
+.calendar-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+}
+
 /* Calendar Header */
 .calendar-header {
     display: flex;
@@ -1439,6 +1449,7 @@ h2 {
         padding: 8px;
     }
 }
+
 
 /* Footer */
 footer {
