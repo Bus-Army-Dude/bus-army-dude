@@ -686,61 +686,91 @@ body {
 /* Countdown Section */
 .countdown-section {
     text-align: center;
-    background-color: #333; /* Dark background */
+    background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
     margin: 20px auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
+    max-width: 800px;
 }
 
-/* Flex container to align countdown items */
+.countdown-title {
+    font-size: 2.2em;
+    color: var(--primary-color); /* You can adjust this based on your theme */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
     flex-wrap: wrap;
     margin: 20px auto;
+    padding: 0 10px;
 }
 
-/* Individual countdown item */
 .countdown-item {
     min-width: 120px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .countdown-value {
-    font-size: 3em;
+    font-size: 2.5em;
     font-weight: bold;
     color: var(--accent-color);
-    background-color: #444; /* Dark background */
-    padding: 10px 20px;
-    border-radius: 10px;
-    transition: transform 0.5s ease-in-out;
+    display: block;
+    margin-bottom: 5px;
     position: relative;
-}
-
-.countdown-value.flip {
-    animation: flip 1s infinite;
+    transition: transform 0.5s ease-in-out;
+    transform-style: preserve-3d;
 }
 
 .countdown-label {
     font-size: 1em;
     color: var(--secondary-text);
-    margin-top: 10px;
 }
 
-/* Flip animation */
+/* Flip Effect - flipping animations for countdown values */
+.countdown-item .countdown-value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    width: 80px;
+    background: #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 2.5em;
+    font-weight: bold;
+    position: relative;
+}
+
+.countdown-item .countdown-value.flip {
+    animation: flip 1s forwards;
+}
+
 @keyframes flip {
     0% {
         transform: rotateX(0deg);
     }
     50% {
-        transform: rotateX(90deg);
-    }
-    100% {
         transform: rotateX(180deg);
     }
+    100% {
+        transform: rotateX(360deg);
+    }
+}
+
+.countdown-item .countdown-label {
+    font-size: 1em;
+    color: var(--secondary-text);
+    margin-top: 5px;
 }
 
 /* Tech Section */
