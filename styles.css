@@ -1293,105 +1293,113 @@ p {
     transform: rotate(180deg);
 }
 
-/* Calendar Container */
+/* General calendar container styles */
 .calendar-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #1a1a1a;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%; /* Ensure it doesn't overflow the container */
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #333; /* Matches your dark theme */
+    color: #fff; /* White text to contrast with dark background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Subtle shadow */
 }
 
-/* Calendar Container */
-.calendar-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #1a1a1a;
-    border-radius: 10px;
-}
-
-/* Calendar Header */
+/* Header (Month and Year display) */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     margin-bottom: 10px;
-    color: white;
 }
 
-.calendar-header button {
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.calendar-header button:hover {
-    background-color: #555;
-}
-
-/* Month and Year Display */
 #month-year {
-    font-size: 18px;
+    font-size: 1.5em; /* Larger font size for better visibility */
     font-weight: bold;
-    color: white;
 }
 
-/* Days of the Week */
+/* Navigation buttons */
+#prev-month, #next-month {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#prev-month:hover, #next-month:hover {
+    background-color: #777;
+}
+
+/* Days of the week (abbreviated) */
 .calendar-days {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for days of the week */
     gap: 5px;
-    margin-bottom: 10px;
-    color: white;
-}
-
-.calendar-days div {
+    width: 100%;
     text-align: center;
     font-weight: bold;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 10px;
 }
 
-/* Calendar Grid (Days) */
+/* Calendar grid */
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns for each day of the week */
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for the days */
     gap: 5px;
+    width: 100%;
 }
 
-/* Individual Day Cells */
+/* Individual day cell */
 .calendar-day {
+    background-color: #444;
+    color: #fff;
     padding: 10px;
     text-align: center;
-    background-color: #333;
-    color: #fff;
-    cursor: pointer;
+    border-radius: 4px;
     position: relative;
-    border-radius: 5px;
+    cursor: pointer;
 }
 
 .calendar-day:hover {
-    background-color: #555;
+    background-color: #666;
 }
 
-/* Event Indicators */
+/* Event indicator inside day */
 .event-indicator {
     width: 10px;
     height: 10px;
-    border-radius: 50%; /* Circle style */
-    background-color: red;
+    background-color: #ff5722; /* Highlight event days */
+    border-radius: 50%;
     position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 5px;
+    right: 5px;
 }
 
-/* Event Modal */
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    #month-year {
+        font-size: 1.2em; /* Adjust font size for mobile */
+    }
+
+    .calendar-day {
+        padding: 8px; /* Reduce padding for smaller screens */
+        font-size: 0.8em;
+    }
+
+    .calendar-days {
+        font-size: 0.75em; /* Smaller day labels */
+    }
+}
+
+/* Modal for events */
 #event-modal {
     display: none;
     position: fixed;
@@ -1399,85 +1407,33 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Darkened overlay */
+    background-color: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
 }
 
-/* Modal Content */
-#event-modal-content {
-    background-color: #333; /* Darker background for better contrast */
+.event-content {
+    background-color: #333;
+    color: #fff;
     padding: 20px;
+    border-radius: 8px;
     max-width: 400px;
-    width: 90%;
-    border-radius: 10px;
-    overflow-y: auto;
-    color: #fff; /* White text for contrast */
-}
-
-/* Event Details */
-.event-details {
-    margin-bottom: 20px;
-}
-
-.event-details p {
-    margin: 10px 0;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #fff; /* Ensures the text color is white for readability */
-}
-
-h2 {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 22px; /* Slightly larger title */
-    color: #ffcc00; /* Gold color for the title for emphasis */
 }
 
-/* Close Button */
-#event-modal-content button {
-    background-color: #ff4500; /* Orange button for contrast */
-    color: white;
-    padding: 10px;
+/* Close button for modal */
+.event-content button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #ff5722;
+    color: #fff;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
-    margin-top: 20px;
+    border-radius: 4px;
 }
 
-#event-modal-content button:hover {
-    background-color: #e04000; /* Darker orange for hover */
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 600px) {
-    #event-modal-content {
-        max-width: 90%;
-        padding: 15px;
-    }
-
-    .event-details p {
-        font-size: 14px; /* Adjust text size for mobile */
-    }
-
-    h2 {
-        font-size: 20px; /* Adjust title size for mobile */
-    }
-
-    #event-modal-content button {
-        font-size: 14px; /* Adjust button size for mobile */
-    }
-}
-
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #121212; /* Dark background for dark mode */
-    color: #e0e0e0; /* Light text for readability */
+.event-content button:hover {
+    background-color: #e64a19;
 }
 
 /* Footer */
