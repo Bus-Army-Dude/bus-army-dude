@@ -483,44 +483,80 @@ window.addEventListener('load', function() {
 
 function getWeather(lat, lon) {
     const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
-
-    // Use OpenCage Geocoder for reverse geocoding to get city, state, and country
     const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=2b9a9eb3498342f78eee9b3cfe478725`;
 
     // Fetch weather data
     fetch(weatherUrl)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Weather data fetch failed');
+            }
+            return response.json();
+        })
         .then(weatherData => {
-            const weather = weatherData.current_weather.weathercode;  // Weather description
-            const temp = weatherData.current_weather.temperature;      // Temperature in Fahrenheit
-            const iconCode = weatherData.current_weather.weathercode;  // Weather icon code
+            const weatherCode = weatherData.current_weather.weathercode; // Numerical code for the weather
+            const temp = weatherData.current_weather.temperature; // Temperature in Fahrenheit
+            const iconCode = weatherData.current_weather.weathercode; // Used for the icon
+
+            // Map weather codes to descriptions
+            const weatherDescriptions = {
+                0: "Clear sky",
+                1: "Mainly clear",
+                2: "Partly cloudy",
+                3: "Overcast",
+                45: "Fog",
+                48: "Depositing rime fog",
+                51: "Light drizzle",
+                53: "Moderate drizzle",
+                55: "Heavy drizzle",
+                61: "Light rain",
+                63: "Moderate rain",
+                65: "Heavy rain",
+                71: "Light snow",
+                73: "Moderate snow",
+                75: "Heavy snow",
+                80: "Showers of rain",
+                81: "Heavy showers of rain",
+                82: "Violent showers of rain",
+                95: "Thunderstorms",
+                96: "Severe thunderstorms",
+                99: "Severe thunderstorms with hail"
+            };
 
             // Fetch location data
             fetch(geocodeUrl)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Geocoding data fetch failed');
+                    }
+                    return response.json();
+                })
                 .then(locationData => {
-                    const city = locationData.results[0].components.city;
-                    const state = locationData.results[0].components.state;
-                    const country = locationData.results[0].components.country;
+                    // Try to get city, state, and country
+                    const city = locationData.results[0].components.city || locationData.results[0].components.town || locationData.results[0].components.village || "Unknown City";
+                    const state = locationData.results[0].components.state || "Unknown State";
+                    const country = locationData.results[0].components.country || "Unknown Country";
 
-                    // Get the appropriate weather icon URL
-                    const weatherIconUrl = `https://open-meteo.com/static/icons/${iconCode}.png`;
+                    // Get the weather description using the weather code
+                    const weatherDescription = weatherDescriptions[weatherCode] || "Unknown weather";
 
-                    // Update the UI with the weather data and location
+                    // Fetch the icon based on the weather code
+                    const weatherIconUrl = `https://www.metaweather.com/static/img/weather-icons/${iconCode}.svg`;
+
                     document.getElementById('weather-info').innerHTML = `
                         <h2>Weather in ${city}, ${state}, ${country}</h2>
-                        <p>${temp}°F, <span class="weather-description">${weather}</span></p>
-                        <img src="${weatherIconUrl}" alt="Weather icon" class="weather-icon" />
+                        <p><strong>${temp}°F</strong>, ${weatherDescription}</p>
+                        <img src="${weatherIconUrl}" alt="${weatherDescription}" class="weather-icon" />
                     `;
                 })
                 .catch(err => {
+                    console.error('Geocoding error:', err);
                     document.getElementById('weather-info').innerHTML = 'Unable to retrieve location data.';
-                    console.error(err);
                 });
         })
         .catch(err => {
+            console.error('Weather data error:', err);
             document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
-            console.error(err);
         });
 }
 
