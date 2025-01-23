@@ -533,9 +533,65 @@ faqQuestions.forEach((question) => {
 });
 
 const events = [
-    { date: '2025-01-20', title: "Trump's Inauguration", time: '12:00 PM', description: 'Donald Trump takes office' },
-    { date: '2025-02-27', title: "Bus Army Dude's Birthday", time: '3:00 AM', description: "Bus Army Dude's 20th Birthday" },
-    { date: '2025-04-05', title: 'TikTok Ban Decision', time: 'TBD', description: 'Discussion whether TikTok gets banned or stays in the US' }
+    // January Events
+    { date: '2025-01-01', title: "New Year's Day", time: '12:00 AM', description: 'Celebration of the first day of the year', timezone: 'UTC' },
+    { date: '2025-01-20', title: "Martin Luther King Jr. Day", time: '12:00 AM', description: 'Celebrating the birthday and legacy of Martin Luther King Jr.', timezone: 'UTC' },
+    { date: '2025-01-22', title: "National Polka Dot Day", time: '12:00 AM', description: 'A day to celebrate the iconic polka dot pattern', timezone: 'UTC' },
+
+    // February Events
+    { date: '2025-02-14', title: "Valentine's Day", time: '12:00 AM', description: 'A day to celebrate love and affection between intimate partners', timezone: 'UTC' },
+    { date: '2025-02-20', title: "World Day of Social Justice", time: '12:00 AM', description: 'A day for promoting social justice around the world', timezone: 'UTC' },
+    { date: '2025-02-27', title: "Bus Army Dude's Birthday", time: '3:00 AM', description: "Bus Army Dude's 20th Birthday", timezone: 'UTC' },
+
+    // March Events
+    { date: '2025-03-08', title: "International Women's Day", time: '12:00 AM', description: 'Celebrating the social, economic, cultural, and political achievements of women', timezone: 'UTC' },
+    { date: '2025-03-17', title: "St. Patrick's Day", time: '12:00 AM', description: 'Celebration of Irish culture and heritage', timezone: 'UTC' },
+
+    // April Events
+    { date: '2025-04-05', title: 'TikTok Ban Decision', time: 'TBD', description: 'Discussion whether TikTok gets banned or stays in the US', timezone: 'UTC' },
+    { date: '2025-04-07', title: "World Health Day", time: '12:00 AM', description: 'A day to raise awareness of global health issues', timezone: 'UTC' },
+
+    // May Events
+    { date: '2025-05-01', title: "Labor Day (International)", time: '12:00 AM', description: 'A day to celebrate the labor movement and the contributions of workers', timezone: 'UTC' },
+    { date: '2025-05-31', title: "World No Tobacco Day", time: '12:00 AM', description: 'A day to raise awareness about the dangers of tobacco use', timezone: 'UTC' },
+
+    // June Events
+    { date: '2025-06-05', title: "World Environment Day", time: '12:00 AM', description: 'A day to raise awareness about environmental issues', timezone: 'UTC' },
+    { date: '2025-06-21', title: "International Yoga Day", time: '12:00 AM', description: 'Celebrating the physical, mental, and spiritual benefits of yoga', timezone: 'UTC' },
+
+    // July Events
+    { date: '2025-07-04', title: "Independence Day (USA)", time: '12:00 AM', description: 'Celebration of the USA\'s declaration of independence', timezone: 'UTC' },
+
+    // August Events
+    { date: '2025-08-12', title: "International Youth Day", time: '12:00 AM', description: 'A day to raise awareness about youth issues around the world', timezone: 'UTC' },
+
+    // September Events
+    { date: '2025-09-01', title: "Hydrocephalus Awareness Month", time: '12:00 AM', description: 'A month dedicated to raising awareness about hydrocephalus and its impact on individuals.', timezone: 'UTC' },
+    { date: '2025-09-21', title: "World Alzheimer’s Day", time: '12:00 AM', description: 'A day to raise awareness of Alzheimer\'s disease and other dementias', timezone: 'UTC' },
+    { date: '2025-09-26', title: "World Contraception Day", time: '12:00 AM', description: 'A day to promote awareness and provide information about contraception', timezone: 'UTC' },
+
+    // October Events
+    { date: '2025-10-10', title: "World Mental Health Day", time: '12:00 AM', description: 'A day to raise awareness about mental health issues', timezone: 'UTC' },
+    { date: '2025-10-31', title: "Halloween", time: '12:00 AM', description: 'A day for celebrating all things spooky and fun', timezone: 'UTC' },
+
+    // November Events
+    { date: '2025-11-11', title: "Veterans Day (USA)", time: '12:00 AM', description: 'A day to honor military veterans', timezone: 'UTC' },
+    { date: '2025-11-14', title: "World Diabetes Day", time: '12:00 AM', description: 'A day to raise awareness about diabetes', timezone: 'UTC' },
+
+    // December Events
+    { date: '2025-12-01', title: "World AIDS Day", time: '12:00 AM', description: 'A day to raise awareness about the AIDS pandemic and its impact worldwide', timezone: 'UTC' },
+    { date: '2025-12-25', title: "Christmas", time: '12:00 AM', description: 'Celebration of the birth of Jesus Christ', timezone: 'UTC' },
+
+    // Disability Awareness Months
+    { date: '2025-03-01', title: "National Disability Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about disabilities and advocate for inclusion', timezone: 'UTC' },
+    { date: '2025-04-01', title: "Autism Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about autism spectrum disorders', timezone: 'UTC' },
+    { date: '2025-05-01', title: "Mental Health Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about mental health issues', timezone: 'UTC' },
+    { date: '2025-06-01', title: "ADHD Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about Attention Deficit Hyperactivity Disorder', timezone: 'UTC' },
+    { date: '2025-07-01', title: "Disability Pride Month", time: '12:00 AM', description: 'A month to celebrate the diversity of the disabled community and advocate for their rights', timezone: 'UTC' },
+    { date: '2025-09-01', title: "Hydrocephalus Awareness Month", time: '12:00 AM', description: 'A month dedicated to raising awareness about hydrocephalus and its impact on individuals', timezone: 'UTC' },
+    { date: '2025-10-01', title: "Down Syndrome Awareness Month", time: '12:00 AM', description: 'A month to raise awareness and promote acceptance of individuals with Down syndrome', timezone: 'UTC' },
+    { date: '2025-11-01', title: "National Epilepsy Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about epilepsy and seizure disorders', timezone: 'UTC' },
+    { date: '2025-12-01', title: "Disability Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about disabilities', timezone: 'UTC' }
 ];
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -557,7 +613,7 @@ function loadCalendar() {
     const currentMonthToday = today.getMonth();
     const currentYearToday = today.getFullYear();
 
-        // Create empty grid cells before the first day of the month
+    // Create empty grid cells before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
         const emptyCell = document.createElement("div");
         calendarGrid.appendChild(emptyCell);
