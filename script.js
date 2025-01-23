@@ -481,25 +481,26 @@ window.addEventListener('load', function() {
     document.body.classList.add('loaded');
 });
 
-// Function to fetch weather data based on user's location
+// Function to fetch weather data based on latitude and longitude
 function getWeather(lat, lon) {
-    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America%2FNew_York`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
 
-    fetch(apiUrl)
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            const weather = data.current_weather;
-            const temperature = weather.temperature;
-            const weatherDescription = weather.weathercode;
-            const city = data.city;
-            const iconUrl = getWeatherIcon(weatherDescription);
-
-            document.getElementById('weather-info').innerHTML = `
-                <h2>Weather in ${city}, ${data.country}</h2>
-                <p class="temperature">${temperature}°F</p>
-                <p class="weather-description">${getWeatherCondition(weatherDescription)}</p>
-                <img src="${iconUrl}" alt="${getWeatherCondition(weatherDescription)}" class="weather-icon">
-            `;
+            if (data && data.current_weather) {
+                const temp = data.current_weather.temperature; // Temperature in Fahrenheit
+                const condition = data.current_weather.weathercode; // Weather condition code
+                const icon = getWeatherIcon(condition); // Get the icon based on weather code
+                const location = `${data.latitude}, ${data.longitude}`; // Can be replaced with detailed location if needed
+                document.getElementById('weather-info').innerHTML = `
+                    <h2>Weather in ${location}</h2>
+                    <p>${temp}°F, ${getConditionText(condition)}</p>
+                    <img src="https://www.weatherbit.io/static/img/icons/${icon}.png" alt="Weather Icon">
+                `;
+            } else {
+                document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
+            }
         })
         .catch(err => {
             document.getElementById('weather-info').innerHTML = 'Unable to retrieve weather data.';
@@ -507,57 +508,82 @@ function getWeather(lat, lon) {
         });
 }
 
-// Function to get the weather condition from the weather code
-function getWeatherCondition(code) {
-    const conditions = {
-        0: "Clear/Sunny",
-        1: "Partly Cloudy",
-        2: "Overcast",
-        3: "Cloudy",
-        4: "Very Cloudy",
-        5: "Light Drizzle",
-        6: "Light Rain",
-        7: "Heavy Rain",
-        8: "Thunderstorm",
-        9: "Snow",
-        10: "Sleet",
-        11: "Fog",
-        12: "Hail",
-        13: "Tornado",
-        14: "Windy",
-    };
-    return conditions[code] || "Unknown Weather Condition";
-}
-
-// Function to get the weather icon URL based on the weather description
-function getWeatherIcon(code) {
-    const weatherIcons = {
-        0: "https://open-meteo.com/images/icons/sunny.png", // Sunny
-        1: "https://open-meteo.com/images/icons/partly-cloudy.png", // Partly Cloudy
-        2: "https://open-meteo.com/images/icons/overcast.png", // Overcast
-        3: "https://open-meteo.com/images/icons/cloudy.png", // Cloudy
-        4: "https://open-meteo.com/images/icons/dense-clouds.png", // Very Cloudy
-        5: "https://open-meteo.com/images/icons/drizzle.png", // Drizzle
-        6: "https://open-meteo.com/images/icons/rain.png", // Light Rain
-        7: "https://open-meteo.com/images/icons/heavy-rain.png", // Heavy Rain
-        8: "https://open-meteo.com/images/icons/thunderstorms.png", // Thunderstorm
-        9: "https://open-meteo.com/images/icons/snow.png", // Snow
-        10: "https://open-meteo.com/images/icons/sleet.png", // Sleet
-        11: "https://open-meteo.com/images/icons/fog.png", // Fog
-        12: "https://open-meteo.com/images/icons/hail.png", // Hail
-        13: "https://open-meteo.com/images/icons/tornado.png", // Tornado
-        14: "https://open-meteo.com/images/icons/windy.png", // Windy
-    };
-
-    return weatherIcons[code] || "https://open-meteo.com/images/icons/default.png"; // Default icon if no match
-}
-
-// Function to handle location error
+// Function to handle location errors
 function handleLocationError() {
     document.getElementById('weather-info').innerHTML = 'Unable to get location for weather.';
 }
 
-// Check if geolocation is supported and get the user's location
+// Function to get weather condition text based on weather code
+function getConditionText(code) {
+    const conditionMap = {
+        0: 'Clear Sky',
+        1: 'Mainly Clear',
+        2: 'Partly Cloudy',
+        3: 'Cloudy',
+        45: 'Fog',
+        48: 'Depositing Rime Fog',
+        51: 'Light Drizzle',
+        53: 'Moderate Drizzle',
+        55: 'Heavy Drizzle',
+        56: 'Light Freezing Drizzle',
+        57: 'Heavy Freezing Drizzle',
+        61: 'Light Rain',
+        63: 'Moderate Rain',
+        65: 'Heavy Rain',
+        66: 'Light Freezing Rain',
+        67: 'Heavy Freezing Rain',
+        71: 'Light Snow',
+        73: 'Moderate Snow',
+        75: 'Heavy Snow',
+        77: 'Snow Grains',
+        80: 'Light Showers of Rain',
+        81: 'Moderate Showers of Rain',
+        82: 'Heavy Showers of Rain',
+        85: 'Light Showers of Snow',
+        86: 'Heavy Showers of Snow',
+        95: 'Thunderstorms',
+        96: 'Thunderstorms with Light Hail',
+        99: 'Thunderstorms with Heavy Hail',
+    };
+    return conditionMap[code] || 'Unknown Condition';
+}
+
+// Function to get weather icon based on condition code
+function getWeatherIcon(code) {
+    const iconMap = {
+        0: 'c01d', // Clear Sky
+        1: 'c02d', // Mainly Clear
+        2: 'c03d', // Partly Cloudy
+        3: 'c04d', // Cloudy
+        45: 'd01d', // Fog
+        48: 'd01d', // Depositing Rime Fog
+        51: 'r01d', // Light Drizzle
+        53: 'r02d', // Moderate Drizzle
+        55: 'r03d', // Heavy Drizzle
+        56: 'r04d', // Light Freezing Drizzle
+        57: 'r05d', // Heavy Freezing Drizzle
+        61: 'r01d', // Light Rain
+        63: 'r02d', // Moderate Rain
+        65: 'r03d', // Heavy Rain
+        66: 'r04d', // Light Freezing Rain
+        67: 'r05d', // Heavy Freezing Rain
+        71: 's01d', // Light Snow
+        73: 's02d', // Moderate Snow
+        75: 's03d', // Heavy Snow
+        77: 's04d', // Snow Grains
+        80: 'r01d', // Light Showers of Rain
+        81: 'r02d', // Moderate Showers of Rain
+        82: 'r03d', // Heavy Showers of Rain
+        85: 's02d', // Light Showers of Snow
+        86: 's03d', // Heavy Showers of Snow
+        95: 't01d', // Thunderstorms
+        96: 't02d', // Thunderstorms with Light Hail
+        99: 't03d', // Thunderstorms with Heavy Hail
+    };
+    return iconMap[code] || 'd01d'; // Default to 'clear sky' icon if no match
+}
+
+// Get user's location and fetch weather data
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         position => {
