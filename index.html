@@ -219,7 +219,7 @@
 
 <!-- Calendar Section -->
 <div class="calendar-container">
-    <!-- Calendar Header with navigation buttons -->
+    <!-- Navigation buttons -->
     <div class="calendar-header">
         <button id="prev-month">Previous</button>
         <div id="month-year"></div>
@@ -237,18 +237,22 @@
         <div>Sat</div>
     </div>
 
-    <!-- Calendar Grid (will be populated dynamically with days) -->
+    <!-- Calendar Grid -->
     <div id="calendar-grid" class="calendar-grid"></div>
 </div>
 
-<!-- Modal for event details -->
-<div id="event-modal" class="event-modal">
-    <div class="modal-content">
-        <span id="close-modal" class="close-btn">&times;</span>
-        <div id="event-details"></div>
+<!-- Modal for Event Details -->
+<div id="event-modal" class="modal">
+    <div id="event-modal-content">
+        <h2>Event Details</h2>
+        <div class="event-details">
+            <p id="event-title"></p>
+            <p id="event-time"></p>
+            <p id="event-description"></p>
+        </div>
+        <button onclick="closeModal()">Close</button>
     </div>
 </div>
-
         
 <!-- Weather Section -->        
 <div id="weather-info">
