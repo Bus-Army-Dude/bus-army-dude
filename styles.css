@@ -851,7 +851,7 @@ body {
     color: white;
 }
 
-/* General container to align with other content */
+/* General container */
 .version-info-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -864,58 +864,53 @@ body {
     background-color: var(--content-bg);
     border-radius: 16px;
     padding: 30px;
-    margin-bottom: 30px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    font-family: 'Segoe UI', sans-serif; /* More modern font */
+    margin-bottom: 40px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    font-family: 'Inter', sans-serif;
     color: var(--text-color);
-    box-sizing: border-box;
-    transition: all 0.3s ease; /* Smooth transition effect */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    line-height: 1.5;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
-.version-info-section:hover {
-    transform: translateY(-5px); /* Adds a slight lift effect */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
-}
-
+/* Version Header */
 .version-header {
-    font-size: 1.6em;
-    font-weight: bold;
+    font-size: 1.8em;
+    font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 10px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
 }
 
+/* Version details */
 .version-number, .build-number, .device-info, .update-time, .countdown {
-    margin: 12px 0;
     font-size: 1.2em;
-    line-height: 1.5em;
-    border-left: 4px solid var(--accent-color);
-    padding-left: 10px;
+    font-weight: 400;
+    margin: 5px 0;
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
 }
 
+/* Italic info */
 .device-info, .update-time {
     font-style: italic;
 }
 
+/* Countdown */
 .countdown {
-    font-weight: bold;
+    font-weight: 600;
     color: var(--accent-color);
-    text-transform: uppercase;
-}
-
-@media screen and (max-width: 768px) {
-    .version-info-section {
-        padding: 20px;
-    }
-
-    .version-header {
-        font-size: 1.4em;
-    }
-
-    .version-number, .build-number, .device-info, .update-time, .countdown {
-        font-size: 1.1em;
-    }
+    text-align: center;
+    padding-top: 10px;
+    font-size: 1.4em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
 }
 
 /* Copy Protection */
