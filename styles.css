@@ -88,12 +88,12 @@ body {
     color: #fff;
     font-weight: 600; /* Bold text for better readability */
     letter-spacing: 0.5px; /* Slight spacing between letters */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for a smooth hover effect */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for smooth hover effect */
 }
 
 /* Hover effect for social buttons */
 .social-button:hover {
-    background-color: #4a4a4a; /* Darker shade to match theme */
+    background-color: #80e27e; /* Lighter green on hover */
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
