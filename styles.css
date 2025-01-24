@@ -851,65 +851,65 @@ body {
     color: white;
 }
 
-/* General container */
+/* General container to align with other content */
 .version-info-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 1200px;  /* Matches the other content width */
+    margin: 0 auto;     /* Center the section */
+    padding: 20px;      /* Same padding as other sections */
     box-sizing: border-box;
 }
 
 /* Version Info Section */
 .version-info-section {
     background-color: var(--content-bg);
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    font-family: 'Inter', sans-serif;
+    border-radius: 16px;     /* Slightly rounded corners */
+    padding: 20px;           /* Consistent padding with other sections */
+    margin-bottom: 30px;     /* Space between sections */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);  /* Modern soft shadow */
+    font-family: 'Inter', sans-serif;  /* Modern, readable font */
     color: var(--text-color);
     display: flex;
     flex-direction: column;
     gap: 15px;
     line-height: 1.5;
-    transition: box-shadow 0.3s ease-in-out;
+    transition: box-shadow 0.3s ease-in-out;  /* Subtle shadow transition */
 }
 
 /* Version Header */
 .version-header {
-    font-size: 1.8em;
+    font-size: 1.6em;
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 10px;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
 }
 
-/* Version details */
+/* Version details like number, build, device, update time, countdown */
 .version-number, .build-number, .device-info, .update-time, .countdown {
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: 400;
-    margin: 5px 0;
+    margin: 8px 0;
     color: var(--text-color);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05); /* Soft background */
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 8px;  /* Rounded corners for the content */
     letter-spacing: 0.5px;
 }
 
-/* Italic info */
+/* Italic text for device info and update time */
 .device-info, .update-time {
     font-style: italic;
 }
 
-/* Countdown */
+/* Countdown section with emphasis */
 .countdown {
     font-weight: 600;
     color: var(--accent-color);
     text-align: center;
+    font-size: 1.3em;
     padding-top: 10px;
-    font-size: 1.4em;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);  /* Light background for emphasis */
     border-radius: 10px;
 }
 
