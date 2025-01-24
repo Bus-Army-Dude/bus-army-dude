@@ -54,48 +54,57 @@ body {
     margin-left: 5px;
 }
 
-/* Social Section - Updated */
+/* Social Section - Updated to match Disabilities section style */
 .social-links-section {
-    text-align: center;
-    padding: 30px 20px; /* Added top/bottom padding for even spacing */
     background-color: var(--content-bg); /* Match website theme */
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 20px; /* Optional: adds margin from other sections */
-    margin-bottom: 30px; /* Added bottom margin to create space between sections */
+    padding: 30px 20px; /* Added top/bottom padding for even spacing */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-family: 'Arial', sans-serif; /* Matching the font to keep it consistent */
+    color: var(--text-color);
+    text-align: center;
 }
 
+/* Social links container - aligned with the rest of the content */
 .social-links-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px; /* Adjusted gap between buttons */
-    align-items: center; /* Ensures vertical centering */
-    margin-top: 20px; /* Adds spacing between top section and buttons */
+    gap: 18px; /* Consistent spacing between social buttons */
+    align-items: center; /* Ensures buttons align vertically */
+    margin-top: 20px;
 }
 
+/* Individual social buttons */
 .social-button {
     display: flex;
     align-items: center;
-    padding: 12px 18px; /* Increased padding for better button size */
+    padding: 14px 24px; /* Slightly larger padding for better button size */
     background-color: var(--accent-color); /* Match theme color */
-    border-radius: 30px;
+    border-radius: 25px; /* Rounded corners for a sleek modern look */
     text-decoration: none;
     color: #fff;
-    font-weight: bold; /* Makes the text bold */
-    transition: background-color 0.3s ease;
+    font-weight: 600; /* Bold text for better readability */
+    letter-spacing: 0.5px; /* Slight spacing between letters */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for a smooth hover effect */
 }
 
+/* Hover effect for social buttons */
 .social-button:hover {
-    background-color: #555;
+    background-color: #4a4a4a; /* Darker shade to match theme */
+    transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
+/* Social icon styling */
 .social-icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 12px; /* Adjusted spacing between icon and text */
+    width: 28px;
+    height: 28px;
+    margin-right: 15px; /* Increased space between icon and text */
 }
 
+/* Styling for the text inside the button */
 .social-button span {
     font-size: 16px;
 }
