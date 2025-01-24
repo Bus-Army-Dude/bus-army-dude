@@ -853,33 +853,45 @@ body {
 
 /* General container to align with other content */
 .version-info-container {
-    max-width: 1200px; /* Set to the same width as other content */
-    margin: 0 auto; /* Center the section */
-    padding: 20px; /* Consistent padding with other sections */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
     box-sizing: border-box;
 }
 
 /* Version Info Section */
 .version-info-section {
     background-color: var(--content-bg);
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 30px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    font-family: 'Arial', sans-serif;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Segoe UI', sans-serif; /* More modern font */
     color: var(--text-color);
-    box-sizing: border-box; /* Ensures padding is handled correctly */
+    box-sizing: border-box;
+    transition: all 0.3s ease; /* Smooth transition effect */
+}
+
+.version-info-section:hover {
+    transform: translateY(-5px); /* Adds a slight lift effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
 }
 
 .version-header {
-    font-size: 1.4em;
+    font-size: 1.6em;
     font-weight: bold;
     color: var(--primary-color);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .version-number, .build-number, .device-info, .update-time, .countdown {
-    margin: 10px 0;
-    font-size: 1.1em;
+    margin: 12px 0;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 10px;
 }
 
 .device-info, .update-time {
@@ -889,6 +901,21 @@ body {
 .countdown {
     font-weight: bold;
     color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 768px) {
+    .version-info-section {
+        padding: 20px;
+    }
+
+    .version-header {
+        font-size: 1.4em;
+    }
+
+    .version-number, .build-number, .device-info, .update-time, .countdown {
+        font-size: 1.1em;
+    }
 }
 
 /* Copy Protection */
