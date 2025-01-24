@@ -19,7 +19,6 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - Profile information display
 - Content Protection
   - Event Calendar
-  - Weather Based on Location
   - Enhanced copy protection
   - Image security measures
   - Content control system
@@ -33,12 +32,6 @@ A centralized platform displaying detailed tech specifications, accessibility re
   - Improved visibility of event indicators on the calendar.
 - **Theme Consistency Across Sections**
   - All sections now reflect the unified website theme for a cohesive user experience.
-
-### 🌦️ Weather Based on Location
-- **Important:** To ensure the weather section works properly, users must enable **Location** and have **JavaScript** and **Cookies** enabled.
-- **For TikTok users:** The weather feature does not work in the TikTok browser due to restrictions on accessing location data. To enable the weather feature:
-  1. Tap the three dots in the top-right corner of the TikTok app.
-  2. Select "Open in Browser" to allow location access for the weather section to work correctly.
 
 ### 💻 Supported Operating Systems
 - iOS
