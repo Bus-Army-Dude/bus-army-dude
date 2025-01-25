@@ -173,39 +173,6 @@ window.onload = function() {
             { username: 'jerridc4', isVerified: false, followers: '478', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
             // Add more shoutouts here...
         ],
-        // Manually set the last updated date and time (example in EST timezone)
-const lastUpdatedDate = "Sat, Jan 25, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
-const lastUpdatedTime = "10:17:02 AM";    // Set the time here (12-hour format)
-
-// Combine the date and time into a single string for parsing
-const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const lastUpdatedElement = document.querySelector("#lastUpdated");
-
-  if (lastUpdatedElement) {
-    // Create a Date object with the manually set date and time, example for EST (GMT-0500)
-    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
-
-    // Convert the manually set date and time to the user's local time zone
-    const options = {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true
-    };
-
-    // Format and display the converted time as "Wed, Jan 8, 2025, 9:51:01 AM"
-    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
-
-    // Set the content of the "Last Updated" text
-    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
-  }
-});
         init() {
             this.createShoutoutCards();
         },
@@ -429,7 +396,40 @@ function updateFlipClock(id, value) {
         }, 600); // match the animation duration
     }
 }
+// Manually set the last updated date and time (example in EST timezone)
+const lastUpdatedDate = "Sat, Jan 25, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
+const lastUpdatedTime = "10:17:02 AM";    // Set the time here (12-hour format)
 
+// Combine the date and time into a single string for parsing
+const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lastUpdatedElement = document.querySelector("#lastUpdated");
+
+  if (lastUpdatedElement) {
+    // Create a Date object with the manually set date and time, example for EST (GMT-0500)
+    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
+
+    // Convert the manually set date and time to the user's local time zone
+    const options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+
+    // Format and display the converted time as "Wed, Jan 8, 2025, 9:51:01 AM"
+    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
+
+    // Set the content of the "Last Updated" text
+    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
+  }
+});
+            
     // Initialize everything
     detectDetailedDevice();
     updateTime();
