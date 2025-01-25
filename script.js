@@ -396,6 +396,18 @@ function updateFlipClock(id, value) {
         }, 600); // match the animation duration
     }
 }
+    
+    // Initialize everything
+    detectDetailedDevice();
+    updateTime();
+    tiktokShoutouts.init();
+    updateNewYearCountdown();
+
+    setInterval(updateTime, 1000);
+    setInterval(updateCountdown, 1000);
+    setInterval(updateNewYearCountdown, 1000);
+});
+
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Sat, Jan 25, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
 const lastUpdatedTime = "10:17:02 AM";    // Set the time here (12-hour format)
@@ -428,17 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Set the content of the "Last Updated" text
     lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
   }
-});
-            
-    // Initialize everything
-    detectDetailedDevice();
-    updateTime();
-    tiktokShoutouts.init();
-    updateNewYearCountdown();
-
-    setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 1000);
-    setInterval(updateNewYearCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
