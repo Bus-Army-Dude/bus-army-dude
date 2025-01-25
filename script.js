@@ -173,7 +173,39 @@ window.onload = function() {
             { username: 'jerridc4', isVerified: false, followers: '478', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
             // Add more shoutouts here...
         ],
+        // Manually set the last updated date and time (example in EST timezone)
+const lastUpdatedDate = "Sat, Jan 25, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
+const lastUpdatedTime = "10:17:02 AM";    // Set the time here (12-hour format)
 
+// Combine the date and time into a single string for parsing
+const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lastUpdatedElement = document.querySelector("#lastUpdated");
+
+  if (lastUpdatedElement) {
+    // Create a Date object with the manually set date and time, example for EST (GMT-0500)
+    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
+
+    // Convert the manually set date and time to the user's local time zone
+    const options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+
+    // Format and display the converted time as "Wed, Jan 8, 2025, 9:51:01 AM"
+    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
+
+    // Set the content of the "Last Updated" text
+    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
+  }
+});
         init() {
             this.createShoutoutCards();
         },
@@ -207,21 +239,21 @@ window.onload = function() {
 
 const instagramShoutouts = {
     accounts: [
-        { username: 'riverkritzar', isVerified: false, followers: '84', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/riverkritzar.jpg' },
-        { username: 'busarmydude', isVerified: false, followers: '18', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
-        { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
-        { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
         { username: 'mrbeast', isVerified: true, followers: '65.5M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
         { username: 'applesauceandadhd', isVerified: true, followers: '732K', nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },    
         { username: 'emtbadge502', isVerified: true, followers: '490K', nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },    
-        { username: 'kaylee_mertens_', isVerified: false, followers: '3,152', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },    
-        { username: 'meetmeinthemediacenter', isVerified: true, followers: '51.2K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },    
-        { username: 'mrfattcheeto', isVerified: true, followers: '269K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },    
         { username: 'trafficlightdoctor', isVerified: true, followers: '310K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },            
+        { username: 'mrfattcheeto', isVerified: true, followers: '269K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },    
         { username: 'lisa.remillard', isVerified: true, followers: '93.9K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },                    
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '51.2K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },    
+        { username: 'kaylee_mertens_', isVerified: false, followers: '3,152', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },    
+        { username: 'riverkritzar', isVerified: false, followers: '84', nickname: 'River Jordan Kritzar', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/riverkritzar.jpg' },
+        { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
+        { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
+        { username: 'busarmydude', isVerified: false, followers: '18', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-01-25T09:51:00', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-25T10:17:02', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -279,16 +311,16 @@ instagramShoutouts.init();
 const youtubeShoutouts = {
     accounts: [
         { username: '@MrBeast', isVerified: true, subscribers: '349M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
-        { username: '@BeastReacts', isVerified: true, subscribers: '35.3M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
-        { username: '@MrBeastGaming', isVerified: true, subscribers: '46.4M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
         { username: '@MrBeast2', isVerified: true, subscribers: '48.5M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
+        { username: '@MrBeastGaming', isVerified: true, subscribers: '46.4M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
+        { username: '@BeastReacts', isVerified: true, subscribers: '35.3M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
         { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.3M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
+        { username: '@Trafficlightdoctor', isVerified: false, subscribers: '151K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
         { username: '@mrfatcheeto', isVerified: false, subscribers: '97.4K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
         { username: '@Badge502', isVerified: false, subscribers: '60.7K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
-        { username: '@Trafficlightdoctor', isVerified: false, subscribers: '151K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-01-25T09:51:00', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-25T10:17:02', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -407,40 +439,6 @@ function updateFlipClock(id, value) {
     setInterval(updateTime, 1000);
     setInterval(updateCountdown, 1000);
     setInterval(updateNewYearCountdown, 1000);
-});
-
-// Manually set the last updated date and time (example in EST timezone)
-const lastUpdatedDate = "Sat, Jan 25, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
-const lastUpdatedTime = "10:07 AM";    // Set the time here (12-hour format)
-
-// Combine the date and time into a single string for parsing
-const lastUpdatedString = `${lastUpdatedDate} ${lastUpdatedTime}`;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const lastUpdatedElement = document.querySelector("#lastUpdated");
-
-  if (lastUpdatedElement) {
-    // Create a Date object with the manually set date and time, example for EST (GMT-0500)
-    const lastUpdatedDateObj = new Date(`${lastUpdatedString} GMT-0500`);
-
-    // Convert the manually set date and time to the user's local time zone
-    const options = {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true
-    };
-
-    // Format and display the converted time as "Wed, Jan 8, 2025, 9:51:01 AM"
-    const localLastUpdated = lastUpdatedDateObj.toLocaleString('en-US', options);
-
-    // Set the content of the "Last Updated" text
-    lastUpdatedElement.textContent = `Last Updated: ${localLastUpdated}`;
-  }
 });
 
 if (window.location.protocol !== 'https:') {
