@@ -1673,6 +1673,122 @@ body {
     }
 }
 
+/* General Styles for the Settings Page */
+.settings-container {
+  background-color: #121212; /* Dark background for the page */
+  color: #e0e0e0; /* Light text color */
+  padding: 30px;
+  margin: 50px auto;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 12px; /* Soft, rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
+
+.settings-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2.2em;
+  font-weight: bold;
+  color: var(--primary-color); /* Accent color for header */
+}
+
+/* Styling for Setting Options */
+.setting-option {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-size: 1.2em;
+  color: #ccc;
+}
+
+/* Styling for Toggle Switches */
+.toggle-switch {
+  width: 50px;
+  height: 30px;
+  border-radius: 20px;
+  appearance: none;
+  background-color: #666;
+  transition: 0.3s;
+  position: relative;
+}
+
+.toggle-switch:checked {
+  background-color: #81c784; /* Light green when checked */
+}
+
+.toggle-switch::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: white;
+  transition: 0.3s;
+  transform: translateY(-50%);
+}
+
+.toggle-switch:checked::before {
+  transform: translateX(20px) translateY(-50%);
+}
+
+/* Styling for Select Dropdown */
+.select-input {
+  padding: 12px;
+  font-size: 1em;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: #fff;
+  appearance: none; /* Remove default dropdown arrow */
+  cursor: pointer;
+}
+
+/* Save Settings Button */
+.primary-btn {
+  background-color: var(--primary-color); /* Matching your accent color */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: none;
+  width: 100%;
+}
+
+.primary-btn:hover {
+  background-color: #66bb6a; /* Lighter green on hover */
+  transform: scale(1.05);
+}
+
+.primary-btn:active {
+  background-color: #45a049; /* Even lighter green when clicked */
+  transform: scale(0.95);
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+  .settings-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .setting-option {
+    margin-bottom: 15px;
+  }
+
+  .primary-btn {
+    font-size: 1em;
+  }
+}
+
 /* Footer */
 footer {
     text-align: center;
