@@ -116,34 +116,42 @@
 <div id="loading-spinner" class="spinner"></div>
 
         
-    <!-- TikTok Shoutouts Section -->
-    <div id="tiktok-section" class="section">
-    <div id="tiktok-message" class="message">
-        <h3>This section isn't available in your region.</h3>
-        <p>Unfortunately, TikTok is not available in your region. Stay tuned for updates!</p>
-    </div>
-    <div id="tiktok-creators" class="creators-grid"></div>
-    <p id="tiktok-last-updated"></p>
+<!-- TikTok Shoutouts Section -->
+    <div class="shoutouts-section section">
+        <div id="tiktok-shoutouts">
+        <h2>TikTok Creator Shoutouts</h2>
+        <p id="lastUpdated"></p> <!-- Display last updated date and time here -->
+  <!-- Your TikTok Creator Shoutouts content here -->
 </div>
 
-    <!-- Instagram Shoutouts Section -->
-    <div id="instagram-section" class="section">
-    <div id="instagram-message" class="message">
-        <h3>This section isn't available in your region.</h3>
-        <p>Unfortunately, Instagram is not available in your region. Stay tuned for updates!</p>
+        <div class="creator-grid">
+        <!-- Cards will be dynamically generated here -->
+        </div>
     </div>
-    <div id="instagram-creators" class="creators-grid"></div>
-    <p id="instagram-last-updated"></p>
+
+<!-- Instagram Shoutouts Section -->
+<div class="shoutouts-section section">
+    <div id="instagram-shoutouts">
+        <h2>Instagram Creator Shoutouts</h2>
+        <!-- Last Updated Timestamp -->
+        <p class="last-updated"> <span id="instagram-last-updated-timestamp">N/A</span></p>
+    </div>
+
+    <div class="instagram-creator-grid">
+        <!-- Instagram creator cards will be dynamically generated here -->
+    </div>
 </div>
 
-    <!-- YouTube Shoutouts Section -->
-   <div id="youtube-section" class="section">
-    <div id="youtube-message" class="message">
-        <h3>This section isn't available in your region.</h3>
-        <p>Unfortunately, YouTube is not available in your region. Stay tuned for updates!</p>
+<!-- YouTube Shoutouts Section -->
+<div class="shoutouts-section section">
+    <div id="youtube-shoutouts">
+        <h2>YouTube Creator Shoutouts</h2>
+        <p id="lastUpdatedYouTube"></p> <!-- Display last updated date and time here -->
     </div>
-    <div id="youtube-creators" class="creators-grid"></div>
-    <p id="youtube-last-updated"></p>
+
+    <div class="youtube-creator-grid">
+        <!-- YouTube creator cards will be dynamically generated here -->
+    </div>
 </div>
         
 <!-- Latest TikTok Video Section -->
