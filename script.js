@@ -643,37 +643,3 @@ document.getElementById("next-month").addEventListener("click", () => {
 
 // Initialize calendar on page load
 document.addEventListener("DOMContentLoaded", loadCalendar);
-
-window.onload = function() {
-    const statusLabel = document.getElementById("status-label");
-
-    // When the page loads, set your own status to "Online"
-    sessionStorage.setItem("userOnline", "true");
-
-    // If session storage says the user is online, update the status
-    if (sessionStorage.getItem("userOnline") === "true") {
-        statusLabel.textContent = "Online";
-        statusLabel.style.color = "green"; // Optional: set color for "Online"
-    }
-
-    // Check the global status in local storage (this is the status visible to others)
-    if (localStorage.getItem("globalStatus") === "Online") {
-        statusLabel.textContent = "Online";
-        statusLabel.style.color = "green";
-    } else {
-        statusLabel.textContent = "Offline";
-        statusLabel.style.color = "red";
-    }
-
-    // Set global status to "Online" when you open the page
-    if (!localStorage.getItem("globalStatus")) {
-        localStorage.setItem("globalStatus", "Online");
-    }
-
-    // When the page is about to unload (user leaves the page), mark the status as "Offline"
-    window.onbeforeunload = function() {
-        sessionStorage.removeItem("userOnline");  // Remove user's session status
-        localStorage.setItem("globalStatus", "Offline");  // Set global status to "Offline"
-    };
-};
-
