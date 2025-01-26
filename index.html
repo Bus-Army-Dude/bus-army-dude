@@ -117,39 +117,49 @@
 
         
 <!-- TikTok Shoutouts Section -->
-    <div class="shoutouts-section section">
-        <div id="tiktok-shoutouts">
+<div class="shoutouts-section section" id="tiktok-section">
+    <div id="tiktok-shoutouts">
         <h2>TikTok Creator Shoutouts</h2>
         <p id="lastUpdated"></p> <!-- Display last updated date and time here -->
-  <!-- Your TikTok Creator Shoutouts content here -->
-</div>
-
-        <div class="creator-grid">
-        <!-- Cards will be dynamically generated here -->
-        </div>
     </div>
 
+    <div class="unavailable-message" id="tiktok-message" style="display: none;">
+        <!-- This message will display if TikTok is unavailable in the user's region -->
+    </div>
+
+    <div class="creator-grid" id="tiktok-creators">
+        <!-- TikTok creator cards will be dynamically generated here -->
+    </div>
+</div>
+
 <!-- Instagram Shoutouts Section -->
-<div class="shoutouts-section section">
+<div class="shoutouts-section section" id="instagram-section">
     <div id="instagram-shoutouts">
         <h2>Instagram Creator Shoutouts</h2>
-        <!-- Last Updated Timestamp -->
         <p class="last-updated"> <span id="instagram-last-updated-timestamp">N/A</span></p>
     </div>
 
-    <div class="instagram-creator-grid">
+    <div class="unavailable-message" id="instagram-message" style="display: none;">
+        <!-- This message will display if Instagram is unavailable in the user's region -->
+    </div>
+
+    <div class="instagram-creator-grid" id="instagram-creators">
         <!-- Instagram creator cards will be dynamically generated here -->
     </div>
 </div>
 
 <!-- YouTube Shoutouts Section -->
-<div class="shoutouts-section section">
+<div class="shoutouts-section section" id="youtube-section">
     <div id="youtube-shoutouts">
         <h2>YouTube Creator Shoutouts</h2>
         <p id="lastUpdatedYouTube"></p> <!-- Display last updated date and time here -->
     </div>
 
-    <div class="youtube-creator-grid">
+    <div class="unavailable-message" id="youtube-message" style="display: none;">
+        <!-- This message will display if YouTube is unavailable in the user's region -->
+    </div>
+
+    <div class="youtube-creator-grid" id="youtube-creators">
         <!-- YouTube creator cards will be dynamically generated here -->
     </div>
 </div>
