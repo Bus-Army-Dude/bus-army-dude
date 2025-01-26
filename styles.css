@@ -64,25 +64,6 @@ body {
     text-align: center;
 }
 
-/* Online/Offline status */
-.status p {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-#status-label {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.online {
-    color: green;
-}
-
-.offline {
-    color: red;
-}
-
 /* Social Section - Updated to match Disabilities section style */
 .social-links-section {
     background-color: var(--content-bg); /* Match website theme */
