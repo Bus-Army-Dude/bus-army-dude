@@ -1,30 +1,32 @@
-// Check for saved user preference on page load
-document.addEventListener('DOMContentLoaded', () => {
-  const darkModeToggle = document.getElementById('theme-toggle');
-  
-  // Check if dark mode is already enabled in localStorage
-  const isDarkMode = localStorage.getItem('dark-mode') === 'true';
+// Check if dark mode is already set in localStorage
+const darkModePreference = localStorage.getItem('dark-mode');
 
-  // Apply dark mode class to body
-  if (isDarkMode) {
+// Apply dark mode if it's enabled, otherwise use light mode by default
+if (darkModePreference === 'true') {
     document.body.classList.add('dark-mode');
-    darkModeToggle.checked = true;
-  } else {
+} else {
     document.body.classList.remove('dark-mode');
-    darkModeToggle.checked = false;
-  }
+}
 
-  // Toggle dark mode when user interacts with the checkbox
-  darkModeToggle.addEventListener('change', (event) => {
-    const isChecked = event.target.checked;
-
-    // Apply dark mode class to body
-    if (isChecked) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('dark-mode', 'true');  // Save preference to localStorage
+// Dark mode toggle functionality
+document.getElementById('theme-toggle').addEventListener('change', function() {
+    if (this.checked) {
+        // Add dark mode class to body
+        document.body.classList.add('dark-mode');
+        // Save the user's preference in localStorage
+        localStorage.setItem('dark-mode', 'true');
     } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('dark-mode', 'false'); // Save preference to localStorage
+        // Remove dark mode class from body
+        document.body.classList.remove('dark-mode');
+        // Save the user's preference in localStorage
+        localStorage.setItem('dark-mode', 'false');
     }
-  });
 });
+
+// Ensure the initial state of the checkbox matches the stored preference
+const themeToggle = document.getElementById('theme-toggle');
+if (darkModePreference === 'true') {
+    themeToggle.checked = true;
+} else {
+    themeToggle.checked = false;
+}
