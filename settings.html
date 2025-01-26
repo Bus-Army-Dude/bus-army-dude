@@ -1,0 +1,39 @@
+<!-- settings.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="settings.js" defer></script> <!-- Link to a separate JavaScript for settings -->
+</head>
+<body>
+
+  <div class="settings-container">
+    <h1>Settings</h1>
+    
+    <div class="setting-option">
+      <label for="theme-toggle">Enable Dark Mode:</label>
+      <input type="checkbox" id="theme-toggle" class="toggle-switch">
+    </div>
+    
+    <div class="setting-option">
+      <label for="notifications-toggle">Enable Notifications:</label>
+      <input type="checkbox" id="notifications-toggle" class="toggle-switch">
+    </div>
+    
+    <div class="setting-option">
+      <label for="language-select">Choose Language:</label>
+      <select id="language-select" class="select-input">
+        <option value="en">English</option>
+        <option value="es">Spanish</option>
+        <!-- Add more languages as needed -->
+      </select>
+    </div>
+    
+    <button id="save-settings" class="primary-btn">Save Settings</button>
+  </div>
+
+</body>
+</html>
