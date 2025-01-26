@@ -645,32 +645,27 @@ document.getElementById("next-month").addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
 window.onload = function() {
-    const onlineStatusElement = document.getElementById("online-status");
     const statusLabel = document.getElementById("status-label");
 
-    // Check if the status is already set in localStorage for your session
+    // Check if you're marked as Online in localStorage
     if (localStorage.getItem("isOnline") === "true") {
-        // Set it to Online
-        onlineStatusElement.classList.add("online");
-        onlineStatusElement.classList.remove("offline");
+        // If the value is true, set status to Online
         statusLabel.textContent = "Online";
         statusLabel.style.color = "green";
     } else {
-        // Default status is Offline
-        onlineStatusElement.classList.add("offline");
-        onlineStatusElement.classList.remove("online");
+        // If not, set status to Offline
         statusLabel.textContent = "Offline";
         statusLabel.style.color = "red";
     }
 
-    // When you load the page, change status to online for your session
+    // Set your status to Online when you load the website
     if (!localStorage.getItem("isOnline")) {
-        localStorage.setItem("isOnline", "true"); // This will set "Online" for your session
-        location.reload(); // Refresh the page to show the status as online
+        localStorage.setItem("isOnline", "true");  // This will set the status to Online for your session
+        location.reload();  // Refresh the page to show the updated status
     }
 
-    // Set to offline when you leave
+    // When you leave, mark the status as Offline
     window.onbeforeunload = function() {
-        localStorage.setItem("isOnline", "false"); // Mark it as offline when you leave
+        localStorage.setItem("isOnline", "false");  // Mark status as Offline when you leave the page
     };
 };
