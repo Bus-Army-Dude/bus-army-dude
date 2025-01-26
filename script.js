@@ -647,23 +647,16 @@ document.addEventListener("DOMContentLoaded", loadCalendar);
 window.onload = function() {
     const statusLabel = document.getElementById("status-label");
 
-    // When the page loads, we check if the status is already set
+    // When the page loads, set your own status to "Online"
+    sessionStorage.setItem("userOnline", "true");
+
+    // If session storage says the user is online, update the status
     if (sessionStorage.getItem("userOnline") === "true") {
-        // If the sessionStorage is set to true (you are online), update the status
         statusLabel.textContent = "Online";
-        statusLabel.style.color = "green";
-    } else {
-        // If not set, mark it as offline for you
-        statusLabel.textContent = "Offline";
-        statusLabel.style.color = "red";
+        statusLabel.style.color = "green"; // Optional: set color for "Online"
     }
 
-    // Update global online status when you load the page
-    if (!localStorage.getItem("globalStatus")) {
-        localStorage.setItem("globalStatus", "Online");  // Set global status to "Online"
-    }
-    
-    // Display the global status for all users
+    // Check the global status in local storage (this is the status visible to others)
     if (localStorage.getItem("globalStatus") === "Online") {
         statusLabel.textContent = "Online";
         statusLabel.style.color = "green";
@@ -672,14 +665,15 @@ window.onload = function() {
         statusLabel.style.color = "red";
     }
 
-    // Set your status to online when you open the website
-    sessionStorage.setItem("userOnline", "true");
-    localStorage.setItem("globalStatus", "Online");
+    // Set global status to "Online" when you open the page
+    if (!localStorage.getItem("globalStatus")) {
+        localStorage.setItem("globalStatus", "Online");
+    }
 
-    // When the window is closed or navigated away, mark status as offline
+    // When the page is about to unload (user leaves the page), mark the status as "Offline"
     window.onbeforeunload = function() {
-        sessionStorage.removeItem("userOnline");  // Remove user session status
-        localStorage.setItem("globalStatus", "Offline");  // Set global status to offline
+        sessionStorage.removeItem("userOnline");  // Remove user's session status
+        localStorage.setItem("globalStatus", "Offline");  // Set global status to "Offline"
     };
 };
 
