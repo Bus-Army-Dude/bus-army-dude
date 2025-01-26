@@ -1673,6 +1673,21 @@ body {
     }
 }
 
+.unavailable-message {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+.unavailable-message h3 {
+  margin: 0;
+  font-size: 1.5em;
+}
+.unavailable-message p {
+  font-size: 1em;
+}
+
 /* Footer */
 footer {
     text-align: center;
