@@ -54,6 +54,16 @@ body {
     margin-left: 5px;
 }
 
+/* Profile Section */
+.profile-section {
+    background-color: #333; /* Adjust for your theme */
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
 /* Online/Offline status */
 .status p {
     font-size: 18px;
