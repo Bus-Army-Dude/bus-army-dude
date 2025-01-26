@@ -1700,10 +1700,10 @@ body {
     }
 }
 
-/* General Styles */
+/* General Styles for Settings Page */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f4; /* Lighter background for Apple-inspired look */
+    background-color: #f4f4f4; /* Lighter background for settings page */
     color: #333;
     margin: 0;
     padding: 0;
