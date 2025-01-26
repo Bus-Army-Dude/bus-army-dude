@@ -54,17 +54,18 @@ body {
     margin-left: 5px;
 }
 
-/* Online/Offline Status */
-.online-status {
-    font-size: 1.2em;
+/* Online/Offline status */
+.status p {
+    font-size: 18px;
     font-weight: bold;
-    margin-top: 10px;
-    color: #ff4d4d; /* Default to red for offline */
 }
 
-/* Online status styling (green) */
-.online-status.online {
-    color: #4CAF50; /* Green for online */
+.online {
+    color: green;
+}
+
+.offline {
+    color: red;
 }
 
 /* Social Section - Updated to match Disabilities section style */
