@@ -18,7 +18,6 @@ body {
 
 /* Profile Section */
 .profile-section {
-    position: relative; /* To position the settings button inside the profile section */
     text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
@@ -27,33 +26,6 @@ body {
     color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Settings Button (Gear Icon) */
-.settings-btn {
-    position: absolute; /* Positioned relative to profile-section */
-    top: 10px;   /* Distance from the top */
-    right: 10px; /* Distance from the right */
-    width: 40px; /* Size of the gear button */
-    height: 40px;
-    background-color: #007BFF; /* Blue background */
-    color: white;
-    border: none;
-    border-radius: 50%;  /* Make it circular */
-    font-size: 18px;      /* Icon size */
-    display: flex;
-    align-items: center; /* Center the icon vertically */
-    justify-content: center; /* Center the icon horizontally */
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.settings-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-.settings-btn i {
-    font-size: 20px; /* Gear icon size */
 }
 
 /* Profile Picture */
