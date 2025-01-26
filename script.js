@@ -644,31 +644,24 @@ document.getElementById("next-month").addEventListener("click", () => {
 // Initialize calendar on page load
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
-window.onload = function() {
-    // Check if the "online" status is already set in local storage
-    let onlineStatus = localStorage.getItem("userStatus");
-
-    // If the status is not set in local storage, assume it's offline for others
-    if (onlineStatus === null) {
-        onlineStatus = "offline";  // Default status
-        localStorage.setItem("userStatus", "offline"); // Set default offline status in localStorage
-    }
-
+window.addEventListener("load", function() {
     const onlineStatusElement = document.getElementById("online-status");
 
-    // If the status is online, show the "Online" text with green color
-    if (onlineStatus === "online") {
+    // Check if it's the first time the user is visiting (check localStorage for "isOnline")
+    if (!localStorage.getItem("isOnline")) {
+        // First time: Automatically set to Online
+        localStorage.setItem("isOnline", "true");
         onlineStatusElement.textContent = "Status: Online";
-        onlineStatusElement.classList.add("online");  // Adds the green color class
+        onlineStatusElement.classList.add("online");  // Apply green color for online
     } else {
-        // Otherwise, show the "Offline" status with red color
+        // If "isOnline" is found in localStorage, show Offline
         onlineStatusElement.textContent = "Status: Offline";
-        onlineStatusElement.classList.remove("online");  // Removes the green color class
     }
 
-    // Set the status to online automatically when you open the page (you can update this logic)
-    // This status will remain "Online" until you close the page or clear local storage.
-    if (window.localStorage.getItem("userStatus") === "offline") {
-        localStorage.setItem("userStatus", "online");  // Update the status to online in local storage
-    }
-};
+    // If you want to toggle status manually later, just use this line to set to Online
+    // localStorage.setItem("isOnline", "true");
+    
+    // Or this line to set to Offline
+    // localStorage.setItem("isOnline", "false");
+});
+
