@@ -644,24 +644,33 @@ document.getElementById("next-month").addEventListener("click", () => {
 // Initialize calendar on page load
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
-window.addEventListener("load", function() {
+window.onload = function() {
     const onlineStatusElement = document.getElementById("online-status");
+    const statusLabel = document.getElementById("status-label");
 
-    // Check if it's the first time the user is visiting (check localStorage for "isOnline")
-    if (!localStorage.getItem("isOnline")) {
-        // First time: Automatically set to Online
-        localStorage.setItem("isOnline", "true");
-        onlineStatusElement.textContent = "Status: Online";
-        onlineStatusElement.classList.add("online");  // Apply green color for online
+    // Check if the status is already set in localStorage for your session
+    if (localStorage.getItem("isOnline") === "true") {
+        // Set it to Online
+        onlineStatusElement.classList.add("online");
+        onlineStatusElement.classList.remove("offline");
+        statusLabel.textContent = "Online";
+        statusLabel.style.color = "green";
     } else {
-        // If "isOnline" is found in localStorage, show Offline
-        onlineStatusElement.textContent = "Status: Offline";
+        // Default status is Offline
+        onlineStatusElement.classList.add("offline");
+        onlineStatusElement.classList.remove("online");
+        statusLabel.textContent = "Offline";
+        statusLabel.style.color = "red";
     }
 
-    // If you want to toggle status manually later, just use this line to set to Online
-    // localStorage.setItem("isOnline", "true");
-    
-    // Or this line to set to Offline
-    // localStorage.setItem("isOnline", "false");
-});
+    // When you load the page, change status to online for your session
+    if (!localStorage.getItem("isOnline")) {
+        localStorage.setItem("isOnline", "true"); // This will set "Online" for your session
+        location.reload(); // Refresh the page to show the status as online
+    }
 
+    // Set to offline when you leave
+    window.onbeforeunload = function() {
+        localStorage.setItem("isOnline", "false"); // Mark it as offline when you leave
+    };
+};
