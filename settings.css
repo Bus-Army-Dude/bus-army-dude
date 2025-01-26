@@ -1,6 +1,6 @@
 /* Ensure this only affects the settings page */
 body.settings-page {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;  /* Clean, modern font (mix Apple style) */
     background-color: #f4f4f4; /* Light background for settings */
     color: #333;
     margin: 0;
@@ -8,9 +8,10 @@ body.settings-page {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100vh;
 }
 
-/* Back Button Styling */
+/* Back Button Styling (Apple-inspired minimalist) */
 .settings-container .back-btn-container {
     margin-top: 20px;
     text-align: left;
@@ -37,37 +38,41 @@ body.settings-page {
 /* Settings Container */
 .settings-container {
     background-color: #fff; /* White background for settings */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow */
-    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for depth (Apple-like) */
+    padding: 40px 30px;
     margin-top: 50px; /* Margin to prevent it from touching the top */
     width: 100%;
     max-width: 600px;
-    border-radius: 12px;
+    border-radius: 12px;  /* Rounded corners (Apple style) */
     text-align: center;
+    overflow: hidden;
 }
 
-/* Title Styling */
+/* Title Styling (Big title, minimalist style) */
 .settings-container h1 {
     font-size: 32px;
     color: #333;
     margin-bottom: 20px;
+    font-weight: 600;
 }
 
-/* Setting Options */
+/* Setting Options (Spacing & alignment) */
 .settings-container .setting-option {
     margin: 20px 0;
     text-align: left;
     padding: 0 20px;
 }
 
+/* Label Style (Apple style: minimalistic) */
 .settings-container .setting-option label {
     font-size: 18px;
     color: #555;
     display: block;
     margin-bottom: 5px;
+    font-weight: 500;
 }
 
-/* Toggle Switch Styling */
+/* Toggle Switch (Clean & modern, Apple-inspired) */
 .settings-container .toggle-switch {
     margin-top: 10px;
     width: 40px;
@@ -80,7 +85,7 @@ body.settings-page {
 }
 
 .settings-container .toggle-switch:checked {
-    background-color: #007BFF;
+    background-color: #007BFF; /* Accent color */
 }
 
 .settings-container .toggle-switch::before {
@@ -102,17 +107,18 @@ body.settings-page {
 /* Select Dropdown Styling */
 .settings-container .select-input {
     margin-top: 10px;
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
     width: 100%;
     max-width: 300px;
     border-radius: 6px;
     border: 1px solid #ddd;
+    background-color: #f9f9f9; /* Light background for select input */
 }
 
-/* Save Button */
+/* Save Button (Apple-inspired, sleek design) */
 .settings-container .primary-btn {
-    background-color: #007BFF;
+    background-color: #007BFF;  /* Accent color */
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -122,8 +128,19 @@ body.settings-page {
     margin-top: 30px;
     border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .settings-container .primary-btn:hover {
-    background-color: #0056b3;
+    background-color: #0056b3;  /* Darker shade on hover */
+}
+
+.settings-container .primary-btn:focus {
+    outline: none;  /* Remove focus outline */
+}
+
+/* Scroll behavior for overflow content */
+.settings-container {
+    overflow: auto; /* In case content is too tall */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile */
 }
