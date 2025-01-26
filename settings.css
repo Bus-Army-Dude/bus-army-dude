@@ -75,3 +75,15 @@ body.dark-mode .settings-container p {
 .back-btn-btn:focus {
     outline: none;
 }
+
+/* "Coming Soon" Message */
+.coming-soon {
+    font-size: 24px;
+    color: #007BFF;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+body.dark-mode .coming-soon {
+    color: #00A9FF;
+}
