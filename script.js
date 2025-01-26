@@ -201,13 +201,13 @@ function getUserLocation() {
 
 // Function to get country from latitude and longitude using OpenCage Geocoding API
 function getCountryFromCoordinates(latitude, longitude) {
-    const apiKey = '18d430c9b9d9480a82ec5b330c364ed4';
+    const apiKey = '421c8bcd4a38468e8d8152e997c9c902';
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            const country = data.results[0]?.components?.country;
+            const country = data.results[0?.components?.country;
             const userRegion = getGeographicRegion(country);
             updateSectionAvailability(userRegion);
         })
@@ -308,7 +308,6 @@ function init() {
 // Initialize the location detection
 getUserLocation();  // Use either getUserLocation() or getUserLocationFromIP()
 init();
-
     
 // New Year countdown
 function updateNewYearCountdown() {
