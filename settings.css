@@ -1,7 +1,7 @@
 /* Ensure this only affects the settings page */
 body.settings-page {
-    font-family: 'Roboto', sans-serif;  /* Clean, modern font (mix Apple style) */
-    background-color: #f4f4f4; /* Light background for settings */
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
     color: #333;
     margin: 0;
     padding: 0;
@@ -11,55 +11,29 @@ body.settings-page {
     height: 100vh;
 }
 
-/* Body Styles for Dark Mode */
+/* Dark Mode Styles */
 body.dark-mode {
-    background-color: #121212;  /* Dark background for dark mode */
-    color: #f4f4f4; /* Light text for dark mode */
+    background-color: #121212;
+    color: white;
 }
 
-body.dark-mode .settings-container {
-    background-color: #1f1f1f; /* Dark container background */
-    color: #f4f4f4;
-}
-
-/* Back Button Styling (Apple-inspired minimalist) */
-.settings-container .back-btn-container {
-    margin-top: 20px;
-    text-align: left;
-    width: 100%;
-    padding-left: 20px;
-}
-
-.settings-container .back-btn {
-    color: #007BFF;
-    font-size: 18px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.settings-container .back-btn i {
-    margin-right: 8px;
-}
-
-.settings-container .back-btn:hover {
-    text-decoration: underline;
-}
-
-/* Settings Container */
 .settings-container {
-    background-color: #fff; /* White background for settings */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for depth (Apple-like) */
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 40px 30px;
-    margin-top: 50px; /* Margin to prevent it from touching the top */
+    margin-top: 50px;
     width: 100%;
     max-width: 600px;
-    border-radius: 12px;  /* Rounded corners (Apple style) */
+    border-radius: 12px;
     text-align: center;
     overflow: hidden;
 }
 
-/* Title Styling (Big title, minimalist style) */
+body.dark-mode .settings-container {
+    background-color: #333;
+    color: #fff;
+}
+
 .settings-container h1 {
     font-size: 32px;
     color: #333;
@@ -67,32 +41,11 @@ body.dark-mode .settings-container {
     font-weight: 600;
 }
 
-.settings-container h1.dark-mode {
-    color: #f4f4f4;
+body.dark-mode .settings-container h1 {
+    color: white;
 }
 
-/* Setting Options (Spacing & alignment) */
-.settings-container .setting-option {
-    margin: 20px 0;
-    text-align: left;
-    padding: 0 20px;
-}
-
-/* Label Style (Apple style: minimalistic) */
-.settings-container .setting-option label {
-    font-size: 18px;
-    color: #555;
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-.settings-container .setting-option label.dark-mode {
-    color: #f4f4f4;
-}
-
-/* Toggle Switch (Clean & modern, Apple-inspired) */
-.settings-container .toggle-switch {
+.toggle-switch {
     margin-top: 10px;
     width: 40px;
     height: 20px;
@@ -103,8 +56,12 @@ body.dark-mode .settings-container {
     appearance: none;
 }
 
+body.dark-mode .toggle-switch {
+    background-color: #444;
+}
+
 .settings-container .toggle-switch:checked {
-    background-color: #007BFF; /* Accent color */
+    background-color: #007BFF;
 }
 
 .settings-container .toggle-switch::before {
@@ -119,25 +76,16 @@ body.dark-mode .settings-container {
     left: 1px;
 }
 
+body.dark-mode .settings-container .toggle-switch::before {
+    background-color: #222;
+}
+
 .settings-container .toggle-switch:checked::before {
     left: 21px;
 }
 
-/* Select Dropdown Styling */
-.settings-container .select-input {
-    margin-top: 10px;
-    padding: 12px;
-    font-size: 16px;
-    width: 100%;
-    max-width: 300px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9; /* Light background for select input */
-}
-
-/* Save Button (Apple-inspired, sleek design) */
 .settings-container .primary-btn {
-    background-color: #007BFF;  /* Accent color */
+    background-color: #007BFF;
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -151,15 +99,14 @@ body.dark-mode .settings-container {
 }
 
 .settings-container .primary-btn:hover {
-    background-color: #0056b3;  /* Darker shade on hover */
+    background-color: #0056b3;
 }
 
 .settings-container .primary-btn:focus {
-    outline: none;  /* Remove focus outline */
+    outline: none;
 }
 
-/* Scroll behavior for overflow content */
 .settings-container {
-    overflow: auto; /* In case content is too tall */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
