@@ -26,6 +26,36 @@ body {
     color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;  /* Make sure the settings button is positioned relative to this */
+}
+
+/* Settings Button (Gear Icon) */
+.settings-btn {
+    position: absolute;  /* Position relative to the profile section */
+    top: 10px;           /* Distance from the top of the profile section */
+    right: 10px;         /* Distance from the right of the profile section */
+    width: 40px;         /* Size of the button */
+    height: 40px;        /* Size of the button */
+    background-color: #007BFF; /* Button background color */
+    color: white;
+    border: none;
+    border-radius: 50%;  /* Make the button circular */
+    font-size: 18px;      /* Icon size */
+    display: flex;
+    align-items: center;  /* Center the icon vertically */
+    justify-content: center; /* Center the icon horizontally */
+    cursor: pointer;
+    padding: 8px;         /* Adds some space so the button doesn’t touch the edges */
+    transition: background-color 0.3s;
+}
+
+.settings-btn:hover {
+    background-color: #0056b3; /* Darker blue when hovered */
+}
+
+/* Font Awesome Gear Icon */
+.settings-btn i {
+    font-size: 20px; /* Icon size */
 }
 
 /* Profile Picture */
