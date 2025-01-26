@@ -1,4 +1,3 @@
-<!-- settings.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,17 +11,19 @@
 
   <div class="settings-container">
     <h1>Settings</h1>
-    
+
+    <!-- Back Button -->
+    <a href="index.html">
+      <button id="back-btn" class="back-btn">Back to Home</button>
+    </a>
+
+    <!-- Dark Mode Toggle -->
     <div class="setting-option">
       <label for="theme-toggle">Enable Dark Mode:</label>
       <input type="checkbox" id="theme-toggle" class="toggle-switch">
     </div>
     
-    <div class="setting-option">
-      <label for="notifications-toggle">Enable Notifications:</label>
-      <input type="checkbox" id="notifications-toggle" class="toggle-switch">
-    </div>
-    
+    <!-- Language Selector -->
     <div class="setting-option">
       <label for="language-select">Choose Language:</label>
       <select id="language-select" class="select-input">
@@ -32,6 +33,7 @@
       </select>
     </div>
     
+    <!-- Save Button -->
     <button id="save-settings" class="primary-btn">Save Settings</button>
   </div>
 
