@@ -600,41 +600,6 @@ body {
     opacity: 0.9;
 }
 
-:root {
-    --light-bg: #ffffff;
-    --light-text: #000000;
-    --light-secondary-text: #666666;
-    --light-border: #dddddd;
-    --light-accent: #4CAF50;
-    --light-content-bg: #f5f5f5;
-    
-    --dark-bg: #1a1a1a;
-    --dark-text: #ffffff;
-    --dark-secondary-text: #a0a0a0;
-    --dark-border: #333333;
-    --dark-accent: #4CAF50;
-    --dark-content-bg: #2d2d2d;
-}
-
-/* Theme Classes */
-.light-mode {
-    --bg-color: var(--light-bg);
-    --text-color: var(--light-text);
-    --secondary-text: var(--light-secondary-text);
-    --border-color: var(--light-border);
-    --accent-color: var(--light-accent);
-    --content-bg: var(--light-content-bg);
-}
-
-.dark-mode {
-    --bg-color: var(--dark-bg);
-    --text-color: var(--dark-text);
-    --secondary-text: var(--dark-secondary-text);
-    --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --content-bg: var(--dark-content-bg);
-}
-
 /* Base Styles */
 body {
     background-color: var(--bg-color);
