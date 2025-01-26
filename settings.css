@@ -50,3 +50,28 @@ body.dark-mode .settings-container h1 {
 body.dark-mode .settings-container p {
     color: #ccc;
 }
+
+/* Back Button Styling */
+.back-btn {
+    text-decoration: none;
+    margin-bottom: 30px;
+}
+
+.back-btn-btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn-btn:hover {
+    background-color: #0056b3;
+}
+
+.back-btn-btn:focus {
+    outline: none;
+}
