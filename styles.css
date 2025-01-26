@@ -1700,88 +1700,134 @@ body {
     }
 }
 
-/* General settings container styling */
-.settings-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4; /* Lighter background for Apple-inspired look */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Back Button */
+.back-btn-container {
+    margin-top: 20px;
+    text-align: left;
+    width: 100%;
+    padding-left: 20px;
+}
+
 .back-btn {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
+    color: #007BFF;
+    font-size: 18px;
     text-decoration: none;
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn i {
+    margin-right: 8px;
 }
 
 .back-btn:hover {
-    background-color: #0056b3;
+    text-decoration: underline;
 }
 
-/* Toggle Switch Styling */
+/* Settings Container */
+.settings-container {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 50px; /* Margin at the top */
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* Title Styling */
+.settings-container h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Setting Options */
+.setting-option {
+    margin: 20px 0;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.setting-option label {
+    font-size: 18px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Switch Styling */
 .toggle-switch {
-    width: 50px;
-    height: 25px;
-    -webkit-appearance: none;
+    margin-top: 10px;
+    width: 40px;
+    height: 20px;
+    border-radius: 10px;
     background-color: #ccc;
-    border-radius: 50px;
     position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .toggle-switch:checked {
     background-color: #007BFF;
 }
 
-.toggle-switch:before {
+.toggle-switch::before {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 21px;
-    height: 21px;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
     border-radius: 50%;
-    background-color: white;
-    transition: transform 0.3s;
+    transition: 0.3s;
+    top: 1px;
+    left: 1px;
 }
 
-.toggle-switch:checked:before {
-    transform: translateX(25px);
+.toggle-switch:checked::before {
+    left: 21px;
 }
 
-/* Select Input */
+/* Select Dropdown Styling */
 .select-input {
-    padding: 8px;
-    width: 150px;
-    margin: 10px 0;
+    margin-top: 10px;
+    padding: 10px;
     font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
 }
 
 /* Save Button */
 .primary-btn {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
     border: none;
-    border-radius: 5px;
+    padding: 12px 20px;
     font-size: 16px;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 30px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-top: 20px;
 }
 
 .primary-btn:hover {
-    background-color: #218838;
+    background-color: #0056b3;
 }
 
 /* Footer */
