@@ -651,21 +651,24 @@ window.onload = function() {
     // If the status is not set in local storage, assume it's offline for others
     if (onlineStatus === null) {
         onlineStatus = "offline";  // Default status
+        localStorage.setItem("userStatus", "offline"); // Set default offline status in localStorage
     }
 
     const onlineStatusElement = document.getElementById("online-status");
 
-    // If you're online (set by local storage), display the online status
+    // If the status is online, show the "Online" text with green color
     if (onlineStatus === "online") {
         onlineStatusElement.textContent = "Status: Online";
         onlineStatusElement.classList.add("online");  // Adds the green color class
     } else {
+        // Otherwise, show the "Offline" status with red color
         onlineStatusElement.textContent = "Status: Offline";
         onlineStatusElement.classList.remove("online");  // Removes the green color class
     }
 
-    // Set the status to online automatically for you when you open the page
-    if (window.localStorage.getItem("userStatus") === null) {
+    // Set the status to online automatically when you open the page (you can update this logic)
+    // This status will remain "Online" until you close the page or clear local storage.
+    if (window.localStorage.getItem("userStatus") === "offline") {
         localStorage.setItem("userStatus", "online");  // Update the status to online in local storage
     }
 };
