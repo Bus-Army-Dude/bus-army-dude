@@ -18,15 +18,42 @@ body {
 
 /* Profile Section */
 .profile-section {
+    position: relative; /* To allow absolute positioning for the settings button */
     text-align: center;
-    margin-top: 20px; /* Added margin-top */
+    margin-top: 20px; 
     margin-bottom: 30px;
     padding: 20px;
     background-color: var(--content-bg);
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #333; /* Adjust for your theme */
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
+/* Settings button positioning */
+.settings-btn {
+    position: absolute;
+    top: 10px;  /* Distance from the top edge */
+    right: 10px; /* Distance from the right edge */
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.settings-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Profile Picture */
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -36,6 +63,7 @@ body {
     border: 3px solid var(--accent-color);
 }
 
+/* Username with Checkmark */
 .username-checkmark {
     display: flex;
     align-items: center;
@@ -52,16 +80,6 @@ body {
     width: 20px;
     height: 20px;
     margin-left: 5px;
-}
-
-/* Profile Section */
-.profile-section {
-    background-color: #333; /* Adjust for your theme */
-    color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
 }
 
 /* Social Section - Updated to match Disabilities section style */
