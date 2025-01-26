@@ -644,3 +644,28 @@ document.getElementById("next-month").addEventListener("click", () => {
 // Initialize calendar on page load
 document.addEventListener("DOMContentLoaded", loadCalendar);
 
+window.onload = function() {
+    // Check if the "online" status is already set in local storage
+    let onlineStatus = localStorage.getItem("userStatus");
+
+    // If the status is not set in local storage, assume it's offline for others
+    if (onlineStatus === null) {
+        onlineStatus = "offline";  // Default status
+    }
+
+    const onlineStatusElement = document.getElementById("online-status");
+
+    // If you're online (set by local storage), display the online status
+    if (onlineStatus === "online") {
+        onlineStatusElement.textContent = "Status: Online";
+        onlineStatusElement.classList.add("online");  // Adds the green color class
+    } else {
+        onlineStatusElement.textContent = "Status: Offline";
+        onlineStatusElement.classList.remove("online");  // Removes the green color class
+    }
+
+    // Set the status to online automatically for you when you open the page
+    if (window.localStorage.getItem("userStatus") === null) {
+        localStorage.setItem("userStatus", "online");  // Update the status to online in local storage
+    }
+};
