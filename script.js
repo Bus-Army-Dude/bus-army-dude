@@ -647,25 +647,39 @@ document.addEventListener("DOMContentLoaded", loadCalendar);
 window.onload = function() {
     const statusLabel = document.getElementById("status-label");
 
-    // Check if you're marked as Online in localStorage
-    if (localStorage.getItem("isOnline") === "true") {
-        // If the value is true, set status to Online
+    // When the page loads, we check if the status is already set
+    if (sessionStorage.getItem("userOnline") === "true") {
+        // If the sessionStorage is set to true (you are online), update the status
         statusLabel.textContent = "Online";
         statusLabel.style.color = "green";
     } else {
-        // If not, set status to Offline
+        // If not set, mark it as offline for you
         statusLabel.textContent = "Offline";
         statusLabel.style.color = "red";
     }
 
-    // Set your status to Online when you load the website
-    if (!localStorage.getItem("isOnline")) {
-        localStorage.setItem("isOnline", "true");  // This will set the status to Online for your session
-        location.reload();  // Refresh the page to show the updated status
+    // Update global online status when you load the page
+    if (!localStorage.getItem("globalStatus")) {
+        localStorage.setItem("globalStatus", "Online");  // Set global status to "Online"
+    }
+    
+    // Display the global status for all users
+    if (localStorage.getItem("globalStatus") === "Online") {
+        statusLabel.textContent = "Online";
+        statusLabel.style.color = "green";
+    } else {
+        statusLabel.textContent = "Offline";
+        statusLabel.style.color = "red";
     }
 
-    // When you leave, mark the status as Offline
+    // Set your status to online when you open the website
+    sessionStorage.setItem("userOnline", "true");
+    localStorage.setItem("globalStatus", "Online");
+
+    // When the window is closed or navigated away, mark status as offline
     window.onbeforeunload = function() {
-        localStorage.setItem("isOnline", "false");  // Mark status as Offline when you leave the page
+        sessionStorage.removeItem("userOnline");  // Remove user session status
+        localStorage.setItem("globalStatus", "Offline");  // Set global status to offline
     };
 };
+
