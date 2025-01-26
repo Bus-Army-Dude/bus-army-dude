@@ -6,21 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings</title>
   <link rel="stylesheet" href="settings.css">
-  <script src="settings.js" defer></script> <!-- Link to a separate JavaScript for settings -->
+  <script src="settings.js" defer></script>
 </head>
-<body>
+<body class="settings-page">
 
+  <!-- Back Button Container -->
   <div class="settings-container">
+    <div class="back-btn-container">
+      <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
+    </div>
+    
     <h1>Settings</h1>
     
-    <!-- Dark Mode Setting -->
     <div class="setting-option">
       <label for="theme-toggle">Enable Dark Mode:</label>
       <input type="checkbox" id="theme-toggle" class="toggle-switch" disabled>
-      <span class="coming-soon-message">Coming Soon...</span>
+      <span class="coming-soon-message">Coming soon...</span>
     </div>
     
-    <!-- Language Setting -->
+    <div class="setting-option">
+      <label for="notifications-toggle">Enable Notifications:</label>
+      <input type="checkbox" id="notifications-toggle" class="toggle-switch" disabled>
+      <span class="coming-soon-message">Coming soon...</span>
+    </div>
+    
     <div class="setting-option">
       <label for="language-select">Choose Language:</label>
       <select id="language-select" class="select-input" disabled>
@@ -28,10 +39,9 @@
         <option value="es">Spanish</option>
         <!-- Add more languages as needed -->
       </select>
-      <span class="coming-soon-message">Coming Soon...</span>
+      <span class="coming-soon-message">Coming soon...</span>
     </div>
     
-    <!-- Save Button -->
     <button id="save-settings" class="primary-btn">Save Settings</button>
   </div>
 
