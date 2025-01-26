@@ -1,5 +1,5 @@
-/* General Styles for Settings Page */
-body {
+/* Ensure this only affects the settings page */
+body.settings-page {
     font-family: 'Roboto', sans-serif;
     background-color: #f4f4f4; /* Light background for settings */
     color: #333;
@@ -11,14 +11,14 @@ body {
 }
 
 /* Back Button Styling */
-.back-btn-container {
+.settings-container .back-btn-container {
     margin-top: 20px;
     text-align: left;
     width: 100%;
     padding-left: 20px;
 }
 
-.back-btn {
+.settings-container .back-btn {
     color: #007BFF;
     font-size: 18px;
     text-decoration: none;
@@ -26,11 +26,11 @@ body {
     align-items: center;
 }
 
-.back-btn i {
+.settings-container .back-btn i {
     margin-right: 8px;
 }
 
-.back-btn:hover {
+.settings-container .back-btn:hover {
     text-decoration: underline;
 }
 
@@ -54,13 +54,13 @@ body {
 }
 
 /* Setting Options */
-.setting-option {
+.settings-container .setting-option {
     margin: 20px 0;
     text-align: left;
     padding: 0 20px;
 }
 
-.setting-option label {
+.settings-container .setting-option label {
     font-size: 18px;
     color: #555;
     display: block;
@@ -68,7 +68,7 @@ body {
 }
 
 /* Toggle Switch Styling */
-.toggle-switch {
+.settings-container .toggle-switch {
     margin-top: 10px;
     width: 40px;
     height: 20px;
@@ -79,11 +79,11 @@ body {
     appearance: none;
 }
 
-.toggle-switch:checked {
+.settings-container .toggle-switch:checked {
     background-color: #007BFF;
 }
 
-.toggle-switch::before {
+.settings-container .toggle-switch::before {
     content: '';
     position: absolute;
     width: 18px;
@@ -95,12 +95,12 @@ body {
     left: 1px;
 }
 
-.toggle-switch:checked::before {
+.settings-container .toggle-switch:checked::before {
     left: 21px;
 }
 
 /* Select Dropdown Styling */
-.select-input {
+.settings-container .select-input {
     margin-top: 10px;
     padding: 10px;
     font-size: 16px;
@@ -111,7 +111,7 @@ body {
 }
 
 /* Save Button */
-.primary-btn {
+.settings-container .primary-btn {
     background-color: #007BFF;
     color: #fff;
     border: none;
@@ -124,6 +124,6 @@ body {
     cursor: pointer;
 }
 
-.primary-btn:hover {
+.settings-container .primary-btn:hover {
     background-color: #0056b3;
 }
