@@ -72,6 +72,13 @@ body.settings-page {
     font-weight: 500;
 }
 
+/* Greyed out appearance for disabled settings */
+.disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+    color: #aaa;
+}
+
 /* Toggle Switch (Clean & modern, Apple-inspired) */
 .settings-container .toggle-switch {
     margin-top: 10px;
@@ -116,6 +123,14 @@ body.settings-page {
     background-color: #f9f9f9; /* Light background for select input */
 }
 
+/* "Coming Soon..." Message */
+.coming-soon-message {
+    font-size: 14px;
+    color: #aaa;
+    margin-left: 15px;
+    font-style: italic;
+}
+
 /* Save Button (Apple-inspired, sleek design) */
 .settings-container .primary-btn {
     background-color: #007BFF;  /* Accent color */
@@ -143,4 +158,18 @@ body.settings-page {
 .settings-container {
     overflow: auto; /* In case content is too tall */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile */
+} 
+
+/* Greyed out and disabled input */
+.settings-container .select-input:disabled, 
+.settings-container .toggle-switch:disabled {
+    background-color: #e0e0e0;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+/* Disabled label and message */
+.settings-container .setting-option.disabled label,
+.settings-container .setting-option.disabled .coming-soon-message {
+    color: #aaa;
 }
