@@ -139,57 +139,6 @@ input:checked + .toggle-slider:before {
     background-color: var(--hover-color);
 }
 
-/* Background Color Customization Styles */
-#backgroundColorSelect {
-    padding: 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--content-bg);
-    color: var(--text-color);
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-#backgroundColorSelect option {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-/* Color Picker Styles */
-#customColorPicker {
-    margin-top: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Custom Background Upload Styles */
-.background-preview {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    margin-top: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    display: none; /* Hide initially */
-}
-
-.save-button {
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.save-button:hover {
-    background-color: var(--hover-color);
-}
-
 /* Reset Button Styles */
 .reset-button {
     background-color: var(--accent-color);
