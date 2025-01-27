@@ -24,6 +24,7 @@ class SettingsManager {
             '--secondary-text': '#a0a0a0',
             '--border-color': '#333333',
             '--accent-color': '#4CAF50',
+            '--hover-color': '#45a049',
             '--content-bg': '#2d2d2d'
         };
 
@@ -33,6 +34,7 @@ class SettingsManager {
             '--secondary-text': '#666666',
             '--border-color': '#dddddd',
             '--accent-color': '#4CAF50',
+            '--hover-color': '#45a049',
             '--content-bg': '#f5f5f5'
         };
     }
@@ -169,6 +171,7 @@ class SettingsManager {
 
     setBackgroundColor(color) {
         document.documentElement.style.setProperty('--bg-color-custom', color);
+        document.documentElement.style.setProperty('--accent-color', color);
         document.body.style.backgroundColor = color;
         this.settings.backgroundColor = color;
         this.saveSettings();
