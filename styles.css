@@ -88,49 +88,6 @@ body {
     position: relative;
 }
 
-/* Settings Button Fix */
-.settings-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    z-index: 999;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Mobile optimization for settings button */
-@media (max-width: 768px) {
-    .settings-button {
-        bottom: 10px;
-        right: 10px;
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-    }
-
-    /* Ensure button doesn't overlap with other content */
-    main {
-        padding-bottom: 60px;
-    }
-}
-
-/* Optional: Add hover effect */
-.settings-button:hover {
-    background-color: var(--hover-color);
-    transform: scale(1.1);
-    transition: all 0.3s ease;
-}
-
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -157,6 +114,60 @@ body {
     width: 20px;
     height: 20px;
     margin-left: 5px;
+}
+
+/* Settings Button Fix */
+.settings-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    z-index: 999; /* Ensure it stays above other content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+    .settings-button {
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+    
+    /* Add padding to main content to prevent overlap */
+    main {
+        padding-bottom: 70px;
+    }
+}
+
+/* Even smaller screens */
+@media screen and (max-width: 480px) {
+    .settings-button {
+        bottom: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+
+/* Optional hover effect */
+.settings-button:hover {
+    transform: scale(1.1);
+    background-color: var(--hover-color, var(--accent-color));
 }
 
 /* Current Date/Time Section */
