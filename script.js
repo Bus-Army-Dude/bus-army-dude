@@ -556,8 +556,10 @@ const events = [
     { date: '2025-12-25', title: "Christmas", time: '12:00 AM', description: 'Celebration of the birth of Jesus Christ', timezone: 'UTC' }
 ];
 
-// Calendar Functionality
+// ============= CALENDAR FUNCTIONALITY =============
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded - Initializing Calendar');
+    
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
@@ -566,9 +568,22 @@ document.addEventListener('DOMContentLoaded', () => {
                        "July", "August", "September", "October", "November", "December"];
 
     function loadCalendar() {
+        console.log('Loading calendar...', { currentMonth, currentYear });
+        
         const monthYearDisplay = document.getElementById("month-year");
+        if (!monthYearDisplay) {
+            console.error('Month-year display element not found');
+            return;
+        }
+        
         monthYearDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        
         const calendarGrid = document.getElementById("calendar-grid");
+        if (!calendarGrid) {
+            console.error('Calendar grid element not found');
+            return;
+        }
+        
         calendarGrid.innerHTML = ''; // Clear previous content
 
         const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -637,10 +652,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             calendarGrid.appendChild(dayCell);
         }
+        
+        console.log('Calendar loaded successfully');
     }
 
     function showEventDetails(event) {
         const modal = document.getElementById("event-modal");
+        if (!modal) {
+            console.error('Event modal not found');
+            return;
+        }
+        
         document.getElementById("event-title").textContent = event.title;
         document.getElementById("event-time").textContent = `Time: ${event.time}`;
         document.getElementById("event-description").textContent = event.description;
@@ -649,6 +671,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showMultipleEventDetails(events) {
         const modal = document.getElementById("event-modal");
+        if (!modal) {
+            console.error('Event modal not found');
+            return;
+        }
+        
         const content = events.map(event => `
             <div class="event-item">
                 <h3>${event.title}</h3>
@@ -663,29 +690,39 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = "flex";
     }
 
-    // Close modal function
+    // Initialize close modal function in global scope
     window.closeModal = function() {
-        document.getElementById("event-modal").style.display = "none";
+        const modal = document.getElementById("event-modal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    // Set up navigation event listeners
+    const prevButton = document.getElementById("prev-month");
+    const nextButton = document.getElementById("next-month");
+
+    if (prevButton) {
+        prevButton.addEventListener("click", () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            loadCalendar();
+        });
     }
 
-    // Navigation event listeners
-    document.getElementById("prev-month").addEventListener("click", () => {
-        currentMonth--;
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-        }
-        loadCalendar();
-    });
-
-    document.getElementById("next-month").addEventListener("click", () => {
-        currentMonth++;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        }
-        loadCalendar();
-    });
+    if (nextButton) {
+        nextButton.addEventListener("click", () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            loadCalendar();
+        });
+    }
 
     // Close modal when clicking outside
     window.onclick = function(event) {
@@ -693,8 +730,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target === modal) {
             closeModal();
         }
-    }
+    };
 
     // Initialize calendar
     loadCalendar();
+    console.log('Calendar initialization complete');
 });
