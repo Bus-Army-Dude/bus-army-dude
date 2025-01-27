@@ -725,9 +725,12 @@ body {
 
 /* Countdown Styles */
 .countdown-section {
-    text-align: center;
+    background-color: var(--content-bg);
+    border-radius: 10px;
     padding: 20px;
-    margin: 20px 0;
+    margin: 30px auto;
+    text-align: center;
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .countdown-container {
@@ -735,30 +738,33 @@ body {
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .countdown-block {
     text-align: center;
 }
 
+/* Flip Clock Styles */
 .flip-clock {
     perspective: 400px;
     margin-bottom: 10px;
 }
 
-.flipper {
+.flip-clock-inner {
     position: relative;
     width: 60px;
     height: 80px;
-    background: var(--content-bg);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.6s;
     transform-style: preserve-3d;
+    transition: transform 0.6s;
 }
 
-.current-value,
-.next-value {
+.flip-clock-inner.flip {
+    transform: rotateX(180deg);
+}
+
+.flip-clock-front,
+.flip-clock-back {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -768,40 +774,51 @@ body {
     justify-content: center;
     font-size: 2em;
     font-weight: bold;
-    background: var(--content-bg);
-    color: var(--text-color);
+    background-color: var(--content-bg);
     border: 2px solid var(--accent-color);
     border-radius: 8px;
+    color: var(--text-color);
 }
 
-.next-value {
-    transform: rotateX(-180deg);
-}
-
-.flipper.flip {
+.flip-clock-back {
     transform: rotateX(180deg);
 }
 
-.label {
-    color: var(--text-color);
+.countdown-label {
+    color: var(--secondary-text);
     font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
     margin-top: 5px;
 }
 
+/* Responsive Design */
 @media (max-width: 600px) {
     .countdown-container {
         gap: 10px;
     }
-    
-    .flipper {
+
+    .flip-clock-inner {
         width: 40px;
         height: 60px;
     }
-    
-    .current-value,
-    .next-value {
+
+    .flip-clock-front,
+    .flip-clock-back {
         font-size: 1.5em;
     }
+}
+
+/* Optional: Add a shadow effect during flip */
+.flip-clock-front,
+.flip-clock-back {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Add a subtle glow effect on hover */
+.flip-clock:hover .flip-clock-front {
+    box-shadow: 0 0 15px var(--accent-color);
+    transition: box-shadow 0.3s ease;
 }
 
 /* Back to Top Button */
