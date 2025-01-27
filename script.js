@@ -341,10 +341,10 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
-// New Year countdown
+// Countdown to AFO Braces
 function updateNewYearCountdown() {
     const now = new Date();
-    const newYear = new Date('2025-01-31T14:30:00');
+    const newYear = new Date('2025-01-31T14:30:00'); // Kept your target date
     const diff = newYear - now;
 
     const countdownSection = document.querySelector('.countdown-section');
@@ -363,21 +363,15 @@ function updateNewYearCountdown() {
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Update flip clock for days
+        // Update flip clock for each unit
         updateFlipClock('countdown-days', days);
-
-        // Update flip clock for hours
         updateFlipClock('countdown-hours', hours);
-
-        // Update flip clock for minutes
         updateFlipClock('countdown-minutes', minutes);
-
-        // Update flip clock for seconds
         updateFlipClock('countdown-seconds', seconds);
     }
 }
 
-// Function to update flip clock value
+// Function to update flip clock value - keeping your existing function
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
     const front = clock.querySelector('.flip-clock-front');
@@ -396,8 +390,9 @@ function updateFlipClock(id, value) {
         }, 600); // match the animation duration
     }
 }
-    
-    // Initialize everything
+
+// Initialize everything - keeping your existing initialization
+document.addEventListener('DOMContentLoaded', () => {
     detectDetailedDevice();
     updateTime();
     tiktokShoutouts.init();
