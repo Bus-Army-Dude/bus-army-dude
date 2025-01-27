@@ -440,86 +440,22 @@ body {
     margin: 10px 0;
 }
 
-/* Instagram Creator Shoutouts */
-.instagram-shoutouts-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    width: 100%;
-}
-
-.instagram-shoutouts-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--text-color);
-    margin-bottom: 5px;
-    width: 100%;
-}
-
-.instagram-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-}
-
-.instagram-creator-card {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.instagram-creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.instagram-creator-pic {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
-}
-
-.instagram-follower-count {
-    color: var(--accent-color);
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-.instagram-visit-profile {
-    display: inline-block;
-    background-color: var(--accent-color);
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    margin-top: 10px;
-    transition: opacity 0.3s ease;
-    text-align: center;
-}
-
-.instagram-visit-profile:hover {
-    opacity: 0.9;
-    background-color: var(--hover-color);
-}
-
-/* YouTube Creator Shoutouts */
+/* Common Creator Grid Styles */
+.creator-grid,
+.instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
+    padding: 20px 0;
     width: 100%;
     max-width: 1200px;
+    margin: 0 auto;
 }
 
+/* Common Creator Card Styles */
+.creator-card,
+.instagram-creator-card,
 .youtube-creator-card {
     background-color: var(--content-bg);
     border-radius: 10px;
@@ -528,13 +464,19 @@ body {
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow-color);
+    position: relative;
 }
 
+.creator-card:hover,
+.instagram-creator-card:hover,
 .youtube-creator-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px var(--shadow-color);
 }
 
+/* Common Profile Picture Styles */
+.creator-pic,
+.instagram-creator-pic,
 .youtube-creator-pic {
     width: 80px;
     height: 80px;
@@ -543,12 +485,47 @@ body {
     margin-bottom: 15px;
 }
 
+/* Common Header Styles */
+.creator-header,
+.instagram-creator-header,
+.youtube-creator-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* Common Username Styles */
+.creator-username,
+.instagram-creator-username,
+.youtube-creator-username {
+    color: var(--secondary-text);
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+/* Common Bio Styles */
+.creator-bio,
+.instagram-creator-bio,
+.youtube-creator-bio {
+    color: var(--secondary-text);
+    margin: 10px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Common Follower/Subscriber Count Styles */
+.follower-count,
+.instagram-follower-count,
 .youtube-subscriber-count {
     color: var(--accent-color);
     font-weight: bold;
     margin: 10px 0;
 }
 
+/* Common Visit Profile Button Styles */
+.visit-profile,
+.instagram-visit-profile,
 .youtube-visit-profile {
     display: inline-block;
     background-color: var(--accent-color);
@@ -557,16 +534,18 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     margin-top: 10px;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     text-align: center;
 }
 
+.visit-profile:hover,
+.instagram-visit-profile:hover,
 .youtube-visit-profile:hover {
-    opacity: 0.9;
     background-color: var(--hover-color);
+    transform: scale(1.05);
 }
 
-/* Calendar Section with Event Indicator */
+/* Calendar Container */
 .calendar-section {
     background-color: var(--content-bg);
     border-radius: 10px;
@@ -575,9 +554,43 @@ body {
     box-shadow: 0 2px 4px var(--shadow-color);
 }
 
+/* Calendar Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+/* Days of Week Header */
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.calendar-days span {
+    padding: 10px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 5px;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+/* Calendar Day Cell */
 .calendar-day {
     position: relative;
-    text-align: center;
+    min-height: 80px;
     padding: 10px;
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
@@ -587,10 +600,11 @@ body {
 }
 
 .calendar-day:hover {
-    background-color: var(--accent-color);
-    color: white;
+    background-color: var(--content-bg);
+    transform: scale(1.02);
 }
 
+/* Event Indicator */
 .event-indicator {
     position: absolute;
     top: 5px;
@@ -601,54 +615,17 @@ body {
     border-radius: 50%;
 }
 
-/* Event Modal */
-.event-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
+/* Event Preview */
+.event-preview {
+    font-size: 0.8em;
+    color: var(--secondary-text);
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.event-modal.active {
-    display: flex;
-}
-
-.event-content {
-    background-color: var(--content-bg);
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 500px;
-    width: 90%;
-    position: relative;
-    box-shadow: 0 4px 15px var(--shadow-color);
-}
-
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: var(--text-color);
-    font-size: 24px;
-    cursor: pointer;
-}
-
-/* Countdown Section */
-.countdown-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 30px 0;
-    text-align: center;
-}
-
+/* Countdown Container */
 .countdown-container {
     display: flex;
     justify-content: center;
@@ -656,22 +633,58 @@ body {
     margin: 20px 0;
 }
 
-.countdown-item {
+/* Flip Clock Container */
+.flip-clock {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    perspective: 400px;
+    margin: 5px;
+}
+
+/* Flip Card */
+.flip-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+/* Flip Card Faces */
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    font-weight: bold;
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+.flip-card-back {
+    transform: rotateX(180deg);
     background-color: var(--accent-color);
     color: white;
-    padding: 15px;
-    border-radius: 8px;
-    min-width: 100px;
 }
 
-.countdown-value {
-    font-size: 2em;
-    font-weight: bold;
+/* Flip Animation */
+.flip-card.flipped {
+    transform: rotateX(180deg);
 }
 
+/* Countdown Labels */
 .countdown-label {
+    text-align: center;
+    margin-top: 10px;
+    color: var(--secondary-text);
     font-size: 0.9em;
-    margin-top: 5px;
 }
 
 /* Back to Top Button */
