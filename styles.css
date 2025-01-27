@@ -575,24 +575,36 @@ body {
     color: var(--text-color);
 }
 
-/* Calendar Section */
-.calendar-section {
+/* Calendar Container */
+.calendar-container {
     background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
-    margin: 30px 0;
+    margin: 30px auto;
+    max-width: 800px;
     box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* Calendar Navigation */
-.calendar-nav {
+/* Calendar Header */
+.calendar-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 20px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
-.calendar-nav button {
+#month-year {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 200px;
+    text-align: center;
+}
+
+#prev-month,
+#next-month {
     background-color: var(--accent-color);
     color: white;
     border: none;
@@ -602,25 +614,27 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.calendar-nav button:hover {
+#prev-month:hover,
+#next-month:hover {
     background-color: var(--hover-color);
 }
 
-/* Calendar Header (Days) */
-.calendar-weekdays {
+/* Calendar Days Header */
+.calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
-.weekday {
-    text-align: center;
-    font-weight: bold;
+.calendar-days div {
     padding: 10px;
     background-color: var(--accent-color);
     color: white;
+    font-weight: bold;
     border-radius: 5px;
+    text-align: center;
 }
 
 /* Calendar Grid */
@@ -640,39 +654,8 @@ body {
     position: relative;
 }
 
-.calendar-day.current {
-    background-color: rgba(var(--accent-color-rgb), 0.1);
-    border: 2px solid var(--accent-color);
-}
-
-/* Day Number */
-.day-number {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    font-weight: bold;
-}
-
-/* Event Indicator */
-.event-indicator {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 8px;
-    height: 8px;
-    background-color: var(--accent-color);
-    border-radius: 50%;
-}
-
-/* Event Preview */
-.event-preview {
-    margin-top: 25px;
-    font-size: 0.8em;
-    color: var(--text-color);
-}
-
 /* Event Modal */
-.event-modal {
+.modal {
     display: none;
     position: fixed;
     top: 0;
@@ -683,15 +666,61 @@ body {
     z-index: 1000;
 }
 
-.event-modal-content {
-    position: relative;
+#event-modal-content {
     background-color: var(--content-bg);
     margin: 15% auto;
     padding: 20px;
-    width: 90%;
-    max-width: 500px;
     border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
     box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.event-details {
+    margin: 20px 0;
+}
+
+#event-modal-content button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: background-color 0.3s ease;
+}
+
+#event-modal-content button:hover {
+    background-color: var(--hover-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: 10px;
+        margin: 15px auto;
+    }
+
+    .calendar-header {
+        gap: 10px;
+    }
+
+    #month-year {
+        font-size: 1.2em;
+        min-width: 150px;
+    }
+
+    .calendar-days div {
+        padding: 5px;
+        font-size: 0.9em;
+    }
+
+    .calendar-day {
+        min-height: 80px;
+    }
 }
 
 /* Countdown Section */
