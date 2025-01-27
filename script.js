@@ -446,25 +446,37 @@ if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
 
-// Get the button
-const backToTopButton = document.getElementById("back-to-top-btn");
+// Back to top button functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopButton = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('visible');
+        } else {
+            backToTopButton.classList.remove('visible');
+        }
+    });
 
-// When the user scrolls down 100px from the top of the document, show the button
-window.onscroll = function () {
-  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-    backToTopButton.style.display = "block"; // Show the button
-  } else {
-    backToTopButton.style.display = "none"; // Hide the button
-  }
-};
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
 
-// When the user clicks on the button, scroll to the top of the document
-backToTopButton.onclick = function () {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth", // Smooth scroll animation
-  });
-};
+// FAQ functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            item.classList.toggle('active');
+        });
+    });
+});
 
   // Check if the user has already accepted cookies
   if (!localStorage.getItem('cookieAccepted')) {
