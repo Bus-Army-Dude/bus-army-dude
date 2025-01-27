@@ -575,35 +575,48 @@ body {
     color: var(--text-color);
 }
 
-/* Calendar Container */
+/* Calendar Section */
 .calendar-section {
     background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    margin: 30px 0;
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* Calendar Header */
-.calendar-header {
+/* Calendar Navigation */
+.calendar-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    padding: 0 10px;
 }
 
-/* Days of Week Header */
-.calendar-days {
+.calendar-nav button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.calendar-nav button:hover {
+    background-color: var(--hover-color);
+}
+
+/* Calendar Header (Days) */
+.calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
     margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
 }
 
-.calendar-days span {
+.weekday {
+    text-align: center;
+    font-weight: bold;
     padding: 10px;
     background-color: var(--accent-color);
     color: white;
@@ -619,19 +632,25 @@ body {
 
 /* Calendar Day Cell */
 .calendar-day {
-    position: relative;
-    min-height: 80px;
+    min-height: 100px;
     padding: 10px;
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    position: relative;
 }
 
-.calendar-day:hover {
-    background-color: var(--content-bg);
-    transform: scale(1.02);
+.calendar-day.current {
+    background-color: rgba(var(--accent-color-rgb), 0.1);
+    border: 2px solid var(--accent-color);
+}
+
+/* Day Number */
+.day-number {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-weight: bold;
 }
 
 /* Event Indicator */
@@ -647,12 +666,32 @@ body {
 
 /* Event Preview */
 .event-preview {
+    margin-top: 25px;
     font-size: 0.8em;
-    color: var(--secondary-text);
-    margin-top: 5px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: var(--text-color);
+}
+
+/* Event Modal */
+.event-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.event-modal-content {
+    position: relative;
+    background-color: var(--content-bg);
+    margin: 15% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-color);
 }
 
 /* Countdown Container */
