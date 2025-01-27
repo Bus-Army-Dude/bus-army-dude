@@ -53,6 +53,12 @@
 - Prevent unauthorized interaction with event calendar details
 - Protected event data and indicators from tampering
 
+### 10. Light/Dark Mode Security
+- Secure implementation of the light/dark mode toggle to prevent unauthorized changes
+
+### 11. Font Size Adjustment Security
+- Secure handling of font size adjustments to prevent unauthorized changes
+
 ## Reporting a Vulnerability
 
 To report a security vulnerability, please follow these steps:
@@ -70,7 +76,7 @@ To report a security vulnerability, please follow these steps:
 - The website undergoes regular security updates
 - Security patches are implemented as soon as vulnerabilities are discovered
 - Users are notified of significant security updates through the version info section
-- Current stable version is v1.10.1
+- Current stable version is v1.11.0
 
 ## Security Best Practices
 
@@ -94,7 +100,8 @@ To report a security vulnerability, please follow these steps:
 
 | Version  | Supported          |
 | -------- | ------------------ |
-| 1.10.1   | :white_check_mark: |
+| 1.11.0   | :white_check_mark: |
+| 1.10.1   | :x:                |
 | 1.10.0   | :x:                |
 | 1.9.x    | :x:                |
 | 1.8.x    | :x:                |
@@ -114,9 +121,9 @@ For any security-related concerns, please contact:
 ## Repository Information
 - Repository: BusArmyDude/busarmydude
 - Language Composition:
-  - **JavaScript:** 41.0%
-  - **CSS:** 40.2%
-  - **HTML:** 18.8%
+  - **JavaScript:** 49.8%
+  - **CSS:** 29.1%
+  - **HTML:** 21.1%
 
 ## Acknowledgments
 
@@ -124,7 +131,7 @@ We appreciate the security community's efforts in responsibly disclosing vulnera
 
 ## Version Control
 
-This security policy is version 1.10.1 and was last updated on 2025-1-23 at 2:31 PM.
+This security policy is version 1.11.0 and was last updated on 2025-1-27 at 6:26 PM.
 
 ---
 
