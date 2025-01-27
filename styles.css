@@ -1017,3 +1017,86 @@ footer {
 #cookieConsent .cookie-btn:hover {
     background-color: var(--hover-color);
 }
+
+/* FAQ Section Styles */
+.faq-section {
+    background-color: var(--content-bg);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: var(--accent-color);
+}
+
+.faq-icon {
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.faq-answer {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    background-color: var(--content-bg);
+    color: var(--text-color);
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+    padding: 15px 20px;
+    max-height: 500px; /* Adjust this value based on your content */
+}
+
+.faq-item.active .faq-icon {
+    transform: rotate(45deg);
+}
+
+/* Make FAQ responsive */
+@media (max-width: 768px) {
+    .faq-section {
+        padding: 15px;
+    }
+
+    .faq-question {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+
+    .faq-answer {
+        font-size: 0.9rem;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 12px 15px;
+    }
+}
