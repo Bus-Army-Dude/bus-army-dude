@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - Bus Army Dude's Profile</title>
+    <title data-translate="settings">Settings - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="settings.css">
+    <link rel="stylesheet" href="ai-features.css">
+
+    <!-- Favicons and Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#ffffff"/>
 </head>
 <body class="dark-mode">
     <div class="container">
         <div class="settings-section section">
             <div class="settings-header">
-                <h1>Settings</h1>
+                <h1 data-translate="settings">Settings</h1>
                 <span class="version">v1.10.1</span>
             </div>
 
@@ -19,8 +32,8 @@
                 <!-- Dark Mode Toggle -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title">Dark Mode</span>
-                        <span class="setting-description">Switch between light and dark theme</span>
+                        <span class="setting-title" data-translate="darkMode">Dark Mode</span>
+                        <span class="setting-description" data-translate="darkModeDesc">Switch between light and dark theme</span>
                     </div>
                     <label class="toggle-switch">
                         <input type="checkbox" id="darkModeToggle" checked>
@@ -31,8 +44,8 @@
                 <!-- Language Selector -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title">Language</span>
-                        <span class="setting-description">Choose your preferred language</span>
+                        <span class="setting-title" data-translate="language">Language</span>
+                        <span class="setting-description" data-translate="languageDesc">Choose your preferred language</span>
                     </div>
                     <select id="languageSelect" class="settings-select">
                         <option value="en">English</option>
@@ -45,8 +58,8 @@
                 <!-- Font Size -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title">Font Size</span>
-                        <span class="setting-description">Adjust text size</span>
+                        <span class="setting-title" data-translate="fontSize">Font Size</span>
+                        <span class="setting-description" data-translate="fontSizeDesc">Adjust text size</span>
                     </div>
                     <div class="font-size-control">
                         <button id="decreaseFont">A-</button>
@@ -56,9 +69,32 @@
                 </div>
             </div>
 
-            <a href="index.html" class="back-link">← Back to Profile</a>
+            <a href="index.html" class="back-link" data-translate="backToProfile">← Back to Profile</a>
         </div>
     </div>
+
+    <!-- Version Panel Section -->
+    <div class="version-info-container">
+        <div class="version-info-section">
+            <div class="version-header" data-translate="versionInfo">Version Information</div>
+            <div class="version-number" data-translate="version">Version: v1.10.1</div>
+            <div class="build-number" data-translate="build">Build: 2025.1.23</div>
+            <div class="device-info" data-translate="deviceInfo">Device: Loading...</div>
+            <div class="update-time" data-translate="currentDateTime">Current Date and Time: Loading...</div>
+        </div>
+    </div>
+
+    <!-- Back-to-Top Button -->
+    <button id="back-to-top-btn" title="Go to top">↑</button>
+
+    <!-- Footer -->
+    <footer>
+        <p data-translate="copyright">© 2025 Bus Army Dude. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="globalSettings.js"></script>
     <script src="settings.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
