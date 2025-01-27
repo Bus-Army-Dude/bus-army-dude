@@ -2,12 +2,14 @@
 body {
     font-family: Arial, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: 0;
 }
 
 /* Container Styles */
 .container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px;
 }
 
@@ -26,29 +28,47 @@ body {
     margin-bottom: 20px;
 }
 
+.settings-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.settings-header .version {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+}
+
 .settings-group {
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.setting-item {
-    margin-bottom: 15px;
-}
-
-.setting-label {
+.setting-card {
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.setting-label {
+    flex: 1;
 }
 
 .setting-title {
-    font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    margin: 0;
     color: var(--text-color);
 }
 
 .setting-description {
     font-size: 0.9rem;
+    margin: 5px 0 0;
     color: var(--secondary-text);
 }
 
