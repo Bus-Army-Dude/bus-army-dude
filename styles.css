@@ -160,6 +160,25 @@ body {
     font-size: 16px;
 }
 
+/* Current President Section */
+.president-section {
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.president-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: block;
+    border: 3px solid var(--accent-color);
+}
+
 /* Links Section */
 .links {
     display: flex;
@@ -222,6 +241,271 @@ body {
     color: var(--secondary-text);
 }
 
+/* Countdown Timer */
+.countdown-wrapper {
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.countdown-item {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Calendar Section */
+.calendar-section {
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.calendar-nav button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.calendar-nav button:hover {
+    background-color: var(--hover-color);
+}
+
+.weekday {
+    text-align: center;
+    font-weight: bold;
+    color: var(--secondary-text);
+    padding: 5px;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.calendar-day:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.calendar-day.today {
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-day.selected {
+    background-color: var(--hover-color);
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-day.other-month {
+    color: var(--secondary-text);
+    background-color: var(--content-bg);
+}
+
+/* Calendar Events */
+.calendar-events {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+}
+
+.event-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: var(--content-bg);
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.event-item:hover {
+    transform: translateX(5px);
+}
+
+.event-time {
+    min-width: 90px;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.event-title {
+    color: var(--text-color);
+    margin-left: 10px;
+}
+
+/* Current Time Display */
+.current-time {
+    text-align: center;
+    font-size: 1.2em;
+    color: var(--text-color);
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--bg-color);
+    border-radius: 5px;
+    font-family: monospace;
+}
+
+/* Time Zone */
+.timezone-display {
+    text-align: center;
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Date Picker (if needed) */
+.date-picker {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--text-color);
+}
+
+/* Month/Year Selection */
+.month-year-select {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.month-year-select select {
+    padding: 5px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Calendar Legend */
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--bg-color);
+    border-radius: 5px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-color);
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-today .legend-color {
+    background-color: var(--accent-color);
+}
+
+.legend-selected .legend-color {
+    background-color: var(--hover-color);
+}
+
+.legend-event .legend-color {
+    background-color: var(--secondary-text);
+}
+
+/* Calendar Responsive Design */
+@media (max-width: 768px) {
+    .calendar-grid {
+        gap: 2px;
+    }
+
+    .calendar-day {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .event-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .event-time {
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .month-year-select {
+        flex-direction: column;
+    }
+
+    .calendar-legend {
+        flex-wrap: wrap;
+    }
+}
+
 /* Disabilities Section */
 .disabilities-section {
     background-color: var(--content-bg);
@@ -261,6 +545,30 @@ body {
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+/* TikTok Creator Shoutouts */
+.tiktok-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.tiktok-creator-card {
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.tiktok-creator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Instagram Creator Section */
@@ -481,67 +789,56 @@ body {
     background-color: var(--hover-color);
 }
 
-/* Version Info Section */
-.version-info-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.version-info-section {
+/* Version and Build Info */
+.version-info {
     background-color: var(--content-bg);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 20px var(--shadow-color);
-    font-family: 'Inter', sans-serif;
-    color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    line-height: 1.5;
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-.version-header {
-    font-size: 1.6em;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .version-number,
-.build-number,
-.device-info,
-.update-time,
-.countdown {
-    font-size: 1.1em;
-    font-weight: 400;
-    margin: 8px 0;
-    color: var(--text-color);
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 8px;
-    letter-spacing: 0.5px;
-}
-
-.device-info,
-.update-time {
-    font-style: italic;
-    color: var(--secondary-text);
-}
-
-.countdown {
-    font-weight: 600;
+.build-number {
+    font-family: monospace;
     color: var(--accent-color);
+    margin: 5px 0;
+}
+
+.update-time {
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+/* Date/Time Stamp */
+.timestamp {
+    font-family: monospace;
+    color: var(--secondary-text);
     text-align: center;
-    font-size: 1.3em;
-    padding-top: 10px;
+    margin: 10px 0;
+    padding: 5px;
     background-color: var(--bg-color);
+    border-radius: 5px;
+}
+
+/* Copyright and Legal Notice */
+.legal-section {
+    background-color: var(--content-bg);
     border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.copyright-notice,
+.legal-notice {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 /* Copy Protection */
@@ -558,6 +855,35 @@ img {
     -khtml-user-drag: none;
     -moz-user-drag: none;
     -o-user-drag: none;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--accent-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    background-color: var(--hover-color);
 }
 
 /* Footer */
