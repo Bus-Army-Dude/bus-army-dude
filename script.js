@@ -556,7 +556,7 @@ const events = [
     { date: '2025-12-25', title: "Christmas", time: '12:00 AM', description: 'Celebration of the birth of Jesus Christ', timezone: 'UTC' }
 ];
 
-// ============= CALENDAR FUNCTIONALITY =============
+// Calendar Functionality
 document.addEventListener('DOMContentLoaded', () => {
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
@@ -594,10 +594,16 @@ document.addEventListener('DOMContentLoaded', () => {
             dayCell.appendChild(dayNumber);
 
             // Check for current day
-            if (day === today.getDate() && 
-                currentMonth === today.getMonth() && 
-                currentYear === today.getFullYear()) {
+            const isToday = day === today.getDate() && 
+                           currentMonth === today.getMonth() && 
+                           currentYear === today.getFullYear();
+            
+            if (isToday) {
                 dayCell.classList.add("current");
+                const todayIndicator = document.createElement("span");
+                todayIndicator.className = "today-indicator";
+                todayIndicator.textContent = "Today";
+                dayCell.appendChild(todayIndicator);
             }
 
             // Check for events
@@ -619,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 dayCell.appendChild(preview);
 
-                // Add click handler for all events on this day
+                // Add click handler for events
                 dayCell.addEventListener("click", () => {
                     if (dayEvents.length === 1) {
                         showEventDetails(dayEvents[0]);
