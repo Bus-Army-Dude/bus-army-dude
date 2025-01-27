@@ -494,6 +494,8 @@ faqQuestions.forEach((question) => {
     });
 });
 
+// ============= EVENTS ARRAY - ADD YOUR EVENTS HERE =============
+// ============= EVENTS ARRAY - ALL EVENTS =============
 const events = [
     // January Events
     { date: '2025-01-01', title: "New Year's Day", time: '12:00 AM', description: 'Celebration of the first day of the year', timezone: 'UTC' },
@@ -507,139 +509,186 @@ const events = [
     { date: '2025-02-27', title: "Bus Army Dude's Birthday", time: '3:00 AM', description: "Bus Army Dude's 20th Birthday", timezone: 'UTC' },
 
     // March Events
+    { date: '2025-03-01', title: "National Disability Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about disabilities and advocate for inclusion', timezone: 'UTC' },
     { date: '2025-03-08', title: "International Women's Day", time: '12:00 AM', description: 'Celebrating the social, economic, cultural, and political achievements of women', timezone: 'UTC' },
     { date: '2025-03-17', title: "St. Patrick's Day", time: '12:00 AM', description: 'Celebration of Irish culture and heritage', timezone: 'UTC' },
 
     // April Events
+    { date: '2025-04-01', title: "Autism Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about autism spectrum disorders', timezone: 'UTC' },
     { date: '2025-04-05', title: 'TikTok Ban Decision', time: 'TBD', description: 'Discussion whether TikTok gets banned or stays in the US', timezone: 'UTC' },
     { date: '2025-04-07', title: "World Health Day", time: '12:00 AM', description: 'A day to raise awareness of global health issues', timezone: 'UTC' },
 
     // May Events
     { date: '2025-05-01', title: "Labor Day (International)", time: '12:00 AM', description: 'A day to celebrate the labor movement and the contributions of workers', timezone: 'UTC' },
+    { date: '2025-05-01', title: "Mental Health Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about mental health issues', timezone: 'UTC' },
     { date: '2025-05-31', title: "World No Tobacco Day", time: '12:00 AM', description: 'A day to raise awareness about the dangers of tobacco use', timezone: 'UTC' },
 
     // June Events
+    { date: '2025-06-01', title: "ADHD Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about Attention Deficit Hyperactivity Disorder', timezone: 'UTC' },
     { date: '2025-06-05', title: "World Environment Day", time: '12:00 AM', description: 'A day to raise awareness about environmental issues', timezone: 'UTC' },
     { date: '2025-06-21', title: "International Yoga Day", time: '12:00 AM', description: 'Celebrating the physical, mental, and spiritual benefits of yoga', timezone: 'UTC' },
 
     // July Events
+    { date: '2025-07-01', title: "Disability Pride Month", time: '12:00 AM', description: 'A month to celebrate the diversity of the disabled community and advocate for their rights', timezone: 'UTC' },
     { date: '2025-07-04', title: "Independence Day (USA)", time: '12:00 AM', description: 'Celebration of the USA\'s declaration of independence', timezone: 'UTC' },
 
     // August Events
     { date: '2025-08-12', title: "International Youth Day", time: '12:00 AM', description: 'A day to raise awareness about youth issues around the world', timezone: 'UTC' },
 
     // September Events
-    { date: '2025-09-01', title: "Hydrocephalus Awareness Month", time: '12:00 AM', description: 'A month dedicated to raising awareness about hydrocephalus and its impact on individuals.', timezone: 'UTC' },
-    { date: '2025-09-21', title: "World Alzheimer’s Day", time: '12:00 AM', description: 'A day to raise awareness of Alzheimer\'s disease and other dementias', timezone: 'UTC' },
+    { date: '2025-09-01', title: "Hydrocephalus Awareness Month", time: '12:00 AM', description: 'A month dedicated to raising awareness about hydrocephalus and its impact on individuals', timezone: 'UTC' },
+    { date: '2025-09-21', title: "World Alzheimer's Day", time: '12:00 AM', description: 'A day to raise awareness of Alzheimer\'s disease and other dementias', timezone: 'UTC' },
     { date: '2025-09-26', title: "World Contraception Day", time: '12:00 AM', description: 'A day to promote awareness and provide information about contraception', timezone: 'UTC' },
 
     // October Events
+    { date: '2025-10-01', title: "Down Syndrome Awareness Month", time: '12:00 AM', description: 'A month to raise awareness and promote acceptance of individuals with Down syndrome', timezone: 'UTC' },
     { date: '2025-10-10', title: "World Mental Health Day", time: '12:00 AM', description: 'A day to raise awareness about mental health issues', timezone: 'UTC' },
     { date: '2025-10-31', title: "Halloween", time: '12:00 AM', description: 'A day for celebrating all things spooky and fun', timezone: 'UTC' },
 
     // November Events
+    { date: '2025-11-01', title: "National Epilepsy Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about epilepsy and seizure disorders', timezone: 'UTC' },
     { date: '2025-11-11', title: "Veterans Day (USA)", time: '12:00 AM', description: 'A day to honor military veterans', timezone: 'UTC' },
     { date: '2025-11-14', title: "World Diabetes Day", time: '12:00 AM', description: 'A day to raise awareness about diabetes', timezone: 'UTC' },
 
     // December Events
     { date: '2025-12-01', title: "World AIDS Day", time: '12:00 AM', description: 'A day to raise awareness about the AIDS pandemic and its impact worldwide', timezone: 'UTC' },
-    { date: '2025-12-25', title: "Christmas", time: '12:00 AM', description: 'Celebration of the birth of Jesus Christ', timezone: 'UTC' },
-
-    // Disability Awareness Months
-    { date: '2025-03-01', title: "National Disability Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about disabilities and advocate for inclusion', timezone: 'UTC' },
-    { date: '2025-04-01', title: "Autism Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about autism spectrum disorders', timezone: 'UTC' },
-    { date: '2025-05-01', title: "Mental Health Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about mental health issues', timezone: 'UTC' },
-    { date: '2025-06-01', title: "ADHD Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about Attention Deficit Hyperactivity Disorder', timezone: 'UTC' },
-    { date: '2025-07-01', title: "Disability Pride Month", time: '12:00 AM', description: 'A month to celebrate the diversity of the disabled community and advocate for their rights', timezone: 'UTC' },
-    { date: '2025-09-01', title: "Hydrocephalus Awareness Month", time: '12:00 AM', description: 'A month dedicated to raising awareness about hydrocephalus and its impact on individuals', timezone: 'UTC' },
-    { date: '2025-10-01', title: "Down Syndrome Awareness Month", time: '12:00 AM', description: 'A month to raise awareness and promote acceptance of individuals with Down syndrome', timezone: 'UTC' },
-    { date: '2025-11-01', title: "National Epilepsy Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about epilepsy and seizure disorders', timezone: 'UTC' },
-    { date: '2025-12-01', title: "Disability Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about disabilities', timezone: 'UTC' }
+    { date: '2025-12-01', title: "Disability Awareness Month", time: '12:00 AM', description: 'A month to raise awareness about disabilities', timezone: 'UTC' },
+    { date: '2025-12-25', title: "Christmas", time: '12:00 AM', description: 'Celebration of the birth of Jesus Christ', timezone: 'UTC' }
 ];
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
+// ============= CALENDAR FUNCTIONALITY =============
+document.addEventListener('DOMContentLoaded', () => {
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+    
+    const monthNames = ["January", "February", "March", "April", "May", "June", 
+                       "July", "August", "September", "October", "November", "December"];
 
-// Function to load the calendar grid
-function loadCalendar() {
-    const monthYearDisplay = document.getElementById("month-year");
-    monthYearDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-    const calendarGrid = document.getElementById("calendar-grid");
-    calendarGrid.innerHTML = ''; // Clear previous grid content
+    function loadCalendar() {
+        const monthYearDisplay = document.getElementById("month-year");
+        monthYearDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        const calendarGrid = document.getElementById("calendar-grid");
+        calendarGrid.innerHTML = ''; // Clear previous content
 
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); // Get the first day of the month
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Get the number of days in the month
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const today = new Date();
 
-    const today = new Date(); // Get the current date to highlight the current day
-    const currentDay = today.getDate();
-    const currentMonthToday = today.getMonth();
-    const currentYearToday = today.getFullYear();
-
-    // Create empty grid cells before the first day of the month
-    for (let i = 0; i < firstDayOfMonth; i++) {
-        const emptyCell = document.createElement("div");
-        calendarGrid.appendChild(emptyCell);
-    }
-
-    // Create day cells with numbers and event indicators
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayCell = document.createElement("div");
-        dayCell.classList.add("calendar-day");
-        dayCell.textContent = day;
-
-        // Check if this is the current day and highlight it
-        if (currentYear === currentYearToday && currentMonth === currentMonthToday && day === currentDay) {
-            dayCell.classList.add("current-day"); // Add a class for highlighting the current day
+        // Create empty cells for days before the first of the month
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            const emptyCell = document.createElement("div");
+            emptyCell.className = "calendar-day empty";
+            calendarGrid.appendChild(emptyCell);
         }
 
-        // Check if there's an event on this day
-        const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-        const event = events.find(event => event.date === dateStr);
-        
-        if (event) {
-            const eventIndicator = document.createElement("div");
-            eventIndicator.classList.add("event-indicator");
-            dayCell.appendChild(eventIndicator);
-            dayCell.addEventListener("click", () => showEventDetails(event));
+        // Create cells for each day of the month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayCell = document.createElement("div");
+            dayCell.className = "calendar-day";
+
+            // Create day number element
+            const dayNumber = document.createElement("span");
+            dayNumber.className = "day-number";
+            dayNumber.textContent = day;
+            dayCell.appendChild(dayNumber);
+
+            // Check for current day
+            if (day === today.getDate() && 
+                currentMonth === today.getMonth() && 
+                currentYear === today.getFullYear()) {
+                dayCell.classList.add("current");
+            }
+
+            // Check for events
+            const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            const dayEvents = events.filter(event => event.date === dateStr);
+
+            if (dayEvents.length > 0) {
+                // Add event indicator
+                const indicator = document.createElement("div");
+                indicator.className = "event-indicator";
+                dayCell.appendChild(indicator);
+
+                // Add event preview
+                const preview = document.createElement("div");
+                preview.className = "event-preview";
+                preview.textContent = dayEvents[0].title;
+                if (dayEvents.length > 1) {
+                    preview.textContent += ` (+${dayEvents.length - 1} more)`;
+                }
+                dayCell.appendChild(preview);
+
+                // Add click handler for all events on this day
+                dayCell.addEventListener("click", () => {
+                    if (dayEvents.length === 1) {
+                        showEventDetails(dayEvents[0]);
+                    } else {
+                        showMultipleEventDetails(dayEvents);
+                    }
+                });
+            }
+
+            calendarGrid.appendChild(dayCell);
         }
-
-        calendarGrid.appendChild(dayCell);
     }
-}
 
-// Function to show event details in a modal
-function showEventDetails(event) {
-    document.getElementById("event-title").textContent = event.title;
-    document.getElementById("event-time").textContent = `Time: ${event.time}`;
-    document.getElementById("event-description").textContent = event.description;
-    document.getElementById("event-modal").style.display = "flex";
-}
-
-// Function to close the event modal
-function closeModal() {
-    document.getElementById("event-modal").style.display = "none";
-}
-
-// Navigation to previous month
-document.getElementById("prev-month").addEventListener("click", () => {
-    currentMonth--;
-    if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
+    function showEventDetails(event) {
+        const modal = document.getElementById("event-modal");
+        document.getElementById("event-title").textContent = event.title;
+        document.getElementById("event-time").textContent = `Time: ${event.time}`;
+        document.getElementById("event-description").textContent = event.description;
+        modal.style.display = "flex";
     }
+
+    function showMultipleEventDetails(events) {
+        const modal = document.getElementById("event-modal");
+        const content = events.map(event => `
+            <div class="event-item">
+                <h3>${event.title}</h3>
+                <p><strong>Time:</strong> ${event.time}</p>
+                <p>${event.description}</p>
+            </div>
+        `).join('<hr>');
+
+        document.getElementById("event-title").textContent = `Events on ${events[0].date}`;
+        document.getElementById("event-time").textContent = '';
+        document.getElementById("event-description").innerHTML = content;
+        modal.style.display = "flex";
+    }
+
+    // Close modal function
+    window.closeModal = function() {
+        document.getElementById("event-modal").style.display = "none";
+    }
+
+    // Navigation event listeners
+    document.getElementById("prev-month").addEventListener("click", () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        loadCalendar();
+    });
+
+    document.getElementById("next-month").addEventListener("click", () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        loadCalendar();
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById("event-modal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    // Initialize calendar
     loadCalendar();
 });
-
-// Navigation to next month
-document.getElementById("next-month").addEventListener("click", () => {
-    currentMonth++;
-    if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-    }
-    loadCalendar();
-});
-
-// Initialize calendar on page load
-document.addEventListener("DOMContentLoaded", loadCalendar);
