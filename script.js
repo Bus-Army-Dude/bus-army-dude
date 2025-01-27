@@ -93,7 +93,7 @@ function updateTime() {
     const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
     const timeElement = document.querySelector('.update-time');
     if (timeElement) {
-        timeElement.textContent = `Current Date and Time: ${timestamp}`;
+        timeElement.textContent = `${timestamp}`;
     }
 }
 
@@ -133,7 +133,7 @@ function smoothReload() {
 function updateVersionPanel() {
     const deviceElement = document.querySelector('.device-info');
     if (deviceElement) {
-        deviceElement.textContent = `Device: ${detectDetailedDevice()}`;
+        deviceElement.textContent = `${detectDetailedDevice()}`;
     }
 }
 
