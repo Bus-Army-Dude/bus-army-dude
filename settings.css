@@ -1,13 +1,70 @@
-/* Settings specific styles */
+/* Settings Page Styles */
 .settings-section {
-    max-width: 600px;
-    margin: 20px auto;
-    background-color: var(--content-bg);
-    border-radius: 16px;
+    background-color: #2d2d2d;
+    border-radius: 12px;
     padding: 24px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Apple-style toggle switch */
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #333;
+}
+
+.settings-header h1 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 24px;
+}
+
+.version {
+    color: #a0a0a0;
+    font-size: 14px;
+}
+
+.settings-group {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #333;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-title {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.setting-description {
+    color: #a0a0a0;
+    font-size: 14px;
+}
+
+/* Toggle Switch */
 .toggle-switch {
     position: relative;
     display: inline-block;
@@ -53,24 +110,67 @@ input:checked + .toggle-slider:before {
     transform: translateX(20px);
 }
 
-/* Font size controls */
+/* Language Select */
+.settings-select {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 8px 12px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+/* Font Size Controls */
 .font-size-control {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.font-size-btn {
-    background-color: var(--content-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    padding: 8px 12px;
+.font-size-control button {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #333;
     border-radius: 6px;
+    padding: 8px 12px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.font-size-btn:hover {
-    background-color: var(--accent-color);
-    color: white;
+.font-size-control button:hover {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+#currentFontSize {
+    color: #ffffff;
+    min-width: 45px;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    color: #4CAF50;
+    text-decoration: none;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.back-link:hover {
+    color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .settings-section {
+        margin: 10px;
+        padding: 16px;
+    }
+
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
 }
