@@ -478,198 +478,23 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleBackToTopButton();
 });
 
-// Get all the FAQ question buttons
-const faqQuestions = document.querySelectorAll('.faq-question');
-
-// Add event listeners to each button
-faqQuestions.forEach((question) => {
-    question.addEventListener('click', () => {
-        const faqItem = question.parentElement;
-
-        // Toggle the active class to show or hide the answer
-        faqItem.classList.toggle('active');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Debug log
-    console.log('Calendar initializing...');
-
-    let currentDate = new Date();
-    let currentMonth = currentDate.getMonth();
-    let currentYear = currentDate.getFullYear();
+document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-question');
     
-    const monthNames = ["January", "February", "March", "April", "May", "June", 
-                       "July", "August", "September", "October", "November", "December"];
-
-    // Events array with your specific events
-    const events = [
-        // January 2025 Events
-        { 
-            date: '2025-01-27', 
-            title: "Current Date", 
-            time: '20:01:32', 
-            description: 'Today\'s Date'
-        },
-        { 
-            date: '2025-01-31', 
-            title: "Bus Army Dude Gets AFO Braces", 
-            time: '2:30 PM', 
-            description: 'I get my AFO Braces'
-        },
-        // February 2025 Events
-        { 
-            date: '2025-02-14', 
-            title: "Valentine's Day", 
-            time: '12:00 AM', 
-            description: 'Valentine\'s Day Celebration'
-        },
-        { 
-            date: '2025-02-27', 
-            title: "Bus Army Dude's Birthday", 
-            time: '3:00 AM', 
-            description: "Bus Army Dude's 20th Birthday"
-        }
-    ];
-
-    function loadCalendar() {
-        console.log('Loading calendar for', monthNames[currentMonth], currentYear);
-
-        // Update month and year display
-        const monthYearElement = document.getElementById('month-year');
-        monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-
-        // Get the calendar grid
-        const calendarGrid = document.getElementById('calendar-grid');
-        calendarGrid.innerHTML = '';
-
-        // Calculate first day of month and total days
-        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        
-        // Add empty cells for days before start of month
-        for (let i = 0; i < firstDay; i++) {
-            const emptyCell = document.createElement('div');
-            emptyCell.className = 'calendar-day empty';
-            calendarGrid.appendChild(emptyCell);
-        }
-
-        // Add days of the month
-        const today = new Date();
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayCell = document.createElement('div');
-            dayCell.className = 'calendar-day';
-
-            // Add day number
-            const dayNumber = document.createElement('span');
-            dayNumber.className = 'day-number';
-            dayNumber.textContent = day;
-            dayCell.appendChild(dayNumber);
-
-            // Check if this is today (2025-01-27)
-            if (day === today.getDate() && 
-                currentMonth === today.getMonth() && 
-                currentYear === today.getFullYear()) {
-                dayCell.classList.add('current');
-                
-                // Add today indicator
-                const todayIndicator = document.createElement('span');
-                todayIndicator.className = 'today-indicator';
-                todayIndicator.textContent = 'Today';
-                dayCell.appendChild(todayIndicator);
-            }
-
-            // Check for events
-            const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const dayEvents = events.filter(event => event.date === dateStr);
-
-            if (dayEvents.length > 0) {
-                // Add event indicator
-                const indicator = document.createElement('div');
-                indicator.className = 'event-indicator';
-                dayCell.appendChild(indicator);
-
-                // Add event preview
-                const preview = document.createElement('div');
-                preview.className = 'event-preview';
-                preview.textContent = dayEvents[0].title;
-                if (dayEvents.length > 1) {
-                    preview.textContent += ` (+${dayEvents.length - 1} more)`;
+    faqItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const parent = item.parentElement;
+            
+            // Close other open FAQs
+            const activeFaqs = document.querySelectorAll('.faq-item.active');
+            activeFaqs.forEach(faq => {
+                if (faq !== parent) {
+                    faq.classList.remove('active');
                 }
-                dayCell.appendChild(preview);
-
-                // Add click handler
-                dayCell.addEventListener('click', () => {
-                    if (dayEvents.length === 1) {
-                        showEventDetails(dayEvents[0]);
-                    } else {
-                        showMultipleEventDetails(dayEvents);
-                    }
-                });
-            }
-
-            calendarGrid.appendChild(dayCell);
-        }
-    }
-
-    function showEventDetails(event) {
-        const modal = document.getElementById('event-modal');
-        document.getElementById('event-title').textContent = event.title;
-        document.getElementById('event-time').textContent = `Time: ${event.time}`;
-        document.getElementById('event-description').textContent = event.description;
-        modal.style.display = 'flex';
-    }
-
-    function showMultipleEventDetails(events) {
-        const modal = document.getElementById('event-modal');
-        const content = events.map(event => `
-            <div class="event-item">
-                <h3>${event.title}</h3>
-                <p><strong>Time:</strong> ${event.time}</p>
-                <p>${event.description}</p>
-            </div>
-        `).join('<hr>');
-
-        document.getElementById('event-title').textContent = `Events on ${events[0].date}`;
-        document.getElementById('event-time').textContent = '';
-        document.getElementById('event-description').innerHTML = content;
-        modal.style.display = 'flex';
-    }
-
-    // Set up navigation buttons
-    document.getElementById('prev-month').addEventListener('click', () => {
-        currentMonth--;
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-        }
-        loadCalendar();
+            });
+            
+            // Toggle current FAQ
+            parent.classList.toggle('active');
+        });
     });
-
-    document.getElementById('next-month').addEventListener('click', () => {
-        currentMonth++;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        }
-        loadCalendar();
-    });
-
-    // Close modal function
-    window.closeModal = function() {
-        const modal = document.getElementById('event-modal');
-        modal.style.display = 'none';
-    };
-
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        const modal = document.getElementById('event-modal');
-        if (event.target === modal) {
-            closeModal();
-        }
-    };
-
-    // Initialize calendar
-    loadCalendar();
-    console.log('Calendar initialization complete');
 });
