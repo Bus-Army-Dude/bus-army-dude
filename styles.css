@@ -125,7 +125,7 @@ body {
     height: 30px;
     border-radius: 50%;
     background: url('settings-icon.png') center/18px no-repeat;
-    background-color: var(--content-bg);  /* Match the profile section background */
+    background-color: #00ff00; /* Adding the green background */
     border: none;
     cursor: pointer;
     padding: 0;
@@ -135,6 +135,7 @@ body {
 
 .settings-button:hover {
     transform: rotate(45deg);
+    background-color: #00cc00; /* Slightly darker green on hover */
 }
 
 /* Responsive adjustments */
