@@ -1,4 +1,5 @@
-class ThemeManager {
+// common.js
+class CommonManager {
     constructor() {
         this.settings = this.loadSettings();
         this.initializeThemeColors();
@@ -45,26 +46,15 @@ class ThemeManager {
         });
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
-        this.settings.darkMode = isDark;
-        this.saveSettings();
     }
 
     setFontSize(size) {
-        size = Math.min(Math.max(size, 12), 20);
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
-        this.settings.fontSize = size;
-        this.saveSettings();
-    }
-
-    saveSettings() {
-        localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
+        document.body.style.fontSize = `${size}px`;
     }
 }
 
-// Initialize theme manager
-const themeManager = new ThemeManager();
-
-// Initialize when DOM is loaded
+// Initialize common manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    themeManager.applySettings();
+    window.commonManager = new CommonManager();
 });
