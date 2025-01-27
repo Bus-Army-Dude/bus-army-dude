@@ -47,11 +47,12 @@
                         <span class="setting-title" data-translate="language">Language</span>
                         <span class="setting-description" data-translate="languageDesc">Choose your preferred language</span>
                     </div>
-                    <select id="languageSelect" class="settings-select">
+                    <select id="languageSelect" onchange="applyTranslation(this.value)">
                         <option value="en">English</option>
                         <option value="es">Español</option>
                         <option value="fr">Français</option>
                         <option value="de">Deutsch</option>
+                        <option value="ja">日本語</option>
                     </select>
                 </div>
 
