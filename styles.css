@@ -16,84 +16,17 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-:root {
-    --light-bg: #ffffff;
-    --light-text: #000000;
-    --light-secondary-text: #666666;
-    --light-border: #dddddd;
-    --light-accent: #4CAF50;
-    --light-content-bg: #f5f5f5;
-    
-    --dark-bg: #1a1a1a;
-    --dark-text: #ffffff;
-    --dark-secondary-text: #a0a0a0;
-    --dark-border: #333333;
-    --dark-accent: #4CAF50;
-    --dark-content-bg: #2d2d2d;
-}
-
-/* Theme Classes */
-.light-mode {
-    --bg-color: var(--light-bg);
-    --text-color: var(--light-text);
-    --secondary-text: var(--light-secondary-text);
-    --border-color: var(--light-border);
-    --accent-color: var(--light-accent);
-    --content-bg: var(--light-content-bg);
-}
-
-.dark-mode {
-    --bg-color: var(--dark-bg);
-    --text-color: var(--dark-text);
-    --secondary-text: var(--dark-secondary-text);
-    --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --content-bg: var(--dark-content-bg);
-}
-
 /* Profile Section */
 .profile-section {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 20px; /* Added margin-top */
     margin-bottom: 30px;
     padding: 20px;
-    background-color: #333; /* Adjust for your theme */
-    color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;  /* Make sure the settings button is positioned relative to this */
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Settings Button (Gear Icon) */
-.settings-btn {
-    position: absolute;  /* Position relative to the profile section */
-    top: 10px;           /* Distance from the top of the profile section */
-    right: 10px;         /* Distance from the right of the profile section */
-    width: 40px;         /* Size of the button */
-    height: 40px;        /* Size of the button */
-    background-color: #007BFF; /* Button background color */
-    color: white;
-    border: none;
-    border-radius: 50%;  /* Make the button circular */
-    font-size: 18px;      /* Icon size */
-    display: flex;
-    align-items: center;  /* Center the icon vertically */
-    justify-content: center; /* Center the icon horizontally */
-    cursor: pointer;
-    padding: 8px;         /* Adds some space so the button doesn’t touch the edges */
-    transition: background-color 0.3s;
-}
-
-.settings-btn:hover {
-    background-color: #0056b3; /* Darker blue when hovered */
-}
-
-/* Font Awesome Gear Icon */
-.settings-btn i {
-    font-size: 20px; /* Icon size */
-}
-
-/* Profile Picture */
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -103,7 +36,6 @@ body {
     border: 3px solid var(--accent-color);
 }
 
-/* Username with Checkmark */
 .username-checkmark {
     display: flex;
     align-items: center;
@@ -120,12 +52,6 @@ body {
     width: 20px;
     height: 20px;
     margin-left: 5px;
-}
-
-/* Additional styling for paragraph */
-.profile-section p {
-    font-size: 16px;
-    margin-top: 10px;
 }
 
 /* Social Section - Updated to match Disabilities section style */
@@ -651,6 +577,41 @@ body {
 
 .youtube-visit-profile:hover {
     opacity: 0.9;
+}
+
+:root {
+    --light-bg: #ffffff;
+    --light-text: #000000;
+    --light-secondary-text: #666666;
+    --light-border: #dddddd;
+    --light-accent: #4CAF50;
+    --light-content-bg: #f5f5f5;
+    
+    --dark-bg: #1a1a1a;
+    --dark-text: #ffffff;
+    --dark-secondary-text: #a0a0a0;
+    --dark-border: #333333;
+    --dark-accent: #4CAF50;
+    --dark-content-bg: #2d2d2d;
+}
+
+/* Theme Classes */
+.light-mode {
+    --bg-color: var(--light-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary-text);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --content-bg: var(--light-content-bg);
+}
+
+.dark-mode {
+    --bg-color: var(--dark-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --content-bg: var(--dark-content-bg);
 }
 
 /* Base Styles */
