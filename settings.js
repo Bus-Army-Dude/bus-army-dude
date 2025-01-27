@@ -169,6 +169,7 @@ class SettingsManager {
 
     setBackgroundColor(color) {
         document.documentElement.style.setProperty('--bg-color-custom', color);
+        document.body.style.backgroundColor = color;
         this.settings.backgroundColor = color;
         this.saveSettings();
     }
