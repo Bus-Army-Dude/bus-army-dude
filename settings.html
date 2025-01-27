@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate="settings">Settings - Bus Army Dude's Profile</title>
+    <title data-translate="settings.title">Settings - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="ai-features.css">
@@ -24,16 +24,16 @@
     <div class="container">
         <div class="settings-section section">
             <div class="settings-header">
-                <h1 data-translate="settings">Settings</h1>
-                <span class="version">v1.10.1</span>
+                <h1 data-translate="settings.title">Settings</h1>
+                <span class="version" data-translate="footer.version">v1.10.1</span>
             </div>
 
             <div class="settings-group">
                 <!-- Dark Mode Toggle -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title" data-translate="darkMode">Dark Mode</span>
-                        <span class="setting-description" data-translate="darkModeDesc">Switch between light and dark theme</span>
+                        <span class="setting-title" data-translate="settings.darkMode">Dark Mode</span>
+                        <span class="setting-description" data-translate="settings.darkModeDesc">Switch between light and dark theme</span>
                     </div>
                     <label class="toggle-switch">
                         <input type="checkbox" id="darkModeToggle" checked>
@@ -44,10 +44,10 @@
                 <!-- Language Selector -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title" data-translate="language">Language</span>
-                        <span class="setting-description" data-translate="languageDesc">Choose your preferred language</span>
+                        <span class="setting-title" data-translate="settings.language">Language</span>
+                        <span class="setting-description" data-translate="settings.languageDesc">Choose your preferred language</span>
                     </div>
-                    <select id="languageSelect" onchange="applyTranslation(this.value)">
+                    <select id="languageSelect" class="language-selector">
                         <option value="en">English</option>
                         <option value="es">Español</option>
                         <option value="fr">Français</option>
@@ -59,42 +59,49 @@
                 <!-- Font Size -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title" data-translate="fontSize">Font Size</span>
-                        <span class="setting-description" data-translate="fontSizeDesc">Adjust text size</span>
+                        <span class="setting-title" data-translate="settings.fontSize">Font Size</span>
+                        <span class="setting-description" data-translate="settings.fontSizeDesc">Adjust text size</span>
                     </div>
                     <div class="font-size-control">
-                        <button id="decreaseFont">A-</button>
+                        <button id="decreaseFont" aria-label="Decrease font size">A-</button>
                         <span id="currentFontSize">16px</span>
-                        <button id="increaseFont">A+</button>
+                        <button id="increaseFont" aria-label="Increase font size">A+</button>
                     </div>
                 </div>
             </div>
 
-            <a href="index.html" class="back-link" data-translate="backToProfile">← Back to Profile</a>
+            <a href="index.html" class="back-link" data-translate="settings.backToProfile">← Back to Profile</a>
         </div>
     </div>
 
     <!-- Version Panel Section -->
     <div class="version-info-container">
         <div class="version-info-section">
-            <div class="version-header" data-translate="versionInfo">Version Information</div>
-            <div class="version-number" data-translate="version">Version: v1.10.1</div>
-            <div class="build-number" data-translate="build">Build: 2025.1.23</div>
-            <div class="device-info" data-translate="deviceInfo">Device: Loading...</div>
-            <div class="update-time" data-translate="currentDateTime">Current Date and Time: Loading...</div>
+            <div class="version-header" data-translate="settings.versionInfo">Version Information</div>
+            <div class="version-details">
+                <div class="version-number" data-translate="footer.version">Version: v1.10.1</div>
+                <div class="build-number" data-translate="footer.build">Build: 2025.1.23</div>
+                <div class="device-info" data-translate="footer.device">Device: Loading...</div>
+                <div class="update-time" data-translate="footer.time">Current Date and Time: 2025-01-27 21:04:30</div>
+                <div class="page-refresh" data-translate="footer.refresh">Page refreshing in: 5 minutes</div>
+            </div>
         </div>
     </div>
 
-    <!-- Back-to-Top Button -->
-    <button id="back-to-top-btn" title="Go to top">↑</button>
-
     <!-- Footer -->
     <footer>
-        <p data-translate="copyright">© 2025 Bus Army Dude. All Rights Reserved.</p>
+        <div class="footer-content">
+            <p class="copyright" data-translate="footer.copyright">© 2025 Bus Army Dude. All Rights Reserved.</p>
+            <div class="protection-notice">
+                <p data-translate="footer.protection.watermark">Protected by Watermark</p>
+                <p data-translate="footer.protection.copy">This content is protected by a watermark. Unauthorized use is prohibited.</p>
+                <p data-translate="footer.protection.legal">All content and materials on this website are legally protected.</p>
+            </div>
+        </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="globalSettings.js"></script>
+    <script src="common.js"></script>
     <script src="settings.js"></script>
     <script src="script.js"></script>
 </body>
