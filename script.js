@@ -363,10 +363,16 @@ function updateNewYearCountdown() {
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Update flip clock for each unit
+        // Update flip clock for days
         updateFlipClock('countdown-days', days);
+
+        // Update flip clock for hours
         updateFlipClock('countdown-hours', hours);
+
+        // Update flip clock for minutes
         updateFlipClock('countdown-minutes', minutes);
+
+        // Update flip clock for seconds
         updateFlipClock('countdown-seconds', seconds);
     }
 }
@@ -374,37 +380,34 @@ function updateNewYearCountdown() {
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return;
-    
+    const front = clock.querySelector('.flip-clock-front');
+    const back = clock.querySelector('.flip-clock-back');
     const valueStr = value.toString().padStart(2, '0');
-    
-    // Only update if the value has changed
-    if (clock.querySelector('.current-value').textContent !== valueStr) {
-        // Update the current value
-        clock.querySelector('.current-value').textContent = valueStr;
-        
-        // Update the next value and trigger flip
-        clock.querySelector('.next-value').textContent = valueStr;
-        clock.querySelector('.flipper').classList.add('flip');
-        
-        // Reset flip animation after it completes
+
+    if (front.textContent !== valueStr) {
+        front.textContent = valueStr;
+        back.textContent = valueStr;
+
+        // Trigger the flip animation
+        clock.querySelector('.flip-clock-inner').classList.add('flip');
+
         setTimeout(() => {
-            clock.querySelector('.flipper').classList.remove('flip');
-        }, 600);
+            clock.querySelector('.flip-clock-inner').classList.remove('flip');
+        }, 600); // match the animation duration
     }
 }
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+    
+    // Initialize everything
     detectDetailedDevice();
     updateTime();
     tiktokShoutouts.init();
     updateNewYearCountdown();
 
     setInterval(updateTime, 1000);
+    setInterval(updateCountdown, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
-    
+
 // Manually set the last updated date and time (example in EST timezone)
 const lastUpdatedDate = "Sat, Jan 25, 2025";  // Set the date here (Day of the Week, Month, Day, Year)
 const lastUpdatedTime = "10:17:02 AM";    // Set the time here (12-hour format)
