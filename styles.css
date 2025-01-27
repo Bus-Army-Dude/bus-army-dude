@@ -441,46 +441,132 @@ body {
 }
 
 /* Instagram Creator Shoutouts */
-.instagram-creator-section {
-    background-color: var(--content-bg);
+.instagram-shoutouts-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 20px;
-    border-radius: 12px;
-    margin: 30px 0;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    width: 100%;
+}
+
+.instagram-shoutouts-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 5px;
+    width: 100%;
 }
 
 .instagram-creator-grid {
-    composes: creator-grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .instagram-creator-card {
-    composes: creator-card;
-}
-
-/* YouTube Creator Shoutouts */
-.youtube-creator-section {
     background-color: var(--content-bg);
+    border-radius: 10px;
     padding: 20px;
-    border-radius: 12px;
-    margin: 30px 0;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-.youtube-creator-grid {
-    composes: creator-grid;
+.instagram-creator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-.youtube-creator-card {
-    composes: creator-card;
+.instagram-creator-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
 }
 
-.subscriber-count {
+.instagram-follower-count {
     color: var(--accent-color);
     font-weight: bold;
     margin: 10px 0;
 }
 
-/* Calendar Section */
+.instagram-visit-profile {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-top: 10px;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+.instagram-visit-profile:hover {
+    opacity: 0.9;
+    background-color: var(--hover-color);
+}
+
+/* YouTube Creator Shoutouts */
+.youtube-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.youtube-creator-card {
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.youtube-creator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.youtube-creator-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.youtube-subscriber-count {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.youtube-visit-profile {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-top: 10px;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+.youtube-visit-profile:hover {
+    opacity: 0.9;
+    background-color: var(--hover-color);
+}
+
+/* Calendar Section with Event Indicator */
 .calendar-section {
     background-color: var(--content-bg);
     border-radius: 10px;
@@ -489,30 +575,69 @@ body {
     box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .calendar-day {
+    position: relative;
     text-align: center;
     padding: 10px;
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
     border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.calendar-day.current {
+.calendar-day:hover {
     background-color: var(--accent-color);
     color: white;
+}
+
+.event-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+}
+
+/* Event Modal */
+.event-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-modal.active {
+    display: flex;
+}
+
+.event-content {
+    background-color: var(--content-bg);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 24px;
+    cursor: pointer;
 }
 
 /* Countdown Section */
@@ -559,17 +684,16 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    opacity: 0;
     transition: all 0.3s ease;
     z-index: 1000;
 }
 
 .back-to-top.visible {
-    opacity: 1;
+    display: flex;
 }
 
 .back-to-top:hover {
@@ -586,6 +710,9 @@ body {
     box-shadow: 0 8px 20px var(--shadow-color);
     font-family: 'Inter', sans-serif;
     color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .version-header {
@@ -595,20 +722,133 @@ body {
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
 }
 
-.version-number,
-.build-number,
-.device-info,
-.update-time,
-.countdown {
-    font-size: 1.1em;
-    font-weight: 400;
-    margin: 8px 0;
-    color: var(--text-color);
+/* Version Number Styling */
+.version-number {
+    font-family: monospace;
+    font-size: 1.2em;
     background: var(--bg-color);
-    padding: 12px;
+    padding: 12px 15px;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.version-number::before {
+    content: "Version:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Build Number Styling */
+.build-number {
+    font-family: monospace;
+    font-size: 1.2em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.build-number::before {
+    content: "Build:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Device Info Styling */
+.device-info {
+    font-size: 1.1em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--hover-color);
+}
+
+.device-info::before {
+    content: "Device:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Update Time Styling */
+.update-time {
+    font-family: monospace;
+    font-size: 1.1em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--hover-color);
+}
+
+.update-time::before {
+    content: "Last Updated:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Countdown Styling */
+.countdown {
+    font-size: 1.2em;
+    font-weight: 600;
+    background: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    margin-top: 10px;
+}
+
+/* Version Info Container for better spacing */
+.version-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .version-info-section {
+        padding: 15px;
+    }
+
+    .version-header {
+        font-size: 1.4em;
+    }
+
+    .version-number,
+    .build-number,
+    .device-info,
+    .update-time {
+        font-size: 1em;
+        padding: 10px 12px;
+    }
+}
+
+/* Animation for updates */
+@keyframes updatePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.version-update {
+    animation: updatePulse 0.5s ease-in-out;
 }
 
 /* Copyright and Legal Notices */
