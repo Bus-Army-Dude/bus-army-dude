@@ -18,20 +18,19 @@ A centralized platform displaying detailed tech specifications, accessibility re
 - YouTube creator shoutouts
 - Profile information display
 - Content Protection
-  - Event Calendar
   - Enhanced copy protection
   - Image security measures
   - Content control system
   - Selection management
   - Last Updated Feature for Follower/Subscriber
-- **Current Day Highlighting in Calendar**
-  - Automatically highlights the current day based on the user's local timezone.
-- **Enhanced Event Modal**
-  - Refined design and functionality for viewing event details.
-- **Calendar Event Indicators**
-  - Improved visibility of event indicators on the calendar.
 - **Theme Consistency Across Sections**
   - All sections now reflect the unified website theme for a cohesive user experience.
+- **Settings Page Access Button**
+  - Added a button in the top profile section to take users to the settings page.
+- **Light/Dark Mode Toggle**
+  - An option to switch between light and dark modes on the settings page.
+- **Font Size Adjustment**
+  - An option to adjust the font size on the settings page under Accessibility.
 
 ### 💻 Supported Operating Systems
 - iOS
@@ -44,11 +43,11 @@ A centralized platform displaying detailed tech specifications, accessibility re
 ### 🛠️ Technical Requirements
 - Modern web browser
 - JavaScript enabled
-**Minimum screen width:** 320px
+  **Minimum screen width:** 320px
 - Stable internet connection
 
 ### 🔄 Version Information
-**Current Version:** v1.10.1
+**Current Version:** v1.11.0
 
 ### 📱 Browser Support
 - Chrome (Latest)
@@ -64,5 +63,5 @@ For technical support or inquiries:
 
 **Business Email:** busarmydude@gmail.com
 
-**📜 License**
+### 📜 License
 - Proprietary - see the LICENSE.md file for details
