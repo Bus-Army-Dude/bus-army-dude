@@ -492,6 +492,16 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 5px;
+}
+
+/* Username Container with Verification Badge */
+.username-container,
+.instagram-username-container,
+.youtube-username-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     margin-bottom: 10px;
 }
 
@@ -500,8 +510,19 @@ body {
 .instagram-creator-username,
 .youtube-creator-username {
     color: var(--secondary-text);
-    margin: 5px 0;
     font-size: 0.9em;
+    margin: 0;
+}
+
+/* Verification Badge Styles */
+.verified-badge,
+.instagram-verified-badge,
+.youtube-verified-badge {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
 }
 
 /* Common Bio Styles */
@@ -543,6 +564,15 @@ body {
 .youtube-visit-profile:hover {
     background-color: var(--hover-color);
     transform: scale(1.05);
+}
+
+/* Creator Name Styles */
+.creator-header h3,
+.instagram-creator-header h3,
+.youtube-creator-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--text-color);
 }
 
 /* Calendar Container */
