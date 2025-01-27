@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate="settings.title">Settings - Bus Army Dude's Profile</title>
+    <title>Settings - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="ai-features.css">
@@ -24,16 +24,16 @@
     <div class="container">
         <div class="settings-section section">
             <div class="settings-header">
-                <h1 data-translate="settings.title">Settings</h1>
-                <span class="version" data-translate="footer.version">v1.10.1</span>
+                <h1>Settings</h1>
+                <span class="version">v1.10.1</span>
             </div>
 
             <div class="settings-group">
                 <!-- Dark Mode Toggle -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title" data-translate="settings.darkMode">Dark Mode</span>
-                        <span class="setting-description" data-translate="settings.darkModeDesc">Switch between light and dark theme</span>
+                        <span class="setting-title">Dark Mode</span>
+                        <span class="setting-description">Switch between light and dark theme</span>
                     </div>
                     <label class="toggle-switch">
                         <input type="checkbox" id="darkModeToggle" checked>
@@ -44,14 +44,44 @@
                 <!-- Font Size -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title" data-translate="settings.fontSize">Font Size</span>
-                        <span class="setting-description" data-translate="settings.fontSizeDesc">Adjust text size</span>
+                        <span class="setting-title">Font Size</span>
+                        <span class="setting-description">Adjust text size</span>
                     </div>
                     <div class="font-size-control">
                         <button id="decreaseFont" aria-label="Decrease font size">A-</button>
                         <span id="currentFontSize">16px</span>
                         <button id="increaseFont" aria-label="Increase font size">A+</button>
                     </div>
+                </div>
+
+                <!-- Background Color Customization -->
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <span class="setting-title">Background Color</span>
+                        <span class="setting-description">Choose your preferred background color</span>
+                    </div>
+                    <select id="backgroundColorSelect">
+                        <option value="#ffffff">White</option>
+                        <option value="#f5f5f5">Light Gray</option>
+                        <option value="#1a1a1a">Dark</option>
+                        <option value="#4CAF50">Green</option>
+                        <option value="#ff5733">Red</option>
+                        <option value="#33ff57">Lime</option>
+                        <option value="#3357ff">Blue</option>
+                        <option value="#ff33a1">Pink</option>
+                    </select>
+                    <input type="color" id="customColorPicker" name="customColorPicker" value="#ffffff">
+                </div>
+
+                <!-- Custom Background Upload -->
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <span class="setting-title">Custom Background</span>
+                        <span class="setting-description">Upload a custom background image</span>
+                    </div>
+                    <input type="file" id="backgroundUploadInput" accept="image/*">
+                    <img id="backgroundPreview" class="background-preview" alt="Background Preview">
+                    <button id="saveBackground" class="save-button">Save Background</button>
                 </div>
 
                 <!-- Reset to Factory Settings -->
@@ -64,14 +94,14 @@
                 </div>
             </div>
 
-            <a href="index.html" class="back-link" data-translate="settings.backToProfile">← Back to Profile</a>
+            <a href="index.html" class="back-link">← Back to Profile</a>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <p class="copyright" data-translate="footer.copyright">© 2025 Bus Army Dude. All Rights Reserved.</p>
+            <p class="copyright">© 2025 Bus Army Dude. All Rights Reserved.</p>
     </footer>
 
     <!-- Scripts -->
