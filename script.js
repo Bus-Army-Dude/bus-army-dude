@@ -505,11 +505,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const monthNames = ["January", "February", "March", "April", "May", "June", 
                        "July", "August", "September", "October", "November", "December"];
 
-    // Events array
+    // Events array with your specific events
     const events = [
-        { date: '2025-01-31', title: "Bus Army Dude Gets AFO Braces", time: '2:30 PM', description: 'I get my AFO Braces' },
-        { date: '2025-02-27', title: "Bus Army Dude's Birthday", time: '3:00 AM', description: "Bus Army Dude's 20th Birthday" }
-        // Add other events here
+        // January 2025 Events
+        { 
+            date: '2025-01-27', 
+            title: "Current Date", 
+            time: '20:01:32', 
+            description: 'Today\'s Date'
+        },
+        { 
+            date: '2025-01-31', 
+            title: "Bus Army Dude Gets AFO Braces", 
+            time: '2:30 PM', 
+            description: 'I get my AFO Braces'
+        },
+        // February 2025 Events
+        { 
+            date: '2025-02-14', 
+            title: "Valentine's Day", 
+            time: '12:00 AM', 
+            description: 'Valentine\'s Day Celebration'
+        },
+        { 
+            date: '2025-02-27', 
+            title: "Bus Army Dude's Birthday", 
+            time: '3:00 AM', 
+            description: "Bus Army Dude's 20th Birthday"
+        }
     ];
 
     function loadCalendar() {
@@ -517,24 +540,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update month and year display
         const monthYearElement = document.getElementById('month-year');
-        if (monthYearElement) {
-            monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-        }
+        monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
         // Get the calendar grid
         const calendarGrid = document.getElementById('calendar-grid');
-        if (!calendarGrid) {
-            console.error('Calendar grid not found!');
-            return;
-        }
-
-        // Clear existing calendar
         calendarGrid.innerHTML = '';
 
         // Calculate first day of month and total days
         const firstDay = new Date(currentYear, currentMonth, 1).getDay();
         const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
+        
         // Add empty cells for days before start of month
         for (let i = 0; i < firstDay; i++) {
             const emptyCell = document.createElement('div');
@@ -543,6 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Add days of the month
+        const today = new Date();
         for (let day = 1; day <= daysInMonth; day++) {
             const dayCell = document.createElement('div');
             dayCell.className = 'calendar-day';
@@ -553,12 +569,17 @@ document.addEventListener('DOMContentLoaded', () => {
             dayNumber.textContent = day;
             dayCell.appendChild(dayNumber);
 
-            // Check if this is today
-            const today = new Date();
+            // Check if this is today (2025-01-27)
             if (day === today.getDate() && 
                 currentMonth === today.getMonth() && 
                 currentYear === today.getFullYear()) {
                 dayCell.classList.add('current');
+                
+                // Add today indicator
+                const todayIndicator = document.createElement('span');
+                todayIndicator.className = 'today-indicator';
+                todayIndicator.textContent = 'Today';
+                dayCell.appendChild(todayIndicator);
             }
 
             // Check for events
@@ -575,11 +596,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const preview = document.createElement('div');
                 preview.className = 'event-preview';
                 preview.textContent = dayEvents[0].title;
+                if (dayEvents.length > 1) {
+                    preview.textContent += ` (+${dayEvents.length - 1} more)`;
+                }
                 dayCell.appendChild(preview);
 
                 // Add click handler
                 dayCell.addEventListener('click', () => {
-                    showEventDetails(dayEvents[0]);
+                    if (dayEvents.length === 1) {
+                        showEventDetails(dayEvents[0]);
+                    } else {
+                        showMultipleEventDetails(dayEvents);
+                    }
                 });
             }
 
@@ -589,23 +617,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showEventDetails(event) {
         const modal = document.getElementById('event-modal');
-        if (modal) {
-            document.getElementById('event-title').textContent = event.title;
-            document.getElementById('event-time').textContent = `Time: ${event.time}`;
-            document.getElementById('event-description').textContent = event.description;
-            modal.style.display = 'flex';
-        }
+        document.getElementById('event-title').textContent = event.title;
+        document.getElementById('event-time').textContent = `Time: ${event.time}`;
+        document.getElementById('event-description').textContent = event.description;
+        modal.style.display = 'flex';
     }
 
-    // Close modal function
-    window.closeModal = function() {
+    function showMultipleEventDetails(events) {
         const modal = document.getElementById('event-modal');
-        if (modal) {
-            modal.style.display = 'none';
-        }
-    };
+        const content = events.map(event => `
+            <div class="event-item">
+                <h3>${event.title}</h3>
+                <p><strong>Time:</strong> ${event.time}</p>
+                <p>${event.description}</p>
+            </div>
+        `).join('<hr>');
 
-    // Add navigation button listeners
+        document.getElementById('event-title').textContent = `Events on ${events[0].date}`;
+        document.getElementById('event-time').textContent = '';
+        document.getElementById('event-description').innerHTML = content;
+        modal.style.display = 'flex';
+    }
+
+    // Set up navigation buttons
     document.getElementById('prev-month').addEventListener('click', () => {
         currentMonth--;
         if (currentMonth < 0) {
@@ -623,6 +657,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         loadCalendar();
     });
+
+    // Close modal function
+    window.closeModal = function() {
+        const modal = document.getElementById('event-modal');
+        modal.style.display = 'none';
+    };
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('event-modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
 
     // Initialize calendar
     loadCalendar();
