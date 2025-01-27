@@ -65,6 +65,16 @@ class SettingsManager {
                 this.adjustFontSize(1);
             });
         }
+
+        // Reset Settings Button
+        const resetButton = document.getElementById('resetSettings');
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset all settings to factory defaults?')) {
+                    this.resetToFactorySettings();
+                }
+            });
+        }
     }
 
     adjustFontSize(change) {
@@ -102,6 +112,22 @@ class SettingsManager {
 
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
+    }
+
+    resetToFactorySettings() {
+        const defaultSettings = {
+            darkMode: true,
+            fontSize: 16
+        };
+        this.settings = defaultSettings;
+        this.applySettings();
+        this.saveSettings();
+
+        // Update UI controls
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const currentFontSize = document.getElementById('currentFontSize');
+        if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
+        if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
     }
 }
 
