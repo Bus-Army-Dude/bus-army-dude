@@ -341,7 +341,7 @@ const youtubeShoutouts = {
 
 youtubeShoutouts.init();
     
-// New Year countdown
+// Countdown to AFO Braces with Split-Flap Effect
 function updateNewYearCountdown() {
     const now = new Date();
     const newYear = new Date('2025-01-31T14:30:00');
@@ -363,48 +363,49 @@ function updateNewYearCountdown() {
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Update flip clock for days
-        updateFlipClock('countdown-days', days);
-
-        // Update flip clock for hours
-        updateFlipClock('countdown-hours', hours);
-
-        // Update flip clock for minutes
-        updateFlipClock('countdown-minutes', minutes);
-
-        // Update flip clock for seconds
-        updateFlipClock('countdown-seconds', seconds);
+        // Update split-flap displays
+        updateSplitFlap('days', days);
+        updateSplitFlap('hours', hours);
+        updateSplitFlap('minutes', minutes);
+        updateSplitFlap('seconds', seconds);
     }
 }
 
-// Function to update flip clock value
-function updateFlipClock(id, value) {
-    const clock = document.getElementById(id);
-    const front = clock.querySelector('.flip-clock-front');
-    const back = clock.querySelector('.flip-clock-back');
-    const valueStr = value.toString().padStart(2, '0');
+function updateSplitFlap(id, value) {
+    const element = document.getElementById(`countdown-${id}`);
+    if (!element) return;
 
-    if (front.textContent !== valueStr) {
-        front.textContent = valueStr;
-        back.textContent = valueStr;
+    const newValue = value.toString().padStart(2, '0');
+    const currentValue = element.getAttribute('data-value') || '00';
+
+    if (newValue !== currentValue) {
+        element.setAttribute('data-value', newValue);
+        
+        // Create the split-flap effect
+        element.innerHTML = `
+            <div class="split-flap">
+                <div class="top">${currentValue}</div>
+                <div class="bottom">${currentValue}</div>
+                <div class="top flip">${newValue}</div>
+                <div class="bottom flip">${newValue}</div>
+            </div>
+        `;
 
         // Trigger the flip animation
-        clock.querySelector('.flip-clock-inner').classList.add('flip');
-
-        setTimeout(() => {
-            clock.querySelector('.flip-clock-inner').classList.remove('flip');
-        }, 600); // match the animation duration
+        requestAnimationFrame(() => {
+            element.querySelector('.split-flap').classList.add('animate');
+        });
     }
 }
-    
-    // Initialize everything
+
+// Keep your existing initialization
+document.addEventListener('DOMContentLoaded', () => {
     detectDetailedDevice();
     updateTime();
     tiktokShoutouts.init();
     updateNewYearCountdown();
 
     setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
 
