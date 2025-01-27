@@ -6,7 +6,6 @@
     <title>Settings - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="settings.css">
-    <link rel="stylesheet" href="ai-features.css">
 </head>
 <body class="dark-mode">
     <div class="container">
@@ -17,18 +16,19 @@
             </div>
 
             <div class="settings-group">
+                <!-- Dark Mode Toggle -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title">Appearance</span>
-                        <span class="setting-description">Choose your preferred theme</span>
+                        <span class="setting-title">Dark Mode</span>
+                        <span class="setting-description">Switch between light and dark theme</span>
                     </div>
                     <label class="toggle-switch">
-                        <input type="checkbox" id="themeToggle" checked>
+                        <input type="checkbox" id="darkModeToggle" checked>
                         <span class="toggle-slider"></span>
-                        <span class="toggle-label">Dark Mode</span>
                     </label>
                 </div>
 
+                <!-- Language Selector -->
                 <div class="setting-item">
                     <div class="setting-label">
                         <span class="setting-title">Language</span>
@@ -39,22 +39,19 @@
                         <option value="es">Español</option>
                         <option value="fr">Français</option>
                         <option value="de">Deutsch</option>
-                        <option value="it">Italiano</option>
-                        <option value="ja">日本語</option>
-                        <option value="ko">한국어</option>
-                        <option value="zh">中文</option>
                     </select>
                 </div>
 
+                <!-- Font Size -->
                 <div class="setting-item">
                     <div class="setting-label">
-                        <span class="setting-title">Text Size</span>
-                        <span class="setting-description">Adjust the size of text</span>
+                        <span class="setting-title">Font Size</span>
+                        <span class="setting-description">Adjust text size</span>
                     </div>
                     <div class="font-size-control">
-                        <button class="font-size-btn" id="decreaseFont">A-</button>
-                        <span class="font-size-value" id="currentFontSize">16</span>
-                        <button class="font-size-btn" id="increaseFont">A+</button>
+                        <button id="decreaseFont">A-</button>
+                        <span id="currentFontSize">16px</span>
+                        <button id="increaseFont">A+</button>
                     </div>
                 </div>
             </div>
@@ -62,8 +59,6 @@
             <a href="index.html" class="back-link">← Back to Profile</a>
         </div>
     </div>
-
-    <script src="common.js"></script>
     <script src="settings.js"></script>
 </body>
 </html>
