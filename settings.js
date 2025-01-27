@@ -1,70 +1,35 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize settings from localStorage
-    loadSettings();
-
-    // Dark Mode Toggle
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    darkModeToggle.addEventListener('change', function() {
-        document.body.classList.toggle('light-mode');
-        document.body.classList.toggle('dark-mode');
-        saveSettings();
-    });
-
-    // Language Selector
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('themeToggle');
     const languageSelect = document.getElementById('languageSelect');
-    languageSelect.addEventListener('change', function() {
-        saveSettings();
-    });
-
-    // Font Size Controls
     const decreaseFont = document.getElementById('decreaseFont');
     const increaseFont = document.getElementById('increaseFont');
     const currentFontSize = document.getElementById('currentFontSize');
 
+    // Initialize controls with current settings
+    themeToggle.checked = themeManager.settings.darkMode;
+    languageSelect.value = themeManager.settings.language;
+    currentFontSize.textContent = themeManager.settings.fontSize;
+
+    // Theme toggle event listener
+    themeToggle.addEventListener('change', (e) => {
+        themeManager.applyTheme(e.target.checked);
+    });
+
+    // Language selector event listener
+    languageSelect.addEventListener('change', (e) => {
+        themeManager.setLanguage(e.target.value);
+    });
+
+    // Font size controls
     decreaseFont.addEventListener('click', () => {
-        changeFontSize(-1);
+        const newSize = parseInt(currentFontSize.textContent) - 1;
+        themeManager.setFontSize(newSize);
+        currentFontSize.textContent = newSize;
     });
 
     increaseFont.addEventListener('click', () => {
-        changeFontSize(1);
+        const newSize = parseInt(currentFontSize.textContent) + 1;
+        themeManager.setFontSize(newSize);
+        currentFontSize.textContent = newSize;
     });
 });
-
-function loadSettings() {
-    const settings = JSON.parse(localStorage.getItem('websiteSettings')) || {
-        darkMode: true,
-        language: 'en',
-        fontSize: 16
-    };
-
-    // Apply Dark Mode
-    document.getElementById('darkModeToggle').checked = settings.darkMode;
-    document.body.classList.toggle('light-mode', !settings.darkMode);
-    document.body.classList.toggle('dark-mode', settings.darkMode);
-
-    // Apply Language
-    document.getElementById('languageSelect').value = settings.language;
-
-    // Apply Font Size
-    document.getElementById('currentFontSize').textContent = `${settings.fontSize}px`;
-    document.documentElement.style.setProperty('--font-size-base', `${settings.fontSize}px`);
-}
-
-function saveSettings() {
-    const settings = {
-        darkMode: document.getElementById('darkModeToggle').checked,
-        language: document.getElementById('languageSelect').value,
-        fontSize: parseInt(document.getElementById('currentFontSize').textContent)
-    };
-
-    localStorage.setItem('websiteSettings', JSON.stringify(settings));
-}
-
-function changeFontSize(change) {
-    const currentSize = parseInt(document.getElementById('currentFontSize').textContent);
-    const newSize = Math.min(Math.max(currentSize + change, 12), 24); // Min: 12px, Max: 24px
-    
-    document.getElementById('currentFontSize').textContent = `${newSize}px`;
-    document.documentElement.style.setProperty('--font-size-base', `${newSize}px`);
-    saveSettings();
-}
