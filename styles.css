@@ -693,26 +693,30 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: var(--accent-color);
-    color: white;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    display: none;
+    background-color: #00ff00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: none; /* Hidden by default */
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    font-size: 20px;
+    z-index: 99;
     transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-.back-to-top.visible {
-    display: flex;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .back-to-top:hover {
-    background-color: var(--hover-color);
+    background-color: #00cc00;
     transform: translateY(-3px);
+}
+
+/* Show button when scrolled */
+.back-to-top.visible {
+    display: flex;
 }
 
 /* Version Info Section */
