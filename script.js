@@ -446,39 +446,36 @@ if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
 
-// Get the button
-const backToTopButton = document.getElementById("back-to-top-btn");
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopButton = document.getElementById('backToTop');
+    const profileSection = document.querySelector('.profile-section');
 
-// When the user scrolls down 100px from the top of the document, show the button
-window.onscroll = function () {
-  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-    backToTopButton.style.display = "block"; // Show the button
-  } else {
-    backToTopButton.style.display = "none"; // Hide the button
-  }
-};
+    // Function to check scroll position and show/hide button
+    function toggleBackToTopButton() {
+        // Get the profile section's bottom position
+        const profileBottom = profileSection.offsetTop + profileSection.offsetHeight;
+        
+        // Show button if scrolled past profile section, hide if at top
+        if (window.scrollY > profileBottom) {
+            backToTopButton.classList.add('visible');
+        } else {
+            backToTopButton.classList.remove('visible');
+        }
+    }
 
-// When the user clicks on the button, scroll to the top of the document
-backToTopButton.onclick = function () {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth", // Smooth scroll animation
-  });
-};
+    // Scroll to top when button is clicked
+    backToTopButton.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 
-  // Check if the user has already accepted cookies
-  if (!localStorage.getItem('cookieAccepted')) {
-    document.getElementById('cookieConsent').style.display = 'block';
-  }
-
-  // Accept cookies button functionality
-  document.getElementById('acceptCookies').onclick = function() {
-    localStorage.setItem('cookieAccepted', 'true');
-    document.getElementById('cookieConsent').style.display = 'none';
-  };
-
-window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
+    // Listen for scroll events
+    window.addEventListener('scroll', toggleBackToTopButton);
+    
+    // Initial check for button visibility
+    toggleBackToTopButton();
 });
 
 // Get all the FAQ question buttons
