@@ -200,30 +200,29 @@
         </div>
 
 <!-- Calendar Section -->
-<div class="calendar-wrapper">
-    <div class="calendar">
-        <div class="calendar-header">
-            <button id="prevMonth" class="calendar-nav-btn">&#10094;</button>
-            <h3 id="monthDisplay" class="calendar-title"></h3>
-            <button id="nextMonth" class="calendar-nav-btn">&#10095;</button>
-        </div>
-        <div class="calendar-weekdays">
-            <div>Sun</div>
-            <div>Mon</div>
-            <div>Tue</div>
-            <div>Wed</div>
-            <div>Thu</div>
-            <div>Fri</div>
-            <div>Sat</div>
-        </div>
-        <div class="calendar-days" id="daysContainer"></div>
+<div class="calendar-container">
+    <div class="calendar-nav">
+        <button class="cal-btn" id="prevMonth">&lt;</button>
+        <div id="monthDisplay" class="month-title"></div>
+        <button class="cal-btn" id="nextMonth">&gt;</button>
     </div>
+    <div class="weekdays">
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+    </div>
+    <div id="calendar" class="days-grid"></div>
 </div>
 
-<div id="calendar-popup" class="calendar-popup">
-    <div class="calendar-popup-content">
-        <span class="calendar-close-btn">&times;</span>
-        <div id="event-details"></div>
+<!-- Event Popup -->
+<div id="eventPopup" class="event-popup">
+    <div class="event-popup-content">
+        <span class="close-popup">&times;</span>
+        <div id="eventDetails"></div>
     </div>
 </div>
         
