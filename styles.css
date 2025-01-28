@@ -1104,14 +1104,14 @@ footer {
     }
 }
 
-/* Calendar Styles */
+/* Calendar specific styles */
 .calendar-container {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    background: var(--background-color, #1a1a1a);
     padding: 20px;
     border-radius: 10px;
+    font-size: inherit;
 }
 
 .calendar-nav {
@@ -1122,32 +1122,30 @@ footer {
 }
 
 .month-title {
-    color: var(--text-color, #ffffff);
-    font-size: 1.5em;
+    font-size: inherit;
     text-align: center;
     flex-grow: 1;
 }
 
 .cal-btn {
-    background: var(--button-background, #333);
-    color: var(--button-text, #fff);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.cal-btn:hover {
-    opacity: 0.8;
+    font-size: inherit;
 }
 
 .weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
-    color: var(--text-color, #ffffff);
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.weekday-text {
+    font-size: inherit;
+    padding: 10px 0;
 }
 
 .days-grid {
@@ -1161,16 +1159,18 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--calendar-day-bg, #333);
-    color: var(--text-color, #ffffff);
     border-radius: 5px;
     cursor: pointer;
     position: relative;
+    font-size: inherit;
+}
+
+.day.empty {
+    cursor: default;
 }
 
 .day.today {
-    background: var(--highlight-color, #444);
-    border: 2px solid var(--accent-color, #666);
+    font-weight: bold;
 }
 
 .day.has-event::after {
@@ -1178,10 +1178,8 @@ footer {
     position: absolute;
     top: 2px;
     right: 2px;
-    color: var(--accent-color, #ff4444);
 }
 
-/* Popup Styles */
 .event-popup {
     display: none;
     position: fixed;
@@ -1194,24 +1192,23 @@ footer {
 }
 
 .event-popup-content {
-    background: var(--background-color, #1a1a1a);
-    color: var(--text-color, #ffffff);
     margin: 15% auto;
     padding: 20px;
     border-radius: 10px;
     width: 80%;
     max-width: 500px;
     position: relative;
+    font-size: inherit;
 }
 
 .close-popup {
-    color: var(--text-color, #ffffff);
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    margin-left: 15px;
 }
 
-.close-popup:hover {
-    color: var(--accent-color, #ff4444);
+.event-details {
+    font-size: inherit;
 }
