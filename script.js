@@ -505,3 +505,76 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
+
+const daysContainer = document.querySelector('.days');
+const eventPopup = document.getElementById('event-popup');
+const eventDetails = document.getElementById('event-details');
+const closePopup = document.querySelector('.close-popup');
+
+// Function to get the number of days in a month
+function getDaysInMonth(year, month) {
+    return new Date(year, month + 1, 0).getDate();
+}
+
+// Get the current year and month
+const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth();
+
+// Get the number of days in the current month
+const monthDays = getDaysInMonth(currentYear, currentMonth);
+
+// Sample events
+const events = [
+    { date: 5, type: 'work', title: 'Team meeting', time: '10:00 AM', location: 'Office', duration: '2 hours', link: 'https://example.com' },
+    { date: 10, type: 'personal', title: 'Birthday party', time: '6:00 PM', location: 'Home', duration: '4 hours' },
+    { date: 15, type: 'medical', title: 'Dentist appointment', time: '2:00 PM', location: 'Dental Clinic', duration: '1 hour' },
+    // Add more events as needed
+];
+
+// Populate the days
+for (let i = 1; i <= monthDays; i++) {
+    const dayDiv = document.createElement('div');
+    dayDiv.classList.add('day');
+    dayDiv.textContent = i;
+
+    // Add event indicator if there is an event on this day
+    const dayEvents = events.filter(event => event.date === i);
+    if (dayEvents.length > 0) {
+        const indicator = document.createElement('div');
+        indicator.classList.add('event-indicator');
+        indicator.addEventListener('click', () => showEventDetails(dayEvents));
+        dayDiv.appendChild(indicator);
+    }
+
+    daysContainer.appendChild(dayDiv);
+}
+
+// Show event details in the pop-up
+function showEventDetails(dayEvents) {
+    eventDetails.innerHTML = ''; // Clear previous details
+    dayEvents.forEach(event => {
+        const eventInfo = document.createElement('div');
+        eventInfo.innerHTML = `
+            <h3>${event.title}</h3>
+            <p><strong>Date:</strong> ${event.date}</p>
+            <p><strong>Time:</strong> ${event.time}</p>
+            <p><strong>Location:</strong> ${event.location}</p>
+            <p><strong>Duration:</strong> ${event.duration}</p>
+            ${event.link ? `<p><strong>Link:</strong> <a href="${event.link}" target="_blank">${event.link}</a></p>` : ''}
+        `;
+        eventDetails.appendChild(eventInfo);
+    });
+    eventPopup.style.display = 'block';
+}
+
+// Close the pop-up
+closePopup.onclick = function() {
+    eventPopup.style.display = 'none';
+}
+
+// Close the pop-up if the user clicks outside of it
+window.onclick = function(event) {
+    if (event.target == eventPopup) {
+        eventPopup.style.display = 'none';
+    }
+}
