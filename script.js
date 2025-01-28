@@ -513,63 +513,67 @@ class Calendar {
         this.currentYear = this.date.getFullYear();
         this.currentDay = this.date.getDate();
         
+        // Get DOM elements
         this.monthDisplay = document.getElementById('monthDisplay');
-        this.daysContainer = document.getElementById('daysContainer');
-        this.prevButton = document.getElementById('prevMonth');
-        this.nextButton = document.getElementById('nextMonth');
+        this.calendar = document.getElementById('calendar');
+        this.popup = document.getElementById('eventPopup');
         
-        // Example events - replace with your actual events
+        // Sample events - Replace with your actual events
         this.events = [
             {
-                date: new Date(2025, 0, 30),
+                date: new Date(2025, 0, 30), // January 30, 2025
                 title: 'Stream Event',
                 time: '3:00 PM',
                 location: 'Twitch',
                 duration: '2 hours',
                 link: 'https://twitch.tv/busarmydude'
             }
+            // Add more events here
         ];
 
         this.init();
     }
 
     init() {
-        this.updateMonth();
         this.renderCalendar();
         this.addEventListeners();
     }
 
-    updateMonth() {
+    renderCalendar() {
+        const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+        const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+        const startingDay = firstDay.getDay();
+        const totalDays = lastDay.getDate();
+
+        // Update month display
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 
                        'July', 'August', 'September', 'October', 'November', 'December'];
         this.monthDisplay.textContent = `${months[this.currentMonth]} ${this.currentYear}`;
-    }
 
-    renderCalendar() {
-        this.daysContainer.innerHTML = '';
-        
-        const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
-        const totalDays = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+        // Clear calendar
+        this.calendar.innerHTML = '';
 
-        // Empty days
-        for (let i = 0; i < firstDay; i++) {
+        // Add empty days for padding
+        for (let i = 0; i < startingDay; i++) {
             const emptyDay = document.createElement('div');
-            emptyDay.className = 'calendar-day empty';
-            this.daysContainer.appendChild(emptyDay);
+            emptyDay.className = 'day empty';
+            this.calendar.appendChild(emptyDay);
         }
 
-        // Actual days
+        // Add days
         for (let day = 1; day <= totalDays; day++) {
-            const dayEl = document.createElement('div');
-            dayEl.className = 'calendar-day';
-            dayEl.textContent = day;
+            const dayElement = document.createElement('div');
+            dayElement.className = 'day';
+            dayElement.textContent = day;
 
+            // Check if it's today
             if (day === this.currentDay && 
                 this.currentMonth === new Date().getMonth() && 
                 this.currentYear === new Date().getFullYear()) {
-                dayEl.classList.add('current');
+                dayElement.classList.add('today');
             }
 
+            // Check for events
             const hasEvent = this.events.some(event => 
                 event.date.getDate() === day && 
                 event.date.getMonth() === this.currentMonth &&
@@ -577,33 +581,41 @@ class Calendar {
             );
 
             if (hasEvent) {
-                dayEl.classList.add('has-event');
-                dayEl.addEventListener('click', () => this.showEvents(day));
+                dayElement.classList.add('has-event');
+                dayElement.addEventListener('click', () => this.showEvents(day));
             }
 
-            this.daysContainer.appendChild(dayEl);
+            this.calendar.appendChild(dayElement);
         }
     }
 
     addEventListeners() {
-        this.prevButton.addEventListener('click', () => {
+        document.getElementById('prevMonth').addEventListener('click', () => {
             this.currentMonth--;
             if (this.currentMonth < 0) {
                 this.currentMonth = 11;
                 this.currentYear--;
             }
-            this.updateMonth();
             this.renderCalendar();
         });
 
-        this.nextButton.addEventListener('click', () => {
+        document.getElementById('nextMonth').addEventListener('click', () => {
             this.currentMonth++;
             if (this.currentMonth > 11) {
                 this.currentMonth = 0;
                 this.currentYear++;
             }
-            this.updateMonth();
             this.renderCalendar();
+        });
+
+        document.querySelector('.close-popup').addEventListener('click', () => {
+            this.popup.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === this.popup) {
+                this.popup.style.display = 'none';
+            }
         });
     }
 
@@ -616,11 +628,9 @@ class Calendar {
 
         if (events.length === 0) return;
 
-        const popup = document.getElementById('calendar-popup');
-        const details = document.getElementById('event-details');
-        
-        details.innerHTML = events.map(event => `
-            <div class="calendar-event">
+        const eventDetails = document.getElementById('eventDetails');
+        eventDetails.innerHTML = events.map(event => `
+            <div class="event-item">
                 <h3>${event.title}</h3>
                 <p>Date: ${event.date.toDateString()}</p>
                 <p>Time: ${event.time}</p>
@@ -629,22 +639,12 @@ class Calendar {
                 ${event.link ? `<p><a href="${event.link}" target="_blank">Join Event</a></p>` : ''}
             </div>
         `).join('');
-        
-        popup.style.display = 'block';
-        
-        document.querySelector('.calendar-close-btn').onclick = () => {
-            popup.style.display = 'none';
-        };
-        
-        window.onclick = (e) => {
-            if (e.target === popup) {
-                popup.style.display = 'none';
-            }
-        };
+
+        this.popup.style.display = 'block';
     }
 }
 
-// Initialize the calendar
+// Initialize the calendar when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const calendar = new Calendar();
 });
