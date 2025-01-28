@@ -1103,3 +1103,96 @@ footer {
         padding: 12px 15px;
     }
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.calendar-section {
+    padding: 20px;
+}
+
+.calendar {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    width: 100%;
+    max-width: 800px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.days-of-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.days-of-week div {
+    font-weight: bold;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.day {
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: relative;
+}
+
+.event-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.event-popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.event-popup-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.close-popup {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-popup:hover,
+.close-popup:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
