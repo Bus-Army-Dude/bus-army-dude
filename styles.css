@@ -1104,14 +1104,25 @@ footer {
     }
 }
 
+/* Calendar Styles */
 .section {
     padding: 20px;
     margin: 20px auto;
     max-width: 800px;
+    background: #191919;
+    border-radius: 15px;
+}
+
+.section-title {
+    color: #fff;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .calendar {
-    background-color: #1a1a1a;
+    background-color: #191919;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -1125,11 +1136,14 @@ footer {
     padding: 0 10px;
 }
 
-.calendar-header h3 {
+.month-display {
     color: #fff;
-    font-size: 1.5em;
+    font-size: 24px;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 10px;
+    text-align: center;
+    flex-grow: 1;
 }
 
 .nav-button {
@@ -1140,6 +1154,7 @@ footer {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 18px;
 }
 
 .nav-button:hover {
@@ -1156,6 +1171,8 @@ footer {
     background-color: #333;
     padding: 10px 0;
     border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
 }
 
 .days {
@@ -1168,7 +1185,7 @@ footer {
 .day {
     min-height: 60px;
     aspect-ratio: 1;
-    background-color: #2a2a2a;
+    background-color: #333;
     color: #fff;
     display: flex;
     align-items: center;
@@ -1177,21 +1194,22 @@ footer {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-    font-size: 1.1em;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .day:hover {
-    background-color: #3a3a3a;
+    background-color: #444;
 }
 
 .empty {
-    background-color: #1a1a1a;
+    background-color: #222;
     cursor: default;
 }
 
 .current-day {
     background-color: #444;
-    border: 2px solid #666;
+    border: 2px solid #fff;
 }
 
 .event-indicator {
@@ -1211,12 +1229,12 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 1000;
 }
 
 .popup-content {
-    background-color: #1a1a1a;
+    background-color: #191919;
     color: #fff;
     margin: 15% auto;
     padding: 20px;
@@ -1224,16 +1242,18 @@ footer {
     width: 80%;
     max-width: 500px;
     position: relative;
+    font-family: 'Poppins', sans-serif;
 }
 
 .close-button {
-    color: #aaa;
+    color: #fff;
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    margin-left: 15px;
 }
 
 .close-button:hover {
-    color: #fff;
+    color: #ff4444;
 }
