@@ -1112,35 +1112,23 @@ footer {
     padding: 20px;
 }
 
-.section-title {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.events-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
 .event-card {
     padding: 20px;
+    margin-bottom: 15px;
     border-radius: 10px;
-    transition: transform 0.2s ease;
-    cursor: pointer;
-}
-
-.event-card:hover {
-    transform: translateY(-2px);
+    background: var(--background-color, #1a1a1a);
+    border: 1px solid var(--border-color, #333);
 }
 
 .event-title {
     margin: 0 0 15px 0;
     font-size: 1.2em;
+    color: var(--text-color, #fff);
 }
 
 .event-info {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -1148,6 +1136,7 @@ footer {
     display: flex;
     align-items: center;
     gap: 8px;
+    color: var(--text-color, #fff);
 }
 
 .event-link {
@@ -1155,17 +1144,12 @@ footer {
     margin-top: 15px;
     padding: 8px 16px;
     border-radius: 5px;
+    background: var(--accent-color, #4a4a4a);
+    color: var(--text-color, #fff);
     text-decoration: none;
     text-align: center;
-    transition: opacity 0.2s ease;
 }
 
 .event-link:hover {
-    opacity: 0.8;
-}
-
-.timezone-info {
-    font-size: 0.9em;
-    margin-top: 5px;
     opacity: 0.8;
 }
