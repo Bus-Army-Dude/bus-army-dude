@@ -516,9 +516,11 @@ function getDaysInMonth(year, month) {
     return new Date(year, month + 1, 0).getDate();
 }
 
-// Get the current year and month
-const currentYear = new Date().getFullYear();
-const currentMonth = new Date().getMonth();
+// Get the current date, year, and month
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth();
+const today = currentDate.getDate();
 
 // Get the number of days in the current month
 const monthDays = getDaysInMonth(currentYear, currentMonth);
@@ -536,6 +538,11 @@ for (let i = 1; i <= monthDays; i++) {
     const dayDiv = document.createElement('div');
     dayDiv.classList.add('day');
     dayDiv.textContent = i;
+
+    // Highlight the current day
+    if (i === today) {
+        dayDiv.classList.add('current-day');
+    }
 
     // Add event indicator if there is an event on this day
     const dayEvents = events.filter(event => event.date === i);
