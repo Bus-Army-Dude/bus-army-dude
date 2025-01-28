@@ -1150,6 +1150,10 @@ body {
     position: relative;
 }
 
+.current-day {
+    background-color: #ffeb3b;
+}
+
 .event-indicator {
     position: absolute;
     top: 5px;
