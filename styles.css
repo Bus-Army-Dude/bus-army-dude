@@ -1104,99 +1104,117 @@ footer {
     }
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-}
-
-.calendar-section {
-    padding: 20px;
-}
-
 .calendar {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    width: 100%;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
     max-width: 800px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.nav-button {
+    background-color: #333;
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #444;
 }
 
 .days-of-week {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    background-color: #333;
-    color: #fff;
     text-align: center;
-    padding: 10px 0;
-}
-
-.days-of-week div {
+    color: #fff;
     font-weight: bold;
+    margin-bottom: 10px;
+    background-color: #333;
+    padding: 10px 0;
+    border-radius: 5px;
 }
 
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(100px, auto);
+    gap: 5px;
 }
 
 .day {
-    border: 1px solid #ccc;
-    padding: 10px;
+    aspect-ratio: 1;
+    background-color: #2a2a2a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.day:hover {
+    background-color: #3a3a3a;
 }
 
 .current-day {
-    background-color: #ffeb3b;
+    background-color: #444;
+    border: 2px solid #666;
 }
 
 .event-indicator {
     position: absolute;
     top: 5px;
     right: 5px;
-    width: 10px;
-    height: 10px;
-    background-color: red;
+    width: 8px;
+    height: 8px;
+    background-color: #ff4444;
     border-radius: 50%;
-    cursor: pointer;
 }
 
-.event-popup {
-    display: none; /* Hidden by default */
+.popup {
+    display: none;
     position: fixed;
-    z-index: 1;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
 }
 
-.event-popup-content {
-    background-color: #fff;
+.popup-content {
+    background-color: #1a1a1a;
+    color: #fff;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border-radius: 10px;
     width: 80%;
     max-width: 500px;
-    border-radius: 8px;
+    position: relative;
 }
 
-.close-popup {
+.close-button {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
 }
 
-.close-popup:hover,
-.close-popup:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.close-button:hover {
+    color: #fff;
 }
