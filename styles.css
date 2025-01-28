@@ -1219,7 +1219,7 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 24px;
+    margin: 24px auto 0;  /* Centered margin */
     padding: 14px 28px;
     border-radius: 50px;
     background: #2ecc71;
@@ -1229,6 +1229,9 @@ footer {
     font-size: 1.1em;
     border: none;
     transition: all 0.2s ease;
+    width: auto;          /* Auto width by default */
+    max-width: 100%;      /* Never exceed container width */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .event-link:hover {
@@ -1291,7 +1294,7 @@ footer {
     animation: fadeIn 0.3s ease forwards;
 }
 
-/* Mobile Responsiveness */
+/* Mobile Responsiveness - Updated */
 @media (max-width: 768px) {
     [data-section-id="events"] {
         padding: 16px;
@@ -1317,11 +1320,21 @@ footer {
     }
 
     .event-link {
-        width: 100%;
-        padding: 12px 24px;
+        width: calc(100% - 32px); /* Account for parent padding */
+        margin: 20px auto 0;
+        padding: 12px 20px;    /* Slightly reduced padding */
+        font-size: 1em;        /* Slightly smaller font */
     }
 
     .event-row {
         font-size: calc(var(--font-size) * 0.95);
+    }
+}
+
+/* For very small screens */
+@media (max-width: 360px) {
+    .event-link {
+        padding: 10px 16px;
+        font-size: 0.95em;
     }
 }
