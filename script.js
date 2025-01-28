@@ -168,7 +168,6 @@ window.onload = function() {
             { username: 'aggressiveafterdark', isVerified: false, followers: '344.9K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
             { username: 'rachel_hughes', isVerified: false, followers: '310.4K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
             { username: 'badge5022', isVerified: false, followers: '19.8K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },           
-            { username: 'busarmydude', isVerified: false, followers: '1,253', nickname: 'Bus Army Dude', bio: 'CURRENT PRESIDENT: Trump (2025-2029) Political party: Republican', profilePic: 'images/busarmydude.jpg' },
             { username: 'raisingramsey2023', isVerified: false, followers: '1,200', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
             { username: 'jerridc4', isVerified: false, followers: '478', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
             // Add more shoutouts here...
