@@ -7,24 +7,18 @@ class EventManager {
         
         // Example events structure with more detailed information
         this.events = [
+            // Add your events here in this format:
+            /*
             {
-                title: 'Minecraft Stream',
-                startDate: new Date('2025-01-30T15:00:00Z'),
-                endDate: new Date('2025-01-30T17:00:00Z'),
-                description: 'Join us for some Minecraft building and adventures! We\'ll be working on new projects and having fun with the community.',
-                location: 'Twitch',
-                link: 'https://twitch.tv/busarmydude',
-                type: 'stream' // Can be used for different event types styling
-            },
-            {
-                title: 'Community Game Night',
-                startDate: new Date('2025-02-01T19:00:00Z'),
-                endDate: new Date('2025-02-01T22:00:00Z'),
-                description: 'Weekly gaming session with viewers! Games will be chosen by the community.',
-                location: 'Twitch',
-                link: 'https://twitch.tv/busarmydude',
-                type: 'community'
+                title: 'Event Title',
+                startDate: new Date('YYYY-MM-DDThh:mm:00Z'),
+                endDate: new Date('YYYY-MM-DDThh:mm:00Z'),
+                description: 'Event Description',
+                location: 'Platform/Location',
+                link: 'https://your-event-url.com',
+                type: 'stream' // or 'community'
             }
+            */
         ];
 
         if (this.eventsContainer) {
