@@ -1112,17 +1112,19 @@ footer {
     margin: 10px 0;
     transition: all 0.3s ease;
     background-color: var(--content-bg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 [data-section-id="events"] .section-content {
     padding: 0;
 }
 
-.section-title {
-    text-align: center;
+[data-section-id="events"] .section-title {
+    text-align: left;
     margin-bottom: 20px;
     color: var(--text-color);
     font-size: var(--title-size);
+    padding-left: 10px;
 }
 
 .events-container {
