@@ -1107,7 +1107,7 @@ footer {
 /* Event Section Styles */
 [data-section-id="events"] {
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--section-border-radius, 15px); /* Using your section border radius variable if it exists, otherwise 15px */
     padding: 20px;
     margin: 10px 0;
     transition: all 0.3s ease;
