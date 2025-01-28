@@ -508,26 +508,28 @@ faqQuestions.forEach((question) => {
 
 class Calendar {
     constructor() {
+        // Initialize date objects
         this.date = new Date();
         this.currentMonth = this.date.getMonth();
         this.currentYear = this.date.getFullYear();
         this.currentDay = this.date.getDate();
         
+        // Get DOM elements
         this.monthDisplay = document.getElementById('monthDisplay');
         this.daysContainer = document.getElementById('daysContainer');
         this.prevButton = document.getElementById('prevMonth');
         this.nextButton = document.getElementById('nextMonth');
-        
+
+        // Sample events
         this.events = [
             {
-                date: new Date(2024, 0, 15),
+                date: new Date(2025, 0, 30), // January 30, 2025
                 title: 'Stream Event',
                 time: '3:00 PM',
                 location: 'Twitch',
                 duration: '2 hours',
                 link: 'https://twitch.tv/busarmydude'
-            },
-            // Add more events here
+            }
         ];
         
         this.initializeCalendar();
@@ -606,7 +608,6 @@ class Calendar {
                 const indicator = document.createElement('div');
                 indicator.className = 'event-indicator';
                 dayElement.appendChild(indicator);
-
                 dayElement.addEventListener('click', () => this.showEventDetails(eventForDay));
             }
 
