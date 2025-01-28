@@ -508,11 +508,14 @@ faqQuestions.forEach((question) => {
 
 class EventsManager {
     constructor() {
-        // Current reference time: 2025-01-28 18:06:54 UTC
+        // Adding console.log for debugging
+        console.log('EventsManager initializing...');
+        
         this.events = [
             {
                 title: 'Stream Event',
-                date: new Date('2025-01-30T15:00:00Z'), // UTC time
+                // Using the current reference time to set future dates
+                date: new Date('2025-01-30T15:00:00Z'),
                 location: 'Twitch',
                 duration: '2 hours',
                 link: 'https://twitch.tv/busarmydude',
@@ -520,52 +523,46 @@ class EventsManager {
             },
             {
                 title: 'Weekly Game Night',
-                date: new Date('2025-02-01T19:00:00Z'), // UTC time
+                date: new Date('2025-02-01T19:00:00Z'),
                 location: 'Twitch',
                 duration: '3 hours',
                 link: 'https://twitch.tv/busarmydude',
                 description: 'Weekly gaming session with viewers'
             }
-            // Add more events as needed
         ];
 
         this.eventsContainer = document.getElementById('eventsContainer');
+        
+        // Add debug logging
+        console.log('Events container:', this.eventsContainer);
+        console.log('Initial events:', this.events);
+        
         this.init();
     }
 
     init() {
+        if (!this.eventsContainer) {
+            console.error('Events container not found!');
+            return;
+        }
         this.renderEvents();
-        this.setupThemeObserver();
-    }
-
-    setupThemeObserver() {
-        const observer = new MutationObserver(() => {
-            this.renderEvents(); // Re-render events when theme changes
-        });
-
-        observer.observe(document.body, {
-            attributes: true,
-            attributeFilter: ['data-theme', 'class']
-        });
     }
 
     formatDateTime(date) {
-        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZone: userTimeZone,
-            timeZoneName: 'short'
-        });
-
-        return {
-            formatted: dateFormatter.format(date),
-            timezone: userTimeZone
-        };
+        try {
+            return new Intl.DateTimeFormat(navigator.language, {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            }).format(date);
+        } catch (error) {
+            console.error('Date formatting error:', error);
+            return date.toString();
+        }
     }
 
     getTimeUntil(date) {
@@ -576,75 +573,67 @@ class EventsManager {
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-        let timeString = '';
-        if (days > 0) timeString += `${days} day${days > 1 ? 's' : ''} `;
-        if (hours > 0) timeString += `${hours} hour${hours > 1 ? 's' : ''} `;
-        if (minutes > 0) timeString += `${minutes} minute${minutes > 1 ? 's' : ''}`;
+        let timeString = [];
+        if (days > 0) timeString.push(`${days} day${days > 1 ? 's' : ''}`);
+        if (hours > 0) timeString.push(`${hours} hour${hours > 1 ? 's' : ''}`);
+        if (minutes > 0) timeString.push(`${minutes} minute${minutes > 1 ? 's' : ''}`);
 
-        return timeString.trim() || 'Starting soon';
+        return timeString.join(', ') || 'Starting soon';
     }
 
     renderEvents() {
+        console.log('Rendering events...');
         const now = new Date();
+        
+        // Filter and sort upcoming events
         const futureEvents = this.events
             .filter(event => event.date > now)
             .sort((a, b) => a.date - b.date);
+
+        console.log('Future events:', futureEvents);
 
         if (futureEvents.length === 0) {
             this.eventsContainer.innerHTML = `
                 <div class="event-card">
                     <p>No upcoming events scheduled.</p>
-                </div>
-            `;
+                </div>`;
             return;
         }
 
-        this.eventsContainer.innerHTML = futureEvents.map(event => {
-            const dateTime = this.formatDateTime(event.date);
-            const timeUntil = this.getTimeUntil(event.date);
-
-            return `
-                <div class="event-card">
-                    <h3 class="event-title">${event.title}</h3>
-                    <div class="event-info">
-                        <div class="event-row">
-                            <span>📅</span>
-                            <span>${dateTime.formatted}</span>
-                        </div>
-                        <div class="event-row">
-                            <span>⏳</span>
-                            <span>Starts in: ${timeUntil}</span>
-                        </div>
-                        <div class="event-row">
-                            <span>📍</span>
-                            <span>${event.location}</span>
-                        </div>
-                        <div class="event-row">
-                            <span>⏱️</span>
-                            <span>${event.duration}</span>
-                        </div>
-                        ${event.description ? `
-                            <div class="event-row">
-                                <span>📝</span>
-                                <span>${event.description}</span>
-                            </div>
-                        ` : ''}
+        this.eventsContainer.innerHTML = futureEvents.map(event => `
+            <div class="event-card">
+                <h3 class="event-title">${event.title}</h3>
+                <div class="event-info">
+                    <div class="event-row">
+                        <span>📅 ${this.formatDateTime(event.date)}</span>
                     </div>
-                    ${event.link ? `
-                        <a href="${event.link}" target="_blank" class="event-link">
-                            Join Event
-                        </a>
+                    <div class="event-row">
+                        <span>⏳ Starts in: ${this.getTimeUntil(event.date)}</span>
+                    </div>
+                    <div class="event-row">
+                        <span>📍 ${event.location}</span>
+                    </div>
+                    <div class="event-row">
+                        <span>⏱️ ${event.duration}</span>
+                    </div>
+                    ${event.description ? `
+                        <div class="event-row">
+                            <span>📝 ${event.description}</span>
+                        </div>
                     ` : ''}
-                    <div class="timezone-info">
-                        Times shown in your local timezone (${dateTime.timezone})
-                    </div>
                 </div>
-            `;
-        }).join('');
+                ${event.link ? `
+                    <a href="${event.link}" target="_blank" class="event-link">
+                        Join Event
+                    </a>
+                ` : ''}
+            </div>
+        `).join('');
     }
 }
 
 // Initialize when the page loads
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing EventsManager...');
     const eventsManager = new EventsManager();
 });
