@@ -7,18 +7,15 @@ class EventManager {
         
         // Example events structure with more detailed information
         this.events = [
-            // Add your events here in this format:
-            /*
             {
-                title: 'Event Title',
-                startDate: new Date('YYYY-MM-DDThh:mm:00Z'),
-                endDate: new Date('YYYY-MM-DDThh:mm:00Z'),
-                description: 'Event Description',
-                location: 'Platform/Location',
-                link: 'https://your-event-url.com',
+                title: 'TikTok Live Stream',
+                startDate: new Date('2025-01-31T22:30:00Z'),
+                endDate: new Date('2025-02-01T00:30:00Z'),
+                description: "Showing off my AFO's and my shoes. and answering questions",
+                location: 'TikTok',
+                link: 'https://www.tiktok.com/live/event/7465045201078190123?enter_from=share_link&share_from_user_id=7192427257401656363',
                 type: 'stream' // or 'community'
             }
-            */
         ];
 
         if (this.eventsContainer) {
