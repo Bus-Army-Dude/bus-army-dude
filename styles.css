@@ -1105,65 +1105,115 @@ footer {
 }
 
 /* Event Section Styles */
-.event-card {
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: var(--border-radius);
-    background: var(--card-background);
-    transition: transform 0.2s;
-    border: 1px solid var(--border-color);
-}
-
-.event-card:hover {
-    transform: translateY(-2px);
-}
-
-.event-title {
-    margin: 0 0 15px 0;
-    font-size: var(--title-size);
-    color: var(--text-color);
-}
-
-.event-info {
-    margin: 10px 0;
-}
-
-.event-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 8px 0;
-    color: var(--text-color);
-    font-size: var(--font-size);
-}
-
-.event-row span {
-    color: var(--text-color);
-}
-
-.event-link {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 8px 16px;
-    background: var(--button-background);
-    color: var(--button-text);
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    transition: opacity 0.2s;
-    font-size: var(--font-size);
-    text-align: center;
-}
-
-.event-link:hover {
-    opacity: 0.8;
-    background: var(--button-hover-background);
-}
-
 .events-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+}
+
+.event-card {
+    position: relative;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.event-title {
+    margin: 0;
+    font-size: var(--title-size);
+    color: var(--text-color);
+}
+
+.event-badge {
+    padding: 4px 8px;
+    border-radius: var(--border-radius);
+    background: var(--accent-color);
+    color: var(--button-text);
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.event-info {
+    display: grid;
+    gap: 20px;
+    margin: 15px 0;
+}
+
+.event-datetime, .event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.event-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--text-color);
+    font-size: var(--font-size);
+}
+
+.event-row .icon {
+    flex-shrink: 0;
+    font-size: 1.2em;
+}
+
+.event-row.description {
+    margin-top: 5px;
+}
+
+.event-row.description span:last-child {
+    line-height: 1.4;
+}
+
+.event-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: var(--button-background);
+    color: var(--button-text);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.event-link:hover {
+    background: var(--button-hover-background);
+    transform: translateY(-1px);
+}
+
+.event-link .icon {
+    transition: transform 0.2s ease;
+}
+
+.event-link:hover .icon {
+    transform: translateX(3px);
+}
+
+.timezone-info {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--text-secondary);
 }
 
 .no-events {
@@ -1173,37 +1223,44 @@ footer {
     font-size: var(--font-size);
 }
 
-/* Make sure events section fits with other sections */
-[data-section-id="events"] {
-    opacity: 1;
-    transform: none;
+/* Stream type specific styling */
+.event-card.stream {
+    border-left: 4px solid var(--accent-color);
 }
 
-/* Dark theme specific adjustments */
-[data-theme="dark"] .event-card {
-    background: var(--card-background);
-    border-color: var(--border-color);
-}
-
-/* Light theme specific adjustments */
-[data-theme="light"] .event-card {
-    background: var(--card-background);
-    border-color: var(--border-color);
+/* Community event specific styling */
+.event-card.community {
+    border-left: 4px solid var(--secondary-color, #6c5ce7);
 }
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     .event-card {
-        margin: 5px 0;
-        padding: 12px;
+        padding: 15px;
     }
 
-    .event-row {
-        font-size: calc(var(--font-size) * 0.9);
+    .event-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .event-badge {
+        align-self: flex-start;
+    }
+
+    .event-info {
+        gap: 15px;
     }
 
     .event-link {
         width: 100%;
-        text-align: center;
     }
+}
+
+/* Theme transitions */
+.event-card,
+.event-badge,
+.event-link {
+    transition: all 0.3s ease;
 }
