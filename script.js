@@ -466,15 +466,91 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// FAQ functionality
+// Modern FAQ functionality
 document.addEventListener('DOMContentLoaded', function() {
     const faqItems = document.querySelectorAll('.faq-item');
     
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
+        
         question.addEventListener('click', () => {
-            item.classList.toggle('active');
+            // Check if this item is already active
+            const isActive = item.classList.contains('active');
+            
+            // Close all FAQ items first
+            faqItems.forEach(faqItem => {
+                // Add a closing animation class if it was active
+                if (faqItem.classList.contains('active')) {
+                    faqItem.classList.add('closing');
+                    setTimeout(() => {
+                        faqItem.classList.remove('closing');
+                    }, 300); // Match this with your CSS transition time
+                }
+                faqItem.classList.remove('active');
+            });
+            
+            // If the clicked item wasn't active before, open it
+            if (!isActive) {
+                item.classList.add('active');
+                // Scroll the item into view if it's not fully visible
+                const rect = item.getBoundingClientRect();
+                const isInViewport = (
+                    rect.top >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+                );
+                
+                if (!isInViewport) {
+                    item.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }
+            }
         });
+    });
+
+    // Add keyboard navigation
+    faqItems.forEach((item, index) => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (index < faqItems.length - 1) {
+                        faqItems[index + 1].querySelector('.faq-question').focus();
+                    }
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (index > 0) {
+                        faqItems[index - 1].querySelector('.faq-question').focus();
+                    }
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    faqItems[0].querySelector('.faq-question').focus();
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    faqItems[faqItems.length - 1].querySelector('.faq-question').focus();
+                    break;
+            }
+        });
+    });
+
+    // Close FAQ when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.faq-item')) {
+            faqItems.forEach(item => {
+                if (item.classList.contains('active')) {
+                    item.classList.add('closing');
+                    setTimeout(() => {
+                        item.classList.remove('active', 'closing');
+                    }, 300);
+                }
+            });
+        }
     });
 });
 
