@@ -1111,6 +1111,7 @@ footer {
     border-radius: var(--border-radius);
     background: var(--card-background);
     transition: transform 0.2s;
+    border: 1px solid var(--border-color);
 }
 
 .event-card:hover {
@@ -1119,7 +1120,7 @@ footer {
 
 .event-title {
     margin: 0 0 15px 0;
-    font-size: 1.2em;
+    font-size: var(--title-size);
     color: var(--text-color);
 }
 
@@ -1131,14 +1132,18 @@ footer {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 5px 0;
+    margin: 8px 0;
     color: var(--text-color);
     font-size: var(--font-size);
 }
 
+.event-row span {
+    color: var(--text-color);
+}
+
 .event-link {
     display: inline-block;
-    margin-top: 10px;
+    margin-top: 15px;
     padding: 8px 16px;
     background: var(--button-background);
     color: var(--button-text);
@@ -1146,16 +1151,19 @@ footer {
     text-decoration: none;
     transition: opacity 0.2s;
     font-size: var(--font-size);
+    text-align: center;
 }
 
 .event-link:hover {
     opacity: 0.8;
+    background: var(--button-hover-background);
 }
 
 .events-container {
     width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .no-events {
@@ -1165,9 +1173,37 @@ footer {
     font-size: var(--font-size);
 }
 
-.timezone-info {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: var(--text-secondary);
-    text-align: center;
+/* Make sure events section fits with other sections */
+[data-section-id="events"] {
+    opacity: 1;
+    transform: none;
+}
+
+/* Dark theme specific adjustments */
+[data-theme="dark"] .event-card {
+    background: var(--card-background);
+    border-color: var(--border-color);
+}
+
+/* Light theme specific adjustments */
+[data-theme="light"] .event-card {
+    background: var(--card-background);
+    border-color: var(--border-color);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .event-card {
+        margin: 5px 0;
+        padding: 12px;
+    }
+
+    .event-row {
+        font-size: calc(var(--font-size) * 0.9);
+    }
+
+    .event-link {
+        width: 100%;
+        text-align: center;
+    }
 }
