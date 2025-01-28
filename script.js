@@ -506,165 +506,145 @@ faqQuestions.forEach((question) => {
     });
 });
 
-class Calendar {
+class EventsManager {
     constructor() {
-        this.date = new Date();
-        this.currentMonth = this.date.getMonth();
-        this.currentYear = this.date.getFullYear();
-        this.currentDay = this.date.getDate();
-        
-        this.monthDisplay = document.getElementById('monthDisplay');
-        this.calendar = document.getElementById('calendar');
-        this.popup = document.getElementById('eventPopup');
-        
-        // Example events - Update with your actual events
+        // Current reference time: 2025-01-28 18:06:54 UTC
         this.events = [
             {
-                date: new Date(2025, 0, 30),
                 title: 'Stream Event',
-                time: '3:00 PM',
+                date: new Date('2025-01-30T15:00:00Z'), // UTC time
                 location: 'Twitch',
                 duration: '2 hours',
-                link: 'https://twitch.tv/busarmydude'
+                link: 'https://twitch.tv/busarmydude',
+                description: 'Join us for a live streaming event!'
+            },
+            {
+                title: 'Weekly Game Night',
+                date: new Date('2025-02-01T19:00:00Z'), // UTC time
+                location: 'Twitch',
+                duration: '3 hours',
+                link: 'https://twitch.tv/busarmydude',
+                description: 'Weekly gaming session with viewers'
             }
+            // Add more events as needed
         ];
 
+        this.eventsContainer = document.getElementById('eventsContainer');
         this.init();
-        this.setupThemeObserver();
     }
 
     init() {
-        this.renderCalendar();
-        this.addEventListeners();
+        this.renderEvents();
+        this.setupThemeObserver();
     }
 
     setupThemeObserver() {
-        // Watch for theme changes
         const observer = new MutationObserver(() => {
-            this.updateThemeClasses();
+            this.renderEvents(); // Re-render events when theme changes
         });
 
-        // Observe theme changes on body or any relevant parent element
         observer.observe(document.body, {
             attributes: true,
             attributeFilter: ['data-theme', 'class']
         });
-
-        // Initial theme setup
-        this.updateThemeClasses();
     }
 
-    updateThemeClasses() {
-        const calendarSection = document.getElementById('calendarSection');
-        if (!calendarSection) return;
+    formatDateTime(date) {
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: userTimeZone,
+            timeZoneName: 'short'
+        });
 
-        // Inherit theme classes from body or parent
-        const themeClasses = document.body.classList;
-        calendarSection.className = 'calendar-container ' + Array.from(themeClasses).join(' ');
+        return {
+            formatted: dateFormatter.format(date),
+            timezone: userTimeZone
+        };
     }
 
-    renderCalendar() {
-        const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-        const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
-        const startingDay = firstDay.getDay();
-        const totalDays = lastDay.getDate();
+    getTimeUntil(date) {
+        const now = new Date();
+        const diff = date - now;
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                       'July', 'August', 'September', 'October', 'November', 'December'];
-        this.monthDisplay.textContent = `${months[this.currentMonth]} ${this.currentYear}`;
+        let timeString = '';
+        if (days > 0) timeString += `${days} day${days > 1 ? 's' : ''} `;
+        if (hours > 0) timeString += `${hours} hour${hours > 1 ? 's' : ''} `;
+        if (minutes > 0) timeString += `${minutes} minute${minutes > 1 ? 's' : ''}`;
 
-        this.calendar.innerHTML = '';
+        return timeString.trim() || 'Starting soon';
+    }
 
-        // Add empty days
-        for (let i = 0; i < startingDay; i++) {
-            const emptyDay = document.createElement('div');
-            emptyDay.className = 'day empty';
-            this.calendar.appendChild(emptyDay);
+    renderEvents() {
+        const now = new Date();
+        const futureEvents = this.events
+            .filter(event => event.date > now)
+            .sort((a, b) => a.date - b.date);
+
+        if (futureEvents.length === 0) {
+            this.eventsContainer.innerHTML = `
+                <div class="event-card">
+                    <p>No upcoming events scheduled.</p>
+                </div>
+            `;
+            return;
         }
 
-        // Add days
-        for (let day = 1; day <= totalDays; day++) {
-            const dayElement = document.createElement('div');
-            dayElement.className = 'day';
-            dayElement.textContent = day;
+        this.eventsContainer.innerHTML = futureEvents.map(event => {
+            const dateTime = this.formatDateTime(event.date);
+            const timeUntil = this.getTimeUntil(event.date);
 
-            if (day === this.currentDay && 
-                this.currentMonth === new Date().getMonth() && 
-                this.currentYear === new Date().getFullYear()) {
-                dayElement.classList.add('today');
-            }
-
-            const hasEvent = this.events.some(event => 
-                event.date.getDate() === day && 
-                event.date.getMonth() === this.currentMonth &&
-                event.date.getFullYear() === this.currentYear
-            );
-
-            if (hasEvent) {
-                dayElement.classList.add('has-event');
-                dayElement.addEventListener('click', () => this.showEvents(day));
-            }
-
-            this.calendar.appendChild(dayElement);
-        }
-    }
-
-    addEventListeners() {
-        document.getElementById('prevMonth').addEventListener('click', () => {
-            this.currentMonth--;
-            if (this.currentMonth < 0) {
-                this.currentMonth = 11;
-                this.currentYear--;
-            }
-            this.renderCalendar();
-        });
-
-        document.getElementById('nextMonth').addEventListener('click', () => {
-            this.currentMonth++;
-            if (this.currentMonth > 11) {
-                this.currentMonth = 0;
-                this.currentYear++;
-            }
-            this.renderCalendar();
-        });
-
-        document.querySelector('.close-popup').addEventListener('click', () => {
-            this.popup.style.display = 'none';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === this.popup) {
-                this.popup.style.display = 'none';
-            }
-        });
-    }
-
-    showEvents(day) {
-        const events = this.events.filter(event => 
-            event.date.getDate() === day && 
-            event.date.getMonth() === this.currentMonth &&
-            event.date.getFullYear() === this.currentYear
-        );
-
-        if (events.length === 0) return;
-
-        const eventDetails = document.getElementById('eventDetails');
-        eventDetails.innerHTML = events.map(event => `
-            <div class="event-item">
-                <h3>${event.title}</h3>
-                <p>Date: ${event.date.toDateString()}</p>
-                <p>Time: ${event.time}</p>
-                <p>Location: ${event.location}</p>
-                <p>Duration: ${event.duration}</p>
-                ${event.link ? `<p><a href="${event.link}" target="_blank">Join Event</a></p>` : ''}
-            </div>
-        `).join('');
-
-        this.popup.style.display = 'block';
+            return `
+                <div class="event-card">
+                    <h3 class="event-title">${event.title}</h3>
+                    <div class="event-info">
+                        <div class="event-row">
+                            <span>📅</span>
+                            <span>${dateTime.formatted}</span>
+                        </div>
+                        <div class="event-row">
+                            <span>⏳</span>
+                            <span>Starts in: ${timeUntil}</span>
+                        </div>
+                        <div class="event-row">
+                            <span>📍</span>
+                            <span>${event.location}</span>
+                        </div>
+                        <div class="event-row">
+                            <span>⏱️</span>
+                            <span>${event.duration}</span>
+                        </div>
+                        ${event.description ? `
+                            <div class="event-row">
+                                <span>📝</span>
+                                <span>${event.description}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    ${event.link ? `
+                        <a href="${event.link}" target="_blank" class="event-link">
+                            Join Event
+                        </a>
+                    ` : ''}
+                    <div class="timezone-info">
+                        Times shown in your local timezone (${dateTime.timezone})
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 }
 
-// Initialize the calendar when the page loads
+// Initialize when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    const calendar = new Calendar();
+    const eventsManager = new EventsManager();
 });
