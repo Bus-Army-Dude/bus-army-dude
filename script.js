@@ -513,30 +513,54 @@ class Calendar {
         this.currentYear = this.date.getFullYear();
         this.currentDay = this.date.getDate();
         
-        // Get DOM elements
         this.monthDisplay = document.getElementById('monthDisplay');
         this.calendar = document.getElementById('calendar');
         this.popup = document.getElementById('eventPopup');
         
-        // Sample events - Replace with your actual events
+        // Example events - Update with your actual events
         this.events = [
             {
-                date: new Date(2025, 0, 30), // January 30, 2025
+                date: new Date(2025, 0, 30),
                 title: 'Stream Event',
                 time: '3:00 PM',
                 location: 'Twitch',
                 duration: '2 hours',
                 link: 'https://twitch.tv/busarmydude'
             }
-            // Add more events here
         ];
 
         this.init();
+        this.setupThemeObserver();
     }
 
     init() {
         this.renderCalendar();
         this.addEventListeners();
+    }
+
+    setupThemeObserver() {
+        // Watch for theme changes
+        const observer = new MutationObserver(() => {
+            this.updateThemeClasses();
+        });
+
+        // Observe theme changes on body or any relevant parent element
+        observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['data-theme', 'class']
+        });
+
+        // Initial theme setup
+        this.updateThemeClasses();
+    }
+
+    updateThemeClasses() {
+        const calendarSection = document.getElementById('calendarSection');
+        if (!calendarSection) return;
+
+        // Inherit theme classes from body or parent
+        const themeClasses = document.body.classList;
+        calendarSection.className = 'calendar-container ' + Array.from(themeClasses).join(' ');
     }
 
     renderCalendar() {
@@ -545,15 +569,13 @@ class Calendar {
         const startingDay = firstDay.getDay();
         const totalDays = lastDay.getDate();
 
-        // Update month display
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 
                        'July', 'August', 'September', 'October', 'November', 'December'];
         this.monthDisplay.textContent = `${months[this.currentMonth]} ${this.currentYear}`;
 
-        // Clear calendar
         this.calendar.innerHTML = '';
 
-        // Add empty days for padding
+        // Add empty days
         for (let i = 0; i < startingDay; i++) {
             const emptyDay = document.createElement('div');
             emptyDay.className = 'day empty';
@@ -566,14 +588,12 @@ class Calendar {
             dayElement.className = 'day';
             dayElement.textContent = day;
 
-            // Check if it's today
             if (day === this.currentDay && 
                 this.currentMonth === new Date().getMonth() && 
                 this.currentYear === new Date().getFullYear()) {
                 dayElement.classList.add('today');
             }
 
-            // Check for events
             const hasEvent = this.events.some(event => 
                 event.date.getDate() === day && 
                 event.date.getMonth() === this.currentMonth &&
