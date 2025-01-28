@@ -200,9 +200,14 @@
         </div>
 
    <!-- Calendar Section -->
-<div class="calendar-section">
+<div class="section">
     <h2>Event Calendar</h2>
     <div class="calendar">
+        <div class="calendar-header">
+            <button id="prevMonth" class="nav-button">&#10094;</button>
+            <h3 id="monthDisplay"></h3>
+            <button id="nextMonth" class="nav-button">&#10095;</button>
+        </div>
         <div class="days-of-week">
             <div>Sun</div>
             <div>Mon</div>
@@ -212,15 +217,15 @@
             <div>Fri</div>
             <div>Sat</div>
         </div>
-        <div class="days">
-            <!-- JavaScript will populate this part with days of the month -->
+        <div class="days" id="daysContainer">
+            <!-- JavaScript will populate this -->
         </div>
     </div>
 </div>
 
-<div id="event-popup" class="event-popup">
-    <div class="event-popup-content">
-        <span class="close-popup">&times;</span>
+<div id="event-popup" class="popup">
+    <div class="popup-content">
+        <span class="close-button">&times;</span>
         <div id="event-details"></div>
     </div>
 </div>
