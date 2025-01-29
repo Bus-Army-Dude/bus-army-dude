@@ -7,6 +7,9 @@
     --accent-color: #4CAF50;
     --hover-color: #45a049;
     --content-bg: #f5f5f5;
+    --slider-thumb-color: #4CAF50; /* Custom slider thumb color */
+    --slider-track-color: #ddd; /* Custom slider track color */
+    --slider-track-filled-color: #4CAF50; /* Custom slider track filled color */
 }
 
 /* Dark Mode Variables */
@@ -18,6 +21,9 @@ body.settings-page.dark-mode {
     --accent-color: #4CAF50;
     --hover-color: #45a049;
     --content-bg: #2d2d2d;
+    --slider-thumb-color: #4CAF50;
+    --slider-track-color: #444;
+    --slider-track-filled-color: #4CAF50;
 }
 
 /* General Styles for Settings Page */
@@ -190,8 +196,36 @@ body.settings-page {
 
 .settings-page .font-size-control input[type="range"] {
     flex: 1;
+    -webkit-appearance: none;
+    height: 8px;
+    background: var(--slider-track-color);
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.settings-page .font-size-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--slider-thumb-color);
+    border-radius: 50%;
     cursor: pointer;
-    font-size: var(--font-size-base); /* Apply base font size */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.settings-page .font-size-control input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--slider-thumb-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.settings-page .font-size-control input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, var(--slider-track-filled-color) 0%, var(--slider-track-filled-color) var(--value), var(--slider-track-color) var(--value), var(--slider-track-color) 100%);
 }
 
 .settings-page .font-size-control span {
