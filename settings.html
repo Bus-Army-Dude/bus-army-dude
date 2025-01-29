@@ -6,7 +6,6 @@
     <title>Settings - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="settings.css">
-    <link rel="stylesheet" href="ai-features.css">
 
     <!-- Favicons and Icons -->
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
@@ -21,19 +20,9 @@
     <meta name="theme-color" content="#ffffff"/>
 </head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-E0RSQS1MS7');
-</script>
-
 <body class="settings-page">
     <div class="container">
-        <div class="settings-section section">
+        <div class="settings-section">
             <div class="settings-header">
                 <h1>Settings</h1>
                 <span class="version">v1.11.0</span>
@@ -49,7 +38,7 @@
                             <p class="setting-description">Switch between light and dark theme</p>
                         </div>
                         <label class="toggle-switch">
-                            <input type="checkbox" id="darkModeToggle" checked>
+                            <input type="checkbox" id="darkModeToggle">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
@@ -105,8 +94,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="common.js"></script>
     <script src="settings.js"></script>
-    <script src="script.js"></script>
 </body>
 </html>
