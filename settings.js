@@ -8,8 +8,7 @@ class SettingsManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 16,
-            highContrast: false
+            fontSize: 16
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -20,16 +19,7 @@ class SettingsManager {
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
             darkModeToggle.addEventListener('change', (e) => {
-                this.applyTheme(e.target.checked, this.settings.highContrast);
-            });
-        }
-
-        // High Contrast Toggle
-        const highContrastToggle = document.getElementById('highContrastToggle');
-        if (highContrastToggle) {
-            highContrastToggle.checked = this.settings.highContrast;
-            highContrastToggle.addEventListener('change', (e) => {
-                this.applyTheme(this.settings.darkMode, e.target.checked);
+                this.applyTheme(e.target.checked);
             });
         }
 
@@ -60,22 +50,14 @@ class SettingsManager {
     }
 
     applySettings() {
-        this.applyTheme(this.settings.darkMode, this.settings.highContrast);
+        this.applyTheme(this.settings.darkMode);
         this.setFontSize(this.settings.fontSize);
     }
 
-    applyTheme(isDark = this.settings.darkMode, isHighContrast = this.settings.highContrast) {
-        if (isHighContrast) {
-            document.body.classList.add('high-contrast');
-            document.body.classList.remove('dark-mode');
-            document.body.classList.remove('light-mode');
-        } else {
-            document.body.classList.toggle('dark-mode', isDark);
-            document.body.classList.toggle('light-mode', !isDark);
-            document.body.classList.remove('high-contrast');
-        }
+    applyTheme(isDark = this.settings.darkMode) {
+        document.body.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('light-mode', !isDark);
         this.settings.darkMode = isDark;
-        this.settings.highContrast = isHighContrast;
         this.saveSettings();
     }
 
@@ -99,8 +81,7 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 16,
-            highContrast: false
+            fontSize: 16
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -108,12 +89,10 @@ class SettingsManager {
 
         // Update UI controls
         const darkModeToggle = document.getElementById('darkModeToggle');
-        const highContrastToggle = document.getElementById('highContrastToggle');
         const fontSizeRange = document.getElementById('fontSizeRange');
         const currentFontSize = document.getElementById('currentFontSize');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
-        if (highContrastToggle) highContrastToggle.checked = defaultSettings.highContrast;
         if (fontSizeRange) fontSizeRange.value = defaultSettings.fontSize;
         if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
     }
