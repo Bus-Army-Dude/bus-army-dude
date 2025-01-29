@@ -1,7 +1,6 @@
 class SettingsManager {
     constructor() {
         this.settings = this.loadSettings();
-        this.initializeThemeColors();
         this.initializeControls();
         this.applySettings();
     }
@@ -15,42 +14,13 @@ class SettingsManager {
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
 
-    initializeThemeColors() {
-        this.darkTheme = {
-            '--bg-color': '#1a1a1a',
-            '--text-color': '#ffffff',
-            '--secondary-text': '#a0a0a0',
-            '--border-color': '#333333',
-            '--accent-color': '#4CAF50',
-            '--content-bg': '#2d2d2d'
-        };
-
-        this.lightTheme = {
-            '--bg-color': '#ffffff',
-            '--text-color': '#000000',
-            '--secondary-text': '#666666',
-            '--border-color': '#dddddd',
-            '--accent-color': '#4CAF50',
-            '--content-bg': '#f5f5f5'
-        };
-
-        this.highContrastTheme = {
-            '--bg-color': '#000000',
-            '--text-color': '#ffffff',
-            '--secondary-text': '#ffcc00',
-            '--border-color': '#ffcc00',
-            '--accent-color': '#ffcc00',
-            '--content-bg': '#333333'
-        };
-    }
-
     initializeControls() {
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
             darkModeToggle.addEventListener('change', (e) => {
-                this.applyTheme(e.target.checked);
+                this.applyTheme(e.target.checked, this.settings.highContrast);
             });
         }
 
@@ -59,7 +29,7 @@ class SettingsManager {
         if (highContrastToggle) {
             highContrastToggle.checked = this.settings.highContrast;
             highContrastToggle.addEventListener('change', (e) => {
-                this.applyHighContrast(e.target.checked);
+                this.applyTheme(this.settings.darkMode, e.target.checked);
             });
         }
 
@@ -90,39 +60,27 @@ class SettingsManager {
     }
 
     applySettings() {
-        this.applyTheme(this.settings.darkMode);
-        this.applyHighContrast(this.settings.highContrast);
+        this.applyTheme(this.settings.darkMode, this.settings.highContrast);
         this.setFontSize(this.settings.fontSize);
     }
 
-    applyTheme(isDark = this.settings.darkMode) {
-        const theme = isDark ? this.darkTheme : this.lightTheme;
-        this.applyThemeColors(theme);
-        document.body.classList.toggle('dark-mode', isDark);
-        document.body.classList.toggle('light-mode', !isDark);
-        this.settings.darkMode = isDark;
-        this.saveSettings();
-    }
-
-    applyHighContrast(isHighContrast = this.settings.highContrast) {
+    applyTheme(isDark = this.settings.darkMode, isHighContrast = this.settings.highContrast) {
         if (isHighContrast) {
-            this.applyThemeColors(this.highContrastTheme);
+            document.body.classList.add('high-contrast');
+            document.body.classList.remove('dark-mode');
+            document.body.classList.remove('light-mode');
         } else {
-            this.applyTheme(this.settings.darkMode);
+            document.body.classList.toggle('dark-mode', isDark);
+            document.body.classList.toggle('light-mode', !isDark);
+            document.body.classList.remove('high-contrast');
         }
-        document.body.classList.toggle('high-contrast', isHighContrast);
+        this.settings.darkMode = isDark;
         this.settings.highContrast = isHighContrast;
         this.saveSettings();
     }
 
-    applyThemeColors(theme) {
-        Object.entries(theme).forEach(([property, value]) => {
-            document.documentElement.style.setProperty(property, value);
-        });
-    }
-
     setFontSize(size) {
-        size = Math.min(Math.max(size, 12), 30); // Limit size between 12px and 30px
+        size = Math.min(Math.max(size, 10), 30); // Limit size between 10px and 30px
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
         this.settings.fontSize = size;
         this.saveSettings();
