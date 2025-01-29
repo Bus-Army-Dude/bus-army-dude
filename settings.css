@@ -235,3 +235,13 @@ body.settings-page {
     --hover-color: #45a049;
     --content-bg: #f5f5f5;
 }
+
+/* High Contrast Mode Classes */
+.settings-page.high-contrast {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --secondary-text: #ffcc00;
+    --border-color: #ffcc00;
+    --accent-color: #ffcc00;
+    --content-bg: #333333;
+}
