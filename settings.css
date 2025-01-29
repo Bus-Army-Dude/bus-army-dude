@@ -4,12 +4,12 @@
     --text-color: #000000;
     --secondary-text: #666666;
     --border-color: #dddddd;
-    --accent-color: #4CAF50;
-    --hover-color: #45a049;
+    --accent-color: #007aff; /* Apple-like blue accent color */
+    --hover-color: #005bb5;
     --content-bg: #f5f5f5;
-    --slider-thumb-color: #4CAF50; /* Custom slider thumb color */
+    --slider-thumb-color: #007aff; /* Custom slider thumb color */
     --slider-track-color: #ddd; /* Custom slider track color */
-    --slider-track-filled-color: #4CAF50; /* Custom slider track filled color */
+    --slider-track-filled-color: #007aff; /* Custom slider track filled color */
 }
 
 /* Dark Mode Variables */
@@ -18,12 +18,12 @@ body.settings-page.dark-mode {
     --text-color: #ffffff;
     --secondary-text: #a0a0a0;
     --border-color: #333333;
-    --accent-color: #4CAF50;
-    --hover-color: #45a049;
+    --accent-color: #007aff;
+    --hover-color: #005bb5;
     --content-bg: #2d2d2d;
-    --slider-thumb-color: #4CAF50;
+    --slider-thumb-color: #007aff;
     --slider-track-color: #444;
-    --slider-track-filled-color: #4CAF50;
+    --slider-track-filled-color: #007aff;
 }
 
 /* General Styles for Settings Page */
@@ -198,7 +198,7 @@ body.settings-page {
     flex: 1;
     -webkit-appearance: none;
     height: 8px;
-    background: var(--slider-track-color);
+    background: linear-gradient(to right, var(--slider-track-filled-color) 0%, var(--slider-track-filled-color) var(--value), var(--slider-track-color) var(--value), var(--slider-track-color) 100%);
     border-radius: 5px;
     outline: none;
     transition: background 0.3s ease;
@@ -224,10 +224,6 @@ body.settings-page {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.settings-page .font-size-control input[type="range"]::-webkit-slider-runnable-track {
-    background: linear-gradient(to right, var(--slider-track-filled-color) 0%, var(--slider-track-filled-color) var(--value), var(--slider-track-color) var(--value), var(--slider-track-color) 100%);
-}
-
 .settings-page .font-size-control span {
     font-size: 1rem;
     font-weight: 500;
@@ -237,7 +233,7 @@ body.settings-page {
 
 /* Reset Button Styles */
 .settings-page .reset-button {
-    background-color: red;
+    background-color: #ff3b30;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -249,7 +245,7 @@ body.settings-page {
 }
 
 .settings-page .reset-button:hover {
-    background-color: darkred;
+    background-color: #d32f2f;
 }
 
 /* Back Link Styles */
