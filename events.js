@@ -7,15 +7,6 @@ class EventManager {
         
         // Example events structure with more detailed information
         this.events = [
-            {
-                title: 'TikTok Live Stream',
-                startDate: new Date('2025-02-01T03:30:00Z'),  // 10:30 PM EST converted to UTC
-                endDate: new Date('2025-02-01T05:30:00Z'),    // 12:30 AM EST converted to UTC
-                description: "Showing off my AFO's and my shoes. and answering questions",
-                location: 'TikTok',
-                link: 'https://www.tiktok.com/live/event/7465045201078190123?enter_from=share_link&share_from_user_id=7192427257401656363',
-                type: 'stream'
-            }
         ];
 
         if (this.eventsContainer) {
