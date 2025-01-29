@@ -147,18 +147,15 @@ body.settings-page {
     gap: 10px;
 }
 
-.settings-page .font-size-control button {
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
+.settings-page .font-size-control input[type="range"] {
+    flex: 1;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.settings-page .font-size-control button:hover {
-    background-color: var(--hover-color);
+.settings-page .font-size-control span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
 }
 
 /* Reset Button Styles */
