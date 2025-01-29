@@ -113,7 +113,7 @@ function detectDetailedDevice() {
 }
 
 // Call the function to update the device information on page load
-window.onload = detectDetailedDevice;;
+window.onload = detectDetailedDevice;
 
 // Time update function
 function updateTime() {
