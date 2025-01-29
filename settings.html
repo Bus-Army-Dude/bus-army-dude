@@ -21,16 +21,6 @@
     <meta name="theme-color" content="#ffffff"/>
 </head>
 
-     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-E0RSQS1MS7');
-    </script>
-    
 <body class="settings-page dark-mode">
     <div class="container">
         <div class="settings-section section">
@@ -64,10 +54,19 @@
                             <p class="setting-description">Adjust text size</p>
                         </div>
                         <div class="font-size-control">
-                            <button id="decreaseFont" aria-label="Decrease font size">A-</button>
+                            <input type="range" id="fontSizeRange" min="10" max="30" value="16" aria-label="Adjust font size">
                             <span id="currentFontSize">16px</span>
-                            <button id="increaseFont" aria-label="Increase font size">A+</button>
                         </div>
+                    </div>
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">High Contrast Mode</h3>
+                            <p class="setting-description">Enhance color contrast</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="highContrastToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
                     </div>
                 </div>
 
@@ -92,6 +91,7 @@
     <footer>
         <div class="footer-content">
             <p class="copyright">© 2025 Bus Army Dude. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <!-- Scripts -->
