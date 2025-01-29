@@ -53,28 +53,215 @@ function detectDetailedDevice() {
         }
     };
 
-    const getDeviceModel = (ua, deviceType) => {
-        const match = ua.match(new RegExp(`${deviceType}\\s*([^;]*)`, 'i'));
-        return match ? match[1].trim() : deviceType;
+    const deviceModels = {
+        const deviceModels = {
+        'iPhone': {
+            '14,4': 'iPhone 13 mini',
+            '14,5': 'iPhone 13',
+            '14,6': 'iPhone 13 Pro',
+            '14,7': 'iPhone 13 Pro Max',
+            '13,1': 'iPhone 12 mini',
+            '13,2': 'iPhone 12',
+            '13,3': 'iPhone 12 Pro',
+            '13,4': 'iPhone 12 Pro Max',
+            '12,1': 'iPhone 11',
+            '12,2': 'iPhone 11 Pro',
+            '12,3': 'iPhone 11 Pro Max',
+            '11,1': 'iPhone XS',
+            '11,2': 'iPhone XS Max',
+            '11,3': 'iPhone XR',
+            '10,1': 'iPhone X',
+            '10,2': 'iPhone 8',
+            '10,3': 'iPhone 8 Plus',
+            '10,4': 'iPhone 7',
+            '10,5': 'iPhone 7 Plus',
+            '10,6': 'iPhone 6S',
+            '10,7': 'iPhone 6S Plus',
+            '10,8': 'iPhone 6',
+            '10,9': 'iPhone 6 Plus',
+            '10,10': 'iPhone SE (1st generation)',
+            '10,11': 'iPhone 5S',
+            '10,12': 'iPhone 5C',
+            '10,13': 'iPhone 5',
+            '10,14': 'iPhone 4S',
+            '10,15': 'iPhone 4',
+            '10,16': 'iPhone 3GS',
+            '10,17': 'iPhone 3G',
+            '10,18': 'iPhone',
+            '15,2': 'iPhone 14',
+            '15,3': 'iPhone 14 Plus',
+            '15,4': 'iPhone 14 Pro',
+            '15,5': 'iPhone 14 Pro Max',
+            '16,1': 'iPhone 15',
+            '16,2': 'iPhone 15 Plus',
+            '16,3': 'iPhone 15 Pro',
+            '16,4': 'iPhone 15 Pro Max',
+            '17,1': 'iPhone 16',
+            '17,2': 'iPhone 16 Plus',
+            '17,3': 'iPhone 16 Pro',
+            '17,4': 'iPhone 16 Pro Max'
+        },
+        'iPad': {
+            '8,1': 'iPad Pro 11-inch (3rd generation)',
+            '8,2': 'iPad Pro 11-inch (3rd generation)',
+            '8,3': 'iPad Pro 11-inch (3rd generation)',
+            '8,4': 'iPad Pro 11-inch (3rd generation)',
+            '8,5': 'iPad Pro 12.9-inch (5th generation)',
+            '8,6': 'iPad Pro 12.9-inch (5th generation)',
+            '8,7': 'iPad Pro 12.9-inch (5th generation)',
+            '8,8': 'iPad Pro 12.9-inch (5th generation)',
+            '7,1': 'iPad Pro 12.9-inch (2nd generation)',
+            '7,2': 'iPad Pro 12.9-inch (2nd generation)',
+            '7,3': 'iPad Pro 10.5-inch',
+            '7,4': 'iPad Pro 10.5-inch',
+            '6,1': 'iPad Pro 9.7-inch',
+            '6,2': 'iPad Pro 9.7-inch',
+            '5,1': 'iPad mini 4',
+            '5,2': 'iPad mini 4',
+            '4,1': 'iPad Air',
+            '4,2': 'iPad Air 2',
+            '4,3': 'iPad Air 3',
+            '3,1': 'iPad 4th generation',
+            '3,2': 'iPad 4th generation',
+            '3,3': 'iPad 4th generation',
+            '2,1': 'iPad 3rd generation',
+            '2,2': 'iPad 3rd generation',
+            '2,3': 'iPad 3rd generation',
+            '1,1': 'iPad 2',
+            '1,2': 'iPad 2',
+            '1,3': 'iPad',
+            '1,4': 'iPad',
+            '2,4': 'iPad (4th generation)',
+            '2,5': 'iPad mini',
+            '2,6': 'iPad mini',
+            '2,7': 'iPad mini',
+            '3,4': 'iPad Air',
+            '3,5': 'iPad Air',
+            '3,6': 'iPad Air',
+            '4,4': 'iPad Air 2',
+            '4,5': 'iPad Air 2',
+            '4,6': 'iPad Air 2'
+        }
+                'Galaxy': {
+            // Galaxy S series
+            'SM-G998B': 'Samsung Galaxy S21 Ultra',
+            'SM-G996B': 'Samsung Galaxy S21+',
+            'SM-G991B': 'Samsung Galaxy S21',
+            'SM-G988B': 'Samsung Galaxy S20 Ultra',
+            'SM-G986B': 'Samsung Galaxy S20+',
+            'SM-G981B': 'Samsung Galaxy S20',
+            'SM-G977B': 'Samsung Galaxy S10 5G',
+            'SM-G975F': 'Samsung Galaxy S10+',
+            'SM-G973F': 'Samsung Galaxy S10',
+            'SM-G970F': 'Samsung Galaxy S10e',
+            'SM-G965F': 'Samsung Galaxy S9+',
+            'SM-G960F': 'Samsung Galaxy S9',
+            'SM-G955F': 'Samsung Galaxy S8+',
+            'SM-G950F': 'Samsung Galaxy S8',
+            'SM-G935F': 'Samsung Galaxy S7 Edge',
+            'SM-G930F': 'Samsung Galaxy S7',
+            // Galaxy Z series (foldables)
+            'SM-F926B': 'Samsung Galaxy Z Fold3',
+            'SM-F916B': 'Samsung Galaxy Z Fold2',
+            'SM-F711B': 'Samsung Galaxy Z Flip3',
+            'SM-F700F': 'Samsung Galaxy Z Flip',
+            // Galaxy A series
+            'SM-A528B': 'Samsung Galaxy A52s',
+            'SM-A515F': 'Samsung Galaxy A51',
+            'SM-A505F': 'Samsung Galaxy A50',
+            'SM-A715F': 'Samsung Galaxy A71',
+            'SM-A705F': 'Samsung Galaxy A70',
+            'SM-A515F': 'Samsung Galaxy A50',
+            'SM-A405F': 'Samsung Galaxy A40',
+            'SM-A305F': 'Samsung Galaxy A30',
+            'SM-A205F': 'Samsung Galaxy A20',
+            'SM-A105F': 'Samsung Galaxy A10',
+            // Galaxy F series
+            'SM-F415F': 'Samsung Galaxy F41',
+            'SM-F915F': 'Samsung Galaxy F91',
+            'SM-F127G': 'Samsung Galaxy F12',
+            'SM-F226G': 'Samsung Galaxy F22',
+            // Galaxy M series
+            'SM-M515F': 'Samsung Galaxy M51',
+            'SM-M315F': 'Samsung Galaxy M31',
+            'SM-M217F': 'Samsung Galaxy M21',
+            'SM-M115F': 'Samsung Galaxy M11',
+            'SM-M105F': 'Samsung Galaxy M10',
+            // Galaxy XCover series
+            'SM-G715FN': 'Samsung Galaxy XCover Pro',
+            'SM-G398FN': 'Samsung Galaxy XCover 4s',
+            'SM-G390F': 'Samsung Galaxy XCover 4',
+            'SM-G388F': 'Samsung Galaxy XCover 3',
+            'SM-G389F': 'Samsung Galaxy XCover FieldPro',
+            // Galaxy J series (discontinued)
+            'SM-J730F': 'Samsung Galaxy J7',
+            'SM-J610F': 'Samsung Galaxy J6',
+            'SM-J530F': 'Samsung Galaxy J5',
+            'SM-J410F': 'Samsung Galaxy J4',
+            'SM-J320F': 'Samsung Galaxy J3',
+            'SM-J200F': 'Samsung Galaxy J2',
+            'SM-J100F': 'Samsung Galaxy J1'
+        }
+        'Pixel': {
+            // Include all Pixel phone models
+            'Pixel 6': 'Google Pixel 6',
+            'Pixel 6 Pro': 'Google Pixel 6 Pro',
+            'Pixel 5': 'Google Pixel 5',
+            'Pixel 5a': 'Google Pixel 5a',
+            'Pixel 4': 'Google Pixel 4',
+            'Pixel 4 XL': 'Google Pixel 4 XL',
+            'Pixel 4a': 'Google Pixel 4a',
+            'Pixel 4a 5G': 'Google Pixel 4a 5G',
+            'Pixel 3': 'Google Pixel 3',
+            'Pixel 3 XL': 'Google Pixel 3 XL',
+            'Pixel 3a': 'Google Pixel 3a',
+            'Pixel 3a XL': 'Google Pixel 3a XL',
+            'Pixel 2': 'Google Pixel 2',
+            'Pixel 2 XL': 'Google Pixel 2 XL',
+            'Pixel 1': 'Google Pixel 1',
+            'Pixel XL': 'Google Pixel XL',
+            'Pixel 4a 5G UW': 'Google Pixel 4a 5G UW',
+            'Pixel 5G': 'Google Pixel 5G',
+            'Pixel 5G UW': 'Google Pixel 5G UW',
+            'Pixel 3 XL 128GB': 'Google Pixel 3 XL 128GB',
+            'Pixel 3 XL 64GB': 'Google Pixel 3 XL 64GB',
+            'Pixel 2 XL 64GB': 'Google Pixel 2 XL 64GB',
+            'Pixel 2 XL 128GB': 'Google Pixel 2 XL 128GB',
+            'Pixel 2 64GB': 'Google Pixel 2 64GB',
+            'Pixel 2 128GB': 'Google Pixel 2 128GB',
+            'Pixel 1 32GB': 'Google Pixel 1 32GB',
+            'Pixel 1 128GB': 'Google Pixel 1 128GB',
+        
+            // Include Pixel tablet models
+            'Pixel C': 'Google Pixel C',
+            'Pixel Slate': 'Google Pixel Slate'
+        }
+    };
+
+    const getDeviceModelName = (deviceType, model) => {
+        return deviceModels[deviceType] && deviceModels[deviceType][model] ? deviceModels[deviceType][model] : `${deviceType} ${model}`;
     };
 
     // Check iPhone
     if (/iPhone/.test(ua)) {
-        const model = getDeviceModel(ua, 'iPhone');
+        const model = ua.match(/iPhone\s*([0-9,]*)/)[1];
         const version = ua.match(/OS\s*([0-9_]+)/)?.[1].replace(/_/g, '.') || getLatestVersion('iOS');
-        deviceInfo = `${model} (iOS ${version})`;
+        const deviceModel = getDeviceModelName('iPhone', model);
+        deviceInfo = `${deviceModel} (iOS ${version})`;
     }
     // Check iPad
     else if (/iPad/.test(ua)) {
-        const model = getDeviceModel(ua, 'iPad');
+        const model = ua.match(/iPad\s*([0-9,]*)/)[1];
         const version = ua.match(/OS\s*([0-9_]+)/)?.[1].replace(/_/g, '.') || getLatestVersion('iPadOS');
-        deviceInfo = `${model} (iPadOS ${version})`;
+        const deviceModel = getDeviceModelName('iPad', model);
+        deviceInfo = `${deviceModel} (iPadOS ${version})`;
     }
     // Check Android
     else if (/Android/.test(ua)) {
-        const model = getDeviceModel(ua, 'Android');
+        const model = ua.match(/Android\s*([0-9.]+)/)?.[1].split('.')[0];
         const version = ua.match(/Android\s*([0-9.]+)/)?.[1] || getLatestVersion('Android');
-        deviceInfo = `${model} (Android ${version})`;
+        const deviceModel = getDeviceModelName('Galaxy', model) || getDeviceModelName('Pixel', model);
+        deviceInfo = `${deviceModel} (Android ${version})`;
     }
     // Check Windows
     else if (/Windows/.test(ua)) {
