@@ -31,7 +31,9 @@ class SettingsManager {
             fontSizeRange.value = this.settings.fontSize;
             fontSizeRange.addEventListener('input', (e) => {
                 this.setFontSize(e.target.value);
+                this.updateSliderBackground(e.target);
             });
+            this.updateSliderBackground(fontSizeRange);
         }
 
         if (currentFontSize) {
@@ -74,6 +76,11 @@ class SettingsManager {
         }
     }
 
+    updateSliderBackground(slider) {
+        const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.setProperty('--value', `${value}%`);
+    }
+
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
@@ -93,7 +100,10 @@ class SettingsManager {
         const currentFontSize = document.getElementById('currentFontSize');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
-        if (fontSizeRange) fontSizeRange.value = defaultSettings.fontSize;
+        if (fontSizeRange) {
+            fontSizeRange.value = defaultSettings.fontSize;
+            this.updateSliderBackground(fontSizeRange);
+        }
         if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
     }
 }
