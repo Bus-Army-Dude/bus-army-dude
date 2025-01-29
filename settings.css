@@ -1,9 +1,37 @@
-/* General Styles for Settings Page */
 :root {
     --font-size-base: 16px; /* Default base font size */
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --secondary-text: #666666;
+    --border-color: #dddddd;
+    --accent-color: #4CAF50;
+    --hover-color: #45a049;
+    --content-bg: #f5f5f5;
 }
 
-body.settings-page {
+/* Dark Mode Variables */
+body.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --secondary-text: #a0a0a0;
+    --border-color: #333333;
+    --accent-color: #4CAF50;
+    --hover-color: #45a049;
+    --content-bg: #2d2d2d;
+}
+
+/* High Contrast Mode Variables */
+body.high-contrast {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --secondary-text: #ffcc00;
+    --border-color: #ffcc00;
+    --accent-color: #ffcc00;
+    --content-bg: #333333;
+}
+
+/* General Styles */
+body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
     margin: 0;
@@ -14,7 +42,7 @@ body.settings-page {
 }
 
 /* Container Styles */
-.settings-page .container {
+.container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
@@ -25,12 +53,12 @@ body.settings-page {
 }
 
 /* Settings Section Styles */
-.settings-page .settings-section {
+.settings-section {
     padding: 20px;
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .settings-header {
+.settings-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,7 +66,7 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .settings-header h1 {
+.settings-header h1 {
     margin: 0;
     font-size: 2rem;
     font-weight: 600;
@@ -46,20 +74,20 @@ body.settings-page {
     font-size: calc(var(--font-size-base) * 2); /* Scale with base font size */
 }
 
-.settings-page .settings-header .version {
+.settings-header .version {
     font-size: 0.9rem;
     color: var(--secondary-text);
     font-size: calc(var(--font-size-base) * 0.9); /* Scale with base font size */
 }
 
-.settings-page .settings-group {
+.settings-group {
     display: flex;
     flex-direction: column;
     gap: 40px; /* Increased gap to separate sections */
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .settings-subsection {
+.settings-subsection {
     padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: 15px;
@@ -67,7 +95,7 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .settings-subsection .subsection-title {
+.settings-subsection .subsection-title {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 20px;
@@ -75,12 +103,12 @@ body.settings-page {
     font-size: calc(var(--font-size-base) * 1.5); /* Scale with base font size */
 }
 
-.settings-page .danger-zone {
+.danger-zone {
     border-color: red;
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .setting-card {
+.setting-card {
     background-color: var(--bg-color);
     padding: 20px;
     border-radius: 15px;
@@ -92,12 +120,12 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .setting-label {
+.setting-label {
     flex: 1;
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .setting-title {
+.setting-title {
     font-size: 1.3rem;
     margin: 0;
     font-weight: 500;
@@ -105,7 +133,7 @@ body.settings-page {
     font-size: calc(var(--font-size-base) * 1.3); /* Scale with base font size */
 }
 
-.settings-page .setting-description {
+.setting-description {
     font-size: 1rem;
     margin: 5px 0 0;
     color: var(--secondary-text);
@@ -113,7 +141,7 @@ body.settings-page {
 }
 
 /* Toggle Switch Styles */
-.settings-page .toggle-switch {
+.toggle-switch {
     position: relative;
     display: inline-block;
     width: 60px;
@@ -121,14 +149,14 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .toggle-switch input {
+.toggle-switch input {
     opacity: 0;
     width: 0;
     height: 0;
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .toggle-slider {
+.toggle-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -141,7 +169,7 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .toggle-slider:before {
+.toggle-slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -154,29 +182,29 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page input:checked + .toggle-slider {
+input:checked + .toggle-slider {
     background-color: var(--accent-color);
 }
 
-.settings-page input:checked + .toggle-slider:before {
+input:checked + .toggle-slider:before {
     transform: translateX(26px);
 }
 
 /* Font Size Control Styles */
-.settings-page .font-size-control {
+.font-size-control {
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .font-size-control input[type="range"] {
+.font-size-control input[type="range"] {
     flex: 1;
     cursor: pointer;
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .font-size-control span {
+.font-size-control span {
     font-size: 1rem;
     font-weight: 500;
     color: var(--text-color);
@@ -184,7 +212,7 @@ body.settings-page {
 }
 
 /* Reset Button Styles */
-.settings-page .reset-button {
+.reset-button {
     background-color: red;
     color: white;
     border: none;
@@ -196,12 +224,12 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .reset-button:hover {
+.reset-button:hover {
     background-color: darkred;
 }
 
 /* Back Link Styles */
-.settings-page .back-link {
+.back-link {
     display: inline-block;
     margin-top: 20px;
     color: var(--accent-color);
@@ -211,37 +239,6 @@ body.settings-page {
     font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .back-link:hover {
+.back-link:hover {
     color: var(--hover-color);
-}
-
-/* Dark Mode and Light Mode Classes */
-.settings-page.dark-mode {
-    --bg-color: #1a1a1a;
-    --text-color: #ffffff;
-    --secondary-text: #a0a0a0;
-    --border-color: #333333;
-    --accent-color: #4CAF50;
-    --hover-color: #45a049;
-    --content-bg: #2d2d2d;
-}
-
-.settings-page.light-mode {
-    --bg-color: #ffffff;
-    --text-color: #000000;
-    --secondary-text: #666666;
-    --border-color: #dddddd;
-    --accent-color: #4CAF50;
-    --hover-color: #45a049;
-    --content-bg: #f5f5f5;
-}
-
-/* High Contrast Mode Classes */
-.settings-page.high-contrast {
-    --bg-color: #000000;
-    --text-color: #ffffff;
-    --secondary-text: #ffcc00;
-    --border-color: #ffcc00;
-    --accent-color: #ffcc00;
-    --content-bg: #333333;
 }
