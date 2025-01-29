@@ -110,6 +110,7 @@ class SettingsManager {
         } else {
             this.applyTheme(this.settings.darkMode);
         }
+        document.body.classList.toggle('high-contrast', isHighContrast);
         this.settings.highContrast = isHighContrast;
         this.saveSettings();
     }
