@@ -18,7 +18,7 @@ function detectDetailedDevice() {
     const operatingSystems = {
         apple: {
             iOS: ['18.3', '18.2.1', '18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
-            iPadOS: ['18.3','18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
+            iPadOS: ['18.3', '18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
             macOS: ['15.3', '15.2', '15.1', '15', '14', '13', '12', '11', '10.15', '10.14', '10.13', '10.12', '10.11', '10.10', '10.9', '10.8', '10.7', '10.6', '10.5', '10.4', '10.3', '10.2', '10.1', '10.0']
         },
         microsoft: {
@@ -53,25 +53,31 @@ function detectDetailedDevice() {
         }
     };
 
+    const getDeviceModel = (ua, deviceType) => {
+        const match = ua.match(new RegExp(`${deviceType}\\s*([^;]*)`, 'i'));
+        return match ? match[1].trim() : deviceType;
+    };
+
     // Check iPhone
     if (/iPhone/.test(ua)) {
-        const model = ua.match(/iPhone\s*(\d+)?/);
+        const model = getDeviceModel(ua, 'iPhone');
         const version = ua.match(/OS\s*([0-9_]+)/)?.[1].replace(/_/g, '.') || getLatestVersion('iOS');
-        const deviceModel = model ? `iPhone ${model[1]}` : 'iPhone';
-        deviceInfo = `${deviceModel} (iOS ${version})`;
+        deviceInfo = `${model} (iOS ${version})`;
     }
     // Check iPad
     else if (/iPad/.test(ua)) {
+        const model = getDeviceModel(ua, 'iPad');
         const version = ua.match(/OS\s*([0-9_]+)/)?.[1].replace(/_/g, '.') || getLatestVersion('iPadOS');
-        deviceInfo = `iPad (iPadOS ${version})`;
+        deviceInfo = `${model} (iPadOS ${version})`;
     }
     // Check Android
     else if (/Android/.test(ua)) {
+        const model = getDeviceModel(ua, 'Android');
         const version = ua.match(/Android\s*([0-9.]+)/)?.[1] || getLatestVersion('Android');
-        deviceInfo = `Android ${version}`;
+        deviceInfo = `${model} (Android ${version})`;
     }
     // Check Windows
-    else if (/Windows NT (\d+\.\d+)/.test(ua)) {
+    else if (/Windows/.test(ua)) {
         const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
         deviceInfo = `Windows ${version}`;
     }
@@ -80,16 +86,34 @@ function detectDetailedDevice() {
         const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1].replace(/_/g, '.') || getLatestVersion('macOS');
         deviceInfo = `macOS ${version}`;
     }
+    // Check Linux
+    else if (/Linux/.test(ua)) {
+        const distro = operatingSystems.linux.find(distro => ua.includes(distro)) || 'Linux';
+        deviceInfo = `${distro}`;
+    }
+    // Check Chrome OS
+    else if (/CrOS/.test(ua)) {
+        deviceInfo = `Chrome OS`;
+    }
+    // Check BlackBerry
+    else if (/BB10/.test(ua)) {
+        deviceInfo = `BlackBerry OS`;
+    }
+    // Check webOS
+    else if (/webOS/.test(ua)) {
+        deviceInfo = `webOS`;
+    }
     // Check other platforms
     else {
         deviceInfo = 'Unknown Device';
     }
 
-    return deviceInfo;
+    // Update the HTML content with device information
+    document.querySelector('.device-info').textContent = deviceInfo;
 }
 
-// Example usage:
-console.log(detectDetailedDevice());
+// Call the function to update the device information on page load
+window.onload = detectDetailedDevice;;
 
 // Time update function
 function updateTime() {
