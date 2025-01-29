@@ -170,7 +170,7 @@ window.onload = function() {
             { username: 'badge5022', isVerified: false, followers: '19.8K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },           
             { username: 'raisingramsey2023', isVerified: false, followers: '1,200', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
             { username: 'jerridc4', isVerified: false, followers: '478', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
-            { username: 'officalbusarmydude', isVerified: true, followers: '3', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
+            { username: 'officalbusarmydude', isVerified: false, followers: '3', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
          
             // Add more shoutouts here...
         ],
