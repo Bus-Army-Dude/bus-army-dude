@@ -123,7 +123,6 @@ class SettingsManager {
     setFontSize(size) {
         size = Math.min(Math.max(size, 12), 30); // Limit size between 12px and 30px
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
-        document.body.style.fontSize = `${size}px`;
         this.settings.fontSize = size;
         this.saveSettings();
 
