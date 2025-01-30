@@ -11,135 +11,134 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
- // Device detection function
+// Device detection function
 function detectDetailedDevice() {
     const ua = navigator.userAgent;
     console.log("User Agent:", ua);
     
-    const supportedVersions = {
-        Windows: {
-            min: '10.0',
-            server: ['2016', '2019', '2022']
-        },
-        macOS: {
-            min: '11.0'
-        },
-        ChromeOS: {
-            min: '96'
-        },
-        Android: {
-            min: '8.0'
-        },
-        Linux: {
-            Ubuntu: '18.04',
-            Debian: '10',
-            openSUSE: '15.5',
-            Fedora: '39'
-        },
-        iOS: {
-            min: '15.0'
-        },
-        iPadOS: {
-            min: '15.0'
+    // First, detect the platform
+    let platform = 'Unknown';
+    let version = 'Unknown Operating System';
+
+    // Windows detection
+    if (/Windows NT/.test(ua)) {
+        platform = 'Windows';
+        const winVer = ua.match(/Windows NT (\d+\.\d+)/);
+        if (winVer && winVer[1] === '10.0') {
+            // Check for Windows 11 build number
+            const build = ua.match(/build\s*(\d+)/);
+            if (build && parseInt(build[1]) >= 22000) {
+                version = 'Windows 11';
+            } else {
+                version = 'Windows 10';
+            }
+        } else {
+            version = 'Windows (version not supported)';
         }
-    };
-
-    const platform = (() => {
-        if (/Windows NT/.test(ua)) return 'Windows';
-        if (/Mac OS X/.test(ua)) return 'macOS';
-        if (/CrOS/.test(ua)) return 'ChromeOS';
-        if (/Android/.test(ua)) return 'Android';
-        if (/iPhone/.test(ua)) return 'iOS';
-        if (/iPad/.test(ua)) return 'iPadOS';
-        if (/Linux/.test(ua)) return 'Linux';
-        return 'Unknown';
-    })();
-
-    const version = (() => {
-        switch (platform) {
-            case 'Windows':
-                const winVer = (ua.match(/Windows NT (\d+\.\d+)/) || [])[1];
-                if (winVer === '10.0') {
-                    const build = (ua.match(/build\s*(\d+)/) || [])[1];
-                    if (build && parseInt(build) >= 22000) {
-                        return 'Windows 11';
-                    }
-                    return 'Windows 10';
-                }
-                return 'Windows (version not supported)';
-
-            case 'macOS':
-                const macVer = (ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/) || [])[1]?.replace(/_/g, '.');
-                if (macVer && parseFloat(macVer) >= 11.0) {
-                    return `macOS ${macVer}`;
-                }
-                return 'macOS (version not supported)';
-
-            case 'iOS':
-                const iosVer = (ua.match(/iPhone OS (\d+[._]\d+[._]?\d*)/) || [])[1]?.replace(/_/g, '.');
-                if (iosVer && parseInt(iosVer) >= 15) {
-                    return `iOS ${iosVer}`;
-                }
-                return 'iOS (version not supported)';
-
-            case 'iPadOS':
-                const ipadVer = (ua.match(/iPad; CPU OS (\d+[._]\d+[._]?\d*)/) || [])[1]?.replace(/_/g, '.');
-                if (ipadVer && parseInt(ipadVer) >= 15) {
-                    return `iPadOS ${ipadVer}`;
-                }
-                return 'iPadOS (version not supported)';
-
-            case 'Android':
-                const androidVer = (ua.match(/Android (\d+(\.\d+)*)/) || [])[1];
-                if (androidVer && parseFloat(androidVer) >= 8.0) {
-                    return `Android ${androidVer}`;
-                }
-                return 'Android (version not supported)';
-
-            case 'ChromeOS':
-                const chromeVer = (ua.match(/Chrome\/(\d+)/) || [])[1];
-                if (chromeVer && parseInt(chromeVer) >= 96) {
-                    return `ChromeOS ${chromeVer}`;
-                }
-                return 'ChromeOS (version not supported)';
-
-            case 'Linux':
-                if (ua.includes('Ubuntu')) {
-                    const ubuntuVer = (ua.match(/Ubuntu[\/|\s](\d+\.\d+)/) || [])[1];
-                    if (ubuntuVer && parseFloat(ubuntuVer) >= 18.04) {
-                        return `Ubuntu ${ubuntuVer}`;
-                    }
-                }
-                if (ua.includes('Debian')) {
-                    const debianVer = (ua.match(/Debian[\/|\s](\d+)/) || [])[1];
-                    if (debianVer && parseInt(debianVer) >= 10) {
-                        return `Debian ${debianVer}`;
-                    }
-                }
-                if (ua.includes('Fedora')) {
-                    const fedoraVer = (ua.match(/Fedora[\/|\s](\d+)/) || [])[1];
-                    if (fedoraVer && parseInt(fedoraVer) >= 39) {
-                        return `Fedora ${fedoraVer}`;
-                    }
-                }
-                if (ua.includes('openSUSE')) {
-                    const suseVer = (ua.match(/openSUSE[\/|\s](\d+\.\d+)/) || [])[1];
-                    if (suseVer && parseFloat(suseVer) >= 15.5) {
-                        return `openSUSE ${suseVer}`;
-                    }
-                }
-                return 'Linux (distribution unknown or not supported)';
-
-            default:
-                return 'Unknown Operating System';
+    }
+    // macOS detection
+    else if (/Macintosh|Mac OS X/.test(ua)) {
+        platform = 'macOS';
+        const macVer = ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
+        if (macVer) {
+            const cleanVer = macVer[1].replace(/_/g, '.');
+            if (parseFloat(cleanVer) >= 11.0) {
+                version = `macOS ${cleanVer}`;
+            } else {
+                version = 'macOS (version not supported)';
+            }
         }
-    })();
+    }
+    // iOS detection
+    else if (/iPhone/.test(ua)) {
+        platform = 'iOS';
+        const iosVer = ua.match(/iPhone OS (\d+[._]\d+[._]?\d*)/);
+        if (iosVer) {
+            const cleanVer = iosVer[1].replace(/_/g, '.');
+            if (parseInt(cleanVer) >= 15) {
+                version = `iOS ${cleanVer}`;
+            } else {
+                version = 'iOS (version not supported)';
+            }
+        }
+    }
+    // iPadOS detection
+    else if (/iPad/.test(ua)) {
+        platform = 'iPadOS';
+        const ipadVer = ua.match(/CPU OS (\d+[._]\d+[._]?\d*)/);
+        if (ipadVer) {
+            const cleanVer = ipadVer[1].replace(/_/g, '.');
+            if (parseInt(cleanVer) >= 15) {
+                version = `iPadOS ${cleanVer}`;
+            } else {
+                version = 'iPadOS (version not supported)';
+            }
+        }
+    }
+    // Android detection
+    else if (/Android/.test(ua)) {
+        platform = 'Android';
+        const androidVer = ua.match(/Android (\d+(\.\d+)*)/);
+        if (androidVer && parseFloat(androidVer[1]) >= 8.0) {
+            version = `Android ${androidVer[1]}`;
+        } else {
+            version = 'Android (version not supported)';
+        }
+    }
+    // ChromeOS detection
+    else if (/CrOS/.test(ua)) {
+        platform = 'ChromeOS';
+        const chromeVer = ua.match(/Chrome\/(\d+)/);
+        if (chromeVer && parseInt(chromeVer[1]) >= 96) {
+            version = `ChromeOS ${chromeVer[1]}`;
+        } else {
+            version = 'ChromeOS (version not supported)';
+        }
+    }
+    // Linux detection
+    else if (/Linux/.test(ua)) {
+        platform = 'Linux';
+        if (ua.includes('Ubuntu')) {
+            const ubuntuVer = ua.match(/Ubuntu[\/|\s](\d+\.\d+)/);
+            if (ubuntuVer && parseFloat(ubuntuVer[1]) >= 18.04) {
+                version = `Ubuntu ${ubuntuVer[1]}`;
+            }
+        } else if (ua.includes('Debian')) {
+            const debianVer = ua.match(/Debian[\/|\s](\d+)/);
+            if (debianVer && parseInt(debianVer[1]) >= 10) {
+                version = `Debian ${debianVer[1]}`;
+            }
+        } else if (ua.includes('Fedora')) {
+            const fedoraVer = ua.match(/Fedora[\/|\s](\d+)/);
+            if (fedoraVer && parseInt(fedoraVer[1]) >= 39) {
+                version = `Fedora ${fedoraVer[1]}`;
+            }
+        } else if (ua.includes('openSUSE')) {
+            const suseVer = ua.match(/openSUSE[\/|\s](\d+\.\d+)/);
+            if (suseVer && parseFloat(suseVer[1]) >= 15.5) {
+                version = `openSUSE ${suseVer[1]}`;
+            }
+        } else {
+            version = 'Linux (distribution unknown or not supported)';
+        }
+    }
 
     console.log(`Detected OS: ${platform}`);
     console.log(`Detected Version: ${version}`);
 
     return version;
 }
+
+// Initialize when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Update device info immediately
+    const deviceInfoDiv = document.querySelector('.device-info');
+    if (deviceInfoDiv) {
+        const osVersion = detectDetailedDevice();
+        deviceInfoDiv.textContent = osVersion;
+        console.log("Set device info to:", osVersion);
+    }
+});
 
 // Time update function
 function updateTime() {
