@@ -40,7 +40,7 @@
 - Protected follower counts
 - Verified badge protection
 
-### 7. Calendar and Event Security
+### 7. Event Security
 - Secure event modal functionality
 - Event details protection to prevent unauthorized access
 - Highlighting current day securely based on the user’s timezone
@@ -121,9 +121,9 @@ For any security-related concerns, please contact:
 ## Repository Information
 - Repository: BusArmyDude/busarmydude
 - Language Composition:
-  - **JavaScript:** 38.3%
-  - **CSS:** 24.3%
-  - **HTML:** 37.4%
+  - **JavaScript:** 44.2%
+  - **CSS:** 31.1%
+  - **HTML:** 24.7%
 
 ## Acknowledgments
 
