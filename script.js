@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-  function detectDetailedDevice() {
+ function detectDetailedDevice() {
     const ua = navigator.userAgent;
     console.log("User Agent:", ua);
     
     // Add UTC timestamp and user login
     const utcTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
     const userLogin = 'BusArmyDude';
-    console.log(`Current Date and Time (UTC): ${utcTime}`);
+    console.log(`Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${utcTime}`);
     console.log(`Current User's Login: ${userLogin}`);
 
     const supportedVersions = {
@@ -144,81 +144,76 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Detected OS: ${platform}`);
     console.log(`Detected Version: ${version}`);
 
-    return { platform, version };
+    return version; // Return just the version string instead of an object
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const { platform, version } = detectDetailedDevice();
+    // Initial update of device info
     const deviceInfoDiv = document.querySelector('.device-info');
-    
     if (deviceInfoDiv) {
-        deviceInfoDiv.textContent = version;
-        console.log("Updated device info display:", version);
+        deviceInfoDiv.textContent = detectDetailedDevice();
     }
-});
-    
-// Time update function
-function updateTime() {
-    const now = new Date();
-    const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
-    const timeElement = document.querySelector('.update-time');
-    if (timeElement) {
-        timeElement.textContent = `${timestamp}`;
-    }
-}
 
-// Page refresh countdown set to 5 minutes (300 seconds)
-const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
-let startTime = Date.now();
-
-function updateCountdown() {
-    const countdownElement = document.querySelector('.countdown');
-    const timeElapsed = Date.now() - startTime;
-    const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);  // Convert ms to seconds
-    
-    if (timeLeft >= 0) {
-        const minutes = Math.floor(timeLeft / 60);  // Get full minutes
-        const seconds = timeLeft % 60;              // Get remaining seconds
-        
-        if (countdownElement) {
-            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+    // Function to update UTC and local times
+    function updateTimes() {
+        // Update UTC time
+        const utcTimeElement = document.querySelector('.utc-time');
+        if (utcTimeElement) {
+            const utcTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
+            utcTimeElement.textContent = utcTime;
         }
-    } else {
-        smoothReload();  // Smooth reload when time is up
+
+        // Update local time
+        const timeElement = document.querySelector('.update-time');
+        if (timeElement) {
+            const now = new Date();
+            const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
+            timeElement.textContent = timestamp;
+        }
     }
-}
 
-// Smoothly reload the page with a fade-out effect
-function smoothReload() {
-    const body = document.body;
-    body.style.transition = 'opacity 0.5s ease';
-    body.style.opacity = '0';
+    // Page refresh countdown set to 5 minutes (300 seconds)
+    const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
+    let startTime = Date.now();
 
-    setTimeout(function() {
-        location.reload();
-    }, 500); // Delay the reload to allow fade-out
-}
+    function updateCountdown() {
+        const countdownElement = document.querySelector('.countdown');
+        const timeElapsed = Date.now() - startTime;
+        const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);
 
-// Update version panel with device info
-function updateVersionPanel() {
-    const deviceElement = document.querySelector('.device-info');
-    if (deviceElement) {
-        deviceElement.textContent = `${detectDetailedDevice()}`;
+        if (timeLeft >= 0) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            if (countdownElement) {
+                countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+            }
+        } else {
+            smoothReload();
+        }
     }
-}
 
-// Call the functions on page load
-window.onload = function() {
-    updateVersionPanel();
-    updateTime();
+    // Smoothly reload the page with a fade-out effect
+    function smoothReload() {
+        const body = document.body;
+        body.style.transition = 'opacity 0.5s ease';
+        body.style.opacity = '0';
+
+        setTimeout(function() {
+            location.reload();
+        }, 500);
+    }
+
+    // Initial updates
+    updateTimes();
     updateCountdown();
-    
-    // Synchronize both time and countdown updates every second
+
+    // Update times and countdown every second
     setInterval(() => {
-        updateTime();
+        updateTimes();
         updateCountdown();
-    }, 1000);  // Update both every second
-};
+    }, 1000);
+});
     
    // TikTok Shoutouts
     const tiktokShoutouts = {
