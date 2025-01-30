@@ -93,8 +93,12 @@ const { deviceInfo, isSupported } = detectDetailedDevice();
 console.log({ deviceInfo, isSupported }); // Log the output for debugging
 
 const deviceInfoDiv = document.querySelector('.device-info');
-if (isSupported) {
-    deviceInfoDiv.textContent = `Your operating system version (${deviceInfo}) is supported.`;
+if (deviceInfoDiv) {
+    if (isSupported) {
+        deviceInfoDiv.textContent = `Your operating system version (${deviceInfo}) is supported.`;
+    } else {
+        deviceInfoDiv.textContent = `Your operating system version (${deviceInfo}) is not supported. Please upgrade to a supported version.`;
+    }
 } else {
-    deviceInfoDiv.textContent = `Your operating system version (${deviceInfo}) is not supported. Please upgrade to a supported version.`;
+    console.error('Element with class "device-info" not found.');
 }
