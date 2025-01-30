@@ -221,54 +221,72 @@ function updateNewYearCountdown() {
             </h2>
             <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
         `;
-    } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        // Update flip clock for days
-        updateFlipClock('countdown-days', days);
-
-        // Update flip clock for hours
-        updateFlipClock('countdown-hours', hours);
-
-        // Update flip clock for minutes
-        updateFlipClock('countdown-minutes', minutes);
-
-        // Update flip clock for seconds
-        updateFlipClock('countdown-seconds', seconds);
+        return;
     }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    // Update flip clock for days
+    updateFlipClock('countdown-days', days);
+    // Update flip clock for hours
+    updateFlipClock('countdown-hours', hours);
+    // Update flip clock for minutes
+    updateFlipClock('countdown-minutes', minutes);
+    // Update flip clock for seconds
+    updateFlipClock('countdown-seconds', seconds);
 }
 
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
+    if (!clock) return;
+    
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
+    if (!front || !back) return;
+    
     const valueStr = value.toString().padStart(2, '0');
 
     if (front.textContent !== valueStr) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
-        // Trigger the flip animation
-        clock.querySelector('.flip-clock-inner').classList.add('flip');
+        const flipInner = clock.querySelector('.flip-clock-inner');
+        if (flipInner) {
+            flipInner.classList.add('flip');
 
-        setTimeout(() => {
-            clock.querySelector('.flip-clock-inner').classList.remove('flip');
-        }, 600); // match the animation duration
+            setTimeout(() => {
+                flipInner.classList.remove('flip');
+            }, 600);
+        }
     }
 }
-    
-    // Initialize everything
-    detectDetailedDevice();
-    updateTime();
-    tiktokShoutouts.init();
-    updateNewYearCountdown();
 
+// Update time function
+function updateTime() {
+    const now = new Date();
+    const timeElement = document.querySelector('.current-time');
+    if (timeElement) {
+        timeElement.textContent = now.toLocaleTimeString();
+    }
+}
+
+// Initialize everything when the document is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize TikTok shoutouts
+    tiktokShoutouts.init();
+    
+    // Initialize countdown
+    updateNewYearCountdown();
+    
+    // Initialize time update
+    updateTime();
+    
+    // Set intervals for updates
     setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 1000);
     setInterval(updateNewYearCountdown, 1000);
 });
 
