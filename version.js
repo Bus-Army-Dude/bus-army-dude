@@ -3,7 +3,7 @@ const VERSION_CONFIG = {
     version: 'v1.11.0',
     build: '2025.1.27',
     userLogin: 'BusArmyDude',
-    currentUTC: '2025-01-30 19:22:20',
+    currentUTC: '2025-01-30 19:31:24',
     supportedVersions: {
         iOS: [
             '15', '15.0.1', '15.0.2', '15.1', '15.1.1', '15.2', '15.2.1', '15.3', '15.3.1', '15.4', '15.4.1', '15.5', '15.6', '15.6.1', '15.7', '15.7.1', '15.7.2', '15.7.3', '15.7.4', '15.7.5', '15.7.6', '15.7.7', '15.7.8', '15.7.9', '15.8', '15.8.1', '15.8.2', '15.8.3',
@@ -26,7 +26,7 @@ const VERSION_CONFIG = {
         Android: ['8.0', '8.1', '9', '10', '11', '12', '12.1', '13', '14', '15', '16 beta 1'],
         Windows: ['10', '11'],
         Linux: ['Ubuntu', 'CentOS', 'Debian', 'Fedora'],
-        ChromeOS: ['132', '133', '134', '135', '136', '137', '138']
+        ChromeOS: ['132', '133', '134', '135', '136', '137', '138', '139', '140']
     }
 };
 
@@ -72,7 +72,9 @@ function detectDetailedDevice() {
         if (match) {
             const version = match[1].replace(/_/g, '.').replace(/\.0$/, '');
             const fullVersion = version.split('.').slice(0, 3).join('.');
-            return `macOS ${fullVersion}`;
+            if (VERSION_CONFIG.supportedVersions.macOS.includes(fullVersion)) {
+                return `macOS ${fullVersion}`;
+            }
         }
     }
     // ChromeOS Detection
