@@ -722,27 +722,30 @@ body {
 .version-info-container {
     background-color: var(--content-bg); /* Matching background color */
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px var(--shadow-color); /* Matching shadow color */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color); /* Matching shadow color */
     margin: 20px auto;
-    max-width: 600px; /* Centered and responsive */
+    max-width: 100%; /* Match the width of other sections */
+    width: 100%;
 }
 
 /* Header styling */
 .version-header {
-    font-size: 1.5em;
+    font-size: 1.75em;
     font-weight: bold;
     color: var(--text-color); /* Matching text color */
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 /* Info row styling */
 .info-row {
     display: flex;
     justify-content: space-between;
-    margin: 8px 0;
+    margin: 10px 0;
     align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 /* Label styling */
@@ -750,13 +753,19 @@ body {
     font-weight: bold;
     color: var(--secondary-text); /* Matching secondary text color */
     min-width: 100px;
+    flex: 1;
 }
 
 /* Value styling */
 .info-row div:not(.info-label) {
     color: var(--text-color); /* Matching text color */
-    flex: 1;
+    flex: 2;
     text-align: right;
+}
+
+/* Custom shadows for modern look */
+.version-info-container {
+    box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color);
 }
 
 /* Responsive adjustments */
