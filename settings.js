@@ -88,7 +88,7 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 16
+            fontSize: 10
         };
         this.settings = defaultSettings;
         this.applySettings();
