@@ -16,7 +16,6 @@ const CONFIG = {
     version: 'v1.11.0',
     build: '2025.1.27',
     userLogin: 'BusArmyDude',
-    currentUTC: '2025-01-30 18:22:28',
     supportedVersions: {
         iOS: {
             '15': ['15.0', '15.0.1', '15.0.2', '15.1', '15.1.1', '15.2', '15.2.1', '15.3', '15.3.1', '15.4', '15.4.1', '15.5', '15.6', '15.6.1', '15.7', '15.7.1', '15.7.2', '15.7.3', '15.7.4', '15.7.5', '15.7.6', '15.7.7', '15.7.8', '15.7.9', '15.8', '15.8.1', '15.8.2', '15.8.3'],
@@ -48,58 +47,25 @@ const CONFIG = {
     }
 };
 
-// Initialize everything when DOM is loaded
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initializeVersionInfo();
-    initializeTimeAndCountdown();
-    setupBackToTop();
-    setupCookieConsent();
-    setupThemeSwitcher();
-    setupFAQAccordion();
+    startTimeUpdates();
 });
 
-// Version Info Initialization
 function initializeVersionInfo() {
-    setElementContent('.version-number', CONFIG.version);
-    setElementContent('.build-number', CONFIG.build);
-    setElementContent('.user-login', CONFIG.userLogin);
-    updateDeviceInfo();
-}
-
-// Set content with error handling
-function setElementContent(selector, content) {
-    const element = document.querySelector(selector);
-    if (element) {
-        element.textContent = content;
-    } else {
-        console.warn(`Element not found: ${selector}`);
-    }
-}
-
-// Device Detection
-function updateDeviceInfo() {
-    const deviceInfo = detectDetailedDevice();
-    setElementContent('.device-info', deviceInfo);
+    document.querySelector('.device-info').textContent = detectDetailedDevice();
 }
 
 function detectDetailedDevice() {
     const ua = navigator.userAgent;
-    let deviceInfo = '';
-
+    
     // iOS/iPadOS Detection
     if (ua.includes('iPhone') || ua.includes('iPad')) {
         const match = ua.match(/OS (\d+_\d+(_\d+)?)/);
         if (match) {
             const version = match[1].replace(/_/g, '.');
-            const majorVersion = version.split('.')[0];
-            const deviceType = ua.includes('iPad') ? 'iPadOS' : 'iOS';
-            
-            // Check if version is supported
-            const supportedVersions = CONFIG.supportedVersions[deviceType][majorVersion];
-            if (supportedVersions && supportedVersions.includes(version)) {
-                return `${deviceType} ${version}`;
-            }
-            return `${deviceType} ${majorVersion}`;
+            return `${ua.includes('iPad') ? 'iPadOS' : 'iOS'} ${version}`;
         }
     }
     // macOS Detection
@@ -107,51 +73,31 @@ function detectDetailedDevice() {
         const match = ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
         if (match) {
             const version = match[1].replace(/_/g, '.');
-            const majorVersion = version.split('.')[0];
-            if (CONFIG.supportedVersions.macOS[majorVersion]) {
-                return `macOS ${version}`;
-            }
+            return `macOS ${version}`;
         }
-        return 'macOS';
     }
     // Android Detection
     else if (ua.includes('Android')) {
         const match = ua.match(/Android (\d+(\.\d+)*)/);
-        if (match) {
-            const version = match[1];
-            const majorVersion = version.split('.')[0];
-            if (CONFIG.supportedVersions.Android[majorVersion]) {
-                return `Android ${version}`;
-            }
-        }
-        return 'Android';
+        if (match) return `Android ${match[1]}`;
     }
     // Windows Detection
     else if (ua.includes('Windows')) {
         if (ua.includes('Windows NT 10.0')) {
-            const build = ua.match(/build\s*(\d+)/);
-            if (build && parseInt(build[1]) >= 22000) {
-                return 'Windows 11';
-            }
-            return 'Windows 10';
+            return parseInt(ua.match(/build\s*(\d+)/)[1]) >= 22000 ? 'Windows 11' : 'Windows 10';
         }
-        return 'Windows';
     }
     // Linux Detection
     else if (ua.includes('Linux')) {
         for (const distro of CONFIG.supportedVersions.Linux) {
-            if (ua.includes(distro)) {
-                return `${distro} Linux`;
-            }
+            if (ua.includes(distro)) return `${distro} Linux`;
         }
         return 'Linux';
     }
-
     return 'Unknown Operating System';
 }
 
-// Time and Countdown Initialization
-function initializeTimeAndCountdown() {
+function startTimeUpdates() {
     updateTimes();
     startCountdown();
     setInterval(updateTimes, 1000);
@@ -161,36 +107,35 @@ function updateTimes() {
     const now = new Date();
     
     // Update UTC time
-    const utcTime = now.toISOString().replace('T', ' ').slice(0, 19);
-    setElementContent('.utc-time', utcTime);
+    document.querySelector('.utc-time').textContent = 
+        now.toISOString().replace('T', ' ').slice(0, 19);
     
     // Update local time
-    const localTime = now.toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-        timeZoneName: 'short'
-    });
-    setElementContent('.update-time', localTime);
+    document.querySelector('.update-time').textContent = 
+        now.toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZoneName: 'short'
+        });
 }
 
-// Countdown functionality
 function startCountdown() {
-    const refreshInterval = 5 * 60; // 5 minutes in seconds
+    const refreshInterval = 5 * 60;
     let timeLeft = refreshInterval;
     
     function updateCountdown() {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-        setElementContent('.countdown', 
-            `Page refreshing in: ${minutes}m ${seconds}s`);
+        document.querySelector('.countdown').textContent = 
+            `Page refreshing in: ${minutes}m ${seconds}s`;
         
         if (timeLeft === 0) {
-            smoothReload();
+            location.reload();
         } else {
             timeLeft--;
         }
