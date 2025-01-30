@@ -23,7 +23,7 @@ const VERSION_CONFIG = {
         Android: ['8.0', '8.1', '9', '10', '11', '12', '12.1', '13', '14', '15', '16 beta 1'],
         Windows: ['10', '11'],
         Linux: ['Ubuntu', 'CentOS', 'Debian', 'Fedora'],
-        ChromeOS: ['132', '133', '134', '135', '136', '137', '138']
+        ChromeOS: ['132', '133', '134', '135', '136', '137', '138', '139', '140']
     }
 };
 
@@ -78,16 +78,10 @@ function detectDetailedDevice() {
         const match = ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
         if (match) {
             const version = match[1].replace(/_/g, '.').replace(/\.0$/, '');
-            const majorVersion = version.split('.')[0];
-            const minorVersion = version.split('.')[1];
-            const mappedVersion = macOSVersionMap[majorVersion + '.' + minorVersion] || majorVersion;
-            const finalVersion = version.split('.').slice(2).join('.');
-            const fullVersion = finalVersion ? `${mappedVersion}.${finalVersion}` : mappedVersion;
+            const fullVersion = version.split('.').slice(0, 3).join('.');
             // Check if the fullVersion is in the supported versions list
             if (VERSION_CONFIG.supportedVersions.macOS.includes(fullVersion)) {
                 return `macOS ${fullVersion}`;
-            } else {
-                return `macOS ${mappedVersion}`;
             }
         }
     }
