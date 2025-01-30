@@ -221,7 +221,7 @@ function updateNewYearCountdown() {
             </h2>
             <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
         `;
-        return;
+        return; // Add return here to prevent further updates
     }
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -229,24 +229,21 @@ function updateNewYearCountdown() {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    // Update flip clock for days
+    // Update flip clock for each unit
     updateFlipClock('countdown-days', days);
-    // Update flip clock for hours
     updateFlipClock('countdown-hours', hours);
-    // Update flip clock for minutes
     updateFlipClock('countdown-minutes', minutes);
-    // Update flip clock for seconds
     updateFlipClock('countdown-seconds', seconds);
 }
 
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return;
+    if (!clock) return; // Add safety check
     
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
-    if (!front || !back) return;
+    if (!front || !back) return; // Add safety check
     
     const valueStr = value.toString().padStart(2, '0');
 
@@ -257,7 +254,6 @@ function updateFlipClock(id, value) {
         const flipInner = clock.querySelector('.flip-clock-inner');
         if (flipInner) {
             flipInner.classList.add('flip');
-
             setTimeout(() => {
                 flipInner.classList.remove('flip');
             }, 600);
@@ -265,7 +261,7 @@ function updateFlipClock(id, value) {
     }
 }
 
-// Update time function
+// Simple time update function
 function updateTime() {
     const now = new Date();
     const timeElement = document.querySelector('.current-time');
@@ -276,13 +272,20 @@ function updateTime() {
 
 // Initialize everything when the document is ready
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize copy protection
+    enhancedCopyProtection.init();
+    
     // Initialize TikTok shoutouts
     tiktokShoutouts.init();
     
-    // Initialize countdown
-    updateNewYearCountdown();
+    // Initialize Instagram shoutouts
+    instagramShoutouts.init();
     
-    // Initialize time update
+    // Initialize YouTube shoutouts
+    youtubeShoutouts.init();
+    
+    // Initialize countdown and time updates
+    updateNewYearCountdown();
     updateTime();
     
     // Set intervals for updates
