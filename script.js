@@ -11,152 +11,88 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
+// Main initialization when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted):", 
+        new Date().toISOString().replace('T', ' ').slice(0, 19));
+    console.log("Current User's Login: BusArmyDude");
+
+    // Initialize all components
+    initializeVersionInfo();
+    startTimeUpdates();
+});
+
+// Initialize version information
+function initializeVersionInfo() {
+    // Set device info
+    const deviceInfoDiv = document.querySelector('.device-info');
+    if (deviceInfoDiv) {
+        deviceInfoDiv.textContent = detectDetailedDevice();
+    }
+
+    // Set user login
+    const userLoginDiv = document.querySelector('.user-login');
+    if (userLoginDiv) {
+        userLoginDiv.textContent = 'BusArmyDude';
+    }
+}
+
 // Device detection function
 function detectDetailedDevice() {
     const ua = navigator.userAgent;
-    console.log("User Agent:", ua);
     
-    const supportedVersions = {
-        Windows: {
-            min: '10.0',
-            server: ['2016', '2019', '2022']
-        },
-        macOS: {
-            min: '11.0'
-        },
-        ChromeOS: {
-            min: '96'
-        },
-        Android: {
-            min: '8.0'
-        },
-        Linux: {
-            Ubuntu: '18.04',
-            Debian: '10',
-            openSUSE: '15.5',
-            Fedora: '39'
-        },
-        iOS: {
-            min: '15.0'
-        },
-        iPadOS: {
-            min: '15.0'
+    let detectedOS = 'Unknown Operating System';
+    
+    if (ua.includes('Windows')) {
+        if (ua.includes('Windows NT 10.0')) {
+            detectedOS = 'Windows 11';
+        } else {
+            detectedOS = 'Windows 10';
         }
-    };
+    } else if (ua.includes('Mac OS X')) {
+        detectedOS = 'macOS';
+    } else if (ua.includes('Linux')) {
+        detectedOS = 'Linux';
+    } else if (ua.includes('Android')) {
+        detectedOS = 'Android';
+    } else if (ua.includes('iPhone')) {
+        detectedOS = 'iOS';
+    }
 
-    const platform = (() => {
-        if (/Windows NT/.test(ua)) return 'Windows';
-        if (/Mac OS X/.test(ua)) return 'macOS';
-        if (/CrOS/.test(ua)) return 'ChromeOS';
-        if (/Android/.test(ua)) return 'Android';
-        if (/iPhone/.test(ua)) return 'iOS';
-        if (/iPad/.test(ua)) return 'iPadOS';
-        if (/Linux/.test(ua)) return 'Linux';
-        return 'Unknown';
-    })();
-
-    const version = (() => {
-        switch (platform) {
-            case 'Windows':
-                const winVer = (ua.match(/Windows NT (\d+\.\d+)/) || [])[1];
-                if (winVer === '10.0') {
-                    const build = (ua.match(/build\s*(\d+)/) || [])[1];
-                    if (build && parseInt(build) >= 22000) {
-                        return 'Windows 11';
-                    }
-                    return 'Windows 10';
-                }
-                return 'Windows (version not supported)';
-
-            case 'macOS':
-                const macVer = (ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/) || [])[1]?.replace(/_/g, '.');
-                if (macVer && parseFloat(macVer) >= 11.0) {
-                    return `macOS ${macVer}`;
-                }
-                return 'macOS (version not supported)';
-
-            case 'iOS':
-                const iosVer = (ua.match(/iPhone OS (\d+[._]\d+[._]?\d*)/) || [])[1]?.replace(/_/g, '.');
-                if (iosVer && parseInt(iosVer) >= 15) {
-                    return `iOS ${iosVer}`;
-                }
-                return 'iOS (version not supported)';
-
-            case 'iPadOS':
-                const ipadVer = (ua.match(/iPad; CPU OS (\d+[._]\d+[._]?\d*)/) || [])[1]?.replace(/_/g, '.');
-                if (ipadVer && parseInt(ipadVer) >= 15) {
-                    return `iPadOS ${ipadVer}`;
-                }
-                return 'iPadOS (version not supported)';
-
-            case 'Android':
-                const androidVer = (ua.match(/Android (\d+(\.\d+)*)/) || [])[1];
-                if (androidVer && parseFloat(androidVer) >= 8.0) {
-                    return `Android ${androidVer}`;
-                }
-                return 'Android (version not supported)';
-
-            case 'ChromeOS':
-                const chromeVer = (ua.match(/Chrome\/(\d+)/) || [])[1];
-                if (chromeVer && parseInt(chromeVer) >= 96) {
-                    return `ChromeOS ${chromeVer}`;
-                }
-                return 'ChromeOS (version not supported)';
-
-            case 'Linux':
-                if (ua.includes('Ubuntu')) {
-                    const ubuntuVer = (ua.match(/Ubuntu[\/|\s](\d+\.\d+)/) || [])[1];
-                    if (ubuntuVer && parseFloat(ubuntuVer) >= 18.04) {
-                        return `Ubuntu ${ubuntuVer}`;
-                    }
-                }
-                if (ua.includes('Debian')) {
-                    const debianVer = (ua.match(/Debian[\/|\s](\d+)/) || [])[1];
-                    if (debianVer && parseInt(debianVer) >= 10) {
-                        return `Debian ${debianVer}`;
-                    }
-                }
-                if (ua.includes('Fedora')) {
-                    const fedoraVer = (ua.match(/Fedora[\/|\s](\d+)/) || [])[1];
-                    if (fedoraVer && parseInt(fedoraVer) >= 39) {
-                        return `Fedora ${fedoraVer}`;
-                    }
-                }
-                if (ua.includes('openSUSE')) {
-                    const suseVer = (ua.match(/openSUSE[\/|\s](\d+\.\d+)/) || [])[1];
-                    if (suseVer && parseFloat(suseVer) >= 15.5) {
-                        return `openSUSE ${suseVer}`;
-                    }
-                }
-                return 'Linux (distribution unknown or not supported)';
-
-            default:
-                return 'Unknown Operating System';
-        }
-    })();
-
-    console.log(`Detected OS: ${platform}`);
-    console.log(`Detected Version: ${version}`);
-
-    return version;
+    return detectedOS;
 }
 
-// Time update function
-function updateTime() {
+// Start time updates
+function startTimeUpdates() {
+    // Initialize the refresh countdown
+    startTime = Date.now();
+    
+    // Initial updates
+    updateTimes();
+    updateCountdown();
+
+    // Set interval for updates
+    setInterval(() => {
+        updateTimes();
+        updateCountdown();
+    }, 1000);
+}
+
+// Update all time displays
+function updateTimes() {
     const now = new Date();
     
     // Update UTC time
     const utcTimeElement = document.querySelector('.utc-time');
     if (utcTimeElement) {
         const utcTime = now.toISOString().replace('T', ' ').slice(0, 19);
-        console.log(`Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${utcTime}`);
         utcTimeElement.textContent = utcTime;
     }
 
     // Update local time
     const timeElement = document.querySelector('.update-time');
     if (timeElement) {
-        const timestamp = now.toLocaleString('en-US', { 
+        const timestamp = now.toLocaleString('en-US', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
@@ -164,7 +100,7 @@ function updateTime() {
             minute: '2-digit',
             second: '2-digit',
             timeZoneName: 'short',
-            hour12: false
+            hour12: true
         });
         timeElement.textContent = timestamp;
     }
@@ -172,7 +108,7 @@ function updateTime() {
 
 // Page refresh countdown variables
 const refreshInterval = 5 * 60 * 1000; // 5 minutes in milliseconds
-let startTime = Date.now();
+let startTime;
 
 // Update countdown function
 function updateCountdown() {
@@ -203,31 +139,24 @@ function smoothReload() {
     }, 500);
 }
 
-// Initialize everything when the DOM is loaded
+// Version number and build info
+const versionInfo = {
+    version: 'v1.11.0',
+    build: '2025.1.27'
+};
+
+// Initialize version and build numbers
 document.addEventListener('DOMContentLoaded', () => {
-    // Update device info
-    const deviceInfoDiv = document.querySelector('.device-info');
-    if (deviceInfoDiv) {
-        const deviceInfo = detectDetailedDevice();
-        deviceInfoDiv.textContent = deviceInfo;
+    const versionElement = document.querySelector('.version-number');
+    const buildElement = document.querySelector('.build-number');
+    
+    if (versionElement) {
+        versionElement.textContent = versionInfo.version;
     }
-
-    // Update user login
-    const userLoginDiv = document.querySelector('.user-login');
-    if (userLoginDiv) {
-        userLoginDiv.textContent = 'BusArmyDude';
-        console.log("Current User's Login: BusArmyDude");
+    
+    if (buildElement) {
+        buildElement.textContent = versionInfo.build;
     }
-
-    // Initial updates
-    updateTime();
-    updateCountdown();
-
-    // Update times and countdown every second
-    setInterval(() => {
-        updateTime();
-        updateCountdown();
-    }, 1000);
 });
     
    // TikTok Shoutouts
