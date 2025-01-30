@@ -148,14 +148,7 @@ function smoothVersionReload() {
 window.onload = function() {
     updateVersionPanel();
     updateTime();
-    updateCountdown();
-    
-    // Synchronize both time and countdown updates every second
-    setInterval(() => {
-        updateTime();
-        updateCountdown();
-    }, 1000);  // Update both every second
-};
+    updateCountdown()
     
    // TikTok Shoutouts
     const tiktokShoutouts = {
