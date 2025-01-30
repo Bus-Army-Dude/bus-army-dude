@@ -5,13 +5,13 @@ const VERSION_CONFIG = {
     userLogin: 'BusArmyDude',
     currentUTC: '2025-01-30 18:43:31',
     supportedVersions: {
-        iOS: ['15.0', '15.0.1', '15.0.2', '15.1', '15.1.1', '15.2', '15.2.1', '15.3'],
+        iOS: ['18.0', '18.1', '18.2', '18.3'],
         iPadOS: ['16.1', '16.1.1', '16.2', '16.3', '16.3.1', '16.4', '16.4.1', '16.5', '16.5.1'],
         macOS: ['15.0', '15.0.1', '15.1', '15.1.1', '15.2', '15.3'],
-        Android: ['12', '12.1', '13', '14', '15', '16 beta 1'],
+        Android: ['12', '12.1', '13', '14'],
         Windows: ['10', '11'],
         Linux: ['Ubuntu', 'CentOS', 'Debian', 'Fedora'],
-        ChromeOS: ['132', '133', '134', '135', '136', '137', '138']
+        ChromeOS: ['132', '133', '134', '135', '136', '137', '138', '139', '140']
     }
 };
 
@@ -57,7 +57,7 @@ function detectDetailedDevice() {
     if (ua.includes('iPhone') || ua.includes('iPad')) {
         const match = ua.match(/OS (\d+_\d+(_\d+)?)/);
         if (match) {
-            const version = match[1].replace(/_/g, '.');
+            const version = match[1].replace(/_/g, '.').replace(/\.0$/, '');
             return `${ua.includes('iPad') ? 'iPadOS' : 'iOS'} ${version}`;
         }
     }
@@ -75,6 +75,7 @@ function detectDetailedDevice() {
             if (VERSION_CONFIG.supportedVersions.macOS.includes(fullVersion)) {
                 return `macOS ${fullVersion}`;
             } else {
+                // Fallback to the mapped version if the full version is not supported
                 return `macOS ${mappedVersion}`;
             }
         }
