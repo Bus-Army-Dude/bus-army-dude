@@ -11,16 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
- function detectDetailedDevice() {
+ // Device detection function
+function detectDetailedDevice() {
     const ua = navigator.userAgent;
     console.log("User Agent:", ua);
     
-    // Add UTC timestamp and user login
-    const utcTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
-    const userLogin = 'BusArmyDude';
-    console.log(`Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${utcTime}`);
-    console.log(`Current User's Login: ${userLogin}`);
-
     const supportedVersions = {
         Windows: {
             min: '10.0',
@@ -65,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'Windows':
                 const winVer = (ua.match(/Windows NT (\d+\.\d+)/) || [])[1];
                 if (winVer === '10.0') {
-                    // Check if it's Windows 11 based on build number
                     const build = (ua.match(/build\s*(\d+)/) || [])[1];
                     if (build && parseInt(build) >= 22000) {
                         return 'Windows 11';
@@ -144,73 +138,76 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Detected OS: ${platform}`);
     console.log(`Detected Version: ${version}`);
 
-    return version; // Return just the version string instead of an object
+    return version;
 }
 
+// Time update function
+function updateTime() {
+    const now = new Date();
+    
+    // Update UTC time
+    const utcTimeElement = document.querySelector('.utc-time');
+    if (utcTimeElement) {
+        const utcTime = now.toISOString().replace('T', ' ').slice(0, 19);
+        utcTimeElement.textContent = utcTime;
+    }
+
+    // Update local time
+    const timeElement = document.querySelector('.update-time');
+    if (timeElement) {
+        const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
+        timeElement.textContent = timestamp;
+    }
+}
+
+// Page refresh countdown variables
+const refreshInterval = 5 * 60 * 1000; // 5 minutes in milliseconds
+let startTime = Date.now();
+
+// Update countdown function
+function updateCountdown() {
+    const countdownElement = document.querySelector('.countdown');
+    const timeElapsed = Date.now() - startTime;
+    const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);
+
+    if (timeLeft >= 0) {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        
+        if (countdownElement) {
+            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+        }
+    } else {
+        smoothReload();
+    }
+}
+
+// Smooth reload function
+function smoothReload() {
+    const body = document.body;
+    body.style.transition = 'opacity 0.5s ease';
+    body.style.opacity = '0';
+
+    setTimeout(function() {
+        location.reload();
+    }, 500);
+}
+
+// Initialize everything when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial update of device info
+    // Update device info
     const deviceInfoDiv = document.querySelector('.device-info');
     if (deviceInfoDiv) {
         deviceInfoDiv.textContent = detectDetailedDevice();
     }
 
-    // Function to update UTC and local times
-    function updateTimes() {
-        // Update UTC time
-        const utcTimeElement = document.querySelector('.utc-time');
-        if (utcTimeElement) {
-            const utcTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
-            utcTimeElement.textContent = utcTime;
-        }
-
-        // Update local time
-        const timeElement = document.querySelector('.update-time');
-        if (timeElement) {
-            const now = new Date();
-            const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
-            timeElement.textContent = timestamp;
-        }
-    }
-
-    // Page refresh countdown set to 5 minutes (300 seconds)
-    const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
-    let startTime = Date.now();
-
-    function updateCountdown() {
-        const countdownElement = document.querySelector('.countdown');
-        const timeElapsed = Date.now() - startTime;
-        const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);
-
-        if (timeLeft >= 0) {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-
-            if (countdownElement) {
-                countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
-            }
-        } else {
-            smoothReload();
-        }
-    }
-
-    // Smoothly reload the page with a fade-out effect
-    function smoothReload() {
-        const body = document.body;
-        body.style.transition = 'opacity 0.5s ease';
-        body.style.opacity = '0';
-
-        setTimeout(function() {
-            location.reload();
-        }, 500);
-    }
-
     // Initial updates
-    updateTimes();
+    updateTime();
     updateCountdown();
 
     // Update times and countdown every second
     setInterval(() => {
-        updateTimes();
+        updateTime();
         updateCountdown();
     }, 1000);
 });
