@@ -781,6 +781,25 @@ body {
     font-weight: 500;
 }
 
+/* User Login Styling */
+.user-login {
+    font-family: monospace;
+    font-size: 1.2em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.user-login::before {
+    content: "User:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
 /* Device Info Styling */
 .device-info {
     font-size: 1.1em;
@@ -795,6 +814,25 @@ body {
 
 .device-info::before {
     content: "Device:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* UTC Time Styling */
+.utc-time {
+    font-family: monospace;
+    font-size: 1.1em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--hover-color);
+}
+
+.utc-time::before {
+    content: "UTC Time:";
     color: var(--secondary-text);
     font-weight: 500;
 }
@@ -850,7 +888,9 @@ body {
 
     .version-number,
     .build-number,
+    .user-login,
     .device-info,
+    .utc-time,
     .update-time {
         font-size: 1em;
         padding: 10px 12px;
@@ -866,6 +906,32 @@ body {
 
 .version-update {
     animation: updatePulse 0.5s ease-in-out;
+}
+
+/* Dark/Light mode variables - Add these to your :root if not already present */
+:root {
+    --content-bg: #ffffff;
+    --bg-color: #f5f5f5;
+    --text-color: #333333;
+    --secondary-text: #666666;
+    --accent-color: #0066cc;
+    --hover-color: #3399ff;
+    --border-color: #dddddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --content-bg: #1a1a1a;
+        --bg-color: #2d2d2d;
+        --text-color: #ffffff;
+        --secondary-text: #cccccc;
+        --accent-color: #3399ff;
+        --hover-color: #66b3ff;
+        --border-color: #404040;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
 }
 
 /* Copyright and Legal Notices */
