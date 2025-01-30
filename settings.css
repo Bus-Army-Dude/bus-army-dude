@@ -31,7 +31,7 @@ body.settings-page {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
     margin: 0;
-    padding: 0;
+    padding: 20px; /* Add padding to the body to ensure content doesn't touch the edges */
     background-color: var(--bg-color);
     color: var(--text-color);
     font-size: var(--font-size-base); /* Apply base font size */
@@ -261,4 +261,15 @@ body.settings-page {
 
 .settings-page .back-link:hover {
     color: var(--hover-color);
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    body.settings-page {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+
+    .settings-page .container {
+        padding: 10px; /* Reduce container padding on smaller screens */
+    }
 }
