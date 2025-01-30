@@ -720,10 +720,10 @@ body {
 
 /* General container styling */
 .version-info-container {
-    background-color: #f8f9fa; /* Light background color for contrast */
+    background-color: var(--content-bg); /* Matching background color */
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-shadow: 0 4px 8px var(--shadow-color); /* Matching shadow color */
     margin: 20px auto;
     max-width: 600px; /* Centered and responsive */
 }
@@ -732,7 +732,7 @@ body {
 .version-header {
     font-size: 1.5em;
     font-weight: bold;
-    color: #343a40; /* Dark color for the header */
+    color: var(--text-color); /* Matching text color */
     text-align: center;
     margin-bottom: 15px;
 }
@@ -748,15 +748,26 @@ body {
 /* Label styling */
 .info-label {
     font-weight: bold;
-    color: #495057; /* Darker color for labels */
+    color: var(--secondary-text); /* Matching secondary text color */
     min-width: 100px;
 }
 
 /* Value styling */
 .info-row div:not(.info-label) {
-    color: #212529; /* Dark color for values */
+    color: var(--text-color); /* Matching text color */
     flex: 1;
     text-align: right;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .version-info-container {
+        padding: 15px;
+    }
+
+    .info-label {
+        min-width: 80px;
+    }
 }
 
 /* Copyright and Legal Notices */
