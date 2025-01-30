@@ -5,12 +5,13 @@ const VERSION_CONFIG = {
     userLogin: 'BusArmyDude',
     currentUTC: '2025-01-30 18:43:31',
     supportedVersions: {
-        iOS: ['15.0', '15.0.1', '15.0.2', '15.1', '15.1.1', '15.2', '15.2.1', '15.3', '15.3.1', '15.4'],
+        iOS: ['15.0', '15.0.1', '15.0.2', '15.1', '15.1.1', '15.2', '15.2.1', '15.3'],
         iPadOS: ['16.1', '16.1.1', '16.2', '16.3', '16.3.1', '16.4', '16.4.1', '16.5', '16.5.1'],
         macOS: ['15.0', '15.0.1', '15.1', '15.1.1', '15.2', '15.3'],
-        Android: ['12', '12.1', '13', '14'],
+        Android: ['12', '12.1', '13', '14', '15', '16 beta 1'],
         Windows: ['10', '11'],
-        Linux: ['Ubuntu', 'CentOS', 'Debian', 'Fedora']
+        Linux: ['Ubuntu', 'CentOS', 'Debian', 'Fedora'],
+        ChromeOS: ['132', '133', '134', '135', '136', '137', '138']
     }
 };
 
@@ -68,8 +69,24 @@ function detectDetailedDevice() {
             const majorVersion = version.split('.')[0];
             const minorVersion = version.split('.')[1];
             const mappedVersion = macOSVersionMap[majorVersion + '.' + minorVersion] || majorVersion;
-            const finalVersion = version.split('.').slice(2).join('.') || '0';
-            return `macOS ${mappedVersion}.${finalVersion}`;
+            const finalVersion = version.split('.').slice(2).join('.');
+            const fullVersion = finalVersion ? `${mappedVersion}.${finalVersion}` : mappedVersion;
+            // Check if the fullVersion is in the supported versions list
+            if (VERSION_CONFIG.supportedVersions.macOS.includes(fullVersion)) {
+                return `macOS ${fullVersion}`;
+            } else {
+                return `macOS ${mappedVersion}`;
+            }
+        }
+    }
+    // ChromeOS Detection
+    else if (ua.includes('CrOS')) {
+        const match = ua.match(/CrOS\s+[^\s]+\s+(\d+\.\d+\.\d+)/);
+        if (match) {
+            const version = match[1].split('.')[0]; // Use only the major version
+            if (VERSION_CONFIG.supportedVersions.ChromeOS.includes(version)) {
+                return `ChromeOS ${version}`;
+            }
         }
     }
     // Android Detection
