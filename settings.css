@@ -272,4 +272,33 @@ body.settings-page {
     .settings-page .container {
         padding: 10px; /* Reduce container padding on smaller screens */
     }
+
+    .settings-page .settings-section {
+        padding: 10px; /* Reduce section padding on smaller screens */
+    }
+
+    .settings-page .settings-header h1 {
+        font-size: 1.5rem; /* Adjust header font size on smaller screens */
+    }
+
+    .settings-page .settings-header .version {
+        font-size: 0.8rem; /* Adjust version font size on smaller screens */
+    }
+
+    .settings-page .settings-subsection .subsection-title {
+        font-size: 1.2rem; /* Adjust subsection title font size on smaller screens */
+    }
+
+    .settings-page .font-size-control span {
+        font-size: 0.9rem; /* Adjust font size display on smaller screens */
+    }
+
+    .settings-page .reset-button {
+        padding: 8px 16px; /* Adjust reset button padding on smaller screens */
+        font-size: calc(var(--font-size-base) * 0.9); /* Adjust reset button font size on smaller screens */
+    }
+
+    .settings-page .back-link {
+        font-size: calc(var(--font-size-base) * 0.9); /* Adjust back link font size on smaller screens */
+    }
 }
