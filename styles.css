@@ -718,65 +718,154 @@ body {
     transform: translateY(-3px);
 }
 
-/* General container styling */
-.version-info-container {
-    background-color: var(--content-bg); /* Matching background color */
+/* Version Info Section */
+.version-info-section {
+    background-color: var(--content-bg);
+    border-radius: 16px;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px var(--shadow-color); /* Matching shadow color */
-    margin: 20px 0; /* Adjust margin to align with other sections */
-    width: 100%; /* Match the width of other sections */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-/* Header styling */
-.version-header {
-    font-size: 1.75em;
-    font-weight: bold;
-    color: var(--text-color); /* Matching text color */
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Info row styling */
-.info-row {
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
     display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.version-header {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Version Number Styling */
+.version-number {
+    font-family: monospace;
+    font-size: 1.2em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-color);
+    gap: 10px;
+    border-left: 4px solid var(--accent-color);
 }
 
-/* Label styling */
-.info-label {
-    font-weight: bold;
-    color: var(--secondary-text); /* Matching secondary text color */
-    min-width: 100px;
-    flex: 1;
+.version-number::before {
+    content: "Version:";
+    color: var(--secondary-text);
+    font-weight: 500;
 }
 
-/* Value styling */
-.info-row div:not(.info-label) {
-    color: var(--text-color); /* Matching text color */
-    flex: 2;
-    text-align: right;
+/* Build Number Styling */
+.build-number {
+    font-family: monospace;
+    font-size: 1.2em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--accent-color);
 }
 
-/* Custom shadows for modern look */
+.build-number::before {
+    content: "Build:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Device Info Styling */
+.device-info {
+    font-size: 1.1em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--hover-color);
+}
+
+.device-info::before {
+    content: "Device:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Update Time Styling */
+.update-time {
+    font-family: monospace;
+    font-size: 1.1em;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid var(--hover-color);
+}
+
+.update-time::before {
+    content: "Last Updated:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Countdown Styling */
+.countdown {
+    font-size: 1.2em;
+    font-weight: 600;
+    background: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    margin-top: 10px;
+}
+
+/* Version Info Container for better spacing */
 .version-info-container {
-    box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .version-info-container {
+/* Responsive Design */
+@media (max-width: 768px) {
+    .version-info-section {
         padding: 15px;
     }
 
-    .info-label {
-        min-width: 80px;
+    .version-header {
+        font-size: 1.4em;
     }
+
+    .version-number,
+    .build-number,
+    .device-info,
+    .update-time {
+        font-size: 1em;
+        padding: 10px 12px;
+    }
+}
+
+/* Animation for updates */
+@keyframes updatePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.version-update {
+    animation: updatePulse 0.5s ease-in-out;
 }
 
 /* Copyright and Legal Notices */
