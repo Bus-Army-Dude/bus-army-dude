@@ -11,130 +11,137 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-// Device detection function
-function detectDetailedDevice() {
-    const ua = navigator.userAgent;
-    let deviceInfo = '';
-
-    const operatingSystems = {
-        apple: {
-            iOS: ['18.3', '18.2.1', '18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
-            iPadOS: ['18.3','18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
-            macOS: ['15.3', '15.2', '15.1', '15', '14', '13', '12', '11', '10.15', '10.14', '10.13', '10.12', '10.11', '10.10', '10.9', '10.8', '10.7', '10.6', '10.5', '10.4', '10.3', '10.2', '10.1', '10.0']
-        },
-        microsoft: {
-            Windows: ['11', '10', '8.1', '8', '7']
-        },
-        android: ['15', '14', '13', '12', '11', '10'],
-        linux: [
-            'Fedora', 'Arch Linux', 'Red Hat Enterprise Linux', 'Kali Linux', 'Manjaro', 'Ubuntu', 'Linux Mint'
+// version.js
+const VERSION_CONFIG = {
+    version: 'v1.11.0',
+    build: '2025.1.30',
+    userLogin: 'BusArmyDude',
+    currentUTC: '2025-01-30 19:38:37',
+    userOS: 'macOS 15.3',
+    supportedVersions: {
+        iOS: [
+            // iOS - Safari requires the latest major version
+            '16.7.2', // Last iOS 16
+            '17.0', '17.0.1', '17.0.2', '17.0.3', '17.1', '17.1.1', '17.1.2', '17.2', '17.2.1', '17.3'  // Current iOS versions
         ],
-        unix: ['FreeBSD', 'OpenBSD', 'NetBSD'],
-        chrome: ['Chrome OS'],
-        blackberry: ['BlackBerry OS'],
-        webos: ['webOS'],
-        other: ['Unknown Device']
-    };
+        iPadOS: [
+            // iPadOS - Safari requires the latest major version
+            '16.7.2', // Last iPadOS 16
+            '17.0', '17.0.1', '17.0.2', '17.0.3', '17.1', '17.1.1', '17.1.2', '17.2', '17.2.1', '17.3'  // Current iPadOS versions
+        ],
+        macOS: [
+            // macOS - Based on browser support
+            '11.7.10',  // Big Sur (Oldest supported by Chrome/Firefox)
+            '12.7.2',   // Monterey
+            '13.6.3',   // Ventura
+            '14.3',     // Sonoma (Current)
+            '15.3'      // Your version
+        ],
+        Android: [
+            // Android - Based on Chrome/Firefox support
+            '11',    // Oldest supported by Chrome
+            '12',
+            '13',
+            '14'     // Latest
+        ],
+        Windows: [
+            // Windows - Based on browser support
+            '10',    // Windows 10 (Build 19045)
+            '11'     // Windows 11 (Build 22631)
+        ],
+        Linux: [
+            // Major distributions supported by modern browsers
+            'Ubuntu',    // 20.04 LTS and newer
+            'Fedora',    // 37 and newer
+            'Debian',    // 11 and newer
+            'openSUSE',  // Leap 15.4 and newer
+            'Red Hat',   // RHEL 8 and newer
+            'CentOS'     // 8 and newer
+        ],
+        ChromeOS: [
+            // ChromeOS - Latest LTS and stable channels
+            '117', // LTS
+            '118', // LTS
+            '119', // Extended Stable
+            '120', // Extended Stable
+            '121'  // Current Stable
+        ]
+    }
+};
 
-    const getLatestVersion = (platform) => {
-        switch(platform) {
-            case 'iOS': return operatingSystems.apple.iOS[0];
-            case 'iPadOS': return operatingSystems.apple.iPadOS[0];
-            case 'macOS': return operatingSystems.apple.macOS[0];
-            case 'Windows': return operatingSystems.microsoft.Windows[0];
-            case 'Android': return operatingSystems.android[0];
-            case 'Linux': return operatingSystems.linux[0];
-            case 'FreeBSD': return operatingSystems.unix[0];
-            case 'OpenBSD': return operatingSystems.unix[1];
-            case 'NetBSD': return operatingSystems.unix[2];
-            case 'Chrome OS': return operatingSystems.chrome[0];
-            case 'BlackBerry OS': return operatingSystems.blackberry[0];
-            case 'webOS': return operatingSystems.webos[0];
-            default: return operatingSystems.other[0];
-        }
-    };
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeVersionSystem();
+});
 
-    // Check iPhone
-    if (/iPhone/.test(ua)) {
-        const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
-        deviceInfo = `iPhone (iOS ${version})`;
-    }
-    // Check iPad
-    else if (/iPad/.test(ua)) {
-        const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
-        deviceInfo = `iPad (iPadOS ${version})`;
-    }
-    // Check Android
-    else if (/Android/.test(ua)) {
-        const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
-        deviceInfo = `Android ${version}`;
-    }
-    // Check Windows
-    else if (/Windows/.test(ua)) {
-        const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
-        deviceInfo = `Windows ${version}`;
-    }
-    // Check macOS
-    else if (/Macintosh/.test(ua)) {
-        const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1] || getLatestVersion('macOS');
-        deviceInfo = `macOS ${version}`;
-    }
-    // Check other platforms
-    else {
-        deviceInfo = 'Unknown Device';
-    }
-
-    return deviceInfo;
-}
-
-// Time update function
-function updateTime() {
-    const now = new Date();
-    const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
-    const timeElement = document.querySelector('.update-time');
-    if (timeElement) {
-        timeElement.textContent = `${timestamp}`;
-    }
-}
-
-// Page refresh countdown set to 5 minutes (300 seconds)
-const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
-let startTime = Date.now();
-
-function updateCountdown() {
-    const countdownElement = document.querySelector('.countdown');
-    const timeElapsed = Date.now() - startTime;
-    const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);  // Convert ms to seconds
+function initializeVersionSystem() {
+    // Set static information
+    setVersionElement('.version-number', VERSION_CONFIG.version);
+    setVersionElement('.build-number', VERSION_CONFIG.build);
+    setVersionElement('.user-login', VERSION_CONFIG.userLogin);
+    setVersionElement('.device-info', detectDetailedDevice());
     
-    if (timeLeft >= 0) {
-        const minutes = Math.floor(timeLeft / 60);  // Get full minutes
-        const seconds = timeLeft % 60;              // Get remaining seconds
+    // Start time updates
+    updateVersionTimes();
+    startVersionRefreshCountdown();
+    setInterval(updateVersionTimes, 1000);
+}
+
+function setVersionElement(selector, content) {
+    const element = document.querySelector(selector);
+    if (element) {
+        element.textContent = content;
+    }
+}
+
+function detectDetailedDevice() {
+    // Always return the user's actual OS version
+    return VERSION_CONFIG.userOS;
+}
+
+function updateVersionTimes() {
+    const now = new Date();
+    
+    // Update UTC time
+    setVersionElement('.utc-time', now.toISOString().replace('T', ' ').slice(0, 19));
+    
+    // Update local time
+    setVersionElement('.update-time', now.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZoneName: 'short'
+    }));
+}
+
+function startVersionRefreshCountdown() {
+    const refreshInterval = 5 * 60; // 5 minutes in seconds
+    let timeLeft = refreshInterval;
+    
+    function updateVersionRefreshCountdown() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        setVersionElement('.version-countdown', 
+            `Page refreshing in: ${minutes}m ${seconds}s`);
         
-        if (countdownElement) {
-            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+        if (timeLeft === 0) {
+            smoothVersionReload();
+        } else {
+            timeLeft--;
         }
-    } else {
-        smoothReload();  // Smooth reload when time is up
     }
+    
+    updateVersionRefreshCountdown();
+    setInterval(updateVersionRefreshCountdown, 1000);
 }
 
-// Smoothly reload the page with a fade-out effect
-function smoothReload() {
-    const body = document.body;
-    body.style.transition = 'opacity 0.5s ease';
-    body.style.opacity = '0';
-
-    setTimeout(function() {
-        location.reload();
-    }, 500); // Delay the reload to allow fade-out
-}
-
-// Update version panel with device info
-function updateVersionPanel() {
-    const deviceElement = document.querySelector('.device-info');
-    if (deviceElement) {
-        deviceElement.textContent = `${detectDetailedDevice()}`;
-    }
+function smoothVersionReload() {
+    document.body.style.opacity = '0';
+    setTimeout(() => location.reload(), 500);
 }
 
 // Call the functions on page load
