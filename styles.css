@@ -724,9 +724,9 @@ body {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color); /* Matching shadow color */
-    margin: 20px auto;
-    max-width: 100%; /* Match the width of other sections */
-    width: 100%;
+    margin: 20px 0; /* Adjust margin to align with other sections */
+    width: 100%; /* Match the width of other sections */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 /* Header styling */
