@@ -718,85 +718,45 @@ body {
     transform: translateY(-3px);
 }
 
-/* Version Info Section */
-.version-info-section {
-    background-color: var(--content-bg);
-    border-radius: 12px;
+/* General container styling */
+.version-info-container {
+    background-color: #f8f9fa; /* Light background color for contrast */
     padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 10px var(--shadow-color);
-    color: var(--text-color);
-}
-
-.version-header {
-    color: var(--accent-color);
-    font-size: 1.2em;
-    font-weight: 600;
-    margin-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-}
-
-/* Common styles for info items */
-.version-number,
-.build-number,
-.user-login,
-.device-info,
-.utc-time,
-.update-time,
-.countdown {
-    background-color: var(--bg-color);
-    padding: 12px 15px;
     border-radius: 8px;
-    margin-bottom: 10px;
-    border-left: 3px solid var(--accent-color);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin: 20px auto;
+    max-width: 600px; /* Centered and responsive */
 }
 
-/* Hover effect */
-.version-number:hover,
-.build-number:hover,
-.user-login:hover,
-.device-info:hover,
-.utc-time:hover,
-.update-time:hover {
-    transform: translateX(5px);
-    background-color: var(--content-bg);
-}
-
-/* Time-related items */
-.utc-time,
-.update-time {
-    font-family: monospace;
-    color: var(--accent-color);
-}
-
-/* Countdown specific styling */
-.countdown {
+/* Header styling */
+.version-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #343a40; /* Dark color for the header */
     text-align: center;
-    font-weight: 600;
-    color: var(--accent-color);
-    border: 2px solid var(--accent-color);
-    background-color: var(--bg-color);
+    margin-bottom: 15px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .version-info-section {
-        padding: 15px;
-    }
+/* Info row styling */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    align-items: center;
+}
 
-    .version-number,
-    .build-number,
-    .user-login,
-    .device-info,
-    .utc-time,
-    .update-time,
-    .countdown {
-        padding: 10px;
-        font-size: 0.9em;
-    }
+/* Label styling */
+.info-label {
+    font-weight: bold;
+    color: #495057; /* Darker color for labels */
+    min-width: 100px;
+}
+
+/* Value styling */
+.info-row div:not(.info-label) {
+    color: #212529; /* Dark color for values */
+    flex: 1;
+    text-align: right;
 }
 
 /* Copyright and Legal Notices */
