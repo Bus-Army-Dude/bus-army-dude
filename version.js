@@ -1,9 +1,9 @@
 // version.js
-const CONFIG = {
+const VERSION_CONFIG = {
     version: 'v1.11.0',
     build: '2025.1.27',
     userLogin: 'BusArmyDude',
-    currentUTC: '2025-01-30 18:30:07',
+    currentUTC: '2025-01-30 18:33:20',
     supportedVersions: {
         iOS: {
             '15': ['15.0', '15.0.1', '15.0.2', '15.1', '15.1.1', '15.2', '15.2.1', '15.3', '15.3.1', '15.4', '15.4.1', '15.5', '15.6', '15.6.1', '15.7', '15.7.1', '15.7.2', '15.7.3', '15.7.4', '15.7.5', '15.7.6', '15.7.7', '15.7.8', '15.7.9', '15.8', '15.8.1', '15.8.2', '15.8.3'],
@@ -37,16 +37,27 @@ const CONFIG = {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    initializeVersionInfo();
-    startVersionTimeUpdates();
+    initializeVersionSystem();
 });
 
-function initializeVersionInfo() {
+function initializeVersionSystem() {
     // Set static information
-    document.querySelector('.version-number').textContent = CONFIG.version;
-    document.querySelector('.build-number').textContent = CONFIG.build;
-    document.querySelector('.user-login').textContent = CONFIG.userLogin;
-    document.querySelector('.device-info').textContent = detectDetailedDevice();
+    setVersionElement('.version-number', VERSION_CONFIG.version);
+    setVersionElement('.build-number', VERSION_CONFIG.build);
+    setVersionElement('.user-login', VERSION_CONFIG.userLogin);
+    setVersionElement('.device-info', detectDetailedDevice());
+    
+    // Start time updates
+    updateVersionTimes();
+    startVersionRefreshCountdown();
+    setInterval(updateVersionTimes, 1000);
+}
+
+function setVersionElement(selector, content) {
+    const element = document.querySelector(selector);
+    if (element) {
+        element.textContent = content;
+    }
 }
 
 function detectDetailedDevice() {
@@ -81,7 +92,7 @@ function detectDetailedDevice() {
     }
     // Linux Detection
     else if (ua.includes('Linux')) {
-        for (const distro of CONFIG.supportedVersions.Linux) {
+        for (const distro of VERSION_CONFIG.supportedVersions.Linux) {
             if (ua.includes(distro)) return `${distro} Linux`;
         }
         return 'Linux';
@@ -89,50 +100,47 @@ function detectDetailedDevice() {
     return 'Unknown Operating System';
 }
 
-function startVersionTimeUpdates() {
-    updateVersionTimes();
-    startVersionCountdown();
-    setInterval(updateVersionTimes, 1000);
-}
-
 function updateVersionTimes() {
     const now = new Date();
     
     // Update UTC time
-    document.querySelector('.utc-time').textContent = 
-        now.toISOString().replace('T', ' ').slice(0, 19);
+    setVersionElement('.utc-time', now.toISOString().replace('T', ' ').slice(0, 19));
     
     // Update local time
-    document.querySelector('.update-time').textContent = 
-        now.toLocaleString('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true,
-            timeZoneName: 'short'
-        });
+    setVersionElement('.update-time', now.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZoneName: 'short'
+    }));
 }
 
-function startVersionCountdown() {
+function startVersionRefreshCountdown() {
     const refreshInterval = 5 * 60; // 5 minutes in seconds
     let timeLeft = refreshInterval;
     
-    function updateVersionCountdown() {
+    function updateVersionRefreshCountdown() {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-        document.querySelector('.version-countdown').textContent = 
-            `Page refreshing in: ${minutes}m ${seconds}s`;
+        setVersionElement('.version-countdown', 
+            `Page refreshing in: ${minutes}m ${seconds}s`);
         
         if (timeLeft === 0) {
-            location.reload();
+            smoothVersionReload();
         } else {
             timeLeft--;
         }
     }
     
-    updateVersionCountdown();
-    setInterval(updateVersionCountdown, 1000);
+    updateVersionRefreshCountdown();
+    setInterval(updateVersionRefreshCountdown, 1000);
+}
+
+function smoothVersionReload() {
+    document.body.style.opacity = '0';
+    setTimeout(() => location.reload(), 500);
 }
