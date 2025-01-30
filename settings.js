@@ -8,7 +8,7 @@ class SettingsManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 10
+            fontSize: 15
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -88,7 +88,7 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 10
+            fontSize: 15
         };
         this.settings = defaultSettings;
         this.applySettings();
