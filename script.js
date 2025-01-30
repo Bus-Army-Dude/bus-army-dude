@@ -11,74 +11,95 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-// Main initialization when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted):", 
-        new Date().toISOString().replace('T', ' ').slice(0, 19));
-    console.log("Current User's Login: BusArmyDude");
+// Version and build configuration
+const CONFIG = {
+    version: 'v1.11.0',
+    build: '2025.1.27',
+    userLogin: 'BusArmyDude'
+};
 
-    // Initialize all components
-    initializeVersionInfo();
-    startTimeUpdates();
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Set version information
+    setVersionInfo();
+    
+    // Initial device detection
+    updateDeviceInfo();
+    
+    // Start time and countdown updates
+    initializeTimeAndCountdown();
+
+    // Log initial information
+    const currentUTC = new Date().toISOString().replace('T', ' ').slice(0, 19);
+    console.log(`Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${currentUTC}`);
+    console.log(`Current User's Login: ${CONFIG.userLogin}`);
 });
 
-// Initialize version information
-function initializeVersionInfo() {
-    // Set device info
+// Set version information
+function setVersionInfo() {
+    const versionElement = document.querySelector('.version-number');
+    const buildElement = document.querySelector('.build-number');
+    const userLoginElement = document.querySelector('.user-login');
+
+    if (versionElement) versionElement.textContent = CONFIG.version;
+    if (buildElement) buildElement.textContent = CONFIG.build;
+    if (userLoginElement) userLoginElement.textContent = CONFIG.userLogin;
+}
+
+// Update device information
+function updateDeviceInfo() {
     const deviceInfoDiv = document.querySelector('.device-info');
     if (deviceInfoDiv) {
-        deviceInfoDiv.textContent = detectDetailedDevice();
-    }
-
-    // Set user login
-    const userLoginDiv = document.querySelector('.user-login');
-    if (userLoginDiv) {
-        userLoginDiv.textContent = 'BusArmyDude';
+        const os = detectDetailedDevice();
+        deviceInfoDiv.textContent = os;
+        console.log('Detected OS:', os);
     }
 }
 
 // Device detection function
 function detectDetailedDevice() {
     const ua = navigator.userAgent;
-    
-    let detectedOS = 'Unknown Operating System';
+    console.log("User Agent:", ua);
     
     if (ua.includes('Windows')) {
         if (ua.includes('Windows NT 10.0')) {
-            detectedOS = 'Windows 11';
-        } else {
-            detectedOS = 'Windows 10';
+            const build = ua.match(/build\s*(\d+)/);
+            if (build && parseInt(build[1]) >= 22000) {
+                return 'Windows 11';
+            }
+            return 'Windows 10';
         }
+        return 'Windows';
     } else if (ua.includes('Mac OS X')) {
-        detectedOS = 'macOS';
+        return 'macOS';
     } else if (ua.includes('Linux')) {
-        detectedOS = 'Linux';
+        return 'Linux';
     } else if (ua.includes('Android')) {
-        detectedOS = 'Android';
+        return 'Android';
     } else if (ua.includes('iPhone')) {
-        detectedOS = 'iOS';
+        return 'iOS';
+    } else {
+        return 'Unknown Operating System';
     }
-
-    return detectedOS;
 }
 
-// Start time updates
-function startTimeUpdates() {
-    // Initialize the refresh countdown
-    startTime = Date.now();
-    
-    // Initial updates
+// Initialize time updates and countdown
+function initializeTimeAndCountdown() {
+    // Set initial times
     updateTimes();
+    
+    // Start countdown
+    startTime = Date.now();
     updateCountdown();
 
-    // Set interval for updates
+    // Update every second
     setInterval(() => {
         updateTimes();
         updateCountdown();
     }, 1000);
 }
 
-// Update all time displays
+// Update both UTC and local times
 function updateTimes() {
     const now = new Date();
     
@@ -86,13 +107,13 @@ function updateTimes() {
     const utcTimeElement = document.querySelector('.utc-time');
     if (utcTimeElement) {
         const utcTime = now.toISOString().replace('T', ' ').slice(0, 19);
-        utcTimeElement.textContent = utcTime;
+        utcTimeElement.textContent = `UTC Time: ${utcTime}`;
     }
 
     // Update local time
-    const timeElement = document.querySelector('.update-time');
-    if (timeElement) {
-        const timestamp = now.toLocaleString('en-US', {
+    const localTimeElement = document.querySelector('.update-time');
+    if (localTimeElement) {
+        const localTime = now.toLocaleString('en-US', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
@@ -102,62 +123,37 @@ function updateTimes() {
             timeZoneName: 'short',
             hour12: true
         });
-        timeElement.textContent = timestamp;
+        localTimeElement.textContent = `Last Updated: ${localTime}`;
     }
 }
 
-// Page refresh countdown variables
-const refreshInterval = 5 * 60 * 1000; // 5 minutes in milliseconds
+// Global countdown variables
+const refreshInterval = 5 * 60 * 1000; // 5 minutes
 let startTime;
 
-// Update countdown function
+// Update countdown display
 function updateCountdown() {
     const countdownElement = document.querySelector('.countdown');
+    if (!countdownElement) return;
+
     const timeElapsed = Date.now() - startTime;
     const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);
 
     if (timeLeft >= 0) {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-        
-        if (countdownElement) {
-            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
-        }
+        countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
     } else {
         smoothReload();
     }
 }
 
-// Smooth reload function
+// Smooth page reload
 function smoothReload() {
-    const body = document.body;
-    body.style.transition = 'opacity 0.5s ease';
-    body.style.opacity = '0';
-
-    setTimeout(function() {
-        location.reload();
-    }, 500);
+    document.body.style.transition = 'opacity 0.5s ease';
+    document.body.style.opacity = '0';
+    setTimeout(() => location.reload(), 500);
 }
-
-// Version number and build info
-const versionInfo = {
-    version: 'v1.11.0',
-    build: '2025.1.27'
-};
-
-// Initialize version and build numbers
-document.addEventListener('DOMContentLoaded', () => {
-    const versionElement = document.querySelector('.version-number');
-    const buildElement = document.querySelector('.build-number');
-    
-    if (versionElement) {
-        versionElement.textContent = versionInfo.version;
-    }
-    
-    if (buildElement) {
-        buildElement.textContent = versionInfo.build;
-    }
-});
     
    // TikTok Shoutouts
     const tiktokShoutouts = {
