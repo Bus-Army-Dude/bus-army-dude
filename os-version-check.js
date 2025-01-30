@@ -90,6 +90,7 @@ function detectDetailedDevice() {
 }
 
 const { deviceInfo, isSupported } = detectDetailedDevice();
+console.log({ deviceInfo, isSupported }); // Log the output for debugging
 
 const deviceInfoDiv = document.querySelector('.device-info');
 if (isSupported) {
