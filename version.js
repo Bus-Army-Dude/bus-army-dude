@@ -1,9 +1,5 @@
 // version.js
 const VERSION_CONFIG = {
-    version: 'v1.11.0',
-    build: '2025.1.30',
-    userLogin: 'BusArmyDude',
-    currentUTC: '2025-01-30 19:38:37',
     userOS: 'macOS 15.3',
     supportedVersions: {
         iOS: [
@@ -67,66 +63,3 @@ function initializeVersionSystem() {
     setVersionElement('.build-number', VERSION_CONFIG.build);
     setVersionElement('.user-login', VERSION_CONFIG.userLogin);
     setVersionElement('.device-info', detectDetailedDevice());
-    
-    // Start time updates
-    updateVersionTimes();
-    startVersionRefreshCountdown();
-    setInterval(updateVersionTimes, 1000);
-}
-
-function setVersionElement(selector, content) {
-    const element = document.querySelector(selector);
-    if (element) {
-        element.textContent = content;
-    }
-}
-
-function detectDetailedDevice() {
-    // Always return the user's actual OS version
-    return VERSION_CONFIG.userOS;
-}
-
-function updateVersionTimes() {
-    const now = new Date();
-    
-    // Update UTC time
-    setVersionElement('.utc-time', now.toISOString().replace('T', ' ').slice(0, 19));
-    
-    // Update local time
-    setVersionElement('.update-time', now.toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-        timeZoneName: 'short'
-    }));
-}
-
-function startVersionRefreshCountdown() {
-    const refreshInterval = 5 * 60; // 5 minutes in seconds
-    let timeLeft = refreshInterval;
-    
-    function updateVersionRefreshCountdown() {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        setVersionElement('.version-countdown', 
-            `Page refreshing in: ${minutes}m ${seconds}s`);
-        
-        if (timeLeft === 0) {
-            smoothVersionReload();
-        } else {
-            timeLeft--;
-        }
-    }
-    
-    updateVersionRefreshCountdown();
-    setInterval(updateVersionRefreshCountdown, 1000);
-}
-
-function smoothVersionReload() {
-    document.body.style.opacity = '0';
-    setTimeout(() => location.reload(), 500);
-}
