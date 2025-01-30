@@ -3,7 +3,7 @@ const VERSION_CONFIG = {
     version: 'v1.11.0',
     build: '2025.1.27',
     userLogin: 'BusArmyDude',
-    currentUTC: '2025-01-30 18:33:20',
+    currentUTC: '2025-01-30 18:43:31',
     supportedVersions: {
         iOS: {
             '15': ['15.0', '15.0.1', '15.0.2', '15.1', '15.1.1', '15.2', '15.2.1', '15.3', '15.3.1', '15.4', '15.4.1', '15.5', '15.6', '15.6.1', '15.7', '15.7.1', '15.7.2', '15.7.3', '15.7.4', '15.7.5', '15.7.6', '15.7.7', '15.7.8', '15.7.9', '15.8', '15.8.1', '15.8.2', '15.8.3'],
@@ -33,6 +33,16 @@ const VERSION_CONFIG = {
         Windows: ['10', '11'],
         Linux: ['Ubuntu', 'CentOS', 'Debian', 'Fedora']
     }
+};
+
+// Mapping macOS versions to marketing names
+const macOSVersionMap = {
+    '10.15': '15',
+    '11': '11',
+    '12': '12',
+    '13': '13',
+    '14': '14',
+    '15': '15'
 };
 
 // Initialize when DOM is loaded
@@ -76,7 +86,10 @@ function detectDetailedDevice() {
         const match = ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
         if (match) {
             const version = match[1].replace(/_/g, '.');
-            return `macOS ${version}`;
+            const majorVersion = version.split('.')[0];
+            const minorVersion = version.split('.')[1];
+            const mappedVersion = macOSVersionMap[majorVersion + '.' + minorVersion] || majorVersion;
+            return `macOS ${mappedVersion}.${version.split('.')[2] || '0'}`;
         }
     }
     // Android Detection
