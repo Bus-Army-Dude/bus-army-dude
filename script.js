@@ -15,73 +15,33 @@ function detectDetailedDevice() {
     const ua = navigator.userAgent;
     let deviceInfo = '';
 
-    const operatingSystems = {
-        apple: {
-            iOS: ['18.3', '18.2.1', '18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
-            iPadOS: ['18.3','18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
-            macOS: ['15.3', '15.2', '15.1', '15', '14', '13', '12', '11', '10.15', '10.14', '10.13', '10.12', '10.11', '10.10', '10.9', '10.8', '10.7', '10.6', '10.5', '10.4', '10.3', '10.2', '10.1', '10.0']
-        },
-        microsoft: {
-            Windows: ['11', '10', '8.1', '8', '7']
-        },
-        android: ['15', '14', '13', '12', '11', '10'],
-        linux: [
-            'Fedora', 'Arch Linux', 'Red Hat Enterprise Linux', 'Kali Linux', 'Manjaro', 'Ubuntu', 'Linux Mint'
-        ],
-        unix: ['FreeBSD', 'OpenBSD', 'NetBSD'],
-        chrome: ['Chrome OS'],
-        blackberry: ['BlackBerry OS'],
-        webos: ['webOS'],
-        other: ['Unknown Device']
-    };
-
-    const getLatestVersion = (platform) => {
-        switch(platform) {
-            case 'iOS': return operatingSystems.apple.iOS[0];
-            case 'iPadOS': return operatingSystems.apple.iPadOS[0];
-            case 'macOS': return operatingSystems.apple.macOS[0];
-            case 'Windows': return operatingSystems.microsoft.Windows[0];
-            case 'Android': return operatingSystems.android[0];
-            case 'Linux': return operatingSystems.linux[0];
-            case 'FreeBSD': return operatingSystems.unix[0];
-            case 'OpenBSD': return operatingSystems.unix[1];
-            case 'NetBSD': return operatingSystems.unix[2];
-            case 'Chrome OS': return operatingSystems.chrome[0];
-            case 'BlackBerry OS': return operatingSystems.blackberry[0];
-            case 'webOS': return operatingSystems.webos[0];
-            default: return operatingSystems.other[0];
-        }
-    };
-
     // Check iPhone
     if (/iPhone/.test(ua)) {
-        const version = ua.match(/iPhone\s*OS\s*(\d+(_\d+)?)/)?.[1]?.replace('_', '.') || getLatestVersion('iOS');
+        const version = ua.match(/iPhone\s*OS\s*([\d_]+)/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
         deviceInfo = `iPhone (iOS ${version})`;
     }
     // Check iPad
     else if (/iPad/.test(ua)) {
-        const version = ua.match(/iPad\s*OS\s*(\d+(_\d+)?)/)?.[1]?.replace('_', '.') || getLatestVersion('iPadOS');
+        const version = ua.match(/CPU\s*OS\s*([\d_]+)/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
         deviceInfo = `iPad (iPadOS ${version})`;
     }
     // Check Android
     else if (/Android/.test(ua)) {
-        const version = ua.match(/Android\s*([0-9.]+)/)?.[1] || getLatestVersion('Android');
+        const version = ua.match(/Android\s*([\d.]+)/)?.[1] || 'Unknown version';
         deviceInfo = `Android ${version}`;
     }
     // Check Windows
     else if (/Windows NT/.test(ua)) {
-        const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
+        const version = ua.match(/Windows NT\s*([\d.]+)/)?.[1] || 'Unknown version';
         deviceInfo = `Windows ${version}`;
     }
     // Check macOS
     else if (/Macintosh/.test(ua)) {
-        const versionMatch = ua.match(/Mac OS X (\d+[_\d]+)/);
-        let version = versionMatch ? versionMatch[1].replace(/_/g, '.') : getLatestVersion('macOS');
+        const versionMatch = ua.match(/Mac OS X\s*([\d_]+)/);
+        let version = versionMatch ? versionMatch[1].replace(/_/g, '.') : 'Unknown version';
         
-        // Adjusting for macOS 11.0 and later
-        if (version.startsWith('10.16')) {
-            version = '11.0';
-        } else if (parseFloat(version) >= 10.16) {
+        // Adjust for macOS 11.0 and later
+        if (parseFloat(version) >= 10.16) {
             const majorVersion = parseInt(version.split('.')[1]) - 9 + 11;
             version = `${majorVersion}.${version.split('.').slice(2).join('.')}`;
         }
