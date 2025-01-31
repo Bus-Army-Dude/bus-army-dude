@@ -151,7 +151,29 @@ window.onload = function() {
 };
     
 // TikTok Shoutouts
-lastUpdatedTime: '2025-01-31T11:12:20', // Manually set the last updated date and time
+const tiktokShoutouts = {
+    accounts: [
+        { username: 'mrbeast', isVerified: true, followers: '114.1M', nickname: 'MrBeast', bio: 'New CEO of Tiktok?', profilePic: 'images/mrbeast.jpeg' },
+        { username: 'teamtrump', isVerified: true, followers: '8.8M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
+        { username: 'carterpcs', isVerified: true, followers: '5.6M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'images/carterpcs.jpeg' },
+        { username: 'applesauceandadhd', isVerified: true, followers: '3.9M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'images/applesauceandadhd.jpeg' },
+        { username: 'tatechtips', isVerified: true, followers: '3.2M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
+        { username: 'imparkerburton', isVerified: false, followers: '2.9M', nickname: 'Parker Burton', bio: 'That Android Guy, Business: parker@imparkerburton.com', profilePic: 'images/imparkerburton.jpeg' },
+        { username: 'kennedylawfirm', isVerified: false, followers: '1.9M', nickname: 'Lawyer Kevin Kennedy', bio: "The Kennedy Law Firm, PLLC, Clarksville, TN, Kev's got you covered™️", profilePic: 'images/kennedylawfirm.jpeg' },
+        { username: 'badge502', isVerified: false, followers: '803.7K', nickname: 'Badge502', bio: 'NREMT - 911/EMD PO Box 775 Belleville, NJ 07109 *I DONT HAVE A BACKUP ACCOUNT*', profilePic: 'images/badge502.jpeg' },
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '697.2K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        { username: 'kaylee_mertens_', isVerified: false, followers: '674.6K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
+        { username: 'mrfatcheeto', isVerified: false, followers: '521.8K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
+        { username: 'trafficlightdoctor', isVerified: false, followers: '384.7K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
+        { username: 'aggressiveafterdark', isVerified: false, followers: '348.3K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
+        { username: 'rachel_hughes', isVerified: false, followers: '310.6K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
+        { username: 'badge5022', isVerified: false, followers: '20.2K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
+        { username: 'raisingramsey2023', isVerified: false, followers: '1,200', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
+        { username: 'jerridc4', isVerified: false, followers: '477', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
+        { username: 'officalbusarmydude', isVerified: false, followers: '12', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
+        // Add more shoutouts here...
+    ],
+    lastUpdatedTime: '2025-01-31T11:12:20', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -199,17 +221,15 @@ lastUpdatedTime: '2025-01-31T11:12:20', // Manually set the last updated date an
             hour12: true
         });
 
-        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
-            .formatToParts(new Date(this.lastUpdatedTime))
-            .find(part => part.type === 'timeZoneName').value;
+        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date(this.lastUpdatedTime)).find(part => part.type === 'timeZoneName').value;
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.split(', ').slice(0, 2).join(', ')} at ${lastUpdatedDate.split(', ')[2]} ${timeZoneName}`;
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', '')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
     }
 };
 
 // Initialize the TikTok shoutouts
 tiktokShoutouts.init();
-    
+
 const instagramShoutouts = {
     accounts: [
         { username: 'mrbeast', isVerified: true, followers: '65.5M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
@@ -275,11 +295,9 @@ const instagramShoutouts = {
             hour12: true
         });
 
-        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
-            .formatToParts(new Date(this.lastUpdatedTime))
-            .find(part => part.type === 'timeZoneName').value;
+        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date(this.lastUpdatedTime)).find(part => part.type === 'timeZoneName').value;
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.split(', ').slice(0, 2).join(', ')} at ${lastUpdatedDate.split(', ')[2]} ${timeZoneName}`;
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', '')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
     }
 };
 
@@ -300,7 +318,7 @@ const youtubeShoutouts = {
         { username: '@BusArmyDude', isVerified: false, subscribers: '0', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photos/busarmydude.jpg' },     
         // Add more YouTube creators as needed
     ],
-   lastUpdatedTime: '2025-01-31T11:12:20', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-01-31T11:12:20', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -348,11 +366,9 @@ const youtubeShoutouts = {
             hour12: true
         });
 
-        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
-            .formatToParts(new Date(this.lastUpdatedTime))
-            .find(part => part.type === 'timeZoneName').value;
+        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date(this.lastUpdatedTime)).find(part => part.type === 'timeZoneName').value;
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.split(', ').slice(0, 2).join(', ')} at ${lastUpdatedDate.split(', ')[2]} ${timeZoneName}`;
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', '')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
     }
 };
 
