@@ -75,7 +75,17 @@ function detectDetailedDevice() {
     }
     // Check macOS
     else if (/Macintosh/.test(ua)) {
-        const version = ua.match(/Mac OS X (\d+_\d+(_\d+)?)/)?.[1]?.replace(/_/g, '.') || getLatestVersion('macOS');
+        const versionMatch = ua.match(/Mac OS X (\d+[_\d]+)/);
+        let version = versionMatch ? versionMatch[1].replace(/_/g, '.') : getLatestVersion('macOS');
+        
+        // Adjusting for macOS 11.0 and later
+        if (version.startsWith('10.16')) {
+            version = '11.0';
+        } else if (parseFloat(version) >= 10.16) {
+            const majorVersion = parseInt(version.split('.')[1]) - 9 + 11;
+            version = `${majorVersion}.${version.split('.').slice(2).join('.')}`;
+        }
+
         deviceInfo = `macOS ${version}`;
     }
     // Check other platforms
