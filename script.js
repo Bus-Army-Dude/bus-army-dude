@@ -17,12 +17,12 @@ function detectDetailedDevice() {
 
     // Check iPhone
     if (/iPhone/.test(ua)) {
-        const version = ua.match(/iPhone\s*OS\s*([\d_]+)/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
+        const version = ua.match(/OS (\d+(_\d+)*) like Mac OS X/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
         deviceInfo = `iPhone (iOS ${version})`;
     }
     // Check iPad
     else if (/iPad/.test(ua)) {
-        const version = ua.match(/CPU\s*OS\s*([\d_]+)/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
+        const version = ua.match(/OS (\d+(_\d+)*) like Mac OS X/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
         deviceInfo = `iPad (iPadOS ${version})`;
     }
     // Check Android
@@ -39,11 +39,12 @@ function detectDetailedDevice() {
     else if (/Macintosh/.test(ua)) {
         const versionMatch = ua.match(/Mac OS X\s*([\d_]+)/);
         let version = versionMatch ? versionMatch[1].replace(/_/g, '.') : 'Unknown version';
-        
+
         // Adjust for macOS 11.0 and later
         if (parseFloat(version) >= 10.16) {
             const majorVersion = parseInt(version.split('.')[1]) - 9 + 11;
-            version = `${majorVersion}.${version.split('.').slice(2).join('.')}`;
+            const minorVersion = version.split('.')[2] || '0';
+            version = `${majorVersion}.${minorVersion}`;
         }
 
         deviceInfo = `macOS ${version}`;
