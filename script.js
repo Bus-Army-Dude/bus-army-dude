@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-// Device detection function
 function detectDetailedDevice() {
     const ua = navigator.userAgent;
     let deviceInfo = '';
@@ -56,27 +55,27 @@ function detectDetailedDevice() {
 
     // Check iPhone
     if (/iPhone/.test(ua)) {
-        const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
+        const version = ua.match(/iPhone\s*OS\s*(\d+(_\d+)?)/)?.[1]?.replace('_', '.') || getLatestVersion('iOS');
         deviceInfo = `iPhone (iOS ${version})`;
     }
     // Check iPad
     else if (/iPad/.test(ua)) {
-        const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
+        const version = ua.match(/iPad\s*OS\s*(\d+(_\d+)?)/)?.[1]?.replace('_', '.') || getLatestVersion('iPadOS');
         deviceInfo = `iPad (iPadOS ${version})`;
     }
     // Check Android
     else if (/Android/.test(ua)) {
-        const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
+        const version = ua.match(/Android\s*([0-9.]+)/)?.[1] || getLatestVersion('Android');
         deviceInfo = `Android ${version}`;
     }
     // Check Windows
-    else if (/Windows/.test(ua)) {
+    else if (/Windows NT/.test(ua)) {
         const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
         deviceInfo = `Windows ${version}`;
     }
     // Check macOS
     else if (/Macintosh/.test(ua)) {
-        const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1] || getLatestVersion('macOS');
+        const version = ua.match(/Mac OS X (\d+_\d+(_\d+)?)/)?.[1]?.replace(/_/g, '.') || getLatestVersion('macOS');
         deviceInfo = `macOS ${version}`;
     }
     // Check other platforms
@@ -86,6 +85,9 @@ function detectDetailedDevice() {
 
     return deviceInfo;
 }
+
+// Example usage
+console.log(detectDetailedDevice());
 
 // Time update function
 function updateTime() {
