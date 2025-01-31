@@ -11,55 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-function detectDetailedDevice() {
-    const ua = navigator.userAgent;
-    let deviceInfo = '';
-
-    // Check iPhone
-    if (/iPhone/.test(ua)) {
-        const version = ua.match(/OS (\d+(_\d+)*) like Mac OS X/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
-        deviceInfo = `iPhone (iOS ${version})`;
-    }
-    // Check iPad
-    else if (/iPad/.test(ua)) {
-        const version = ua.match(/OS (\d+(_\d+)*) like Mac OS X/)?.[1]?.replace(/_/g, '.') || 'Unknown version';
-        deviceInfo = `iPad (iPadOS ${version})`;
-    }
-    // Check Android
-    else if (/Android/.test(ua)) {
-        const version = ua.match(/Android\s*([\d.]+)/)?.[1] || 'Unknown version';
-        deviceInfo = `Android ${version}`;
-    }
-    // Check Windows
-    else if (/Windows NT/.test(ua)) {
-        const version = ua.match(/Windows NT\s*([\d.]+)/)?.[1] || 'Unknown version';
-        deviceInfo = `Windows ${version}`;
-    }
-    // Check macOS
-    else if (/Macintosh/.test(ua)) {
-        const versionMatch = ua.match(/Mac OS X\s*([\d_]+)/);
-        let version = versionMatch ? versionMatch[1].replace(/_/g, '.') : 'Unknown version';
-
-        // Adjust for macOS 11.0 and later
-        if (parseFloat(version) >= 10.16) {
-            const majorVersion = parseInt(version.split('.')[1]) - 9 + 11;
-            const minorVersion = version.split('.')[2] || '0';
-            version = `${majorVersion}.${minorVersion}`;
-        }
-
-        deviceInfo = `macOS ${version}`;
-    }
-    // Check other platforms
-    else {
-        deviceInfo = 'Unknown Device';
-    }
-
-    return deviceInfo;
-}
-
-// Example usage
-console.log(detectDetailedDevice());
-
 // Time update function
 function updateTime() {
     const now = new Date();
