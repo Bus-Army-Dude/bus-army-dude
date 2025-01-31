@@ -221,15 +221,17 @@ const tiktokShoutouts = {
             hour12: true
         });
 
-        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date(this.lastUpdatedTime)).find(part => part.type === 'timeZoneName').value;
+        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+            .formatToParts(new Date(this.lastUpdatedTime))
+            .find(part => part.type === 'timeZoneName').value;
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', '')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', ',')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
     }
 };
 
 // Initialize the TikTok shoutouts
 tiktokShoutouts.init();
-
+    
 const instagramShoutouts = {
     accounts: [
         { username: 'mrbeast', isVerified: true, followers: '65.5M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
@@ -295,9 +297,11 @@ const instagramShoutouts = {
             hour12: true
         });
 
-        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date(this.lastUpdatedTime)).find(part => part.type === 'timeZoneName').value;
+        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+            .formatToParts(new Date(this.lastUpdatedTime))
+            .find(part => part.type === 'timeZoneName').value;
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', '')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', ',')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
     }
 };
 
@@ -366,9 +370,11 @@ const youtubeShoutouts = {
             hour12: true
         });
 
-        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date(this.lastUpdatedTime)).find(part => part.type === 'timeZoneName').value;
+        const timeZoneName = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+            .formatToParts(new Date(this.lastUpdatedTime))
+            .find(part => part.type === 'timeZoneName').value;
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', '')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate.replace(',', ',')} at ${lastUpdatedDate.split(', ')[1]} ${timeZoneName}`;
     }
 };
 
