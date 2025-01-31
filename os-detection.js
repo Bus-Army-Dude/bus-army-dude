@@ -2,7 +2,7 @@ function detectDetailedDevice() {
     try {
         const parser = new UAParser();
         const result = parser.getResult();
-        const osName = result.os.name;
+        const osName = result.os.name || 'Unknown OS';
         let osVersion = result.os.version || 'Unknown version';
         let deviceInfo = `${osName} ${osVersion}`;
 
@@ -13,8 +13,12 @@ function detectDetailedDevice() {
         if (osName === "Mac OS") {
             if (osVersion.startsWith("10.")) {
                 let [major, minor] = osVersion.split('.').slice(1).map(Number);
-                major = major - 9 + 11; // Adjust for macOS 11 and later
-                osVersion = `${major}.${minor}`;
+                if (major >= 15) {
+                    osVersion = `${major}.${minor}`;
+                } else {
+                    major = major - 9 + 11; // Adjust for macOS 11 and later
+                    osVersion = `${major}.${minor}`;
+                }
             }
             console.log("Adjusted macOS Version:", osVersion);
             deviceInfo = `macOS ${osVersion}`;
@@ -52,5 +56,5 @@ function detectDetailedDevice() {
     }
 }
 
-// Call the function to detect the OS version
-detectDetailedDevice();
+// Call the function to detect the OS version after the window has loaded
+window.addEventListener('load', detectDetailedDevice);
