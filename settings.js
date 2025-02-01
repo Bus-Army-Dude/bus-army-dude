@@ -7,7 +7,7 @@ class SettingsManager {
         this.applySettings();
 
         // Set maintenance mode manually in JavaScript here:
-        this.setMaintenanceMode(true);  // You can set this to 'true' or 'false' based on your needs
+        this.setMaintenanceMode(false);  // You can set this to 'true' or 'false' based on your needs
     }
 
     loadSettings() {
