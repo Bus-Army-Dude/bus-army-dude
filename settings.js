@@ -1,7 +1,7 @@
 class SettingsManager {
     constructor() {
         this.settings = this.loadSettings();
-        this.isOwner = true; // Set this to `false` if you want to simulate a non-owner
+        this.isOwner = false; // Set this to `false` if you want to simulate a non-owner
         this.initializeControls();
         this.applySettings();
     }
