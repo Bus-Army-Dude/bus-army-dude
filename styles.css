@@ -1544,19 +1544,3 @@ footer {
         font-size: 0.95em;
     }
 }
-
-/* Style for Maintenance Mode Message */
-.maintenance-mode-message {
-    background-color: red; /* Red background */
-    color: white;  /* White text */
-    padding: 10px 20px;
-    text-align: center; /* Center the text */
-    font-size: 18px; /* Optional: Adjust font size */
-    font-weight: bold; /* Optional: Make the text bold */
-    position: fixed; /* Fix the message at the top */
-    top: 0; /* Position at the top */
-    left: 0;
-    width: 100%; /* Full width */
-    z-index: 1000; /* Ensure it appears on top */
-    display: none; /* Initially hidden */
-}
