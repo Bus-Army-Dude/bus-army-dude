@@ -120,8 +120,8 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: -10px; /* Adjust the value to make sure the circle is half out */
-    left: 10px;
+    bottom: 5px; /* Adjust the value to position at the bottom-right of the profile pic */
+    right: 5px; /* Position it on the right of the profile picture */
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -136,12 +136,7 @@ body {
 
 /* Profile Status Styling */
 .profile-status {
-    position: absolute;
-    bottom: 0; /* The status will be half out of the circle */
-    left: 0;
-    transform: translateX(-50%);
-    font-size: 16px; /* You can adjust the size as per preference */
-    z-index: 1;
+    font-size: 16px; /* Adjust as per your preference */
     color: white;
 }
 
