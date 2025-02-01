@@ -145,6 +145,7 @@ body {
 .profile-status.idle { color: yellow; }
 .profile-status.offline { color: gray; }
 
+
 /* Add these new styles for the settings button */
 .settings-button {
     position: absolute;
