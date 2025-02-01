@@ -120,7 +120,7 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: 10px;
+    bottom: -10px; /* Adjust the value to make sure the circle is half out */
     left: 10px;
     width: 30px;
     height: 30px;
@@ -131,22 +131,19 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden; /* Ensures the status is half in and half out */
+    z-index: 2;  /* Ensure it's above the profile image */
 }
 
 /* Profile Status Styling */
 .profile-status {
     position: absolute;
-    bottom: -10px;
+    bottom: 0; /* The status will be half out of the circle */
     left: 0;
     transform: translateX(-50%);
-    font-size: 24px;
+    font-size: 16px; /* You can adjust the size as per preference */
     z-index: 1;
-    background-color: rgba(0, 0, 0, 0.5); /* optional, to make the status stand out */
-    padding: 5px 10px;
-    border-radius: 5px;
     color: white;
 }
-
 
 /* Profile Status Colors */
 .profile-status.online { color: green; }
