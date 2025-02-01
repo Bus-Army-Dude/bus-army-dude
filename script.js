@@ -385,10 +385,18 @@ function updateNewYearCountdown() {
             <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
         `;
     } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const years = newYear.getFullYear() - now.getFullYear();
+        const months = (newYear.getMonth() + 1) - (now.getMonth() + 1);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30; // Approximation
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Update flip clock for years
+        updateFlipClock('countdown-years', years);
+
+        // Update flip clock for months
+        updateFlipClock('countdown-months', months);
 
         // Update flip clock for days
         updateFlipClock('countdown-days', days);
