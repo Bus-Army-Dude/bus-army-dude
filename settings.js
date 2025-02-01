@@ -1,25 +1,28 @@
 class SettingsManager {
     constructor() {
-        // Load the settings and the owner status
+        // Load the settings, owner status, and maintenance mode state
         this.settings = this.loadSettings();
         this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
+
+        // Set maintenance mode manually in JavaScript here:
+        this.setMaintenanceMode(true);  // You can set this to 'true' or 'false' based on your needs
     }
 
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
-            maintenanceMode: false,
-            profileStatus: "online"  // Default value
+            maintenanceMode: false, // Default to false (off)
+            profileStatus: "online"
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
 
     // Check if the user is the owner
     checkIfOwner() {
-        return localStorage.getItem('isOwner') === 'true';  // Fixed: comparing against 'true' string
+        return localStorage.getItem('isOwner') === 'true';  // Check ownership from localStorage
     }
 
     initializeControls() {
