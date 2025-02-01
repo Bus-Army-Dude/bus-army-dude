@@ -11,6 +11,8 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
+            maintenanceMode: false,
+            profileStatus: "online"  // Default value
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -27,7 +29,7 @@ class SettingsManager {
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
-            darkModeToggle.disabled = !this.isOwner;  // Disable if not owner
+            darkModeToggle.disabled = false;  // Always enable dark mode toggle for all users
             darkModeToggle.addEventListener('change', (e) => {
                 this.applyTheme(e.target.checked);
             });
@@ -38,7 +40,7 @@ class SettingsManager {
         const currentFontSize = document.getElementById('currentFontSize');
         if (fontSizeRange) {
             fontSizeRange.value = this.settings.fontSize;
-            fontSizeRange.disabled = !this.isOwner;  // Disable if not owner
+            fontSizeRange.disabled = false;  // Always enable font size slider for all users
             fontSizeRange.addEventListener('input', (e) => {
                 this.setFontSize(e.target.value);
                 this.updateSliderBackground(e.target);
@@ -123,7 +125,8 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
-           
+            maintenanceMode: false,
+            profileStatus: "online"  // Default value
         };
         this.settings = defaultSettings;
         this.applySettings();
