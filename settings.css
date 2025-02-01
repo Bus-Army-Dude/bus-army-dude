@@ -318,59 +318,19 @@ body.settings-page {
 }
 
 .settings-page .dark-mode-schedule .time-picker input:focus {
-    outline: none;
     border-color: var(--accent-color);
     box-shadow: 0 0 5px var(--accent-color);
 }
 
-.settings-page .dark-mode-schedule .time-picker .slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 8px;
-    background: var(--slider-track-color);
-    border-radius: 5px;
-    outline: none;
-    transition: background 0.3s ease;
-    margin-top: 10px;
-}
-
-.settings-page .dark-mode-schedule .time-picker .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    background-color: var(--slider-thumb-color);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.settings-page .dark-mode-schedule .time-picker .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    background-color: var(--slider-thumb-color);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.settings-page .dark-mode-schedule .info-text {
-    font-size: 1rem;
-    color: var(--secondary-text);
-    margin-top: 10px;
-}
-
-/* Adjusting for smaller screens */
-@media (max-width: 768px) {
-    .settings-page .dark-mode-schedule {
-        padding: 15px;
-    }
-
-    .settings-page .dark-mode-schedule h3 {
-        font-size: 1.3rem;
-    }
-
-    .settings-page .dark-mode-schedule .time-picker input,
-    .settings-page .dark-mode-schedule .time-picker .slider {
-        font-size: 0.9rem;
-    }
+/* Coming Soon Page Styles */
+.settings-page .coming-soon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--text-color);
+    font-weight: 600;
+    height: 100vh;
+    background-color: var(--content-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
