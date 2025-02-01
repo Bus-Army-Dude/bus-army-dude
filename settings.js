@@ -9,8 +9,8 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
-            maintenanceMode: false,  // Default setting for maintenance mode
-            profileStatus: "Active" // Default profile status
+            maintenanceMode: false,
+            profileStatus: "Active"
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -46,6 +46,7 @@ class SettingsManager {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
             maintenanceModeToggle.addEventListener('change', (e) => {
                 this.requestPassword(() => {
+                    console.log('Password Correct. Changing Maintenance Mode...');
                     this.setMaintenanceMode(e.target.checked);
                 });
             });
@@ -57,6 +58,7 @@ class SettingsManager {
             profileStatusSelect.value = this.settings.profileStatus;
             profileStatusSelect.addEventListener('change', (e) => {
                 this.requestPassword(() => {
+                    console.log('Password Correct. Changing Profile Status...');
                     this.setProfileStatus(e.target.value);
                 });
             });
@@ -78,10 +80,14 @@ class SettingsManager {
         const password = prompt("Please enter the password to modify owner-only settings:");
         const correctPassword = "Penta!933754"; // Your preset password here
 
+        console.log('Password entered: ', password); // Debugging line
+
         if (password === correctPassword) {
+            console.log('Password correct. Allowing changes.'); // Debugging line
             callback(); // If password is correct, apply the change
         } else {
             alert("Incorrect password. You are not authorized to change this setting.");
+            console.log('Incorrect password'); // Debugging line
         }
     }
 
@@ -157,7 +163,6 @@ class SettingsManager {
     }
 
     applyMaintenanceMode(isActive) {
-        // Apply maintenance mode effect here (e.g., display a maintenance page or message)
         if (isActive) {
             document.body.classList.add('maintenance-mode');
         } else {
@@ -179,5 +184,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Get the current year
 const currentYear = new Date().getFullYear();
-// Set the current year in the footer
 document.getElementById('current-year').textContent = currentYear;
