@@ -70,6 +70,9 @@ class SettingsManager {
                 }
             });
         }
+
+        // Footer Year Update
+        this.updateFooterYear();
     }
 
     applySettings() {
@@ -136,58 +139,36 @@ class SettingsManager {
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
     }
 
-    // Maintenance Mode (Only for owner)
-    setMaintenanceMode(isActive) {
-        this.settings.maintenanceMode = isActive;
+    setMaintenanceMode(isEnabled) {
+        this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
-        this.applyMaintenanceMode(isActive);
     }
 
-    applyMaintenanceMode(isActive) {
-        if (isActive) {
-            document.body.classList.add('maintenance-mode');
-        } else {
-            document.body.classList.remove('maintenance-mode');
-        }
-    }
-
-    // Profile Status (Only for owner)
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
-        this.applyProfileStatus(status); // Apply status change to the profile
+    }
+
+    applyMaintenanceMode(isEnabled) {
+        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
+        if (maintenanceModeToggle) maintenanceModeToggle.checked = isEnabled;
     }
 
     applyProfileStatus(status) {
-        const statusElement = document.querySelector('.profile-status');
-        
-        if (!statusElement) {
-            console.error('Profile status element not found!');
-            return;
-        }
+        const profileStatusSelect = document.getElementById('profileStatusSelect');
+        if (profileStatusSelect) profileStatusSelect.value = status;
+    }
 
-        // Remove all previous status classes
-        statusElement.classList.remove('online', 'idle', 'dnd', 'offline');
-        statusElement.classList.add(status); // Add the new status class
-
-        // Set the emoji according to the status
-        if (status === 'online') {
-            statusElement.textContent = '🟢';  // Green circle for Online
-        } else if (status === 'idle') {
-            statusElement.textContent = '🟡';  // Yellow circle for Idle
-        } else if (status === 'dnd') {
-            statusElement.textContent = '🔴';  // Red circle for Do Not Disturb
-        } else if (status === 'offline') {
-            statusElement.textContent = '🔘';  // Gray circle for Offline
+    // Function to update the year in the footer
+    updateFooterYear() {
+        const currentYear = new Date().getFullYear();
+        const yearElement = document.getElementById('current-year');
+        if (yearElement) {
+            yearElement.textContent = currentYear;
         }
     }
 }
 
-// Initialize settings when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.settingsManager = new SettingsManager();
+    const settingsManager = new SettingsManager();
 });
-
-// Get the current year
-const currentYear = new Date().getFullYear();
-document.getElementById('current-year').textContent = currentYear;
