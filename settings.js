@@ -79,7 +79,7 @@ class SettingsManager {
         this.applyTheme(this.settings.darkMode);
         this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
-        this.applyProfileStatus(this.settings.profileStatus);
+        this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
     }
 
     applyTheme(isDark = this.settings.darkMode) {
@@ -160,6 +160,15 @@ class SettingsManager {
         if (statusElement) {
             statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
             statusElement.classList.add(status); // Add the new status class
+
+            // Change the icon based on the status
+            const statusIcons = {
+                "online": "🟢",
+                "idle": "🟡",
+                "offline": "⚪"
+            };
+
+            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
         }
     }
 
