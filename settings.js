@@ -10,8 +10,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,  // Default setting for maintenance mode
-            profileStatus: "Active", // Default profile status
-            darkModeSchedule: { start: "22:00", end: "06:00" } // Default dark mode schedule
+            profileStatus: "Active" // Default profile status
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -22,9 +21,7 @@ class SettingsManager {
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
             darkModeToggle.addEventListener('change', (e) => {
-                if (!this.settings.darkModeSchedule) {
-                    this.applyTheme(e.target.checked);
-                }
+                this.applyTheme(e.target.checked);
             });
         }
 
@@ -61,20 +58,6 @@ class SettingsManager {
             });
         }
 
-        // Dark Mode Schedule - Vertically displayed inputs
-        const darkModeStartInput = document.getElementById('darkModeStart');
-        const darkModeEndInput = document.getElementById('darkModeEnd');
-        if (darkModeStartInput && darkModeEndInput) {
-            darkModeStartInput.value = this.settings.darkModeSchedule.start;
-            darkModeEndInput.value = this.settings.darkModeSchedule.end;
-            darkModeStartInput.addEventListener('change', (e) => {
-                this.setDarkModeSchedule(e.target.value, this.settings.darkModeSchedule.end);
-            });
-            darkModeEndInput.addEventListener('change', (e) => {
-                this.setDarkModeSchedule(this.settings.darkModeSchedule.start, e.target.value);
-            });
-        }
-
         // Reset Settings Button
         const resetButton = document.getElementById('resetSettings');
         if (resetButton) {
@@ -84,11 +67,6 @@ class SettingsManager {
                 }
             });
         }
-
-        // Disable dark mode toggle when schedule is active
-        if (this.settings.darkModeSchedule) {
-            this.toggleDarkModeScheduleControls(true);
-        }
     }
 
     applySettings() {
@@ -96,7 +74,6 @@ class SettingsManager {
         this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);
-        this.applyDarkModeSchedule(this.settings.darkModeSchedule);
     }
 
     applyTheme(isDark = this.settings.darkMode) {
@@ -133,8 +110,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "Active",
-            darkModeSchedule: { start: "22:00", end: "06:00" }
+            profileStatus: "Active"
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -146,8 +122,6 @@ class SettingsManager {
         const currentFontSize = document.getElementById('currentFontSize');
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
-        const darkModeStartInput = document.getElementById('darkModeStart');
-        const darkModeEndInput = document.getElementById('darkModeEnd');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (fontSizeRange) {
@@ -157,8 +131,6 @@ class SettingsManager {
         if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
-        if (darkModeStartInput) darkModeStartInput.value = defaultSettings.darkModeSchedule.start;
-        if (darkModeEndInput) darkModeEndInput.value = defaultSettings.darkModeSchedule.end;
     }
 
     // Maintenance Mode (Public can change now)
@@ -181,41 +153,6 @@ class SettingsManager {
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
-    }
-
-    // Dark Mode Schedule
-    setDarkModeSchedule(start, end) {
-        this.settings.darkModeSchedule = { start, end };
-        this.saveSettings();
-        this.toggleDarkModeScheduleControls(true); // Disable the dark mode toggle
-    }
-
-    applyDarkModeSchedule(schedule) {
-        const currentTime = new Date();
-        const startTime = this.parseTime(schedule.start);
-        const endTime = this.parseTime(schedule.end);
-
-        if (currentTime >= startTime && currentTime <= endTime) {
-            this.applyTheme(true); // Enable dark mode
-        } else {
-            this.applyTheme(false); // Disable dark mode
-        }
-    }
-
-    parseTime(timeString) {
-        const [hours, minutes] = timeString.split(':').map(Number);
-        const time = new Date();
-        time.setHours(hours);
-        time.setMinutes(minutes);
-        time.setSeconds(0);
-        return time;
-    }
-
-    toggleDarkModeScheduleControls(disable) {
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        if (darkModeToggle) {
-            darkModeToggle.disabled = disable;
-        }
     }
 }
 
