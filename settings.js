@@ -1,7 +1,7 @@
 class SettingsManager {
     constructor() {
         this.settings = this.loadSettings();
-        this.isOwner = false; // Set this to `false` if you want to simulate a non-owner
+        this.isOwner = true;  // Change this to `true` when you want to allow edits as the owner
         this.initializeControls();
         this.applySettings();
     }
@@ -155,6 +155,17 @@ class SettingsManager {
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
+        this.applyProfileStatus(status); // Apply status change to the profile
+    }
+
+    applyProfileStatus(status) {
+        // You can update the profile status by updating the HTML dynamically here.
+        const statusElement = document.querySelector('.profile-status');
+        statusElement.classList.remove('online', 'idle', 'dnd', 'offline'); // Remove all previous classes
+        statusElement.classList.add(status); // Add the new status class
+        statusElement.textContent = status === 'online' ? '🟢' :
+                                   status === 'idle' ? '🟡' :
+                                   status === 'dnd' ? '🔴' : '🔘'; // Set the emoji according to the status
     }
 }
 
