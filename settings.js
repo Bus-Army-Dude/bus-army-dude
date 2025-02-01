@@ -11,7 +11,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "online"  // Default value
+            profileStatus: "online"  // Default value (removed DND)
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -116,7 +116,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "online"  // Default value
+            profileStatus: "online"  // Default value (removed DND)
         };
         this.settings = defaultSettings;
         this.applySettings();
