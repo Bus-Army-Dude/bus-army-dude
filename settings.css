@@ -263,7 +263,7 @@ body.settings-page {
     color: var(--hover-color);
 }
 
-/* Dark Mode Schedule - Modern Version */
+/* Dark Mode Schedule - Vertical Version */
 .settings-page .dark-mode-schedule {
     padding: 20px;
     border-radius: 20px;
@@ -286,9 +286,8 @@ body.settings-page {
 
 .settings-page .dark-mode-schedule .time-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column; /* Change to column layout */
+    gap: 10px; /* Adjust spacing between labels and inputs */
 }
 
 .settings-page .dark-mode-schedule .time-container label {
@@ -300,37 +299,40 @@ body.settings-page {
 
 .settings-page .dark-mode-schedule .time-picker {
     display: flex;
-    flex: 2;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column; /* Stack the time pickers vertically */
+    gap: 10px; /* Adjust spacing between start and end time pickers */
     width: 100%;
 }
 
 .settings-page .dark-mode-schedule .time-picker input {
-    width: 100%;
     padding: 10px;
-    font-size: 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: border 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1rem;
 }
 
 .settings-page .dark-mode-schedule .time-picker input:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 5px var(--accent-color);
+    outline: none;
 }
 
-/* Coming Soon Page Styles */
-.settings-page .coming-soon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    color: var(--text-color);
-    font-weight: 600;
-    height: 100vh;
-    background-color: var(--content-bg);
-    transition: background-color 0.3s ease, color 0.3s ease;
+.settings-page .dark-mode-schedule .time-picker .time-start,
+.settings-page .dark-mode-schedule .time-picker .time-end {
+    width: 100%;
+}
+
+.settings-page .dark-mode-schedule .save-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.settings-page .dark-mode-schedule .save-button:hover {
+    background-color: var(--hover-color);
 }
