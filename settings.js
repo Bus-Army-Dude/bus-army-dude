@@ -1,10 +1,9 @@
 class SettingsManager {
     constructor() {
         this.settings = this.loadSettings();
-        this.isOwner = true;  // Set to `true` when you want to allow edits as the owner
+        this.isOwner = true;  // Change this to `true` when you want to allow edits as the owner
         this.initializeControls();
         this.applySettings();
-        this.applyProfileStatusFromSettings();  // Make sure to apply the saved profile status on page load
     }
 
     loadSettings() {
@@ -12,7 +11,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "online"  // Default profile status
+            profileStatus: "online"  // Default value
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -170,16 +169,6 @@ class SettingsManager {
         const yearElement = document.getElementById('current-year');
         if (yearElement) {
             yearElement.textContent = currentYear;
-        }
-    }
-
-    // Apply the profile status from the settings when the page loads
-    applyProfileStatusFromSettings() {
-        const statusElement = document.querySelector('.profile-status');
-        if (statusElement) {
-            const status = this.settings.profileStatus;
-            statusElement.classList.remove('online', 'idle', 'offline');
-            statusElement.classList.add(status); // Apply the saved status class
         }
     }
 }
