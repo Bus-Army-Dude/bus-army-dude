@@ -263,65 +263,7 @@ body.settings-page {
     color: var(--hover-color);
 }
 
-/* Profile Status */
-.settings-page .profile-info {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    background-color: var(--content-bg);
-    border-radius: 20px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    font-size: var(--font-size-base); /* Apply base font size */
-    border: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.settings-page .profile-info h2 {
-    font-size: 1.8rem;
-    color: var(--text-color);
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.settings-page .profile-info p {
-    font-size: 1rem;
-    color: var(--secondary-text);
-}
-
-.settings-page .profile-info .status-indicator {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-color: #4CAF50; /* Default green for "active" */
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.settings-page .profile-info .status-text {
-    font-size: 1.1rem;
-    color: var(--text-color);
-    display: inline-block;
-    font-weight: 500;
-}
-
-.settings-page .profile-info .profile-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: var(--accent-color);
-    color: white;
-    border-radius: 25px;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.settings-page .profile-info .profile-button:hover {
-    background-color: var(--hover-color);
-}
-
-/* Dark Mode Schedule */
+/* Dark Mode Schedule - Modern Version */
 .settings-page .dark-mode-schedule {
     padding: 20px;
     border-radius: 20px;
@@ -344,57 +286,91 @@ body.settings-page {
 
 .settings-page .dark-mode-schedule .time-container {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
     align-items: center;
+    gap: 20px;
 }
 
-.settings-page .dark-mode-schedule label {
+.settings-page .dark-mode-schedule .time-container label {
     font-size: 1rem;
     color: var(--text-color);
+    font-weight: 500;
+    flex: 1;
 }
 
-.settings-page .dark-mode-schedule input[type="time"] {
+.settings-page .dark-mode-schedule .time-picker {
+    display: flex;
+    flex: 2;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.settings-page .dark-mode-schedule .time-picker input {
+    width: 100%;
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     background-color: var(--bg-color);
-    width: 100px;
+    color: var(--text-color);
     transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
-.settings-page .dark-mode-schedule input[type="time"]:focus {
+.settings-page .dark-mode-schedule .time-picker input:focus {
     outline: none;
     border-color: var(--accent-color);
     box-shadow: 0 0 5px var(--accent-color);
 }
 
+.settings-page .dark-mode-schedule .time-picker .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--slider-track-color);
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+.settings-page .dark-mode-schedule .time-picker .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: var(--slider-thumb-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.settings-page .dark-mode-schedule .time-picker .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background-color: var(--slider-thumb-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 .settings-page .dark-mode-schedule .info-text {
     font-size: 1rem;
     color: var(--secondary-text);
+    margin-top: 10px;
 }
 
-/* Responsive Adjustments */
+/* Adjusting for smaller screens */
 @media (max-width: 768px) {
-    .settings-page .profile-info,
     .settings-page .dark-mode-schedule {
         padding: 15px;
-    }
-
-    .settings-page .profile-info h2 {
-        font-size: 1.6rem;
-    }
-
-    .settings-page .profile-info .status-text {
-        font-size: 1rem;
     }
 
     .settings-page .dark-mode-schedule h3 {
         font-size: 1.3rem;
     }
 
-    .settings-page .dark-mode-schedule label,
-    .settings-page .dark-mode-schedule input[type="time"] {
-        font-size: 1rem;
+    .settings-page .dark-mode-schedule .time-picker input,
+    .settings-page .dark-mode-schedule .time-picker .slider {
+        font-size: 0.9rem;
     }
 }
