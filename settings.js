@@ -1,6 +1,7 @@
 class SettingsManager {
     constructor() {
         this.settings = this.loadSettings();
+        this.isOwner = this.checkIfOwner();  // Check if the current user is the owner
         this.initializeControls();
         this.applySettings();
     }
@@ -13,6 +14,15 @@ class SettingsManager {
             profileStatus: "Active" // Default profile status
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
+    }
+
+    checkIfOwner() {
+        // For now, we assume the owner is identified by some fixed condition, like a hardcoded username or password.
+        // Example: Let's say the owner is "admin" (this can be replaced with more secure checks in a real system)
+        const ownerPassword = "Penta!933754"; // Set your own password
+        const userPassword = prompt("Please enter password to access owner settings:"); // Basic prompt for example purposes
+
+        return userPassword === ownerPassword;
     }
 
     initializeControls() {
@@ -40,19 +50,21 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
-        // Maintenance Mode (Now available to everyone)
+        // Maintenance Mode (Visible but Disabled for non-owners)
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         if (maintenanceModeToggle) {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
+            maintenanceModeToggle.disabled = !this.isOwner; // Disable if not owner
             maintenanceModeToggle.addEventListener('change', (e) => {
                 this.setMaintenanceMode(e.target.checked);
             });
         }
 
-        // Profile Status (Now available to everyone)
+        // Profile Status (Visible but Disabled for non-owners)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
             profileStatusSelect.value = this.settings.profileStatus;
+            profileStatusSelect.disabled = !this.isOwner; // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
                 this.setProfileStatus(e.target.value);
             });
