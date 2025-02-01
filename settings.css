@@ -263,42 +263,53 @@ body.settings-page {
     color: var(--hover-color);
 }
 
-/* Responsive Design */
-@media (max-width: 800px) {
-    body.settings-page {
-        padding: 10px; /* Reduce padding on smaller screens */
-    }
+/* Dark Mode Schedule Styles */
+.settings-page .dark-mode-schedule {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    background-color: var(--bg-color);
+    font-size: var(--font-size-base);
+}
 
-    .settings-page .container {
-        padding: 10px; /* Reduce container padding on smaller screens */
-    }
+.settings-page .dark-mode-schedule input[type="time"] {
+    font-size: var(--font-size-base);
+    border-radius: 8px;
+    padding: 8px;
+    width: 100px;
+    margin-top: 10px;
+}
 
-    .settings-page .settings-section {
-        padding: 10px; /* Reduce section padding on smaller screens */
-    }
+/* Owner Only Settings */
+.settings-page .owner-only-settings {
+    background-color: #ffcc00;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #ffa500;
+    font-size: var(--font-size-base);
+}
 
-    .settings-page .settings-header h1 {
-        font-size: 1.5rem; /* Adjust header font size on smaller screens */
-    }
+.settings-page .owner-only-settings h3 {
+    color: #333;
+    font-size: 1.4rem;
+}
 
-    .settings-page .settings-header .version {
-        font-size: 0.8rem; /* Adjust version font size on smaller screens */
-    }
+/* Profile Info */
+.settings-page .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: var(--content-bg);
+}
 
-    .settings-page .settings-subsection .subsection-title {
-        font-size: 1.2rem; /* Adjust subsection title font size on smaller screens */
-    }
+.settings-page .profile-info h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
 
-    .settings-page .font-size-control span {
-        font-size: 0.9rem; /* Adjust font size display on smaller screens */
-    }
-
-    .settings-page .reset-button {
-        padding: 8px 16px; /* Adjust reset button padding on smaller screens */
-        font-size: calc(var(--font-size-base) * 0.9); /* Adjust reset button font size on smaller screens */
-    }
-
-    .settings-page .back-link {
-        font-size: calc(var(--font-size-base) * 0.9); /* Adjust back link font size on smaller screens */
-    }
+.settings-page .profile-info p {
+    font-size: 1rem;
+    color: var(--secondary-text);
 }
