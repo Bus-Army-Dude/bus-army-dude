@@ -159,21 +159,19 @@ class SettingsManager {
     }
 
     applyProfileStatus(status) {
-        // You can update the profile status by updating the HTML dynamically here.
-        const statusElement = document.querySelector('.profile-status');
-        statusElement.classList.remove('online', 'idle', 'dnd', 'offline'); // Remove all previous classes
-        statusElement.classList.add(status); // Add the new status class
+    const statusElement = document.querySelector('.profile-status');
+    statusElement.classList.remove('online', 'idle', 'dnd', 'offline'); // Remove all previous classes
+    statusElement.classList.add(status); // Add the new status class
 
-        // Update the emoji for the status
-        if (status === 'online') {
-            statusElement.textContent = '🟢';  // Green for Online
-        } else if (status === 'idle') {
-            statusElement.textContent = '🟡';  // Yellow for Idle
-        } else if (status === 'dnd') {
-            statusElement.textContent = '🔴';  // Red for Do Not Disturb
-        } else if (status === 'offline') {
-            statusElement.textContent = '🔘';  // Gray for Offline
-        }
+    // Set the emoji according to the status
+    if (status === 'online') {
+        statusElement.textContent = '🟢';  // Green circle for Online
+    } else if (status === 'idle') {
+        statusElement.textContent = '🟡';  // Yellow circle for Idle
+    } else if (status === 'dnd') {
+        statusElement.textContent = '🔴';  // Red circle for Do Not Disturb
+    } else if (status === 'offline') {
+        statusElement.textContent = '🔘';  // Gray circle for Offline
     }
 }
 
