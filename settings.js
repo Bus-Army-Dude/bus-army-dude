@@ -11,7 +11,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "active"  // Default value
+            profileStatus: "online"  // Default value
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -116,7 +116,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "active"  // Default value
+            profileStatus: "online"  // Default value
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -147,6 +147,7 @@ class SettingsManager {
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
+        this.applyProfileStatus(status); // Apply status change to the profile
     }
 
     applyMaintenanceMode(isEnabled) {
@@ -155,8 +156,11 @@ class SettingsManager {
     }
 
     applyProfileStatus(status) {
-        const profileStatusSelect = document.getElementById('profileStatusSelect');
-        if (profileStatusSelect) profileStatusSelect.value = status;
+        const statusElement = document.querySelector('.profile-status');
+        if (statusElement) {
+            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
+            statusElement.classList.add(status); // Add the new status class
+        }
     }
 
     // Function to update the year in the footer
