@@ -116,6 +116,43 @@ body {
     margin-left: 5px;
 }
 
+/* Profile Status Circle (new) */
+.status-circle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px; /* Size of the status circle */
+    height: 30px;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(50%, 50%); /* Moves it halfway inside the profile picture */
+    font-size: 20px; /* Adjust size for the icon */
+}
+
+.status-circle.online {
+    background-color: #4caf50; /* Green for Online */
+    border-color: #4caf50;
+}
+
+.status-circle.idle {
+    background-color: #ffeb3b; /* Yellow for Idle */
+    border-color: #ffeb3b;
+}
+
+.status-circle.dnd {
+    background-color: #f44336; /* Red for Do Not Disturb */
+    border-color: #f44336;
+}
+
+.status-circle.offline {
+    background-color: #9e9e9e; /* Gray for Offline */
+    border-color: #9e9e9e;
+}
+
 /* Add these new styles for the settings button */
 .settings-button {
     position: absolute;
