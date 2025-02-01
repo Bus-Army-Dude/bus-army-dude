@@ -159,19 +159,27 @@ class SettingsManager {
     }
 
     applyProfileStatus(status) {
-    const statusElement = document.querySelector('.profile-status');
-    statusElement.classList.remove('online', 'idle', 'dnd', 'offline'); // Remove all previous classes
-    statusElement.classList.add(status); // Add the new status class
+        const statusElement = document.querySelector('.profile-status');
+        
+        if (!statusElement) {
+            console.error('Profile status element not found!');
+            return;
+        }
 
-    // Set the emoji according to the status
-    if (status === 'online') {
-        statusElement.textContent = '🟢';  // Green circle for Online
-    } else if (status === 'idle') {
-        statusElement.textContent = '🟡';  // Yellow circle for Idle
-    } else if (status === 'dnd') {
-        statusElement.textContent = '🔴';  // Red circle for Do Not Disturb
-    } else if (status === 'offline') {
-        statusElement.textContent = '🔘';  // Gray circle for Offline
+        // Remove all previous status classes
+        statusElement.classList.remove('online', 'idle', 'dnd', 'offline');
+        statusElement.classList.add(status); // Add the new status class
+
+        // Set the emoji according to the status
+        if (status === 'online') {
+            statusElement.textContent = '🟢';  // Green circle for Online
+        } else if (status === 'idle') {
+            statusElement.textContent = '🟡';  // Yellow circle for Idle
+        } else if (status === 'dnd') {
+            statusElement.textContent = '🔴';  // Red circle for Do Not Disturb
+        } else if (status === 'offline') {
+            statusElement.textContent = '🔘';  // Gray circle for Offline
+        }
     }
 }
 
