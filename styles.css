@@ -143,7 +143,7 @@ body {
 /* Profile Status Colors */
 .profile-status.online { color: green; }
 .profile-status.idle { color: yellow; }
-.profile-status.dnd { color: red; }
+.profile-status.dnd { color: red; } /* Ensure this is red for DND status */
 .profile-status.offline { color: gray; }
 
 /* Add these new styles for the settings button */
