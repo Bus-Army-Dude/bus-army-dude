@@ -19,9 +19,7 @@ class SettingsManager {
 
     // Check if the user is the owner
     checkIfOwner() {
-        // Assuming you have a way to set this (e.g., user login, session, etc.)
-        // You can manually set this to true for yourself or use localStorage to remember if you're logged in as the owner
-        return localStorage.getItem('isOwner') === 'true';  // Or replace this with your own method to check ownership
+        return localStorage.getItem('isOwner') === 'true';  // Assuming ownership is stored in localStorage
     }
 
     initializeControls() {
@@ -29,7 +27,6 @@ class SettingsManager {
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
-            darkModeToggle.disabled = false;  // Always enable dark mode toggle for all users
             darkModeToggle.addEventListener('change', (e) => {
                 this.applyTheme(e.target.checked);
             });
@@ -40,7 +37,6 @@ class SettingsManager {
         const currentFontSize = document.getElementById('currentFontSize');
         if (fontSizeRange) {
             fontSizeRange.value = this.settings.fontSize;
-            fontSizeRange.disabled = false;  // Always enable font size slider for all users
             fontSizeRange.addEventListener('input', (e) => {
                 this.setFontSize(e.target.value);
                 this.updateSliderBackground(e.target);
@@ -152,17 +148,24 @@ class SettingsManager {
     setMaintenanceMode(isEnabled) {
         this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
+        this.applyMaintenanceMode(isEnabled); // Apply the maintenance mode on page
+    }
+
+    applyMaintenanceMode(isEnabled) {
+        const maintenanceMessage = document.getElementById('maintenanceModeMessage');
+        if (maintenanceMessage) {
+            if (isEnabled) {
+                maintenanceMessage.style.display = 'block';  // Show the maintenance message
+            } else {
+                maintenanceMessage.style.display = 'none';  // Hide the maintenance message
+            }
+        }
     }
 
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
         this.applyProfileStatus(status); // Apply status change to the profile
-    }
-
-    applyMaintenanceMode(isEnabled) {
-        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
-        if (maintenanceModeToggle) maintenanceModeToggle.checked = isEnabled;
     }
 
     applyProfileStatus(status) {
