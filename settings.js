@@ -11,7 +11,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "Active"
+            profileStatus: "active"  // Default value
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -113,7 +113,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "Active"
+            profileStatus: "active"  // Default value
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -163,9 +163,17 @@ class SettingsManager {
         const statusElement = document.querySelector('.profile-status');
         statusElement.classList.remove('online', 'idle', 'dnd', 'offline'); // Remove all previous classes
         statusElement.classList.add(status); // Add the new status class
-        statusElement.textContent = status === 'online' ? '🟢' :
-                                   status === 'idle' ? '🟡' :
-                                   status === 'dnd' ? '🔴' : '🔘'; // Set the emoji according to the status
+
+        // Update the emoji for the status
+        if (status === 'online') {
+            statusElement.textContent = '🟢';  // Green for Online
+        } else if (status === 'idle') {
+            statusElement.textContent = '🟡';  // Yellow for Idle
+        } else if (status === 'dnd') {
+            statusElement.textContent = '🔴';  // Red for Do Not Disturb
+        } else if (status === 'offline') {
+            statusElement.textContent = '🔘';  // Gray for Offline
+        }
     }
 }
 
