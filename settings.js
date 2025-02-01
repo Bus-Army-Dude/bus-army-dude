@@ -22,7 +22,9 @@ class SettingsManager {
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
             darkModeToggle.addEventListener('change', (e) => {
-                this.applyTheme(e.target.checked);
+                if (!this.settings.darkModeSchedule) {
+                    this.applyTheme(e.target.checked);
+                }
             });
         }
 
@@ -41,16 +43,16 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
-        // Maintenance Mode (Owner Only)
+        // Maintenance Mode (Now available to everyone)
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
-        if (maintenanceModeToggle && this.isOwner()) {
+        if (maintenanceModeToggle) {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
             maintenanceModeToggle.addEventListener('change', (e) => {
                 this.setMaintenanceMode(e.target.checked);
             });
         }
 
-        // Profile Status
+        // Profile Status (Now available to everyone)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
             profileStatusSelect.value = this.settings.profileStatus;
@@ -59,7 +61,7 @@ class SettingsManager {
             });
         }
 
-        // Dark Mode Schedule
+        // Dark Mode Schedule - Vertically displayed inputs
         const darkModeStartInput = document.getElementById('darkModeStart');
         const darkModeEndInput = document.getElementById('darkModeEnd');
         if (darkModeStartInput && darkModeEndInput) {
@@ -81,6 +83,11 @@ class SettingsManager {
                     this.resetToFactorySettings();
                 }
             });
+        }
+
+        // Disable dark mode toggle when schedule is active
+        if (this.settings.darkModeSchedule) {
+            this.toggleDarkModeScheduleControls(true);
         }
     }
 
@@ -154,13 +161,7 @@ class SettingsManager {
         if (darkModeEndInput) darkModeEndInput.value = defaultSettings.darkModeSchedule.end;
     }
 
-    // Owner-only feature: Check if the current user is the owner
-    isOwner() {
-        // Replace with your own logic for identifying the owner
-        return true; // Assume always the owner for this case
-    }
-
-    // Maintenance Mode (Owner only)
+    // Maintenance Mode (Public can change now)
     setMaintenanceMode(isActive) {
         this.settings.maintenanceMode = isActive;
         this.saveSettings();
@@ -176,7 +177,7 @@ class SettingsManager {
         }
     }
 
-    // Profile Status
+    // Profile Status (Public can change now)
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
@@ -186,26 +187,35 @@ class SettingsManager {
     setDarkModeSchedule(start, end) {
         this.settings.darkModeSchedule = { start, end };
         this.saveSettings();
+        this.toggleDarkModeScheduleControls(true); // Disable the dark mode toggle
     }
 
     applyDarkModeSchedule(schedule) {
-        // You can implement logic to toggle dark mode based on schedule here.
         const currentTime = new Date();
-        const start = this.parseTime(schedule.start);
-        const end = this.parseTime(schedule.end);
+        const startTime = this.parseTime(schedule.start);
+        const endTime = this.parseTime(schedule.end);
 
-        if (currentTime >= start && currentTime <= end) {
-            this.applyTheme(true);
+        if (currentTime >= startTime && currentTime <= endTime) {
+            this.applyTheme(true); // Enable dark mode
         } else {
-            this.applyTheme(false);
+            this.applyTheme(false); // Disable dark mode
         }
     }
 
-    parseTime(timeStr) {
-        const [hours, minutes] = timeStr.split(":").map(Number);
+    parseTime(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
         const time = new Date();
-        time.setHours(hours, minutes, 0, 0);
+        time.setHours(hours);
+        time.setMinutes(minutes);
+        time.setSeconds(0);
         return time;
+    }
+
+    toggleDarkModeScheduleControls(disable) {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.disabled = disable;
+        }
     }
 }
 
