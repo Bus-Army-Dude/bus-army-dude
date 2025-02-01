@@ -1,17 +1,20 @@
 class SettingsManager {
     constructor() {
-        // Load settings and check if the user is the owner
+        // Load the settings, owner status, and maintenance mode state
         this.settings = this.loadSettings();
         this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
+
+        // Set maintenance mode manually in JavaScript here:
+        this.setMaintenanceMode(false);  // You can set this to 'true' or 'false' based on your needs
     }
 
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
-            maintenanceMode: false,
+            maintenanceMode: false, // Default to false (off)
             profileStatus: "online"
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -19,7 +22,7 @@ class SettingsManager {
 
     // Check if the user is the owner
     checkIfOwner() {
-        return localStorage.getItem('isOwner') === 'true';  // Checking 'isOwner' in localStorage
+        return localStorage.getItem('isOwner') === 'true';  // Check ownership from localStorage
     }
 
     initializeControls() {
@@ -47,6 +50,16 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
+        // Maintenance Mode (Visible and Editable only for owner)
+        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
+        if (maintenanceModeToggle) {
+            maintenanceModeToggle.checked = this.settings.maintenanceMode;
+            maintenanceModeToggle.disabled = !this.isOwner;  // Disable if not owner
+            maintenanceModeToggle.addEventListener('change', (e) => {
+                this.setMaintenanceMode(e.target.checked);
+            });
+        }
+
         // Profile Status (Visible and Editable only for owner)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
@@ -54,16 +67,6 @@ class SettingsManager {
             profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
                 this.setProfileStatus(e.target.value);
-            });
-        }
-
-        // Maintenance Mode (Visible and Editable only for owner)
-        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
-        if (maintenanceModeToggle) {
-            maintenanceModeToggle.checked = this.settings.maintenanceMode;
-            maintenanceModeToggle.disabled = !this.isOwner;
-            maintenanceModeToggle.addEventListener('change', (e) => {
-                this.setMaintenanceMode(e.target.checked);
             });
         }
 
@@ -88,6 +91,80 @@ class SettingsManager {
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
     }
 
+    applyTheme(isDark = this.settings.darkMode) {
+        document.body.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('light-mode', !isDark);
+        this.settings.darkMode = isDark;
+        this.saveSettings();
+    }
+
+    setFontSize(size) {
+        size = Math.min(Math.max(size, 10), 30); // Limit size between 10px and 30px
+        document.documentElement.style.setProperty('--font-size-base', `${size}px`);
+        this.settings.fontSize = size;
+        this.saveSettings();
+
+        // Update UI display
+        const currentFontSize = document.getElementById('currentFontSize');
+        if (currentFontSize) {
+            currentFontSize.textContent = `${size}px`;
+        }
+    }
+
+    updateSliderBackground(slider) {
+        const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.setProperty('--value', `${value}%`);
+    }
+
+    saveSettings() {
+        localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
+    }
+
+    resetToFactorySettings() {
+        const defaultSettings = {
+            darkMode: true,
+            fontSize: 15,
+            maintenanceMode: false,
+            profileStatus: "online"  // Default value
+        };
+        this.settings = defaultSettings;
+        this.applySettings();
+        this.saveSettings();
+
+        // Update UI controls
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const fontSizeRange = document.getElementById('fontSizeRange');
+        const currentFontSize = document.getElementById('currentFontSize');
+        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
+        const profileStatusSelect = document.getElementById('profileStatusSelect');
+
+        if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
+        if (fontSizeRange) {
+            fontSizeRange.value = defaultSettings.fontSize;
+            this.updateSliderBackground(fontSizeRange);
+        }
+        if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
+        if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
+        if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
+    }
+
+    setMaintenanceMode(isEnabled) {
+        this.settings.maintenanceMode = isEnabled;
+        this.saveSettings();
+        this.applyMaintenanceMode(isEnabled); // Apply the maintenance mode on page
+    }
+
+    applyMaintenanceMode(isEnabled) {
+        const maintenanceMessage = document.getElementById('maintenanceModeMessage');
+        if (maintenanceMessage) {
+            if (isEnabled) {
+                maintenanceMessage.style.display = 'block';  // Show the maintenance message
+            } else {
+                maintenanceMessage.style.display = 'none';  // Hide the maintenance message
+            }
+        }
+    }
+
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
@@ -109,10 +186,6 @@ class SettingsManager {
 
             statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
         }
-    }
-
-    saveSettings() {
-        localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
 
     // Function to update the year in the footer
