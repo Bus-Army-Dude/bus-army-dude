@@ -562,7 +562,8 @@ body {
     height: 16px;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 4px;
+    margin-left: 0; /* Remove margin to eliminate gap */
+    margin-right: 2px; /* Optionally add a tiny margin on the right for spacing */
 }
 
 /* Common Bio Styles */
