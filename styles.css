@@ -78,73 +78,73 @@ body {
 
 /* Profile Section */
 .profile-section {
-    display: flex;
-    align-items: center;
+    text-align: center;
     margin-top: 20px;
-    padding: 10px;
-}
-
-.profile-pic-wrapper {
-    position: relative;
-    display: inline-block;
-    margin-right: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--content-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    position: relative;  /* Position for the profile status circle */
 }
 
 .profile-pic {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+    border: 3px solid var(--accent-color);
+    position: relative; /* So the status circle can overlap */
 }
 
-.profile-status-container {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-}
-
-.profile-status {
-    font-size: 20px;
-    font-weight: bold;
-    padding: 5px;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
-}
-
-/* Profile Status Styles */
-.profile-status.online {
-    background-color: #4CAF50; /* Green for online */
-    color: white;
-}
-
-.profile-status.idle {
-    background-color: #FFEB3B; /* Yellow for idle */
-    color: black;
-}
-
-.profile-status.offline {
-    background-color: #F44336; /* Red for offline */
-    color: white;
-}
-
-/* Verified Badge */
-.verified {
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-}
-
-/* Username Section */
 .username-checkmark {
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin: 15px 0;
 }
 
 .username-checkmark h1 {
-    font-size: 24px;
-    font-weight: bold;
     margin: 0;
+    font-size: 24px;
+    color: var(--text-color);
 }
+
+.verified {
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+}
+
+/* Profile Status Container */
+.profile-status-container {
+    position: absolute;
+    bottom: 5px; /* Adjust the value to position at the bottom-right of the profile pic */
+    right: 5px; /* Position it on the right of the profile picture */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--content-bg);
+    border: 3px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Ensures the status is half in and half out */
+    z-index: 2;  /* Ensure it's above the profile image */
+}
+
+/* Profile Status Styling */
+.profile-status {
+    font-size: 16px; /* Adjust as per your preference */
+    color: white;
+}
+
+/* Profile Status Colors */
+.profile-status.online { color: green; }
+.profile-status.idle { color: yellow; }
+.profile-status.dnd { color: red; }
+.profile-status.offline { color: gray; }
 
 /* Add these new styles for the settings button */
 .settings-button {
