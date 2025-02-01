@@ -42,6 +42,19 @@
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
+
+                    <!-- Dark Mode Schedule -->
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">Dark Mode Schedule</h3>
+                            <p class="setting-description">Set a time range for Dark Mode</p>
+                        </div>
+                        <label for="darkModeStart">Start Time:</label>
+                        <input type="time" id="darkModeStart" class="time-input">
+                        <label for="darkModeEnd">End Time:</label>
+                        <input type="time" id="darkModeEnd" class="time-input">
+                        <p id="darkModeScheduleStatus" class="status-text">Coming Soon...</p>
+                    </div>
                 </div>
 
                 <!-- Accessibility Section -->
@@ -56,6 +69,36 @@
                             <input type="range" id="fontSizeRange" min="10" max="30" value="16" aria-label="Adjust font size">
                             <span id="currentFontSize">16px</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Owner Only Settings Section -->
+                <div class="settings-subsection owner-only">
+                    <h2 class="subsection-title">Owner Only Settings</h2>
+                    
+                    <!-- Maintenance Mode -->
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">Maintenance Mode</h3>
+                            <p class="setting-description">Put the site into maintenance mode for updates</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="maintenanceModeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Profile Status -->
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">Profile Status</h3>
+                            <p class="setting-description">Set profile status (active, under review, etc.)</p>
+                        </div>
+                        <select id="profileStatus" class="select-input">
+                            <option value="active">Active</option>
+                            <option value="under_review">Under Review</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
                     </div>
                 </div>
 
