@@ -133,15 +133,20 @@ body {
     overflow: hidden; /* Ensures the status is half in and half out */
 }
 
-/* Profile Status - Half in, Half out */
+/* Profile Status Styling */
 .profile-status {
-    font-size: 18px;
     position: absolute;
-    bottom: 0;
-    left: 50%;
+    bottom: -10px;
+    left: 0;
     transform: translateX(-50%);
-    transition: all 0.3s ease; /* Smooth transition for profile status change */
+    font-size: 24px;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5); /* optional, to make the status stand out */
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
 }
+
 
 /* Profile Status Colors */
 .profile-status.online { color: green; }
