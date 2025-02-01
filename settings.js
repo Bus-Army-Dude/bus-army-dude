@@ -1,7 +1,8 @@
 class SettingsManager {
     constructor() {
+        // Load the settings and the owner status
         this.settings = this.loadSettings();
-        this.isOwner = true;  // Change this to `true` when you want to allow edits as the owner
+        this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
     }
@@ -16,11 +17,19 @@ class SettingsManager {
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
 
+    // Check if the user is the owner
+    checkIfOwner() {
+        // Assuming you have a way to set this (e.g., user login, session, etc.)
+        // You can manually set this to true for yourself or use localStorage to remember if you're logged in as the owner
+        return localStorage.getItem('isOwner') === 'true';  // Or replace this with your own method to check ownership
+    }
+
     initializeControls() {
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
+            darkModeToggle.disabled = !this.isOwner;  // Disable if not owner
             darkModeToggle.addEventListener('change', (e) => {
                 this.applyTheme(e.target.checked);
             });
@@ -31,6 +40,7 @@ class SettingsManager {
         const currentFontSize = document.getElementById('currentFontSize');
         if (fontSizeRange) {
             fontSizeRange.value = this.settings.fontSize;
+            fontSizeRange.disabled = !this.isOwner;  // Disable if not owner
             fontSizeRange.addEventListener('input', (e) => {
                 this.setFontSize(e.target.value);
                 this.updateSliderBackground(e.target);
@@ -45,7 +55,7 @@ class SettingsManager {
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         if (maintenanceModeToggle) {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
-            maintenanceModeToggle.disabled = !this.isOwner; // Disable if not owner
+            maintenanceModeToggle.disabled = !this.isOwner;  // Disable if not owner
             maintenanceModeToggle.addEventListener('change', (e) => {
                 this.setMaintenanceMode(e.target.checked);
             });
@@ -55,7 +65,7 @@ class SettingsManager {
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
             profileStatusSelect.value = this.settings.profileStatus;
-            profileStatusSelect.disabled = !this.isOwner; // Disable if not owner
+            profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
                 this.setProfileStatus(e.target.value);
             });
