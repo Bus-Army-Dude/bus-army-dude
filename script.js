@@ -371,7 +371,7 @@ youtubeShoutouts.init();
 // New Year countdown
 function updateNewYearCountdown() {
     const now = new Date();
-    const newYear = new Date('2025-01-31T14:30:00');
+    const newYear = new Date('2025-02-27T03:00:00');
     const diff = newYear - now;
 
     const countdownSection = document.querySelector('.countdown-section');
@@ -380,7 +380,7 @@ function updateNewYearCountdown() {
     if (diff <= 0) {
         countdownSection.innerHTML = `
             <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                YOU DID IT TODAY IS THE DAY YOU GET YOUR AFO BRACES!!!!!
+                IT IS OFFICALLY YOUR 20TH BIRTHDAY HAPPY BIRTHDAY BUS ARMY DUDE!!!
             </h2>
             <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
         `;
