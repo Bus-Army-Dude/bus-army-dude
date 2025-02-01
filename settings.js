@@ -1,7 +1,6 @@
 class SettingsManager {
     constructor() {
         this.settings = this.loadSettings();
-        this.isOwner = false;  // Initially set to false, will be set to true when validated
         this.initializeControls();
         this.applySettings();
     }
@@ -14,14 +13,6 @@ class SettingsManager {
             profileStatus: "Active" // Default profile status
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
-    }
-
-    checkIfOwner() {
-        // Ask for password only when trying to access owner-only settings
-        const ownerPassword = "Penta!933754"; // Set your own password
-        const userPassword = prompt("Please enter password to access owner settings:"); // Basic prompt for example purposes
-
-        return userPassword === ownerPassword;
     }
 
     initializeControls() {
@@ -49,33 +40,25 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
-        // Maintenance Mode (Ask for password if not owner)
+        // Maintenance Mode (Password Prompt Every Time)
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         if (maintenanceModeToggle) {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
             maintenanceModeToggle.addEventListener('change', (e) => {
-                if (this.checkIfOwner()) {
-                    this.isOwner = true; // Set owner flag if password is correct
+                this.requestPassword(() => {
                     this.setMaintenanceMode(e.target.checked);
-                } else {
-                    alert("You are not authorized to change this setting.");
-                    e.target.checked = !e.target.checked; // Revert the toggle if password is wrong
-                }
+                });
             });
         }
 
-        // Profile Status (Ask for password if not owner)
+        // Profile Status (Password Prompt Every Time)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
             profileStatusSelect.value = this.settings.profileStatus;
             profileStatusSelect.addEventListener('change', (e) => {
-                if (this.checkIfOwner()) {
-                    this.isOwner = true; // Set owner flag if password is correct
+                this.requestPassword(() => {
                     this.setProfileStatus(e.target.value);
-                } else {
-                    alert("You are not authorized to change this setting.");
-                    profileStatusSelect.value = this.settings.profileStatus; // Revert the select option
-                }
+                });
             });
         }
 
@@ -87,6 +70,18 @@ class SettingsManager {
                     this.resetToFactorySettings();
                 }
             });
+        }
+    }
+
+    // Function to ask for password every time before applying a change to the owner-only settings
+    requestPassword(callback) {
+        const password = prompt("Please enter the password to modify owner-only settings:");
+        const correctPassword = "Penta!933754"; // Your preset password here
+
+        if (password === correctPassword) {
+            callback(); // If password is correct, apply the change
+        } else {
+            alert("Incorrect password. You are not authorized to change this setting.");
         }
     }
 
