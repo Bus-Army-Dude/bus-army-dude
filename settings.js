@@ -1,20 +1,31 @@
 class SettingsManager {
     constructor() {
-        // Load the settings, owner status, and maintenance mode state
+        // Load settings and check if the user is the owner
         this.settings = this.loadSettings();
         this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
+    }
 
-        // Set maintenance mode manually in JavaScript here:
-        this.setMaintenanceMode(false);  // You can set this to 'true' or 'false' based on your needs
+    // Method to set the profile status manually in JavaScript
+    setProfileStatusManually(status) {
+        if (['online', 'idle', 'offline'].includes(status)) {
+            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
+        } else {
+            console.error('Invalid profile status');
+        }
+    }
+
+    // Method to set the maintenance mode manually in JavaScript
+    setMaintenanceModeManually(isEnabled) {
+        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
     }
 
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
-            maintenanceMode: false, // Default to false (off)
+            maintenanceMode: false,
             profileStatus: "online"
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -22,7 +33,7 @@ class SettingsManager {
 
     // Check if the user is the owner
     checkIfOwner() {
-        return localStorage.getItem('isOwner') === 'true';  // Check ownership from localStorage
+        return localStorage.getItem('isOwner') === 'true';  // Checking 'isOwner' in localStorage
     }
 
     initializeControls() {
@@ -50,16 +61,6 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
-        // Maintenance Mode (Visible and Editable only for owner)
-        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
-        if (maintenanceModeToggle) {
-            maintenanceModeToggle.checked = this.settings.maintenanceMode;
-            maintenanceModeToggle.disabled = !this.isOwner;  // Disable if not owner
-            maintenanceModeToggle.addEventListener('change', (e) => {
-                this.setMaintenanceMode(e.target.checked);
-            });
-        }
-
         // Profile Status (Visible and Editable only for owner)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
@@ -67,6 +68,16 @@ class SettingsManager {
             profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
                 this.setProfileStatus(e.target.value);
+            });
+        }
+
+        // Maintenance Mode (Visible and Editable only for owner)
+        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
+        if (maintenanceModeToggle) {
+            maintenanceModeToggle.checked = this.settings.maintenanceMode;
+            maintenanceModeToggle.disabled = !this.isOwner;
+            maintenanceModeToggle.addEventListener('change', (e) => {
+                this.setMaintenanceMode(e.target.checked);
             });
         }
 
@@ -89,6 +100,29 @@ class SettingsManager {
         this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
+    }
+
+    setProfileStatus(status) {
+        this.settings.profileStatus = status;
+        this.saveSettings();
+        this.applyProfileStatus(status); // Apply status change to the profile
+    }
+
+    applyProfileStatus(status) {
+        const statusElement = document.querySelector('.profile-status');
+        if (statusElement) {
+            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
+            statusElement.classList.add(status); // Add the new status class
+
+            // Change the icon based on the status
+            const statusIcons = {
+                "online": "🟢",
+                "idle": "🟡",
+                "offline": "⚪"
+            };
+
+            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
+        }
     }
 
     applyTheme(isDark = this.settings.darkMode) {
@@ -125,7 +159,7 @@ class SettingsManager {
             darkMode: true,
             fontSize: 15,
             maintenanceMode: false,
-            profileStatus: "online"  // Default value
+            profileStatus: "online"
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -165,29 +199,6 @@ class SettingsManager {
         }
     }
 
-    setProfileStatus(status) {
-        this.settings.profileStatus = status;
-        this.saveSettings();
-        this.applyProfileStatus(status); // Apply status change to the profile
-    }
-
-    applyProfileStatus(status) {
-        const statusElement = document.querySelector('.profile-status');
-        if (statusElement) {
-            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
-            statusElement.classList.add(status); // Add the new status class
-
-            // Change the icon based on the status
-            const statusIcons = {
-                "online": "🟢",
-                "idle": "🟡",
-                "offline": "⚪"
-            };
-
-            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
-        }
-    }
-
     // Function to update the year in the footer
     updateFooterYear() {
         const currentYear = new Date().getFullYear();
@@ -198,6 +209,13 @@ class SettingsManager {
     }
 }
 
+// Initialize SettingsManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
+
+    // Example of setting maintenance mode manually
+    settingsManager.setMaintenanceModeManually(true);  // Set maintenance mode to "true"
+
+    // Example of setting profile status manually
+    settingsManager.setProfileStatusManually('idle');  // Set profile status to "idle"
 });
