@@ -1,27 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Plans - Bus Army Dude</title>
-    <link rel="stylesheet" href="flightplans.css">
+    <title>Flight Plans - Bus Army Dude's Profile</title>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
-    <meta http-equiv="refresh" content="300">
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-E0RSQS1MS7');
-    </script>
+    <link rel="stylesheet" href="flightplans.css">
 
     <!-- Favicons and Icons -->
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
@@ -35,48 +22,57 @@
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff"/>
 
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration -->
-    <meta name="browserconfig" content="/browserconfig.xml">
 </head>
-
 <body>
-    <header>
-        <!-- Hamburger Menu Icon -->
-        <div class="hamburger" id="hamburger" onclick="toggleMenu()">&#9776;</div>
+    <!-- Hamburger Menu Icon -->
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        &#9776; <!-- Hamburger icon (three horizontal bars) -->
+    </div>
 
-        <!-- Navigation Menu -->
-        <nav class="nav-menu" id="navMenu">
-            <button class="close-btn" onclick="toggleMenu()">✖</button>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="flightplans.html">Flight Plans</a></li>
-                <li><a href="settings.html">Settings</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Navigation Menu -->
+    <nav class="nav-menu" id="navMenu">
+        <button class="close-btn" onclick="toggleMenu()">✖</button> <!-- Close button for the menu -->
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="flightplans.html">Flight Plans</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </nav>
 
     <main>
-        <div class="flight-plan">
-            <h2>Flight Plan Overview</h2>
-            
-            <!-- Aircraft Information -->
-            <div id="aircraft" class="flight-section"></div>
+        <section class="flight-plan-section">
+            <h1>Current Flight Plan</h1>
 
-            <!-- Route Information -->
-            <div id="route" class="flight-section"></div>
+            <!-- Aircraft Section -->
+            <div id="aircraft">
+                <h2>Aircraft</h2>
+                <!-- Data populated by flightplans.js -->
+            </div>
 
-            <!-- Weather Information -->
-            <div id="weather" class="flight-section"></div>
+            <!-- Route Section -->
+            <div id="route">
+                <h2>Route</h2>
+                <!-- Data populated by flightplans.js -->
+            </div>
 
-            <!-- Fuel Information -->
-            <div id="fuel" class="flight-section"></div>
+            <!-- Weather Section -->
+            <div id="weather">
+                <h2>Weather</h2>
+                <!-- Data populated by flightplans.js -->
+            </div>
 
-            <!-- Other Factors -->
-            <div id="other-factors" class="flight-section"></div>
-        </div>
+            <!-- Fuel Section -->
+            <div id="fuel">
+                <h2>Fuel</h2>
+                <!-- Data populated by flightplans.js -->
+            </div>
+
+            <!-- Other Factors Section -->
+            <div id="other-factors">
+                <h2>Other Factors</h2>
+                <!-- Data populated by flightplans.js -->
+            </div>
+        </section>
     </main>
 
     <!-- Scripts -->
