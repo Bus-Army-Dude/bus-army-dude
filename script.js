@@ -574,3 +574,12 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
+
+// JavaScript for Hamburger Menu
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
