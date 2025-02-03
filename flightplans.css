@@ -1,244 +1,158 @@
-/* Global Styles */
-:root {
-    --font-size-default: 16px;
-    --font-size-large: 18px;
-    --font-size-small: 14px;
-    --primary-color-light: #333;
-    --primary-color-dark: #fff;
-    --bg-color-light: #f4f4f4;
-    --bg-color-dark: #222;
-    --accent-color-light: #f8f8f8;
-    --accent-color-dark: #444;
-    --primary-accent-color: #00aaff;
-}
-
+/* General Styles for Flight Plan Page */
 body {
     font-family: Arial, sans-serif;
-    font-size: var(--font-size-default);
-    background-color: var(--bg-color-light);
-    color: var(--primary-color-light);
-    transition: all 0.3s ease;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Light and Dark Mode Support */
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
 }
 
 body.dark-mode {
-    background-color: var(--bg-color-dark);
-    color: var(--primary-color-dark);
+    background-color: #121212;
+    color: #ffffff;
 }
 
-/* Flight Plan Layout */
-.flight-plan-content {
+/* Flight Plan Container */
+.flight-plan-container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
-    margin-top: 60px;
 }
 
-.flight-plan-section {
-    margin-bottom: 30px;
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
 }
 
-.flight-plan-section h2 {
-    font-size: 1.5rem;
+/* Aircraft, Route, Weather, Fuel, and Other Factors */
+.flight-section {
+    background-color: var(--content-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.flight-section h2 {
+    font-size: 1.8rem;
     margin-bottom: 10px;
-    color: var(--primary-accent-color);
 }
 
-.flight-plan-section p {
-    font-size: var(--font-size-default);
+.flight-section p {
+    font-size: 1.2rem;
     line-height: 1.6;
 }
 
-/* Aircraft Section */
-#aircraft {
-    padding: 15px;
-    background-color: var(--accent-color-light);
-    border-radius: 5px;
+/* Navigation Styles (Hamburger menu) */
+.hamburger {
+    display: block;
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--text-color);
 }
 
-#aircraft p {
-    margin: 5px 0;
-}
-
-/* Route Section */
-#route {
-    padding: 15px;
-    background-color: var(--accent-color-light);
-    border-radius: 5px;
-}
-
-#route p {
-    margin: 5px 0;
-}
-
-/* Weather Section */
-#weather {
-    padding: 15px;
-    background-color: var(--accent-color-light);
-    border-radius: 5px;
-}
-
-#weather p {
-    margin: 5px 0;
-}
-
-/* Fuel Section */
-#fuel {
-    padding: 15px;
-    background-color: var(--accent-color-light);
-    border-radius: 5px;
-}
-
-#fuel p {
-    margin: 5px 0;
-}
-
-/* Other Factors Section */
-#other-factors {
-    padding: 15px;
-    background-color: var(--accent-color-light);
-    border-radius: 5px;
-}
-
-#other-factors p {
-    margin: 5px 0;
-}
-
-/* Navigation Menu */
 .nav-menu {
     display: none;
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
+    background-color: var(--content-bg);
     width: 250px;
     height: 100%;
-    background-color: var(--bg-color-dark);
-    padding: 20px;
-    transition: 0.3s;
-}
-
-.nav-menu.open {
-    display: block;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
 }
 
 .nav-menu ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.nav-menu ul li {
-    margin: 10px 0;
-}
-
-.nav-menu ul li a {
-    text-decoration: none;
-    color: var(--primary-color-dark);
-    font-size: var(--font-size-default);
-    transition: color 0.3s;
-}
-
-.nav-menu ul li a:hover {
-    color: var(--primary-accent-color);
-}
-
-.nav-menu .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: var(--primary-color-dark);
-    font-size: 20px;
-    cursor: pointer;
-}
-
-/* Hamburger Icon */
-.hamburger {
-    cursor: pointer;
-    font-size: 30px;
-    color: var(--primary-color-light);
-    padding: 10px;
-}
-
-.hamburger:hover {
-    color: var(--accent-color-light);
-}
-
-/* Dark Mode adjustments */
-body.dark-mode .nav-menu {
-    background-color: var(--bg-color-dark);
-}
-
-body.dark-mode .nav-menu ul li a {
-    color: var(--primary-color-light);
-}
-
-body.dark-mode .hamburger {
-    color: var(--primary-color-light);
-}
-
-/* Font size changes */
-body.font-size-small {
-    font-size: var(--font-size-small);
-}
-
-body.font-size-large {
-    font-size: var(--font-size-large);
-}
-
-body.font-size-small .flight-plan-section p,
-body.font-size-large .flight-plan-section p {
-    font-size: var(--font-size-small);
-}
-
-/* Flight Plan Headers */
-.flight-plan-section h2 {
-    font-size: 1.5rem;
-    color: var(--primary-accent-color);
-}
-
-/* Common Styles for All Sections */
-.flight-plan-section {
-    background-color: var(--accent-color-light);
     padding: 20px;
-    border-radius: 8px;
+    list-style: none;
+    margin: 0;
+}
+
+.nav-menu li {
     margin-bottom: 20px;
-    transition: all 0.3s ease;
 }
 
-.flight-plan-section h2 {
-    font-size: 1.8rem;
-    color: var(--primary-accent-color);
+.nav-menu a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.5rem;
 }
 
-.flight-plan-section p {
-    font-size: var(--font-size-default);
-    line-height: 1.8;
-    color: var(--primary-color-light);
+.nav-menu a:hover {
+    color: var(--accent-color);
 }
 
-/* Dark Mode Styles for Sections */
-body.dark-mode .flight-plan-section {
-    background-color: var(--accent-color-dark);
+/* Close Button Styles */
+.close-btn {
+    font-size: 30px;
+    color: var(--text-color);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-body.dark-mode .flight-plan-section h2 {
-    color: var(--primary-accent-color);
-}
-
-body.dark-mode .flight-plan-section p {
-    color: var(--primary-color-dark);
-}
-
-/* Flight Plan Details */
-.flight-plan-section p {
-    margin: 5px 0;
-}
-
-/* Additional Layout adjustments for smaller screens */
-@media (max-width: 768px) {
-    .flight-plan-section h2 {
-        font-size: 1.4rem;
+/* Make sure hamburger and nav menu are responsive */
+@media screen and (max-width: 768px) {
+    .flight-plan-container {
+        padding: 10px;
     }
 
-    .flight-plan-section p {
-        font-size: 14px;
+    .hamburger {
+        display: block;
+        font-size: 25px;
+    }
+
+    .nav-menu ul {
+        padding: 15px;
     }
 }
+
+/* Custom Variables for Color Scheme */
+:root {
+    --content-bg: #f4f4f4;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --text-color: #333333;
+    --accent-color: #0066cc;
+}
+
+/* Styles for Flight Plan Sections */
+#aircraft,
+#route,
+#weather,
+#fuel,
+#other-factors {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#aircraft h2,
+#route h2,
+#weather h2,
+#fuel h2,
+#other-factors h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+#aircraft p,
+#route p,
+#weather p,
+#fuel p,
+#other-factors p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
