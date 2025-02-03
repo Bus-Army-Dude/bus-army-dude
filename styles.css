@@ -116,6 +116,23 @@ body {
     margin-left: 5px;
 }
 
+/* Profile Status Container */
+.profile-status-container {
+    position: absolute;
+    bottom: 5px; /* Adjust the value to position at the bottom-right of the profile pic */
+    right: 5px; /* Position it on the right of the profile picture */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--content-bg);
+    border: 3px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Ensures the status is half in and half out */
+    z-index: 2;
+}
+
 /* Hamburger Menu Icon */
 .hamburger {
     font-size: 30px;
@@ -124,21 +141,20 @@ body {
     top: 20px;
     right: 20px;
     z-index: 1001; /* Ensure it is above the content */
-    display: inline-block;
 }
 
 /* Navigation Menu */
 .nav-menu {
     display: none;
-    position: absolute;
-    top: 80px; /* Adjust to appear below profile */
-    right: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
     background-color: #333;
     color: white;
-    width: 200px;
+    width: 250px;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
     z-index: 1000; /* Ensure it appears above everything else */
 }
 
@@ -160,6 +176,19 @@ body {
 
 .nav-menu a:hover {
     color: #ff9800;
+}
+
+/* Close Button */
+.close-btn {
+    font-size: 30px;
+    color: white;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 1001;
 }
 
 /* Show the menu when active */
