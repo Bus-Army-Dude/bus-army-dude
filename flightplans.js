@@ -8,9 +8,6 @@ const flightPlan = {
         departure: "JFK Airport",
         arrival: "LAX Airport",
         path: "New York -> Los Angeles -> Direct route",
-        departureRunway: "Runway 22R",
-        arrivalRunway: "Runway 25L",
-        duration: "5 hours 30 minutes",
     },
     weather: {
         departureWeather: "Clear skies, 75°F",
@@ -27,6 +24,11 @@ const flightPlan = {
         communication: "Radio communication with ATC on frequency 118.5 MHz.",
         emergencyProcedures: "Follow standard emergency protocols if necessary.",
     },
+    runway: {
+        departureRunway: "Runway 22R",
+        arrivalRunway: "Runway 25L",
+    },
+    duration: "6 hours 30 minutes",
 };
 
 // Function to display the flight plan data
@@ -44,9 +46,6 @@ function displayFlightPlan() {
         <p><strong>Departure Airport:</strong> ${flightPlan.route.departure}</p>
         <p><strong>Arrival Airport:</strong> ${flightPlan.route.arrival}</p>
         <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
-        <p><strong>Departure Runway:</strong> ${flightPlan.route.departureRunway}</p>
-        <p><strong>Arrival Runway:</strong> ${flightPlan.route.arrivalRunway}</p>
-        <p><strong>Duration:</strong> ${flightPlan.route.duration}</p>
     `;
 
     // Display Weather information
@@ -71,6 +70,9 @@ function displayFlightPlan() {
         <p><strong>Weight and Balance:</strong> ${flightPlan.otherFactors.weightAndBalance}</p>
         <p><strong>Communication:</strong> ${flightPlan.otherFactors.communication}</p>
         <p><strong>Emergency Procedures:</strong> ${flightPlan.otherFactors.emergencyProcedures}</p>
+        <p><strong>Departure Runway:</strong> ${flightPlan.runway.departureRunway}</p>
+        <p><strong>Arrival Runway:</strong> ${flightPlan.runway.arrivalRunway}</p>
+        <p><strong>Flight Duration:</strong> ${flightPlan.duration}</p>
     `;
 }
 
@@ -79,8 +81,8 @@ window.onload = function() {
     displayFlightPlan();
 };
 
-// Function to toggle the navigation menu
+// Hamburger menu toggle
 function toggleMenu() {
-    const navMenu = document.getElementById("navMenu");
-    navMenu.style.display = navMenu.style.display === "block" ? "none" : "block";
+    const menu = document.getElementById("navMenu");
+    menu.classList.toggle("open");
 }
