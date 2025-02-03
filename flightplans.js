@@ -8,6 +8,9 @@ const flightPlan = {
         departure: "JFK Airport",
         arrival: "LAX Airport",
         path: "New York -> Los Angeles -> Direct route",
+        departureRunway: "Runway 22R",
+        arrivalRunway: "Runway 25L",
+        duration: "5 hours 30 minutes",
     },
     weather: {
         departureWeather: "Clear skies, 75°F",
@@ -41,6 +44,9 @@ function displayFlightPlan() {
         <p><strong>Departure Airport:</strong> ${flightPlan.route.departure}</p>
         <p><strong>Arrival Airport:</strong> ${flightPlan.route.arrival}</p>
         <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
+        <p><strong>Departure Runway:</strong> ${flightPlan.route.departureRunway}</p>
+        <p><strong>Arrival Runway:</strong> ${flightPlan.route.arrivalRunway}</p>
+        <p><strong>Duration:</strong> ${flightPlan.route.duration}</p>
     `;
 
     // Display Weather information
@@ -75,6 +81,6 @@ window.onload = function() {
 
 // Function to toggle the navigation menu
 function toggleMenu() {
-    const menu = document.getElementById('navMenu');
-    menu.classList.toggle('active');
+    const navMenu = document.getElementById("navMenu");
+    navMenu.style.display = navMenu.style.display === "block" ? "none" : "block";
 }
