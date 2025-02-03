@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Plan</title>
-    
-    <!-- Stylesheets -->
+    <title>Flight Plans - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
-    <link rel="stylesheet" href="flightplans.css"> <!-- Add the CSS specific to the flight plans page -->
-    
-    <!-- Refresh every 5 minutes -->
+    <link rel="stylesheet" href="flightplans.css">
     <meta http-equiv="refresh" content="300">
     
     <!-- Google tag (gtag.js) -->
@@ -43,43 +39,61 @@
     <meta name="browserconfig" content="/browserconfig.xml">
 </head>
 <body>
-    <!-- Flight Plan Page Content -->
-    <div class="flight-plan-container">
-        <h1 class="flight-plan-title">Current Flight Plan</h1>
-        
-        <section class="flight-plan-section" id="aircraft">
+    <!-- Flight Plan Page Header with Hamburger -->
+    <header class="header">
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="flightplans.html">Flight Plans</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+        <!-- Close Button -->
+        <div class="close-btn" id="closeBtn" onclick="toggleMenu()">X</div>
+    </nav>
+
+    <!-- Main Content for Flight Plan -->
+    <main class="flight-plan-content">
+        <h1>Current Flight Plan</h1>
+        <div class="flight-info">
             <h2>Aircraft</h2>
-            <!-- Dynamic content will be loaded here -->
-        </section>
+            <p>Aircraft Type: Boeing 787</p>
+            <p>Aircraft Identification: ABC1234</p>
 
-        <section class="flight-plan-section" id="route">
             <h2>Route</h2>
-            <!-- Dynamic content will be loaded here -->
-        </section>
+            <p>Departure: New York (JFK)</p>
+            <p>Arrival: Los Angeles (LAX)</p>
+            <p>Flight Path: JFK → LAX</p>
 
-        <section class="flight-plan-section" id="weather">
             <h2>Weather</h2>
-            <!-- Dynamic content will be loaded here -->
-        </section>
+            <p>Weather at Departure: Clear skies, 25°C</p>
+            <p>Weather at Destination: Sunny, 28°C</p>
 
-        <section class="flight-plan-section" id="fuel">
             <h2>Fuel</h2>
-            <!-- Dynamic content will be loaded here -->
-        </section>
+            <p>Fuel Efficiency: 5,000 liters/hour</p>
+            <p>Fuel Needed: 30,000 liters</p>
 
-        <section class="flight-plan-section" id="other-factors">
             <h2>Other Factors</h2>
-            <!-- Dynamic content will be loaded here -->
-        </section>
-    </div>
+            <p>Altitude: 35,000 feet</p>
+            <p>Weight & Balance: Within range</p>
+            <p>Communication: VHF Channel 123.4</p>
+            <p>Emergency Procedures: Standard protocols in place</p>
+        </div>
+    </main>
 
     <!-- Scripts -->
     <script src="common.js"></script>
-    <script src="script.js"></script>
+    <script src="flightplans.js"></script>
     <script src="ai-features.js"></script>
     <script src="settings.js"></script>
     <script src="events.js"></script>
     <script src="version.js"></script>
-    <script src="flightplans.js"></script> <!-- This should be included for your flight plan-specific JS -->
 </body>
 </html>
