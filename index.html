@@ -62,6 +62,12 @@
         <button class="settings-button" aria-label="Settings" onclick="window.location.href='settings.html'"></button>
         <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
         
+     <!-- Profile Section -->
+<div class="profile-section">
+    <div class="profile-pic-wrapper">
+        <button class="settings-button" aria-label="Settings" onclick="window.location.href='settings.html'"></button>
+        <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
+        
         <!-- Profile Status Circle -->
         <div class="profile-status-container">
             <span class="profile-status">🟢</span>
@@ -76,12 +82,13 @@
 
     <!-- Hamburger Menu Icon -->
     <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-        &#9776; <!-- This is the hamburger icon (three horizontal bars) -->
+        &#9776; <!-- Hamburger icon (three horizontal bars) -->
     </div>
 </div>
 
 <!-- Navigation Menu -->
 <nav class="nav-menu" id="navMenu">
+    <button class="close-btn" onclick="toggleMenu()">✖</button> <!-- Close button for the menu -->
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="flightplans.html">Flight Plans</a></li>
