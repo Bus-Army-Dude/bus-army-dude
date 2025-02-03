@@ -165,6 +165,7 @@ const tiktokShoutouts = {
         { username: 'kaylee_mertens_', isVerified: false, followers: '674.5K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
         { username: 'mrfatcheeto', isVerified: false, followers: '570.4K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
         { username: 'trafficlightdoctor', isVerified: false, followers: '385.1K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
+        { username: 'captainsteeeve', isVerified: false, followers: '285.1K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },       
         { username: 'aggressiveafterdark', isVerified: false, followers: '349.7K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
         { username: 'rachel_hughes', isVerified: false, followers: '310.7K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
         { username: 'badge5022', isVerified: false, followers: '20.7K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
@@ -173,7 +174,7 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '19', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
     ],
-    lastUpdatedTime: '2025-02-03T11:39:20', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-02-03T16:04:00', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
