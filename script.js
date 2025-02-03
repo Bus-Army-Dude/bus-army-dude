@@ -574,9 +574,3 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
-
-// Function to toggle the navigation menu
-function toggleMenu() {
-    const menu = document.getElementById('navMenu');
-    menu.classList.toggle('active'); // Toggle the 'active' class to show/hide the menu
-}
