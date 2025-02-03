@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Plans - Bus Army Dude's Profile</title>
-
-    <!-- Stylesheets -->
+    <title>Flight Plans - Bus Army Dude's Page</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="flightplans.css">
+    <link rel="stylesheet" href="settings.css">
+    <meta http-equiv="refresh" content="300">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E0RSQS1MS7');
+    </script>
 
     <!-- Favicons and Icons -->
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
@@ -21,10 +29,9 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff"/>
-
 </head>
 <body>
-    <!-- Hamburger Menu Icon -->
+    <!-- Hamburger Menu -->
     <div class="hamburger" id="hamburger" onclick="toggleMenu()">
         &#9776; <!-- Hamburger icon (three horizontal bars) -->
     </div>
@@ -39,41 +46,35 @@
         </ul>
     </nav>
 
-    <main>
-        <section class="flight-plan-section">
-            <h1>Current Flight Plan</h1>
+    <!-- Flight Plan Content -->
+    <div class="flight-plan-section">
+        <h1>Current Flight Plan</h1>
+        
+        <div id="aircraft" class="flight-plan-item">
+            <h2>Aircraft</h2>
+            <!-- Aircraft details will be populated here -->
+        </div>
 
-            <!-- Aircraft Section -->
-            <div id="aircraft">
-                <h2>Aircraft</h2>
-                <!-- Data populated by flightplans.js -->
-            </div>
+        <div id="route" class="flight-plan-item">
+            <h2>Route</h2>
+            <!-- Route details will be populated here -->
+        </div>
 
-            <!-- Route Section -->
-            <div id="route">
-                <h2>Route</h2>
-                <!-- Data populated by flightplans.js -->
-            </div>
+        <div id="weather" class="flight-plan-item">
+            <h2>Weather</h2>
+            <!-- Weather details will be populated here -->
+        </div>
 
-            <!-- Weather Section -->
-            <div id="weather">
-                <h2>Weather</h2>
-                <!-- Data populated by flightplans.js -->
-            </div>
+        <div id="fuel" class="flight-plan-item">
+            <h2>Fuel</h2>
+            <!-- Fuel details will be populated here -->
+        </div>
 
-            <!-- Fuel Section -->
-            <div id="fuel">
-                <h2>Fuel</h2>
-                <!-- Data populated by flightplans.js -->
-            </div>
-
-            <!-- Other Factors Section -->
-            <div id="other-factors">
-                <h2>Other Factors</h2>
-                <!-- Data populated by flightplans.js -->
-            </div>
-        </section>
-    </main>
+        <div id="other-factors" class="flight-plan-item">
+            <h2>Other Factors</h2>
+            <!-- Other factors details will be populated here -->
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="common.js"></script>
@@ -82,7 +83,7 @@
     <script src="settings.js"></script>
     <script src="events.js"></script>
     <script src="version.js"></script>
-    <script src="flightplans.js"></script> <!-- This is the new JS file -->
-</body>
+    <script src="flightplans.js"></script>
 
+</body>
 </html>
