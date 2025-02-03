@@ -1,158 +1,120 @@
-/* General Styles for Flight Plan Page */
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    background-color: var(--content-bg);
+    color: var(--text-color);
+    font-size: var(--font-size);
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-/* Light and Dark Mode Support */
-body.light-mode {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-}
-
-/* Flight Plan Container */
-.flight-plan-container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* Flight Plan Section Styling */
+.flight-plan-section {
     padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-/* Aircraft, Route, Weather, Fuel, and Other Factors */
-.flight-section {
+    margin: 20px auto;
     background-color: var(--content-bg);
     border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px var(--shadow-color);
+    box-shadow: 0px 4px 12px var(--shadow-color);
+    max-width: 800px;
 }
 
-.flight-section h2 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+h1, h2 {
+    color: var(--heading-color);
 }
 
-.flight-section p {
-    font-size: 1.2rem;
+p {
     line-height: 1.6;
+    margin: 10px 0;
 }
 
-/* Navigation Styles (Hamburger menu) */
+/* Section Headers */
+h2 {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 5px;
+}
+
+/* Individual Flight Plan Item Styling */
+.flight-plan-item {
+    padding: 10px;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Highlight important text */
+strong {
+    color: var(--highlight-color);
+}
+
+/* Hamburger Menu */
 .hamburger {
-    display: block;
     font-size: 30px;
     cursor: pointer;
-    color: var(--text-color);
+    color: var(--accent-color);
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
+/* Navigation Menu */
 .nav-menu {
     display: none;
     position: fixed;
     top: 0;
-    right: 0;
-    background-color: var(--content-bg);
+    left: 0;
     width: 250px;
     height: 100%;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 10;
+    background-color: var(--nav-bg);
+    color: var(--text-color);
+    padding-top: 60px;
+    transition: 0.3s;
+    z-index: 9999;
 }
 
 .nav-menu ul {
-    padding: 20px;
-    list-style: none;
-    margin: 0;
+    list-style-type: none;
+    padding: 0;
 }
 
-.nav-menu li {
-    margin-bottom: 20px;
+.nav-menu ul li {
+    padding: 10px;
+    text-align: left;
 }
 
-.nav-menu a {
+.nav-menu ul li a {
     color: var(--text-color);
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: var(--font-size);
 }
 
-.nav-menu a:hover {
+.nav-menu ul li a:hover {
     color: var(--accent-color);
 }
 
-/* Close Button Styles */
-.close-btn {
-    font-size: 30px;
-    color: var(--text-color);
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
+.nav-menu.active {
+    display: block;
 }
 
-/* Make sure hamburger and nav menu are responsive */
-@media screen and (max-width: 768px) {
-    .flight-plan-container {
-        padding: 10px;
-    }
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--accent-color);
+}
 
-    .hamburger {
-        display: block;
-        font-size: 25px;
-    }
-
-    .nav-menu ul {
+/* Additional Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .flight-plan-section {
+        width: 90%;
         padding: 15px;
     }
-}
 
-/* Custom Variables for Color Scheme */
-:root {
-    --content-bg: #f4f4f4;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --text-color: #333333;
-    --accent-color: #0066cc;
+    .nav-menu {
+        width: 200px;
+    }
 }
-
-/* Styles for Flight Plan Sections */
-#aircraft,
-#route,
-#weather,
-#fuel,
-#other-factors {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-#aircraft h2,
-#route h2,
-#weather h2,
-#fuel h2,
-#other-factors h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-#aircraft p,
-#route p,
-#weather p,
-#fuel p,
-#other-factors p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-}
-
