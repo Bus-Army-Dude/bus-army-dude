@@ -145,8 +145,7 @@ body {
 .profile-status.idle { color: yellow; }
 .profile-status.offline { color: gray; }
 
-
-/* Add these new styles for the settings button */
+/* Settings Button */
 .settings-button {
     position: absolute;
     top: 20px;
@@ -168,14 +167,93 @@ body {
     background-color: #00cc00; /* Slightly darker green on hover */
 }
 
+/* Hamburger Menu */
+.hamburger {
+    position: absolute;
+    top: 20px;
+    left: 20px; /* Place it on the left of the profile pic */
+    width: 30px;
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.hamburger .bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.hamburger:hover .bar {
+    background-color: var(--accent-color); /* Change color on hover */
+}
+
+/* Navigation Menu */
+.nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;  /* Initially hidden off-screen */
+    width: 250px;
+    height: 100vh;
+    background-color: var(--content-bg);
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+.nav-menu ul {
+    list-style: none;
+    padding: 20px;
+    text-align: left;
+}
+
+.nav-menu ul li {
+    margin: 15px 0;
+}
+
+.nav-menu ul li a {
+    color: var(--text-color);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.nav-menu ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Active Menu */
+.nav-menu.active {
+    right: 0;
+}
+
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+    }
+
+    .username-checkmark h1 {
+        font-size: 20px;
+    }
+
+    .hamburger {
+        width: 25px;
+        height: 20px;
+    }
+
+    .hamburger .bar {
+        height: 2px;
+    }
+
     .settings-button {
         width: 25px;
         height: 25px;
         top: 15px;
         right: 15px;
-        background-size: 15px;
     }
 }
 
