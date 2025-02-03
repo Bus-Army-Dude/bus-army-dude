@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Plans - Bus Army Dude's Profile</title>
+    <title>Flight Plan - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
-    <link rel="stylesheet" href="flightplans.css">
     <meta http-equiv="refresh" content="300">
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-E0RSQS1MS7');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E0RSQS1MS7');
     </script>
     
     <!-- Favicons and Icons -->
@@ -38,68 +37,51 @@
     <!-- Microsoft-specific configuration -->
     <meta name="browserconfig" content="/browserconfig.xml">
 </head>
+
 <body>
-    <!-- Flight Plan Page Header with Hamburger -->
-    <header class="header">
-        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-    </header>
+
+    <!-- Hamburger Menu Icon -->
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        &#9776; <!-- Hamburger icon (three horizontal bars) -->
+    </div>
 
     <!-- Navigation Menu -->
     <nav class="nav-menu" id="navMenu">
+        <button class="close-btn" onclick="toggleMenu()">✖</button> <!-- Close button for the menu -->
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="flightplans.html">Flight Plans</a></li>
             <li><a href="settings.html">Settings</a></li>
         </ul>
-        <!-- Close Button -->
-        <div class="close-btn" id="closeBtn" onclick="toggleMenu()">X</div>
     </nav>
 
-    <!-- Main Content for Flight Plan -->
-    <main class="flight-plan-content">
-        <h1>Current Flight Plan</h1>
-        
-        <!-- Aircraft Section -->
-        <section id="aircraft">
+    <!-- Flight Plan Content -->
+    <div class="flight-plan-content">
+        <h1>Flight Plan Details</h1>
+        <div class="flight-plan-section" id="aircraft">
             <h2>Aircraft</h2>
-            <!-- Aircraft data will be dynamically injected here -->
-        </section>
-
-        <!-- Route Section -->
-        <section id="route">
+            <!-- Aircraft info will be populated here -->
+        </div>
+        <div class="flight-plan-section" id="route">
             <h2>Route</h2>
-            <!-- Route data will be dynamically injected here -->
-        </section>
-
-        <!-- Weather Section -->
-        <section id="weather">
+            <!-- Route info will be populated here -->
+        </div>
+        <div class="flight-plan-section" id="weather">
             <h2>Weather</h2>
-            <!-- Weather data will be dynamically injected here -->
-        </section>
-
-        <!-- Fuel Section -->
-        <section id="fuel">
+            <!-- Weather info will be populated here -->
+        </div>
+        <div class="flight-plan-section" id="fuel">
             <h2>Fuel</h2>
-            <!-- Fuel data will be dynamically injected here -->
-        </section>
-
-        <!-- Other Factors Section -->
-        <section id="other-factors">
+            <!-- Fuel info will be populated here -->
+        </div>
+        <div class="flight-plan-section" id="other-factors">
             <h2>Other Factors</h2>
-            <!-- Other factors data will be dynamically injected here -->
-        </section>
-    </main>
+            <!-- Other factors info will be populated here -->
+        </div>
+    </div>
 
     <!-- Scripts -->
-    <script src="common.js"></script>
-    <script src="flightplans.js"></script>
-    <script src="ai-features.js"></script>
-    <script src="settings.js"></script>
-    <script src="events.js"></script>
-    <script src="version.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
