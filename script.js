@@ -578,5 +578,5 @@ faqQuestions.forEach((question) => {
 // Function to toggle the navigation menu
 function toggleMenu() {
     const menu = document.getElementById('navMenu');
-    menu.classList.toggle('active'); // This will either show or hide the menu based on the 'active' class
+    menu.classList.toggle('active'); // Toggle the 'active' class to show/hide the menu
 }
