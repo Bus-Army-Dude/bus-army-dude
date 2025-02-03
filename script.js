@@ -308,6 +308,7 @@ const youtubeShoutouts = {
         { username: '@MrBeastGaming', isVerified: true, subscribers: '46.5M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
         { username: '@BeastReacts', isVerified: true, subscribers: '35.3M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
         { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.3M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
+        { username: '@CaptainSteeeve', isVerified: true, subscribers: '297K', nickname: 'Captain Steeeve', bio: 'No bio yet', profilePic: 'youtube_photoes/IMG_2371.jpeg' },                        
         { username: '@rachel_hughes', isVerified: false, subscribers: '230K', nickname: 'Rachel Hughes', bio: 'My name is Rachel Hughes :) I am a 30 year old, mom of two, living in Utah! I love sharing my experiences and life regarding mental health, leaving religion, overcoming an eating disorder, having a disabled child, fitness, beauty and more! Thank you so much for being here. xo', profilePic: 'youtube_photoes/rachel_hughes.jpg' },        
         { username: '@Trafficlightdoctor', isVerified: false, subscribers: '153K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
         { username: '@mrfatcheeto', isVerified: false, subscribers: '101K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
@@ -315,7 +316,7 @@ const youtubeShoutouts = {
         { username: '@BusArmyDude', isVerified: false, subscribers: '0', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-02-03T11:39:20', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-02-03T16:17:00', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
