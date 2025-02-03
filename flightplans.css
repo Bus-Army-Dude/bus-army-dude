@@ -1,0 +1,135 @@
+/* Global styles for the flight plan page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 32px;
+    color: var(--accent-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Flight Plan Sections */
+.flight-plan-section {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: var(--content-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.flight-plan-section h2 {
+    font-size: 28px;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.flight-plan-section p {
+    font-size: 18px;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Aircraft Section */
+#aircraft {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#aircraft p {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* Route Section */
+#route {
+    background-color: #e7f7e7;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#route p {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* Weather Section */
+#weather {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#weather p {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* Fuel Section */
+#fuel {
+    background-color: #ffe7d1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#fuel p {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* Other Factors Section */
+#other-factors {
+    background-color: #d8e0f1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#other-factors p {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .flight-plan-section {
+        padding: 15px;
+    }
+
+    #aircraft p, #route p, #weather p, #fuel p, #other-factors p {
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+}
+
+/* Theme color variables */
+:root {
+    --background-color: #f0f0f0;
+    --text-color: #333;
+    --accent-color: #00bfae;
+    --content-bg: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
