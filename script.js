@@ -575,10 +575,12 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// JavaScript for Hamburger Menu
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
+// JavaScript to toggle the navigation menu
+document.addEventListener("DOMContentLoaded", function () {
+    const hamburger = document.querySelector(".hamburger");
+    const navMenu = document.querySelector(".nav-menu");
 
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+    hamburger.addEventListener("click", function () {
+        navMenu.classList.toggle("active");
+    });
 });
