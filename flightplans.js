@@ -8,6 +8,9 @@ const flightPlan = {
         departure: "JFK Airport",
         arrival: "LAX Airport",
         path: "New York -> Los Angeles -> Direct route",
+        departureRunway: "Runway 4L",
+        arrivalRunway: "Runway 25R",
+        duration: "6 hours, 10 minutes"
     },
     weather: {
         departureWeather: "Clear skies, 75°F",
@@ -24,25 +27,16 @@ const flightPlan = {
         communication: "Radio communication with ATC on frequency 118.5 MHz.",
         emergencyProcedures: "Follow standard emergency protocols if necessary.",
     },
-    runway: {
-        departureRunway: "Runway 22R",
-        arrivalRunway: "Runway 25L",
-    },
-    duration: "6 hours 30 minutes",
 };
 
 // Function to display the flight plan data
 function displayFlightPlan() {
-    console.log("Displaying flight plan...");
-    console.log(flightPlan);
-
     // Display Aircraft information
     const aircraftSection = document.getElementById('aircraft');
     aircraftSection.innerHTML = `
         <p><strong>Aircraft Type:</strong> ${flightPlan.aircraft.type}</p>
         <p><strong>Aircraft ID:</strong> ${flightPlan.aircraft.identification}</p>
     `;
-    console.log("Aircraft section updated");
 
     // Display Route information
     const routeSection = document.getElementById('route');
@@ -50,8 +44,10 @@ function displayFlightPlan() {
         <p><strong>Departure Airport:</strong> ${flightPlan.route.departure}</p>
         <p><strong>Arrival Airport:</strong> ${flightPlan.route.arrival}</p>
         <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
+        <p><strong>Departure Runway:</strong> ${flightPlan.route.departureRunway}</p>
+        <p><strong>Arrival Runway:</strong> ${flightPlan.route.arrivalRunway}</p>
+        <p><strong>Flight Duration:</strong> ${flightPlan.route.duration}</p>
     `;
-    console.log("Route section updated");
 
     // Display Weather information
     const weatherSection = document.getElementById('weather');
@@ -60,7 +56,6 @@ function displayFlightPlan() {
         <p><strong>Weather at Arrival:</strong> ${flightPlan.weather.arrivalWeather}</p>
         <p><strong>Hazardous Conditions:</strong> ${flightPlan.weather.hazardousConditions}</p>
     `;
-    console.log("Weather section updated");
 
     // Display Fuel information
     const fuelSection = document.getElementById('fuel');
@@ -68,7 +63,6 @@ function displayFlightPlan() {
         <p><strong>Fuel Efficiency:</strong> ${flightPlan.fuel.fuelEfficiency}</p>
         <p><strong>Fuel Required:</strong> ${flightPlan.fuel.fuelRequired}</p>
     `;
-    console.log("Fuel section updated");
 
     // Display Other Factors
     const otherFactorsSection = document.getElementById('other-factors');
@@ -77,16 +71,11 @@ function displayFlightPlan() {
         <p><strong>Weight and Balance:</strong> ${flightPlan.otherFactors.weightAndBalance}</p>
         <p><strong>Communication:</strong> ${flightPlan.otherFactors.communication}</p>
         <p><strong>Emergency Procedures:</strong> ${flightPlan.otherFactors.emergencyProcedures}</p>
-        <p><strong>Departure Runway:</strong> ${flightPlan.runway.departureRunway}</p>
-        <p><strong>Arrival Runway:</strong> ${flightPlan.runway.arrivalRunway}</p>
-        <p><strong>Flight Duration:</strong> ${flightPlan.duration}</p>
     `;
-    console.log("Other factors section updated");
 }
 
 // Call the display function when the page is loaded
 window.onload = function() {
-    console.log("Page loaded");
     displayFlightPlan();
 };
 
