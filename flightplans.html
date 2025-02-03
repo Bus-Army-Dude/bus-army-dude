@@ -5,12 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Plan - Bus Army Dude's Profile</title>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
+    
+    <!-- Meta Tags -->
     <meta http-equiv="refresh" content="300">
     
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -29,7 +33,7 @@
     <link rel="manifest" href="/manifest.json" />
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff"/>
+    <meta name="theme-color" content="#ffffff" />
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json">
@@ -42,12 +46,12 @@
 
     <!-- Hamburger Menu Icon -->
     <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-        &#9776; <!-- Hamburger icon (three horizontal bars) -->
+        &#9776; <!-- Hamburger icon -->
     </div>
 
     <!-- Navigation Menu -->
     <nav class="nav-menu" id="navMenu">
-        <button class="close-btn" onclick="toggleMenu()">✖</button> <!-- Close button for the menu -->
+        <button class="close-btn" onclick="toggleMenu()">✖</button>
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="flightplans.html">Flight Plans</a></li>
@@ -58,22 +62,32 @@
     <!-- Flight Plan Content -->
     <div class="flight-plan-content">
         <h1>Flight Plan Details</h1>
+
+        <!-- Aircraft Section -->
         <div class="flight-plan-section" id="aircraft">
             <h2>Aircraft</h2>
             <!-- Aircraft info will be populated here -->
         </div>
+
+        <!-- Route Section -->
         <div class="flight-plan-section" id="route">
             <h2>Route</h2>
             <!-- Route info will be populated here -->
         </div>
+
+        <!-- Weather Section -->
         <div class="flight-plan-section" id="weather">
             <h2>Weather</h2>
             <!-- Weather info will be populated here -->
         </div>
+
+        <!-- Fuel Section -->
         <div class="flight-plan-section" id="fuel">
             <h2>Fuel</h2>
             <!-- Fuel info will be populated here -->
         </div>
+
+        <!-- Other Factors Section -->
         <div class="flight-plan-section" id="other-factors">
             <h2>Other Factors</h2>
             <!-- Other factors info will be populated here -->
@@ -81,7 +95,13 @@
     </div>
 
     <!-- Scripts -->
+    <script src="common.js"></script>
     <script src="script.js"></script>
+    <script src="ai-features.js"></script>
+    <script src="settings.js"></script>
+    <script src="events.js"></script>
+    <script src="version.js"></script>
+
 </body>
 
 </html>
