@@ -33,12 +33,16 @@ const flightPlan = {
 
 // Function to display the flight plan data
 function displayFlightPlan() {
+    console.log("Displaying flight plan...");
+    console.log(flightPlan);
+
     // Display Aircraft information
     const aircraftSection = document.getElementById('aircraft');
     aircraftSection.innerHTML = `
         <p><strong>Aircraft Type:</strong> ${flightPlan.aircraft.type}</p>
         <p><strong>Aircraft ID:</strong> ${flightPlan.aircraft.identification}</p>
     `;
+    console.log("Aircraft section updated");
 
     // Display Route information
     const routeSection = document.getElementById('route');
@@ -47,6 +51,7 @@ function displayFlightPlan() {
         <p><strong>Arrival Airport:</strong> ${flightPlan.route.arrival}</p>
         <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
     `;
+    console.log("Route section updated");
 
     // Display Weather information
     const weatherSection = document.getElementById('weather');
@@ -55,6 +60,7 @@ function displayFlightPlan() {
         <p><strong>Weather at Arrival:</strong> ${flightPlan.weather.arrivalWeather}</p>
         <p><strong>Hazardous Conditions:</strong> ${flightPlan.weather.hazardousConditions}</p>
     `;
+    console.log("Weather section updated");
 
     // Display Fuel information
     const fuelSection = document.getElementById('fuel');
@@ -62,6 +68,7 @@ function displayFlightPlan() {
         <p><strong>Fuel Efficiency:</strong> ${flightPlan.fuel.fuelEfficiency}</p>
         <p><strong>Fuel Required:</strong> ${flightPlan.fuel.fuelRequired}</p>
     `;
+    console.log("Fuel section updated");
 
     // Display Other Factors
     const otherFactorsSection = document.getElementById('other-factors');
@@ -74,10 +81,12 @@ function displayFlightPlan() {
         <p><strong>Arrival Runway:</strong> ${flightPlan.runway.arrivalRunway}</p>
         <p><strong>Flight Duration:</strong> ${flightPlan.duration}</p>
     `;
+    console.log("Other factors section updated");
 }
 
 // Call the display function when the page is loaded
 window.onload = function() {
+    console.log("Page loaded");
     displayFlightPlan();
 };
 
@@ -85,4 +94,5 @@ window.onload = function() {
 function toggleMenu() {
     const menu = document.getElementById("navMenu");
     menu.classList.toggle("open");
+    console.log("Menu toggled");
 }
