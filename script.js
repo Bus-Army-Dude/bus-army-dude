@@ -575,12 +575,8 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// JavaScript to toggle the navigation menu
-document.addEventListener("DOMContentLoaded", function () {
-    const hamburger = document.querySelector(".hamburger");
-    const navMenu = document.querySelector(".nav-menu");
-
-    hamburger.addEventListener("click", function () {
-        navMenu.classList.toggle("active");
-    });
-});
+// Function to toggle the navigation menu
+function toggleMenu() {
+    const menu = document.getElementById('navMenu');
+    menu.classList.toggle('active'); // This will either show or hide the menu based on the 'active' class
+}
