@@ -85,7 +85,7 @@ body {
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    position: relative;
+    position: relative;  /* Position for the profile status circle */
 }
 
 .profile-pic {
@@ -95,6 +95,7 @@ body {
     margin: 0 auto;
     display: block;
     border: 3px solid var(--accent-color);
+    position: relative; /* So the status circle can overlap */
 }
 
 .username-checkmark {
@@ -130,70 +131,52 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden; /* Ensures the status is half in and half out */
-    z-index: 2;
+    z-index: 2;  /* Ensure it's above the profile image */
 }
 
-/* Hamburger Menu Icon */
-.hamburger {
-    font-size: 30px;
-    cursor: pointer;
+/* Profile Status Styling */
+.profile-status {
+    font-size: 16px; /* Adjust as per your preference */
+    color: white;
+}
+
+/* Profile Status Colors */
+.profile-status.online { color: green; }
+.profile-status.idle { color: yellow; }
+.profile-status.offline { color: gray; }
+
+
+/* Add these new styles for the settings button */
+.settings-button {
     position: absolute;
     top: 20px;
     right: 20px;
-    z-index: 1001; /* Ensure it is above the content */
-}
-
-/* Navigation Menu */
-.nav-menu {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background-color: #333;
-    color: white;
-    width: 250px;
-    padding: 20px;
-    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
-    z-index: 1000; /* Ensure it appears above everything else */
-}
-
-.nav-menu ul {
-    list-style: none;
-    padding: 0;
-}
-
-.nav-menu li {
-    margin: 15px 0;
-}
-
-.nav-menu a {
-    text-decoration: none;
-    color: white;
-    font-size: 18px;
-    transition: color 0.3s ease;
-}
-
-.nav-menu a:hover {
-    color: #ff9800;
-}
-
-/* Close Button */
-.close-btn {
-    font-size: 30px;
-    color: white;
-    background: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: url('settings-icon.png') center/18px no-repeat;
+    background-color: #00ff00; /* Adding the green background */
     border: none;
-    position: absolute;
-    top: 10px;
-    right: 10px;
     cursor: pointer;
-    z-index: 1001;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s ease;
 }
 
-/* Show the menu when active */
-.nav-menu.active {
-    display: block;
+.settings-button:hover {
+    transform: rotate(45deg);
+    background-color: #00cc00; /* Slightly darker green on hover */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .settings-button {
+        width: 25px;
+        height: 25px;
+        top: 15px;
+        right: 15px;
+        background-size: 15px;
+    }
 }
 
 /* Current Date/Time Section */
@@ -1563,15 +1546,4 @@ footer {
         padding: 10px 16px;
         font-size: 0.95em;
     }
-}
-
-/* Basic reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
 }
