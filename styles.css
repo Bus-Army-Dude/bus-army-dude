@@ -85,7 +85,7 @@ body {
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    position: relative;  /* Position for the profile status circle */
+    position: relative;
 }
 
 .profile-pic {
@@ -95,7 +95,6 @@ body {
     margin: 0 auto;
     display: block;
     border: 3px solid var(--accent-color);
-    position: relative; /* So the status circle can overlap */
 }
 
 .username-checkmark {
@@ -117,144 +116,55 @@ body {
     margin-left: 5px;
 }
 
-/* Profile Status Container */
-.profile-status-container {
-    position: absolute;
-    bottom: 5px; /* Adjust the value to position at the bottom-right of the profile pic */
-    right: 5px; /* Position it on the right of the profile picture */
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: var(--content-bg);
-    border: 3px solid var(--accent-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Ensures the status is half in and half out */
-    z-index: 2;  /* Ensure it's above the profile image */
-}
-
-/* Profile Status Styling */
-.profile-status {
-    font-size: 16px; /* Adjust as per your preference */
-    color: white;
-}
-
-/* Profile Status Colors */
-.profile-status.online { color: green; }
-.profile-status.idle { color: yellow; }
-.profile-status.offline { color: gray; }
-
-/* Settings Button */
-.settings-button {
+/* Hamburger Menu Icon */
+.hamburger {
+    font-size: 30px;
+    cursor: pointer;
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: url('settings-icon.png') center/18px no-repeat;
-    background-color: #00ff00; /* Adding the green background */
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-.settings-button:hover {
-    transform: rotate(45deg);
-    background-color: #00cc00; /* Slightly darker green on hover */
-}
-
-/* Hamburger Menu */
-.hamburger {
-    position: absolute;
-    top: 20px;
-    left: 20px; /* Place it on the left of the profile pic */
-    width: 30px;
-    height: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.hamburger .bar {
-    width: 100%;
-    height: 3px;
-    background-color: var(--text-color);
-    transition: all 0.3s ease;
-}
-
-.hamburger:hover .bar {
-    background-color: var(--accent-color); /* Change color on hover */
+    z-index: 1001; /* Ensure it is above the content */
+    display: inline-block;
 }
 
 /* Navigation Menu */
 .nav-menu {
-    position: fixed;
-    top: 0;
-    right: -100%;  /* Initially hidden off-screen */
-    width: 250px;
-    height: 100vh;
-    background-color: var(--content-bg);
-    transition: right 0.3s ease;
-    z-index: 1000;
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust to appear below profile */
+    right: 0;
+    background-color: #333;
+    color: white;
+    width: 200px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Ensure it appears above everything else */
 }
 
 .nav-menu ul {
     list-style: none;
-    padding: 20px;
-    text-align: left;
+    padding: 0;
 }
 
-.nav-menu ul li {
+.nav-menu li {
     margin: 15px 0;
 }
 
-.nav-menu ul li a {
-    color: var(--text-color);
-    font-size: 18px;
+.nav-menu a {
     text-decoration: none;
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
 }
 
-.nav-menu ul li a:hover {
-    text-decoration: underline;
+.nav-menu a:hover {
+    color: #ff9800;
 }
 
-/* Active Menu */
+/* Show the menu when active */
 .nav-menu.active {
-    right: 0;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .profile-pic {
-        width: 120px;
-        height: 120px;
-    }
-
-    .username-checkmark h1 {
-        font-size: 20px;
-    }
-
-    .hamburger {
-        width: 25px;
-        height: 20px;
-    }
-
-    .hamburger .bar {
-        height: 2px;
-    }
-
-    .settings-button {
-        width: 25px;
-        height: 25px;
-        top: 15px;
-        right: 15px;
-    }
+    display: block;
 }
 
 /* Current Date/Time Section */
