@@ -5,13 +5,13 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Ensures padding and borders don't affect element sizes */
+    box-sizing: border-box;
 }
 
 /* Header Styling */
 .header {
     background-color: var(--content-bg);
-    padding: 20px 15px; /* Add horizontal padding */
+    padding: 20px 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -38,21 +38,21 @@ body {
 .flight-plan-container {
     margin: 20px auto;
     padding: 30px;
-    max-width: 100%; /* Ensures container width adjusts to screen */
-    width: 90%; /* Set the container width to 90% of the screen */
+    max-width: 100%;
+    width: 90%;
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box;
 }
 
 /* Section Styling */
 section {
     margin-bottom: 25px;
     padding: 20px;
-    border: 2px solid var(--border-color); /* Border around each section */
-    border-radius: 8px; /* Rounded corners for sections */
-    background-color: var(--content-bg); /* Background for the section */
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--content-bg);
 }
 
 /* Title in Sections */
@@ -65,7 +65,7 @@ h2 {
 
 /* Paragraph Text in Sections */
 p {
-    font-size: var(--font-size, 1rem); /* Adjusts based on settings */
+    font-size: var(--font-size, 1rem);
     color: var(--text-color);
 }
 
@@ -80,7 +80,7 @@ p {
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: block;
-    margin: 0 auto; /* Center the button */
+    margin: 0 auto;
 }
 
 .return-home-button:hover {
@@ -91,7 +91,7 @@ p {
 @media screen and (max-width: 768px) {
     .flight-plan-container {
         padding: 20px;
-        width: 95%; /* Make container almost full-width on smaller screens */
+        width: 95%;
     }
 
     h2 {
@@ -110,11 +110,11 @@ p {
 
 @media screen and (max-width: 480px) {
     body {
-        padding: 0 10px; /* Add padding to prevent text touching sides */
+        padding: 0 10px;
     }
 
     .flight-plan-container {
-        width: 100%; /* Ensure the container takes up full width */
+        width: 100%;
         padding: 15px;
     }
 
@@ -147,13 +147,13 @@ p {
 /* Dark Mode Theme */
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-color: #0f172a; /* Dark background */
-        --content-bg: #1e293b; /* Dark content background */
-        --text-color: #f8fafc; /* Light text color */
-        --accent-color: #4CAF50; /* Accent color for dark mode */
-        --hover-color: #45a049; /* Button hover color */
-        --shadow-color: rgba(255, 255, 255, 0.1); /* Light shadow */
-        --border-color: #333333; /* Dark border color */
+        --bg-color: #0f172a;
+        --content-bg: #1e293b;
+        --text-color: #f8fafc;
+        --accent-color: #4CAF50;
+        --hover-color: #45a049;
+        --shadow-color: rgba(255, 255, 255, 0.1);
+        --border-color: #333333;
     }
 }
 
@@ -169,6 +169,10 @@ p {
     font-weight: bold;
     transition: all 0.3s ease-in-out;
     text-align: center;
+    min-width: 250px;
+    max-width: 350px; /* Limiting the size */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #flight-status p {
@@ -181,31 +185,31 @@ p {
 
 /* Flight Status Classes */
 .flight-scheduled {
-    background-color: #28a745; /* Green */
+    background-color: #28a745;
     color: white;
     border: 2px solid #218838;
 }
 
 .flight-in-progress {
-    background-color: #ffc107; /* Yellow */
+    background-color: #ffc107;
     color: white;
     border: 2px solid #e0a800;
 }
 
 .flight-completed {
-    background-color: #007bff; /* Blue */
+    background-color: #007bff;
     color: white;
     border: 2px solid #0056b3;
 }
 
 .flight-cancelled {
-    background-color: #dc3545; /* Red */
+    background-color: #dc3545;
     color: white;
     border: 2px solid #c82333;
 }
 
 .no-flight-scheduled {
-    background-color: #6c757d; /* Gray */
+    background-color: #6c757d;
     color: white;
     border: 2px solid #5a6268;
 }
@@ -225,22 +229,22 @@ p {
 /* Icons for each status */
 .flight-scheduled .status-icon {
     background-color: #218838;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190411.png'); /* Scheduled icon */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190411.png');
 }
 
 .flight-in-progress .status-icon {
     background-color: #e0a800;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190407.png'); /* In progress icon */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190423.png');
 }
 
 .flight-completed .status-icon {
     background-color: #0056b3;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190410.png'); /* Completed icon */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190413.png');
 }
 
 .flight-cancelled .status-icon {
     background-color: #c82333;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190413.png'); /* Cancelled icon */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190414.png');
 }
 
 /* Footer */
