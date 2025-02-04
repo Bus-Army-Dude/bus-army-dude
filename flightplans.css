@@ -1,7 +1,7 @@
 /* General page styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--content-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;
     padding: 0;
@@ -10,7 +10,7 @@ body {
 
 /* Header Styling */
 .header {
-    background-color: var(--header-bg);
+    background-color: var(--content-bg);
     padding: 20px 15px; /* Add horizontal padding */
     display: flex;
     align-items: center;
@@ -50,9 +50,9 @@ body {
 section {
     margin-bottom: 25px;
     padding: 20px;
-    border: 2px solid var(--section-border-color); /* Border around each section */
+    border: 2px solid var(--border-color); /* Border around each section */
     border-radius: 8px; /* Rounded corners for sections */
-    background-color: var(--section-bg); /* Background for the section */
+    background-color: var(--content-bg); /* Background for the section */
 }
 
 /* Title in Sections */
@@ -72,7 +72,7 @@ p {
 /* Return Home Button */
 .return-home-button {
     background-color: var(--accent-color);
-    color: var(--button-text-color);
+    color: var(--text-color);
     padding: 12px 25px;
     font-size: 18px;
     border-radius: 8px;
@@ -84,7 +84,7 @@ p {
 }
 
 .return-home-button:hover {
-    background-color: var(--button-hover-color);
+    background-color: var(--hover-color);
 }
 
 /* Responsive styling */
@@ -108,7 +108,6 @@ p {
     }
 }
 
-/* For smaller screens (max-width: 480px) */
 @media screen and (max-width: 480px) {
     body {
         padding: 0 10px; /* Add padding to prevent text touching sides */
@@ -136,28 +135,24 @@ p {
 
 /* Light Mode Theme */
 :root {
-    --content-bg: #ffffff; /* Replace with your content background color */
-    --text-color: #333333; /* Replace with your text color */
-    --accent-color: #007bff; /* Replace with your accent color */
-    --header-bg: #f8f9fa; /* Replace with your header background color */
-    --shadow-color: rgba(0, 0, 0, 0.1); /* Replace with your shadow color */
-    --button-text-color: #ffffff; /* Replace with your button text color */
-    --button-hover-color: #0056b3; /* Replace with your button hover color */
-    --section-border-color: #dcdcdc; /* Replace with your section border color */
-    --section-bg: #ffffff; /* Replace with your section background color */
+    --bg-color: #ffffff;
+    --content-bg: #f8fafc;
+    --text-color: #0f172a;
+    --accent-color: #2563eb;
+    --hover-color: #1d4ed8;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --border-color: #e2e8f0;
 }
 
 /* Dark Mode Theme */
 @media (prefers-color-scheme: dark) {
     :root {
-        --content-bg: #121212; /* Replace with your dark mode content background color */
-        --text-color: #ffffff; /* Replace with your dark mode text color */
-        --accent-color: #1e90ff; /* Replace with your dark mode accent color */
-        --header-bg: #1c1c1c; /* Replace with your dark mode header background color */
-        --shadow-color: rgba(255, 255, 255, 0.1); /* Replace with your dark mode shadow color */
-        --button-text-color: #ffffff; /* Replace with your dark mode button text color */
-        --button-hover-color: #4169e1; /* Replace with your dark mode button hover color */
-        --section-border-color: #444; /* Replace with your dark mode section border color */
-        --section-bg: #2c2c2c; /* Replace with your dark mode section background color */
+        --bg-color: #0f172a; /* Dark background */
+        --content-bg: #1e293b; /* Dark content background */
+        --text-color: #f8fafc; /* Light text color */
+        --accent-color: #4CAF50; /* Accent color for dark mode */
+        --hover-color: #45a049; /* Button hover color */
+        --shadow-color: rgba(255, 255, 255, 0.1); /* Light shadow */
+        --border-color: #333333; /* Dark border color */
     }
 }
