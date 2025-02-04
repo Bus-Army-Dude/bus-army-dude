@@ -28,13 +28,27 @@ const flightPlan = {
         emergencyProcedures: "Follow standard emergency protocols if necessary.", // Emergency procedures (e.g., Follow standard emergency protocols if necessary)
     },
     flightDateTime: {
-        date: "2025-02-03", // Date of the flight (e.g., 2025-02-03)
-        time: "15:30 UTC", // Time of the flight (e.g., 15:30 UTC)
+        date: "02-03-2025", // Date of the flight (e.g., 2025-02-03)
+        time: "12:30 AM EST", // Time of the flight (e.g., 15:30 UTC)
     },
 };
 
 // Function to display the flight plan data dynamically
 function displayFlightPlan() {
+    // Flight Status Display: No flight scheduled or Flight Scheduled
+    const flightStatusSection = document.getElementById('flight-status');
+    if (flightStatusSection) {
+        if (flightPlan.flightDateTime.date && flightPlan.flightDateTime.time) {
+            flightStatusSection.innerHTML = `
+                <span class="status-scheduled">Flight Scheduled</span>
+            `;
+        } else {
+            flightStatusSection.innerHTML = `
+                <span class="status-not-scheduled">No flights scheduled</span>
+            `;
+        }
+    }
+
     // Aircraft info
     const aircraftSection = document.getElementById('aircraft');
     if (aircraftSection) {
