@@ -3,13 +3,19 @@ const flightPlan = null; // Change this to `null` to simulate "No flight schedul
 
 // Function to display the flight plan data dynamically
 function displayFlightPlan() {
-    // Flight status message
     const flightStatus = document.getElementById('flight-status');
+    
     if (flightStatus) {
         if (flightPlan === null) {
-            flightStatus.innerHTML = "<p>No flights scheduled</p>"; // No flight scheduled
+            flightStatus.innerHTML = `
+                <p class="no-flight-scheduled">
+                    <span class="status-icon"></span> No flights scheduled
+                </p>`;
         } else {
-            flightStatus.innerHTML = "<p>Flight Plan Scheduled</p>"; // Flight is scheduled
+            flightStatus.innerHTML = `
+                <p class="flight-scheduled">
+                    <span class="status-icon"></span> Flight Plan Scheduled
+                </p>`;
         }
     }
 
@@ -17,7 +23,7 @@ function displayFlightPlan() {
     const aircraftSection = document.getElementById('aircraft');
     if (aircraftSection) {
         if (flightPlan === null) {
-            aircraftSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+            aircraftSection.innerHTML = "<p>No flight scheduled</p>";
         } else {
             aircraftSection.innerHTML = `
                 <p><strong>Aircraft Type:</strong> ${flightPlan.aircraft.type}</p>
@@ -30,7 +36,7 @@ function displayFlightPlan() {
     const routeSection = document.getElementById('route');
     if (routeSection) {
         if (flightPlan === null) {
-            routeSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+            routeSection.innerHTML = "<p>No flight scheduled</p>";
         } else {
             routeSection.innerHTML = `
                 <p><strong>Departure:</strong> ${flightPlan.route.departure}</p>
@@ -47,7 +53,7 @@ function displayFlightPlan() {
     const weatherSection = document.getElementById('weather');
     if (weatherSection) {
         if (flightPlan === null) {
-            weatherSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+            weatherSection.innerHTML = "<p>No flight scheduled</p>";
         } else {
             weatherSection.innerHTML = `
                 <p><strong>Weather at Departure:</strong> ${flightPlan.weather.departureWeather}</p>
@@ -61,7 +67,7 @@ function displayFlightPlan() {
     const fuelSection = document.getElementById('fuel');
     if (fuelSection) {
         if (flightPlan === null) {
-            fuelSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+            fuelSection.innerHTML = "<p>No flight scheduled</p>";
         } else {
             fuelSection.innerHTML = `
                 <p><strong>Fuel Efficiency:</strong> ${flightPlan.fuel.fuelEfficiency}</p>
@@ -74,7 +80,7 @@ function displayFlightPlan() {
     const otherFactorsSection = document.getElementById('other-factors');
     if (otherFactorsSection) {
         if (flightPlan === null) {
-            otherFactorsSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+            otherFactorsSection.innerHTML = "<p>No flight scheduled</p>";
         } else {
             otherFactorsSection.innerHTML = `
                 <p><strong>Altitude:</strong> ${flightPlan.otherFactors.altitude}</p>
