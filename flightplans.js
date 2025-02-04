@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
             arrival: "KSAN Airport",
             departureRunway: "Runway 01L",
             arrivalRunway: "Runway 27",
-            duration: "5 hours 12 minutes",
+            duration: "5 hours 08 minutes",
             path: "Direct Route - KTPA to KSAN",
             detailedRoute: "DORMR2 FROOT DCT ROZZI Y280 LEV DCT IAH J86 JCT DCT ELP DCT SSO J50 GBN J18 HOGGZ LUCKI1"
         },
         weather: {
-            departureWeather: "Clear skies, 75°F",
-            arrivalWeather: "Cloudy, 65°F",
+            departureWeather: "Partly cloudy, 75°F",
+            arrivalWeather: "Mostly cloudy, 55°F",
             hazardousConditions: "No hazardous conditions expected."
         },
         fuel: {
