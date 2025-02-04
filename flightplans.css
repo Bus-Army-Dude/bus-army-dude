@@ -1,4 +1,4 @@
-/* General page styling */
+/* General Page Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: var(--content-bg);
@@ -11,7 +11,7 @@ body {
 /* Header Styling */
 .header {
     background-color: var(--header-bg);
-    padding: 20px 15px; /* Add horizontal padding */
+    padding: 20px 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -38,32 +38,36 @@ body {
 .flight-plan-container {
     margin: 20px auto;
     padding: 30px;
-    max-width: 100%; /* Ensures container width adjusts to screen */
-    width: 90%; /* Set the container width to 90% of the screen */
+    max-width: 100%; 
+    width: 90%; 
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box;
 }
 
 /* Section Styling */
 section {
     margin-bottom: 25px;
-    padding: 15px;
-    background-color: var(--section-bg); /* Optional, adds a background to each section */
+    padding: 20px;
+    background-color: var(--section-bg);
     border-radius: 8px;
     box-shadow: 0 2px 5px var(--shadow-color);
+    border-left: 5px solid var(--accent-color); /* Adds a subtle left border to emphasize the section */
 }
 
+/* Section Headers */
 h2 {
     font-size: 1.6em;
     color: var(--text-color);
     border-bottom: 2px solid var(--accent-color);
     padding-bottom: 7px;
+    margin-bottom: 15px;
 }
 
+/* Paragraph Styling */
 p {
-    font-size: var(--font-size, 1rem); /* Adjusts based on settings */
+    font-size: var(--font-size, 1rem); 
     color: var(--text-color);
 }
 
@@ -78,18 +82,18 @@ p {
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: block;
-    margin: 0 auto; /* Center the button */
+    margin: 0 auto;
 }
 
 .return-home-button:hover {
     background-color: var(--button-hover-color);
 }
 
-/* Responsive styling */
+/* Responsive Styling */
 @media screen and (max-width: 768px) {
     .flight-plan-container {
         padding: 20px;
-        width: 95%; /* Make container almost full-width on smaller screens */
+        width: 95%; /* Ensure container is almost full width on smaller screens */
     }
 
     h2 {
@@ -102,14 +106,14 @@ p {
     }
 }
 
-/* For smaller screens (max-width: 480px) */
+/* For Smaller Screens (max-width: 480px) */
 @media screen and (max-width: 480px) {
     body {
-        padding: 0 10px; /* Add padding to prevent text touching sides */
+        padding: 0 10px;
     }
 
     .flight-plan-container {
-        width: 100%; /* Ensure the container takes up full width */
+        width: 100%;
         padding: 15px;
     }
 
