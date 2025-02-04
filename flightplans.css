@@ -1,0 +1,82 @@
+/* General page styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--content-bg);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styling */
+.header {
+    background-color: var(--header-bg);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+/* Home Button */
+.home-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: url('home-icon.png') center/18px no-repeat;
+    background-color: var(--accent-color);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.home-button:hover {
+    transform: scale(1.1);
+}
+
+/* Flight Plan Container */
+.flight-plan-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    background-color: var(--content-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 5px;
+}
+
+p {
+    font-size: var(--font-size, 1rem); /* Adjusts based on settings */
+}
+
+/* Return Home Button */
+.return-home-button {
+    background-color: var(--accent-color);
+    color: var(--button-text-color);
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.return-home-button:hover {
+    background-color: var(--button-hover-color);
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+    .flight-plan-container {
+        padding: 15px;
+    }
+}
