@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
         airFrame: "N806SB",
     };
 
-   // Function to update the flight status dynamically
-   function updateFlightStatus(status) {
+    // Function to update the flight status dynamically
+    function updateFlightStatus(status) {
         const statusContainer = document.getElementById('flight-status');
         const statusText = document.getElementById('flight-status-text');
         const icon = statusContainer.querySelector('.status-icon');
@@ -62,10 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
         icon.style.backgroundImage = ''; // Clear the previous icon
 
         // Show or hide the flight plan container based on status
-        if (status === 'no-flight-scheduled' || status === 'loading') {
+        if (status === 'no-flight-scheduled' || status === 'loading' || status === 'cancelled') {
             flightPlanContainer.style.display = 'none'; // Hide flight plan for these statuses
         } else {
-            flightPlanContainer.style.display = 'block'; // Show flight plan
+            flightPlanContainer.style.display = 'block'; // Show flight plan for other statuses
         }
 
         switch (status) {
