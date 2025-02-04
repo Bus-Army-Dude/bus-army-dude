@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Plans - X-Plane 12</title>
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="flightplans.css"> 
+    <link rel="stylesheet" href="settings.css"> <!-- Assuming settings.css is global for themes and font sizes -->
+    
+    <!-- Favicons -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Scripts -->
+    <script src="common.js"></script>
+    <script src="script.js"></script>
+    <script src="ai-features.js"></script>
+    <script src="settings.js"></script>
+    <script src="events.js"></script>
+    <script src="version.js"></script>
+    <script src="flightplans.js"></script>
+</head>
+<body>
+    <!-- Header and navigation -->
+    <header class="header">
+        <button class="home-button" aria-label="Return Home" onclick="window.location.href='index.html'"></button>
+        <h1>Flight Plans - X-Plane 12</h1>
+    </header>
+
+    <!-- Flight Plan Data Section -->
+    <div class="flight-plan-container">
+        <section id="aircraft">
+            <h2>Aircraft Information</h2>
+            <p>Loading...</p> <!-- This will be dynamically populated -->
+        </section>
+
+        <section id="route">
+            <h2>Route Information</h2>
+            <p>Loading...</p> <!-- This will be dynamically populated -->
+        </section>
+
+        <section id="weather">
+            <h2>Weather Information</h2>
+            <p>Loading...</p> <!-- This will be dynamically populated -->
+        </section>
+
+        <section id="fuel">
+            <h2>Fuel Information</h2>
+            <p>Loading...</p> <!-- This will be dynamically populated -->
+        </section>
+
+        <section id="other-factors">
+            <h2>Other Factors</h2>
+            <p>Loading...</p> <!-- This will be dynamically populated -->
+        </section>
+    </div>
+
+    <!-- Return to Home Button -->
+    <footer>
+        <button class="return-home-button" onclick="window.location.href='index.html'">Return to Home</button>
+    </footer>
+</body>
+</html>
