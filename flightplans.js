@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             arrivalRunway: "Runway 27",
             duration: "5 hours 12 minutes",
             path: "Direct Route - KTPA to KSAN",
-            detailedRoute: "KTPA/01L N0452F340 DORMR2 FROOT DCT ROZZI Y280 LEV DCT IAH J86 JCT DCT ELP/N0454F360 DCT SSO J50 GBN J18 HOGGZ LUCKI1 KSAN/27"
+            detailedRoute: "DORMR2 FROOT DCT ROZZI Y280 LEV DCT IAH J86 JCT DCT ELP DCT SSO J50 GBN J18 HOGGZ LUCKI1"
         },
         weather: {
             departureWeather: "Clear skies, 75°F",
@@ -21,16 +21,16 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         fuel: {
             fuelEfficiency: "2.77 gallons per mile",
-            fuelRequired: "27,594 gallons for the journey",
-            enrouteBurn: "27,094 lbs",
-            blockFuel: "34,103 lbs"
+            fuelRequired: "33,813 gallons for the journey",
+            enrouteBurn: "26,797 lbs",
+            blockFuel: "33,813 lbs"
         },
         loadSheet: {
             passengers: 180,
             emptyWeight: "91,894 lbs",
             estimatedZFW: "133,294 lbs",
-            estimatedTOW: "166,897 lbs",
-            estimatedLW: "139,803 lbs",
+            estimatedTOW: "166,607 lbs",
+            estimatedLW: "139,810 lbs",
             cargo: "9,900 lbs",
             payload: "41,400 lbs",
             maxZFW: "138,300 lbs",
@@ -40,11 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
         atcFlightPlan: "(FPL-737800-IS -B738/M-SDE2E3FGHIRWXY/LB1 -KTPA1830 -N0452F340 DORMR2 FROOT DCT ROZZI Y280 LEV DCT IAH J86 JCT DCT ELP/N0454F360 DCT SSO J50 GBN J18 HOGGZ LUCKI1 -KSAN0444 KLAX -PBN/A1B1C1D1S1S2 DOF/250204 REG/N806SB EET/KZMA0002 KZJX0028 KZHU0051 KZAB0236 KZLA0409 OPR/737 PER/C RMK/TCAS)",
         flightDateTime: {
             date: "02-04-2025",
-            time: "18:30 UTC"
+            time: "10:30 UTC"
         },
-        arrivalTime: "23:42 UTC",
-        airTime: "04:44",
-        blockTime: "5:12",
+        arrivalTime: "15:38 UTC",
+        airTime: "04:48",
+        blockTime: "5:08",
         flightNumber: "737800",
         callSign: "737800",
         airFrame: "N806SB"
