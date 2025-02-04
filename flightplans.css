@@ -179,20 +179,42 @@ p {
     gap: 10px;
 }
 
+/* Flight Status Classes */
 .flight-scheduled {
     background-color: #28a745; /* Green */
     color: white;
     border: 2px solid #218838;
 }
 
-.no-flight-scheduled {
+.flight-in-progress {
+    background-color: #ffc107; /* Yellow */
+    color: white;
+    border: 2px solid #e0a800;
+}
+
+.flight-completed {
+    background-color: #007bff; /* Blue */
+    color: white;
+    border: 2px solid #0056b3;
+}
+
+.flight-cancelled {
     background-color: #dc3545; /* Red */
     color: white;
     border: 2px solid #c82333;
 }
 
+.no-flight-scheduled {
+    background-color: #6c757d; /* Gray */
+    color: white;
+    border: 2px solid #5a6268;
+}
+
 .flight-scheduled .status-icon,
-.no-flight-scheduled .status-icon {
+.no-flight-scheduled .status-icon,
+.flight-in-progress .status-icon,
+.flight-completed .status-icon,
+.flight-cancelled .status-icon {
     width: 24px;
     height: 24px;
     display: inline-block;
@@ -200,18 +222,25 @@ p {
     background-size: contain;
 }
 
+/* Icons for each status */
 .flight-scheduled .status-icon {
     background-color: #218838;
     background-image: url('https://cdn-icons-png.flaticon.com/512/190/190411.png'); /* Check icon */
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
-.no-flight-scheduled .status-icon {
+.flight-in-progress .status-icon {
+    background-color: #e0a800;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190407.png'); /* In progress icon */
+}
+
+.flight-completed .status-icon {
+    background-color: #0056b3;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190410.png'); /* Completed icon */
+}
+
+.flight-cancelled .status-icon {
     background-color: #c82333;
     background-image: url('https://cdn-icons-png.flaticon.com/512/190/190413.png'); /* Cross icon */
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 /* Footer */
