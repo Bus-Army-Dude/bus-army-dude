@@ -157,6 +157,62 @@ p {
     }
 }
 
+/* Modern flight status styling */
+#flight-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+#flight-status p {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.flight-scheduled {
+    background-color: #28a745; /* Green */
+    color: white;
+    border: 2px solid #218838;
+}
+
+.no-flight-scheduled {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: 2px solid #c82333;
+}
+
+.flight-scheduled .status-icon,
+.no-flight-scheduled .status-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    border-radius: 50%;
+    background-size: contain;
+}
+
+.flight-scheduled .status-icon {
+    background-color: #218838;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190411.png'); /* Check icon */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.no-flight-scheduled .status-icon {
+    background-color: #c82333;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190413.png'); /* Cross icon */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 /* Footer */
 footer {
     text-align: center;
