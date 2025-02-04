@@ -53,14 +53,14 @@ section {
     background-color: var(--section-bg);
     border-radius: 8px;
     box-shadow: 0 2px 5px var(--shadow-color);
-    border-left: 5px solid var(--accent-color); /* Border for visibility */
+    border-left: 5px solid var(--accent-color); /* Keeps border visible */
 }
 
 /* Section Headers */
 h2 {
     font-size: 1.6em;
     color: var(--text-color);
-    border-bottom: 2px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color); /* Border for headers */
     padding-bottom: 7px;
     margin-bottom: 15px;
 }
@@ -93,13 +93,13 @@ p {
 @media (prefers-color-scheme: dark) {
     /* Update section background for dark mode */
     section {
-        background-color: var(--dark-section-bg); /* Define dark mode background */
-        border-left: 5px solid var(--dark-accent-color); /* Adjust for dark mode */
+        background-color: var(--dark-section-bg); /* Dark section background */
+        border-left: 5px solid var(--dark-accent-color); /* Dark mode accent color for border */
     }
 
     h2 {
-        color: var(--dark-text-color); /* Adjust heading color */
-        border-bottom: 2px solid var(--dark-accent-color); /* Dark mode heading border */
+        color: var(--dark-text-color); /* Dark mode text color */
+        border-bottom: 2px solid var(--dark-accent-color); /* Dark mode header border */
     }
 
     .flight-plan-container {
