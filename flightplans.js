@@ -48,52 +48,59 @@ document.addEventListener('DOMContentLoaded', function() {
         flightNumber: "737800",
         callSign: "737800",
         airFrame: "N806SB",
-        // New field for manual flight status
-        flightStatus: "Flight In Progress"  // Options: 'No Flights Scheduled', 'Flight Scheduled', 'Flight In Progress', 'Flight Completed', 'Flight Cancelled'
     };
 
     // Flight Status logic (based on manual input)
-    const flightStatusContainer = document.getElementById('flight-status');
-    const flightStatusText = document.createElement('p');
-    const statusIcon = document.createElement('span');
+const flightStatusContainer = document.getElementById('flight-status');
 
-    // Update flight status based on the manual status in the flightPlan object
-    updateFlightStatus(flightPlan.flightStatus);
+// Create the status text and icon elements once
+const flightStatusText = document.createElement('p');
+const statusIcon = document.createElement('span');
 
-    // Function to update flight status dynamically
-    function updateFlightStatus(statusMessage) {
-        flightStatusText.textContent = statusMessage;
-        statusIcon.classList.add('status-icon');
+// Append the elements only once
+flightStatusContainer.appendChild(statusIcon);
+flightStatusContainer.appendChild(flightStatusText);
 
-        // Add class based on status
-        flightStatusContainer.className = ''; // Reset classes
-        switch (statusMessage) {
-            case 'Flight Scheduled':
-                flightStatusContainer.classList.add('flight-scheduled');
-                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190411.png')"; // Scheduled icon
-                break;
-            case 'Flight In Progress':
-                flightStatusContainer.classList.add('flight-in-progress');
-                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190423.png')"; // In progress icon
-                break;
-            case 'Flight Completed':
-                flightStatusContainer.classList.add('flight-completed');
-                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190413.png')"; // Completed icon
-                break;
-            case 'Flight Cancelled':
-                flightStatusContainer.classList.add('flight-cancelled');
-                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190414.png')"; // Cancelled icon
-                break;
-            default:
-                flightStatusContainer.classList.add('no-flight-scheduled');
-                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190400.png')"; // Default icon (maybe a question mark)
-                break;
-        }
+// Update flight status based on the manual status in the flightPlan object
+updateFlightStatus(flightPlan.flightStatus);
 
-        // Append the icon and text to the status container
-        flightStatusContainer.appendChild(statusIcon);
-        flightStatusContainer.appendChild(flightStatusText);
+// Function to update flight status dynamically
+function updateFlightStatus(statusMessage) {
+    // Clear previous content in the container (if any)
+    flightStatusText.textContent = '';
+    statusIcon.className = '';  // Remove any previously applied classes
+    statusIcon.style.backgroundImage = '';  // Reset the icon image
+
+    // Update the text and icon based on the status
+    flightStatusText.textContent = statusMessage;
+    statusIcon.classList.add('status-icon');  // Always keep the common icon class
+
+    // Reset the class for the container itself
+    flightStatusContainer.className = '';
+
+    switch (statusMessage) {
+        case 'Flight Scheduled':
+            flightStatusContainer.classList.add('flight-scheduled');
+            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190411.png')"; // Scheduled icon
+            break;
+        case 'Flight In Progress':
+            flightStatusContainer.classList.add('flight-in-progress');
+            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190423.png')"; // In progress icon
+            break;
+        case 'Flight Completed':
+            flightStatusContainer.classList.add('flight-completed');
+            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190413.png')"; // Completed icon
+            break;
+        case 'Flight Cancelled':
+            flightStatusContainer.classList.add('flight-cancelled');
+            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190414.png')"; // Cancelled icon
+            break;
+        default:
+            flightStatusContainer.classList.add('no-flight-scheduled');
+            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190400.png')"; // Default icon (maybe a question mark)
+            break;
     }
+}
 
     // Populate the flight plan sections dynamically
     updateFlightInfo(flightPlan);
