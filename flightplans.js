@@ -1,71 +1,88 @@
-// Set flightPlan to empty or undefined for no flight
-let flightPlan; // Or set as flightPlan = {}; for empty object
+// Sample flight plan data for X-Plane 12 (dynamically fetched or updated)
+const flightPlan = null; // Change this to `null` to simulate "No flight scheduled"
 
 // Function to display the flight plan data dynamically
 function displayFlightPlan() {
-    // Check if flight plan is available (empty or undefined will trigger this)
-    if (!flightPlan || !flightPlan.aircraft || !flightPlan.route) {
-        // Display "No flights scheduled" if no flight plan
-        document.getElementById('flight-status').textContent = "No flights scheduled";
-        return;
-    }
-
-    // Update flight status
+    // Flight status message
     const flightStatus = document.getElementById('flight-status');
     if (flightStatus) {
-        flightStatus.textContent = "Flight Plan Scheduled";
+        if (flightPlan === null) {
+            flightStatus.innerHTML = "<p>No flights scheduled</p>"; // No flight scheduled
+        } else {
+            flightStatus.innerHTML = "<p>Flight Plan Scheduled</p>"; // Flight is scheduled
+        }
     }
 
     // Aircraft info
     const aircraftSection = document.getElementById('aircraft');
     if (aircraftSection) {
-        aircraftSection.innerHTML = `
-            <p><strong>Aircraft Type:</strong> ${flightPlan.aircraft.type}</p>
-            <p><strong>Aircraft ID:</strong> ${flightPlan.aircraft.identification}</p>
-        `;
+        if (flightPlan === null) {
+            aircraftSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+        } else {
+            aircraftSection.innerHTML = `
+                <p><strong>Aircraft Type:</strong> ${flightPlan.aircraft.type}</p>
+                <p><strong>Aircraft ID:</strong> ${flightPlan.aircraft.identification}</p>
+            `;
+        }
     }
 
     // Route info
     const routeSection = document.getElementById('route');
     if (routeSection) {
-        routeSection.innerHTML = `
-            <p><strong>Departure:</strong> ${flightPlan.route.departure}</p>
-            <p><strong>Arrival:</strong> ${flightPlan.route.arrival}</p>
-            <p><strong>Departure Runway:</strong> ${flightPlan.route.departureRunway}</p>
-            <p><strong>Arrival Runway:</strong> ${flightPlan.route.arrivalRunway}</p>
-            <p><strong>Flight Duration:</strong> ${flightPlan.route.duration}</p>
-            <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
-        `;
+        if (flightPlan === null) {
+            routeSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+        } else {
+            routeSection.innerHTML = `
+                <p><strong>Departure:</strong> ${flightPlan.route.departure}</p>
+                <p><strong>Arrival:</strong> ${flightPlan.route.arrival}</p>
+                <p><strong>Departure Runway:</strong> ${flightPlan.route.departureRunway}</p>
+                <p><strong>Arrival Runway:</strong> ${flightPlan.route.arrivalRunway}</p>
+                <p><strong>Flight Duration:</strong> ${flightPlan.route.duration}</p>
+                <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
+            `;
+        }
     }
 
     // Weather info
     const weatherSection = document.getElementById('weather');
     if (weatherSection) {
-        weatherSection.innerHTML = `
-            <p><strong>Weather at Departure:</strong> ${flightPlan.weather.departureWeather}</p>
-            <p><strong>Weather at Arrival:</strong> ${flightPlan.weather.arrivalWeather}</p>
-            <p><strong>Hazardous Conditions:</strong> ${flightPlan.weather.hazardousConditions}</p>
-        `;
+        if (flightPlan === null) {
+            weatherSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+        } else {
+            weatherSection.innerHTML = `
+                <p><strong>Weather at Departure:</strong> ${flightPlan.weather.departureWeather}</p>
+                <p><strong>Weather at Arrival:</strong> ${flightPlan.weather.arrivalWeather}</p>
+                <p><strong>Hazardous Conditions:</strong> ${flightPlan.weather.hazardousConditions}</p>
+            `;
+        }
     }
 
     // Fuel info
     const fuelSection = document.getElementById('fuel');
     if (fuelSection) {
-        fuelSection.innerHTML = `
-            <p><strong>Fuel Efficiency:</strong> ${flightPlan.fuel.fuelEfficiency}</p>
-            <p><strong>Fuel Required:</strong> ${flightPlan.fuel.fuelRequired}</p>
-        `;
+        if (flightPlan === null) {
+            fuelSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+        } else {
+            fuelSection.innerHTML = `
+                <p><strong>Fuel Efficiency:</strong> ${flightPlan.fuel.fuelEfficiency}</p>
+                <p><strong>Fuel Required:</strong> ${flightPlan.fuel.fuelRequired}</p>
+            `;
+        }
     }
 
     // Other factors
     const otherFactorsSection = document.getElementById('other-factors');
     if (otherFactorsSection) {
-        otherFactorsSection.innerHTML = `
-            <p><strong>Altitude:</strong> ${flightPlan.otherFactors.altitude}</p>
-            <p><strong>Weight and Balance:</strong> ${flightPlan.otherFactors.weightAndBalance}</p>
-            <p><strong>Communication:</strong> ${flightPlan.otherFactors.communication}</p>
-            <p><strong>Emergency Procedures:</strong> ${flightPlan.otherFactors.emergencyProcedures}</p>
-        `;
+        if (flightPlan === null) {
+            otherFactorsSection.innerHTML = "<p>No flight scheduled</p>"; // No flight scheduled
+        } else {
+            otherFactorsSection.innerHTML = `
+                <p><strong>Altitude:</strong> ${flightPlan.otherFactors.altitude}</p>
+                <p><strong>Weight and Balance:</strong> ${flightPlan.otherFactors.weightAndBalance}</p>
+                <p><strong>Communication:</strong> ${flightPlan.otherFactors.communication}</p>
+                <p><strong>Emergency Procedures:</strong> ${flightPlan.otherFactors.emergencyProcedures}</p>
+            `;
+        }
     }
 }
 
