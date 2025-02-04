@@ -5,7 +5,7 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Ensures padding and borders don't affect element sizes */
+    box-sizing: border-box;
 }
 
 /* Header Styling */
@@ -46,21 +46,21 @@ body {
     box-sizing: border-box;
 }
 
-/* Section Styling */
+/* Section Styling (now includes borders around the entire section) */
 section {
     margin-bottom: 25px;
     padding: 20px;
     background-color: var(--section-bg);
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 0 2px 5px var(--shadow-color);
-    border: 2px solid var(--section-border-color); /* Border for each section */
+    border: 3px solid var(--section-border-color); /* Border around the entire section */
 }
 
 /* Section Headers */
 h2 {
     font-size: 1.6em;
     color: var(--text-color);
-    border-bottom: 2px solid var(--accent-color); /* Border for headers */
+    border-bottom: 2px solid var(--accent-color); 
     padding-bottom: 7px;
     margin-bottom: 15px;
 }
@@ -93,13 +93,13 @@ p {
 @media (prefers-color-scheme: dark) {
     /* Update section background for dark mode */
     section {
-        background-color: var(--dark-section-bg); /* Dark section background */
-        border: 2px solid var(--dark-section-border-color); /* Dark mode border color */
+        background-color: var(--dark-section-bg); 
+        border: 3px solid var(--dark-section-border-color); /* Dark mode section border */
     }
 
     h2 {
-        color: var(--dark-text-color); /* Dark mode text color */
-        border-bottom: 2px solid var(--dark-accent-color); /* Dark mode header border */
+        color: var(--dark-text-color); 
+        border-bottom: 2px solid var(--dark-accent-color); 
     }
 
     .flight-plan-container {
