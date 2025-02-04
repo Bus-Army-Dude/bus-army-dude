@@ -52,44 +52,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
    // Function to update the flight status dynamically
 function updateFlightStatus(status) {
-    const statusElement = document.getElementById('flight-status');
-    const statusText = statusElement.querySelector('p');
-    const statusIcon = statusElement.querySelector('.status-icon');
+    const statusContainer = document.getElementById('flight-status');
+    const statusText = document.getElementById('flight-status-text');
+    const icon = statusContainer.querySelector('.status-icon');
 
-    // Reset any previous icon or styles
-    statusElement.classList.remove('flight-scheduled', 'flight-in-progress', 'flight-completed', 'flight-cancelled', 'no-flight-scheduled');
+    // Reset previous classes
+    statusContainer.classList.remove('flight-scheduled', 'flight-in-progress', 'flight-completed', 'flight-cancelled', 'no-flight-scheduled');
+    icon.style.backgroundImage = ''; // Clear the previous icon
 
-    // Handling the different flight statuses
     switch (status) {
-        case 'loading':
-            statusText.textContent = "Loading...";
-            statusElement.classList.add('no-flight-scheduled');
-            statusIcon.style.display = 'none'; // Hide the icon during loading
-            break;
         case 'scheduled':
-            statusText.textContent = "Flight Scheduled";
-            statusElement.classList.add('flight-scheduled');
-            statusIcon.style.display = 'inline-block'; // Show the icon
+            statusContainer.classList.add('flight-scheduled');
+            statusText.textContent = 'Flight Scheduled';
+            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190411.png")'; // Scheduled icon
             break;
         case 'in-progress':
-            statusText.textContent = "Flight In Progress";
-            statusElement.classList.add('flight-in-progress');
-            statusIcon.style.display = 'inline-block'; // Show the icon
+            statusContainer.classList.add('flight-in-progress');
+            statusText.textContent = 'Flight In Progress';
+            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190423.png")'; // In progress icon
             break;
         case 'completed':
-            statusText.textContent = "Flight Completed";
-            statusElement.classList.add('flight-completed');
-            statusIcon.style.display = 'inline-block'; // Show the icon
+            statusContainer.classList.add('flight-completed');
+            statusText.textContent = 'Flight Completed';
+            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190413.png")'; // Completed icon
             break;
         case 'cancelled':
-            statusText.textContent = "Flight Cancelled";
-            statusElement.classList.add('flight-cancelled');
-            statusIcon.style.display = 'inline-block'; // Show the icon
+            statusContainer.classList.add('flight-cancelled');
+            statusText.textContent = 'Flight Cancelled';
+            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190414.png")'; // Cancelled icon
+            break;
+        case 'loading':
+            statusContainer.classList.add('no-flight-scheduled');
+            statusText.textContent = 'Loading...';
+            icon.style.backgroundImage = ''; // Optional: remove icon during loading state
             break;
         default:
-            statusText.textContent = "Unknown Status";
-            statusElement.classList.add('no-flight-scheduled');
-            statusIcon.style.display = 'none'; // Hide the icon for unknown status
+            console.log('Unknown status');
     }
 }
 
