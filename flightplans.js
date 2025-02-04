@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Assuming you have a variable `isFlightScheduled` that indicates if a flight is scheduled
-    const isFlightScheduled = true; // Set this based on your condition or flight data
+    const isFlightScheduled = false; // Set this based on your condition or flight data
 
     const flightStatusContainer = document.getElementById('flight-status');
     const flightStatusText = document.createElement('p');
@@ -31,37 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateFlightInfo() {
     // Simulate dynamic population with flight plan data
     const flightPlan = {
-        aircraft: {
-            type: "Boeing 787",
-            identification: "N787BA"
-        },
-        route: {
-            departure: "JFK Airport",
-            arrival: "LAX Airport",
-            departureRunway: "Runway 04L",
-            arrivalRunway: "Runway 25R",
-            duration: "5 hours 30 minutes",
-            path: "Direct Route - JFK to LAX"
-        },
-        weather: {
-            departureWeather: "Clear skies, 75°F",
-            arrivalWeather: "Cloudy, 65°F",
-            hazardousConditions: "No hazardous conditions expected."
-        },
-        fuel: {
-            fuelEfficiency: "3.5 gallons per mile",
-            fuelRequired: "5,000 gallons for the journey"
-        },
-        otherFactors: {
-            altitude: "35,000 feet",
-            weightAndBalance: "Balanced load with 85% capacity.",
-            communication: "Radio communication with ATC on frequency 118.5 MHz.",
-            emergencyProcedures: "Follow standard emergency protocols if necessary."
-        },
-        flightDateTime: {
-            date: "02-03-2025",
-            time: "12:30 AM EST"
-        }
     };
 
     // Populate sections dynamically with flight data
