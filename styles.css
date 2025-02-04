@@ -85,7 +85,7 @@ body {
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    position: relative;  /* Position for the profile status circle */
+    position: relative; /* Position for the profile status circle */
 }
 
 .profile-pic {
@@ -131,7 +131,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden; /* Ensures the status is half in and half out */
-    z-index: 2;  /* Ensure it's above the profile image */
+    z-index: 2; /* Ensure it's above the profile image */
 }
 
 /* Profile Status Styling */
@@ -145,7 +145,6 @@ body {
 .profile-status.idle { color: yellow; }
 .profile-status.offline { color: gray; }
 
-
 /* Add these new styles for the settings button */
 .settings-button {
     position: absolute;
@@ -155,7 +154,7 @@ body {
     height: 30px;
     border-radius: 50%;
     background: url('settings-icon.png') center/18px no-repeat;
-    background-color: #00ff00; /* Adding the green background */
+    background-color: #00ff00; /* Green background */
     border: none;
     cursor: pointer;
     padding: 0;
@@ -168,14 +167,39 @@ body {
     background-color: #00cc00; /* Slightly darker green on hover */
 }
 
+/* New Flight Plans Button */
+.flightplans-button {
+    position: absolute;
+    top: 20px;
+    left: 20px; /* Positioned on the left side of the page */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: url('flight-icon.png') center/18px no-repeat;
+    background-color: #00aaff; /* Blue background */
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.flightplans-button:hover {
+    transform: rotate(45deg);
+    background-color: #0088cc; /* Slightly darker blue on hover */
+}
+
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
-    .settings-button {
+    .settings-button, .flightplans-button {
         width: 25px;
         height: 25px;
         top: 15px;
-        right: 15px;
         background-size: 15px;
+    }
+
+    .flightplans-button {
+        left: 15px; /* Adjusted position for smaller screens */
     }
 }
 
