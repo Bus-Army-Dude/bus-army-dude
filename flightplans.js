@@ -50,53 +50,53 @@ document.addEventListener('DOMContentLoaded', function() {
         airFrame: "N806SB",
     };
 
-   document.addEventListener('DOMContentLoaded', function() {
-    // Simulate a delay in getting flight status (e.g., API call or data fetching)
-    setTimeout(function() {
-        // Simulating the flight status update (change this based on actual data)
-        updateFlightStatus('in-progress'); // This could be 'scheduled', 'in-progress', 'completed', or 'cancelled'
-    }, 2000); // Simulate a delay of 2 seconds for the data fetch
-});
-
-// Function to update the flight status dynamically
+   // Function to update the flight status dynamically
 function updateFlightStatus(status) {
-    const flightStatusElement = document.getElementById('flight-status');
-    const statusTextElement = document.getElementById('status-text');
-    const statusIconElement = flightStatusElement.querySelector('.status-icon');
+    const statusElement = document.getElementById('flight-status');
+    const statusText = statusElement.querySelector('p');
+    const statusIcon = statusElement.querySelector('.status-icon');
 
-    // Clear previous status class
-    flightStatusElement.className = '';
-    statusIconElement.style.backgroundImage = ''; // Reset the icon
+    // Reset any previous icon or styles
+    statusElement.classList.remove('flight-scheduled', 'flight-in-progress', 'flight-completed', 'flight-cancelled', 'no-flight-scheduled');
 
-    // Update the status and icon
+    // Handling the different flight statuses
     switch (status) {
+        case 'loading':
+            statusText.textContent = "Loading...";
+            statusElement.classList.add('no-flight-scheduled');
+            statusIcon.style.display = 'none'; // Hide the icon during loading
+            break;
         case 'scheduled':
-            flightStatusElement.classList.add('flight-scheduled');
-            statusTextElement.textContent = 'Flight Scheduled';
-            statusIconElement.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190411.png')";
+            statusText.textContent = "Flight Scheduled";
+            statusElement.classList.add('flight-scheduled');
+            statusIcon.style.display = 'inline-block'; // Show the icon
             break;
         case 'in-progress':
-            flightStatusElement.classList.add('flight-in-progress');
-            statusTextElement.textContent = 'Flight in Progress';
-            statusIconElement.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190423.png')";
+            statusText.textContent = "Flight In Progress";
+            statusElement.classList.add('flight-in-progress');
+            statusIcon.style.display = 'inline-block'; // Show the icon
             break;
         case 'completed':
-            flightStatusElement.classList.add('flight-completed');
-            statusTextElement.textContent = 'Flight Completed';
-            statusIconElement.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190410.png')";
+            statusText.textContent = "Flight Completed";
+            statusElement.classList.add('flight-completed');
+            statusIcon.style.display = 'inline-block'; // Show the icon
             break;
         case 'cancelled':
-            flightStatusElement.classList.add('flight-cancelled');
-            statusTextElement.textContent = 'Flight Cancelled';
-            statusIconElement.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190413.png')";
+            statusText.textContent = "Flight Cancelled";
+            statusElement.classList.add('flight-cancelled');
+            statusIcon.style.display = 'inline-block'; // Show the icon
             break;
         default:
-            flightStatusElement.classList.add('no-flight-scheduled');
-            statusTextElement.textContent = 'No flight scheduled';
-            statusIconElement.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190400.png')";
-            break;
+            statusText.textContent = "Unknown Status";
+            statusElement.classList.add('no-flight-scheduled');
+            statusIcon.style.display = 'none'; // Hide the icon for unknown status
     }
 }
+
+// Example usage:
+// Manually call the function like this in the script to change the status:
+
+updateFlightStatus('in-progress'); // This will set the status to "Flight In Progress"
 
     // Populate the flight plan sections dynamically
     updateFlightInfo(flightPlan);
