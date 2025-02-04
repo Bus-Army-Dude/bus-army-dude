@@ -225,7 +225,7 @@ p {
 /* Icons for each status */
 .flight-scheduled .status-icon {
     background-color: #218838;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190411.png'); /* Check icon */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190411.png'); /* Scheduled icon */
 }
 
 .flight-in-progress .status-icon {
@@ -240,7 +240,7 @@ p {
 
 .flight-cancelled .status-icon {
     background-color: #c82333;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190413.png'); /* Cross icon */
+    background-image: url('https://cdn-icons-png.flaticon.com/512/190/190413.png'); /* Cancelled icon */
 }
 
 /* Footer */
