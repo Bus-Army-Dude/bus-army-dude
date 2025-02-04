@@ -48,133 +48,125 @@ document.addEventListener('DOMContentLoaded', function() {
         flightNumber: "737800",
         callSign: "737800",
         airFrame: "N806SB",
+        flightStatus: "Flight In Progress" // Added missing flightStatus key for clarity
     };
 
     // Flight Status logic (based on manual input)
-const flightStatusContainer = document.getElementById('flight-status');
+    const flightStatusContainer = document.getElementById('flight-status');
+    const flightStatusText = document.createElement('p');
+    const statusIcon = document.createElement('span');
 
-// Create the status text and icon elements once
-const flightStatusText = document.createElement('p');
-const statusIcon = document.createElement('span');
+    flightStatusContainer.appendChild(statusIcon);
+    flightStatusContainer.appendChild(flightStatusText);
 
-// Append the elements only once
-flightStatusContainer.appendChild(statusIcon);
-flightStatusContainer.appendChild(flightStatusText);
+    // Update flight status dynamically
+    updateFlightStatus(flightPlan.flightStatus);
 
-// Update flight status based on the manual status in the flightPlan object
-updateFlightStatus(flightPlan.flightStatus);
+    function updateFlightStatus(statusMessage) {
+        flightStatusText.textContent = '';
+        statusIcon.className = '';  // Remove any previously applied classes
+        statusIcon.style.backgroundImage = '';  // Reset the icon image
 
-// Function to update flight status dynamically
-function updateFlightStatus(statusMessage) {
-    // Clear previous content in the container (if any)
-    flightStatusText.textContent = '';
-    statusIcon.className = '';  // Remove any previously applied classes
-    statusIcon.style.backgroundImage = '';  // Reset the icon image
+        flightStatusText.textContent = statusMessage;
+        statusIcon.classList.add('status-icon');
 
-    // Update the text and icon based on the status
-    flightStatusText.textContent = statusMessage;
-    statusIcon.classList.add('status-icon');  // Always keep the common icon class
-
-    // Reset the class for the container itself
-    flightStatusContainer.className = '';
-
-    switch (statusMessage) {
-        case 'Flight Scheduled':
-            flightStatusContainer.classList.add('flight-scheduled');
-            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190411.png')"; // Scheduled icon
-            break;
-        case 'Flight In Progress':
-            flightStatusContainer.classList.add('flight-in-progress');
-            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190423.png')"; // In progress icon
-            break;
-        case 'Flight Completed':
-            flightStatusContainer.classList.add('flight-completed');
-            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190413.png')"; // Completed icon
-            break;
-        case 'Flight Cancelled':
-            flightStatusContainer.classList.add('flight-cancelled');
-            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190414.png')"; // Cancelled icon
-            break;
-        default:
-            flightStatusContainer.classList.add('no-flight-scheduled');
-            statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190400.png')"; // Default icon (maybe a question mark)
-            break;
+        switch (statusMessage) {
+            case 'Flight Scheduled':
+                flightStatusContainer.classList.add('flight-scheduled');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190411.png')";
+                break;
+            case 'Flight In Progress':
+                flightStatusContainer.classList.add('flight-in-progress');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190423.png')";
+                break;
+            case 'Flight Completed':
+                flightStatusContainer.classList.add('flight-completed');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190413.png')";
+                break;
+            case 'Flight Cancelled':
+                flightStatusContainer.classList.add('flight-cancelled');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190414.png')";
+                break;
+            default:
+                flightStatusContainer.classList.add('no-flight-scheduled');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190400.png')";
+                break;
+        }
     }
-}
 
     // Populate the flight plan sections dynamically
     updateFlightInfo(flightPlan);
-});
 
-function updateFlightInfo(flightPlan) {
-    // Aircraft info
-    document.getElementById('aircraft').innerHTML = `
-        <p><strong>Aircraft Type:</strong> ${flightPlan.aircraft.type}</p>
-        <p><strong>Aircraft ID:</strong> ${flightPlan.aircraft.identification}</p>
-    `;
-    
-    // Route info
-    document.getElementById('route').innerHTML = `
-        <p><strong>Departure:</strong> ${flightPlan.route.departure}</p>
-        <p><strong>Arrival:</strong> ${flightPlan.route.arrival}</p>
-        <p><strong>Departure Runway:</strong> ${flightPlan.route.departureRunway}</p>
-        <p><strong>Arrival Runway:</strong> ${flightPlan.route.arrivalRunway}</p>
-        <p><strong>Flight Duration:</strong> ${flightPlan.route.duration}</p>
-        <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
-        <p><strong>Detailed Route:</strong> ${flightPlan.route.detailedRoute}</p>
-    `;
-    
-    // Weather info
-    document.getElementById('weather').innerHTML = `
-        <p><strong>Weather at Departure:</strong> ${flightPlan.weather.departureWeather}</p>
-        <p><strong>Weather at Arrival:</strong> ${flightPlan.weather.arrivalWeather}</p>
-        <p><strong>Hazardous Conditions:</strong> ${flightPlan.weather.hazardousConditions}</p>
-    `;
-    
-    // Fuel info
-    document.getElementById('fuel').innerHTML = `
-        <p><strong>Fuel Efficiency:</strong> ${flightPlan.fuel.fuelEfficiency}</p>
-        <p><strong>Fuel Required:</strong> ${flightPlan.fuel.fuelRequired}</p>
-        <p><strong>Enroute Burn:</strong> ${flightPlan.fuel.enrouteBurn}</p>
-        <p><strong>Block Fuel:</strong> ${flightPlan.fuel.blockFuel}</p>
-    `;
-    
-    // Load Sheet info
-    document.getElementById('load-sheet').innerHTML = `
-        <p><strong>Passengers:</strong> ${flightPlan.loadSheet.passengers}</p>
-        <p><strong>Empty Weight:</strong> ${flightPlan.loadSheet.emptyWeight}</p>
-        <p><strong>Estimated ZFW:</strong> ${flightPlan.loadSheet.estimatedZFW}</p>
-        <p><strong>Estimated TOW:</strong> ${flightPlan.loadSheet.estimatedTOW}</p>
-        <p><strong>Estimated LW:</strong> ${flightPlan.loadSheet.estimatedLW}</p>
-        <p><strong>Cargo:</strong> ${flightPlan.loadSheet.cargo}</p>
-        <p><strong>Payload:</strong> ${flightPlan.loadSheet.payload}</p>
-        <p><strong>Max ZFW:</strong> ${flightPlan.loadSheet.maxZFW}</p>
-        <p><strong>Max TOW:</strong> ${flightPlan.loadSheet.maxTOW}</p>
-        <p><strong>Max LW:</strong> ${flightPlan.loadSheet.maxLW}</p>
-    `;
-    
-    // ATC Flight Plan
-    document.getElementById('atc-flight-plan').innerHTML = `
-        <p><strong>ATC Flight Plan:</strong> ${flightPlan.atcFlightPlan}</p>
-    `;
-    
-    // Flight Date and Time
-    document.getElementById('flight-datetime').innerHTML = `
-        <p><strong>Flight Date:</strong> ${flightPlan.flightDateTime.date}</p>
-        <p><strong>Flight Time:</strong> ${flightPlan.flightDateTime.time}</p>
-    `;
-    
-    // Arrival and Flight Info
-    document.getElementById('arrival-time').innerHTML = `
-        <p><strong>Arrival Time:</strong> ${flightPlan.arrivalTime}</p>
-        <p><strong>Air Time:</strong> ${flightPlan.airTime}</p>
-        <p><strong>Block Time:</strong> ${flightPlan.blockTime}</p>
-    `;
-    
-    // Flight Number, Call Sign, and Airframe
-    document.getElementById('flight-info').innerHTML = `
-        <p><strong>Flight Number:</strong> ${flightPlan.flightNumber}</p>
-        <p><strong>Call Sign:</strong> ${flightPlan.callSign}</p>
-        <p><strong>Air Frame:</strong> ${flightPlan.airFrame}</p>
-    `;
-}
+    function updateFlightInfo(flightPlan) {
+        // Aircraft info
+        document.getElementById('aircraft').innerHTML = `
+            <p><strong>Aircraft Type:</strong> ${flightPlan.aircraft.type}</p>
+            <p><strong>Aircraft ID:</strong> ${flightPlan.aircraft.identification}</p>
+        `;
+        
+        // Route info
+        document.getElementById('route').innerHTML = `
+            <p><strong>Departure:</strong> ${flightPlan.route.departure}</p>
+            <p><strong>Arrival:</strong> ${flightPlan.route.arrival}</p>
+            <p><strong>Departure Runway:</strong> ${flightPlan.route.departureRunway}</p>
+            <p><strong>Arrival Runway:</strong> ${flightPlan.route.arrivalRunway}</p>
+            <p><strong>Flight Duration:</strong> ${flightPlan.route.duration}</p>
+            <p><strong>Flight Path:</strong> ${flightPlan.route.path}</p>
+            <p><strong>Detailed Route:</strong> ${flightPlan.route.detailedRoute}</p>
+        `;
+        
+        // Weather info
+        document.getElementById('weather').innerHTML = `
+            <p><strong>Weather at Departure:</strong> ${flightPlan.weather.departureWeather}</p>
+            <p><strong>Weather at Arrival:</strong> ${flightPlan.weather.arrivalWeather}</p>
+            <p><strong>Hazardous Conditions:</strong> ${flightPlan.weather.hazardousConditions}</p>
+        `;
+        
+        // Fuel info
+        document.getElementById('fuel').innerHTML = `
+            <p><strong>Fuel Efficiency:</strong> ${flightPlan.fuel.fuelEfficiency}</p>
+            <p><strong>Fuel Required:</strong> ${flightPlan.fuel.fuelRequired}</p>
+            <p><strong>Enroute Burn:</strong> ${flightPlan.fuel.enrouteBurn}</p>
+            <p><strong>Block Fuel:</strong> ${flightPlan.fuel.blockFuel}</p>
+        `;
+        
+        // Load Sheet info
+        document.getElementById('load-sheet').innerHTML = `
+            <p><strong>Passengers:</strong> ${flightPlan.loadSheet.passengers}</p>
+            <p><strong>Empty Weight:</strong> ${flightPlan.loadSheet.emptyWeight}</p>
+            <p><strong>Estimated ZFW:</strong> ${flightPlan.loadSheet.estimatedZFW}</p>
+            <p><strong>Estimated TOW:</strong> ${flightPlan.loadSheet.estimatedTOW}</p>
+            <p><strong>Estimated LW:</strong> ${flightPlan.loadSheet.estimatedLW}</p>
+            <p><strong>Cargo:</strong> ${flightPlan.loadSheet.cargo}</p>
+            <p><strong>Payload:</strong> ${flightPlan.loadSheet.payload}</p>
+            <p><strong>Max ZFW:</strong> ${flightPlan.loadSheet.maxZFW}</p>
+            <p><strong>Max TOW:</strong> ${flightPlan.loadSheet.maxTOW}</p>
+            <p><strong>Max LW:</strong> ${flightPlan.loadSheet.maxLW}</p>
+        `;
+        
+        // ATC Flight Plan
+        document.getElementById('atc-flight-plan').innerHTML = `
+            <p><strong>ATC Flight Plan:</strong> ${flightPlan.atcFlightPlan}</p>
+        `;
+        
+        // Flight Date and Time
+        document.getElementById('flight-datetime').innerHTML = `
+            <p><strong>Flight Date:</strong> ${flightPlan.flightDateTime.date}</p>
+            <p><strong>Flight Time:</strong> ${flightPlan.flightDateTime.time}</p>
+        `;
+        
+        // Arrival and Flight Info
+        document.getElementById('arrival-time').innerHTML = `
+            <p><strong>Arrival Time:</strong> ${flightPlan.arrivalTime}</p>
+            <p><strong>Air Time:</strong> ${flightPlan.airTime}</p>
+            <p><strong>Block Time:</strong> ${flightPlan.blockTime}</p>
+        `;
+        
+        // Flight Number, Call Sign, and Airframe
+        document.getElementById('flight-info').innerHTML = `
+            <p><strong>Flight Number:</strong> ${flightPlan.flightNumber}</p>
+            <p><strong>Call Sign:</strong> ${flightPlan.callSign}</p>
+            <p><strong>Air Frame:</strong> ${flightPlan.airFrame}</p>
+        `;
+    }
+});
