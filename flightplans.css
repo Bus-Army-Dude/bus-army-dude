@@ -144,7 +144,7 @@ p {
     --button-text-color: #ffffff; /* Button text color */
     --button-hover-color: #0056b3; /* Button hover color */
     --section-border-color: #ccc; /* Light mode border color */
-    --section-bg: #f9f9f9; /* Section background for light mode */
+    --section-bg: #ffffff; /* Section background for light mode */
 }
 
 /* Dark Mode Theme */
