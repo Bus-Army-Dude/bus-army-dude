@@ -5,12 +5,13 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
+    box-sizing: border-box; /* Ensures padding and borders don't affect element sizes */
 }
 
 /* Header Styling */
 .header {
     background-color: var(--header-bg);
-    padding: 15px;
+    padding: 20px 15px; /* Add horizontal padding */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,10 +20,10 @@ body {
 
 /* Home Button */
 .home-button {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    background: url('home-icon.png') center/18px no-repeat;
+    background: url('home-icon.png') center/20px no-repeat;
     background-color: var(--accent-color);
     border: none;
     cursor: pointer;
@@ -36,38 +37,44 @@ body {
 /* Flight Plan Container */
 .flight-plan-container {
     margin: 20px auto;
-    padding: 20px;
-    max-width: 800px;
+    padding: 30px;
+    max-width: 100%; /* Ensures container width adjusts to screen */
+    width: 90%; /* Set the container width to 90% of the screen */
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
 }
 
+/* Section Styling */
 section {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 h2 {
-    font-size: 1.5em;
+    font-size: 1.6em;
     color: var(--text-color);
     border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 5px;
+    padding-bottom: 7px;
 }
 
 p {
     font-size: var(--font-size, 1rem); /* Adjusts based on settings */
+    color: var(--text-color);
 }
 
 /* Return Home Button */
 .return-home-button {
     background-color: var(--accent-color);
     color: var(--button-text-color);
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 12px 25px;
+    font-size: 18px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto; /* Center the button */
 }
 
 .return-home-button:hover {
@@ -77,6 +84,38 @@ p {
 /* Responsive styling */
 @media screen and (max-width: 768px) {
     .flight-plan-container {
+        padding: 20px;
+        width: 95%; /* Make container almost full-width on smaller screens */
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    .return-home-button {
+        font-size: 16px;
+        padding: 8px 18px;
+    }
+}
+
+/* For smaller screens (max-width: 480px) */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 0 10px; /* Add padding to prevent text touching sides */
+    }
+
+    .flight-plan-container {
+        width: 100%; /* Ensure the container takes up full width */
         padding: 15px;
+    }
+
+    .home-button {
+        width: 28px;
+        height: 28px;
+    }
+
+    .return-home-button {
+        font-size: 14px;
+        padding: 6px 15px;
     }
 }
