@@ -1,36 +1,21 @@
-// Sample flight plan data for X-Plane 12 (dynamically fetched or updated)
-const flightPlan = {
-    aircraft: {
-        type: "Boeing 787",
-        identification: "N787BA",
-    },
-    route: {
-        departure: "JFK Airport",
-        arrival: "LAX Airport",
-        departureRunway: "Runway 04L",
-        arrivalRunway: "Runway 25R",
-        duration: "5 hours 30 minutes",
-        path: "Direct Route - JFK to LAX",
-    },
-    weather: {
-        departureWeather: "Clear skies, 75°F",
-        arrivalWeather: "Cloudy, 65°F",
-        hazardousConditions: "No hazardous conditions expected.",
-    },
-    fuel: {
-        fuelEfficiency: "3.5 gallons per mile",
-        fuelRequired: "5,000 gallons for the journey",
-    },
-    otherFactors: {
-        altitude: "35,000 feet",
-        weightAndBalance: "Balanced load with 85% capacity.",
-        communication: "Radio communication with ATC on frequency 118.5 MHz.",
-        emergencyProcedures: "Follow standard emergency protocols if necessary.",
-    },
-};
+// Set flightPlan to empty or undefined for no flight
+let flightPlan; // Or set as flightPlan = {}; for empty object
 
 // Function to display the flight plan data dynamically
 function displayFlightPlan() {
+    // Check if flight plan is available (empty or undefined will trigger this)
+    if (!flightPlan || !flightPlan.aircraft || !flightPlan.route) {
+        // Display "No flights scheduled" if no flight plan
+        document.getElementById('flight-status').textContent = "No flights scheduled";
+        return;
+    }
+
+    // Update flight status
+    const flightStatus = document.getElementById('flight-status');
+    if (flightStatus) {
+        flightStatus.textContent = "Flight Plan Scheduled";
+    }
+
     // Aircraft info
     const aircraftSection = document.getElementById('aircraft');
     if (aircraftSection) {
