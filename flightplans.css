@@ -1,4 +1,4 @@
-/* General Styling */
+/* General page styling */
 body {
     font-family: Arial, sans-serif;
     background-color: var(--content-bg);
@@ -18,7 +18,7 @@ body {
     box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-/* Home Button Styling */
+/* Home Button */
 .home-button {
     width: 35px;
     height: 35px;
@@ -34,12 +34,12 @@ body {
     transform: scale(1.1);
 }
 
-/* Flight Plan Container Styling */
+/* Flight Plan Container */
 .flight-plan-container {
     margin: 20px auto;
     padding: 30px;
-    width: 90%; /* Set the container width to 90% of the screen */
     max-width: 100%; /* Ensures container width adjusts to screen */
+    width: 90%; /* Set the container width to 90% of the screen */
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
@@ -49,6 +49,10 @@ body {
 /* Section Styling */
 section {
     margin-bottom: 25px;
+    padding: 15px;
+    background-color: var(--section-bg); /* Optional, adds a background to each section */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px var(--shadow-color);
 }
 
 h2 {
@@ -63,7 +67,7 @@ p {
     color: var(--text-color);
 }
 
-/* Return Home Button Styling */
+/* Return Home Button */
 .return-home-button {
     background-color: var(--accent-color);
     color: var(--button-text-color);
@@ -81,9 +85,7 @@ p {
     background-color: var(--button-hover-color);
 }
 
-/* Responsive Styles */
-
-/* For tablets and smaller screens (max-width: 768px) */
+/* Responsive styling */
 @media screen and (max-width: 768px) {
     .flight-plan-container {
         padding: 20px;
@@ -100,7 +102,7 @@ p {
     }
 }
 
-/* For mobile screens (max-width: 480px) */
+/* For smaller screens (max-width: 480px) */
 @media screen and (max-width: 480px) {
     body {
         padding: 0 10px; /* Add padding to prevent text touching sides */
