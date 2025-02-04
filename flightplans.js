@@ -47,31 +47,48 @@ document.addEventListener('DOMContentLoaded', function() {
         blockTime: "5:08",
         flightNumber: "737800",
         callSign: "737800",
-        airFrame: "N806SB"
+        airFrame: "N806SB",
+        // New field for manual flight status
+        flightStatus: "Flight In Progress"  // Options: 'No Flights Scheduled', 'Flight Scheduled', 'Flight In Progress', 'Flight Completed', 'Flight Cancelled'
     };
 
-    // Flight Status (based on flight time)
+    // Flight Status logic (based on manual input)
     const flightStatusContainer = document.getElementById('flight-status');
     const flightStatusText = document.createElement('p');
     const statusIcon = document.createElement('span');
-    
-    if (flightPlan.flightDateTime.date && flightPlan.flightDateTime.time) {
-        // Flight is scheduled
-        flightStatusContainer.classList.add('flight-scheduled');
-        flightStatusContainer.classList.remove('no-flight-scheduled');
-        flightStatusText.textContent = "Flight Plan Scheduled";
-        statusIcon.classList.add('status-icon');
-    } else {
-        // No flight scheduled
-        flightStatusContainer.classList.add('no-flight-scheduled');
-        flightStatusContainer.classList.remove('flight-scheduled');
-        flightStatusText.textContent = "No flights scheduled";
-        statusIcon.classList.add('status-icon');
-    }
 
-    // Append the icon and text to the status container
-    flightStatusContainer.appendChild(statusIcon);
-    flightStatusContainer.appendChild(flightStatusText);
+    // Update flight status based on the manual status in the flightPlan object
+    updateFlightStatus(flightPlan.flightStatus);
+
+    // Function to update flight status dynamically
+    function updateFlightStatus(statusMessage) {
+        flightStatusText.textContent = statusMessage;
+        statusIcon.classList.add('status-icon');
+
+        // Add class based on status
+        flightStatusContainer.className = ''; // Reset classes
+        switch (statusMessage) {
+            case 'Flight Scheduled':
+                flightStatusContainer.classList.add('flight-scheduled');
+                break;
+            case 'Flight In Progress':
+                flightStatusContainer.classList.add('flight-in-progress');
+                break;
+            case 'Flight Completed':
+                flightStatusContainer.classList.add('flight-completed');
+                break;
+            case 'Flight Cancelled':
+                flightStatusContainer.classList.add('flight-cancelled');
+                break;
+            default:
+                flightStatusContainer.classList.add('no-flight-scheduled');
+                break;
+        }
+
+        // Append the icon and text to the status container
+        flightStatusContainer.appendChild(statusIcon);
+        flightStatusContainer.appendChild(flightStatusText);
+    }
 
     // Populate the flight plan sections dynamically
     updateFlightInfo(flightPlan);
