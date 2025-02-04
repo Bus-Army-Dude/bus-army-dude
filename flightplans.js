@@ -70,18 +70,23 @@ document.addEventListener('DOMContentLoaded', function() {
         switch (statusMessage) {
             case 'Flight Scheduled':
                 flightStatusContainer.classList.add('flight-scheduled');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190411.png')"; // Scheduled icon
                 break;
             case 'Flight In Progress':
                 flightStatusContainer.classList.add('flight-in-progress');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190423.png')"; // In progress icon
                 break;
             case 'Flight Completed':
                 flightStatusContainer.classList.add('flight-completed');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190413.png')"; // Completed icon
                 break;
             case 'Flight Cancelled':
                 flightStatusContainer.classList.add('flight-cancelled');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190414.png')"; // Cancelled icon
                 break;
             default:
                 flightStatusContainer.classList.add('no-flight-scheduled');
+                statusIcon.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/190/190400.png')"; // Default icon (maybe a question mark)
                 break;
         }
 
