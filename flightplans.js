@@ -94,7 +94,7 @@ function updateFlightStatus(status) {
 // Example usage:
 // Manually call the function like this in the script to change the status:
 
-updateFlightStatus('in-progress'); // This will set the status to "Flight In Progress"
+updateFlightStatus('flight-completed'); // This will set the status to "Flight In Progress"
 
     // Populate the flight plan sections dynamically
     updateFlightInfo(flightPlan);
