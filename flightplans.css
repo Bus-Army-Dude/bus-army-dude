@@ -156,3 +156,12 @@ p {
         --border-color: #333333; /* Dark border color */
     }
 }
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: var(--secondary-text);
+    border-top: 1px solid var(--border-color);
+}
