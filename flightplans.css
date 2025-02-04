@@ -143,21 +143,21 @@ p {
     --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow color */
     --button-text-color: #ffffff; /* Button text color */
     --button-hover-color: #0056b3; /* Button hover color */
-    --section-border-color: #e0e0e0; /* Border color for light mode (light gray) */
-    --section-bg: #ffffff; /* Section background for light mode (white) */
+    --section-border-color: #dcdcdc; /* Light grey border in light mode */
+    --section-bg: #ffffff; /* White background for sections in light mode */
 }
 
 /* Dark Mode Theme */
 @media (prefers-color-scheme: dark) {
     :root {
-        --content-bg: #121212; /* Background color for dark mode */
-        --text-color: #ffffff; /* Text color for dark mode */
+        --content-bg: #121212; /* Dark background */
+        --text-color: #ffffff; /* Light text color */
         --accent-color: #1e90ff; /* Accent color for dark mode */
-        --header-bg: #1c1c1c; /* Header background for dark mode */
-        --shadow-color: rgba(255, 255, 255, 0.1); /* Light shadow for dark mode */
-        --button-text-color: #ffffff; /* Button text color */
+        --header-bg: #1c1c1c; /* Dark header background */
+        --shadow-color: rgba(255, 255, 255, 0.1); /* Light shadow */
+        --button-text-color: #ffffff; /* White button text */
         --button-hover-color: #4169e1; /* Button hover color */
-        --section-border-color: #444; /* Dark mode border color */
-        --section-bg: #2c2c2c; /* Section background for dark mode */
+        --section-border-color: #444; /* Dark border for dark mode */
+        --section-bg: #2c2c2c; /* Dark section background */
     }
 }
