@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
       gtag('config', 'G-E0RSQS1MS7');
     </script>
     
@@ -31,11 +30,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff"/>
-
-    <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration -->
     <meta name="browserconfig" content="/browserconfig.xml">
 </head>
 <body>
@@ -48,6 +43,11 @@
     <!-- Main Flight Plan Section -->
     <div class="flight-plan-container">
         
+        <!-- Flight Status Display -->
+        <div id="flight-status">
+            <!-- This will be dynamically updated to "No flights scheduled" or "Flight Plan Scheduled" -->
+        </div>
+
         <!-- Aircraft Information Section -->
         <section id="aircraft">
             <h2>Aircraft Information</h2>
@@ -80,8 +80,7 @@
         
     </div>
 
-
-<!-- Scripts -->
+    <!-- Scripts -->
     <script src="common.js"></script>
     <script src="script.js"></script>
     <script src="ai-features.js"></script>
@@ -89,7 +88,8 @@
     <script src="events.js"></script>
     <script src="version.js"></script>   
     <script src="flightplans.js"></script>  
-     <!-- Footer -->
+
+    <!-- Footer -->
     <footer>
         <p>© 2025 Bus Army Dude. All Rights Reserved.</p>
     </footer>
