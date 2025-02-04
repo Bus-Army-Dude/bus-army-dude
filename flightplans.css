@@ -53,7 +53,7 @@ section {
     background-color: var(--section-bg);
     border-radius: 8px;
     box-shadow: 0 2px 5px var(--shadow-color);
-    border-left: 5px solid var(--accent-color); /* Keeps border visible */
+    border: 2px solid var(--section-border-color); /* Border for each section */
 }
 
 /* Section Headers */
@@ -94,7 +94,7 @@ p {
     /* Update section background for dark mode */
     section {
         background-color: var(--dark-section-bg); /* Dark section background */
-        border-left: 5px solid var(--dark-accent-color); /* Dark mode accent color for border */
+        border: 2px solid var(--dark-section-border-color); /* Dark mode border color */
     }
 
     h2 {
