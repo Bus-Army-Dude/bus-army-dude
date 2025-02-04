@@ -51,50 +51,60 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
    // Function to update the flight status dynamically
-function updateFlightStatus(status) {
-    const statusContainer = document.getElementById('flight-status');
-    const statusText = document.getElementById('flight-status-text');
-    const icon = statusContainer.querySelector('.status-icon');
+   function updateFlightStatus(status) {
+        const statusContainer = document.getElementById('flight-status');
+        const statusText = document.getElementById('flight-status-text');
+        const icon = statusContainer.querySelector('.status-icon');
+        const flightPlanContainer = document.getElementById('flightPlanContainer');
 
-    // Reset previous classes
-    statusContainer.classList.remove('flight-scheduled', 'flight-in-progress', 'flight-completed', 'flight-cancelled', 'no-flight-scheduled');
-    icon.style.backgroundImage = ''; // Clear the previous icon
+        // Reset previous classes
+        statusContainer.classList.remove('flight-scheduled', 'flight-in-progress', 'flight-completed', 'flight-cancelled', 'no-flight-scheduled');
+        icon.style.backgroundImage = ''; // Clear the previous icon
 
-    switch (status) {
-        case 'scheduled':
-            statusContainer.classList.add('flight-scheduled');
-            statusText.textContent = 'Flight Scheduled';
-            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190411.png")'; // Scheduled icon
-            break;
-        case 'in-progress':
-            statusContainer.classList.add('flight-in-progress');
-            statusText.textContent = 'Flight In Progress';
-            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190423.png")'; // In progress icon
-            break;
-        case 'completed':
-            statusContainer.classList.add('flight-completed');
-            statusText.textContent = 'Flight Completed';
-            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190413.png")'; // Completed icon
-            break;
-        case 'cancelled':
-            statusContainer.classList.add('flight-cancelled');
-            statusText.textContent = 'Flight Cancelled';
-            icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190414.png")'; // Cancelled icon
-            break;
-        case 'loading':
-            statusContainer.classList.add('no-flight-scheduled');
-            statusText.textContent = 'Loading...';
-            icon.style.backgroundImage = ''; // Optional: remove icon during loading state
-            break;
-        default:
-            console.log('Unknown status');
+        // Show or hide the flight plan container based on status
+        if (status === 'no-flight-scheduled' || status === 'loading') {
+            flightPlanContainer.style.display = 'none'; // Hide flight plan for these statuses
+        } else {
+            flightPlanContainer.style.display = 'block'; // Show flight plan
+        }
+
+        switch (status) {
+            case 'scheduled':
+                statusContainer.classList.add('flight-scheduled');
+                statusText.textContent = 'Flight Scheduled';
+                icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190411.png")'; // Scheduled icon
+                break;
+            case 'in-progress':
+                statusContainer.classList.add('flight-in-progress');
+                statusText.textContent = 'Flight In Progress';
+                icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190423.png")'; // In progress icon
+                break;
+            case 'completed':
+                statusContainer.classList.add('flight-completed');
+                statusText.textContent = 'Flight Completed';
+                icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190413.png")'; // Completed icon
+                break;
+            case 'cancelled':
+                statusContainer.classList.add('flight-cancelled');
+                statusText.textContent = 'Flight Cancelled';
+                icon.style.backgroundImage = 'url("https://cdn-icons-png.flaticon.com/512/190/190414.png")'; // Cancelled icon
+                break;
+            case 'loading':
+                statusContainer.classList.add('no-flight-scheduled');
+                statusText.textContent = 'Loading...';
+                icon.style.backgroundImage = ''; // Optional: remove icon during loading state
+                break;
+            case 'no-flight-scheduled':
+            default:
+                statusContainer.classList.add('no-flight-scheduled');
+                statusText.textContent = 'No Flight Scheduled';
+                icon.style.backgroundImage = ''; // No icon for this status
+                break;
+        }
     }
-}
 
-// Example usage:
-// Manually call the function like this in the script to change the status:
-
-updateFlightStatus('completed'); // This will set the status to "Flight In Progress"
+    // Example usage: Manually call the function to set a flight status
+    updateFlightStatus('scheduled'); // This will set the status to "Flight Scheduled"
 
     // Populate the flight plan sections dynamically
     updateFlightInfo(flightPlan);
@@ -155,20 +165,6 @@ updateFlightStatus('completed'); // This will set the status to "Flight In Progr
         document.getElementById('flight-datetime').innerHTML = `
             <p><strong>Flight Date:</strong> ${flightPlan.flightDateTime.date}</p>
             <p><strong>Flight Time:</strong> ${flightPlan.flightDateTime.time}</p>
-        `;
-        
-        // Arrival and Flight Info
-        document.getElementById('arrival-time').innerHTML = `
-            <p><strong>Arrival Time:</strong> ${flightPlan.arrivalTime}</p>
-            <p><strong>Air Time:</strong> ${flightPlan.airTime}</p>
-            <p><strong>Block Time:</strong> ${flightPlan.blockTime}</p>
-        `;
-        
-        // Flight Number, Call Sign, and Airframe
-        document.getElementById('flight-info').innerHTML = `
-            <p><strong>Flight Number:</strong> ${flightPlan.flightNumber}</p>
-            <p><strong>Call Sign:</strong> ${flightPlan.callSign}</p>
-            <p><strong>Air Frame:</strong> ${flightPlan.airFrame}</p>
         `;
     }
 });
