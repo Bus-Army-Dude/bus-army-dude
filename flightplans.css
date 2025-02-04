@@ -53,7 +53,7 @@ section {
     background-color: var(--section-bg);
     border-radius: 8px;
     box-shadow: 0 2px 5px var(--shadow-color);
-    border-left: 5px solid var(--accent-color); /* Adds a subtle left border to emphasize the section */
+    border-left: 5px solid var(--accent-color); /* Border for visibility */
 }
 
 /* Section Headers */
@@ -89,11 +89,38 @@ p {
     background-color: var(--button-hover-color);
 }
 
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    /* Update section background for dark mode */
+    section {
+        background-color: var(--dark-section-bg); /* Define dark mode background */
+        border-left: 5px solid var(--dark-accent-color); /* Adjust for dark mode */
+    }
+
+    h2 {
+        color: var(--dark-text-color); /* Adjust heading color */
+        border-bottom: 2px solid var(--dark-accent-color); /* Dark mode heading border */
+    }
+
+    .flight-plan-container {
+        background-color: var(--dark-content-bg);
+        box-shadow: 0 4px 10px var(--dark-shadow-color);
+    }
+
+    .return-home-button {
+        background-color: var(--dark-accent-color);
+    }
+
+    .return-home-button:hover {
+        background-color: var(--dark-button-hover-color);
+    }
+}
+
 /* Responsive Styling */
 @media screen and (max-width: 768px) {
     .flight-plan-container {
         padding: 20px;
-        width: 95%; /* Ensure container is almost full width on smaller screens */
+        width: 95%;
     }
 
     h2 {
