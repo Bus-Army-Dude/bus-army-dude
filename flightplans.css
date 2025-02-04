@@ -143,8 +143,8 @@ p {
     --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow color */
     --button-text-color: #ffffff; /* Button text color */
     --button-hover-color: #0056b3; /* Button hover color */
-    --section-border-color: #ddd; /* Light gray border color for light mode */
-    --section-bg: #ffffff; /* Section background for light mode */
+    --section-border-color: #e0e0e0; /* Border color for light mode (light gray) */
+    --section-bg: #ffffff; /* Section background for light mode (white) */
 }
 
 /* Dark Mode Theme */
