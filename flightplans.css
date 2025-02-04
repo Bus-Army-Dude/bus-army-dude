@@ -183,6 +183,11 @@ p {
     gap: 10px;
 }
 
+/* To center the "Loading..." text in case the icon is hidden */
+#flight-status.no-flight-scheduled p {
+    justify-content: center;  /* Centers text when no flight scheduled */
+}
+
 /* Flight Status Classes */
 .flight-scheduled {
     background-color: #28a745;
@@ -212,18 +217,21 @@ p {
     background-color: #6c757d;
     color: white;
     border: 2px solid #5a6268;
+    font-style: italic; /* Optional: To distinguish loading state */
 }
 
+/* Flight Status Icons */
 .flight-scheduled .status-icon,
-.no-flight-scheduled .status-icon,
 .flight-in-progress .status-icon,
 .flight-completed .status-icon,
-.flight-cancelled .status-icon {
+.flight-cancelled .status-icon,
+.no-flight-scheduled .status-icon {
     width: 24px;
     height: 24px;
     display: inline-block;
     border-radius: 50%;
     background-size: contain;
+    background-repeat: no-repeat;
 }
 
 /* Icons for each status */
