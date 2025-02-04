@@ -170,7 +170,7 @@ p {
     transition: all 0.3s ease-in-out;
     text-align: center;
     min-width: 250px;
-    max-width: 350px; /* Limiting the size */
+    max-width: 350px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -181,11 +181,6 @@ p {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-/* To center the "Loading..." text in case the icon is hidden */
-#flight-status.no-flight-scheduled p {
-    justify-content: center;  /* Centers text when no flight scheduled */
 }
 
 /* Flight Status Classes */
@@ -217,21 +212,14 @@ p {
     background-color: #6c757d;
     color: white;
     border: 2px solid #5a6268;
-    font-style: italic; /* Optional: To distinguish loading state */
 }
 
-/* Flight Status Icons */
-.flight-scheduled .status-icon,
-.flight-in-progress .status-icon,
-.flight-completed .status-icon,
-.flight-cancelled .status-icon,
-.no-flight-scheduled .status-icon {
+.status-icon {
     width: 24px;
     height: 24px;
     display: inline-block;
     border-radius: 50%;
     background-size: contain;
-    background-repeat: no-repeat;
 }
 
 /* Icons for each status */
@@ -253,6 +241,10 @@ p {
 .flight-cancelled .status-icon {
     background-color: #c82333;
     background-image: url('https://cdn-icons-png.flaticon.com/512/190/190414.png');
+}
+
+.no-flight-scheduled .status-icon {
+    background-color: #6c757d;
 }
 
 /* Footer */
