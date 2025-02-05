@@ -359,9 +359,9 @@ body {
 /* TikTok Creator Grid Styles */
 .tiktok-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Grid layout with automatic column fill */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Two columns for responsive design */
     gap: 20px; /* Space between the cards */
-    padding: 20px 0;
+    padding: 20px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -377,7 +377,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow-color);
     position: relative;
-    margin-bottom: 20px; /* Prevent cards touching */
+    margin-bottom: 20px;
 }
 
 /* Hover Effect for TikTok Creator Cards */
@@ -388,9 +388,9 @@ body {
 
 /* TikTok Profile Picture Styles */
 .tiktok-creator-pic {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+    width: 60px; /* Reduced size of the profile picture */
+    height: 60px;
+    border-radius: 50%; /* Circle shape */
     object-fit: cover;
     margin-bottom: 15px;
 }
@@ -403,18 +403,17 @@ body {
     margin-bottom: 5px;
 }
 
-/* TikTok Username Container */
+/* Username Container with Verification Badge */
 .tiktok-username-container {
     display: flex;
     align-items: center;
-    gap: 4px;
-    margin-bottom: 10px;
+    gap: 8px; /* Slight gap between username and checkmark */
 }
 
 /* TikTok Username Text */
 .tiktok-creator-username {
     color: var(--secondary-text);
-    font-size: 0.9em;
+    font-size: 1em;
     margin: 0;
 }
 
@@ -424,25 +423,31 @@ body {
     height: 16px;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 0; /* No margin */
+}
+
+/* Creator Name Style */
+.tiktok-creator-name {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 10px;
 }
 
 /* TikTok Bio Styles */
 .tiktok-creator-bio {
     color: var(--secondary-text);
-    margin: 10px 0;
     font-size: 0.9em;
     line-height: 1.4;
+    margin-bottom: 10px;
 }
 
 /* TikTok Follower Count Styles */
 .tiktok-follower-count {
     color: var(--accent-color);
     font-weight: bold;
-    margin: 10px 0;
+    margin-bottom: 10px;
 }
 
-/* TikTok Visit Profile Button Styles */
+/* Visit Profile Button Styles */
 .tiktok-visit-profile {
     display: inline-block;
     background-color: var(--accent-color);
@@ -450,22 +455,14 @@ body {
     text-decoration: none;
     padding: 8px 16px;
     border-radius: 20px;
-    margin-top: 10px;
-    transition: all 0.3s ease;
     text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Hover effect for Visit Profile Button */
+/* Hover Effect for Visit Profile Button */
 .tiktok-visit-profile:hover {
     background-color: var(--hover-color);
     transform: scale(1.05);
-}
-
-/* TikTok Creator Name Styles */
-.tiktok-creator-header h3 {
-    margin: 0;
-    font-size: 1.1em;
-    color: var(--text-color);
 }
 
 /* Instagram Creator Grid Styles */
