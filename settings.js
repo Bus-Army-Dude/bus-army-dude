@@ -1,38 +1,25 @@
 class SettingsManager {
     constructor() {
-        // Load settings and check if the user is the owner
+        // Load the settings and the owner status
         this.settings = this.loadSettings();
         this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
     }
 
-    // Method to set the profile status manually in JavaScript
-    setProfileStatusManually(status) {
-        if (['online', 'idle', 'offline'].includes(status)) {
-            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
-        } else {
-            console.error('Invalid profile status');
-        }
-    }
-
-    // Method to set the maintenance mode manually in JavaScript
-    setMaintenanceModeManually(isEnabled) {
-        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
-    }
-
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
-            
+            maintenanceMode: false,
+            profileStatus: "online"  // Default value
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
 
     // Check if the user is the owner
     checkIfOwner() {
-        return localStorage.getItem('isOwner') === 'true';  // Checking 'isOwner' in localStorage
+        return localStorage.getItem('isOwner') === 'false';  // Assuming ownership is stored in localStorage
     }
 
     initializeControls() {
@@ -60,6 +47,16 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
+        // Maintenance Mode (Visible and Editable only for owner)
+        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
+        if (maintenanceModeToggle) {
+            maintenanceModeToggle.checked = this.settings.maintenanceMode;
+            maintenanceModeToggle.disabled = !this.isOwner;  // Disable if not owner
+            maintenanceModeToggle.addEventListener('change', (e) => {
+                this.setMaintenanceMode(e.target.checked);
+            });
+        }
+
         // Profile Status (Visible and Editable only for owner)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
@@ -67,16 +64,6 @@ class SettingsManager {
             profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
                 this.setProfileStatus(e.target.value);
-            });
-        }
-
-        // Maintenance Mode (Visible and Editable only for owner)
-        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
-        if (maintenanceModeToggle) {
-            maintenanceModeToggle.checked = this.settings.maintenanceMode;
-            maintenanceModeToggle.disabled = !this.isOwner;
-            maintenanceModeToggle.addEventListener('change', (e) => {
-                this.setMaintenanceMode(e.target.checked);
             });
         }
 
@@ -99,29 +86,6 @@ class SettingsManager {
         this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
-    }
-
-    setProfileStatus(status) {
-        this.settings.profileStatus = status;
-        this.saveSettings();
-        this.applyProfileStatus(status); // Apply status change to the profile
-    }
-
-    applyProfileStatus(status) {
-        const statusElement = document.querySelector('.profile-status');
-        if (statusElement) {
-            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
-            statusElement.classList.add(status); // Add the new status class
-
-            // Change the icon based on the status
-            const statusIcons = {
-                "online": "🟢",
-                "idle": "🟡",
-                "offline": "⚪"
-            };
-
-            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
-        }
     }
 
     applyTheme(isDark = this.settings.darkMode) {
@@ -157,7 +121,8 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 15,
-            
+            maintenanceMode: false,
+            profileStatus: "online"  // Default value
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -197,6 +162,29 @@ class SettingsManager {
         }
     }
 
+    setProfileStatus(status) {
+        this.settings.profileStatus = status;
+        this.saveSettings();
+        this.applyProfileStatus(status); // Apply status change to the profile
+    }
+
+    applyProfileStatus(status) {
+        const statusElement = document.querySelector('.profile-status');
+        if (statusElement) {
+            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
+            statusElement.classList.add(status); // Add the new status class
+
+            // Change the icon based on the status
+            const statusIcons = {
+                "online": "🟢",
+                "idle": "🟡",
+                "offline": "⚪"
+            };
+
+            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
+        }
+    }
+
     // Function to update the year in the footer
     updateFooterYear() {
         const currentYear = new Date().getFullYear();
@@ -207,51 +195,6 @@ class SettingsManager {
     }
 }
 
-// Initialize SettingsManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
-
-    // Example of setting maintenance mode manually
-    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "true"
-
-    // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('offline');  // Set profile status to "idle"
 });
-
-const clientId = 'Ov23liiJwpCt2MVb19WH';
-const redirectUri = 'https://bus-army-dude.github.io/bus-army-dude/callback.html';
-
-// Sign In with GitHub OAuth
-document.getElementById('github-login').addEventListener('click', function() {
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user&redirect_uri=${redirectUri}`;
-    window.location.href = githubAuthUrl;
-});
-
-// Check if user is the owner (after OAuth callback)
-function checkIfOwner(token) {
-    fetch('https://api.github.com/user', {
-        headers: {
-            Authorization: `token ${token}`
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const ownerUsername = 'BusArmyDude'; // Replace with your GitHub username
-        if (data.login === ownerUsername) {
-            // Show owner-only settings
-            document.getElementById('auth-section').style.display = 'none';
-            document.getElementById('owner-settings').style.display = 'block';
-        } else {
-            alert('You do not have permission to access Owner Only Settings.');
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Sign Out
-function signOut() {
-    document.getElementById('owner-settings').style.display = 'none';
-    document.getElementById('auth-section').style.display = 'block';
-    // Clear any stored tokens or authentication
-}
-
