@@ -398,8 +398,8 @@ body {
 .youtube-creator-grid,
 .tiktok-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Same as Instagram and YouTube */
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Same layout as Instagram and YouTube */
+    gap: 20px; /* Ensure space between cards */
     padding: 20px 0;
     width: 100%;
     max-width: 1200px;
