@@ -215,5 +215,5 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsManager.setMaintenanceModeManually(true);  // Set maintenance mode to "true"
 
     // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('idle');  // Set profile status to "idle"
+    settingsManager.setProfileStatusManually('online');  // Set profile status to "idle"
 });
