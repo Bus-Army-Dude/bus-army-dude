@@ -262,34 +262,3 @@ body.settings-page {
 .settings-page .back-link:hover {
     color: var(--hover-color);
 }
-
-/* OAuth Button */
-.oauth-btn {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.oauth-btn:hover {
-    background-color: #444;
-}
-
-/* Sign Out Button */
-.sign-out-btn {
-    background-color: #f00;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.sign-out-btn:hover {
-    background-color: #d00;
-}
