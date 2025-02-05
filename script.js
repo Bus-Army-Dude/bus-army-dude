@@ -175,7 +175,7 @@ const tiktokShoutouts = {
     ],
     lastUpdatedTime: '2025-02-03T16:04:00', // Manually set the last updated date and time
     regionsAvailability: {
-        US: true, // Banned in the US
+        US: false, // Banned in the US
         CA: false, // Available in Canada
         GB: false, // Available in the UK
         AU: false, // Available in Australia
