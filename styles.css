@@ -398,7 +398,7 @@ body {
 .youtube-creator-grid,
 .tiktok-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ensures grid is responsive */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Same as Instagram and YouTube */
     gap: 20px;
     padding: 20px 0;
     width: 100%;
@@ -526,7 +526,6 @@ body {
     text-align: center;
 }
 
-/* Hover Effect for Visit Profile Button */
 .visit-profile:hover,
 .instagram-visit-profile:hover,
 .youtube-visit-profile:hover,
