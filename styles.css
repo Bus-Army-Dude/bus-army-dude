@@ -392,138 +392,6 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color);
 }
 
-/* Creator Shoutouts Common Styles */
-.creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px 0;
-}
-
-.creator-card {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    animation: fadeIn 0.5s ease-out;
-}
-
-.creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.creator-pic {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
-}
-
-.creator-info {
-    flex: 1;
-}
-
-.creator-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.creator-header h3 {
-    margin: 0;
-    font-size: 1.1em;
-    color: var(--text-color);
-    word-break: break-word;
-    line-height: 1.3;
-}
-
-.verified-badge {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    margin-left: 0;  /* No left margin */
-    margin-right: 0; /* No right margin */
-}
-
-.creator-username {
-    color: var(--secondary-text);
-    margin: 5px 0;
-    font-size: 0.9em;
-}
-
-.creator-bio {
-    color: var(--secondary-text);
-    margin: 10px 0;
-    font-size: 0.9em;
-    line-height: 1.4;
-}
-
-.visit-profile {
-    display: inline-block;
-    background-color: var(--accent-color);
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    margin-top: 10px;
-    transition: opacity 0.3s ease;
-    text-align: center;
-}
-
-.visit-profile:hover {
-    opacity: 0.9;
-    background-color: var(--hover-color);
-}
-
-/* TikTok Message Styles (Displayed when TikTok is unavailable in a region) */
-.tiktok-message {
-    background-color: var(--error-bg);
-    color: var(--error-text);
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 1.1em;
-    text-align: center;
-}
-
-.tiktok-message.show {
-    display: block;
-}
-
-.tiktok-message p {
-    margin: 0;
-    font-size: 1em;
-}
-
-/* Shoutouts Section Styles */
-.shoutouts-section {
-    padding: 40px;
-    background-color: var(--section-bg);
-}
-
-#tiktok-shoutouts {
-    margin-bottom: 20px;
-    color: var(--heading-color);
-    font-size: 1.5em;
-    font-weight: bold;
-    text-align: center;
-}
-
-#tiktok-last-updated-timestamp {
-    font-size: 0.9em;
-    color: var(--secondary-text);
-    text-align: center;
-    margin-top: 5px;
-}
-
 /* TikTok Creator Shoutouts */
 .tiktok-creator-section {
     background-color: var(--content-bg);
@@ -556,6 +424,71 @@ body {
 .tiktok-creator-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.tiktok-creator-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.tiktok-creator-info {
+    flex: 1;
+}
+
+.tiktok-creator-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.tiktok-creator-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--text-color);
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.tiktok-verified-badge {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-left: 0;  /* No left margin */
+    margin-right: 0; /* No right margin */
+}
+
+.tiktok-creator-username {
+    color: var(--secondary-text);
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.tiktok-creator-bio {
+    color: var(--secondary-text);
+    margin: 10px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.tiktok-visit-profile {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-top: 10px;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+.tiktok-visit-profile:hover {
+    opacity: 0.9;
+    background-color: var(--hover-color);
 }
 
 .follower-count {
