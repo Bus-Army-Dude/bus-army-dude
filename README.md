@@ -7,7 +7,7 @@ A centralized platform displaying detailed tech specifications, accessibility re
 ### 🚀 Features
 - Device Information
 - Comprehensive tech specifications
-- Real-time battery status
+- Battery Status
 - Software version tracking
 - Accessibility Resources
   - Verified medical resources
@@ -31,6 +31,10 @@ A centralized platform displaying detailed tech specifications, accessibility re
   - An option to switch between light and dark modes on the settings page.
 - **Font Size Adjustment**
   - An option to adjust the font size on the settings page under Accessibility.
+- **Maintence Mode (Owner Only)**
+  - An option for the owner to show a message at the top of the website for doing maintence.
+- **Profile Status (Owner Only)**
+  - An option for the owner to show the status if he is (Online, Idle, or Offline).
 
 ### 💻 Supported Operating Systems
 - iOS
@@ -50,11 +54,14 @@ A centralized platform displaying detailed tech specifications, accessibility re
 **Current Version:** v1.11.0
 
 ### 📱 Browser Support
-- Chrome (Latest)
-- Firefox (Latest)
-- Safari (Latest)
-- Edge (Latest)
-- Opera (Latest)
+- Chrome (Latest) (133.0.6943.35)
+- Firefox (Latest) (134.0.2)
+- Safari (Latest) (18)
+- Safari (in-app) (Latest) (18)
+- Edge (Latest) (Version 132)
+- Opera (Latest) (Opera One R2)
+- Mozilla (Latest) (134.0.2 for desktop and 135.0 for iOS)
+- Samsung Internet (Latest) (27.0.0.79)
 
 ### 📞 Support
 For technical support or inquiries:
