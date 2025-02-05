@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub OAuth Callback</title>
+</head>
+<body>
+    <script>
+        // Extract the code from the URL
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+
+        // Now exchange the code for an access token
+        if (code) {
+            // Here you would make a request to your server to exchange the code for a token
+            // For demo purposes, we'll log the code (Note: Real implementation needs a backend)
+            console.log('GitHub Authorization Code:', code);
+
+            // Example: if you had a server exchanging the code, you would then fetch the token:
+            // Example server request:
+            // fetch('https://yourserver.com/exchange-code', {
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'application/json'
+            //   },
+            //   body: JSON.stringify({ code })
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //   checkIfOwner(data.token);  // Verify if the user is the owner
+            // });
+
+            // Temporary Redirect back to home page
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
