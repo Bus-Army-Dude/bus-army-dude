@@ -167,42 +167,6 @@ body {
     background-color: #00cc00; /* Slightly darker green on hover */
 }
 
-/* New Flight Plans Button */
-.flightplans-button {
-    position: absolute;
-    top: 20px;
-    left: 20px; /* Positioned on the left side of the page */
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: url('flight-icon.png') center/18px no-repeat;
-    background-color: #00aaff; /* Blue background */
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-.flightplans-button:hover {
-    transform: rotate(45deg);
-    background-color: #0088cc; /* Slightly darker blue on hover */
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .settings-button, .flightplans-button {
-        width: 25px;
-        height: 25px;
-        top: 15px;
-        background-size: 15px;
-    }
-
-    .flightplans-button {
-        left: 15px; /* Adjusted position for smaller screens */
-    }
-}
-
 /* Current Date/Time Section */
 .datetime-section {
     background-color: var(--content-bg);
@@ -395,8 +359,8 @@ body {
 /* TikTok Creator Grid Styles */
 .tiktok-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Same layout as Instagram and YouTube */
-    gap: 20px; /* Ensure space between cards */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Grid layout with automatic column fill */
+    gap: 20px; /* Space between the cards */
     padding: 20px 0;
     width: 100%;
     max-width: 1200px;
@@ -413,11 +377,10 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow-color);
     position: relative;
-    margin-bottom: 20px; /* Added margin to prevent touching */
-    height: 100%; /* Prevent stretching */
+    margin-bottom: 20px; /* Prevent cards touching */
 }
 
-/* Hover Effect on Cards */
+/* Hover Effect for TikTok Creator Cards */
 .tiktok-creator-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px var(--shadow-color);
@@ -432,7 +395,7 @@ body {
     margin-bottom: 15px;
 }
 
-/* TikTok Header Styles */
+/* TikTok Header and Username Styles */
 .tiktok-creator-header {
     display: flex;
     align-items: center;
@@ -440,7 +403,7 @@ body {
     margin-bottom: 5px;
 }
 
-/* TikTok Username Container with Verification Badge */
+/* TikTok Username Container */
 .tiktok-username-container {
     display: flex;
     align-items: center;
@@ -448,21 +411,20 @@ body {
     margin-bottom: 10px;
 }
 
-/* TikTok Username Styles */
+/* TikTok Username Text */
 .tiktok-creator-username {
     color: var(--secondary-text);
     font-size: 0.9em;
     margin: 0;
 }
 
-/* TikTok Verification Badge Styles */
+/* TikTok Verification Badge */
 .tiktok-verified-badge {
     width: 16px;
     height: 16px;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 0;  /* No margin */
-    margin-right: 0; /* No margin */
+    margin-left: 0; /* No margin */
 }
 
 /* TikTok Bio Styles */
@@ -473,7 +435,7 @@ body {
     line-height: 1.4;
 }
 
-/* TikTok Follower/Subscriber Count Styles */
+/* TikTok Follower Count Styles */
 .tiktok-follower-count {
     color: var(--accent-color);
     font-weight: bold;
@@ -493,6 +455,7 @@ body {
     text-align: center;
 }
 
+/* Hover effect for Visit Profile Button */
 .tiktok-visit-profile:hover {
     background-color: var(--hover-color);
     transform: scale(1.05);
