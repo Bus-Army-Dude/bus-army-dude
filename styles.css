@@ -420,6 +420,7 @@ body {
     box-shadow: 0 2px 4px var(--shadow-color);
     position: relative;
     margin-bottom: 20px; /* Added margin to prevent touching */
+    height: 100%; /* Prevent stretching */
 }
 
 /* Hover Effect on Cards */
