@@ -483,48 +483,7 @@ body {
     background-color: var(--hover-color);
 }
 
-/* TikTok Message Styles (Displayed when TikTok is unavailable in a region) */
-.tiktok-message {
-    background-color: var(--error-bg);
-    color: var(--error-text);
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 1.1em;
-    text-align: center;
-}
-
-.tiktok-message.show {
-    display: block;
-}
-
-.tiktok-message p {
-    margin: 0;
-    font-size: 1em;
-}
-
-/* Shoutouts Section Styles */
-.shoutouts-section {
-    padding: 40px;
-    background-color: var(--section-bg);
-}
-
-#tiktok-shoutouts {
-    margin-bottom: 20px;
-    color: var(--heading-color);
-    font-size: 1.5em;
-    font-weight: bold;
-    text-align: center;
-}
-
-#tiktok-last-updated-timestamp {
-    font-size: 0.9em;
-    color: var(--secondary-text);
-    text-align: center;
-    margin-top: 5px;
-}
-
-/* TikTok Creator Section */
+/* TikTok Creator Shoutouts */
 .tiktok-creator-section {
     background-color: var(--content-bg);
     padding: 20px;
@@ -533,109 +492,18 @@ body {
     box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* TikTok Creator Grid */
 .tiktok-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Make it responsive */
-    gap: 20px;
-    padding: 20px 0;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    composes: creator-grid;
 }
 
-/* TikTok Creator Card */
 .tiktok-creator-card {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    position: relative;
+    composes: creator-card;
 }
 
-/* Hover Effects on TikTok Creator Card */
-.tiktok-creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-/* TikTok Creator Profile Picture */
-.tiktok-creator-pic {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
-}
-
-/* TikTok Creator Header */
-.tiktok-creator-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-/* TikTok Creator Name */
-.tiktok-creator-header h3 {
-    margin: 0;
-    font-size: 1.1em;
-    color: var(--text-color);
-}
-
-/* TikTok Creator Username & Verification Badge */
-.tiktok-username-container {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-bottom: 10px;
-}
-
-.tiktok-creator-username {
-    color: var(--secondary-text);
-    font-size: 0.9em;
-    margin: 0;
-}
-
-.tiktok-verified-badge {
-    width: 16px;
-    height: 16px;
-}
-
-/* TikTok Creator Bio */
-.tiktok-creator-bio {
-    color: var(--secondary-text);
-    margin: 10px 0;
-    font-size: 0.9em;
-    line-height: 1.4;
-}
-
-/* TikTok Creator Followers Count */
-.tiktok-follower-count {
+.follower-count {
     color: var(--accent-color);
     font-weight: bold;
     margin: 10px 0;
-}
-
-/* Visit Profile Button */
-.tiktok-visit-profile {
-    display: inline-block;
-    background-color: var(--accent-color);
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-.tiktok-visit-profile:hover {
-    background-color: var(--hover-color);
-    transform: scale(1.05);
 }
 
 /* Common Creator Grid Styles */
