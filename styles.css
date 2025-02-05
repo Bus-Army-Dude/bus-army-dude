@@ -388,7 +388,7 @@ body {
 
 /* TikTok Profile Picture Styles */
 .tiktok-creator-pic {
-    width: 60px; /* Reduced size of the profile picture */
+    width: 60px; /* Profile picture size adjusted */
     height: 60px;
     border-radius: 50%; /* Circle shape */
     object-fit: cover;
@@ -399,7 +399,7 @@ body {
 .tiktok-creator-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 8px; /* Space between username and checkmark */
     margin-bottom: 5px;
 }
 
@@ -407,7 +407,7 @@ body {
 .tiktok-username-container {
     display: flex;
     align-items: center;
-    gap: 8px; /* Slight gap between username and checkmark */
+    gap: 8px; /* Space between username and checkmark */
 }
 
 /* TikTok Username Text */
