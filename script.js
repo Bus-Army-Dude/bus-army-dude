@@ -1,676 +1,578 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Bus Army Dude's Profile</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ai-features.css">
-    <link rel="stylesheet" href="settings.css">
-    <meta http-equiv="refresh" content="300">
+document.addEventListener('DOMContentLoaded', () => {
+    // Enhanced Copy Protection
+    const enhancedCopyProtection = {
+        init() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('copy', e => e.preventDefault());
+        }
+    };
+
+    // Initialize copy protection
+    enhancedCopyProtection.init();
+
+// Device detection function
+function detectDetailedDevice() {
+    const ua = navigator.userAgent;
+    let deviceInfo = '';
+
+    const operatingSystems = {
+        apple: {
+            iOS: ['18.3', '18.2.1', '18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
+            iPadOS: ['18.3','18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
+            macOS: ['15.3', '15.2', '15.1', '15', '14', '13', '12', '11', '10.15', '10.14', '10.13', '10.12', '10.11', '10.10', '10.9', '10.8', '10.7', '10.6', '10.5', '10.4', '10.3', '10.2', '10.1', '10.0']
+        },
+        microsoft: {
+            Windows: ['11', '10', '8.1', '8', '7']
+        },
+        android: ['15', '14', '13', '12', '11', '10'],
+        linux: [
+            'Fedora', 'Arch Linux', 'Red Hat Enterprise Linux', 'Kali Linux', 'Manjaro', 'Ubuntu', 'Linux Mint'
+        ],
+        unix: ['FreeBSD', 'OpenBSD', 'NetBSD'],
+        chrome: ['Chrome OS'],
+        blackberry: ['BlackBerry OS'],
+        webos: ['webOS'],
+        other: ['Unknown Device']
+    };
+
+    const getLatestVersion = (platform) => {
+        switch(platform) {
+            case 'iOS': return operatingSystems.apple.iOS[0];
+            case 'iPadOS': return operatingSystems.apple.iPadOS[0];
+            case 'macOS': return operatingSystems.apple.macOS[0];
+            case 'Windows': return operatingSystems.microsoft.Windows[0];
+            case 'Android': return operatingSystems.android[0];
+            case 'Linux': return operatingSystems.linux[0];
+            case 'FreeBSD': return operatingSystems.unix[0];
+            case 'OpenBSD': return operatingSystems.unix[1];
+            case 'NetBSD': return operatingSystems.unix[2];
+            case 'Chrome OS': return operatingSystems.chrome[0];
+            case 'BlackBerry OS': return operatingSystems.blackberry[0];
+            case 'webOS': return operatingSystems.webos[0];
+            default: return operatingSystems.other[0];
+        }
+    };
+
+    // Check iPhone
+    if (/iPhone/.test(ua)) {
+        const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
+        deviceInfo = `iPhone (iOS ${version})`;
+    }
+    // Check iPad
+    else if (/iPad/.test(ua)) {
+        const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
+        deviceInfo = `iPad (iPadOS ${version})`;
+    }
+    // Check Android
+    else if (/Android/.test(ua)) {
+        const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
+        deviceInfo = `Android ${version}`;
+    }
+    // Check Windows
+    else if (/Windows/.test(ua)) {
+        const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
+        deviceInfo = `Windows ${version}`;
+    }
+    // Check macOS
+    else if (/Macintosh/.test(ua)) {
+        const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1] || getLatestVersion('macOS');
+        deviceInfo = `macOS ${version}`;
+    }
+    // Check other platforms
+    else {
+        deviceInfo = 'Unknown Device';
+    }
+
+    return deviceInfo;
+}
+
+// Time update function
+function updateTime() {
+    const now = new Date();
+    const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
+    const timeElement = document.querySelector('.update-time');
+    if (timeElement) {
+        timeElement.textContent = `${timestamp}`;
+    }
+}
+
+// Page refresh countdown set to 5 minutes (300 seconds)
+const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
+let startTime = Date.now();
+
+function updateCountdown() {
+    const countdownElement = document.querySelector('.countdown');
+    const timeElapsed = Date.now() - startTime;
+    const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);  // Convert ms to seconds
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    if (timeLeft >= 0) {
+        const minutes = Math.floor(timeLeft / 60);  // Get full minutes
+        const seconds = timeLeft % 60;              // Get remaining seconds
+        
+        if (countdownElement) {
+            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+        }
+    } else {
+        smoothReload();  // Smooth reload when time is up
+    }
+}
+
+// Smoothly reload the page with a fade-out effect
+function smoothReload() {
+    const body = document.body;
+    body.style.transition = 'opacity 0.5s ease';
+    body.style.opacity = '0';
+
+    setTimeout(function() {
+        location.reload();
+    }, 500); // Delay the reload to allow fade-out
+}
+
+// Update version panel with device info
+function updateVersionPanel() {
+    const deviceElement = document.querySelector('.device-info');
+    if (deviceElement) {
+        deviceElement.textContent = `${detectDetailedDevice()}`;
+    }
+}
+
+// Call the functions on page load
+window.onload = function() {
+    updateVersionPanel();
+    updateTime();
+    updateCountdown();
     
-      gtag('config', 'G-E0RSQS1MS7');
-    </script>
+    // Synchronize both time and countdown updates every second
+    setInterval(() => {
+        updateTime();
+        updateCountdown();
+    }, 1000);  // Update both every second
+};
     
-    <!-- Favicons and Icons -->
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff"/>
+// TikTok Shoutouts
+const tiktokShoutouts = {
+    accounts: [
+        { username: 'mrbeast', isVerified: true, followers: '114.2M', nickname: 'MrBeast', bio: 'New CEO of Tiktok?', profilePic: 'images/mrbeast.jpeg' },
+        { username: 'teamtrump', isVerified: true, followers: '8.8M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
+        { username: 'carterpcs', isVerified: true, followers: '5.6M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'images/carterpcs.jpeg' },
+        { username: 'applesauceandadhd', isVerified: true, followers: '3.9M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'images/applesauceandadhd.jpeg' },
+        { username: 'tatechtips', isVerified: true, followers: '3.2M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
+        { username: 'imparkerburton', isVerified: false, followers: '2.9M', nickname: 'Parker Burton', bio: 'That Android Guy, Business: parker@imparkerburton.com', profilePic: 'images/imparkerburton.jpeg' },
+        { username: 'kennedylawfirm', isVerified: false, followers: '1.9M', nickname: 'Lawyer Kevin Kennedy', bio: "The Kennedy Law Firm, PLLC, Clarksville, TN, Kev's got you covered™️", profilePic: 'images/kennedylawfirm.jpeg' },
+        { username: 'badge502', isVerified: false, followers: '804K', nickname: 'Badge502', bio: 'NREMT - 911/EMD PO Box 775 Belleville, NJ 07109 *I DONT HAVE A BACKUP ACCOUNT*', profilePic: 'images/badge502.jpeg' },
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '698.1K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        { username: 'kaylee_mertens_', isVerified: false, followers: '674.5K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
+        { username: 'mrfatcheeto', isVerified: false, followers: '570.4K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
+        { username: 'trafficlightdoctor', isVerified: false, followers: '385.1K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
+        { username: 'captainsteeeve', isVerified: false, followers: '285.1K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },       
+        { username: 'aggressiveafterdark', isVerified: false, followers: '349.7K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
+        { username: 'rachel_hughes', isVerified: false, followers: '310.7K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
+        { username: 'badge5022', isVerified: false, followers: '20.7K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
+        { username: 'raisingramsey2023', isVerified: false, followers: '1,199', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
+        { username: 'jerridc4', isVerified: false, followers: '479', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
+        { username: 'officalbusarmydude', isVerified: false, followers: '19', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
+        // Add more shoutouts here...
+    ],
+    lastUpdatedTime: '2025-02-03T16:04:00', // Manually set the last updated date and time
+    init() {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+    },
+    createShoutoutCards() {
+        const container = document.querySelector('.creator-grid');
+        if (!container) return;
 
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration -->
-    <meta name="browserconfig" content="/browserconfig.xml">
-</head>
-<body class="dark-mode">
-    <div class="container">
-
-
-<!-- Maintenance Mode Message -->
-<div id="maintenanceModeMessage" style="display: none; background-color: red; color: white; text-align: center; padding: 20px;">
-    <h2>We're Performing Some Upgrades!</h2>
-    <p>
-        Our website is currently undergoing scheduled maintenance to improve your experience. We’re making some big updates, so things will be smoother, faster, and even better when we're done.
-    </p>
-    <p>
-        During this time, certain features may be temporarily unavailable, and you might not be able to access all parts of the site. But don’t worry, we’re working hard to get everything back up and running as quickly as possible.
-    </p>
-    <p>
-        Please check back soon, or follow our social media pages for updates on when we’ll be live again. We appreciate your patience and can’t wait to show you what’s new!
-    </p>
-    <p><strong>Thank you for your understanding!</strong></p>
-</div>
-
-    <!-- Profile Section -->
-<div class="profile-section">
-    <div class="profile-pic-wrapper">
-        <!-- Settings Button -->
-        <button class="settings-button" aria-label="Settings" onclick="window.location.href='settings.html'"></button>
-        
-        <!-- Profile Picture -->
-        <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
-        
-        <!-- Profile Status Circle (half in, half out) -->
-        <div class="profile-status-container">
-            <span class="profile-status">🟢</span> <!-- This status will update dynamically -->
-        </div>
-    </div>
-
-    <div class="username-checkmark">
-        <h1>Bus Army Dude</h1>
-        <img src="check.png" alt="Verified" class="verified">
-    </div>
-    <p>CURRENT PRESIDENT: Trump (2025-2029), Political party: Republican</p>
-</div>
-        
-        <!-- Social Links Section -->
-        <div class="social-links-section">
-            <h2>Connect with Me</h2>
-            <div class="social-links-container">
-                <a href="https://www.tiktok.com/@officalbusarmydude" class="social-button">
-                    <img src="tiktok.png" alt="TikTok" class="social-icon">
-                    <span>TikTok</span>
-                </a>
-                <a href="https://www.youtube.com/@BusArmyDude" class="social-button">
-                    <img src="youtube.png" alt="YouTube" class="social-icon">
-                    <span>YouTube</span>
-                </a>
-                <a href="https://www.snapchat.com/add/riverkritzar" class="social-button">
-                    <img src="snapchat-logo.svg" alt="Snapchat" class="social-icon">
-                    <span>Snapchat</span>
-                </a>
-                <a href="https://x.com/KritzarRiver" class="social-button">
-                    <img src="X_logo_2023_original.svg" alt="X" class="social-icon">
-                    <span>X (Twitter)</span>
-                </a>
-                <a href="https://m.twitch.tv/BusArmyDude" class="social-button">
-                    <img src="logo-twitch.svg" alt="Twitch" class="social-icon">
-                    <span>Twitch</span>
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=61569972389004" class="social-button">
-                    <img src="meta.png" alt="Facebook" class="social-icon">
-                    <span>Facebook</span>
-                </a>
-                <a href="https://steamcommunity.com/profiles/76561199283946668" class="social-button">
-                    <img src="Steam_icon_logo.svg.png" alt="Steam" class="social-icon">
-                    <span>Steam</span>
-                </a>
-                <a href="https://discord.gg/NjMtuZYc52" class="social-button">
-                    <img src="discord-icon.svg" alt="Discord" class="social-icon">
-                    <span>Discord</span>
-                </a>
-                <a href="https://www.instagram.com/busarmydude/" class="social-button">
-                    <img src="instagram.png" alt="Instagram" class="social-icon">
-                    <span>Instagram</span>
-                </a>
-                <a href="https://www.threads.net/@busarmydude" class="social-button">
-                    <img src="Threads_(app)_logo.svg.png" alt="Threads" class="social-icon">
-                    <span>Threads</span>
-                </a>
-            </div>
-        </div>
-        
-        <!-- Current President -->        
-        <section id="current-president" class="president-section">
-            <h2 class="section-title">Current U.S. President</h2>
-            <div class="president-info">
-                <img src="donaldtrump.jpg" alt="President Donald J. Trump" class="president-photo">
-                <div class="president-details">
-                    <h3 class="president-name">Donald J. Trump</h3>
-                    <p><strong>Born:</strong> June 14, 1946</p>
-                    <p><strong>Height:</strong> 6'3" (190.5 cm)</p>
-                    <p><strong>Party:</strong> Republican Party</p>
-                    <p class="presidential-term"><strong>Presidential Term:</strong> 1/20/25 at 12:00 PM - 1/20/29 at 12:00 PM</p>
-                    <p><strong>Vice President:</strong> James David Vance</p>
-                </div>
-            </div>
-        </section>
-
-        <div id="loading-spinner" class="spinner"></div>
-        
-        <!-- TikTok Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="tiktok-shoutouts">
-                <h2>TikTok Creator Shoutouts</h2>
-                <p id="tiktok-last-updated-timestamp"></p>
-            </div>
-            <div class="creator-grid">
-                <!-- Cards will be dynamically generated here -->
-            </div>
-        </div>
-        
-        <!-- Instagram Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="instagram-shoutouts">
-                <h2>Instagram Creator Shoutouts</h2>
-                <p class="last-updated"><span id="instagram-last-updated-timestamp">N/A</span></p>
-            </div>
-            <div class="instagram-creator-grid">
-                <!-- Instagram creator cards will be dynamically generated here -->
-            </div>
-        </div>
-
-        <!-- YouTube Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="youtube-shoutouts">
-                <h2>YouTube Creator Shoutouts</h2>
-                <p id="lastUpdatedYouTube"></p>
-            </div>
-            <div class="youtube-creator-grid">
-                <!-- YouTube creator cards will be dynamically generated here -->
-            </div>
-        </div>
-        
-        <!-- Links Section -->
-        <div class="links-section section">
-            <h2 class="section-title">Useful Links</h2>
-            <div class="links">
-                <a href="https://rivers-merch-store.printify.me/products" target="_blank">Merch Store (Printify)</a>
-                <a href="https://riverkritzar-shop.fourthwall.com/" target="_blank">Merch Store (Fourthwall)</a>
-                <a href="https://discord.gg/NjMtuZYc52" target="_blank">Join the Bus Army Dude's Community Discord Server!</a>
-                <a href="https://forms.gle/wmugwzd7W3VGghw6A" target="_blank">Bug Report Form!</a>
-                <a href="https://forms.gle/4n2UyC1JSJobPPpy5" target="_blank">Feedback or Suggestions Form!</a>
-            </div>
-        </div>
-        
-        <!-- Countdown Section -->
-        <div class="countdown-section">
-            <h2>Countdown to BUS ARMY DUDE'S 20TH BIRTHDAY</h2>
-            <div class="countdown-container">
-                <div class="countdown-block">
-                    <div id="countdown-days" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="creator-info">
+                    <div class="creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
                     </div>
-                    <div class="countdown-label">Days</div>
+                    <p class="creator-username">@${account.username}</p>
+                    <p class="creator-bio">${account.bio || ''}</p>
+                    <p class="follower-count">${account.followers} Followers</p>
+                    <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">
+                        Visit Profile
+                    </a>
                 </div>
-                <div class="countdown-block">
-                    <div id="countdown-hours" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-block">
-                    <div id="countdown-minutes" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-block">
-                    <div id="countdown-seconds" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
-            </div>
-        </div>
+            `;
+            container.appendChild(card);
+        });
+    },
+    setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
+        if (!lastUpdatedElement) return;
 
-<!-- Calendar Section -->
-<section class="section" data-section-id="events">
-    <div class="section-content">
-        <h2 class="section-title">Upcoming Events</h2>
-        <div class="events-container" id="eventsContainer"></div>
-    </div>
-</section>
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+            timeZone: userTimeZone,
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+    }
+};
+
+// Initialize the TikTok shoutouts
+tiktokShoutouts.init();
+
+const instagramShoutouts = {
+    accounts: [
+        { username: 'mrbeast', isVerified: true, followers: '65.5M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
+        { username: 'applesauceandadhd', isVerified: true, followers: '753K', nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },    
+        { username: 'emtbadge502', isVerified: true, followers: '495K', nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },    
+        { username: 'trafficlightdoctor', isVerified: true, followers: '312K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },            
+        { username: 'mrfattcheeto', isVerified: true, followers: '285K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },    
+        { username: 'heyrachelhughes', isVerified: false, followers: '101K', nickname: 'Rachel Hughes', bio: 'PPersonal blog, YouTube + TikTok: Rachel_Hughes, ALL INQUIRIES: houseofhughes@thestation.io, 20% off Bucked Up: RACHELHUGHES', profilePic: 'instagram_photos/houseofhughes.jpeg' },                            
+        { username: 'lisa.remillard', isVerified: true, followers: '100K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },                    
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '51.4K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },    
+        { username: 'kaylee_mertens_', isVerified: false, followers: '3,150', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },    
+        { username: 'riverkritzar', isVerified: false, followers: '87', nickname: 'River Jordan Kritzar', bio: "Hello, my name is River, I am 19. I am autistic. I love technology.", profilePic: 'instagram_photos/riverkritzar.jpg' },
+        { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
+        { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
+        { username: 'busarmydude', isVerified: false, followers: '20', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
+        // Add more Instagram creators as needed
+    ],
+    lastUpdatedTime: '2025-02-03T11:39:20', // Manually set the last updated date and time
+    init() {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+    },
+    createShoutoutCards() {
+        const container = document.querySelector('.instagram-creator-grid');
+        if (!container) return;
+
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'instagram-creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="${account.nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="instagram-creator-info">
+                    <div class="instagram-creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''}
+                    </div>
+                    <p class="instagram-creator-username">${account.username}</p>
+                    <p class="instagram-creator-bio">${account.bio || ''}</p>
+                    <p class="instagram-follower-count">${account.followers} Followers</p>
+                    <a href="https://instagram.com/${account.username}" target="_blank" class="instagram-visit-profile">
+                        Visit Profile
+                    </a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    },
+    setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
+        if (!lastUpdatedElement) return;
+
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+            timeZone: userTimeZone,
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+    }
+};
+
+// Initialize the YouTube shoutouts
+instagramShoutouts.init();
+
+const youtubeShoutouts = {
+    accounts: [
+        { username: '@MrBeast', isVerified: true, subscribers: '355M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
+        { username: '@MrBeast2', isVerified: true, subscribers: '48.6M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
+        { username: '@MrBeastGaming', isVerified: true, subscribers: '46.5M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
+        { username: '@BeastReacts', isVerified: true, subscribers: '35.3M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
+        { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.3M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
+        { username: '@CaptainSteeeve', isVerified: true, subscribers: '297K', nickname: 'Captain Steeeve', bio: 'No bio yet', profilePic: 'youtube_photoes/IMG_2371.jpeg' },                        
+        { username: '@rachel_hughes', isVerified: false, subscribers: '230K', nickname: 'Rachel Hughes', bio: 'My name is Rachel Hughes :) I am a 30 year old, mom of two, living in Utah! I love sharing my experiences and life regarding mental health, leaving religion, overcoming an eating disorder, having a disabled child, fitness, beauty and more! Thank you so much for being here. xo', profilePic: 'youtube_photoes/rachel_hughes.jpg' },        
+        { username: '@Trafficlightdoctor', isVerified: false, subscribers: '153K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
+        { username: '@mrfatcheeto', isVerified: false, subscribers: '101K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
+        { username: '@Badge502', isVerified: false, subscribers: '61.2K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
+        { username: '@BusArmyDude', isVerified: false, subscribers: '0', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' },     
+        // Add more YouTube creators as needed
+    ],
+    lastUpdatedTime: '2025-02-03T16:17:00', // Manually set the last updated date and time
+    init() {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+    },
+    createShoutoutCards() {
+        const container = document.querySelector('.youtube-creator-grid');
+        if (!container) return;
+
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'youtube-creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="youtube-creator-info">
+                    <div class="youtube-creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''}
+                    </div>
+                    <p class="youtube-creator-username">${account.username}</p>
+                    <p class="youtube-creator-bio">${account.bio || ''}</p>
+                    <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
+                    <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
+                        Visit Channel
+                    </a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    },
+    setLastUpdatedTime() {
+        const lastUpdatedElement = document.getElementById('lastUpdatedYouTube');
+        if (!lastUpdatedElement) return;
+
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+            timeZone: userTimeZone,
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+
+        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+    }
+};
+
+youtubeShoutouts.init();
+    
+// New Year countdown
+function updateNewYearCountdown() {
+    const now = new Date();
+    const newYear = new Date('2025-02-27T03:00:00');
+    const diff = newYear - now;
+
+    const countdownSection = document.querySelector('.countdown-section');
+    if (!countdownSection) return;
+
+    if (diff <= 0) {
+        countdownSection.innerHTML = `
+            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                HAPPY 20TH BIRTHDAY BUS ARMY DUDE ENJOY IT GOD LOVE'S YOU!!!!!
+            </h2>
+            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+        `;
+    } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Update flip clock for days
+        updateFlipClock('countdown-days', days);
+
+        // Update flip clock for hours
+        updateFlipClock('countdown-hours', hours);
+
+        // Update flip clock for minutes
+        updateFlipClock('countdown-minutes', minutes);
+
+        // Update flip clock for seconds
+        updateFlipClock('countdown-seconds', seconds);
+    }
+}
+
+// Function to update flip clock value
+function updateFlipClock(id, value) {
+    const clock = document.getElementById(id);
+    const front = clock.querySelector('.flip-clock-front');
+    const back = clock.querySelector('.flip-clock-back');
+    const valueStr = value.toString().padStart(2, '0');
+
+    if (front.textContent !== valueStr) {
+        front.textContent = valueStr;
+        back.textContent = valueStr;
+
+        // Trigger the flip animation
+        clock.querySelector('.flip-clock-inner').classList.add('flip');
+
+        setTimeout(() => {
+            clock.querySelector('.flip-clock-inner').classList.remove('flip');
+        }, 600); // match the animation duration
+    }
+}
+    
+    // Initialize everything
+    detectDetailedDevice();
+    updateTime();
+    tiktokShoutouts.init();
+    updateNewYearCountdown();
+
+    setInterval(updateTime, 1000);
+    setInterval(updateCountdown, 1000);
+    setInterval(updateNewYearCountdown, 1000);
+});
+
+if (window.location.protocol !== 'https:') {
+    window.location.href = "https://" + window.location.host + window.location.pathname;
+}
+
+// Back to top button functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopButton = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('visible');
+        } else {
+            backToTopButton.classList.remove('visible');
+        }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Modern FAQ functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
         
-        <div class="faq-section">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faq-container">
-        <!-- Basic Information -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Who is Bus Army Dude?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Key Information:</p>
-                <ul>
-                    <li>Content Creator focusing on:
-                        <ul>
-                            <li>Gaming (primarily simulation games)</li>
-                            <li>Tech reviews and updates</li>
-                            <li>AFO journey documentation</li>
-                            <li>Lifestyle content</li>
-                        </ul>
-                    </li>
-                    <li>Platform Presence:
-                        <ul>
-                            <li>Primary: TikTok</li>
-                            <li>Secondary: Instagram</li>
-                            <li>This website for updates</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Gaming Content -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What games do you play?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Currently Installed and Active:</p>
-                <ul>
-                    <li>Farming Simulator 2025</li>
-                    <li>X-Plane 12</li>
-                </ul>
-                <p>Also Own (Currently Not Installed):</p>
-                <ul>
-                    <li>American Truck Simulator</li>
-                    <li>Car Mechanic Simulator 2018</li>
-                    <li>Ark: Survival of the Fittest</li>
-                    <li>Cities: Skylines</li>
-                    <li>Planet Coaster</li>
-                    <li>X-Plane 11</li>
-                </ul>
-                <p>All games are played through Steam, focusing primarily on simulation games.</p>
-            </div>
-        </div>
-
-        <!-- Tech Setup -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What tech do you use?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>I'm fully integrated into the Apple ecosystem:</p>
-                <ul>
-                    <li>iPhone 16 Pro - For mobile content creation and streaming</li>
-                    <li>2023 Mac Mini - For gaming and content editing</li>
-                    <li>Apple Watch Ultra 2 - For daily wear and notifications</li>
-                </ul>
-                <p>This setup allows me to create high-quality content and maintain seamless connectivity across devices.</p>
-            </div>
-        </div>
-
-        <!-- Streaming Information -->
-        <div class="faq-item">
-            <button class="faq-question">
-                When and where do you stream?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>I stream regularly on TikTok. My next stream is scheduled for:</p>
-                <ul>
-                    <li>No upcoming events scheduled</li>
-                </ul>
-                <p>Check the Events section for all upcoming stream schedules.</p>
-            </div>
-        </div>
-
-        <!-- Platform Backup Plan -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What if TikTok gets banned? Where can I find you?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>In case TikTok becomes unavailable:</p>
-                <ul>
-                    <li>Visit bus-army-dude.github.io (this website)</li>
-                    <li>Follow my Instagram (primary backup platform)</li>
-                    <li>Check other social media platforms (links above)</li>
-                </ul>
-                <p>To stay connected:</p>
-                <ul>
-                    <li>Bookmark this website</li>
-                    <li>Follow all backup platforms now</li>
-                    <li>Enable notifications on all platforms</li>
-                    <li>Check this website regularly for updates</li>
-                </ul>
-                <p>This website will always have the most current information about where to find my content.</p>
-            </div>
-        </div>
-
-        <!-- AFO Journey -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Tell me about your AFO journey
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>My AFO Journey Timeline:</p>
-                <ul>
-                    <li>Starting Date: January 31st, 2025 (Friday)</li>
-                    <li>Documentation Plans:
-                        <ul>
-                            <li>Daily updates</li>
-                            <li>Progress tracking</li>
-                            <li>Experience sharing</li>
-                            <li>Q&A sessions</li>
-                        </ul>
-                    </li>
-                </ul>
-                <p>Follow now to join from the beginning of this journey!</p>
-            </div>
-        </div>
-
-        <!-- Gaming Specifics -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Tell me about your Farming Simulator 2025 content
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Farming Simulator 2025 is one of my primary games. During streams I:</p>
-                <ul>
-                    <li>Show different farming techniques</li>
-                    <li>Explore various maps and equipment</li>
-                    <li>Share strategies and tips</li>
-                    <li>Take viewer suggestions</li>
-                    <li>Demonstrate new mods and features</li>
-                </ul>
-                <p>Join my streams to see my current farm progress!</p>
-            </div>
-        </div>
-
-        <!-- X-Plane Content -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What do you do in X-Plane 12?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>In X-Plane 12, I focus on:</p>
-                <ul>
-                    <li>Virtual flying experiences</li>
-                    <li>Different aircraft exploration</li>
-                    <li>Various airports and routes</li>
-                    <li>Flight simulation challenges</li>
-                    <li>Weather condition flying</li>
-                </ul>
-                <p>Watch my streams to see which aircraft I'm currently flying!</p>
-            </div>
-        </div>        
-
-        <!-- Website Technical Details -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Tell me about this website's technical details
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Website Technical Specifications:</p>
-                <ul>
-                    <li>Repository Information:
-                        <ul>
-                            <li>Owner: BusArmyDude</li>
-                            <li>Description: A link in bio for social media accounts</li>
-                        </ul>
-                    </li>
-                    <li>Technology Stack:
-                        <ul>
-                            <li>JavaScript (38.3%)</li>
-                            <li>CSS (24.3%)</li>
-                            <li>HTML (37.4%)</li>
-                        </ul>
-                    </li>
-                    <li>Last Updated: January 28th, 2025 20:10:38 UTC</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Content Protection -->
-        <div class="faq-item">
-            <button class="faq-question">
-                How is the website's content protected?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Content Protection Features:</p>
-                <ul>
-                    <li>Text Protection:
-                        <ul>
-                            <li>Copy-paste disabled for all text content</li>
-                            <li>Text selection disabled</li>
-                            <li>Right-click context menu disabled</li>
-                            <li>Keyboard shortcuts for copying blocked (Ctrl+C, ⌘+C)</li>
-                            <li>Drag-and-drop text selection prevented</li>
-                        </ul>
-                    </li>
-                    <li>Image Protection:
-                        <ul>
-                            <li>Right-click saving disabled</li>
-                            <li>Image dragging prevented</li>
-                            <li>Screenshot prevention measures</li>
-                            <li>Mobile long-press save disabled</li>
-                            <li>Image download blocking</li>
-                        </ul>
-                    </li>
-                    <li>Print Prevention:
-                        <ul>
-                            <li>Print commands blocked (Ctrl+P, ⌘+P)</li>
-                            <li>Print Screen key disabled</li>
-                            <li>Browser print function blocked</li>
-                            <li>PDF conversion prevented</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Additional Security Features -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What other security features are implemented?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Additional Security Measures:</p>
-                <ul>
-                    <li>Cross-Platform Protection:
-                        <ul>
-                            <li>Mobile browser save restrictions</li>
-                            <li>Tablet content protection</li>
-                            <li>Desktop browser security</li>
-                            <li>All major browsers supported</li>
-                        </ul>
-                    </li>
-                    <li>Additional Security:
-                        <ul>
-                            <li>View-source restrictions</li>
-                            <li>Developer tools detection</li>
-                            <li>Iframe embedding prevention</li>
-                            <li>Content scraping protection</li>
-                        </ul>
-                    </li>
-                    <li>Repository Security:
-                        <ul>
-                            <li>Version control through Git</li>
-                            <li>Protected branches</li>
-                            <li>Deployment protection rules</li>
-                            <li>Regular security updates</li>
-                        </ul>
-                    </li>
-                </ul>
-                <p>Last Security Update: January 28th, 2025 20:11:11 UTC</p>
-            </div>
-        </div>
-
-        <!-- Website Updates -->
-        <div class="faq-item">
-            <button class="faq-question">
-                How often is the website updated?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Update Schedule:</p>
-                <ul>
-                    <li>Regular Updates:
-                        <ul>
-                            <li>Content updates (daily)</li>
-                            <li>Schedule updates (weekly)</li>
-                            <li>Feature updates (as needed)</li>
-                            <li>Security patches (immediate)</li>
-                        </ul>
-                    </li>
-                    <li>Version Control:
-                        <ul>
-                            <li>All changes tracked via Git</li>
-                            <li>Public commit history available</li>
-                            <li>Automated deployment process</li>
-                        </ul>
-                    </li>
-                </ul>
-                <p>Last Updated: January 28th, 2025 20:11:11 UTC</p>
-            </div>
-        </div>
-
-        <!-- Final Notes -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Any final notes for the community?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Important Reminders:</p>
-                <ul>
-                    <li>AFO journey begins January 31st</li>
-                    <li>First stream that evening (10:30 PM EST)</li>
-                    <li>Follow all backup platforms</li>
-                    <li>Bookmark this website</li>
-                    <li>Enable notifications</li>
-                    <li>Join our supportive community</li>
-                </ul>
-                <p>Thank you for being part of this journey!</p>
-            </div>
-        </div>
-    </div>
-</div>
-        
-        <!-- Tech Section -->
-        <div class="tech-section section">
-            <h2>Tech Information</h2>
+        question.addEventListener('click', () => {
+            // Check if this item is already active
+            const isActive = item.classList.contains('active');
             
-            <!-- iPhone Section -->
-            <div class="tech-item">
-                <h3>iPhone 16 Pro</h3>
-                <p><span>Model:</span> iPhone 16 Pro</p>
-                <p><span>Material:</span> Titanium</p>
-                <p><span>Storage:</span> 128GB</p>
-                <p><span>Battery Capacity:</span> 3,582mAh</p>
-                <p><span>Color:</span> Natural Titanium</p>
-                <p><span>Price:</span> $1,067.49</p>
-                <p><span>Date Released:</span> September 20, 2024</p>
-                <p><span>Date Bought:</span> November 08, 2024</p>
-                <p><span>OS Version:</span> iOS 18.3 (22D63)</p>
-                <p><span>Battery Capacity %:</span> 100%</p>
-                <p><span>Battery Charge Cycles:</span> 133</p>
-            </div>
+            // Close all FAQ items first
+            faqItems.forEach(faqItem => {
+                // Add a closing animation class if it was active
+                if (faqItem.classList.contains('active')) {
+                    faqItem.classList.add('closing');
+                    setTimeout(() => {
+                        faqItem.classList.remove('closing');
+                    }, 300); // Match this with your CSS transition time
+                }
+                faqItem.classList.remove('active');
+            });
+            
+            // If the clicked item wasn't active before, open it
+            if (!isActive) {
+                item.classList.add('active');
+                // Scroll the item into view if it's not fully visible
+                const rect = item.getBoundingClientRect();
+                const isInViewport = (
+                    rect.top >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+                );
+                
+                if (!isInViewport) {
+                    item.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }
+            }
+        });
+    });
 
-            <!-- Apple Watch Section -->
-            <div class="tech-item">
-                <h3>Apple Watch Ultra 2</h3>
-                <p><span>Model:</span> Apple Watch Ultra 2</p>
-                <p><span>Material:</span> Titanium</p>
-                <p><span>Storage:</span> 64GB</p>
-                <p><span>Battery Capacity:</span> 564mAh</p>
-                <p><span>Color:</span> Natural Titanium</p>
-                <p><span>Price:</span> $853.98</p>
-                <p><span>Date Released:</span> September 22, 2023</p>
-                <p><span>Date Bought:</span> May 17, 2024</p>
-                <p><span>OS Version:</span> WatchOS 11.3 (22S555)</p>
-                <p><span>Battery Capacity %:</span> 97%</p>
-            </div>
+    // Add keyboard navigation
+    faqItems.forEach((item, index) => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (index < faqItems.length - 1) {
+                        faqItems[index + 1].querySelector('.faq-question').focus();
+                    }
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (index > 0) {
+                        faqItems[index - 1].querySelector('.faq-question').focus();
+                    }
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    faqItems[0].querySelector('.faq-question').focus();
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    faqItems[faqItems.length - 1].querySelector('.faq-question').focus();
+                    break;
+            }
+        });
+    });
 
-            <!-- Mac Mini Section -->
-            <div class="tech-item">
-                <h3>2023 Mac Mini M2</h3>
-                <p><span>Model:</span> 2023 Mac Mini M2</p>
-                <p><span>Material:</span> Aluminum</p>
-                <p><span>Storage:</span> 256GB SSD</p>
-                <p><span>Color:</span> Grey</p>
-                <p><span>Price:</span> $742.29</p>
-                <p><span>Date Released:</span> January 17, 2023</p>
-                <p><span>Date Bought:</span> May 16, 2024</p>
-                <p><span>OS Version:</span> macOS Sequoia 15.3 Beta (24D5055b)</p>
-            </div>
-        </div>
+    // Close FAQ when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.faq-item')) {
+            faqItems.forEach(item => {
+                if (item.classList.contains('active')) {
+                    item.classList.add('closing');
+                    setTimeout(() => {
+                        item.classList.remove('active', 'closing');
+                    }, 300);
+                }
+            });
+        }
+    });
+});
 
-        <!-- Disabilities Section -->
-        <div class="disabilities-section section">
-            <h2>Disabilities</h2>
-            <p>I have the following disabilities:</p>
-            <ul>
-                <li><a href="https://www.nimh.nih.gov/health/topics/autism-spectrum-disorders-asd" target="_blank">Autism Spectrum Disorder (ASD)</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/attention-deficit-hyperactivity-disorder-adhd" target="_blank">Attention Deficit Hyperactivity Disorder (ADHD)</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/anxiety-disorders" target="_blank">Anxiety Disorder</a></li>
-                <li><a href="https://www.ninds.nih.gov/health-information/disorders/hydrocephalus" target="_blank">Hydrocephalus</a></li>
-                <li><a href="https://www.ninds.nih.gov/health-information/disorders/epilepsy-and-seizures" target="_blank">Epilepsy (Stress Seizures)</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/obsessive-compulsive-disorder-ocd" target="_blank">Obsessive-Compulsive Disorder (OCD)</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/post-traumatic-stress-disorder-ptsd" target="_blank">Post-Traumatic Stress Disorder (PTSD)</a></li>
-                <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3070692/" target="_blank">Idiopathic Toe Walking</a></li>
-            </ul>
-        </div>
-    </div>
-    
-    <!-- Version Panel Section -->
-    <div class="version-info-container">
-        <div class="version-info-section">
-            <div class="version-header">Version Information</div>
-            <div class="version-number">v1.11.0</div>
-            <div class="build-number">2025.1.27</div>
-            <div class="device-info">Loading...</div>
-            <div class="update-time">2025-01-27 21:29:16</div>
-            <div class="countdown">5 minutes</div>
-        </div>
-    </div>
-    
-   <!-- The back to top button should be placed just before the notice-container div -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
-    
-    <div class="notice-container">
-        <div class="copy-protection-message">
-            This content is protected by a watermark. Unauthorized use is prohibited.
-        </div>
-        <div class="legal-protection-message">
-            All content and materials on this website are legally protected.
-        </div>
-    </div>
+  // Check if the user has already accepted cookies
+  if (!localStorage.getItem('cookieAccepted')) {
+    document.getElementById('cookieConsent').style.display = 'block';
+  }
 
-    <!-- Watermark text -->
-    <div class="watermark">Protected by Watermark</div>
+  // Accept cookies button functionality
+  document.getElementById('acceptCookies').onclick = function() {
+    localStorage.setItem('cookieAccepted', 'true');
+    document.getElementById('cookieConsent').style.display = 'none';
+  };
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 Bus Army Dude. All Rights Reserved.</p>
-    </footer>
+window.addEventListener('load', function() {
+    document.body.classList.add('loaded');
+});
 
-    <!-- Scripts -->
-    <script src="common.js"></script>
-    <script src="script.js"></script>
-    <script src="ai-features.js"></script>
-    <script src="settings.js"></script>
-    <script src="events.js"></script>
-    <script src="version.js"></script>
-</body>
-</html>                
+// Get all the FAQ question buttons
+const faqQuestions = document.querySelectorAll('.faq-question');
+
+// Add event listeners to each button
+faqQuestions.forEach((question) => {
+    question.addEventListener('click', () => {
+        const faqItem = question.parentElement;
+
+        // Toggle the active class to show or hide the answer
+        faqItem.classList.toggle('active');
+    });
+});
