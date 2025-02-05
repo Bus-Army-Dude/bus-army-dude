@@ -217,3 +217,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // Example of setting profile status manually
     settingsManager.setProfileStatusManually('offline');  // Set profile status to "idle"
 });
+
+const clientId = 'Ov23liiJwpCt2MVb19WH';
+const redirectUri = 'https://bus-army-dude.github.io/bus-army-dude/callback.html';
+
+// Sign In with GitHub OAuth
+document.getElementById('github-login').addEventListener('click', function() {
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user&redirect_uri=${redirectUri}`;
+    window.location.href = githubAuthUrl;
+});
+
+// Check if user is the owner (after OAuth callback)
+function checkIfOwner(token) {
+    fetch('https://api.github.com/user', {
+        headers: {
+            Authorization: `token ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const ownerUsername = 'BusArmyDude'; // Replace with your GitHub username
+        if (data.login === ownerUsername) {
+            // Show owner-only settings
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('owner-settings').style.display = 'block';
+        } else {
+            alert('You do not have permission to access Owner Only Settings.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Sign Out
+function signOut() {
+    document.getElementById('owner-settings').style.display = 'none';
+    document.getElementById('auth-section').style.display = 'block';
+    // Clear any stored tokens or authentication
+}
+
