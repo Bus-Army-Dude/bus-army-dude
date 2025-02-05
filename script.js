@@ -175,213 +175,33 @@ const tiktokShoutouts = {
     ],
     lastUpdatedTime: '2025-02-03T16:04:00', // Manually set the last updated date and time
     regionsAvailability: {
-        'Afghanistan': true,
-        'Albania': false,
-        'Algeria': false,
-        'Andorra': false,
-        'Angola': false,
-        'Antigua and Barbuda': false,
-        'Argentina': false,
-        'Armenia': false,
-        'Australia': false,
-        'Austria': false,
-        'Azerbaijan': false,
-        'Bahamas': false,
-        'Bahrain': false,
-        'Bangladesh': false,
-        'Barbados': false,
-        'Belarus': true,
-        'Belgium': false,
-        'Belize': false,
-        'Benin': false,
-        'Bhutan': false,
-        'Bolivia': false,
-        'Bosnia and Herzegovina': false,
-        'Botswana': false,
-        'Brazil': false,
-        'Brunei': false,
-        'Bulgaria': false,
-        'Burkina Faso': false,
-        'Burundi': false,
-        'Cabo Verde': false,
-        'Cambodia': false,
-        'Cameroon': false,
-        'Canada': false,
-        'Central African Republic': false,
-        'Chad': false,
-        'Chile': false,
-        'China': false,
-        'Colombia': false,
-        'Comoros': false,
-        'Congo': false,
-        'Costa Rica': false,
-        'Croatia': false,
-        'Cuba': false,
-        'Cyprus': false,
-        'Czech Republic': false,
-        'Denmark': false,
-        'Djibouti': false,
-        'Dominica': false,
-        'Dominican Republic': false,
-        'Ecuador': false,
-        'Egypt': false,
-        'El Salvador': false,
-        'Equatorial Guinea': false,
-        'Eritrea': false,
-        'Estonia': false,
-        'Eswatini': false,
-        'Ethiopia': false,
-        'Fiji': false,
-        'Finland': false,
-        'France': false,
-        'Gabon': false,
-        'Gambia': false,
-        'Georgia': false,
-        'Germany': false,
-        'Ghana': false,
-        'Greece': false,
-        'Grenada': false,
-        'Guatemala': false,
-        'Guinea': false,
-        'Guinea-Bissau': false,
-        'Guyana': false,
-        'Haiti': false,
-        'Honduras': false,
-        'Hungary': false,
-        'Iceland': false,
-        'India': true,
-        'Indonesia': false,
-        'Iran': true,
-        'Iraq': false,
-        'Ireland': false,
-        'Israel': false,
-        'Italy': false,
-        'Jamaica': false,
-        'Japan': false,
-        'Jordan': false,
-        'Kazakhstan': false,
-        'Kenya': false,
-        'Kiribati': false,
-        'Korea (North)': true,
-        'Korea (South)': false,
-        'Kuwait': false,
-        'Kyrgyzstan': false,
-        'Laos': false,
-        'Latvia': false,
-        'Lebanon': false,
-        'Lesotho': false,
-        'Liberia': false,
-        'Libya': false,
-        'Liechtenstein': false,
-        'Lithuania': false,
-        'Luxembourg': false,
-        'Madagascar': false,
-        'Malawi': false,
-        'Malaysia': false,
-        'Maldives': false,
-        'Mali': false,
-        'Malta': false,
-        'Marshall Islands': false,
-        'Mauritania': false,
-        'Mauritius': false,
-        'Mexico': false,
-        'Micronesia': false,
-        'Moldova': false,
-        'Monaco': false,
-        'Mongolia': false,
-        'Montenegro': false,
-        'Morocco': false,
-        'Mozambique': false,
-        'Myanmar': false,
-        'Namibia': false,
-        'Nauru': false,
-        'Nepal': false,
-        'Netherlands': false,
-        'New Zealand': false,
-        'Nicaragua': false,
-        'Niger': false,
-        'Nigeria': true,
-        'North Macedonia': false,
-        'Norway': false,
-        'Oman': false,
-        'Pakistan': false,
-        'Palau': false,
-        'Panama': false,
-        'Papua New Guinea': false,
-        'Paraguay': false,
-        'Peru': false,
-        'Philippines': false,
-        'Poland': false,
-        'Portugal': false,
-        'Qatar': false,
-        'Romania': false,
-        'Russia': true,
-        'Rwanda': false,
-        'Saint Kitts and Nevis': false,
-        'Saint Lucia': false,
-        'Saint Vincent and the Grenadines': false,
-        'Samoa': false,
-        'San Marino': false,
-        'Sao Tome and Principe': false,
-        'Saudi Arabia': false,
-        'Senegal': false,
-        'Serbia': false,
-        'Seychelles': false,
-        'Sierra Leone': false,
-        'Singapore': false,
-        'Slovakia': false,
-        'Slovenia': false,
-        'Solomon Islands': false,
-        'Somalia': false,
-        'South Africa': false,
-        'South Sudan': false,
-        'Spain': false,
-        'Sri Lanka': false,
-        'Sudan': true,
-        'Suriname': false,
-        'Sweden': false,
-        'Switzerland': false,
-        'Syria': true,
-        'Taiwan': false,
-        'Tajikistan': false,
-        'Tanzania': false,
-        'Thailand': false,
-        'Timor-Leste': false,
-        'Togo': false,
-        'Tonga': false,
-        'Trinidad and Tobago': false,
-        'Tunisia': false,
-        'Turkey': false,
-        'Turkmenistan': true,
-        'Tuvalu': false,
-        'Uganda': true,
-        'Ukraine': false,
-        'United Arab Emirates': false,
-        'United Kingdom': false,
-        'United States': false,
-        'Uruguay': false,
-        'Uzbekistan': false,
-        'Vanuatu': false,
-        'Vatican City': false,
-        'Venezuela': false,
-        'Vietnam': false,
-        'Yemen': false,
-        'Zambia': false,
-        'Zimbabwe': false
+        US: true, // Banned in the US
+        CA: false, // Available in Canada
+        GB: false, // Available in the UK
+        AU: false, // Available in Australia
+        IN: true, // Banned in India
+        DE: false, // Available in Germany
+        FR: false, // Available in France
+        RU: true, // Banned in Russia
+        CN: true, // Banned in China
+        // Add other regions here...
     },
     
     init() {
         this.getUserRegion().then(region => {
             this.checkTikTokAvailability(region);
             this.setLastUpdatedTime();
+            this.createShoutoutCards(); // Make sure to call the createShoutoutCards function
         });
     },
+    
     async getUserRegion() {
         // Mock region for testing. In a real implementation, use a geolocation API to get the user's actual region.
         const response = await fetch('https://ipinfo.io/json?token=e7b5cfd07f11cd');
         const data = await response.json();
         return data.country || 'Unknown Region'; // Use the country code for simplicity
     },
+    
     checkTikTokAvailability(userRegion) {
         const container = document.querySelector('.creator-grid');
         const messageContainer = document.querySelector('.tiktok-message');
@@ -403,6 +223,34 @@ const tiktokShoutouts = {
             if (messageContainer) messageContainer.style.display = 'none';
         }
     },
+
+    createShoutoutCards() {
+        const container = document.querySelector('.creator-grid');
+        if (!container) return;
+
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="creator-info">
+                    <div class="creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                    </div>
+                    <p class="creator-username">@${account.username}</p>
+                    <p class="creator-bio">${account.bio || ''}</p>
+                    <p class="follower-count">${account.followers} Followers</p>
+                    <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">
+                        Visit Profile
+                    </a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    },
+
     setLastUpdatedTime() {
         const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
         if (!lastUpdatedElement) return;
