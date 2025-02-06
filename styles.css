@@ -1429,3 +1429,42 @@ footer {
         font-size: 0.95em;
     }
 }
+
+/* Battery Icon Container */
+.battery-icon {
+    position: relative;
+    width: 150px; /* Adjust width as needed */
+    height: 40px;
+    border: 2px solid #333; /* Outline of the battery */
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    background-color: #f0f0f0; /* Battery background */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
+}
+
+/* Battery Tip */
+.battery-icon::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    width: 6px;
+    height: 20px;
+    background-color: #333;
+    border-radius: 2px;
+}
+
+/* Battery Level */
+.battery-level {
+    height: 100%;
+    background-color: #76c7c0; /* Green for healthy battery */
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    line-height: 36px; /* Vertically center the percentage */
+    border-radius: 6px;
+    transition: width 0.3s ease; /* Smooth transition for width */
+}
