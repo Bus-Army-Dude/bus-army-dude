@@ -9,8 +9,8 @@ class EventManager {
         this.events = [
            {
                 title: "Bus Army Dude's Birthday",
-                startDate: new Date('2025-02-27T22:00:00Z'),  // 10:30 PM EST converted to UTC
-                endDate: new Date('2025-02-28T02:00:00Z'),    // 12:30 AM EST converted to UTC
+                startDate: new Date('2025-02-27T03:00:00Z'),  // 10:30 PM EST converted to UTC
+                endDate: new Date('2025-02-28T07:00:00Z'),    // 12:30 AM EST converted to UTC
                 description: "just chilling with my viewers",
                 location: 'Twitch',
                 link: 'https://www.twitch.tv/busarmydude',
