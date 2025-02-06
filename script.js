@@ -245,7 +245,7 @@ const instagramShoutouts = {
         { username: 'busarmydude', id: '17841405793187230', isVerified: false, nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' }
     ],
     accessToken: 'EAANvZAlGIdnsBOZCG0N0ao5i8rowkgj2q7snlPDeVSxSaQVS0Q00BNCheshj2k00beinuzfdYZBvKyu36up4sBzt8meyyg4hTYE1D2pP0BPN649e3rZAjmgdZBxx2FrXHJZAoPwB7kkXsZC03k3ZCoDCSk3EeKXY1snqrkOlpcHz0sQroWONN6Q1kwWkROMyUlcqsBMOlLJsmmTEZBf9l0hCkzwqfvTbcMW9ZCfwZDZD', // Your Instagram Graph API Access Token
-    lastUpdatedTime: '2025-02-05T15:10:17', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-02-06T13:26:26', // Manually set the last updated date and time
     async init() {
         await this.createShoutoutCards();
         this.setLastUpdatedTime();
