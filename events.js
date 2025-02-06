@@ -7,14 +7,14 @@ class EventManager {
         
         // Example events structure with more detailed information
         this.events = [
-            {
+           {
                 title: "Bus Army Dude's Birthday",
-                startDate: new Date('2025-02-27T22:00:00Z'),
-                endDate: new Date('2025-02-28T02:00:00Z'),
-                description: 'Just Chatting with my viewers on my birthday',
+                startDate: new Date('2025-02-27T22:00:00Z'),  // 10:30 PM EST converted to UTC
+                endDate: new Date('2025-02-28T02:00:00Z'),    // 12:30 AM EST converted to UTC
+                description: "just chilling with my viewers",
                 location: 'Twitch',
-                link: 'https://twitch.tv/busarmydude',
-                type: 'community'
+                link: 'https://www.twitch.tv/busarmydude',
+                type: 'stream'
             }
         ];
 
