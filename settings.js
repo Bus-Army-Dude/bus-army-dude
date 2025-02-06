@@ -24,7 +24,7 @@ class SettingsManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 15,
+            fontSize: 16,
             
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -156,7 +156,7 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 15,
+            fontSize: 16,
             
         };
         this.settings = defaultSettings;
@@ -215,5 +215,5 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "true"
 
     // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('idle');  // Set profile status to "idle"
+    settingsManager.setProfileStatusManually('online');  // Set profile status to "idle"
 });
