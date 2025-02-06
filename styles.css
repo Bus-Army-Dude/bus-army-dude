@@ -267,10 +267,15 @@ body {
 /* Useful Links Section */
 .links {
     display: flex;
+    background-color: var(--content-bg);
     flex-direction: column;
     gap: 10px;
     max-width: 500px;
     margin: 0 auto;
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin: 20px 0;
 }
 
 .links a {
