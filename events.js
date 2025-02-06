@@ -104,7 +104,7 @@ class EventManager {
                         <div class="event-datetime">
                             <div class="event-row">
                                 <span class="icon">📅</span>
-                                <span>${startDateTime.date}</span>
+                                <span>${startDateTime.date} - ${endDateTime.date}</span>
                             </div>
                             <div class="event-row">
                                 <span class="icon">🕒</span>
