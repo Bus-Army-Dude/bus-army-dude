@@ -230,74 +230,51 @@ tiktokShoutouts.init();
 
 const instagramShoutouts = {
     accounts: [
-        { username: 'mrbeast', id: '17841405793187218', isVerified: true, nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
-        { username: 'applesauceandadhd', id: '17841405793187219', isVerified: true, nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },
-        { username: 'emtbadge502', id: '17841405793187220', isVerified: true, nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },
-        { username: 'trafficlightdoctor', id: '17841405793187221', isVerified: true, nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },
-        { username: 'mrfattcheeto', id: '17841405793187222', isVerified: true, nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },
-        { username: 'lisa.remillard', id: '17841405793187223', isVerified: true, nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subscribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },
-        { username: 'heyrachelhughes', id: '17841405793187224', isVerified: false, nickname: 'Rachel Hughes', bio: 'Personal blog, YouTube + TikTok: Rachel_Hughes, ALL INQUIRIES: houseofhughes@thestation.io, 20% off Bucked Up: RACHELHUGHES', profilePic: 'instagram_photos/houseofhughes.jpeg' },
-        { username: 'meetmeinthemediacenter', id: '17841405793187225', isVerified: true, nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },
-        { username: 'kaylee_mertens_', id: '17841405793187226', isVerified: false, nickname: 'Kaylee Mertens', bio: 'TikTok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },
-        { username: 'riverkritzar', id: '17841405793187227', isVerified: false, nickname: 'River Jordan Kritzar', bio: "Hello, my name is River, I am 19. I am autistic. I love technology.", profilePic: 'instagram_photos/riverkritzar.jpg' },
-        { username: 'rose_the_fox24', id: '17841405793187228', isVerified: false, nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
-        { username: '_jano_142_', id: '17841405793187229', isVerified: false, nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️', profilePic: 'instagram_photos/jano142.jpg' },
-        { username: 'busarmydude', id: '17841405793187230', isVerified: false, nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' }
+        { username: 'mrbeast', isVerified: true, followers: '65.5M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
+        { username: 'applesauceandadhd', isVerified: true, followers: '761K', nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },    
+        { username: 'emtbadge502', isVerified: true, followers: '495K', nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },    
+        { username: 'trafficlightdoctor', isVerified: true, followers: '312K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },            
+        { username: 'mrfattcheeto', isVerified: true, followers: '288K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },    
+        { username: 'lisa.remillard', isVerified: true, followers: '103K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },                            
+        { username: 'heyrachelhughes', isVerified: false, followers: '101K', nickname: 'Rachel Hughes', bio: 'PPersonal blog, YouTube + TikTok: Rachel_Hughes, ALL INQUIRIES: houseofhughes@thestation.io, 20% off Bucked Up: RACHELHUGHES', profilePic: 'instagram_photos/houseofhughes.jpeg' },                            
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '51.4K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },    
+        { username: 'kaylee_mertens_', isVerified: false, followers: '3,149', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },    
+        { username: 'riverkritzar', isVerified: false, followers: '87', nickname: 'River Jordan Kritzar', bio: "Hello, my name is River, I am 19. I am autistic. I love technology.", profilePic: 'instagram_photos/riverkritzar.jpg' },
+        { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
+        { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
+        { username: 'busarmydude', isVerified: false, followers: '20', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
+        // Add more Instagram creators as needed
     ],
-    accessToken: 'EAANvZAlGIdnsBOZCG0N0ao5i8rowkgj2q7snlPDeVSxSaQVS0Q00BNCheshj2k00beinuzfdYZBvKyu36up4sBzt8meyyg4hTYE1D2pP0BPN649e3rZAjmgdZBxx2FrXHJZAoPwB7kkXsZC03k3ZCoDCSk3EeKXY1snqrkOlpcHz0sQroWONN6Q1kwWkROMyUlcqsBMOlLJsmmTEZBf9l0hCkzwqfvTbcMW9ZCfwZDZD',
-    lastUpdatedTime: '2025-02-06T13:26:26', // Set manually for now
-    async init() {
-        await this.createShoutoutCards();
+    lastUpdatedTime: '2025-02-05T15:10:17', // Manually set the last updated date and time
+    init() {
+        this.createShoutoutCards();
         this.setLastUpdatedTime();
     },
-    async fetchInstagramData(accountId) {
-        const url = `https://graph.instagram.com/${accountId}?fields=username,is_verified,followers_count,biography,profile_picture_url&access_token=${this.accessToken}`;
-        
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            console.log("Instagram data for account", accountId, data); // Added logging for debugging
-            
-            if (data.error) {
-                console.error(`Error fetching data for account ID ${accountId}:`, data.error);
-                return null;
-            }
-            return data;
-        } catch (error) {
-            console.error('Error fetching Instagram data:', error);
-            return null;
-        }
-    },
-    async createShoutoutCards() {
+    createShoutoutCards() {
         const container = document.querySelector('.instagram-creator-grid');
         if (!container) return;
 
         container.innerHTML = '';
-        for (const account of this.accounts) {
-            const instagramData = await this.fetchInstagramData(account.id);
-            
-            if (!instagramData) continue;
-            
+        this.accounts.forEach(account => {
             const card = document.createElement('div');
             card.className = 'instagram-creator-card';
             card.innerHTML = `
-                <img src="${instagramData.profile_picture_url || account.profilePic}" alt="${account.nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <img src="${account.profilePic}" alt="${account.nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'">
                 <div class="instagram-creator-info">
                     <div class="instagram-creator-header">
                         <h3>${account.nickname}</h3>
-                        ${instagramData.is_verified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''}
+                        ${account.isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''}
                     </div>
-                    <p class="instagram-creator-username">${instagramData.username}</p>
-                    <p class="instagram-creator-bio">${instagramData.biography || account.bio}</p>
-                    <p class="instagram-follower-count">${instagramData.followers_count} Followers</p>
-                    <a href="https://instagram.com/${instagramData.username}" target="_blank" class="instagram-visit-profile">
+                    <p class="instagram-creator-username">${account.username}</p>
+                    <p class="instagram-creator-bio">${account.bio || ''}</p>
+                    <p class="instagram-follower-count">${account.followers} Followers</p>
+                    <a href="https://instagram.com/${account.username}" target="_blank" class="instagram-visit-profile">
                         Visit Profile
                     </a>
                 </div>
             `;
             container.appendChild(card);
-        }
+        });
     },
     setLastUpdatedTime() {
         const lastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
@@ -316,15 +293,12 @@ const instagramShoutouts = {
             hour12: true
         });
 
-        console.log("Last updated time:", lastUpdatedDate); // Added logging to debug last updated time
         lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
     }
 };
 
-// Initialize the Instagram shoutouts when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    instagramShoutouts.init();
-});
+// Initialize the YouTube shoutouts
+instagramShoutouts.init();
 
 const youtubeShoutouts = {
     accounts: [
