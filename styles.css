@@ -272,26 +272,23 @@ body {
     box-shadow: 0 6px 12px var(--shadow-color);
     margin: 25px 0;
     text-align: center;
-    transition: transform 0.4s ease; /* Adds smooth transition */
-}
-
-.useful-links-section:hover {
-    transform: translateY(-5px); /* Floating effect on hover */
 }
 
 .links-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column; /* Stack buttons vertically */
     gap: 20px;
-    align-items: center;
+    align-items: center; /* Center align in the middle */
     margin-top: 30px;
 }
 
 .link-button {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 16px 28px;
+    width: 100%; /* Full-width buttons */
+    max-width: 400px; /* Max width for responsiveness */
     background-color: var(--accent-color);
     border-radius: 25px; /* Pill shape */
     text-decoration: none;
@@ -305,12 +302,12 @@ body {
 
 .link-button:hover {
     background-color: var(--hover-color);
-    transform: translateY(-5px); /* Move the button up */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Deepen shadow */
+    transform: translateY(-5px); /* Move the button up on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Deepen shadow on hover */
 }
 
 .link-button:active {
-    transform: translateY(2px); /* Button presses down */
+    transform: translateY(2px); /* Button presses down on click */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Subtle pressed shadow */
 }
 
