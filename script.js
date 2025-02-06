@@ -244,8 +244,8 @@ const instagramShoutouts = {
         { username: '_jano_142_', id: '17841405793187229', isVerified: false, nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️', profilePic: 'instagram_photos/jano142.jpg' },
         { username: 'busarmydude', id: '17841405793187230', isVerified: false, nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' }
     ],
-    accessToken: 'EAANvZAlGIdnsBOZCG0N0ao5i8rowkgj2q7snlPDeVSxSaQVS0Q00BNCheshj2k00beinuzfdYZBvKyu36up4sBzt8meyyg4hTYE1D2pP0BPN649e3rZAjmgdZBxx2FrXHJZAoPwB7kkXsZC03k3ZCoDCSk3EeKXY1snqrkOlpcHz0sQroWONN6Q1kwWkROMyUlcqsBMOlLJsmmTEZBf9l0hCkzwqfvTbcMW9ZCfwZDZD', // Your Instagram Graph API Access Token
-    lastUpdatedTime: '2025-02-06T13:26:26', // Manually set the last updated date and time
+    accessToken: 'EAANvZAlGIdnsBOZCG0N0ao5i8rowkgj2q7snlPDeVSxSaQVS0Q00BNCheshj2k00beinuzfdYZBvKyu36up4sBzt8meyyg4hTYE1D2pP0BPN649e3rZAjmgdZBxx2FrXHJZAoPwB7kkXsZC03k3ZCoDCSk3EeKXY1snqrkOlpcHz0sQroWONN6Q1kwWkROMyUlcqsBMOlLJsmmTEZBf9l0hCkzwqfvTbcMW9ZCfwZDZD',
+    lastUpdatedTime: '2025-02-06T13:26:26', // Set manually for now
     async init() {
         await this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -256,6 +256,8 @@ const instagramShoutouts = {
         try {
             const response = await fetch(url);
             const data = await response.json();
+            
+            console.log("Instagram data for account", accountId, data); // Added logging for debugging
             
             if (data.error) {
                 console.error(`Error fetching data for account ID ${accountId}:`, data.error);
@@ -314,12 +316,15 @@ const instagramShoutouts = {
             hour12: true
         });
 
+        console.log("Last updated time:", lastUpdatedDate); // Added logging to debug last updated time
         lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
     }
 };
 
-// Initialize the Instagram shoutouts
-instagramShoutouts.init();
+// Initialize the Instagram shoutouts when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    instagramShoutouts.init();
+});
 
 const youtubeShoutouts = {
     accounts: [
