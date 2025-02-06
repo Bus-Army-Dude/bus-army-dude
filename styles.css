@@ -288,7 +288,7 @@ body {
     align-items: center;
     padding: 14px 24px;
     background-color: var(--accent-color);
-    border-radius: 25px;
+    border-radius: 25px; /* Makes buttons pill-shaped */
     text-decoration: none;
     color: white;
     font-weight: 600;
