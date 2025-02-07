@@ -404,43 +404,43 @@ body {
     justify-content: flex-start;
     background-color: #f5f5f7; /* Light gray background */
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Inner shadow */
-    overflow: hidden;
     margin-top: 10px;
+    overflow: visible; /* Allow the tip to show outside */
 }
 
 /* Battery Tip (outside of the container) */
 .battery-icon::after {
     content: '';
     position: absolute;
-    right: -6px; /* Position the tip outside the container */
-    top: 50%; /* Vertically center it with the battery */
-    transform: translateY(-50%); /* Ensure it's centered */
-    width: 8px; /* Apple-like battery tip width */
-    height: 18px; /* Apple-like battery tip height */
-    background-color: #888; /* Same color as the border */
-    border-radius: 2px; /* Rounded edges */
+    right: -10px; /* Move tip outside */
+    top: 50%;    /* Vertically center the tip */
+    transform: translateY(-50%);
+    width: 8px;  /* Tip width */
+    height: 15px; /* Tip height */
+    background-color: #888; /* Same as border color */
+    border-radius: 2px; /* Rounded tip */
 }
 
 /* Battery Level */
 .battery-level {
     height: 100%;
-    background-color: #32CD32; /* Full charge (green) */
-    transition: width 0.4s ease; /* Smooth transition for battery level change */
+    background-color: #32CD32; /* Green (full charge) */
+    transition: width 0.4s ease; /* Smooth width transition */
     text-align: center;
     color: white;
     font-size: 12px;
-    line-height: 25px; /* Vertically center the text */
+    line-height: 25px; /* Vertically center text */
     font-weight: 600;
 }
 
 /* Battery 85% and below (Yellow) */
 .low-power .battery-level {
-    background-color: #FFCC00; /* Yellow color */
+    background-color: #FFCC00; /* Yellow */
 }
 
 /* Battery 20% and below (Red) */
 .critical .battery-level {
-    background-color: #FF3B30; /* Red color */
+    background-color: #FF3B30; /* Red */
 }
 
 /* Disabilities Section */
