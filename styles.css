@@ -267,13 +267,17 @@ body {
 /* Useful Links Section */
 .useful-links-section {
     background-color: var(--content-bg);
-    padding: 40px 25px;
+    padding: 40px 20px; /* Adjusted padding */
     border-radius: 12px;
     box-shadow: 0 6px 12px var(--shadow-color);
     margin: 25px 0;
     text-align: center;
-    width: 100%; /* Ensure it takes full width of parent */
-    box-sizing: border-box; /* Account for padding in total width */
+}
+
+/* Title Styling */
+.useful-links-section h2 {
+    font-size: 1.8rem; /* Increase the font size of the title */
+    margin-bottom: 20px;
 }
 
 /* Links Container */
@@ -284,7 +288,8 @@ body {
     align-items: center; /* Center align in the middle */
     margin-top: 30px;
     width: 100%;
-    box-sizing: border-box; /* Include padding in width calculation */
+    padding: 0 20px; /* Extra padding to avoid buttons touching the sides */
+    box-sizing: border-box;
 }
 
 /* Link Button */
@@ -293,7 +298,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 16px 28px;
-    width: 100%; /* Full width on larger screens */
+    width: 90%; /* Use 90% width to ensure space on mobile */
     max-width: 400px; /* Max width for larger screens */
     background-color: var(--accent-color);
     border-radius: 25px; /* Pill shape */
@@ -304,7 +309,6 @@ body {
     font-size: 1.1rem;
     transition: all 0.4s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow */
-    margin: 0 10px; /* Add margin to avoid touching sides */
 }
 
 /* Button Hover Effects */
@@ -323,28 +327,30 @@ body {
 /* Responsive Design for Mobile and Tablet */
 @media (max-width: 768px) {
     .useful-links-section {
-        padding: 30px 20px; /* Reduce padding on smaller screens */
+        padding: 30px 15px; /* Adjust padding for mobile */
     }
 
     .links-container {
-        gap: 16px; /* Reduce the space between buttons on smaller screens */
+        gap: 16px; /* Adjust gap on smaller screens */
     }
 
     .link-button {
-        padding: 14px 24px; /* Adjust padding for smaller screens */
-        font-size: 1rem; /* Smaller font size on mobile */
-        width: 90%; /* Make buttons take up 90% of the screen width on mobile */
-        max-width: none; /* Remove the max-width so it uses more screen space */
-        margin: 0 10px; /* Add margin to prevent touching sides */
+        padding: 14px 24px;
+        font-size: 1rem;
+        width: 95%; /* Use 95% to avoid touching borders */
+        max-width: none;
     }
 }
 
 @media (max-width: 480px) {
     .link-button {
-        padding: 12px 20px; /* Further reduce padding on very small screens */
-        font-size: 0.9rem; /* Even smaller font size */
-        width: 100%; /* Full width on very small screens */
-        margin: 0 10px; /* Ensure there's no margin squished */
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        width: 95%; /* Ensure space on very small screens */
+    }
+
+    .useful-links-section h2 {
+        font-size: 1.6rem; /* Slightly smaller title for very small screens */
     }
 }
 
