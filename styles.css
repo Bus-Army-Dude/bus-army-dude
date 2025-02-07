@@ -272,6 +272,8 @@ body {
     box-shadow: 0 6px 12px var(--shadow-color);
     margin: 25px 0;
     text-align: center;
+    width: 100%; /* Ensure it takes full width of parent */
+    box-sizing: border-box; /* Account for padding in total width */
 }
 
 /* Links Container */
@@ -281,6 +283,8 @@ body {
     gap: 20px;
     align-items: center; /* Center align in the middle */
     margin-top: 30px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* Link Button */
@@ -300,6 +304,7 @@ body {
     font-size: 1.1rem;
     transition: all 0.4s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+    margin: 0 10px; /* Add margin to avoid touching sides */
 }
 
 /* Button Hover Effects */
@@ -330,6 +335,7 @@ body {
         font-size: 1rem; /* Smaller font size on mobile */
         width: 90%; /* Make buttons take up 90% of the screen width on mobile */
         max-width: none; /* Remove the max-width so it uses more screen space */
+        margin: 0 10px; /* Add margin to prevent touching sides */
     }
 }
 
@@ -338,6 +344,7 @@ body {
         padding: 12px 20px; /* Further reduce padding on very small screens */
         font-size: 0.9rem; /* Even smaller font size */
         width: 100%; /* Full width on very small screens */
+        margin: 0 10px; /* Ensure there's no margin squished */
     }
 }
 
