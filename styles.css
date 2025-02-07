@@ -426,9 +426,15 @@ body {
     height: 100%;
     background-color: #32CD32; /* Green (full charge) */
     transition: width 0.4s ease; /* Smooth width transition */
-    display: flex;
-    align-items: center; /* Center the text vertically */
-    justify-content: center; /* Center the text horizontally */
+    display: block;
+}
+
+/* Battery Percentage (fixed at center) */
+.battery-percentage {
+    position: absolute;
+    top: 50%; /* Vertically center the text */
+    left: 50%; /* Horizontally center the text */
+    transform: translate(-50%, -50%); /* Adjust position exactly at the center */
     color: white;
     font-size: 12px;
     font-weight: 600;
