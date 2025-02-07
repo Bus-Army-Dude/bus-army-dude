@@ -380,4 +380,4 @@ const iphoneBattery = document.querySelector('.tech-item:nth-child(1) .battery-i
 updateBatteryLevel(iphoneBattery, 100); // 100% for iPhone
 
 const watchBattery = document.querySelector('.tech-item:nth-child(2) .battery-icon');
-updateBatteryLevel(watchBattery, 97); // 85% for Watch
+updateBatteryLevel(watchBattery, 20); // 85% for Watch
