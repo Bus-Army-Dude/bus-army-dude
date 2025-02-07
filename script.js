@@ -356,28 +356,3 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
-
-function updateBatteryLevel(batteryElement, percentage) {
-    const batteryLevel = batteryElement.querySelector('.battery-level');
-
-    // Update battery width
-    batteryLevel.style.width = `${percentage}%`;
-    batteryLevel.textContent = `${percentage}%`;
-
-    // Remove previous states
-    batteryElement.classList.remove('low-power', 'critical');
-
-    // Add correct class based on percentage
-    if (percentage <= 20) {
-        batteryElement.classList.add('critical');
-    } else if (percentage <= 85) {
-        batteryElement.classList.add('low-power');
-    }
-}
-
-// Example usage
-const iphoneBattery = document.querySelector('.tech-item:nth-child(1) .battery-icon');
-updateBatteryLevel(iphoneBattery, 100); // 100% for iPhone
-
-const watchBattery = document.querySelector('.tech-item:nth-child(2) .battery-icon');
-updateBatteryLevel(watchBattery, 20); // 85% for Watch
