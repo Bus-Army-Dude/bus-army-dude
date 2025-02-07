@@ -406,16 +406,16 @@ body {
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Inner shadow */
     overflow: hidden;
     margin-top: 10px;
-    padding-right: 8px; /* Increased padding to account for the tip */
 }
 
-/* Battery Tip (on the right side) */
+/* Battery Tip (outside of the container) */
 .battery-icon::after {
     content: '';
     position: absolute;
-    right: -4px; /* Adjusted right position */
-    top: 3px; /* Adjusted top position */
-    width: 6px; /* Apple-like battery tip width */
+    right: -6px; /* Position the tip outside the container */
+    top: 50%; /* Vertically center it with the battery */
+    transform: translateY(-50%); /* Ensure it's centered */
+    width: 8px; /* Apple-like battery tip width */
     height: 18px; /* Apple-like battery tip height */
     background-color: #888; /* Same color as the border */
     border-radius: 2px; /* Rounded edges */
