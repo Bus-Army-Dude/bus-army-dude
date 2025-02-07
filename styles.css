@@ -274,6 +274,7 @@ body {
     text-align: center;
 }
 
+/* Links Container */
 .links-container {
     display: flex;
     flex-direction: column; /* Stack buttons vertically */
@@ -282,13 +283,14 @@ body {
     margin-top: 30px;
 }
 
+/* Link Button */
 .link-button {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 16px 28px;
-    width: 100%; /* Full-width buttons */
-    max-width: 400px; /* Max width for responsiveness */
+    width: 100%; /* Full width on larger screens */
+    max-width: 400px; /* Max width for larger screens */
     background-color: var(--accent-color);
     border-radius: 25px; /* Pill shape */
     text-decoration: none;
@@ -300,15 +302,43 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow */
 }
 
+/* Button Hover Effects */
 .link-button:hover {
     background-color: var(--hover-color);
     transform: translateY(-5px); /* Move the button up on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Deepen shadow on hover */
 }
 
+/* Button Active Effects */
 .link-button:active {
     transform: translateY(2px); /* Button presses down on click */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Subtle pressed shadow */
+}
+
+/* Responsive Design for Mobile and Tablet */
+@media (max-width: 768px) {
+    .useful-links-section {
+        padding: 30px 20px; /* Reduce padding on smaller screens */
+    }
+
+    .links-container {
+        gap: 16px; /* Reduce the space between buttons on smaller screens */
+    }
+
+    .link-button {
+        padding: 14px 24px; /* Adjust padding for smaller screens */
+        font-size: 1rem; /* Smaller font size on mobile */
+        width: 90%; /* Make buttons take up 90% of the screen width on mobile */
+        max-width: none; /* Remove the max-width so it uses more screen space */
+    }
+}
+
+@media (max-width: 480px) {
+    .link-button {
+        padding: 12px 20px; /* Further reduce padding on very small screens */
+        font-size: 0.9rem; /* Even smaller font size */
+        width: 100%; /* Full width on very small screens */
+    }
 }
 
 /* Tech Information Section */
