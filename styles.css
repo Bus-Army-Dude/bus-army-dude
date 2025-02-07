@@ -1446,16 +1446,16 @@ footer {
     overflow: hidden;
 }
 
-/* Battery Tip */
+/* Battery Tip (on the right side) */
 .battery-icon::after {
     content: '';
     position: absolute;
-    right: -12px;
+    right: -10px; /* Position tip on the right side */
     top: 8px;
-    width: 8px;
-    height: 24px;
-    background-color: #888;
-    border-radius: 2px;
+    width: 8px; /* Small width for the tip */
+    height: 24px; /* Slightly larger height to resemble iOS */
+    background-color: #888; /* Same color as the border for continuity */
+    border-radius: 2px; /* Rounded edges like iOS */
 }
 
 /* Battery Level */
