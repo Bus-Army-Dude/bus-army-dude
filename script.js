@@ -356,34 +356,3 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
-
-// Get the navbar element
-const navbar = document.querySelector('.navbar');
-
-// Variable to track last scroll position
-let lastScrollTop = 0;
-
-// Detect scroll events
-window.addEventListener('scroll', function () {
-    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (currentScroll > lastScrollTop) {
-        // Scrolling down, hide the navbar
-        navbar.style.top = "-80px"; // Adjust as needed to hide the navbar completely
-    } else {
-        // Scrolling up, show the navbar
-        navbar.style.top = "0"; // Ensure it stays at the top of the page
-    }
-
-    // Update the last scroll position
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-});
-
-// Get the hamburger menu and nav links
-const hamburgerMenu = document.getElementById("hamburger-menu");
-const navLinks = document.querySelector(".nav-links");
-
-// Toggle mobile menu on hamburger click
-hamburgerMenu.addEventListener("click", function () {
-    navLinks.classList.toggle("active");
-});
