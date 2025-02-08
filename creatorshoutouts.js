@@ -163,7 +163,7 @@ const youtubeShoutouts = {
         { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-02-06T09:07:05', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-02-08T09:07:05', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
