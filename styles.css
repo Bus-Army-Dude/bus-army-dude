@@ -81,11 +81,13 @@ body {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
-    padding: 20px;
+    padding: 40px 20px 20px; /* Add more padding at the top */
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     position: relative;
+    border: 2px solid var(--border-color); /* Light border around profile */
+    overflow: hidden; /* Prevent any content from overflowing */
 }
 
 /* Navigation Menu */
@@ -95,6 +97,9 @@ body {
     padding: 15px 20px;
     box-shadow: 0 2px 6px var(--shadow-color);
     margin-bottom: 20px; /* Spacing between nav and profile */
+    position: sticky;
+    top: 0; /* Stick the navbar to the top */
+    z-index: 100;
 }
 
 .nav-links {
@@ -117,8 +122,6 @@ body {
     color: var(--accent-color);
 }
 
-/* Profile Picture and other styles remain the same as before... */
-
 /* Profile Picture Styling */
 .profile-pic {
     width: 150px;
@@ -127,7 +130,8 @@ body {
     margin: 0 auto;
     display: block;
     border: 3px solid var(--accent-color);
-    position: relative;
+    position: relative; /* So the status circle can overlap */
+    z-index: 1; /* Ensure it stays on top */
 }
 
 /* Username and Verified Badge */
@@ -199,7 +203,7 @@ body {
     background-color: #00cc00;
 }
 
-/* Responsive adjustments for smaller screens */
+/* Mobile Responsive */
 @media screen and (max-width: 768px) {
     .settings-button {
         width: 25px;
@@ -233,6 +237,10 @@ body {
     .nav-item {
         padding: 10px 0;
         text-align: center;
+    }
+
+    .profile-section {
+        padding: 20px; /* Less padding on mobile */
     }
 }
 
