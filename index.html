@@ -56,29 +56,36 @@
     <p><strong>Thank you for your understanding!</strong></p>
 </div>
 
-    <!-- Profile Section -->
-<div class="profile-section">
     <!-- Navigation Menu -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="logo">Bus Army Dude's Page</a>
-            <ul class="nav-links">
-                <li><a href="index.html" id="home-link">Home</a></li>
-                <li><a href="merch.html" id="merch-link">Merch Store</a></li>
-            </ul>
-        </div>
-    </nav>
+<nav class="navbar">
+    <div class="navbar-container">
+        <!-- Logo -->
+        <a href="index.html" class="logo">YourSite</a>
 
+        <!-- Hamburger Menu Icon for Mobile -->
+        <div class="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-item" id="home-link">Home</a></li>
+            <li><a href="merch.html" class="nav-item" id="merch-link">Merch Store</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Profile Section -->
+<div class="profile-section">
     <div class="profile-pic-wrapper">
-        <!-- Settings Button -->
-        <button class="settings-button" aria-label="Settings" onclick="window.location.href='settings.html'"></button>
-        
         <!-- Profile Picture -->
         <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
-        
+
         <!-- Profile Status Circle (half in, half out) -->
         <div class="profile-status-container">
-            <span class="profile-status">🟢</span> <!-- This status will update dynamically -->
+            <span class="profile-status online">🟢</span> <!-- This status will update dynamically -->
         </div>
     </div>
 
