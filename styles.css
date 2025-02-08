@@ -85,9 +85,41 @@ body {
     background-color: var(--content-bg);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    position: relative; /* Position for the profile status circle */
+    position: relative;
 }
 
+/* Navigation Menu */
+.navbar {
+    width: 100%;
+    background-color: var(--nav-bg);
+    padding: 15px 20px;
+    box-shadow: 0 2px 6px var(--shadow-color);
+    margin-bottom: 20px; /* Spacing between nav and profile */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    color: var(--nav-text);
+    font-size: 1em;
+    padding: 0 20px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: var(--accent-color);
+}
+
+/* Profile Picture and other styles remain the same as before... */
+
+/* Profile Picture Styling */
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -95,9 +127,10 @@ body {
     margin: 0 auto;
     display: block;
     border: 3px solid var(--accent-color);
-    position: relative; /* So the status circle can overlap */
+    position: relative;
 }
 
+/* Username and Verified Badge */
 .username-checkmark {
     display: flex;
     align-items: center;
@@ -120,8 +153,8 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: 5px; /* Adjust the value to position at the bottom-right of the profile pic */
-    right: 5px; /* Position it on the right of the profile picture */
+    bottom: 5px;
+    right: 5px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -130,22 +163,21 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Ensures the status is half in and half out */
-    z-index: 2; /* Ensure it's above the profile image */
+    overflow: hidden;
+    z-index: 2;
 }
 
 /* Profile Status Styling */
 .profile-status {
-    font-size: 16px; /* Adjust as per your preference */
+    font-size: 16px;
     color: white;
 }
 
-/* Profile Status Colors */
 .profile-status.online { color: green; }
 .profile-status.idle { color: yellow; }
 .profile-status.offline { color: gray; }
 
-/* Add these new styles for the settings button */
+/* Settings Button Styles */
 .settings-button {
     position: absolute;
     top: 20px;
@@ -154,7 +186,7 @@ body {
     height: 30px;
     border-radius: 50%;
     background: url('settings-icon.png') center/18px no-repeat;
-    background-color: #00ff00; /* Green background */
+    background-color: #00ff00;
     border: none;
     cursor: pointer;
     padding: 0;
@@ -164,16 +196,43 @@ body {
 
 .settings-button:hover {
     transform: rotate(45deg);
-    background-color: #00cc00; /* Slightly darker green on hover */
+    background-color: #00cc00;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for smaller screens */
 @media screen and (max-width: 768px) {
     .settings-button {
         width: 25px;
         height: 25px;
         top: 15px;
         background-size: 15px;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+    }
+
+    .username-checkmark h1 {
+        font-size: 20px;
+    }
+
+    .profile-status-container {
+        width: 25px;
+        height: 25px;
+    }
+
+    .navbar {
+        padding: 10px 15px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+    }
+
+    .nav-item {
+        padding: 10px 0;
+        text-align: center;
     }
 }
 
