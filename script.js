@@ -357,11 +357,12 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Toggle the mobile navigation menu on hamburger click
-const menuToggle = document.querySelector('.menu-toggle');
-const navLinks = document.querySelector('.nav-links');
+// Get the hamburger menu and nav links
+const hamburgerMenu = document.getElementById("hamburger-menu");
+const navLinks = document.querySelector(".nav-links");
 
-// Toggle the mobile class on nav-links when menu toggle is clicked
-menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('mobile');
+// Toggle mobile menu on hamburger click
+hamburgerMenu.addEventListener("click", function () {
+    navLinks.classList.toggle("active");
 });
+
