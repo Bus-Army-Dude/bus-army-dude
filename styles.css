@@ -93,9 +93,9 @@ body {
     margin-top: 80px; /* Ensure it doesn’t overlap with the fixed navbar */
     margin-bottom: 30px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--content-bg); /* Dark/Light background variable */
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px var(--shadow-color);
     position: relative;
 }
 
@@ -114,12 +114,14 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Navbar container */
 .navbar-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
+/* Navigation links */
 .nav-links {
     list-style: none;
     display: flex;
@@ -195,7 +197,7 @@ body {
     border-radius: 50%;
     margin: 0 auto;
     display: block;
-    border: 3px solid #f39c12;
+    border: 3px solid var(--accent-color);
     position: relative;
 }
 
@@ -210,7 +212,7 @@ body {
 .username-checkmark h1 {
     margin: 0;
     font-size: 24px;
-    color: #333;
+    color: var(--text-color);
 }
 
 .verified {
@@ -227,8 +229,8 @@ body {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #f9f9f9;
-    border: 3px solid #f39c12;
+    background-color: var(--content-bg); /* Ensure the profile status container aligns with content */
+    border: 3px solid var(--accent-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -293,6 +295,15 @@ body {
 
     .navbar {
         padding: 10px 15px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+    }
+
+    .nav-item {
+        padding: 10px 0;
+        text-align: center;
     }
 }
 
