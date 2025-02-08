@@ -1,128 +1,115 @@
-# Contributor Covenant Code of Conduct
+# Contributor Code of Conduct
 
-## Our Pledge
+## 1. **Our Pledge**
 
-We as members, contributors, and leaders pledge to make participation in our
-community a harassment-free experience for everyone, regardless of age, body
-size, visible or invisible disability, ethnicity, sex characteristics, gender
-identity and expression, level of experience, education, socio-economic status,
-nationality, personal appearance, race, religion, or sexual identity
-and orientation.
+We, as users and contributors of **Bus Army Dude's Link In Bio**, are committed to creating an inclusive and respectful environment for everyone. Our goal is to maintain a space free of harassment and discrimination, regardless of:
 
-We pledge to act and interact in ways that contribute to an open, welcoming,
-diverse, inclusive, and healthy community.
+- Age
+- Body size
+- Disability
+- Medical conditions
+- Ethnicity
+- Gender identity and expression
+- Level of experience
+- Education
+- Socio-economic status
+- Nationality
+- Personal appearance
+- Race
+- Religion
+- Sexual identity and orientation
 
-## Our Standards
+We pledge to promote an open, welcoming, diverse, inclusive, and supportive community.
 
-Examples of behavior that contributes to a positive environment for our
-community include:
+---
 
-* Demonstrating empathy and kindness toward other people
-* Being respectful of differing opinions, viewpoints, and experiences
-* Giving and gracefully accepting constructive feedback
-* Accepting responsibility and apologizing to those affected by our mistakes,
-  and learning from the experience
-* Focusing on what is best not just for us as individuals, but for the
-  overall community
+## 2. **Our Standards**
+
+### 2.1 **Expected Behavior**
+
+We expect users and contributors to:
+
+- **Be Respectful**: Consider differing opinions, viewpoints, and experiences.
+- **Be Welcoming**: Encourage participation and create an environment of inclusion.
+- **Show Kindness**: Demonstrate empathy and consideration for others.
+- **Offer Constructive Feedback**: Provide and accept helpful, thoughtful feedback.
+- **Take Responsibility**: Own up to mistakes and learn from them.
+- **Prioritize Community Well-being**: Focus on actions that benefit the entire community.
+
+### 2.2 **Unacceptable Behavior**
 
 Examples of unacceptable behavior include:
 
-* The use of sexualized language or imagery, and sexual attention or
-  advances of any kind
-* Trolling, insulting or derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or email
-  address, without their explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+- **Harassment**: Any form of threats, insults, derogatory comments, or personal attacks.
+- **Discrimination**: Discriminatory remarks or actions based on race, gender, or any protected characteristic.
+- **Inappropriate Content**: Sexualized language, imagery, or unwelcome advances.
+- **Trolling or Disruptions**: Deliberately trying to derail discussions or content.
+- **Sharing Private Information**: Publishing someone’s private details (e.g., addresses) without their consent.
+- **Spamming or Unauthorized Promotions**: Advertising unrelated services, products, or spam.
 
-## Enforcement Responsibilities
+---
 
-Community leaders are responsible for clarifying and enforcing our standards of
-acceptable behavior and will take appropriate and fair corrective action in
-response to any behavior that they deem inappropriate, threatening, offensive,
-or harmful.
+## 3. **Scope**
 
-Community leaders have the right and responsibility to remove, edit, or reject
-comments, commits, code, wiki edits, issues, and other contributions that are
-not aligned to this Code of Conduct, and will communicate reasons for moderation
-decisions when appropriate.
+This Code of Conduct applies to all areas of **Bus Army Dude's Link In Bio**, including:
 
-## Scope
+- **User Interactions**: Comments, social media shoutouts (TikTok, Instagram, YouTube), and profile content.
+- **Content Contributions**: Any tech information, accessibility resources, or updates to the website.
+- **Public Representation**: Acting as an official representative of the website (e.g., through social media accounts or events).
 
-This Code of Conduct applies within all community spaces, and also applies when
-an individual is officially representing the community in public spaces.
-Examples of representing our community include using an official e-mail address,
-posting via an official social media account, or acting as an appointed
-representative at an online or offline event.
+---
 
-## Enforcement
+## 4. **Enforcement Responsibilities**
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-busarmydude (Discord).
-All complaints will be reviewed and investigated promptly and fairly.
+### 4.1 **Community Leaders' Role**
 
-All community leaders are obligated to respect the privacy and security of the
-reporter of any incident.
+Community leaders are responsible for clarifying and enforcing the standards outlined in this Code of Conduct. They may:
 
-## Enforcement Guidelines
+- Remove, edit, or reject any contributions (comments, content submissions, etc.) that violate the standards.
+- Take corrective action to maintain a respectful environment.
 
-Community leaders will follow these Community Impact Guidelines in determining
-the consequences for any action they deem in violation of this Code of Conduct:
+### 4.2 **Enforcement Actions**
 
-### 1. Correction
+- **Correction**: A written warning with an explanation of the violation.
+- **Warning**: Temporary removal or restriction from the platform, with conditions for re-entry.
+- **Temporary Ban**: A temporary ban from the website for serious violations.
+- **Permanent Ban**: A permanent ban for repeat or extreme offenses.
 
-**Community Impact**: Use of inappropriate language or other behavior deemed
-unprofessional or unwelcome in the community.
+---
 
-**Consequence**: A private, written warning from community leaders, providing
-clarity around the nature of the violation and an explanation of why the
-behavior was inappropriate. A public apology may be requested.
+## 5. **Reporting Issues**
 
-### 2. Warning
+If you encounter unacceptable behavior or violations of the Code of Conduct, please report it to the community leaders at:
 
-**Community Impact**: A violation through a single incident or series
-of actions.
+**Email**: busarmydude@gmail.com
 
-**Consequence**: A warning with consequences for continued behavior. No
-interaction with the people involved, including unsolicited interaction with
-those enforcing the Code of Conduct, for a specified period of time. This
-includes avoiding interactions in community spaces as well as external channels
-like social media. Violating these terms may lead to a temporary or
-permanent ban.
+All complaints will be reviewed and investigated promptly and fairly, and confidentiality will be maintained to protect the individual reporting the issue.
 
-### 3. Temporary Ban
+---
 
-**Community Impact**: A serious violation of community standards, including
-sustained inappropriate behavior.
+## 6. **Enforcement Guidelines**
 
-**Consequence**: A temporary ban from any sort of interaction or public
-communication with the community for a specified period of time. No public or
-private interaction with the people involved, including unsolicited interaction
-with those enforcing the Code of Conduct, is allowed during this period.
-Violating these terms may lead to a permanent ban.
+Community leaders will follow these guidelines to address violations:
 
-### 4. Permanent Ban
+### 6.1 **Correction**
+- **Impact**: Inappropriate language or behavior that does not align with community standards.
+- **Consequence**: A private warning with a request for improvement.
 
-**Community Impact**: Demonstrating a pattern of violation of community
-standards, including sustained inappropriate behavior,  harassment of an
-individual, or aggression toward or disparagement of classes of individuals.
+### 6.2 **Warning**
+- **Impact**: Repeated or severe violation of community guidelines.
+- **Consequence**: A formal warning and temporary restriction on community interactions.
 
-**Consequence**: A permanent ban from any sort of public interaction within
-the community.
+### 6.3 **Temporary Ban**
+- **Impact**: Serious violation or harmful behavior.
+- **Consequence**: Temporary removal from the platform with the potential for reinstatement upon review.
 
-## Attribution
+### 6.4 **Permanent Ban**
+- **Impact**: Persistent harmful behavior or extreme violations.
+- **Consequence**: Permanent removal from the community and its platforms.
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage],
-version 2.0, available at
-https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
+---
 
-Community Impact Guidelines were inspired by [Mozilla's code of conduct
-enforcement ladder](https://github.com/mozilla/diversity).
+## 7. **Attribution**
 
-[homepage]: https://www.contributor-covenant.org
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.1.
 
-For answers to common questions about this code of conduct, see the FAQ at
-https://www.contributor-covenant.org/faq. Translations are available at
-https://www.contributor-covenant.org/translations.
