@@ -369,10 +369,10 @@ window.addEventListener('scroll', function () {
 
     if (currentScroll > lastScrollTop) {
         // Scrolling down, hide the navbar
-        navbar.style.top = "-100px"; // Adjust as needed to hide
+        navbar.style.top = "-80px"; // Adjust as needed to hide the navbar completely
     } else {
         // Scrolling up, show the navbar
-        navbar.style.top = "0"; // Show navbar at the top
+        navbar.style.top = "0"; // Ensure it stays at the top of the page
     }
 
     // Update the last scroll position
