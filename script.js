@@ -356,3 +356,22 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
+
+// Function to highlight the current page in the navigation
+function highlightCurrentPage() {
+    const currentPage = window.location.pathname.split('/').pop(); // Get current page name
+    const navLinks = document.querySelectorAll('.nav-item');
+
+    navLinks.forEach(link => {
+        if (link.href.includes(currentPage)) {
+            link.classList.add('active'); // Add active class for current page
+        } else {
+            link.classList.remove('active'); // Remove active class from other pages
+        }
+    });
+}
+
+// Event listener for when the page loads
+window.addEventListener('load', () => {
+    highlightCurrentPage(); // Highlight current page in navigation
+});
