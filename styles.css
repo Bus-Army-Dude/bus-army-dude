@@ -76,36 +76,46 @@ body {
     padding: 0 20px;
 }
 
-/* Main container for aligning navigation and profile section */
-.main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin-top: 60px; /* To avoid the profile section being hidden behind the fixed navbar */
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Profile Section */
+.profile-section {
+    text-align: center;
+    margin-top: 100px; /* Ensure it's below the fixed navigation bar */
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--content-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    position: relative;
 }
 
 /* Navigation Menu */
 .navbar {
+    position: fixed; /* Fix the navbar to the top */
+    top: 0;
+    left: 0;
     width: 100%;
     background-color: var(--nav-bg);
     padding: 15px 20px;
     box-shadow: 0 2px 6px var(--shadow-color);
-    position: fixed; /* Fix navbar at the top */
-    top: 0;
-    left: 0;
-    z-index: 1000; /* Ensure navbar stays above other content */
-}
-
-/* Container inside the navbar */
-.navbar-container {
-    width: 100%;
+    z-index: 100; /* Make sure it stays on top */
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Navigation Links */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .nav-links {
     list-style: none;
     display: flex;
@@ -126,18 +136,46 @@ body {
     color: var(--accent-color);
 }
 
-/* Profile Section */
-.profile-section {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: var(--content-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px var(--shadow-color);
-    position: relative;
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hamburger-menu .line {
     width: 100%;
-    max-width: 1000px; /* Optional: adjust max-width for larger screens */
+    height: 4px;
+    background-color: var(--text-color);
+    border-radius: 5px;
+}
+
+/* Show hamburger icon on mobile */
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none; /* Hidden by default on mobile */
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .nav-links.active {
+        display: flex; /* Show when active */
+    }
+
+    .nav-item {
+        padding: 10px 0;
+        width: 100%;
+    }
 }
 
 /* Profile Picture Styling */
@@ -222,14 +260,11 @@ body {
 
 /* Responsive adjustments for smaller screens */
 @media screen and (max-width: 768px) {
-    .navbar {
-        padding: 10px 15px;
-    }
-
-    .profile-section {
-        width: 100%;
-        padding: 15px;
-        margin-top: 80px; /* Add extra space to prevent overlap with fixed navbar */
+    .settings-button {
+        width: 25px;
+        height: 25px;
+        top: 15px;
+        background-size: 15px;
     }
 
     .profile-pic {
@@ -246,24 +281,17 @@ body {
         height: 25px;
     }
 
-    .menu-toggle {
-        display: block;
+    .navbar {
+        padding: 10px 15px;
     }
 
     .nav-links {
-        display: none;
         flex-direction: column;
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links.active {
-        display: flex;
     }
 
     .nav-item {
         padding: 10px 0;
-        width: 100%;
+        text-align: center;
     }
 }
 
