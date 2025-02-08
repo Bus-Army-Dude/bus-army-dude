@@ -76,16 +76,13 @@ body {
     padding: 0 20px;
 }
 
-/* Profile Section */
-.profile-section {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: var(--content-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px var(--shadow-color);
-    position: relative;
+/* Main container for aligning navigation and profile section */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 60px; /* To avoid the profile section being hidden behind the fixed navbar */
 }
 
 /* Navigation Menu */
@@ -94,42 +91,18 @@ body {
     background-color: var(--nav-bg);
     padding: 15px 20px;
     box-shadow: 0 2px 6px var(--shadow-color);
-    margin-bottom: 20px; /* Spacing between nav and profile */
-    position: sticky;
+    position: fixed; /* Fix navbar at the top */
     top: 0;
-    z-index: 10; /* Ensure it stays on top of other content */
+    left: 0;
+    z-index: 1000; /* Ensure navbar stays above other content */
 }
 
+/* Container inside the navbar */
 .navbar-container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.logo {
-    font-size: 1.8em;
-    color: var(--logo-color);
-    text-decoration: none;
-}
-
-/* Mobile Hamburger Menu */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-}
-
-.menu-toggle div {
-    width: 25px;
-    height: 3px;
-    background-color: var(--accent-color);
-    border-radius: 10px;
 }
 
 /* Navigation Links */
@@ -151,6 +124,20 @@ body {
 
 .nav-item:hover {
     color: var(--accent-color);
+}
+
+/* Profile Section */
+.profile-section {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--content-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    position: relative;
+    width: 100%;
+    max-width: 1000px; /* Optional: adjust max-width for larger screens */
 }
 
 /* Profile Picture Styling */
@@ -235,28 +222,16 @@ body {
 
 /* Responsive adjustments for smaller screens */
 @media screen and (max-width: 768px) {
-    /* Navbar Adjustments */
     .navbar {
         padding: 10px 15px;
     }
 
-    .nav-links {
-        flex-direction: column;
-        display: none;
+    .profile-section {
         width: 100%;
+        padding: 15px;
+        margin-top: 80px; /* Add extra space to prevent overlap with fixed navbar */
     }
 
-    .nav-item {
-        padding: 10px 0;
-        text-align: center;
-        width: 100%;
-    }
-
-    .menu-toggle {
-        display: flex;
-    }
-
-    /* Profile Section Adjustments */
     .profile-pic {
         width: 120px;
         height: 120px;
@@ -271,9 +246,24 @@ body {
         height: 25px;
     }
 
-    /* Show the nav links when toggled */
-    .nav-links.mobile {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links.active {
         display: flex;
+    }
+
+    .nav-item {
+        padding: 10px 0;
+        width: 100%;
     }
 }
 
