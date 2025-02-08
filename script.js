@@ -357,30 +357,11 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Toggle mobile navigation menu
+// Toggle the mobile navigation menu on hamburger click
 const menuToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
 
+// Toggle the mobile class on nav-links when menu toggle is clicked
 menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('show');
+    navLinks.classList.toggle('mobile');
 });
-
-// Highlight current page in navigation
-function highlightCurrentPage() {
-    const currentPage = window.location.pathname.split('/').pop(); // Get current page name
-    const navLinks = document.querySelectorAll('.nav-item');
-
-    navLinks.forEach(link => {
-        if (link.href.includes(currentPage)) {
-            link.classList.add('active'); // Add active class for current page
-        } else {
-            link.classList.remove('active'); // Remove active class from other pages
-        }
-    });
-}
-
-// Event listener for when the page loads
-window.addEventListener('load', () => {
-    highlightCurrentPage(); // Highlight current page in navigation
-});
-
