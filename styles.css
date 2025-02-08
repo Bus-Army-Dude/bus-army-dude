@@ -93,7 +93,7 @@ body {
     margin-top: 80px; /* Ensure it doesn’t overlap with the fixed navbar */
     margin-bottom: 30px;
     padding: 20px;
-    background-color: var(--content-bg);
+    background-color: var(--content-bg); /* This is dynamic based on the mode */
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -112,17 +112,15 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: top 0.3s ease; /* Smooth transition for hiding */
+    transition: top 0.3s ease-in-out; /* Smooth transition for hiding */
 }
 
-/* Navbar Container */
 .navbar-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-/* Navigation Links */
 .nav-links {
     list-style: none;
     display: flex;
@@ -162,15 +160,6 @@ body {
 }
 
 /* Mobile Menu */
-.nav-links {
-    display: flex;
-    flex-direction: row;
-}
-
-.nav-links.active {
-    display: flex;
-}
-
 @media screen and (max-width: 768px) {
     .hamburger-menu {
         display: flex;
