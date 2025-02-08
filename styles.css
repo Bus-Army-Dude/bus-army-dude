@@ -93,9 +93,9 @@ body {
     margin-top: 80px; /* Ensure it doesn’t overlap with the fixed navbar */
     margin-bottom: 30px;
     padding: 20px;
-    background-color: var(--content-bg); /* Dark/Light background variable */
+    background-color: var(--content-bg);
     border-radius: 12px;
-    box-shadow: 0 4px 10px var(--shadow-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
 }
 
@@ -112,16 +112,17 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: top 0.3s ease; /* Smooth transition for hiding */
 }
 
-/* Navbar container */
+/* Navbar Container */
 .navbar-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-/* Navigation links */
+/* Navigation Links */
 .nav-links {
     list-style: none;
     display: flex;
@@ -160,7 +161,16 @@ body {
     border-radius: 5px;
 }
 
-/* Show hamburger menu on mobile */
+/* Mobile Menu */
+.nav-links {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-links.active {
+    display: flex;
+}
+
 @media screen and (max-width: 768px) {
     .hamburger-menu {
         display: flex;
@@ -197,7 +207,7 @@ body {
     border-radius: 50%;
     margin: 0 auto;
     display: block;
-    border: 3px solid var(--accent-color);
+    border: 3px solid #f39c12;
     position: relative;
 }
 
@@ -212,7 +222,7 @@ body {
 .username-checkmark h1 {
     margin: 0;
     font-size: 24px;
-    color: var(--text-color);
+    color: #333;
 }
 
 .verified {
@@ -229,8 +239,8 @@ body {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: var(--content-bg); /* Ensure the profile status container aligns with content */
-    border: 3px solid var(--accent-color);
+    background-color: #f9f9f9;
+    border: 3px solid #f39c12;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -295,15 +305,6 @@ body {
 
     .navbar {
         padding: 10px 15px;
-    }
-
-    .nav-links {
-        flex-direction: column;
-    }
-
-    .nav-item {
-        padding: 10px 0;
-        text-align: center;
     }
 }
 
