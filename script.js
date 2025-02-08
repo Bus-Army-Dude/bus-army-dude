@@ -357,12 +357,17 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Get the hamburger menu and nav links
-const hamburgerMenu = document.getElementById("hamburger-menu");
-const navLinks = document.querySelector(".nav-links");
+// Wait for the DOM content to load before executing the script
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the hamburger menu and nav links
+    const hamburgerMenu = document.getElementById("hamburger-menu");
+    const navLinks = document.querySelector(".nav-links");
 
-// Toggle mobile menu on hamburger click
-hamburgerMenu.addEventListener("click", function () {
-    navLinks.classList.toggle("active");
+    // Check if hamburger menu exists and nav links are available
+    if (hamburgerMenu && navLinks) {
+        // Toggle the 'active' class on nav-links when hamburger menu is clicked
+        hamburgerMenu.addEventListener("click", function() {
+            navLinks.classList.toggle("active");
+        });
+    }
 });
-
