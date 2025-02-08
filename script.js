@@ -357,7 +357,15 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Function to highlight the current page in the navigation
+// Toggle mobile navigation menu
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
+});
+
+// Highlight current page in navigation
 function highlightCurrentPage() {
     const currentPage = window.location.pathname.split('/').pop(); // Get current page name
     const navLinks = document.querySelectorAll('.nav-item');
@@ -375,3 +383,4 @@ function highlightCurrentPage() {
 window.addEventListener('load', () => {
     highlightCurrentPage(); // Highlight current page in navigation
 });
+
