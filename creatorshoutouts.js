@@ -12,7 +12,8 @@ const tiktokShoutouts = {
         { username: 'meetmeinthemediacenter', isVerified: true, followers: '699.5K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
         { username: 'kaylee_mertens_', isVerified: false, followers: '674.2K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
         { username: 'mrfatcheeto', isVerified: false, followers: '603.3K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
-        { username: 'trafficlightdoctor', isVerified: false, followers: '385.2K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },        { username: 'aggressiveafterdark', isVerified: false, followers: '351.7K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
+        { username: 'trafficlightdoctor', isVerified: false, followers: '385.2K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },        
+        { username: 'aggressiveafterdark', isVerified: false, followers: '353.8K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
         { username: 'rachel_hughes', isVerified: false, followers: '310.8K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
         { username: 'captainsteeeve', isVerified: false, followers: '290.1K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },               
         { username: 'badge5022', isVerified: false, followers: '20.9K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
@@ -21,7 +22,7 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '26', nickname: 'Bus Army Dude🇨🇦', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
     ],
-    lastUpdatedTime: '2025-02-08T08:54:48', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-02-08T09:12:24', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
