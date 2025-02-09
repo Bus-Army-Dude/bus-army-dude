@@ -23,12 +23,16 @@ const tiktokShoutouts = {
     ],
     lastUpdated: '2025-02-09T13:13:14Z', // Set last updated time for TikTok
     init() {
+        console.log('Initializing TikTok Shoutouts...');
         this.createShoutoutCards();
         this.setLastUpdatedTime('TikTok');
     },
     createShoutoutCards() {
         const container = document.querySelector('.tiktok-creator-grid');
-        if (!container) return;
+        if (!container) {
+            console.error('TikTok container not found!');
+            return;
+        }
 
         container.innerHTML = '';
         this.accounts.forEach(account => {
@@ -54,7 +58,6 @@ const tiktokShoutouts = {
     },
     convertToUserTimezone(lastUpdated) {
         const lastUpdatedDate = new Date(lastUpdated);
-        
         const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
             weekday: 'short',
             year: 'numeric',
@@ -65,14 +68,15 @@ const tiktokShoutouts = {
             second: '2-digit',
             hour12: true
         });
-        
         return formattedTime;
     },
     setLastUpdatedTime(section) {
         const lastUpdatedElement = document.getElementById(`lastUpdatedTime${section}`);
-        if (lastUpdatedElement) {
-            lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+        if (!lastUpdatedElement) {
+            console.error(`${section} Last Updated element not found!`);
+            return;
         }
+        lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
     }
 };
 
@@ -97,12 +101,16 @@ const instagramShoutouts = {
     ],
    lastUpdated: '2025-02-09T13:13:14Z', // Set last updated time for Instagram
     init() {
+        console.log('Initializing Instagram Shoutouts...');
         this.createShoutoutCards();
         this.setLastUpdatedTime('Instagram');
     },
     createShoutoutCards() {
         const container = document.querySelector('.instagram-creator-grid');
-        if (!container) return;
+        if (!container) {
+            console.error('Instagram container not found!');
+            return;
+        }
 
         container.innerHTML = '';
         this.accounts.forEach(account => {
@@ -128,9 +136,11 @@ const instagramShoutouts = {
     },
     setLastUpdatedTime(section) {
         const lastUpdatedElement = document.getElementById(`lastUpdatedTime${section}`);
-        if (lastUpdatedElement) {
-            lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+        if (!lastUpdatedElement) {
+            console.error(`${section} Last Updated element not found!`);
+            return;
         }
+        lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
     }
 };
 
@@ -153,12 +163,16 @@ const youtubeShoutouts = {
     ],
     lastUpdated: '2025-02-09T13:13:14Z', // Set last updated time for YouTube
     init() {
+        console.log('Initializing YouTube Shoutouts...');
         this.createShoutoutCards();
         this.setLastUpdatedTime('YouTube');
     },
     createShoutoutCards() {
         const container = document.querySelector('.youtube-creator-grid');
-        if (!container) return;
+        if (!container) {
+            console.error('YouTube container not found!');
+            return;
+        }
 
         container.innerHTML = '';
         this.accounts.forEach(account => {
@@ -184,9 +198,11 @@ const youtubeShoutouts = {
     },
     setLastUpdatedTime(section) {
         const lastUpdatedElement = document.getElementById(`lastUpdatedTime${section}`);
-        if (lastUpdatedElement) {
-            lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+        if (!lastUpdatedElement) {
+            console.error(`${section} Last Updated element not found!`);
+            return;
         }
+        lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
     }
 };
 
