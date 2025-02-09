@@ -7,32 +7,25 @@ class SettingsManager {
         this.applySettings();
     }
 
+    // Method to set the profile status manually in JavaScript
+    setProfileStatusManually(status) {
+        if (['online', 'idle', 'offline'].includes(status)) {
+            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
+        } else {
+            console.error('Invalid profile status');
+        }
+    }
+
+    // Method to set the maintenance mode manually in JavaScript
+    setMaintenanceModeManually(isEnabled) {
+        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
+    }
+
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             fontSize: 16,
-            profileStatus: 'offline',
-            maintenanceMode: false,
-            creatorShoutouts: {
-                tiktok: {
-                    US: true,
-                    UK: true,
-                    CA: false,
-                    CN: false
-                },
-                instagram: {
-                    US: true,
-                    CA: true,
-                    MX: false,
-                    GB: false
-                },
-                youtube: {
-                    US: true,
-                    MX: true,
-                    IN: false,
-                    BR: false
-                }
-            }
+            
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -43,7 +36,7 @@ class SettingsManager {
     }
 
     initializeControls() {
-        // Dark Mode Toggle (Available for all users)
+        // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
@@ -52,7 +45,7 @@ class SettingsManager {
             });
         }
 
-        // Font Size Control (Available for all users)
+        // Font Size Control
         const fontSizeRange = document.getElementById('fontSizeRange');
         const currentFontSize = document.getElementById('currentFontSize');
         if (fontSizeRange) {
@@ -67,13 +60,13 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
-        // Profile Status (Visible only for owner)
+        // Profile Status (Visible and Editable only for owner)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
             profileStatusSelect.value = this.settings.profileStatus;
             profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
-                if (this.isOwner) this.setProfileStatus(e.target.value);
+                this.setProfileStatus(e.target.value);
             });
         }
 
@@ -83,14 +76,9 @@ class SettingsManager {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
             maintenanceModeToggle.disabled = !this.isOwner;
             maintenanceModeToggle.addEventListener('change', (e) => {
-                if (this.isOwner) this.setMaintenanceMode(e.target.checked);
+                this.setMaintenanceMode(e.target.checked);
             });
         }
-
-        // Creator Shoutouts Region Toggles (Manually set each region for each platform)
-        this.initializeCreatorShoutoutRegionControl('tiktok');
-        this.initializeCreatorShoutoutRegionControl('instagram');
-        this.initializeCreatorShoutoutRegionControl('youtube');
 
         // Reset Settings Button
         const resetButton = document.getElementById('resetSettings');
@@ -106,38 +94,33 @@ class SettingsManager {
         this.updateFooterYear();
     }
 
-    // Initialize creator shoutouts region toggles for each region
-    initializeCreatorShoutoutRegionControl(platform) {
-        const regionControls = document.querySelectorAll(`#${platform}RegionControl .regionToggle`);
-        regionControls.forEach((toggle) => {
-            toggle.addEventListener('change', (e) => {
-                this.setCreatorShoutoutRegion(platform, e.target.dataset.region, e.target.checked);
-            });
-            toggle.checked = this.settings.creatorShoutouts[platform][toggle.dataset.region];
-        });
-    }
-
     applySettings() {
         this.applyTheme(this.settings.darkMode);
         this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
-        this.applyProfileStatus(this.settings.profileStatus);
-        this.applyCreatorShoutouts();
+        this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
     }
 
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
-        this.applyProfileStatus(status);
+        this.applyProfileStatus(status); // Apply status change to the profile
     }
 
     applyProfileStatus(status) {
         const statusElement = document.querySelector('.profile-status');
         if (statusElement) {
-            statusElement.classList.remove('online', 'idle', 'offline');
-            statusElement.classList.add(status);
-            const statusIcons = { online: "🟢", idle: "🟡", offline: "⚪" };
-            statusElement.textContent = statusIcons[status] || "⚪";
+            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
+            statusElement.classList.add(status); // Add the new status class
+
+            // Change the icon based on the status
+            const statusIcons = {
+                "online": "🟢",
+                "idle": "🟡",
+                "offline": "⚪"
+            };
+
+            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
         }
     }
 
@@ -149,11 +132,12 @@ class SettingsManager {
     }
 
     setFontSize(size) {
-        size = Math.min(Math.max(size, 10), 30);
+        size = Math.min(Math.max(size, 10), 30); // Limit size between 10px and 30px
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
         this.settings.fontSize = size;
         this.saveSettings();
 
+        // Update UI display
         const currentFontSize = document.getElementById('currentFontSize');
         if (currentFontSize) {
             currentFontSize.textContent = `${size}px`;
@@ -173,82 +157,52 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 16,
-            profileStatus: 'offline',
-            maintenanceMode: false,
-            creatorShoutouts: {
-                tiktok: {
-                    US: true,
-                    UK: true,
-                    CA: false,
-                    CN: false
-                },
-                instagram: {
-                    US: true,
-                    CA: true,
-                    MX: false,
-                    GB: false
-                },
-                youtube: {
-                    US: true,
-                    MX: true,
-                    IN: false,
-                    BR: false
-                }
-            }
+            
         };
         this.settings = defaultSettings;
         this.applySettings();
         this.saveSettings();
+
+        // Update UI controls
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const fontSizeRange = document.getElementById('fontSizeRange');
+        const currentFontSize = document.getElementById('currentFontSize');
+        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
+        const profileStatusSelect = document.getElementById('profileStatusSelect');
+
+        if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
+        if (fontSizeRange) {
+            fontSizeRange.value = defaultSettings.fontSize;
+            this.updateSliderBackground(fontSizeRange);
+        }
+        if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
+        if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
+        if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
     }
 
     setMaintenanceMode(isEnabled) {
         this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
-        this.applyMaintenanceMode(isEnabled);
+        this.applyMaintenanceMode(isEnabled); // Apply the maintenance mode on page
     }
 
     applyMaintenanceMode(isEnabled) {
         const maintenanceMessage = document.getElementById('maintenanceModeMessage');
         if (maintenanceMessage) {
-            maintenanceMessage.style.display = isEnabled ? 'block' : 'none';
+            if (isEnabled) {
+                maintenanceMessage.style.display = 'block';  // Show the maintenance message
+            } else {
+                maintenanceMessage.style.display = 'none';  // Hide the maintenance message
+            }
         }
     }
 
-    setCreatorShoutoutRegion(platform, region, isAvailable) {
-        this.settings.creatorShoutouts[platform][region] = isAvailable;
-        this.saveSettings();
-        this.applyCreatorShoutouts();
-    }
-
-    applyCreatorShoutouts() {
-        const shoutoutSections = ['tiktok', 'instagram', 'youtube'];
-        shoutoutSections.forEach(platform => {
-            const sectionElement = document.getElementById(`${platform}ShoutoutSection`);
-            if (sectionElement) {
-                const regions = Object.keys(this.settings.creatorShoutouts[platform]);
-                const availableRegions = regions.filter(region => this.settings.creatorShoutouts[platform][region]);
-                sectionElement.style.display = availableRegions.length > 0 ? 'block' : 'none';
-            }
-        });
-    }
-
-    // Manually set regions for creator shoutouts
-    setCreatorShoutoutsTikTokManually(region, isAvailable) {
-        this.setCreatorShoutoutRegion('tiktok', region, isAvailable);
-    }
-
-    setCreatorShoutoutsInstagramManually(region, isAvailable) {
-        this.setCreatorShoutoutRegion('instagram', region, isAvailable);
-    }
-
-    setCreatorShoutoutsYouTubeManually(region, isAvailable) {
-        this.setCreatorShoutoutRegion('youtube', region, isAvailable);
-    }
-
+    // Function to update the year in the footer
     updateFooterYear() {
-        const footerYear = document.getElementById('footerYear');
-        if (footerYear) {
-            footerYear.textContent = new Date().getFullYear();
+        const currentYear = new Date().getFullYear();
+        const yearElement = document.getElementById('current-year');
+        if (yearElement) {
+            yearElement.textContent = currentYear;
         }
     }
 }
@@ -257,9 +211,9 @@ class SettingsManager {
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
-    // Example of manually setting creator shoutouts regions (with true/false for each region)
-    settingsManager.setCreatorShoutoutsTikTokManually('US', true);   // Enable US for TikTok
-    settingsManager.setCreatorShoutoutsTikTokManually('CN', false);  // Disable CN for TikTok
-    settingsManager.setCreatorShoutoutsInstagramManually('MX', true); // Enable MX for Instagram
-    settingsManager.setCreatorShoutoutsYouTubeManually('BR', true);  // Enable BR for YouTube
+    // Example of setting maintenance mode manually
+    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "true"
+
+    // Example of setting profile status manually
+    settingsManager.setProfileStatusManually('offline');  // Set profile status to "idle"
 });
