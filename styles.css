@@ -503,6 +503,19 @@ body {
     margin-right: auto;
 }
 
+/* TikTok Creator Shoutouts */
+.tiktok-creator-section {
+    background-color: var(--content-bg);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 30px 20px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* TikTok Creator Grid */
 .tiktok-creator-grid {
     display: grid;
@@ -744,7 +757,7 @@ body {
     background-color: var(--content-bg);
     padding: 30px;
     border-radius: 12px;
-    margin: 30px 0;
+    margin: 30px 20px;
     box-shadow: 0 4px 8px var(--shadow-color);
     width: 100%;
     max-width: 1200px;
