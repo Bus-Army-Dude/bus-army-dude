@@ -15,16 +15,22 @@ class SettingsManager {
             maintenanceMode: false,
             creatorShoutouts: {
                 tiktok: {
-                    availableRegions: ['US', 'UK'],
-                    bannedRegions: ['CN']
+                    US: true,
+                    UK: true,
+                    CA: false,
+                    CN: false
                 },
                 instagram: {
-                    availableRegions: ['US', 'CA'],
-                    bannedRegions: []
+                    US: true,
+                    CA: true,
+                    MX: false,
+                    GB: false
                 },
                 youtube: {
-                    availableRegions: ['US', 'MX'],
-                    bannedRegions: []
+                    US: true,
+                    MX: true,
+                    IN: false,
+                    BR: false
                 }
             }
         };
@@ -100,14 +106,14 @@ class SettingsManager {
         this.updateFooterYear();
     }
 
-    // Initialize creator shoutouts region toggles
+    // Initialize creator shoutouts region toggles for each region
     initializeCreatorShoutoutRegionControl(platform) {
         const regionControls = document.querySelectorAll(`#${platform}RegionControl .regionToggle`);
         regionControls.forEach((toggle) => {
             toggle.addEventListener('change', (e) => {
                 this.setCreatorShoutoutRegion(platform, e.target.dataset.region, e.target.checked);
             });
-            toggle.checked = this.isRegionAvailable(platform, toggle.dataset.region);
+            toggle.checked = this.settings.creatorShoutouts[platform][toggle.dataset.region];
         });
     }
 
@@ -170,9 +176,24 @@ class SettingsManager {
             profileStatus: 'offline',
             maintenanceMode: false,
             creatorShoutouts: {
-                tiktok: { availableRegions: ['US', 'UK'], bannedRegions: ['CN'] },
-                instagram: { availableRegions: ['US', 'CA'], bannedRegions: [] },
-                youtube: { availableRegions: ['US', 'MX'], bannedRegions: [] }
+                tiktok: {
+                    US: true,
+                    UK: true,
+                    CA: false,
+                    CN: false
+                },
+                instagram: {
+                    US: true,
+                    CA: true,
+                    MX: false,
+                    GB: false
+                },
+                youtube: {
+                    US: true,
+                    MX: true,
+                    IN: false,
+                    BR: false
+                }
             }
         };
         this.settings = defaultSettings;
@@ -194,21 +215,9 @@ class SettingsManager {
     }
 
     setCreatorShoutoutRegion(platform, region, isAvailable) {
-        const platformSettings = this.settings.creatorShoutouts[platform];
-        if (isAvailable) {
-            platformSettings.availableRegions.push(region);
-            platformSettings.bannedRegions = platformSettings.bannedRegions.filter(r => r !== region);
-        } else {
-            platformSettings.bannedRegions.push(region);
-            platformSettings.availableRegions = platformSettings.availableRegions.filter(r => r !== region);
-        }
+        this.settings.creatorShoutouts[platform][region] = isAvailable;
         this.saveSettings();
         this.applyCreatorShoutouts();
-    }
-
-    isRegionAvailable(platform, region) {
-        const platformSettings = this.settings.creatorShoutouts[platform];
-        return platformSettings.availableRegions.includes(region) && !platformSettings.bannedRegions.includes(region);
     }
 
     applyCreatorShoutouts() {
@@ -216,72 +225,24 @@ class SettingsManager {
         shoutoutSections.forEach(platform => {
             const sectionElement = document.getElementById(`${platform}ShoutoutSection`);
             if (sectionElement) {
-                const regions = ['US', 'CA', 'UK', 'MX']; // List of regions to consider
-                const availableRegions = regions.filter(region => this.isRegionAvailable(platform, region));
+                const regions = Object.keys(this.settings.creatorShoutouts[platform]);
+                const availableRegions = regions.filter(region => this.settings.creatorShoutouts[platform][region]);
                 sectionElement.style.display = availableRegions.length > 0 ? 'block' : 'none';
             }
         });
     }
 
     // Manually set regions for creator shoutouts
-    setCreatorShoutoutsTikTokManually(isAvailable) {
-        const tiktokSettings = this.settings.creatorShoutouts.tiktok;
-        const regions = ['US', 'UK', 'CA', 'CN'];
-        regions.forEach(region => {
-            if (isAvailable) {
-                if (!tiktokSettings.availableRegions.includes(region)) {
-                    tiktokSettings.availableRegions.push(region);
-                }
-                tiktokSettings.bannedRegions = tiktokSettings.bannedRegions.filter(r => r !== region);
-            } else {
-                if (!tiktokSettings.bannedRegions.includes(region)) {
-                    tiktokSettings.bannedRegions.push(region);
-                }
-                tiktokSettings.availableRegions = tiktokSettings.availableRegions.filter(r => r !== region);
-            }
-        });
-        this.saveSettings();
-        this.applyCreatorShoutouts();
+    setCreatorShoutoutsTikTokManually(region, isAvailable) {
+        this.setCreatorShoutoutRegion('tiktok', region, isAvailable);
     }
 
-    setCreatorShoutoutsInstagramManually(isAvailable) {
-        const instagramSettings = this.settings.creatorShoutouts.instagram;
-        const regions = ['US', 'CA', 'MX', 'GB'];
-        regions.forEach(region => {
-            if (isAvailable) {
-                if (!instagramSettings.availableRegions.includes(region)) {
-                    instagramSettings.availableRegions.push(region);
-                }
-                instagramSettings.bannedRegions = instagramSettings.bannedRegions.filter(r => r !== region);
-            } else {
-                if (!instagramSettings.bannedRegions.includes(region)) {
-                    instagramSettings.bannedRegions.push(region);
-                }
-                instagramSettings.availableRegions = instagramSettings.availableRegions.filter(r => r !== region);
-            }
-        });
-        this.saveSettings();
-        this.applyCreatorShoutouts();
+    setCreatorShoutoutsInstagramManually(region, isAvailable) {
+        this.setCreatorShoutoutRegion('instagram', region, isAvailable);
     }
 
-    setCreatorShoutoutsYouTubeManually(isAvailable) {
-        const youtubeSettings = this.settings.creatorShoutouts.youtube;
-        const regions = ['US', 'MX', 'IN', 'BR'];
-        regions.forEach(region => {
-            if (isAvailable) {
-                if (!youtubeSettings.availableRegions.includes(region)) {
-                    youtubeSettings.availableRegions.push(region);
-                }
-                youtubeSettings.bannedRegions = youtubeSettings.bannedRegions.filter(r => r !== region);
-            } else {
-                if (!youtubeSettings.bannedRegions.includes(region)) {
-                    youtubeSettings.bannedRegions.push(region);
-                }
-                youtubeSettings.availableRegions = youtubeSettings.availableRegions.filter(r => r !== region);
-            }
-        });
-        this.saveSettings();
-        this.applyCreatorShoutouts();
+    setCreatorShoutoutsYouTubeManually(region, isAvailable) {
+        this.setCreatorShoutoutRegion('youtube', region, isAvailable);
     }
 
     updateFooterYear() {
@@ -296,14 +257,9 @@ class SettingsManager {
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
-    // Example of setting maintenance mode manually
-    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "false"
-
-    // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('online');  // Set profile status to "online"
-
-    // Example of manually setting creator shoutouts regions (TikTok, Instagram, YouTube)
-    settingsManager.setCreatorShoutoutsTikTokManually(true); // Make TikTok shoutouts available for all regions
-    settingsManager.setCreatorShoutoutsInstagramManually(false); // Disable Instagram shoutouts for all regions
-    settingsManager.setCreatorShoutoutsYouTubeManually(true); // Make YouTube shoutouts available for all regions
+    // Example of manually setting creator shoutouts regions (with true/false for each region)
+    settingsManager.setCreatorShoutoutsTikTokManually('US', true);   // Enable US for TikTok
+    settingsManager.setCreatorShoutoutsTikTokManually('CN', false);  // Disable CN for TikTok
+    settingsManager.setCreatorShoutoutsInstagramManually('MX', true); // Enable MX for Instagram
+    settingsManager.setCreatorShoutoutsYouTubeManually('BR', true);  // Enable BR for YouTube
 });
