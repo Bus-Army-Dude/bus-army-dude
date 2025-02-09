@@ -494,9 +494,9 @@ body {
     background-color: var(--content-bg);
     padding: 20px;
     border-radius: 12px;
-    margin: 30px 20px; /* Added margin-right to prevent touching the side of the screen */
+    margin: 30px 0;
     box-shadow: 0 4px 8px var(--shadow-color);
-    width: calc(100% - 40px); /* Account for the added margins */
+    width: 100%;
     max-width: 1200px;
     margin: 30px auto;
 }
@@ -506,7 +506,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    padding: 20px 20px; /* Added padding on the left and right */
+    padding: 20px 0;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -522,13 +522,13 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px var(--shadow-color);
     position: relative;
-    border: 1px solid var(--accent-color); /* Add subtle border for better contrast */
-    background-color: rgba(255, 255, 255, 0.9); /* Slight opacity for contrast */
+    border: 1px solid var(--accent-color);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .tiktok-creator-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px var(--shadow-color); /* Enhance hover shadow for better visibility */
+    box-shadow: 0 8px 16px var(--shadow-color);
 }
 
 /* Common Creator Card Styles */
@@ -568,7 +568,7 @@ body {
 /* Common Profile Picture Styles */
 .creator-pic,
 .instagram-creator-pic,
-youtube-creator-pic {
+.youtube-creator-pic {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -679,11 +679,12 @@ youtube-creator-pic {
     background-color: var(--content-bg);
     padding: 30px;
     border-radius: 12px;
-    margin: 30px 20px; /* Added margin-right to prevent touching the side of the screen */
-    box-shadow: 0 4px 8px var(--shadow-color);
-    width: calc(100% - 40px); /* Account for the added margins */
-    max-width: 1200px;
     margin: 30px auto;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    width: 100%; /* Ensure full width of container */
+    max-width: 1200px; /* Consistent max-width for all sections */
+    margin-left: 20px; /* Margin to the left */
+    margin-right: 20px; /* Margin to the right */
 }
 
 /* Section Header Styles */
