@@ -12,15 +12,14 @@ const tiktokShoutouts = {
         { username: 'meetmeinthemediacenter', isVerified: true, followers: '699.7K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
         { username: 'kaylee_mertens_', isVerified: false, followers: '674.2K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
         { username: 'mrfatcheeto', isVerified: false, followers: '624.7K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
-        { username: 'trafficlightdoctor', isVerified: false, followers: '385.3K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },        
+        { username: 'trafficlightdoctor', isVerified: false, followers: '385.3K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
         { username: 'aggressiveafterdark', isVerified: false, followers: '354.2K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
         { username: 'rachel_hughes', isVerified: false, followers: '310.9K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/houseofhughes.jpeg' },
-        { username: 'captainsteeeve', isVerified: false, followers: '291.2K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },               
+        { username: 'captainsteeeve', isVerified: false, followers: '291.2K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },
         { username: 'badge5022', isVerified: false, followers: '21K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
         { username: 'raisingramsey2023', isVerified: false, followers: '1,200', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
         { username: 'jerridc4', isVerified: false, followers: '479', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
         { username: 'officalbusarmydude', isVerified: false, followers: '26', nickname: 'Bus Army Dude🇨🇦', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
-        // Add more shoutouts here...
     ],
     init() {
         this.createShoutoutCards();
@@ -52,39 +51,34 @@ const tiktokShoutouts = {
             container.appendChild(card);
         });
     },
-    // Function to convert the manually set last updated time to the user's local timezone
-function convertToUserTimezone(lastUpdated) {
-  const lastUpdatedDate = new Date(lastUpdated);
-  
-  // Use toLocaleString to ensure it's in the user's local timezone
-  const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: true
-  });
-  
-  return formattedTime;
-}
-
-// Manually set the last updated time here (example: '2025-02-09T12:00:00Z')
-const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
-
-// Set the formatted time in the user's timezone
-window.onload = function() {
-  const lastUpdatedElement = document.getElementById('lastUpdatedTime');
-  
-  // Display the manually set last updated time in the user's local timezone
-  lastUpdatedElement.textContent = convertToUserTimezone(manuallySetLastUpdated);
+    convertToUserTimezone(lastUpdated) {
+        const lastUpdatedDate = new Date(lastUpdated);
+        
+        const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+        
+        return formattedTime;
+    }
 };
 
-// Initialize the TikTok shoutouts
+const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
+
+window.onload = function() {
+    const lastUpdatedElement = document.getElementById('lastUpdatedTime');
+    lastUpdatedElement.textContent = tiktokShoutouts.convertToUserTimezone(manuallySetLastUpdated);
+};
+
 tiktokShoutouts.init();
 
+// Instagram Shoutouts
 const instagramShoutouts = {
     accounts: [
         { username: 'mrbeast', isVerified: true, followers: '65.6M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },    
@@ -100,11 +94,9 @@ const instagramShoutouts = {
         { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
         { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
         { username: 'busarmydude', isVerified: false, followers: '20', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
-        // Add more Instagram creators as needed
     ],
     init() {
         this.createShoutoutCards();
-        this.setLastUpdatedTime();
     },
     createShoutoutCards() {
         const container = document.querySelector('.instagram-creator-grid');
@@ -113,61 +105,33 @@ const instagramShoutouts = {
         container.innerHTML = '';
         this.accounts.forEach(account => {
             const card = document.createElement('div');
-            card.className = 'instagram-creator-card';
+            card.className = 'creator-card';
             card.innerHTML = `
-                <img src="${account.profilePic}" alt="${account.nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="instagram-creator-info">
-                    <div class="instagram-creator-header">
+                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="creator-info">
+                    <div class="creator-header">
                         <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''}
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
                     </div>
-                    <p class="instagram-creator-username">${account.username}</p>
-                    <p class="instagram-creator-bio">${account.bio || ''}</p>
-                    <p class="instagram-follower-count">${account.followers} Followers</p>
-                    <a href="https://instagram.com/${account.username}" target="_blank" class="instagram-visit-profile">
+                    <p class="creator-username">@${account.username}</p>
+                    <p class="creator-bio">${account.bio || ''}</p>
+                    <p class="follower-count">${account.followers} Followers</p>
+                    <a href="https://www.instagram.com/${account.username}/" target="_blank" class="visit-profile">
                         Visit Profile
                     </a>
                 </div>
             `;
             container.appendChild(card);
         });
-    },
-     // Function to convert the manually set last updated time to the user's local timezone
-function convertToUserTimezone(lastUpdated) {
-  const lastUpdatedDate = new Date(lastUpdated);
-  
-  // Use toLocaleString to ensure it's in the user's local timezone
-  const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: true
-  });
-  
-  return formattedTime;
-}
-
-// Manually set the last updated time here (example: '2025-02-09T12:00:00Z')
-const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
-
-// Set the formatted time in the user's timezone
-window.onload = function() {
-  const lastUpdatedElement = document.getElementById('lastUpdatedTime');
-  
-  // Display the manually set last updated time in the user's local timezone
-  lastUpdatedElement.textContent = convertToUserTimezone(manuallySetLastUpdated);
+    }
 };
 
-// Initialize the YouTube shoutouts
 instagramShoutouts.init();
 
+// YouTube Shoutouts
 const youtubeShoutouts = {
     accounts: [
-        { username: '@MrBeast', isVerified: true, subscribers: '359M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
+         { username: '@MrBeast', isVerified: true, subscribers: '359M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
         { username: '@MrBeast2', isVerified: true, subscribers: '48.7M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
         { username: '@MrBeastGaming', isVerified: true, subscribers: '46.6M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
         { username: '@BeastReacts', isVerified: true, subscribers: '35.4M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
@@ -177,12 +141,10 @@ const youtubeShoutouts = {
         { username: '@Trafficlightdoctor', isVerified: false, subscribers: '153K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
         { username: '@mrfatcheeto', isVerified: false, subscribers: '103K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
         { username: '@Badge502', isVerified: false, subscribers: '61.3K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
-        { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' },     
-        // Add more YouTube creators as needed
+        { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' }, 
     ],
     init() {
         this.createShoutoutCards();
-        this.setLastUpdatedTime();
     },
     createShoutoutCards() {
         const container = document.querySelector('.youtube-creator-grid');
@@ -191,53 +153,25 @@ const youtubeShoutouts = {
         container.innerHTML = '';
         this.accounts.forEach(account => {
             const card = document.createElement('div');
-            card.className = 'youtube-creator-card';
+            card.className = 'creator-card';
             card.innerHTML = `
-                <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="youtube-creator-info">
-                    <div class="youtube-creator-header">
+                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="creator-info">
+                    <div class="creator-header">
                         <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''}
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
                     </div>
-                    <p class="youtube-creator-username">${account.username}</p>
-                    <p class="youtube-creator-bio">${account.bio || ''}</p>
-                    <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
-                    <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
-                        Visit Channel
+                    <p class="creator-username">@${account.username}</p>
+                    <p class="creator-bio">${account.bio || ''}</p>
+                    <p class="follower-count">${account.followers} Followers</p>
+                    <a href="https://www.youtube.com/${account.username}" target="_blank" class="visit-profile">
+                        Visit Profile
                     </a>
                 </div>
             `;
             container.appendChild(card);
         });
-    },
-     // Function to convert the manually set last updated time to the user's local timezone
-function convertToUserTimezone(lastUpdated) {
-  const lastUpdatedDate = new Date(lastUpdated);
-  
-  // Use toLocaleString to ensure it's in the user's local timezone
-  const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: true
-  });
-  
-  return formattedTime;
-}
-
-// Manually set the last updated time here (example: '2025-02-09T12:00:00Z')
-const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
-
-// Set the formatted time in the user's timezone
-window.onload = function() {
-  const lastUpdatedElement = document.getElementById('lastUpdatedTime');
-  
-  // Display the manually set last updated time in the user's local timezone
-  lastUpdatedElement.textContent = convertToUserTimezone(manuallySetLastUpdated);
+    }
 };
 
 youtubeShoutouts.init();
