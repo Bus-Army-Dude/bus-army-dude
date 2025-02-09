@@ -23,38 +23,6 @@ const tiktokShoutouts = {
         // Add more shoutouts here...
     ],
     const shoutoutSection = {
-    lastUpdatedTime: '2025-02-08T09:12:24Z', // Manually set the last updated date and time in UTC
-    init() {
-        this.createShoutoutCards();
-        this.setLastUpdatedTime();
-    },
-    createShoutoutCards() {
-        const container = document.querySelector('.creator-grid');
-        if (!container) return;
-
-        container.innerHTML = '';
-        this.accounts.forEach(account => {
-            const card = document.createElement('div');
-            card.className = 'creator-card';
-            card.innerHTML = `
-                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="creator-info">
-                    <div class="creator-header">
-                        <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
-                    </div>
-                    <p class="creator-username">@${account.username}</p>
-                    <p class="creator-bio">${account.bio || ''}</p>
-                    <p class="follower-count">${account.followers} Followers</p>
-                    <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">
-                        Visit Profile
-                    </a>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    },
-   const shoutoutSection = {
     lastUpdatedTime: '2025-02-08T09:04:24Z', // Manually set the last updated date and time in UTC
     init() {
         this.createShoutoutCards();
@@ -96,10 +64,10 @@ const tiktokShoutouts = {
         // Get the user's timezone
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        // Convert the UTC date to the user's timezone
+        // Convert the UTC date to the user's timezone, including weekday
         const formattedDate = utcDate.toLocaleString('en-US', {
             timeZone: userTimeZone,
-            weekday: 'short',
+            weekday: 'long', // Show the full name of the day
             year: 'numeric',
             month: 'short',
             day: 'numeric',
@@ -116,11 +84,10 @@ const tiktokShoutouts = {
         const minutes = Math.abs(timezoneOffset) % 60;
         const timezoneString = `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 
-        // Display the formatted time with timezone
+        // Display the formatted time with weekday and timezone
         lastUpdatedElement.textContent = `Last Updated: ${formattedDate} ${timezoneString}`;
     }
 };
-
 
 // Initialize the TikTok shoutouts
 tiktokShoutouts.init();
@@ -184,10 +151,10 @@ const instagramShoutouts = {
         // Get the user's timezone
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        // Convert the UTC date to the user's timezone
+        // Convert the UTC date to the user's timezone, including weekday
         const formattedDate = utcDate.toLocaleString('en-US', {
             timeZone: userTimeZone,
-            weekday: 'short',
+            weekday: 'long', // Show the full name of the day
             year: 'numeric',
             month: 'short',
             day: 'numeric',
@@ -204,7 +171,7 @@ const instagramShoutouts = {
         const minutes = Math.abs(timezoneOffset) % 60;
         const timezoneString = `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 
-        // Display the formatted time with timezone
+        // Display the formatted time with weekday and timezone
         lastUpdatedElement.textContent = `Last Updated: ${formattedDate} ${timezoneString}`;
     }
 };
@@ -293,5 +260,3 @@ const youtubeShoutouts = {
         lastUpdatedElement.textContent = `Last Updated: ${formattedDate} ${timezoneString}`;
     }
 };
-
-youtubeShoutouts.init();
