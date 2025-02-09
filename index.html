@@ -143,35 +143,38 @@
 
         <div id="loading-spinner" class="spinner"></div>
         
-       <!-- TikTok Shoutouts Section -->
-<div class="shoutouts-section section" id="tiktokSection">
-    <h2>TikTok Creator Shoutouts</h2>
-    <p id="tiktok-last-updated-timestamp"></p>
-    <div class="creator-grid">
-        <!-- Cards will be dynamically generated here -->
-    </div>
-    <p class="hidden-message" id="tiktokUnavailableMessage" style="display: none;">TikTok shoutouts are not available in your region.</p>
-</div>
+        <!-- TikTok Shoutouts Section -->
+        <div class="shoutouts-section section">
+            <div id="tiktok-shoutouts">
+                <h2>TikTok Creator Shoutouts</h2>
+                <p id="tiktok-last-updated-timestamp"></p>
+            </div>
+            <div class="creator-grid">
+                <!-- Cards will be dynamically generated here -->
+            </div>
+        </div>
+        
+        <!-- Instagram Shoutouts Section -->
+        <div class="shoutouts-section section">
+            <div id="instagram-shoutouts">
+                <h2>Instagram Creator Shoutouts</h2>
+                <p class="last-updated"><span id="instagram-last-updated-timestamp">N/A</span></p>
+            </div>
+            <div class="instagram-creator-grid">
+                <!-- Instagram creator cards will be dynamically generated here -->
+            </div>
+        </div>
 
-<!-- Instagram Shoutouts Section -->
-<div class="shoutouts-section section" id="instagramSection">
-    <h2>Instagram Creator Shoutouts</h2>
-    <p id="instagram-last-updated-timestamp"></p>
-    <div class="creator-grid">
-        <!-- Cards will be dynamically generated here -->
-    </div>
-    <p class="hidden-message" id="instagramUnavailableMessage" style="display: none;">Instagram shoutouts are not available in your region.</p>
-</div>
-
-<!-- YouTube Shoutouts Section -->
-<div class="shoutouts-section section" id="youtubeSection">
-    <h2>YouTube Creator Shoutouts</h2>
-    <p id="youtube-last-updated-timestamp"></p>
-    <div class="creator-grid">
-        <!-- Cards will be dynamically generated here -->
-    </div>
-    <p class="hidden-message" id="youtubeUnavailableMessage" style="display: none;">YouTube shoutouts are not available in your region.</p>
-</div>
+        <!-- YouTube Shoutouts Section -->
+        <div class="shoutouts-section section">
+            <div id="youtube-shoutouts">
+                <h2>YouTube Creator Shoutouts</h2>
+                <p id="lastUpdatedYouTube"></p>
+            </div>
+            <div class="youtube-creator-grid">
+                <!-- YouTube creator cards will be dynamically generated here -->
+            </div>
+        </div>
         
         <!-- Useful Links Section -->
     <div class="useful-links-section section">
@@ -563,61 +566,59 @@
 </div>
         
         <!-- Tech Section -->
-<div class="tech-section section">
-    <h2>Tech Information</h2>
-    
-    <!-- iPhone Section -->
-    <div class="tech-item">
-        <h3>iPhone 16 Pro</h3>
-        <p><span>Model:</span> iPhone 16 Pro</p>
-        <p><span>Material:</span> Titanium</p>
-        <p><span>Storage:</span> 128GB</p>
-        <p><span>Battery Capacity:</span> 3,582mAh</p>
-        <p><span>Color:</span> Natural Titanium</p>
-        <p><span>Price:</span> $1,067.49</p>
-        <p><span>Date Released:</span> September 20, 2024</p>
-        <p><span>Date Bought:</span> November 08, 2024</p>
-        <p><span>OS Version:</span> iOS 18.3 (22D63)</p>
-        <p><span>Battery Health:</span></p>
-        <div class="battery-icon">
-            <div class="battery-level" style="width: 100%;"></div>
-            <div class="battery-percentage">100%</div>
+        <div class="tech-section section">
+            <h2>Tech Information</h2>
+            
+            <!-- iPhone Section -->
+            <div class="tech-item">
+                <h3>iPhone 16 Pro</h3>
+                <p><span>Model:</span> iPhone 16 Pro</p>
+                <p><span>Material:</span> Titanium</p>
+                <p><span>Storage:</span> 128GB</p>
+                <p><span>Battery Capacity:</span> 3,582mAh</p>
+                <p><span>Color:</span> Natural Titanium</p>
+                <p><span>Price:</span> $1,067.49</p>
+                <p><span>Date Released:</span> September 20, 2024</p>
+                <p><span>Date Bought:</span> November 08, 2024</p>
+                <p><span>OS Version:</span> iOS 18.3 (22D63)</p>
+                <p><span>Battery Health:</span></p>
+                <div class="battery-icon">
+                    <div class="battery-level" style="width: 100%;">100%</div>
+                </div>
+                <p><span>Battery Charge Cycles:</span> 133</p>
+            </div>
+            
+            <!-- Apple Watch Section -->
+            <div class="tech-item">
+                <h3>Apple Watch Ultra 2</h3>
+                <p><span>Model:</span> Apple Watch Ultra 2</p>
+                <p><span>Material:</span> Titanium</p>
+                <p><span>Storage:</span> 64GB</p>
+                <p><span>Battery Capacity:</span> 564mAh</p>
+                <p><span>Color:</span> Natural Titanium</p>
+                <p><span>Price:</span> $853.98</p>
+                <p><span>Date Released:</span> September 22, 2023</p>
+                <p><span>Date Bought:</span> May 17, 2024</p>
+                <p><span>OS Version:</span> WatchOS 11.3 (22S555)</p>
+                <p><span>Battery Health:</span></p>
+                <div class="battery-icon">
+                    <div class="battery-level" style="width: 97%;">97%</div>
+                </div>
+            </div>
+            
+            <!-- Mac Mini Section -->
+            <div class="tech-item">
+                <h3>2023 Mac Mini M2</h3>
+                <p><span>Model:</span> 2023 Mac Mini M2</p>
+                <p><span>Material:</span> Aluminum</p>
+                <p><span>Storage:</span> 256GB SSD</p>
+                <p><span>Color:</span> Grey</p>
+                <p><span>Price:</span> $742.29</p>
+                <p><span>Date Released:</span> January 17, 2023</p>
+                <p><span>Date Bought:</span> May 16, 2024</p>
+                <p><span>OS Version:</span> macOS Sequoia 15.3 Beta (24D5055b)</p>
+            </div>
         </div>
-        <p><span>Battery Charge Cycles:</span> 139</p>
-    </div>
-    
-    <!-- Apple Watch Ultra 2 Section -->
-    <div class="tech-item">
-        <h3>Apple Watch Ultra 2</h3>
-        <p><span>Model:</span> Apple Watch Ultra 2</p>
-        <p><span>Material:</span> Titanium</p>
-        <p><span>Storage:</span> 64GB</p>
-        <p><span>Battery Capacity:</span> 564mAh</p>
-        <p><span>Color:</span> Natural Titanium</p>
-        <p><span>Price:</span> $853.98</p>
-        <p><span>Date Released:</span> September 22, 2023</p>
-        <p><span>Date Bought:</span> May 17, 2024</p>
-        <p><span>OS Version:</span> WatchOS 11.3 (22S555)</p>
-        <p><span>Battery Health:</span></p>
-        <div class="battery-icon">
-            <div class="battery-level" style="width: 97%;"></div>
-            <div class="battery-percentage">97%</div>
-        </div>
-    </div>
-    
-    <!-- Mac Mini Section -->
-    <div class="tech-item">
-        <h3>2023 Mac Mini M2</h3>
-        <p><span>Model:</span> 2023 Mac Mini M2</p>
-        <p><span>Material:</span> Aluminum</p>
-        <p><span>Storage:</span> 256GB SSD</p>
-        <p><span>Color:</span> Grey</p>
-        <p><span>Price:</span> $742.29</p>
-        <p><span>Date Released:</span> January 17, 2023</p>
-        <p><span>Date Bought:</span> May 16, 2024</p>
-        <p><span>OS Version:</span> macOS Sequoia 15.3 Beta (24D5055b)</p>
-    </div>
-</div>
 
 
         <!-- Disabilities Section -->
