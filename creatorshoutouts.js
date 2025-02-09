@@ -22,7 +22,40 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '26', nickname: 'Bus Army Dude🇨🇦', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
     ],
-    lastUpdatedTime: '2025-02-08T09:12:24', // Manually set the last updated date and time
+    const shoutoutSection = {
+    lastUpdatedTime: '2025-02-08T09:12:24Z', // Manually set the last updated date and time in UTC
+    init() {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+    },
+    createShoutoutCards() {
+        const container = document.querySelector('.creator-grid');
+        if (!container) return;
+
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'creator-card';
+            card.innerHTML = `
+                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="creator-info">
+                    <div class="creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                    </div>
+                    <p class="creator-username">@${account.username}</p>
+                    <p class="creator-bio">${account.bio || ''}</p>
+                    <p class="follower-count">${account.followers} Followers</p>
+                    <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">
+                        Visit Profile
+                    </a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    },
+   const shoutoutSection = {
+    lastUpdatedTime: '2025-02-08T09:04:24Z', // Manually set the last updated date and time in UTC
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -57,8 +90,14 @@ const tiktokShoutouts = {
         const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
         if (!lastUpdatedElement) return;
 
+        // Ensure the time is treated as UTC first
+        const utcDate = new Date(this.lastUpdatedTime); // Use the UTC time
+
+        // Get the user's timezone
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+
+        // Convert the UTC date to the user's timezone
+        const formattedDate = utcDate.toLocaleString('en-US', {
             timeZone: userTimeZone,
             weekday: 'short',
             year: 'numeric',
@@ -70,9 +109,18 @@ const tiktokShoutouts = {
             hour12: true
         });
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+        // Append the timezone information
+        const timezoneOffset = new Date().getTimezoneOffset();
+        const sign = timezoneOffset > 0 ? '-' : '+';
+        const hours = Math.floor(Math.abs(timezoneOffset) / 60);
+        const minutes = Math.abs(timezoneOffset) % 60;
+        const timezoneString = `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+        // Display the formatted time with timezone
+        lastUpdatedElement.textContent = `Last Updated: ${formattedDate} ${timezoneString}`;
     }
 };
+
 
 // Initialize the TikTok shoutouts
 tiktokShoutouts.init();
@@ -94,7 +142,8 @@ const instagramShoutouts = {
         { username: 'busarmydude', isVerified: false, followers: '20', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-02-08T09:04:24', // Manually set the last updated date and time
+    const shoutoutSection = {
+    lastUpdatedTime: '2025-02-08T09:04:24Z', // Manually set the last updated date and time in UTC
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -129,8 +178,14 @@ const instagramShoutouts = {
         const lastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
         if (!lastUpdatedElement) return;
 
+        // Ensure the time is treated as UTC first
+        const utcDate = new Date(this.lastUpdatedTime); // Use the UTC time
+
+        // Get the user's timezone
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+
+        // Convert the UTC date to the user's timezone
+        const formattedDate = utcDate.toLocaleString('en-US', {
             timeZone: userTimeZone,
             weekday: 'short',
             year: 'numeric',
@@ -142,7 +197,15 @@ const instagramShoutouts = {
             hour12: true
         });
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+        // Append the timezone information
+        const timezoneOffset = new Date().getTimezoneOffset();
+        const sign = timezoneOffset > 0 ? '-' : '+';
+        const hours = Math.floor(Math.abs(timezoneOffset) / 60);
+        const minutes = Math.abs(timezoneOffset) % 60;
+        const timezoneString = `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+        // Display the formatted time with timezone
+        lastUpdatedElement.textContent = `Last Updated: ${formattedDate} ${timezoneString}`;
     }
 };
 
@@ -164,7 +227,8 @@ const youtubeShoutouts = {
         { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-02-08T09:07:05', // Manually set the last updated date and time
+   const shoutoutSection = {
+    lastUpdatedTime: '2025-02-08T09:07:05Z', // Manually set the last updated date and time in UTC
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -199,8 +263,14 @@ const youtubeShoutouts = {
         const lastUpdatedElement = document.getElementById('lastUpdatedYouTube');
         if (!lastUpdatedElement) return;
 
+        // Ensure the time is treated as UTC first
+        const utcDate = new Date(this.lastUpdatedTime); // Use the UTC time
+
+        // Get the user's timezone
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+
+        // Convert the UTC date to the user's timezone
+        const formattedDate = utcDate.toLocaleString('en-US', {
             timeZone: userTimeZone,
             weekday: 'short',
             year: 'numeric',
@@ -212,7 +282,15 @@ const youtubeShoutouts = {
             hour12: true
         });
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+        // Append the timezone information
+        const timezoneOffset = new Date().getTimezoneOffset();
+        const sign = timezoneOffset > 0 ? '-' : '+';
+        const hours = Math.floor(Math.abs(timezoneOffset) / 60);
+        const minutes = Math.abs(timezoneOffset) % 60;
+        const timezoneString = `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+        // Display the formatted time with timezone
+        lastUpdatedElement.textContent = `Last Updated: ${formattedDate} ${timezoneString}`;
     }
 };
 
