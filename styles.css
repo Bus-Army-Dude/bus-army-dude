@@ -648,6 +648,21 @@ body {
     color: var(--text-color);
 }
 
+/* Common Last Updated Styles */
+.last-updated {
+    font-size: 0.9em;
+    color: var(--secondary-text);
+    margin-top: 15px;
+}
+
+/* Last Updated Timestamp Styles for Specific Sections */
+#tiktok-last-updated-timestamp,
+#instagram-last-updated-timestamp,
+#lastUpdatedYouTube {
+    font-style: italic;
+    color: var(--tertiary-text);
+}
+
 :root {
     --accent-color-rgb: 0, 123, 255; /* Match this to your accent color */
     --shadow-color: rgba(0, 0, 0, 0.1);
