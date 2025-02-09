@@ -21,12 +21,13 @@ const tiktokShoutouts = {
         { username: 'jerridc4', isVerified: false, followers: '479', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
         { username: 'officalbusarmydude', isVerified: false, followers: '26', nickname: 'Bus Army Dude🇨🇦', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
     ],
+    lastUpdated: '2025-02-09T13:13:14Z', // Set last updated time for TikTok
     init() {
         this.createShoutoutCards();
-        this.setLastUpdatedTime();
+        this.setLastUpdatedTime('TikTok');
     },
     createShoutoutCards() {
-        const container = document.querySelector('.creator-grid');
+        const container = document.querySelector('.tiktok-creator-grid');
         if (!container) return;
 
         container.innerHTML = '';
@@ -66,14 +67,13 @@ const tiktokShoutouts = {
         });
         
         return formattedTime;
+    },
+    setLastUpdatedTime(section) {
+        const lastUpdatedElement = document.getElementById(`lastUpdatedTime${section}`);
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+        }
     }
-};
-
-const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
-
-window.onload = function() {
-    const lastUpdatedElement = document.getElementById('lastUpdatedTime');
-    lastUpdatedElement.textContent = tiktokShoutouts.convertToUserTimezone(manuallySetLastUpdated);
 };
 
 tiktokShoutouts.init();
@@ -95,8 +95,10 @@ const instagramShoutouts = {
         { username: '_jano_142_', isVerified: false, followers: '48', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },    
         { username: 'busarmydude', isVerified: false, followers: '20', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
     ],
+   lastUpdated: '2025-02-09T13:13:14Z', // Set last updated time for Instagram
     init() {
         this.createShoutoutCards();
+        this.setLastUpdatedTime('Instagram');
     },
     createShoutoutCards() {
         const container = document.querySelector('.instagram-creator-grid');
@@ -123,6 +125,12 @@ const instagramShoutouts = {
             `;
             container.appendChild(card);
         });
+    },
+    setLastUpdatedTime(section) {
+        const lastUpdatedElement = document.getElementById(`lastUpdatedTime${section}`);
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+        }
     }
 };
 
@@ -143,8 +151,10 @@ const youtubeShoutouts = {
         { username: '@Badge502', isVerified: false, subscribers: '61.3K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
         { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' }, 
     ],
+    lastUpdated: '2025-02-09T13:13:14Z', // Set last updated time for YouTube
     init() {
         this.createShoutoutCards();
+        this.setLastUpdatedTime('YouTube');
     },
     createShoutoutCards() {
         const container = document.querySelector('.youtube-creator-grid');
@@ -171,6 +181,12 @@ const youtubeShoutouts = {
             `;
             container.appendChild(card);
         });
+    },
+    setLastUpdatedTime(section) {
+        const lastUpdatedElement = document.getElementById(`lastUpdatedTime${section}`);
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+        }
     }
 };
 
