@@ -140,7 +140,22 @@ const instagramShoutouts = {
             console.error(`${section} Last Updated element not found!`);
             return;
         }
+        console.log(`${section} last updated: ${this.lastUpdated}`); // Log the last updated time
         lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+    },
+    convertToUserTimezone(lastUpdated) {
+        const lastUpdatedDate = new Date(lastUpdated);
+        const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+        return formattedTime;
     }
 };
 
@@ -202,7 +217,22 @@ const youtubeShoutouts = {
             console.error(`${section} Last Updated element not found!`);
             return;
         }
+        console.log(`${section} last updated: ${this.lastUpdated}`); // Log the last updated time
         lastUpdatedElement.textContent = `Last Updated: ${this.convertToUserTimezone(this.lastUpdated)}`;
+    },
+    convertToUserTimezone(lastUpdated) {
+        const lastUpdatedDate = new Date(lastUpdated);
+        const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+        return formattedTime;
     }
 };
 
