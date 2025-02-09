@@ -62,18 +62,16 @@
                 <!-- Owner Only Settings Section -->
                 <div class="settings-subsection owner-only">
                     <h2 class="subsection-title">Owner Only Settings</h2>
-                    
-                <!-- Maintenance Mode -->
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Maintenance Mode</h3>
-                        <p class="setting-description">Put the site into maintenance mode for updates</p>
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">Maintenance Mode</h3>
+                            <p class="setting-description">Put the site into maintenance mode for updates</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="maintenanceModeToggle" />
+                            <span class="toggle-slider"></span>
+                        </label>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="maintenanceModeToggle" />
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
 
                     <!-- Profile Status -->
                     <div class="setting-card">
@@ -90,68 +88,67 @@
                 </div>
 
                 <!-- Shoutout Section Toggles -->
-<div class="settings-subsection">
-    <h2 class="subsection-title">Shoutout Section Settings</h2>
+                <div class="settings-subsection">
+                    <h2 class="subsection-title">Shoutout Section Settings</h2>
 
-    <!-- TikTok Shoutouts -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">TikTok Shoutouts</h3>
-            <p class="setting-description">Enable or disable TikTok shoutouts</p>
-        </div>
-        <label class="toggle-switch">
-            <input type="checkbox" id="toggleTikTokShoutouts">
-            <span class="toggle-slider"></span>
-        </label>
-        <select id="tiktokRegions" multiple>
-            <option value="us">United States</option>
-            <option value="uk">United Kingdom</option>
-            <option value="ca">Canada</option>
-            <option value="eu">European Union</option>
-            <!-- Add more regions as needed -->
-        </select>
-    </div>
+                    <!-- TikTok Shoutouts -->
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">TikTok Shoutouts</h3>
+                            <p class="setting-description">Enable or disable TikTok shoutouts</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleTikTokShoutouts">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <select id="tiktokRegions" multiple disabled>
+                            <option value="us">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="ca">Canada</option>
+                            <option value="eu">European Union</option>
+                            <!-- Add more regions as needed -->
+                        </select>
+                    </div>
 
-    <!-- Instagram Shoutouts -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">Instagram Shoutouts</h3>
-            <p class="setting-description">Enable or disable Instagram shoutouts</p>
-        </div>
-        <label class="toggle-switch">
-            <input type="checkbox" id="toggleInstagramShoutouts">
-            <span class="toggle-slider"></span>
-        </label>
-        <select id="instagramRegions" multiple>
-            <option value="us">United States</option>
-            <option value="uk">United Kingdom</option>
-            <option value="ca">Canada</option>
-            <option value="eu">European Union</option>
-            <!-- Add more regions as needed -->
-        </select>
-    </div>
+                    <!-- Instagram Shoutouts -->
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">Instagram Shoutouts</h3>
+                            <p class="setting-description">Enable or disable Instagram shoutouts</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleInstagramShoutouts">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <select id="instagramRegions" multiple disabled>
+                            <option value="us">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="ca">Canada</option>
+                            <option value="eu">European Union</option>
+                            <!-- Add more regions as needed -->
+                        </select>
+                    </div>
 
-    <!-- YouTube Shoutouts -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">YouTube Shoutouts</h3>
-            <p class="setting-description">Enable or disable YouTube shoutouts</p>
-        </div>
-        <label class="toggle-switch">
-            <input type="checkbox" id="toggleYouTubeShoutouts">
-            <span class="toggle-slider"></span>
-        </label>
-        <select id="youtubeRegions" multiple>
-            <option value="us">United States</option>
-            <option value="uk">United Kingdom</option>
-            <option value="ca">Canada</option>
-            <option value="eu">European Union</option>
-            <!-- Add more regions as needed -->
-        </select>
-    </div>
-</div>
+                    <!-- YouTube Shoutouts -->
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">YouTube Shoutouts</h3>
+                            <p class="setting-description">Enable or disable YouTube shoutouts</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleYouTubeShoutouts">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <select id="youtubeRegions" multiple disabled>
+                            <option value="us">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="ca">Canada</option>
+                            <option value="eu">European Union</option>
+                            <!-- Add more regions as needed -->
+                        </select>
+                    </div>
+                </div>
 
-                
                 <!-- Danger Zone Section -->
                 <div class="settings-subsection danger-zone">
                     <h2 class="subsection-title">Danger Zone</h2>
@@ -173,7 +170,7 @@
     <footer>
         <p>© <span id="current-year"></span> Bus Army Dude. All Rights Reserved.</p>
     </footer>
-    
+
     <!-- Scripts -->
     <script src="settings.js"></script>
     <script src="script.js"></script>
