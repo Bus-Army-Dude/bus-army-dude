@@ -495,12 +495,12 @@ body {
     background-color: var(--content-bg);
     padding: 20px;
     border-radius: 10px;
-    margin: 30px auto;
+    margin-bottom: 30px;
     box-shadow: 0 2px 4px var(--shadow-color);
+    margin-left: auto;  /* Centered */
+    margin-right: auto; /* Centered */
     width: 100%;
-    max-width: 1200px; /* Keeps it in line with other sections */
-    margin-left: 15px; /* Margin for left */
-    margin-right: 15px; /* Margin for right */
+    max-width: 1200px;  /* Matches max-width of President section */
 }
 
 /* TikTok Creator Grid */
@@ -538,12 +538,12 @@ body {
     background-color: var(--content-bg);
     padding: 20px;
     border-radius: 10px;
-    margin: 30px auto;
+    margin-bottom: 30px;
     box-shadow: 0 2px 4px var(--shadow-color);
+    margin-left: auto;  /* Centered */
+    margin-right: auto; /* Centered */
     width: 100%;
-    max-width: 1200px; /* Keeps it in line with other sections */
-    margin-left: 15px; /* Margin for left */
-    margin-right: 15px; /* Margin for right */
+    max-width: 1200px;  /* Matches max-width of President section */
 }
 
 /* Instagram Creator Grid */
@@ -581,12 +581,12 @@ body {
     background-color: var(--content-bg);
     padding: 20px;
     border-radius: 10px;
-    margin: 30px auto;
+    margin-bottom: 30px;
     box-shadow: 0 2px 4px var(--shadow-color);
+    margin-left: auto;  /* Centered */
+    margin-right: auto; /* Centered */
     width: 100%;
-    max-width: 1200px; /* Keeps it in line with other sections */
-    margin-left: 15px; /* Margin for left */
-    margin-right: 15px; /* Margin for right */
+    max-width: 1200px;  /* Matches max-width of President section */
 }
 
 /* YouTube Creator Grid */
