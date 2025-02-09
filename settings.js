@@ -11,8 +11,22 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 16,
+            profileStatus: 'offline',
             maintenanceMode: false,
-            profileStatus: 'online'
+            creatorShoutouts: {
+                tiktok: {
+                    availableRegions: ['US', 'UK'],
+                    bannedRegions: ['CN']
+                },
+                instagram: {
+                    availableRegions: ['US', 'CA'],
+                    bannedRegions: []
+                },
+                youtube: {
+                    availableRegions: ['US', 'MX'],
+                    bannedRegions: []
+                }
+            }
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -23,7 +37,7 @@ class SettingsManager {
     }
 
     initializeControls() {
-        // Dark Mode Toggle
+        // Dark Mode Toggle (Available for all users)
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
@@ -32,7 +46,7 @@ class SettingsManager {
             });
         }
 
-        // Font Size Control
+        // Font Size Control (Available for all users)
         const fontSizeRange = document.getElementById('fontSizeRange');
         const currentFontSize = document.getElementById('currentFontSize');
         if (fontSizeRange) {
@@ -47,13 +61,13 @@ class SettingsManager {
             currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
-        // Profile Status (Visible and Editable only for owner)
+        // Profile Status (Visible only for owner)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
             profileStatusSelect.value = this.settings.profileStatus;
             profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
-                this.setProfileStatus(e.target.value);
+                if (this.isOwner) this.setProfileStatus(e.target.value);
             });
         }
 
@@ -63,9 +77,14 @@ class SettingsManager {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
             maintenanceModeToggle.disabled = !this.isOwner;
             maintenanceModeToggle.addEventListener('change', (e) => {
-                this.setMaintenanceMode(e.target.checked);
+                if (this.isOwner) this.setMaintenanceMode(e.target.checked);
             });
         }
+
+        // Creator Shoutouts Region Toggles (Manually set each region for each platform)
+        this.initializeCreatorShoutoutRegionControl('tiktok');
+        this.initializeCreatorShoutoutRegionControl('instagram');
+        this.initializeCreatorShoutoutRegionControl('youtube');
 
         // Reset Settings Button
         const resetButton = document.getElementById('resetSettings');
@@ -81,33 +100,38 @@ class SettingsManager {
         this.updateFooterYear();
     }
 
+    // Initialize creator shoutouts region toggles
+    initializeCreatorShoutoutRegionControl(platform) {
+        const regionControls = document.querySelectorAll(`#${platform}RegionControl .regionToggle`);
+        regionControls.forEach((toggle) => {
+            toggle.addEventListener('change', (e) => {
+                this.setCreatorShoutoutRegion(platform, e.target.dataset.region, e.target.checked);
+            });
+            toggle.checked = this.isRegionAvailable(platform, toggle.dataset.region);
+        });
+    }
+
     applySettings() {
         this.applyTheme(this.settings.darkMode);
         this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
-        this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
+        this.applyProfileStatus(this.settings.profileStatus);
+        this.applyCreatorShoutouts();
     }
 
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
-        this.applyProfileStatus(status); // Apply status change to the profile
+        this.applyProfileStatus(status);
     }
 
     applyProfileStatus(status) {
         const statusElement = document.querySelector('.profile-status');
         if (statusElement) {
-            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
-            statusElement.classList.add(status); // Add the new status class
-
-            // Change the icon based on the status
-            const statusIcons = {
-                "online": "🟢",
-                "idle": "🟡",
-                "offline": "⚪"
-            };
-
-            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
+            statusElement.classList.remove('online', 'idle', 'offline');
+            statusElement.classList.add(status);
+            const statusIcons = { online: "🟢", idle: "🟡", offline: "⚪" };
+            statusElement.textContent = statusIcons[status] || "⚪";
         }
     }
 
@@ -119,12 +143,11 @@ class SettingsManager {
     }
 
     setFontSize(size) {
-        size = Math.min(Math.max(size, 10), 30); // Limit size between 10px and 30px
+        size = Math.min(Math.max(size, 10), 30);
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
         this.settings.fontSize = size;
         this.saveSettings();
 
-        // Update UI display
         const currentFontSize = document.getElementById('currentFontSize');
         if (currentFontSize) {
             currentFontSize.textContent = `${size}px`;
@@ -144,53 +167,127 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 16,
+            profileStatus: 'offline',
             maintenanceMode: false,
-            profileStatus: 'online'
+            creatorShoutouts: {
+                tiktok: { availableRegions: ['US', 'UK'], bannedRegions: ['CN'] },
+                instagram: { availableRegions: ['US', 'CA'], bannedRegions: [] },
+                youtube: { availableRegions: ['US', 'MX'], bannedRegions: [] }
+            }
         };
         this.settings = defaultSettings;
         this.applySettings();
         this.saveSettings();
-
-        // Update UI controls
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const fontSizeRange = document.getElementById('fontSizeRange');
-        const currentFontSize = document.getElementById('currentFontSize');
-        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
-        const profileStatusSelect = document.getElementById('profileStatusSelect');
-
-        if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
-        if (fontSizeRange) {
-            fontSizeRange.value = defaultSettings.fontSize;
-            this.updateSliderBackground(fontSizeRange);
-        }
-        if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
-        if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
-        if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
     }
 
     setMaintenanceMode(isEnabled) {
         this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
-        this.applyMaintenanceMode(isEnabled); // Apply the maintenance mode on page
+        this.applyMaintenanceMode(isEnabled);
     }
 
     applyMaintenanceMode(isEnabled) {
         const maintenanceMessage = document.getElementById('maintenanceModeMessage');
         if (maintenanceMessage) {
-            if (isEnabled) {
-                maintenanceMessage.style.display = 'block';  // Show the maintenance message
-            } else {
-                maintenanceMessage.style.display = 'none';  // Hide the maintenance message
-            }
+            maintenanceMessage.style.display = isEnabled ? 'block' : 'none';
         }
     }
 
-    // Function to update the year in the footer
+    setCreatorShoutoutRegion(platform, region, isAvailable) {
+        const platformSettings = this.settings.creatorShoutouts[platform];
+        if (isAvailable) {
+            platformSettings.availableRegions.push(region);
+            platformSettings.bannedRegions = platformSettings.bannedRegions.filter(r => r !== region);
+        } else {
+            platformSettings.bannedRegions.push(region);
+            platformSettings.availableRegions = platformSettings.availableRegions.filter(r => r !== region);
+        }
+        this.saveSettings();
+        this.applyCreatorShoutouts();
+    }
+
+    isRegionAvailable(platform, region) {
+        const platformSettings = this.settings.creatorShoutouts[platform];
+        return platformSettings.availableRegions.includes(region) && !platformSettings.bannedRegions.includes(region);
+    }
+
+    applyCreatorShoutouts() {
+        const shoutoutSections = ['tiktok', 'instagram', 'youtube'];
+        shoutoutSections.forEach(platform => {
+            const sectionElement = document.getElementById(`${platform}ShoutoutSection`);
+            if (sectionElement) {
+                const regions = ['US', 'CA', 'UK', 'MX']; // List of regions to consider
+                const availableRegions = regions.filter(region => this.isRegionAvailable(platform, region));
+                sectionElement.style.display = availableRegions.length > 0 ? 'block' : 'none';
+            }
+        });
+    }
+
+    // Manually set regions for creator shoutouts
+    setCreatorShoutoutsTikTokManually(isAvailable) {
+        const tiktokSettings = this.settings.creatorShoutouts.tiktok;
+        const regions = ['US', 'UK', 'CA', 'CN'];
+        regions.forEach(region => {
+            if (isAvailable) {
+                if (!tiktokSettings.availableRegions.includes(region)) {
+                    tiktokSettings.availableRegions.push(region);
+                }
+                tiktokSettings.bannedRegions = tiktokSettings.bannedRegions.filter(r => r !== region);
+            } else {
+                if (!tiktokSettings.bannedRegions.includes(region)) {
+                    tiktokSettings.bannedRegions.push(region);
+                }
+                tiktokSettings.availableRegions = tiktokSettings.availableRegions.filter(r => r !== region);
+            }
+        });
+        this.saveSettings();
+        this.applyCreatorShoutouts();
+    }
+
+    setCreatorShoutoutsInstagramManually(isAvailable) {
+        const instagramSettings = this.settings.creatorShoutouts.instagram;
+        const regions = ['US', 'CA', 'MX', 'GB'];
+        regions.forEach(region => {
+            if (isAvailable) {
+                if (!instagramSettings.availableRegions.includes(region)) {
+                    instagramSettings.availableRegions.push(region);
+                }
+                instagramSettings.bannedRegions = instagramSettings.bannedRegions.filter(r => r !== region);
+            } else {
+                if (!instagramSettings.bannedRegions.includes(region)) {
+                    instagramSettings.bannedRegions.push(region);
+                }
+                instagramSettings.availableRegions = instagramSettings.availableRegions.filter(r => r !== region);
+            }
+        });
+        this.saveSettings();
+        this.applyCreatorShoutouts();
+    }
+
+    setCreatorShoutoutsYouTubeManually(isAvailable) {
+        const youtubeSettings = this.settings.creatorShoutouts.youtube;
+        const regions = ['US', 'MX', 'IN', 'BR'];
+        regions.forEach(region => {
+            if (isAvailable) {
+                if (!youtubeSettings.availableRegions.includes(region)) {
+                    youtubeSettings.availableRegions.push(region);
+                }
+                youtubeSettings.bannedRegions = youtubeSettings.bannedRegions.filter(r => r !== region);
+            } else {
+                if (!youtubeSettings.bannedRegions.includes(region)) {
+                    youtubeSettings.bannedRegions.push(region);
+                }
+                youtubeSettings.availableRegions = youtubeSettings.availableRegions.filter(r => r !== region);
+            }
+        });
+        this.saveSettings();
+        this.applyCreatorShoutouts();
+    }
+
     updateFooterYear() {
-        const currentYear = new Date().getFullYear();
-        const yearElement = document.getElementById('current-year');
-        if (yearElement) {
-            yearElement.textContent = currentYear;
+        const footerYear = document.getElementById('footerYear');
+        if (footerYear) {
+            footerYear.textContent = new Date().getFullYear();
         }
     }
 }
@@ -198,92 +295,15 @@ class SettingsManager {
 // Initialize SettingsManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
-});
 
-// Function to control shoutout sections
-document.addEventListener('DOMContentLoaded', function() {
-    const currentRegion = "us"; // Example: user's current region (set dynamically)
-    
-    // TikTok section
-    const tiktokToggle = document.getElementById('toggleTikTokShoutouts');
-    const tiktokSection = document.getElementById('tiktokSection');
-    const tiktokMessage = document.getElementById('tiktokUnavailableMessage');
-    const tiktokRegions = document.getElementById('tiktokRegions');
+    // Example of setting maintenance mode manually
+    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "false"
 
-    // Instagram section
-    const instagramToggle = document.getElementById('toggleInstagramShoutouts');
-    const instagramSection = document.getElementById('instagramSection');
-    const instagramMessage = document.getElementById('instagramUnavailableMessage');
-    const instagramRegions = document.getElementById('instagramRegions');
+    // Example of setting profile status manually
+    settingsManager.setProfileStatusManually('online');  // Set profile status to "online"
 
-    // YouTube section
-    const youtubeToggle = document.getElementById('toggleYouTubeShoutouts');
-    const youtubeSection = document.getElementById('youtubeSection');
-    const youtubeMessage = document.getElementById('youtubeUnavailableMessage');
-    const youtubeRegions = document.getElementById('youtubeRegions');
-
-    // Load saved settings from localStorage
-    const savedSettings = JSON.parse(localStorage.getItem('shoutoutSettings')) || {
-        tiktok: { enabled: true, regions: [] },
-        instagram: { enabled: true, regions: [] },
-        youtube: { enabled: true, regions: [] }
-    };
-
-    // Initialize toggles based on saved settings
-    tiktokToggle.checked = savedSettings.tiktok.enabled;
-    instagramToggle.checked = savedSettings.instagram.enabled;
-    youtubeToggle.checked = savedSettings.youtube.enabled;
-
-    // Helper function to check if region is available
-    const isRegionAvailable = (regions) => {
-        return [...regions.options].some(option => option.value === currentRegion && option.selected);
-    };
-
-    // Function to update shoutout sections based on settings
-    function updateShoutoutSections() {
-        // TikTok
-        if (tiktokToggle.checked && isRegionAvailable(tiktokRegions)) {
-            tiktokSection.style.display = 'block';
-            tiktokMessage.style.display = 'none';
-        } else {
-            tiktokSection.style.display = 'none';
-            tiktokMessage.style.display = 'block';
-        }
-
-        // Instagram
-        if (instagramToggle.checked && isRegionAvailable(instagramRegions)) {
-            instagramSection.style.display = 'block';
-            instagramMessage.style.display = 'none';
-        } else {
-            instagramSection.style.display = 'none';
-            instagramMessage.style.display = 'block';
-        }
-
-        // YouTube
-        if (youtubeToggle.checked && isRegionAvailable(youtubeRegions)) {
-            youtubeSection.style.display = 'block';
-            youtubeMessage.style.display = 'none';
-        } else {
-            youtubeSection.style.display = 'none';
-            youtubeMessage.style.display = 'block';
-        }
-
-        // Save settings to localStorage
-        localStorage.setItem('shoutoutSettings', JSON.stringify({
-            tiktok: { enabled: tiktokToggle.checked, regions: [...tiktokRegions.selectedOptions].map(opt => opt.value) },
-            instagram: { enabled: instagramToggle.checked, regions: [...instagramRegions.selectedOptions].map(opt => opt.value) },
-            youtube: { enabled: youtubeToggle.checked, regions: [...youtubeRegions.selectedOptions].map(opt => opt.value) }
-        }));
-    }
-
-    // Event listeners for toggles and region selections
-    tiktokToggle.addEventListener('change', updateShoutoutSections);
-    instagramToggle.addEventListener('change', updateShoutoutSections);
-    youtubeToggle.addEventListener('change', updateShoutoutSections);
-    tiktokRegions.addEventListener('change', updateShoutoutSections);
-    instagramRegions.addEventListener('change', updateShoutoutSections);
-    youtubeRegions.addEventListener('change', updateShoutoutSections);
-
-    // Apply settings on page load
-    updateShoutoutSections();
+    // Example of manually setting creator shoutouts regions (TikTok, Instagram, YouTube)
+    settingsManager.setCreatorShoutoutsTikTokManually(true); // Make TikTok shoutouts available for all regions
+    settingsManager.setCreatorShoutoutsInstagramManually(false); // Disable Instagram shoutouts for all regions
+    settingsManager.setCreatorShoutoutsYouTubeManually(true); // Make YouTube shoutouts available for all regions
 });
