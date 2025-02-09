@@ -22,7 +22,6 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '26', nickname: 'Bus Army Dude🇨🇦', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
     ],
-    lastUpdatedTime: '2025-02-09T13:13:14', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -53,25 +52,34 @@ const tiktokShoutouts = {
             container.appendChild(card);
         });
     },
-    setLastUpdatedTime() {
-        const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
-        if (!lastUpdatedElement) return;
+    // Function to convert the manually set last updated time to the user's local timezone
+function convertToUserTimezone(lastUpdated) {
+  const lastUpdatedDate = new Date(lastUpdated);
+  
+  // Use toLocaleString to ensure it's in the user's local timezone
+  const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  });
+  
+  return formattedTime;
+}
 
-        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-            timeZone: userTimeZone,
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        });
+// Manually set the last updated time here (example: '2025-02-09T12:00:00Z')
+const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
-    }
+// Set the formatted time in the user's timezone
+window.onload = function() {
+  const lastUpdatedElement = document.getElementById('lastUpdatedTime');
+  
+  // Display the manually set last updated time in the user's local timezone
+  lastUpdatedElement.textContent = convertToUserTimezone(manuallySetLastUpdated);
 };
 
 // Initialize the TikTok shoutouts
@@ -94,7 +102,6 @@ const instagramShoutouts = {
         { username: 'busarmydude', isVerified: false, followers: '20', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-02-09T13:13:14', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -125,25 +132,34 @@ const instagramShoutouts = {
             container.appendChild(card);
         });
     },
-    setLastUpdatedTime() {
-        const lastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
-        if (!lastUpdatedElement) return;
+     // Function to convert the manually set last updated time to the user's local timezone
+function convertToUserTimezone(lastUpdated) {
+  const lastUpdatedDate = new Date(lastUpdated);
+  
+  // Use toLocaleString to ensure it's in the user's local timezone
+  const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  });
+  
+  return formattedTime;
+}
 
-        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-            timeZone: userTimeZone,
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        });
+// Manually set the last updated time here (example: '2025-02-09T12:00:00Z')
+const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
-    }
+// Set the formatted time in the user's timezone
+window.onload = function() {
+  const lastUpdatedElement = document.getElementById('lastUpdatedTime');
+  
+  // Display the manually set last updated time in the user's local timezone
+  lastUpdatedElement.textContent = convertToUserTimezone(manuallySetLastUpdated);
 };
 
 // Initialize the YouTube shoutouts
@@ -164,7 +180,6 @@ const youtubeShoutouts = {
         { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' },     
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-02-09T13:13:14', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -195,25 +210,34 @@ const youtubeShoutouts = {
             container.appendChild(card);
         });
     },
-    setLastUpdatedTime() {
-        const lastUpdatedElement = document.getElementById('lastUpdatedYouTube');
-        if (!lastUpdatedElement) return;
+     // Function to convert the manually set last updated time to the user's local timezone
+function convertToUserTimezone(lastUpdated) {
+  const lastUpdatedDate = new Date(lastUpdated);
+  
+  // Use toLocaleString to ensure it's in the user's local timezone
+  const formattedTime = lastUpdatedDate.toLocaleString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  });
+  
+  return formattedTime;
+}
 
-        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-            timeZone: userTimeZone,
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        });
+// Manually set the last updated time here (example: '2025-02-09T12:00:00Z')
+const manuallySetLastUpdated = '2025-02-09T13:13:14Z';
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
-    }
+// Set the formatted time in the user's timezone
+window.onload = function() {
+  const lastUpdatedElement = document.getElementById('lastUpdatedTime');
+  
+  // Display the manually set last updated time in the user's local timezone
+  lastUpdatedElement.textContent = convertToUserTimezone(manuallySetLastUpdated);
 };
 
 youtubeShoutouts.init();
