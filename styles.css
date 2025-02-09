@@ -489,107 +489,32 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color);
 }
 
-
 /* TikTok Creator Shoutouts */
 .tiktok-creator-section {
     background-color: var(--content-bg);
     padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    width: 100%;  /* Full width */
-    max-width: 1200px;  /* Matches the width of the President section */
-    margin-left: auto;  /* Centers the section horizontally */
-    margin-right: auto; /* Centers the section horizontally */
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* TikTok Creator Grid */
 .tiktok-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    composes: creator-grid;
 }
 
-/* TikTok Creator Card */
 .tiktok-creator-card {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    position: relative;
-    border: 1px solid var(--accent-color); /* Add subtle border for better contrast */
-    background-color: rgba(255, 255, 255, 0.9); /* Slight opacity for contrast */
+    composes: creator-card;
 }
 
-.tiktok-creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px var(--shadow-color); /* Enhance hover shadow for better visibility */
+.follower-count {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin: 10px 0;
 }
 
-/* Instagram Creator Shoutouts */
-.instagram-creator-section {
-    background-color: var(--content-bg);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    width: 100%;  /* Full width */
-    max-width: 1200px;  /* Matches the width of the President section */
-    margin-left: auto;  /* Centers the section horizontally */
-    margin-right: auto; /* Centers the section horizontally */
-}
-
-/* Instagram Creator Grid */
-.instagram-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Instagram Creator Card */
-.instagram-creator-card {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    position: relative;
-    border: 1px solid var(--accent-color); /* Add subtle border for better contrast */
-    background-color: rgba(255, 255, 255, 0.9); /* Slight opacity for contrast */
-}
-
-.instagram-creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px var(--shadow-color); /* Enhance hover shadow for better visibility */
-}
-
-/* YouTube Creator Shoutouts */
-.youtube-creator-section {
-    background-color: var(--content-bg);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    width: 100%;  /* Full width */
-    max-width: 1200px;  /* Matches the width of the President section */
-    margin-left: auto;  /* Centers the section horizontally */
-    margin-right: auto; /* Centers the section horizontally */
-}
-
-/* YouTube Creator Grid */
+/* Common Creator Grid Styles */
+.creator-grid,
+.instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -598,25 +523,6 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-/* YouTube Creator Card */
-.youtube-creator-card {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    position: relative;
-    border: 1px solid var(--accent-color); /* Add subtle border for better contrast */
-    background-color: rgba(255, 255, 255, 0.9); /* Slight opacity for contrast */
-}
-
-.youtube-creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px var(--shadow-color); /* Enhance hover shadow for better visibility */
 }
 
 /* Common Creator Card Styles */
@@ -638,19 +544,6 @@ body {
 .youtube-creator-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-/* Common Creator Grid Styles */
-.creator-grid,
-.instagram-creator-grid,
-.youtube-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 /* Common Profile Picture Styles */
@@ -701,6 +594,8 @@ body {
     height: 16px;
     display: inline-block;
     vertical-align: middle;
+    margin-left: 0;  /* No margin */
+    margin-right: 0; /* No margin */
 }
 
 /* Common Bio Styles */
@@ -751,65 +646,6 @@ body {
     margin: 0;
     font-size: 1.1em;
     color: var(--text-color);
-}
-
-/* Last Updated Styles for Timestamp */
-.last-updated {
-    font-size: 0.85em;
-    color: var(--secondary-text);
-    margin-top: 5px;
-}
-
-/* TikTok, Instagram, YouTube Shoutouts Section Styles */
-#tiktok-shoutouts-section,
-#instagram-shoutouts-section,
-#youtube-shoutouts-section {
-    background-color: var(--content-bg);
-    padding: 30px;
-    border-radius: 12px;
-    margin: 30px auto;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    width: 100%; /* Ensure full width of container */
-    max-width: 1200px; /* Consistent max-width for all sections */
-    margin-left: 15px; /* Add left margin */
-    margin-right: 15px; /* Add right margin */
-}
-
-/* Section Header Styles */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-#tiktok-shoutouts-section h2,
-#instagram-shoutouts-section h2,
-#youtube-shoutouts-section h2 {
-    margin: 0;
-    font-size: 1.5em;
-    color: var(--text-color);
-}
-
-/* Adjust the "Last Updated" Text */
-#tiktok-last-updated-timestamp,
-#instagram-last-updated-timestamp,
-#youtube-last-updated-timestamp {
-    font-size: 0.85em;
-    color: var(--secondary-text);
-    margin-top: 5px;
-}
-
-/* Mobile Responsiveness */
-@media screen and (max-width: 768px) {
-    .tiktok-creator-section,
-    .instagram-creator-section,
-    .youtube-creator-section {
-        width: 90%;  /* Keeps the section smaller on mobile */
-        max-width: 100%; /* Allows full width on mobile but reduces padding */
-        margin-left: auto;  /* Keep it centered on mobile */
-        margin-right: auto; /* Keep it centered on mobile */
-    }
 }
 
 :root {
