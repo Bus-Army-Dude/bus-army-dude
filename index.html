@@ -143,38 +143,35 @@
 
         <div id="loading-spinner" class="spinner"></div>
         
-        <!-- TikTok Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="tiktok-shoutouts">
-                <h2>TikTok Creator Shoutouts</h2>
-                <p id="tiktok-last-updated-timestamp"></p>
-            </div>
-            <div class="creator-grid">
-                <!-- Cards will be dynamically generated here -->
-            </div>
-        </div>
-        
-        <!-- Instagram Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="instagram-shoutouts">
-                <h2>Instagram Creator Shoutouts</h2>
-                <p class="last-updated"><span id="instagram-last-updated-timestamp">N/A</span></p>
-            </div>
-            <div class="instagram-creator-grid">
-                <!-- Instagram creator cards will be dynamically generated here -->
-            </div>
-        </div>
+       <!-- TikTok Shoutouts Section -->
+<div class="shoutouts-section section" id="tiktokSection">
+    <h2>TikTok Creator Shoutouts</h2>
+    <p id="tiktok-last-updated-timestamp"></p>
+    <div class="creator-grid">
+        <!-- Cards will be dynamically generated here -->
+    </div>
+    <p class="hidden-message" id="tiktokUnavailableMessage" style="display: none;">TikTok shoutouts are not available in your region.</p>
+</div>
 
-        <!-- YouTube Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="youtube-shoutouts">
-                <h2>YouTube Creator Shoutouts</h2>
-                <p id="lastUpdatedYouTube"></p>
-            </div>
-            <div class="youtube-creator-grid">
-                <!-- YouTube creator cards will be dynamically generated here -->
-            </div>
-        </div>
+<!-- Instagram Shoutouts Section -->
+<div class="shoutouts-section section" id="instagramSection">
+    <h2>Instagram Creator Shoutouts</h2>
+    <p id="instagram-last-updated-timestamp"></p>
+    <div class="creator-grid">
+        <!-- Cards will be dynamically generated here -->
+    </div>
+    <p class="hidden-message" id="instagramUnavailableMessage" style="display: none;">Instagram shoutouts are not available in your region.</p>
+</div>
+
+<!-- YouTube Shoutouts Section -->
+<div class="shoutouts-section section" id="youtubeSection">
+    <h2>YouTube Creator Shoutouts</h2>
+    <p id="youtube-last-updated-timestamp"></p>
+    <div class="creator-grid">
+        <!-- Cards will be dynamically generated here -->
+    </div>
+    <p class="hidden-message" id="youtubeUnavailableMessage" style="display: none;">YouTube shoutouts are not available in your region.</p>
+</div>
         
         <!-- Useful Links Section -->
     <div class="useful-links-section section">
