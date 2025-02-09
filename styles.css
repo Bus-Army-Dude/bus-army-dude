@@ -608,8 +608,6 @@ body {
     height: 16px;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 0;  /* No margin */
-    margin-right: 0; /* No margin */
 }
 
 /* Common Bio Styles */
@@ -673,7 +671,7 @@ body {
 #tiktok-shoutouts-section,
 #instagram-shoutouts-section,
 #youtube-shoutouts-section {
-    background-color: var(--content-bg);  /* Updated to fit with light/dark mode */
+    background-color: var(--content-bg);
     padding: 30px;
     border-radius: 12px;
     margin: 30px 0;
