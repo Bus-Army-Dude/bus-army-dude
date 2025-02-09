@@ -494,13 +494,13 @@ body {
 .tiktok-creator-section {
     background-color: var(--content-bg);
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 10px;
     margin: 30px auto;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    width: 100%; /* Ensure the section takes full width */
-    max-width: 1200px; /* Set max width to match other sections */
-    margin-left: 15px; /* Add left margin */
-    margin-right: 15px; /* Add right margin */
+    box-shadow: 0 2px 4px var(--shadow-color);
+    width: 100%;
+    max-width: 1200px; /* Keeps it in line with other sections */
+    margin-left: 15px; /* Margin for left */
+    margin-right: 15px; /* Margin for right */
 }
 
 /* TikTok Creator Grid */
@@ -537,13 +537,13 @@ body {
 .instagram-creator-section {
     background-color: var(--content-bg);
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 10px;
     margin: 30px auto;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
     width: 100%;
-    max-width: 1200px;
-    margin-left: 15px; /* Add left margin */
-    margin-right: 15px; /* Add right margin */
+    max-width: 1200px; /* Keeps it in line with other sections */
+    margin-left: 15px; /* Margin for left */
+    margin-right: 15px; /* Margin for right */
 }
 
 /* Instagram Creator Grid */
@@ -580,13 +580,13 @@ body {
 .youtube-creator-section {
     background-color: var(--content-bg);
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 10px;
     margin: 30px auto;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
     width: 100%;
-    max-width: 1200px;
-    margin-left: 15px; /* Add left margin */
-    margin-right: 15px; /* Add right margin */
+    max-width: 1200px; /* Keeps it in line with other sections */
+    margin-left: 15px; /* Margin for left */
+    margin-right: 15px; /* Margin for right */
 }
 
 /* YouTube Creator Grid */
