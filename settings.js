@@ -7,25 +7,12 @@ class SettingsManager {
         this.applySettings();
     }
 
-    // Method to set the profile status manually in JavaScript
-    setProfileStatusManually(status) {
-        if (['online', 'idle', 'offline'].includes(status)) {
-            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
-        } else {
-            console.error('Invalid profile status');
-        }
-    }
-
-    // Method to set the maintenance mode manually in JavaScript
-    setMaintenanceModeManually(isEnabled) {
-        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
-    }
-
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             fontSize: 16,
-            
+            maintenanceMode: false,
+            profileStatus: 'online'
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -157,7 +144,8 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 16,
-            
+            maintenanceMode: false,
+            profileStatus: 'online'
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -210,12 +198,6 @@ class SettingsManager {
 // Initialize SettingsManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
-
-    // Example of setting maintenance mode manually
-    settingsManager.setMaintenanceModeManually(true);  // Set maintenance mode to "true"
-
-    // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('online');  // Set profile status to "idle"
 });
 
 // Function to control shoutout sections
@@ -239,6 +221,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const youtubeSection = document.getElementById('youtubeSection');
     const youtubeMessage = document.getElementById('youtubeUnavailableMessage');
     const youtubeRegions = document.getElementById('youtubeRegions');
+
+    // Load saved settings from localStorage
+    const savedSettings = JSON.parse(localStorage.getItem('shoutoutSettings')) || {
+        tiktok: { enabled: true, regions: [] },
+        instagram: { enabled: true, regions: [] },
+        youtube: { enabled: true, regions: [] }
+    };
+
+    // Initialize toggles based on saved settings
+    tiktokToggle.checked = savedSettings.tiktok.enabled;
+    instagramToggle.checked = savedSettings.instagram.enabled;
+    youtubeToggle.checked = savedSettings.youtube.enabled;
 
     // Helper function to check if region is available
     const isRegionAvailable = (regions) => {
@@ -273,17 +267,23 @@ document.addEventListener('DOMContentLoaded', function() {
             youtubeSection.style.display = 'none';
             youtubeMessage.style.display = 'block';
         }
+
+        // Save settings to localStorage
+        localStorage.setItem('shoutoutSettings', JSON.stringify({
+            tiktok: { enabled: tiktokToggle.checked, regions: [...tiktokRegions.selectedOptions].map(opt => opt.value) },
+            instagram: { enabled: instagramToggle.checked, regions: [...instagramRegions.selectedOptions].map(opt => opt.value) },
+            youtube: { enabled: youtubeToggle.checked, regions: [...youtubeRegions.selectedOptions].map(opt => opt.value) }
+        }));
     }
 
-    // Event listeners to update sections when toggles or regions change
+    // Event listeners for toggles and region selections
     tiktokToggle.addEventListener('change', updateShoutoutSections);
-    tiktokRegions.addEventListener('change', updateShoutoutSections);
     instagramToggle.addEventListener('change', updateShoutoutSections);
-    instagramRegions.addEventListener('change', updateShoutoutSections);
     youtubeToggle.addEventListener('change', updateShoutoutSections);
+    tiktokRegions.addEventListener('change', updateShoutoutSections);
+    instagramRegions.addEventListener('change', updateShoutoutSections);
     youtubeRegions.addEventListener('change', updateShoutoutSections);
 
-    // Initial load
+    // Apply settings on page load
     updateShoutoutSections();
 });
-
