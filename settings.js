@@ -217,3 +217,73 @@ document.addEventListener('DOMContentLoaded', () => {
     // Example of setting profile status manually
     settingsManager.setProfileStatusManually('online');  // Set profile status to "idle"
 });
+
+// Function to control shoutout sections
+document.addEventListener('DOMContentLoaded', function() {
+    const currentRegion = "us"; // Example: user's current region (set dynamically)
+    
+    // TikTok section
+    const tiktokToggle = document.getElementById('toggleTikTokShoutouts');
+    const tiktokSection = document.getElementById('tiktokSection');
+    const tiktokMessage = document.getElementById('tiktokUnavailableMessage');
+    const tiktokRegions = document.getElementById('tiktokRegions');
+
+    // Instagram section
+    const instagramToggle = document.getElementById('toggleInstagramShoutouts');
+    const instagramSection = document.getElementById('instagramSection');
+    const instagramMessage = document.getElementById('instagramUnavailableMessage');
+    const instagramRegions = document.getElementById('instagramRegions');
+
+    // YouTube section
+    const youtubeToggle = document.getElementById('toggleYouTubeShoutouts');
+    const youtubeSection = document.getElementById('youtubeSection');
+    const youtubeMessage = document.getElementById('youtubeUnavailableMessage');
+    const youtubeRegions = document.getElementById('youtubeRegions');
+
+    // Helper function to check if region is available
+    const isRegionAvailable = (regions) => {
+        return [...regions.options].some(option => option.value === currentRegion && option.selected);
+    };
+
+    // Function to update shoutout sections based on settings
+    function updateShoutoutSections() {
+        // TikTok
+        if (tiktokToggle.checked && isRegionAvailable(tiktokRegions)) {
+            tiktokSection.style.display = 'block';
+            tiktokMessage.style.display = 'none';
+        } else {
+            tiktokSection.style.display = 'none';
+            tiktokMessage.style.display = 'block';
+        }
+
+        // Instagram
+        if (instagramToggle.checked && isRegionAvailable(instagramRegions)) {
+            instagramSection.style.display = 'block';
+            instagramMessage.style.display = 'none';
+        } else {
+            instagramSection.style.display = 'none';
+            instagramMessage.style.display = 'block';
+        }
+
+        // YouTube
+        if (youtubeToggle.checked && isRegionAvailable(youtubeRegions)) {
+            youtubeSection.style.display = 'block';
+            youtubeMessage.style.display = 'none';
+        } else {
+            youtubeSection.style.display = 'none';
+            youtubeMessage.style.display = 'block';
+        }
+    }
+
+    // Event listeners to update sections when toggles or regions change
+    tiktokToggle.addEventListener('change', updateShoutoutSections);
+    tiktokRegions.addEventListener('change', updateShoutoutSections);
+    instagramToggle.addEventListener('change', updateShoutoutSections);
+    instagramRegions.addEventListener('change', updateShoutoutSections);
+    youtubeToggle.addEventListener('change', updateShoutoutSections);
+    youtubeRegions.addEventListener('change', updateShoutoutSections);
+
+    // Initial load
+    updateShoutoutSections();
+});
+
