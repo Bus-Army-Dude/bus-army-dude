@@ -497,10 +497,10 @@ body {
     border-radius: 10px;
     margin-bottom: 30px;
     box-shadow: 0 2px 4px var(--shadow-color);
-    margin-left: auto;  /* Centered */
-    margin-right: auto; /* Centered */
-    width: 100%;        /* Full width within max-width */
-    max-width: 1200px;  /* Same max-width as President section */
+    width: 100%;  /* Full width */
+    max-width: 1200px;  /* Matches the width of the President section */
+    margin-left: auto;  /* Centers the section horizontally */
+    margin-right: auto; /* Centers the section horizontally */
 }
 
 /* TikTok Creator Grid */
@@ -540,10 +540,10 @@ body {
     border-radius: 10px;
     margin-bottom: 30px;
     box-shadow: 0 2px 4px var(--shadow-color);
-    margin-left: auto;  /* Centered */
-    margin-right: auto; /* Centered */
-    width: 100%;        /* Full width within max-width */
-    max-width: 1200px;  /* Same max-width as President section */
+    width: 100%;  /* Full width */
+    max-width: 1200px;  /* Matches the width of the President section */
+    margin-left: auto;  /* Centers the section horizontally */
+    margin-right: auto; /* Centers the section horizontally */
 }
 
 /* Instagram Creator Grid */
@@ -583,10 +583,10 @@ body {
     border-radius: 10px;
     margin-bottom: 30px;
     box-shadow: 0 2px 4px var(--shadow-color);
-    margin-left: auto;  /* Centered */
-    margin-right: auto; /* Centered */
-    width: 100%;        /* Full width within max-width */
-    max-width: 1200px;  /* Same max-width as President section */
+    width: 100%;  /* Full width */
+    max-width: 1200px;  /* Matches the width of the President section */
+    margin-left: auto;  /* Centers the section horizontally */
+    margin-right: auto; /* Centers the section horizontally */
 }
 
 /* YouTube Creator Grid */
@@ -805,8 +805,10 @@ body {
     .tiktok-creator-section,
     .instagram-creator-section,
     .youtube-creator-section {
-        width: 90%;  /* Reduce width on mobile */
-        max-width: 100%; /* Allow full width on mobile */
+        width: 90%;  /* Keeps the section smaller on mobile */
+        max-width: 100%; /* Allows full width on mobile but reduces padding */
+        margin-left: auto;  /* Keep it centered on mobile */
+        margin-right: auto; /* Keep it centered on mobile */
     }
 }
 
