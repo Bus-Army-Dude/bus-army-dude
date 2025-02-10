@@ -5,27 +5,13 @@ class SettingsManager {
         this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
-    }
-
-    // Method to set the profile status manually in JavaScript
-    setProfileStatusManually(status) {
-        if (['online', 'idle', 'offline'].includes(status)) {
-            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
-        } else {
-            console.error('Invalid profile status');
-        }
-    }
-
-    // Method to set the maintenance mode manually in JavaScript
-    setMaintenanceModeManually(isEnabled) {
-        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
+        this.checkCookieConsent();  // Check if user has accepted cookies
     }
 
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-           
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -74,6 +60,14 @@ class SettingsManager {
             });
         }
 
+        // Cookie Consent
+        const acceptCookiesButton = document.getElementById('accept-cookies');
+        if (acceptCookiesButton) {
+            acceptCookiesButton.addEventListener('click', () => {
+                this.setCookieConsent('accepted');
+            });
+        }
+
         // Reset Settings Button
         const resetButton = document.getElementById('resetSettings');
         if (resetButton) {
@@ -95,6 +89,7 @@ class SettingsManager {
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
     }
 
+    // Set the profile status
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
@@ -118,6 +113,7 @@ class SettingsManager {
         }
     }
 
+    // Apply dark or light theme
     applyTheme(isDark = this.settings.darkMode) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
@@ -125,6 +121,7 @@ class SettingsManager {
         this.saveSettings();
     }
 
+    // Set text size
     setTextSize(size) {
         document.body.classList.remove('text-default', 'text-large', 'text-larger');
         document.body.classList.add('text-' + size);
@@ -132,15 +129,16 @@ class SettingsManager {
         this.saveSettings();
     }
 
+    // Save settings to localStorage
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
 
+    // Reset to default settings
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-           
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -158,6 +156,7 @@ class SettingsManager {
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
     }
 
+    // Set Maintenance Mode
     setMaintenanceMode(isEnabled) {
         this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
@@ -175,13 +174,47 @@ class SettingsManager {
         }
     }
 
-    // Function to update the year in the footer
+    // Check if user has accepted cookies
+    checkCookieConsent() {
+        const cookieConsent = localStorage.getItem('cookieConsent');
+        const cookieBanner = document.getElementById('cookie-consent-banner');
+
+        if (cookieConsent === 'accepted') {
+            cookieBanner.style.display = 'none';  // Hide the banner if cookies are accepted
+        } else {
+            cookieBanner.style.display = 'block';  // Show the banner if cookies are not accepted
+        }
+    }
+
+    // Set cookie consent in localStorage
+    setCookieConsent(consent) {
+        if (consent === 'accepted') {
+            localStorage.setItem('cookieConsent', 'accepted');  // Save cookie consent to localStorage
+        }
+        this.checkCookieConsent();  // Recheck after setting consent
+    }
+
+    // Update the footer year
     updateFooterYear() {
         const currentYear = new Date().getFullYear();
         const yearElement = document.getElementById('current-year');
         if (yearElement) {
             yearElement.textContent = currentYear;
         }
+    }
+
+    // Set profile status manually
+    setProfileStatusManually(status) {
+        if (['online', 'idle', 'offline'].includes(status)) {
+            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
+        } else {
+            console.error('Invalid profile status');
+        }
+    }
+
+    // Set maintenance mode manually
+    setMaintenanceModeManually(isEnabled) {
+        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
     }
 }
 
@@ -193,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsManager.setMaintenanceModeManually(true);  // Set maintenance mode to "true"
 
     // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('online');  // Set profile status to "idle"
+    settingsManager.setProfileStatusManually('online');  // Set profile status to "online"
 });
 
 function adjustTextSize(size) {
