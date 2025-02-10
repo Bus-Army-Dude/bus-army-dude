@@ -1,134 +1,247 @@
 :root {
-    --bg-color-light: #f7f7f7;
-    --bg-color-dark: #1f1f1f;
-    --text-color-light: #333333;
-    --text-color-dark: #e0e0e0;
-    --border-color-light: #e0e0e0;
-    --border-color-dark: #333333;
-    --accent-color: #007aff;
-    --danger-color: #ff3b30;
-    --green-enabled: #34c759;
-    --gray-disabled: #a0a0a0;
+    --font-size-base: 16px; /* Default base font size */
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --secondary-text: #666666;
+    --border-color: #dddddd;
+    --accent-color: #007aff; /* Apple-like blue accent color */
+    --hover-color: #005bb5;
+    --content-bg: #f5f5f5;
+    --slider-thumb-color: #007aff; /* Custom slider thumb color */
+    --slider-track-color: #ddd; /* Custom slider track color */
+    --slider-track-filled-color: #007aff; /* Custom slider track filled color */
+    --toggle-on: #34c759; /* Green for on */
+    --toggle-off: #dddddd; /* Gray for off */
 }
 
+/* Dark Mode Variables */
+body.settings-page.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --secondary-text: #a0a0a0;
+    --border-color: #333333;
+    --accent-color: #007aff;
+    --hover-color: #005bb5;
+    --content-bg: #2d2d2d;
+    --slider-thumb-color: #007aff;
+    --slider-track-color: #444;
+    --slider-track-filled-color: #007aff;
+    --toggle-on: #34c759;
+    --toggle-off: #666666;
+}
+
+/* General Styles for Settings Page */
 body.settings-page {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--bg-color-light);
-    color: var(--text-color-light);
+    transition: background-color 0.3s ease, color 0.3s ease;
     margin: 0;
     padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: var(--font-size-base);
 }
 
-body.settings-page.dark-mode {
-    background-color: var(--bg-color-dark);
-    color: var(--text-color-dark);
-}
-
-/* Container */
+/* Container Styles */
 .settings-page .container {
-    max-width: 700px;
+    max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    border: 1px solid var(--border-color-light);
+    background-color: var(--content-bg);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-body.settings-page.dark-mode .container {
-    background-color: var(--bg-color-dark);
-    border-color: var(--border-color-dark);
+/* Settings Section Styles */
+.settings-page .settings-section {
+    padding: 20px;
 }
 
-/* Section Headers */
-.settings-page h1 {
-    font-size: 1.5rem;
+.settings-page .settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.settings-page h2 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
+.settings-page .settings-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
-/* Settings Groups */
+.settings-page .settings-header .version {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+}
+
 .settings-page .settings-group {
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 .settings-page .settings-subsection {
-    padding: 15px;
-    border: 1px solid var(--border-color-light);
-    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    background-color: var(--bg-color);
+}
+
+.settings-page .settings-subsection .subsection-title {
+    font-size: 1.5rem;
+    font-weight: 600;
     margin-bottom: 20px;
-    background-color: #f9f9f9;
+    color: var(--text-color);
 }
 
-body.settings-page.dark-mode .settings-subsection {
-    border-color: var(--border-color-dark);
-    background-color: #2d2d2d;
+.settings-page .danger-zone {
+    border-color: red;
 }
 
-/* Toggle Switch */
+.settings-page .setting-card {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.settings-page .setting-label {
+    flex: 1;
+}
+
+.settings-page .setting-title {
+    font-size: 1.3rem;
+    margin: 0;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.settings-page .setting-description {
+    font-size: 1rem;
+    margin: 5px 0 0;
+    color: var(--secondary-text);
+}
+
+/* Toggle Switch Styles */
 .settings-page .toggle-switch {
     position: relative;
+    display: inline-block;
     width: 50px;
     height: 28px;
-    background-color: var(--gray-disabled); /* Default grey color */
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .settings-page .toggle-switch input {
-    display: none; /* Hide the checkbox */
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .settings-page .toggle-slider {
     position: absolute;
-    top: 4px;
-    left: 4px;
-    width: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-off);
+    transition: 0.4s;
+    border-radius: 50px;
+}
+
+.settings-page .toggle-slider:before {
+    position: absolute;
+    content: "";
     height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
     background-color: white;
+    transition: 0.4s;
     border-radius: 50%;
-    transition: 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Toggle Switch - On */
 .settings-page input:checked + .toggle-slider {
+    background-color: var(--toggle-on);
+}
+
+.settings-page input:checked + .toggle-slider:before {
     transform: translateX(22px);
 }
 
-.settings-page input:checked + .toggle-switch {
-    background-color: var(--green-enabled); /* Apple green color when enabled */
-}
-
-/* Font Size Control */
+/* Font Size Control Styles */
 .settings-page .font-size-control {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .settings-page .font-size-control input[type="range"] {
     flex: 1;
+    -webkit-appearance: none;
     height: 8px;
+    background: linear-gradient(to right, var(--slider-track-filled-color) 0%, var(--slider-track-filled-color) var(--value), var(--slider-track-color) var(--value), var(--slider-track-color) 100%);
     border-radius: 5px;
-    background-color: var(--accent-color);
+    outline: none;
+    transition: background 0.3s ease;
 }
 
-/* Reset Button */
-.settings-page .reset-button {
-    background-color: var(--danger-color);
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
+.settings-page .font-size-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--slider-thumb-color);
+    border-radius: 50%;
     cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.settings-page .font-size-control input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--slider-thumb-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.settings-page .font-size-control span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* Reset Button Styles */
+.settings-page .reset-button {
+    background-color: #ff3b30;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
     transition: background-color 0.3s ease;
 }
 
 .settings-page .reset-button:hover {
-    background-color: darkred;
+    background-color: #d32f2f;
+}
+
+/* Back Link Styles */
+.settings-page .back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.settings-page .back-link:hover {
+    color: var(--hover-color);
 }
