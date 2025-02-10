@@ -24,7 +24,6 @@ class SettingsManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 16,
             
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -43,21 +42,6 @@ class SettingsManager {
             darkModeToggle.addEventListener('change', (e) => {
                 this.applyTheme(e.target.checked);
             });
-        }
-
-        // Font Size Control
-        const fontSizeRange = document.getElementById('fontSizeRange');
-        const currentFontSize = document.getElementById('currentFontSize');
-        if (fontSizeRange) {
-            fontSizeRange.value = this.settings.fontSize;
-            fontSizeRange.addEventListener('input', (e) => {
-                this.setFontSize(e.target.value);
-                this.updateSliderBackground(e.target);
-            });
-            this.updateSliderBackground(fontSizeRange);
-        }
-        if (currentFontSize) {
-            currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
         // Profile Status (Visible and Editable only for owner)
@@ -96,7 +80,6 @@ class SettingsManager {
 
     applySettings() {
         this.applyTheme(this.settings.darkMode);
-        this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
     }
@@ -131,24 +114,6 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    setFontSize(size) {
-        size = Math.min(Math.max(size, 10), 30); // Limit size between 10px and 30px
-        document.documentElement.style.setProperty('--font-size-base', `${size}px`);
-        this.settings.fontSize = size;
-        this.saveSettings();
-
-        // Update UI display
-        const currentFontSize = document.getElementById('currentFontSize');
-        if (currentFontSize) {
-            currentFontSize.textContent = `${size}px`;
-        }
-    }
-
-    updateSliderBackground(slider) {
-        const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-        slider.style.setProperty('--value', `${value}%`);
-    }
-
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
@@ -156,7 +121,6 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 16,
             
         };
         this.settings = defaultSettings;
@@ -171,11 +135,6 @@ class SettingsManager {
         const profileStatusSelect = document.getElementById('profileStatusSelect');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
-        if (fontSizeRange) {
-            fontSizeRange.value = defaultSettings.fontSize;
-            this.updateSliderBackground(fontSizeRange);
-        }
-        if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
     }
