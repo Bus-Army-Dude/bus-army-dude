@@ -209,25 +209,26 @@ function adjustTextSize(size) {
     document.body.classList.add('text-' + size);
 }
 
-// Function to handle cookie acceptance
+// Function to accept cookies and hide the banner
 function acceptCookies() {
-    const banner = document.getElementById('cookie-consent-banner');
-    banner.classList.add('hide');  // Hide the banner
-    localStorage.setItem('cookieConsent', 'accepted');  // Store the user's consent
+    // Set a cookie indicating the user has accepted
+    document.cookie = "cookieConsent=true; path=/; max-age=" + 60*60*24*365; // 1 year
+
+    // Hide the cookie consent banner
+    document.getElementById('cookie-consent-banner').style.display = 'none';
 }
 
-// Check if the user has already accepted cookies
-window.addEventListener('load', () => {
-    const cookieConsent = localStorage.getItem('cookieConsent');
-    const banner = document.getElementById('cookie-consent-banner');
+// Check if the user has already accepted the cookies
+window.onload = function() {
+    // Read the cookie to check if user already accepted
+    var cookies = document.cookie.split('; ');
+    var cookieConsent = cookies.find(row => row.startsWith('cookieConsent='));
 
-    if (cookieConsent === 'accepted') {
-        banner.classList.add('hide');  // Hide banner if consent is already given
+    // If the cookieConsent exists, hide the banner
+    if (cookieConsent) {
+        document.getElementById('cookie-consent-banner').style.display = 'none';
+    } else {
+        // Otherwise, show the banner
+        document.getElementById('cookie-consent-banner').style.display = 'flex';
     }
-});
-
-// Event listener for the accept button
-const acceptButton = document.querySelector('#cookie-consent-banner button');
-if (acceptButton) {
-    acceptButton.addEventListener('click', acceptCookies);
-}
+};
