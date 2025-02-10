@@ -41,6 +41,24 @@ body.settings-page {
     font-size: var(--font-size-base);
 }
 
+a:focus, button:focus, .toggle-switch:focus {
+    outline: 3px solid #005fcc; /* Custom focus indicator */
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
 /* Container Styles */
 .settings-page .container {
     max-width: 800px;
@@ -201,4 +219,48 @@ body.settings-page {
 
 .settings-page .back-link:hover {
     color: var(--hover-color);
+}
+
+/* Additional Text Size Classes */
+.text-default { font-size: 100%; }
+.text-large { font-size: 120%; }
+.text-larger { font-size: 140%; }
+
+/* Cookie Consent Banner */
+#cookie-consent-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+#cookie-consent-banner p {
+    margin: 0;
+}
+
+#cookie-consent-banner a {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+#cookie-consent-banner button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#cookie-consent-banner button:hover {
+    background-color: var(--hover-color);
 }
