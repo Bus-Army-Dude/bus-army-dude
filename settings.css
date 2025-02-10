@@ -173,49 +173,6 @@ body.settings-page {
     transform: translateX(22px);
 }
 
-/* Font Size Control Styles */
-.settings-page .font-size-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.settings-page .font-size-control input[type="range"] {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 8px;
-    background: linear-gradient(to right, var(--slider-track-filled-color) 0%, var(--slider-track-filled-color) var(--value), var(--slider-track-color) var(--value), var(--slider-track-color) 100%);
-    border-radius: 5px;
-    outline: none;
-    transition: background 0.3s ease;
-}
-
-.settings-page .font-size-control input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--slider-thumb-color);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.settings-page .font-size-control input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--slider-thumb-color);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.settings-page .font-size-control span {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-color);
-}
-
 /* Reset Button Styles */
 .settings-page .reset-button {
     background-color: #ff3b30;
