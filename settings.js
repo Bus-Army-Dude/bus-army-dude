@@ -5,7 +5,6 @@ class SettingsManager {
         this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
-        this.checkCookieConsent();  // Check if user has accepted cookies
     }
 
     loadSettings() {
@@ -59,14 +58,6 @@ class SettingsManager {
             maintenanceModeToggle.disabled = !this.isOwner;
             maintenanceModeToggle.addEventListener('change', (e) => {
                 this.setMaintenanceMode(e.target.checked);
-            });
-        }
-
-        // Cookie Consent
-        const acceptCookiesButton = document.getElementById('accept-cookies');
-        if (acceptCookiesButton) {
-            acceptCookiesButton.addEventListener('click', () => {
-                this.setCookieConsent('accepted');
             });
         }
 
@@ -178,26 +169,6 @@ class SettingsManager {
         }
     }
 
-    // Check if user has accepted cookies
-    checkCookieConsent() {
-        const cookieConsent = localStorage.getItem('cookieConsent');
-        const cookieBanner = document.getElementById('cookie-consent-banner');
-
-        if (cookieConsent === 'accepted') {
-            cookieBanner.style.display = 'none';  // Hide the banner if cookies are accepted
-        } else {
-            cookieBanner.style.display = 'block';  // Show the banner if cookies are not accepted
-        }
-    }
-
-    // Set cookie consent in localStorage
-    setCookieConsent(consent) {
-        if (consent === 'accepted') {
-            localStorage.setItem('cookieConsent', 'accepted');  // Save cookie consent to localStorage
-        }
-        this.checkCookieConsent();  // Recheck after setting consent
-    }
-
     // Update the footer year
     updateFooterYear() {
         const currentYear = new Date().getFullYear();
@@ -238,7 +209,25 @@ function adjustTextSize(size) {
     document.body.classList.add('text-' + size);
 }
 
+// Function to handle cookie acceptance
 function acceptCookies() {
-    document.getElementById('cookie-consent-banner').style.display = 'none';
-    // Set cookie consent
+    const banner = document.getElementById('cookie-consent-banner');
+    banner.classList.add('hide');  // Hide the banner
+    localStorage.setItem('cookieConsent', 'accepted');  // Store the user's consent
+}
+
+// Check if the user has already accepted cookies
+window.addEventListener('load', () => {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+    const banner = document.getElementById('cookie-consent-banner');
+
+    if (cookieConsent === 'accepted') {
+        banner.classList.add('hide');  // Hide banner if consent is already given
+    }
+});
+
+// Event listener for the accept button
+const acceptButton = document.querySelector('#cookie-consent-banner button');
+if (acceptButton) {
+    acceptButton.addEventListener('click', acceptCookies);
 }
