@@ -1,36 +1,27 @@
 :root {
-    --font-size-base: 16px; /* Default font size */
-    --font-size-scale: 1; /* Font size adjustment scale */
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --secondary-text-color: #666666;
-    --border-color: #e0e0e0;
+    --bg-color-light: #f7f7f7;
+    --bg-color-dark: #1f1f1f;
+    --text-color-light: #333333;
+    --text-color-dark: #e0e0e0;
+    --border-color-light: #e0e0e0;
+    --border-color-dark: #333333;
     --accent-color: #007aff;
-    --hover-color: #005bb5;
     --danger-color: #ff3b30;
-    --content-bg: #f9f9f9;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --green-enabled: #34c759;
+    --gray-disabled: #a0a0a0;
 }
 
-/* Dark Mode */
-body.settings-page.dark-mode {
-    --bg-color: #1f1f1f;
-    --text-color: #e0e0e0;
-    --secondary-text-color: #a0a0a0;
-    --border-color: #333333;
-    --content-bg: #2d2d2d;
-    --shadow-color: rgba(0, 0, 0, 0.5);
-}
-
-/* General Styles */
 body.settings-page {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
     margin: 0;
     padding: 20px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-size: calc(var(--font-size-base) * var(--font-size-scale));
+}
+
+body.settings-page.dark-mode {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
 }
 
 /* Container */
@@ -38,51 +29,43 @@ body.settings-page {
     max-width: 700px;
     margin: 20px auto;
     padding: 20px;
-    background-color: var(--content-bg);
+    background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    transition: all 0.3s ease;
+    border: 1px solid var(--border-color-light);
+}
+
+body.settings-page.dark-mode .container {
+    background-color: var(--bg-color-dark);
+    border-color: var(--border-color-dark);
 }
 
 /* Section Headers */
-.settings-page .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.settings-page h1 {
+    font-size: 1.5rem;
     margin-bottom: 20px;
 }
 
-.settings-page h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.settings-page .version {
-    font-size: 0.85rem;
-    color: var(--secondary-text-color);
+.settings-page h2 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
 }
 
 /* Settings Groups */
 .settings-page .settings-group {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
     margin-bottom: 30px;
 }
 
 .settings-page .settings-subsection {
-    padding: 20px;
+    padding: 15px;
+    border: 1px solid var(--border-color-light);
     border-radius: 10px;
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
 }
 
-.settings-page .subsection-title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 10px;
+body.settings-page.dark-mode .settings-subsection {
+    border-color: var(--border-color-dark);
+    background-color: #2d2d2d;
 }
 
 /* Toggle Switch */
@@ -90,41 +73,35 @@ body.settings-page {
     position: relative;
     width: 50px;
     height: 28px;
-    background-color: #dcdcdc;
+    background-color: var(--gray-disabled); /* Default grey color */
     border-radius: 50px;
-    transition: background-color 0.3s ease;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .settings-page .toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+    display: none; /* Hide the checkbox */
 }
 
 .settings-page .toggle-slider {
     position: absolute;
     top: 4px;
     left: 4px;
-    height: 20px;
     width: 20px;
-    background-color: #fff;
+    height: 20px;
+    background-color: white;
     border-radius: 50%;
     transition: 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Green when enabled, grey when disabled */
+/* Toggle Switch - On */
 .settings-page input:checked + .toggle-slider {
     transform: translateX(22px);
 }
 
 .settings-page input:checked + .toggle-switch {
-    background-color: #34c759; /* Apple green */
-}
-
-.settings-page .toggle-switch:not(input:checked) {
-    background-color: #a0a0a0; /* Darkish grey */
+    background-color: var(--green-enabled); /* Apple green color when enabled */
 }
 
 /* Font Size Control */
@@ -136,29 +113,17 @@ body.settings-page {
 
 .settings-page .font-size-control input[type="range"] {
     flex: 1;
-    appearance: none;
     height: 8px;
-    background: linear-gradient(to right, var(--accent-color) 0%, var(--accent-color) var(--value), var(--border-color) var(--value), var(--border-color) 100%);
     border-radius: 5px;
-    outline: none;
-    transition: background 0.3s ease;
-}
-
-.settings-page .font-size-control input[type="range"]::-webkit-slider-thumb {
-    width: 20px;
-    height: 20px;
     background-color: var(--accent-color);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Reset Button */
 .settings-page .reset-button {
     background-color: var(--danger-color);
     color: white;
+    padding: 10px 15px;
     border: none;
-    padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -166,18 +131,4 @@ body.settings-page {
 
 .settings-page .reset-button:hover {
     background-color: darkred;
-}
-
-/* Back Link */
-.settings-page .back-link {
-    margin-top: 20px;
-    display: inline-block;
-    color: var(--accent-color);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.settings-page .back-link:hover {
-    color: var(--hover-color);
 }
