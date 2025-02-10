@@ -24,7 +24,8 @@ class SettingsManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            
+            textSize: 'default',
+           
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -41,6 +42,15 @@ class SettingsManager {
             darkModeToggle.checked = this.settings.darkMode;
             darkModeToggle.addEventListener('change', (e) => {
                 this.applyTheme(e.target.checked);
+            });
+        }
+
+        // Text Size Adjustment
+        const textSizeSelect = document.getElementById('text-size');
+        if (textSizeSelect) {
+            textSizeSelect.value = this.settings.textSize;
+            textSizeSelect.addEventListener('change', (e) => {
+                this.setTextSize(e.target.value);
             });
         }
 
@@ -80,6 +90,7 @@ class SettingsManager {
 
     applySettings() {
         this.applyTheme(this.settings.darkMode);
+        this.setTextSize(this.settings.textSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
     }
@@ -114,6 +125,13 @@ class SettingsManager {
         this.saveSettings();
     }
 
+    setTextSize(size) {
+        document.body.classList.remove('text-default', 'text-large', 'text-larger');
+        document.body.classList.add('text-' + size);
+        this.settings.textSize = size;
+        this.saveSettings();
+    }
+
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
@@ -121,7 +139,8 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            
+            textSize: 'default',
+           
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -129,12 +148,12 @@ class SettingsManager {
 
         // Update UI controls
         const darkModeToggle = document.getElementById('darkModeToggle');
-        const fontSizeRange = document.getElementById('fontSizeRange');
-        const currentFontSize = document.getElementById('currentFontSize');
+        const textSizeSelect = document.getElementById('text-size');
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
+        if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
     }
@@ -176,3 +195,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Example of setting profile status manually
     settingsManager.setProfileStatusManually('online');  // Set profile status to "idle"
 });
+
+function adjustTextSize(size) {
+    document.body.classList.remove('text-default', 'text-large', 'text-larger');
+    document.body.classList.add('text-' + size);
+}
+
+function acceptCookies() {
+    document.getElementById('cookie-consent-banner').style.display = 'none';
+    // Set cookie consent
+}
