@@ -240,10 +240,12 @@ a:focus, button:focus, .toggle-switch:focus {
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
+    font-size: 0.9rem; /* Slightly smaller font for the banner */
 }
 
 #cookie-consent-banner p {
     margin: 0;
+    flex: 1; /* Ensures text takes up remaining space */
 }
 
 #cookie-consent-banner a {
@@ -259,8 +261,10 @@ a:focus, button:focus, .toggle-switch:focus {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-size: 1rem; /* Adjust font size for button */
 }
 
 #cookie-consent-banner button:hover {
     background-color: var(--hover-color);
 }
+
