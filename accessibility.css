@@ -1,0 +1,67 @@
+/* Accessibility Statement Page */
+body.accessibility-statement-page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
+    font-size: var(--font-size-base);
+}
+
+h1, h2 {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+p, ul {
+    font-size: 1rem;
+    color: var(--secondary-text);
+    line-height: 1.5;
+}
+
+ul {
+    margin-left: 20px;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+a:hover {
+    color: var(--hover-color);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--content-bg);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.accessibility-statement h1 {
+    margin-bottom: 15px;
+}
+
+.accessibility-statement p, .accessibility-statement ul {
+    margin-bottom: 15px;
+}
+
+.accessibility-statement ul li {
+    list-style-type: disc;
+}
