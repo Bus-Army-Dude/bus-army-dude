@@ -32,7 +32,6 @@ A centralized platform showcasing:
 - **Theme Consistency**: Unified website theme across all sections
 - **Settings Page Access Button**: Quick access to settings from the top profile section
 - **Light/Dark Mode Toggle**: Easily switch between light and dark modes in settings
-- **Font Size Adjustment**: Font size adjustment under Accessibility settings
 - **Maintenance Mode (Owner Only)**: Show a maintenance message on the website when necessary
 - **Profile Status (Owner Only)**: Display your online, idle, or offline status
 
