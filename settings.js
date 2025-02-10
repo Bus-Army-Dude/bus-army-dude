@@ -12,6 +12,8 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
+            profileStatus: 'offline',  // Default profile status
+            maintenanceMode: false,  // Default maintenance mode
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -139,6 +141,8 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
+            profileStatus: 'offline',
+            maintenanceMode: false,
         };
         this.settings = defaultSettings;
         this.applySettings();
