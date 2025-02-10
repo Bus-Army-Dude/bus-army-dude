@@ -1,262 +1,181 @@
 :root {
-    --font-size-base: 16px; /* Default base font size */
+    --font-size-base: 16px; /* Default font size */
+    --font-size-scale: 1; /* Font size adjustment scale */
     --bg-color: #ffffff;
-    --text-color: #000000;
-    --secondary-text: #666666;
-    --border-color: #dddddd;
-    --accent-color: #007aff; /* Apple-like blue accent color */
-    --hover-color: #005bb5;
-    --content-bg: #f5f5f5;
-    --slider-thumb-color: #007aff; /* Custom slider thumb color */
-    --slider-track-color: #ddd; /* Custom slider track color */
-    --slider-track-filled-color: #007aff; /* Custom slider track filled color */
-}
-
-/* Dark Mode Variables */
-body.settings-page.dark-mode {
-    --bg-color: #1a1a1a;
-    --text-color: #ffffff;
-    --secondary-text: #a0a0a0;
-    --border-color: #333333;
+    --text-color: #333333;
+    --secondary-text-color: #666666;
+    --border-color: #e0e0e0;
     --accent-color: #007aff;
     --hover-color: #005bb5;
-    --content-bg: #2d2d2d;
-    --slider-thumb-color: #007aff;
-    --slider-track-color: #444;
-    --slider-track-filled-color: #007aff;
+    --danger-color: #ff3b30;
+    --content-bg: #f9f9f9;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* General Styles for Settings Page */
+/* Dark Mode */
+body.settings-page.dark-mode {
+    --bg-color: #1f1f1f;
+    --text-color: #e0e0e0;
+    --secondary-text-color: #a0a0a0;
+    --border-color: #333333;
+    --content-bg: #2d2d2d;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* General Styles */
 body.settings-page {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin: 0;
-    padding: 20px; /* Add padding to the body to ensure content doesn't touch the edges */
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-size: var(--font-size-base); /* Apply base font size */
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: calc(var(--font-size-base) * var(--font-size-scale));
 }
 
-/* Container Styles */
+/* Container */
 .settings-page .container {
-    max-width: 800px;
+    max-width: 700px;
     margin: 20px auto;
     padding: 20px;
     background-color: var(--content-bg);
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    font-size: var(--font-size-base); /* Apply base font size */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: all 0.3s ease;
 }
 
-/* Settings Section Styles */
-.settings-page .settings-section {
-    padding: 20px;
-    font-size: var(--font-size-base); /* Apply base font size */
-}
-
-.settings-page .settings-header {
+/* Section Headers */
+.settings-page .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .settings-header h1 {
-    margin: 0;
-    font-size: 2rem;
+.settings-page h1 {
+    font-size: 1.5rem;
     font-weight: 600;
-    color: var(--text-color);
-    font-size: calc(var(--font-size-base) * 2); /* Scale with base font size */
+    margin: 0;
 }
 
-.settings-page .settings-header .version {
-    font-size: 0.9rem;
-    color: var(--secondary-text);
-    font-size: calc(var(--font-size-base) * 0.9); /* Scale with base font size */
+.settings-page .version {
+    font-size: 0.85rem;
+    color: var(--secondary-text-color);
 }
 
+/* Settings Groups */
 .settings-page .settings-group {
     display: flex;
     flex-direction: column;
-    gap: 40px; /* Increased gap to separate sections */
-    font-size: var(--font-size-base); /* Apply base font size */
+    gap: 30px;
+    margin-bottom: 30px;
 }
 
 .settings-page .settings-subsection {
     padding: 20px;
+    border-radius: 10px;
+    background-color: var(--bg-color);
     border: 1px solid var(--border-color);
-    border-radius: 15px;
-    background-color: var(--bg-color);
-    font-size: var(--font-size-base); /* Apply base font size */
-}
-
-.settings-page .settings-subsection .subsection-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: var(--text-color);
-    font-size: calc(var(--font-size-base) * 1.5); /* Scale with base font size */
-}
-
-.settings-page .danger-zone {
-    border-color: red;
-    font-size: var(--font-size-base); /* Apply base font size */
-}
-
-.settings-page .setting-card {
-    background-color: var(--bg-color);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     transition: background-color 0.3s ease, color 0.3s ease;
-    font-size: var(--font-size-base); /* Apply base font size */
 }
 
-.settings-page .setting-label {
-    flex: 1;
-    font-size: var(--font-size-base); /* Apply base font size */
-}
-
-.settings-page .setting-title {
-    font-size: 1.3rem;
-    margin: 0;
+.settings-page .subsection-title {
+    font-size: 1.2rem;
     font-weight: 500;
-    color: var(--text-color);
-    font-size: calc(var(--font-size-base) * 1.3); /* Scale with base font size */
+    margin-bottom: 10px;
 }
 
-.settings-page .setting-description {
-    font-size: 1rem;
-    margin: 5px 0 0;
-    color: var(--secondary-text);
-    font-size: calc(var(--font-size-base) * 1); /* Scale with base font size */
-}
-
-/* Toggle Switch Styles */
+/* Toggle Switch */
 .settings-page .toggle-switch {
     position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    font-size: var(--font-size-base); /* Apply base font size */
+    width: 50px;
+    height: 28px;
+    background-color: #dcdcdc;
+    border-radius: 50px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .settings-page .toggle-switch input {
     opacity: 0;
     width: 0;
     height: 0;
-    font-size: var(--font-size-base); /* Apply base font size */
 }
 
 .settings-page .toggle-slider {
     position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--border-color);
-    transition: 0.4s;
-    border-radius: 34px;
-    font-size: var(--font-size-base); /* Apply base font size */
-}
-
-.settings-page .toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
+    top: 4px;
     left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
     border-radius: 50%;
-    font-size: var(--font-size-base); /* Apply base font size */
+    transition: 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Green when enabled, grey when disabled */
 .settings-page input:checked + .toggle-slider {
-    background-color: var(--accent-color);
+    transform: translateX(22px);
 }
 
-.settings-page input:checked + .toggle-slider:before {
-    transform: translateX(26px);
+.settings-page input:checked + .toggle-switch {
+    background-color: #34c759; /* Apple green */
 }
 
-/* Font Size Control Styles */
+.settings-page .toggle-switch:not(input:checked) {
+    background-color: #a0a0a0; /* Darkish grey */
+}
+
+/* Font Size Control */
 .settings-page .font-size-control {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: var(--font-size-base); /* Apply base font size */
+    gap: 15px;
 }
 
 .settings-page .font-size-control input[type="range"] {
     flex: 1;
-    -webkit-appearance: none;
+    appearance: none;
     height: 8px;
-    background: linear-gradient(to right, var(--slider-track-filled-color) 0%, var(--slider-track-filled-color) var(--value), var(--slider-track-color) var(--value), var(--slider-track-color) 100%);
+    background: linear-gradient(to right, var(--accent-color) 0%, var(--accent-color) var(--value), var(--border-color) var(--value), var(--border-color) 100%);
     border-radius: 5px;
     outline: none;
     transition: background 0.3s ease;
 }
 
 .settings-page .font-size-control input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
     width: 20px;
     height: 20px;
-    background: var(--slider-thumb-color);
+    background-color: var(--accent-color);
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.settings-page .font-size-control input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--slider-thumb-color);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.settings-page .font-size-control span {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-color);
-    font-size: calc(var(--font-size-base) * 1); /* Scale with base font size */
-}
-
-/* Reset Button Styles */
+/* Reset Button */
 .settings-page .reset-button {
-    background-color: #ff3b30;
+    background-color: var(--danger-color);
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 10px;
     transition: background-color 0.3s ease;
-    font-size: var(--font-size-base); /* Apply base font size */
 }
 
 .settings-page .reset-button:hover {
-    background-color: #d32f2f;
+    background-color: darkred;
 }
 
-/* Back Link Styles */
+/* Back Link */
 .settings-page .back-link {
-    display: inline-block;
     margin-top: 20px;
+    display: inline-block;
     color: var(--accent-color);
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
     transition: color 0.3s ease;
-    font-size: var(--font-size-base); /* Apply base font size */
 }
 
 .settings-page .back-link:hover {
