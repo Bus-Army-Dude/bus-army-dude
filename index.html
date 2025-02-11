@@ -144,15 +144,22 @@
             </div>
         </section>
 
-          <iframe 
-              src="https://bus-army-dude.instatus.com/embed-status/4e365a41/light-lg" 
-              width="495" 
-              height="61" 
-              frameBorder="0" 
-              scrolling="no" 
-              style="border: none;"
-            >
-          </iframe>
+          <style>
+  .responsive-iframe {
+    width: 100%;
+    max-width: 495px;
+    height: auto;
+    aspect-ratio: 8.1; /* Maintain the original aspect ratio (495/61) */
+    border: none;
+  }
+</style>
+
+<iframe 
+  class="responsive-iframe"
+  src="https://bus-army-dude.instatus.com/embed-status/4e365a41/light-lg" 
+  frameBorder="0" 
+  scrolling="no">
+</iframe>
         
         <!-- TikTok Shoutouts Section -->
         <div class="shoutouts-section section">
