@@ -40,36 +40,44 @@
 </head>
 <body>
     <header>
-        <h1>Bus Army Dude's Merchandise</h1>
-        <button class="home-button" onclick="window.location.href='index.html'">Home</button>
+        <div class="header-content">
+            <h1>Bus Army Dude's Merchandise</h1>
+            <button class="home-button" onclick="window.location.href='index.html'">Home</button>
+        </div>
     </header>
 
     <div class="container">
         <section id="on-sale">
             <h2>On Sale</h2>
             <div class="product-grid">
-                <!-- Product Item -->
+                <!-- Product Item In Stock -->
                 <div class="product-item">
+                    <div class="stock-ribbon in-stock">In Stock</div>
                     <div class="sale-ribbon">Sale</div>
                     <img src="images/product1.jpg" alt="Product 1">
                     <h3>Product Name 1</h3>
                     <p class="price"><span class="original-price">$25.99</span> $19.99 <span class="discount">(23% off)</span></p>
+                    <p class="quantity">Quantity: 50</p>
                     <a href="product-link-1" class="buy-now">Buy Now</a>
                 </div>
-                <!-- More Product Items -->
+                <!-- Product Item Low Stock -->
                 <div class="product-item">
+                    <div class="stock-ribbon low-stock">Low Stock</div>
                     <div class="sale-ribbon">Sale</div>
                     <img src="images/product4.jpg" alt="Product 4">
                     <h3>Product Name 4</h3>
                     <p class="price"><span class="original-price">$20.99</span> $15.99 <span class="discount">(24% off)</span></p>
+                    <p class="quantity">Quantity: 5</p>
                     <a href="product-link-4" class="buy-now">Buy Now</a>
                 </div>
+                <!-- Product Item Out of Stock -->
                 <div class="product-item">
-                    <div class="sale-ribbon">Sale</div>
+                    <div class="stock-ribbon out-of-stock">Out of Stock</div>
                     <img src="images/product5.jpg" alt="Product 5">
                     <h3>Product Name 5</h3>
                     <p class="price"><span class="original-price">$16.99</span> $12.99 <span class="discount">(24% off)</span></p>
-                    <a href="product-link-5" class="buy-now">Buy Now</a>
+                    <p class="quantity">Quantity: 0</p>
+                    <button class="buy-now out-of-stock-button" disabled>Out of Stock</button>
                 </div>
             </div>
         </section>
@@ -79,22 +87,28 @@
             <div class="product-grid">
                 <!-- Product Item -->
                 <div class="product-item">
+                    <div class="stock-ribbon in-stock">In Stock</div>
                     <img src="images/product2.jpg" alt="Product 2">
                     <h3>Product Name 2</h3>
                     <p class="price">$24.99</p>
+                    <p class="quantity">Quantity: 30</p>
                     <a href="product-link-2" class="buy-now">Buy Now</a>
                 </div>
                 <!-- More Product Items -->
                 <div class="product-item">
+                    <div class="stock-ribbon in-stock">In Stock</div>
                     <img src="images/product6.jpg" alt="Product 6">
                     <h3>Product Name 6</h3>
                     <p class="price">$29.99</p>
+                    <p class="quantity">Quantity: 20</p>
                     <a href="product-link-6" class="buy-now">Buy Now</a>
                 </div>
                 <div class="product-item">
+                    <div class="stock-ribbon low-stock">Low Stock</div>
                     <img src="images/product7.jpg" alt="Product 7">
                     <h3>Product Name 7</h3>
                     <p class="price">$34.99</p>
+                    <p class="quantity">Quantity: 2</p>
                     <a href="product-link-7" class="buy-now">Buy Now</a>
                 </div>
             </div>
@@ -105,23 +119,29 @@
             <div class="product-grid">
                 <!-- Product Item -->
                 <div class="product-item">
+                    <div class="stock-ribbon in-stock">In Stock</div>
                     <img src="images/product3.jpg" alt="Product 3">
                     <h3>Product Name 3</h3>
                     <p class="price">$29.99</p>
+                    <p class="quantity">Quantity: 15</p>
                     <a href="product-link-3" class="buy-now">Buy Now</a>
                 </div>
                 <!-- More Product Items -->
                 <div class="product-item">
+                    <div class="stock-ribbon in-stock">In Stock</div>
                     <img src="images/product8.jpg" alt="Product 8">
                     <h3>Product Name 8</h3>
                     <p class="price">$39.99</p>
+                    <p class="quantity">Quantity: 25</p>
                     <a href="product-link-8" class="buy-now">Buy Now</a>
                 </div>
                 <div class="product-item">
+                    <div class="stock-ribbon out-of-stock">Out of Stock</div>
                     <img src="images/product9.jpg" alt="Product 9">
                     <h3>Product Name 9</h3>
-                    <p class="price">$44.99</p>
-                    <a href="product-link-9" class="buy-now">Buy Now</a>
+                    <p class="price"><span class="original-price">$44.99</span> <span class="discount">(Out of Stock)</span></p>
+                    <p class="quantity">Quantity: 0</p>
+                    <button class="buy-now out-of-stock-button" disabled>Out of Stock</button>
                 </div>
             </div>
         </section>
