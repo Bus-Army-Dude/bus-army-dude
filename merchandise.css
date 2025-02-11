@@ -25,6 +25,7 @@ header {
 
 h1, h2 {
     margin: 0 0 20px;
+    color: var(--text-color);
 }
 
 .product-grid {
@@ -36,10 +37,12 @@ h1, h2 {
 .product-item {
     background-color: var(--content-bg);
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px var(--shadow-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
     flex: 1 1 calc(33.333% - 40px);
     text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .product-item img {
@@ -60,6 +63,17 @@ h1, h2 {
     margin: 10px 0;
 }
 
+.product-item .price .original-price {
+    text-decoration: line-through;
+    margin-right: 10px;
+    color: var(--secondary-text);
+}
+
+.product-item .price .discount {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
 .product-item .buy-now {
     display: inline-block;
     padding: 10px 20px;
@@ -74,11 +88,25 @@ h1, h2 {
     background-color: var(--hover-color);
 }
 
-footer {
-    background-color: var(--border-color);
+.sale-ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ff0000;
     color: white;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transform: rotate(-45deg);
+    transform-origin: 0 0;
+}
+
+footer {
+    background-color: var(--content-bg);
+    color: var(--text-color);
     text-align: center;
     padding: 10px 0;
+    border-top: 1px solid var(--border-color);
 }
 
 footer p {
