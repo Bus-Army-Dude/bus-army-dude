@@ -144,6 +144,38 @@ section h2 {
     color: var(--text-color); /* Ensure button text color contrast */
 }
 
+.product-item .out-of-stock-button {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+}
+
+.stock-ribbon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.in-stock {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+
+.low-stock {
+    background-color: #ffc107; /* Yellow */
+    color: black;
+}
+
+.out-of-stock {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+
 .sale-ribbon {
     position: absolute;
     top: 10px;
@@ -155,6 +187,11 @@ section h2 {
     font-weight: bold;
     z-index: 1;
     border-radius: 5px;
+}
+
+.quantity {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
 }
 
 footer {
