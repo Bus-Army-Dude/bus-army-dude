@@ -44,15 +44,44 @@ header {
     color: white;
 }
 
+.category-nav {
+    background-color: var(--content-bg);
+    padding: 10px 0;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.category-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.category-nav li {
+    display: inline;
+}
+
+.category-nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+}
+
+.category-nav a:hover {
+    background-color: var(--hover-color);
+    color: white;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-}
-
-h1 {
-    margin: 0 0 20px;
-    color: var(--text-color);
 }
 
 section {
@@ -67,6 +96,9 @@ section {
 section h2 {
     margin: 0 0 20px;
     color: var(--text-color);
+    border-bottom: 2px solid var(--border-color); /* Add bottom border */
+    padding-bottom: 10px; /* Add padding for spacing */
+    font-size: 1.5rem; /* Increase font size */
 }
 
 .product-grid {
@@ -108,7 +140,7 @@ section h2 {
 
 .product-item h3 {
     margin: 15px 0;
-    font-size: 1rem;
+    font-size: 1.2rem; /* Increased font size */
     color: var(--text-color);
 }
 
