@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "true"
 
     // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('online');  // Set profile status to "online"
+    settingsManager.setProfileStatusManually('offline');  // Set profile status to "online"
 });
 
 function adjustTextSize(size) {
