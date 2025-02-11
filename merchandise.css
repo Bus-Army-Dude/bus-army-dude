@@ -12,36 +12,39 @@ header {
     color: white;
     padding: 20px 0;
     text-align: center;
-    margin-bottom: 20px; /* Add some spacing below the header */
+    margin-bottom: 20px;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: var(--content-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-h1, h2 {
+h1 {
     margin: 0 0 20px;
     color: var(--text-color);
 }
 
 section {
-    margin-bottom: 40px; /* Add spacing between sections */
+    margin-bottom: 40px;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     background-color: var(--content-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+section h2 {
+    margin: 0 0 20px;
+    color: var(--text-color);
 }
 
 .product-grid {
     display: flex;
     gap: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling for the product grid */
-    padding-bottom: 10px; /* Add some padding at the bottom for better spacing */
+    overflow-x: auto;
+    padding-bottom: 10px;
 }
 
 .product-item {
@@ -49,8 +52,8 @@ section {
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    flex: 0 0 auto; /* Prevents flex items from shrinking */
-    width: 280px; /* Set a fixed width for product items */
+    flex: 0 0 auto;
+    width: 280px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -102,12 +105,12 @@ section {
 
 .sale-ribbon {
     position: absolute;
-    top: 10px; 
-    left: 10px; 
+    top: 10px;
+    left: 10px;
     background-color: #ff0000;
     color: white;
-    padding: 5px 10px; 
-    font-size: 1rem; 
+    padding: 5px 10px;
+    font-size: 1rem;
     font-weight: bold;
     z-index: 1;
     border-radius: 5px;
@@ -117,18 +120,17 @@ footer {
     background-color: var(--content-bg);
     color: var(--text-color);
     text-align: center;
-    padding: 20px 0; /* Increase padding for better readability */
+    padding: 20px 0;
     border-top: 1px solid var(--border-color);
-    margin-top: 20px; /* Add some spacing above the footer */
+    margin-top: 20px;
 }
 
 footer p {
     margin: 0;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .product-item {
-        width: 80%; /* Adjust width for smaller screens */
+        width: 80%;
     }
 }
