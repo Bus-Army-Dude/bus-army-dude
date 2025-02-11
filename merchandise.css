@@ -50,6 +50,7 @@ section h2 {
 .product-item {
     background-color: var(--content-bg);
     padding: 15px;
+    border: 1px solid var(--border-color); /* Add a border */
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     flex: 0 0 auto;
@@ -57,6 +58,12 @@ section h2 {
     text-align: center;
     position: relative;
     overflow: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.product-item:hover {
+    background-color: var(--hover-color); /* Add hover effect */
+    color: var(--text-color); /* Ensure text color contrast */
 }
 
 .product-item img {
