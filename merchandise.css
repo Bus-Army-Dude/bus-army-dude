@@ -49,6 +49,7 @@ header {
     padding: 10px 0;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px var(--shadow-color);
+    overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 .category-nav ul {
@@ -58,6 +59,7 @@ header {
     display: flex;
     justify-content: center;
     gap: 20px;
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 .category-nav li {
@@ -96,26 +98,26 @@ section {
 section h2 {
     margin: 0 0 20px;
     color: var(--text-color);
-    border-bottom: 2px solid var(--border-color); /* Add bottom border */
-    padding-bottom: 10px; /* Add padding for spacing */
-    font-size: 1.5rem; /* Increase font size */
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    font-size: 1.5rem;
 }
 
 .product-grid {
     display: flex;
     gap: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling for product grid */
+    overflow-x: auto; /* Enable horizontal scrolling */
     padding-bottom: 10px;
 }
 
 .product-item {
     background-color: var(--content-bg);
-    padding: 20px; /* Increased padding */
-    border: 2px solid var(--border-color); /* Enhance the border */
+    padding: 20px;
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     flex: 0 0 auto;
-    width: 300px; /* Slightly wider */
+    width: 300px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -123,31 +125,31 @@ section h2 {
 }
 
 .product-item:hover {
-    background-color: var(--hover-color); /* Add hover effect */
-    color: var(--text-color); /* Ensure text color contrast */
+    background-color: var(--hover-color);
+    color: var(--text-color);
 }
 
 .product-item:hover h3, .product-item:hover .price, .product-item:hover .buy-now {
-    color: var(--text-color); /* Ensure text color contrast on hover */
+    color: var(--text-color);
 }
 
 .product-item img {
     max-width: 100%;
     height: auto;
-    border-radius: 12px; /* Increased border-radius for a more rounded look */
-    margin-bottom: 15px; /* Increased margin */
+    border-radius: 12px;
+    margin-bottom: 15px;
 }
 
 .product-item h3 {
     margin: 15px 0;
-    font-size: 1.2rem; /* Increased font size */
+    font-size: 1.2rem;
     color: var(--text-color);
 }
 
 .product-item .price {
     font-size: 1.1rem;
     color: var(--accent-color);
-    margin: 15px 0; /* Increased margin */
+    margin: 15px 0;
 }
 
 .product-item .price .original-price {
@@ -163,7 +165,7 @@ section h2 {
 
 .product-item .buy-now {
     display: inline-block;
-    padding: 10px 20px; /* Increased padding */
+    padding: 10px 20px;
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
@@ -172,8 +174,8 @@ section h2 {
 }
 
 .product-item .buy-now:hover {
-    background-color: var(--hover-color);
-    color: var(--text-color); /* Ensure button text color contrast */
+    background-color: var (--hover-color);
+    color: var (--text-color);
 }
 
 .product-item .out-of-stock-button {
@@ -194,17 +196,17 @@ section h2 {
 }
 
 .in-stock {
-    background-color: #28a745; /* Green */
+    background-color: #28a745;
     color: white;
 }
 
 .low-stock {
-    background-color: #ffc107; /* Yellow */
+    background-color: #ffc107;
     color: black;
 }
 
 .out-of-stock {
-    background-color: #dc3545; /* Red */
+    background-color: #dc3545;
     color: white;
 }
 
@@ -224,7 +226,7 @@ section h2 {
 .quantity {
     font-size: 0.9rem;
     color: var(--secondary-text);
-    margin-top: 10px; /* Add margin for spacing */
+    margin-top: 10px;
 }
 
 footer {
@@ -243,5 +245,21 @@ footer p {
 @media (max-width: 768px) {
     .product-item {
         width: 80%;
+    }
+    .category-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .category-nav li {
+        display: block;
+    }
+    .category-nav {
+        padding: 0 10px; /* Add padding for better spacing */
+    }
+    .header-content {
+        flex-direction: column;
+    }
+    .header-content h1 {
+        margin-bottom: 10px; /* Add margin for spacing */
     }
 }
