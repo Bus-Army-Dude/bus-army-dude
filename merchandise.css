@@ -15,6 +15,35 @@ header {
     margin-bottom: 20px;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.header-content h1 {
+    margin: 0;
+    color: white;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.home-button {
+    background-color: white;
+    color: var(--accent-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: var(--hover-color);
+    color: white;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -50,7 +79,7 @@ section h2 {
 .product-item {
     background-color: var(--content-bg);
     padding: 15px;
-    border: 1px solid var(--border-color); /* Add a border */
+    border: 2px solid var(--border-color); /* Enhance the border */
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     flex: 0 0 auto;
