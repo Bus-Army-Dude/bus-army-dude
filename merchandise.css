@@ -35,11 +35,11 @@ section {
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     background-color: var(--content-bg);
+    overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 .product-grid {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -48,7 +48,8 @@ section {
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
-    flex: 1 1 calc(25% - 40px); /* Make product cards smaller */
+    flex: 0 0 auto; /* Prevents flex items from shrinking */
+    width: 280px; /* Set a fixed width for product items */
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -122,4 +123,14 @@ footer {
 
 footer p {
     margin: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .product-grid {
+        flex-wrap: nowrap; /* Prevent wrapping on smaller screens */
+    }
+    .product-item {
+        width: 80%; /* Adjust width for smaller screens */
+    }
 }
