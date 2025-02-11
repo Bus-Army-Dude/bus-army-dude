@@ -90,15 +90,15 @@ h1, h2 {
 
 .sale-ribbon {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 10px; 
+    left: -30px; 
     background-color: #ff0000;
     color: white;
-    padding: 5px 10px;
-    font-size: 0.9rem;
+    padding: 5px 20px; 
+    font-size: 1rem; 
     font-weight: bold;
-    transform: rotate(-45deg);
-    transform-origin: 0 0;
+    transform: rotate(-45deg); 
+    z-index: 1;
 }
 
 footer {
