@@ -78,12 +78,12 @@ section h2 {
 
 .product-item {
     background-color: var(--content-bg);
-    padding: 15px;
+    padding: 20px; /* Increased padding */
     border: 2px solid var(--border-color); /* Enhance the border */
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     flex: 0 0 auto;
-    width: 280px;
+    width: 300px; /* Slightly wider */
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -102,12 +102,12 @@ section h2 {
 .product-item img {
     max-width: 100%;
     height: auto;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    border-radius: 12px; /* Increased border-radius for a more rounded look */
+    margin-bottom: 15px; /* Increased margin */
 }
 
 .product-item h3 {
-    margin: 10px 0;
+    margin: 15px 0;
     font-size: 1rem;
     color: var(--text-color);
 }
@@ -115,7 +115,7 @@ section h2 {
 .product-item .price {
     font-size: 1.1rem;
     color: var(--accent-color);
-    margin: 10px 0;
+    margin: 15px 0; /* Increased margin */
 }
 
 .product-item .price .original-price {
@@ -131,7 +131,7 @@ section h2 {
 
 .product-item .buy-now {
     display: inline-block;
-    padding: 8px 16px;
+    padding: 10px 20px; /* Increased padding */
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
@@ -192,6 +192,7 @@ section h2 {
 .quantity {
     font-size: 0.9rem;
     color: var(--secondary-text);
+    margin-top: 10px; /* Add margin for spacing */
 }
 
 footer {
