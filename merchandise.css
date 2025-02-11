@@ -106,6 +106,16 @@ header {
     color: var(--secondary-text);
 }
 
+section {
+    border: 2px solid var(--border-color); /* Add borders to separate sections */
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    background-color: var(--content-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .product-grid {
     display: flex;
     gap: 20px;
