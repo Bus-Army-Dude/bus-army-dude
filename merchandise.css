@@ -1,3 +1,4 @@
+/* General Body Styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -7,6 +8,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Header Styling */
 header {
     background-color: var(--accent-color);
     color: white;
@@ -44,6 +46,7 @@ header {
     color: white;
 }
 
+/* Navigation Styling */
 .category-nav {
     background-color: var(--content-bg);
     padding: 10px 0;
@@ -80,12 +83,14 @@ header {
     color: white;
 }
 
+/* Container Styling */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
+/* Section Header Styling */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -106,8 +111,9 @@ header {
     color: var(--secondary-text);
 }
 
+/* Section Styling */
 section {
-    border: 2px solid var(--border-color); /* Add borders to separate sections */
+    border: 2px solid var(--border-color);
     margin-bottom: 40px;
     padding: 20px;
     border-radius: 12px;
@@ -116,6 +122,7 @@ section {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Product Grid Styling */
 .product-grid {
     display: flex;
     gap: 20px;
@@ -123,14 +130,15 @@ section {
     padding-bottom: 10px;
 }
 
+/* Product Item Styling */
 .product-item {
     background-color: var(--content-bg);
-    padding: 20px; /* Increased padding */
-    border: 2px solid var(--border-color); /* Enhance the border */
+    padding: 20px;
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     flex: 0 0 auto;
-    width: 300px; /* Slightly wider */
+    width: 300px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -149,20 +157,20 @@ section {
 .product-item img {
     max-width: 100%;
     height: auto;
-    border-radius: 12px; /* Increased border-radius for a more rounded look */
-    margin-bottom: 15px; /* Increased margin */
+    border-radius: 12px;
+    margin-bottom: 15px;
 }
 
 .product-item h3 {
     margin: 15px 0;
-    font-size: 1.2rem; /* Increased font size */
+    font-size: 1.2rem;
     color: var(--text-color);
 }
 
 .product-item .price {
     font-size: 1.1rem;
     color: var(--accent-color);
-    margin: 15px 0; /* Increased margin */
+    margin: 15px 0;
 }
 
 .product-item .price .original-price {
@@ -178,7 +186,7 @@ section {
 
 .product-item .buy-now {
     display: inline-block;
-    padding: 10px 20px; /* Increased padding */
+    padding: 10px 20px;
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
@@ -197,6 +205,7 @@ section {
     cursor: not-allowed;
 }
 
+/* Stock Ribbon Styling */
 .stock-ribbon {
     position: absolute;
     top: 10px;
@@ -223,6 +232,7 @@ section {
     color: white;
 }
 
+/* Sale Ribbon Styling */
 .sale-ribbon {
     position: absolute;
     top: 10px;
@@ -236,12 +246,14 @@ section {
     border-radius: 5px;
 }
 
+/* Quantity Styling */
 .quantity {
     font-size: 0.9rem;
     color: var(--secondary-text);
     margin-top: 10px; /* Add margin for spacing */
 }
 
+/* No Sale Message Styling */
 .no-sale-message {
     text-align: center;
     font-size: 1.2rem;
@@ -252,6 +264,7 @@ section {
     margin: 20px 0;
 }
 
+/* Footer Styling */
 footer {
     background-color: var(--content-bg);
     color: var(--text-color);
