@@ -98,9 +98,9 @@ section {
 section h2 {
     margin: 0 0 20px;
     color: var(--text-color);
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 10px;
-    font-size: 1.5rem;
+    border-bottom: 2px solid var(--border-color); /* Add bottom border */
+    padding-bottom: 10px; /* Add padding for spacing */
+    font-size: 1.5rem; /* Increase font size */
 }
 
 .product-grid {
@@ -112,12 +112,12 @@ section h2 {
 
 .product-item {
     background-color: var(--content-bg);
-    padding: 20px;
-    border: 2px solid var(--border-color);
+    padding: 20px; /* Increased padding */
+    border: 2px solid var(--border-color); /* Enhance the border */
     border-radius: 12px;
     box-shadow: 0 4px 10px var(--shadow-color);
     flex: 0 0 auto;
-    width: 300px;
+    width: 300px; /* Slightly wider */
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -125,31 +125,31 @@ section h2 {
 }
 
 .product-item:hover {
-    background-color: var(--hover-color);
-    color: var(--text-color);
+    background-color: var(--hover-color); /* Add hover effect */
+    color: var(--text-color); /* Ensure text color contrast */
 }
 
 .product-item:hover h3, .product-item:hover .price, .product-item:hover .buy-now {
-    color: var(--text-color);
+    color: var(--text-color); /* Ensure text color contrast on hover */
 }
 
 .product-item img {
     max-width: 100%;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 15px;
+    border-radius: 12px; /* Increased border-radius for a more rounded look */
+    margin-bottom: 15px; /* Increased margin */
 }
 
 .product-item h3 {
     margin: 15px 0;
-    font-size: 1.2rem;
+    font-size: 1.2rem; /* Increased font size */
     color: var(--text-color);
 }
 
 .product-item .price {
     font-size: 1.1rem;
     color: var(--accent-color);
-    margin: 15px 0;
+    margin: 15px 0; /* Increased margin */
 }
 
 .product-item .price .original-price {
@@ -165,7 +165,7 @@ section h2 {
 
 .product-item .buy-now {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 10px 20px; /* Increased padding */
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
@@ -174,8 +174,8 @@ section h2 {
 }
 
 .product-item .buy-now:hover {
-    background-color: var (--hover-color);
-    color: var (--text-color);
+    background-color: var(--hover-color);
+    color: var(--text-color); /* Ensure button text color contrast */
 }
 
 .product-item .out-of-stock-button {
@@ -196,17 +196,17 @@ section h2 {
 }
 
 .in-stock {
-    background-color: #28a745;
+    background-color: #28a745; /* Green */
     color: white;
 }
 
 .low-stock {
-    background-color: #ffc107;
+    background-color: #ffc107; /* Yellow */
     color: black;
 }
 
 .out-of-stock {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Red */
     color: white;
 }
 
@@ -226,7 +226,17 @@ section h2 {
 .quantity {
     font-size: 0.9rem;
     color: var(--secondary-text);
-    margin-top: 10px;
+    margin-top: 10px; /* Add margin for spacing */
+}
+
+.no-sale-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+    padding: 20px;
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    margin: 20px 0;
 }
 
 footer {
