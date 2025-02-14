@@ -141,7 +141,6 @@ body {
 
 /* Profile Status Colors */
 .profile-status.online { color: green; }
-.profile-status.do-not-disturb { color: red; }
 .profile-status.idle { color: yellow; }
 .profile-status.offline { color: gray; }
 
