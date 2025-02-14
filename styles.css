@@ -76,6 +76,7 @@ body {
     padding: 0 20px;
 }
 
+/* Profile Section */
 .profile-section {
     text-align: center;
     margin-top: 20px;
@@ -144,29 +145,7 @@ body {
 .profile-status.idle { color: yellow; }
 .profile-status.offline { color: gray; }
 
-/* Merch Store Button */
-.merch-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: url('merch-icon.png') center/18px no-repeat;
-    background-color: #ff9800; /* Orange background */
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-.merch-button:hover {
-    transform: rotate(45deg);
-    background-color: #e68a00; /* Slightly darker orange on hover */
-}
-
-/* Settings Button */
+/* Add these new styles for the settings button */
 .settings-button {
     position: absolute;
     top: 20px;
@@ -190,7 +169,7 @@ body {
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
-    .settings-button, .merch-button {
+    .settings-button {
         width: 25px;
         height: 25px;
         top: 15px;
