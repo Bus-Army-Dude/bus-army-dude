@@ -7,10 +7,25 @@ class SettingsManager {
         this.applySettings();
     }
 
+    // Method to set the profile status manually in JavaScript
+    setProfileStatusManually(status) {
+        if (['online', 'idle', 'offline'].includes(status)) {
+            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
+        } else {
+            console.error('Invalid profile status');
+        }
+    }
+
+    // Method to set the maintenance mode manually in JavaScript
+    setMaintenanceModeManually(isEnabled) {
+        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
+    }
+
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            textSize: 'default',
+            fontSize: 16,
+            
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -30,13 +45,19 @@ class SettingsManager {
             });
         }
 
-        // Text Size Adjustment
-        const textSizeSelect = document.getElementById('text-size');
-        if (textSizeSelect) {
-            textSizeSelect.value = this.settings.textSize;
-            textSizeSelect.addEventListener('change', (e) => {
-                this.setTextSize(e.target.value);
+        // Font Size Control
+        const fontSizeRange = document.getElementById('fontSizeRange');
+        const currentFontSize = document.getElementById('currentFontSize');
+        if (fontSizeRange) {
+            fontSizeRange.value = this.settings.fontSize;
+            fontSizeRange.addEventListener('input', (e) => {
+                this.setFontSize(e.target.value);
+                this.updateSliderBackground(e.target);
             });
+            this.updateSliderBackground(fontSizeRange);
+        }
+        if (currentFontSize) {
+            currentFontSize.textContent = `${this.settings.fontSize}px`;
         }
 
         // Profile Status (Visible and Editable only for owner)
@@ -75,12 +96,11 @@ class SettingsManager {
 
     applySettings() {
         this.applyTheme(this.settings.darkMode);
-        this.setTextSize(this.settings.textSize);
+        this.setFontSize(this.settings.fontSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
     }
 
-    // Set the profile status
     setProfileStatus(status) {
         this.settings.profileStatus = status;
         this.saveSettings();
@@ -90,7 +110,7 @@ class SettingsManager {
     applyProfileStatus(status) {
         const statusElement = document.querySelector('.profile-status');
         if (statusElement) {
-            statusElement.classList.remove('online', 'do not disturb' 'idle', 'offline');  // Remove previous status classes
+            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
             statusElement.classList.add(status); // Add the new status class
 
             // Change the icon based on the status
@@ -104,7 +124,6 @@ class SettingsManager {
         }
     }
 
-    // Apply dark or light theme
     applyTheme(isDark = this.settings.darkMode) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
@@ -112,26 +131,33 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    // Set text size
-    setTextSize(size) {
-        document.body.classList.remove('text-default', 'text-large', 'text-larger');
-        document.body.classList.add('text-' + size);
-        this.settings.textSize = size;
+    setFontSize(size) {
+        size = Math.min(Math.max(size, 10), 30); // Limit size between 10px and 30px
+        document.documentElement.style.setProperty('--font-size-base', `${size}px`);
+        this.settings.fontSize = size;
         this.saveSettings();
+
+        // Update UI display
+        const currentFontSize = document.getElementById('currentFontSize');
+        if (currentFontSize) {
+            currentFontSize.textContent = `${size}px`;
+        }
     }
 
-    // Save settings to localStorage
+    updateSliderBackground(slider) {
+        const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.setProperty('--value', `${value}%`);
+    }
+
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
 
-    // Reset to default settings
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            textSize: 'default',
-            profileStatus: 'offline',
-            maintenanceMode: false,
+            fontSize: 16,
+            
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -139,17 +165,21 @@ class SettingsManager {
 
         // Update UI controls
         const darkModeToggle = document.getElementById('darkModeToggle');
-        const textSizeSelect = document.getElementById('text-size');
+        const fontSizeRange = document.getElementById('fontSizeRange');
+        const currentFontSize = document.getElementById('currentFontSize');
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
-        if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
+        if (fontSizeRange) {
+            fontSizeRange.value = defaultSettings.fontSize;
+            this.updateSliderBackground(fontSizeRange);
+        }
+        if (currentFontSize) currentFontSize.textContent = `${defaultSettings.fontSize}px`;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
     }
 
-    // Set Maintenance Mode
     setMaintenanceMode(isEnabled) {
         this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
@@ -167,27 +197,13 @@ class SettingsManager {
         }
     }
 
-    // Update the footer year
+    // Function to update the year in the footer
     updateFooterYear() {
         const currentYear = new Date().getFullYear();
         const yearElement = document.getElementById('current-year');
         if (yearElement) {
             yearElement.textContent = currentYear;
         }
-    }
-
-    // Set profile status manually
-    setProfileStatusManually(status) {
-        if (['online', 'idle', 'offline'].includes(status)) {
-            this.setProfileStatus(status); // Reuse the existing setProfileStatus method
-        } else {
-            console.error('Invalid profile status');
-        }
-    }
-
-    // Set maintenance mode manually
-    setMaintenanceModeManually(isEnabled) {
-        this.setMaintenanceMode(isEnabled); // Reuse the existing setMaintenanceMode method
     }
 }
 
@@ -196,37 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
     // Example of setting maintenance mode manually
-    settingsManager.setMaintenanceModeManually(true);  // Set maintenance mode to "true"
+    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "true"
 
     // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('dnd');  // Set profile status to "online"
+    settingsManager.setProfileStatusManually('online');  // Set profile status to "idle"
 });
-
-function adjustTextSize(size) {
-    document.body.classList.remove('text-default', 'text-large', 'text-larger');
-    document.body.classList.add('text-' + size);
-}
-
-// Function to accept cookies and hide the banner
-function acceptCookies() {
-    // Set a cookie indicating the user has accepted
-    document.cookie = "cookieConsent=true; path=/; max-age=" + 60*60*24*365; // 1 year
-
-    // Hide the cookie consent banner
-    document.getElementById('cookie-consent-banner').style.display = 'none';
-}
-
-// Check if the user has already accepted the cookies
-window.onload = function() {
-    // Read the cookie to check if user already accepted
-    var cookies = document.cookie.split('; ');
-    var cookieConsent = cookies.find(row => row.startsWith('cookieConsent='));
-
-    // If the cookieConsent exists, hide the banner
-    if (cookieConsent) {
-        document.getElementById('cookie-consent-banner').style.display = 'none';
-    } else {
-        // Otherwise, show the banner
-        document.getElementById('cookie-consent-banner').style.display = 'flex';
-    }
-};
