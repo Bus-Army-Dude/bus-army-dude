@@ -96,7 +96,6 @@ class SettingsManager {
             // Change the icon based on the status
             const statusIcons = {
                 "online": "🟢",
-                "dnd": "🔴",
                 "idle": "🟡",
                 "offline": "⚪"
             };
