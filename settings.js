@@ -11,8 +11,6 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-            profileStatus: 'offline',  // Default profile status
-            maintenanceMode: false,  // Default maintenance mode
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -92,12 +90,13 @@ class SettingsManager {
     applyProfileStatus(status) {
         const statusElement = document.querySelector('.profile-status');
         if (statusElement) {
-            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
+            statusElement.classList.remove('online', 'do not disturb' 'idle', 'offline');  // Remove previous status classes
             statusElement.classList.add(status); // Add the new status class
 
             // Change the icon based on the status
             const statusIcons = {
                 "online": "🟢",
+                "dnd": "🔴",
                 "idle": "🟡",
                 "offline": "⚪"
             };
@@ -198,10 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
     // Example of setting maintenance mode manually
-    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "true"
+    settingsManager.setMaintenanceModeManually(true);  // Set maintenance mode to "true"
 
     // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('offline');  // Set profile status to "online"
+    settingsManager.setProfileStatusManually('dnd');  // Set profile status to "online"
 });
 
 function adjustTextSize(size) {
