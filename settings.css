@@ -30,6 +30,15 @@ body.settings-page.dark-mode {
     --toggle-off: #666666;
 }
 
+/* Adding Focus Outline Toggle */
+:root {
+    --focus-outline-color: #005fcc; /* Default focus outline color */
+}
+
+body.settings-page.focus-outline-disabled *:focus {
+    outline: none; /* Disable focus outline */
+}
+
 /* General Styles for Settings Page */
 body.settings-page {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -42,7 +51,7 @@ body.settings-page {
 }
 
 a:focus, button:focus, .toggle-switch:focus {
-    outline: 3px solid #005fcc; /* Custom focus indicator */
+    outline: 3px solid var(--focus-outline-color); /* Custom focus indicator */
 }
 
 .skip-link {
