@@ -5,23 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
 
+     <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-E0RSQS1MS7');
+    </script>
+
     <!-- Favicons and Icons -->
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff"/>
+    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" alt="Apple Touch Icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" alt="Apple Touch Icon">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" alt="Android Icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" alt="Favicon 32x32">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" alt="Favicon 96x96">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" alt="Favicon 16x16">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body class="settings-page">
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
     <div class="container" role="main" id="main-content">
         <div class="settings-section">
             <div class="settings-header">
@@ -40,7 +51,7 @@
                             <h3 class="setting-title">Dark Mode</h3>
                             <p class="setting-description">Switch between light and dark theme</p>
                         </div>
-                        <label class="toggle-switch">
+                        <label class="toggle-switch" aria-label="Toggle dark mode">
                             <input type="checkbox" id="darkModeToggle">
                             <span class="toggle-slider"></span>
                         </label>
@@ -53,7 +64,7 @@
                             <p class="setting-description">Adjust the text size for better readability</p>
                         </div>
                         <label for="text-size">Text Size:</label>
-                        <select id="text-size" onchange="adjustTextSize(this.value)">
+                        <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
                             <option value="default">Default</option>
                             <option value="large">Large</option>
                             <option value="larger">Larger</option>
@@ -66,7 +77,7 @@
                             <h3 class="setting-title">Disable Focus Outline</h3>
                             <p class="setting-description">Turn off the blue outline when navigating with keyboard</p>
                         </div>
-                        <label class="toggle-switch">
+                        <label class="toggle-switch" aria-label="Toggle focus outline">
                             <input type="checkbox" id="focusOutlineToggle">
                             <span class="toggle-slider"></span>
                         </label>
@@ -83,7 +94,7 @@
                             <h3 class="setting-title">Maintenance Mode</h3>
                             <p class="setting-description">Put the site into maintenance mode for updates</p>
                         </div>
-                        <label class="toggle-switch">
+                        <label class="toggle-switch" aria-label="Toggle maintenance mode">
                             <input type="checkbox" id="maintenanceModeToggle">
                             <span class="toggle-slider"></span>
                         </label>
@@ -95,7 +106,7 @@
                             <h3 class="setting-title">Profile Status</h3>
                             <p class="setting-description">Set profile status (Online, Idle, Offline)</p>
                         </div>
-                        <select id="profileStatusSelect" class="select-input" disabled>
+                        <select id="profileStatusSelect" class="select-input" disabled aria-label="Select profile status">
                             <option value="online">🟢 Online</option>
                             <option value="idle">🟡 Idle</option>
                             <option value="offline">🔘 Offline</option>
@@ -111,37 +122,41 @@
                             <h3 class="setting-title">Reset to Factory Settings</h3>
                             <p class="setting-description">Restore all settings to their default values</p>
                         </div>
-                        <button id="resetSettings" class="reset-button">Reset</button>
+                        <button id="resetSettings" class="reset-button" aria-label="Reset to factory settings">Reset</button>
                     </div>
                 </div>
             </div>
 
-            <a href="index.html" class="back-link" tabindex="0">← Back to Profile</a>
+            <a href="index.html" class="back-link" tabindex="0" aria-label="Back to Profile">← Back to Profile</a>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
         <p>© <span id="current-year"></span> Bus Army Dude. All Rights Reserved.</p>
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-service.html">Terms of Service</a>
-        <a href="accessibility-statement.html">Accessibility Statement</a>
+        <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+        <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+        <a href="accessibility-statement.html" aria-label="Accessibility Statement">Accessibility Statement</a>
     </footer>
 
     <iframe 
       class="responsive-iframe"
       src="https://bus-army-dude.instatus.com/embed-status/4e365a41/light-lg" 
       frameborder="0" 
-      scrolling="no">
+      scrolling="no"
+      title="Bus Army Dude's Website Status">
     </iframe>
 
     <!-- Cookie Consent Banner -->
-    <div id="cookie-consent-banner">
-        <p>We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html">cookie policy</a>.</p>
-        <button onclick="acceptCookies()">Accept</button>
+    <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description">
+        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.</p>
+        <button onclick="acceptCookies()" aria-label="Accept cookies">Accept</button>
     </div>
 
     <!-- Scripts -->
     <script src="settings.js"></script>
+    <script src="common.js"></script>
+    <script src="script.js"></script>
+    <script src="ai-features.js"></script>
 </body>
 </html>
