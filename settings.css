@@ -226,6 +226,31 @@ a:focus, button:focus, .toggle-switch:focus {
 .text-large { font-size: 120%; }
 .text-larger { font-size: 140%; }
 
+/* Media Queries for Mobile */
+@media (max-width: 600px) {
+    .settings-page {
+        font-size: calc(var(--font-size-base) * 0.875); /* Slightly smaller font for mobile */
+    }
+
+    .settings-page .settings-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .settings-page .setting-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .settings-page .setting-title {
+        font-size: 1.2rem;
+    }
+
+    .settings-page .settings-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 /* Cookie Consent Banner */
 #cookie-consent-banner {
     position: fixed;
