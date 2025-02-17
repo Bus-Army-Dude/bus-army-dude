@@ -12,6 +12,7 @@
     --slider-track-filled-color: #007aff; /* Custom slider track filled color */
     --toggle-on: #34c759; /* Green for on */
     --toggle-off: #dddddd; /* Gray for off */
+    --focus-outline-color: #005fcc; /* Default focus outline color */
 }
 
 /* Dark Mode Variables */
@@ -30,11 +31,7 @@ body.settings-page.dark-mode {
     --toggle-off: #666666;
 }
 
-/* Adding Focus Outline Toggle */
-:root {
-    --focus-outline-color: #005fcc; /* Default focus outline color */
-}
-
+/* Focus Outline Disable */
 body.settings-page.focus-outline-disabled *:focus {
     outline: none; /* Disable focus outline */
 }
