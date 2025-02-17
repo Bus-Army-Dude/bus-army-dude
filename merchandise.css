@@ -285,8 +285,20 @@ footer p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    section {
+        padding: 10px;
+    }
+
     .product-item {
-        width: 100%;
+        padding: 10px;
+    }
+
+    .product-item img {
+        margin-bottom: 10px;
     }
 
     .category-nav ul {
