@@ -31,9 +31,9 @@ body.settings-page.dark-mode {
     --toggle-off: #666666;
 }
 
-/* Focus Outline Disable */
+/* When focus outline is disabled, remove outline from all focused elements */
 body.settings-page.focus-outline-disabled *:focus {
-    outline: none; /* Disable focus outline */
+    outline: none !important;
 }
 
 /* General Styles for Settings Page */
@@ -47,10 +47,12 @@ body.settings-page {
     font-size: var(--font-size-base);
 }
 
+/* Default focus indicator for interactive elements */
 a:focus, button:focus, .toggle-switch:focus {
-    outline: 3px solid var(--focus-outline-color); /* Custom focus indicator */
+    outline: 3px solid var(--focus-outline-color);
 }
 
+/* Skip Link */
 .skip-link {
     position: absolute;
     top: -40px;
@@ -60,7 +62,6 @@ a:focus, button:focus, .toggle-switch:focus {
     padding: 8px;
     z-index: 100;
 }
-
 .skip-link:focus {
     top: 0;
 }
@@ -235,22 +236,18 @@ a:focus, button:focus, .toggle-switch:focus {
 /* Media Queries for Mobile */
 @media (max-width: 600px) {
     .settings-page {
-        font-size: calc(var(--font-size-base) * 0.875); /* Slightly smaller font for mobile */
+        font-size: calc(var(--font-size-base) * 0.875);
     }
-
     .settings-page .settings-header h1 {
         font-size: 1.5rem;
     }
-
     .settings-page .setting-card {
         flex-direction: column;
         align-items: flex-start;
     }
-
     .settings-page .setting-title {
         font-size: 1.2rem;
     }
-
     .settings-page .settings-header {
         flex-direction: column;
         align-items: flex-start;
@@ -275,7 +272,7 @@ a:focus, button:focus, .toggle-switch:focus {
 
 #cookie-consent-banner p {
     margin: 0;
-    flex: 1; /* Ensures text takes up remaining space */
+    flex: 1;
 }
 
 #cookie-consent-banner a {
@@ -291,7 +288,7 @@ a:focus, button:focus, .toggle-switch:focus {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 1rem; /* Adjust font size for button */
+    font-size: 1rem;
 }
 
 #cookie-consent-banner button:hover {
