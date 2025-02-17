@@ -143,20 +143,14 @@ class SettingsManager {
 
     // Disable focus outline
     disableFocusOutline() {
-        const style = document.createElement('style');
-        style.id = 'focusOutlineStyle';
-        style.innerHTML = '*:focus { outline: none; }';
-        document.head.appendChild(style);
+        document.body.classList.add('focus-outline-disabled');
         this.settings.focusOutline = 'disabled';
         this.saveSettings();
     }
 
     // Enable focus outline
     enableFocusOutline() {
-        const style = document.getElementById('focusOutlineStyle');
-        if (style) {
-            style.remove();
-        }
+        document.body.classList.remove('focus-outline-disabled');
         this.settings.focusOutline = 'enabled';
         this.saveSettings();
     }
