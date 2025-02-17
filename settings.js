@@ -246,10 +246,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
     // Example of setting maintenance mode manually
-    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "true"
+    settingsManager.setMaintenanceModeManually(false);  // Set maintenance mode to "false"
 
     // Example of setting profile status manually
-    settingsManager.setProfileStatusManually('offline');  // Set profile status to "online"
+    settingsManager.setProfileStatusManually('offline');  // Set profile status to "offline"
 });
 
 // Function to accept cookies and hide the banner
