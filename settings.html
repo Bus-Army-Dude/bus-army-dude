@@ -33,6 +33,8 @@
                 <!-- Appearance Section -->
                 <div class="settings-subsection">
                     <h2 class="subsection-title">Appearance</h2>
+
+                    <!-- Dark Mode -->
                     <div class="setting-card">
                         <div class="setting-label">
                             <h3 class="setting-title">Dark Mode</h3>
@@ -43,6 +45,7 @@
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
+
                     <!-- Adjustable Text Size -->
                     <div class="setting-card">
                         <div class="setting-label">
@@ -56,12 +59,24 @@
                             <option value="larger">Larger</option>
                         </select>
                     </div>
+
+                    <!-- Disable Focus Outline -->
+                    <div class="setting-card">
+                        <div class="setting-label">
+                            <h3 class="setting-title">Disable Focus Outline</h3>
+                            <p class="setting-description">Turn off the blue outline when navigating with keyboard</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="focusOutlineToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Owner Only Settings Section -->
                 <div class="settings-subsection owner-only">
                     <h2 class="subsection-title">Owner Only Settings</h2>
-                    
+
                     <!-- Maintenance Mode -->
                     <div class="setting-card">
                         <div class="setting-label">
@@ -113,31 +128,20 @@
         <a href="accessibility-statement.html">Accessibility Statement</a>
     </footer>
 
-    <style>
-  .responsive-iframe {
-    width: 100%;
-    max-width: 495px;
-    height: auto;
-    aspect-ratio: 8.1; /* Maintain the original aspect ratio (495/61) */
-    border: none;
-  }
-</style>
+    <iframe 
+      class="responsive-iframe"
+      src="https://bus-army-dude.instatus.com/embed-status/4e365a41/light-lg" 
+      frameBorder="0" 
+      scrolling="no">
+    </iframe>
 
-<iframe 
-  class="responsive-iframe"
-  src="https://bus-army-dude.instatus.com/embed-status/4e365a41/light-lg" 
-  frameBorder="0" 
-  scrolling="no">
-</iframe>
-    
-   <!-- Cookie Consent Banner -->
-<div id="cookie-consent-banner">
-    <p>We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html">cookie policy</a>.</p>
-    <button onclick="acceptCookies()">Accept</button>
-</div>
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent-banner">
+        <p>We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html">cookie policy</a>.</p>
+        <button onclick="acceptCookies()">Accept</button>
+    </div>
 
     <!-- Scripts -->
     <script src="settings.js"></script>
-    <script src="https://busarmydudesprofile.statuspage.io/embed/script.js"></script>
 </body>
 </html>
