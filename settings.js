@@ -13,6 +13,7 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',  // Default profile status
             maintenanceMode: false,  // Default maintenance mode
+            focusOutline: 'enabled'   // Default focus outline setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -38,6 +39,19 @@ class SettingsManager {
             textSizeSelect.value = this.settings.textSize;
             textSizeSelect.addEventListener('change', (e) => {
                 this.setTextSize(e.target.value);
+            });
+        }
+
+        // Focus Outline Toggle
+        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
+        if (focusOutlineToggle) {
+            focusOutlineToggle.checked = this.settings.focusOutline === 'disabled';
+            focusOutlineToggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.disableFocusOutline();
+                } else {
+                    this.enableFocusOutline();
+                }
             });
         }
 
@@ -80,6 +94,11 @@ class SettingsManager {
         this.setTextSize(this.settings.textSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
+        if (this.settings.focusOutline === 'disabled') {
+            this.disableFocusOutline();
+        } else {
+            this.enableFocusOutline();
+        }
     }
 
     // Set the profile status
@@ -122,6 +141,26 @@ class SettingsManager {
         this.saveSettings();
     }
 
+    // Disable focus outline
+    disableFocusOutline() {
+        const style = document.createElement('style');
+        style.id = 'focusOutlineStyle';
+        style.innerHTML = '*:focus { outline: none; }';
+        document.head.appendChild(style);
+        this.settings.focusOutline = 'disabled';
+        this.saveSettings();
+    }
+
+    // Enable focus outline
+    enableFocusOutline() {
+        const style = document.getElementById('focusOutlineStyle');
+        if (style) {
+            style.remove();
+        }
+        this.settings.focusOutline = 'enabled';
+        this.saveSettings();
+    }
+
     // Save settings to localStorage
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
@@ -134,6 +173,7 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',
             maintenanceMode: false,
+            focusOutline: 'enabled'
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -144,11 +184,13 @@ class SettingsManager {
         const textSizeSelect = document.getElementById('text-size');
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
+        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
+        if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'disabled';
     }
 
     // Set Maintenance Mode
