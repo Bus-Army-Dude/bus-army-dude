@@ -87,6 +87,9 @@ class SettingsManager {
 
         // Footer Year Update
         this.updateFooterYear();
+
+        // Remove focus outline from buttons
+        this.disableFocusOutlineOnButtons();
     }
 
     applySettings() {
@@ -153,6 +156,15 @@ class SettingsManager {
         document.body.classList.remove('focus-outline-disabled');
         this.settings.focusOutline = 'enabled';
         this.saveSettings();
+    }
+
+    // Disable focus outline on all buttons
+    disableFocusOutlineOnButtons() {
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('focus', (e) => {
+                e.target.style.outline = 'none'; // Remove outline when focus is applied
+            });
+        });
     }
 
     // Save settings to localStorage
@@ -239,11 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Example of setting profile status manually
     settingsManager.setProfileStatusManually('offline');  // Set profile status to "online"
 });
-
-function adjustTextSize(size) {
-    document.body.classList.remove('text-default', 'text-large', 'text-larger');
-    document.body.classList.add('text-' + size);
-}
 
 // Function to accept cookies and hide the banner
 function acceptCookies() {
