@@ -34,9 +34,11 @@ function getDeviceModel() {
             model = androidModelMatch[1].split(';')[1].trim();
         }
     } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        const iOSModelMatch = userAgent.match(/\((.*?)\)/);
-        if (iOSModelMatch && iOSModelMatch.length > 1) {
-            model = iOSModelMatch[1].split(';')[0].trim();
+        const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?([0-9]+),([0-9]+)/);
+        if (iOSModelMatch) {
+            const deviceType = iOSModelMatch[1];
+            const modelNumber = `${iOSModelMatch[2]},${iOSModelMatch[3]}`;
+            model = `${deviceType} ${modelNumber}`;
         }
     } else if (/Windows NT/i.test(userAgent)) {
         model = 'Windows PC';
