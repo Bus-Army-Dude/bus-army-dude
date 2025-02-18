@@ -11,53 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-function getMobileOperatingSystem() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-    if (/android/i.test(userAgent)) {
-        return 'Android';
-    }
-
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return 'iOS';
-    }
-
-    return 'unknown';
-}
-
-function getDeviceModel() {
-    const userAgent = navigator.userAgent;
-    let model = 'unknown';
-
-    if (getMobileOperatingSystem() === 'Android') {
-        const androidModelMatch = userAgent.match(/\((.*?)\)/);
-        if (androidModelMatch && androidModelMatch.length > 1) {
-            model = androidModelMatch[1].split(';')[1].trim();
-        }
-    } else if (getMobileOperatingSystem() === 'iOS') {
-        const iOSModelMatch = userAgent.match(/\((.*?)\)/);
-        if (iOSModelMatch && iOSModelMatch.length > 1) {
-            model = iOSModelMatch[1].split(';')[0].trim();
-        }
-    }
-
-    return model;
-}
-
-window.onload = () => {
-    const os = getMobileOperatingSystem();
-    const model = getDeviceModel();
-    
-    const deviceInfoElement = document.querySelector('.device-info');
-    deviceInfoElement.textContent = `Operating System: ${os}, Device Model: ${model}`;
-};
-
-// Update the HTML content with detected device info
-window.onload = function() {
-    const deviceInfo = detectDetailedDevice();
-    document.querySelector('.device-info').textContent = deviceInfo;
-}
-
 // Time update function
 function updateTime() {
     const now = new Date();
