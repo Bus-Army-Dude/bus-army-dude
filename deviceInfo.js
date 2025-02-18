@@ -7,15 +7,14 @@ function getOperatingSystem() {
     }
 
     if (/Mac OS X/i.test(userAgent)) {
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return 'iOS';
+        }
         return 'macOS';
     }
 
     if (/Android/i.test(userAgent)) {
         return 'Android';
-    }
-
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return 'iOS';
     }
 
     if (/Linux/i.test(userAgent)) {
