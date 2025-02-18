@@ -32,7 +32,7 @@ body.settings-page.dark-mode {
 }
 
 /* Focus Outline Fix - Remove outline globally when disabled */
-body.settings-page.focus-outline-disabled *:focus {
+body.focus-outline-disabled *:focus {
     outline: none !important;
 }
 
