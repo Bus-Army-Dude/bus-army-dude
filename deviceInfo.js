@@ -1,14 +1,18 @@
 function getMobileOperatingSystem() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    console.log('User Agent:', userAgent);
 
     if (/android/i.test(userAgent)) {
+        console.log('Detected Android OS');
         return 'Android';
     }
 
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        console.log('Detected iOS');
         return 'iOS';
     }
 
+    console.log('OS unknown');
     return 'unknown';
 }
 
@@ -28,6 +32,7 @@ function getOSVersion() {
         }
     }
 
+    console.log('Detected OS Version:', version);
     return version;
 }
 
@@ -47,6 +52,7 @@ function getDeviceModel() {
         }
     }
 
+    console.log('Detected Device Model:', model);
     return model;
 }
 
@@ -55,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const osVersion = getOSVersion();
     const model = getDeviceModel();
     
+    console.log(`Operating System: ${os}, OS Version: ${osVersion}, Device Model: ${model}`);
+
     const deviceInfoElement = document.querySelector('.device-info');
     deviceInfoElement.textContent = `Operating System: ${os} ${osVersion}, Device Model: ${model}`;
 });
