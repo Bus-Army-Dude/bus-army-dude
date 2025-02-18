@@ -257,17 +257,24 @@ function adjustTextSize(size) {
 
 // Function to accept cookies and hide the banner
 function acceptCookies() {
+    // Set a cookie indicating the user has accepted cookies for 1 year
     document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
-    document.getElementById('cookie-consent-banner').style.display = 'none';
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
 }
 
-// Check if the user has already accepted the cookies
-window.onload = function() {
+// Check if the user has already accepted the cookies on page load
+window.addEventListener('load', function() {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (!banner) return;
+
     const cookies = document.cookie.split('; ');
-    const cookieConsent = cookies.find(row => row.startsWith('cookieConsent='));
-    if (cookieConsent) {
-        document.getElementById('cookie-consent-banner').style.display = 'none';
+    const consentCookie = cookies.find(row => row.startsWith('cookieConsent='));
+    if (consentCookie && consentCookie.split('=')[1] === 'true') {
+        banner.style.display = 'none';
     } else {
-        document.getElementById('cookie-consent-banner').style.display = 'flex';
+        banner.style.display = 'flex';
     }
-};
+});
