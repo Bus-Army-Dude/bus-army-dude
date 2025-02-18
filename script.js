@@ -11,127 +11,117 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-// Time update function
-function updateTime() {
-    const now = new Date();
-    const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
-    const timeElement = document.querySelector('.update-time');
-    if (timeElement) {
-        timeElement.textContent = `${timestamp}`;
-    }
-}
-
-// Page refresh countdown set to 5 minutes (300 seconds)
-const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
-let startTime = Date.now();
-
-function updateCountdown() {
-    const countdownElement = document.querySelector('.countdown');
-    const timeElapsed = Date.now() - startTime;
-    const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);  // Convert ms to seconds
-    
-    if (timeLeft >= 0) {
-        const minutes = Math.floor(timeLeft / 60);  // Get full minutes
-        const seconds = timeLeft % 60;              // Get remaining seconds
-        
-        if (countdownElement) {
-            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+    // Time update function
+    function updateTime() {
+        const now = new Date();
+        const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
+        const timeElement = document.querySelector('.update-time');
+        if (timeElement) {
+            timeElement.textContent = `${timestamp}`;
         }
-    } else {
-        smoothReload();  // Smooth reload when time is up
     }
-}
 
-// Smoothly reload the page with a fade-out effect
-function smoothReload() {
-    const body = document.body;
-    body.style.transition = 'opacity 0.5s ease';
-    body.style.opacity = '0';
+    // Page refresh countdown set to 5 minutes (300 seconds)
+    const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
+    let startTime = Date.now();
 
-    setTimeout(function() {
-        location.reload();
-    }, 500); // Delay the reload to allow fade-out
-}
+    function updateCountdown() {
+        const countdownElement = document.querySelector('.countdown');
+        const timeElapsed = Date.now() - startTime;
+        const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);  // Convert ms to seconds
 
-// Update version panel with device info
-function updateVersionPanel() {
-    const deviceElement = document.querySelector('.device-info');
-    if (deviceElement) {
-        deviceElement.textContent = `${detectDetailedDevice()}`;
+        if (timeLeft >= 0) {
+            const minutes = Math.floor(timeLeft / 60);  // Get full minutes
+            const seconds = timeLeft % 60;              // Get remaining seconds
+
+            if (countdownElement) {
+                countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+            }
+        } else {
+            smoothReload();  // Smooth reload when time is up
+        }
     }
-}
 
-// Call the functions on page load
-window.onload = function() {
-    updateVersionPanel();
-    updateTime();
-    updateCountdown();
-    
-    // Synchronize both time and countdown updates every second
-    setInterval(() => {
+    // Smoothly reload the page with a fade-out effect
+    function smoothReload() {
+        const body = document.body;
+        body.style.transition = 'opacity 0.5s ease';
+        body.style.opacity = '0';
+
+        setTimeout(function() {
+            location.reload();
+        }, 500); // Delay the reload to allow fade-out
+    }
+
+    // Call the functions on page load
+    window.onload = function() {
         updateTime();
         updateCountdown();
-    }, 1000);  // Update both every second
-};
-    
-// New Year countdown
-function updateNewYearCountdown() {
-    const now = new Date();
-    const newYear = new Date('2025-02-27T03:00:00');
-    const diff = newYear - now;
 
-    const countdownSection = document.querySelector('.countdown-section');
-    if (!countdownSection) return;
+        // Synchronize both time and countdown updates every second
+        setInterval(() => {
+            updateTime();
+            updateCountdown();
+        }, 1000);  // Update both every second
+    };
 
-    if (diff <= 0) {
-        countdownSection.innerHTML = `
-            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                HAPPY 20TH BIRTHDAY BUS ARMY DUDE ENJOY IT GOD LOVE'S YOU!!!!!
-            </h2>
-            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
-        `;
-    } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    // New Year countdown
+    function updateNewYearCountdown() {
+        const now = new Date();
+        const newYear = new Date('2025-02-27T03:00:00');
+        const diff = newYear - now;
 
-        // Update flip clock for days
-        updateFlipClock('countdown-days', days);
+        const countdownSection = document.querySelector('.countdown-section');
+        if (!countdownSection) return;
 
-        // Update flip clock for hours
-        updateFlipClock('countdown-hours', hours);
+        if (diff <= 0) {
+            countdownSection.innerHTML = `
+                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                    HAPPY 20TH BIRTHDAY BUS ARMY DUDE ENJOY IT GOD LOVE'S YOU!!!!!
+                </h2>
+                <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+            `;
+        } else {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Update flip clock for minutes
-        updateFlipClock('countdown-minutes', minutes);
+            // Update flip clock for days
+            updateFlipClock('countdown-days', days);
 
-        // Update flip clock for seconds
-        updateFlipClock('countdown-seconds', seconds);
+            // Update flip clock for hours
+            updateFlipClock('countdown-hours', hours);
+
+            // Update flip clock for minutes
+            updateFlipClock('countdown-minutes', minutes);
+
+            // Update flip clock for seconds
+            updateFlipClock('countdown-seconds', seconds);
+        }
     }
-}
 
-// Function to update flip clock value
-function updateFlipClock(id, value) {
-    const clock = document.getElementById(id);
-    const front = clock.querySelector('.flip-clock-front');
-    const back = clock.querySelector('.flip-clock-back');
-    const valueStr = value.toString().padStart(2, '0');
+    // Function to update flip clock value
+    function updateFlipClock(id, value) {
+        const clock = document.getElementById(id);
+        const front = clock.querySelector('.flip-clock-front');
+        const back = clock.querySelector('.flip-clock-back');
+        const valueStr = value.toString().padStart(2, '0');
 
-    if (front.textContent !== valueStr) {
-        front.textContent = valueStr;
-        back.textContent = valueStr;
+        if (front.textContent !== valueStr) {
+            front.textContent = valueStr;
+            back.textContent = valueStr;
 
-        // Trigger the flip animation
-        clock.querySelector('.flip-clock-inner').classList.add('flip');
+            // Trigger the flip animation
+            clock.querySelector('.flip-clock-inner').classList.add('flip');
 
-        setTimeout(() => {
-            clock.querySelector('.flip-clock-inner').classList.remove('flip');
-        }, 600); // match the animation duration
+            setTimeout(() => {
+                clock.querySelector('.flip-clock-inner').classList.remove('flip');
+            }, 600); // match the animation duration
+        }
     }
-}
-    
+
     // Initialize everything
-    detectDetailedDevice();
     updateTime();
     tiktokShoutouts.init();
     updateNewYearCountdown();
@@ -148,7 +138,7 @@ if (window.location.protocol !== 'https:') {
 // Back to top button functionality
 document.addEventListener('DOMContentLoaded', function() {
     const backToTopButton = document.getElementById('backToTop');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 300) {
             backToTopButton.classList.add('visible');
@@ -168,14 +158,14 @@ document.addEventListener('DOMContentLoaded', function() {
 // Modern FAQ functionality
 document.addEventListener('DOMContentLoaded', function() {
     const faqItems = document.querySelectorAll('.faq-item');
-    
+
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
-        
+
         question.addEventListener('click', () => {
             // Check if this item is already active
             const isActive = item.classList.contains('active');
-            
+
             // Close all FAQ items first
             faqItems.forEach(faqItem => {
                 // Add a closing animation class if it was active
@@ -187,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 faqItem.classList.remove('active');
             });
-            
+
             // If the clicked item wasn't active before, open it
             if (!isActive) {
                 item.classList.add('active');
@@ -197,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     rect.top >= 0 &&
                     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
                 );
-                
+
                 if (!isInViewport) {
                     item.scrollIntoView({
                         behavior: 'smooth',
@@ -211,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add keyboard navigation
     faqItems.forEach((item, index) => {
         const question = item.querySelector('.faq-question');
-        
+
         question.addEventListener('keydown', (e) => {
             switch(e.key) {
                 case 'ArrowDown':
@@ -253,16 +243,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-  // Check if the user has already accepted cookies
-  if (!localStorage.getItem('cookieAccepted')) {
+// Check if the user has already accepted cookies
+if (!localStorage.getItem('cookieAccepted')) {
     document.getElementById('cookieConsent').style.display = 'block';
-  }
+}
 
-  // Accept cookies button functionality
-  document.getElementById('acceptCookies').onclick = function() {
+// Accept cookies button functionality
+document.getElementById('acceptCookies').onclick = function() {
     localStorage.setItem('cookieAccepted', 'true');
     document.getElementById('cookieConsent').style.display = 'none';
-  };
+};
 
 window.addEventListener('load', function() {
     document.body.classList.add('loaded');
