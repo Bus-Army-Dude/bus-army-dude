@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="settings.css">
 
     <!-- Favicons and Icons -->
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" alt="Apple Touch Icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" alt="Apple Touch Icon">
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" alt="Android Icon">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" alt="Favicon 32x32">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" alt="Favicon 96x96">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" alt="Favicon 16x16">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
@@ -30,96 +30,93 @@
                 <span class="version">v1.12.0</span>
             </div>
 
-            <div class="settings-group">
-                <!-- Appearance Section -->
-                <div class="settings-subsection">
-                    <h2 class="subsection-title">Appearance</h2>
+            <!-- Appearance Section -->
+            <div class="settings-subsection">
+                <h2 class="subsection-title">Appearance</h2>
 
-                    <!-- Dark Mode -->
-                    <div class="setting-card">
-                        <div class="setting-label">
-                            <h3 class="setting-title">Dark Mode</h3>
-                            <p class="setting-description">Switch between light and dark theme</p>
-                        </div>
-                        <label class="toggle-switch" aria-label="Toggle dark mode">
-                            <input type="checkbox" id="darkModeToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
+                <!-- Dark Mode -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Dark Mode</h3>
+                        <p class="setting-description">Switch between light and dark theme</p>
                     </div>
+                    <label class="toggle-switch" aria-label="Toggle dark mode">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
 
-                <div class="settings-group">
-                <!-- Appearance Section -->
-                <div class="settings-subsection">
-                    <h2 class="subsection-title">Accessibility</h2>
+            <!-- Accessibility Section -->
+            <div class="settings-subsection">
+                <h2 class="subsection-title">Accessibility</h2>
 
-                    <!-- Disable Focus Outline -->
-                    <div class="setting-card">
-                        <div class="setting-label">
-                            <h3 class="setting-title">Disable Focus Outline</h3>
-                            <p class="setting-description">Turn off the blue outline when navigating with keyboard</p>
-                        </div>
-                        <label class="toggle-switch" aria-label="Toggle focus outline">
-                            <input type="checkbox" id="focusOutlineToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
+                <!-- Disable Focus Outline -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Disable Focus Outline</h3>
+                        <p class="setting-description">Turn off the blue outline when navigating with keyboard</p>
                     </div>
+                    <label class="toggle-switch" aria-label="Toggle focus outline">
+                        <input type="checkbox" id="focusOutlineToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
 
                 <!-- Adjustable Text Size -->
-                    <div class="setting-card">
-                        <div class="setting-label">
-                            <h3 class="setting-title">Text Size</h3>
-                            <p class="setting-description">Adjust the text size for better readability</p>
-                        </div>
-                        <label for="text-size">Text Size:</label>
-                        <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
-                            <option value="default">Default</option>
-                            <option value="large">Large</option>
-                            <option value="larger">Larger</option>
-                        </select>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Text Size</h3>
+                        <p class="setting-description">Adjust the text size for better readability</p>
                     </div>
+                    <label for="text-size">Text Size:</label>
+                    <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
+                        <option value="default">Default</option>
+                        <option value="large">Large</option>
+                        <option value="larger">Larger</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Owner Only Settings Section -->
+            <div class="settings-subsection owner-only">
+                <h2 class="subsection-title">Owner Only Settings</h2>
+
+                <!-- Maintenance Mode -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Maintenance Mode</h3>
+                        <p class="setting-description">Put the site into maintenance mode for updates</p>
+                    </div>
+                    <label class="toggle-switch" aria-label="Toggle maintenance mode">
+                        <input type="checkbox" id="maintenanceModeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
 
-                <!-- Owner Only Settings Section -->
-                <div class="settings-subsection owner-only">
-                    <h2 class="subsection-title">Owner Only Settings</h2>
-
-                    <!-- Maintenance Mode -->
-                    <div class="setting-card">
-                        <div class="setting-label">
-                            <h3 class="setting-title">Maintenance Mode</h3>
-                            <p class="setting-description">Put the site into maintenance mode for updates</p>
-                        </div>
-                        <label class="toggle-switch" aria-label="Toggle maintenance mode">
-                            <input type="checkbox" id="maintenanceModeToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
+                <!-- Profile Status -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Profile Status</h3>
+                        <p class="setting-description">Set profile status (Online, Idle, Offline)</p>
                     </div>
-
-                    <!-- Profile Status -->
-                    <div class="setting-card">
-                        <div class="setting-label">
-                            <h3 class="setting-title">Profile Status</h3>
-                            <p class="setting-description">Set profile status (Online, Idle, Offline)</p>
-                        </div>
-                        <select id="profileStatusSelect" class="select-input" disabled aria-label="Select profile status">
-                            <option value="online">🟢 Online</option>
-                            <option value="idle">🟡 Idle</option>
-                            <option value="offline">🔘 Offline</option>
-                        </select>
-                    </div>
+                    <select id="profileStatusSelect" class="select-input" disabled aria-label="Select profile status">
+                        <option value="online">🟢 Online</option>
+                        <option value="idle">🟡 Idle</option>
+                        <option value="offline">🔘 Offline</option>
+                    </select>
                 </div>
+            </div>
 
-                <!-- Danger Zone Section -->
-                <div class="settings-subsection danger-zone">
-                    <h2 class="subsection-title">Danger Zone</h2>
-                    <div class="setting-card">
-                        <div class="setting-label">
-                            <h3 class="setting-title">Reset to Factory Settings</h3>
-                            <p class="setting-description">Restore all settings to their default values</p>
-                        </div>
-                        <button id="resetSettings" class="reset-button" aria-label="Reset to factory settings">Reset</button>
+            <!-- Danger Zone Section -->
+            <div class="settings-subsection danger-zone">
+                <h2 class="subsection-title">Danger Zone</h2>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Reset to Factory Settings</h3>
+                        <p class="setting-description">Restore all settings to their default values</p>
                     </div>
+                    <button id="resetSettings" class="reset-button" aria-label="Reset to factory settings">Reset</button>
                 </div>
             </div>
 
@@ -151,7 +148,7 @@
 
     <!-- Scripts -->
     <script src="settings.js"></script>
-     <script src="common.js"></script>
+    <script src="common.js"></script>
     <script src="script.js"></script>
     <script src="ai-features.js"></script>
 </body>
