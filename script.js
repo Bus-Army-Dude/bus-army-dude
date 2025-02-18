@@ -56,14 +56,14 @@ function detectDetailedDevice() {
 
     // Check for iPhone models
     if (/iPhone/.test(ua)) {
-        const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
-        const modelMatch = ua.match(/iPhone\s*(\w+)/);
+        const version = ua.match(/OS (\d+_\d+_\d+)?/)?.[1]?.replace(/_/g, '.') || getLatestVersion('iOS');
+        const modelMatch = ua.match(/iPhone\s*([\w\s]+)?/);
         const model = modelMatch ? modelMatch[1] : 'iPhone';
         deviceInfo = `${model} (iOS ${version})`;
     }
     // Check for iPad models
     else if (/iPad/.test(ua)) {
-        const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
+        const version = ua.match(/OS (\d+_\d+_\d+)?/)?.[1]?.replace(/_/g, '.') || getLatestVersion('iPadOS');
         deviceInfo = `iPad (iPadOS ${version})`;
     }
     // Check for Android devices
@@ -80,7 +80,7 @@ function detectDetailedDevice() {
     }
     // Check for macOS
     else if (/Macintosh/.test(ua)) {
-        const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1] || getLatestVersion('macOS');
+        const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1]?.replace(/_/g, '.') || getLatestVersion('macOS');
         deviceInfo = `macOS ${version}`;
     }
     // Check for other platforms
@@ -89,6 +89,12 @@ function detectDetailedDevice() {
     }
 
     return deviceInfo;
+}
+
+// Update the HTML content with detected device info
+window.onload = function() {
+    const deviceInfo = detectDetailedDevice();
+    document.querySelector('.device-info').textContent = deviceInfo;
 }
 
 // Time update function
