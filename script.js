@@ -11,85 +11,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-// Device detection function
-function detectDetailedDevice() {
-    const ua = navigator.userAgent;
-    let deviceInfo = '';
+function getMobileOperatingSystem() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-    const operatingSystems = {
-        apple: {
-            iOS: ['18.3.1','18.3', '18.2.1', '18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
-            iPadOS: ['18.3.1','18.3','18.2', '18.1', '18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
-            macOS: ['15.3.1','15.3', '15.2', '15.1', '15', '14', '13', '12', '11', '10.15', '10.14', '10.13', '10.12', '10.11', '10.10', '10.9', '10.8', '10.7', '10.6', '10.5', '10.4', '10.3', '10.2', '10.1', '10.0']
-        },
-        microsoft: {
-            Windows: ['11', '10', '8.1', '8', '7']
-        },
-        android: ['15', '14', '13', '12', '11', '10'],
-        linux: [
-            'Fedora', 'Arch Linux', 'Red Hat Enterprise Linux', 'Kali Linux', 'Manjaro', 'Ubuntu', 'Linux Mint'
-        ],
-        unix: ['FreeBSD', 'OpenBSD', 'NetBSD'],
-        chrome: ['Chrome OS'],
-        blackberry: ['BlackBerry OS'],
-        webos: ['webOS'],
-        other: ['Unknown Device']
-    };
-
-    const getLatestVersion = (platform) => {
-        switch(platform) {
-            case 'iOS': return operatingSystems.apple.iOS[0];
-            case 'iPadOS': return operatingSystems.apple.iPadOS[0];
-            case 'macOS': return operatingSystems.apple.macOS[0];
-            case 'Windows': return operatingSystems.microsoft.Windows[0];
-            case 'Android': return operatingSystems.android[0];
-            case 'Linux': return operatingSystems.linux[0];
-            case 'FreeBSD': return operatingSystems.unix[0];
-            case 'OpenBSD': return operatingSystems.unix[1];
-            case 'NetBSD': return operatingSystems.unix[2];
-            case 'Chrome OS': return operatingSystems.chrome[0];
-            case 'BlackBerry OS': return operatingSystems.blackberry[0];
-            case 'webOS': return operatingSystems.webos[0];
-            default: return operatingSystems.other[0];
-        }
-    };
-
-    // Check for iPhone models
-    if (/iPhone/.test(ua)) {
-        const version = ua.match(/OS (\d+_\d+_\d+)?/)?.[1]?.replace(/_/g, '.') || getLatestVersion('iOS');
-        const modelMatch = ua.match(/iPhone\s*([\w\s]+)?/);
-        const model = modelMatch ? modelMatch[1] : 'iPhone';
-        deviceInfo = `${model} (iOS ${version})`;
-    }
-    // Check for iPad models
-    else if (/iPad/.test(ua)) {
-        const version = ua.match(/OS (\d+_\d+_\d+)?/)?.[1]?.replace(/_/g, '.') || getLatestVersion('iPadOS');
-        deviceInfo = `iPad (iPadOS ${version})`;
-    }
-    // Check for Android devices
-    else if (/Android/.test(ua)) {
-        const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
-        const modelMatch = ua.match(/Android.*;\s*(\w+\s*\w+)/);
-        const model = modelMatch ? modelMatch[1] : 'Android Device';
-        deviceInfo = `${model} (Android ${version})`;
-    }
-    // Check for Windows versions
-    else if (/Windows/.test(ua)) {
-        const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
-        deviceInfo = `Windows ${version}`;
-    }
-    // Check for macOS
-    else if (/Macintosh/.test(ua)) {
-        const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1]?.replace(/_/g, '.') || getLatestVersion('macOS');
-        deviceInfo = `macOS ${version}`;
-    }
-    // Check for other platforms
-    else {
-        deviceInfo = 'Unknown Device';
+    if (/android/i.test(userAgent)) {
+        return 'Android';
     }
 
-    return deviceInfo;
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return 'iOS';
+    }
+
+    return 'unknown';
 }
+
+function getDeviceModel() {
+    const userAgent = navigator.userAgent;
+    let model = 'unknown';
+
+    if (getMobileOperatingSystem() === 'Android') {
+        const androidModelMatch = userAgent.match(/\((.*?)\)/);
+        if (androidModelMatch && androidModelMatch.length > 1) {
+            model = androidModelMatch[1].split(';')[1].trim();
+        }
+    } else if (getMobileOperatingSystem() === 'iOS') {
+        const iOSModelMatch = userAgent.match(/\((.*?)\)/);
+        if (iOSModelMatch && iOSModelMatch.length > 1) {
+            model = iOSModelMatch[1].split(';')[0].trim();
+        }
+    }
+
+    return model;
+}
+
+window.onload = () => {
+    const os = getMobileOperatingSystem();
+    const model = getDeviceModel();
+    
+    const deviceInfoElement = document.querySelector('.device-info');
+    deviceInfoElement.textContent = `Operating System: ${os}, Device Model: ${model}`;
+};
 
 // Update the HTML content with detected device info
 window.onload = function() {
