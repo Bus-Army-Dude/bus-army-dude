@@ -31,7 +31,7 @@ body.settings-page.dark-mode {
     --toggle-off: #666666;
 }
 
-/* When focus outline is disabled, remove outline from all focused elements */
+/* Focus Outline Fix - Remove outline globally when disabled */
 body.settings-page.focus-outline-disabled *:focus {
     outline: none !important;
 }
@@ -48,7 +48,7 @@ body.settings-page {
 }
 
 /* Default focus indicator for interactive elements */
-a:focus, button:focus, .toggle-switch:focus {
+a:focus, button:focus, .toggle-switch:focus, input:focus {
     outline: 3px solid var(--focus-outline-color);
 }
 
