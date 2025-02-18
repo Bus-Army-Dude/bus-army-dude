@@ -40,7 +40,7 @@
                         <h3 class="setting-title">Dark Mode</h3>
                         <p class="setting-description">Switch between light and dark theme</p>
                     </div>
-                    <label class="toggle-switch" aria-label="Toggle dark mode">
+                    <label for="darkModeToggle" class="toggle-switch" aria-label="Toggle dark mode">
                         <input type="checkbox" id="darkModeToggle">
                         <span class="toggle-slider"></span>
                     </label>
@@ -57,7 +57,7 @@
                         <h3 class="setting-title">Disable Focus Outline</h3>
                         <p class="setting-description">Turn off the blue outline when navigating with keyboard</p>
                     </div>
-                    <label class="toggle-switch" aria-label="Toggle focus outline">
+                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline">
                         <input type="checkbox" id="focusOutlineToggle">
                         <span class="toggle-slider"></span>
                     </label>
@@ -78,18 +78,16 @@
                 </div>
             </div>
 
-             <!-- Disability Section -->
-        <section class="settings-section">
-            <div class="settings-header">
-                <h1>Disability Profiles</h1>
-            </div>
-            <div class="settings-group">
+            <!-- Disability Section -->
+            <section class="settings-subsection">
+                <h2 class="subsection-title">Disability Profiles</h2>
+
                 <div class="setting-card">
                     <div class="setting-label">
                         <p class="setting-title">Vision Impaired Profile</p>
                         <p class="setting-description">Enhances the website's visuals.</p>
                     </div>
-                    <label class="toggle-switch">
+                    <label for="vision-impaired-toggle" class="toggle-switch" aria-label="Toggle vision impaired profile">
                         <input type="checkbox" id="vision-impaired-toggle">
                         <span class="toggle-slider"></span>
                     </label>
@@ -100,7 +98,7 @@
                         <p class="setting-title">ADHD Friendly Profile</p>
                         <p class="setting-description">More focus & fewer distractions.</p>
                     </div>
-                    <label class="toggle-switch">
+                    <label for="adhd-friendly-toggle" class="toggle-switch" aria-label="Toggle ADHD friendly profile">
                         <input type="checkbox" id="adhd-friendly-toggle">
                         <span class="toggle-slider"></span>
                     </label>
@@ -111,13 +109,12 @@
                         <p class="setting-title">Autism Friendly Profile</p>
                         <p class="setting-description">Enhances the website for people with autism.</p>
                     </div>
-                    <label class="toggle-switch">
+                    <label for="autism-friendly-toggle" class="toggle-switch" aria-label="Toggle autism friendly profile">
                         <input type="checkbox" id="autism-friendly-toggle">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-            </div>
-        </section>
+            </section>
 
             <!-- Owner Only Settings Section -->
             <div class="settings-subsection owner-only">
@@ -129,7 +126,7 @@
                         <h3 class="setting-title">Maintenance Mode</h3>
                         <p class="setting-description">Put the site into maintenance mode for updates</p>
                     </div>
-                    <label class="toggle-switch" aria-label="Toggle maintenance mode">
+                    <label for="maintenanceModeToggle" class="toggle-switch" aria-label="Toggle maintenance mode">
                         <input type="checkbox" id="maintenanceModeToggle">
                         <span class="toggle-slider"></span>
                     </label>
