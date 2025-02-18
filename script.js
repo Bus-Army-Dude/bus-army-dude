@@ -54,32 +54,36 @@ function detectDetailedDevice() {
         }
     };
 
-    // Check iPhone
+    // Check for iPhone models
     if (/iPhone/.test(ua)) {
         const version = ua.match(/iPhone\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iOS');
-        deviceInfo = `iPhone (iOS ${version})`;
+        const modelMatch = ua.match(/iPhone\s*(\w+)/);
+        const model = modelMatch ? modelMatch[1] : 'iPhone';
+        deviceInfo = `${model} (iOS ${version})`;
     }
-    // Check iPad
+    // Check for iPad models
     else if (/iPad/.test(ua)) {
         const version = ua.match(/iPad\s*OS\s*(\d+)?/)?.[1] || getLatestVersion('iPadOS');
         deviceInfo = `iPad (iPadOS ${version})`;
     }
-    // Check Android
+    // Check for Android devices
     else if (/Android/.test(ua)) {
         const version = ua.match(/Android\s*([0-9.]+)?/)?.[1] || getLatestVersion('Android');
-        deviceInfo = `Android ${version}`;
+        const modelMatch = ua.match(/Android.*;\s*(\w+\s*\w+)/);
+        const model = modelMatch ? modelMatch[1] : 'Android Device';
+        deviceInfo = `${model} (Android ${version})`;
     }
-    // Check Windows
+    // Check for Windows versions
     else if (/Windows/.test(ua)) {
         const version = ua.match(/Windows NT (\d+\.\d+)/)?.[1] || getLatestVersion('Windows');
         deviceInfo = `Windows ${version}`;
     }
-    // Check macOS
+    // Check for macOS
     else if (/Macintosh/.test(ua)) {
         const version = ua.match(/Mac OS X (\d+[\.\d+]+)?/)?.[1] || getLatestVersion('macOS');
         deviceInfo = `macOS ${version}`;
     }
-    // Check other platforms
+    // Check for other platforms
     else {
         deviceInfo = 'Unknown Device';
     }
