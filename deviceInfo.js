@@ -50,11 +50,11 @@ function getDeviceModel() {
     return model;
 }
 
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
     const os = getMobileOperatingSystem();
     const osVersion = getOSVersion();
     const model = getDeviceModel();
     
     const deviceInfoElement = document.querySelector('.device-info');
     deviceInfoElement.textContent = `Operating System: ${os} ${osVersion}, Device Model: ${model}`;
-};
+});
