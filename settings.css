@@ -31,7 +31,7 @@ body.settings-page.dark-mode {
     --toggle-off: #666666;
 }
 
-/* Focus Outline Fix - Remove outline globally when disabled */
+/* Focus Outline Fix - When body has .focus-outline-disabled, remove outline from all focused elements */
 body.focus-outline-disabled *:focus {
     outline: none !important;
 }
@@ -79,7 +79,7 @@ a:focus, button:focus, .toggle-switch:focus, input:focus {
 /* Settings Section Styles */
 .settings-page .settings-section {
     padding: 20px;
-    margin-bottom: 40px; /* Added more space between sections */
+    margin-bottom: 40px; /* Extra space between sections */
 }
 
 .settings-page .settings-header {
@@ -107,12 +107,13 @@ a:focus, button:focus, .toggle-switch:focus, input:focus {
     gap: 40px;
 }
 
+/* Settings Subsection (each section like Appearance, Accessibility, etc.) */
 .settings-page .settings-subsection {
     padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: 15px;
     background-color: var(--bg-color);
-    margin-bottom: 40px; /* Added margin between subsections */
+    margin-bottom: 40px; /* Space between subsections */
 }
 
 .settings-page .settings-subsection .subsection-title {
@@ -126,6 +127,7 @@ a:focus, button:focus, .toggle-switch:focus, input:focus {
     border-color: red;
 }
 
+/* Setting Card Styles */
 .settings-page .setting-card {
     background-color: var(--bg-color);
     padding: 20px;
@@ -135,7 +137,7 @@ a:focus, button:focus, .toggle-switch:focus, input:focus {
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-bottom: 20px; /* Added margin between individual setting cards */
+    margin-bottom: 20px; /* Space between individual setting cards */
 }
 
 .settings-page .setting-label {
