@@ -79,6 +79,7 @@ a:focus, button:focus, .toggle-switch:focus, input:focus {
 /* Settings Section Styles */
 .settings-page .settings-section {
     padding: 20px;
+    margin-bottom: 40px; /* Added more space between sections */
 }
 
 .settings-page .settings-header {
@@ -111,6 +112,7 @@ a:focus, button:focus, .toggle-switch:focus, input:focus {
     border: 1px solid var(--border-color);
     border-radius: 15px;
     background-color: var(--bg-color);
+    margin-bottom: 40px; /* Added margin between subsections */
 }
 
 .settings-page .settings-subsection .subsection-title {
@@ -133,6 +135,7 @@ a:focus, button:focus, .toggle-switch:focus, input:focus {
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 20px; /* Added margin between individual setting cards */
 }
 
 .settings-page .setting-label {
