@@ -9,7 +9,7 @@ class CommonManager {
         const defaultSettings = {
             darkMode: true,
             fontSize: 16,
-            focusOutlineDisabled: false // Default to outline enabled
+            focusOutlineDisabled: false // Default is false, meaning focus outline is enabled initially
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -55,6 +55,7 @@ class CommonManager {
     }
 
     applyFocusOutlineSetting() {
+        // Now the logic is reversed: if focusOutlineDisabled is true, the outline is removed
         if (this.settings.focusOutlineDisabled) {
             document.body.classList.add('focus-outline-disabled');
         } else {
@@ -62,22 +63,11 @@ class CommonManager {
         }
     }
 
-    toggleDarkMode() {
-        this.settings.darkMode = !this.settings.darkMode;
-        localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
-        this.applyTheme(this.settings.darkMode);
-    }
-
-    updateFontSize(size) {
-        this.settings.fontSize = size;
-        localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
-        this.setFontSize(size);
-    }
-
     toggleFocusOutline() {
+        // Toggle the focus outline setting and update localStorage
         this.settings.focusOutlineDisabled = !this.settings.focusOutlineDisabled;
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
-        this.applyFocusOutlineSetting();
+        this.applyFocusOutlineSetting(); // Apply the updated setting
     }
 }
 
@@ -86,7 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.commonManager = new CommonManager();
 
     // Attach event listener for the focus outline toggle
-    document.querySelector('#focus-outline-toggle').addEventListener('change', (e) => {
-        window.commonManager.toggleFocusOutline();
-    });
+    const focusOutlineToggle = document.querySelector('#focus-outline-toggle');
+    if (focusOutlineToggle) {
+        focusOutlineToggle.checked = !window.commonManager.settings.focusOutlineDisabled; // Invert initial state
+        focusOutlineToggle.addEventListener('change', () => {
+            window.commonManager.toggleFocusOutline();
+        });
+    }
 });
