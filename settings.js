@@ -45,6 +45,7 @@ class SettingsManager {
         // Focus Outline Toggle
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
         if (focusOutlineToggle) {
+            // Reversed logic: if focusOutline is enabled, set the checkbox to 'unchecked' (false)
             focusOutlineToggle.checked = this.settings.focusOutline === 'disabled';
             focusOutlineToggle.addEventListener('change', (e) => {
                 if (e.target.checked) {
