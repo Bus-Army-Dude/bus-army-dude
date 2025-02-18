@@ -144,16 +144,16 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    // Disable focus outline
+    // Disable focus outline globally
     disableFocusOutline() {
-        document.body.classList.add('focus-outline-disabled');
+        document.body.classList.add('focus-outline-disabled'); // Apply globally
         this.settings.focusOutline = 'disabled';
         this.saveSettings();
     }
 
-    // Enable focus outline
+    // Enable focus outline globally
     enableFocusOutline() {
-        document.body.classList.remove('focus-outline-disabled');
+        document.body.classList.remove('focus-outline-disabled'); // Apply globally
         this.settings.focusOutline = 'enabled';
         this.saveSettings();
     }
