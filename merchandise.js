@@ -1,5 +1,5 @@
 // Replace <API_URL> with the actual API you're using.
-const apiUrl = 'https://storefront-api.fourthwall.com/v1/collections?storefront_token=<ptkn_f9428183-c420-41b7-a28e-d91fb04c8dda>';
+const res = await fetch("https://storefront-api.fourthwall.com/v1/collections?storefront_token=<ptkn_f9428183-c420-41b7-a28e-d91fb04c8dda>");
 
 document.addEventListener('DOMContentLoaded', function() {
     // Set the current year in the footer
