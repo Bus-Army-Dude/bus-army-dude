@@ -16,27 +16,11 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-    
         gtag('config', 'G-E0RSQS1MS7');
     </script>
     
     <!-- Favicons and Icons -->
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff"/>
-
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration -->
-    <meta name="browserconfig" content="/browserconfig.xml">
+    <link rel="icon" href="images/favicon-32x32.png" type="image/png" />
 </head>
 <body>
     <header>
@@ -46,235 +30,23 @@
         </div>
     </header>
 
-    <nav class="category-nav">
-        <ul>
-            <li><a href="#on-sale">On Sale</a></li>
-            <li><a href="#new-arrivals">New Arrivals</a></li>
-            <li><a href="#popular">Popular</a></li>
-            <li><a href="#all-products">All Products</a></li>
-            <li><a href="#accessories">Accessories</a></li>
-            <li><a href="#baby-and-toddler">Baby & Toddler</a></li>
-            <li><a href="#kitchenwear">Kitchenwear</a></li>
-            <li><a href="#hats">Hats</a></li>
-            <li><a href="#hoodies-and-sweatshirts">Hoodies & Sweatshirts</a></li>
-            <li><a href="#outdoor">Outdoors</a></li>
-            <li><a href="#t-shirts">T-Shirts</a></li>
-        </ul>
+    <nav class="category-nav" id="category-nav">
+        <!-- Categories will be populated here dynamically -->
     </nav>
 
-   <style>
-  .responsive-iframe {
-    width: 100%;
-    max-width: 495px;
-    height: auto;
-    aspect-ratio: 8.1; /* Maintain the original aspect ratio (495/61) */
-    border: none;
-  }
-</style>
+    <div class="container" id="product-container">
+        <!-- Product sections will be populated here dynamically -->
+    </div>
 
-<iframe 
-  class="responsive-iframe"
-  src="https://bus-army-dude.instatus.com/embed-status/4e365a41/light-lg" 
-  frameBorder="0" 
-  scrolling="no">
-</iframe>
-    
-    <div class="container">
-        <!-- On Sale section -->
-        <section id="on-sale">
-            <div class="section-header">
-                <h2>On Sale</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no products on sale -->
-            <div class="no-sale-message">No products are currently on sale. Check back later!</div>
-        </section>
-        
-        <section id="new-arrivals">
-            <div class="section-header">
-                <h2>New Arrivals</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no products in the New Arrivals section -->
-            <div class="no-sale-message">No products in the New Arrivals section. Check back later!</div>
-        </section>
+    <footer>
+        <p>© <span id="current-year"></span> Bus Army Dude. All Rights Reserved.</p>
+    </footer>
 
-        <section id="popular">
-            <div class="section-header">
-                <h2>Popular</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no popular products -->
-            <div class="no-sale-message">No popular products currently. Check back later!</div>
-        </section>
-
-        <section id="all-products">
-            <div class="section-header">
-                <h2>All Products</h2>
-                <span class="product-count">(3)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Example Product Item -->
-                <div class="product-item">
-                    <div class="stock-ribbon in-stock">In Stock</div>
-                    <img src="product_images/autism.webp" alt="Product 1">
-                    <h3>Autism Awareness AirPods Case®</h3>
-                    <p class="price">$25.00</p>
-                    <p class="quantity">Quantity: Unlimited</p>
-                    <a href="https://riverkritzar-shop.fourthwall.com/products/autism-awareness-airpods-case" class="buy-now">Buy Now</a>
-                </div>
-
-                <div class="product-item">
-                    <div class="stock-ribbon in-stock">In Stock</div>
-                    <img src="product_images/adhd.webp" alt="Product 2">
-                    <h3>ADHD Awareness Ribbon iPhone® Case</h3>
-                    <p class="price">$21.00</p>
-                    <p class="quantity">Quantity: Unlimited</p>
-                    <a href="https://riverkritzar-shop.fourthwall.com/products/adhd-awareness-ribbon-iphone-case" class="buy-now">Buy Now</a>
-                </div>
-                
-                <div class="product-item">
-                    <div class="stock-ribbon in-stock">In Stock</div>
-                    <img src="product_images/adhd-pin.webp" alt="Product 3">
-                    <h3>ADHD Awareness Ribbon Pin Set</h3>
-                    <p class="price">$14.00</p>
-                    <p class="quantity">Quantity: Unlimited</p>
-                    <a href="https://riverkritzar-shop.fourthwall.com/products/adhd-awareness-ribbon-pin-set" class="buy-now">Buy Now</a>
-                </div>
-        </section>
-
-        <section id="accessories">
-            <div class="section-header">
-                <h2>Accessories</h2>
-                <span class="product-count">(3)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Example Product Item -->
-                <div class="product-item">
-                    <div class="stock-ribbon in-stock">In Stock</div>
-                    <img src="product_images/autism.webp" alt="Product 1">
-                    <h3>Autism Awareness AirPods Case®</h3>
-                    <p class="price">$25.00</p>
-                    <p class="quantity">Quantity: Unlimited</p>
-                    <a href="https://riverkritzar-shop.fourthwall.com/products/autism-awareness-airpods-case" class="buy-now">Buy Now</a>
-                </div>
-
-                <div class="product-item">
-                    <div class="stock-ribbon in-stock">In Stock</div>
-                    <img src="product_images/adhd.webp" alt="Product 2">
-                    <h3>ADHD Awareness Ribbon iPhone® Case</h3>
-                    <p class="price">$21.00</p>
-                    <p class="quantity">Quantity: Unlimited</p>
-                    <a href="https://riverkritzar-shop.fourthwall.com/products/adhd-awareness-ribbon-iphone-case" class="buy-now">Buy Now</a>
-                </div>
-                
-                <div class="product-item">
-                    <div class="stock-ribbon in-stock">In Stock</div>
-                    <img src="product_images/adhd-pin.webp" alt="Product 3">
-                    <h3>ADHD Awareness Ribbon Pin Set</h3>
-                    <p class="price">$14.00</p>
-                    <p class="quantity">Quantity: Unlimited</p>
-                    <a href="https://riverkritzar-shop.fourthwall.com/products/adhd-awareness-ribbon-pin-set" class="buy-now">Buy Now</a>
-                </div>
-        </section>
-
-        <section id="baby-and-toddler">
-            <div class="section-header">
-                <h2>Baby & Toddler</h2>
-                <span class="product-count">(0)</span>
-             </div>
-             <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no products on sale -->
-            <div class="no-sale-message">No Baby & Toddler Products listed. Check back later!</div>
-        </section>
-
-        <section id="kitchenwear">
-            <div class="section-header">
-                <h2>Kitchenwear</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no home & living products -->
-            <div class="no-sale-message">No products are currently in kitchenwear. Check back later!</div>
-        </section>
-
-        <section id="hats">
-            <div class="section-header">
-                <h2>Hats</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no men products -->
-            <div class="no-sale-message">No products are currently in hats. Check back later!</div>
-        </section>
-
-        <section id="hoodies-and-sweatshirts">
-            <div class="section-header">
-                <h2>Hoodies & Sweatshirts</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no women products -->
-            <div class="no-sale-message">No products are currently in Hoodies & Sweatshirts. Check back later!</div>
-        </section>
-
-        <section id="outdoor">
-            <div class="section-header">
-                <h2>Outdoors</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Example Product Item -->
-                <div class="product-item">
-                    <div class="stock-ribbon in-stock">In Stock</div>
-                    <div class="sale-ribbon">Sale</div> <!-- Sale Ribbon -->
-                    <img src="product_images/autism-flag.webp" alt="Product 1">
-                    <h3>Autism Awareness All-Over Flag®</h3>
-                    <p class="original-price"><s>$32.00</s></p> <!-- Original price crossed out -->
-                    <p class="sale-price">$24.00</p> <!-- Sale price -->
-                    <p class="quantity">Quantity: Unlimited</p>
-                    <a href="https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-all-over-flag" class="buy-now">Buy Now</a>
-                </div>
-        </section>
-
-        <section id="t-shirts">
-            <div class="section-header">
-                <h2>T-Shirts</h2>
-                <span class="product-count">(0)</span>
-            </div>
-            <div class="product-grid">
-                <!-- Product items go here -->
-            </div>
-            <!-- Message for no women products -->
-            <div class="no-sale-message">No products are currently in T-Shirts. Check back later!</div>
-        </section>
-
-        <footer>
-            <p>© <span id="current-year"></span> Bus Army Dude. All Rights Reserved.</p>
-        </footer>
-
-        <script src="merchandise.js"></script>
-        <script src="common.js"></script>
-        <script src="script.js"></script>
-        <script src="ai-features.js"></script>
-        <script src="settings.js"></script>
-        <script src="https://busarmydudesprofile.statuspage.io/embed/script.js"></script>
-    </body>
+    <script src="merchandise.js"></script>
+    <script src="common.js"></script>
+    <script src="script.js"></script>
+    <script src="ai-features.js"></script>
+    <script src="settings.js"></script>
+    <script src="https://busarmydudesprofile.statuspage.io/embed/script.js"></script>
+</body>
 </html>
