@@ -26,6 +26,10 @@ a:focus, button:focus, .toggle-switch:focus {
     outline: 3px solid var(--focus-outline-color); /* Custom focus indicator */
 }
 
+body.focus-outline-disabled *:focus {
+    outline: none; /* Disable focus outline */
+}
+
 /* Header Styling */
 header {
     background-color: var(--accent-color);
