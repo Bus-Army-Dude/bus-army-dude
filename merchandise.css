@@ -1,4 +1,3 @@
-/* Color Variables */
 :root {
     --bg-color: #f9fafb;
     --text-color: #2b2b2b;
@@ -7,8 +6,9 @@
     --border-color: #dcdcdc;
     --secondary-text: #6c757d;
     --content-bg: #ffffff;
-    --shadow-color: rgba(0, 0, 0, 0.05);
+    --shadow-color: rgba(0, 0, 0, 0.1);
     --sale-color: #ff5a5f;
+    --focus-outline-color: #005fcc; /* Default focus outline color */
 }
 
 /* General Body Styling */
@@ -22,13 +22,17 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+a:focus, button:focus, .toggle-switch:focus {
+    outline: 3px solid var(--focus-outline-color); /* Custom focus indicator */
+}
+
 /* Header Styling */
 header {
     background-color: var(--accent-color);
     color: white;
-    padding: 15px;
+    padding: 20px;
     text-align: center;
-    box-shadow: 0 2px 6px var(--shadow-color);
+    box-shadow: 0 4px 8px var(--shadow-color);
     margin-bottom: 20px;
 }
 
@@ -36,11 +40,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .header-content h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     flex-grow: 1;
     text-align: center;
 }
@@ -50,7 +55,7 @@ header {
     color: var(--accent-color);
     border: none;
     padding: 10px 20px;
-    border-radius: 6px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -65,7 +70,8 @@ header {
 .category-nav {
     background-color: var(--content-bg);
     padding: 10px 0;
-    box-shadow: 0 2px 6px var(--shadow-color);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin-bottom: 20px;
 }
 
 .category-nav ul {
@@ -74,15 +80,20 @@ header {
     padding: 0;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
+    overflow-x: auto;
+}
+
+.category-nav li {
+    flex: 0 0 auto;
 }
 
 .category-nav a {
     text-decoration: none;
     color: var(--text-color);
     font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 10px 15px;
+    border-radius: 5px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -104,9 +115,28 @@ section {
     margin-bottom: 30px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 6px var(--shadow-color);
+    box-shadow: 0 4px 8px var(--shadow-color);
     background-color: var(--content-bg);
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.section-header .product-count {
+    font-size: 1.2rem;
+    color: var(--secondary-text);
 }
 
 /* Product Grid Styling */
@@ -165,7 +195,7 @@ section {
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
