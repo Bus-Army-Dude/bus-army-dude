@@ -14,9 +14,6 @@ class SettingsManager {
             profileStatus: 'offline',  // Default profile status
             maintenanceMode: false,    // Default maintenance mode
             focusOutline: 'enabled',   // Default focus outline setting (enabled means outlines show)
-            visionImpaired: false,     // Vision Impaired Profile (disabled by default)
-            adhdFriendly: false,       // ADHD Friendly Profile (disabled by default)
-            autismFriendly: false      // Autism Friendly Profile (disabled by default)
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -55,31 +52,6 @@ class SettingsManager {
                 } else {
                     this.disableFocusOutline();
                 }
-            });
-        }
-
-        // Disability Profiles
-        const visionImpairedToggle = document.getElementById('visionImpairedToggle');
-        if (visionImpairedToggle) {
-            visionImpairedToggle.checked = this.settings.visionImpaired;
-            visionImpairedToggle.addEventListener('change', (e) => {
-                this.toggleDisabilityProfile('vision-impaired', e.target.checked);
-            });
-        }
-
-        const adhdFriendlyToggle = document.getElementById('adhdFriendlyToggle');
-        if (adhdFriendlyToggle) {
-            adhdFriendlyToggle.checked = this.settings.adhdFriendly;
-            adhdFriendlyToggle.addEventListener('change', (e) => {
-                this.toggleDisabilityProfile('adhd-friendly', e.target.checked);
-            });
-        }
-
-        const autismFriendlyToggle = document.getElementById('autismFriendlyToggle');
-        if (autismFriendlyToggle) {
-            autismFriendlyToggle.checked = this.settings.autismFriendly;
-            autismFriendlyToggle.addEventListener('change', (e) => {
-                this.toggleDisabilityProfile('autism-friendly', e.target.checked);
             });
         }
 
@@ -130,25 +102,8 @@ class SettingsManager {
         } else {
             this.disableFocusOutline();
         }
-
-        // Apply disability profiles
-        this.toggleDisabilityProfile('vision-impaired', this.settings.visionImpaired);
-        this.toggleDisabilityProfile('adhd-friendly', this.settings.adhdFriendly);
-        this.toggleDisabilityProfile('autism-friendly', this.settings.autismFriendly);
     }
-
-    // Toggle disability profiles
-    toggleDisabilityProfile(profile, isEnabled) {
-        const body = document.body;
-        if (isEnabled) {
-            body.classList.add(profile);
-        } else {
-            body.classList.remove(profile);
-        }
-        this.settings[profile] = isEnabled;
-        this.saveSettings();
-    }
-
+    
     // Set the profile status
     setProfileStatus(status) {
         this.settings.profileStatus = status;
@@ -225,9 +180,6 @@ class SettingsManager {
             profileStatus: 'offline',
             maintenanceMode: false,
             focusOutline: 'enabled',
-            visionImpaired: false,
-            adhdFriendly: false,
-            autismFriendly: false
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -239,18 +191,12 @@ class SettingsManager {
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-        const visionImpairedToggle = document.getElementById('visionImpairedToggle');
-        const adhdFriendlyToggle = document.getElementById('adhdFriendlyToggle');
-        const autismFriendlyToggle = document.getElementById('autismFriendlyToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
-        if (visionImpairedToggle) visionImpairedToggle.checked = defaultSettings.visionImpaired;
-        if (adhdFriendlyToggle) adhdFriendlyToggle.checked = defaultSettings.adhdFriendly;
-        if (autismFriendlyToggle) autismFriendlyToggle.checked = defaultSettings.autismFriendly;
     }
 
     // Set Maintenance Mode
