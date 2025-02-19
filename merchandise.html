@@ -4,18 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Merchandise - Bus Army Dude's Profile</title>
+    
+    <!-- Link CSS files -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="merchandise.css">
     <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
-    <meta http-equiv="refresh" content="300">
-
-    <!-- Content-Security-Policy allowing necessary resources -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://storefront-api.fourthwall.com; img-src 'self' data: https://your-image-source.com;">
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script src="analytics.js"></script>
+    
+    <!-- Content-Security-Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://storefront-api.fourthwall.com; img-src 'self' data: https://your-image-source.com; style-src 'self' 'unsafe-inline';">
 
     <!-- Favicons and Icons -->
     <link rel="icon" href="images/favicon-32x32.png" type="image/png" />
@@ -51,5 +48,6 @@
     <script src="script.js"></script>
     <script src="ai-features.js"></script>
     <script src="settings.js"></script>
+    <script src="analytics.js"></script> <!-- External Google Analytics script -->
 </body>
 </html>
