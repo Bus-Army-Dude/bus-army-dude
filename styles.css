@@ -847,7 +847,7 @@ body {
 .os-info {
     font-size: 1.1em;
     background: var(--bg-color, #2f2f2f); /* Default dark background */
-    color: var(--text-color);
+    color: var(--primary-text, #f5f5f5); /* Light text color */
     padding: 12px 20px;
     border-radius: 8px;
     display: flex;
@@ -858,10 +858,10 @@ body {
     transition: background 0.3s ease, border-left 0.3s ease; /* Smooth transitions */
 }
 
-/* Before pseudo-element for the label */
+/* Before pseudo-element to add "Operating System:" label */
 .os-info::before {
-    content: "Operating System:"; /* Label text */
-    color: var(--text-color);
+    content: "Operating System:"; /* Label for the OS */
+    color: var(--secondary-text, #bbb); /* Subtle light color for the label */
     font-weight: 500;
     margin-right: 10px;
 }
