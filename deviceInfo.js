@@ -48,3 +48,12 @@ function getOperatingSystem() {
 
     return os;
 }
+
+function updateOperatingSystemDisplay() {
+    const os = getOperatingSystem();
+    const osInfoElement = document.getElementById('os-info');
+    osInfoElement.textContent = os; // Only update the OS, no "Operating System:"
+}
+
+// Call the update function on page load
+window.onload = updateOperatingSystemDisplay;
