@@ -7,10 +7,11 @@ function getOperatingSystem() {
     }
 
     if (/Mac OS X/i.test(userAgent)) {
-        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-            return 'iOS';
+        // Check for Mac OS and exclude iPhone/iPad
+        if (/iPad|iPhone|iPod/.test(userAgent)) {
+            return 'iOS'; // If iPhone, iPad or iPod detected, return iOS
         }
-        return 'macOS';
+        return 'macOS'; // Otherwise, return macOS
     }
 
     if (/Android/i.test(userAgent)) {
@@ -104,6 +105,13 @@ function getDeviceModel() {
         // Handle specific iPhone SE models
         if (/iPhone.*12,8/i.test(userAgent)) model = 'iPhone SE (2nd Generation)';
         if (/iPhone.*14,6/i.test(userAgent)) model = 'iPhone SE (3rd Generation)';
+    } else if (/Macintosh/i.test(userAgent)) {
+        // Handle macOS devices specifically
+        if (/MacBook Pro/i.test(userAgent)) model = 'MacBook Pro';
+        if (/MacBook Air/i.test(userAgent)) model = 'MacBook Air';
+        if (/Mac Mini/i.test(userAgent)) model = 'Mac Mini';
+        if (/iMac/i.test(userAgent)) model = 'iMac';
+        if (/Mac Pro/i.test(userAgent)) model = 'Mac Pro';
     }
 
     return model;
