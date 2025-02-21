@@ -7,11 +7,10 @@ function getOperatingSystem() {
     }
 
     if (/Mac OS X/i.test(userAgent)) {
-        // Exclude iOS devices (iPhone/iPad)
-        if (/iPhone|iPad|iPod/.test(userAgent)) {
-            return 'iOS';
+        if (/iPad|iPhone|iPod/.test(userAgent)) {
+            return 'iOS'; // If iPhone, iPad or iPod detected
         }
-        return 'macOS';
+        return 'macOS'; // Otherwise, return macOS
     }
 
     if (/Android/i.test(userAgent)) {
@@ -29,7 +28,7 @@ function getDeviceModel() {
     const userAgent = navigator.userAgent;
     let model = 'unknown';
 
-    // Handle Android models
+    // Android Device Detection
     if (/Android/i.test(userAgent)) {
         const androidModelMatch = userAgent.match(/\((.*?)\)/);
         if (androidModelMatch && androidModelMatch.length > 1) {
@@ -37,23 +36,24 @@ function getDeviceModel() {
             model = modelDetails[1]?.trim() || 'Generic Android Device';
         }
     } 
-    // Handle iOS models
-    else if (/iPad|iPhone|iPod/.test(userAgent)) {
-        const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?([0-9]+,([0-9]+))/);
+    // iOS Device Detection
+    else if (/iPhone|iPad|iPod/.test(userAgent)) {
+        // Handle iPhone, iPad, iPod Model Detection
+        const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?OS (\d+_\d+)/);
         if (iOSModelMatch) {
             const deviceType = iOSModelMatch[1];
-            const modelNumber = `${iOSModelMatch[2]}`;
-            model = `${deviceType} ${modelNumber}`;
+            const osVersion = iOSModelMatch[2].replace('_', '.');
+            model = `${deviceType} (iOS ${osVersion})`;
         } else {
             model = 'iOS Device';
         }
 
-        // Specific iPhone Models (based on iPhone 16 or earlier)
+        // Specific iPhone Models (Updated for iPhone 16 series)
         if (/iPhone.*17,1/i.test(userAgent)) model = 'iPhone 16 Pro';
         if (/iPhone.*17,2/i.test(userAgent)) model = 'iPhone 16 Pro Max';
-        if (/iPhone.*17,3/i.test(userAgent)) model = 'iPhone 16E';
-        if (/iPhone.*17,4/i.test(userAgent)) model = 'iPhone 16';
-        if (/iPhone.*17,5/i.test(userAgent)) model = 'iPhone 16 Plus';
+        if (/iPhone.*17,3/i.test(userAgent)) model = 'iPhone 16E'; 
+        if (/iPhone.*17,4/i.test(userAgent)) model = 'iPhone 16'; 
+        if (/iPhone.*17,5/i.test(userAgent)) model = 'iPhone 16 Plus'; 
         if (/iPhone.*16,1/i.test(userAgent)) model = 'iPhone 15';
         if (/iPhone.*16,2/i.test(userAgent)) model = 'iPhone 15 Plus';
         if (/iPhone.*16,3/i.test(userAgent)) model = 'iPhone 15 Pro';
@@ -83,17 +83,18 @@ function getDeviceModel() {
         if (/iPhone.*7,1/i.test(userAgent)) model = 'iPhone 6 Plus';
         if (/iPhone.*7,2/i.test(userAgent)) model = 'iPhone 6';
 
-        // Handle specific iPhone SE models
+        // Handle iPhone SE models
         if (/iPhone.*12,8/i.test(userAgent)) model = 'iPhone SE (2nd Generation)';
         if (/iPhone.*14,6/i.test(userAgent)) model = 'iPhone SE (3rd Generation)';
     } 
-    // Handle macOS models
+    // macOS Device Detection
     else if (/Macintosh/i.test(userAgent)) {
         if (/MacBook Pro/i.test(userAgent)) model = 'MacBook Pro';
-        if (/MacBook Air/i.test(userAgent)) model = 'MacBook Air';
-        if (/Mac Mini/i.test(userAgent)) model = 'Mac Mini';
-        if (/iMac/i.test(userAgent)) model = 'iMac';
-        if (/Mac Pro/i.test(userAgent)) model = 'Mac Pro';
+        else if (/MacBook Air/i.test(userAgent)) model = 'MacBook Air';
+        else if (/Mac Mini/i.test(userAgent)) model = 'Mac Mini';
+        else if (/iMac/i.test(userAgent)) model = 'iMac';
+        else if (/Mac Pro/i.test(userAgent)) model = 'Mac Pro';
+        else model = 'MacOS Device';
     }
 
     return model;
