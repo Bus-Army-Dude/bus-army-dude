@@ -11,7 +11,29 @@ function getOperatingSystem() {
 
     // Detect Windows
     else if (/Windows NT/i.test(userAgent)) {
-        os = 'Windows';
+        // Check for Xbox Series X
+        if (/Xbox Series X/i.test(userAgent)) {
+            os = 'Xbox Series X';
+        }
+        // Check for Xbox Series S
+        else if (/Xbox Series S/i.test(userAgent)) {
+            os = 'Xbox Series S';
+        }
+        // Check for Xbox One
+        else if (/Xbox One/i.test(userAgent)) {
+            os = 'Xbox One';
+        }
+        // Check for Xbox One S
+        else if (/Xbox One S/i.test(userAgent)) {
+            os = 'Xbox One S';
+        }
+        // Check for Xbox One X
+        else if (/Xbox One X/i.test(userAgent)) {
+            os = 'Xbox One X';
+        }
+        else {
+            os = 'Windows'; // Default to Windows for non-Xbox PCs
+        }
     }
 
     // Detect Linux
@@ -26,10 +48,3 @@ function getOperatingSystem() {
 
     return os;
 }
-
-// Update the OS info display
-document.addEventListener("DOMContentLoaded", function () {
-    const osDisplay = document.getElementById("os");
-    const os = getOperatingSystem();
-    osDisplay.textContent = os; // Only setting the OS name
-});
