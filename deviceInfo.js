@@ -9,7 +9,7 @@ function getOperatingSystem() {
         os = 'macOS';
     }
 
-    // Detect Windows
+    // Detect Windows and Xbox versions
     else if (/Windows NT/i.test(userAgent)) {
         // Check for Xbox Series X
         if (/Xbox Series X/i.test(userAgent)) {
@@ -51,9 +51,9 @@ function getOperatingSystem() {
 
 function updateOperatingSystemDisplay() {
     const os = getOperatingSystem();
-    const osInfoElement = document.getElementById('os-info');
-    osInfoElement.textContent = os; // Only update the OS, no "Operating System:"
+    const osInfoElement = document.getElementById('os');
+    osInfoElement.textContent = os; // Set the OS without the "Operating System:" label
 }
 
-// Call the update function on page load
+// Call the update function when the page loads
 window.onload = updateOperatingSystemDisplay;
