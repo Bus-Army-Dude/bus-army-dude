@@ -29,16 +29,48 @@ function getDeviceModel() {
     let model = 'unknown';
 
     if (/Android/i.test(userAgent)) {
+        // More comprehensive Android device matching
         const androidModelMatch = userAgent.match(/\((.*?)\)/);
         if (androidModelMatch && androidModelMatch.length > 1) {
-            model = androidModelMatch[1].split(';')[1].trim();
+            const modelDetails = androidModelMatch[1].split(';');
+            if (modelDetails.length > 2) {
+                model = modelDetails[2].trim(); // Try extracting 3rd item (model details)
+            } else if (modelDetails.length > 1) {
+                model = modelDetails[1].trim(); // Fallback to 2nd item
+            } else {
+                model = modelDetails[0].trim(); // Just in case
+            }
+
+            // Detect if it's a TV or wearable device
+            if (/Smart-TV/i.test(userAgent)) {
+                model += ' (Smart TV)';
+            } else if (/Watch/i.test(userAgent)) {
+                model += ' (Wearable)';
+            }
         }
+        if (model === 'unknown') model = 'Generic Android Device'; // Fallback if model still unknown
     } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // More detailed matching for iOS devices
         const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?([0-9]+),([0-9]+)/);
         if (iOSModelMatch) {
             const deviceType = iOSModelMatch[1];
             const modelNumber = `${iOSModelMatch[2]},${iOSModelMatch[3]}`;
             model = `${deviceType} ${modelNumber}`;
+        } else if (/iPad/i.test(userAgent)) {
+            model = 'iPad';
+        } else if (/iPhone/i.test(userAgent)) {
+            model = 'iPhone';
+        } else if (/iPod/i.test(userAgent)) {
+            model = 'iPod';
+        } else {
+            model = 'Generic iOS Device'; // Fallback if no match
+        }
+
+        // Handle cases for Apple Watch and Apple TV
+        if (/Watch/i.test(userAgent)) {
+            model = 'Apple Watch';
+        } else if (/AppleTV/i.test(userAgent)) {
+            model = 'Apple TV';
         }
     } else if (/Windows NT/i.test(userAgent)) {
         model = 'Windows PC';
@@ -58,5 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Operating System: ${os}, Device Model: ${model}`);
 
     const deviceInfoElement = document.querySelector('.device-info');
-    deviceInfoElement.textContent = `Operating System: ${os}, Device Model: ${model}`;
+    if (deviceInfoElement) {
+        deviceInfoElement.textContent = `Operating System: ${os}, Device Model: ${model}`;
+    }
 });
