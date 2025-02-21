@@ -865,8 +865,8 @@ body {
     font-weight: 500;
 }
 
-/* Device Info Styling */
-.device-info {
+/* OS Info Styling */
+.os-info {
     font-size: 1.1em;
     background: var(--bg-color);
     padding: 12px 15px;
@@ -877,8 +877,8 @@ body {
     border-left: 4px solid var(--hover-color);
 }
 
-.device-info::before {
-    content: "Device:";
+.os-info::before {
+    content: "Operating System:";
     color: var(--secondary-text);
     font-weight: 500;
 }
@@ -934,7 +934,7 @@ body {
 
     .version-number,
     .build-number,
-    .device-info,
+    .os-info,
     .update-time {
         font-size: 1em;
         padding: 10px 12px;
