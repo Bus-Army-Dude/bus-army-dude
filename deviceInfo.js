@@ -48,12 +48,9 @@ function getDeviceModel() {
                 model += ' (Wearable)';
             }
         }
-        if (model === 'unknown') {
-            console.warn('Unknown Android device detected:', userAgent);
-            model = 'Generic Android Device'; // Fallback if model still unknown
-        }
+        if (model === 'unknown') model = 'Generic Android Device'; // Fallback if model still unknown
     } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        // More detailed matching for iOS devices
+        // More detailed matching for iOS devices (including model numbers)
         const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?([0-9]+),([0-9]+)/);
         if (iOSModelMatch) {
             const deviceType = iOSModelMatch[1];
@@ -66,24 +63,47 @@ function getDeviceModel() {
         } else if (/iPod/i.test(userAgent)) {
             model = 'iPod';
         } else {
-            console.warn('Unknown iOS device detected:', userAgent);
             model = 'Generic iOS Device'; // Fallback if no match
         }
 
-        // Handle cases for Apple Watch and Apple TV
-        if (/Watch/i.test(userAgent)) {
-            model = 'Apple Watch';
-        } else if (/AppleTV/i.test(userAgent)) {
-            model = 'Apple TV';
-        }
-    } else if (/Windows NT/i.test(userAgent)) {
-        model = 'Windows PC';
-    } else if (/Mac OS X/i.test(userAgent)) {
-        model = 'Mac';
-    } else if (/Linux/i.test(userAgent)) {
-        model = 'Linux PC';
-    } else {
-        console.warn('Unknown device detected:', userAgent);
+        // Handle specific iPhone models
+        if (/iPhone.*17,1/i.test(userAgent)) model = 'iPhone 16 Pro';
+        if (/iPhone.*17,2/i.test(userAgent)) model = 'iPhone 16 Pro Max';
+        if (/iPhone.*17,3/i.test(userAgent)) model = 'iPhone 16E'; // iPhone 16E
+        if (/iPhone.*17,4/i.test(userAgent)) model = 'iPhone 16'; // iPhone 16
+        if (/iPhone.*17,5/i.test(userAgent)) model = 'iPhone 16 Plus'; // iPhone 16 Plus
+        if (/iPhone.*16,1/i.test(userAgent)) model = 'iPhone 15';
+        if (/iPhone.*16,2/i.test(userAgent)) model = 'iPhone 15 Plus';
+        if (/iPhone.*16,3/i.test(userAgent)) model = 'iPhone 15 Pro';
+        if (/iPhone.*16,4/i.test(userAgent)) model = 'iPhone 15 Pro Max';
+        if (/iPhone.*14,4/i.test(userAgent)) model = 'iPhone 14';
+        if (/iPhone.*14,5/i.test(userAgent)) model = 'iPhone 14 Plus';
+        if (/iPhone.*14,2/i.test(userAgent)) model = 'iPhone 14 Pro';
+        if (/iPhone.*14,3/i.test(userAgent)) model = 'iPhone 14 Pro Max';
+        if (/iPhone.*13,1/i.test(userAgent)) model = 'iPhone 13 Mini';
+        if (/iPhone.*13,2/i.test(userAgent)) model = 'iPhone 13';
+        if (/iPhone.*13,3/i.test(userAgent)) model = 'iPhone 13 Pro';
+        if (/iPhone.*13,4/i.test(userAgent)) model = 'iPhone 13 Pro Max';
+        if (/iPhone.*12,1/i.test(userAgent)) model = 'iPhone 12 Mini';
+        if (/iPhone.*12,3/i.test(userAgent)) model = 'iPhone 12';
+        if (/iPhone.*12,5/i.test(userAgent)) model = 'iPhone 12 Pro';
+        if (/iPhone.*12,8/i.test(userAgent)) model = 'iPhone 12 Pro Max';
+        if (/iPhone.*11,2/i.test(userAgent)) model = 'iPhone XS';
+        if (/iPhone.*11,4/i.test(userAgent)) model = 'iPhone XS Max';
+        if (/iPhone.*11,6/i.test(userAgent)) model = 'iPhone XR';
+        if (/iPhone.*10,3/i.test(userAgent)) model = 'iPhone X';
+        if (/iPhone.*10,1/i.test(userAgent)) model = 'iPhone 8';
+        if (/iPhone.*10,4/i.test(userAgent)) model = 'iPhone 8 Plus';
+        if (/iPhone.*9,1/i.test(userAgent)) model = 'iPhone 7';
+        if (/iPhone.*9,2/i.test(userAgent)) model = 'iPhone 7 Plus';
+        if (/iPhone.*8,1/i.test(userAgent)) model = 'iPhone 6s';
+        if (/iPhone.*8,2/i.test(userAgent)) model = 'iPhone 6s Plus';
+        if (/iPhone.*7,1/i.test(userAgent)) model = 'iPhone 6 Plus';
+        if (/iPhone.*7,2/i.test(userAgent)) model = 'iPhone 6';
+
+        // Handle specific iPhone SE models
+        if (/iPhone.*12,8/i.test(userAgent)) model = 'iPhone SE (2nd Generation)';
+        if (/iPhone.*14,6/i.test(userAgent)) model = 'iPhone SE (3rd Generation)';
     }
 
     return model;
