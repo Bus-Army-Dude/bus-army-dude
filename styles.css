@@ -846,22 +846,22 @@ body {
 /* OS Info Styling */
 .os-info {
     font-size: 1.1em;
-    background: var(--bg-color, #2f2f2f); /* Default dark background */
-    color: var(--text-color, #f5f5f5); /* Use the text color variable */
+    background: var(--bg-color, #2f2f2f); /* Dark background */
+    color: var(--text-color, #f5f5f5); /* Light text color */
     padding: 12px 20px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 15px;
-    border-left: 6px solid var(--hover-color, #3498db); /* Border color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
-    transition: background 0.3s ease, border-left 0.3s ease; /* Smooth transitions */
+    border-left: 6px solid var(--hover-color, #3498db); /* Border to match theme */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background 0.3s ease, border-left 0.3s ease; 
 }
 
 /* Before pseudo-element to add "Operating System:" label */
 .os-info::before {
-    content: "Operating System:"; /* Label for the OS */
-    color: var(--secondary-text, #bbb); /* Subtle light color for the label */
+    content: "Operating System:";
+    color: var(--secondary-text, #bbb); /* Light color for the label */
     font-weight: 500;
     margin-right: 10px;
 }
