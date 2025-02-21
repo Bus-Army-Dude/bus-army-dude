@@ -27,5 +27,9 @@ function getOperatingSystem() {
     return os;
 }
 
-// Update the content inside the .os-info element
-document.getElementById("os").textContent = getOperatingSystem();
+// Update the OS info display
+document.addEventListener("DOMContentLoaded", function () {
+    const osDisplay = document.getElementById("os");
+    const os = getOperatingSystem();
+    osDisplay.textContent = os; // Only setting the OS name
+});
