@@ -868,19 +868,24 @@ body {
 /* OS Info Styling */
 .os-info {
     font-size: 1.1em;
-    background: var(--bg-color);
-    padding: 12px 15px;
+    background: var(--bg-color, #2f2f2f); /* Dark background, fallback to a dark color */
+    color: var(--primary-text, #f5f5f5); /* Light text color, fallback to light */
+    padding: 12px 20px;
     border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    border-left: 4px solid var(--hover-color);
+    gap: 15px;
+    border-left: 6px solid var(--hover-color, #3498db); /* Adjust border to match theme */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Add a soft shadow to give it depth */
+    transition: background 0.3s ease, border-left 0.3s ease; /* Smooth transitions for background and border */
 }
 
+/* Before pseudo-element */
 .os-info::before {
     content: "Operating System:";
-    color: var(--secondary-text);
+    color: var(--secondary-text, #bbb); /* Subtle light color for the label */
     font-weight: 500;
+    margin-right: 10px;
 }
 
 /* Update Time Styling */
