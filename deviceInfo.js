@@ -48,7 +48,10 @@ function getDeviceModel() {
                 model += ' (Wearable)';
             }
         }
-        if (model === 'unknown') model = 'Generic Android Device'; // Fallback if model still unknown
+        if (model === 'unknown') {
+            console.warn('Unknown Android device detected:', userAgent);
+            model = 'Generic Android Device'; // Fallback if model still unknown
+        }
     } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
         // More detailed matching for iOS devices
         const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?([0-9]+),([0-9]+)/);
@@ -63,6 +66,7 @@ function getDeviceModel() {
         } else if (/iPod/i.test(userAgent)) {
             model = 'iPod';
         } else {
+            console.warn('Unknown iOS device detected:', userAgent);
             model = 'Generic iOS Device'; // Fallback if no match
         }
 
@@ -78,6 +82,8 @@ function getDeviceModel() {
         model = 'Mac';
     } else if (/Linux/i.test(userAgent)) {
         model = 'Linux PC';
+    } else {
+        console.warn('Unknown device detected:', userAgent);
     }
 
     return model;
