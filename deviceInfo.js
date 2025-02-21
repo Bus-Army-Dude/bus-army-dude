@@ -27,12 +27,11 @@ function getOperatingSystem() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const os = getOperatingSystem();
-    console.log(`Operating System: ${os}`);
-
-    // Display the OS in the page
+    const os = getOperatingSystem(); // This function gets the OS
     const osInfoElement = document.querySelector('.os-info');
+
     if (osInfoElement) {
+        // Set the content of the element to just the OS name
         osInfoElement.textContent = `Operating System: ${os}`;
     }
 });
