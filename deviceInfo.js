@@ -27,5 +27,5 @@ function getOperatingSystem() {
     return os;
 }
 
-// Update only the operating system part of the text (without "Operating System:" label)
+// Update the content inside the .os-info element
 document.getElementById("os").textContent = getOperatingSystem();
