@@ -7,11 +7,11 @@ function getOperatingSystem() {
     }
 
     if (/Mac OS X/i.test(userAgent)) {
-        // Check for Mac OS and exclude iPhone/iPad
-        if (/iPad|iPhone|iPod/.test(userAgent)) {
-            return 'iOS'; // If iPhone, iPad or iPod detected, return iOS
+        // Exclude iOS devices (iPhone/iPad)
+        if (/iPhone|iPad|iPod/.test(userAgent)) {
+            return 'iOS';
         }
-        return 'macOS'; // Otherwise, return macOS
+        return 'macOS';
     }
 
     if (/Android/i.test(userAgent)) {
@@ -29,50 +29,31 @@ function getDeviceModel() {
     const userAgent = navigator.userAgent;
     let model = 'unknown';
 
+    // Handle Android models
     if (/Android/i.test(userAgent)) {
-        // More comprehensive Android device matching
         const androidModelMatch = userAgent.match(/\((.*?)\)/);
         if (androidModelMatch && androidModelMatch.length > 1) {
             const modelDetails = androidModelMatch[1].split(';');
-            if (modelDetails.length > 2) {
-                model = modelDetails[2].trim(); // Try extracting 3rd item (model details)
-            } else if (modelDetails.length > 1) {
-                model = modelDetails[1].trim(); // Fallback to 2nd item
-            } else {
-                model = modelDetails[0].trim(); // Just in case
-            }
-
-            // Detect if it's a TV or wearable device
-            if (/Smart-TV/i.test(userAgent)) {
-                model += ' (Smart TV)';
-            } else if (/Watch/i.test(userAgent)) {
-                model += ' (Wearable)';
-            }
+            model = modelDetails[1]?.trim() || 'Generic Android Device';
         }
-        if (model === 'unknown') model = 'Generic Android Device'; // Fallback if model still unknown
-    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        // More detailed matching for iOS devices (including model numbers)
-        const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?([0-9]+),([0-9]+)/);
+    } 
+    // Handle iOS models
+    else if (/iPad|iPhone|iPod/.test(userAgent)) {
+        const iOSModelMatch = userAgent.match(/(iPhone|iPad|iPod).*?([0-9]+,([0-9]+))/);
         if (iOSModelMatch) {
             const deviceType = iOSModelMatch[1];
-            const modelNumber = `${iOSModelMatch[2]},${iOSModelMatch[3]}`;
+            const modelNumber = `${iOSModelMatch[2]}`;
             model = `${deviceType} ${modelNumber}`;
-        } else if (/iPad/i.test(userAgent)) {
-            model = 'iPad';
-        } else if (/iPhone/i.test(userAgent)) {
-            model = 'iPhone';
-        } else if (/iPod/i.test(userAgent)) {
-            model = 'iPod';
         } else {
-            model = 'Generic iOS Device'; // Fallback if no match
+            model = 'iOS Device';
         }
 
-        // Handle specific iPhone models
+        // Specific iPhone Models (based on iPhone 16 or earlier)
         if (/iPhone.*17,1/i.test(userAgent)) model = 'iPhone 16 Pro';
         if (/iPhone.*17,2/i.test(userAgent)) model = 'iPhone 16 Pro Max';
-        if (/iPhone.*17,3/i.test(userAgent)) model = 'iPhone 16E'; // iPhone 16E
-        if (/iPhone.*17,4/i.test(userAgent)) model = 'iPhone 16'; // iPhone 16
-        if (/iPhone.*17,5/i.test(userAgent)) model = 'iPhone 16 Plus'; // iPhone 16 Plus
+        if (/iPhone.*17,3/i.test(userAgent)) model = 'iPhone 16E';
+        if (/iPhone.*17,4/i.test(userAgent)) model = 'iPhone 16';
+        if (/iPhone.*17,5/i.test(userAgent)) model = 'iPhone 16 Plus';
         if (/iPhone.*16,1/i.test(userAgent)) model = 'iPhone 15';
         if (/iPhone.*16,2/i.test(userAgent)) model = 'iPhone 15 Plus';
         if (/iPhone.*16,3/i.test(userAgent)) model = 'iPhone 15 Pro';
@@ -105,8 +86,9 @@ function getDeviceModel() {
         // Handle specific iPhone SE models
         if (/iPhone.*12,8/i.test(userAgent)) model = 'iPhone SE (2nd Generation)';
         if (/iPhone.*14,6/i.test(userAgent)) model = 'iPhone SE (3rd Generation)';
-    } else if (/Macintosh/i.test(userAgent)) {
-        // Handle macOS devices specifically
+    } 
+    // Handle macOS models
+    else if (/Macintosh/i.test(userAgent)) {
         if (/MacBook Pro/i.test(userAgent)) model = 'MacBook Pro';
         if (/MacBook Air/i.test(userAgent)) model = 'MacBook Air';
         if (/Mac Mini/i.test(userAgent)) model = 'Mac Mini';
