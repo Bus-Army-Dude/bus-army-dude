@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsManager.setMaintenanceModeManually(false);
 
     // Example: Set profile status manually
-    settingsManager.setProfileStatusManually('offline');
+    settingsManager.setProfileStatusManually('online');
 });
 
 // Function to adjust text size (if called from inline onchange attribute)
