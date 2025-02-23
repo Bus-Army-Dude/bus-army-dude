@@ -7,15 +7,6 @@ class EventManager {
         
         // Example events structure with more detailed information
         this.events = [
-           {
-                title: "Bus Army Dude's Birthday",
-                startDate: new Date('2025-02-28T03:00:00Z'),  // 10:00 PM EST (Feb 27) in UTC
-                endDate: new Date('2025-02-28T07:00:00Z'),    // 02:00 AM EST (Feb 28) in UTC
-                description: "just chilling with my viewers",
-                location: 'Twitch',
-                link: 'https://www.twitch.tv/busarmydude',
-                type: 'stream'
-            }
         ];
 
         if (this.eventsContainer) {
