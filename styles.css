@@ -989,30 +989,26 @@ body {
     margin: 30px 0;
 }
 
+/* Protection Message */
 .copy-protection-message,
-.legal-protection-message {
-    background-color: var(--accent-color);
-    color: white;
+.legal-protection-message,
+.watermark-message {
+    background-color: #e74c3c;  /* Red background */
+    color: white;  /* White text */
     padding: 15px;
     text-align: center;
     font-size: 14px;
     margin: 10px 0;
     border-radius: 8px;
-    box-shadow: 0 4px 6px var(--shadow-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-/* Watermark Text */
-.watermark {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);  /* Semi-transparent white */
-    font-weight: bold;
-    z-index: 9999;
-    pointer-events: none; /* Makes the watermark non-interactive */
-    opacity: 0.5;
-    text-transform: uppercase;
+/* Legal Section Margin for Visual Spacing */
+.legal-section {
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 /* Copy Protection */
