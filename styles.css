@@ -794,20 +794,6 @@ body {
     gap: 15px;
 }
 
-/* Version Info Section */
-.version-info-section {
-    background-color: var(--content-bg);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 20px var(--shadow-color);
-    font-family: 'Inter', sans-serif;
-    color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
 /* Version Header */
 .version-header {
     font-size: 1.6em;
@@ -833,29 +819,48 @@ body {
     border-left: 4px solid var(--accent-color);
 }
 
-.info-container::before {
+/* Version Number */
+.version-number {
+    border-left: 4px solid var(--accent-color);
+}
+
+.version-number::before {
+    content: "Version:";
     color: var(--secondary-text);
     font-weight: 500;
 }
 
-/* Version Number */
-.version-number::before {
-    content: "Version:";
+/* Build Number */
+.build-number {
+    border-left: 4px solid var(--accent-color);
 }
 
-/* Build Number */
 .build-number::before {
     content: "Build:";
+    color: var(--secondary-text);
+    font-weight: 500;
 }
 
-/* Operating System Styling */
+/* Operating System */
+.os-info {
+    border-left: 4px solid var(--accent-color);
+}
+
 .os-info::before {
     content: "Operating System:";
+    color: var(--secondary-text);
+    font-weight: 500;
 }
 
-/* Device Model Styling */
+/* Device Model */
+.device-info {
+    border-left: 4px solid var(--accent-color);
+}
+
 .device-info::before {
     content: "Device Model:";
+    color: var(--secondary-text);
+    font-weight: 500;
 }
 
 /* Update Time */
@@ -877,7 +882,7 @@ body {
     font-weight: 500;
 }
 
-/* Countdown Styling */
+/* Countdown */
 .countdown {
     font-size: 1.2em;
     font-weight: 600;
