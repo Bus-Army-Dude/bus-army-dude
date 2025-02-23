@@ -270,3 +270,9 @@ faqQuestions.forEach((question) => {
         faqItem.classList.toggle('active');
     });
 });
+
+// Get the current year based on the user's local timezone
+const currentYear = new Date().getFullYear();
+
+// Update the year in the span element
+document.getElementById('year').textContent = currentYear;
