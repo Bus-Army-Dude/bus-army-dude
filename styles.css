@@ -307,7 +307,6 @@ body {
     margin-top: 20px;
 }
 
-/* Social Button */
 .social-button {
     display: flex;
     align-items: center;
@@ -326,31 +325,25 @@ body {
     transform: scale(1.05);
 }
 
-/* Social Icon Styling */
-.social-icon {
+/* Ensuring Icons have a color that fits both light and dark modes */
+.social-button .social-icon {
     width: 28px;
     height: 28px;
     margin-right: 15px;
-    color: inherit; /* Makes icon color inherit from parent */
+    color: var(--icon-color); /* Apply the icon color from the theme */
 }
 
-/* Light Mode Icon Color */
-.light-mode .social-icon {
-    color: #333; /* Dark color for light mode */
+/* Theme-specific icon color */
+:root {
+    --icon-color: #ffffff; /* Default icon color for light mode */
 }
 
-/* Dark Mode Icon Color */
-.dark-mode .social-icon {
-    color: #fff; /* Light color for dark mode */
+.light-mode {
+    --icon-color: #212529; /* Darker icon color for light mode */
 }
 
-/* Hover Effects for Icons */
-.light-mode .social-button:hover .social-icon {
-    color: #4CAF50; /* Green icon on hover in light mode */
-}
-
-.dark-mode .social-button:hover .social-icon {
-    color: #BB86FC; /* Purple icon on hover in dark mode */
+.dark-mode {
+    --icon-color: #ffffff; /* Light icon color for dark mode */
 }
 
 /* Media Queries for Responsiveness */
