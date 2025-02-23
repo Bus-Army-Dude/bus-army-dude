@@ -271,16 +271,6 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Wait for the DOM content to load before running the script
-document.addEventListener("DOMContentLoaded", function() {
-    // Get the current year based on the user's local timezone
-    const currentYear = new Date().getFullYear();
+// Get the current year and update the span element
+document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // Update the year in the span element
-    const yearSpan = document.getElementById('year');
-    if (yearSpan) {
-        yearSpan.textContent = currentYear;
-    } else {
-        console.error('Element with ID "year" not found.');
-    }
-});
