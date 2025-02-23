@@ -13,7 +13,6 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',  // Default profile status
             maintenanceMode: false,    // Default maintenance mode
-            focusOutline: 'enabled',   // Default focus outline setting (enabled means outlines show)
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -39,19 +38,6 @@ class SettingsManager {
             textSizeSelect.value = this.settings.textSize;
             textSizeSelect.addEventListener('change', (e) => {
                 this.setTextSize(e.target.value);
-            });
-        }
-
-        // Focus Outline Toggle
-        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-        if (focusOutlineToggle) {
-            focusOutlineToggle.checked = this.settings.focusOutline === 'enabled';
-            focusOutlineToggle.addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    this.enableFocusOutline();
-                } else {
-                    this.disableFocusOutline();
-                }
             });
         }
 
@@ -87,9 +73,6 @@ class SettingsManager {
 
         // Footer Year Update
         this.updateFooterYear();
-
-        // Remove focus outline from buttons (if needed)
-        this.disableFocusOutlineOnButtons();
     }
 
     applySettings() {
@@ -144,20 +127,6 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    // Disable focus outline globally
-    disableFocusOutline() {
-        document.body.classList.add('focus-outline-disabled'); // This class removes outlines from all focused elements
-        this.settings.focusOutline = 'disabled';
-        this.saveSettings();
-    }
-
-    // Enable focus outline globally
-    enableFocusOutline() {
-        document.body.classList.remove('focus-outline-disabled');
-        this.settings.focusOutline = 'enabled';
-        this.saveSettings();
-    }
-
     // Remove focus outline from all buttons (for extra measure)
     disableFocusOutlineOnButtons() {
         document.querySelectorAll('button').forEach(button => {
@@ -179,7 +148,6 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',
             maintenanceMode: false,
-            focusOutline: 'enabled',
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -190,13 +158,11 @@ class SettingsManager {
         const textSizeSelect = document.getElementById('text-size');
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
-        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
-        if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
     }
 
     // Set Maintenance Mode
