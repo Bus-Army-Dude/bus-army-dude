@@ -844,50 +844,42 @@ body {
     font-weight: 500;
 }
 
-/* OS Info Styling */
+/* OS Info Styling (matches version/build number theme) */
 .os-info {
-    font-size: 1.1em;
-    background: var(--bg-color, #2f2f2f); /* Dark background */
-    color: var(--text-color, #f5f5f5); /* Light text color */
-    padding: 12px 20px;
+    font-family: monospace;
+    font-size: 1.2em;
+    background: var(--bg-color);
+    padding: 12px 15px;
     border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 15px;
-    border-left: 6px solid var(--hover-color, #3498db); /* Border to match theme */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    transition: background 0.3s ease, border-left 0.3s ease;
+    gap: 10px;
+    border-left: 4px solid var(--accent-color);
 }
 
-/* Before pseudo-element to add "Operating System:" label */
 .os-info::before {
     content: "Operating System:";
-    color: var(--secondary-text, #bbb); /* Light color for the label */
+    color: var(--secondary-text);
     font-weight: 500;
-    margin-right: 10px;
 }
 
-/* Device Model Styling */
+/* Device Model Styling (matches version/build number theme) */
 .device-info {
-    font-size: 1.1em;
-    background: var(--bg-color, #2f2f2f); /* Dark background */
-    color: var(--text-color, #f5f5f5); /* Light text color */
-    padding: 12px 20px;
+    font-family: monospace;
+    font-size: 1.2em;
+    background: var(--bg-color);
+    padding: 12px 15px;
     border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 15px;
-    border-left: 6px solid var(--hover-color, #3498db); /* Border to match theme */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    transition: background 0.3s ease, border-left 0.3s ease;
+    gap: 10px;
+    border-left: 4px solid var(--accent-color);
 }
 
-/* Before pseudo-element to add "Device Model:" label */
 .device-info::before {
     content: "Device Model:";
-    color: var(--secondary-text, #bbb); /* Light color for the label */
+    color: var(--secondary-text);
     font-weight: 500;
-    margin-right: 10px;
 }
 
 /* Update Time Styling */
