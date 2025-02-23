@@ -1001,6 +1001,20 @@ body {
     box-shadow: 0 4px 6px var(--shadow-color);
 }
 
+/* Watermark Text */
+.watermark {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);  /* Semi-transparent white */
+    font-weight: bold;
+    z-index: 9999;
+    pointer-events: none; /* Makes the watermark non-interactive */
+    opacity: 0.5;
+    text-transform: uppercase;
+}
+
 /* Copy Protection */
 * {
     -webkit-user-select: none;
