@@ -250,6 +250,8 @@ body {
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
+    justify-content: center; /* Center text in button */
+    min-width: 160px; /* Ensure the button has a decent width */
 }
 
 .social-button:hover {
@@ -260,7 +262,13 @@ body {
 .social-icon {
     width: 28px;
     height: 28px;
-    margin-right: 15px;
+    margin-right: 12px; /* Less space between icon and text */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+/* Adjust text alignment in the button */
+.social-button span {
+    text-align: center;
 }
 
 /* Useful Links Section */
