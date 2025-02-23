@@ -242,7 +242,7 @@ body {
 .social-button {
     display: flex;
     align-items: center;
-    justify-content: center; /* Ensures the text is centered */
+    justify-content: center; /* Ensures text is centered */
     padding: 14px 24px;
     background-color: var(--accent-color);
     border-radius: 25px;
@@ -251,6 +251,8 @@ body {
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
+    width: auto; /* Let the width adjust according to content */
+    min-width: 200px; /* Set a min-width for consistency */
 }
 
 .social-button:hover {
@@ -259,10 +261,14 @@ body {
 }
 
 .social-button .social-icon {
-    font-size: 20px; /* Adjust size */
-    margin-right: 15px;
+    font-size: 20px; /* Adjust icon size */
+    margin-right: 15px; /* Space between icon and text */
     color: var(--icon-color); /* Set icon color based on theme */
-    flex-shrink: 0; /* Prevents icon from shrinking */
+    flex-shrink: 0; /* Prevent shrinking of the icon */
+}
+
+.social-button span {
+    flex-grow: 1; /* Ensures text is centered when icon is on the left */
 }
 
 /* Theme-specific icon color */
