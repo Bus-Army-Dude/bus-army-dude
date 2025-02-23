@@ -213,15 +213,6 @@ class SettingsManager {
         }
     }
 
-    // Update the footer year
-    updateFooterYear() {
-        const currentYear = new Date().getFullYear();
-        const yearElement = document.getElementById('current-year');
-        if (yearElement) {
-            yearElement.textContent = currentYear;
-        }
-    }
-
     // Set profile status manually (for owner)
     setProfileStatusManually(status) {
         if (['online', 'idle', 'offline'].includes(status)) {
