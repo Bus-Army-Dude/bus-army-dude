@@ -794,7 +794,6 @@ body {
     gap: 15px;
 }
 
-/* Version Header */
 .version-header {
     font-size: 1.6em;
     font-weight: 700;
@@ -810,18 +809,19 @@ body {
 .info-container {
     font-family: monospace;
     font-size: 1.2em;
-    background: var(--bg-color);
+    background-color: #1c1c1c; /* Dark background */
     padding: 12px 15px;
-    border-radius: 8px;
+    border-radius: 8px; /* Rounded corners */
     display: flex;
     align-items: center;
     gap: 10px;
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid #3df936; /* Green border on the left */
+    color: #ccc; /* Light text color */
 }
 
-/* Version Number */
+/* Version Number Styling */
 .version-number {
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid #3df936;
 }
 
 .version-number::before {
@@ -830,9 +830,9 @@ body {
     font-weight: 500;
 }
 
-/* Build Number */
+/* Build Number Styling */
 .build-number {
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid #3df936;
 }
 
 .build-number::before {
@@ -841,9 +841,9 @@ body {
     font-weight: 500;
 }
 
-/* Operating System */
+/* OS Info Styling */
 .os-info {
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid #3df936; /* Green border to match the others */
 }
 
 .os-info::before {
@@ -852,9 +852,9 @@ body {
     font-weight: 500;
 }
 
-/* Device Model */
+/* Device Model Styling */
 .device-info {
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid #3df936; /* Green border to match the others */
 }
 
 .device-info::before {
@@ -863,17 +863,9 @@ body {
     font-weight: 500;
 }
 
-/* Update Time */
+/* Update Time Styling */
 .update-time {
-    font-family: monospace;
-    font-size: 1.1em;
-    background: var(--bg-color);
-    padding: 12px 15px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-left: 4px solid var(--hover-color);
+    border-left: 4px solid #3df936; /* Green border to match the others */
 }
 
 .update-time::before {
@@ -882,7 +874,7 @@ body {
     font-weight: 500;
 }
 
-/* Countdown */
+/* Countdown Styling */
 .countdown {
     font-size: 1.2em;
     font-weight: 600;
@@ -895,7 +887,7 @@ body {
     margin-top: 10px;
 }
 
-/* Version Info Container */
+/* Version Info Container for better spacing */
 .version-info-container {
     display: flex;
     flex-direction: column;
@@ -912,7 +904,7 @@ body {
         font-size: 1.4em;
     }
 
-    .info-container, .update-time {
+    .info-container {
         font-size: 1em;
         padding: 10px 12px;
     }
