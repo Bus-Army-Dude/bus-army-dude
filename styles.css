@@ -242,6 +242,7 @@ body {
 .social-button {
     display: flex;
     align-items: center;
+    justify-content: center; /* Ensures the text is centered */
     padding: 14px 24px;
     background-color: var(--accent-color);
     border-radius: 25px;
@@ -257,11 +258,11 @@ body {
     transform: scale(1.05);
 }
 
-/* Font Awesome Icons */
 .social-button .social-icon {
     font-size: 20px; /* Adjust size */
     margin-right: 15px;
     color: var(--icon-color); /* Set icon color based on theme */
+    flex-shrink: 0; /* Prevents icon from shrinking */
 }
 
 /* Theme-specific icon color */
