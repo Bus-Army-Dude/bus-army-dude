@@ -241,6 +241,6 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Get the current year and update the span element
-document.getElementById('current-year').textContent = new Date().getFullYear();
+// Get the current year dynamically
+document.getElementById('year').textContent = new Date().getFullYear();
 
