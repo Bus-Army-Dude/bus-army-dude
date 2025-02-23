@@ -268,3 +268,6 @@ window.addEventListener('load', function() {
         banner.style.display = 'flex';
     }
 });
+
+// Get the current year dynamically
+document.getElementById('year').textContent = new Date().getFullYear();
