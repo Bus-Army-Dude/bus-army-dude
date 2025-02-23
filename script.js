@@ -198,36 +198,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add keyboard navigation
-    faqItems.forEach((item, index) => {
-        const question = item.querySelector('.faq-question');
-
-        question.addEventListener('keydown', (e) => {
-            switch(e.key) {
-                case 'ArrowDown':
-                    e.preventDefault();
-                    if (index < faqItems.length - 1) {
-                        faqItems[index + 1].querySelector('.faq-question').focus();
-                    }
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    if (index > 0) {
-                        faqItems[index - 1].querySelector('.faq-question').focus();
-                    }
-                    break;
-                case 'Home':
-                    e.preventDefault();
-                    faqItems[0].querySelector('.faq-question').focus();
-                    break;
-                case 'End':
-                    e.preventDefault();
-                    faqItems[faqItems.length - 1].querySelector('.faq-question').focus();
-                    break;
-            }
-        });
-    });
-
     // Close FAQ when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.faq-item')) {
