@@ -220,6 +220,20 @@ body {
     flex: 1;
 }
 
+/* Root (Light Mode) */
+:root {
+    --icon-color-light: #000; /* Dark color for icons in light mode */
+    --icon-color-dark: #fff;  /* Light color for icons in dark mode */
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --icon-color-light: #fff;  /* Light color for icons in dark mode */
+        --icon-color-dark: #000;   /* Dark color for icons in dark mode */
+    }
+}
+
 /* Social Links Section */
 .social-links-section {
     background-color: var(--content-bg);
@@ -264,12 +278,20 @@ body {
     height: 28px;
     margin-right: 12px; /* Space between icon and text */
     flex-shrink: 0; /* Prevent icon from shrinking */
+    fill: var(--icon-color-light); /* Icon color in light mode */
 }
 
 /* Adjust text alignment in the button */
 .social-button span {
     text-align: center;
     flex-grow: 1; /* Make the text take remaining space */
+}
+
+/* Dark Mode Icon Color */
+@media (prefers-color-scheme: dark) {
+    .social-icon {
+        fill: var(--icon-color-dark); /* Icon color in dark mode */
+    }
 }
 
 /* Useful Links Section */
