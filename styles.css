@@ -220,18 +220,72 @@ body {
     flex: 1;
 }
 
-/* Root (Light Mode) */
+/* Theme Variables */
 :root {
-    --icon-color-light: #000; /* Dark color for icons in light mode */
-    --icon-color-dark: #fff;  /* Light color for icons in dark mode */
+    /* Light Mode Colors */
+    --light-bg: #ffffff;
+    --light-content-bg: #f5f5f5;
+    --light-text: #212529;
+    --light-secondary-text: #495057;
+    --light-border: #dee2e6;
+    --light-accent: #4CAF50;
+    --light-hover: #45a049;
+    --light-link: #007bff;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    
+    /* Dark Mode Colors */
+    --dark-bg: #121212;
+    --dark-content-bg: #2d2d2d;
+    --dark-text: #E0E0E0;
+    --dark-secondary-text: #a0a0a0;
+    --dark-border: #333333;
+    --dark-accent: #4CAF50;
+    --dark-hover: #45a049;
+    --dark-link: #BB86FC;
+    --dark-shadow: rgba(0, 0, 0, 0.2);
+    
+    /* Default Theme (Dark) */
+    --bg-color: var(--dark-bg);
+    --content-bg: var(--dark-content-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --hover-color: var(--dark-hover);
+    --link-color: var(--dark-link);
+    --shadow-color: var(--dark-shadow);
 }
 
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --icon-color-light: #fff;  /* Light color for icons in dark mode */
-        --icon-color-dark: #000;   /* Dark color for icons in dark mode */
-    }
+/* Theme Classes */
+.light-mode {
+    --bg-color: var(--light-bg);
+    --content-bg: var(--light-content-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary-text);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --hover-color: var(--light-hover);
+    --link-color: var(--light-link);
+    --shadow-color: var(--light-shadow);
+}
+
+.dark-mode {
+    --bg-color: var(--dark-bg);
+    --content-bg: var(--dark-content-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --hover-color: var(--dark-hover);
+    --link-color: var(--dark-link);
+    --shadow-color: var(--dark-shadow);
+}
+
+/* General Styles */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
 }
 
 /* Social Links Section */
@@ -253,6 +307,7 @@ body {
     margin-top: 20px;
 }
 
+/* Social Button */
 .social-button {
     display: flex;
     align-items: center;
@@ -264,8 +319,6 @@ body {
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
-    justify-content: space-between; /* Space between icon and text */
-    min-width: 160px; /* Ensure button width */
 }
 
 .social-button:hover {
@@ -273,24 +326,38 @@ body {
     transform: scale(1.05);
 }
 
+/* Social Icon Styling */
 .social-icon {
     width: 28px;
     height: 28px;
-    margin-right: 12px; /* Space between icon and text */
-    flex-shrink: 0; /* Prevent icon from shrinking */
-    fill: var(--icon-color-light); /* Icon color in light mode */
+    margin-right: 15px;
+    color: inherit; /* Makes icon color inherit from parent */
 }
 
-/* Adjust text alignment in the button */
-.social-button span {
-    text-align: center;
-    flex-grow: 1; /* Make the text take remaining space */
+/* Light Mode Icon Color */
+.light-mode .social-icon {
+    color: #333; /* Dark color for light mode */
 }
 
 /* Dark Mode Icon Color */
-@media (prefers-color-scheme: dark) {
-    .social-icon {
-        fill: var(--icon-color-dark); /* Icon color in dark mode */
+.dark-mode .social-icon {
+    color: #fff; /* Light color for dark mode */
+}
+
+/* Hover Effects for Icons */
+.light-mode .social-button:hover .social-icon {
+    color: #4CAF50; /* Green icon on hover in light mode */
+}
+
+.dark-mode .social-button:hover .social-icon {
+    color: #BB86FC; /* Purple icon on hover in dark mode */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .social-links-container {
+        flex-direction: column;
+        align-items: center;
     }
 }
 
