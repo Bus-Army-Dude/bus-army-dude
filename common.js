@@ -84,3 +84,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Function to accept cookies and hide the banner
+function acceptCookies() {
+    document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
+}
+
+// Check if cookies have been accepted on page load
+window.addEventListener('load', function() {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (!banner) return;
+
+    const cookies = document.cookie.split('; ');
+    const consentCookie = cookies.find(row => row.startsWith('cookieConsent='));
+    if (consentCookie && consentCookie.split('=')[1] === 'true') {
+        banner.style.display = 'none';
+    } else {
+        banner.style.display = 'flex';
+    }
+});
