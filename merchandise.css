@@ -103,10 +103,12 @@ body {
 
 .product-container .product-image {
     width: 100%; /* Ensure image takes up the full width of the container */
-    height: 150px; /* Set a specific height for the image */
-    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    height: auto; /* Automatically adjust height based on width to maintain aspect ratio */
+    max-height: 200px; /* Set a max height to prevent the image from becoming too large */
+    object-fit: contain; /* Ensures the image stays inside the container without stretching */
     border-radius: 8px;
     position: relative;
+    margin-bottom: 15px; /* Adds spacing below the image to separate it from the text */
 }
 
 .product-container .sale-ribbon,
