@@ -95,7 +95,6 @@ body {
     padding: 20px;
     box-shadow: var(--shadow-color);
     position: relative;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
@@ -106,23 +105,23 @@ body {
     transform: translateY(-5px);
 }
 
-/* Image Wrapper for Thumbnail with Aspect Ratio */
+/* Image Wrapper for Thumbnail */
 .product-container .product-image-wrapper {
-    width: 100%;
-    aspect-ratio: 16 / 9; /* Set desired aspect ratio; adjust as needed */
+    width: calc(100% - 20px); /* Ensure image wrapper has side margins */
+    height: 120px;  /* Fixed height for thumbnail image */
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 15px;
+    margin: 0 10px 15px; /* 10px margin on left and right, 15px below */
     position: relative;
 }
 
 /* Product Image */
 .product-container .product-image-wrapper img {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;  /* Ensures full image is visible without distortion */
+    object-fit: contain;  /* Show entire image without distortion */
     object-position: center;
-    display: block;
 }
 
 /* Ribbons Overlapping the Image */
@@ -217,23 +216,25 @@ footer p {
         flex-direction: column;
         align-items: flex-start;
     }
-
+    
     .categories-dropdown select {
         font-size: 0.9rem;
     }
-
+    
     .product-section .section-header {
         font-size: 1rem;
     }
-
+    
     .product-container {
         padding: 15px;
     }
-
+    
     .product-container .product-image-wrapper {
-        aspect-ratio: 16 / 9;
+        height: 100px;
+        width: calc(100% - 20px);
+        margin: 0 10px 15px;
     }
-
+    
     footer p {
         font-size: 0.8rem;
     }
