@@ -4,38 +4,15 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // Sample product data
 const products = [
     {
-        title: 'Product 1',
-        price: 19.99,
-        originalPrice: 29.99,
-        description: 'A great product!',
-        image: 'product-image1.jpg',
-        onSale: true,
-        stockStatus: 'In Stock',
-        category: 'all', // Added category for filtering
-        link: 'product-link1.html'
-    },
-    {
-        title: 'Product 2',
-        price: 15.99,
-        originalPrice: 25.99,
-        description: 'Another awesome product!',
-        image: 'product-image2.jpg',
+        title: 'Autism Mode Puzzele Heart Baby Onesie',
+        price: 24.00,
+        description: "Embrace uniqueness with our Autism Mode baby onesie. Made of ultrasoft fabric, this lightweight onesie is perfect for active babies. Featuring a colorful puzzle heart logo and a bold 'AUTISM MODE' switch, it's a statement piece for supporting autism awareness.",
+        image: 'product_images/autism-mode.webp',
         onSale: false,
-        stockStatus: 'Low Stock',
-        category: 'hats', // Added category for filtering
-        link: 'product-link2.html'
-    },
-    {
-        title: 'Product 3',
-        price: 22.99,
-        originalPrice: 35.99,
-        description: 'Perfect for the outdoors!',
-        image: 'product-image3.jpg',
-        onSale: true,
         stockStatus: 'In Stock',
-        category: 'outdoor', // Added category for filtering
-        link: 'product-link3.html'
-    },
+        category: 'baby-toddler', // Added category for filtering
+        link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-mode-puzzle-heart-baby-onesie",
+    }
     // Add more products as needed
 ];
 
