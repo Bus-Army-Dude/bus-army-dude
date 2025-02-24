@@ -1589,3 +1589,13 @@ footer {
         font-size: 0.95em;
     }
 }
+
+/* Default focus outline style */
+:focus {
+    outline: 2px solid #4CAF50; /* Example: Green outline */
+}
+
+/* If the 'focus-outline-disabled' class is added to the body, remove the outline */
+body.focus-outline-disabled :focus {
+    outline: none; /* No outline when focus outline is disabled */
+}
