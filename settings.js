@@ -136,9 +136,9 @@ class SettingsManager {
     // Focus outline enabling and disabling
     toggleFocusOutline(enable) {
         if (enable) {
-            document.body.classList.add('focus-outline');
+            document.body.classList.remove('focus-outline-disabled');
         } else {
-            document.body.classList.remove('focus-outline');
+            document.body.classList.add('focus-outline-disabled');
         }
         this.settings.focusOutline = enable ? 'enabled' : 'disabled';
         this.saveSettings();
