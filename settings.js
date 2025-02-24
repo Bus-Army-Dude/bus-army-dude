@@ -13,6 +13,7 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',  // Default profile status
             maintenanceMode: false,    // Default maintenance mode
+            focusOutline: 'enabled'    // Default focus outline setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -73,6 +74,15 @@ class SettingsManager {
 
         // Footer Year Update
         this.updateFooterYear();
+
+        // Focus Outline Toggle
+        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
+        if (focusOutlineToggle) {
+            focusOutlineToggle.checked = this.settings.focusOutline === 'enabled';
+            focusOutlineToggle.addEventListener('change', (e) => {
+                this.toggleFocusOutline(e.target.checked);
+            });
+        }
     }
 
     applySettings() {
@@ -80,13 +90,9 @@ class SettingsManager {
         this.setTextSize(this.settings.textSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
-        if (this.settings.focusOutline === 'enabled') {
-            this.enableFocusOutline();
-        } else {
-            this.disableFocusOutline();
-        }
+        this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
     }
-    
+
     // Set the profile status
     setProfileStatus(status) {
         this.settings.profileStatus = status;
@@ -127,13 +133,15 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    // Remove focus outline from all buttons (for extra measure)
-    disableFocusOutlineOnButtons() {
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('focus', (e) => {
-                e.target.style.outline = 'none';
-            });
-        });
+    // Focus outline enabling and disabling
+    toggleFocusOutline(enable) {
+        if (enable) {
+            document.body.classList.add('focus-outline');
+        } else {
+            document.body.classList.remove('focus-outline');
+        }
+        this.settings.focusOutline = enable ? 'enabled' : 'disabled';
+        this.saveSettings();
     }
 
     // Save settings to localStorage
@@ -148,6 +156,7 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',
             maintenanceMode: false,
+            focusOutline: 'enabled'  // Default focus outline setting
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -158,11 +167,13 @@ class SettingsManager {
         const textSizeSelect = document.getElementById('text-size');
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
+        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
+        if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
     }
 
     // Set Maintenance Mode
@@ -200,15 +211,6 @@ class SettingsManager {
             footerYear.textContent = new Date().getFullYear();
         }
     }
-
-    // Focus outline enabling and disabling
-    enableFocusOutline() {
-        document.body.classList.add('focus-outline');
-    }
-
-    disableFocusOutline() {
-        document.body.classList.remove('focus-outline');
-    }
 }
 
 // Initialize SettingsManager when the page loads
@@ -221,12 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Manually set profile status
     settingsManager.setProfileStatusManually('offline');
 });
-
-// Adjust text size function (if used in onchange attribute)
-function adjustTextSize(size) {
-    document.body.classList.remove('text-default', 'text-large', 'text-larger');
-    document.body.classList.add('text-' + size);
-}
 
 // Function to accept cookies and hide the banner
 function acceptCookies() {
