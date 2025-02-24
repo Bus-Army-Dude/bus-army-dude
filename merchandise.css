@@ -98,6 +98,7 @@ body {
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    height: 100%; /* Ensure the container takes full height */
 }
 
 .product-container:hover {
@@ -105,11 +106,11 @@ body {
 }
 
 .product-container .product-image {
-    width: 100%; /* Ensure it takes full width of the container */
+    width: 100%; /* Ensures the image takes full width of the container */
     height: 200px; /* Fixed height for the image */
-    object-fit: contain; /* Maintains the image's aspect ratio */
+    object-fit: cover; /* Ensures image doesn't stretch */
     border-radius: 10px;
-    margin: 0 auto 15px; /* Centers the image and gives space below */
+    margin-bottom: 15px; /* Adds space between image and other content */
     position: relative;
 }
 
@@ -135,6 +136,7 @@ body {
     right: 10px;
 }
 
+/* Content below image */
 .product-container .product-title {
     margin-top: 15px;
     font-size: 1.2rem;
