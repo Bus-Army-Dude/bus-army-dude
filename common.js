@@ -8,7 +8,7 @@ class CommonManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 16,
+            fontSize: 'default',
             focusOutlineDisabled: false // Default is false, meaning focus outline is enabled initially
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -37,7 +37,7 @@ class CommonManager {
     applySettings() {
         this.applyTheme(this.settings.darkMode);
         this.setFontSize(this.settings.fontSize);
-        this.applyFocusOutlineSetting();
+        this.applyFocusOutlineSetting(); // Apply the focus outline setting here
     }
 
     applyTheme(isDark = this.settings.darkMode) {
@@ -55,7 +55,7 @@ class CommonManager {
     }
 
     applyFocusOutlineSetting() {
-        // Now the logic is reversed: if focusOutlineDisabled is true, the outline is removed
+        // Apply or remove the class that disables focus outlines
         if (this.settings.focusOutlineDisabled) {
             document.body.classList.add('focus-outline-disabled');
         } else {
@@ -82,28 +82,5 @@ document.addEventListener('DOMContentLoaded', () => {
         focusOutlineToggle.addEventListener('change', () => {
             window.commonManager.toggleFocusOutline();
         });
-    }
-});
-
-// Function to accept cookies and hide the banner
-function acceptCookies() {
-    document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
-    const banner = document.getElementById('cookie-consent-banner');
-    if (banner) {
-        banner.style.display = 'none';
-    }
-}
-
-// Check if cookies have been accepted on page load
-window.addEventListener('load', function() {
-    const banner = document.getElementById('cookie-consent-banner');
-    if (!banner) return;
-
-    const cookies = document.cookie.split('; ');
-    const consentCookie = cookies.find(row => row.startsWith('cookieConsent='));
-    if (consentCookie && consentCookie.split('=')[1] === 'true') {
-        banner.style.display = 'none';
-    } else {
-        banner.style.display = 'flex';
     }
 });
