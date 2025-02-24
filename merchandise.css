@@ -167,7 +167,7 @@ body {
 }
 
 /* Footer */
-.footer {
+footer {
     background-color: var(--content-bg);
     padding: 20px;
     text-align: center;
@@ -175,7 +175,7 @@ body {
     border-top: 1px solid var(--border-color);
 }
 
-.footer p {
+footer p {
     color: var(--secondary-text);
     font-size: 0.9rem;
 }
@@ -203,7 +203,7 @@ body {
         height: 180px;
     }
 
-    .footer p {
+    footer p {
         font-size: 0.8rem;
     }
 }
