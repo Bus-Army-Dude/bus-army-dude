@@ -142,6 +142,18 @@ body {
     color: var(--accent-color);
 }
 
+.product-container .product-price .original-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.product-container .product-price .discounted-price {
+    color: var(--highlight-color); /* Highlight sale price */
+    font-weight: bold;
+}
+
 .product-container .product-description {
     margin-top: 10px;
     font-size: 0.9rem;
