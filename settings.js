@@ -192,20 +192,37 @@ class SettingsManager {
     setMaintenanceModeManually(isEnabled) {
         this.setMaintenanceMode(isEnabled);
     }
+
+    // Dynamically update footer year
+    updateFooterYear() {
+        const footerYear = document.getElementById('year');
+        if (footerYear) {
+            footerYear.textContent = new Date().getFullYear();
+        }
+    }
+
+    // Focus outline enabling and disabling
+    enableFocusOutline() {
+        document.body.classList.add('focus-outline');
+    }
+
+    disableFocusOutline() {
+        document.body.classList.remove('focus-outline');
+    }
 }
 
 // Initialize SettingsManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
-    // Example: Set maintenance mode manually
+    // Manually set maintenance mode
     settingsManager.setMaintenanceModeManually(false);
 
-    // Example: Set profile status manually
+    // Manually set profile status
     settingsManager.setProfileStatusManually('offline');
 });
 
-// Function to adjust text size (if called from inline onchange attribute)
+// Adjust text size function (if used in onchange attribute)
 function adjustTextSize(size) {
     document.body.classList.remove('text-default', 'text-large', 'text-larger');
     document.body.classList.add('text-' + size);
@@ -213,7 +230,6 @@ function adjustTextSize(size) {
 
 // Function to accept cookies and hide the banner
 function acceptCookies() {
-    // Set a cookie indicating the user has accepted cookies for 1 year
     document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
     const banner = document.getElementById('cookie-consent-banner');
     if (banner) {
@@ -221,7 +237,7 @@ function acceptCookies() {
     }
 }
 
-// Check if the user has already accepted the cookies on page load
+// Check if cookies have been accepted on page load
 window.addEventListener('load', function() {
     const banner = document.getElementById('cookie-consent-banner');
     if (!banner) return;
@@ -234,6 +250,3 @@ window.addEventListener('load', function() {
         banner.style.display = 'flex';
     }
 });
-
-// Get the current year dynamically
-document.getElementById('year').textContent = new Date().getFullYear();
