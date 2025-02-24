@@ -47,9 +47,14 @@ body.settings-page {
     font-size: var(--font-size-base);
 }
 
-/* Default focus indicator for interactive elements */
-a:focus, button:focus, .toggle-switch:focus, input:focus {
-    outline: 3px solid var(--focus-outline-color);
+/* Default focus outline styling */
+:focus {
+    outline: 3px solid #4CAF50; /* Green outline for accessibility */
+}
+
+/* Class to disable focus outlines */
+.focus-outline-disabled :focus {
+    outline: none;
 }
 
 /* Skip Link */
