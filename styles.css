@@ -176,6 +176,38 @@ body {
     }
 }
 
+/* Merch Button */
+.merch-button {
+    position: absolute;
+    top: 20px;
+    left: 20px; /* Positioned to the left */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: url('gift-bag-icon.png') center/18px no-repeat; /* Use your gift bag icon here */
+    background-color: #ff9900; /* Orange background for Merch button */
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.merch-button:hover {
+    transform: rotate(45deg);
+    background-color: #cc7a00; /* Darker orange on hover */
+}
+
+/* Responsive adjustments for the Merch Button */
+@media screen and (max-width: 768px) {
+    .merch-button {
+        width: 25px;
+        height: 25px;
+        top: 15px;
+        background-size: 15px;
+    }
+}
+
 /* Current Date/Time Section */
 .datetime-section {
     background-color: var(--content-bg);
