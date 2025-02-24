@@ -99,9 +99,11 @@ body {
 
 .product-container .product-image {
     width: 100%;
-    height: 200px; /* Ensure image doesn't get too big */
-    object-fit: cover; /* Prevent image distortion */
+    height: auto;
+    max-height: 200px; /* Prevent image from getting too big */
+    object-fit: cover; /* Ensure image is cropped without distortion */
     border-radius: 8px;
+    margin-bottom: 15px; /* Space for title and description */
 }
 
 .product-container .sale-ribbon,
