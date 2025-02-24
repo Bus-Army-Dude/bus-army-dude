@@ -102,9 +102,9 @@ body {
 }
 
 .product-container .product-image {
-    width: 100%;
-    max-height: 200px; /* Limit the image height */
-    object-fit: contain; /* Ensure image retains aspect ratio */
+    width: 100%; /* Ensure image takes up the full width of the container */
+    height: 150px; /* Set a specific height for the image */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
     border-radius: 8px;
     position: relative;
 }
