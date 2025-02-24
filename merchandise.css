@@ -108,7 +108,8 @@ body {
 /* Product Image Wrapper */
 .product-container .product-image-wrapper {
     width: 100%;
-    height: 200px; /* Adjust height to accommodate the image size */
+    height: auto; /* Adjust height to fit the image size */
+    max-height: 200px; /* Set a maximum height for the image */
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 15px;
@@ -238,7 +239,8 @@ footer p {
     }
 
     .product-container .product-image-wrapper {
-        height: 180px; /* Slightly smaller image height on mobile */
+        height: auto; /* Adjust height to fit the image size */
+        max-height: 180px; /* Set a maximum height for the image */
     }
 
     footer p {
