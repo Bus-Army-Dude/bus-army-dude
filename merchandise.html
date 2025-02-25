@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> <!-- Removed the "no-js" class -->
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +8,8 @@
     <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="merchandise.css">
-
-    <!-- Meta tag to refresh the page every 300 seconds -->
     <meta http-equiv="refresh" content="300">
 
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -22,7 +18,6 @@
       gtag('config', 'G-E0RSQS1MS7');
     </script>
 
-    <!-- Favicons and Icons -->
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
@@ -33,14 +28,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff"/>
-
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration -->
-    <meta name="browserconfig" content="/browserconfig.xml">
 </head>
-
 <body>
     <!-- Header Section -->
     <header>
@@ -50,27 +38,15 @@
         </div>
     </header>
 
-   <!-- Category List -->
-<ul id="category-list">
-    <li><a href="#" onclick="filterCategory('All Products')">All Products</a></li>
-    <li><a href="#" onclick="filterCategory('Outdoor')">Outdoor</a></li>
-    <li><a href="#" onclick="filterCategory('Hats')">Hats</a></li>
-    <li><a href="#" onclick="filterCategory('Hoodies & Sweatshirts')">Hoodies & Sweatshirts</a></li>
-    <li><a href="#" onclick="filterCategory('T-shirts')">T-shirts</a></li>
-    <li><a href="#" onclick="filterCategory('Baby & Toddler')">Baby & Toddler</a></li>
-    <li><a href="#" onclick="filterCategory('Kitchenwear')">Kitchenwear</a></li>
-    <li><a href="#" onclick="filterCategory('Accessories')">Accessories</a></li>
-</ul>
+    <!-- Category List -->
+    <ul id="category-list"></ul> <!-- This will be populated dynamically -->
 
-<!-- Title & Product Count -->
-<h2 id="section-title">All Products</h2>
-<p id="product-count">4 products</p>
+    <!-- Title & Product Count -->
+    <h2 id="section-title">All Products</h2>
+    <p id="product-count">0 products</p>
 
-<!-- Product Grid -->
-<div id="product-grid">
-    <!-- Products will be dynamically rendered here -->
-</div>
-    </section>
+    <!-- Product Grid -->
+    <div id="product-grid"></div>
 
     <!-- Footer Section -->
     <footer>
@@ -78,11 +54,10 @@
     </footer>
 
     <!-- JavaScript files -->
-    <script src="common.js"></script>  <!-- Includes all common logic for theme, font size, etc. -->
-    <script src="script.js"></script>  <!-- Any custom script specific to the page -->
-    <script src="ai-features.js"></script> <!-- AI-related features, if any -->
-    <script src="settings.js"></script>  <!-- Keeping settings.js as requested -->
-    <script src="merchandise.js"></script> <!-- Handling product/category logic -->
+    <script src="common.js"></script>
+    <script src="script.js"></script>
+    <script src="ai-features.js"></script>
+    <script src="settings.js"></script>
+    <script src="merchandise.js"></script> <!-- This will handle product/category logic -->
 </body>
-
 </html>
