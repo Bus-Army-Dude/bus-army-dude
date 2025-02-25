@@ -105,23 +105,21 @@ body {
     transform: translateY(-5px);
 }
 
-/* Remove or reduce padding on the right */
+/* Adjust the image container */
 .product-container .product-image-wrapper {
     width: 100%;
-    height: auto;
-    max-height: 200px;
+    height: 200px; /* Fixed height to control layout */
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 15px;
-    /* padding-right: 0; */ /* Set this to 0 or remove entirely */
     position: relative;
 }
 
-/* Adjusted Product Image */
+/* Fixed image scaling */
 .product-container .product-image-wrapper img {
     display: block;
     width: 100%; /* Ensure the image scales with the container */
-    height: auto; /* Keep aspect ratio intact */
+    height: 100%; /* Fill the height */
     object-fit: cover; /* Ensures the image covers the container without distortion */
     object-position: center;
 }
@@ -240,8 +238,7 @@ footer p {
     }
 
     .product-container .product-image-wrapper {
-        height: auto; /* Adjust height to fit the image size */
-        max-height: 180px; /* Set a maximum height for the image */
+        height: 180px; /* Adjusted height for mobile */
     }
 
     footer p {
