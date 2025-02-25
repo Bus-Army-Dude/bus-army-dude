@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchandise - Bus Army Dude's Profile</title>
+    <title>Merchandise - Bus Army Dude Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
@@ -41,36 +42,33 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="title">Merchandise</div>
-                <button class="home-button" onclick="window.location.href='https://bus-army-dude.github.io/bus-army-dude/index.html'">Return to Home</button>
+    <!-- Header Section -->
+    <header>
+        <div class="header-content">
+            <h1>Merchandise</h1>
+            <button class="home-button" onclick="window.location.href='index.html'">Home</button>
         </div>
+    </header>
 
-        <div class="categories-dropdown">
-            <select id="category-select">
-                <option value="all">All Products</option>
-                <option value="outdoor">Outdoor</option>
-                <option value="hats">Hats</option>
-                <option value="hoodies-sweatshirts">Hoodies & Sweatshirts</option>
-                <option value="t-shirts">T-Shirts</option>
-                <option value="baby-toddler">Baby & Toddler</option>
-                <option value="kitchenwear">Kitchenwear</option>
-                <option value="accessories">Accessories</option>
-            </select>
+    <!-- Category Navigation -->
+    <nav class="category-nav">
+        <ul id="category-list">
+            <!-- Categories will be dynamically populated -->
+        </ul>
+    </nav>
+
+    <!-- Products Section -->
+    <section id="products-section">
+        <div class="section-header">
+            <h2 id="section-title">All Products</h2>
+            <span id="product-count">0 products</span>
         </div>
-
-        <div class="product-section" id="product-section">
-            <div class="section-header">
-                <span id="sectionTitle">All Products</span>
-                <span id="productCount" class="product-count">10 items</span>
-            </div>
-            <div class="products">
-                <!-- Products will be dynamically inserted by merchandise.js -->
-            </div>
+        <div class="product-grid" id="product-grid">
+            <!-- Product items will be dynamically populated here -->
         </div>
-    </div>
+    </section>
 
+    <!-- Footer Section -->
     <footer>
         <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
     </footer>
@@ -81,4 +79,5 @@
     <script src="settings.js"></script>
     <script src="merchandise.js"></script>
 </body>
+
 </html>
