@@ -3,17 +3,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const currentYear = new Date().getFullYear();
     document.getElementById("year").textContent = currentYear;
 
-    // Example categories
-    const categories = ["All Products", "Category 1", "Category 2", "Category 3"];
+    // Categories for filtering
+    const categories = ["All Products", "Outdoor", "Hats", "Hoodies & Sweatshirts", "T-shirts", "Baby & Toddler", "Kitchenwear", "Accessories"];
     const categoryList = document.getElementById("category-list");
-    
+
+    // Dynamically create category list in the navigation
     categories.forEach(category => {
         const li = document.createElement("li");
         li.innerHTML = `<a href="#" onclick="filterCategory('${category}')">${category}</a>`;
         categoryList.appendChild(li);
     });
 
-    // Example products data (this would typically come from your server)
+    // Example products data (with categories)
     const products = [
         {
             name: "Product 1",
@@ -23,7 +24,8 @@ document.addEventListener("DOMContentLoaded", function() {
             stock: "in-stock",
             sale: true,
             image: "product1.jpg",
-            link: "#"
+            link: "#",
+            category: "Outdoor" // Category assigned to the product
         },
         {
             name: "Product 2",
@@ -33,14 +35,28 @@ document.addEventListener("DOMContentLoaded", function() {
             stock: "low-stock",
             sale: false,
             image: "product2.jpg",
-            link: "#"
-        }
+            link: "#",
+            category: "Hats" // Category assigned to the product
+        },
+        {
+            name: "Product 3",
+            price: 15,
+            originalPrice: 25,
+            discount: 40,
+            stock: "out-of-stock",
+            sale: false,
+            image: "product3.jpg",
+            link: "#",
+            category: "T-shirts" // Category assigned to the product
+        },
+        // Add more products with their respective categories
     ];
 
     const productGrid = document.getElementById("product-grid");
     const sectionTitle = document.getElementById("section-title");
     const productCount = document.getElementById("product-count");
 
+    // Function to render products
     function renderProducts(products) {
         productGrid.innerHTML = "";
         productCount.textContent = `${products.length} products`;
@@ -70,8 +86,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to filter products by category
     window.filterCategory = function(category) {
         sectionTitle.textContent = category;
-        // Fetch products based on selected category (this can be done through AJAX or other methods)
-        renderProducts(products.filter(product => category === "All Products" || product.category === category));
+        // Filter products based on selected category
+        if (category === "All Products") {
+            renderProducts(products); // Show all products if "All Products" is selected
+        } else {
+            renderProducts(products.filter(product => product.category === category)); // Filter by selected category
+        }
     };
 });
 
