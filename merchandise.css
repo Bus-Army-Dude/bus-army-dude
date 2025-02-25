@@ -37,7 +37,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
-    flex-wrap: wrap; /* Ensures header content is flexible on smaller screens */
+    flex-wrap: wrap;
 }
 
 .header-content h1 {
@@ -80,7 +80,7 @@ header {
     display: flex;
     gap: 20px;
     justify-content: center;
-    flex-wrap: wrap; /* Allows navigation items to wrap on smaller screens */
+    flex-wrap: wrap;
 }
 
 .category-nav a {
@@ -281,7 +281,7 @@ footer span {
 @media (max-width: 1200px) {
     .header-content {
         flex-direction: column;
-        padding: 0 1rem; /* Adjust padding on medium screens */
+        padding: 0 1rem; 
     }
 
     .category-nav ul {
@@ -295,17 +295,17 @@ footer span {
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjust columns on smaller screens */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
     }
 }
 
 @media (max-width: 768px) {
     .header-content h1 {
-        font-size: 1.8rem; /* Adjust title font size */
+        font-size: 1.8rem; 
     }
 
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Adjust grid for smaller screens */
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
     }
 
     .product-item h3 {
@@ -324,16 +324,16 @@ footer span {
 
 @media (max-width: 480px) {
     .header-content h1 {
-        font-size: 1.6rem; /* Further decrease font size */
+        font-size: 1.6rem; 
     }
 
     .home-button {
         padding: 10px 20px;
-        font-size: 1rem; /* Adjust button size */
+        font-size: 1rem;
     }
 
     .product-item h3 {
-        font-size: 1.3rem; /* Adjust product title for smaller screens */
+        font-size: 1.3rem; 
     }
 
     .product-item .price {
