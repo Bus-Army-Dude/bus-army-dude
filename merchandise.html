@@ -50,22 +50,26 @@
         </div>
     </header>
 
-    <!-- Category Navigation -->
-    <nav class="category-nav">
-        <ul id="category-list">
-            <!-- Categories will be dynamically populated -->
-        </ul>
-    </nav>
+   <!-- Category List -->
+<ul id="category-list">
+    <li><a href="#" onclick="filterCategory('All Products')">All Products</a></li>
+    <li><a href="#" onclick="filterCategory('Outdoor')">Outdoor</a></li>
+    <li><a href="#" onclick="filterCategory('Hats')">Hats</a></li>
+    <li><a href="#" onclick="filterCategory('Hoodies & Sweatshirts')">Hoodies & Sweatshirts</a></li>
+    <li><a href="#" onclick="filterCategory('T-shirts')">T-shirts</a></li>
+    <li><a href="#" onclick="filterCategory('Baby & Toddler')">Baby & Toddler</a></li>
+    <li><a href="#" onclick="filterCategory('Kitchenwear')">Kitchenwear</a></li>
+    <li><a href="#" onclick="filterCategory('Accessories')">Accessories</a></li>
+</ul>
 
-    <!-- Products Section -->
-    <section id="products-section">
-        <div class="section-header">
-            <h2 id="section-title">All Products</h2>
-            <span id="product-count">0 products</span>
-        </div>
-        <div class="product-grid" id="product-grid">
-            <!-- Product items will be dynamically populated here -->
-        </div>
+<!-- Title & Product Count -->
+<h2 id="section-title">All Products</h2>
+<p id="product-count">4 products</p>
+
+<!-- Product Grid -->
+<div id="product-grid">
+    <!-- Products will be dynamically rendered here -->
+</div>
     </section>
 
     <!-- Footer Section -->
