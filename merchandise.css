@@ -118,9 +118,10 @@ body {
 /* Fixed image scaling */
 .product-container .product-image-wrapper img {
     display: block;
+    max-width: 100%; /* Ensure the image scales with the container */
     width: 100%; /* Ensure the image scales with the container */
     height: 100%; /* Fill the height */
-    object-fit: cover; /* Ensures the image covers the container without distortion */
+    object-fit: contain; /* Ensures the image fits within the container without distortion */
     object-position: center;
 }
 
