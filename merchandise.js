@@ -18,49 +18,41 @@ document.addEventListener("DOMContentLoaded", function() {
     // Example products data (with categories)
     const products = [
         {
-            name: "Outdoor Jacket",
-            price: 30,
-            originalPrice: 50,
-            discount: 40,
+            name: "September Awareness Rainbow Onesie",
+            price: 25,
             stock: "in-stock",
-            sale: true,
-            image: "product1.jpg",
-            link: "#", // Change this to the actual product link
-            category: "Outdoor" // Category assigned to the product
-        },
-        {
-            name: "Stylish Hat",
-            price: 20,
-            originalPrice: 40,
-            discount: 50,
-            stock: "low-stock",
             sale: false,
-            image: "product2.jpg",
-            link: "#", // Change this to the actual product link
-            category: "Hats" // Category assigned to the product
+            image: "product_images/september.webp",
+            link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/september-awareness-rainbow-onesie", // Change this to the actual product link
+            category: "Baby & Toddler" // Category assigned to the product
         },
         {
-            name: "Cool Hoodie",
-            price: 50,
-            originalPrice: 70,
-            discount: 30,
+            name: "ADHD Awareness Ribbon Baby Tee",
+            price: 29,
             stock: "in-stock",
-            sale: true,
-            image: "product3.jpg",
-            link: "#", // Change this to the actual product link
-            category: "Hoodies & Sweatshirts" // Category assigned to the product
+            sale: false,
+            image: "product_images/adhd.webp",
+            link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-baby-tee", // Change this to the actual product link
+            category: "Baby & Toddler" // Category assigned to the product
         },
         {
-            name: "Graphic T-Shirt",
-            price: 15,
-            originalPrice: 25,
-            discount: 40,
-            stock: "out-of-stock",
+            name: "Bear Hug Baby Tee",
+            price: 28,
+            stock: "in-stock",
             sale: false,
-            image: "product4.jpg",
-            link: "#", // Change this to the actual product link
-            category: "T-Shirts" // Category assigned to the product
+            image: "product_images/bear-hug-baby-tee.webp",
+            link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/bear-hug-baby-tee", // Change this to the actual product link
+            category: "Baby & Toddler" // Category assigned to the product
         },
+        {
+            name: "Autism Mode Puzzle Heart Baby Onesie",
+            price: 24,
+            stock: "in-stock",
+            sale: false,
+            image: "product_images/Autism.webp",
+            link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-mode-puzzle-heart-baby-onesie", // Change this to the actual product link
+            category: "Baby & Toddler" // Category assigned to the product
+        }
         // Add more products with their respective categories
     ];
 
