@@ -100,6 +100,7 @@ header {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    box-sizing: border-box; /* Ensure padding doesn’t affect width */
 }
 
 /* Section Header Styling */
@@ -140,6 +141,7 @@ section {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
     padding-top: 30px; /* Added padding to the top */
+    grid-template-rows: auto;
 }
 
 /* Product Item Styling */
@@ -153,8 +155,9 @@ section {
     position: relative;
     overflow: hidden;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    max-width: 300px;
-    margin: 0 auto;
+    max-width: 100%; /* Ensures it doesn't overflow */
+    width: 100%; /* Ensures it takes up 100% width of the container */
+    box-sizing: border-box; /* Ensures padding doesn’t cause overflow */
 }
 
 .product-item:hover {
@@ -285,6 +288,8 @@ footer span {
 
     .product-item {
         width: 100%;
+        padding: 15px; /* Adjust padding */
+        box-sizing: border-box; /* Ensure no overflow */
     }
 
     .product-grid {
