@@ -69,7 +69,6 @@ header {
     padding: 15px 0;
     box-shadow: 0 4px 15px var(--shadow-color);
     overflow-x: auto;
-    margin: 0 20px;  /* Added margin to the categories */
 }
 
 .category-nav ul {
@@ -95,11 +94,24 @@ header {
     color: white;
 }
 
-/* Container Styling */
+/* General Container Styling */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1200px; /* Maximum width of the container */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Padding to ensure content doesn't touch edges */
+}
+
+/* Product Section Styling */
+section {
+    border: 2px solid var(--border-color);
+    margin-bottom: 40px;
     padding: 20px;
+    border-radius: 16px;
+    background-color: var(--content-bg);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-left: 20px; /* Margin on the left */
+    margin-right: 20px; /* Margin on the right */
 }
 
 /* Section Header Styling */
@@ -123,22 +135,13 @@ header {
     color: var(--secondary-text);
 }
 
-/* Section Styling */
-section {
-    border: 2px solid var(--border-color);
-    margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 16px;
-    background-color: var(--content-bg);
-    box-shadow: 0 4px 15px var(--shadow-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Product Grid Styling */
+/* Product Grid Layout */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Ensures grid auto-adjusts to screen size */
     gap: 30px;
+    padding: 20px; /* Padding between grid items */
+    box-sizing: border-box; /* Ensures padding is included in the grid width */
 }
 
 /* Product Item Styling */
@@ -152,57 +155,31 @@ section {
     position: relative;
     overflow: hidden;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0 auto; /* Ensures each item stays centered in its grid space */
 }
 
-.product-item:hover {
-    background-color: var(--hover-color);
-    color: white;
-    transform: translateY(-10px);
-}
+/* Add a responsive fix for smaller screens to avoid overflow */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
 
-.product-item img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
+    .product-grid {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
 
-.product-item h3 {
-    margin: 15px 0;
-    font-size: 1.5rem;
-    color: var(--text-color);
-}
+    .header-content {
+        flex-direction: column;
+    }
 
-.product-item .price {
-    font-size: 1.4rem;
-    color: var(--accent-color);
-    margin: 15px 0;
-}
+    .category-nav ul {
+        flex-direction: column;
+        gap: 15px;
+    }
 
-.product-item .price .original-price {
-    text-decoration: line-through;
-    margin-right: 10px;
-    color: var(--secondary-text);
-}
-
-.product-item .price .discount {
-    color: var(--accent-color);
-    font-weight: bold;
-}
-
-.product-item .buy-now {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: var(--accent-color);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease;
-}
-
-.product-item .buy-now:hover {
-    background-color: var(--hover-color);
+    .product-item {
+        width: 100%;
+    }
 }
 
 /* Stock Ribbon Styling */
@@ -253,11 +230,7 @@ footer {
     text-align: center;
     padding: 20px 0;
     border-top: 1px solid var(--border-color);
-    width: 100%; /* Made footer full width */
-    position: relative;
-    left: 0; /* Ensures footer stretches all the way across */
-    margin-left: 0;  /* Reset left margin to stretch footer */
-    margin-right: 0; /* Reset right margin to stretch footer */
+    width: 100%; /* Ensures footer spans the entire width */
 }
 
 footer p {
@@ -266,18 +239,8 @@ footer p {
     color: var(--secondary-text);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-    }
-
-    .category-nav ul {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .product-item {
-        width: 100%;
-    }
+/* Footer Year Script Styling */
+#year {
+    font-weight: bold;
+    color: var(--accent-color);
 }
