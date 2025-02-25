@@ -317,14 +317,17 @@ footer span {
 
 /* Initially hide content until styles are loaded */
 html.no-js body {
-    visibility: hidden; /* Hide content */
-    opacity: 0;         /* Make it invisible */
-    transition: opacity 0.3s ease-in-out;
+    visibility: hidden;   /* Hide content */
+    opacity: 0;           /* Make it invisible */
+    pointer-events: none; /* Prevent interaction during loading */
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s; /* Delay visibility change */
 }
 
 /* After the styles are loaded, remove the hidden class */
 html:not(.no-js) body {
-    visibility: visible; /* Ensure content is visible */
-    opacity: 1;          /* Fade in */
-    transition: opacity 0.3s ease-in-out;
+    visibility: visible;  /* Ensure content is visible */
+    opacity: 1;           /* Fade in */
+    pointer-events: auto; /* Re-enable interaction */
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0s; /* Immediate visibility change */
 }
+
