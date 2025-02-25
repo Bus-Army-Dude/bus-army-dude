@@ -314,18 +314,3 @@ footer span {
         font-size: 1.1rem; /* Adjust button size for mobile */
     }
 }
-
-/* Prevent FOUC (Flash of Unstyled Content) */
-html, body {
-    background-color: #f7f7f9; /* The background color of your page */
-    transition: background-color 0.3s ease; /* Smooth transition to the styled background */
-}
-
-body {
-    opacity: 0; /* Hide content until it is fully loaded */
-    transition: opacity 0.5s ease; /* Smooth transition to visible state */
-}
-
-body.loaded {
-    opacity: 1; /* Show content after it has fully loaded */
-}
