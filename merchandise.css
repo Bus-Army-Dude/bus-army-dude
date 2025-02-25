@@ -237,10 +237,24 @@ footer p {
 
     .product-container {
         padding: 15px;
+        margin-bottom: 30px; /* Increase bottom margin to avoid overlap */
     }
 
     .product-container .product-image-wrapper {
-        height: 180px; /* Adjusted height for mobile */
+        height: auto; /* Let the height adjust based on the image */
+    }
+
+    .product-container img {
+        height: auto; /* Ensure images scale correctly */
+        object-fit: contain; /* Adjusts to maintain image aspect ratio without cropping */
+    }
+
+    .product-container .product-description {
+        margin-top: 15px; /* Add extra margin for better spacing on mobile */
+    }
+
+    .product-container .product-button {
+        margin-top: 20px;
     }
 
     footer p {
