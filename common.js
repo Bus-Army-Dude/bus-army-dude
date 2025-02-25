@@ -4,6 +4,7 @@ class CommonManager {
         this.settings = this.loadSettings();
         this.initializeThemeColors();
         this.applySettings();
+        this.addRefreshHandling();
     }
 
     // Immediately removes the 'no-js' class from the <html> element
@@ -75,6 +76,19 @@ class CommonManager {
         this.settings.focusOutlineDisabled = !this.settings.focusOutlineDisabled;
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
         this.applyFocusOutlineSetting(); // Apply the updated setting
+    }
+
+    // Adds handling for force refresh or reload scenarios
+    addRefreshHandling() {
+        window.addEventListener('beforeunload', () => {
+            // Clear or reset any relevant things here if necessary
+            localStorage.setItem('websiteSettings', JSON.stringify(this.settings)); // Save settings on refresh
+        });
+
+        // To handle immediate cache and style resets after a hard reload (e.g., Ctrl+Shift+R)
+        if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
+            this.applySettings(); // Reapply settings after reload
+        }
     }
 }
 
