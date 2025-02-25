@@ -314,3 +314,17 @@ footer span {
         font-size: 1.1rem; /* Adjust button size for mobile */
     }
 }
+
+/* Initially hide content until styles are loaded */
+html.no-js body {
+    visibility: hidden; /* Hide content */
+    opacity: 0;         /* Make it invisible */
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* After the styles are loaded, remove the hidden class */
+html:not(.no-js) body {
+    visibility: visible; /* Ensure content is visible */
+    opacity: 1;          /* Fade in */
+    transition: opacity 0.3s ease-in-out;
+}
