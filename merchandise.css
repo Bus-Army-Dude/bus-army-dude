@@ -1,316 +1,194 @@
-/* Color Variables */
+/* Root variables for colors */
 :root {
-    --bg-color: #f7f7f9;
-    --text-color: #2b2b2b;
-    --accent-color: #1f7ce5;
-    --hover-color: #1566b1;
-    --border-color: #e4e7ec;
-    --secondary-text: #8d8d8d;
-    --content-bg: #ffffff;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --background-light: #ffffff;
+    --background-dark: #181818;
+    --text-light: #000000;
+    --text-dark: #ffffff;
+    --button-background-light: #007bff;
+    --button-background-dark: #0056b3;
+    --border-light: #dddddd;
+    --border-dark: #444444;
 }
 
-/* General Body Styling */
+/* General Reset */
+html, body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    background-color: var(--background-light); /* Default to light background */
+    color: var(--text-light); /* Default text color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Light mode styles */
 body {
-    font-family: 'Poppins', sans-serif; /* Using Poppins for modern clean typography */
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: var(--background-light);
+    color: var(--text-light);
 }
 
-/* Header Styling */
+/* Dark mode styles */
+body.dark-mode {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+/* Prevent FOUC (Flash of Unstyled Content) */
+body.no-flash {
+    opacity: 1;
+}
+
+/* Header Styles */
 header {
-    background-color: var(--accent-color);
-    color: white;
-    padding: 25px 0;
-    text-align: center;
-    box-shadow: 0 4px 20px var(--shadow-color);
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-}
-
-.header-content {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
+    padding: 20px;
+    background-color: var(--background-light);
+    border-bottom: 1px solid var(--border-light);
 }
 
-.header-content h1 {
-    margin: 0;
-    font-size: 2.4rem;
-    flex-grow: 1;
-    text-align: center;
+header .categories-dropdown {
+    margin: 0 15px;
+    padding: 10px;
+    font-size: 16px;
 }
 
-.home-button {
-    background-color: white;
-    color: var(--accent-color);
-    border: none;
-    padding: 12px 30px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+/* Product Section */
+.product-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--background-light);
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
 }
 
-.home-button:hover {
-    background-color: var(--hover-color);
-    color: white;
-    transform: scale(1.05);
-}
-
-/* Navigation Styling */
-.category-nav {
-    background-color: var(--content-bg);
-    padding: 15px 0;
-    box-shadow: 0 4px 15px var(--shadow-color);
-    overflow-x: auto;
-    margin-bottom: 20px;
-}
-
-.category-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.product-section .product {
     display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.category-nav a {
-    text-decoration: none;
-    color: var(--text-color);
-    font-weight: 500;
-    padding: 12px 24px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.category-nav a:hover {
-    background-color: var(--hover-color);
-    color: white;
-}
-
-/* Container Styling */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box; /* Ensure padding doesn’t affect width */
-}
-
-/* Section Header Styling */
-.section-header {
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 10px;
+    background-color: var(--background-light);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px;
+    width: calc(33.33% - 30px); /* Adjust width for 3 products per row */
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
-.section-header h2 {
-    font-size: 2rem;
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.section-header .product-count {
-    font-size: 1.1rem;
-    color: var(--secondary-text);
-}
-
-/* Section Styling */
-section {
-    border: 2px solid var(--border-color);
-    margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 16px;
-    background-color: var(--content-bg);
-    box-shadow: 0 4px 15px var(--shadow-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Product Grid Styling */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
-    padding-top: 30px; /* Added padding to the top */
-    grid-template-rows: auto;
-}
-
-/* Product Item Styling */
-.product-item {
-    background-color: var(--content-bg);
-    padding: 20px;
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    box-shadow: 0 6px 20px var(--shadow-color);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    max-width: 100%; /* Ensures it doesn't overflow */
-    width: 100%; /* Ensures it takes up 100% width of the container */
-    box-sizing: border-box; /* Ensures padding doesn’t cause overflow */
-}
-
-.product-item:hover {
-    background-color: var(--hover-color);
-    color: white;
-    transform: translateY(-10px);
-}
-
-.product-item img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    margin-bottom: 15px;
+.product-section .product img {
     width: 100%;
+    height: auto;
+    border-radius: 10px;
 }
 
-.product-item h3 {
-    margin: 15px 0;
-    font-size: 1.8rem; /* Increase size of title */
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.product-item .price {
-    font-size: 1.6rem; /* Increase size of price */
-    color: var(--accent-color);
-    margin: 15px 0;
-}
-
-.product-item .price .original-price {
-    text-decoration: line-through;
-    margin-right: 10px;
-    color: var(--secondary-text);
-}
-
-.product-item .price .discount {
-    color: var(--accent-color);
+.product-section .product-title {
+    font-size: 18px;
     font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
 }
 
-.product-item .buy-now {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: var(--accent-color);
-    color: white;
+.product-section .product-price {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+}
+
+.product-section .sale-ribbon,
+.product-section .stock-ribbon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff0000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.product-section .stock-ribbon {
+    background-color: #28a745;
+}
+
+.product-section .product-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: var(--button-background-light);
+    color: var(--text-light);
     text-decoration: none;
-    border-radius: 50px; /* Makes the button pill-shaped */
-    font-size: 1.2rem;
+    border-radius: 20px;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
-.product-item .buy-now:hover {
-    background-color: var(--hover-color);
+.product-section .product-button:hover {
+    background-color: var(--button-background-dark);
 }
 
-/* Stock Ribbon Styling */
-.stock-ribbon {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 8px 14px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    z-index: 1;
-    border-radius: 8px;
+/* Layout for responsive grid */
+.product-section .products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
 }
 
-.in-stock {
-    background-color: #28a745;
-    color: white;
+.product-section .product {
+    width: calc(33.33% - 30px);
 }
 
-.low-stock {
-    background-color: #ffc107;
-    color: black;
+@media (max-width: 768px) {
+    .product-section .product {
+        width: calc(50% - 30px); /* 2 products per row */
+    }
 }
 
-.out-of-stock {
-    background-color: #dc3545;
-    color: white;
+@media (max-width: 480px) {
+    .product-section .product {
+        width: 100%; /* 1 product per row */
+    }
 }
 
-/* Sale Ribbon Styling */
-.sale-ribbon {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background-color: #ff0000;
-    color: white;
-    padding: 8px 14px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    z-index: 1;
-    border-radius: 8px;
-}
-
-/* Footer Styling */
+/* Footer Styles */
 footer {
-    background-color: var(--content-bg);
-    color: var(--text-color);
+    width: 100%;
+    background-color: var(--background-light);
+    color: var(--text-light);
     text-align: center;
     padding: 20px 0;
-    border-top: 1px solid var(--border-color);
-    width: 100%;
-    position: relative;
+    margin-top: 30px;
 }
 
 footer p {
     margin: 0;
-    font-size: 1rem;
-    color: var(--secondary-text);
 }
 
-footer span {
-    color: var(--text-color); /* Ensures the year is the same color as the rest of the footer */
+footer #year {
+    color: #00ff00; /* Green for the year */
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-    }
+/* Prevent FOUC (Flash of Unstyled Content) */
+html, body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    background-color: var(--background-light); /* Default to light background */
+    color: var(--text-light); /* Default text color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
 
-    .category-nav ul {
-        flex-direction: column;
-        gap: 15px;
-    }
+body.dark-mode {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
 
-    .product-item {
-        width: 100%;
-        padding: 15px; /* Adjust padding */
-        box-sizing: border-box; /* Ensure no overflow */
-    }
+/* Add a 'no-flash' class for initial load */
+body.no-flash {
+    opacity: 1;
+}
 
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Adjusting for smaller screens */
-    }
-
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .product-item h3 {
-        font-size: 1.5rem; /* Adjust for mobile */
-    }
-
-    .product-item .price {
-        font-size: 1.4rem; /* Adjust for mobile */
-    }
-
-    .product-item .buy-now {
-        padding: 10px 20px;
-        font-size: 1.1rem; /* Adjust button size for mobile */
-    }
+/* Add transition effects for the entire page */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
