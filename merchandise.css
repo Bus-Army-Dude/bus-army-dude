@@ -118,8 +118,8 @@ body {
 /* Fixed image scaling */
 .product-container .product-image-wrapper img {
     display: block;
-    width: 300px; /* Example width */
-    height: 200px; /* Example height */
+    width: 100%; /* Ensure the image scales with the container */
+    height: 100%; /* Fill the height */
     object-fit: cover; /* Ensures the image covers the container without distortion */
     object-position: center;
 }
