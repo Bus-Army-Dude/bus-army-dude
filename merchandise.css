@@ -8,17 +8,61 @@
     --secondary-text: #8d8d8d;
     --content-bg: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --dark-bg-color: #121212;
+    --dark-text-color: #e4e4e4;
+    --dark-accent-color: #2196f3;
+    --dark-hover-color: #1566b1;
+    --dark-border-color: #3a3a3a;
+    --dark-secondary-text: #a5a5a5;
+    --dark-content-bg: #2c2c2c;
+    --dark-shadow-color: rgba(0, 0, 0, 0.3);
 }
 
 /* General Body Styling */
 body {
-    font-family: 'Poppins', sans-serif; 
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--dark-bg-color);
+        color: var(--dark-text-color);
+    }
+    
+    header {
+        background-color: var(--dark-accent-color);
+        color: white;
+    }
+
+    .category-nav select {
+        background-color: var(--dark-content-bg);
+        color: var(--dark-text-color);
+        border: 1px solid var(--dark-border-color);
+    }
+
+    section {
+        background-color: var(--dark-content-bg);
+        border: 2px solid var(--dark-border-color);
+        box-shadow: 0 4px 15px var(--dark-shadow-color);
+    }
+
+    .product-item {
+        background-color: var(--dark-content-bg);
+        border: 2px solid var(--dark-border-color);
+        box-shadow: 0 6px 20px var(--dark-shadow-color);
+    }
+
+    footer {
+        background-color: var(--dark-content-bg);
+        color: var(--dark-text-color);
+    }
 }
 
 /* Header Styling */
@@ -64,7 +108,7 @@ header {
     transform: scale(1.05);
 }
 
-/* Navigation Styling (Dropdown) */
+/* Navigation Styling (Modern Dropdown) */
 .category-nav {
     background-color: var(--content-bg);
     padding: 15px 0;
@@ -74,7 +118,7 @@ header {
 
 .category-nav select {
     font-size: 1rem;
-    padding: 10px;
+    padding: 12px;
     width: 100%;
     border-radius: 8px;
     border: 1px solid var(--border-color);
@@ -82,7 +126,7 @@ header {
     color: var(--text-color);
     appearance: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .category-nav select:hover {
@@ -95,7 +139,7 @@ header {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 /* Section Header Styling */
@@ -133,10 +177,9 @@ section {
 /* Product Grid Styling */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ensures responsiveness */
-    gap: 20px; /* Adds spacing between items */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ensures larger items on desktop */
+    gap: 20px;
     padding-top: 30px;
-    grid-template-rows: auto;
 }
 
 /* Product Item Styling */
@@ -150,9 +193,6 @@ section {
     position: relative;
     overflow: hidden;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    max-width: 100%; 
-    width: 100%;
-    box-sizing: border-box; 
 }
 
 .product-item:hover {
@@ -166,12 +206,11 @@ section {
     height: auto;
     border-radius: 12px;
     margin-bottom: 15px;
-    width: 100%;
 }
 
 .product-item h3 {
     margin: 15px 0;
-    font-size: 1.8rem; 
+    font-size: 1.8rem;
     color: var(--text-color);
     font-weight: 600;
 }
@@ -199,7 +238,7 @@ section {
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
-    border-radius: 50px; 
+    border-radius: 50px;
     font-size: 1.2rem;
     transition: background-color 0.3s ease;
 }
@@ -267,7 +306,7 @@ footer p {
 }
 
 footer span {
-    color: var(--text-color); 
+    color: var(--text-color);
 }
 
 /* Responsive Design */
@@ -278,7 +317,7 @@ footer span {
     }
 
     .category-nav select {
-        width: 80%; /* Reduce width of dropdown on medium screens */
+        width: 80%;
         margin: 0 auto;
     }
 
@@ -336,19 +375,4 @@ footer span {
     .category-nav select {
         width: 100%;
     }
-}
-
-/* Initially hide content until styles are loaded */
-html.no-js body {
-    visibility: hidden;   
-    opacity: 0;           
-    pointer-events: none;
-    transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s; 
-}
-
-html:not(.no-js) body {
-    visibility: visible;  
-    opacity: 1;           
-    pointer-events: auto;
-    transition: opacity 0.3s ease-in-out, visibility 0s linear 0s; 
 }
