@@ -58,16 +58,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Function to render products
     function renderProducts(productsToRender) {
-        productGrid.innerHTML = "";
-        productCount.textContent = `${productsToRender.length} products`;
+        productGrid.innerHTML = ""; // Clear the grid before rendering
+        productCount.textContent = `${productsToRender.length} product${productsToRender.length !== 1 ? 's' : ''}`;
+        
         productsToRender.forEach(product => {
             const productItem = document.createElement("div");
             productItem.classList.add("product-item");
 
+            // Sale ribbon if applicable
+            const saleRibbon = product.sale ? '<div class="sale-ribbon">Sale</div>' : '';
+            const stockStatusRibbon = `<div class="stock-ribbon ${product.stock}">${product.stock.replace("-", " ")}</div>`;
+
+            // Product content
             productItem.innerHTML = `
                 <img src="${product.image}" alt="${product.name}">
-                ${product.sale ? '<div class="sale-ribbon">Sale</div>' : ''}
-                <div class="stock-ribbon ${product.stock}">${product.stock.replace("-", " ")}</div>
+                ${saleRibbon}
+                ${stockStatusRibbon}
                 <h3>${product.name}</h3>
                 <p class="price">
                     <span class="original-price">$${product.originalPrice}</span>
