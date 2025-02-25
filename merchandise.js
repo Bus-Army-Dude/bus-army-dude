@@ -1,82 +1,76 @@
-// Sample product data
-const products = [
-    {
-        title: 'Autism Mode Puzzle Heart Baby Onesie',
-        price: 24.00,
-        description: "Embrace uniqueness with our Autism Mode baby onesie. Made of ultrasoft fabric, this lightweight onesie is perfect for active babies. Featuring a colorful puzzle heart logo and a bold 'AUTISM MODE' switch, it's a statement piece for supporting autism awareness.",
-        image: 'product_images/autism-mode.webp',
-        onSale: false,
-        stockStatus: 'In Stock',
-        category: 'baby-toddler',
-        link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-mode-puzzle-heart-baby-onesie",
-    },
-    {
-        title: 'Bear Hug Baby Tee',
-        price: 28.00,
-        description: "Wrap your little one in love with our Bella+Canvas Baby Jersey Short Sleeve Tee. Made from soft jersey cotton, this tee features an adorable bear holding an 'I LOVE YOU' sign. Perfect for adding a touch of cuteness to any baby's outfit. Shop now at River's Merch Store!",
-        image: 'product_images/bear-hug-baby-tee.webp',
-        onSale: false,
-        stockStatus: 'In Stock',
-        category: 'baby-toddler',
-        link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/bear-hug-baby-tee",
-    },
-    {
-        title: 'ADHD Awareness Ribbon Baby Tee',
-        price: 29.00,
-        description: "Raise awareness in style with this ultra-soft baby tee featuring the iconic orange ADHD awareness ribbon. Made from lightweight jersey cotton for maximum comfort, this tee is the perfect canvas for your unique designs. Show support while keeping your little one comfy and stylish.",
-        image: 'product_images/adhd.webp',
-        onSale: false,
-        stockStatus: 'In Stock',
-        category: 'baby-toddler',
-        link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-baby-tee",
-    }
-    // Add more products here
-];
+document.addEventListener("DOMContentLoaded", function() {
+    // Set the current year dynamically in the footer
+    const currentYear = new Date().getFullYear();
+    document.getElementById("year").textContent = currentYear;
 
-// Function to display products based on selected category
-function displayProducts(category = 'all') {
-    const productSection = document.querySelector("#product-section .products");
-    const sectionTitle = document.getElementById("sectionTitle");
-    const productCount = document.getElementById("productCount");
-
-    // Clear previous products
-    productSection.innerHTML = '';
-
-    // Filter products based on selected category
-    const filteredProducts = category === "all" ? products : products.filter(product => product.category === category);
-
-    // Update section title and count
-    sectionTitle.textContent = category.charAt(0).toUpperCase() + category.slice(1) + " Products";
-    productCount.textContent = `${filteredProducts.length} items`;
-
-    // Loop through the filtered products and display them
-    filteredProducts.forEach(product => {
-        const productDiv = document.createElement("div");
-        productDiv.classList.add("product");
-
-        productDiv.innerHTML = `
-            <div class="product-image">
-                <img src="${product.image}" alt="${product.title}">
-                ${product.onSale ? '<div class="sale-ribbon">SALE</div>' : ''}
-                <div class="stock-status">${product.stockStatus}</div>
-            </div>
-            <div class="product-title">${product.title}</div>
-            <div class="product-price">$${product.price}</div>
-            <div class="product-description">${product.description}</div>
-            <a href="${product.link}" class="product-button">View Product</a>
-        `;
-
-        productSection.appendChild(productDiv);
+    // Example categories
+    const categories = ["All Products", "Category 1", "Category 2", "Category 3"];
+    const categoryList = document.getElementById("category-list");
+    
+    categories.forEach(category => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="#" onclick="filterCategory('${category}')">${category}</a>`;
+        categoryList.appendChild(li);
     });
-}
 
-// Event listener for category dropdown
-document.getElementById("category-select").addEventListener("change", (event) => {
-    displayProducts(event.target.value);
+    // Example products data (this would typically come from your server)
+    const products = [
+        {
+            name: "Product 1",
+            price: 30,
+            originalPrice: 50,
+            discount: 40,
+            stock: "in-stock",
+            sale: true,
+            image: "product1.jpg",
+            link: "#"
+        },
+        {
+            name: "Product 2",
+            price: 20,
+            originalPrice: 40,
+            discount: 50,
+            stock: "low-stock",
+            sale: false,
+            image: "product2.jpg",
+            link: "#"
+        }
+    ];
+
+    const productGrid = document.getElementById("product-grid");
+    const sectionTitle = document.getElementById("section-title");
+    const productCount = document.getElementById("product-count");
+
+    function renderProducts(products) {
+        productGrid.innerHTML = "";
+        productCount.textContent = `${products.length} products`;
+        products.forEach(product => {
+            const productItem = document.createElement("div");
+            productItem.classList.add("product-item");
+
+            productItem.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                ${product.sale ? '<div class="sale-ribbon">Sale</div>' : ''}
+                <div class="stock-ribbon ${product.stock}">${product.stock.replace("-", " ")}</div>
+                <h3>${product.name}</h3>
+                <p class="price">
+                    <span class="original-price">$${product.originalPrice}</span>
+                    <span class="discount">$${product.price} (${product.discount}% Off)</span>
+                </p>
+                <a href="${product.link}" class="buy-now">Buy Now</a>
+            `;
+
+            productGrid.appendChild(productItem);
+        });
+    }
+
+    // Initial render
+    renderProducts(products);
+
+    // Function to filter products by category
+    window.filterCategory = function(category) {
+        sectionTitle.textContent = category;
+        // Fetch products based on selected category (this can be done through AJAX or other methods)
+        renderProducts(products.filter(product => category === "All Products" || product.category === category));
+    };
 });
-
-// Initial display of all products when the page loads
-displayProducts("all");
-
-// Set the current year for copyright dynamically
-document.getElementById("year").textContent = new Date().getFullYear(); 
