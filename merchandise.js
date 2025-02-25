@@ -74,3 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
         renderProducts(products.filter(product => category === "All Products" || product.category === category));
     };
 });
+
+window.addEventListener("load", function() {
+    document.body.classList.add("loaded"); // Add the 'loaded' class to body when everything is ready
+});
