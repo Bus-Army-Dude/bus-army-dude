@@ -105,15 +105,15 @@ body {
     transform: translateY(-5px);
 }
 
-/* Product Image Wrapper - Adjusted Thumbnail Style */
+/* Remove or reduce padding on the right */
 .product-container .product-image-wrapper {
     width: 100%;
-    height: auto; /* Let the height adjust automatically */
-    max-height: 200px; /* Set a reasonable max height */
+    height: auto;
+    max-height: 200px;
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 15px;
-    padding-right: 10px; /* Adds margin on the right */
+    /* padding-right: 0; */ /* Set this to 0 or remove entirely */
     position: relative;
 }
 
