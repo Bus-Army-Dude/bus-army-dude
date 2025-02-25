@@ -1,8 +1,15 @@
 class CommonManager {
     constructor() {
+        this.removeNoJsClass();  // Remove no-js as early as possible
         this.settings = this.loadSettings();
         this.initializeThemeColors();
         this.applySettings();
+    }
+
+    // Immediately removes the 'no-js' class from the <html> element
+    removeNoJsClass() {
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');  // Optionally, add a 'js' class
     }
 
     loadSettings() {
