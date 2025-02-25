@@ -4,7 +4,17 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("year").textContent = currentYear;
 
     // Categories for filtering
-    const categories = ["All Products", "Outdoor", "Hats", "Hoodies & Sweatshirts", "T-shirts", "Baby & Toddler", "Kitchenwear", "Accessories"];
+    const categories = [
+        "All Products", 
+        "Outdoor", 
+        "Hats", 
+        "Hoodies & Sweatshirts", 
+        "T-shirts", 
+        "Baby & Toddler", 
+        "Kitchenwear", 
+        "Accessories"
+    ];
+
     const categoryList = document.getElementById("category-list");
 
     // Dynamically create category list in the navigation
@@ -60,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function renderProducts(productsToRender) {
         productGrid.innerHTML = ""; // Clear the grid before rendering
         productCount.textContent = `${productsToRender.length} product${productsToRender.length !== 1 ? 's' : ''}`;
-        
+
         productsToRender.forEach(product => {
             const productItem = document.createElement("div");
             productItem.classList.add("product-item");
@@ -86,21 +96,26 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Initial render
+    // Initial render (All Products by default)
     renderProducts(products);
 
     // Function to filter products by category
     window.filterCategory = function(category) {
         sectionTitle.textContent = category;
+        
         // Filter products based on selected category
+        let filteredProducts = [];
         if (category === "All Products") {
-            renderProducts(products); // Show all products if "All Products" is selected
+            filteredProducts = products; // Show all products if "All Products" is selected
         } else {
-            renderProducts(products.filter(product => product.category === category)); // Filter by selected category
+            filteredProducts = products.filter(product => product.category === category); // Filter by selected category
         }
+
+        renderProducts(filteredProducts); // Render the filtered products
     };
 });
 
+// After all content is loaded, add the 'loaded' class
 window.addEventListener("load", function() {
     document.body.classList.add("loaded"); // Add the 'loaded' class to body when everything is ready
 });
