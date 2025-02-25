@@ -173,14 +173,14 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         {
             name: "Autism Awareness Puzzle Piece Hoodie",
-            price: 41.00,
-            originalPrice: 41.00, // Same as price, for non-sale
+            price: 39.00,
+            originalPrice: 39.00, // Same as price, for non-sale
             discount: 0, // No discount
             stock: "in-stock",
             sale: false, // No sale
-            image: "product_images/autismtrucker.webp",
+            image: "product_images/autismhoodie.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-puzzle-piece-hoodie",
-            category: "Hats"
+            category: "Hoodies & Sweatshirts"
         },
         {
             name: "Autism Awareness AirPods Case®",
