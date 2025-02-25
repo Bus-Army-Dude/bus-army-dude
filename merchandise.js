@@ -57,10 +57,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const productCount = document.getElementById("product-count");
 
     // Function to render products
-    function renderProducts(products) {
+    function renderProducts(productsToRender) {
         productGrid.innerHTML = "";
-        productCount.textContent = `${products.length} products`;
-        products.forEach(product => {
+        productCount.textContent = `${productsToRender.length} products`;
+        productsToRender.forEach(product => {
             const productItem = document.createElement("div");
             productItem.classList.add("product-item");
 
