@@ -4,50 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Merchandise - Bus Army Dude's Profile</title>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ai-features.css">
-    <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="merchandise.css">
 
     <!-- Meta tag to refresh the page every 300 seconds -->
     <meta http-equiv="refresh" content="300">
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-E0RSQS1MS7');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E0RSQS1MS7');
     </script>
 
-    <!-- Favicons and Icons -->
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff"/>
+    <link rel="icon" href="images/favicon-32x32.png" type="image/png" sizes="32x32" />
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json">
-
-    <!-- Microsoft-specific configuration -->
-    <meta name="browserconfig" content="/browserconfig.xml">
 </head>
 
 <body>
+    <!-- Main container -->
     <div class="container">
-        <div class="header">
-            <div class="title">Merchandise</div>
-                <button class="home-button" onclick="window.location.href='https://bus-army-dude.github.io/bus-army-dude/index.html'">Return to Home</button>
-        </div>
 
-        <div class="categories-dropdown">
+        <!-- Header with return button -->
+        <header class="header">
+            <h1>Merchandise</h1>
+            <button class="home-button" onclick="window.location.href='https://bus-army-dude.github.io/bus-army-dude/index.html'">Return to Home</button>
+        </header>
+
+        <!-- Category selection dropdown -->
+        <div class="category-select">
             <select id="category-select">
                 <option value="all">All Products</option>
                 <option value="outdoor">Outdoor</option>
@@ -60,25 +53,27 @@
             </select>
         </div>
 
+        <!-- Product display section -->
         <div class="product-section" id="product-section">
             <div class="section-header">
-                <span id="sectionTitle">All Products</span>
+                <h2 id="sectionTitle">All Products</h2>
                 <span id="productCount" class="product-count">10 items</span>
             </div>
-            <div class="products">
-                <!-- Products will be dynamically inserted by merchandise.js -->
+
+            <div class="product-grid">
+                <!-- Products will be dynamically inserted here -->
             </div>
         </div>
+
     </div>
 
+    <!-- Footer -->
     <footer>
         <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
     </footer>
 
+    <!-- Scripts -->
     <script src="common.js"></script>
-    <script src="script.js"></script>
-    <script src="ai-features.js"></script>
-    <script src="settings.js"></script>
     <script src="merchandise.js"></script>
 </body>
 </html>
