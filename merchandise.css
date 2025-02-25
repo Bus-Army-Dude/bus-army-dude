@@ -12,7 +12,7 @@
 
 /* General Body Styling */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif; /* Using Poppins for modern clean typography */
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
@@ -63,7 +63,7 @@ header {
     transform: scale(1.05);
 }
 
-/* Category Navigation Styling */
+/* Navigation Styling */
 .category-nav {
     background-color: var(--content-bg);
     padding: 15px 0;
@@ -92,6 +92,45 @@ header {
 .category-nav a:hover {
     background-color: var(--hover-color);
     color: white;
+}
+
+/* Container Styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Section Header Styling */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.section-header .product-count {
+    font-size: 1.1rem;
+    color: var(--secondary-text);
+}
+
+/* Section Styling */
+section {
+    border: 2px solid var(--border-color);
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 16px;
+    background-color: var(--content-bg);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Product Grid Styling */
@@ -213,6 +252,8 @@ footer {
     text-align: center;
     padding: 20px 0;
     border-top: 1px solid var(--border-color);
+    margin-left: 20px;  /* Added margin-left */
+    margin-right: 20px; /* Added margin-right */
 }
 
 footer p {
