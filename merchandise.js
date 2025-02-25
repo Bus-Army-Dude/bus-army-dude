@@ -4,16 +4,16 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // Sample product data
 const products = [
     {
-        title: 'Autism Mode Puzzele Heart Baby Onesie',
+        title: 'Autism Mode Puzzle Heart Baby Onesie',
         price: 24.00,
         description: "Embrace uniqueness with our Autism Mode baby onesie. Made of ultrasoft fabric, this lightweight onesie is perfect for active babies. Featuring a colorful puzzle heart logo and a bold 'AUTISM MODE' switch, it's a statement piece for supporting autism awareness.",
         image: 'product_images/autism-mode.webp',
         onSale: false,
         stockStatus: 'In Stock',
-        category: 'baby-toddler', // Added category for filtering
+        category: 'baby-toddler',
         link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-mode-puzzle-heart-baby-onesie",
     }
-    // Add more products as needed
+    // Add more products here
 ];
 
 // Function to display products
@@ -46,8 +46,8 @@ function displayProducts(category = 'all') {
         case 'baby-toddler':
             sectionTitle.textContent = 'Baby & Toddler';
             break;
-        case 'kitchenwear':
-            sectionTitle.textContent = 'Kitchenwear';
+        case 'kitchenware': // Spelling fix
+            sectionTitle.textContent = 'Kitchenware';
             break;
         case 'accessories':
             sectionTitle.textContent = 'Accessories';
@@ -70,7 +70,7 @@ function displayProducts(category = 'all') {
                 <div class="stock-status">${product.stockStatus}</div>
             </div>
             <div class="product-title">${product.title}</div>
-            <div class="product-price">$${product.price} <span class="original-price">$${product.originalPrice}</span></div>
+            <div class="product-price">$${product.price}</div> <!-- Removed originalPrice -->
             <div class="product-description">${product.description}</div>
             <a href="${product.link}" class="product-button">View Product</a>
         `;
