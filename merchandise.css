@@ -105,23 +105,23 @@ body {
     transform: translateY(-5px);
 }
 
-/* Product Image Wrapper */
+/* Product Image Wrapper - Thumbnail Style */
 .product-container .product-image-wrapper {
     width: 100%;
-    height: auto; /* Adjust height to fit the image size */
-    max-height: 200px; /* Set a maximum height for the image */
-    border-radius: 10px;
+    height: 100px; /* Shrink the height a bit more to fit */
+    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 15px;
     position: relative;
+    padding-right: 10px; /* Adds margin to the right */
 }
 
 /* Adjusted Product Image */
 .product-container .product-image-wrapper img {
     display: block;
-    width: 100%; /* Ensures the image fully fits inside the container width */
-    height: 100%; /* Ensures the height stays within bounds */
-    object-fit: cover; /* Crop and fit image nicely inside the container */
+    max-width: 100%; /* Ensures the image fits inside the container */
+    max-height: 100%; /* Keeps the image within the height boundaries */
+    object-fit: contain; /* Ensures the entire image is shown without distortion */
     object-position: center;
 }
 
