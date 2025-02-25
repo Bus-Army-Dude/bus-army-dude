@@ -1,6 +1,3 @@
-// Set current year in footer
-document.getElementById('year').textContent = new Date().getFullYear();
-
 // Sample product data
 const products = [
     {
@@ -36,82 +33,50 @@ const products = [
     // Add more products here
 ];
 
-// Function to display products dynamically
+// Function to display products based on selected category
 function displayProducts(category = 'all') {
-    const productSection = document.getElementById('product-section').querySelector('.products');
-    const sectionTitle = document.getElementById('sectionTitle');
-    const productCount = document.getElementById('productCount');
+    const productSection = document.querySelector("#product-section .products");
+    const sectionTitle = document.getElementById("sectionTitle");
+    const productCount = document.getElementById("productCount");
 
-    productSection.innerHTML = ''; // Clear previous products
+    // Clear previous products
+    productSection.innerHTML = '';
 
     // Filter products based on selected category
-    let filteredProducts = products.filter(product => category === 'all' || product.category === category);
+    const filteredProducts = category === "all" ? products : products.filter(product => product.category === category);
 
-    // Update section title and product count based on the category
-    switch (category) {
-        case 'all':
-            sectionTitle.textContent = 'All Products';
-            break;
-        case 'outdoor':
-            sectionTitle.textContent = 'Outdoor';
-            break;
-        case 'hats':
-            sectionTitle.textContent = 'Hats';
-            break;
-        case 'hoodies-sweatshirts':
-            sectionTitle.textContent = 'Hoodies & Sweatshirts';
-            break;
-        case 't-shirts':
-            sectionTitle.textContent = 'T-Shirts';
-            break;
-        case 'baby-toddler':
-            sectionTitle.textContent = 'Baby & Toddler';
-            break;
-        case 'kitchenware':
-            sectionTitle.textContent = 'Kitchenware';
-            break;
-        case 'accessories':
-            sectionTitle.textContent = 'Accessories';
-            break;
-        default:
-            sectionTitle.textContent = 'All Products';
-    }
-
-    // Update product count
+    // Update section title and count
+    sectionTitle.textContent = category.charAt(0).toUpperCase() + category.slice(1) + " Products";
     productCount.textContent = `${filteredProducts.length} items`;
 
-    // Create and display each product container
+    // Loop through the filtered products and display them
     filteredProducts.forEach(product => {
-        const productContainer = document.createElement('div');
-        productContainer.classList.add('product-container');
-        
-        const formattedPrice = `$${product.price.toFixed(2)}`;
-        const salePrice = product.onSale ? (product.price * 0.8).toFixed(2) : null; // Assuming 20% discount for sale items
+        const productDiv = document.createElement("div");
+        productDiv.classList.add("product");
 
-        productContainer.innerHTML = `
+        productDiv.innerHTML = `
             <div class="product-image">
                 <img src="${product.image}" alt="${product.title}">
                 ${product.onSale ? '<div class="sale-ribbon">SALE</div>' : ''}
                 <div class="stock-status">${product.stockStatus}</div>
             </div>
             <div class="product-title">${product.title}</div>
-            <div class="product-price">
-                ${product.onSale ? `<span class="original-price">$${formattedPrice}</span>` : ''}
-                <span class="sale-price">${salePrice ? `$${salePrice}` : formattedPrice}</span>
-            </div>
+            <div class="product-price">$${product.price}</div>
             <div class="product-description">${product.description}</div>
             <a href="${product.link}" class="product-button">View Product</a>
         `;
 
-        productSection.appendChild(productContainer);
+        productSection.appendChild(productDiv);
     });
 }
 
-// Initial product display (All Products)
-displayProducts();
-
-// Handle category selection change
-document.getElementById('category-select').addEventListener('change', (event) => {
-    const selectedCategory = event.target.value;
-    displayProducts(selectedCategory);
+// Event listener for category dropdown
+document.getElementById("category-select").addEventListener("change", (event) => {
+    displayProducts(event.target.value);
 });
+
+// Initial display of all products when the page loads
+displayProducts("all");
+
+// Set the current year for copyright dynamically
+document.getElementById("year").textContent = new Date().getFullYear(); 
