@@ -12,6 +12,26 @@ const products = [
         stockStatus: 'In Stock',
         category: 'baby-toddler',
         link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-mode-puzzle-heart-baby-onesie",
+    },
+    {
+        title: 'Bear Hug Baby Tee',
+        price: 28.00,
+        description: "Wrap your little one in love with our Bella+Canvas Baby Jersey Short Sleeve Tee. Made from soft jersey cotton, this tee features an adorable bear holding an 'I LOVE YOU' sign. Perfect for adding a touch of cuteness to any baby's outfit. Shop now at River's Merch Store!",
+        image: 'product_images/bear-hug-baby-tee.webp',
+        onSale: false,
+        stockStatus: 'In Stock',
+        category: 'baby-toddler',
+        link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/bear-hug-baby-tee",
+    },
+    {
+        title: 'ADHD Awareness Ribbon Baby Tee',
+        price: 29.00,
+        description: "Raise awareness in style with this ultra-soft baby tee featuring the iconic orange ADHD awareness ribbon. Made from lightweight jersey cotton for maximum comfort, this tee is the perfect canvas for your unique designs. Show support while keeping your little one comfy and stylish.",
+        image: 'product_images/adhd.webp',
+        onSale: false,
+        stockStatus: 'In Stock',
+        category: 'baby-toddler',
+        link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-baby-tee",
     }
     // Add more products here
 ];
