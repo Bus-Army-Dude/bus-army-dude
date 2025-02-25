@@ -115,13 +115,14 @@ body {
     position: relative;
 }
 
-/* Fixed image scaling */
+/* Ensure the image scales proportionally */
 .product-container .product-image-wrapper img {
     display: block;
     width: 100%; /* Ensure the image scales with the container */
     height: 100%; /* Fill the height */
     object-fit: cover; /* Ensures the image covers the container without distortion */
     object-position: center;
+    border-radius: inherit; /* Ensure the image respects the container's border radius */
 }
 
 /* Ribbons overlapping the image */
