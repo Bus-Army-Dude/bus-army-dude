@@ -99,6 +99,7 @@ body {
     flex-direction: column;
     transition: transform 0.3s ease;
     height: 100%; /* Ensure the container takes full height */
+    margin-bottom: 20px; /* Add this to create space between product containers */
 }
 
 .product-container:hover {
