@@ -69,6 +69,7 @@ header {
     padding: 15px 0;
     box-shadow: 0 4px 15px var(--shadow-color);
     overflow-x: auto;
+    margin: 0 20px;  /* Added margin to the categories */
 }
 
 .category-nav ul {
@@ -252,8 +253,11 @@ footer {
     text-align: center;
     padding: 20px 0;
     border-top: 1px solid var(--border-color);
-    margin-left: 20px;  /* Added margin-left */
-    margin-right: 20px; /* Added margin-right */
+    width: 100%; /* Made footer full width */
+    position: relative;
+    left: 0; /* Ensures footer stretches all the way across */
+    margin-left: 0;  /* Reset left margin to stretch footer */
+    margin-right: 0; /* Reset right margin to stretch footer */
 }
 
 footer p {
