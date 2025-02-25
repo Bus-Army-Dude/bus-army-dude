@@ -69,7 +69,7 @@ header {
     padding: 15px 0;
     box-shadow: 0 4px 15px var(--shadow-color);
     overflow-x: auto;
-    margin-bottom: 20px; /* Added margin bottom */
+    margin-bottom: 20px;
 }
 
 .category-nav ul {
@@ -137,8 +137,9 @@ section {
 /* Product Grid Styling */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Changed the min-width to 300px */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
+    padding-top: 30px; /* Added padding to the top */
 }
 
 /* Product Item Styling */
@@ -152,6 +153,8 @@ section {
     position: relative;
     overflow: hidden;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .product-item:hover {
@@ -165,16 +168,18 @@ section {
     height: auto;
     border-radius: 12px;
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .product-item h3 {
     margin: 15px 0;
-    font-size: 1.5rem;
+    font-size: 1.8rem; /* Increase size of title */
     color: var(--text-color);
+    font-weight: 600;
 }
 
 .product-item .price {
-    font-size: 1.4rem;
+    font-size: 1.6rem; /* Increase size of price */
     color: var(--accent-color);
     margin: 15px 0;
 }
@@ -196,8 +201,8 @@ section {
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
+    border-radius: 50px; /* Makes the button pill-shaped */
+    font-size: 1.2rem;
     transition: background-color 0.3s ease;
 }
 
@@ -253,7 +258,7 @@ footer {
     text-align: center;
     padding: 20px 0;
     border-top: 1px solid var(--border-color);
-    width: 100%; /* Ensures footer goes full width */
+    width: 100%;
     position: relative;
 }
 
@@ -261,6 +266,10 @@ footer p {
     margin: 0;
     font-size: 1rem;
     color: var(--secondary-text);
+}
+
+footer span {
+    color: var(--text-color); /* Ensures the year is the same color as the rest of the footer */
 }
 
 /* Responsive Design */
@@ -282,9 +291,21 @@ footer p {
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Adjusting for smaller screens */
     }
 
-    /* Ensuring the product container does not overflow on small screens */
     .container {
         padding-left: 10px;
         padding-right: 10px;
+    }
+
+    .product-item h3 {
+        font-size: 1.5rem; /* Adjust for mobile */
+    }
+
+    .product-item .price {
+        font-size: 1.4rem; /* Adjust for mobile */
+    }
+
+    .product-item .buy-now {
+        padding: 10px 20px;
+        font-size: 1.1rem; /* Adjust button size for mobile */
     }
 }
