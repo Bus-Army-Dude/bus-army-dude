@@ -36,7 +36,7 @@ const products = [
     // Add more products here
 ];
 
-// Function to display products
+// Function to display products dynamically
 function displayProducts(category = 'all') {
     const productSection = document.getElementById('product-section').querySelector('.products');
     const sectionTitle = document.getElementById('sectionTitle');
@@ -44,9 +44,10 @@ function displayProducts(category = 'all') {
 
     productSection.innerHTML = ''; // Clear previous products
 
+    // Filter products based on selected category
     let filteredProducts = products.filter(product => category === 'all' || product.category === category);
 
-    // Update section title and product count
+    // Update section title and product count based on the category
     switch (category) {
         case 'all':
             sectionTitle.textContent = 'All Products';
@@ -66,7 +67,7 @@ function displayProducts(category = 'all') {
         case 'baby-toddler':
             sectionTitle.textContent = 'Baby & Toddler';
             break;
-        case 'kitchenware': // Spelling fix
+        case 'kitchenware':
             sectionTitle.textContent = 'Kitchenware';
             break;
         case 'accessories':
@@ -79,10 +80,14 @@ function displayProducts(category = 'all') {
     // Update product count
     productCount.textContent = `${filteredProducts.length} items`;
 
+    // Create and display each product container
     filteredProducts.forEach(product => {
         const productContainer = document.createElement('div');
         productContainer.classList.add('product-container');
         
+        const formattedPrice = `$${product.price.toFixed(2)}`;
+        const salePrice = product.onSale ? (product.price * 0.8).toFixed(2) : null; // Assuming 20% discount for sale items
+
         productContainer.innerHTML = `
             <div class="product-image">
                 <img src="${product.image}" alt="${product.title}">
@@ -90,7 +95,10 @@ function displayProducts(category = 'all') {
                 <div class="stock-status">${product.stockStatus}</div>
             </div>
             <div class="product-title">${product.title}</div>
-            <div class="product-price">$${product.price}</div> <!-- Removed originalPrice -->
+            <div class="product-price">
+                ${product.onSale ? `<span class="original-price">$${formattedPrice}</span>` : ''}
+                <span class="sale-price">${salePrice ? `$${salePrice}` : formattedPrice}</span>
+            </div>
             <div class="product-description">${product.description}</div>
             <a href="${product.link}" class="product-button">View Product</a>
         `;
