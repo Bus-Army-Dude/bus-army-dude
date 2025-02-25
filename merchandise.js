@@ -1,143 +1,120 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const categories = [
-        "All Products", 
-        "Outdoor", 
-        "Hats", 
-        "Hoodies & Sweatshirts", 
-        "T-Shirts", 
-        "Baby & Toddler", 
-        "Kitchenware", 
-        "Accessories"
-    ];
+document.addEventListener("DOMContentLoaded", function() {
+    // Set the current year dynamically in the footer
+    const currentYear = new Date().getFullYear();
+    document.getElementById("year").textContent = currentYear;
 
-    const products = [
-        {
-            id: 1,
-            title: "Outdoor Hat",
-            category: "Hats",
-            price: "$25.00",
-            stockStatus: "In Stock",
-            image: "path-to-hat-image.jpg", // Update with actual image path
-            link: "https://example.com/product/outdoor-hat" // Product link
-        },
-        {
-            id: 2,
-            title: "Bus Army Hoodie",
-            category: "Hoodies & Sweatshirts",
-            price: "$45.00",
-            stockStatus: "Low Stock",
-            image: "path-to-hoodie-image.jpg", // Update with actual image path
-            link: "https://example.com/product/bus-army-hoodie" // Product link
-        },
-        {
-            id: 3,
-            title: "Graphic T-Shirt",
-            category: "T-Shirts",
-            price: "$30.00",
-            stockStatus: "In Stock",
-            image: "path-to-tshirt-image.jpg", // Update with actual image path
-            link: "https://example.com/product/graphic-tshirt" // Product link
-        },
-        {
-            id: 4,
-            title: "Baby Onesie",
-            category: "Baby & Toddler",
-            price: "$20.00",
-            stockStatus: "Out of Stock",
-            image: "path-to-onesie-image.jpg", // Update with actual image path
-            link: "https://example.com/product/baby-onesie" // Product link
-        },
-        {
-            id: 5,
-            title: "Custom Mug",
-            category: "Kitchenware",
-            price: "$15.00",
-            stockStatus: "In Stock",
-            image: "path-to-mug-image.jpg", // Update with actual image path
-            link: "https://example.com/product/custom-mug" // Product link
-        },
-        {
-            id: 6,
-            title: "Keychain",
-            category: "Accessories",
-            price: "$10.00",
-            stockStatus: "In Stock",
-            image: "path-to-keychain-image.jpg", // Update with actual image path
-            link: "https://example.com/product/keychain" // Product link
-        }
-    ];
+    // Categories for filtering
+    const categories = ["All Products", "Outdoor", "Hats", "Hoodies & Sweatshirts", "T-Shirts", "Baby & Toddler", "Kitchenwear", "Accessories"];
+    const categorySelect = document.getElementById("categories");
 
-    // Populate categories dropdown
-    const categoryDropdown = document.getElementById('categories');
-    categories.forEach((category) => {
-        const option = document.createElement('option');
+    // Dynamically create category list in the dropdown
+    categories.forEach(category => {
+        const option = document.createElement("option");
         option.value = category;
         option.textContent = category;
-        categoryDropdown.appendChild(option);
+        categorySelect.appendChild(option);
     });
 
-    // Render all products by default
-    renderProducts(products);
+    // Example products data (with categories)
+    const products = [
+        {
+            name: "Outdoor Jacket",
+            price: 30,
+            originalPrice: 50,
+            discount: 40,
+            stock: "in-stock",
+            sale: true,
+            image: "product1.jpg",
+            link: "#", // Change this to the actual product link
+            category: "Outdoor" // Category assigned to the product
+        },
+        {
+            name: "Stylish Hat",
+            price: 20,
+            originalPrice: 40,
+            discount: 50,
+            stock: "low-stock",
+            sale: false,
+            image: "product2.jpg",
+            link: "#", // Change this to the actual product link
+            category: "Hats" // Category assigned to the product
+        },
+        {
+            name: "Cool Hoodie",
+            price: 50,
+            originalPrice: 70,
+            discount: 30,
+            stock: "in-stock",
+            sale: true,
+            image: "product3.jpg",
+            link: "#", // Change this to the actual product link
+            category: "Hoodies & Sweatshirts" // Category assigned to the product
+        },
+        {
+            name: "Graphic T-Shirt",
+            price: 15,
+            originalPrice: 25,
+            discount: 40,
+            stock: "out-of-stock",
+            sale: false,
+            image: "product4.jpg",
+            link: "#", // Change this to the actual product link
+            category: "T-Shirts" // Category assigned to the product
+        },
+        // Add more products with their respective categories
+    ];
 
-    // Filter products based on category selection
-    categoryDropdown.addEventListener('change', function () {
-        const selectedCategory = this.value;
-        if (selectedCategory === "All Products") {
-            renderProducts(products);
-        } else {
-            const filteredProducts = products.filter(product => product.category === selectedCategory);
-            renderProducts(filteredProducts);
-        }
-    });
+    const productGrid = document.getElementById("product-grid");
+    const sectionTitle = document.getElementById("section-title");
+    const productCount = document.getElementById("product-count");
 
     // Function to render products
     function renderProducts(productsToRender) {
-        const productGrid = document.getElementById('product-grid');
-        productGrid.innerHTML = ''; // Clear the grid before rendering
+        productGrid.innerHTML = ""; // Clear the grid before rendering
+        productCount.textContent = `${productsToRender.length} product${productsToRender.length !== 1 ? 's' : ''}`;
+        
+        productsToRender.forEach(product => {
+            const productItem = document.createElement("div");
+            productItem.classList.add("product-item");
 
-        productsToRender.forEach((product) => {
-            const productContainer = document.createElement('div');
-            productContainer.classList.add('product-container');
+            // Sale ribbon if applicable
+            const saleRibbon = product.sale ? '<div class="sale-ribbon">Sale</div>' : '';
+            const stockStatusRibbon = `<div class="stock-ribbon ${product.stock}">${product.stock.replace("-", " ")}</div>`;
 
-            // Product image (wrap it in a link)
-            const productLink = document.createElement('a');
-            productLink.href = product.link; // Use product link
-            productLink.target = '_blank'; // Open in a new tab
+            // Product content
+            productItem.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                ${saleRibbon}
+                ${stockStatusRibbon}
+                <h3>${product.name}</h3>
+                <p class="price">
+                    <span class="original-price">$${product.originalPrice}</span>
+                    <span class="discount">$${product.price} (${product.discount}% Off)</span>
+                </p>
+                <a href="${product.link}" class="buy-now">Buy Now</a>
+            `;
 
-            const productImage = document.createElement('img');
-            productImage.src = product.image; // Ensure product.image is a valid URL
-            productImage.alt = product.title;
-
-            productLink.appendChild(productImage);
-
-            // Product details
-            const productTitle = document.createElement('h3');
-            productTitle.textContent = product.title;
-
-            const productPrice = document.createElement('p');
-            productPrice.textContent = product.price;
-
-            const stockStatus = document.createElement('span');
-            stockStatus.classList.add('stock-status');
-            stockStatus.textContent = product.stockStatus;
-
-            // Append everything to the container
-            productContainer.appendChild(productLink);
-            productContainer.appendChild(productTitle);
-            productContainer.appendChild(productPrice);
-            productContainer.appendChild(stockStatus);
-
-            // Add the product container to the grid
-            productGrid.appendChild(productContainer);
+            productGrid.appendChild(productItem);
         });
-
-        // Update product count
-        document.getElementById('product-count').textContent = `${productsToRender.length} products`;
     }
 
+    // Initial render
+    renderProducts(products);
+
+    // Function to filter products by category
+    categorySelect.addEventListener("change", function() {
+        const selectedCategory = categorySelect.value;
+        sectionTitle.textContent = selectedCategory;
+
+        if (selectedCategory === "All Products") {
+            renderProducts(products); // Show all products if "All Products" is selected
+        } else {
+            const filteredProducts = products.filter(product => product.category === selectedCategory);
+            renderProducts(filteredProducts); // Filter by selected category
+        }
+    });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const currentYear = new Date().getFullYear();
-    document.getElementById('year').textContent = currentYear;
+window.addEventListener("load", function() {
+    document.body.classList.add("loaded"); // Add the 'loaded' class to body when everything is ready
 });
