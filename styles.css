@@ -609,9 +609,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 110px;
     margin-bottom: 8px;
-    padding-left: 100px;
 }
 
 /* Username Container with Verification Badge */
@@ -622,7 +620,6 @@ body {
     align-items: center;
     gap: 6px;
     margin-bottom: 12px;
-    padding-left: 100px;
 }
 
 /* Common Username Styles */
@@ -654,7 +651,6 @@ body {
     margin: 12px 0;
     font-size: 1em;
     line-height: 1.5;
-    padding-left: 100px;
 }
 
 /* Common Follower/Subscriber Count Styles */
@@ -665,7 +661,6 @@ body {
     font-weight: 600;
     margin: 12px 0;
     font-size: 1.05em;
-    padding-left: 100px;
 }
 
 /* Common Visit Profile Button Styles */
@@ -682,7 +677,6 @@ body {
     transition: all 0.3s ease;
     text-align: center;
     font-weight: 500;
-    margin-left: 100px;
 }
 
 .visit-profile:hover,
@@ -706,7 +700,7 @@ body {
 .youtube-cover-photo {
     width: 100%;
     height: 150px;
-    object-fit: cover; /* This is the fix! */
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 15px;
     display: block;
@@ -714,8 +708,40 @@ body {
 
 .youtube-creator-card {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto 1fr; /* Removed the third row for the button */
     gap: 10px;
+    padding-top: 130px; /* Adjust padding to accommodate profile pic */
+}
+
+.youtube-creator-info {
+    padding-left: 0; /* Reset padding */
+    text-align: left; /* Align text to the left */
+}
+
+.youtube-creator-header {
+    margin-top: 0; /* Reset margin */
+    padding-left: 0; /* Reset padding */
+    align-items: flex-start; /* Align items to the left */
+    margin-top: 110px; /* Added to push content down */
+    padding-left: 100px; /* added padding to account for profile picture */
+}
+
+.youtube-username-container {
+    padding-left: 0; /* Reset padding */
+    align-items: flex-start; /* Align items to the left */
+    padding-left: 100px; /* added padding to account for profile picture */
+}
+
+.youtube-creator-bio,
+.youtube-subscriber-count {
+    padding-left: 0; /* Reset padding */
+    padding-left: 100px; /* added padding to account for profile picture */
+}
+
+.youtube-visit-profile {
+    margin-left: 0; /* Reset margin */
+    margin-top: auto; /* Push button to the bottom */
+    margin-left: 100px; /* added margin to account for profile picture */
 }
 
 :root {
