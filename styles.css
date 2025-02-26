@@ -553,8 +553,8 @@ body {
     align-items: flex-start;
     box-shadow: 0 3px 6px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%; /* Ensure cards take full width of their container */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .creator-card:hover,
@@ -660,13 +660,13 @@ body {
 .instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusted minmax for better responsiveness */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
-    padding: 30px 20px; /* Added padding to prevent touching sides */
+    padding: 30px 20px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    box-sizing: border-box; /* Include padding in width */
+    box-sizing: border-box;
 }
 
 /* YouTube Specific Cover Photo styles */
@@ -704,22 +704,42 @@ body {
     .creator-grid,
     .instagram-creator-grid,
     .youtube-creator-grid {
-        grid-template-columns: 1fr; /* Single column on smaller screens */
-        padding: 20px 10px; /* Adjust padding for smaller screens */
+        grid-template-columns: 1fr;
+        padding: 20px 10px;
     }
 
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
-        padding: 20px; /* Adjust card padding for smaller screens */
+        padding: 20px;
     }
 
     .creator-pic,
     .instagram-creator-pic,
     .youtube-creator-pic {
-        width: 70px; /* Adjust profile picture size for smaller screens */
+        width: 70px;
         height: 70px;
     }
+}
+
+/* Center the grid containers */
+.creator-grid,
+.instagram-creator-grid,
+.youtube-creator-grid {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Add padding to the body or a wrapper element to prevent content from touching the sides */
+body {
+    padding: 0 10px; /* Adjust as needed */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+/* If you have a wrapper around the grids, apply padding to that wrapper instead of the body */
+.content-wrapper { /* Replace with your actual wrapper class or ID */
+    padding: 0 10px; /* Adjust as needed */
+    box-sizing: border-box;
 }
 
 :root {
