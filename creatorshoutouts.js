@@ -153,7 +153,7 @@ instagramShoutouts.init();
 
 const youtubeShoutouts = {
     accounts: [
-        { username: '@MrBeast', isVerified: true, subscribers: '367M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg', coverPhoto: 'youtube_photoes/mrbeast-cover.jpg' },
+        { username: '@MrBeast', isVerified: true, subscribers: '367M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg', coverPhoto: 'youtube_photoes/channels4_banner.jpg' },
         { username: '@MrBeast2', isVerified: true, subscribers: '49.4M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg', coverPhoto: 'youtube_photoes/mrbeast-cover.jpg' },
         { username: '@MrBeastGaming', isVerified: true, subscribers: '46.7M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg', coverPhoto: 'youtube_photoes/mrbeast-cover.jpg' },
         { username: '@BeastReacts', isVerified: true, subscribers: '35.4M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg', coverPhoto: 'youtube_photoes/mrbeast-cover.jpg' },
