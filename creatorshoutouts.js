@@ -164,7 +164,6 @@ const youtubeShoutouts = {
         { username: '@mrfatcheeto', isVerified: false, subscribers: '107K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg', coverPhoto: 'youtube_photoes/mrbeast-cover.jpg' },
         { username: '@Badge502', isVerified: false, subscribers: '62.1K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg', coverPhoto: 'youtube_photoes/mrbeast-cover.jpg' },     
         { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg', coverPhoto: 'youtube_photoes/mrbeast-cover.jpg' },     
-        // Add more YouTube creators as needed
     ],
     lastUpdatedTime: '2025-02-26T11:55:27', // Manually set the last updated date and time
     init() {
@@ -172,32 +171,32 @@ const youtubeShoutouts = {
         this.setLastUpdatedTime();
     },
     createShoutoutCards() {
-    const container = document.querySelector('.youtube-creator-grid');
-    if (!container) return;
+        const container = document.querySelector('.youtube-creator-grid');
+        if (!container) return;
 
-    container.innerHTML = '';
-    this.accounts.forEach(account => {
-        const card = document.createElement('div');
-        card.className = 'youtube-creator-card';
-        card.innerHTML = `
-            <div class="youtube-creator-cover" style="background-image: url('${account.coverPhoto || 'default-cover.jpg'}');"></div>
-            <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
-            <div class="youtube-creator-info">
-                <div class="youtube-creator-header">
-                    <h3>${account.nickname}</h3>
-                    ${account.isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''}
+        container.innerHTML = '';
+        this.accounts.forEach(account => {
+            const card = document.createElement('div');
+            card.className = 'youtube-creator-card';
+            card.innerHTML = `
+                <div class="youtube-creator-cover" style="background-image: url('${account.coverPhoto || 'default-cover.jpg'}');"></div>
+                <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="youtube-creator-info">
+                    <div class="youtube-creator-header">
+                        <h3>${account.nickname}</h3>
+                        ${account.isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''}
+                    </div>
+                    <p class="youtube-creator-username">${account.username}</p>
+                    <p class="youtube-creator-bio">${account.bio || ''}</p>
+                    <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
+                    <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
+                        Visit Channel
+                    </a>
                 </div>
-                <p class="youtube-creator-username">${account.username}</p>
-                <p class="youtube-creator-bio">${account.bio || ''}</p>
-                <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
-                <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
-                    Visit Channel
-                </a>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-}
+            `;
+            container.appendChild(card);
+        });
+    },
     setLastUpdatedTime() {
         const lastUpdatedElement = document.getElementById('lastUpdatedYouTube');
         if (!lastUpdatedElement) return;
@@ -219,4 +218,5 @@ const youtubeShoutouts = {
     }
 };
 
+// Initialize the shoutouts section
 youtubeShoutouts.init();
