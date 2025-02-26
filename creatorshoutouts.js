@@ -29,7 +29,7 @@ const tiktokShoutouts = {
         this.setLastUpdatedTime();
     },
     createShoutoutCards() {
-        const container = document.querySelector('.creator-grid');
+        const container = document.querySelector('.tiktok-creator-grid');
         if (!container) {
             console.error('Creator grid element not found.');
             return;
