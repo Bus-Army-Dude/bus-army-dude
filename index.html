@@ -154,13 +154,21 @@
             </div>
         </section>
 
-          <style>
+         <style>
   .responsive-iframe {
     width: 100%;
     max-width: 495px;
-    height: auto;
-    aspect-ratio: 8.1; /* Maintain the original aspect ratio (495/61) */
+    height: 61vw; /* Adjust height based on viewport width */
+    max-height: 495px; /* Prevent it from getting too large on bigger screens */
+    aspect-ratio: 8.1; /* Maintain the original aspect ratio */
     border: none;
+  }
+
+  /* Ensure the iframe is properly visible on smaller mobile screens */
+  @media (max-width: 495px) {
+    .responsive-iframe {
+      height: auto; 
+    }
   }
 </style>
 
