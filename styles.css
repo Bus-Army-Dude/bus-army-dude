@@ -543,39 +543,38 @@ body {
 
 /* TikTok Creator Shoutouts */
 .tiktok-creator-section {
-    background-color: var(--section-bg);
+    background-color: var(--content-bg);
     padding: 20px;
     border-radius: 12px;
     margin: 30px 0;
     box-shadow: 0 4px 8px var(--shadow-color);
-    transition: background-color 0.3s ease;
 }
 
 .tiktok-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Same grid style as Instagram and YouTube */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Aligned with Instagram */
     gap: 20px;
     padding: 20px 0;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .tiktok-creator-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 15px;
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    box-shadow: 0 2px 4px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
     position: relative;
-    text-align: center; /* Center align to match other sections */
+    text-align: center;
 }
 
 .tiktok-creator-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 14px var(--hover-shadow);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .tiktok-creator-pic {
@@ -584,19 +583,33 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--accent-color);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .tiktok-creator-header h3 {
-    font-size: 1.2em;
-    margin: 10px 0 5px 0;
+    font-size: 1.1em;
+    margin: 0;
     color: var(--text-color);
 }
 
 .tiktok-creator-username {
     color: var(--secondary-text);
     font-size: 0.9em;
-    margin-bottom: 10px;
+    margin: 0;
+}
+
+.tiktok-verified-badge {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tiktok-creator-bio {
+    color: var(--secondary-text);
+    margin: 10px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
 }
 
 .tiktok-follower-count {
@@ -607,17 +620,18 @@ body {
 
 .tiktok-visit-profile {
     display: inline-block;
-    background-color: var(--button-bg);
-    color: var(--button-text);
+    background-color: var(--accent-color);
+    color: white;
     text-decoration: none;
     padding: 8px 16px;
     border-radius: 20px;
     margin-top: 10px;
     transition: all 0.3s ease;
+    text-align: center;
 }
 
 .tiktok-visit-profile:hover {
-    background-color: var(--button-hover-bg);
+    background-color: var(--hover-color);
     transform: scale(1.05);
 }
 
