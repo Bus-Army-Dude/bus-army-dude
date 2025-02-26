@@ -549,7 +549,7 @@ body {
     border-radius: 12px;
     padding: 25px;
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
+    flex-direction: column;
     align-items: flex-start;
     box-shadow: 0 3px 6px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -577,7 +577,7 @@ body {
 .creator-info,
 .instagram-creator-info,
 .youtube-creator-info {
-    width: 100%; /* Ensure full width */
+    width: 100%;
 }
 
 .creator-header h3,
@@ -591,6 +591,8 @@ body {
 .username-container,
 .instagram-username-container,
 .youtube-username-container {
+    display: flex; /* Use flexbox for username and badge */
+    align-items: center; /* Align items vertically */
     margin-bottom: 10px;
 }
 
@@ -600,6 +602,15 @@ body {
     color: var(--secondary-text);
     font-size: 1em;
     margin: 0;
+}
+
+/* Verification Badge Styling (Applies to all cards) */
+.verified-badge,
+.instagram-verified-badge,
+.youtube-verified-badge {
+    width: 18px; /* Adjust size */
+    height: 18px; /* Adjust size */
+    margin-left: 5px; /* Space between username and badge */
 }
 
 .creator-bio,
@@ -661,22 +672,22 @@ body {
     height: auto;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 10px; /* Space between cover photo and content */
+    margin-bottom: 10px;
 }
 
 .youtube-creator-content {
     display: flex;
     align-items: flex-start;
     gap: 20px;
-    width: 100%; /* Ensure full width */
+    width: 100%;
 }
 
 .youtube-creator-pic {
-    margin-left: 0; /* Align with left edge */
+    margin-left: 0;
 }
 
 .youtube-creator-info {
-    flex-grow: 1; /* Allow text to take remaining space */
+    flex-grow: 1;
 }
 
 :root {
