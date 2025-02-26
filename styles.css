@@ -542,9 +542,7 @@ body {
 }
 
 /* TikTok Creator Shoutouts */
-.tiktok-creator-section,
-.youtube-creator-section,
-.instagram-creator-section {
+.tiktok-creator-section {
     background-color: var(--content-bg);
     padding: 20px;
     border-radius: 12px;
@@ -552,10 +550,24 @@ body {
     box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* Creator Section Grid */
-.tiktok-creator-grid,
-.youtube-creator-grid,
-.instagram-creator-grid {
+.tiktok-creator-grid {
+    composes: creator-grid;
+}
+
+.tiktok-creator-card {
+    composes: creator-card;
+}
+
+.follower-count {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Common Creator Grid Styles */
+.creator-grid,
+.instagram-creator-grid,
+.youtube-creator-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
@@ -565,10 +577,10 @@ body {
     margin: 0 auto;
 }
 
-/* Creator Card */
-.tiktok-creator-card,
-.youtube-creator-card,
-.instagram-creator-card {
+/* Common Creator Card Styles */
+.creator-card,
+.instagram-creator-card,
+.youtube-creator-card {
     background-color: var(--content-bg);
     border-radius: 10px;
     padding: 20px;
@@ -577,20 +589,19 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow-color);
     position: relative;
-    text-align: center;
 }
 
-.tiktok-creator-card:hover,
-.youtube-creator-card:hover,
-.instagram-creator-card:hover {
+.creator-card:hover,
+.instagram-creator-card:hover,
+.youtube-creator-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-/* Creator Picture */
-.tiktok-creator-pic,
-.youtube-creator-pic,
-.instagram-creator-pic {
+/* Common Profile Picture Styles */
+.creator-pic,
+.instagram-creator-pic,
+.youtube-creator-pic {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -599,57 +610,70 @@ body {
     margin-bottom: 15px;
 }
 
-/* Creator Header */
-.tiktok-creator-header h3,
-.youtube-creator-header h3,
-.instagram-creator-header h3 {
-    font-size: 1.1em;
-    margin: 0;
-    color: var(--text-color);
+/* Common Header Styles */
+.creator-header,
+.instagram-creator-header,
+.youtube-creator-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
 }
 
-/* Creator Username */
-.tiktok-creator-username,
-.youtube-creator-username,
-.instagram-creator-username {
+/* Username Container with Verification Badge */
+.username-container,
+.instagram-username-container,
+.youtube-username-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+/* Common Username Styles */
+.creator-username,
+.instagram-creator-username,
+.youtube-creator-username {
     color: var(--secondary-text);
     font-size: 0.9em;
     margin: 0;
 }
 
-/* Verified Badge */
-.tiktok-verified-badge,
-.youtube-verified-badge,
-.instagram-verified-badge {
+/* Verification Badge Styles */
+.verified-badge,
+.instagram-verified-badge,
+.youtube-verified-badge {
     width: 16px;
     height: 16px;
     display: inline-block;
     vertical-align: middle;
+    margin-left: 0;  /* No margin */
+    margin-right: 0; /* No margin */
 }
 
-/* Creator Bio */
-.tiktok-creator-bio,
-.youtube-creator-bio,
-.instagram-creator-bio {
+/* Common Bio Styles */
+.creator-bio,
+.instagram-creator-bio,
+.youtube-creator-bio {
     color: var(--secondary-text);
     margin: 10px 0;
     font-size: 0.9em;
     line-height: 1.4;
 }
 
-/* Follower/Subscriber Count */
-.tiktok-follower-count,
-.youtube-subscriber-count,
-.instagram-follower-count {
+/* Common Follower/Subscriber Count Styles */
+.follower-count,
+.instagram-follower-count,
+.youtube-subscriber-count {
     color: var(--accent-color);
     font-weight: bold;
     margin: 10px 0;
 }
 
-/* Visit Profile Button */
-.tiktok-visit-profile,
-.youtube-visit-profile,
-.instagram-visit-profile {
+/* Common Visit Profile Button Styles */
+.visit-profile,
+.instagram-visit-profile,
+.youtube-visit-profile {
     display: inline-block;
     background-color: var(--accent-color);
     color: white;
@@ -661,20 +685,20 @@ body {
     text-align: center;
 }
 
-.tiktok-visit-profile:hover,
-.youtube-visit-profile:hover,
-.instagram-visit-profile:hover {
+.visit-profile:hover,
+.instagram-visit-profile:hover,
+.youtube-visit-profile:hover {
     background-color: var(--hover-color);
     transform: scale(1.05);
 }
 
-/* YouTube Creator Cover Photo */
-.youtube-creator-card .cover-photo {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
+/* Creator Name Styles */
+.creator-header h3,
+.instagram-creator-header h3,
+.youtube-creator-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--text-color);
 }
 
 :root {
