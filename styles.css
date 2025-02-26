@@ -552,17 +552,6 @@ body {
     box-shadow: 0 5px 12px var(--shadow-color);
 }
 
-/* TikTok Creator Shoutouts */
-.tiktok-creator-section,
-.instagram-creator-section,
-.youtube-creator-section {
-    background-color: var(--content-bg);
-    padding: 25px;
-    border-radius: 15px;
-    margin: 30px 0;
-    box-shadow: 0 5px 12px var(--shadow-color);
-}
-
 /* Common Creator Grid Styles */
 .creator-grid,
 .instagram-creator-grid,
@@ -611,10 +600,10 @@ body {
 
 .youtube-creator-pic {
     position: absolute;
-    bottom: 20px; /* Adjust bottom position */
-    left: 20px; /* Adjust left position */
-    width: 120px; /* Adjust profile picture size */
-    height: 120px; /* Adjust profile picture size */
+    bottom: 20px;
+    left: 20px;
+    width: 120px;
+    height: 120px;
     border: 3px solid var(--accent-color);
     z-index: 2;
 }
@@ -624,7 +613,7 @@ body {
 .instagram-creator-header,
 .youtube-creator-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Align header items to start */
     gap: 10px;
     margin-bottom: 8px;
 }
@@ -634,7 +623,7 @@ body {
 .instagram-username-container,
 .youtube-username-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Align username items to start */
     gap: 6px;
     margin-bottom: 12px;
 }
@@ -698,7 +687,7 @@ body {
 
 .visit-profile:hover,
 .instagram-visit-profile:hover,
-.youtube-creator-profile:hover {
+.youtube-visit-profile:hover {
     background-color: var(--hover-color);
     transform: scale(1.08);
 }
@@ -732,30 +721,17 @@ body {
 }
 
 .youtube-creator-info {
-    padding-left: 140px; /* Adjust padding to shift content right */
+    padding-left: 0; /* Remove padding */
     text-align: left;
-    margin-top: 20px; /* Adjust top margin for spacing */
+    margin-top: 140px; /* adjust margin to account for profile picture */
 }
 
-.youtube-creator-header {
-    margin-top: 0;
-    padding-left: 0;
-    align-items: flex-start;
-}
-
-.youtube-username-container {
-    padding-left: 0;
-    align-items: flex-start;
-}
-
+.youtube-creator-header,
+.youtube-username-container,
 .youtube-creator-bio,
-.youtube-subscriber-count {
-    padding-left: 0;
-}
-
+.youtube-subscriber-count,
 .youtube-visit-profile {
-    margin-left: 140px; /* Adjust margin to align button with content */
-    margin-top: 20px;
+    padding-left: 140px; /* Add padding */
 }
 
 :root {
