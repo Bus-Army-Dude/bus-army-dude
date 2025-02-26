@@ -543,59 +543,59 @@ body {
 
 /* TikTok Creator Shoutouts */
 .tiktok-creator-section {
-    background-color: var(--content-bg);
+    background-color: var(--section-bg); /* Updated to match other sections */
     padding: 20px;
     border-radius: 12px;
     margin: 30px 0;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 0 4px 8px var(--shadow-color); /* Shadow consistent with other sections */
+    transition: background-color 0.3s ease;
 }
 
 .tiktok-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusted for consistency */
     gap: 20px;
     padding: 20px 0;
-    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .tiktok-creator-card {
-    background-color: var(--content-bg);
+    background-color: var(--card-bg); /* Updated to match other cards */
     border-radius: 10px;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
 }
 
 .tiktok-creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px var(--shadow-color);
+    transform: translateY(-5px); /* Hover effect to add interactivity */
+    box-shadow: 0 6px 14px var(--hover-shadow); /* Consistent hover effect */
 }
 
 .tiktok-creator-pic {
-    width: 80px;
-    height: 80px;
+    width: 70px; /* Reduced size for consistency with others */
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--accent-color);
+    border: 3px solid var(--accent-color); /* Accent color remains */
     margin-bottom: 15px;
 }
 
 .tiktok-creator-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 5px;
 }
 
 .tiktok-creator-header h3 {
     margin: 0;
     font-size: 1.1em;
-    color: var(--text-color);
+    color: var(--text-color); /* Match text color with other sections */
 }
 
 .tiktok-username-container {
@@ -606,7 +606,7 @@ body {
 }
 
 .tiktok-creator-username {
-    color: var(--secondary-text);
+    color: var(--secondary-text); /* Match secondary text color */
     font-size: 0.9em;
     margin: 0;
 }
@@ -619,35 +619,34 @@ body {
 }
 
 .tiktok-creator-bio {
-    color: var(--secondary-text);
+    color: var(--secondary-text); /* Match bio text styling */
     margin: 10px 0;
     font-size: 0.9em;
-    line-height: 1.4;
+    line-height: 1.5; /* Consistent line-height */
 }
 
 .tiktok-follower-count {
-    color: var(--accent-color);
+    color: var(--accent-color); /* Follower count in accent color */
     font-weight: bold;
     margin: 10px 0;
 }
 
 .tiktok-visit-profile {
     display: inline-block;
-    background-color: var(--accent-color);
-    color: white;
+    background-color: var(--button-bg); /* Match button styling with other sections */
+    color: var(--button-text); /* Button text color */
     text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 10px 18px;
+    border-radius: 25px; /* More consistent with rounded button styles */
     margin-top: 10px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     text-align: center;
 }
 
 .tiktok-visit-profile:hover {
-    background-color: var(--hover-color);
-    transform: scale(1.05);
+    background-color: var(--button-hover-bg); /* Consistent hover color */
+    transform: scale(1.05); /* Subtle hover transform */
 }
-
 
 /* YouTube Creator Shoutouts */
 .youtube-creator-section {
