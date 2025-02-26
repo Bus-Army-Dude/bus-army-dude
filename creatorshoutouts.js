@@ -169,7 +169,7 @@ const youtubeShoutouts = {
             nickname: 'MrBeast 2',
             bio: 'my second channel for other videos and shorts :) subscribe ',
             profilePic: 'youtube_photoes/mrbeast2.jpg',
-            coverPhoto: 'youtube_photoes/mrbeast2_cover.jpg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels4_banner.jpg', // Add cover photo
         },
         {
             username: '@MrBeastGaming',
