@@ -572,12 +572,12 @@ body {
     background-color: var(--content-bg);
     border-radius: 12px;
     padding: 25px;
-    display: flex;
+    display: flex; /* Change to flexbox for easier positioning */
     flex-direction: column;
+    position: relative; /* Needed for absolute positioning of profile pic */
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px var(--shadow-color);
-    position: relative;
-    overflow: hidden;
 }
 
 .creator-card:hover,
@@ -596,9 +596,15 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--accent-color);
+}
+
+.youtube-creator-pic {
     position: absolute;
-    top: 110px;
-    left: 20px;
+    top: 10px; /* Adjust top position */
+    left: 10px; /* Adjust left position */
+    width: 80px; /* Adjust size */
+    height: 80px; /* Adjust size */
+    border: 3px solid var(--accent-color); /* Adjust border */
     z-index: 2;
 }
 
@@ -699,49 +705,43 @@ body {
 /* Youtube Specific Cover Photo */
 .youtube-cover-photo {
     width: 100%;
-    height: 150px;
+    height: auto; /* Adjust height based on aspect ratio */
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 15px;
-    display: block;
+    margin-bottom: 0; /* Remove bottom margin */
 }
 
 .youtube-creator-card {
-    display: grid;
-    grid-template-rows: auto 1fr; /* Removed the third row for the button */
-    gap: 10px;
-    padding-top: 130px; /* Adjust padding to accommodate profile pic */
+    display: flex; /* Change to flexbox for easier positioning */
+    flex-direction: column;
+    position: relative; /* Needed for absolute positioning of profile pic */
+    padding-top: 10px; /* Adjust padding to accommodate profile pic */
 }
 
 .youtube-creator-info {
-    padding-left: 0; /* Reset padding */
-    text-align: left; /* Align text to the left */
+    padding-left: 10px; /* Add some left padding */
+    text-align: left;
 }
 
 .youtube-creator-header {
-    margin-top: 0; /* Reset margin */
-    padding-left: 0; /* Reset padding */
-    align-items: flex-start; /* Align items to the left */
-    margin-top: 110px; /* Added to push content down */
-    padding-left: 100px; /* added padding to account for profile picture */
+    margin-top: 90px; /* Adjust based on profile pic size */
+    padding-left: 0;
+    align-items: flex-start;
 }
 
 .youtube-username-container {
-    padding-left: 0; /* Reset padding */
-    align-items: flex-start; /* Align items to the left */
-    padding-left: 100px; /* added padding to account for profile picture */
+    padding-left: 0;
+    align-items: flex-start;
 }
 
 .youtube-creator-bio,
 .youtube-subscriber-count {
-    padding-left: 0; /* Reset padding */
-    padding-left: 100px; /* added padding to account for profile picture */
+    padding-left: 0;
 }
 
 .youtube-visit-profile {
-    margin-left: 0; /* Reset margin */
-    margin-top: auto; /* Push button to the bottom */
-    margin-left: 100px; /* added margin to account for profile picture */
+    margin-left: 0;
+    margin-top: 10px; /* Add some top margin */
 }
 
 :root {
