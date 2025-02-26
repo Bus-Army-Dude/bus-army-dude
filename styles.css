@@ -541,98 +541,136 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color);
 }
 
-/* General Card Styling (Applies to all cards) */
+/* TikTok Creator Shoutouts */
+.tiktok-creator-section {
+    background-color: var(--content-bg);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.tiktok-creator-grid {
+    composes: creator-grid;
+}
+
+.tiktok-creator-card {
+    composes: creator-card;
+}
+
+.follower-count {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Common Creator Grid Styles */
+.creator-grid,
+.instagram-creator-grid,
+.youtube-creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Common Creator Card Styles */
 .creator-card,
 .instagram-creator-card,
 .youtube-creator-card {
     background-color: var(--content-bg);
-    border-radius: 12px;
-    padding: 25px;
+    border-radius: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    box-shadow: 0 3px 6px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    position: relative;
 }
 
 .creator-card:hover,
 .instagram-creator-card:hover,
 .youtube-creator-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 6px 15px var(--shadow-color);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-/* Profile Picture Styling (Applies to all cards) */
+/* Common Profile Picture Styles */
 .creator-pic,
 .instagram-creator-pic,
 .youtube-creator-pic {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--accent-color);
+    border: 3px solid var(--accent-color);
+    margin-bottom: 15px;
 }
 
-/* Text Content Styling (Applies to all cards) */
-.creator-info,
-.instagram-creator-info,
-.youtube-creator-info {
-    width: 100%;
-}
-
-.creator-header h3,
-.instagram-creator-header h3,
-.youtube-creator-header h3 {
-    margin: 0 0 5px 0;
-    font-size: 1.2em;
-    color: var(--text-color);
+/* Common Header Styles */
+.creator-header,
+.instagram-creator-header,
+.youtube-creator-header {
     display: flex;
     align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
 }
 
+/* Username Container with Verification Badge */
 .username-container,
 .instagram-username-container,
 .youtube-username-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     margin-bottom: 10px;
 }
 
+/* Common Username Styles */
 .creator-username,
 .instagram-creator-username,
 .youtube-creator-username {
     color: var(--secondary-text);
-    font-size: 1em;
+    font-size: 0.9em;
     margin: 0;
 }
 
-/* Verification Badge Styling (Applies to all cards) */
+/* Verification Badge Styles */
 .verified-badge,
 .instagram-verified-badge,
 .youtube-verified-badge {
-    width: 18px;
-    height: 18px;
-    margin-left: 5px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0;  /* No margin */
+    margin-right: 0; /* No margin */
 }
 
+/* Common Bio Styles */
 .creator-bio,
 .instagram-creator-bio,
 .youtube-creator-bio {
     color: var(--secondary-text);
     margin: 10px 0;
-    font-size: 1em;
-    line-height: 1.5;
+    font-size: 0.9em;
+    line-height: 1.4;
 }
 
+/* Common Follower/Subscriber Count Styles */
 .follower-count,
 .instagram-follower-count,
 .youtube-subscriber-count {
     color: var(--accent-color);
-    font-weight: 600;
+    font-weight: bold;
     margin: 10px 0;
-    font-size: 1.05em;
 }
 
+/* Common Visit Profile Button Styles */
 .visit-profile,
 .instagram-visit-profile,
 .youtube-visit-profile {
@@ -640,93 +678,27 @@ body {
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    margin-top: 15px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-top: 10px;
     transition: all 0.3s ease;
     text-align: center;
-    font-weight: 500;
 }
 
 .visit-profile:hover,
 .instagram-visit-profile:hover,
 .youtube-visit-profile:hover {
     background-color: var(--hover-color);
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
-/* General Grid Container Adjustments for All Platforms */
-.creator-grid,
-.instagram-creator-grid,
-.youtube-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    padding: 30px 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
-/* YouTube Specific Cover Photo styles */
-.youtube-cover-photo {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-.youtube-creator-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    width: 100%;
-}
-
-.youtube-creator-pic {
-    margin-left: 0;
-}
-
-.youtube-creator-info {
-    flex-grow: 1;
-}
-
-/* YouTube Specific Header Styles */
-.youtube-creator-header {
-    display: flex;
-    align-items: center;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .creator-grid,
-    .instagram-creator-grid,
-    .youtube-creator-grid {
-        grid-template-columns: 1fr;
-        padding: 20px 10px;
-    }
-
-    .creator-card,
-    .instagram-creator-card,
-    .youtube-creator-card {
-        padding: 20px;
-    }
-
-    .creator-pic,
-    .instagram-creator-pic,
-    .youtube-creator-pic {
-        width: 70px;
-        height: 70px;
-    }
-}
-
-/* Ensure body or wrapper has padding */
-body,
-.content-wrapper { /* Add your wrapper class if you have one */
-    padding: 0 10px;
-    box-sizing: border-box;
+/* Creator Name Styles */
+.creator-header h3,
+.instagram-creator-header h3,
+.youtube-creator-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--text-color);
 }
 
 :root {
