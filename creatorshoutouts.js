@@ -260,32 +260,34 @@ const youtubeShoutouts = {
         this.setLastUpdatedTime();
     },
     createShoutoutCards() {
-        const container = document.querySelector('.youtube-creator-grid');
-        if (!container) return;
+    const container = document.querySelector('.youtube-creator-grid');
+    if (!container) return;
 
-        container.innerHTML = '';
-        this.accounts.forEach(account => {
-            const card = document.createElement('div');
-            card.className = 'youtube-creator-card';
-            card.innerHTML = `
-                <img src="${account.coverPhoto}" alt="${account.nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">
-                <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="youtube-creator-info">
-                    <div class="youtube-creator-header">
-                        <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''}
-                    </div>
-                    <p class="youtube-creator-username">${account.username}</p>
-                    <p class="youtube-creator-bio">${account.bio || ''}</p>
-                    <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
-                    <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
-                        Visit Channel
-                    </a>
+    container.innerHTML = '';
+    this.accounts.forEach(account => {
+        const card = document.createElement('div');
+        card.className = 'youtube-creator-card';
+        card.innerHTML = `
+            <img src="${account.coverPhoto}" alt="${account.nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">
+            <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
+            <div class="youtube-creator-info">
+                <div class="youtube-creator-header">
+                    <h3>${account.nickname}</h3>
                 </div>
-            `;
-            container.appendChild(card);
-        });
-    },
+                <div class="username-container">
+                    <p class="youtube-creator-username">${account.username}</p>
+                    ${account.isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''}
+                </div>
+                <p class="youtube-creator-bio">${account.bio || ''}</p>
+                <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
+                <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
+                    Visit Channel
+                </a>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+},
     setLastUpdatedTime() {
         const lastUpdatedElement = document.getElementById('lastUpdatedYouTube');
         if (!lastUpdatedElement) return;
