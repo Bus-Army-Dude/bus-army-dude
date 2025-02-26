@@ -591,7 +591,7 @@ body {
 .username-container,
 .instagram-username-container,
 .youtube-username-container {
-    display: flex; /* Use flexbox for username and badge */
+    display: flex; /* Ensure flexbox is used */
     align-items: center; /* Align items vertically */
     margin-bottom: 10px;
 }
@@ -608,9 +608,9 @@ body {
 .verified-badge,
 .instagram-verified-badge,
 .youtube-verified-badge {
-    width: 18px; /* Adjust size */
-    height: 18px; /* Adjust size */
-    margin-left: 5px; /* Space between username and badge */
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
 }
 
 .creator-bio,
