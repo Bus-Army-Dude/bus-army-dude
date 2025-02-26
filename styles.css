@@ -591,8 +591,6 @@ body {
 .username-container,
 .instagram-username-container,
 .youtube-username-container {
-    display: flex; /* Ensure flexbox is used */
-    align-items: center; /* Align items vertically */
     margin-bottom: 10px;
 }
 
@@ -688,6 +686,12 @@ body {
 
 .youtube-creator-info {
     flex-grow: 1;
+}
+
+/* YouTube Specific Header Styles */
+.youtube-creator-header {
+    display: flex; /* Ensure flexbox is used */
+    align-items: center; /* Align items vertically */
 }
 
 :root {
