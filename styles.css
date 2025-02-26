@@ -655,7 +655,7 @@ body {
     transform: scale(1.08);
 }
 
-/* Grid Layout (Applies to all cards) */
+/* General Grid Container Adjustments for All Platforms */
 .creator-grid,
 .instagram-creator-grid,
 .youtube-creator-grid {
@@ -722,23 +722,10 @@ body {
     }
 }
 
-/* Center the grid containers */
-.creator-grid,
-.instagram-creator-grid,
-.youtube-creator-grid {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Add padding to the body or a wrapper element to prevent content from touching the sides */
-body {
-    padding: 0 10px; /* Adjust as needed */
-    box-sizing: border-box; /* Include padding in width */
-}
-
-/* If you have a wrapper around the grids, apply padding to that wrapper instead of the body */
-.content-wrapper { /* Replace with your actual wrapper class or ID */
-    padding: 0 10px; /* Adjust as needed */
+/* Ensure body or wrapper has padding */
+body,
+.content-wrapper { /* Add your wrapper class if you have one */
+    padding: 0 10px;
     box-sizing: border-box;
 }
 
