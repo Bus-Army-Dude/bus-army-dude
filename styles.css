@@ -553,6 +553,8 @@ body {
     align-items: flex-start;
     box-shadow: 0 3px 6px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* Ensure cards take full width of their container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .creator-card:hover,
@@ -586,6 +588,8 @@ body {
     margin: 0 0 5px 0;
     font-size: 1.2em;
     color: var(--text-color);
+    display: flex;
+    align-items: center;
 }
 
 .username-container,
@@ -656,12 +660,13 @@ body {
 .instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusted minmax for better responsiveness */
     gap: 25px;
-    padding: 30px 0;
+    padding: 30px 20px; /* Added padding to prevent touching sides */
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box; /* Include padding in width */
 }
 
 /* YouTube Specific Cover Photo styles */
@@ -690,8 +695,31 @@ body {
 
 /* YouTube Specific Header Styles */
 .youtube-creator-header {
-    display: flex; /* Ensure flexbox is used */
-    align-items: center; /* Align items vertically */
+    display: flex;
+    align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .creator-grid,
+    .instagram-creator-grid,
+    .youtube-creator-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
+        padding: 20px 10px; /* Adjust padding for smaller screens */
+    }
+
+    .creator-card,
+    .instagram-creator-card,
+    .youtube-creator-card {
+        padding: 20px; /* Adjust card padding for smaller screens */
+    }
+
+    .creator-pic,
+    .instagram-creator-pic,
+    .youtube-creator-pic {
+        width: 70px; /* Adjust profile picture size for smaller screens */
+        height: 70px;
+    }
 }
 
 :root {
