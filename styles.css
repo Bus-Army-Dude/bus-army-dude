@@ -600,11 +600,11 @@ body {
 
 .youtube-creator-pic {
     position: absolute;
-    top: 10px; /* Adjust top position */
-    left: 10px; /* Adjust left position */
-    width: 80px; /* Adjust size */
-    height: 80px; /* Adjust size */
-    border: 3px solid var(--accent-color); /* Adjust border */
+    top: 40px; /* Adjusted top position */
+    left: 10px;
+    width: 80px;
+    height: 80px;
+    border: 3px solid var(--accent-color);
     z-index: 2;
 }
 
@@ -705,26 +705,27 @@ body {
 /* Youtube Specific Cover Photo */
 .youtube-cover-photo {
     width: 100%;
-    height: auto; /* Adjust height based on aspect ratio */
+    height: 200px; /* Increased cover photo height */
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 0; /* Remove bottom margin */
+    margin-bottom: 0;
 }
 
 .youtube-creator-card {
     display: flex; /* Change to flexbox for easier positioning */
     flex-direction: column;
     position: relative; /* Needed for absolute positioning of profile pic */
+    overflow: hidden;
     padding-top: 10px; /* Adjust padding to accommodate profile pic */
 }
 
 .youtube-creator-info {
-    padding-left: 10px; /* Add some left padding */
+    padding-left: 10px;
     text-align: left;
 }
 
 .youtube-creator-header {
-    margin-top: 90px; /* Adjust based on profile pic size */
+     margin-top: 120px; /* Adjusted based on profile pic size and cover photo height */
     padding-left: 0;
     align-items: flex-start;
 }
@@ -741,7 +742,7 @@ body {
 
 .youtube-visit-profile {
     margin-left: 0;
-    margin-top: 10px; /* Add some top margin */
+    margin-top: 10px;
 }
 
 :root {
