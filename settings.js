@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsManager.setMaintenanceModeManually(false);
 
     // Manually set profile status
-    settingsManager.setProfileStatusManually('offline');
+    settingsManager.setProfileStatusManually('idle');
 });
 
 // Function to accept cookies and hide the banner
