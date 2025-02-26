@@ -577,7 +577,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px var(--shadow-color);
     position: relative;
-    overflow: hidden; /* Important for positioning */
+    overflow: hidden;
 }
 
 .creator-card:hover,
@@ -596,11 +596,10 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--accent-color);
-    margin-bottom: 20px;
-    position: absolute; /* Position absolutely */
-    top: 110px; /* Adjust as needed */
-    left: 20px; /* Adjust as needed */
-    z-index: 2; /* Ensure it's above the cover photo */
+    position: absolute;
+    top: 110px;
+    left: 20px;
+    z-index: 2;
 }
 
 /* Common Header Styles */
@@ -610,7 +609,9 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-top: 110px;
     margin-bottom: 8px;
+    padding-left: 100px;
 }
 
 /* Username Container with Verification Badge */
@@ -621,6 +622,7 @@ body {
     align-items: center;
     gap: 6px;
     margin-bottom: 12px;
+    padding-left: 100px;
 }
 
 /* Common Username Styles */
@@ -652,6 +654,7 @@ body {
     margin: 12px 0;
     font-size: 1em;
     line-height: 1.5;
+    padding-left: 100px;
 }
 
 /* Common Follower/Subscriber Count Styles */
@@ -662,6 +665,7 @@ body {
     font-weight: 600;
     margin: 12px 0;
     font-size: 1.05em;
+    padding-left: 100px;
 }
 
 /* Common Visit Profile Button Styles */
@@ -678,6 +682,7 @@ body {
     transition: all 0.3s ease;
     text-align: center;
     font-weight: 500;
+    margin-left: 100px;
 }
 
 .visit-profile:hover,
@@ -701,10 +706,10 @@ body {
 .youtube-cover-photo {
     width: 100%;
     height: 150px;
-    object-fit: cover;
+    object-fit: cover; /* This is the fix! */
     border-radius: 8px;
     margin-bottom: 15px;
-    display: block; /* Ensure it's a block element */
+    display: block;
 }
 
 .youtube-creator-card {
