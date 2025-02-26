@@ -23,14 +23,17 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '42', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
     ],
-    lastUpdatedTime: '2025-02-26T11:48:05', // Manually set the last updated date and time
+     lastUpdatedTime: '2025-02-26T11:48:05',
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
     },
     createShoutoutCards() {
         const container = document.querySelector('.creator-grid');
-        if (!container) return;
+        if (!container) {
+            console.error('Creator grid element not found.');
+            return;
+        }
 
         container.innerHTML = '';
         this.accounts.forEach(account => {
@@ -41,7 +44,7 @@ const tiktokShoutouts = {
                 <div class="creator-info">
                     <div class="creator-header">
                         <h3>${account.nickname}</h3>
-                        ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}
+                        ${account.isVerified ? '<img src="images/check.png" alt="Verified" class="verified-badge">' : ''}
                     </div>
                     <p class="creator-username">@${account.username}</p>
                     <p class="creator-bio">${account.bio || ''}</p>
@@ -56,7 +59,10 @@ const tiktokShoutouts = {
     },
     setLastUpdatedTime() {
         const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
-        if (!lastUpdatedElement) return;
+        if (!lastUpdatedElement) {
+            console.error('Last updated timestamp element not found.');
+            return;
+        }
 
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
@@ -75,8 +81,10 @@ const tiktokShoutouts = {
     }
 };
 
-// Initialize the TikTok shoutouts
-tiktokShoutouts.init();
+// Initialize the TikTok shoutouts after DOM content is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    tiktokShoutouts.init();
+});
 
 const instagramShoutouts = {
     accounts: [
