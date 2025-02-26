@@ -153,17 +153,105 @@ instagramShoutouts.init();
 
 const youtubeShoutouts = {
     accounts: [
-        { username: '@MrBeast', isVerified: true, subscribers: '367M', nickname: 'MrBeast', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!', profilePic: 'youtube_photoes/mrbeast.jpg' },
-        { username: '@MrBeast2', isVerified: true, subscribers: '49.4M', nickname: 'MrBeast 2', bio: 'my second channel for other videos and shorts :) subscribe ', profilePic: 'youtube_photoes/mrbeast2.jpg' },
-        { username: '@MrBeastGaming', isVerified: true, subscribers: '46.7M', nickname: 'MrBeast Gaming', bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE', profilePic: 'youtube_photoes/mrbeastgaming.jpg' },
-        { username: '@BeastReacts', isVerified: true, subscribers: '35.4M', nickname: 'Beast Reacts', bio: 'SUBSCRIBE FOR A COOKIE', profilePic: 'youtube_photoes/beastreacts.jpg' },
-        { username: '@BeastPhilanthropy', isVerified: true, subscribers: '27.5M', nickname: 'Beast Philanthropy', bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!', profilePic: 'youtube_photoes/beastphilanthropy.jpg' },
-        { username: '@CaptainSteeeve', isVerified: true, subscribers: '349K', nickname: 'Captain Steeeve', bio: 'No bio yet', profilePic: 'youtube_photoes/IMG_2371.jpeg' },                        
-        { username: '@HeyRachelHughes', isVerified: false, subscribers: '231K', nickname: 'Rachel Hughes', bio: 'My name is Rachel Hughes :) I am a 30 year old, mom of two, living in Utah! I love sharing my experiences and life regarding mental health, leaving religion, overcoming an eating disorder, having a disabled child, fitness, beauty and more! Thank you so much for being here. xo', profilePic: 'youtube_photoes/IMG_2648.jpeg' },        
-        { username: '@Trafficlightdoctor', isVerified: false, subscribers: '154K', nickname: 'Traffic Light Doctor', bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.', profilePic: 'youtube_photoes/trafficlightdoctor.jpeg' },     
-        { username: '@mrfatcheeto', isVerified: false, subscribers: '107K', nickname: 'Mr Fat Cheeto', bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ', profilePic: 'youtube_photoes/mrfatcheeto.jpg' },
-        { username: '@Badge502', isVerified: false, subscribers: '62.1K', nickname: 'Badge502', bio: 'Your local EMT!', profilePic: 'youtube_photoes/badge502.jpg' },     
-        { username: '@BusArmyDude', isVerified: false, subscribers: '2', nickname: 'Bus Army Dude', bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.", profilePic: 'youtube_photoes/busarmydude.jpg' },     
+        {
+            username: '@MrBeast',
+            isVerified: true,
+            subscribers: '367M',
+            nickname: 'MrBeast',
+            bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!',
+            profilePic: 'youtube_photoes/mrbeast.jpg',
+            coverPhoto: 'youtube_photoes/mrbeast_cover.jpg', // Add cover photo
+        },
+        {
+            username: '@MrBeast2',
+            isVerified: true,
+            subscribers: '49.4M',
+            nickname: 'MrBeast 2',
+            bio: 'my second channel for other videos and shorts :) subscribe ',
+            profilePic: 'youtube_photoes/mrbeast2.jpg',
+            coverPhoto: 'youtube_photoes/mrbeast2_cover.jpg', // Add cover photo
+        },
+        {
+            username: '@MrBeastGaming',
+            isVerified: true,
+            subscribers: '46.7M',
+            nickname: 'MrBeast Gaming',
+            bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE',
+            profilePic: 'youtube_photoes/mrbeastgaming.jpg',
+            coverPhoto: 'youtube_photoes/mrbeastgaming_cover.jpg', // Add cover photo
+        },
+        {
+            username: '@BeastReacts',
+            isVerified: true,
+            subscribers: '35.4M',
+            nickname: 'Beast Reacts',
+            bio: 'SUBSCRIBE FOR A COOKIE',
+            profilePic: 'youtube_photoes/beastreacts.jpg',
+            coverPhoto: 'youtube_photoes/beastreacts_cover.jpg', // Add cover photo
+        },
+        {
+            username: '@BeastPhilanthropy',
+            isVerified: true,
+            subscribers: '27.5M',
+            nickname: 'Beast Philanthropy',
+            bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!',
+            profilePic: 'youtube_photoes/beastphilanthropy.jpg',
+            coverPhoto: 'youtube_photoes/beastphilanthropy_cover.jpg', // Add cover photo
+        },
+        {
+            username: '@CaptainSteeeve',
+            isVerified: true,
+            subscribers: '349K',
+            nickname: 'Captain Steeeve',
+            bio: 'No bio yet',
+            profilePic: 'youtube_photoes/IMG_2371.jpeg',
+            coverPhoto: 'youtube_photoes/IMG_2371_cover.jpeg', // Add cover photo
+        },
+        {
+            username: '@HeyRachelHughes',
+            isVerified: false,
+            subscribers: '231K',
+            nickname: 'Rachel Hughes',
+            bio: 'My name is Rachel Hughes :) I am a 30 year old, mom of two, living in Utah! I love sharing my experiences and life regarding mental health, leaving religion, overcoming an eating disorder, having a disabled child, fitness, beauty and more! Thank you so much for being here. xo',
+            profilePic: 'youtube_photoes/IMG_2648.jpeg',
+            coverPhoto: 'youtube_photoes/IMG_2648_cover.jpeg', // Add cover photo
+        },
+        {
+            username: '@Trafficlightdoctor',
+            isVerified: false,
+            subscribers: '154K',
+            nickname: 'Traffic Light Doctor',
+            bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.',
+            profilePic: 'youtube_photoes/trafficlightdoctor.jpeg',
+            coverPhoto: 'youtube_photoes/trafficlightdoctor_cover.jpeg', // Add cover photo
+        },
+        {
+            username: '@mrfatcheeto',
+            isVerified: false,
+            subscribers: '107K',
+            nickname: 'Mr Fat Cheeto',
+            bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ',
+            profilePic: 'youtube_photoes/mrfatcheeto.jpg',
+            coverPhoto: 'youtube_photoes/mrfatcheeto_cover.jpeg', // Add cover photo
+        },
+        {
+            username: '@Badge502',
+            isVerified: false,
+            subscribers: '62.1K',
+            nickname: 'Badge502',
+            bio: 'Your local EMT!',
+            profilePic: 'youtube_photoes/badge502.jpg',
+            coverPhoto: 'youtube_photoes/badge502_cover.jpeg', // Add cover photo
+        },
+        {
+            username: '@BusArmyDude',
+            isVerified: false,
+            subscribers: '2',
+            nickname: 'Bus Army Dude',
+            bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.",
+            profilePic: 'youtube_photoes/busarmydude.jpg',
+            coverPhoto: 'youtube_photoes/busarmydude_cover.jpeg', // Add cover photo
+        },
         // Add more YouTube creators as needed
     ],
     lastUpdatedTime: '2025-02-26T11:55:27', // Manually set the last updated date and time
@@ -180,6 +268,7 @@ const youtubeShoutouts = {
             const card = document.createElement('div');
             card.className = 'youtube-creator-card';
             card.innerHTML = `
+                <img src="${account.coverPhoto}" alt="${account.nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">
                 <img src="${account.profilePic}" alt="@${account.username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
                 <div class="youtube-creator-info">
                     <div class="youtube-creator-header">
@@ -189,7 +278,7 @@ const youtubeShoutouts = {
                     <p class="youtube-creator-username">${account.username}</p>
                     <p class="youtube-creator-bio">${account.bio || ''}</p>
                     <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
-                    <a href="https://youtube.com/${account.username}" target="_blank" class="youtube-visit-profile">
+                    <a href="https://youtube.com/$${account.username}" target="_blank" class="youtube-visit-profile">
                         Visit Channel
                     </a>
                 </div>
