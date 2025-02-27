@@ -19,242 +19,242 @@ document.addEventListener("DOMContentLoaded", function() {
     const products = [
         {
             name: "September Awareness Rainbow Onesie",
-            price: 25.00,
+            price: 17.50,
             originalPrice: 25.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/september.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/september-awareness-rainbow-onesie",
             category: "Baby & Toddler"
         },
         {
             name: "ADHD Awareness Ribbon Baby Tee",
-            price: 29.00,
+            price: 20.30,
             originalPrice: 29.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/adhd.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-baby-tee",
             category: "Baby & Toddler"
         },
         {
             name: "Bear Hug Baby Tee",
-            price: 28.00,
+            price: 19.60,
             originalPrice: 28.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/bear-hug-baby-tee.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/bear-hug-baby-tee",
             category: "Baby & Toddler"
         },
         {
             name: "Autism Mode Puzzle Heart Baby Onesie",
-            price: 24.00,
+            price: 16.80,
             originalPrice: 24.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/Autism.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-mode-puzzle-heart-baby-onesie",
             category: "Baby & Toddler"
         },
         {
             name: "Autism Awareness All-Over Flag",
-            price: 32.00,
+            price: 22.40,
             originalPrice: 32.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/autismflag.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-all-over-flag",
             category: "Outdoor"
         },
         {
             name: "ADHD Awareness Ribbon Baby Onesie",
-            price: 25.00,
+            price: 17.50,
             originalPrice: 25.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/ribbon.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-baby-onesie",
             category: "Baby & Toddler"
         },
         {
             name: "HydroStrong Rainbow Baby Tee",
-            price: 28.00,
+            price: 19.60,
             originalPrice: 28.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/hydro.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/hydrostrong-rainbow-baby-tee",
             category: "Baby & Toddler"
         },
         {
             name: "ADHD Awareness Ribbon Women's Polo",
-            price: 84.00,
+            price: 58.80,
             originalPrice: 84.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/adhdwomenspolo.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-womens-polo",
             category: "T-Shirts"
         },
         {
             name: "ADHD Awareness Ribbon Women's Polo",
-            price: 84.00,
+            price: 58.80,
             originalPrice: 84.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/adhdmenspolo.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-polo-shirt",
             category: "T-Shirts"
         },
         {
             name: "Inclusive Autism Awareness Polo",
-            price: 75.97,
+            price: 53.17,
             originalPrice: 75.97, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/inclusiveautism.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/inclusive-autism-awareness-polo",
             category: "T-Shirts"
         },
         {
             name: "Colorful Handprints Autism Support Youth T-Shirt",
-            price: 24.00,
+            price: 16.80,
             originalPrice: 24.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/colorfulautism.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/colorful-handprints-autism-support-youth-t-shirt",
             category: "T-Shirts"
         },
         {
             name: "Unity Puzzle Piece Cotton T-Shirt",
-            price: 27.00,
+            price: 18.90,
             originalPrice: 27.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/unitypuzzel.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/unity-puzzle-piece-cotton-t-shirt",
             category: "T-Shirts"
         },
         {
             name: "ADHD Awareness Tie-Dye Dad Hat",
-            price: 26.00,
+            price: 18.20,
             originalPrice: 26.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/adhdtiedye.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-tie-dye-dad-hat",
             category: "Hats"
         },
         {
             name: "Autism Awareness Puzzle Trucker Hat",
-            price: 23.00,
+            price: 16.10,
             originalPrice: 23.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/autismtrucker.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-puzzle-trucker-hat",
             category: "Hats"
         },
         {
             name: "Autism Awareness Puzzle Piece Hoodie",
-            price: 39.00,
+            price: 27.30,
             originalPrice: 39.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/autismhoodie.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-puzzle-piece-hoodie",
             category: "Hoodies & Sweatshirts"
         },
         {
             name: "Autism Awareness AirPods Case®",
-            price: 25.00,
+            price: 17.50,
             originalPrice: 25.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/autismairpodscase.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-airpods-case",
             category: "Accessories"
         },
         {
             name: "ADHD Awareness Ribbon iPhone® Case",
-            price: 21.00,
+            price: 14.70,
             originalPrice: 21.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/adhdcase.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-iphone-case",
             category: "Accessories"
         },
         {
             name: "ADHD Awareness Ribbon Pin Set (1.25)",
-            price: 14.00,
+            price: 9.80,
             originalPrice: 14.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/adhdpin125.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-pin-set",
             category: "Accessories"
         },
         {
             name: "ADHD Awareness Ribbon Pin Set (2.25)",
-            price: 15.00,
+            price: 10.50,
             originalPrice: 15.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/adhdpin225.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/adhd-awareness-ribbon-pin-set",
             category: "Accessories"
         },
         {
             name: "Vibrant Puzzle Pieces Autism Awareness Desk Mat",
-            price: 23.00,
+            price: 16.10,
             originalPrice: 23.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/autismdeskmat.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/vibrant-puzzle-pieces-autism-awareness-desk-mat",
             category: "Accessories"
         },
         {
             name: "Interlocking Hearts Jigsaw Puzzle Mug",
-            price: 14.00,
+            price: 9.80,
             originalPrice: 14.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/blackmug.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/interlocking-hearts-jigsaw-puzzle-mug",
             category: "Kitchenwear"
         },
         {
             name: "Autism Awareness Puzzle Ceramic Mug",
-            price: 14.00,
+            price: 9.80,
             originalPrice: 14.00, // Same as price, for non-sale
-            discount: 0, // No discount
+            discount: 30, // No discount
             stock: "in-stock",
-            sale: false, // No sale
+            sale: true, // No sale
             image: "product_images/whitemug.webp",
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-puzzle-ceramic-mug",
             category: "Kitchenwear"
