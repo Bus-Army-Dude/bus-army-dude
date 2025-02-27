@@ -17,7 +17,8 @@ class CommonManager {
         const defaultSettings = {
             darkMode: true, // Default to dark mode
             fontSize: 'default',
-            focusOutlineDisabled: false
+            focusOutlineDisabled: false,
+            voiceOver: false // Default voice over setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -46,6 +47,7 @@ class CommonManager {
         this.applyTheme(this.settings.darkMode); // Apply the saved theme
         this.setFontSize(this.settings.fontSize); // Apply the saved font size
         this.applyFocusOutlineSetting(); // Apply focus outline setting
+        this.toggleVoiceOver(this.settings.voiceOver); // Apply voice over setting
     }
 
     applyTheme(isDark = this.settings.darkMode) {
@@ -70,6 +72,20 @@ class CommonManager {
         }
     }
 
+    toggleVoiceOver(enable) {
+        if (enable) {
+            // Logic to enable voice over
+            console.log("Voice Over enabled");
+            // Add your voice over enabling logic here
+        } else {
+            // Logic to disable voice over
+            console.log("Voice Over disabled");
+            // Add your voice over disabling logic here
+        }
+        this.settings.voiceOver = enable;
+        localStorage.setItem('websiteSettings', JSON.stringify(this.settings)); // Save updated settings
+    }
+
     addThemeToggleHandling() {
         const themeToggle = document.querySelector('#theme-toggle');
         if (themeToggle) {
@@ -78,6 +94,15 @@ class CommonManager {
                 this.settings.darkMode = !this.settings.darkMode;
                 this.applyTheme(this.settings.darkMode); // Apply new theme
                 localStorage.setItem('websiteSettings', JSON.stringify(this.settings)); // Save updated settings
+            });
+        }
+
+        // Voice Over Toggle Handling
+        const voiceOverToggle = document.querySelector('#voiceOverToggle');
+        if (voiceOverToggle) {
+            voiceOverToggle.checked = this.settings.voiceOver;
+            voiceOverToggle.addEventListener('change', () => {
+                this.toggleVoiceOver(voiceOverToggle.checked);
             });
         }
     }
