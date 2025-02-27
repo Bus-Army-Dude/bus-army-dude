@@ -1,21 +1,62 @@
-/* Color Variables */
+/* Theme Variables */
 :root {
-    --bg-color: #f7f7f9;
-    --text-color: #2b2b2b;
-    --accent-color: #1f7ce5;
-    --hover-color: #1566b1;
-    --border-color: #e4e7ec;
-    --secondary-text: #8d8d8d;
-    --content-bg: #ffffff;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --dark-bg-color: #121212;
-    --dark-text-color: #e4e4e4;
-    --dark-accent-color: #2196f3;
-    --dark-hover-color: #1566b1;
-    --dark-border-color: #3a3a3a;
-    --dark-secondary-text: #a5a5a5;
-    --dark-content-bg: #2c2c2c;
-    --dark-shadow-color: rgba(0, 0, 0, 0.3);
+    /* Light Mode Colors */
+    --light-bg: #ffffff;
+    --light-content-bg: #f5f5f5;
+    --light-text: #212529;
+    --light-secondary-text: #495057;
+    --light-border: #dee2e6;
+    --light-accent: #4CAF50;
+    --light-hover: #45a049;
+    --light-link: #007bff;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    
+    /* Dark Mode Colors */
+    --dark-bg: #121212;
+    --dark-content-bg: #2d2d2d;
+    --dark-text: #E0E0E0;
+    --dark-secondary-text: #a0a0a0;
+    --dark-border: #333333;
+    --dark-accent: #4CAF50;
+    --dark-hover: #45a049;
+    --dark-link: #BB86FC;
+    --dark-shadow: rgba(0, 0, 0, 0.2);
+    
+    /* Default Theme (Dark) */
+    --bg-color: var(--dark-bg);
+    --content-bg: var(--dark-content-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --hover-color: var(--dark-hover);
+    --link-color: var(--dark-link);
+    --shadow-color: var(--dark-shadow);
+}
+
+/* Theme Classes */
+.light-mode {
+    --bg-color: var(--light-bg);
+    --content-bg: var(--light-content-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary-text);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --hover-color: var(--light-hover);
+    --link-color: var(--light-link);
+    --shadow-color: var(--light-shadow);
+}
+
+.dark-mode {
+    --bg-color: var(--dark-bg);
+    --content-bg: var(--dark-content-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --hover-color: var(--dark-hover);
+    --link-color: var(--dark-link);
+    --shadow-color: var(--dark-shadow);
 }
 
 /* General Body Styling */
