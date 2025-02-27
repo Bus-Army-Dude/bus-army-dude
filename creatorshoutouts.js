@@ -170,7 +170,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/channels4_banner.jpg', // Add cover photo
         },
         {
-            username: '@MrBeastGaming',
+            username: 'MrBeastGaming',
             isVerified: true,
             subscribers: '46.7M',
             nickname: 'MrBeast Gaming',
