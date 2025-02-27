@@ -608,6 +608,9 @@ body {
     object-fit: cover;
     border: 3px solid var(--accent-color);
     margin-bottom: 15px;
+    position: absolute;
+    top: 110px;
+    left: 20px;
 }
 
 /* Common Header Styles */
@@ -618,6 +621,7 @@ body {
     align-items: center;
     gap: 8px;
     margin-bottom: 5px;
+    margin-top: 50px; /* Adjusted to give space for the profile picture */
 }
 
 /* Username Container with Verification Badge */
@@ -719,9 +723,9 @@ body {
     position: relative;
 }
 
-.youtube-creator-card .youtube-creator-pic {
-    margin-top: -40px; /* Adjust based on the cover photo overlap */
-    border: 3px solid white; /* Ensure profile picture stands out */
+.youtube-creator-info {
+    padding-top: 60px; /* Space for the profile picture */
+    padding-left: 20px; /* Align with profile picture */
 }
 
 :root {
