@@ -158,7 +158,7 @@ const youtubeShoutouts = {
             nickname: 'MrBeast',
             bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!',
             profilePic: 'youtube_photoes/mrbeast.jpg',
-            coverPhoto: 'youtube_photoes/mrbeast_cover.jpg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels3_banner.jpg', // Add cover photo
         },
         {
             username: '@MrBeast2',
