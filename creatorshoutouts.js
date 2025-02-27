@@ -170,7 +170,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/channels4_banner.jpg', // Add cover photo
         },
         {
-            username: 'MrBeastGaming',
+            username: '@MrBeastGaming',
             isVerified: true,
             subscribers: '46.7M',
             nickname: 'MrBeast Gaming',
@@ -277,7 +277,7 @@ const youtubeShoutouts = {
                     </div>
                     <p class="youtube-creator-bio">${account.bio || ''}</p>
                     <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
-                    <a href="https://youtube.com/$${account.username}" target="_blank" class="youtube-visit-profile">
+                    <a href="https://youtube.com/@${account.username}" target="_blank" class="youtube-visit-profile">
                         Visit Channel
                     </a>
                 </div>
