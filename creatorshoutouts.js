@@ -176,7 +176,7 @@ const youtubeShoutouts = {
             nickname: 'MrBeast Gaming',
             bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames MrBeast Gaming - SUBSCRIBE OR ELSE',
             profilePic: 'youtube_photoes/mrbeastgaming.jpg',
-            coverPhoto: 'youtube_photoes/mrbeastgaming_cover.jpg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels5_banner.jpg', // Add cover photo
         },
         {
             username: 'BeastReacts',
@@ -185,7 +185,7 @@ const youtubeShoutouts = {
             nickname: 'Beast Reacts',
             bio: 'SUBSCRIBE FOR A COOKIE',
             profilePic: 'youtube_photoes/beastreacts.jpg',
-            coverPhoto: 'youtube_photoes/beastreacts_cover.jpg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels6_banner.jpg', // Add cover photo
         },
         {
             username: 'BeastPhilanthropy',
@@ -194,7 +194,7 @@ const youtubeShoutouts = {
             nickname: 'Beast Philanthropy',
             bio: '100% of the profits from my ad revenue, merch sales, and sponsorships will go towards making the world a better place!',
             profilePic: 'youtube_photoes/beastphilanthropy.jpg',
-            coverPhoto: 'youtube_photoes/beastphilanthropy_cover.jpg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels8_banner.jpg', // Add cover photo
         },
         {
             username: 'CaptainSteeeve',
@@ -203,7 +203,7 @@ const youtubeShoutouts = {
             nickname: 'Captain Steeeve',
             bio: 'No bio yet',
             profilePic: 'youtube_photoes/IMG_2371.jpeg',
-            coverPhoto: 'youtube_photoes/IMG_2371_cover.jpeg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels9_banner.jpg', // Add cover photo
         },
         {
             username: 'HeyRachelHughes',
@@ -212,7 +212,7 @@ const youtubeShoutouts = {
             nickname: 'Rachel Hughes',
             bio: 'My name is Rachel Hughes :) I am a 30 year old, mom of two, living in Utah! I love sharing my experiences and life regarding mental health, leaving religion, overcoming an eating disorder, having a disabled child, fitness, beauty and more! Thank you so much for being here. xo',
             profilePic: 'youtube_photoes/IMG_2648.jpeg',
-            coverPhoto: 'youtube_photoes/IMG_2648_cover.jpeg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels10_banner.jpg', // Add cover photo
         },
         {
             username: 'Trafficlightdoctor',
@@ -221,7 +221,7 @@ const youtubeShoutouts = {
             nickname: 'Traffic Light Doctor',
             bio: 'TrafficlightDoctor Live! explores traffic signals and road safety, while TrafficlightDoctor Live Gaming offers an immersive gaming experience.',
             profilePic: 'youtube_photoes/trafficlightdoctor.jpeg',
-            coverPhoto: 'youtube_photoes/trafficlightdoctor_cover.jpeg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels11_banner.jpg', // Add cover photo
         },
         {
             username: 'mrfatcheeto',
@@ -230,7 +230,7 @@ const youtubeShoutouts = {
             nickname: 'Mr Fat Cheeto',
             bio: 'I’m like a HVAC Genius. Come join me on my crazy HVAC Comedy adventures ',
             profilePic: 'youtube_photoes/mrfatcheeto.jpg',
-            coverPhoto: 'youtube_photoes/mrfatcheeto_cover.jpeg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels12_banner.jpg', // Add cover photo
         },
         {
             username: 'Badge502',
@@ -239,7 +239,7 @@ const youtubeShoutouts = {
             nickname: 'Badge502',
             bio: 'Your local EMT!',
             profilePic: 'youtube_photoes/badge502.jpg',
-            coverPhoto: 'youtube_photoes/badge502_cover.jpeg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels13_banner.jpg', // Add cover photo
         },
         {
             username: 'BusArmyDude',
@@ -248,7 +248,7 @@ const youtubeShoutouts = {
             nickname: 'Bus Army Dude',
             bio: "Welcome to Bus Army Dude, a tech channel offering reviews, tutorials, and insights. The channel explores various tech topics, emphasizing accessibility and user-friendly content.",
             profilePic: 'youtube_photoes/busarmydude.jpg',
-            coverPhoto: 'youtube_photoes/busarmydude_cover.jpeg', // Add cover photo
+            coverPhoto: 'youtube_photoes/channels7_banner.jpg', // Add cover photo
         },
         // Add more YouTube creators as needed
     ],
