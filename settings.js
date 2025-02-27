@@ -158,16 +158,26 @@ class SettingsManager {
     // Voice Over enabling and disabling
     toggleVoiceOver(enable) {
         if (enable) {
-            // Logic to enable voice over
-            console.log("Voice Over enabled");
-            // Add your voice over enabling logic here
+            // Enable voice over
+            document.querySelectorAll('[data-voice-over]').forEach(element => {
+                element.addEventListener('mouseenter', this.handleVoiceOver);
+            });
         } else {
-            // Logic to disable voice over
-            console.log("Voice Over disabled");
-            // Add your voice over disabling logic here
+            // Disable voice over
+            document.querySelectorAll('[data-voice-over]').forEach(element => {
+                element.removeEventListener('mouseenter', this.handleVoiceOver);
+            });
         }
         this.settings.voiceOver = enable;
         this.saveSettings();
+    }
+
+    handleVoiceOver(event) {
+        const text = event.target.getAttribute('data-voice-over');
+        if (text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
     }
 
     // Save settings to localStorage
