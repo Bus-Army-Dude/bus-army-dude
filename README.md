@@ -56,19 +56,20 @@ A centralized platform showcasing:
 ---
 
 ### 🔄 Version Information
-**Current Version:** v1.11.0
+**Current Version:** v1.13.0
 
 ---
 
 ### 📱 Browser Support
-- Chrome (Latest) (133.0.6943.35)
-- Firefox (Latest) (134.0.2)
-- Safari (Latest) (18)
-- Safari (in-app) (Latest) (18)
-- Edge (Latest) (Version 132)
+- Chrome (Latest) (134.0.6998.23)
+- Firefox desktop (Latest) (135.0.1)
+- Firefox iOS (Latest) (135.2)
+- Safari (Latest) (18.3)
+- Safari (in-app) (Latest) (18.3)
+- Edge (Latest) (132.0.2957.171)
 - Opera (Latest) (Opera One R2)
-- Mozilla (Latest) (134.0.2 for desktop and 135.0 for iOS)
-- Samsung Internet (Latest) (27.0.0.79)
+- Mozilla (Latest) (135.0.1 for desktop and 135.2 for iOS)
+- Samsung Internet (Latest) (27.0.7.17)
 
 ---
 
