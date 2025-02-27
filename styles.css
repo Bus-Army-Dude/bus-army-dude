@@ -607,7 +607,6 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--accent-color);
-    margin-bottom: 15px;
     position: absolute;
     top: 110px;
     left: 20px;
@@ -621,7 +620,7 @@ body {
     align-items: center;
     gap: 8px;
     margin-bottom: 5px;
-    margin-top: 50px; /* Adjusted to give space for the profile picture */
+    margin-top: 60px; /* Adjusted to give space for the profile picture */
 }
 
 /* Username Container with Verification Badge */
@@ -708,7 +707,7 @@ body {
 /* YouTube Creator Cover Photo Styles */
 .youtube-cover-photo {
     width: 100%;
-    height: 150px;
+    height: 120px; /* Adjusted height to fit the card */
     object-fit: cover;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
