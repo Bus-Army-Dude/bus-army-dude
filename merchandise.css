@@ -63,7 +63,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 0 20px; /* Added padding to ensure content doesn't touch the sides */
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
@@ -174,11 +174,23 @@ header {
     appearance: none;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow-color); /* Added shadow for modern look */
 }
 
 .category-nav select:hover {
     background-color: var(--hover-color);
     color: white;
+}
+
+/* Modern Dropdown Styling */
+.category-nav::after {
+    content: '▼';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-color);
 }
 
 /* Container Styling */
