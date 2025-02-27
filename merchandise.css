@@ -258,7 +258,7 @@ section {
 
 .product-item .price {
     font-size: 1.6rem;
-    color: var(--accent-color);
+    color: var (--accent-color);
     margin: 15px 0;
 }
 
