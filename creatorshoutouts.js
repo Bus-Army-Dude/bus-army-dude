@@ -152,7 +152,7 @@ instagramShoutouts.init();
 const youtubeShoutouts = {
     accounts: [
         {
-            username: '@MrBeast',
+            username: 'MrBeast',
             isVerified: true,
             subscribers: '367M',
             nickname: 'MrBeast',
@@ -161,7 +161,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/channels3_banner.jpg', // Add cover photo
         },
         {
-            username: '@MrBeast2',
+            username: 'MrBeast2',
             isVerified: true,
             subscribers: '49.4M',
             nickname: 'MrBeast 2',
@@ -170,7 +170,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/channels4_banner.jpg', // Add cover photo
         },
         {
-            username: '@MrBeastGaming',
+            username: 'MrBeastGaming',
             isVerified: true,
             subscribers: '46.7M',
             nickname: 'MrBeast Gaming',
@@ -179,7 +179,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/mrbeastgaming_cover.jpg', // Add cover photo
         },
         {
-            username: '@BeastReacts',
+            username: 'BeastReacts',
             isVerified: true,
             subscribers: '35.4M',
             nickname: 'Beast Reacts',
@@ -188,7 +188,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/beastreacts_cover.jpg', // Add cover photo
         },
         {
-            username: '@BeastPhilanthropy',
+            username: 'BeastPhilanthropy',
             isVerified: true,
             subscribers: '27.5M',
             nickname: 'Beast Philanthropy',
@@ -197,7 +197,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/beastphilanthropy_cover.jpg', // Add cover photo
         },
         {
-            username: '@CaptainSteeeve',
+            username: 'CaptainSteeeve',
             isVerified: true,
             subscribers: '349K',
             nickname: 'Captain Steeeve',
@@ -206,7 +206,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/IMG_2371_cover.jpeg', // Add cover photo
         },
         {
-            username: '@HeyRachelHughes',
+            username: 'HeyRachelHughes',
             isVerified: false,
             subscribers: '231K',
             nickname: 'Rachel Hughes',
@@ -215,7 +215,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/IMG_2648_cover.jpeg', // Add cover photo
         },
         {
-            username: '@Trafficlightdoctor',
+            username: 'Trafficlightdoctor',
             isVerified: false,
             subscribers: '154K',
             nickname: 'Traffic Light Doctor',
@@ -224,7 +224,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/trafficlightdoctor_cover.jpeg', // Add cover photo
         },
         {
-            username: '@mrfatcheeto',
+            username: 'mrfatcheeto',
             isVerified: false,
             subscribers: '107K',
             nickname: 'Mr Fat Cheeto',
@@ -233,7 +233,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/mrfatcheeto_cover.jpeg', // Add cover photo
         },
         {
-            username: '@Badge502',
+            username: 'Badge502',
             isVerified: false,
             subscribers: '62.1K',
             nickname: 'Badge502',
@@ -242,7 +242,7 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/badge502_cover.jpeg', // Add cover photo
         },
         {
-            username: '@BusArmyDude',
+            username: 'BusArmyDude',
             isVerified: false,
             subscribers: '2',
             nickname: 'Bus Army Dude',
@@ -277,7 +277,7 @@ const youtubeShoutouts = {
                     </div>
                     <p class="youtube-creator-bio">${account.bio || ''}</p>
                     <p class="youtube-subscriber-count">${account.subscribers} Subscribers</p>
-                    <a href="https://youtube.com/@{account.username}" target="_blank" class="youtube-visit-profile">
+                    <a href="https://youtube.com/@${account.username}" target="_blank" class="youtube-visit-profile">
                         Visit Channel
                     </a>
                 </div>
