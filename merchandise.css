@@ -73,36 +73,36 @@ body {
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: var(--dark-bg-color);
-        color: var(--dark-text-color);
+        background-color: var(--dark-bg);
+        color: var(--dark-text);
     }
     
     header {
-        background-color: var(--dark-accent-color);
+        background-color: var(--dark-accent);
         color: white;
     }
 
     .category-nav select {
         background-color: var(--dark-content-bg);
-        color: var(--dark-text-color);
-        border: 1px solid var(--dark-border-color);
+        color: var(--dark-text);
+        border: 1px solid var(--dark-border);
     }
 
     section {
         background-color: var(--dark-content-bg);
-        border: 2px solid var(--dark-border-color);
-        box-shadow: 0 4px 15px var(--dark-shadow-color);
+        border: 2px solid var(--dark-border);
+        box-shadow: 0 4px 15px var(--dark-shadow);
     }
 
     .product-item {
         background-color: var(--dark-content-bg);
-        border: 2px solid var(--dark-border-color);
-        box-shadow: 0 6px 20px var(--dark-shadow-color);
+        border: 2px solid var(--dark-border);
+        box-shadow: 0 6px 20px var(--dark-shadow);
     }
 
     footer {
         background-color: var(--dark-content-bg);
-        color: var(--dark-text-color);
+        color: var(--dark-text);
     }
 }
 
