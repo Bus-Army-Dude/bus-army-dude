@@ -1,27 +1,27 @@
 /* Theme Variables */
 :root {
     /* Light Mode Colors */
-    --light-bg: #ffffff;
-    --light-content-bg: #f5f5f5;
+    --light-bg: #f9f9f9;
+    --light-content-bg: #ffffff;
     --light-text: #212529;
-    --light-secondary-text: #495057;
+    --light-secondary-text: #6c757d;
     --light-border: #dee2e6;
-    --light-accent: #4CAF50;
-    --light-hover: #45a049;
+    --light-accent: #007bff;
+    --light-hover: #0056b3;
     --light-link: #007bff;
     --light-shadow: rgba(0, 0, 0, 0.1);
-    
+
     /* Dark Mode Colors */
     --dark-bg: #121212;
-    --dark-content-bg: #2d2d2d;
-    --dark-text: #E0E0E0;
+    --dark-content-bg: #1f1f1f;
+    --dark-text: #e0e0e0;
     --dark-secondary-text: #a0a0a0;
     --dark-border: #333333;
-    --dark-accent: #4CAF50;
-    --dark-hover: #45a049;
-    --dark-link: #BB86FC;
+    --dark-accent: #007bff;
+    --dark-hover: #0056b3;
+    --dark-link: #bb86fc;
     --dark-shadow: rgba(0, 0, 0, 0.2);
-    
+
     /* Default Theme (Dark) */
     --bg-color: var(--dark-bg);
     --content-bg: var(--dark-content-bg);
@@ -82,7 +82,7 @@ body.light-mode {
         background-color: var(--dark-bg);
         color: var(--dark-text);
     }
-    
+
     header {
         background-color: var(--dark-accent);
         color: white;
@@ -116,7 +116,7 @@ body.light-mode {
 header {
     background-color: var(--accent-color);
     color: white;
-    padding: 25px 0;
+    padding: 20px 0;
     text-align: center;
     box-shadow: 0 4px 20px var(--shadow-color);
     margin-bottom: 20px;
@@ -161,12 +161,14 @@ header {
     padding: 15px 0;
     box-shadow: 0 4px 15px var(--shadow-color);
     margin-bottom: 20px;
+    position: relative;
+    border-radius: 12px;
 }
 
 .category-nav select {
     font-size: 1rem;
     padding: 12px;
-    width: 100%;
+    width: calc(100% - 30px);
     border-radius: 8px;
     border: 1px solid var(--border-color);
     background-color: var(--content-bg);
@@ -175,14 +177,9 @@ header {
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
     box-shadow: 0 4px 15px var(--shadow-color); /* Added shadow for modern look */
+    margin: 0 15px;
 }
 
-.category-nav select:hover {
-    background-color: var(--hover-color);
-    color: white;
-}
-
-/* Modern Dropdown Styling */
 .category-nav::after {
     content: '▼';
     position: absolute;
@@ -191,6 +188,11 @@ header {
     transform: translateY(-50%);
     pointer-events: none;
     color: var(--text-color);
+}
+
+.category-nav select:hover {
+    background-color: var(--hover-color);
+    color: white;
 }
 
 /* Container Styling */
