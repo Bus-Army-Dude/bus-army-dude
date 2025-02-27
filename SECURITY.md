@@ -76,7 +76,7 @@ To report a security vulnerability, please follow these steps:
 - The website undergoes regular security updates
 - Security patches are implemented as soon as vulnerabilities are discovered
 - Users are notified of significant security updates through the version info section
-- Current stable version is v1.11.0
+- Current stable version is v1.13.0
 
 ## Security Best Practices
 
@@ -100,7 +100,9 @@ To report a security vulnerability, please follow these steps:
 
 | Version  | Supported          |
 | -------- | ------------------ |
-| 1.11.0   | :white_check_mark: |
+| 1.13.0   | :white_check_mark: |
+| 1.12.0   | :x:                |
+| 1.11.0   | :x:                |
 | 1.10.1   | :x:                |
 | 1.10.0   | :x:                |
 | 1.9.x    | :x:                |
@@ -121,9 +123,9 @@ For any security-related concerns, please contact:
 ## Repository Information
 - Repository: BusArmyDude/busarmydude
 - Language Composition:
-  - **JavaScript:** 44.2%
-  - **CSS:** 31.1%
-  - **HTML:** 24.7%
+  - **JavaScript:** 41.1%
+  - **CSS:** 29.9%
+  - **HTML:** 29.0%
 
 ## Acknowledgments
 
@@ -131,7 +133,7 @@ We appreciate the security community's efforts in responsibly disclosing vulnera
 
 ## Version Control
 
-This security policy is version 1.11.0 and was last updated on 2025-1-28 at 3:19 PM.
+This security policy is version 1.13.0 and was last updated on 2025-2-26 at 7:17 PM EST.
 
 ---
 
