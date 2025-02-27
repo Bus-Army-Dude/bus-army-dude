@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // New Year countdown
     function updateNewYearCountdown() {
         const now = new Date();
-        const newYear = new Date('2025-03-20T00:00:00');
+        const newYear = new Date('2025-02-27T00:00:00');
         const diff = newYear - now;
 
         const countdownSection = document.querySelector('.countdown-section');
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (diff <= 0) {
             countdownSection.innerHTML = `
                 <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    HAPPY SRPING 2025!!!
+                    HAPPY 20TH BIRTHDAY BUS ARMY DUDE ENJOY IT GOD LOVE'S YOU!!!!!
                 </h2>
                 <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
             `;
@@ -243,4 +243,3 @@ faqQuestions.forEach((question) => {
 
 // Get the current year dynamically
 document.getElementById('year').textContent = new Date().getFullYear();
-
