@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (diff <= 0) {
             countdownSection.innerHTML = `
                 <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    HAPPY 20TH BIRTHDAY BUS ARMY DUDE ENJOY IT GOD LOVE'S YOU!!!!!
+                    HAPPY SRPING 2025!!!
                 </h2>
                 <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
             `;
