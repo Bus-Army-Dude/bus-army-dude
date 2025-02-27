@@ -13,7 +13,8 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',  // Default profile status
             maintenanceMode: false,    // Default maintenance mode
-            focusOutline: 'enabled'    // Default focus outline setting
+            focusOutline: 'enabled',   // Default focus outline setting
+            voiceOver: false           // Default voice over setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -83,6 +84,15 @@ class SettingsManager {
                 this.toggleFocusOutline(e.target.checked);
             });
         }
+
+        // Voice Over Toggle
+        const voiceOverToggle = document.getElementById('voiceOverToggle');
+        if (voiceOverToggle) {
+            voiceOverToggle.checked = this.settings.voiceOver;
+            voiceOverToggle.addEventListener('change', (e) => {
+                this.toggleVoiceOver(e.target.checked);
+            });
+        }
     }
 
     applySettings() {
@@ -91,6 +101,7 @@ class SettingsManager {
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
         this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
+        this.toggleVoiceOver(this.settings.voiceOver);
     }
 
     // Set the profile status
@@ -144,6 +155,21 @@ class SettingsManager {
         this.saveSettings();
     }
 
+    // Voice Over enabling and disabling
+    toggleVoiceOver(enable) {
+        if (enable) {
+            // Logic to enable voice over
+            console.log("Voice Over enabled");
+            // Add your voice over enabling logic here
+        } else {
+            // Logic to disable voice over
+            console.log("Voice Over disabled");
+            // Add your voice over disabling logic here
+        }
+        this.settings.voiceOver = enable;
+        this.saveSettings();
+    }
+
     // Save settings to localStorage
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
@@ -156,7 +182,8 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',
             maintenanceMode: false,
-            focusOutline: 'enabled'  // Default focus outline setting
+            focusOutline: 'enabled',  // Default focus outline setting
+            voiceOver: false          // Default voice over setting
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -168,12 +195,14 @@ class SettingsManager {
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
+        const voiceOverToggle = document.getElementById('voiceOverToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
+        if (voiceOverToggle) voiceOverToggle.checked = defaultSettings.voiceOver;
     }
 
     // Set Maintenance Mode
