@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // New Year countdown
     function updateNewYearCountdown() {
         const now = new Date();
-        const newYear = new Date('2025-02-27T00:00:00');
+        const newYear = new Date('2025-03-20T00:00:00');
         const diff = newYear - now;
 
         const countdownSection = document.querySelector('.countdown-section');
