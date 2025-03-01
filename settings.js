@@ -13,8 +13,7 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',  // Default profile status
             maintenanceMode: false,    // Default maintenance mode
-            focusOutline: 'enabled',   // Default focus outline setting
-            animationsEnabled: true    // New setting to enable animations
+            focusOutline: 'enabled'    // Default focus outline setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -73,6 +72,9 @@ class SettingsManager {
             });
         }
 
+        // Footer Year Update
+        this.updateFooterYear();
+
         // Focus Outline Toggle
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
         if (focusOutlineToggle) {
@@ -81,18 +83,6 @@ class SettingsManager {
                 this.toggleFocusOutline(e.target.checked);
             });
         }
-
-        // Animations Toggle
-        const animationsToggle = document.getElementById('animationsToggle');
-        if (animationsToggle) {
-            animationsToggle.checked = this.settings.animationsEnabled;
-            animationsToggle.addEventListener('change', (e) => {
-                this.toggleAnimations(e.target.checked);
-            });
-        }
-
-        // Footer Year Update
-        this.updateFooterYear();
     }
 
     applySettings() {
@@ -101,7 +91,6 @@ class SettingsManager {
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
         this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
-        this.toggleAnimations(this.settings.animationsEnabled);  // Apply animations setting
     }
 
     // Set the profile status
@@ -155,19 +144,6 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    // Disable/Enable animations
-    toggleAnimations(enable) {
-        if (enable) {
-            // Remove the class that disables animations
-            document.body.classList.remove('no-animations');
-        } else {
-            // Add the class that disables animations
-            document.body.classList.add('no-animations');
-        }
-        this.settings.animationsEnabled = enable;
-        this.saveSettings();
-    }
-
     // Save settings to localStorage
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
@@ -180,8 +156,7 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',
             maintenanceMode: false,
-            focusOutline: 'enabled',    // Default focus outline setting
-            animationsEnabled: true     // Default to animations enabled
+            focusOutline: 'enabled'  // Default focus outline setting
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -193,14 +168,12 @@ class SettingsManager {
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-        const animationsToggle = document.getElementById('animationsToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
-        if (animationsToggle) animationsToggle.checked = defaultSettings.animationsEnabled;
     }
 
     // Set Maintenance Mode
@@ -218,7 +191,7 @@ class SettingsManager {
     }
 
     // Set profile status manually (for owner)
-    settingsManager.setProfileStatusManually('online') {
+    setProfileStatusManually(status) {
         if (['online', 'idle', 'offline'].includes(status)) {
             this.setProfileStatus(status);
         } else {
@@ -227,8 +200,8 @@ class SettingsManager {
     }
 
     // Set maintenance mode manually (for owner)
-    setMaintenanceModeManually(isDisabled) {
-        this.setMaintenanceMode(isDisabled);
+    setMaintenanceModeManually(isEnabled) {
+        this.setMaintenanceMode(isEnabled);
     }
 
     // Dynamically update footer year
@@ -243,20 +216,33 @@ class SettingsManager {
 // Initialize SettingsManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
+
+    // Manually set maintenance mode
+    settingsManager.setMaintenanceModeManually(false);
+
+    // Manually set profile status
+    settingsManager.setProfileStatusManually('online');
 });
 
-
-// Check if the user has already accepted cookies
-if (!localStorage.getItem("cookiesAccepted")) {
-    // Show the banner if cookies haven't been accepted yet
-    document.getElementById("cookie-consent-banner").style.display = "block";
-}
-
-// Function to accept cookies
+// Function to accept cookies and hide the banner
 function acceptCookies() {
-    // Set a flag in local storage so the banner won't show again
-    localStorage.setItem("cookiesAccepted", "true");
-
-    // Hide the banner after acceptance
-    document.getElementById("cookie-consent-banner").style.display = "none";
+    document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
 }
+
+// Check if cookies have been accepted on page load
+window.addEventListener('load', function() {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (!banner) return;
+
+    const cookies = document.cookie.split('; ');
+    const consentCookie = cookies.find(row => row.startsWith('cookieConsent='));
+    if (consentCookie && consentCookie.split('=')[1] === 'true') {
+        banner.style.display = 'none';
+    } else {
+        banner.style.display = 'flex';
+    }
+});
