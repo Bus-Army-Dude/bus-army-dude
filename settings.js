@@ -244,3 +244,19 @@ class SettingsManager {
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 });
+
+
+// Check if the user has already accepted cookies
+if (!localStorage.getItem("cookiesAccepted")) {
+    // Show the banner if cookies haven't been accepted yet
+    document.getElementById("cookie-consent-banner").style.display = "block";
+}
+
+// Function to accept cookies
+function acceptCookies() {
+    // Set a flag in local storage so the banner won't show again
+    localStorage.setItem("cookiesAccepted", "true");
+
+    // Hide the banner after acceptance
+    document.getElementById("cookie-consent-banner").style.display = "none";
+}
