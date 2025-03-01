@@ -146,10 +146,14 @@
     </footer>
 
     <!-- Cookie Consent Banner -->
-    <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description">
-        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.</p>
-        <button onclick="acceptCookies()" aria-label="Accept cookies">Accept</button>
+<div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description" aria-live="assertive">
+    <div id="cookie-consent-banner-content">
+        <p id="cookie-consent-description">
+            We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.
+        </p>
+        <button onclick="acceptCookies()" id="accept-cookies-btn" aria-label="Accept cookies">Accept</button>
     </div>
+</div>
 
     <!-- Scripts -->
     <script src="settings.js"></script>
