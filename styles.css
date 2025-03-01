@@ -198,6 +198,39 @@ body {
     background-color: #cc7a00; /* Darker orange on hover */
 }
 
+/* Portfolio Button */
+.portfolio-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px; /* Positioned to the bottom-left */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: url('portfolio-icon.png') center/18px no-repeat; /* Use your portfolio icon here */
+    background-color: #007bff; /* Blue background for Portfolio button */
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.portfolio-button:hover {
+    transform: rotate(45deg);
+    background-color: #0066cc; /* Slightly darker blue on hover */
+}
+
+/* Responsive adjustments for the Portfolio Button */
+@media screen and (max-width: 768px) {
+    .portfolio-button {
+        width: 25px;
+        height: 25px;
+        bottom: 15px;
+        left: 15px;
+        background-size: 15px;
+    }
+}
+
 /* Responsive adjustments for the Merch Button */
 @media screen and (max-width: 768px) {
     .merch-button {
