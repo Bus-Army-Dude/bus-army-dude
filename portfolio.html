@@ -1,107 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Portfolio - Bus Army Dude</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Portfolio - Bus Army Dude</title>
 
-    <!-- Link to external CSS files -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ai-features.css">
-    <link rel="stylesheet" href="settings.css">
-    <link rel="stylesheet" href="portfolio.css">
+  <!-- External CSS Files -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="ai-features.css" />
+  <link rel="stylesheet" href="settings.css" />
+  <link rel="stylesheet" href="portfolio.css" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-E0RSQS1MS7');
-    </script>
-    
-    <!-- Favicons and Icons -->
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff"/>
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E0RSQS1MS7');
+  </script>
+
+  <!-- Favicons and Icons -->
+  <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
+  <meta name="theme-color" content="#ffffff" />
 </head>
 <body>
 
-    <div class="container">
-        <!-- Page Title and Home Button -->
-        <div class="portfolio-header">
-            <h1>My Portfolio</h1>
-            <button class="home-button" onclick="window.location.href='index.html'">Home</button>
+  <div class="portfolio-container">
+    <!-- Header -->
+    <header class="portfolio-header">
+      <div class="header-content">
+        <h1>My Portfolio</h1>
+        <button class="home-button" onclick="window.location.href='index.html'">Home</button>
+      </div>
+    </header>
+
+    <!-- About Me Section -->
+    <section class="about-me section">
+      <h2>About Me</h2>
+      <p>
+        Hey, I'm Bus Army Dude – a creative web developer and tech enthusiast.
+        I build modern, responsive websites and web apps that push boundaries.
+        I love clean code, innovative design, and tackling new challenges.
+      </p>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills section">
+      <h2>Skills</h2>
+      <div class="skills-container">
+        <div class="skill-card">HTML</div>
+        <div class="skill-card">CSS</div>
+        <div class="skill-card">JavaScript</div>
+        <div class="skill-card">React</div>
+        <div class="skill-card">Node.js</div>
+        <div class="skill-card">Git & GitHub</div>
+        <div class="skill-card">Responsive Design</div>
+        <div class="skill-card">UI/UX Design</div>
+      </div>
+    </section>
+
+    <!-- Work Experience Section -->
+    <section class="work-experience section">
+      <h2>Work Experience</h2>
+      <div class="experience-container">
+        <div class="experience-card">
+          <h3>Web Developer</h3>
+          <span class="job-duration">2022 - Present</span>
+          <p>
+            At Company Name, I craft responsive websites and contribute to dynamic user interfaces with a modern tech stack.
+          </p>
         </div>
+        <div class="experience-card">
+          <h3>Freelance Developer</h3>
+          <span class="job-duration">2020 - 2022</span>
+          <p>
+            I delivered custom web solutions for startups and small businesses, handling everything from design to deployment.
+          </p>
+        </div>
+      </div>
+    </section>
 
-        <!-- Bio Section -->
-        <section class="bio-section">
-            <h2>About Me</h2>
-            <p>Hi! I’m Bus Army Dude, a web developer and tech enthusiast. I have experience in various coding languages and technologies. Check out my work below!</p>
-        </section>
+    <!-- Projects Section -->
+    <section class="projects section">
+      <h2>Projects</h2>
+      <div class="projects-container">
+        <div class="project-card">
+          <h3>Personal Website</h3>
+          <p>
+            A modern, responsive personal site built with HTML, CSS, and JavaScript. It showcases my projects and blog.
+          </p>
+          <a href="https://bus-army-dude.github.io" target="_blank" class="view-project">View Project</a>
+        </div>
+        <div class="project-card">
+          <h3>E-commerce Store</h3>
+          <p>
+            A dynamic e-commerce platform built with React and Node.js. Features custom product pages and seamless checkout.
+          </p>
+          <a href="#" target="_blank" class="view-project">View Project</a>
+        </div>
+        <!-- Add more project cards as needed -->
+      </div>
+    </section>
 
-        <!-- Skills Section -->
-        <section class="skills-section">
-            <h2>Skills</h2>
-            <ul>
-                <li>HTML, CSS, JavaScript</li>
-                <li>React, Node.js</li>
-                <li>Git, GitHub</li>
-                <li>Responsive Web Design</li>
-                <li>UI/UX Design</li>
-            </ul>
-        </section>
+    <!-- Contact Section (Optional) -->
+    <section class="contact section">
+      <h2>Contact Me</h2>
+      <p>If you like what you see or have a project in mind, hit me up!</p>
+      <a href="mailto:busarmydude@example.com" class="contact-button">Send an Email</a>
+    </section>
+  </div>
 
-        <!-- Work Experience Section -->
-        <section class="work-experience-section">
-            <h2>Work Experience</h2>
-            <div class="job">
-                <h3>Web Developer</h3>
-                <p>Company Name - 2022 to Present</p>
-                <p>Developed responsive websites and collaborated with designers and developers.</p>
-            </div>
-            <div class="job">
-                <h3>Freelance Developer</h3>
-                <p>2020 to 2022</p>
-                <p>Built custom websites for small businesses and startups.</p>
-            </div>
-        </section>
+  <!-- Footer -->
+  <footer>
+    <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
+  </footer>
 
-        <!-- Projects Section -->
-        <section class="projects-section">
-            <h2>Projects</h2>
-            <div class="project">
-                <h3>Personal Website</h3>
-                <p>A fully responsive personal website showcasing my work. Built with HTML, CSS, and JavaScript.</p>
-                <a href="https://bus-army-dude.github.io" target="_blank">View Project</a>
-            </div>
-            <div class="project">
-                <h3>E-commerce Store</h3>
-                <p>Developed a custom e-commerce site with responsive layouts. Built with React and Node.js.</p>
-                <a href="#" target="_blank">View Project</a>
-            </div>
-        </section>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="common.js"></script>
-    <script src="script.js"></script>
-    <script src="ai-features.js"></script>
-    <script src="settings.js"></script>
-    <script src="portfolio.js"></script>
-
+  <!-- Scripts -->
+  <script src="common.js"></script>
+  <script src="script.js"></script>
+  <script src="ai-features.js"></script>
+  <script src="settings.js"></script>
+  <script src="portfolio.js"></script>
 </body>
 </html>
