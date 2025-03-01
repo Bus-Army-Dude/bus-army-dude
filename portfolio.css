@@ -1,10 +1,15 @@
 /* General Styles */
+:root {
+  --accent-color: #4CAF50;
+  --text-color: #333;
+}
+
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f7f7f7;
-  color: #333;
+  color: var(--text-color);
   line-height: 1.6;
 }
 
@@ -18,7 +23,7 @@ body {
 
 /* Header */
 .portfolio-header {
-  background-color: #333;
+  background-color: var(--text-color);
   color: #fff;
   padding: 1.5rem 0;
   text-align: center;
@@ -30,7 +35,7 @@ body {
 }
 
 .home-button {
-  background-color: #4CAF50;
+  background-color: var(--accent-color);
   color: #fff;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -46,14 +51,19 @@ body {
 
 /* Section */
 .section {
-  margin-bottom: 3rem;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .section h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #333;
-  border-bottom: 2px solid #4CAF50;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--accent-color);
   padding-bottom: 0.5rem;
 }
 
@@ -97,7 +107,7 @@ body {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #4CAF50;
+  border-left: 5px solid var(--accent-color);
 }
 
 .job-duration {
@@ -123,7 +133,7 @@ body {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #4CAF50;
+  border-left: 5px solid var(--accent-color);
 }
 
 .edu-duration {
@@ -165,7 +175,7 @@ body {
 .view-project {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: #4CAF50;
+  background-color: var(--accent-color);
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
@@ -203,7 +213,7 @@ body {
 .read-more {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: #4CAF50;
+  background-color: var(--accent-color);
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
@@ -215,7 +225,7 @@ body {
 
 /* Contact Button */
 .contact-button {
-  background-color: #4CAF50;
+  background-color: var(--accent-color);
   color: #fff;
   padding: 1rem 2rem;
   text-decoration: none;
@@ -233,7 +243,7 @@ body {
 footer {
   text-align: center;
   padding: 1.5rem 0;
-  background-color: #333;
+  background-color: var(--text-color);
   color: #fff;
 }
 
