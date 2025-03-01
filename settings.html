@@ -48,49 +48,36 @@
             </div>
 
             <!-- Accessibility Section -->
-<div class="settings-subsection">
-    <h2 class="subsection-title">Accessibility</h2>
+            <div class="settings-subsection">
+                <h2 class="subsection-title">Accessibility</h2>
 
-    <!-- Adjustable Text Size -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">Text Size</h3>
-            <p class="setting-description">Adjust the text size for better readability</p>
-        </div>
-        <label for="text-size">Text Size:</label>
-        <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
-            <option value="default">Default</option>
-            <option value="large">Large</option>
-            <option value="larger">Larger</option>
-        </select>
-    </div>
+                <!-- Adjustable Text Size -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Text Size</h3>
+                        <p class="setting-description">Adjust the text size for better readability</p>
+                    </div>
+                    <label for="text-size">Text Size:</label>
+                    <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
+                        <option value="default">Default</option>
+                        <option value="large">Large</option>
+                        <option value="larger">Larger</option>
+                    </select>
+                </div>
 
-    <!-- Disable Focus Outline -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">Disable Focus Outline</h3>
-            <p class="setting-description">Toggle the blue focus outline for accessibility purposes</p>
-        </div>
-        <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
-            <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
+                <!-- Disable Focus Outline -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Disable Focus Outline</h3>
+                        <p class="setting-description">Toggle the blue focus outline for accessibility purposes</p>
+                    </div>
+                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
+                        <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
 
-    <!-- Disable Animations -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">Disable Animations</h3>
-            <p class="setting-description">Disable animations when hovering over buttons and content for improved accessibility</p>
-        </div>
-        <label for="animationsToggle" class="toggle-switch" aria-label="Toggle animations">
-            <input type="checkbox" id="animationsToggle">
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
-</div>
-
-            
             <!-- Owner Only Settings Section -->
             <div class="settings-subsection owner-only">
                 <h2 class="subsection-title">Owner Only Settings</h2>
@@ -146,14 +133,10 @@
     </footer>
 
     <!-- Cookie Consent Banner -->
-<div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description" aria-live="assertive">
-    <div id="cookie-consent-banner-content">
-        <p id="cookie-consent-description">
-            We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.
-        </p>
-        <button onclick="acceptCookies()" id="accept-cookies-btn" aria-label="Accept cookies">Accept</button>
+    <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description">
+        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.</p>
+        <button onclick="acceptCookies()" aria-label="Accept cookies">Accept</button>
     </div>
-</div>
 
     <!-- Scripts -->
     <script src="settings.js"></script>
