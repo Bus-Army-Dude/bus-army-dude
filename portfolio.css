@@ -3,32 +3,35 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
 }
 
 /* Header */
 .portfolio-header {
   background-color: var(--accent-color);
   color: var(--text-color);
-  padding: 1.5rem;
+  padding: 2rem;
   text-align: center;
+  border-radius: 12px;
 }
 
 .portfolio-header h1 {
   margin: 0;
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: var(--text-color);
+  letter-spacing: 1px;
 }
 
 .home-button {
   background-color: var(--accent-color);
   color: var(--text-color);
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 2rem;
   cursor: pointer;
   border-radius: 8px;
-  font-size: 1rem;
-  margin-top: 1rem;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s ease;
 }
 
 .home-button:hover {
@@ -37,114 +40,111 @@
 
 /* Section */
 .section {
-  margin-bottom: 3rem;
-  padding: 1.5rem;
+  margin-bottom: 3.5rem;
+  padding: 2rem;
   background-color: var(--section-background-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
 .section h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
   color: var(--text-color);
-  border-bottom: 2px solid var(--accent-color);
+  border-bottom: 3px solid var(--accent-color);
   padding-bottom: 0.5rem;
 }
 
 .section p {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-secondary-color);
 }
 
 /* Skill Cards */
 .skills-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
 }
 
 .skill-card {
   background-color: var(--background-color);
-  padding: 1rem;
+  padding: 1.5rem;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: 10px;
   text-align: center;
   font-weight: bold;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
 .skill-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-7px);
 }
 
 /* Experience Cards */
 .experience-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 1.5rem;
 }
 
 .experience-card {
   background-color: var(--background-color);
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
   border-left: 5px solid var(--accent-color);
 }
 
 .job-duration {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-secondary-color);
   margin-bottom: 1rem;
 }
 
 .experience-card p {
   color: var(--text-color);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 /* Education Cards */
 .education-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 1.5rem;
 }
 
 .education-card {
   background-color: var(--background-color);
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
   border-left: 5px solid var(--accent-color);
 }
 
 .edu-duration {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-secondary-color);
   margin-bottom: 1rem;
 }
 
 .education-card p {
   color: var(--text-color);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 /* Project Cards */
 .projects-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
 }
 
 .project-card {
   background-color: var(--background-color);
-  padding: 1.5rem;
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
 .project-card h3 {
@@ -154,7 +154,7 @@
 
 .project-card p {
   margin-bottom: 1rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--text-secondary-color);
 }
 
@@ -165,6 +165,7 @@
   color: var(--text-color);
   text-decoration: none;
   border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .view-project:hover {
@@ -173,17 +174,16 @@
 
 /* Blog Cards */
 .blog-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
 }
 
 .blog-card {
   background-color: var(--background-color);
-  padding: 1.5rem;
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
 .blog-card h3 {
@@ -192,7 +192,7 @@
 }
 
 .blog-date {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-secondary-color);
   margin-bottom: 1rem;
 }
@@ -204,6 +204,7 @@
   color: var(--text-color);
   text-decoration: none;
   border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .read-more:hover {
@@ -214,12 +215,13 @@
 .contact-button {
   background-color: var(--accent-color);
   color: var(--text-color);
-  padding: 1rem 2rem;
+  padding: 1rem 2.5rem;
   text-decoration: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
   text-align: center;
   display: inline-block;
+  transition: background-color 0.3s ease;
 }
 
 .contact-button:hover {
@@ -229,7 +231,7 @@
 /* Footer */
 footer {
   text-align: center;
-  padding: 1.5rem 0;
+  padding: 2rem 0;
   background-color: var(--accent-color);
   color: var(--text-color);
 }
@@ -246,7 +248,7 @@ footer p {
 
   .projects-container,
   .blog-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 
@@ -270,6 +272,6 @@ footer p {
   }
 
   .section {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 }
