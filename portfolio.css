@@ -3,14 +3,14 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem 1.5rem;
 }
 
 /* Header */
 .portfolio-header {
   background-color: var(--accent-color);
   color: var(--text-color);
-  padding: 1.5rem 0;
+  padding: 1.5rem;
   text-align: center;
 }
 
@@ -26,7 +26,7 @@
   border: none;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 1rem;
   margin-top: 1rem;
 }
@@ -38,6 +38,10 @@
 /* Section */
 .section {
   margin-bottom: 3rem;
+  padding: 1.5rem;
+  background-color: var(--section-background-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .section h2 {
@@ -138,7 +142,7 @@
 .project-card {
   background-color: var(--background-color);
   padding: 1.5rem;
-  width: 48%;
+  width: 100%;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -177,7 +181,7 @@
 .blog-card {
   background-color: var(--background-color);
   padding: 1.5rem;
-  width: 48%;
+  width: 100%;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -236,6 +240,10 @@ footer p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .portfolio-container {
+    padding: 1rem;
+  }
+
   .projects-container,
   .blog-container {
     flex-direction: column;
@@ -255,5 +263,13 @@ footer p {
 
   .skill-card {
     font-size: 1rem;
+  }
+
+  .portfolio-container {
+    padding: 0.75rem;
+  }
+
+  .section {
+    padding: 1rem;
   }
 }
