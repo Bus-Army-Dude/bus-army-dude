@@ -13,7 +13,8 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',  // Default profile status
             maintenanceMode: false,    // Default maintenance mode
-            focusOutline: 'enabled'    // Default focus outline setting
+            focusOutline: 'enabled',    // Default focus outline setting
+            animationsEnabled: true    // New setting to enable animations
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -72,9 +73,6 @@ class SettingsManager {
             });
         }
 
-        // Footer Year Update
-        this.updateFooterYear();
-
         // Focus Outline Toggle
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
         if (focusOutlineToggle) {
@@ -83,6 +81,18 @@ class SettingsManager {
                 this.toggleFocusOutline(e.target.checked);
             });
         }
+
+        // Animations Toggle
+        const animationsToggle = document.getElementById('animationsToggle');
+        if (animationsToggle) {
+            animationsToggle.checked = this.settings.animationsEnabled;
+            animationsToggle.addEventListener('change', (e) => {
+                this.toggleAnimations(e.target.checked);
+            });
+        }
+
+        // Footer Year Update
+        this.updateFooterYear();
     }
 
     applySettings() {
@@ -91,6 +101,7 @@ class SettingsManager {
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
         this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
+        this.toggleAnimations(this.settings.animationsEnabled);  // Apply animations setting
     }
 
     // Set the profile status
@@ -144,6 +155,17 @@ class SettingsManager {
         this.saveSettings();
     }
 
+    // Disable/Enable animations
+    toggleAnimations(enable) {
+        if (enable) {
+            document.body.classList.remove('no-animations');
+        } else {
+            document.body.classList.add('no-animations');
+        }
+        this.settings.animationsEnabled = enable;
+        this.saveSettings();
+    }
+
     // Save settings to localStorage
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
@@ -156,7 +178,8 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',
             maintenanceMode: false,
-            focusOutline: 'enabled'  // Default focus outline setting
+            focusOutline: 'enabled',    // Default focus outline setting
+            animationsEnabled: true     // Default to animations enabled
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -168,12 +191,14 @@ class SettingsManager {
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
+        const animationsToggle = document.getElementById('animationsToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
+        if (animationsToggle) animationsToggle.checked = defaultSettings.animationsEnabled;
     }
 
     // Set Maintenance Mode
@@ -216,42 +241,4 @@ class SettingsManager {
 // Initialize SettingsManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
-
-    // Manually set maintenance mode
-    settingsManager.setMaintenanceModeManually(false);
-
-    // Manually set profile status
-    settingsManager.setProfileStatusManually('online');
-});
-
-// Function to accept cookies and hide the banner
-function acceptCookies() {
-    document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
-    const banner = document.getElementById('cookie-consent-banner');
-    if (banner) {
-        banner.style.display = 'none';
-    }
-}
-
-// Check if cookies have been accepted on page load
-window.addEventListener('load', function() {
-    const banner = document.getElementById('cookie-consent-banner');
-    if (!banner) return;
-
-    const cookies = document.cookie.split('; ');
-    const consentCookie = cookies.find(row => row.startsWith('cookieConsent='));
-    if (consentCookie && consentCookie.split('=')[1] === 'true') {
-        banner.style.display = 'none';
-    } else {
-        banner.style.display = 'flex';
-    }
-});
-
-// JavaScript to handle animation toggle
-document.getElementById('animationsToggle').addEventListener('change', function() {
-    if (this.checked) {
-        document.body.classList.remove('no-animations'); // Enable animations
-    } else {
-        document.body.classList.add('no-animations'); // Disable animations
-    }
 });
