@@ -1,18 +1,3 @@
-/* General Styles */
-:root {
-  --accent-color: #4CAF50;
-  --text-color: #333;
-}
-
-body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f7f7f7;
-  color: var(--text-color);
-  line-height: 1.6;
-}
-
 /* Container */
 .portfolio-container {
   width: 100%;
@@ -23,8 +8,8 @@ body {
 
 /* Header */
 .portfolio-header {
-  background-color: var(--text-color);
-  color: #fff;
+  background-color: var(--accent-color);
+  color: var(--text-color);
   padding: 1.5rem 0;
   text-align: center;
 }
@@ -32,11 +17,12 @@ body {
 .portfolio-header h1 {
   margin: 0;
   font-size: 2.5rem;
+  color: var(--text-color);
 }
 
 .home-button {
   background-color: var(--accent-color);
-  color: #fff;
+  color: var(--text-color);
   border: none;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
@@ -46,17 +32,12 @@ body {
 }
 
 .home-button:hover {
-  background-color: #45a049;
+  background-color: var(--accent-color-hover);
 }
 
 /* Section */
 .section {
-  background-color: var(--accent-color);
-  color: var(--text-color);
-  padding: 2rem;
-  margin-bottom: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
 }
 
 .section h2 {
@@ -69,7 +50,7 @@ body {
 
 .section p {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-secondary-color);
 }
 
 /* Skill Cards */
@@ -80,9 +61,9 @@ body {
 }
 
 .skill-card {
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   text-align: center;
   font-weight: bold;
@@ -103,7 +84,7 @@ body {
 }
 
 .experience-card {
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -112,12 +93,12 @@ body {
 
 .job-duration {
   font-size: 1rem;
-  color: #777;
+  color: var(--text-secondary-color);
   margin-bottom: 1rem;
 }
 
 .experience-card p {
-  color: #555;
+  color: var(--text-color);
   font-size: 1.1rem;
 }
 
@@ -129,7 +110,7 @@ body {
 }
 
 .education-card {
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -138,12 +119,12 @@ body {
 
 .edu-duration {
   font-size: 1rem;
-  color: #777;
+  color: var(--text-secondary-color);
   margin-bottom: 1rem;
 }
 
 .education-card p {
-  color: #555;
+  color: var(--text-color);
   font-size: 1.1rem;
 }
 
@@ -155,7 +136,7 @@ body {
 }
 
 .project-card {
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 1.5rem;
   width: 48%;
   border-radius: 8px;
@@ -164,25 +145,26 @@ body {
 
 .project-card h3 {
   margin-bottom: 1rem;
+  color: var(--text-color);
 }
 
 .project-card p {
   margin-bottom: 1rem;
   font-size: 1.1rem;
-  color: #555;
+  color: var(--text-secondary-color);
 }
 
 .view-project {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: var(--accent-color);
-  color: #fff;
+  color: var(--text-color);
   text-decoration: none;
   border-radius: 5px;
 }
 
 .view-project:hover {
-  background-color: #45a049;
+  background-color: var(--accent-color-hover);
 }
 
 /* Blog Cards */
@@ -193,7 +175,7 @@ body {
 }
 
 .blog-card {
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 1.5rem;
   width: 48%;
   border-radius: 8px;
@@ -202,11 +184,12 @@ body {
 
 .blog-card h3 {
   margin-bottom: 1rem;
+  color: var(--text-color);
 }
 
 .blog-date {
   font-size: 1rem;
-  color: #888;
+  color: var(--text-secondary-color);
   margin-bottom: 1rem;
 }
 
@@ -214,19 +197,19 @@ body {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: var(--accent-color);
-  color: #fff;
+  color: var(--text-color);
   text-decoration: none;
   border-radius: 5px;
 }
 
 .read-more:hover {
-  background-color: #45a049;
+  background-color: var(--accent-color-hover);
 }
 
 /* Contact Button */
 .contact-button {
   background-color: var(--accent-color);
-  color: #fff;
+  color: var(--text-color);
   padding: 1rem 2rem;
   text-decoration: none;
   border-radius: 5px;
@@ -236,15 +219,15 @@ body {
 }
 
 .contact-button:hover {
-  background-color: #45a049;
+  background-color: var(--accent-color-hover);
 }
 
 /* Footer */
 footer {
   text-align: center;
   padding: 1.5rem 0;
-  background-color: var(--text-color);
-  color: #fff;
+  background-color: var(--accent-color);
+  color: var(--text-color);
 }
 
 footer p {
