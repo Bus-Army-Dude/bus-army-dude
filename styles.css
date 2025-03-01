@@ -1640,9 +1640,17 @@ body.focus-outline-disabled :focus {
 body.no-animations * {
     animation: none !important;
     transition: none !important;
+    will-change: auto !important; /* Ensure no pre-rendering or optimizations are applied */
 }
 
 /* Optionally, you can style the toggle switch when animations are disabled */
 body.no-animations #animationsToggle {
     background-color: #ccc; /* Example: You can adjust this color */
+    border-color: #aaa; /* Make the toggle look disabled or in a neutral state */
+}
+
+/* Example for animation toggle switch styling when animations are enabled */
+body:not(.no-animations) #animationsToggle {
+    background-color: #4caf50; /* Green or active state color */
+    border-color: #388e3c; /* Active border color */
 }
