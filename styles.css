@@ -862,7 +862,7 @@ body {
 
 /* Version Number Styling */
 .version-number {
-    font-family: monospace;
+    font-family: Roboto;
     font-size: 1.1em;
     background: var(--bg-color);
     padding: 12px 15px;
