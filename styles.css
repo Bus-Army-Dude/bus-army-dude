@@ -863,7 +863,7 @@ body {
 /* Version Number Styling */
 .version-number {
     font-family: monospace;
-    font-size: 1.2em;
+    font-size: 1.1em;
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
@@ -881,8 +881,8 @@ body {
 
 /* Build Number Styling */
 .build-number {
-    font-family: monospace;
-    font-size: 1.2em;
+    font-family: Roboto;
+    font-size: 1.1em;
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
@@ -900,6 +900,7 @@ body {
 
 /* OS Info Styling */
 .os-info {
+    font-family: Roboto;
     font-size: 1.1em;
     background: var(--bg-color, #2f2f2f); /* Dark background */
     color: var(--text-color, #f5f5f5); /* Light text color */
@@ -923,6 +924,7 @@ body {
 
 /* Device Model Styling */
 .device-info {
+    font-family: Roboto;
     font-size: 1.1em;
     background: var(--bg-color, #2f2f2f); /* Dark background */
     color: var(--text-color, #f5f5f5); /* Light text color */
@@ -946,7 +948,7 @@ body {
 
 /* Update Time Styling */
 .update-time {
-    font-family: monospace;
+    font-family: Roboto;
     font-size: 1.1em;
     background: var(--bg-color);
     padding: 12px 15px;
@@ -958,13 +960,14 @@ body {
 }
 
 .update-time::before {
-    content: "Last Updated:";
+    content: "Current Date & Time:";
     color: var(--secondary-text);
     font-weight: 500;
 }
 
 /* Countdown Styling */
 .countdown {
+    font-family: Roboto;
     font-size: 1.2em;
     font-weight: 600;
     background: var(--bg-color);
