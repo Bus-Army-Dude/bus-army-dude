@@ -1635,3 +1635,14 @@ footer {
 body.focus-outline-disabled :focus {
     outline: none; /* No outline when focus outline is disabled */
 }
+
+/* Disable animations when the 'no-animations' class is added to the body */
+body.no-animations * {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Optionally, you can style the toggle switch when animations are disabled */
+body.no-animations #animationsToggle {
+    background-color: #ccc; /* Example: You can adjust this color */
+}
