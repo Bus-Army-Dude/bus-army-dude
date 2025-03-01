@@ -1,31 +1,31 @@
 class SettingsManager {
     constructor() {
-        // Load settings and check if the user is the owner
         this.settings = this.loadSettings();
-        this.isOwner = this.checkIfOwner();  // Check if current user is the owner
+        this.isOwner = this.checkIfOwner();
         this.initializeControls();
         this.applySettings();
+        this.checkCookieConsent();
     }
 
+    // Load settings from localStorage (includes cookie consent status)
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-            profileStatus: 'offline',  // Default profile status
-            maintenanceMode: false,    // Default maintenance mode
-            focusOutline: 'enabled',    // Default focus outline setting
-            animationsEnabled: true    // New setting to enable animations
+            profileStatus: 'offline',
+            maintenanceMode: false,
+            focusOutline: 'enabled',
+            animationsEnabled: true
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
 
     // Check if the user is the owner
     checkIfOwner() {
-        return localStorage.getItem('isOwner') === 'true';  // Checking 'isOwner' in localStorage
+        return localStorage.getItem('isOwner') === 'true';
     }
 
     initializeControls() {
-        // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
@@ -34,7 +34,6 @@ class SettingsManager {
             });
         }
 
-        // Text Size Adjustment
         const textSizeSelect = document.getElementById('text-size');
         if (textSizeSelect) {
             textSizeSelect.value = this.settings.textSize;
@@ -43,17 +42,15 @@ class SettingsManager {
             });
         }
 
-        // Profile Status (Visible and Editable only for owner)
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         if (profileStatusSelect) {
             profileStatusSelect.value = this.settings.profileStatus;
-            profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
+            profileStatusSelect.disabled = !this.isOwner;
             profileStatusSelect.addEventListener('change', (e) => {
                 this.setProfileStatus(e.target.value);
             });
         }
 
-        // Maintenance Mode (Visible and Editable only for owner)
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         if (maintenanceModeToggle) {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
@@ -63,7 +60,6 @@ class SettingsManager {
             });
         }
 
-        // Reset Settings Button
         const resetButton = document.getElementById('resetSettings');
         if (resetButton) {
             resetButton.addEventListener('click', () => {
@@ -73,7 +69,6 @@ class SettingsManager {
             });
         }
 
-        // Focus Outline Toggle
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
         if (focusOutlineToggle) {
             focusOutlineToggle.checked = this.settings.focusOutline === 'enabled';
@@ -82,7 +77,6 @@ class SettingsManager {
             });
         }
 
-        // Animations Toggle
         const animationsToggle = document.getElementById('animationsToggle');
         if (animationsToggle) {
             animationsToggle.checked = this.settings.animationsEnabled;
@@ -91,52 +85,38 @@ class SettingsManager {
             });
         }
 
-        // Footer Year Update
         this.updateFooterYear();
     }
 
+    // Check if cookies have been accepted
+    checkCookieConsent() {
+        if (!localStorage.getItem('cookiesAccepted')) {
+            const cookieConsent = document.getElementById('cookieConsent');
+            cookieConsent.style.display = 'block'; // Show the consent banner
+            document.getElementById('acceptCookies').addEventListener('click', () => {
+                localStorage.setItem('cookiesAccepted', 'true'); // Save consent
+                cookieConsent.style.display = 'none'; // Hide the consent banner
+            });
+        }
+    }
+
+    // Apply settings like dark mode, text size, etc.
     applySettings() {
         this.applyTheme(this.settings.darkMode);
         this.setTextSize(this.settings.textSize);
         this.applyMaintenanceMode(this.settings.maintenanceMode);
-        this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
+        this.applyProfileStatus(this.settings.profileStatus);
         this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
-        this.toggleAnimations(this.settings.animationsEnabled);  // Apply animations setting
+        this.toggleAnimations(this.settings.animationsEnabled);
     }
 
-    // Set the profile status
-    setProfileStatus(status) {
-        this.settings.profileStatus = status;
-        this.saveSettings();
-        this.applyProfileStatus(status); // Apply status change to the profile
-    }
-
-    applyProfileStatus(status) {
-        const statusElement = document.querySelector('.profile-status');
-        if (statusElement) {
-            statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
-            statusElement.classList.add(status); // Add the new status class
-
-            // Map status to icons
-            const statusIcons = {
-                "online": "🟢",
-                "idle": "🟡",
-                "offline": "⚪"
-            };
-
-            statusElement.textContent = statusIcons[status] || "⚪"; // Default to offline icon if no match
-        }
-    }
-
-    // Apply dark or light theme
-    applyTheme(isDark = this.settings.darkMode) {
+    applyTheme(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
         this.settings.darkMode = isDark;
         this.saveSettings();
     }
 
-    // Set text size
     setTextSize(size) {
         document.body.classList.remove('text-default', 'text-large', 'text-larger');
         document.body.classList.add('text-' + size);
@@ -144,7 +124,6 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    // Focus outline enabling and disabling
     toggleFocusOutline(enable) {
         if (enable) {
             document.body.classList.remove('focus-outline-disabled');
@@ -155,7 +134,6 @@ class SettingsManager {
         this.saveSettings();
     }
 
-    // Disable/Enable animations
     toggleAnimations(enable) {
         if (enable) {
             document.body.classList.remove('no-animations');
@@ -178,30 +156,14 @@ class SettingsManager {
             textSize: 'default',
             profileStatus: 'offline',
             maintenanceMode: false,
-            focusOutline: 'enabled',    // Default focus outline setting
-            animationsEnabled: true     // Default to animations enabled
+            focusOutline: 'enabled',
+            animationsEnabled: true
         };
         this.settings = defaultSettings;
         this.applySettings();
         this.saveSettings();
-
-        // Update UI controls
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const textSizeSelect = document.getElementById('text-size');
-        const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
-        const profileStatusSelect = document.getElementById('profileStatusSelect');
-        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-        const animationsToggle = document.getElementById('animationsToggle');
-
-        if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
-        if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
-        if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
-        if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
-        if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
-        if (animationsToggle) animationsToggle.checked = defaultSettings.animationsEnabled;
     }
 
-    // Set Maintenance Mode
     setMaintenanceMode(isEnabled) {
         this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
@@ -215,21 +177,6 @@ class SettingsManager {
         }
     }
 
-    // Set profile status manually (for owner)
-    setProfileStatusManually(status) {
-        if (['online', 'idle', 'offline'].includes(status)) {
-            this.setProfileStatus(status);
-        } else {
-            console.error('Invalid profile status');
-        }
-    }
-
-    // Set maintenance mode manually (for owner)
-    setMaintenanceModeManually(isEnabled) {
-        this.setMaintenanceMode(isEnabled);
-    }
-
-    // Dynamically update footer year
     updateFooterYear() {
         const footerYear = document.getElementById('year');
         if (footerYear) {
