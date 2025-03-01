@@ -1638,19 +1638,58 @@ body.focus-outline-disabled :focus {
 
 /* Disable animations when the 'no-animations' class is added to the body */
 body.no-animations * {
-    animation: none !important;
-    transition: none !important;
-    will-change: auto !important; /* Ensure no pre-rendering or optimizations are applied */
+    animation: none !important;    /* Disable animations */
+    transition: none !important;   /* Disable transitions */
+    will-change: auto !important;  /* Reset any forced optimizations */
 }
 
-/* Optionally, you can style the toggle switch when animations are disabled */
+/* Optionally, style the toggle switch when animations are disabled */
 body.no-animations #animationsToggle {
-    background-color: #ccc; /* Example: You can adjust this color */
-    border-color: #aaa; /* Make the toggle look disabled or in a neutral state */
+    background-color: #ccc;        /* Gray background to show it's disabled */
+    border-color: #aaa;           /* Lighter border to indicate neutral state */
+    cursor: not-allowed;          /* Change cursor to indicate it's disabled */
 }
 
 /* Example for animation toggle switch styling when animations are enabled */
 body:not(.no-animations) #animationsToggle {
-    background-color: #4caf50; /* Green or active state color */
-    border-color: #388e3c; /* Active border color */
+    background-color: #4caf50;     /* Green color when enabled */
+    border-color: #388e3c;         /* Darker green border when enabled */
+    cursor: pointer;               /* Cursor pointer to show it’s clickable */
+}
+
+/* Optionally, you can add a transition for when the toggle changes state */
+#animationsToggle {
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Additional style for the switch when the page is loading animations (for the animations toggle) */
+#animationsToggle {
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    position: relative;
+    border-radius: 50px;
+    background-color: #ccc;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+#animationsToggle:before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background-color: white;
+    transition: left 0.3s ease;
+}
+
+body.no-animations #animationsToggle:before {
+    left: 25px; /* Move to the right when animations are disabled */
+}
+
+body:not(.no-animations) #animationsToggle:before {
+    left: 3px;  /* Move to the left when animations are enabled */
 }
