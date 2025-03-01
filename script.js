@@ -11,15 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize copy protection
     enhancedCopyProtection.init();
 
-    // Time update function
-    function updateTime() {
-        const now = new Date();
-        const timestamp = now.toLocaleString('en-US', { timeZoneName: 'short' });
-        const timeElement = document.querySelector('.update-time');
-        if (timeElement) {
-            timeElement.textContent = `${timestamp}`;
-        }
+   // Time update function
+function updateTime() {
+    const now = new Date();
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric', 
+        hour12: true, 
+        timeZoneName: 'short' 
+    };
+
+    const timestamp = now.toLocaleString('en-US', options);
+    const timeElement = document.querySelector('.update-time');
+    
+    if (timeElement) {
+        timeElement.textContent = `${timestamp}`;
     }
+}
+
+// Call updateTime to set the current time when the page loads
+updateTime();
 
     // Page refresh countdown set to 5 minutes (300 seconds)
     const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
