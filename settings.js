@@ -246,3 +246,12 @@ window.addEventListener('load', function() {
         banner.style.display = 'flex';
     }
 });
+
+// JavaScript to handle animation toggle
+document.getElementById('animationsToggle').addEventListener('change', function() {
+    if (this.checked) {
+        document.body.classList.remove('no-animations'); // Enable animations
+    } else {
+        document.body.classList.add('no-animations'); // Disable animations
+    }
+});
