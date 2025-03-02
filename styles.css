@@ -21,7 +21,35 @@
     --dark-hover: #45a049;
     --dark-link: #BB86FC;
     --dark-shadow: rgba(0, 0, 0, 0.2);
+
+    /* Protanopia - Red-Green Color Blindness */
+    --protanopia-bg: #e6e6e6; /* Lighter background */
+    --protanopia-content-bg: #f2f2f2;
+    --protanopia-text: #000000; /* Darker text for contrast */
+    --protanopia-accent: #ff6666; /* Red tones */
+    --protanopia-link: #ff0000;
     
+    /* Deuteranopia - Red-Green Color Blindness */
+    --deuteranopia-bg: #e6e6e6;
+    --deuteranopia-content-bg: #f2f2f2;
+    --deuteranopia-text: #000000;
+    --deuteranopia-accent: #ff6666; /* Green-red tones */
+    --deuteranopia-link: #ff0000;
+    
+    /* Tritanopia - Blue-Yellow Color Blindness */
+    --tritanopia-bg: #e6e6e6;
+    --tritanopia-content-bg: #f2f2f2;
+    --tritanopia-text: #000000;
+    --tritanopia-accent: #ffcc00; /* Yellow tones */
+    --tritanopia-link: #ff4500;
+
+    /* Achromatopsia - Total Color Blindness */
+    --achromatopsia-bg: #ffffff; /* White background */
+    --achromatopsia-content-bg: #f8f8f8;
+    --achromatopsia-text: #000000;
+    --achromatopsia-accent: #000000; /* Black for everything */
+    --achromatopsia-link: #000000;
+
     /* Default Theme (Dark) */
     --bg-color: var(--dark-bg);
     --content-bg: var(--dark-content-bg);
@@ -57,6 +85,38 @@
     --hover-color: var(--dark-hover);
     --link-color: var(--dark-link);
     --shadow-color: var(--dark-shadow);
+}
+
+.protanopia {
+    --bg-color: var(--protanopia-bg);
+    --content-bg: var(--protanopia-content-bg);
+    --text-color: var(--protanopia-text);
+    --accent-color: var(--protanopia-accent);
+    --link-color: var(--protanopia-link);
+}
+
+.deuteranopia {
+    --bg-color: var(--deuteranopia-bg);
+    --content-bg: var(--deuteranopia-content-bg);
+    --text-color: var(--deuteranopia-text);
+    --accent-color: var(--deuteranopia-accent);
+    --link-color: var(--deuteranopia-link);
+}
+
+.tritanopia {
+    --bg-color: var(--tritanopia-bg);
+    --content-bg: var(--tritanopia-content-bg);
+    --text-color: var(--tritanopia-text);
+    --accent-color: var(--tritanopia-accent);
+    --link-color: var(--tritanopia-link);
+}
+
+.achromatopsia {
+    --bg-color: var(--achromatopsia-bg);
+    --content-bg: var(--achromatopsia-content-bg);
+    --text-color: var(--achromatopsia-text);
+    --accent-color: var(--achromatopsia-accent);
+    --link-color: var(--achromatopsia-link);
 }
 
 /* Base Styles */
