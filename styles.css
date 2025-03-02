@@ -1688,11 +1688,22 @@ body.focus-outline-disabled :focus {
     overflow-y: scroll; 
     padding: 10px; 
     border-bottom: 1px solid #ccc; 
+    background: #f9f9f9; /* Light background for better readability */
 }
 
 .chat-log p { 
     margin: 0; 
-    padding: 5px 0; 
+    padding: 10px; /* Add padding for better spacing */
+    font-size: 16px; /* Increase font size for readability */
+    border-radius: 4px; /* Add border radius for better aesthetics */
+}
+
+.chat-log p:nth-child(odd) { 
+    background: #e0e0e0; /* Light gray background for user messages */
+}
+
+.chat-log p:nth-child(even) { 
+    background: #d1e7fd; /* Light blue background for AI messages */
 }
 
 .chat-input { 
@@ -1701,4 +1712,6 @@ body.focus-outline-disabled :focus {
     border: none; 
     border-top: 1px solid #ccc; 
     outline: none; 
+    font-size: 16px; /* Increase font size for input */
+    background: #f1f1f1; /* Light gray background for input */
 }
