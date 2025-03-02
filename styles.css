@@ -1635,3 +1635,75 @@ footer {
 body.focus-outline-disabled :focus {
     outline: none; /* No outline when focus outline is disabled */
 }
+
+body { 
+    font-family: Arial, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    background: #f4f4f4; 
+}
+
+.chat-icon { 
+    position: fixed; 
+    bottom: 20px; 
+    left: 20px; 
+    width: 60px; 
+    height: 60px; 
+    background: #007bff; 
+    border: none; 
+    border-radius: 50%; 
+    color: white; 
+    font-size: 24px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    cursor: pointer; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+.chat-popup { 
+    display: none; 
+    position: fixed; 
+    bottom: 90px; 
+    left: 20px; 
+    width: 300px; 
+    background: white; 
+    border-radius: 8px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+.chat-box { 
+    display: flex; 
+    flex-direction: column; 
+    height: 400px; 
+}
+
+.chat-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px; 
+    background: #007bff; 
+    color: white; 
+    border-radius: 8px 8px 0 0; 
+}
+
+.chat-log { 
+    flex: 1; 
+    overflow-y: scroll; 
+    padding: 10px; 
+    border-bottom: 1px solid #ccc; 
+}
+
+.chat-log p { 
+    margin: 0; 
+    padding: 5px 0; 
+}
+
+.chat-input { 
+    width: calc(100% - 20px); 
+    padding: 10px; 
+    border: none; 
+    border-top: 1px solid #ccc; 
+    outline: none; 
+}
