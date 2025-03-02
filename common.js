@@ -46,31 +46,6 @@ class CommonManager {
             '--accent-color': '#4CAF50',
             '--content-bg': '#f5f5f5'
         };
-
-        // Colorblind mode color adjustments
-        this.colorblindModes = {
-            protanopia: {
-                '--accent-color': '#ff6666', // Red tones for protanopia
-                '--bg-color': '#e6e6e6', // Light background for visibility
-                '--text-color': '#000000', // Keep text dark for contrast
-            },
-            deuteranopia: {
-                '--accent-color': '#ff6666', // Green-red adjustments
-                '--bg-color': '#e6e6e6', 
-                '--text-color': '#000000',
-            },
-            tritanopia: {
-                '--accent-color': '#ffcc00', // Adjusted for blue-yellow blindness
-                '--bg-color': '#e6e6e6', 
-                '--text-color': '#000000',
-            },
-            achromatopsia: {
-                '--accent-color': '#000000', // Black-and-white for total colorblindness
-                '--bg-color': '#ffffff',
-                '--text-color': '#000000',
-            },
-            none: {} // Default, no adjustments
-        };
     }
 
     applySettings() {
@@ -104,11 +79,10 @@ class CommonManager {
 
     applyColorblindMode(mode) {
         console.log("Applying colorblind mode:", mode);
-        const colorblindStyles = this.colorblindModes[mode];
-        Object.entries(colorblindStyles).forEach(([property, value]) => {
-            document.documentElement.style.setProperty(property, value);
-            console.log(`Set ${property} to ${value}`);
-        });
+        document.documentElement.classList.remove('colorblind-protanopia', 'colorblind-deuteranopia', 'colorblind-tritanopia', 'colorblind-achromatopsia');
+        if (mode !== 'none') {
+            document.documentElement.classList.add(`colorblind-${mode}`);
+        }
     }
 
     addThemeToggleHandling() {
@@ -167,4 +141,8 @@ class CommonManager {
 // Initialize CommonManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     const commonManager = new CommonManager();
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'colorblind-modes.css';
+    document.head.appendChild(link);
 });
