@@ -64,8 +64,66 @@ document.addEventListener('DOMContentLoaded', function () {
             let aiResponse = responses.find(response => response.keywords.some(keyword => userMessage.includes(keyword)))?.response 
                              || defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
 
+            // Check for specific commands and update settings
+            if (userMessage.includes("turn off dark mode")) {
+                aiResponse = "Dark mode has been turned off.";
+                document.body.classList.remove('dark-mode');
+                if (document.getElementById('dark-mode-toggle')) {
+                    document.getElementById('dark-mode-toggle').checked = false;
+                }
+                localStorage.setItem('darkMode', 'disabled');
+            } else if (userMessage.includes("turn on dark mode")) {
+                aiResponse = "Dark mode has been turned on.";
+                document.body.classList.add('dark-mode');
+                if (document.getElementById('dark-mode-toggle')) {
+                    document.getElementById('dark-mode-toggle').checked = true;
+                }
+                localStorage.setItem('darkMode', 'enabled');
+            } else if (userMessage.includes("disable focus outline")) {
+                aiResponse = "Focus outline has been disabled.";
+                document.body.classList.add('disable-focus-outline');
+                localStorage.setItem('disableFocusOutline', 'enabled');
+            } else if (userMessage.includes("enable focus outline")) {
+                aiResponse = "Focus outline has been enabled.";
+                document.body.classList.remove('disable-focus-outline');
+                localStorage.setItem('disableFocusOutline', 'disabled');
+            } else if (userMessage.includes("set text size default")) {
+                aiResponse = "Text size has been set to default.";
+                document.body.classList.remove('text-size-large', 'text-size-larger');
+                localStorage.setItem('textSize', 'default');
+            } else if (userMessage.includes("set text size large")) {
+                aiResponse = "Text size has been set to large.";
+                document.body.classList.add('text-size-large');
+                document.body.classList.remove('text-size-larger');
+                localStorage.setItem('textSize', 'large');
+            } else if (userMessage.includes("set text size larger")) {
+                aiResponse = "Text size has been set to larger.";
+                document.body.classList.add('text-size-larger');
+                document.body.classList.remove('text-size-large');
+                localStorage.setItem('textSize', 'larger');
+            }
+
             chatLog.innerHTML += `<p class="ai"><strong>AI:</strong> ${aiResponse}</p>`;
             chatLog.scrollTop = chatLog.scrollHeight;
         }
     });
+
+    // Load initial settings
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        if (document.getElementById('dark-mode-toggle')) {
+            document.getElementById('dark-mode-toggle').checked = true;
+        }
+    }
+
+    if (localStorage.getItem('disableFocusOutline') === 'enabled') {
+        document.body.classList.add('disable-focus-outline');
+    }
+
+    const textSize = localStorage.getItem('textSize');
+    if (textSize === 'large') {
+        document.body.classList.add('text-size-large');
+    } else if (textSize === 'larger') {
+        document.body.classList.add('text-size-larger');
+    }
 });
