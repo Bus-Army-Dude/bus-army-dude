@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     chatInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             const userMessage = chatInput.value.toLowerCase();
-            chatLog.innerHTML += `<p><strong>You:</strong> ${chatInput.value}</p>`;
+            chatLog.innerHTML += `<p class="user"><strong>You:</strong> ${chatInput.value}</p>`;
             chatInput.value = '';
 
             let aiResponse = responses["default"];
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            chatLog.innerHTML += `<p><strong>AI:</strong> ${aiResponse}</p>`;
+            chatLog.innerHTML += `<p class="ai"><strong>AI:</strong> ${aiResponse}</p>`;
             chatLog.scrollTop = chatLog.scrollHeight;
         }
     });
