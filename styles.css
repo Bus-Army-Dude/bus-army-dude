@@ -1698,12 +1698,14 @@ body.focus-outline-disabled :focus {
     border-radius: 4px; /* Add border radius for better aesthetics */
 }
 
-.chat-log p:nth-child(odd) { 
-    background: #e0e0e0; /* Light gray background for user messages */
+.chat-log p.user { 
+    background: #4caf50; /* Green background for user messages */
+    color: white; /* White text for user messages */
 }
 
-.chat-log p:nth-child(even) { 
-    background: #d1e7fd; /* Light blue background for AI messages */
+.chat-log p.ai { 
+    background: #007bff; /* Blue background for AI messages */
+    color: white; /* White text for AI messages */
 }
 
 .chat-input { 
