@@ -1636,13 +1636,6 @@ body.focus-outline-disabled :focus {
     outline: none; /* No outline when focus outline is disabled */
 }
 
-body { 
-    font-family: Arial, sans-serif; 
-    margin: 0; 
-    padding: 0; 
-    background: #f4f4f4; 
-}
-
 .chat-icon { 
     position: fixed; 
     bottom: 20px; 
