@@ -44,7 +44,7 @@ body.settings-page {
 
 /* Default focus outline styling */
 :focus {
-    outline: 3px solid #4CAF50; /* Green outline for accessibility */
+    outline: 3px solid #005fcc; /* Green outline for accessibility */
 }
 
 /* Class to completely disable focus outlines */
