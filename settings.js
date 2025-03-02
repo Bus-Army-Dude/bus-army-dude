@@ -198,10 +198,6 @@ class SettingsManager {
         if (maintenanceMessage) {
             maintenanceMessage.style.display = isEnabled ? 'block' : 'none';
         }
-        if (isEnabled && !this.isOwner) {
-            // Redirect non-owners to a maintenance page
-            window.location.href = '/maintenance.html';
-        }
     }
 
     // Set profile status manually (for owner)
