@@ -2,6 +2,7 @@ class CommonManager {
     constructor() {
         this.removeNoJsClass();
         this.settings = this.loadSettings(); // Always load the settings from localStorage
+        console.log("Loaded settings:", this.settings);
         this.initializeThemeColors();
         this.applySettings(); // Apply theme based on stored settings
         this.addThemeToggleHandling(); // Handle theme switching
@@ -102,9 +103,11 @@ class CommonManager {
     }
 
     applyColorblindMode(mode) {
+        console.log("Applying colorblind mode:", mode);
         const colorblindStyles = this.colorblindModes[mode];
         Object.entries(colorblindStyles).forEach(([property, value]) => {
             document.documentElement.style.setProperty(property, value);
+            console.log(`Set ${property} to ${value}`);
         });
     }
 
