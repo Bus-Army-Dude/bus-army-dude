@@ -49,21 +49,23 @@
 </head>
 <body class="dark-mode">
     <div class="container">
-<!-- Chat Popup and Icon -->
-    <div id="chat-popup" class="chat-popup">
-        <div class="chat-box">
-            <div class="chat-header">
-                <span>AI Chat Assistant</span>
-                <button id="close-chat-btn">&times;</button>
+<!-- Chat Icon -->
+        <button id="open-chat-btn" class="chat-icon">
+            <i class="fas fa-comments"></i>
+        </button>
+
+        <!-- Chat Popup -->
+        <div id="chat-popup" class="chat-popup">
+            <div class="chat-box">
+                <div class="chat-header">
+                    <h2>Chat with us</h2>
+                    <button id="close-chat-btn">&times;</button>
+                </div>
+                <div id="chat-log" class="chat-log"></div>
+                <input id="chat-input" class="chat-input" type="text" placeholder="Type a message...">
             </div>
-            <div class="chat-log" id="chat-log"></div>
-            <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
         </div>
     </div>
-
-    <button id="open-chat-btn" class="chat-icon">
-        <i class="fas fa-robot"></i>
-    </button>
 
 <!-- Maintenance Mode Message -->
 <div id="maintenanceModeMessage" style="display: none; background-color: red; color: white; text-align: center; padding: 20px;">
