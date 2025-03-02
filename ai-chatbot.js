@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const chatPopup = document.getElementById('chat-popup');
     const chatInput = document.getElementById('chat-input');
     const chatLog = document.getElementById('chat-log');
-    
+
     const responses = [
         { keywords: ["hello", "hi"], response: "Hi there! How can I assist you today?" },
         { keywords: ["how are you"], response: "I'm just a computer program, so I don't have feelings, but thanks for asking!" },
@@ -64,91 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let aiResponse = responses.find(response => response.keywords.some(keyword => userMessage.includes(keyword)))?.response 
                              || defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
 
-            // Check for specific commands and update settings
-            if (userMessage.includes("turn off dark mode")) {
-                aiResponse = "Dark mode has been turned off.";
-                document.body.classList.remove('dark-mode');
-                if (document.getElementById('darkModeToggle')) {
-                    document.getElementById('darkModeToggle').checked = false;
-                }
-                localStorage.setItem('darkMode', 'disabled');
-            } else if (userMessage.includes("turn on dark mode")) {
-                aiResponse = "Dark mode has been turned on.";
-                document.body.classList.add('dark-mode');
-                if (document.getElementById('darkModeToggle')) {
-                    document.getElementById('darkModeToggle').checked = true;
-                }
-                localStorage.setItem('darkMode', 'enabled');
-            } else if (userMessage.includes("disable focus outline")) {
-                aiResponse = "Focus outline has been disabled.";
-                document.body.classList.add('focus-outline-disabled');
-                if (document.getElementById('focusOutlineToggle')) {
-                    document.getElementById('focusOutlineToggle').checked = false;
-                }
-                localStorage.setItem('focusOutline', 'disabled');
-            } else if (userMessage.includes("enable focus outline")) {
-                aiResponse = "Focus outline has been enabled.";
-                document.body.classList.remove('focus-outline-disabled');
-                if (document.getElementById('focusOutlineToggle')) {
-                    document.getElementById('focusOutlineToggle').checked = true;
-                }
-                localStorage.setItem('focusOutline', 'enabled');
-            } else if (userMessage.includes("set text size default")) {
-                aiResponse = "Text size has been set to default.";
-                document.body.classList.remove('text-size-large', 'text-size-larger');
-                document.body.classList.add('text-size-default');
-                if (document.getElementById('textSizeSelect')) {
-                    document.getElementById('textSizeSelect').value = 'default';
-                }
-                localStorage.setItem('textSize', 'default');
-            } else if (userMessage.includes("set text size large")) {
-                aiResponse = "Text size has been set to large.";
-                document.body.classList.remove('text-size-default', 'text-size-larger');
-                document.body.classList.add('text-size-large');
-                if (document.getElementById('textSizeSelect')) {
-                    document.getElementById('textSizeSelect').value = 'large';
-                }
-                localStorage.setItem('textSize', 'large');
-            } else if (userMessage.includes("set text size larger")) {
-                aiResponse = "Text size has been set to larger.";
-                document.body.classList.remove('text-size-default', 'text-size-large');
-                document.body.classList.add('text-size-larger');
-                if (document.getElementById('textSizeSelect')) {
-                    document.getElementById('textSizeSelect').value = 'larger';
-                }
-                localStorage.setItem('textSize', 'larger');
-            }
-
             chatLog.innerHTML += `<p class="ai"><strong>AI:</strong> ${aiResponse}</p>`;
             chatLog.scrollTop = chatLog.scrollHeight;
         }
     });
-
-    // Load initial settings
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        if (document.getElementById('darkModeToggle')) {
-            document.getElementById('darkModeToggle').checked = true;
-        }
-    }
-
-    if (localStorage.getItem('focusOutline') === 'enabled') {
-        document.body.classList.remove('focus-outline-disabled');
-        if (document.getElementById('focusOutlineToggle')) {
-            document.getElementById('focusOutlineToggle').checked = true;
-        }
-    } else {
-        document.body.classList.add('focus-outline-disabled');
-        if (document.getElementById('focusOutlineToggle')) {
-            document.getElementById('focusOutlineToggle').checked = false;
-        }
-    }
-
-    const textSize = localStorage.getItem('textSize');
-    if (textSize) {
-        document.body.classList.add(`text-size-${textSize}`);
-        if (document.getElementById('textSizeSelect')) {
-            document.getElementById('textSizeSelect').value = textSize;
-        }
-    }
 });
