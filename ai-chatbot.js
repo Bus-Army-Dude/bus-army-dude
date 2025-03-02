@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const chatPopup = document.getElementById('chat-popup');
     const chatInput = document.getElementById('chat-input');
     const chatLog = document.getElementById('chat-log');
-
+    
     const responses = [
         { keywords: ["hello", "hi"], response: "Hi there! How can I assist you today?" },
         { keywords: ["how are you"], response: "I'm just a computer program, so I don't have feelings, but thanks for asking!" },
