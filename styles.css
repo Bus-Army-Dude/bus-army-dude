@@ -21,7 +21,7 @@
     --dark-hover: #45a049;
     --dark-link: #BB86FC;
     --dark-shadow: rgba(0, 0, 0, 0.2);
-
+    
     /* Protanopia - Red-Green Color Blindness */
     --protanopia-bg: #e6e6e6; /* Lighter background */
     --protanopia-content-bg: #f2f2f2;
@@ -489,7 +489,7 @@ body {
 
 .tech-item h3 {
     margin-top: 0;
-    color: var(--accent-color);
+    color: var (--accent-color);
     margin-bottom: 10px;
 }
 
@@ -611,11 +611,29 @@ body {
 }
 
 .tiktok-creator-grid {
-    composes: creator-grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .tiktok-creator-card {
-    composes: creator-card;
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    position: relative;
+}
+
+.tiktok-creator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .follower-count {
@@ -820,10 +838,10 @@ body {
     justify-content: center;
     font-size: 2em;
     font-weight: bold;
-    background-color: var(--content-bg);
-    border: 2px solid var(--accent-color);
+    background-color: var (--content-bg);
+    border: 2px solid var (--accent-color);
     border-radius: 8px;
-    color: var(--text-color);
+    color: var (--text-color);
 }
 
 .flip-clock-back {
@@ -831,7 +849,7 @@ body {
 }
 
 .countdown-label {
-    color: var(--secondary-text);
+    color: var (--secondary-text);
     font-size: 0.9em;
     font-weight: bold;
     text-transform: uppercase;
@@ -863,7 +881,7 @@ body {
 
 /* Optional: Add a subtle glow effect on hover */
 .flip-clock:hover .flip-clock-front {
-    box-shadow: 0 0 15px var(--accent-color);
+    box-shadow: 0 0 15px var (--accent-color);
     transition: box-shadow 0.3s ease;
 }
 
@@ -872,7 +890,7 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: var(--accent-color);
+    background-color: var (--accent-color);
     color: white;
     width: 40px;
     height: 40px;
@@ -890,19 +908,19 @@ body {
 }
 
 .back-to-top:hover {
-    background-color: var(--hover-color);
+    background-color: var (--hover-color);
     transform: translateY(-3px);
 }
 
 /* Version Info Section */
 .version-info-section {
-    background-color: var(--content-bg);
+    background-color: var (--content-bg);
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 30px;
-    box-shadow: 0 8px 20px var(--shadow-color);
+    box-shadow: 0 8px 20px var (--shadow-color);
     font-family: 'Inter', sans-serif;
-    color: var(--text-color);
+    color: var (--text-color);
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -912,11 +930,11 @@ body {
 .version-header {
     font-size: 1.6em;
     font-weight: 700;
-    color: var(--accent-color);
+    color: var (--accent-color);
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var (--border-color);
     padding-bottom: 10px;
 }
 
@@ -924,18 +942,18 @@ body {
 .version-number {
     font-family: Roboto;
     font-size: 1.1em;
-    background: var(--bg-color);
+    background: var (--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid var (--accent-color);
 }
 
 .version-number::before {
     content: "Version:";
-    color: var(--secondary-text);
+    color: var (--secondary-text);
     font-weight: 500;
 }
 
@@ -943,18 +961,18 @@ body {
 .build-number {
     font-family: Roboto;
     font-size: 1.1em;
-    background: var(--bg-color);
+    background: var (--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-left: 4px solid var(--accent-color);
+    border-left: 4px solid var (--accent-color);
 }
 
 .build-number::before {
     content: "Build:";
-    color: var(--secondary-text);
+    color: var (--secondary-text);
     font-weight: 500;
 }
 
@@ -962,14 +980,14 @@ body {
 .os-info {
     font-family: Roboto;
     font-size: 1.1em;
-    background: var(--bg-color, #2f2f2f); /* Dark background */
-    color: var(--text-color, #f5f5f5); /* Light text color */
+    background: var (--bg-color, #2f2f2f); /* Dark background */
+    color: var (--text-color, #f5f5f5); /* Light text color */
     padding: 12px 20px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 15px;
-    border-left: 6px solid var(--hover-color, #3498db); /* Border to match theme */
+    border-left: 6px solid var (--hover-color, #3498db); /* Border to match theme */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     transition: background 0.3s ease, border-left 0.3s ease;
 }
@@ -977,7 +995,7 @@ body {
 /* Before pseudo-element to add "Operating System:" label */
 .os-info::before {
     content: "Operating System:";
-    color: var(--secondary-text, #bbb); /* Light color for the label */
+    color: var (--secondary-text, #bbb); /* Light color for the label */
     font-weight: 500;
     margin-right: 10px;
 }
@@ -986,14 +1004,14 @@ body {
 .device-info {
     font-family: Roboto;
     font-size: 1.1em;
-    background: var(--bg-color, #2f2f2f); /* Dark background */
-    color: var(--text-color, #f5f5f5); /* Light text color */
+    background: var (--bg-color, #2f2f2f); /* Dark background */
+    color: var (--text-color, #f5f5f5); /* Light text color */
     padding: 12px 20px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 15px;
-    border-left: 6px solid var(--hover-color, #3498db); /* Border to match theme */
+    border-left: 6px solid var (--hover-color, #3498db); /* Border to match theme */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     transition: background 0.3s ease, border-left 0.3s ease;
 }
@@ -1001,27 +1019,26 @@ body {
 /* Before pseudo-element to add "Device Model:" label */
 .device-info::before {
     content: "Device Model:";
-    color: var(--secondary-text, #bbb); /* Light color for the label */
+    color: var (--secondary-text, #bbb); /* Light color for the label */
     font-weight: 500;
-    margin-right: 10px;
 }
 
 /* Update Time Styling */
 .update-time {
     font-family: Roboto;
     font-size: 1.1em;
-    background: var(--bg-color);
+    background: var (--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-left: 4px solid var(--hover-color);
+    border-left: 4px solid var (--hover-color);
 }
 
 .update-time::before {
     content: "Current Date & Time:";
-    color: var(--secondary-text);
+    color: var (--secondary-text);
     font-weight: 500;
 }
 
@@ -1030,12 +1047,12 @@ body {
     font-family: Roboto;
     font-size: 1.2em;
     font-weight: 600;
-    background: var(--bg-color);
+    background: var (--bg-color);
     padding: 15px;
     border-radius: 8px;
     text-align: center;
-    color: var(--accent-color);
-    border: 2px solid var(--accent-color);
+    color: var (--accent-color);
+    border: 2px solid var (--accent-color);
     margin-top: 10px;
 }
 
@@ -1079,7 +1096,7 @@ body {
 
 /* Copyright and Legal Notices */
 .legal-section {
-    background-color: var(--content-bg);
+    background-color: var (--content-bg);
     border-radius: 10px;
     padding: 20px;
     margin: 30px 0;
@@ -1140,8 +1157,8 @@ footer {
     text-align: center;
     padding: 20px;
     margin-top: 40px;
-    color: var(--secondary-text);
-    border-top: 1px solid var(--border-color);
+    color: var (--secondary-text);
+    border-top: 1px solid var (--border-color);
 }
 
 /* Responsive Design */
@@ -1189,500 +1206,6 @@ footer {
     
     .countdown-container {
         flex-wrap: wrap;
-    }
-}
-
-:root {
-    --accent-color: #2563eb; /* Modern blue */
-    --accent-color-rgb: 37, 99, 235;
-    --bg-color: #ffffff;
-    --content-bg: #f8fafc;
-    --text-color: #0f172a;
-    --border-color: #e2e8f0;
-    --border-color-rgb: 226, 232, 240;
-    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Dark mode variables */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #0f172a;
-        --content-bg: #1e293b;
-        --text-color: #f8fafc;
-        --border-color: #334155;
-        --border-color-rgb: 51, 65, 85;
-    }
-}
-
-/* FAQ Section Styles */
-.faq-section {
-    background-color: var(--content-bg);
-    padding: 2rem;
-    border-radius: 1.25rem;
-    margin: 2rem auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s var(--transition-timing);
-    max-width: 1200px;
-    width: 95%;
-}
-
-.faq-section h2 {
-    color: var(--text-color);
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.faq-container {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* Category Styling */
-.faq-category {
-    color: var(--text-color);
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 2rem 0 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(var(--accent-color-rgb), 0.1);
-    position: relative;
-}
-
-.faq-category::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 50px;
-    height: 2px;
-    background-color: var(--accent-color);
-}
-
-/* FAQ Item Styling */
-.faq-item {
-    background: var(--bg-color);
-    border: 1px solid rgba(var(--border-color-rgb), 0.1);
-    border-radius: 1rem;
-    overflow: hidden;
-    transition: all 0.3s var(--transition-timing);
-    position: relative;
-}
-
-.faq-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.faq-question {
-    width: 100%;
-    padding: 1.5rem;
-    background-color: transparent;
-    color: var(--text-color);
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    font-weight: 500;
-    transition: all 0.3s var(--transition-timing);
-}
-
-.faq-question:hover {
-    background-color: rgba(var(--accent-color-rgb), 0.05);
-}
-
-/* FAQ Icon Styling */
-.faq-icon {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(var(--accent-color-rgb), 0.1);
-    color: var(--accent-color);
-    transition: all 0.3s var(--transition-timing);
-    font-size: 1rem;
-    flex-shrink: 0;
-    margin-left: 1rem;
-}
-
-/* FAQ Answer Styling */
-.faq-answer {
-    padding: 0 1.5rem;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    color: var(--text-color);
-    line-height: 1.6;
-    transition: all 0.3s var(--transition-timing);
-}
-
-.faq-answer ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0;
-}
-
-.faq-answer li {
-    padding-left: 1.5rem;
-    position: relative;
-    margin-bottom: 0.5rem;
-}
-
-.faq-answer li::before {
-    content: "•";
-    color: var(--accent-color);
-    position: absolute;
-    left: 0;
-}
-
-/* Active State Styling */
-.faq-item.active {
-    background: rgba(var(--accent-color-rgb), 0.02);
-}
-
-.faq-item.active .faq-answer {
-    padding: 0 1.5rem 1.5rem;
-    max-height: 1000px;
-    opacity: 1;
-}
-
-.faq-item.active .faq-icon {
-    transform: rotate(45deg);
-    background: var(--accent-color);
-    color: white;
-}
-
-/* Closing Animation */
-.faq-item.closing .faq-answer {
-    max-height: 0;
-    padding: 0 1.5rem;
-    opacity: 0;
-}
-
-/* Animations */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.faq-item.active .faq-answer {
-    animation: slideDown 0.3s var(--transition-timing) forwards;
-}
-
-/* Accessibility */
-.faq-question:focus {
-    outline: none;
-}
-
-.faq-question:focus-visible {
-    outline: 2px solid var(--accent-color);
-    outline-offset: -2px;
-    border-radius: 0.5rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .faq-section {
-        padding: 1.5rem;
-        margin: 1rem auto;
-    }
-
-    .faq-section h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .faq-category {
-        font-size: 1.25rem;
-        margin: 1.5rem 0 0.75rem;
-    }
-
-    .faq-question {
-        padding: 1.25rem;
-        font-size: 1rem;
-    }
-
-    .faq-icon {
-        width: 20px;
-        height: 20px;
-        font-size: 0.875rem;
-    }
-
-    .faq-answer {
-        font-size: 0.95rem;
-    }
-
-    .faq-item.active .faq-answer {
-        padding: 0 1.25rem 1.25rem;
-    }
-}
-
-/* Small Screen Optimization */
-@media (max-width: 480px) {
-    .faq-section {
-        padding: 1rem;
-        border-radius: 1rem;
-    }
-
-    .faq-question {
-        padding: 1rem;
-        font-size: 0.95rem;
-    }
-
-    .faq-icon {
-        width: 18px;
-        height: 18px;
-        margin-left: 0.5rem;
-    }
-}
-
-/* Event Section Container */
-[data-section-id="events"] {
-    border: 1px solid var(--border-color);
-    border-radius: 15px;
-    padding: 20px;
-    margin: 10px 0;
-    background-color: var(--content-bg);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.section-content {
-    padding: 0;
-}
-
-.section-title {
-    text-align: left;
-    margin-bottom: 20px;
-    padding-left: 10px;
-    color: var(--text-color);
-    font-size: var(--title-size);
-    font-weight: 600;
-}
-
-/* Events Grid Container */
-.events-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-}
-
-/* Event Card Styles */
-.event-card {
-    position: relative;
-    padding: 24px;
-    border-radius: 12px;
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-}
-
-.event-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-/* Event Header */
-.event-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.event-title {
-    margin: 0;
-    font-size: var(--title-size);
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.event-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: var(--accent-color);
-    color: var(--button-text);
-    font-size: 0.9em;
-    font-weight: 500;
-}
-
-/* Event Information Layout */
-.event-info {
-    display: grid;
-    gap: 24px;
-    margin: 20px 0;
-}
-
-.event-datetime,
-.event-details {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* Event Row Styling */
-.event-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    color: var(--text-color);
-    font-size: var(--font-size);
-}
-
-.event-row .icon {
-    flex-shrink: 0;
-    width: 20px;
-    font-size: 1.2em;
-    text-align: center;
-}
-
-.event-row.description {
-    margin-top: 8px;
-}
-
-.event-row.description span:last-child {
-    line-height: 1.5;
-}
-
-/* Join Event Button */
-.event-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 24px auto 0;  /* Centered margin */
-    padding: 14px 28px;
-    border-radius: 50px;
-    background: #2ecc71;
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.1em;
-    border: none;
-    transition: all 0.2s ease;
-    width: auto;          /* Auto width by default */
-    max-width: 100%;      /* Never exceed container width */
-    box-sizing: border-box; /* Include padding in width calculation */
-}
-
-.event-link:hover {
-    background: #27ae60;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
-}
-
-.event-link .icon {
-    transition: transform 0.2s ease;
-}
-
-.event-link:hover .icon {
-    transform: translateX(3px);
-}
-
-/* Timezone Info */
-.timezone-info {
-    margin-top: 16px;
-    text-align: center;
-    font-size: 0.9em;
-    color: var(--text-secondary);
-}
-
-/* Empty State */
-.no-events {
-    text-align: center;
-    color: var(--text-color);
-    padding: 24px;
-    font-size: var(--font-size);
-}
-
-/* Event Type Indicators */
-.event-card.stream {
-    border-left: 4px solid var(--accent-color);
-}
-
-.event-card.community {
-    border-left: 4px solid var(--secondary-color, #6c5ce7);
-}
-
-.event-card.empty {
-    text-align: center;
-    padding: 40px 24px;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.event-card {
-    animation: fadeIn 0.3s ease forwards;
-}
-
-/* Mobile Responsiveness - Updated */
-@media (max-width: 768px) {
-    [data-section-id="events"] {
-        padding: 16px;
-        margin: 5px 0;
-    }
-
-    .event-card {
-        padding: 16px;
-    }
-
-    .event-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .event-badge {
-        align-self: flex-start;
-    }
-
-    .event-info {
-        gap: 16px;
-    }
-
-    .event-link {
-        width: calc(100% - 32px); /* Account for parent padding */
-        margin: 20px auto 0;
-        padding: 12px 20px;    /* Slightly reduced padding */
-        font-size: 1em;        /* Slightly smaller font */
-    }
-
-    .event-row {
-        font-size: calc(var(--font-size) * 0.95);
-    }
-}
-
-/* For very small screens */
-@media (max-width: 360px) {
-    .event-link {
-        padding: 10px 16px;
-        font-size: 0.95em;
     }
 }
 
