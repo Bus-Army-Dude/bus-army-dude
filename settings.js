@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
     // Manually set maintenance mode
-    settingsManager.setMaintenanceModeManually(true);
+    settingsManager.setMaintenanceModeManually(false);
 
     // Manually set profile status
     settingsManager.setProfileStatusManually('online');
