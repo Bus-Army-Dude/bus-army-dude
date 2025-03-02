@@ -11,8 +11,6 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-            profileStatus: 'offline',  // Default profile status
-            maintenanceMode: false,    // Default maintenance mode
             focusOutline: 'enabled'    // Default focus outline setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -154,8 +152,6 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-            profileStatus: 'offline',
-            maintenanceMode: false,
             focusOutline: 'enabled'  // Default focus outline setting
         };
         this.settings = defaultSettings;
@@ -218,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
     // Manually set maintenance mode
-    settingsManager.setMaintenanceModeManually(false);
+    settingsManager.setMaintenanceModeManually(true);
 
     // Manually set profile status
     settingsManager.setProfileStatusManually('online');
