@@ -48,35 +48,52 @@
             </div>
 
             <!-- Accessibility Section -->
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Accessibility</h2>
+<div class="settings-subsection">
+    <h2 class="subsection-title">Accessibility</h2>
 
-                <!-- Adjustable Text Size -->
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Text Size</h3>
-                        <p class="setting-description">Adjust the text size for better readability</p>
-                    </div>
-                    <label for="text-size">Text Size:</label>
-                    <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
-                        <option value="default">Default</option>
-                        <option value="large">Large</option>
-                        <option value="larger">Larger</option>
-                    </select>
-                </div>
+    <!-- Adjustable Text Size -->
+    <div class="setting-card">
+        <div class="setting-label">
+            <h3 class="setting-title">Text Size</h3>
+            <p class="setting-description">Adjust the text size for better readability</p>
+        </div>
+        <label for="text-size">Text Size:</label>
+        <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
+            <option value="default">Default</option>
+            <option value="large">Large</option>
+            <option value="larger">Larger</option>
+        </select>
+    </div>
 
-                <!-- Disable Focus Outline -->
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Disable Focus Outline</h3>
-                        <p class="setting-description">Toggle the blue focus outline for accessibility purposes</p>
-                    </div>
-                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
-                        <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
+    <!-- Disable Focus Outline -->
+    <div class="setting-card">
+        <div class="setting-label">
+            <h3 class="setting-title">Disable Focus Outline</h3>
+            <p class="setting-description">Toggle the blue focus outline for accessibility purposes</p>
+        </div>
+        <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
+            <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+
+    <!-- Colorblind Mode -->
+    <div class="setting-card">
+        <div class="setting-label">
+            <h3 class="setting-title">Colorblind Mode</h3>
+            <p class="setting-description">Adjust the color theme for different types of colorblindness</p>
+        </div>
+        <label for="colorblindModeSelect" aria-label="Select colorblind mode">
+            <select id="colorblindModeSelect" class="select-input" onchange="setColorblindMode(this.value)">
+                <option value="none">None</option>
+                <option value="protanopia">Protanopia</option>
+                <option value="deuteranopia">Deuteranopia</option>
+                <option value="tritanopia">Tritanopia</option>
+                <option value="achromatopsia">Achromatopsia (Grayscale)</option>
+            </select>
+        </label>
+    </div>
+</div>
 
             <!-- Owner Only Settings Section -->
             <div class="settings-subsection owner-only">
