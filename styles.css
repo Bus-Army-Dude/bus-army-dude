@@ -1628,7 +1628,7 @@ footer {
 
 /* Default focus outline style */
 :focus {
-    outline: 2px solid #0000FF; /* Example: Blue outline */
+    outline: 2px solid #005fcc; /* Example: Blue outline */
 }
 
 /* If the 'focus-outline-disabled' class is added to the body, remove the outline */
