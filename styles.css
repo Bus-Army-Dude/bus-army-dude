@@ -1701,11 +1701,13 @@ body.focus-outline-disabled :focus {
 .chat-log p.user { 
     background: #4caf50; /* Green background for user messages */
     color: white; /* White text for user messages */
+    align-self: flex-end; /* Align user messages on the right */
 }
 
 .chat-log p.ai { 
     background: #007bff; /* Blue background for AI messages */
     color: white; /* White text for AI messages */
+    align-self: flex-start; /* Align AI messages on the left */
 }
 
 .chat-input { 
