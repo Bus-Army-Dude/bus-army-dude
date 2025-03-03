@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { keywords: ["what can you do"], response: "I can assist you with basic questions and provide information about Bus Army Dude. How can I help you?" },
         { keywords: ["tell me a joke"], response: "Why don't scientists trust atoms? Because they make up everything!" },
         { keywords: ["who is bus army dude"], response: "Bus Army Dude is a content creator focusing on gaming, tech reviews, AFO journey documentation, and lifestyle content." },
-        { keywords: ["contact", "support"], response: "You can contact support via the contact form on the website or email support@busarmydude.com." },
+        { keywords: ["contact", "support"], response: "You can contact support via discord at busarmydude or email busarmydude@gmail.com." },
         { keywords: ["social media"], response: "You can follow Bus Army Dude on TikTok, YouTube, Snapchat, Twitter, Twitch, Facebook, Steam, Discord, Instagram, and more." },
         { keywords: ["merchandise"], response: "Check out the Merch Store for exclusive Bus Army Dude merchandise at https://riverkritzar-shop.fourthwall.com/" },
         { keywords: ["current president", "president"], response: "The current president is Donald J. Trump, serving from 2025 to 2029." },
@@ -37,6 +37,19 @@ document.addEventListener('DOMContentLoaded', function () {
         { keywords: ["threads account"], response: "Bus Army Dude's Threads account is https://www.threads.net/@busarmydude." },
         { keywords: ["bluesky profile"], response: "Bus Army Dude's Bluesky profile is https://bsky.app/profile/busarmydude.bsky.social." },
         { keywords: ["youtube music account"], response: "Bus Army Dude's YouTube Music account is https://music.youtube.com/@BusArmyDude." },
+        { keywords: ["content schedule"], response: "Bus Army Dude posts new content every Monday, Wednesday, and Friday." },
+        { keywords: ["latest video"], response: "You can watch Bus Army Dude's latest video on YouTube at https://www.youtube.com/@BusArmyDude." },
+        { keywords: ["favorite game"], response: "Bus Army Dude's favorite game is currently Farming Simulator 2025." },
+        { keywords: ["gaming setup"], response: "Bus Army Dude's gaming setup includes a 2023 Mac Mini M2, a Razer keyboard and a dell mouse, and a 4K Hisense Roku TV." },
+        { keywords: ["collaboration"], response: "Bus Army Dude is open to collaborations. Please contact busarmydude@gmail.com." },
+        { keywords: ["events"], response: "Bus Army Dude is currently not hosting any events right now." },
+        { keywords: ["streaming schedule"], response: "Bus Army Dude streams coming soon." },
+        { keywords: ["features", "website features"], response: "The website includes sections for videos, blogs, merchandise, social media links, and a contact form." },
+        { keywords: ["video section", "videos"], response: "The video section includes all of Bus Army Dude's latest videos on YouTube." },
+        { keywords: ["blog section", "blogs"], response: "The blog section coming soon." },
+        { keywords: ["social media links"], response: "The social media links section provides quick access to all of Bus Army Dude's social media profiles." },
+        { keywords: ["security features","security"], response: "This website has the following security features: Context menu prevention, Text selection prevention, copy prevention, drag-and-drop prevention, printing prevention." },
+        { keywords: ["merch store"], response: "The merch store features exclusive Bus Army Dude merchandise, available at https://riverkritzar-shop.fourthwall.com/." },
         { keywords: ["default"], response: "I'm sorry, I don't understand that. Can you please rephrase?" }
     ];
 
