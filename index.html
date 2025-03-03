@@ -49,25 +49,9 @@
 </head>
 <body class="dark-mode">
     <div class="container">
-<!-- Chat Icon -->
-        <button id="open-chat-btn" class="chat-icon">
-            <i class="fas fa-comments"></i>
-        </button>
 
-        <!-- Chat Popup -->
-        <div id="chat-popup" class="chat-popup">
-            <div class="chat-box">
-                <div class="chat-header">
-                    <h2>Chat with us</h2>
-                    <button id="close-chat-btn">&times;</button>
-                </div>
-                <div id="chat-log" class="chat-log"></div>
-                <input id="chat-input" class="chat-input" type="text" placeholder="Type a message...">
-            </div>
-        </div>
-    </div>
 
-    <!--Start of Tawk.to Script-->
+   <!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -79,6 +63,14 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
+
+<style>
+/* Custom CSS to move Tawk.to widget to the left */
+#tawkto-chat-container {
+    right: auto !important;
+    left: 0 !important;
+}
+</style>
 <!--End of Tawk.to Script-->
     
 <!-- Maintenance Mode Message -->
