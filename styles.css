@@ -1695,19 +1695,22 @@ body.focus-outline-disabled :focus {
     margin: 0; 
     padding: 10px; /* Add padding for better spacing */
     font-size: 16px; /* Increase font size for readability */
-    border-radius: 4px; /* Add border radius for better aesthetics */
+    border-radius: 20px; /* Add border radius for better aesthetics */
+    max-width: 70%; /* Limit the width of the chat bubbles */
 }
 
 .chat-log p.user { 
     background: #4caf50; /* Green background for user messages */
     color: white; /* White text for user messages */
     align-self: flex-end; /* Align user messages on the right */
+    text-align: right; /* Text alignment inside the bubble */
 }
 
 .chat-log p.ai { 
     background: #007bff; /* Blue background for AI messages */
     color: white; /* White text for AI messages */
     align-self: flex-start; /* Align AI messages on the left */
+    text-align: left; /* Text alignment inside the bubble */
 }
 
 .chat-input { 
