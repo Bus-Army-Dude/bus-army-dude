@@ -1689,6 +1689,9 @@ body.focus-outline-disabled :focus {
     padding: 10px; 
     border-bottom: 1px solid #ccc; 
     background: #f9f9f9; /* Light background for better readability */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between chat bubbles */
 }
 
 .chat-log p { 
@@ -1697,6 +1700,8 @@ body.focus-outline-disabled :focus {
     font-size: 16px; /* Increase font size for readability */
     border-radius: 20px; /* Add border radius for better aesthetics */
     max-width: 70%; /* Limit the width of the chat bubbles */
+    word-wrap: break-word; /* Ensure long words break to fit bubble */
+    display: inline-block;
 }
 
 .chat-log p.user { 
