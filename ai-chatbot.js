@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     chatInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            const userMessage = chatInput.value.toLowerCase();
+        if (e.key === 'Enter' && chatInput.value.trim() !== '') {
+            const userMessage = chatInput.value.toLowerCase().trim();
             chatLog.innerHTML += `<p class="user"><strong>You:</strong> ${chatInput.value}</p>`;
             chatInput.value = '';
 
