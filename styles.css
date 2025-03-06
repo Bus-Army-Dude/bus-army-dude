@@ -706,7 +706,7 @@ body {
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Countdown Styles */
+/* General Countdown Styles */
 .countdown-section {
     background-color: var(--content-bg);
     border-radius: 10px;
@@ -719,7 +719,7 @@ body {
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     margin-top: 20px;
     flex-wrap: wrap;
 }
@@ -731,8 +731,8 @@ body {
 /* Flip Clock Container */
 .flip-clock {
     position: relative;
-    width: 100px;
-    height: 120px;
+    width: 80px;
+    height: 100px;
     perspective: 1000px; /* Creates the 3D effect */
     margin-bottom: 10px;
     display: inline-block; /* Ensures the flip clock stays in the flow */
@@ -748,8 +748,7 @@ body {
 }
 
 /* Top and Bottom of the flip clock */
-.flip-clock-top,
-.flip-clock-bottom {
+.flip-clock-side {
     position: absolute;
     width: 100%;
     height: 50%;
@@ -762,13 +761,11 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
 
-/* The top part of the clock */
 .flip-clock-top {
     top: 0;
     border-bottom: 1px solid #222;
 }
 
-/* The bottom part of the clock */
 .flip-clock-bottom {
     bottom: 0;
     border-top: 1px solid #222;
@@ -804,7 +801,7 @@ body {
 }
 
 /* Flipping Animation */
-.flip-clock-inner.flip {
+.flip-clock-inner.flipping {
     transform: rotateX(-180deg); /* Rotate the inner element to show the back side */
 }
 
@@ -824,8 +821,8 @@ body {
     }
 
     .flip-clock {
-        width: 70px;
-        height: 90px;
+        width: 60px;
+        height: 80px;
     }
 
     .flip-clock-top,
