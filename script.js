@@ -82,69 +82,77 @@ updateTime();
     };
 
     // New Year countdown
-    function updateNewYearCountdown() {
-        const now = new Date();
-        const newYear = new Date('2025-03-21T00:00:00');
-        const diff = newYear - now;
+function updateNewYearCountdown() {
+    const now = new Date();
+    const newYear = new Date('2025-03-21T00:00:00');
+    const diff = newYear - now;
 
-        const countdownSection = document.querySelector('.countdown-section');
-        if (!countdownSection) return;
+    const countdownSection = document.querySelector('.countdown-section');
+    if (!countdownSection) return;
 
-        if (diff <= 0) {
-            countdownSection.innerHTML = `
-                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    HAPPY 20TH BIRTHDAY BUS ARMY DUDE ENJOY IT GOD LOVE'S YOU!!!!!
-                </h2>
-                <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
-            `;
-        } else {
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    if (diff <= 0) {
+        countdownSection.innerHTML = `
+            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                Spring 2025 is here!!!!
+            </h2>
+            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+        `;
+    } else {
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365)); // Approximate year
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30)); // Approximate month
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Update flip clock for days
-            updateFlipClock('countdown-days', days);
+        // Update flip clock for years
+        updateFlipClock('countdown-years', years);
 
-            // Update flip clock for hours
-            updateFlipClock('countdown-hours', hours);
+        // Update flip clock for months
+        updateFlipClock('countdown-months', months);
 
-            // Update flip clock for minutes
-            updateFlipClock('countdown-minutes', minutes);
+        // Update flip clock for days
+        updateFlipClock('countdown-days', days);
 
-            // Update flip clock for seconds
-            updateFlipClock('countdown-seconds', seconds);
-        }
+        // Update flip clock for hours
+        updateFlipClock('countdown-hours', hours);
+
+        // Update flip clock for minutes
+        updateFlipClock('countdown-minutes', minutes);
+
+        // Update flip clock for seconds
+        updateFlipClock('countdown-seconds', seconds);
     }
+}
 
-    // Function to update flip clock value
-    function updateFlipClock(id, value) {
-        const clock = document.getElementById(id);
-        const front = clock.querySelector('.flip-clock-front');
-        const back = clock.querySelector('.flip-clock-back');
-        const valueStr = value.toString().padStart(2, '0');
+// Function to update flip clock value
+function updateFlipClock(id, value) {
+    const clock = document.getElementById(id);
+    const front = clock.querySelector('.flip-clock-front');
+    const back = clock.querySelector('.flip-clock-back');
+    const valueStr = value.toString().padStart(2, '0');
 
-        if (front.textContent !== valueStr) {
-            front.textContent = valueStr;
-            back.textContent = valueStr;
+    if (front.textContent !== valueStr) {
+        front.textContent = valueStr;
+        back.textContent = valueStr;
 
-            // Trigger the flip animation
-            clock.querySelector('.flip-clock-inner').classList.add('flip');
+        // Trigger the flip animation
+        clock.querySelector('.flip-clock-inner').classList.add('flip');
 
-            setTimeout(() => {
-                clock.querySelector('.flip-clock-inner').classList.remove('flip');
-            }, 600); // match the animation duration
-        }
+        setTimeout(() => {
+            clock.querySelector('.flip-clock-inner').classList.remove('flip');
+        }, 600); // match the animation duration
     }
+}
 
-    // Initialize everything
-    updateTime();
-    tiktokShoutouts.init();
-    updateNewYearCountdown();
+// Initialize everything
+updateTime();
+tiktokShoutouts.init();
+updateNewYearCountdown();
 
-    setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 1000);
-    setInterval(updateNewYearCountdown, 1000);
+setInterval(updateTime, 1000);
+setInterval(updateCountdown, 1000);
+setInterval(updateNewYearCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
