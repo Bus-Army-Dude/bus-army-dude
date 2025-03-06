@@ -729,45 +729,82 @@ body {
 }
 
 .flip-clock {
-    perspective: 400px;
+    position: relative;
+    width: 100px;
+    height: 120px;
+    perspective: 1000px; /* Gives the 3D effect */
     margin-bottom: 10px;
     display: inline-block; /* Ensure flip clock is centered */
 }
 
 .flip-clock-inner {
     position: relative;
-    width: 60px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.6s;
-    display: flex; /* Flexbox to center the content */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
 }
 
-.flip-clock-inner.flip {
-    transform: rotateX(180deg);
+.flip-clock-top,
+.flip-clock-bottom {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    background-color: #333;
+    color: white;
+    font-size: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flip-clock-top {
+    top: 0;
+    border-bottom: 1px solid #222;
+}
+
+.flip-clock-bottom {
+    bottom: 0;
+    border-top: 1px solid #222;
 }
 
 .flip-clock-front,
 .flip-clock-back {
     position: absolute;
     width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
+    height: 50%;
+    backface-visibility: hidden; /* Only shows one side */
+    background-color: #333;
+    color: white;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 2em;
-    font-weight: bold;
-    background-color: var(--content-bg);
-    border: 2px solid var(--accent-color);
-    border-radius: 8px;
-    color: var(--text-color);
+    align-items: center;
+    font-size: 2.5em;
+}
+
+.flip-clock-front {
+    top: 0;
+    transform-origin: bottom;
+    transform: rotateX(0deg);
 }
 
 .flip-clock-back {
+    bottom: 0;
+    transform-origin: top;
     transform: rotateX(180deg);
+}
+
+/* Flipping Animation */
+.flip .flip-clock-front {
+    animation: flip-down 0.6s ease-in-out forwards;
+}
+
+@keyframes flip-down {
+    0% {
+        transform: rotateX(0deg);
+    }
+    100% {
+        transform: rotateX(-180deg);
+    }
 }
 
 .countdown-label {
@@ -784,14 +821,16 @@ body {
         gap: 10px;
     }
 
-    .flip-clock-inner {
-        width: 40px;
-        height: 60px;
+    .flip-clock {
+        width: 70px;
+        height: 90px;
     }
 
+    .flip-clock-top,
+    .flip-clock-bottom,
     .flip-clock-front,
     .flip-clock-back {
-        font-size: 1.5em;
+        font-size: 1.8em;
     }
 }
 
