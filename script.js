@@ -115,22 +115,22 @@ function updateNewYearCountdown() {
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         // Update flip clock for years
-        updateFlipClock('countdown-years', years);
+        updateFlipClock('flip1', years);
 
         // Update flip clock for months
-        updateFlipClock('countdown-months', months);
+        updateFlipClock('flip2', months);
 
         // Update flip clock for days
-        updateFlipClock('countdown-days', days);
+        updateFlipClock('flip3', days);
 
         // Update flip clock for hours
-        updateFlipClock('countdown-hours', hours);
+        updateFlipClock('flip4', hours);
 
         // Update flip clock for minutes
-        updateFlipClock('countdown-minutes', minutes);
+        updateFlipClock('flip5', minutes);
 
         // Update flip clock for seconds
-        updateFlipClock('countdown-seconds', seconds);
+        updateFlipClock('flip6', seconds);
     }
 }
 
@@ -142,14 +142,15 @@ function updateFlipClock(id, value) {
     const valueStr = value.toString().padStart(2, '0');
 
     if (front.textContent !== valueStr) {
-        front.textContent = valueStr;
         back.textContent = valueStr;
 
         // Trigger the flip animation
-        clock.querySelector('.flip-clock-inner').classList.add('flip');
+        const flipClockInner = clock.querySelector('.flip-clock-inner');
+        flipClockInner.classList.add('flip');
 
         setTimeout(() => {
-            clock.querySelector('.flip-clock-inner').classList.remove('flip');
+            front.textContent = valueStr;
+            flipClockInner.classList.remove('flip');
         }, 600); // match the animation duration
     }
 }
@@ -160,7 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
     updateNewYearCountdown();
 
     // Initialize TikTok shoutouts
-    tiktokShoutouts.init(); // This line initializes TikTok shoutouts, so make sure it's back
+    if (typeof tiktokShoutouts !== 'undefined' && tiktokShoutouts.init) {
+        tiktokShoutouts.init(); // Ensure TikTok shoutouts are initialized if available
+    }
 
     // Set intervals for countdown
     setInterval(updateNewYearCountdown, 1000);
