@@ -81,10 +81,19 @@ updateTime();
         }, 1000);  // Update both every second
     };
 
-    // New Year countdown
+    // New Year countdown with timezone adjustment
 function updateNewYearCountdown() {
     const now = new Date();
-    const newYear = new Date('2025-03-21T00:00:00');
+    
+    // Get user's local timezone offset in minutes
+    const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000; // convert to milliseconds
+
+    // Set the target date (Spring 2025) in UTC
+    const newYearUTC = new Date('2025-03-21T00:00:00Z'); // 'Z' denotes UTC time
+    
+    // Adjust the New Year date to the user's local timezone
+    const newYear = new Date(newYearUTC.getTime() + localTimezoneOffset);
+
     const diff = newYear - now;
 
     const countdownSection = document.querySelector('.countdown-section');
