@@ -728,22 +728,26 @@ body {
     text-align: center;
 }
 
+/* Flip Clock Container */
 .flip-clock {
     position: relative;
     width: 100px;
     height: 120px;
-    perspective: 1000px; /* Gives the 3D effect */
+    perspective: 1000px; /* Creates the 3D effect */
     margin-bottom: 10px;
-    display: inline-block; /* Ensure flip clock is centered */
+    display: inline-block; /* Ensures the flip clock stays in the flow */
 }
 
+/* Inner flip clock wrapper for 3D flipping */
 .flip-clock-inner {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
+    transition: transform 0.6s ease-in-out; /* Smooth flip animation */
 }
 
+/* Top and Bottom of the flip clock */
 .flip-clock-top,
 .flip-clock-bottom {
     position: absolute;
@@ -751,62 +755,61 @@ body {
     height: 50%;
     background-color: #333;
     color: white;
-    font-size: 2.5em;
+    font-size: 3em;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
 
+/* The top part of the clock */
 .flip-clock-top {
     top: 0;
     border-bottom: 1px solid #222;
+    transform-origin: bottom;
 }
 
+/* The bottom part of the clock */
 .flip-clock-bottom {
     bottom: 0;
     border-top: 1px solid #222;
 }
 
+/* Front and Back of the flip clock */
 .flip-clock-front,
 .flip-clock-back {
     position: absolute;
     width: 100%;
     height: 50%;
-    backface-visibility: hidden; /* Only shows one side */
+    backface-visibility: hidden; /* Ensures only one side is visible */
     background-color: #333;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5em;
+    font-size: 3em; /* Increase size for more emphasis */
 }
 
+/* Front side starts facing upwards */
 .flip-clock-front {
     top: 0;
     transform-origin: bottom;
-    transform: rotateX(0deg);
+    transform: rotateX(0deg); /* Default front view */
 }
 
+/* Back side starts facing downwards */
 .flip-clock-back {
     bottom: 0;
     transform-origin: top;
-    transform: rotateX(180deg);
+    transform: rotateX(180deg); /* Back side rotated by 180deg */
 }
 
-/* Flipping Animation */
-.flip .flip-clock-front {
-    animation: flip-down 0.6s ease-in-out forwards;
+/* Flipping Animation (Only flip the top half) */
+.flip .flip-clock-inner {
+    transform: rotateX(-180deg); /* Rotate the inner element to show the back side of the top half */
 }
 
-@keyframes flip-down {
-    0% {
-        transform: rotateX(0deg);
-    }
-    100% {
-        transform: rotateX(-180deg);
-    }
-}
-
+/* Countdown Labels */
 .countdown-label {
     color: var(--secondary-text);
     font-size: 0.9em;
@@ -832,12 +835,6 @@ body {
     .flip-clock-back {
         font-size: 1.8em;
     }
-}
-
-/* Optional: Add a shadow effect during flip */
-.flip-clock-front,
-.flip-clock-back {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Optional: Add a subtle glow effect on hover */
