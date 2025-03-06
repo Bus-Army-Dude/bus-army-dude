@@ -223,78 +223,104 @@ s0.parentNode.insertBefore(s1,s0);
 
         <!-- Countdown Section -->
         <div class="countdown-section">
-    <h2>Countdown to Spring 2025!</h2>
     <div class="countdown-container">
+        <!-- Years -->
         <div class="countdown-block">
-            <div id="countdown-years" class="flip-clock">
+            <div class="flip-clock" id="years">
                 <div class="flip-clock-inner">
-                    <!-- Top half and bottom half for the current value -->
-                    <div class="flip-clock-top">00</div>
-                    <div class="flip-clock-bottom">00</div>
-                    <!-- Front and back for the flip effect -->
-                    <div class="flip-clock-front">00</div>
-                    <div class="flip-clock-back">00</div>
+                    <div class="flip-clock-top">
+                        <div class="flip-clock-front" id="years-front">00</div>
+                        <div class="flip-clock-back" id="years-back">01</div>
+                    </div>
+                    <div class="flip-clock-bottom">
+                        <div class="flip-clock-front" id="years-bottom-front">00</div>
+                        <div class="flip-clock-back" id="years-bottom-back">01</div>
+                    </div>
                 </div>
             </div>
-            <div class="countdown-label">Years</div>
         </div>
-        <!-- Repeat the same structure for months, days, hours, minutes, and seconds -->
+
+        <!-- Months -->
         <div class="countdown-block">
-            <div id="countdown-months" class="flip-clock">
+            <div class="flip-clock" id="months">
                 <div class="flip-clock-inner">
-                    <div class="flip-clock-top">00</div>
-                    <div class="flip-clock-bottom">00</div>
-                    <div class="flip-clock-front">00</div>
-                    <div class="flip-clock-back">00</div>
+                    <div class="flip-clock-top">
+                        <div class="flip-clock-front" id="months-front">00</div>
+                        <div class="flip-clock-back" id="months-back">01</div>
+                    </div>
+                    <div class="flip-clock-bottom">
+                        <div class="flip-clock-front" id="months-bottom-front">00</div>
+                        <div class="flip-clock-back" id="months-bottom-back">01</div>
+                    </div>
                 </div>
             </div>
-            <div class="countdown-label">Months</div>
         </div>
+
+        <!-- Days -->
         <div class="countdown-block">
-            <div id="countdown-days" class="flip-clock">
+            <div class="flip-clock" id="days">
                 <div class="flip-clock-inner">
-                    <div class="flip-clock-top">00</div>
-                    <div class="flip-clock-bottom">00</div>
-                    <div class="flip-clock-front">00</div>
-                    <div class="flip-clock-back">00</div>
+                    <div class="flip-clock-top">
+                        <div class="flip-clock-front" id="days-front">00</div>
+                        <div class="flip-clock-back" id="days-back">01</div>
+                    </div>
+                    <div class="flip-clock-bottom">
+                        <div class="flip-clock-front" id="days-bottom-front">00</div>
+                        <div class="flip-clock-back" id="days-bottom-back">01</div>
+                    </div>
                 </div>
             </div>
-            <div class="countdown-label">Days</div>
         </div>
+
+        <!-- Hours -->
         <div class="countdown-block">
-            <div id="countdown-hours" class="flip-clock">
+            <div class="flip-clock" id="hours">
                 <div class="flip-clock-inner">
-                    <div class="flip-clock-top">00</div>
-                    <div class="flip-clock-bottom">00</div>
-                    <div class="flip-clock-front">00</div>
-                    <div class="flip-clock-back">00</div>
+                    <div class="flip-clock-top">
+                        <div class="flip-clock-front" id="hours-front">00</div>
+                        <div class="flip-clock-back" id="hours-back">01</div>
+                    </div>
+                    <div class="flip-clock-bottom">
+                        <div class="flip-clock-front" id="hours-bottom-front">00</div>
+                        <div class="flip-clock-back" id="hours-bottom-back">01</div>
+                    </div>
                 </div>
             </div>
-            <div class="countdown-label">Hours</div>
         </div>
+
+        <!-- Minutes -->
         <div class="countdown-block">
-            <div id="countdown-minutes" class="flip-clock">
+            <div class="flip-clock" id="minutes">
                 <div class="flip-clock-inner">
-                    <div class="flip-clock-top">00</div>
-                    <div class="flip-clock-bottom">00</div>
-                    <div class="flip-clock-front">00</div>
-                    <div class="flip-clock-back">00</div>
+                    <div class="flip-clock-top">
+                        <div class="flip-clock-front" id="minutes-front">00</div>
+                        <div class="flip-clock-back" id="minutes-back">01</div>
+                    </div>
+                    <div class="flip-clock-bottom">
+                        <div class="flip-clock-front" id="minutes-bottom-front">00</div>
+                        <div class="flip-clock-back" id="minutes-bottom-back">01</div>
+                    </div>
                 </div>
             </div>
-            <div class="countdown-label">Minutes</div>
         </div>
+
+        <!-- Seconds -->
         <div class="countdown-block">
-            <div id="countdown-seconds" class="flip-clock">
+            <div class="flip-clock" id="seconds">
                 <div class="flip-clock-inner">
-                    <div class="flip-clock-top">00</div>
-                    <div class="flip-clock-bottom">00</div>
-                    <div class="flip-clock-front">00</div>
-                    <div class="flip-clock-back">00</div>
+                    <div class="flip-clock-top">
+                        <div class="flip-clock-front" id="seconds-front">00</div>
+                        <div class="flip-clock-back" id="seconds-back">01</div>
+                    </div>
+                    <div class="flip-clock-bottom">
+                        <div class="flip-clock-front" id="seconds-bottom-front">00</div>
+                        <div class="flip-clock-back" id="seconds-bottom-back">01</div>
+                    </div>
                 </div>
             </div>
-            <div class="countdown-label">Seconds</div>
         </div>
     </div>
+    <div class="countdown-label">Countdown</div>
 </div>
 
 <!-- Calendar Section -->
