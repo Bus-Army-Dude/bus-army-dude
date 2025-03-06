@@ -719,7 +719,7 @@ body {
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 30px; /* Adjusted gap for a cleaner split */
+    gap: 20px;
     margin-top: 20px;
     flex-wrap: wrap;
 }
@@ -731,9 +731,10 @@ body {
 /* Flip Clock Container */
 .flip-clock {
     position: relative;
-    width: 80px; /* Adjusted width for a single flip clock */
+    width: 100px;
     height: 120px;
     perspective: 1000px; /* Creates the 3D effect */
+    margin-bottom: 10px;
     display: inline-block; /* Ensures the flip clock stays in the flow */
 }
 
@@ -754,7 +755,7 @@ body {
     height: 50%;
     background-color: #333;
     color: white;
-    font-size: 2.5em; /* Adjusted font size for readability */
+    font-size: 2.5em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -765,7 +766,6 @@ body {
 .flip-clock-top {
     top: 0;
     border-bottom: 1px solid #222;
-    transform-origin: bottom;
 }
 
 /* The bottom part of the clock */
@@ -786,7 +786,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5em; /* Adjust font size */
+    font-size: 2.5em;
 }
 
 /* Front side starts facing upwards */
@@ -803,9 +803,9 @@ body {
     transform: rotateX(180deg); /* Back side rotated by 180deg */
 }
 
-/* Flipping Animation (Only flip the top half) */
-.flip .flip-clock-inner {
-    transform: rotateX(-180deg); /* Rotate the inner element to show the back side of the top half */
+/* Flipping Animation */
+.flip-clock-inner.flip {
+    transform: rotateX(-180deg); /* Rotate the inner element to show the back side */
 }
 
 /* Countdown Labels */
