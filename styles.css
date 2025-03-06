@@ -747,8 +747,9 @@ body {
     transition: transform 0.6s ease-in-out; /* Smooth flip animation */
 }
 
-/* Top and Bottom of the flip clock */
-.flip-clock-side {
+/* The top and bottom will be within the same flip clock container */
+.flip-clock-top,
+.flip-clock-bottom {
     position: absolute;
     width: 100%;
     height: 50%;
