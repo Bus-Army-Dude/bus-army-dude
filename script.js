@@ -89,7 +89,7 @@ function updateNewYearCountdown() {
     const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000; // convert to milliseconds
 
     // Set the target date (Spring 2025) in UTC
-    const newYearUTC = new Date('2025-03-20T00:01:00Z'); // 'Z' denotes UTC time
+    const newYearUTC = new Date('2025-03-21T00:01:00Z'); // 'Z' denotes UTC time
     
     // Adjust the New Year date to the user's local timezone
     const newYear = new Date(newYearUTC.getTime() + localTimezoneOffset);
@@ -115,22 +115,22 @@ function updateNewYearCountdown() {
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         // Update flip clock for years
-        updateFlipClock('flip1', years);
+        updateFlipClock('countdown-years', years);
 
         // Update flip clock for months
-        updateFlipClock('flip2', months);
+        updateFlipClock('countdown-months', months);
 
         // Update flip clock for days
-        updateFlipClock('flip3', days);
+        updateFlipClock('countdown-days', days);
 
         // Update flip clock for hours
-        updateFlipClock('flip4', hours);
+        updateFlipClock('countdown-hours', hours);
 
         // Update flip clock for minutes
-        updateFlipClock('flip5', minutes);
+        updateFlipClock('countdown-minutes', minutes);
 
         // Update flip clock for seconds
-        updateFlipClock('flip6', seconds);
+        updateFlipClock('countdown-seconds', seconds);
     }
 }
 
@@ -142,31 +142,26 @@ function updateFlipClock(id, value) {
     const valueStr = value.toString().padStart(2, '0');
 
     if (front.textContent !== valueStr) {
+        front.textContent = valueStr;
         back.textContent = valueStr;
 
         // Trigger the flip animation
-        const flipClockInner = clock.querySelector('.flip-clock-inner');
-        flipClockInner.classList.add('flip');
+        clock.querySelector('.flip-clock-inner').classList.add('flip');
 
         setTimeout(() => {
-            front.textContent = valueStr;
-            flipClockInner.classList.remove('flip');
+            clock.querySelector('.flip-clock-inner').classList.remove('flip');
         }, 600); // match the animation duration
     }
 }
 
 // Initialize everything
-document.addEventListener('DOMContentLoaded', function() {
-    // Update the countdown once the page loads
-    updateNewYearCountdown();
+updateTime();
+tiktokShoutouts.init();
+updateNewYearCountdown();
 
-    // Initialize TikTok shoutouts
-    if (typeof tiktokShoutouts !== 'undefined' && tiktokShoutouts.init) {
-        tiktokShoutouts.init(); // Ensure TikTok shoutouts are initialized if available
-    }
-
-    // Set intervals for countdown
-    setInterval(updateNewYearCountdown, 1000);
+setInterval(updateTime, 1000);
+setInterval(updateCountdown, 1000);
+setInterval(updateNewYearCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
