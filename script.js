@@ -155,13 +155,15 @@ function updateFlipClock(id, value) {
 }
 
 // Initialize everything
-updateTime();
-tiktokShoutouts.init();
-updateNewYearCountdown();
+document.addEventListener('DOMContentLoaded', function() {
+    // Update the countdown once the page loads
+    updateNewYearCountdown();
 
-setInterval(updateTime, 1000);
-setInterval(updateCountdown, 1000);
-setInterval(updateNewYearCountdown, 1000);
+    // Initialize TikTok shoutouts
+    tiktokShoutouts.init(); // This line initializes TikTok shoutouts, so make sure it's back
+
+    // Set intervals for countdown
+    setInterval(updateNewYearCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
