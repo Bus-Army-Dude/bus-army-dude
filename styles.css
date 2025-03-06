@@ -719,7 +719,7 @@ body {
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px; /* Adjusted gap for a cleaner split */
     margin-top: 20px;
     flex-wrap: wrap;
 }
@@ -731,10 +731,9 @@ body {
 /* Flip Clock Container */
 .flip-clock {
     position: relative;
-    width: 100px;
+    width: 80px; /* Adjusted width for a single flip clock */
     height: 120px;
     perspective: 1000px; /* Creates the 3D effect */
-    margin-bottom: 10px;
     display: inline-block; /* Ensures the flip clock stays in the flow */
 }
 
@@ -755,7 +754,7 @@ body {
     height: 50%;
     background-color: #333;
     color: white;
-    font-size: 3em;
+    font-size: 2.5em; /* Adjusted font size for readability */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -787,7 +786,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3em; /* Increase size for more emphasis */
+    font-size: 2.5em; /* Adjust font size */
 }
 
 /* Front side starts facing upwards */
