@@ -89,7 +89,7 @@ function updateNewYearCountdown() {
     const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000; // convert to milliseconds
 
     // Set the target date (Spring 2025) in UTC
-    const newYearUTC = new Date('2025-03-20T00:01:00Z'); // 'Z' denotes UTC time
+    const newYearUTC = new Date('2026-12-25T00:00:00Z'); // 'Z' denotes UTC time
     
     // Adjust the New Year date to the user's local timezone
     const newYear = new Date(newYearUTC.getTime() + localTimezoneOffset);
