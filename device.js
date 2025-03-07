@@ -1,48 +1,92 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Function to detect OS
+    // Function to detect OS and version
     function detectOS() {
         let userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        let os;
+        let os = "Unknown OS";
+        let osVersion = "Unknown Version";
 
-        if (/windows phone/i.test(userAgent)) {
-            os = "Windows Phone";
-        } else if (/android/i.test(userAgent)) {
-            os = "Android";
-        } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // Check for iOS
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
             os = "iOS";
-        } else if (/Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent)) {
+            const match = userAgent.match(/OS (\d+_\d+_\d+)/);
+            if (match) {
+                osVersion = match[1].replace(/_/g, ".");
+            }
+        }
+        // Check for Android
+        else if (/android/i.test(userAgent)) {
+            os = "Android";
+            const match = userAgent.match(/Android (\d+\.\d+(\.\d+)?)/);
+            if (match) {
+                osVersion = match[1];
+            }
+        }
+        // Check for macOS
+        else if (/Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent)) {
             os = "macOS";
-        } else if (/Win/.test(userAgent)) {
+            const match = userAgent.match(/Mac OS X (\d+_\d+_\d+)/);
+            if (match) {
+                osVersion = match[1].replace(/_/g, ".");
+            }
+        }
+        // Check for Windows
+        else if (/Windows NT/.test(userAgent)) {
             os = "Windows";
-        } else if (/Linux/.test(userAgent)) {
+            const match = userAgent.match(/Windows NT (\d+\.\d+)/);
+            if (match) {
+                osVersion = match[1];
+            }
+        }
+        // Check for Linux
+        else if (/Linux/.test(userAgent)) {
             os = "Linux";
-        } else {
-            os = "Unknown OS";
+            osVersion = "N/A";
         }
 
-        document.getElementById("os-info").textContent = os;
+        document.getElementById("os-info").textContent = `${os} ${osVersion}`;
+        checkOSVersion(os, osVersion);
     }
 
-    // Function to detect device model
-    function detectDevice() {
-        let userAgent = navigator.userAgent;
+    // Function to check if the user's OS version is the latest
+    function checkOSVersion(os, userVersion) {
+        const latestVersions = {
+            "iOS": "18.4",         // Latest iOS version
+            "Android": "14.0",     // Latest Android version
+            "macOS": "15.4",       // Latest macOS version
+            "Windows": "10.0",     // Latest Windows version
+            "Linux": "latest"      // Use a general "latest" marker for Linux
+        };
 
-        if (/iPhone/i.test(userAgent)) {
-            return "iPhone";
-        } else if (/iPad/i.test(userAgent)) {
-            return "iPad";
-        } else if (/Macintosh/i.test(userAgent)) {
-            return "Mac";
-        } else if (/Android/i.test(userAgent)) {
-            return "Android Device";
-        } else if (/Windows/i.test(userAgent)) {
-            return "Windows Device";
-        } else {
-            return "Unknown Device";
+        // If the user's OS is outdated
+        if (os === "iOS" && compareVersions(userVersion, latestVersions.iOS) < 0) {
+            alert("You need the latest version of iOS to use this website.");
+            window.location.href = "https://www.apple.com/ios/ios-18-preview"; // Redirect to iOS update page
+        } else if (os === "Android" && compareVersions(userVersion, latestVersions.Android) < 0) {
+            alert("You need the latest version of Android to use this website.");
+            window.location.href = "https://www.android.com/versions"; // Redirect to Android update page
+        } else if (os === "macOS" && compareVersions(userVersion, latestVersions.macOS) < 0) {
+            alert("You need the latest version of macOS to use this website.");
+            window.location.href = "https://www.apple.com/macos"; // Redirect to macOS update page
+        } else if (os === "Windows" && compareVersions(userVersion, latestVersions.Windows) < 0) {
+            alert("You need the latest version of Windows to use this website.");
+            window.location.href = "https://www.microsoft.com/en-us/software-download/windows10"; // Redirect to Windows update page
         }
     }
 
-    // Set the detected values after DOM is fully loaded
-    document.getElementById("device-info").textContent = detectDevice();
+    // Version comparison function (e.g., 14.0 vs 13.2)
+    function compareVersions(v1, v2) {
+        const v1Parts = v1.split('.').map(num => parseInt(num, 10));
+        const v2Parts = v2.split('.').map(num => parseInt(num, 10));
+
+        for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
+            const v1Part = v1Parts[i] || 0;
+            const v2Part = v2Parts[i] || 0;
+            if (v1Part < v2Part) return -1;
+            if (v1Part > v2Part) return 1;
+        }
+        return 0;
+    }
+
+    // Run the OS detection and version check
     detectOS();
 });
