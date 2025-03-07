@@ -529,26 +529,28 @@ body {
     color: var(--text-color);
     text-decoration: none;
     padding: 15px;
-    transition: all 0.3s ease, box-shadow 0.2s ease; /* Smoother transition */
+    transition: all 0.3s ease, box-shadow 0.2s ease, background-color 0.3s ease; /* Added background-color transition */
     width: 100%;
     box-sizing: border-box;
     border-radius: 8px;
     border: 1px solid transparent; /* Make the border initially transparent */
+    background-color: var(--accent-color); /* Default background color */
+    transform: translateY(0); /* Start with no transformation */
 }
 
-/* Modern hover effect with light green border and glow */
+/* Modern hover effect with lighter green background, border, and glow */
 .disabilities-section a:hover {
-    background-color: var(--accent-color);
+    background-color: rgba(144, 238, 144, 0.3); /* Lighter green background on hover */
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 10px rgba(144, 238, 144, 0.7); /* Light green glow around the button */
+    transform: translateY(-4px); /* Slightly pop the button up */
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 15px rgba(144, 238, 144, 0.7); /* Light green glow around the button */
     border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
 }
 
 /* Dark mode hover effect */
 @media (prefers-color-scheme: dark) {
     .disabilities-section a:hover {
-        box-shadow: 0 4px 15px black, 0 0 10px rgba(144, 238, 144, 0.7); /* Light green glow with black shadow for dark mode */
+        box-shadow: 0 4px 15px black, 0 0 15px rgba(144, 238, 144, 0.7); /* Light green glow with black shadow for dark mode */
         border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
     }
 }
@@ -556,7 +558,7 @@ body {
 /* Light mode hover effect */
 @media (prefers-color-scheme: light) {
     .disabilities-section a:hover {
-        box-shadow: 0 4px 15px white, 0 0 10px rgba(144, 238, 144, 0.7); /* Light green glow with white shadow for light mode */
+        box-shadow: 0 4px 15px white, 0 0 15px rgba(144, 238, 144, 0.7); /* Light green glow with white shadow for light mode */
         border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
     }
 }
