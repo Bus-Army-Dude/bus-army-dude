@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function() {
         let os = "Unknown OS";
         let osVersion = "Unknown Version";
 
+        // Debug: Print full User-Agent for debugging
+        console.log("User-Agent: ", userAgent);
+
         // Check for iOS
         if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
             os = "iOS";
@@ -27,6 +30,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const match = userAgent.match(/Mac OS X (\d+_\d+_\d+)/);
             if (match) {
                 osVersion = match[1].replace(/_/g, ".");
+            } else {
+                const matchAlt = userAgent.match(/Mac OS (\d+\.\d+)/);
+                if (matchAlt) {
+                    osVersion = matchAlt[1];
+                }
             }
         }
         // Check for Windows
@@ -43,18 +51,20 @@ document.addEventListener("DOMContentLoaded", function() {
             osVersion = "N/A";
         }
 
+        // Output detected OS info for debugging
+        console.log(`Detected OS: ${os}, Version: ${osVersion}`);
+
         document.getElementById("os-info").textContent = `${os} ${osVersion}`;
-        console.log(`Detected OS: ${os}, Version: ${osVersion}`);  // Debug output
         checkOSVersion(os, osVersion);
     }
 
     // Function to check if the user's OS version is the latest
     function checkOSVersion(os, userVersion) {
         const latestVersions = {
-            "iOS": "18.4",         // Latest iOS version
-            "Android": "14.0",     // Latest Android version
-            "macOS": "15.4",       // Latest macOS version
-            "Windows": "10.0",     // Latest Windows version
+            "iOS": "18.4",         // Latest iOS version supported by browsers
+            "Android": "14.0",     // Latest Android version supported by browsers
+            "macOS": "15.4",       // Latest macOS version supported by browsers
+            "Windows": "10.0",     // Latest Windows version supported by browsers
             "Linux": "latest"      // Use a general "latest" marker for Linux
         };
 
