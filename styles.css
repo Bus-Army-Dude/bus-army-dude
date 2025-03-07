@@ -529,16 +529,32 @@ body {
     color: var(--text-color);
     text-decoration: none;
     padding: 15px;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, box-shadow 0.2s ease; /* Smoother transition */
     width: 100%;
     box-sizing: border-box;
+    border-radius: 8px;
 }
 
+/* Modern hover effect with lighter green */
 .disabilities-section a:hover {
     background-color: var(--accent-color);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px var(--shadow-color);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 4px 20px rgba(144, 238, 144, 0.7); /* Lighter green shadow */
+}
+
+/* Dark mode hover shadow */
+@media (prefers-color-scheme: dark) {
+    .disabilities-section a:hover {
+        box-shadow: 0 4px 15px black, 0 4px 20px rgba(144, 238, 144, 0.7); /* Lighter green shadow with black for dark mode */
+    }
+}
+
+/* Light mode hover shadow */
+@media (prefers-color-scheme: light) {
+    .disabilities-section a:hover {
+        box-shadow: 0 4px 15px white, 0 4px 20px rgba(144, 238, 144, 0.7); /* Lighter green shadow with white for light mode */
+    }
 }
 
 /* TikTok Creator Shoutouts */
