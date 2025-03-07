@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         document.getElementById("os-info").textContent = `${os} ${osVersion}`;
+        console.log(`Detected OS: ${os}, Version: ${osVersion}`);  // Debug output
         checkOSVersion(os, osVersion);
     }
 
