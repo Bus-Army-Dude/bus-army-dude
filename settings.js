@@ -12,7 +12,6 @@ class SettingsManager {
             darkMode: true,
             textSize: 'default',
             focusOutline: 'enabled',    // Default focus outline setting
-            colorblindMode: 'none',    // Default colorblind mode
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -82,15 +81,6 @@ class SettingsManager {
                 this.toggleFocusOutline(e.target.checked);
             });
         }
-
-        // Colorblind Mode
-        const colorblindModeSelect = document.getElementById('colorblindModeSelect');
-        if (colorblindModeSelect) {
-            colorblindModeSelect.value = this.settings.colorblindMode || 'none';
-            colorblindModeSelect.addEventListener('change', (e) => {
-                this.setColorblindMode(e.target.value);
-            });
-        }
     }
 
     applySettings() {
@@ -99,7 +89,6 @@ class SettingsManager {
         this.applyMaintenanceMode(this.settings.maintenanceMode);
         this.applyProfileStatus(this.settings.profileStatus);  // Apply profile status
         this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
-        this.applyColorblindMode(this.settings.colorblindMode);
     }
 
     // Set the profile status
@@ -164,7 +153,6 @@ class SettingsManager {
             darkMode: true,
             textSize: 'default',
             focusOutline: 'enabled',  // Default focus outline setting
-            colorblindMode: 'none',
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -176,14 +164,12 @@ class SettingsManager {
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-        const colorblindModeSelect = document.getElementById('colorblindModeSelect');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
         if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
-        if (colorblindModeSelect) colorblindModeSelect.value = defaultSettings.colorblindMode;
     }
 
     // Set Maintenance Mode
@@ -213,24 +199,7 @@ class SettingsManager {
     setMaintenanceModeManually(isEnabled) {
         this.setMaintenanceMode(isEnabled);
     }
-
-    // Set Colorblind Mode
-    setColorblindMode(mode) {
-        document.documentElement.classList.remove('colorblind-protanopia', 'colorblind-deuteranopia', 'colorblind-tritanopia', 'colorblind-achromatopsia');
-        if (mode !== 'none') {
-            document.documentElement.classList.add(`colorblind-${mode}`);
-        }
-        this.settings.colorblindMode = mode;
-        this.saveSettings();
-    }
-
-    applyColorblindMode(mode) {
-        document.documentElement.classList.remove('colorblind-protanopia', 'colorblind-deuteranopia', 'colorblind-tritanopia', 'colorblind-achromatopsia');
-        if (mode !== 'none') {
-            document.documentElement.classList.add(`colorblind-${mode}`);
-        }
-    }
-
+    
     // Dynamically update footer year
     updateFooterYear() {
         const footerYear = document.getElementById('year');
@@ -248,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsManager.setMaintenanceModeManually(false);
 
     // Manually set profile status
-    settingsManager.setProfileStatusManually('offline');
+    settingsManager.setProfileStatusManually('online');
 });
 
 // Function to accept cookies and hide the banner
