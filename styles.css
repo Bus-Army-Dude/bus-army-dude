@@ -533,27 +533,31 @@ body {
     width: 100%;
     box-sizing: border-box;
     border-radius: 8px;
+    border: 1px solid transparent; /* Make the border initially transparent */
 }
 
-/* Modern hover effect with lighter green */
+/* Modern hover effect with light green border and glow */
 .disabilities-section a:hover {
     background-color: var(--accent-color);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 4px 20px rgba(144, 238, 144, 0.7); /* Lighter green shadow */
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 10px rgba(144, 238, 144, 0.7); /* Light green glow around the button */
+    border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
 }
 
-/* Dark mode hover shadow */
+/* Dark mode hover effect */
 @media (prefers-color-scheme: dark) {
     .disabilities-section a:hover {
-        box-shadow: 0 4px 15px black, 0 4px 20px rgba(144, 238, 144, 0.7); /* Lighter green shadow with black for dark mode */
+        box-shadow: 0 4px 15px black, 0 0 10px rgba(144, 238, 144, 0.7); /* Light green glow with black shadow for dark mode */
+        border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
     }
 }
 
-/* Light mode hover shadow */
+/* Light mode hover effect */
 @media (prefers-color-scheme: light) {
     .disabilities-section a:hover {
-        box-shadow: 0 4px 15px white, 0 4px 20px rgba(144, 238, 144, 0.7); /* Lighter green shadow with white for light mode */
+        box-shadow: 0 4px 15px white, 0 0 10px rgba(144, 238, 144, 0.7); /* Light green glow with white shadow for light mode */
+        border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
     }
 }
 
