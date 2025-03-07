@@ -1,0 +1,66 @@
+/* Prevent video controls on mobile */
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+/* Disable dragging images */
+img {
+    pointer-events: none;
+}
+
+/* Block right-click menu */
+* {
+    -webkit-touch-callout: none; /* Disable callout on touch devices */
+    -webkit-user-select: none; /* Prevent text selection */
+    -ms-user-select: none; /* Prevent text selection */
+    user-select: none; /* Prevent text selection */
+    -webkit-user-drag: none; /* Disable image dragging */
+    user-drag: none; /* Disable image dragging */
+}
+
+/* Prevent saving of images on touch devices */
+img {
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    -ms-touch-action: none;
+    touch-action: none;
+}
+
+/* Prevent printing of the page */
+@media print {
+    body {
+        display: none !important;
+    }
+}
+
+/* Block right-click on the page */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Apply blur effect to the entire page */
+body.blurred {
+    filter: blur(5px); /* Apply blur to the entire page */
+    transition: filter 0.3s ease; /* Smooth transition for the blur effect */
+}
+
+/* Prevent the media (images, videos) from being clicked or saved */
+img, video {
+    pointer-events: none; /* Disable interactions */
+}
+
+/* Prevent screenshot detection on mobile */
+body {
+    -webkit-user-select: none; /* Disable selection */
+    -webkit-touch-callout: none; /* Disable callout menu */
+}
+
+/* Prevent print screen detection */
+body.no-print {
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none; /* Disable interactions for print screen */
+}
