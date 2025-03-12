@@ -573,47 +573,6 @@ body {
     }
 }
 
-.creator-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.creator-card {
-  border: 1px solid #ddd;
-  padding: 10px;
-  width: 200px;
-  text-align: center;
-}
-
-.creator-pic {
-  width: 100%;
-  height: auto;
-}
-
-.creator-info {
-  margin-top: 10px;
-}
-
-.creator-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.verified-badge {
-  width: 20px;
-  height: 20px;
-  margin-left: 5px;
-}
-
-.unavailable-message {
-  color: red;
-  font-size: 18px;
-  margin-top: 20px;
-  text-align: center;
-}
-
 /* TikTok Creator Shoutouts */
 .tiktok-creator-section {
     background-color: var(--content-bg);
@@ -772,6 +731,14 @@ body {
     margin: 0;
     font-size: 1.1em;
     color: var(--text-color);
+}
+
+/* Unavailable Message Styles */
+.unavailable-message {
+  color: red;
+  font-size: 18px;
+  margin-top: 20px;
+  text-align: center;
 }
 
 :root {
