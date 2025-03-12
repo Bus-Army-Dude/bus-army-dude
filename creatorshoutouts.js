@@ -51,7 +51,7 @@ const tiktokShoutouts = {
     YE: true, YT: true, 
     ZA: true, ZM: true, ZW: true
   },
-  apiKey: 'f40a00183b5441eab5fe9e02d4498bf6', // Replace with your ipgeolocation.io API key
+  apiKey: '81d0ec80962a4a5cbebc0a24f06e5eca', // Replace with your ipgeolocation.io API key
   init() {
     this.getUserRegion().then(userRegion => {
       if (this.regionAvailability[userRegion]) {
