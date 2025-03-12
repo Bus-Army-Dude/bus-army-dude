@@ -8,7 +8,6 @@ class CommonManager {
         this.addThemeToggleHandling(); // Handle theme switching
         this.addFontSizeHandling(); // Handle font size adjustments
         this.addFocusOutlineHandling(); // Handle focus outline settings
-        this.addColorblindHandling(); // Handle colorblind mode
     }
 
     // Immediately removes the 'no-js' class from the <html> element
@@ -20,9 +19,8 @@ class CommonManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true, // Default to dark mode
-            fontSize: 16, // Default font size in pixels
+            fontSize: 'Default', // Default font size in pixels
             focusOutlineDisabled: false,
-            colorblindMode: 'none' // Default no colorblind mode
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
