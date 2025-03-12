@@ -24,54 +24,74 @@ const tiktokShoutouts = {
         // Add more shoutouts here...
     ],
     lastUpdatedTime: '2025-03-11T07:28:57', // Manually set the last updated date and time
-    init() {
-        this.createShoutoutCards();
-        this.setLastUpdatedTime();
-    },
-    createShoutoutCards() {
-        const container = document.querySelector('.creator-grid');
-        if (!container) return;
-
-        container.innerHTML = '';
-        this.accounts.forEach(account => {
-            const card = document.createElement('div');
-            card.className = 'creator-card';
-            card.innerHTML = `
-                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="creator-info">
-                    <div class="creator-header">
-                        <h3>${account.nickname} ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
-                    </div>
-                    <p class="creator-username">@${account.username}</p>
-                    <p class="creator-bio">${account.bio || ''}</p>
-                    <p class="follower-count">${account.followers} Followers</p>
-                    <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">
-                        Visit Profile
-                    </a>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    },
-    setLastUpdatedTime() {
-        const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
-        if (!lastUpdatedElement) return;
-
-        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-            timeZone: userTimeZone,
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        });
-
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+  regionAvailability: {
+    US: true,
+    UK: true,
+    CA: false,
+    // Add more regions as needed
+  },
+  init() {
+    const userRegion = this.getUserRegion();
+    if (this.regionAvailability[userRegion]) {
+      this.createShoutoutCards();
+      this.setLastUpdatedTime();
+    } else {
+      this.showUnavailableMessage(userRegion);
     }
+  },
+  createShoutoutCards() {
+    const container = document.querySelector('.creator-grid');
+    if (!container) return;
+    container.innerHTML = '';
+    this.accounts.forEach(account => {
+      const card = document.createElement('div');
+      card.className = 'creator-card';
+      card.innerHTML = `
+        <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+        <div class="creator-info">
+          <div class="creator-header">
+            <h3>${account.nickname} ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
+          </div>
+          <p class="creator-username">@${account.username}</p>
+          <p class="creator-bio">${account.bio || ''}</p>
+          <p class="follower-count">${account.followers} Followers</p>
+          <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile"> Visit Profile </a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  },
+  setLastUpdatedTime() {
+    const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
+    if (!lastUpdatedElement) return;
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+      timeZone: userTimeZone,
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    });
+    lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+  },
+  getUserRegion() {
+    // Implement a method to get the user's region
+    // This is a placeholder, replace with actual region detection logic
+    return 'US'; // Example: return 'CA' for Canada
+  },
+  showUnavailableMessage(region) {
+    const container = document.querySelector('.creator-grid');
+    if (!container) return;
+    container.innerHTML = `
+      <div class="unavailable-message">
+        <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
+      </div>
+    `;
+  }
 };
 
 // Initialize the TikTok shoutouts
