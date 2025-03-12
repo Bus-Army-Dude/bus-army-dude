@@ -11,7 +11,7 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-            focusOutline: 'enabled',    // Default focus outline setting
+            focusOutline: 'disabled',    // Default focus outline setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -152,7 +152,7 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 'default',
-            focusOutline: 'enabled',  // Default focus outline setting
+            focusOutline: 'disabled',  // Default focus outline setting
         };
         this.settings = defaultSettings;
         this.applySettings();
