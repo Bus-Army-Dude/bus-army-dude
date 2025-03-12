@@ -23,9 +23,9 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
     ],
-    lastUpdatedTime: '2025-03-11T07:28:57', // Manually set the last updated date and time
+  lastUpdatedTime: '2025-03-11T07:28:57', // Manually set the last updated date and time
   regionAvailability: {
-    US: false,
+    US: true,
     UK: true,
     CA: false,
     // Add more regions as needed
@@ -84,13 +84,13 @@ const tiktokShoutouts = {
     return 'US'; // Example: return 'CA' for Canada
   },
   showUnavailableMessage(region) {
-    const container = document.querySelector('.creator-grid');
-    if (!container) return;
-    container.innerHTML = `
-      <div class="unavailable-message">
-        <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
-      </div>
+    const messageContainer = document.querySelector('.unavailable-message');
+    if (!messageContainer) return;
+    messageContainer.innerHTML = `
+      <div class="unavailable-message-title">System Message</div>
+      <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
     `;
+    messageContainer.style.display = 'block';
   }
 };
 
