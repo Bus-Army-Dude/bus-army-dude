@@ -30,14 +30,18 @@ const tiktokShoutouts = {
     CA: false,
     // Add more regions as needed
   },
+  apiKey: 'f40a00183b5441eab5fe9e02d4498bf6', // Replace with your ipgeolocation.io API key
   init() {
-    const userRegion = this.getUserRegion();
-    if (this.regionAvailability[userRegion]) {
-      this.createShoutoutCards();
-      this.setLastUpdatedTime();
-    } else {
-      this.showUnavailableMessage(userRegion);
-    }
+    this.getUserRegion().then(userRegion => {
+      if (this.regionAvailability[userRegion]) {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+      } else {
+        this.showUnavailableMessage(userRegion);
+      }
+    }).catch(error => {
+      console.error('Error fetching user region:', error);
+    });
   },
   createShoutoutCards() {
     const container = document.querySelector('.creator-grid');
@@ -78,10 +82,15 @@ const tiktokShoutouts = {
     });
     lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
   },
-  getUserRegion() {
-    // Implement a method to get the user's region
-    // This is a placeholder, replace with actual region detection logic
-    return 'US'; // Example: return 'CA' for Canada
+  async getUserRegion() {
+    try {
+      const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${this.apiKey}`);
+      const data = await response.json();
+      return data.country_code2; // Return the 2-letter country code
+    } catch (error) {
+      console.error('Error fetching geolocation data:', error);
+      return 'US'; // Default to 'US' if there's an error
+    }
   },
   showUnavailableMessage(region) {
     const messageContainer = document.querySelector('.unavailable-message');
