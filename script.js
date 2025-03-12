@@ -23,7 +23,7 @@ function updateTime() {
         minute: 'numeric', 
         second: 'numeric', 
         hour12: true, 
-        timeZoneName: 'short' 
+        timeZoneName: 'long' 
     };
 
     const timestamp = now.toLocaleString('en-US', options);
