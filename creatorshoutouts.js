@@ -25,7 +25,7 @@ const tiktokShoutouts = {
     ],
     lastUpdatedTime: '2025-03-11T07:28:57', // Manually set the last updated date and time
   regionAvailability: {
-    US: true,
+    US: false,
     UK: true,
     CA: false,
     // Add more regions as needed
