@@ -124,7 +124,7 @@ const tiktokShoutouts = {
     return 'US'; // Default to 'US' if there's an error
   }
 },
-  showUnavailableMessage(region) {
+  function showTikTokUnavailableMessage(region) {
     const messageContainer = document.querySelector('.tiktok-unavailable-message');
     if (!messageContainer) return;
     messageContainer.innerHTML = `
@@ -132,8 +132,7 @@ const tiktokShoutouts = {
       <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
     `;
     messageContainer.style.display = 'block';
-  }
-};
+}
 
 // Initialize the TikTok shoutouts
 tiktokShoutouts.init();
@@ -257,7 +256,7 @@ const instagramShoutouts = {
       return 'US'; // Default to 'US' if there's an error
     }
   },
-  showUnavailableMessage(region) {
+  function showInstagramUnavailableMessage(region) {
     const messageContainer = document.querySelector('.instagram-unavailable-message');
     if (!messageContainer) return;
     messageContainer.innerHTML = `
@@ -265,8 +264,7 @@ const instagramShoutouts = {
       <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
     `;
     messageContainer.style.display = 'block';
-  }
-};
+}
 
 // Initialize the Instagram shoutouts
 instagramShoutouts.init();
@@ -486,7 +484,7 @@ const youtubeShoutouts = {
       return 'US'; // Default to 'US' if there's an error
     }
   },
-  showUnavailableMessage(region) {
+  function showYouTubeUnavailableMessage(region) {
     const messageContainer = document.querySelector('.youtube-unavailable-message');
     if (!messageContainer) return;
     messageContainer.innerHTML = `
@@ -494,8 +492,7 @@ const youtubeShoutouts = {
       <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
     `;
     messageContainer.style.display = 'block';
-  }
-};
+}
 
 // Initialize the YouTube shoutouts
 youtubeShoutouts.init();
