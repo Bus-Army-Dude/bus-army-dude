@@ -37,22 +37,24 @@ function updateTime() {
 // Call updateTime to set the current time when the page loads
 updateTime();
 
-    // Function to get the next 5-minute mark
+   // Set a 5-minute interval (300,000 milliseconds)
+const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
+
+// Function to calculate the next 5-minute mark based on current user time
 function getNextRefreshTime() {
     const now = new Date();
     const currentMinutes = now.getMinutes();
-    const currentSeconds = now.getSeconds();
     
     // Calculate the minutes for the next 5-minute interval
     const nextRefreshMinutes = Math.ceil(currentMinutes / 5) * 5;
-
-    // Create a new date for the next refresh time
+    
+    // Create a new Date object for the next refresh time
     const nextRefreshTime = new Date(now);
     nextRefreshTime.setMinutes(nextRefreshMinutes);
     nextRefreshTime.setSeconds(0);
     nextRefreshTime.setMilliseconds(0);
 
-    // If nextRefreshMinutes equals 60 (edge case for the next hour)
+    // Handle the case where the refresh time pushes into the next hour
     if (nextRefreshMinutes === 60) {
         nextRefreshTime.setHours(nextRefreshTime.getHours() + 1);
         nextRefreshTime.setMinutes(0);
@@ -67,22 +69,23 @@ function updateCountdown() {
     const now = new Date();
     const nextRefreshTime = getNextRefreshTime();
 
-    // Calculate time left in seconds
-    const timeLeft = Math.ceil((nextRefreshTime - now) / 1000); 
+    // Calculate time left until the next 5-minute refresh
+    const timeLeft = Math.ceil((nextRefreshTime - now) / 1000);  // Time left in seconds
 
-    if (timeLeft >= 0) {
+    if (timeLeft > 0) {
         const minutes = Math.floor(timeLeft / 60);  // Full minutes
         const seconds = timeLeft % 60;              // Remaining seconds
 
+        // Update the countdown display
         if (countdownElement) {
             countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
         }
     } else {
-        smoothReload();  // If time is up, trigger smooth reload
+        smoothReload();  // Time is up, trigger smooth reload
     }
 }
 
-// Smoothly reload the page with a fade-out effect
+// Function to smoothly reload the page with a fade-out effect
 function smoothReload() {
     const body = document.body;
     body.style.transition = 'opacity 0.5s ease';
@@ -90,17 +93,19 @@ function smoothReload() {
 
     setTimeout(function() {
         location.reload();  // Reload the page after the fade-out effect
-    }, 500); // Delay reload to allow for fade-out
+    }, 500); // Wait 0.5 seconds for the fade-out to complete
 }
 
-// Call the functions on page load
+// Set everything up when the page loads
 window.onload = function() {
-    updateCountdown();
+    updateCountdown();  // Start updating the countdown right away
 
-    // Synchronize countdown updates every second
-    setInterval(() => {
-        updateCountdown();
-    }, 1000);  // Update the countdown every second
+    // Update the countdown every second
+    setInterval(updateCountdown, 1000);
+
+    // Trigger a page refresh at the next 5-minute interval
+    const nextRefreshTime = getNextRefreshTime() - new Date();  // Time in milliseconds until the next refresh
+    setTimeout(smoothReload, nextRefreshTime);  // Schedule the smooth reload
 };
 
     // New Year countdown with timezone adjustment
