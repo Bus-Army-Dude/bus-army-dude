@@ -23,6 +23,7 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
      ],
+  const tiktokShoutouts = {
   lastUpdatedTime: '2025-03-13T09:21:57', // Manually set the last updated date and time
   regionAvailability: {
     AD: true, AE: true, AF: false, AG: true, AI: true, AL: true, AM: true, AO: true, AQ: true, AR: true, AS: true, AT: true, AU: true, AW: true, AX: true, AZ: true, 
@@ -50,8 +51,8 @@ const tiktokShoutouts = {
     WF: true, WS: true, 
     YE: true, YT: true, 
     ZA: true, ZM: true, ZW: true
+    // Add more regions here...
   },
-  apiKey: '81d0ec80962a4a5cbebc0a24f06e5eca', // Replace with your ipgeolocation.io API key
   init() {
     this.getUserRegion().then(userRegion => {
       if (this.regionAvailability[userRegion]) {
@@ -67,20 +68,18 @@ const tiktokShoutouts = {
   createShoutoutCards() {
     const container = document.querySelector('.creator-grid');
     if (!container) return;
-    container.innerHTML = '';
+    container.innerHTML = ''; // Clear previous cards
     this.accounts.forEach(account => {
       const card = document.createElement('div');
       card.className = 'creator-card';
       card.innerHTML = `
         <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
         <div class="creator-info">
-          <div class="creator-header">
-            <h3>${account.nickname} ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
-          </div>
-          <p class="creator-username">@${account.username}</p>
-          <p class="creator-bio">${account.bio || ''}</p>
-          <p class="follower-count">${account.followers} Followers</p>
-          <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile"> Visit Profile </a>
+          <h3>${account.nickname} ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
+          <p>@${account.username}</p>
+          <p>${account.bio || ''}</p>
+          <p>${account.followers} Followers</p>
+          <a href="https://tiktok.com/@${account.username}" target="_blank">Visit Profile</a>
         </div>
       `;
       container.appendChild(card);
@@ -104,25 +103,9 @@ const tiktokShoutouts = {
     lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
   },
   async getUserRegion() {
-    const cachedRegion = localStorage.getItem('userRegion');
-    const cachedTime = localStorage.getItem('userRegionTime');
-    const currentTime = Date.now();
-
-    if (cachedRegion && cachedTime && (currentTime - cachedTime < this.cacheDuration)) {
-      return cachedRegion;
-    }
-
-    try {
-      const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${this.apiKey}`);
-      const data = await response.json();
-      const region = data.country_code2;
-      localStorage.setItem('userRegion', region);
-      localStorage.setItem('userRegionTime', currentTime);
-      return region;
-    } catch (error) {
-      console.error('Error fetching geolocation data:', error);
-      return 'US'; // Default to 'US' if there's an error
-    }
+    // For now, we're faking a region based on browser language or manual input
+    const region = navigator.language.slice(-2).toUpperCase(); // Using browser's language as a region fallback
+    return region || 'US'; // Default to 'US' if detection fails
   },
   showUnavailableMessage(region) {
     const messageContainer = document.querySelector('.unavailable-message');
