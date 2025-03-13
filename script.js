@@ -37,43 +37,48 @@ function updateTime() {
 // Call updateTime to set the current time when the page loads
 updateTime();
 
-    function getNextRefreshTime() {
+    // Function to get the next 5-minute mark
+function getNextRefreshTime() {
     const now = new Date();
-    // Calculate the minutes until the next 5-minute interval
-    const minutes = now.getMinutes();
-    const nextRefreshMinutes = Math.ceil((minutes + 1) / 5) * 5;
+    const currentMinutes = now.getMinutes();
+    const currentSeconds = now.getSeconds();
+    
+    // Calculate the minutes for the next 5-minute interval
+    const nextRefreshMinutes = Math.ceil(currentMinutes / 5) * 5;
 
-    // Set the refresh time to the next 5-minute mark
-    const nextRefreshTime = new Date();
+    // Create a new date for the next refresh time
+    const nextRefreshTime = new Date(now);
     nextRefreshTime.setMinutes(nextRefreshMinutes);
     nextRefreshTime.setSeconds(0);
     nextRefreshTime.setMilliseconds(0);
 
-    // If the next refresh time is less than now, it means the next interval is the next hour
-    if (nextRefreshTime <= now) {
-        nextRefreshTime.setHours(now.getHours() + 1);
+    // If nextRefreshMinutes equals 60 (edge case for the next hour)
+    if (nextRefreshMinutes === 60) {
+        nextRefreshTime.setHours(nextRefreshTime.getHours() + 1);
         nextRefreshTime.setMinutes(0);
     }
-    
+
     return nextRefreshTime;
 }
 
+// Function to update the countdown timer
 function updateCountdown() {
     const countdownElement = document.querySelector('.countdown');
     const now = new Date();
     const nextRefreshTime = getNextRefreshTime();
-    const timeLeft = Math.ceil((nextRefreshTime - now) / 1000);  // Time left in seconds
+
+    // Calculate time left in seconds
+    const timeLeft = Math.ceil((nextRefreshTime - now) / 1000); 
 
     if (timeLeft >= 0) {
-        const minutes = Math.floor(timeLeft / 60);  // Get full minutes
-        const seconds = timeLeft % 60;              // Get remaining seconds
+        const minutes = Math.floor(timeLeft / 60);  // Full minutes
+        const seconds = timeLeft % 60;              // Remaining seconds
 
-        // Update countdown display
         if (countdownElement) {
-            countdownElement.textContent = `Page refreshing in: ${minutes} Minutes ${seconds} Seconds`;
+            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
         }
     } else {
-        smoothReload();  // Smooth reload when time is up
+        smoothReload();  // If time is up, trigger smooth reload
     }
 }
 
@@ -84,20 +89,18 @@ function smoothReload() {
     body.style.opacity = '0';
 
     setTimeout(function() {
-        location.reload();
-    }, 500); // Delay the reload to allow fade-out
+        location.reload();  // Reload the page after the fade-out effect
+    }, 500); // Delay reload to allow for fade-out
 }
 
 // Call the functions on page load
 window.onload = function() {
-    updateTime();
     updateCountdown();
 
-    // Synchronize both time and countdown updates every second
+    // Synchronize countdown updates every second
     setInterval(() => {
-        updateTime();
         updateCountdown();
-    }, 1000);  // Update both every second
+    }, 1000);  // Update the countdown every second
 };
 
     // New Year countdown with timezone adjustment
