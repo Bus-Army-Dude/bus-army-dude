@@ -37,14 +37,32 @@ function updateTime() {
 // Call updateTime to set the current time when the page loads
 updateTime();
 
-    // Set the refresh interval to 5 minutes (300 seconds)
-const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
-let refreshTime = Date.now() + refreshInterval;  // Get future time 5 minutes from now
+    function getNextRefreshTime() {
+    const now = new Date();
+    // Calculate the minutes until the next 5-minute interval
+    const minutes = now.getMinutes();
+    const nextRefreshMinutes = Math.ceil((minutes + 1) / 5) * 5;
+
+    // Set the refresh time to the next 5-minute mark
+    const nextRefreshTime = new Date();
+    nextRefreshTime.setMinutes(nextRefreshMinutes);
+    nextRefreshTime.setSeconds(0);
+    nextRefreshTime.setMilliseconds(0);
+
+    // If the next refresh time is less than now, it means the next interval is the next hour
+    if (nextRefreshTime <= now) {
+        nextRefreshTime.setHours(now.getHours() + 1);
+        nextRefreshTime.setMinutes(0);
+    }
+    
+    return nextRefreshTime;
+}
 
 function updateCountdown() {
     const countdownElement = document.querySelector('.countdown');
-    const currentTime = Date.now();
-    const timeLeft = Math.ceil((refreshTime - currentTime) / 1000);  // Convert ms to seconds
+    const now = new Date();
+    const nextRefreshTime = getNextRefreshTime();
+    const timeLeft = Math.ceil((nextRefreshTime - now) / 1000);  // Time left in seconds
 
     if (timeLeft >= 0) {
         const minutes = Math.floor(timeLeft / 60);  // Get full minutes
