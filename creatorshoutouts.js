@@ -66,7 +66,7 @@ const tiktokShoutouts = {
         // T
         TC: true, TD: true, TF: true, TG: true, TH: true, TJ: true, TK: true, TL: true, TM: true, TN: true, TO: true, TR: true, TT: true, TV: true, TW: true, TZ: true,
         // U
-        UA: true, UG: true, UM: true, US: false, UY: true, UZ: true,
+        UA: true, UG: true, UM: true, US: true, UY: true, UZ: true,
         // V
         VA: true, VC: true, VE: true, VG: true, VI: true, VN: true, VU: true,
         // W
