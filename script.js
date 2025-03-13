@@ -37,75 +37,54 @@ function updateTime() {
 // Call updateTime to set the current time when the page loads
 updateTime();
 
-   // Set a 5-minute interval (300,000 milliseconds)
-const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
-
-// Function to calculate the next 5-minute mark based on current user time
-function getNextRefreshTime() {
+  // Function to calculate the remaining time until the next 5-minute interval
+function getRemainingTime() {
     const now = new Date();
-    const currentMinutes = now.getMinutes();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
     
-    // Calculate the minutes for the next 5-minute interval
-    const nextRefreshMinutes = Math.ceil(currentMinutes / 5) * 5;
-    
-    // Create a new Date object for the next refresh time
-    const nextRefreshTime = new Date(now);
-    nextRefreshTime.setMinutes(nextRefreshMinutes);
-    nextRefreshTime.setSeconds(0);
-    nextRefreshTime.setMilliseconds(0);
+    // Calculate how many minutes and seconds are left until the next 5-minute mark
+    const minutesToNextRefresh = 5 - (minutes % 5) - (seconds === 0 ? 0 : 1);
+    const secondsToNextRefresh = 60 - seconds;
 
-    // Handle the case where the refresh time pushes into the next hour
-    if (nextRefreshMinutes === 60) {
-        nextRefreshTime.setHours(nextRefreshTime.getHours() + 1);
-        nextRefreshTime.setMinutes(0);
-    }
-
-    return nextRefreshTime;
+    return minutesToNextRefresh * 60 + secondsToNextRefresh;
 }
 
-// Function to update the countdown timer
+// Function to update the countdown display
 function updateCountdown() {
     const countdownElement = document.querySelector('.countdown');
-    const now = new Date();
-    const nextRefreshTime = getNextRefreshTime();
+    const remainingTime = getRemainingTime();
 
-    // Calculate time left until the next 5-minute refresh
-    const timeLeft = Math.ceil((nextRefreshTime - now) / 1000);  // Time left in seconds
+    const minutes = Math.floor(remainingTime / 60); // Get full minutes
+    const seconds = remainingTime % 60;             // Get remaining seconds
 
-    if (timeLeft > 0) {
-        const minutes = Math.floor(timeLeft / 60);  // Full minutes
-        const seconds = timeLeft % 60;              // Remaining seconds
+    if (countdownElement) {
+        countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+    }
 
-        // Update the countdown display
-        if (countdownElement) {
-            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
-        }
-    } else {
-        smoothReload();  // Time is up, trigger smooth reload
+    // If time has run out, reload the page
+    if (remainingTime <= 0) {
+        smoothReload();
     }
 }
 
-// Function to smoothly reload the page with a fade-out effect
+// Smoothly reload the page with a fade-out effect
 function smoothReload() {
     const body = document.body;
     body.style.transition = 'opacity 0.5s ease';
     body.style.opacity = '0';
 
     setTimeout(function() {
-        location.reload();  // Reload the page after the fade-out effect
-    }, 500); // Wait 0.5 seconds for the fade-out to complete
+        location.reload();
+    }, 500); // Delay the reload to allow fade-out
 }
 
-// Set everything up when the page loads
+// Call the functions on page load
 window.onload = function() {
-    updateCountdown();  // Start updating the countdown right away
+    updateCountdown();
 
-    // Update the countdown every second
+    // Update countdown every second
     setInterval(updateCountdown, 1000);
-
-    // Trigger a page refresh at the next 5-minute interval
-    const nextRefreshTime = getNextRefreshTime() - new Date();  // Time in milliseconds until the next refresh
-    setTimeout(smoothReload, nextRefreshTime);  // Schedule the smooth reload
 };
 
     // New Year countdown with timezone adjustment
