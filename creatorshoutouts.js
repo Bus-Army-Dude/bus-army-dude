@@ -258,6 +258,15 @@ const youtubeShoutouts = {
             coverPhoto: 'youtube_photoes/channels8_banner.jpg', // Add cover photo
         },
         {
+            username: 'zollotech',
+            isVerified: true,
+            subscribers: '1.71M',
+            nickname: 'zollotech',
+            bio: "The Top and most reliable iOS Update information on YouTube also covering the latest tech reviews, news and how to's on phones, gadgets, hardware, software and more ... Have a product you would like me to review, message me or contact me at business@zollotech.com",
+            profilePic: 'youtube_photoes/channels4_profile.jpg',
+            coverPhoto: 'youtube_photoes/channels4_banner (1).jpg', // Add cover photo
+        },
+        {
             username: 'CaptainSteeeve',
             isVerified: true,
             subscribers: '368K',
