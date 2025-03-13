@@ -92,9 +92,9 @@ const tiktokShoutouts = {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
       timeZone: userTimeZone,
-      weekday: 'short',
+      weekday: 'long',
       year: 'numeric',
-      month: 'short',
+      month: 'long',
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
@@ -193,9 +193,9 @@ const instagramShoutouts = {
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
             timeZone: userTimeZone,
-            weekday: 'short',
+            weekday: 'long',
             year: 'numeric',
-            month: 'short',
+            month: 'long',
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
@@ -362,9 +362,9 @@ const youtubeShoutouts = {
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
             timeZone: userTimeZone,
-            weekday: 'short',
+            weekday: 'long',
             year: 'numeric',
-            month: 'short',
+            month: 'long',
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
