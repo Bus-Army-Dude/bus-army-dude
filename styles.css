@@ -738,19 +738,40 @@ body {
   color: var(--text-color);
 }
 
-/* Show the unavailable message when active */
-.tiktok-unavailable-message.active,
-.instagram-unavailable-message.active,
-.youtube-unavailable-message.active {
-  display: block;
+/* Unavailable Message Styles */
+.unavailable-message {
+    color: var(--secondary-text);  /* Text color */
+    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+    background-color: var(--content-bg); /* Background color */
+    padding: 20px;
+    border: 2px solid var(--accent-color); /* Accent border color */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color); /* Box shadow for effect */
 }
 
-/* Positioning the unavailable message under each section */
-.shoutouts-section .tiktok-unavailable-message,
-.shoutouts-section .instagram-unavailable-message,
-.shoutouts-section .youtube-unavailable-message {
-  margin-top: 20px; /* Space between the section and the message */
-  text-align: center;
+/* Title of Unavailable Message */
+.unavailable-message-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text-color); /* Color of title text */
+}
+
+/* TikTok Specific Unavailable Message */
+.tiktok-unavailable-message {
+    display: none; /* Hidden by default */
+}
+
+/* Instagram Specific Unavailable Message */
+.instagram-unavailable-message {
+    display: none; /* Hidden by default */
+}
+
+/* YouTube Specific Unavailable Message */
+.youtube-unavailable-message {
+    display: none; /* Hidden by default */
 }
 
 :root {
