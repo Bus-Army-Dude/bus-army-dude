@@ -51,7 +51,7 @@ const tiktokShoutouts = {
     YE: true, YT: true, 
     ZA: true, ZM: true, ZW: true
   },
-  apiKey: '81d0ec80962a4a5cbebc0a24f06e5eca', // Replace with your ipgeolocation.io API key
+  apiKey: '2378DCCDF7E3D95F025FE117FADA4B73', // Replace with your ipgeolocation.io API key
   init() {
     this.getUserRegion().then(userRegion => {
       if (this.regionAvailability[userRegion]) {
@@ -104,26 +104,26 @@ const tiktokShoutouts = {
     lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
   },
   async getUserRegion() {
-    const cachedRegion = localStorage.getItem('userRegion');
-    const cachedTime = localStorage.getItem('userRegionTime');
-    const currentTime = Date.now();
+  const cachedRegion = localStorage.getItem('userRegion');
+  const cachedTime = localStorage.getItem('userRegionTime');
+  const currentTime = Date.now();
 
-    if (cachedRegion && cachedTime && (currentTime - cachedTime < this.cacheDuration)) {
-      return cachedRegion;
-    }
+  if (cachedRegion && cachedTime && (currentTime - cachedTime < this.cacheDuration)) {
+    return cachedRegion;
+  }
 
-    try {
-      const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${this.apiKey}`);
-      const data = await response.json();
-      const region = data.country_code2;
-      localStorage.setItem('userRegion', region);
-      localStorage.setItem('userRegionTime', currentTime);
-      return region;
-    } catch (error) {
-      console.error('Error fetching geolocation data:', error);
-      return 'US'; // Default to 'US' if there's an error
-    }
-  },
+  try {
+    const response = await fetch(`https://api.ip2location.io/?key=${this.apiKey}&format=json`);
+    const data = await response.json();
+    const region = data.country_code; // ip2location.io uses 'country_code' for the country code
+    localStorage.setItem('userRegion', region);
+    localStorage.setItem('userRegionTime', currentTime);
+    return region;
+  } catch (error) {
+    console.error('Error fetching geolocation data:', error);
+    return 'US'; // Default to 'US' if there's an error
+  }
+},
   showUnavailableMessage(region) {
     const messageContainer = document.querySelector('.unavailable-message');
     if (!messageContainer) return;
