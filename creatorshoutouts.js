@@ -35,7 +35,7 @@ const tiktokShoutouts = {
     HK: true, HM: true, HN: true, HR: true, HT: true, HU: true, 
     ID: true, IE: true, IL: true, IM: true, IN: false, IO: true, IQ: true, IR: false, IS: true, IT: true, 
     JE: true, JM: true, JO: true, JP: true, 
-    KE: true, KG: false, KH: true, KI: true, KM: true, KN: true, KP: true, KR: true, KW: true, KY: true, KZ: true, 
+    KE: true, KG: false, KH: true, KI: true, KM: true, KN: true, KP: false, KR: true, KW: true, KY: true, KZ: true, 
     LA: true, LB: true, LC: true, LI: true, LK: true, LR: true, LS: true, LT: true, LU: true, LV: true, LY: true, 
     MA: true, MC: true, MD: true, ME: true, MF: true, MG: true, MH: true, MK: true, ML: true, MM: true, MN: true, MO: true, MP: true, MQ: true, MR: true, MS: true, MT: true, MU: true, MV: true, MW: true, MX: true, MY: true, MZ: true, 
     NA: true, NC: true, NE: true, NF: true, NG: true, NI: true, NL: true, NO: true, NP: false, NR: true, NU: true, NZ: true, 
@@ -45,12 +45,12 @@ const tiktokShoutouts = {
     RE: true, RO: true, RS: true, RU: true, RW: true, 
     SA: true, SB: true, SC: true, SD: true, SE: true, SG: true, SH: true, SI: true, SJ: true, SK: true, SL: true, SM: true, SN: true, SO: false, SR: true, SS: true, ST: true, SV: true, SX: true, SY: true, SZ: true, 
     TC: true, TD: true, TF: true, TG: true, TH: true, TJ: true, TK: true, TL: true, TM: true, TN: true, TO: true, TR: true, TT: true, TV: true, TW: true, TZ: true, 
-    UA: true, UG: true, UM: true, US: true, UY: true, UZ: true, 
+    UA: true, UG: true, UM: true, US: false, UY: true, UZ: true, 
     VA: true, VC: true, VE: true, VG: true, VI: true, VN: true, VU: true, 
     WF: true, WS: true, 
     YE: true, YT: true, 
     ZA: true, ZM: true, ZW: true
-  },
+  }
   apiKey: '2378DCCDF7E3D95F025FE117FADA4B73', // Replace with your ipgeolocation.io API key
   init() {
     this.getUserRegion().then(userRegion => {
