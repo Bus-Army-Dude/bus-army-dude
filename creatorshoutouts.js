@@ -125,7 +125,7 @@ const tiktokShoutouts = {
   }
 },
   showUnavailableMessage(region) {
-    const messageContainer = document.querySelector('.unavailable-message');
+    const messageContainer = document.querySelector('.tiktok-unavailable-message');
     if (!messageContainer) return;
     messageContainer.innerHTML = `
       <div class="unavailable-message-title">System Message</div>
@@ -258,7 +258,7 @@ const instagramShoutouts = {
     }
   },
   showUnavailableMessage(region) {
-    const messageContainer = document.querySelector('.unavailable-message');
+    const messageContainer = document.querySelector('.instagram-unavailable-message');
     if (!messageContainer) return;
     messageContainer.innerHTML = `
       <div class="unavailable-message-title">System Message</div>
@@ -487,7 +487,7 @@ const youtubeShoutouts = {
     }
   },
   showUnavailableMessage(region) {
-    const messageContainer = document.querySelector('.unavailable-message');
+    const messageContainer = document.querySelector('.youtube-unavailable-message');
     if (!messageContainer) return;
     messageContainer.innerHTML = `
       <div class="unavailable-message-title">System Message</div>
