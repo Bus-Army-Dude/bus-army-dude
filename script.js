@@ -70,7 +70,7 @@ function updateCountdown() {
 
         // Update countdown display
         if (countdownElement) {
-            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+            countdownElement.textContent = `Page refreshing in: ${minutes} Minutes ${seconds} Seconds`;
         }
     } else {
         smoothReload();  // Smooth reload when time is up
