@@ -37,34 +37,25 @@ function updateTime() {
 // Call updateTime to set the current time when the page loads
 updateTime();
 
-  // Function to calculate the remaining time until the next 5-minute interval
-function getRemainingTime() {
-    const now = new Date();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-    
-    // Calculate how many minutes and seconds are left until the next 5-minute mark
-    const minutesToNextRefresh = 5 - (minutes % 5) - (seconds === 0 ? 0 : 1);
-    const secondsToNextRefresh = 60 - seconds;
+    // Set the refresh interval to 5 minutes (300 seconds)
+const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
+let refreshTime = Date.now() + refreshInterval;  // Get future time 5 minutes from now
 
-    return minutesToNextRefresh * 60 + secondsToNextRefresh;
-}
-
-// Function to update the countdown display
 function updateCountdown() {
     const countdownElement = document.querySelector('.countdown');
-    const remainingTime = getRemainingTime();
+    const currentTime = Date.now();
+    const timeLeft = Math.ceil((refreshTime - currentTime) / 1000);  // Convert ms to seconds
 
-    const minutes = Math.floor(remainingTime / 60); // Get full minutes
-    const seconds = remainingTime % 60;             // Get remaining seconds
+    if (timeLeft >= 0) {
+        const minutes = Math.floor(timeLeft / 60);  // Get full minutes
+        const seconds = timeLeft % 60;              // Get remaining seconds
 
-    if (countdownElement) {
-        countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
-    }
-
-    // If time has run out, reload the page
-    if (remainingTime <= 0) {
-        smoothReload();
+        // Update countdown display
+        if (countdownElement) {
+            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+        }
+    } else {
+        smoothReload();  // Smooth reload when time is up
     }
 }
 
@@ -81,10 +72,14 @@ function smoothReload() {
 
 // Call the functions on page load
 window.onload = function() {
+    updateTime();
     updateCountdown();
 
-    // Update countdown every second
-    setInterval(updateCountdown, 1000);
+    // Synchronize both time and countdown updates every second
+    setInterval(() => {
+        updateTime();
+        updateCountdown();
+    }, 1000);  // Update both every second
 };
 
     // New Year countdown with timezone adjustment
