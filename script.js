@@ -37,49 +37,50 @@ function updateTime() {
 // Call updateTime to set the current time when the page loads
 updateTime();
 
-    // Page refresh countdown set to 5 minutes (300 seconds)
-    const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
-    let startTime = Date.now();
+    // Set the refresh interval to 5 minutes (300 seconds)
+const refreshInterval = 5 * 60 * 1000;  // 5 minutes in milliseconds
+let refreshTime = Date.now() + refreshInterval;  // Get future time 5 minutes from now
 
-    function updateCountdown() {
-        const countdownElement = document.querySelector('.countdown');
-        const timeElapsed = Date.now() - startTime;
-        const timeLeft = Math.ceil((refreshInterval - timeElapsed) / 1000);  // Convert ms to seconds
+function updateCountdown() {
+    const countdownElement = document.querySelector('.countdown');
+    const currentTime = Date.now();
+    const timeLeft = Math.ceil((refreshTime - currentTime) / 1000);  // Convert ms to seconds
 
-        if (timeLeft >= 0) {
-            const minutes = Math.floor(timeLeft / 60);  // Get full minutes
-            const seconds = timeLeft % 60;              // Get remaining seconds
+    if (timeLeft >= 0) {
+        const minutes = Math.floor(timeLeft / 60);  // Get full minutes
+        const seconds = timeLeft % 60;              // Get remaining seconds
 
-            if (countdownElement) {
-                countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
-            }
-        } else {
-            smoothReload();  // Smooth reload when time is up
+        // Update countdown display
+        if (countdownElement) {
+            countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
         }
+    } else {
+        smoothReload();  // Smooth reload when time is up
     }
+}
 
-    // Smoothly reload the page with a fade-out effect
-    function smoothReload() {
-        const body = document.body;
-        body.style.transition = 'opacity 0.5s ease';
-        body.style.opacity = '0';
+// Smoothly reload the page with a fade-out effect
+function smoothReload() {
+    const body = document.body;
+    body.style.transition = 'opacity 0.5s ease';
+    body.style.opacity = '0';
 
-        setTimeout(function() {
-            location.reload();
-        }, 500); // Delay the reload to allow fade-out
-    }
+    setTimeout(function() {
+        location.reload();
+    }, 500); // Delay the reload to allow fade-out
+}
 
-    // Call the functions on page load
-    window.onload = function() {
+// Call the functions on page load
+window.onload = function() {
+    updateTime();
+    updateCountdown();
+
+    // Synchronize both time and countdown updates every second
+    setInterval(() => {
         updateTime();
         updateCountdown();
-
-        // Synchronize both time and countdown updates every second
-        setInterval(() => {
-            updateTime();
-            updateCountdown();
-        }, 1000);  // Update both every second
-    };
+    }, 1000);  // Update both every second
+};
 
     // New Year countdown with timezone adjustment
 function updateNewYearCountdown() {
