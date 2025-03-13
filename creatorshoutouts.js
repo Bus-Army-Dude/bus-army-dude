@@ -23,87 +23,48 @@ const tiktokShoutouts = {
         { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
      ],
-  lastUpdatedTime: '2025-03-13T09:21:57',
-    regionAvailability: {
-        // A
-        AD: true, AE: true, AF: false, AG: true, AI: true, AL: true, AM: true, AO: true, AQ: true, AR: true, AS: true, AT: true, AU: true, AW: true, AX: true, AZ: true,
-        // B
-        BA: true, BB: true, BD: true, BE: true, BF: true, BG: true, BH: true, BI: true, BJ: true, BL: true, BM: true, BN: true, BO: true, BQ: true, BR: true, BS: true, BT: true, BV: true, BW: true, BY: true, BZ: true,
-        // C
-        CA: true, CC: true, CD: true, CF: true, CG: true, CH: true, CI: true, CK: true, CL: true, CM: true, CN: true, CO: true, CR: true, CU: true, CV: true, CW: true, CX: true, CY: true, CZ: true,
-        // D
-        DE: true, DJ: true, DK: true, DM: true, DO: true, DZ: true,
-        // E
-        EC: true, EE: true, EG: true, EH: true, ER: true, ES: true, ET: true,
-        // F
-        FI: true, FJ: true, FK: true, FM: true, FO: true, FR: true,
-        // G
-        GA: true, GB: true, GD: true, GE: true, GF: true, GG: true, GH: true, GI: true, GL: true, GM: true, GN: true, GP: true, GQ: true, GR: true, GT: true, GU: true, GW: true, GY: true,
-        // H
-        HK: true, HM: true, HN: true, HR: true, HT: true, HU: true,
-        // I
-        ID: true, IE: true, IL: true, IM: true, IN: false, IO: true, IQ: true, IR: false, IS: true, IT: true,
-        // J
-        JE: true, JM: true, JO: true, JP: true,
-        // K
-        KE: true, KG: false, KH: true, KI: true, KM: true, KN: true, KP: true, KR: true, KW: true, KY: true, KZ: true,
-        // L
-        LA: true, LB: true, LC: true, LI: true, LK: true, LR: true, LS: true, LT: true, LU: true, LV: true, LY: true,
-        // M
-        MA: true, MC: true, MD: true, ME: true, MF: true, MG: true, MH: true, MK: true, ML: true, MM: true, MN: true, MO: true, MP: true, MQ: true, MR: true, MS: true, MT: true, MU: true, MV: true, MW: true, MX: true, MY: true, MZ: true,
-        // N
-        NA: true, NC: true, NE: true, NF: true, NG: true, NI: true, NL: true, NO: true, NP: false, NR: true, NU: true, NZ: true,
-        // O
-        OM: true,
-        // P
-        PA: true, PE: true, PF: true, PG: true, PH: true, PK: true, PL: true, PM: true, PN: true, PR: true, PT: true, PW: true, PY: true,
-        // Q
-        QA: true,
-        // R
-        RE: true, RO: true, RS: true, RU: true, RW: true,
-        // S
-        SA: true, SB: true, SC: true, SD: true, SE: true, SG: true, SH: true, SI: true, SJ: true, SK: true, SL: true, SM: true, SN: true, SO: false, SR: true, SS: true, ST: true, SV: true, SX: true, SY: true, SZ: true,
-        // T
-        TC: true, TD: true, TF: true, TG: true, TH: true, TJ: true, TK: true, TL: true, TM: true, TN: true, TO: true, TR: true, TT: true, TV: true, TW: true, TZ: true,
-        // U
-        UA: true, UG: true, UM: true, US: true, UY: true, UZ: true,
-        // V
-        VA: true, VC: true, VE: true, VG: true, VI: true, VN: true, VU: true,
-        // W
-        WF: true, WS: true,
-        // Y
-        YE: true, YT: true,
-        // Z
-        ZA: true, ZM: true, ZW: true
-    },
-
-    init() {
-        console.log('Initializing TikTok shoutouts...');
-        this.getUserRegion()
-            .then(userRegion => {
-                console.log('Detected user region:', userRegion);
-
-                if (!(userRegion in this.regionAvailability)) {
-                    console.warn(`Region ${userRegion} not found in availability list, defaulting to US`);
-                    userRegion = 'US';
-                }
-
-                if (this.regionAvailability[userRegion]) {
-                    this.createShoutoutCards();
-                    this.setLastUpdatedTime();
-                    console.log(`Content available for region: ${userRegion}`);
-                } else {
-                    this.showUnavailableMessage(userRegion);
-                    console.log(`Content unavailable for region: ${userRegion}`);
-                }
-            })
-            .catch(error => {
-                console.error('Error during initialization:', error);
-                this.handleRegionError();
-            });
-    },
-
-     createShoutoutCards() {
+  lastUpdatedTime: '2025-03-13T09:21:57', // Manually set the last updated date and time
+  regionAvailability: {
+    AD: true, AE: true, AF: false, AG: true, AI: true, AL: true, AM: true, AO: true, AQ: true, AR: true, AS: true, AT: true, AU: true, AW: true, AX: true, AZ: true, 
+    BA: true, BB: true, BD: true, BE: true, BF: true, BG: true, BH: true, BI: true, BJ: true, BL: true, BM: true, BN: true, BO: true, BQ: true, BR: true, BS: true, BT: true, BV: true, BW: true, BY: true, BZ: true, 
+    CA: true, CC: true, CD: true, CF: true, CG: true, CH: true, CI: true, CK: true, CL: true, CM: true, CN: true, CO: true, CR: true, CU: true, CV: true, CW: true, CX: true, CY: true, CZ: true, 
+    DE: true, DJ: true, DK: true, DM: true, DO: true, DZ: true, 
+    EC: true, EE: true, EG: true, EH: true, ER: true, ES: true, ET: true, 
+    FI: true, FJ: true, FK: true, FM: true, FO: true, FR: true, 
+    GA: true, GB: true, GD: true, GE: true, GF: true, GG: true, GH: true, GI: true, GL: true, GM: true, GN: true, GP: true, GQ: true, GR: true, GT: true, GU: true, GW: true, GY: true, 
+    HK: true, HM: true, HN: true, HR: true, HT: true, HU: true, 
+    ID: true, IE: true, IL: true, IM: true, IN: false, IO: true, IQ: true, IR: false, IS: true, IT: true, 
+    JE: true, JM: true, JO: true, JP: true, 
+    KE: true, KG: false, KH: true, KI: true, KM: true, KN: true, KP: true, KR: true, KW: true, KY: true, KZ: true, 
+    LA: true, LB: true, LC: true, LI: true, LK: true, LR: true, LS: true, LT: true, LU: true, LV: true, LY: true, 
+    MA: true, MC: true, MD: true, ME: true, MF: true, MG: true, MH: true, MK: true, ML: true, MM: true, MN: true, MO: true, MP: true, MQ: true, MR: true, MS: true, MT: true, MU: true, MV: true, MW: true, MX: true, MY: true, MZ: true, 
+    NA: true, NC: true, NE: true, NF: true, NG: true, NI: true, NL: true, NO: true, NP: false, NR: true, NU: true, NZ: true, 
+    OM: true, 
+    PA: true, PE: true, PF: true, PG: true, PH: true, PK: true, PL: true, PM: true, PN: true, PR: true, PT: true, PW: true, PY: true, 
+    QA: true, 
+    RE: true, RO: true, RS: true, RU: true, RW: true, 
+    SA: true, SB: true, SC: true, SD: true, SE: true, SG: true, SH: true, SI: true, SJ: true, SK: true, SL: true, SM: true, SN: true, SO: false, SR: true, SS: true, ST: true, SV: true, SX: true, SY: true, SZ: true, 
+    TC: true, TD: true, TF: true, TG: true, TH: true, TJ: true, TK: true, TL: true, TM: true, TN: true, TO: true, TR: true, TT: true, TV: true, TW: true, TZ: true, 
+    UA: true, UG: true, UM: true, US: true, UY: true, UZ: true, 
+    VA: true, VC: true, VE: true, VG: true, VI: true, VN: true, VU: true, 
+    WF: true, WS: true, 
+    YE: true, YT: true, 
+    ZA: true, ZM: true, ZW: true
+  },
+  apiKey: '81d0ec80962a4a5cbebc0a24f06e5eca', // Replace with your ipgeolocation.io API key
+  init() {
+    this.getUserRegion().then(userRegion => {
+      if (this.regionAvailability[userRegion]) {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+      } else {
+        this.showUnavailableMessage(userRegion);
+      }
+    }).catch(error => {
+      console.error('Error fetching user region:', error);
+    });
+  },
+  createShoutoutCards() {
     const container = document.querySelector('.creator-grid');
     if (!container) return;
     container.innerHTML = '';
@@ -126,113 +87,56 @@ const tiktokShoutouts = {
     });
   },
   setLastUpdatedTime() {
-        const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
-        if (!lastUpdatedElement) {
-            console.error('Last updated timestamp element not found');
-            return;
-        }
+    const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
+    if (!lastUpdatedElement) return;
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+      timeZone: userTimeZone,
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    });
+    lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+  },
+  async getUserRegion() {
+    const cachedRegion = localStorage.getItem('userRegion');
+    const cachedTime = localStorage.getItem('userRegionTime');
+    const currentTime = Date.now();
 
-        try {
-            const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-                timeZone: userTimeZone,
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                hour12: true
-            });
-            lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
-        } catch (error) {
-            console.error('Error formatting date:', error);
-            lastUpdatedElement.textContent = `Last Updated: ${this.lastUpdatedTime}`;
-        }
-    },
-
-    async getUserRegion() {
-        try {
-            const methods = [
-                () => {
-                    const lang = navigator.language || navigator.userLanguage;
-                    return lang ? lang.split('-').pop().toUpperCase() : null;
-                },
-                () => {
-                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    const timezoneMap = {
-                        'America/': 'US',
-                        'Europe/': 'GB',
-                        'Asia/': 'JP',
-                    };
-                    for (const [prefix, region] of Object.entries(timezoneMap)) {
-                        if (timezone.startsWith(prefix)) return region;
-                    }
-                    return null;
-                },
-                () => 'US'
-            ];
-
-            for (const method of methods) {
-                const region = method();
-                if (region && this.isValidRegion(region)) {
-                    return region;
-                }
-            }
-
-            return 'US';
-        } catch (error) {
-            console.error('Error detecting region:', error);
-            return 'US';
-        }
-    },
-
-    isValidRegion(region) {
-        return typeof region === 'string' &&
-               region.length === 2 &&
-               region === region.toUpperCase() &&
-               region in this.regionAvailability;
-    },
-
-    handleRegionError() {
-        console.log('Falling back to US region due to error');
-        if (this.regionAvailability['US']) {
-            this.createShoutoutCards();
-            this.setLastUpdatedTime();
-        } else {
-            this.showUnavailableMessage('US');
-        }
-    },
-
-    showUnavailableMessage(region) {
-        const messageContainer = document.querySelector('.unavailable-message');
-        if (!messageContainer) {
-            console.error('Unavailable message container not found');
-            return;
-        }
-
-        const messages = {
-            AF: 'This content is currently not available in Afghanistan.',
-            IN: 'This content is currently not available in India.',
-            IR: 'This content is currently not available in Iran.',
-            KG: 'This content is currently not available in Kyrgyzstan.',
-            NP: 'This content is currently not available in Nepal.',
-            SO: 'This content is currently not available in Somalia.',
-            default: `Sorry, this section isn't available in ${region}. We apologize for any inconvenience.`
-        };
-
-        messageContainer.innerHTML = `
-            <div class="unavailable-message-title">Region Restriction Notice</div>
-            <p>${messages[region] || messages.default}</p>
-        `;
-        messageContainer.style.display = 'block';
+    if (cachedRegion && cachedTime && (currentTime - cachedTime < this.cacheDuration)) {
+      return cachedRegion;
     }
+
+    try {
+      const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${this.apiKey}`);
+      const data = await response.json();
+      const region = data.country_code2;
+      localStorage.setItem('userRegion', region);
+      localStorage.setItem('userRegionTime', currentTime);
+      return region;
+    } catch (error) {
+      console.error('Error fetching geolocation data:', error);
+      return 'US'; // Default to 'US' if there's an error
+    }
+  },
+  showUnavailableMessage(region) {
+    const messageContainer = document.querySelector('.unavailable-message');
+    if (!messageContainer) return;
+    messageContainer.innerHTML = `
+      <div class="unavailable-message-title">System Message</div>
+      <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
+    `;
+    messageContainer.style.display = 'block';
+  }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    tiktokShoutouts.init();
-});
+// Initialize the TikTok shoutouts
+tiktokShoutouts.init();
 
 const instagramShoutouts = {
     accounts: [
@@ -289,9 +193,9 @@ const instagramShoutouts = {
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
             timeZone: userTimeZone,
-            weekday: 'long',
+            weekday: 'short',
             year: 'numeric',
-            month: 'long',
+            month: 'short',
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
@@ -458,9 +362,9 @@ const youtubeShoutouts = {
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
             timeZone: userTimeZone,
-            weekday: 'long',
+            weekday: 'short',
             year: 'numeric',
-            month: 'long',
+            month: 'short',
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
