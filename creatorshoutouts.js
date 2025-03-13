@@ -103,35 +103,29 @@ const tiktokShoutouts = {
             });
     },
 
-    createShoutoutCards() {
-        const container = document.querySelector('.creator-grid');
-        if (!container) {
-            console.error('Creator grid container not found');
-            return;
-        }
-
-        container.innerHTML = '';
-
-        this.accounts.forEach(account => {
-            const card = document.createElement('div');
-            card.className = 'creator-card';
-            card.innerHTML = `
-                <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic"
-                     onerror="this.src='images/default-profile.jpg'">
-                <div class="creator-info">
-                    <h3>${account.nickname} ${account.isVerified ?
-                        '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
-                    <p>@${account.username}</p>
-                    <p>${account.bio || ''}</p>
-                    <p>${account.followers} Followers</p>
-                    <a href="https://tiktok.com/@${account.username}" target="_blank">Visit Profile</a>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    },
-
-    setLastUpdatedTime() {
+     createShoutoutCards() {
+    const container = document.querySelector('.creator-grid');
+    if (!container) return;
+    container.innerHTML = '';
+    this.accounts.forEach(account => {
+      const card = document.createElement('div');
+      card.className = 'creator-card';
+      card.innerHTML = `
+        <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+        <div class="creator-info">
+          <div class="creator-header">
+            <h3>${account.nickname} ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
+          </div>
+          <p class="creator-username">@${account.username}</p>
+          <p class="creator-bio">${account.bio || ''}</p>
+          <p class="follower-count">${account.followers} Followers</p>
+          <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile"> Visit Profile </a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  },
+  setLastUpdatedTime() {
         const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
         if (!lastUpdatedElement) {
             console.error('Last updated timestamp element not found');
