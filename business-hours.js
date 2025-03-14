@@ -88,10 +88,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const openDate = new Date(`${now.toDateString()} ${openTime}`);
-        const closeDate = new Date(`${now.toDateString()} ${closeTime}`);
+        const openDate = new Date(`1970-01-01T${openTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
+        const closeDate = new Date(`1970-01-01T${closeTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
 
-        if (now >= openDate && now <= closeDate) {
+        if (now >= new Date(openDate) && now <= new Date(closeDate)) {
             setStatus("Open", "green");
         } else {
             setStatus("Closed", "red");
@@ -119,12 +119,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
         if (hours === "Closed") return hours;
         const [openTime, closeTime] = hours.split(" - ");
-        const openDate = new Date(`2025-01-01T${convertTo24Hour(openTime)}:00`);
-        const closeDate = new Date(`2025-01-01T${convertTo24Hour(closeTime)}:00`);
+        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
 
-        const openTimeConverted = openDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
-        const closeTimeConverted = closeDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
-
-        return `${openTimeConverted} - ${closeTimeConverted}`;
+        return `${openDate} - ${closeDate}`;
     }
 });
