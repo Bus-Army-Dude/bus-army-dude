@@ -19,14 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const todayDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // ISO format for holidays
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // Display user's timezone
+    // Display the user's detected timezone
     document.getElementById('user-timezone').textContent = userTimezone;
 
     // Render business hours dynamically
     for (const [day, hours] of Object.entries(businessHours)) {
-        const convertedHours = (userTimezone === "America/New_York") 
-            ? hours 
-            : convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
+        const convertedHours = convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
         if (day === currentDay) {
