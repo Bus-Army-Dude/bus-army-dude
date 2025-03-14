@@ -1688,94 +1688,40 @@ body.focus-outline-disabled :focus {
     outline: none; /* No outline when focus outline is disabled */
 }
 
-.chat-icon { 
-    position: fixed; 
-    bottom: 20px; 
-    left: 20px; 
-    width: 60px; 
-    height: 60px; 
-    background: #007bff; 
-    border: none; 
-    border-radius: 50%; 
-    color: white; 
-    font-size: 24px; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    cursor: pointer; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    z-index: 1000; /* Ensure the chat icon is on top */
+.business-info {
+  padding: 20px;
+  background-color: var(--background-color); /* Light/Dark mode adaptive */
+  color: var(--text-color);
+  border-radius: 10px;
 }
 
-.chat-popup { 
-    display: none; 
-    position: fixed; 
-    bottom: 90px; 
-    left: 20px; 
-    width: 300px; 
-    background: white; 
-    border-radius: 8px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    z-index: 1000; /* Ensure the chat popup is on top */
+.hours-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.chat-box { 
-    display: flex; 
-    flex-direction: column; 
-    height: 400px; 
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.chat-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 10px; 
-    background: #007bff; 
-    color: white; 
-    border-radius: 8px 8px 0 0; 
+.hours-row.highlight {
+  background-color: var(--highlight-color);
+  font-weight: bold;
 }
 
-.chat-log { 
-    flex: 1; 
-    overflow-y: scroll; 
-    padding: 10px; 
-    border-bottom: 1px solid #ccc; 
-    background: #f9f9f9; /* Light background for better readability */
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Space between chat bubbles */
+.status {
+  font-size: 1.2rem;
+  margin-top: 10px;
 }
 
-.chat-log p { 
-    margin: 0; 
-    padding: 10px; /* Add padding for better spacing */
-    font-size: 16px; /* Increase font size for readability */
-    border-radius: 20px; /* Add border radius for better aesthetics */
-    max-width: 70%; /* Limit the width of the chat bubbles */
-    word-wrap: break-word; /* Ensure long words break to fit bubble */
-    display: inline-block;
-}
-
-.chat-log p.user { 
-    background: #4caf50; /* Green background for user messages */
-    color: white; /* White text for user messages */
-    align-self: flex-end; /* Align user messages on the right */
-    text-align: right; /* Text alignment inside the bubble */
-}
-
-.chat-log p.ai { 
-    background: #007bff; /* Blue background for AI messages */
-    color: white; /* White text for AI messages */
-    align-self: flex-start; /* Align AI messages on the left */
-    text-align: left; /* Text alignment inside the bubble */
-}
-
-.chat-input { 
-    width: calc(100% - 20px); 
-    padding: 10px; 
-    border: none; 
-    border-top: 1px solid #ccc; 
-    outline: none; 
-    font-size: 16px; /* Increase font size for input */
-    background: #f1f1f1; /* Light gray background for input */
+.holiday-alert {
+  background-color: var(--alert-color);
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 15px;
 }
