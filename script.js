@@ -275,91 +275,91 @@ faqQuestions.forEach((question) => {
     });
 });
 
-// Get the current year dynamically
-document.getElementById('year').textContent = new Date().getFullYear();
+document.addEventListener('DOMContentLoaded', function() {
+    // Example business hours in local timezone
+    const businessHours = {
+        monday: { open: "09:00", close: "17:00" },
+        tuesday: { open: "09:00", close: "17:00" },
+        wednesday: { open: "09:00", close: "17:00" },
+        thursday: { open: "09:00", close: "17:00" },
+        friday: { open: "09:00", close: "17:00" },
+        saturday: { open: "10:00", close: "14:00" },
+        sunday: { open: "Closed", close: "Closed" }
+    };
 
-// Define business hours in your local timezone
-const businessHours = {
-  monday: { open: "09:00", close: "17:00" },
-  tuesday: { open: "09:00", close: "17:00" },
-  wednesday: { open: "09:00", close: "17:00" },
-  thursday: { open: "09:00", close: "17:00" },
-  friday: { open: "09:00", close: "17:00" },
-  saturday: { open: "10:00", close: "14:00" },
-  sunday: { open: null, close: null } // Closed
-};
+    // Example holiday hours
+    const holidayHours = {
+        'Christmas': { date: '2025-12-25', open: "10:00", close: "14:00" }
+    };
 
-// Holiday hours (with holiday name)
-const holidayHours = {
-  date: "2025-12-25", // Example holiday date (YYYY-MM-DD)
-  name: "Christmas Day", // Name of the holiday
-  open: "10:00",
-  close: "14:00"
-};
-
-// Function to convert hours to user's timezone
-function convertToUserTimezone(time, timezoneOffset) {
-  const localTime = new Date(`1970-01-01T${time}:00`);
-  const userTimezoneOffset = localTime.getTimezoneOffset() * 60000;
-  const adjustedTime = new Date(localTime - userTimezoneOffset + timezoneOffset * 60000);
-  return adjustedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-// Function to check if business is open
-function isBusinessOpen(day, timezoneOffset) {
-  const now = new Date();
-  const currentDay = now.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
-  const currentTime = now.toTimeString().slice(0, 5); // HH:MM format
-
-  if (day === currentDay) {
-    const hours = businessHours[day];
-    if (hours.open && currentTime >= hours.open && currentTime <= hours.close) {
-      return true;
-    }
-  }
-  return false;
-}
-
-// Render business hours dynamically
-function renderBusinessHours() {
-  const container = document.getElementById("hours-container");
-  const timezoneOffset = new Date().getTimezoneOffset();
-  const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD format
-
-  // Check if today is a holiday
-  if (today === holidayHours.date) {
-    document.getElementById("holiday-alert").style.display = "block";
-    document.getElementById("holiday-name").textContent = holidayHours.name;
-    document.getElementById("holiday-hours").textContent = `${convertToUserTimezone(holidayHours.open, timezoneOffset)} - ${convertToUserTimezone(holidayHours.close, timezoneOffset)}`;
-  }
-
-  for (const [day, hours] of Object.entries(businessHours)) {
-    const row = document.createElement("div");
-    row.classList.add("hours-row");
-
-    // Add highlight class if it's today
-    if (day === today.toLowerCase()) row.classList.add("highlight");
-
-    const daySpan = document.createElement("span");
-    daySpan.textContent = day.charAt(0).toUpperCase() + day.slice(1);
-
-    const hoursSpan = document.createElement("span");
-    if (hours.open && hours.close) {
-      const openTime = convertToUserTimezone(hours.open, timezoneOffset);
-      const closeTime = convertToUserTimezone(hours.close, timezoneOffset);
-      hoursSpan.textContent = `${openTime} - ${closeTime}`;
-    } else {
-      hoursSpan.textContent = "Closed";
+    // Function to format hours
+    function formatHours(hours) {
+        return `${hours.open} - ${hours.close}`;
     }
 
-    row.appendChild(daySpan);
-    row.appendChild(hoursSpan);
-    container.appendChild(row);
-  }
+    // Get the user's current timezone
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log("User Timezone:", userTimezone);
 
-  // Update open/closed status
-  const openStatus = isBusinessOpen(today.toLowerCase(), timezoneOffset) ? "Open" : "Closed";
-  document.getElementById("open-status").textContent = openStatus;
-}
+    // Render the business hours dynamically
+    function renderBusinessHours() {
+        const currentDate = new Date();
+        const currentDay = currentDate.toLocaleString('en-us', { weekday: 'long' }).toLowerCase(); // Gets the current weekday (e.g., 'monday', 'tuesday')
 
-document.addEventListener("DOMContentLoaded", renderBusinessHours);
+        const hoursContainer = document.getElementById('hours-container');
+        let hoursContent = '<h3>Business Hours:</h3>';
+
+        // Loop through the business hours and display them
+        for (let day in businessHours) {
+            const hours = businessHours[day];
+            const isToday = currentDay === day;
+
+            // Highlight today's hours
+            const rowClass = isToday ? 'highlight' : '';
+            hoursContent += `
+                <div class="hours-row ${rowClass}">
+                    <strong>${day.charAt(0).toUpperCase() + day.slice(1)}:</strong> ${formatHours(hours)}
+                </div>
+            `;
+        }
+
+        // Append business hours to the container
+        hoursContainer.innerHTML = hoursContent;
+
+        // Update the status based on the current time
+        const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
+        const openingTime = parseTime(businessHours[currentDay].open);
+        const closingTime = parseTime(businessHours[currentDay].close);
+
+        const status = (currentTime >= openingTime && currentTime < closingTime) ? 'Open' : 'Closed';
+        document.getElementById('open-status').textContent = status;
+    }
+
+    // Function to parse time like "09:00" into minutes (for comparison)
+    function parseTime(time) {
+        if (time === 'Closed') return -1;
+        const [hour, minute] = time.split(':').map(num => parseInt(num));
+        return hour * 60 + minute;
+    }
+
+    // Render the holiday hours if today is a holiday
+    function renderHolidayHours() {
+        const currentDate = new Date();
+        const todayDate = currentDate.toISOString().split('T')[0]; // Get today’s date in YYYY-MM-DD format
+
+        // Check if there's a holiday today
+        for (let holiday in holidayHours) {
+            if (holidayHours[holiday].date === todayDate) {
+                document.getElementById('holiday-name').textContent = holiday;
+                document.getElementById('holiday-hours').textContent = formatHours(holidayHours[holiday]);
+                document.getElementById('holiday-alert').style.display = 'block'; // Show holiday hours
+                break;
+            }
+        }
+    }
+
+    // Run the functions on load
+    renderBusinessHours();
+    renderHolidayHours();
+});
+
