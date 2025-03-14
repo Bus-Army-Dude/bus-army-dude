@@ -111,8 +111,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
         if (hours === "Closed") return hours; // No conversion needed for "Closed"
         const [openTime, closeTime] = hours.split(" - ");
-        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}Z`);
-        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}Z`);
+        const openDate = new Date(new Date().toLocaleDateString() + ' ' + openTime);
+        const closeDate = new Date(new Date().toLocaleDateString() + ' ' + closeTime);
 
         const openTimeConverted = openDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: "2-digit", minute: "2-digit" });
         const closeTimeConverted = closeDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: "2-digit", minute: "2-digit" });
