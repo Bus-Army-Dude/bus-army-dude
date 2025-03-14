@@ -17,6 +17,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const hoursContainer = document.getElementById("hours-container");
     const currentDay = new Date().toLocaleString("en-US", { weekday: 'long' }).toLowerCase();
     const todayDate = new Date().toISOString().split('T')[0];
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    // Display user's timezone
+    document.getElementById('user-timezone').textContent = userTimezone;
 
     // Render business hours
     for (const [day, hours] of Object.entries(businessHours)) {
