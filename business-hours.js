@@ -42,15 +42,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // Display user's timezone
     document.getElementById('user-timezone').textContent = userTimezone;
 
-    // Render business hours
+    // Render business hours with conversion to user's timezone
     for (const [day, hours] of Object.entries(businessHours)) {
+        const convertedHours = convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
         if (day === currentDay) {
             dayElement.classList.add("highlight");
         }
         dayElement.id = day;
-        dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${hours}</span>`;
+        dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedHours}</span>`;
         hoursContainer.appendChild(dayElement);
     }
 
@@ -62,8 +63,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // Check for holiday hours
     if (holidayHours[todayDate]) {
         const holidayAlert = document.getElementById("holiday-alert");
+        const convertedHolidayHours = holidayHours[todayDate].hours === "Closed" ? "Closed" : convertHoursToUserTimezone(holidayHours[todayDate].hours, "America/New_York", userTimezone);
         document.getElementById("holiday-name").textContent = holidayHours[todayDate].name;
-        document.getElementById("holiday-hours").textContent = holidayHours[todayDate].hours;
+        document.getElementById("holiday-hours").textContent = convertedHolidayHours;
         holidayAlert.style.display = "block";
     }
 
@@ -112,5 +114,17 @@ document.addEventListener("DOMContentLoaded", function() {
             hours = parseInt(hours, 10) + 12;
         }
         return `${hours}:${minutes}`;
+    }
+
+    function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
+        if (hours === "Closed") return hours;
+        const [openTime, closeTime] = hours.split(" - ");
+        const openDate = new Date(`2025-01-01T${convertTo24Hour(openTime)}:00`);
+        const closeDate = new Date(`2025-01-01T${convertTo24Hour(closeTime)}:00`);
+
+        const openTimeConverted = openDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const closeTimeConverted = closeDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+
+        return `${openTimeConverted} - ${closeTimeConverted}`;
     }
 });
