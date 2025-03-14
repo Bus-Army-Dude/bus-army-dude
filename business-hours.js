@@ -35,16 +35,18 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     const hoursContainer = document.getElementById("hours-container");
-    const currentDay = new Date().toLocaleString("en-US", { weekday: 'long' }).toLowerCase();
-    const todayDate = new Date().toISOString().split('T')[0];
+    const currentDay = new Date().toLocaleString("en-US", { weekday: 'long', timeZone: "America/New_York" }).toLowerCase();
+    const todayDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // ISO format
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     // Display user's timezone
     document.getElementById('user-timezone').textContent = userTimezone;
 
-    // Render business hours with conversion to user's timezone
+    // Render business hours with conversion
     for (const [day, hours] of Object.entries(businessHours)) {
-        const convertedHours = convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
+        const convertedHours = (userTimezone === "America/New_York") 
+            ? hours 
+            : convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
         if (day === currentDay) {
@@ -63,9 +65,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // Check for holiday hours
     if (holidayHours[todayDate]) {
         const holidayAlert = document.getElementById("holiday-alert");
-        const convertedHolidayHours = holidayHours[todayDate].hours === "Closed" ? "Closed" : convertHoursToUserTimezone(holidayHours[todayDate].hours, "America/New_York", userTimezone);
-        document.getElementById("holiday-name").textContent = holidayHours[todayDate].name;
-        document.getElementById("holiday-hours").textContent = convertedHolidayHours;
+        const holidayName = holidayHours[todayDate].name;
+        const holidaySpecialHours = holidayHours[todayDate].hours === "Closed" 
+            ? "Closed" 
+            : convertHoursToUserTimezone(holidayHours[todayDate].hours, "America/New_York", userTimezone);
+
+        document.getElementById("holiday-name").textContent = holidayName;
+        document.getElementById("holiday-hours").textContent = holidaySpecialHours;
         holidayAlert.style.display = "block";
     }
 
@@ -73,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateStatus();
 
     function updateStatus() {
-        const now = new Date();
+        const nowInNewYork = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
         let currentDayHours = businessHours[currentDay];
 
         // Check if today is a holiday and use holiday hours if available
@@ -88,13 +94,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const openDate = new Date(`1970-01-01T${openTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
-        const closeDate = new Date(`1970-01-01T${closeTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
-        const openDateInUserTz = new Date(openDate).getTime();
-        const closeDateInUserTz = new Date(closeDate).getTime();
-        const nowInUserTz = new Date(now.toLocaleString("en-US", { timeZone: userTimezone })).getTime();
+        const openDateInNewYork = new Date(`1970-01-01T${openTime}:00Z`).toLocaleString("en-US", { timeZone: "America/New_York" });
+        const closeDateInNewYork = new Date(`1970-01-01T${closeTime}:00Z`).toLocaleString("en-US", { timeZone: "America/New_York" });
+        const nowTime = new Date(nowInNewYork).getTime();
 
-        if (nowInUserTz >= openDateInUserTz && nowInUserTz <= closeDateInUserTz) {
+        // Open/closed status logic
+        if (nowTime >= new Date(openDateInNewYork).getTime() && nowTime <= new Date(closeDateInNewYork).getTime()) {
             setStatus("Open", "green");
         } else {
             setStatus("Closed", "red");
@@ -122,9 +127,12 @@ document.addEventListener("DOMContentLoaded", function() {
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
         if (hours === "Closed") return hours;
         const [openTime, closeTime] = hours.split(" - ");
-        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
-        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00Z`);
+        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00Z`);
 
-        return `${openDate} - ${closeDate}`;
+        const openTimeConverted = new Date(openDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const closeTimeConverted = new Date(closeDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+
+        return `${openTimeConverted} - ${closeTimeConverted}`;
     }
 });
