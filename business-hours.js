@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateStatus();
 
     function updateStatus() {
-        const now = new Date().toLocaleString("en-US", { timeZone: userTimezone });
+        const now = new Date();
         let currentDayHours = businessHours[currentDay];
 
         // Check if today is a holiday and use holiday hours if available
@@ -88,10 +88,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const openDate = new Date(`1970-01-01T${openTime}:00`).toLocaleString("en-US", { timeZone: userTimezone });
-        const closeDate = new Date(`1970-01-01T${closeTime}:00`).toLocaleString("en-US", { timeZone: userTimezone });
+        const openDate = new Date(`1970-01-01T${openTime}:00`);
+        const closeDate = new Date(`1970-01-01T${closeTime}:00`);
 
-        if (new Date(now) >= new Date(openDate) && new Date(now) <= new Date(closeDate)) {
+        const openTimeInUserTz = new Date(openDate.toLocaleString("en-US", { timeZone: userTimezone })).getTime();
+        const closeTimeInUserTz = new Date(closeDate.toLocaleString("en-US", { timeZone: userTimezone })).getTime();
+        const nowInUserTz = new Date(now.toLocaleString("en-US", { timeZone: userTimezone })).getTime();
+
+        if (nowInUserTz >= openTimeInUserTz && nowInUserTz <= closeTimeInUserTz) {
             setStatus("Open", "green");
         } else {
             setStatus("Closed", "red");
