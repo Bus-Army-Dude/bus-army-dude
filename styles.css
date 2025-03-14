@@ -1694,8 +1694,10 @@ body.focus-outline-disabled :focus {
     color: var(--text-color);
     border: 1px solid var(--border-color); 
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    margin: 20px auto;
+    max-width: 800px;
 }
 
 /* Business Hours Container */
@@ -1707,15 +1709,23 @@ body.focus-outline-disabled :focus {
 /* Contact Info Styling */
 .contact-info a {
     color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: var(--hover-color);
 }
 
 /* Holiday Alert Box */
 .holiday-alert {
     margin-top: 15px;
     padding: 10px;
-    background-color: var(--light-content-bg);
+    background-color: var(--light-accent);
     border: 1px solid var(--border-color);
     border-radius: 5px;
+    color: white;
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
 
 /* Status Styling */
@@ -1728,4 +1738,17 @@ body.focus-outline-disabled :focus {
 .hours-row.highlight {
     background-color: var(--accent-color);
     color: var(--bg-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Modern styling for hours rows */
+.hours-row {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hours-row:last-child {
+    border-bottom: none;
 }
