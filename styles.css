@@ -1734,6 +1734,12 @@ body.focus-outline-disabled :focus {
     margin-top: 20px;
 }
 
+/* Timezone Display */
+.timezone {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
 /* Highlight the current day in the business hours */
 .hours-row.highlight {
     background-color: var(--accent-color);
