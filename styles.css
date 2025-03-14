@@ -1697,24 +1697,16 @@ body.focus-outline-disabled :focus {
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
     margin: 20px auto;
-    /* Full width with padding for all devices */
-    width: 100%;
-    max-width: 100%; /* Remove max-width restriction */
-    padding-left: 5vw;  /* Left padding for larger screens */
-    padding-right: 5vw; /* Right padding for larger screens */
-    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    max-width: 1200px; /* Limit max width for larger screens */
+    width: calc(100% - 40px); /* Ensure padding on smaller devices */
+    box-sizing: border-box;
 }
 
 /* Business Hours Container */
 .hours-container {
     margin-top: 15px;
     padding-top: 10px;
-    /* Same width strategy for consistency */
-    width: 100%;
-    max-width: 100%; 
-    padding-left: 5vw;
-    padding-right: 5vw;
-    box-sizing: border-box;
+    width: 100%; /* Full width inside the container */
 }
 
 /* Contact Info Styling */
@@ -1737,11 +1729,9 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
-    /* Responsive width adjustments */
-    width: 100%;
-    max-width: 100%;
-    padding-left: 5vw;
-    padding-right: 5vw;
+    width: calc(100% - 40px); /* Full width with margin */
+    max-width: 1200px; /* Same width limit as the business-info */
+    margin: 0 auto;
     box-sizing: border-box;
 }
 
@@ -1749,8 +1739,7 @@ body.focus-outline-disabled :focus {
 .status {
     font-weight: bold;
     margin-top: 20px;
-    /* Center the status text */
-    text-align: center;
+    text-align: center; /* Center status */
 }
 
 /* Timezone Display */
@@ -1765,7 +1754,7 @@ body.focus-outline-disabled :focus {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 10px;
-    text-align: center;
+    text-align: center; /* Center title */
 }
 
 /* Highlight the current day in the business hours */
@@ -1778,16 +1767,11 @@ body.focus-outline-disabled :focus {
 
 /* Modern styling for hours rows */
 .hours-row {
-    padding: 5px 0;
+    padding: 10px 0;
     border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
     font-weight: bold;
-    /* Full width with spacing */
-    width: 100%;
-    max-width: 100%;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    box-sizing: border-box;
+    display: flex; /* Use flexbox for organization */
+    justify-content: space-between; /* Space between day and hours */
 }
 
 .hours-row span {
