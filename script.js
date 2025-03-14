@@ -275,100 +275,80 @@ faqQuestions.forEach((question) => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Example business hours (local time)
+document.addEventListener("DOMContentLoaded", function() {
     const businessHours = {
-        monday: { open: "09:00", close: "17:00" },
-        tuesday: { open: "09:00", close: "17:00" },
-        wednesday: { open: "09:00", close: "17:00" },
-        thursday: { open: "09:00", close: "17:00" },
-        friday: { open: "09:00", close: "17:00" },
-        saturday: { open: "10:00", close: "14:00" },
-        sunday: { open: "Closed", close: "Closed" }
+        sunday: "9:00 AM - 5:00 PM",
+        monday: "9:00 AM - 5:00 PM",
+        tuesday: "9:00 AM - 5:00 PM",
+        wednesday: "9:00 AM - 5:00 PM",
+        thursday: "9:00 AM - 5:00 PM",
+        friday: "9:00 AM - 5:00 PM",
+        saturday: "9:00 AM - 5:00 PM"
     };
 
-    // Example holiday hours
     const holidayHours = {
-        "2025-12-25": { // Example holiday (Christmas)
-            name: "Christmas Day",
-            open: "Closed",
-            close: "Closed"
-        }
+        "2025-12-25": "Closed",  // Example: Christmas Day
+        "2025-01-01": "10:00 AM - 2:00 PM"  // Example: New Year's Day
     };
 
-    // Function to format hours
-    function formatHours(hours) {
-        return `${hours.open} - ${hours.close}`;
-    }
+    const hoursContainer = document.getElementById("hours-container");
+    const currentDay = new Date().toLocaleString("en-US", { weekday: 'long' }).toLowerCase();
+    const todayDate = new Date().toISOString().split('T')[0];
 
-    // Render the business hours dynamically
-    function renderBusinessHours() {
-        const hoursContainer = document.getElementById('hours-container');
-        let hoursContent = '<h3>Business Hours:</h3>';
-
-        // Loop through the business hours and display them
-        for (let day in businessHours) {
-            const hours = businessHours[day];
-
-            hoursContent += `
-                <div class="hours-row">
-                    <strong>${day.charAt(0).toUpperCase() + day.slice(1)}:</strong> ${formatHours(hours)}
-                </div>
-            `;
+    // Render business hours
+    for (const [day, hours] of Object.entries(businessHours)) {
+        const dayElement = document.createElement("div");
+        dayElement.classList.add("hours-row");
+        if (day === currentDay) {
+            dayElement.classList.add("highlight");
         }
-
-        // Append business hours to the container
-        hoursContainer.innerHTML = hoursContent;
+        dayElement.id = day;
+        dayElement.textContent = `${capitalize(day)}: ${hours}`;
+        hoursContainer.appendChild(dayElement);
     }
 
-    // Function to check if today is a holiday and display the holiday hours if necessary
-    function checkForHoliday() {
-        const currentDate = new Date();
-        const formattedDate = currentDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    // Highlight today's hours
+    function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
-        if (holidayHours[formattedDate]) {
-            const holiday = holidayHours[formattedDate];
+    // Check for holiday hours
+    if (holidayHours[todayDate]) {
+        const holidayAlert = document.getElementById("holiday-alert");
+        document.getElementById("holiday-name").textContent = "Today's Holiday";
+        document.getElementById("holiday-hours").textContent = holidayHours[todayDate];
+        holidayAlert.style.display = "block";
+    }
 
-            // Show holiday alert
-            document.getElementById('holiday-name').textContent = holiday.name;
-            document.getElementById('holiday-hours').textContent = formatHours(holiday);
-            document.getElementById('holiday-alert').style.display = 'block';
+    // Update open/closed status
+    updateStatus();
 
-            // Set special holiday status
-            return true;
+    function updateStatus() {
+        const now = new Date();
+        const currentDayHours = businessHours[currentDay];
+        const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
+        const openDate = new Date(`1970-01-01T${openTime}:00`);
+        const closeDate = new Date(`1970-01-01T${closeTime}:00`);
+
+        const statusElement = document.getElementById("open-status");
+        if (now >= openDate && now <= closeDate) {
+            statusElement.textContent = "Open";
+            statusElement.style.color = "green";
+        } else {
+            statusElement.textContent = "Closed";
+            statusElement.style.color = "red";
         }
-
-        // If no holiday today, hide the holiday section
-        document.getElementById('holiday-alert').style.display = 'none';
-        return false;
     }
 
-    // Function to determine if the business is open or closed
-    function checkBusinessStatus() {
-        const currentDate = new Date();
-        const currentDay = currentDate.toLocaleString('en-us', { weekday: 'long' }).toLowerCase(); // Get today's day
-
-        const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
-        const openingTime = parseTime(businessHours[currentDay].open);
-        const closingTime = parseTime(businessHours[currentDay].close);
-
-        const status = (currentTime >= openingTime && currentTime < closingTime) ? 'Open' : 'Closed';
-        document.getElementById('open-status').textContent = status;
-    }
-
-    // Parse time from string like "09:00" to minutes (for comparison)
-    function parseTime(time) {
-        if (time === 'Closed') return -1;
-        const [hour, minute] = time.split(':').map(num => parseInt(num));
-        return hour * 60 + minute;
-    }
-
-    // Run the functions when the DOM is ready
-    renderBusinessHours();
-    const isHoliday = checkForHoliday();
-    if (!isHoliday) {
-        checkBusinessStatus();
+    function convertTo24Hour(time) {
+        const [timePart, modifier] = time.split(" ");
+        let [hours, minutes] = timePart.split(":");
+        if (hours === "12") {
+            hours = "00";
+        }
+        if (modifier === "PM") {
+            hours = parseInt(hours, 10) + 12;
+        }
+        return `${hours}:${minutes}`;
     }
 });
-
-
