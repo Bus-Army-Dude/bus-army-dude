@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const todayDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // ISO format for holidays
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // Display the user's detected timezone
+    // Display user's timezone
     document.getElementById('user-timezone').textContent = userTimezone;
 
     // Render business hours dynamically
@@ -41,9 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    // Display special hours only on the event date
+    // Show holiday alert only on matching holiday date
+    const holidayAlert = document.getElementById("holiday-alert");
     if (holidayHours[todayDate]) {
-        const holidayAlert = document.getElementById("holiday-alert");
         const holidayDetails = holidayHours[todayDate];
         const specialHours = holidayDetails.hours === "Closed" 
             ? "Closed" 
@@ -52,6 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("holiday-name").textContent = holidayDetails.name;
         document.getElementById("holiday-hours").textContent = specialHours;
         holidayAlert.style.display = "block";
+    } else {
+        // Hide the holiday alert if there's no holiday
+        holidayAlert.style.display = "none";
     }
 
     // Update Open/Closed Status
