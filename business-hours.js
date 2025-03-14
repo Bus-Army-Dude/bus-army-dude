@@ -88,8 +88,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const openDate = new Date(`1970-01-01T${openTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
-        const closeDate = new Date(`1970-01-01T${closeTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
+        const openDate = new Date(`1970-01-01T${openTime}:00`).toLocaleString("en-US", { timeZone: userTimezone });
+        const closeDate = new Date(`1970-01-01T${closeTime}:00`).toLocaleString("en-US", { timeZone: userTimezone });
 
         if (now >= new Date(openDate) && now <= new Date(closeDate)) {
             setStatus("Open", "green");
@@ -119,9 +119,12 @@ document.addEventListener("DOMContentLoaded", function() {
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
         if (hours === "Closed") return hours;
         const [openTime, closeTime] = hours.split(" - ");
-        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
-        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00`);
+        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00`);
 
-        return `${openDate} - ${closeDate}`;
+        const openTimeConverted = new Date(openDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const closeTimeConverted = new Date(closeDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+
+        return `${openTimeConverted} - ${closeTimeConverted}`;
     }
 });
