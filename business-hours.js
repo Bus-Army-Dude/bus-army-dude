@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const businessHours = {
         sunday: "10:00 AM - 11:00 PM",
         monday: "10:00 AM - 11:00 PM",
@@ -6,43 +6,23 @@ document.addEventListener("DOMContentLoaded", function() {
         wednesday: "10:00 AM - 11:00 PM",
         thursday: "10:00 AM - 11:00 PM",
         friday: "10:00 AM - 11:00 PM",
-        saturday: "10:00 AM - 11:00 PM"
+        saturday: "10:00 AM - 11:00 PM",
     };
 
     const holidayHours = {
-        "2025-05-26": { name: "Memorial Day", hours: "Closed" },
-        "2025-07-04": { name: "Independence Day", hours: "Closed" },
-        "2025-09-01": { name: "Labor Day", hours: "Closed" },
-        "2025-09-01": { name: "Columbus Day", hours: "10:00 AM - 11:00 PM" },
-        "2025-11-11": { name: "Veterans Day", hours: "Closed" },
-        "2025-11-27": { name: "Thanksgiving Day", hours: "Closed" },
-        "2025-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
         "2025-12-25": { name: "Christmas Day", hours: "Closed" },
-        "2025-12-31": { name: "New Year's Eve", hours: "Closed" },
-        "2026-01-01": { name: "New Year's Day", hours: "Closed" },
-        "2026-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
-        "2026-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
-        "2026-05-26": { name: "Memorial Day", hours: "Closed" },
-        "2026-07-04": { name: "Independence Day", hours: "Closed" },
-        "2026-09-01": { name: "Labor Day", hours: "Closed" },
-        "2026-09-01": { name: "Columbus Day", hours: "10:00 AM - 11:00 PM" },
-        "2026-11-11": { name: "Veterans Day", hours: "Closed" },
-        "2026-11-27": { name: "Thanksgiving Day", hours: "Closed" },
-        "2026-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
-        "2026-12-25": { name: "Christmas Day", hours: "Closed" },
-        "2026-12-31": { name: "New Year's Eve", hours: "Closed" },
-        "2027-01-01": { name: "New Year's Day", hours: "Closed" }
+        "2025-11-27": { name: "Thanksgiving Day", hours: "Closed" },
     };
 
     const hoursContainer = document.getElementById("hours-container");
     const currentDay = new Date().toLocaleString("en-US", { weekday: "long", timeZone: "America/New_York" }).toLowerCase();
-    const todayDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // ISO format
+    const todayDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // ISO format for holidays
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // Display user's timezone
-    document.getElementById("user-timezone").textContent = userTimezone;
+    // Display the user's detected timezone
+    document.getElementById('user-timezone').textContent = userTimezone;
 
-    // Render business hours with conversion
+    // Render business hours dynamically
     for (const [day, hours] of Object.entries(businessHours)) {
         const convertedHours = (userTimezone === "America/New_York") 
             ? hours 
@@ -52,64 +32,55 @@ document.addEventListener("DOMContentLoaded", function() {
         if (day === currentDay) {
             dayElement.classList.add("highlight");
         }
-        dayElement.id = day;
         dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedHours}</span>`;
         hoursContainer.appendChild(dayElement);
     }
 
-    // Highlight today's hours
+    // Capitalize the first letter of the day
     function capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    // Check for holiday hours
+    // Display special hours only on the event date
     if (holidayHours[todayDate]) {
         const holidayAlert = document.getElementById("holiday-alert");
-        const holidayName = holidayHours[todayDate].name;
-        const holidaySpecialHours = holidayHours[todayDate].hours === "Closed" 
+        const holidayDetails = holidayHours[todayDate];
+        const specialHours = holidayDetails.hours === "Closed" 
             ? "Closed" 
-            : convertHoursToUserTimezone(holidayHours[todayDate].hours, "America/New_York", userTimezone);
+            : convertHoursToUserTimezone(holidayDetails.hours, "America/New_York", userTimezone);
 
-        document.getElementById("holiday-name").textContent = holidayName;
-        document.getElementById("holiday-hours").textContent = holidaySpecialHours;
+        document.getElementById("holiday-name").textContent = holidayDetails.name;
+        document.getElementById("holiday-hours").textContent = specialHours;
         holidayAlert.style.display = "block";
     }
 
-    // Update open/closed status
+    // Update Open/Closed Status
     updateStatus();
 
     function updateStatus() {
-        const nowInNewYork = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+        const nowInUserTz = new Date().toLocaleString("en-US", { timeZone: userTimezone });
         let currentDayHours = businessHours[currentDay];
 
-        // Check if today is a holiday and use holiday hours if available
+        // Check if today has special holiday hours
         if (holidayHours[todayDate]) {
             currentDayHours = holidayHours[todayDate].hours;
         }
 
-        // If hours are "Closed" for holidays, set status accordingly
+        // If hours are "Closed," reflect it
         if (currentDayHours === "Closed") {
             setStatus("Closed", "red");
             return;
         }
 
-        // Parse open and close times
+        // Parse and compare open and close times
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const now = new Date();
+        const now = new Date(nowInUserTz);
 
-        const openDateTime = new Date(
-            `${now.toLocaleDateString("en-US", { timeZone: "America/New_York" })}T${openTime}`
-        );
-        const closeDateTime = new Date(
-            `${now.toLocaleDateString("en-US", { timeZone: "America/New_York" })}T${closeTime}`
-        );
+        const openDateTime = new Date(`${now.toLocaleDateString()} ${openTime}`);
+        const closeDateTime = new Date(`${now.toLocaleDateString()} ${closeTime}`);
 
-        const nowInNewYorkTime = new Date(
-            now.toLocaleString("en-US", { timeZone: "America/New_York" })
-        );
-
-        // Open/closed status logic
-        if (nowInNewYorkTime >= openDateTime && nowInNewYorkTime <= closeDateTime) {
+        // Determine the Open/Closed status
+        if (now >= openDateTime && now <= closeDateTime) {
             setStatus("Open", "green");
         } else {
             setStatus("Closed", "red");
@@ -122,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
         statusElement.style.color = color;
     }
 
+    // Convert time to 24-hour format
     function convertTo24Hour(time) {
         const [timePart, modifier] = time.split(" ");
         let [hours, minutes] = timePart.split(":");
@@ -134,11 +106,12 @@ document.addEventListener("DOMContentLoaded", function() {
         return `${hours}:${minutes}`;
     }
 
+    // Convert business hours to user’s timezone
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
-        if (hours === "Closed") return hours;
+        if (hours === "Closed") return hours; // No conversion needed for "Closed"
         const [openTime, closeTime] = hours.split(" - ");
-        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00Z`);
-        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00Z`);
+        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}Z`);
+        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}Z`);
 
         const openTimeConverted = openDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: "2-digit", minute: "2-digit" });
         const closeTimeConverted = closeDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: "2-digit", minute: "2-digit" });
