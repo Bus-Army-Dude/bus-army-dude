@@ -1697,13 +1697,24 @@ body.focus-outline-disabled :focus {
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
     margin: 20px auto;
-    max-width: 800px;
+    /* Full width with padding for all devices */
+    width: 100%;
+    max-width: 100%; /* Remove max-width restriction */
+    padding-left: 5vw;  /* Left padding for larger screens */
+    padding-right: 5vw; /* Right padding for larger screens */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
 /* Business Hours Container */
 .hours-container {
     margin-top: 15px;
     padding-top: 10px;
+    /* Same width strategy for consistency */
+    width: 100%;
+    max-width: 100%; 
+    padding-left: 5vw;
+    padding-right: 5vw;
+    box-sizing: border-box;
 }
 
 /* Contact Info Styling */
@@ -1726,18 +1737,27 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
+    /* Responsive width adjustments */
+    width: 100%;
+    max-width: 100%;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    box-sizing: border-box;
 }
 
 /* Status Styling */
 .status {
     font-weight: bold;
     margin-top: 20px;
+    /* Center the status text */
+    text-align: center;
 }
 
 /* Timezone Display */
 .timezone {
     font-size: 1.1rem;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 /* Hours Title Styling */
@@ -1745,6 +1765,7 @@ body.focus-outline-disabled :focus {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 /* Highlight the current day in the business hours */
@@ -1761,6 +1782,12 @@ body.focus-outline-disabled :focus {
     border-bottom: 1px solid var(--border-color);
     transition: background-color 0.3s ease, color 0.3s ease;
     font-weight: bold;
+    /* Full width with spacing */
+    width: 100%;
+    max-width: 100%;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    box-sizing: border-box;
 }
 
 .hours-row span {
