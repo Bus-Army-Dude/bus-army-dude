@@ -24,7 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Render business hours dynamically
     for (const [day, hours] of Object.entries(businessHours)) {
-        const convertedHours = convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
+        const convertedHours = (userTimezone === "America/New_York") 
+            ? hours // No conversion needed for America/New_York
+            : convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
         if (day === currentDay) {
