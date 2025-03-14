@@ -88,14 +88,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const openDate = new Date(`1970-01-01T${openTime}:00`);
-        const closeDate = new Date(`1970-01-01T${closeTime}:00`);
-
-        const openTimeInUserTz = new Date(openDate.toLocaleString("en-US", { timeZone: userTimezone })).getTime();
-        const closeTimeInUserTz = new Date(closeDate.toLocaleString("en-US", { timeZone: userTimezone })).getTime();
+        const openDate = new Date(`1970-01-01T${openTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
+        const closeDate = new Date(`1970-01-01T${closeTime}:00Z`).toLocaleString("en-US", { timeZone: userTimezone });
+        const openDateInUserTz = new Date(openDate).getTime();
+        const closeDateInUserTz = new Date(closeDate).getTime();
         const nowInUserTz = new Date(now.toLocaleString("en-US", { timeZone: userTimezone })).getTime();
 
-        if (nowInUserTz >= openTimeInUserTz && nowInUserTz <= closeTimeInUserTz) {
+        if (nowInUserTz >= openDateInUserTz && nowInUserTz <= closeDateInUserTz) {
             setStatus("Open", "green");
         } else {
             setStatus("Closed", "red");
@@ -123,12 +122,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
         if (hours === "Closed") return hours;
         const [openTime, closeTime] = hours.split(" - ");
-        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00`);
-        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00`);
+        const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00Z`).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
 
-        const openTimeConverted = new Date(openDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
-        const closeTimeConverted = new Date(closeDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
-
-        return `${openTimeConverted} - ${closeTimeConverted}`;
+        return `${openDate} - ${closeDate}`;
     }
 });
