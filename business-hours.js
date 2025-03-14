@@ -35,12 +35,12 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     const hoursContainer = document.getElementById("hours-container");
-    const currentDay = new Date().toLocaleString("en-US", { weekday: 'long', timeZone: "America/New_York" }).toLowerCase();
+    const currentDay = new Date().toLocaleString("en-US", { weekday: "long", timeZone: "America/New_York" }).toLowerCase();
     const todayDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // ISO format
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     // Display user's timezone
-    document.getElementById('user-timezone').textContent = userTimezone;
+    document.getElementById("user-timezone").textContent = userTimezone;
 
     // Render business hours with conversion
     for (const [day, hours] of Object.entries(businessHours)) {
@@ -93,13 +93,23 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        // Parse open and close times
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const openDateInNewYork = new Date(`1970-01-01T${openTime}:00Z`).toLocaleString("en-US", { timeZone: "America/New_York" });
-        const closeDateInNewYork = new Date(`1970-01-01T${closeTime}:00Z`).toLocaleString("en-US", { timeZone: "America/New_York" });
-        const nowTime = new Date(nowInNewYork).getTime();
+        const now = new Date();
+
+        const openDateTime = new Date(
+            `${now.toLocaleDateString("en-US", { timeZone: "America/New_York" })}T${openTime}`
+        );
+        const closeDateTime = new Date(
+            `${now.toLocaleDateString("en-US", { timeZone: "America/New_York" })}T${closeTime}`
+        );
+
+        const nowInNewYorkTime = new Date(
+            now.toLocaleString("en-US", { timeZone: "America/New_York" })
+        );
 
         // Open/closed status logic
-        if (nowTime >= new Date(openDateInNewYork).getTime() && nowTime <= new Date(closeDateInNewYork).getTime()) {
+        if (nowInNewYorkTime >= openDateTime && nowInNewYorkTime <= closeDateTime) {
             setStatus("Open", "green");
         } else {
             setStatus("Closed", "red");
@@ -130,8 +140,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const openDate = new Date(`1970-01-01T${convertTo24Hour(openTime)}:00Z`);
         const closeDate = new Date(`1970-01-01T${convertTo24Hour(closeTime)}:00Z`);
 
-        const openTimeConverted = new Date(openDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
-        const closeTimeConverted = new Date(closeDate.toLocaleString("en-US", { timeZone: fromTimezone })).toLocaleTimeString("en-US", { timeZone: toTimezone, hour: '2-digit', minute: '2-digit' });
+        const openTimeConverted = openDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: "2-digit", minute: "2-digit" });
+        const closeTimeConverted = closeDate.toLocaleTimeString("en-US", { timeZone: toTimezone, hour: "2-digit", minute: "2-digit" });
 
         return `${openTimeConverted} - ${closeTimeConverted}`;
     }
