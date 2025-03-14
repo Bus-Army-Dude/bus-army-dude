@@ -24,9 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Render business hours dynamically
     for (const [day, hours] of Object.entries(businessHours)) {
-        const convertedHours = (userTimezone === "America/New_York") 
-            ? hours // No conversion needed for America/New_York
-            : convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
+        const convertedHours = convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
         if (day === currentDay) {
@@ -109,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return `${hours}:${minutes}`;
     }
 
-    // Convert business hours to user’s timezone
+    // Convert business and holiday hours to user’s timezone
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
         if (hours === "Closed") return hours; // No conversion needed for "Closed"
         const [openTime, closeTime] = hours.split(" - ");
