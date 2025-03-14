@@ -327,8 +327,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const now = new Date();
         const currentDayHours = businessHours[currentDay];
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
-        const openDate = new Date(`1970-01-01T${openTime}:00`);
-        const closeDate = new Date(`1970-01-01T${closeTime}:00`);
+        const openDate = new Date(now.toDateString() + " " + openTime);
+        const closeDate = new Date(now.toDateString() + " " + closeTime);
 
         const statusElement = document.getElementById("open-status");
         if (now >= openDate && now <= closeDate) {
