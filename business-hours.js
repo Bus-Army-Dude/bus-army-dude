@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "2026-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
         "2026-12-25": { name: "Christmas Day", hours: "Closed" },
         "2026-12-31": { name: "New Year's Eve", hours: "Closed" },
-        "2027-01-01": { name: "New Year's Day", hours: "Closed" },
+        "2027-01-01": { name: "New Year's Day", hours: "Closed" }
     };
 
     const hoursContainer = document.getElementById("hours-container");
@@ -73,19 +73,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function updateStatus() {
         const now = new Date();
-        const currentDayHours = businessHours[currentDay];
+        let currentDayHours = businessHours[currentDay];
+
+        // Check if today is a holiday and use holiday hours if available
+        if (holidayHours[todayDate]) {
+            currentDayHours = holidayHours[todayDate].hours;
+        }
+
+        // If hours are "Closed" for holidays, set status accordingly
+        if (currentDayHours === "Closed") {
+            setStatus("Closed", "red");
+            return;
+        }
+
         const [openTime, closeTime] = currentDayHours.split(" - ").map(time => convertTo24Hour(time));
         const openDate = new Date(`${now.toDateString()} ${openTime}`);
         const closeDate = new Date(`${now.toDateString()} ${closeTime}`);
 
-        const statusElement = document.getElementById("open-status");
         if (now >= openDate && now <= closeDate) {
-            statusElement.textContent = "Open";
-            statusElement.style.color = "green";
+            setStatus("Open", "green");
         } else {
-            statusElement.textContent = "Closed";
-            statusElement.style.color = "red";
+            setStatus("Closed", "red");
         }
+    }
+
+    function setStatus(statusText, color) {
+        const statusElement = document.getElementById("open-status");
+        statusElement.textContent = statusText;
+        statusElement.style.color = color;
     }
 
     function convertTo24Hour(time) {
