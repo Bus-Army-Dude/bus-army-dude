@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
             dayElement.classList.add("highlight");
         }
         dayElement.id = day;
-        dayElement.textContent = `${capitalize(day)}: ${hours}`;
+        dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${hours}</span>`;
         hoursContainer.appendChild(dayElement);
     }
 
