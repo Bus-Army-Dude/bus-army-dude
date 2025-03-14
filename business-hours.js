@@ -10,8 +10,29 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     const holidayHours = {
-        "2025-12-25": { name: "Christmas Day", hours: "Closed" },
+        "2025-03-14": { name: "Out Of Office", hours: "Closed" },
+        "2025-05-26": { name: "Memorial Day", hours: "Closed" },
+        "2025-07-04": { name: "Independence Day", hours: "Closed" },
+        "2025-09-01": { name: "Labor Day", hours: "Closed" },
+        "2025-09-01": { name: "Columbus Day", hours: "10:00 AM - 11:00 PM" },
+        "2025-11-11": { name: "Veterans Day", hours: "Closed" },
         "2025-11-27": { name: "Thanksgiving Day", hours: "Closed" },
+        "2025-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
+        "2025-12-25": { name: "Christmas Day", hours: "Closed" },
+        "2025-12-31": { name: "New Year's Eve", hours: "Closed" },
+        "2026-01-01": { name: "New Year's Day", hours: "Closed" },
+        "2026-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
+        "2026-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
+        "2026-05-26": { name: "Memorial Day", hours: "Closed" },
+        "2026-07-04": { name: "Independence Day", hours: "Closed" },
+        "2026-09-01": { name: "Labor Day", hours: "Closed" },
+        "2026-09-01": { name: "Columbus Day", hours: "10:00 AM - 11:00 PM" },
+        "2026-11-11": { name: "Veterans Day", hours: "Closed" },
+        "2026-11-27": { name: "Thanksgiving Day", hours: "Closed" },
+        "2026-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
+        "2026-12-25": { name: "Christmas Day", hours: "Closed" },
+        "2026-12-31": { name: "New Year's Eve", hours: "Closed" },
+        "2027-01-01": { name: "New Year's Day", hours: "Closed" }
     };
 
     const hoursContainer = document.getElementById("hours-container");
