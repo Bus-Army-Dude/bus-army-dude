@@ -1738,6 +1738,14 @@ body.focus-outline-disabled :focus {
 .timezone {
     font-size: 1.1rem;
     margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Hours Title Styling */
+.hours-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Highlight the current day in the business hours */
@@ -1753,6 +1761,7 @@ body.focus-outline-disabled :focus {
     padding: 5px 0;
     border-bottom: 1px solid var(--border-color);
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: bold;
 }
 
 .hours-row:last-child {
