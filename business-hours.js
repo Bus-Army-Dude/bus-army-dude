@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateStatus();
 
     function updateStatus() {
-        const now = new Date();
+        const now = new Date().toLocaleString("en-US", { timeZone: userTimezone });
         let currentDayHours = businessHours[currentDay];
 
         // Check if today is a holiday and use holiday hours if available
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const openDate = new Date(`1970-01-01T${openTime}:00`).toLocaleString("en-US", { timeZone: userTimezone });
         const closeDate = new Date(`1970-01-01T${closeTime}:00`).toLocaleString("en-US", { timeZone: userTimezone });
 
-        if (now >= new Date(openDate) && now <= new Date(closeDate)) {
+        if (new Date(now) >= new Date(openDate) && new Date(now) <= new Date(closeDate)) {
             setStatus("Open", "green");
         } else {
             setStatus("Closed", "red");
