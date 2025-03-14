@@ -287,8 +287,8 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     const holidayHours = {
-        "2025-12-25": "Closed",  // Example: Christmas Day
-        "2025-01-01": "10:00 AM - 2:00 PM"  // Example: New Year's Day
+        "2025-12-25": "Closed",
+        "2025-01-01": "10:00 AM - 2:00 PM"
     };
 
     const hoursContainer = document.getElementById("hours-container");
