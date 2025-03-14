@@ -309,6 +309,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const hoursContainer = document.getElementById('hours-container');
         let hoursContent = '<h3>Business Hours:</h3>';
 
+        console.log('Rendering business hours...');
+
         // Loop through the business hours and display them
         for (let day in businessHours) {
             const hours = businessHours[day];
@@ -359,6 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Run the functions on load
+    console.log('Script loaded...');
     renderBusinessHours();
     renderHolidayHours();
 });
