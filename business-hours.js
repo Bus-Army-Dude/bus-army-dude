@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
         "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
         "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
-        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 12:00 PM" },
+        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 02:00 PM" },
         "2025-05-26": { name: "Memorial Day", hours: "Closed" },
         "2025-07-04": { name: "Independence Day", hours: "Closed" },
         "2025-09-01": { name: "Labor Day", hours: "Closed" },
@@ -69,6 +69,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to check if the business is currently open (comparing times in EST)
     function isBusinessOpen(dayOfWeek, todayDate) {
         const now = new Date();
+        const nowEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const currentHourEST = nowEST.getHours();
+        const currentMinuteEST = nowEST.getMinutes();
+
         let openTimeEST;
         let closeTimeEST;
 
@@ -85,10 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
             openTimeEST = todayHoursEST.open;
             closeTimeEST = todayHoursEST.close;
         }
-
-        const nowEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-        const currentHourEST = nowEST.getHours();
-        const currentMinuteEST = nowEST.getMinutes();
 
         if (!openTimeEST || !closeTimeEST) {
             return "Closed";
@@ -109,10 +109,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const currentHour = nowEST.getHours();
         const currentMinute = nowEST.getMinutes();
 
-        const isOpen = (currentHour > openTime.hour || (currentHour === openTime.hour && currentMinute >= openTime.minute)) &&
-                       (currentHour < closeTime.hour || (currentHour === closeTime.hour && currentMinute < closeTime.minute));
+        const currentMinutes = currentHour * 60 + currentMinute;
+        const openMinutes = openTime.hour * 60 + openTime.minute;
+        const closeMinutes = closeTime.hour * 60 + closeTime.minute;
 
-        return isOpen ? "Open" : "Closed";
+        return (currentMinutes >= openMinutes && currentMinutes < closeMinutes) ? "Open" : "Closed";
     }
 
     // Render business hours
