@@ -1697,8 +1697,8 @@ body.focus-outline-disabled :focus {
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
     margin: 20px auto;
-    max-width: 1200px; /* Limit max width for larger screens */
-    width: calc(100% - 40px); /* Ensure padding on smaller devices */
+    max-width: 100%; /* Ensure full width on mobile */
+    width: 100%; /* Full width for mobile */
     box-sizing: border-box;
 }
 
@@ -1729,8 +1729,8 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
-    width: calc(100% - 40px); /* Full width with margin */
-    max-width: 1200px; /* Same width limit as the business-info */
+    width: 100%; /* Ensure full width on mobile */
+    max-width: 100%; /* Same width limit for mobile */
     margin: 0 auto;
     box-sizing: border-box;
 }
@@ -1790,3 +1790,27 @@ body.focus-outline-disabled :focus {
     color: red;
     font-weight: bold;
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .business-info,
+    .holiday-alert {
+        padding: 15px;
+        width: calc(100% - 20px); /* Reduce padding on mobile */
+        margin: 10px auto; /* Adjust margin for smaller screens */
+    }
+    
+    .hours-title {
+        font-size: 1.3rem;
+    }
+    
+    .hours-row {
+        font-size: 0.95rem;
+        padding: 8px 0; /* Reduce padding on mobile */
+    }
+    
+    .timezone {
+        font-size: 1rem;
+    }
+}
+
