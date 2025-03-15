@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Helper function to convert time from EST to user's timezone
     function convertTimeToTimezone(time, toTimezone) {
-        const now = new Date();
         const [timePart, modifier] = time.split(" ");
         let [hours, minutes] = timePart.split(":");
         hours = parseInt(hours, 10);
@@ -35,23 +34,24 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modifier === "PM" && hours !== 12) hours += 12;
         if (modifier === "AM" && hours === 12) hours = 0;
 
-        const estDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+        const estDate = new Date();
+        estDate.setHours(hours, minutes, 0, 0);
 
-        const estTimeString = estDate.toLocaleString("en-US", {
+        const estTimeString = estDate.toLocaleTimeString("en-US", {
             timeZone: 'America/New_York',
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true
+            hour12: false
         });
 
-        const userTimeString = estDate.toLocaleString("en-US", {
-            timeZone: toTimezone,
+        const estTime = new Date(`1970-01-01T${estTimeString}Z`);
+        const userTime = new Date(estTime.toLocaleString("en-US", { timeZone: toTimezone }));
+
+        return userTime.toLocaleTimeString("en-US", {
             hour: '2-digit',
             minute: '2-digit',
             hour12: true
         });
-
-        return userTimeString;
     }
 
     // Set user's timezone display
