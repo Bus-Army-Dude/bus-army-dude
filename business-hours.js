@@ -31,6 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return date.toLocaleString('en-US', options);
     }
 
+    // Set user's timezone display
+    document.getElementById("user-timezone").textContent = userTimezone;
+
     // Render business hours in user's timezone, but only show status for today
     for (const [day, { open, close }] of Object.entries(businessHoursEST)) {
         const convertedOpen = convertTimeToTimezone(open, "America/New_York", userTimezone);
@@ -43,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (day === currentDay) {
             const status = (currentTime >= convertedOpen && currentTime <= convertedClose) ? "Open" : "Closed";
             dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span> <strong>Status: ${status}</strong>`;
+            document.getElementById("open-status").textContent = status; // Update the status for today
         } else {
             dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span>`;
         }
@@ -59,6 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("holiday-name").textContent = holidayDetails.name;
         document.getElementById("holiday-hours").textContent = specialHours;
+        document.getElementById("holiday-alert").style.display = "block"; // Show the holiday alert
+    } else {
+        document.getElementById("holiday-alert").style.display = "none"; // Hide the holiday alert if no holiday
     }
 
     // Function to capitalize the first letter of the day (e.g., sunday -> Sunday)
