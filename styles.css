@@ -1757,10 +1757,9 @@ body.focus-outline-disabled :focus {
     text-align: center; /* Center title */
 }
 
-/* Highlight the current day in the business hours */
-.hours-row.highlight {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
+.hours-row.current-day {
+    background-color: var(--accent-color); /* Or any color you prefer */
+    color: var(--bg-color); /* Adjust text color if needed */
     padding: 5px 10px;
     border-radius: 5px;
 }
