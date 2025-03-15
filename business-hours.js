@@ -31,24 +31,22 @@ document.addEventListener("DOMContentLoaded", function () {
         return date.toLocaleString('en-US', options);
     }
 
-    // Loop through business hours to convert them to the user's timezone
+    // Render business hours in user's timezone, but only show status for today
     for (const [day, { open, close }] of Object.entries(businessHoursEST)) {
         const convertedOpen = convertTimeToTimezone(open, "America/New_York", userTimezone);
         const convertedClose = convertTimeToTimezone(close, "America/New_York", userTimezone);
 
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
+
+        // Show status for the current day only
         if (day === currentDay) {
-            dayElement.classList.add("highlight");
+            const status = (currentTime >= convertedOpen && currentTime <= convertedClose) ? "Open" : "Closed";
+            dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span> <strong>Status: ${status}</strong>`;
+        } else {
+            dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span>`;
         }
 
-        // Check if it's Open or Closed based on the current time
-        let status = "Closed";
-        if (currentTime >= convertedOpen && currentTime <= convertedClose) {
-            status = "Open";
-        }
-
-        dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span> <strong>Status: ${status}</strong>`;
         document.getElementById("hours-container").appendChild(dayElement);
     }
 
@@ -58,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const specialHours = holidayDetails.hours === "Closed"
             ? "Closed"
             : convertTimeToTimezone(holidayDetails.hours, "America/New_York", userTimezone);
-        
+
         document.getElementById("holiday-name").textContent = holidayDetails.name;
         document.getElementById("holiday-hours").textContent = specialHours;
     }
