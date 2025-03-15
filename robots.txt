@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bus-army-dude.github.io/bus-army-dude/sitemap.xml
