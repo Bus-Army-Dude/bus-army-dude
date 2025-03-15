@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     const holidayHours = {
-        "2025-03-14": { name: "Out Of Office", hours: "Closed" },
         "2025-05-26": { name: "Memorial Day", hours: "Closed" },
         "2025-07-04": { name: "Independence Day", hours: "Closed" },
         "2025-09-01": { name: "Labor Day", hours: "Closed" },
