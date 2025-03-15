@@ -20,12 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-12-31": { name: "New Year's Eve", hours: "Closed" },
         "2026-01-01": { name: "New Year's Day", hours: "Closed" },
         "2026-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
-        "2026-07-04": { name: "Independence Day", hours: "Closed" },
-        "2026-11-27": { name: "Thanksgiving Day", hours: "Closed" },
-        "2026-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
-        "2026-12-25": { name: "Christmas Day", hours: "Closed" },
-        "2026-12-31": { name: "New Year's Eve", hours: "Closed" },
-        "2027-01-01": { name: "New Year's Day", hours: "Closed" }
     };
 
     const hoursContainer = document.getElementById("hours-container");
@@ -96,13 +90,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const [hours, minutes] = time.split(":").map(Number);
         const isPM = period === "PM" && hours !== 12;
         const isAM = period === "AM" && hours === 12;
-        const formattedTime = `${isPM ? hours + 12 : isAM ? 0 : hours}:${minutes || 0}`;
+        const formattedHours = isPM ? hours + 12 : isAM ? 0 : hours;
 
-        const dateTimeStr = `1970-01-01T${formattedTime}:00`;
-        const fromDate = new Date(dateTimeStr + `Z`).toLocaleString("en-US", { timeZone: fromTz });
-        const targetDate = new Date(fromDate).toLocaleString("en-US", { timeZone: toTz });
+        const date = new Date();
+        date.setHours(formattedHours);
+        date.setMinutes(minutes || 0);
+        const dateStr = date.toISOString();
 
-        return new Date(targetDate);
+        const targetDate = new Date(new Date(dateStr).toLocaleString("en-US", { timeZone: toTz }));
+
+        return targetDate;
     }
 
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
