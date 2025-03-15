@@ -24,9 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentDay = currentDateUserTimezone.toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
     const todayDate = currentDateUserTimezone.toLocaleDateString("en-CA", { timeZone: userTimezone });
 
-    // Log the current day to check its value
-    console.log("Current Day:", currentDay);
-
     // Function to convert time from EST to any other timezone
     function convertTimeToTimezone(time, toTimezone) {
         const now = new Date();
@@ -139,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const openTimeUserStr = openFormatterUser.format(openTimeUser);
         const closeTimeUserStr = closeFormatterUser.format(closeTimeUser);
 
-        // Simple string comparison - might need to adjust based on format
         if (nowUserTimeStr >= openTimeUserStr && nowUserTimeStr < closeTimeUserStr) {
             return "Open";
         } else {
@@ -152,26 +148,34 @@ document.addEventListener("DOMContentLoaded", function () {
     statusElement.textContent = status;
     statusElement.className = status.toLowerCase(); // Add class 'open' or 'closed' for styling
 
-    // Check for holiday hours
+    // Function to capitalize the first letter of the day
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Check for holiday hours and apply timezone conversion
     const holidayAlertElement = document.getElementById("holiday-alert");
     const holidayNameElement = document.getElementById("holiday-name");
     const holidayHoursElement = document.getElementById("holiday-hours");
 
     if (holidayHours[todayDate]) {
         const holidayDetails = holidayHours[todayDate];
-        const specialHours = holidayDetails.hours === "Closed"
-            ? "Closed"
-            : convertTimeToTimezone(holidayDetails.hours, userTimezone);
+
+        let specialHours;
+        if (holidayDetails.hours === "Closed") {
+            specialHours = "Closed";
+        } else {
+            // Convert holiday hours to user's timezone
+            const [open, close] = holidayDetails.hours.split(" - ");
+            const convertedOpen = convertTimeToTimezone(open, userTimezone);
+            const convertedClose = convertTimeToTimezone(close, userTimezone);
+            specialHours = `${convertedOpen} - ${convertedClose}`;
+        }
 
         holidayNameElement.textContent = holidayDetails.name;
         holidayHoursElement.textContent = specialHours;
         holidayAlertElement.style.display = "block";
     } else {
         holidayAlertElement.style.display = "none";
-    }
-
-    // Function to capitalize the first letter of the day
-    function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 });
