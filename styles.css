@@ -1781,3 +1781,13 @@ body.focus-outline-disabled :focus {
 .hours-row:last-child {
     border-bottom: none;
 }
+
+.open {
+    color: green;
+    font-weight: bold;
+}
+
+.closed {
+    color: red;
+    font-weight: bold;
+}
