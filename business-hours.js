@@ -40,9 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (period === 'PM' && hours !== 12) estHours += 12;
         if (period === 'AM' && hours === 12) estHours = 0;
 
-        const dateEST = new Date('2025-03-15T00:00:00-04:00'); // Using EDT offset
-
-        dateEST.setHours(estHours, minutes, 0, 0);
+        const dateEST = new Date('2025-03-15T' + estHours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':00-04:00');
 
         const targetTime = dateEST.toLocaleString('en-US', {
             timeZone: toTimezone,
@@ -58,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("user-timezone").textContent = userTimezone;
 
     // Get current date/time in user's timezone
-    const currentDate = new Date('2025-03-15T15:31:16Z');
+    const currentDate = new Date();
     const currentDay = currentDate.toLocaleString("en-US", {
         weekday: "long",
         timeZone: userTimezone
@@ -89,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return (currentTimeInMinutesEST >= openTimeInMinutesEST && currentTimeInMinutesEST < closeTimeInMinutesEST) ? "Open" : "Closed";
     }
 
-    // Render business hours in user's timezone
+    // Render business hours
     const hoursContainer = document.getElementById("hours-container");
     hoursContainer.innerHTML = "";
 
@@ -108,13 +106,13 @@ document.addEventListener("DOMContentLoaded", function () {
         hoursContainer.appendChild(dayElement);
     }
 
-    // Update status based on EST but display in user context
+    // Update status
     const statusElement = document.getElementById("open-status");
     const status = isBusinessOpen(currentDay);
     statusElement.textContent = status;
     statusElement.className = status.toLowerCase();
 
-    // Check for holiday hours and display in user's timezone
+    // Check for holiday hours
     const holidayAlertElement = document.getElementById("holiday-alert");
     const holidayNameElement = document.getElementById("holiday-name");
     const holidayHoursElement = document.getElementById("holiday-hours");
