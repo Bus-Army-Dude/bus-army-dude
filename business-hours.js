@@ -113,8 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const openTime = parseTime(openTimeEST);
         const closeTime = parseTime(closeTimeEST);
-        console.log("Parsed Open Time:", openTime, "Parsed Close Time:", openTime);
-        console.log("Parsed Close Time:", closeTime);
+        console.log("Parsed Open Time:", openTime, "Parsed Close Time:", closeTime);
 
         const currentMinutes = currentHourEST * 60 + currentMinuteEST;
         const openMinutes = openTime.hour * 60 + openTime.minute;
