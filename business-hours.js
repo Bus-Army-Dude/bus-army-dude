@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Get the user's timezone dynamically
-    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     // Get current day in user's timezone
     const currentDay = new Date().toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to convert time from EST to any other timezone
     function convertTimeToTimezone(time, fromTimezone, toTimezone) {
-        const date = new Date(`2025-01-01T${time}:00.000Z`); // Using a random date to manipulate time
+        const date = new Date(`2025-01-01T${time}:00.000Z`); // Using a fixed date to manipulate time
         const options = { timeZone: toTimezone, hour: '2-digit', minute: '2-digit', hour12: true };
         return date.toLocaleString('en-US', options);
     }
@@ -42,16 +42,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
 
-        // Show status for the current day only
-        if (day === currentDay) {
-            const status = (currentTime >= convertedOpen && currentTime <= convertedClose) ? "Open" : "Closed";
-            dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span> <strong>Status: ${status}</strong>`;
-            document.getElementById("open-status").textContent = status; // Update the status for today
-        } else {
-            dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span>`;
-        }
+        // Do not display the status in each day row
+        dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span>`;
 
         document.getElementById("hours-container").appendChild(dayElement);
+    }
+
+    // Only show the status for today (open or closed)
+    const todayHours = businessHoursEST[currentDay];
+    if (todayHours) {
+        const convertedOpen = convertTimeToTimezone(todayHours.open, "America/New_York", userTimezone);
+        const convertedClose = convertTimeToTimezone(todayHours.close, "America/New_York", userTimezone);
+        const status = (currentTime >= convertedOpen && currentTime <= convertedClose) ? "Open" : "Closed";
+        document.getElementById("open-status").textContent = status;
     }
 
     // Check if today is a holiday and if there are special holiday hours
