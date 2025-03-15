@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
         "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
         "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
-        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 02:00 PM" },
+        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 12:00 PM" },
         "2025-05-26": { name: "Memorial Day", hours: "Closed" },
         "2025-07-04": { name: "Independence Day", hours: "Closed" },
         "2025-09-01": { name: "Labor Day", hours: "Closed" },
