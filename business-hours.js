@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "2026-05-26": { name: "Memorial Day", hours: "Closed" },
         "2026-07-04": { name: "Independence Day", hours: "Closed" },
         "2026-09-01": { name: "Labor Day", hours: "Closed" },
-        "2026-10-13": { name: "Columbus Day", open: 10, close: 23 },
+        "2026-10-12": { name: "Columbus Day", open: 10, close: 23 },
         "2026-11-11": { name: "Veterans Day", hours: "Closed" },
         "2026-11-27": { name: "Thanksgiving Day", hours: "Closed" },
         "2026-12-24": { name: "Christmas Eve", open: 10, close: 18 },
