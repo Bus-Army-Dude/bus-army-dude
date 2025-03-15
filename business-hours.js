@@ -33,23 +33,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Helper function to convert time from EST to user's timezone
     function convertTimeToTimezone(timeStr, toTimezone) {
-        // Parse the input time
         const [time, period] = timeStr.split(' ');
         const [hours, minutes] = time.split(':').map(Number);
 
-        // Convert to 24-hour format for EST time
         let estHours = hours;
         if (period === 'PM' && hours !== 12) estHours += 12;
         if (period === 'AM' && hours === 12) estHours = 0;
 
-        // Create date object for the reference date (2025-03-15)
-        const baseDate = new Date('2025-03-15T00:00:00-05:00'); // EST base date
+        const dateEST = new Date('2025-03-15T00:00:00-04:00'); // Using EDT offset
 
-        // Set the hours and minutes in EST
-        baseDate.setHours(estHours, minutes, 0, 0);
+        dateEST.setHours(estHours, minutes, 0, 0);
 
-        // Convert to target timezone
-        const targetTime = baseDate.toLocaleString('en-US', {
+        const targetTime = dateEST.toLocaleString('en-US', {
             timeZone: toTimezone,
             hour: 'numeric',
             minute: '2-digit',
@@ -73,56 +68,31 @@ document.addEventListener("DOMContentLoaded", function () {
         timeZone: userTimezone
     });
 
-    // Function to check if the business is currently open in user's timezone
+    // Function to check if the business is currently open (comparing times in EST)
     function isBusinessOpen(dayOfWeek) {
-        const nowUserTimezone = new Date(); // Current time in user's timezone
+        const now = new Date();
         const todayHoursEST = businessHoursEST[dayOfWeek];
 
         if (!todayHoursEST) return "Closed";
 
-        // Convert business hours from EST to user's timezone
-        const openTimeUser = convertTimeToTimezone(todayHoursEST.open, userTimezone);
-        const closeTimeUser = convertTimeToTimezone(todayHoursEST.close, userTimezone);
+        const nowEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const currentHourEST = nowEST.getHours();
+        const currentMinuteEST = nowEST.getMinutes();
 
-        // Get current time in user's timezone in the same format
-        const nowFormattedUser = nowUserTimezone.toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true
-        });
+        const [openHourEST, openMinuteEST] = todayHoursEST.open.split(/[: ]/).filter(Boolean).map((val, index, arr) => index === 0 ? parseInt(val) + (arr[2] === 'PM' && parseInt(val) !== 12 ? 12 : (arr[2] === 'AM' && parseInt(val) === 12 ? 0 : 0)) : parseInt(val));
+        const [closeHourEST, closeMinuteEST] = todayHoursEST.close.split(/[: ]/).filter(Boolean).map((val, index, arr) => index === 0 ? parseInt(val) + (arr[2] === 'PM' && parseInt(val) !== 12 ? 12 : (arr[2] === 'AM' && parseInt(val) === 12 ? 0 : 0)) : parseInt(val));
 
-        // Helper function to compare times
-        function compareTimes(time1, time2) {
-            const [t1, p1] = time1.split(' ');
-            const [h1, m1] = t1.split(':').map(Number);
-            const [t2, p2] = time2.split(' ');
-            const [h2, m2] = t2.split(':').map(Number);
+        const currentTimeInMinutesEST = currentHourEST * 60 + currentMinuteEST;
+        const openTimeInMinutesEST = openHourEST * 60 + openMinuteEST;
+        const closeTimeInMinutesEST = closeHourEST * 60 + closeMinuteEST;
 
-            let hours1 = h1;
-            if (p1 === 'PM' && h1 !== 12) hours1 += 12;
-            if (p1 === 'AM' && h1 === 12) hours1 = 0;
-
-            let hours2 = h2;
-            if (p2 === 'PM' && h2 !== 12) hours2 += 12;
-            if (p2 === 'AM' && h2 === 12) hours2 = 0;
-
-            if (hours1 < hours2) return -1;
-            if (hours1 > hours2) return 1;
-            if (m1 < m2) return -1;
-            if (m1 > m2) return 1;
-            return 0;
-        }
-
-        const isOpen = compareTimes(nowFormattedUser, openTimeUser) >= 0 && compareTimes(nowFormattedUser, closeTimeUser) < 0;
-
-        return isOpen ? "Open" : "Closed";
+        return (currentTimeInMinutesEST >= openTimeInMinutesEST && currentTimeInMinutesEST < closeTimeInMinutesEST) ? "Open" : "Closed";
     }
 
-    // Render business hours
+    // Render business hours in user's timezone
     const hoursContainer = document.getElementById("hours-container");
     hoursContainer.innerHTML = "";
 
-    // Display regular hours in user's timezone
     for (const [day, { open, close }] of Object.entries(businessHoursEST)) {
         const convertedOpen = convertTimeToTimezone(open, userTimezone);
         const convertedClose = convertTimeToTimezone(close, userTimezone);
@@ -138,13 +108,13 @@ document.addEventListener("DOMContentLoaded", function () {
         hoursContainer.appendChild(dayElement);
     }
 
-    // Update status in user's timezone
+    // Update status based on EST but display in user context
     const statusElement = document.getElementById("open-status");
     const status = isBusinessOpen(currentDay);
     statusElement.textContent = status;
     statusElement.className = status.toLowerCase();
 
-    // Check for holiday hours
+    // Check for holiday hours and display in user's timezone
     const holidayAlertElement = document.getElementById("holiday-alert");
     const holidayNameElement = document.getElementById("holiday-name");
     const holidayHoursElement = document.getElementById("holiday-hours");
