@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
         "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
         "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
-        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 02:00 PM" },
+        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 12:00 PM" },
         "2025-05-26": { name: "Memorial Day", hours: "Closed" },
         "2025-07-04": { name: "Independence Day", hours: "Closed" },
         "2025-09-01": { name: "Labor Day", hours: "Closed" },
@@ -73,24 +73,32 @@ document.addEventListener("DOMContentLoaded", function () {
         const currentHourEST = nowEST.getHours();
         const currentMinuteEST = nowEST.getMinutes();
 
+        console.log("Current Time (EST):", currentHourEST, currentMinuteEST);
+        console.log("Today's Date:", todayDate);
+        console.log("Holiday Hours for today:", holidayHours[todayDate]);
+
         let openTimeEST;
         let closeTimeEST;
 
         if (holidayHours[todayDate]) {
             const holidayDetails = holidayHours[todayDate];
+            console.log("Holiday Details:", holidayDetails);
             if (holidayDetails.hours === "Closed") {
                 return "Closed";
             } else {
                 [openTimeEST, closeTimeEST] = holidayDetails.hours.split(" - ");
+                console.log("Holiday Open Time (EST):", openTimeEST, "Holiday Close Time (EST):", closeTimeEST);
             }
         } else {
             const todayHoursEST = businessHoursEST[dayOfWeek];
             if (!todayHoursEST) return "Closed";
             openTimeEST = todayHoursEST.open;
             closeTimeEST = todayHoursEST.close;
+            console.log("Regular Open Time (EST):", openTimeEST, "Regular Close Time (EST):", closeTimeEST);
         }
 
         if (!openTimeEST || !closeTimeEST) {
+            console.log("Open or close time is undefined.");
             return "Closed";
         }
 
@@ -105,15 +113,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const openTime = parseTime(openTimeEST);
         const closeTime = parseTime(closeTimeEST);
+        console.log("Parsed Open Time:", openTime, "Parsed Close Time:", openTime);
+        console.log("Parsed Close Time:", closeTime);
 
-        const currentHour = nowEST.getHours();
-        const currentMinute = nowEST.getMinutes();
-
-        const currentMinutes = currentHour * 60 + currentMinute;
+        const currentMinutes = currentHourEST * 60 + currentMinuteEST;
         const openMinutes = openTime.hour * 60 + openTime.minute;
         const closeMinutes = closeTime.hour * 60 + closeTime.minute;
+        console.log("Current Minutes:", currentMinutes, "Open Minutes:", openMinutes, "Close Minutes:", closeMinutes);
 
-        return (currentMinutes >= openMinutes && currentMinutes < closeMinutes) ? "Open" : "Closed";
+        const isOpen = (currentMinutes >= openMinutes && currentMinutes < closeMinutes);
+        console.log("Is Open:", isOpen);
+        return isOpen ? "Open" : "Closed";
     }
 
     // Render business hours
