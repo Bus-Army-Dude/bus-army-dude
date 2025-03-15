@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
         "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
         "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
+        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 02:00 PM" },
         "2025-05-26": { name: "Memorial Day", hours: "Closed" },
         "2025-07-04": { name: "Independence Day", hours: "Closed" },
         "2025-09-01": { name: "Labor Day", hours: "Closed" },
@@ -31,25 +32,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     // Helper function to convert time from EST to user's timezone
-    function convertTimeToTimezone(timeStr, fromTimezone = 'America/New_York', toTimezone) {
+    function convertTimeToTimezone(timeStr, toTimezone) {
         // Parse the input time
         const [time, period] = timeStr.split(' ');
         const [hours, minutes] = time.split(':').map(Number);
         
-        // Convert to 24-hour format
-        let hour24 = hours;
-        if (period === 'PM' && hours !== 12) hour24 += 12;
-        if (period === 'AM' && hours === 12) hour24 = 0;
+        // Convert to 24-hour format for EST time
+        let estHours = hours;
+        if (period === 'PM' && hours !== 12) estHours += 12;
+        if (period === 'AM' && hours === 12) estHours = 0;
 
-        // Create a date object using the reference date (2025-03-15)
-        const date = new Date('2025-03-15T00:00:00Z');
-        date.setUTCHours(hour24);
-        date.setUTCMinutes(minutes);
+        // Create date object for the reference date (2025-03-15)
+        const baseDate = new Date('2025-03-15T00:00:00-05:00'); // EST base date
+        
+        // Set the hours and minutes in EST
+        baseDate.setHours(estHours, minutes, 0, 0);
 
-        // Convert from EST to target timezone
-        const targetTime = date.toLocaleString('en-US', {
+        // Convert to target timezone
+        const targetTime = baseDate.toLocaleString('en-US', {
             timeZone: toTimezone,
-            hour: '2-digit',
+            hour: 'numeric',
             minute: '2-digit',
             hour12: true
         });
@@ -57,28 +59,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return targetTime;
     }
 
-    // Function to check if the business is currently open
-    function isBusinessOpen(dayOfWeek) {
-        const now = new Date('2025-03-15T15:26:39Z'); // Using provided UTC time
-        const todayHours = businessHoursEST[dayOfWeek];
-        
-        if (!todayHours) return "Closed";
+    // Set user's timezone display
+    document.getElementById("user-timezone").textContent = userTimezone;
 
-        const currentTimeInEST = now.toLocaleString("en-US", {
-            timeZone: "America/New_York",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true
-        });
-
-        const openTime = todayHours.open;
-        const closeTime = todayHours.close;
-
-        return (currentTimeInEST >= openTime && currentTimeInEST < closeTime) ? "Open" : "Closed";
-    }
-
-    // Get current day using the provided UTC time
-    const currentDate = new Date('2025-03-15T15:26:39Z');
+    // Get current date/time in user's timezone
+    const currentDate = new Date('2025-03-15T15:31:16Z');
     const currentDay = currentDate.toLocaleString("en-US", { 
         weekday: "long",
         timeZone: userTimezone 
@@ -88,16 +73,34 @@ document.addEventListener("DOMContentLoaded", function () {
         timeZone: userTimezone 
     });
 
-    // Set user's timezone display
-    document.getElementById("user-timezone").textContent = userTimezone;
+    // Function to check if the business is currently open
+    function isBusinessOpen(dayOfWeek) {
+        const now = new Date('2025-03-15T15:31:16Z');
+        const todayHours = businessHoursEST[dayOfWeek];
+        
+        if (!todayHours) return "Closed";
+
+        const currentTimeEST = now.toLocaleString("en-US", {
+            timeZone: "America/New_York",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        });
+
+        const openTimeEST = todayHours.open;
+        const closeTimeEST = todayHours.close;
+
+        return (currentTimeEST >= openTimeEST && currentTimeEST < closeTimeEST) ? "Open" : "Closed";
+    }
 
     // Render business hours
     const hoursContainer = document.getElementById("hours-container");
     hoursContainer.innerHTML = "";
 
+    // Display regular hours
     for (const [day, { open, close }] of Object.entries(businessHoursEST)) {
-        const convertedOpen = convertTimeToTimezone(open, "America/New_York", userTimezone);
-        const convertedClose = convertTimeToTimezone(close, "America/New_York", userTimezone);
+        const convertedOpen = convertTimeToTimezone(open, userTimezone);
+        const convertedClose = convertTimeToTimezone(close, userTimezone);
 
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
@@ -110,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
         hoursContainer.appendChild(dayElement);
     }
 
-    // Check open/closed status
+    // Update status
     const statusElement = document.getElementById("open-status");
     const status = isBusinessOpen(currentDay);
     statusElement.textContent = status;
@@ -129,8 +132,8 @@ document.addEventListener("DOMContentLoaded", function () {
             specialHours = "Closed";
         } else {
             const [open, close] = holidayDetails.hours.split(" - ");
-            const convertedOpen = convertTimeToTimezone(open, "America/New_York", userTimezone);
-            const convertedClose = convertTimeToTimezone(close, "America/New_York", userTimezone);
+            const convertedOpen = convertTimeToTimezone(open, userTimezone);
+            const convertedClose = convertTimeToTimezone(close, userTimezone);
             specialHours = `${convertedOpen} - ${convertedClose}`;
         }
 
