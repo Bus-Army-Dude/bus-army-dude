@@ -21,30 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-12-31": { name: "New Year's Eve", hours: "Closed" },
         "2026-01-01": { name: "New Year's Day", hours: "Closed" },
         "2026-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
-        "2026-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
-        "2026-05-26": { name: "Memorial Day", hours: "Closed" },
-        "2026-07-04": { name: "Independence Day", hours: "Closed" },
-        "2026-09-01": { name: "Labor Day", hours: "Closed" },
-        "2026-09-01": { name: "Columbus Day", hours: "10:00 AM - 11:00 PM" },
-        "2026-11-11": { name: "Veterans Day", hours: "Closed" },
-        "2026-11-27": { name: "Thanksgiving Day", hours: "Closed" },
-        "2026-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
-        "2026-12-25": { name: "Christmas Day", hours: "Closed" },
-        "2026-12-31": { name: "New Year's Eve", hours: "Closed" },
-        "2027-01-01": { name: "New Year's Day", hours: "Closed" }
     };
 
     const hoursContainer = document.getElementById("hours-container");
-    // Get the current day in the business's timezone
+
     const currentDay = new Date().toLocaleString("en-US", { weekday: "long", timeZone: "America/New_York" }).toLowerCase();
-    // Get today's date (ISO format) in the business's timezone
     const todayDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // Display the user's detected timezone
     document.getElementById("user-timezone").textContent = userTimezone;
 
-    // Render business hours (converted to the user's timezone)
+    // Render business hours in user's timezone
     for (const [day, hours] of Object.entries(businessHours)) {
         const convertedHours = convertHoursToUserTimezone(hours, "America/New_York", userTimezone);
         const dayElement = document.createElement("div");
@@ -56,13 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
         hoursContainer.appendChild(dayElement);
     }
 
-    // Capitalize helper
-    function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
-    // Show holiday alert if today is a holiday
-    const holidayAlert = document.getElementById("holiday-alert");
     if (holidayHours[todayDate]) {
         const holidayDetails = holidayHours[todayDate];
         const specialHours = holidayDetails.hours === "Closed" 
@@ -70,12 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
             : convertHoursToUserTimezone(holidayDetails.hours, "America/New_York", userTimezone);
         document.getElementById("holiday-name").textContent = holidayDetails.name;
         document.getElementById("holiday-hours").textContent = specialHours;
-        holidayAlert.style.display = "block";
+        document.getElementById("holiday-alert").style.display = "block";
     } else {
-        holidayAlert.style.display = "none";
+        document.getElementById("holiday-alert").style.display = "none";
     }
 
-    // Update Open/Closed status based on the converted hours
     updateStatus();
 
     function updateStatus() {
@@ -87,8 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
             setStatus("Closed", "red");
             return;
         }
+
         const [openStr, closeStr] = currentHours.split(" - ");
-        // Convert the open/close times to Date objects in the user's timezone
         const openDateUser = convertTimeToTarget(openStr, "America/New_York", userTimezone);
         const closeDateUser = convertTimeToTarget(closeStr, "America/New_York", userTimezone);
         const nowUser = new Date();
@@ -105,22 +84,15 @@ document.addEventListener("DOMContentLoaded", function () {
         statusElement.style.color = color;
     }
 
-    // Helper: Convert a time string (e.g. "10:00 AM") from the fromTimezone to a Date object in the toTimezone
+    // Helper function to convert time string to user's timezone
     function convertTimeToTarget(timeStr, fromTz, toTz) {
-        // Use a dummy date string from the business's timezone
-        const dummyDateStr = new Date().toLocaleDateString("en-US", { timeZone: fromTz });
-        const dateTimeStr = dummyDateStr + " " + timeStr;
-        // Create a Date object from the string (this interprets it in local time)
-        const dateInLocal = new Date(dateTimeStr);
-        // Force it into the fromTz context
-        const dateInFromTzStr = dateInLocal.toLocaleString("en-US", { timeZone: fromTz });
-        const dateInFromTz = new Date(dateInFromTzStr);
-        // Now convert to the target timezone by formatting and re-parsing
-        const dateInToTzStr = dateInFromTz.toLocaleString("en-US", { timeZone: toTz });
-        return new Date(dateInToTzStr);
+        const today = new Date().toLocaleDateString("en-US", { timeZone: fromTz });
+        const dateTimeStr = `${today} ${timeStr}`;
+        const dateInFromTz = new Date(dateTimeStr).toLocaleString("en-US", { timeZone: fromTz });
+        const dateInUserTz = new Date(dateInFromTz).toLocaleString("en-US", { timeZone: toTz });
+        return new Date(dateInUserTz);
     }
 
-    // Convert business hours string to user's timezone (formatted)
     function convertHoursToUserTimezone(hours, fromTimezone, toTimezone) {
         if (hours === "Closed") return hours;
         const [openStr, closeStr] = hours.split(" - ");
@@ -129,5 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const openFormatted = openDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
         const closeFormatted = closeDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
         return `${openFormatted} - ${closeFormatted}`;
+    }
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 });
