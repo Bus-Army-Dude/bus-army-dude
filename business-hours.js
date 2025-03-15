@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let hour = hours;
             if (period === 'PM' && hours !== 12) hour += 12;
             if (period === 'AM' && hours === 12) hour = 0;
-            return { hour, minute };
+            return { hour, minute: minutes }; // Changed 'minute' to 'minute: minutes'
         };
 
         const openTime = parseTime(openTimeEST);
