@@ -26,21 +26,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to convert time from EST to any other timezone
     function convertTimeToTimezone(time, toTimezone) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const day = now.getDate();
+
         const [timePart, modifier] = time.split(" ");
-        const [hours, minutes] = timePart.split(":");
-        let hour = parseInt(hours, 10);
-        const minute = parseInt(minutes, 10);
+        let [hours, minutes] = timePart.split(":");
+        hours = parseInt(hours, 10);
+        minutes = parseInt(minutes, 10);
 
-        if (modifier === "PM" && hour !== 12) hour += 12;
-        if (modifier === "AM" && hour === 12) hour = 0;
+        if (modifier === "PM" && hours !== 12) hours += 12;
+        if (modifier === "AM" && hours === 12) hours = 0;
 
-        const nowEST = new Date();
-        nowEST.toLocaleString('en-US', { timeZone: 'America/New_York' }); // Ensure it's in EST context
+        const dateEST = new Date(year, month, day, hours, minutes);
+        const optionsEST = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: true };
+        const timeInEST = dateEST.toLocaleString('en-US', optionsEST);
 
-        nowEST.setHours(hour - 5, minute, 0, 0); // Subtract 5 for EST offset (can have issues with DST)
+        const dateInESTForConversion = new Date(year, month, day, parseInt(timeInEST.split(':')[0]), parseInt(timeInEST.split(':')[1].substring(0, 2)));
+        if (timeInEST.includes('PM') && parseInt(timeInEST.split(':')[0]) !== 12) dateInESTForConversion.setHours(dateInESTForConversion.getHours() + 12);
+        if (timeInEST.includes('AM') && parseInt(timeInEST.split(':')[0]) === 12) dateInESTForConversion.setHours(0);
 
-        const options = { timeZone: toTimezone, hour: '2-digit', minute: '2-digit', hour12: true };
-        return nowEST.toLocaleString('en-US', options);
+
+        const optionsTarget = { timeZone: toTimezone, hour: '2-digit', minute: '2-digit', hour12: true };
+        return dateInESTForConversion.toLocaleString('en-US', optionsTarget);
     }
 
     // Set user's timezone display
@@ -89,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const month = nowUserTime.getMonth();
             const dayOfMonth = nowUserTime.getDate();
 
-            return new Date(Date.UTC(year, month, dayOfMonth, hours - 5, minutes, 0)); // Still using manual offset - let's try another way
+            return new Date(year, month, dayOfMonth, hours, minutes);
         }
 
         const openTimeEST = todayHoursEST.open;
@@ -98,18 +107,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const openDateEST = createESTDate(openTimeEST);
         const closeDateEST = createESTDate(closeTimeEST);
 
-        const openDateUser = new Date(openDateEST.toLocaleString('en-US', { timeZone: userTimezone }));
-        const closeDateUser = new Date(closeDateEST.toLocaleString('en-US', { timeZone: userTimezone }));
+        const optionsESTForOpen = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: true };
+        const openTimeUser = new Date(openDateEST.toLocaleString('en-US', optionsESTForOpen, { timeZone: userTimezone }));
+        const closeTimeUser = new Date(closeDateEST.toLocaleString('en-US', optionsESTForOpen, { timeZone: userTimezone }));
 
-        if (nowUser >= openDateUser && nowUser < closeDateUser) {
+        if (nowUser >= openTimeUser && nowUser < closeTimeUser) {
             return "Open";
         } else {
             return "Closed";
         }
     }
 
-    // Set the open/closed status for today
-    document.getElementById("open-status").textContent = isBusinessOpen(businessHoursEST, currentDay, userTimezone);
+    const statusElement = document.getElementById("open-status");
+    const status = isBusinessOpen(businessHoursEST, currentDay, userTimezone);
+    statusElement.textContent = status;
+    statusElement.className = status.toLowerCase(); // Add class 'open' or 'closed' for styling
 
     // Check for holiday hours
     const holidayAlertElement = document.getElementById("holiday-alert");
