@@ -26,9 +26,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to convert time from EST to any other timezone
     function convertTimeToTimezone(time, toTimezone) {
-        const dateEST = new Date(`2025-01-01T${time}:00-05:00`); // Using a fixed date for time manipulation, assuming EST offset
+        const [timePart, modifier] = time.split(" ");
+        const [hours, minutes] = timePart.split(":");
+        let hour = parseInt(hours, 10);
+        const minute = parseInt(minutes, 10);
+
+        if (modifier === "PM" && hour !== 12) hour += 12;
+        if (modifier === "AM" && hour === 12) hour = 0;
+
+        const nowEST = new Date();
+        nowEST.toLocaleString('en-US', { timeZone: 'America/New_York' }); // Ensure it's in EST context
+
+        nowEST.setHours(hour - 5, minute, 0, 0); // Subtract 5 for EST offset (can have issues with DST)
+
         const options = { timeZone: toTimezone, hour: '2-digit', minute: '2-digit', hour12: true };
-        return dateEST.toLocaleString('en-US', options);
+        return nowEST.toLocaleString('en-US', options);
     }
 
     // Set user's timezone display
@@ -44,6 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
+
+        if (day === currentDay) {
+            dayElement.classList.add("current-day"); // Add a class for highlighting
+        }
 
         dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen} - ${convertedClose}</span>`;
         hoursContainer.appendChild(dayElement);
@@ -73,16 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const month = nowUserTime.getMonth();
             const dayOfMonth = nowUserTime.getDate();
 
-            // Create a date in EST (using "America/New_York" timezone)
-            return new Date(nowUserTime.toLocaleString('en-US', {
-                timeZone: 'America/New_York',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            }).replace(/(\d+)\/(\d+)\/(\d+), (\d+):(\d+):(\d+)/, '$3-$1-$2T$4:$5:$6'));
+            return new Date(Date.UTC(year, month, dayOfMonth, hours - 5, minutes, 0)); // Still using manual offset - let's try another way
         }
 
         const openTimeEST = todayHoursEST.open;
@@ -91,11 +98,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const openDateEST = createESTDate(openTimeEST);
         const closeDateEST = createESTDate(closeTimeEST);
 
-        // Convert EST times to user's timezone for comparison
         const openDateUser = new Date(openDateEST.toLocaleString('en-US', { timeZone: userTimezone }));
         const closeDateUser = new Date(closeDateEST.toLocaleString('en-US', { timeZone: userTimezone }));
 
-        // Compare current time in user's timezone
         if (nowUser >= openDateUser && nowUser < closeDateUser) {
             return "Open";
         } else {
