@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentDay = currentDateUserTimezone.toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
     const todayDate = currentDateUserTimezone.toLocaleDateString("en-CA", { timeZone: userTimezone });
 
+    // Log the current day to check its value
+    console.log("Current Day:", currentDay);
+
     // Function to convert time from EST to any other timezone
     function convertTimeToTimezone(time, toTimezone) {
         const now = new Date();
@@ -39,17 +42,32 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modifier === "PM" && hours !== 12) hours += 12;
         if (modifier === "AM" && hours === 12) hours = 0;
 
-        const dateEST = new Date(year, month, day, hours, minutes);
-        const optionsEST = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: true };
-        const timeInEST = dateEST.toLocaleString('en-US', optionsEST);
+        const localDate = new Date(year, month, day, hours, minutes);
 
-        const dateInESTForConversion = new Date(year, month, day, parseInt(timeInEST.split(':')[0]), parseInt(timeInEST.split(':')[1].substring(0, 2)));
-        if (timeInEST.includes('PM') && parseInt(timeInEST.split(':')[0]) !== 12) dateInESTForConversion.setHours(dateInESTForConversion.getHours() + 12);
-        if (timeInEST.includes('AM') && parseInt(timeInEST.split(':')[0]) === 12) dateInESTForConversion.setHours(0);
+        const estFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/New_York',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
 
+        const estTimeString = estFormatter.format(localDate);
+        const [estHourMinute, estAMPM] = estTimeString.split(' ');
+        const [estHour, estMinute] = estHourMinute.split(':');
+        let estHours = parseInt(estHour, 10);
+        if (estAMPM === 'PM' && estHours !== 12) estHours += 12;
+        if (estAMPM === 'AM' && estHours === 12) estHours = 0;
 
-        const optionsTarget = { timeZone: toTimezone, hour: '2-digit', minute: '2-digit', hour12: true };
-        return dateInESTForConversion.toLocaleString('en-US', optionsTarget);
+        const estDate = new Date(year, month, day, estHours, parseInt(estMinute));
+
+        const targetFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: toTimezone,
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        return targetFormatter.format(estDate);
     }
 
     // Set user's timezone display
@@ -83,10 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const nowUser = new Date();
 
-        // Function to create a Date object for a given time in EST on the current day
         function createESTDate(timeStr) {
-            const [time, modifier] = timeStr.split(" ");
-            let [hours, minutes] = time.split(":");
+            const [timePart, modifier] = timeStr.split(" ");
+            let [hours, minutes] = timePart.split(":");
             hours = parseInt(hours, 10);
             minutes = parseInt(minutes, 10);
 
@@ -107,11 +124,23 @@ document.addEventListener("DOMContentLoaded", function () {
         const openDateEST = createESTDate(openTimeEST);
         const closeDateEST = createESTDate(closeTimeEST);
 
-        const optionsESTForOpen = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: true };
-        const openTimeUser = new Date(openDateEST.toLocaleString('en-US', optionsESTForOpen, { timeZone: userTimezone }));
-        const closeTimeUser = new Date(closeDateEST.toLocaleString('en-US', optionsESTForOpen, { timeZone: userTimezone }));
+        const estFormatterOpen = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: true });
+        const openTimeUser = new Date(openDateEST.toLocaleString('en-US', estFormatterOpen, { timeZone: userTimezone }));
+        const closeTimeUser = new Date(closeDateEST.toLocaleString('en-US', estFormatterOpen, { timeZone: userTimezone }));
 
-        if (nowUser >= openTimeUser && nowUser < closeTimeUser) {
+        const nowUserCompare = new Date();
+
+        const userFormatter = new Intl.DateTimeFormat('en-US', { timeZone: userTimezone, hour: '2-digit', minute: '2-digit', hour12: true });
+        const nowUserTimeStr = userFormatter.format(nowUserCompare);
+
+        const openFormatterUser = new Intl.DateTimeFormat('en-US', { timeZone: userTimezone, hour: '2-digit', minute: '2-digit', hour12: true });
+        const closeFormatterUser = new Intl.DateTimeFormat('en-US', { timeZone: userTimezone, hour: '2-digit', minute: '2-digit', hour12: true });
+
+        const openTimeUserStr = openFormatterUser.format(openTimeUser);
+        const closeTimeUserStr = closeFormatterUser.format(closeTimeUser);
+
+        // Simple string comparison - might need to adjust based on format
+        if (nowUserTimeStr >= openTimeUserStr && nowUserTimeStr < closeTimeUserStr) {
             return "Open";
         } else {
             return "Closed";
