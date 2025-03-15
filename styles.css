@@ -1696,10 +1696,11 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 20px auto;
-    max-width: 100%; /* Ensure full width on mobile */
-    width: 100%; /* Full width for mobile */
+    margin: 10px 0; /* Similar margin to the event section */
+    max-width: 1200px; /* Limit max width for larger screens */
+    width: 100%; /* Full width to match other content */
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 /* Business Hours Container */
@@ -1729,8 +1730,8 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
-    width: 100%; /* Ensure full width on mobile */
-    max-width: 100%; /* Same width limit for mobile */
+    width: 100%; /* Full width to match business-info width */
+    max-width: 1200px; /* Same width limit as the business-info */
     margin: 0 auto;
     box-sizing: border-box;
 }
@@ -1791,26 +1792,33 @@ body.focus-outline-disabled :focus {
     font-weight: bold;
 }
 
-/* Media Queries for Responsive Design */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .business-info,
-    .holiday-alert {
-        padding: 15px;
-        width: calc(100% - 20px); /* Reduce padding on mobile */
-        margin: 10px auto; /* Adjust margin for smaller screens */
+    .business-info {
+        padding: 16px;
+        margin: 5px 0;
     }
-    
+
+    .holiday-alert {
+        padding: 12px;
+    }
+
     .hours-title {
         font-size: 1.3rem;
     }
-    
+
     .hours-row {
-        font-size: 0.95rem;
-        padding: 8px 0; /* Reduce padding on mobile */
-    }
-    
-    .timezone {
-        font-size: 1rem;
+        font-size: calc(var(--font-size) * 0.95);
     }
 }
 
+/* For very small screens */
+@media (max-width: 360px) {
+    .business-info {
+        padding: 12px;
+    }
+
+    .holiday-alert {
+        padding: 8px;
+    }
+}
