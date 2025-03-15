@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
         "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
         "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
-        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 12:00 PM" },
+        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 02:00 PM" },
         "2025-05-26": { name: "Memorial Day", hours: "Closed" },
         "2025-07-04": { name: "Independence Day", hours: "Closed" },
         "2025-09-01": { name: "Labor Day", hours: "Closed" },
@@ -67,24 +67,52 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Function to check if the business is currently open (comparing times in EST)
-    function isBusinessOpen(dayOfWeek) {
+    function isBusinessOpen(dayOfWeek, todayDate) {
         const now = new Date();
-        const todayHoursEST = businessHoursEST[dayOfWeek];
+        let openTimeEST;
+        let closeTimeEST;
 
-        if (!todayHoursEST) return "Closed";
+        if (holidayHours[todayDate]) {
+            const holidayDetails = holidayHours[todayDate];
+            if (holidayDetails.hours === "Closed") {
+                return "Closed";
+            } else {
+                [openTimeEST, closeTimeEST] = holidayDetails.hours.split(" - ");
+            }
+        } else {
+            const todayHoursEST = businessHoursEST[dayOfWeek];
+            if (!todayHoursEST) return "Closed";
+            openTimeEST = todayHoursEST.open;
+            closeTimeEST = todayHoursEST.close;
+        }
 
         const nowEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         const currentHourEST = nowEST.getHours();
         const currentMinuteEST = nowEST.getMinutes();
 
-        const [openHourEST, openMinuteEST] = todayHoursEST.open.split(/[: ]/).filter(Boolean).map((val, index, arr) => index === 0 ? parseInt(val) + (arr[2] === 'PM' && parseInt(val) !== 12 ? 12 : (arr[2] === 'AM' && parseInt(val) === 12 ? 0 : 0)) : parseInt(val));
-        const [closeHourEST, closeMinuteEST] = todayHoursEST.close.split(/[: ]/).filter(Boolean).map((val, index, arr) => index === 0 ? parseInt(val) + (arr[2] === 'PM' && parseInt(val) !== 12 ? 12 : (arr[2] === 'AM' && parseInt(val) === 12 ? 0 : 0)) : parseInt(val));
+        if (!openTimeEST || !closeTimeEST) {
+            return "Closed";
+        }
 
-        const currentTimeInMinutesEST = currentHourEST * 60 + currentMinuteEST;
-        const openTimeInMinutesEST = openHourEST * 60 + openMinuteEST;
-        const closeTimeInMinutesEST = closeHourEST * 60 + closeMinuteEST;
+        const parseTime = (timeStr) => {
+            const [time, period] = timeStr.split(' ');
+            const [hours, minutes] = time.split(':').map(Number);
+            let hour = hours;
+            if (period === 'PM' && hours !== 12) hour += 12;
+            if (period === 'AM' && hours === 12) hour = 0;
+            return { hour, minute };
+        };
 
-        return (currentTimeInMinutesEST >= openTimeInMinutesEST && currentTimeInMinutesEST < closeTimeInMinutesEST) ? "Open" : "Closed";
+        const openTime = parseTime(openTimeEST);
+        const closeTime = parseTime(closeTimeEST);
+
+        const currentHour = nowEST.getHours();
+        const currentMinute = nowEST.getMinutes();
+
+        const isOpen = (currentHour > openTime.hour || (currentHour === openTime.hour && currentMinute >= openTime.minute)) &&
+                       (currentHour < closeTime.hour || (currentHour === closeTime.hour && currentMinute < closeTime.minute));
+
+        return isOpen ? "Open" : "Closed";
     }
 
     // Render business hours
@@ -108,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Update status
     const statusElement = document.getElementById("open-status");
-    const status = isBusinessOpen(currentDay);
+    const status = isBusinessOpen(currentDay, todayDate);
     statusElement.textContent = status;
     statusElement.className = status.toLowerCase();
 
