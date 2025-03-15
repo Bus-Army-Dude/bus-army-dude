@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const [openStr, closeStr] = currentHours.split(" - ");
         const openDateUser = convertTimeToTarget(openStr, "America/New_York", userTimezone);
         const closeDateUser = convertTimeToTarget(closeStr, "America/New_York", userTimezone);
-        const nowUser = new Date();
+        const nowUser = new Date();  // Use current time directly (automatically in user's timezone)
 
         if (nowUser >= openDateUser && nowUser <= closeDateUser) {
             setStatus("Open", "green");
