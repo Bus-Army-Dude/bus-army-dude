@@ -1789,18 +1789,20 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
 }
 
-/* Open status - green border and no text highlight */
+/* Open status - green background and border */
 .open {
+    background-color: #28a745; /* Green background */
     border-color: #28a745; /* Green border */
     padding: 14px 30px;
-    color: var(--text-color); /* Text color unchanged */
+    color: white; /* White text */
 }
 
-/* Closed status - red border and no text highlight */
+/* Closed status - red background and border */
 .closed {
+    background-color: #dc3545; /* Red background */
     border-color: #dc3545; /* Red border */
     padding: 14px 30px;
-    color: var(--text-color); /* Text color unchanged */
+    color: white; /* White text */
 }
 
 /* Mobile Responsiveness */
