@@ -1818,24 +1818,27 @@ body.focus-outline-disabled :focus {
     border: 2px solid #dc3545; /* Matching border color */
 }
 
-/* Ensure the status doesn’t blend in with surrounding content */
-.status.open,
-.status.closed {
+/* Highlighted Open or Closed Status - Fixing Contrast Issue */
+.open,
+.closed {
     background-color: #ffffff; /* White background for high contrast */
     color: #333333; /* Dark text color */
     border-radius: 50px; /* Fully rounded corners for smooth edges */
     padding: 15px 35px; /* Adequate padding to prevent cramped appearance */
 }
 
-/* Border color based on open/closed state */
+/* Open Status Highlight */
 .open {
     border-color: #28a745; /* Green border for 'open' status */
-    background-color: #28a745; /* Matching green background */
+    background-color: #e1f7e2; /* Lighter green background to create contrast */
+    color: #28a745; /* Dark green text for contrast */
 }
 
+/* Closed Status Highlight */
 .closed {
     border-color: #dc3545; /* Red border for 'closed' status */
-    background-color: #dc3545; /* Matching red background */
+    background-color: #f8d7da; /* Lighter red background to create contrast */
+    color: #dc3545; /* Dark red text for contrast */
 }
 
 /* Mobile Responsiveness */
