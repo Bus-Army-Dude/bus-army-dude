@@ -1696,9 +1696,9 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 20px 0;
-    max-width: 1200px;
-    width: 100%;
+    margin: 10px 0; /* Similar margin to the event section */
+    max-width: 1200px; /* Limit max width for larger screens */
+    width: 100%; /* Full width to match other content */
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
@@ -1707,7 +1707,7 @@ body.focus-outline-disabled :focus {
 .hours-container {
     margin-top: 15px;
     padding-top: 10px;
-    width: 100%;
+    width: 100%; /* Full width inside the container */
 }
 
 /* Contact Info Styling */
@@ -1730,57 +1730,17 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
-    width: 100%;
-    max-width: 1200px;
+    width: 100%; /* Full width to match business-info width */
+    max-width: 1200px; /* Same width limit as the business-info */
     margin: 0 auto;
     box-sizing: border-box;
-}
-
-/* Timezone Display */
-.timezone {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-/* Hours Title Styling */
-.hours-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-/* Modern styling for hours rows */
-.hours-row {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-color);
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
-
-.hours-row span {
-    font-weight: normal;
-}
-
-.hours-row:last-child {
-    border-bottom: none;
-}
-
-/* Highlight Current Day's Hours */
-.hours-row.current-day {
-    background-color: var(--highlight-color);
-    color: white;
-    border-radius: 8px;
-    box-shadow: inset 0 0 10px var(--shadow-color);
 }
 
 /* Status Styling with Pill Shape */
 .status {
     font-weight: bold;
     margin-top: 20px;
-    text-align: center;
+    text-align: center; /* Center status */
     padding: 10px 20px;
     border-radius: 25px; /* Pill Shape */
     display: inline-block;
@@ -1792,8 +1752,6 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     position: relative;
     border: 3px solid transparent; /* Placeholder border */
-    background-color: transparent;
-    color: transparent;
     transition: all 0.3s ease;
 }
 
@@ -1835,11 +1793,38 @@ body.focus-outline-disabled :focus {
     background: linear-gradient(45deg, red, darkred); /* Red strip for Closed */
 }
 
+/* Highlight Current Day's Hours */
+.hours-row.current-day {
+    background-color: var(--accent-color); /* Or any color you prefer */
+    color: var(--bg-color); /* Adjust text color if needed */
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px var(--shadow-color);
+    font-weight: bold; /* Make it visually prominent */
+}
+
+/* Modern styling for hours rows */
+.hours-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: bold;
+    display: flex; /* Use flexbox for organization */
+    justify-content: space-between; /* Space between day and hours */
+}
+
+.hours-row span {
+    font-weight: normal;
+}
+
+.hours-row:last-child {
+    border-bottom: none;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
         padding: 16px;
-        margin: 15px 0;
+        margin: 5px 0;
     }
 
     .holiday-alert {
@@ -1867,7 +1852,6 @@ body.focus-outline-disabled :focus {
 @media (max-width: 360px) {
     .business-info {
         padding: 12px;
-        margin: 10px 0;
     }
 
     .holiday-alert {
@@ -1882,3 +1866,4 @@ body.focus-outline-disabled :focus {
         margin-right: auto;
     }
 }
+
