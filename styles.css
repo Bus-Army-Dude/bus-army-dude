@@ -1791,28 +1791,51 @@ body.focus-outline-disabled :focus {
     font-weight: bold;
     margin-top: 20px;
     text-align: center;
-    padding: 12px 25px; /* Ample padding for balance */
-    border-radius: 25px; /* Rounded corners for a modern look */
+    padding: 14px 30px; /* Adequate padding for a more spacious look */
+    border-radius: 30px; /* Fully rounded corners for a modern, sleek appearance */
     display: inline-block;
-    font-size: 1.2rem; /* Slightly larger text for readability */
-    text-transform: uppercase; /* For a clean, modern feel */
-    letter-spacing: 1px; /* Adds a slight gap between letters for a sleek look */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    transition: none; /* No transition effect */
+    font-size: 1.2rem; /* A slightly larger font size for visibility */
+    text-transform: uppercase; /* Adds emphasis to the status */
+    letter-spacing: 1.2px; /* Slight letter spacing for a clean look */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: var(--bg-color); /* Background color to help it stand out */
+    color: var(--text-color); /* Text color */
+    border: 2px solid var(--border-color); /* Light border to outline the status */
+    transition: none; /* No transition effects */
 }
 
 /* Open Status Styling */
 .open {
-    color: white;
-    background-color: #28a745; /* Fresh green for the 'open' status */
-    border: 2px solid #28a745; /* Border matching the background */
+    color: white; /* White text for contrast */
+    background-color: #28a745; /* Bright green to signify 'open' */
+    border: 2px solid #28a745; /* Matching border color */
 }
 
 /* Closed Status Styling */
 .closed {
-    color: white;
-    background-color: #dc3545; /* Bold red for the 'closed' status */
-    border: 2px solid #dc3545; /* Border matching the background */
+    color: white; /* White text for contrast */
+    background-color: #dc3545; /* Bold red to signify 'closed' */
+    border: 2px solid #dc3545; /* Matching border color */
+}
+
+/* Ensure the status doesn’t blend in with surrounding content */
+.status.open,
+.status.closed {
+    background-color: #ffffff; /* White background for high contrast */
+    color: #333333; /* Dark text color */
+    border-radius: 50px; /* Fully rounded corners for smooth edges */
+    padding: 15px 35px; /* Adequate padding to prevent cramped appearance */
+}
+
+/* Border color based on open/closed state */
+.open {
+    border-color: #28a745; /* Green border for 'open' status */
+    background-color: #28a745; /* Matching green background */
+}
+
+.closed {
+    border-color: #dc3545; /* Red border for 'closed' status */
+    background-color: #dc3545; /* Matching red background */
 }
 
 /* Mobile Responsiveness */
@@ -1836,7 +1859,7 @@ body.focus-outline-disabled :focus {
 
     .status {
         font-size: 1.1rem; /* Slightly smaller font on mobile */
-        padding: 10px 20px; /* Adjust padding for mobile */
+        padding: 12px 25px; /* Adjust padding for mobile */
     }
 }
 
@@ -1852,6 +1875,6 @@ body.focus-outline-disabled :focus {
 
     .status {
         font-size: 1rem; /* Smaller font size for very small screens */
-        padding: 8px 15px; /* Less padding on very small screens */
+        padding: 10px 20px; /* Less padding on very small screens */
     }
 }
