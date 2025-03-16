@@ -1775,42 +1775,37 @@ body.focus-outline-disabled :focus {
     border-bottom: none;
 }
 
-/* Status Styling with Pill Shape */
+/* Modern Status Styling */
 .status {
     font-weight: bold;
     margin-top: 20px;
     text-align: center;
     padding: 10px 20px;
-    border-radius: 25px; /* Pill Shape */
+    border-radius: 25px;
     display: inline-block;
     font-size: 1.2rem;
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
-    position: relative;
-    border: 2px solid transparent; /* No border initially */
-    background-color: transparent;
-    color: transparent;
     transition: all 0.3s ease;
+    position: relative;
 }
 
-/* Open Status (Green) */
 .status.open {
     background-color: green;
     color: white;
-    border-color: darkgreen; /* Darker border for open */
+    border: 2px solid darkgreen; /* Darker border for open */
 }
 
-/* Closed Status (Red) */
 .status.closed {
     background-color: red;
     color: white;
-    border-color: darkred; /* Darker border for closed */
+    border: 2px solid darkred; /* Darker border for closed */
 }
 
-/* Border strip effect around pill */
+/* Pill shape and strip effect */
 .status.open:before,
 .status.closed:before {
     content: "";
@@ -1852,7 +1847,7 @@ body.focus-outline-disabled :focus {
     }
 
     .status {
-        font-size: 1rem;
+        font-size: 1rem; 
         padding: 10px 15px;
         width: auto;
         margin-left: auto;
