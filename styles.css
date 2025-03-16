@@ -1696,8 +1696,8 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 10px 0;
-    max-width: 1200px; 
+    margin: 20px 0; /* Add more margin to the top and bottom */
+    max-width: 1200px;
     width: 100%;
     box-sizing: border-box;
     transition: all 0.3s ease;
@@ -1751,7 +1751,14 @@ body.focus-outline-disabled :focus {
     text-align: center;
 }
 
-/* Modern status row styling */
+.hours-row.current-day {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Modern styling for hours rows */
 .hours-row {
     padding: 10px 0;
     border-bottom: 1px solid var(--border-color);
@@ -1772,39 +1779,58 @@ body.focus-outline-disabled :focus {
 .status {
     font-weight: bold;
     margin-top: 20px;
-    text-align: center; 
-    padding: 15px 20px; /* Added more padding for spacious design */
-    border-radius: 12px; /* Smooth rounded corners */
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 25px;
     display: inline-block;
     font-size: 1.2rem;
-    width: calc(100% - 40px); /* Stretch to fit container without touching edges */
+    width: 100%;
+    max-width: 280px;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
     transition: all 0.3s ease;
-    background-color: var(--bg-color); /* Neutral background for contrast */
-    color: var(--text-color); /* Text color for contrast */
+    border: 2px solid transparent;
+    position: relative;
 }
 
-/* Open Status */
+.status:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 5px;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
 .open {
-    background-color: #4CAF50; /* Light Green for open */
-    border: 2px solid #4CAF50; /* Green border */
-    color: white; /* White text */
+    color: white;
+    background-color: green;
+    border-color: green;
 }
 
-/* Closed Status */
+.open:before {
+    background-color: green;
+}
+
 .closed {
-    background-color: #f44336; /* Red for closed */
-    border: 2px solid #f44336; /* Red border */
-    color: white; /* White text */
+    color: white;
+    background-color: red;
+    border-color: red;
+}
+
+.closed:before {
+    background-color: red;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
         padding: 16px;
-        margin: 5px 0;
+        margin: 15px 0;
     }
 
     .holiday-alert {
@@ -1820,9 +1846,11 @@ body.focus-outline-disabled :focus {
     }
 
     .status {
-        font-size: 1rem; /* Reduce font size on smaller screens */
+        font-size: 1rem; 
         padding: 10px 15px;
-        width: calc(100% - 30px); /* Adjust width for smaller devices */
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -1830,6 +1858,7 @@ body.focus-outline-disabled :focus {
 @media (max-width: 360px) {
     .business-info {
         padding: 12px;
+        margin: 10px 0;
     }
 
     .holiday-alert {
@@ -1839,6 +1868,9 @@ body.focus-outline-disabled :focus {
     .status {
         font-size: 0.9rem;
         padding: 8px 12px;
-        width: calc(100% - 24px); /* Adjust width even further for small screens */
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
+
