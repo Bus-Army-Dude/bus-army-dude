@@ -1693,10 +1693,10 @@ body.focus-outline-disabled :focus {
     background-color: var(--content-bg);
     color: var(--text-color);
     border: 1px solid var(--border-color);
-    padding: 25px; /* Slightly increased padding for spaciousness */
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Softer and more diffused shadow */
-    margin: 20px auto; /* Centering and more spacing from other sections */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin: 24px auto;
     max-width: 1200px;
     width: 100%;
     box-sizing: border-box;
@@ -1705,8 +1705,8 @@ body.focus-outline-disabled :focus {
 
 /* Business Hours Container */
 .hours-container {
-    margin-top: 20px;
-    padding-top: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
     width: 100%;
 }
 
@@ -1714,27 +1714,28 @@ body.focus-outline-disabled :focus {
 .contact-info a {
     color: var(--link-color);
     text-decoration: none;
-    font-weight: bold; /* Make links stand out */
-    transition: color 0.3s ease;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
 }
 
 .contact-info a:hover {
     color: var(--hover-color);
-    text-decoration: underline; /* Add underline on hover */
+    background-color: rgba(var(--link-color-rgb), 0.1);
 }
 
 /* Holiday Alert Box */
 .holiday-alert {
-    margin-top: 20px;
-    padding: 15px 20px; /* Increased padding for better spacing */
-    background: linear-gradient(145deg, var(--light-accent), var(--light-accent-light)); /* Subtle gradient */
-    border: 1px solid var(--border-color);
-    border-radius: 8px; /* Rounded corners */
+    margin: 24px auto;
+    padding: 18px 24px;
+    background: linear-gradient(145deg, var(--light-accent), var(--light-accent-light));
+    border: none;
+    border-radius: 12px;
     color: white;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    width: calc(100% - 32px);
+    max-width: 1136px;
     box-sizing: border-box;
     font-size: 1.1rem;
     font-weight: 500;
@@ -1744,41 +1745,43 @@ body.focus-outline-disabled :focus {
 /* Timezone Display */
 .timezone {
     font-size: 1.1rem;
-    margin-bottom: 10px;
+    margin: 16px 0;
     text-align: center;
-    font-weight: 600; /* Make it more prominent */
+    font-weight: 600;
+    color: var(--text-color-muted);
 }
 
 /* Hours Title Styling */
 .hours-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 16px;
     text-align: center;
+    letter-spacing: -0.5px;
 }
 
 /* Hours Row Styling */
-.hours-row.current-day {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-
-/* Modern Styling for Hours Rows */
 .hours-row {
-    padding: 15px 0;
-    border-bottom: 1px solid var(--border-color);
-    font-weight: bold;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(var(--border-color-rgb), 0.1);
+    font-weight: 500;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1rem; /* Slightly smaller font size */
+    font-size: 1.05rem;
+}
+
+.hours-row.current-day {
+    background-color: rgba(var(--accent-color-rgb), 0.1);
+    color: var(--accent-color);
+    padding: 16px;
+    border-radius: 12px;
+    margin: 8px 0;
 }
 
 /* Hours Row Normal Styling */
 .hours-row span {
-    font-weight: normal;
+    font-weight: 400;
 }
 
 /* Remove Border from Last Row */
@@ -1786,57 +1789,90 @@ body.focus-outline-disabled :focus {
     border-bottom: none;
 }
 
+/* Modern Status Container */
+.status-container {
+    width: calc(100% - 48px);
+    margin: 32px auto;
+    padding: 4px;
+    border-radius: 100px;
+    background: linear-gradient(to right, 
+        var(--status-dark) 0%,
+        var(--status-darker) 100%);
+}
+
 /* Modern Status Styling */
 .status {
-    font-weight: bold;
-    margin-top: 25px;
+    width: 100%;
+    font-weight: 700;
     text-align: center;
-    padding: 12px 25px; /* Add padding for a spacious design */
-    border-radius: 8px;
-    display: inline-block;
-    font-size: 1.3rem;
-    text-transform: uppercase; /* Uppercase text for prominence */
+    padding: 16px;
+    border-radius: 100px;
+    display: block;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    background-color: var(--status-light);
+    transition: all 0.3s ease;
 }
 
-.open {
-    color: white;
-    background-color: green;
-    border: 2px solid green; /* Border matching the status */
+/* Status Colors */
+.status.open {
+    --status-light: rgba(0, 200, 83, 0.15);
+    --status-dark: rgb(0, 160, 67);
+    --status-darker: rgb(0, 140, 58);
+    color: rgb(0, 160, 67);
 }
 
-.closed {
-    color: white;
-    background-color: red;
-    border: 2px solid red; /* Border matching the status */
+.status.closed {
+    --status-light: rgba(255, 59, 48, 0.15);
+    --status-dark: rgb(220, 40, 30);
+    --status-darker: rgb(200, 35, 27);
+    color: rgb(220, 40, 30);
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
-        padding: 16px;
-        margin: 5px 0;
+        padding: 20px;
+        margin: 16px 0;
+    }
+
+    .status-container {
+        width: calc(100% - 32px);
     }
 
     .holiday-alert {
-        padding: 12px;
+        padding: 16px;
+        margin: 16px auto;
     }
 
     .hours-title {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
     }
 
     .hours-row {
-        font-size: calc(var(--font-size) * 0.95);
+        font-size: 1rem;
     }
 }
 
 /* For very small screens */
 @media (max-width: 360px) {
     .business-info {
-        padding: 12px;
+        padding: 16px;
+    }
+
+    .status-container {
+        width: calc(100% - 24px);
     }
 
     .holiday-alert {
-        padding: 8px;
+        padding: 12px;
+        width: calc(100% - 24px);
+    }
+
+    .status {
+        font-size: 1.1rem;
+        padding: 14px;
     }
 }
