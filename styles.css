@@ -1696,7 +1696,7 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 20px 0; /* Add more margin to the top and bottom */
+    margin: 20px 0;
     max-width: 1200px;
     width: 100%;
     box-sizing: border-box;
@@ -1790,11 +1790,24 @@ body.focus-outline-disabled :focus {
     margin-right: auto;
     box-sizing: border-box;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
     position: relative;
 }
 
-.status:before {
+.status.open {
+    background-color: green;
+    color: white;
+    border: 2px solid darkgreen; /* Darker border for open */
+}
+
+.status.closed {
+    background-color: red;
+    color: white;
+    border: 2px solid darkred; /* Darker border for closed */
+}
+
+/* Pill shape and strip effect */
+.status.open:before,
+.status.closed:before {
     content: "";
     position: absolute;
     top: 50%;
@@ -1806,24 +1819,12 @@ body.focus-outline-disabled :focus {
     transition: all 0.3s ease;
 }
 
-.open {
-    color: white;
-    background-color: green;
-    border-color: green;
+.status.open:before {
+    background-color: darkgreen; /* Darker strip for open status */
 }
 
-.open:before {
-    background-color: green;
-}
-
-.closed {
-    color: white;
-    background-color: red;
-    border-color: red;
-}
-
-.closed:before {
-    background-color: red;
+.status.closed:before {
+    background-color: darkred; /* Darker strip for closed status */
 }
 
 /* Mobile Responsiveness */
@@ -1873,4 +1874,3 @@ body.focus-outline-disabled :focus {
         margin-right: auto;
     }
 }
-
