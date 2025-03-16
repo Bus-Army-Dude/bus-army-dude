@@ -1688,65 +1688,105 @@ body.focus-outline-disabled :focus {
     outline: none; /* No outline when focus outline is disabled */
 }
 
-/* Business Info Section */
+/* Modern Business Info Section 2025 */
 .business-info {
-    background-color: var(--content-bg);
+    --shadow-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
     color: var(--text-color);
-    border: 1px solid var(--border-color);
-    padding: 32px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    margin: 24px auto;
-    max-width: 1200px;
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: 24px;
+    box-shadow: 
+        0 8px 32px -8px var(--shadow-color),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    margin: 2rem auto;
+    max-width: min(1200px, 95vw);
     width: 100%;
     box-sizing: border-box;
-    transition: all 0.3s ease;
-    position: relative;
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .business-info h1 {
-    font-size: 2rem;
-    margin-bottom: 24px;
-    font-weight: 700;
-    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 800;
+    background: linear-gradient(120deg, var(--text-color), color-mix(in srgb, var(--text-color) 70%, var(--accent-color)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
 }
 
-/* Contact Info Styling */
 .contact-info {
-    margin: 20px 0;
-    text-align: center;
+    margin: 1.5rem 0;
+    font-size: 1.1rem;
 }
 
 .contact-info a {
     color: var(--link-color);
     text-decoration: none;
     font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    background: color-mix(in srgb, var(--link-color) 10%, transparent);
     transition: all 0.3s ease;
-    background-color: rgba(var(--link-color-rgb), 0.1);
+    display: inline-block;
 }
 
 .contact-info a:hover {
-    background-color: rgba(var(--link-color-rgb), 0.2);
-    transform: translateY(-1px);
+    background: color-mix(in srgb, var(--link-color) 15%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--link-color) 20%, transparent);
 }
 
-/* Hours Container */
-#hours-container {
-    margin: 24px 0;
-    padding: 20px;
-    background-color: rgba(var(--content-bg-rgb), 0.5);
+.timezone-container {
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: color-mix(in srgb, var(--content-bg) 95%, var(--accent-color));
     border-radius: 12px;
+    font-size: 0.95rem;
 }
 
-/* Hours Row Styling */
+#user-timezone {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+    font-weight: 500;
+    color: var(--accent-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    margin-left: 0.5rem;
+}
+
+.hours-section {
+    margin: 2rem 0;
+}
+
+.hours-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+#hours-container {
+    background: color-mix(in srgb, var(--content-bg) 97%, var(--accent-color));
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: inset 0 2px 4px color-mix(in srgb, var(--shadow-color) 50%, transparent);
+}
+
 .hours-row {
-    padding: 12px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(var(--border-color-rgb), 0.1);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
     transition: all 0.3s ease;
 }
 
@@ -1755,119 +1795,94 @@ body.focus-outline-disabled :focus {
 }
 
 .hours-row.current-day {
-    background-color: rgba(var(--accent-color-rgb), 0.1);
-    border-radius: 8px;
-    font-weight: 600;
-    color: var(--accent-color);
-    transform: scale(1.02);
-}
-
-/* Holiday Alert Styling */
-#holiday-alert {
-    margin: 24px 0;
-    padding: 20px;
-    background: linear-gradient(135deg, 
-        rgba(var(--accent-color-rgb), 0.1) 0%,
-        rgba(var(--accent-color-rgb), 0.05) 100%);
+    background: color-mix(in srgb, var(--accent-color) 10%, transparent);
     border-radius: 12px;
-    border: 1px solid rgba(var(--accent-color-rgb), 0.2);
+    transform: scale(1.02);
+    font-weight: 600;
 }
 
-/* Status Container Styling */
+#holiday-alert {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--accent-color) 15%, transparent),
+        color-mix(in srgb, var(--accent-color) 5%, transparent)
+    );
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+/* Status Container - Centered */
 .status-container {
-    margin: 32px auto;
-    width: calc(100% - 48px);
+    margin: 2rem auto;
+    width: 100%;
+    max-width: calc(100% - 48px);
     padding: 4px;
     border-radius: 100px;
     background: linear-gradient(to right,
-        var(--status-border-color) 0%,
-        var(--status-border-color-dark) 100%);
+        var(--status-dark) 0%,
+        var(--status-darker) 100%);
+    text-align: center;
 }
 
-/* Status Styling */
+/* Status Styling - Centered */
 .status {
     width: 100%;
-    margin: 0;
-    padding: 16px 24px;
+    padding: 1rem 2rem;
     border-radius: 100px;
     font-size: 1.2rem;
     font-weight: 700;
-    text-align: center;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     transition: all 0.3s ease;
+    background-color: var(--status-light);
 }
 
 /* Open Status */
 .status .open {
-    --status-bg: rgba(0, 200, 83, 0.15);
-    --status-border-color: rgb(0, 160, 67);
-    --status-border-color-dark: rgb(0, 140, 58);
-    background-color: var(--status-bg);
-    color: var(--status-border-color);
+    --status-light: color-mix(in srgb, rgb(0, 200, 83) 15%, transparent);
+    --status-dark: rgb(0, 160, 67);
+    --status-darker: rgb(0, 140, 58);
+    color: rgb(0, 160, 67);
 }
 
 /* Closed Status */
 .status .closed {
-    --status-bg: rgba(255, 59, 48, 0.15);
-    --status-border-color: rgb(220, 40, 30);
-    --status-border-color-dark: rgb(200, 35, 27);
-    background-color: var(--status-bg);
-    color: var(--status-border-color);
+    --status-light: color-mix(in srgb, rgb(255, 59, 48) 15%, transparent);
+    --status-dark: rgb(220, 40, 30);
+    --status-darker: rgb(200, 35, 27);
+    color: rgb(220, 40, 30);
 }
 
-/* Timezone Display */
-#user-timezone {
-    display: inline-block;
-    padding: 4px 12px;
-    background-color: rgba(var(--text-color-rgb), 0.1);
-    border-radius: 6px;
-    font-family: monospace;
-    font-size: 0.9rem;
-}
-
-/* Mobile Responsiveness */
+/* Modern Responsive Design */
 @media (max-width: 768px) {
     .business-info {
-        padding: 24px;
-        margin: 16px auto;
-    }
-
-    .business-info h1 {
-        font-size: 1.75rem;
+        padding: clamp(16px, 3vw, 24px);
+        margin: 1rem auto;
     }
 
     .status-container {
-        width: calc(100% - 32px);
+        max-width: calc(100% - 32px);
     }
 
     .hours-row {
-        padding: 10px 12px;
+        padding: 0.6rem 0.8rem;
         font-size: 0.95rem;
     }
 }
 
-/* Small Screen Adjustments */
 @media (max-width: 480px) {
-    .business-info {
-        padding: 20px;
-    }
-
     .business-info h1 {
         font-size: 1.5rem;
     }
 
     .status-container {
-        width: calc(100% - 24px);
+        max-width: calc(100% - 24px);
     }
 
     .status {
         font-size: 1rem;
-        padding: 14px 20px;
-    }
-
-    .hours-row {
-        padding: 8px 10px;
-        font-size: 0.9rem;
+        padding: 0.875rem 1.5rem;
     }
 }
