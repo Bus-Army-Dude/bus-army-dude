@@ -1693,7 +1693,7 @@ body.focus-outline-disabled :focus {
     background-color: var(--content-bg);
     color: var(--text-color);
     border: 1px solid var(--border-color);
-    padding: 30px;
+    padding: 32px;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     margin: 24px auto;
@@ -1701,178 +1701,173 @@ body.focus-outline-disabled :focus {
     width: 100%;
     box-sizing: border-box;
     transition: all 0.3s ease;
+    position: relative;
 }
 
-/* Business Hours Container */
-.hours-container {
-    margin-top: 24px;
-    padding-top: 16px;
-    width: 100%;
+.business-info h1 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    font-weight: 700;
+    text-align: center;
 }
 
 /* Contact Info Styling */
+.contact-info {
+    margin: 20px 0;
+    text-align: center;
+}
+
 .contact-info a {
     color: var(--link-color);
     text-decoration: none;
     font-weight: 600;
-    transition: all 0.3s ease;
-    padding: 4px 8px;
+    padding: 6px 12px;
     border-radius: 6px;
-}
-
-.contact-info a:hover {
-    color: var(--hover-color);
+    transition: all 0.3s ease;
     background-color: rgba(var(--link-color-rgb), 0.1);
 }
 
-/* Holiday Alert Box */
-.holiday-alert {
-    margin: 24px auto;
-    padding: 18px 24px;
-    background: linear-gradient(145deg, var(--light-accent), var(--light-accent-light));
-    border: none;
+.contact-info a:hover {
+    background-color: rgba(var(--link-color-rgb), 0.2);
+    transform: translateY(-1px);
+}
+
+/* Hours Container */
+#hours-container {
+    margin: 24px 0;
+    padding: 20px;
+    background-color: rgba(var(--content-bg-rgb), 0.5);
     border-radius: 12px;
-    color: white;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    width: calc(100% - 32px);
-    max-width: 1136px;
-    box-sizing: border-box;
-    font-size: 1.1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-/* Timezone Display */
-.timezone {
-    font-size: 1.1rem;
-    margin: 16px 0;
-    text-align: center;
-    font-weight: 600;
-    color: var(--text-color-muted);
-}
-
-/* Hours Title Styling */
-.hours-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 16px;
-    text-align: center;
-    letter-spacing: -0.5px;
 }
 
 /* Hours Row Styling */
 .hours-row {
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(var(--border-color-rgb), 0.1);
-    font-weight: 500;
+    padding: 12px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.05rem;
+    border-bottom: 1px solid rgba(var(--border-color-rgb), 0.1);
+    transition: all 0.3s ease;
 }
 
-.hours-row.current-day {
-    background-color: rgba(var(--accent-color-rgb), 0.1);
-    color: var(--accent-color);
-    padding: 16px;
-    border-radius: 12px;
-    margin: 8px 0;
-}
-
-/* Hours Row Normal Styling */
-.hours-row span {
-    font-weight: 400;
-}
-
-/* Remove Border from Last Row */
 .hours-row:last-child {
     border-bottom: none;
 }
 
-/* Modern Status Container */
-.status-container {
-    width: calc(100% - 48px);
-    margin: 32px auto;
-    padding: 4px;
-    border-radius: 100px;
-    background: linear-gradient(to right, 
-        var(--status-dark) 0%,
-        var(--status-darker) 100%);
+.hours-row.current-day {
+    background-color: rgba(var(--accent-color-rgb), 0.1);
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--accent-color);
+    transform: scale(1.02);
 }
 
-/* Modern Status Styling */
+/* Holiday Alert Styling */
+#holiday-alert {
+    margin: 24px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, 
+        rgba(var(--accent-color-rgb), 0.1) 0%,
+        rgba(var(--accent-color-rgb), 0.05) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.2);
+}
+
+/* Status Container Styling */
+.status-container {
+    margin: 32px auto;
+    width: calc(100% - 48px);
+    padding: 4px;
+    border-radius: 100px;
+    background: linear-gradient(to right,
+        var(--status-border-color) 0%,
+        var(--status-border-color-dark) 100%);
+}
+
+/* Status Styling */
 .status {
     width: 100%;
+    margin: 0;
+    padding: 16px 24px;
+    border-radius: 100px;
+    font-size: 1.2rem;
     font-weight: 700;
     text-align: center;
-    padding: 16px;
-    border-radius: 100px;
-    display: block;
-    font-size: 1.2rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0;
-    background-color: var(--status-light);
+    letter-spacing: 1.5px;
     transition: all 0.3s ease;
 }
 
-/* Status Colors */
-.status.open {
-    --status-light: rgba(0, 200, 83, 0.15);
-    --status-dark: rgb(0, 160, 67);
-    --status-darker: rgb(0, 140, 58);
-    color: rgb(0, 160, 67);
+/* Open Status */
+.status .open {
+    --status-bg: rgba(0, 200, 83, 0.15);
+    --status-border-color: rgb(0, 160, 67);
+    --status-border-color-dark: rgb(0, 140, 58);
+    background-color: var(--status-bg);
+    color: var(--status-border-color);
 }
 
-.status.closed {
-    --status-light: rgba(255, 59, 48, 0.15);
-    --status-dark: rgb(220, 40, 30);
-    --status-darker: rgb(200, 35, 27);
-    color: rgb(220, 40, 30);
+/* Closed Status */
+.status .closed {
+    --status-bg: rgba(255, 59, 48, 0.15);
+    --status-border-color: rgb(220, 40, 30);
+    --status-border-color-dark: rgb(200, 35, 27);
+    background-color: var(--status-bg);
+    color: var(--status-border-color);
+}
+
+/* Timezone Display */
+#user-timezone {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: rgba(var(--text-color-rgb), 0.1);
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.9rem;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
-        padding: 20px;
-        margin: 16px 0;
+        padding: 24px;
+        margin: 16px auto;
+    }
+
+    .business-info h1 {
+        font-size: 1.75rem;
     }
 
     .status-container {
         width: calc(100% - 32px);
     }
 
-    .holiday-alert {
-        padding: 16px;
-        margin: 16px auto;
-    }
-
-    .hours-title {
-        font-size: 1.5rem;
-    }
-
     .hours-row {
-        font-size: 1rem;
+        padding: 10px 12px;
+        font-size: 0.95rem;
     }
 }
 
-/* For very small screens */
-@media (max-width: 360px) {
+/* Small Screen Adjustments */
+@media (max-width: 480px) {
     .business-info {
-        padding: 16px;
+        padding: 20px;
+    }
+
+    .business-info h1 {
+        font-size: 1.5rem;
     }
 
     .status-container {
         width: calc(100% - 24px);
     }
 
-    .holiday-alert {
-        padding: 12px;
-        width: calc(100% - 24px);
+    .status {
+        font-size: 1rem;
+        padding: 14px 20px;
     }
 
-    .status {
-        font-size: 1.1rem;
-        padding: 14px;
+    .hours-row {
+        padding: 8px 10px;
+        font-size: 0.9rem;
     }
 }
