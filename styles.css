@@ -1696,78 +1696,18 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 10px 0; /* Similar margin to the event section */
-    max-width: 1200px; /* Limit max width for larger screens */
-    width: 100%; /* Full width to match other content */
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-}
-
-/* Status Styling with Pill Shape */
-.status {
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: center; /* Center status */
-    padding: 10px 20px;
-    border-radius: 25px; /* Pill Shape */
-    display: inline-block;
-    font-size: 1.2rem;
+    margin: 20px 0;
+    max-width: 1200px;
     width: 100%;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
     box-sizing: border-box;
-    position: relative;
-    overflow: hidden; /* Hide anything outside the container */
     transition: all 0.3s ease;
 }
 
-/* Open Status (Green) */
-.status.open {
-    background-color: lightgreen; /* Lighter green inside */
-    color: darkgreen;
-    border: 3px solid green; /* Border color */
-}
-
-/* Closed Status (Red) */
-.status.closed {
-    background-color: lightcoral; /* Lighter red inside */
-    color: darkred;
-    border: 3px solid red; /* Border color */
-}
-
-/* Border strip effect around pill */
-.status.open:before,
-.status.closed:before {
-    content: "";
-    position: absolute;
-    top: -6px;
-    left: -6px;
-    right: -6px;
-    bottom: -6px;
-    border-radius: 30px; /* Larger radius for the strip */
-    z-index: -1;
-    transition: all 0.3s ease;
-}
-
-/* Green strip for Open */
-.status.open:before {
-    background: darkgreen; /* Dark green strip around open status */
-}
-
-/* Red strip for Closed */
-.status.closed:before {
-    background: darkred; /* Dark red strip around closed status */
-}
-
-/* Highlight Current Day's Hours */
-.hours-row.current-day {
-    background-color: var(--accent-color); /* Or any color you prefer */
-    color: var(--bg-color); /* Adjust text color if needed */
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: inset 0 0 10px var(--shadow-color);
-    font-weight: bold; /* Make it visually prominent */
+/* Business Hours Container */
+.hours-container {
+    margin-top: 15px;
+    padding-top: 10px;
+    width: 100%;
 }
 
 /* Contact Info Styling */
@@ -1790,17 +1730,113 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
-    width: 100%; /* Full width to match business-info width */
-    max-width: 1200px; /* Same width limit as the business-info */
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
+}
+
+/* Timezone Display */
+.timezone {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Hours Title Styling */
+.hours-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.hours-row.current-day {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Modern styling for hours rows */
+.hours-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hours-row span {
+    font-weight: normal;
+}
+
+.hours-row:last-child {
+    border-bottom: none;
+}
+
+/* Status Styling with Pill Shape */
+.status {
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 25px; /* Pill Shape */
+    display: inline-block;
+    font-size: 1.2rem;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    position: relative;
+    border: 2px solid transparent; /* No border initially */
+    background-color: transparent;
+    color: transparent;
+    transition: all 0.3s ease;
+}
+
+/* Open Status (Green) */
+.status.open {
+    background-color: green;
+    color: white;
+    border-color: darkgreen; /* Darker border for open */
+}
+
+/* Closed Status (Red) */
+.status.closed {
+    background-color: red;
+    color: white;
+    border-color: darkred; /* Darker border for closed */
+}
+
+/* Border strip effect around pill */
+.status.open:before,
+.status.closed:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 5px;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
+.status.open:before {
+    background-color: darkgreen; /* Darker strip for open status */
+}
+
+.status.closed:before {
+    background-color: darkred; /* Darker strip for closed status */
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
         padding: 16px;
-        margin: 5px 0;
+        margin: 15px 0;
     }
 
     .holiday-alert {
@@ -1828,6 +1864,7 @@ body.focus-outline-disabled :focus {
 @media (max-width: 360px) {
     .business-info {
         padding: 12px;
+        margin: 10px 0;
     }
 
     .holiday-alert {
