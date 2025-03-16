@@ -1707,9 +1707,9 @@ body.focus-outline-disabled :focus {
 .status {
     font-weight: bold;
     margin-top: 20px;
-    text-align: center; /* Center status */
+    text-align: center; /* Center status text */
     padding: 10px 20px;
-    border-radius: 25px; /* Pill Shape */
+    border-radius: 50px; /* This makes the pill shape */
     display: inline-block;
     font-size: 1.2rem;
     width: auto;
@@ -1718,7 +1718,7 @@ body.focus-outline-disabled :focus {
     margin-right: auto;
     box-sizing: border-box;
     position: relative;
-    border: 3px solid transparent; /* Placeholder border */
+    border: 3px solid transparent; /* Placeholder border for border color change */
     transition: all 0.3s ease;
 }
 
@@ -1738,8 +1738,20 @@ body.focus-outline-disabled :focus {
     box-shadow: 0 0 8px rgba(219, 53, 79, 0.5); /* Soft red glow */
 }
 
-/* Border strip effect around pill */
-.status.open:before,
+/* Green strip for Open */
+.status.open:before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 50px; /* This will also round the border strip */
+    z-index: -1;
+    background: linear-gradient(45deg, #2a9d8f, #1b6f61); /* Green strip for Open */
+}
+
+/* Red strip for Closed */
 .status.closed:before {
     content: "";
     position: absolute;
@@ -1747,18 +1759,8 @@ body.focus-outline-disabled :focus {
     left: -6px;
     right: -6px;
     bottom: -6px;
-    border-radius: 30px; /* Larger radius for the strip */
+    border-radius: 50px; /* Rounded corners for the border strip */
     z-index: -1;
-    transition: all 0.3s ease;
-}
-
-/* Green strip for Open */
-.status.open:before {
-    background: linear-gradient(45deg, #2a9d8f, #1b6f61); /* Green strip for Open */
-}
-
-/* Red strip for Closed */
-.status.closed:before {
     background: linear-gradient(45deg, #d9534f, #a94442); /* Red strip for Closed */
 }
 
@@ -1809,8 +1811,10 @@ body.focus-outline-disabled :focus {
 
     .status {
         font-size: 1rem;
-        padding: 10px 20px;
-        max-width: 270px;
+        padding: 8px 15px;
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hours-row {
@@ -1827,7 +1831,9 @@ body.focus-outline-disabled :focus {
     .status {
         font-size: 0.9rem;
         padding: 8px 16px;
-        max-width: 250px;
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hours-row {
