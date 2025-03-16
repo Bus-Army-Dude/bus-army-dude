@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <browserconfig>
-      <msapplication>
-        <tile>
-          <square70x70logo src="/ms-icon-70x70.png"/>
-          <square150x150logo src="/ms-icon-150x150.png"/>
-          <square310x310logo src="/ms-icon-310x310.png"/>
-          <TileColor>#ffffff</TileColor>
-        </tile>
-      </msapplication>
-    </browserconfig>
-    
+<browserconfig>
+  <msapplication>
+    <tile>
+      <!-- Light Mode Icons -->
+      <square70x70logo src="/assets/light-icon/72.png"/>
+      <square150x150logo src="/assets/light-icon/152.png"/>
+      <square310x310logo src="/assets/light-icon/258.png"/>
+      <TileColor>#ffffff</TileColor>
+    </tile>
+    <tile>
+      <!-- Dark Mode Icons -->
+      <square70x70logo src="/assets/dark-icon/72.png"/>
+      <square150x150logo src="/assets/dark-icon/152.png"/>
+      <square310x310logo src="/assets/dark-icon/258.png"/>
+      <TileColor>#000000</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>
