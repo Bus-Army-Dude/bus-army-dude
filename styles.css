@@ -1696,9 +1696,9 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 10px 0; /* Similar margin to the event section */
-    max-width: 1200px; /* Limit max width for larger screens */
-    width: 100%; /* Full width to match other content */
+    margin: 10px 0;
+    max-width: 1200px; 
+    width: 100%;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
@@ -1707,7 +1707,7 @@ body.focus-outline-disabled :focus {
 .hours-container {
     margin-top: 15px;
     padding-top: 10px;
-    width: 100%; /* Full width inside the container */
+    width: 100%;
 }
 
 /* Contact Info Styling */
@@ -1730,8 +1730,8 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
-    width: 100%; /* Full width to match business-info width */
-    max-width: 1200px; /* Same width limit as the business-info */
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
 }
@@ -1748,23 +1748,16 @@ body.focus-outline-disabled :focus {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 10px;
-    text-align: center; /* Center title */
+    text-align: center;
 }
 
-.hours-row.current-day {
-    background-color: var(--accent-color); /* Or any color you prefer */
-    color: var(--bg-color); /* Adjust text color if needed */
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-/* Modern styling for hours rows */
+/* Modern status row styling */
 .hours-row {
     padding: 10px 0;
     border-bottom: 1px solid var(--border-color);
     font-weight: bold;
-    display: flex; /* Use flexbox for organization */
-    justify-content: space-between; /* Space between day and hours */
+    display: flex;
+    justify-content: space-between;
 }
 
 .hours-row span {
@@ -1780,35 +1773,34 @@ body.focus-outline-disabled :focus {
     font-weight: bold;
     margin-top: 20px;
     text-align: center;
-    padding: 14px 30px; /* Adequate padding on left and right */
-    border-radius: 30px; /* Fully rounded corners for a modern look */
-    display: block; /* Ensures it spans the full width */
-    font-size: 1.2rem; /* Slightly larger font size for visibility */
-    text-transform: uppercase; /* Adds emphasis to the status */
-    letter-spacing: 1.2px; /* Slight letter spacing for a clean look */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    background-color: var(--bg-color); /* Background color to help it stand out */
-    color: var(--text-color); /* Text color */
-    border: 2px solid var(--border-color); /* Light border to outline the status */
-    width: calc(100% - 40px); /* Stretches to the full width with padding on sides */
-    margin-left: 20px; /* Adds space from the left edge of the container */
-    margin-right: 20px; /* Adds space from the right edge of the container */
-    transition: none; /* No transition effects */
-    box-sizing: border-box; /* Prevents it from overflowing the container */
+    padding: 14px 30px; 
+    border-radius: 30px; 
+    display: block;
+    font-size: 1.2rem; 
+    text-transform: uppercase; 
+    letter-spacing: 1.2px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); 
+    background-color: var(--bg-color); 
+    color: var(--text-color);
+    border: 2px solid var(--border-color); 
+    width: calc(100% - 40px); 
+    margin-left: 20px;
+    margin-right: 20px;
+    box-sizing: border-box;
 }
 
+/* Open status - green border and no text highlight */
 .open {
-    background-color: #28a745; /* Modern green */
-    color: white;
     border-color: #28a745; /* Green border */
-    font-weight: 600; /* Slightly bolded for emphasis */
+    padding: 14px 30px;
+    color: var(--text-color); /* Text color unchanged */
 }
 
+/* Closed status - red border and no text highlight */
 .closed {
-    background-color: #dc3545; /* Modern red */
-    color: white;
     border-color: #dc3545; /* Red border */
-    font-weight: 600; /* Slightly bolded for emphasis */
+    padding: 14px 30px;
+    color: var(--text-color); /* Text color unchanged */
 }
 
 /* Mobile Responsiveness */
@@ -1832,11 +1824,11 @@ body.focus-outline-disabled :focus {
 
     /* Status for smaller screens */
     .status {
-        padding: 12px 20px; /* Less padding on small devices */
-        font-size: 1.1rem; /* Slightly smaller text on mobile */
-        margin-left: 10px; /* Reduce left margin */
-        margin-right: 10px; /* Reduce right margin */
-        width: calc(100% - 20px); /* Adjust width to fit the screen */
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: calc(100% - 20px);
     }
 }
 
@@ -1852,11 +1844,10 @@ body.focus-outline-disabled :focus {
 
     /* Status for very small screens */
     .status {
-        padding: 10px 15px; /* Less padding for smaller screens */
-        font-size: 1rem; /* Even smaller text size */
-        margin-left: 5px; /* Minimal left margin */
-        margin-right: 5px; /* Minimal right margin */
-        width: calc(100% - 10px); /* Adjust width further for small screens */
+        padding: 10px 15px;
+        font-size: 1rem;
+        margin-left: 5px;
+        margin-right: 5px;
+        width: calc(100% - 10px);
     }
 }
-
