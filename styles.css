@@ -1692,55 +1692,53 @@ body.focus-outline-disabled :focus {
 .business-info {
     background-color: var(--content-bg);
     color: var(--text-color);
-    border: 1px solid var(--border-color); 
-    padding: 20px;
+    border: 1px solid var(--border-color);
+    padding: 25px; /* Slightly increased padding for spaciousness */
     border-radius: 12px;
-    box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 10px 0; /* Similar margin to the event section */
-    max-width: 1200px; /* Limit max width for larger screens */
-    width: 100%; /* Full width to match other content */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Softer and more diffused shadow */
+    margin: 20px auto; /* Centering and more spacing from other sections */
+    max-width: 1200px;
+    width: 100%;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
 /* Business Hours Container */
 .hours-container {
-    margin-top: 15px;
-    padding-top: 10px;
-    width: 100%; /* Full width inside the container */
+    margin-top: 20px;
+    padding-top: 12px;
+    width: 100%;
 }
 
 /* Contact Info Styling */
 .contact-info a {
     color: var(--link-color);
     text-decoration: none;
+    font-weight: bold; /* Make links stand out */
     transition: color 0.3s ease;
 }
 
 .contact-info a:hover {
     color: var(--hover-color);
+    text-decoration: underline; /* Add underline on hover */
 }
 
 /* Holiday Alert Box */
 .holiday-alert {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: var(--light-accent);
+    margin-top: 20px;
+    padding: 15px 20px; /* Increased padding for better spacing */
+    background: linear-gradient(145deg, var(--light-accent), var(--light-accent-light)); /* Subtle gradient */
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 8px; /* Rounded corners */
     color: white;
-    box-shadow: 0 4px 10px var(--shadow-color);
-    width: 100%; /* Full width to match business-info width */
-    max-width: 1200px; /* Same width limit as the business-info */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
-}
-
-/* Status Styling */
-.status {
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: center; /* Center status */
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 /* Timezone Display */
@@ -1748,6 +1746,7 @@ body.focus-outline-disabled :focus {
     font-size: 1.1rem;
     margin-bottom: 10px;
     text-align: center;
+    font-weight: 600; /* Make it more prominent */
 }
 
 /* Hours Title Styling */
@@ -1755,41 +1754,60 @@ body.focus-outline-disabled :focus {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 10px;
-    text-align: center; /* Center title */
+    text-align: center;
 }
 
+/* Hours Row Styling */
 .hours-row.current-day {
-    background-color: var(--accent-color); /* Or any color you prefer */
-    color: var(--bg-color); /* Adjust text color if needed */
-    padding: 5px 10px;
-    border-radius: 5px;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: 8px 12px;
+    border-radius: 8px;
 }
 
-/* Modern styling for hours rows */
+/* Modern Styling for Hours Rows */
 .hours-row {
-    padding: 10px 0;
+    padding: 15px 0;
     border-bottom: 1px solid var(--border-color);
     font-weight: bold;
-    display: flex; /* Use flexbox for organization */
-    justify-content: space-between; /* Space between day and hours */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem; /* Slightly smaller font size */
 }
 
+/* Hours Row Normal Styling */
 .hours-row span {
     font-weight: normal;
 }
 
+/* Remove Border from Last Row */
 .hours-row:last-child {
     border-bottom: none;
 }
 
-.open {
-    color: green;
+/* Modern Status Styling */
+.status {
     font-weight: bold;
+    margin-top: 25px;
+    text-align: center;
+    padding: 12px 25px; /* Add padding for a spacious design */
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 1.3rem;
+    text-transform: uppercase; /* Uppercase text for prominence */
+}
+
+.open {
+    color: white;
+    background-color: green;
+    border: 2px solid green; /* Border matching the status */
 }
 
 .closed {
-    color: red;
-    font-weight: bold;
+    color: white;
+    background-color: red;
+    border: 2px solid red; /* Border matching the status */
 }
 
 /* Mobile Responsiveness */
