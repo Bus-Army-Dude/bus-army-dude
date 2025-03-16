@@ -1719,13 +1719,15 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     position: relative;
     border: none;
+    background-color: transparent; /* Ensure transparent background by default */
+    color: #ffffff; /* White text for readability */
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Open Status (Green) */
 .status.open {
-    background-color: #2e7d32; /* A deeper, more refined green */
+    background-color: #2e7d32; /* Deep green background */
     color: #ffffff; /* White text for readability */
     border: 2px solid #1b5e20; /* Dark green border */
     box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2); /* Soft green glow */
