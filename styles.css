@@ -1703,42 +1703,39 @@ body.focus-outline-disabled :focus {
     transition: all 0.3s ease;
 }
 
-/* Status Styling with Modern Pill Shape */
+/* Status Styling with Pill Shape */
 .status {
     font-weight: bold;
     margin-top: 20px;
-    text-align: center;
-    padding: 12px 30px;
-    border-radius: 25px;
+    text-align: center; /* Center status */
+    padding: 10px 20px;
+    border-radius: 25px; /* Pill Shape */
     display: inline-block;
     font-size: 1.2rem;
-    width: 100%;
+    width: auto;
     max-width: 300px;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
     position: relative;
-    border: none;
-    background-color: transparent; /* Ensure transparent background by default */
-    color: #ffffff; /* White text for readability */
+    border: 3px solid transparent; /* Placeholder border */
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Open Status (Green) */
 .status.open {
-    background-color: #2e7d32; /* Deep green background */
-    color: #ffffff; /* White text for readability */
-    border: 2px solid #1b5e20; /* Dark green border */
-    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2); /* Soft green glow */
+    background-color: #d3f9d8; /* Lighter green inside */
+    color: #2a9d8f; /* Darker green text */
+    border-color: #2a9d8f; /* Border matches the green */
+    box-shadow: 0 0 8px rgba(42, 157, 143, 0.5); /* Soft green glow */
 }
 
 /* Closed Status (Red) */
 .status.closed {
-    background-color: #c62828; /* Rich red background */
-    color: #ffffff; /* White text for readability */
-    border: 2px solid #b71c1c; /* Dark red border */
-    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2); /* Soft red glow */
+    background-color: #f5c6cb; /* Lighter red inside */
+    color: #d9534f; /* Dark red text */
+    border-color: #d9534f; /* Border matches the red */
+    box-shadow: 0 0 8px rgba(219, 53, 79, 0.5); /* Soft red glow */
 }
 
 /* Border strip effect around pill */
@@ -1746,21 +1743,23 @@ body.focus-outline-disabled :focus {
 .status.closed:before {
     content: "";
     position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    border-radius: 30px;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 30px; /* Larger radius for the strip */
     z-index: -1;
     transition: all 0.3s ease;
 }
 
+/* Green strip for Open */
 .status.open:before {
-    background: linear-gradient(135deg, #388e3c, #1b5e20); /* Green gradient strip for Open */
+    background: linear-gradient(45deg, #2a9d8f, #1b6f61); /* Green strip for Open */
 }
 
+/* Red strip for Closed */
 .status.closed:before {
-    background: linear-gradient(135deg, #d32f2f, #b71c1c); /* Red gradient strip for Closed */
+    background: linear-gradient(45deg, #d9534f, #a94442); /* Red strip for Closed */
 }
 
 /* Highlight Current Day's Hours */
