@@ -3,6 +3,18 @@
   "short_name": "Bus Army Dude",
   "icons": [
     {
+      "src": "/assets/light-icon/152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/dark-icon/152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "/assets/light-icon/180.png",
       "sizes": "180x180",
       "type": "image/png",
@@ -11,6 +23,18 @@
     {
       "src": "/assets/dark-icon/180.png",
       "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/light-icon/258.png",
+      "sizes": "258x258",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/dark-icon/258.png",
+      "sizes": "258x258",
       "type": "image/png",
       "purpose": "any maskable"
     },
@@ -25,9 +49,21 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/light-icon/72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/dark-icon/72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#ffffff",  // Light theme color
+  "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
   "start_url": "/index.html"
