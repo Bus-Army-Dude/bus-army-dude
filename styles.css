@@ -1799,17 +1799,17 @@ body.focus-outline-disabled :focus {
 
 /* Open Status (Green) */
 .status.open {
-    background-color: green;
-    color: white;
-    border-color: green; /* Border matches background color */
+    background-color: lightgreen; /* Lighter green inside */
+    color: darkgreen;
+    border-color: green; /* Border matches strip */
     box-shadow: 0 0 8px rgba(0, 128, 0, 0.5); /* Soft green glow */
 }
 
 /* Closed Status (Red) */
 .status.closed {
-    background-color: red;
-    color: white;
-    border-color: red; /* Border matches background color */
+    background-color: pink; /* Lighter red inside */
+    color: darkred;
+    border-color: red; /* Border matches strip */
     box-shadow: 0 0 8px rgba(255, 0, 0, 0.5); /* Soft red glow */
 }
 
@@ -1823,17 +1823,16 @@ body.focus-outline-disabled :focus {
     right: -6px;
     bottom: -6px;
     border-radius: 30px; /* Larger radius for the strip */
-    background-color: transparent;
     z-index: -1;
     transition: all 0.3s ease;
 }
 
 .status.open:before {
-    background: linear-gradient(45deg, green, darkgreen);
+    background: linear-gradient(45deg, green, darkgreen); /* Green strip for Open */
 }
 
 .status.closed:before {
-    background: linear-gradient(45deg, red, darkred);
+    background: linear-gradient(45deg, red, darkred); /* Red strip for Closed */
 }
 
 /* Mobile Responsiveness */
