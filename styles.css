@@ -1703,11 +1703,71 @@ body.focus-outline-disabled :focus {
     transition: all 0.3s ease;
 }
 
-/* Business Hours Container */
-.hours-container {
-    margin-top: 15px;
-    padding-top: 10px;
-    width: 100%; /* Full width inside the container */
+/* Status Styling with Pill Shape */
+.status {
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center; /* Center status */
+    padding: 10px 20px;
+    border-radius: 25px; /* Pill Shape */
+    display: inline-block;
+    font-size: 1.2rem;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Hide anything outside the container */
+    transition: all 0.3s ease;
+}
+
+/* Open Status (Green) */
+.status.open {
+    background-color: lightgreen; /* Lighter green inside */
+    color: darkgreen;
+    border: 3px solid green; /* Border color */
+}
+
+/* Closed Status (Red) */
+.status.closed {
+    background-color: lightcoral; /* Lighter red inside */
+    color: darkred;
+    border: 3px solid red; /* Border color */
+}
+
+/* Border strip effect around pill */
+.status.open:before,
+.status.closed:before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 30px; /* Larger radius for the strip */
+    z-index: -1;
+    transition: all 0.3s ease;
+}
+
+/* Green strip for Open */
+.status.open:before {
+    background: darkgreen; /* Dark green strip around open status */
+}
+
+/* Red strip for Closed */
+.status.closed:before {
+    background: darkred; /* Dark red strip around closed status */
+}
+
+/* Highlight Current Day's Hours */
+.hours-row.current-day {
+    background-color: var(--accent-color); /* Or any color you prefer */
+    color: var(--bg-color); /* Adjust text color if needed */
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px var(--shadow-color);
+    font-weight: bold; /* Make it visually prominent */
 }
 
 /* Contact Info Styling */
@@ -1734,90 +1794,6 @@ body.focus-outline-disabled :focus {
     max-width: 1200px; /* Same width limit as the business-info */
     margin: 0 auto;
     box-sizing: border-box;
-}
-
-/* Status Styling with Pill Shape */
-.status {
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: center; /* Center status */
-    padding: 10px 20px;
-    border-radius: 25px; /* Pill Shape */
-    display: inline-block;
-    font-size: 1.2rem;
-    width: 100%;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-    position: relative;
-    border: 3px solid transparent; /* Placeholder border */
-    transition: all 0.3s ease;
-}
-
-/* Open Status (Green) */
-.status.open {
-    background-color: lightgreen; /* Lighter green inside */
-    color: darkgreen;
-    border-color: green; /* Border matches strip */
-    box-shadow: 0 0 8px rgba(0, 128, 0, 0.5); /* Soft green glow */
-}
-
-/* Closed Status (Red) */
-.status.closed {
-    background-color: pink; /* Lighter red inside */
-    color: darkred;
-    border-color: red; /* Border matches strip */
-    box-shadow: 0 0 8px rgba(255, 0, 0, 0.5); /* Soft red glow */
-}
-
-/* Border strip effect around pill */
-.status.open:before,
-.status.closed:before {
-    content: "";
-    position: absolute;
-    top: -6px;
-    left: -6px;
-    right: -6px;
-    bottom: -6px;
-    border-radius: 30px; /* Larger radius for the strip */
-    z-index: -1;
-    transition: all 0.3s ease;
-}
-
-.status.open:before {
-    background: linear-gradient(45deg, green, darkgreen); /* Green strip for Open */
-}
-
-.status.closed:before {
-    background: linear-gradient(45deg, red, darkred); /* Red strip for Closed */
-}
-
-/* Highlight Current Day's Hours */
-.hours-row.current-day {
-    background-color: var(--accent-color); /* Or any color you prefer */
-    color: var(--bg-color); /* Adjust text color if needed */
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: inset 0 0 10px var(--shadow-color);
-    font-weight: bold; /* Make it visually prominent */
-}
-
-/* Modern styling for hours rows */
-.hours-row {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-color);
-    font-weight: bold;
-    display: flex; /* Use flexbox for organization */
-    justify-content: space-between; /* Space between day and hours */
-}
-
-.hours-row span {
-    font-weight: normal;
-}
-
-.hours-row:last-child {
-    border-bottom: none;
 }
 
 /* Mobile Responsiveness */
@@ -1866,4 +1842,3 @@ body.focus-outline-disabled :focus {
         margin-right: auto;
     }
 }
-
