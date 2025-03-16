@@ -308,20 +308,32 @@ s0.parentNode.insertBefore(s1,s0);
 </section>
 
 <div class="business-info">
-        <h1>Bus Army Dude's Merch Store</h1>
-        <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>    
-        <p><strong>Your current timezone:</strong> <span id="user-timezone"></span></p>
+    <h1>Bus Army Dude's Merch Store</h1>
+    
+    <p class="contact-info">
+        <strong>Contact:</strong> 
+        <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a>
+    </p>    
+    
+    <div class="timezone-container">
+        <strong>Your current timezone:</strong> 
+        <span id="user-timezone"></span>
+    </div>
+    
+    <div class="hours-section">
         <h2>Business Hours</h2>
         <div id="hours-container"></div>
-    
-        <!-- The holiday alert starts hidden -->
-        <div id="holiday-alert" style="display: none;">
-            <p><strong>Holiday:</strong> <span id="holiday-name"></span></p>
-            <p><strong>Special hours today:</strong> <span id="holiday-hours"></span></p>
+    </div>
+
+    <div id="holiday-alert" style="display: none;">
+        <p><strong>Holiday:</strong> <span id="holiday-name"></span></p>
+        <p><strong>Special hours today:</strong> <span id="holiday-hours"></span></p>
+    </div>
+
+    <div class="status-container">
+        <div class="status">
+            <strong>Status:</strong> <span id="open-status"></span>
         </div>
-    
-        <div class="status-container">
-        <p class="status"><strong>Status:</strong> <span id="open-status"></span></p>
     </div>
 </div>
         
