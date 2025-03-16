@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <url>
-    <loc>https://bus-army-dude.github.io/bus-army-dude/</loc>
-    <lastmod>2025-02-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://bus-army-dude.github.io/bus-army-dude/merchandise.html</loc>
-    <lastmod>2025-02-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://bus-army-dude.github.io/bus-army-dude/settings.html</loc>
-    <lastmod>2025-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
+  <!-- Home Page -->
   <url>
     <loc>https://bus-army-dude.github.io/bus-army-dude/index.html</loc>
     <lastmod>2025-02-27</lastmod>
@@ -29,6 +9,23 @@
     <priority>1.0</priority>
   </url>
 
+  <!-- Merchandise Page -->
+  <url>
+    <loc>https://bus-army-dude.github.io/bus-army-dude/merchandise.html</loc>
+    <lastmod>2025-02-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Settings Page -->
+  <url>
+    <loc>https://bus-army-dude.github.io/bus-army-dude/settings.html</loc>
+    <lastmod>2025-02-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Accessibility Statement -->
   <url>
     <loc>https://bus-army-dude.github.io/bus-army-dude/accessibility-statement.html</loc>
     <lastmod>2025-02-27</lastmod>
@@ -36,6 +33,7 @@
     <priority>0.4</priority>
   </url>
 
+  <!-- Privacy Policy -->
   <url>
     <loc>https://bus-army-dude.github.io/bus-army-dude/privacy-policy.html</loc>
     <lastmod>2025-02-27</lastmod>
@@ -43,6 +41,7 @@
     <priority>0.4</priority>
   </url>
 
+  <!-- Terms of Service -->
   <url>
     <loc>https://bus-army-dude.github.io/bus-army-dude/terms-of-service.html</loc>
     <lastmod>2025-02-27</lastmod>
