@@ -1794,18 +1794,21 @@ body.focus-outline-disabled :focus {
     margin-left: 20px; /* Adds space from the left edge of the container */
     margin-right: 20px; /* Adds space from the right edge of the container */
     transition: none; /* No transition effects */
+    box-sizing: border-box; /* Prevents it from overflowing the container */
 }
 
 .open {
-    background-color: green;
+    background-color: #28a745; /* Modern green */
     color: white;
-    border-color: green;
+    border-color: #28a745; /* Green border */
+    font-weight: 600; /* Slightly bolded for emphasis */
 }
 
 .closed {
-    background-color: red;
+    background-color: #dc3545; /* Modern red */
     color: white;
-    border-color: red;
+    border-color: #dc3545; /* Red border */
+    font-weight: 600; /* Slightly bolded for emphasis */
 }
 
 /* Mobile Responsiveness */
