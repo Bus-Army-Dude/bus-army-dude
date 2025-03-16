@@ -1725,18 +1725,18 @@ body.focus-outline-disabled :focus {
 
 /* Open Status (Green) */
 .status.open {
-    background-color: #a8f7a2; /* Lighter green inside */
-    color: #006400; /* Dark Green for text */
-    border: 2px solid #388e3c; /* Dark green border */
-    box-shadow: 0 4px 12px rgba(56, 142, 60, 0.2); /* Soft green glow */
+    background-color: #2e7d32; /* A deeper, more refined green */
+    color: #ffffff; /* White text for readability */
+    border: 2px solid #1b5e20; /* Dark green border */
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2); /* Soft green glow */
 }
 
 /* Closed Status (Red) */
 .status.closed {
-    background-color: #ffcccb; /* Lighter red inside */
-    color: #8b0000; /* Dark Red for text */
-    border: 2px solid #d32f2f; /* Dark red border */
-    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2); /* Soft red glow */
+    background-color: #c62828; /* Rich red background */
+    color: #ffffff; /* White text for readability */
+    border: 2px solid #b71c1c; /* Dark red border */
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2); /* Soft red glow */
 }
 
 /* Border strip effect around pill */
@@ -1782,10 +1782,6 @@ body.focus-outline-disabled :focus {
     align-items: center;
     font-size: 1.1rem;
     transition: all 0.3s ease;
-}
-
-.hours-row:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect */
 }
 
 .hours-row span {
@@ -1837,3 +1833,4 @@ body.focus-outline-disabled :focus {
         font-size: 0.95rem;
     }
 }
+
