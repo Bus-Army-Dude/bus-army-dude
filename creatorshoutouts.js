@@ -152,7 +152,7 @@ const instagramShoutouts = {
         { username: 'riverkritzar', isVerified: false, followers: '95', nickname: 'River Jordan Kritzar', bio: "Hello, my name is River, I am 20. I am autistic. I love technology.", profilePic: 'instagram_photos/riverkritzar.jpg' },
         { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
         { username: '_jano_142_', isVerified: false, followers: '50', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },
-        { username: 'busarmydude', isVerified: false, followers: '21', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 19. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
+        { username: 'busarmydude', isVerified: false, followers: '21', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 20. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
         { username: 'miss_foxy_ghost_wife', isVerified: false, followers: '5', nickname: 'Foxy Riley', bio: 'hey yo im Miss Foxy! i turn 20 in about two months im very friendly i dint bite hard~ dont be shy come say Hey to your friendly neighborhood Fox 😘', profilePic: 'instagram_photos/missfoxyghostwife.jpg' },
         // Add more Instagram creators as needed
     ],
