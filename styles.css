@@ -1789,25 +1789,30 @@ body.focus-outline-disabled :focus {
 /* Modern Status Styling */
 .status {
     font-weight: bold;
-    margin-top: 25px;
+    margin-top: 20px;
     text-align: center;
-    padding: 12px 25px; /* Add padding for a spacious design */
-    border-radius: 8px;
+    padding: 12px 25px; /* Ample padding for balance */
+    border-radius: 25px; /* Rounded corners for a modern look */
     display: inline-block;
-    font-size: 1.3rem;
-    text-transform: uppercase; /* Uppercase text for prominence */
+    font-size: 1.2rem; /* Slightly larger text for readability */
+    text-transform: uppercase; /* For a clean, modern feel */
+    letter-spacing: 1px; /* Adds a slight gap between letters for a sleek look */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: none; /* No transition effect */
 }
 
+/* Open Status Styling */
 .open {
     color: white;
-    background-color: green;
-    border: 2px solid green; /* Border matching the status */
+    background-color: #28a745; /* Fresh green for the 'open' status */
+    border: 2px solid #28a745; /* Border matching the background */
 }
 
+/* Closed Status Styling */
 .closed {
     color: white;
-    background-color: red;
-    border: 2px solid red; /* Border matching the status */
+    background-color: #dc3545; /* Bold red for the 'closed' status */
+    border: 2px solid #dc3545; /* Border matching the background */
 }
 
 /* Mobile Responsiveness */
@@ -1828,6 +1833,11 @@ body.focus-outline-disabled :focus {
     .hours-row {
         font-size: calc(var(--font-size) * 0.95);
     }
+
+    .status {
+        font-size: 1.1rem; /* Slightly smaller font on mobile */
+        padding: 10px 20px; /* Adjust padding for mobile */
+    }
 }
 
 /* For very small screens */
@@ -1838,5 +1848,10 @@ body.focus-outline-disabled :focus {
 
     .holiday-alert {
         padding: 8px;
+    }
+
+    .status {
+        font-size: 1rem; /* Smaller font size for very small screens */
+        padding: 8px 15px; /* Less padding on very small screens */
     }
 }
