@@ -1692,11 +1692,11 @@ body.focus-outline-disabled :focus {
 .business-info {
     background-color: var(--content-bg);
     color: var(--text-color);
-    border: 1px solid var(--border-color); 
-    padding: 20px;
+    border: 1px solid var(--border-color);
+    padding: 25px; /* Slightly increased padding for spaciousness */
     border-radius: 12px;
-    box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 20px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Softer and more diffused shadow */
+    margin: 20px auto; /* Centering and more spacing from other sections */
     max-width: 1200px;
     width: 100%;
     box-sizing: border-box;
@@ -1705,8 +1705,8 @@ body.focus-outline-disabled :focus {
 
 /* Business Hours Container */
 .hours-container {
-    margin-top: 15px;
-    padding-top: 10px;
+    margin-top: 20px;
+    padding-top: 12px;
     width: 100%;
 }
 
@@ -1714,26 +1714,31 @@ body.focus-outline-disabled :focus {
 .contact-info a {
     color: var(--link-color);
     text-decoration: none;
+    font-weight: bold; /* Make links stand out */
     transition: color 0.3s ease;
 }
 
 .contact-info a:hover {
     color: var(--hover-color);
+    text-decoration: underline; /* Add underline on hover */
 }
 
 /* Holiday Alert Box */
 .holiday-alert {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: var(--light-accent);
+    margin-top: 20px;
+    padding: 15px 20px; /* Increased padding for better spacing */
+    background: linear-gradient(145deg, var(--light-accent), var(--light-accent-light)); /* Subtle gradient */
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 8px; /* Rounded corners */
     color: white;
-    box-shadow: 0 4px 10px var(--shadow-color);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 /* Timezone Display */
@@ -1741,6 +1746,7 @@ body.focus-outline-disabled :focus {
     font-size: 1.1rem;
     margin-bottom: 10px;
     text-align: center;
+    font-weight: 600; /* Make it more prominent */
 }
 
 /* Hours Title Styling */
@@ -1751,26 +1757,31 @@ body.focus-outline-disabled :focus {
     text-align: center;
 }
 
+/* Hours Row Styling */
 .hours-row.current-day {
     background-color: var(--accent-color);
     color: var(--bg-color);
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 8px 12px;
+    border-radius: 8px;
 }
 
-/* Modern styling for hours rows */
+/* Modern Styling for Hours Rows */
 .hours-row {
-    padding: 10px 0;
+    padding: 15px 0;
     border-bottom: 1px solid var(--border-color);
     font-weight: bold;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-size: 1rem; /* Slightly smaller font size */
 }
 
+/* Hours Row Normal Styling */
 .hours-row span {
     font-weight: normal;
 }
 
+/* Remove Border from Last Row */
 .hours-row:last-child {
     border-bottom: none;
 }
@@ -1778,60 +1789,32 @@ body.focus-outline-disabled :focus {
 /* Modern Status Styling */
 .status {
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 25px;
     text-align: center;
-    padding: 10px 20px;
-    border-radius: 25px;
+    padding: 12px 25px; /* Add padding for a spacious design */
+    border-radius: 8px;
     display: inline-block;
-    font-size: 1.2rem;
-    width: 100%;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    position: relative;
+    font-size: 1.3rem;
+    text-transform: uppercase; /* Uppercase text for prominence */
 }
 
-.status.open {
+.open {
+    color: white;
     background-color: green;
-    color: white;
-    border: 2px solid darkgreen; /* Darker border for open */
+    border: 2px solid green; /* Border matching the status */
 }
 
-.status.closed {
+.closed {
+    color: white;
     background-color: red;
-    color: white;
-    border: 2px solid darkred; /* Darker border for closed */
-}
-
-/* Pill shape and strip effect */
-.status.open:before,
-.status.closed:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 5px;
-    border-radius: 50px;
-    transform: translate(-50%, -50%);
-    transition: all 0.3s ease;
-}
-
-.status.open:before {
-    background-color: darkgreen; /* Darker strip for open status */
-}
-
-.status.closed:before {
-    background-color: darkred; /* Darker strip for closed status */
+    border: 2px solid red; /* Border matching the status */
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
         padding: 16px;
-        margin: 15px 0;
+        margin: 5px 0;
     }
 
     .holiday-alert {
@@ -1845,32 +1828,15 @@ body.focus-outline-disabled :focus {
     .hours-row {
         font-size: calc(var(--font-size) * 0.95);
     }
-
-    .status {
-        font-size: 1rem; 
-        padding: 10px 15px;
-        width: auto;
-        margin-left: auto;
-        margin-right: auto;
-    }
 }
 
 /* For very small screens */
 @media (max-width: 360px) {
     .business-info {
         padding: 12px;
-        margin: 10px 0;
     }
 
     .holiday-alert {
         padding: 8px;
-    }
-
-    .status {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-        width: auto;
-        margin-left: auto;
-        margin-right: auto;
     }
 }
