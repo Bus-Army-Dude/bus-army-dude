@@ -1692,103 +1692,22 @@ body.focus-outline-disabled :focus {
 .business-info {
     background-color: var(--content-bg);
     color: var(--text-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color); 
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-    max-width: 1200px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    margin: 10px 0;
+    max-width: 1200px; 
     width: 100%;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
-/* Status Styling with Pill Shape */
-.status {
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: center; /* Center status text */
-    padding: 10px 20px;
-    border-radius: 50px; /* This makes the pill shape */
-    display: inline-block;
-    font-size: 1.2rem;
-    width: auto;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-    position: relative;
-    border: 3px solid transparent; /* Placeholder border to be replaced */
-    transition: all 0.3s ease;
-}
-
-/* Open Status (Green) */
-.status.open {
-    background-color: #d3f9d8; /* Lighter green inside */
-    color: #2a9d8f; /* Darker green text */
-    border-color: #2a9d8f; /* Border matches the green */
-    box-shadow: 0 0 8px rgba(42, 157, 143, 0.5); /* Soft green glow */
-}
-
-/* Closed Status (Red) */
-.status.closed {
-    background-color: #f5c6cb; /* Lighter red inside */
-    color: #d9534f; /* Dark red text */
-    border-color: #d9534f; /* Border matches the red */
-    box-shadow: 0 0 8px rgba(219, 53, 79, 0.5); /* Soft red glow */
-}
-
-/* Green strip for Open */
-.status.open:before {
-    content: "";
-    position: absolute;
-    top: -6px;
-    left: -6px;
-    right: -6px;
-    bottom: -6px;
-    border-radius: 50px; /* This will also round the border strip */
-    z-index: -1;
-    background: linear-gradient(45deg, #2a9d8f, #1b6f61); /* Green strip for Open */
-}
-
-/* Red strip for Closed */
-.status.closed:before {
-    content: "";
-    position: absolute;
-    top: -6px;
-    left: -6px;
-    right: -6px;
-    bottom: -6px;
-    border-radius: 50px; /* Rounded corners for the border strip */
-    z-index: -1;
-    background: linear-gradient(45deg, #d9534f, #a94442); /* Red strip for Closed */
-}
-
-/* Highlight Current Day's Hours */
-.hours-row.current-day {
-    background-color: var(--accent-color); /* Accent color for the current day */
-    color: var(--bg-color); /* Adjust text color */
-    padding: 8px 16px;
-    border-radius: 8px;
-    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
-    font-weight: bold; /* Make it visually prominent */
-    transition: all 0.3s ease;
-}
-
-/* Modern hours row */
-.hours-row {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border-color);
-    font-weight: normal;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-}
-
-.hours-row span {
-    font-weight: 400;
+/* Business Hours Container */
+.hours-container {
+    margin-top: 15px;
+    padding-top: 10px;
+    width: 100%;
 }
 
 /* Contact Info Styling */
@@ -1802,42 +1721,124 @@ body.focus-outline-disabled :focus {
     color: var(--hover-color);
 }
 
+/* Holiday Alert Box */
+.holiday-alert {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--light-accent);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: white;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Timezone Display */
+.timezone {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Hours Title Styling */
+.hours-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Modern status row styling */
+.hours-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hours-row span {
+    font-weight: normal;
+}
+
+.hours-row:last-child {
+    border-bottom: none;
+}
+
+/* Modern Status Styling */
+.status {
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center; 
+    padding: 15px 20px; /* Added more padding for spacious design */
+    border-radius: 12px; /* Smooth rounded corners */
+    display: inline-block;
+    font-size: 1.2rem;
+    width: calc(100% - 40px); /* Stretch to fit container without touching edges */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: var(--bg-color); /* Neutral background for contrast */
+    color: var(--text-color); /* Text color for contrast */
+}
+
+/* Open Status */
+.open {
+    background-color: #4CAF50; /* Light Green for open */
+    border: 2px solid #4CAF50; /* Green border */
+    color: white; /* White text */
+}
+
+/* Closed Status */
+.closed {
+    background-color: #f44336; /* Red for closed */
+    border: 2px solid #f44336; /* Red border */
+    color: white; /* White text */
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
-        padding: 18px;
-        margin: 15px 0;
+        padding: 16px;
+        margin: 5px 0;
     }
 
-    .status {
-        font-size: 1rem;
-        padding: 8px 15px;
-        width: auto;
-        margin-left: auto;
-        margin-right: auto;
+    .holiday-alert {
+        padding: 12px;
+    }
+
+    .hours-title {
+        font-size: 1.3rem;
     }
 
     .hours-row {
-        font-size: 1rem;
+        font-size: calc(var(--font-size) * 0.95);
+    }
+
+    .status {
+        font-size: 1rem; /* Reduce font size on smaller screens */
+        padding: 10px 15px;
+        width: calc(100% - 30px); /* Adjust width for smaller devices */
     }
 }
 
 /* For very small screens */
 @media (max-width: 360px) {
     .business-info {
-        padding: 15px;
+        padding: 12px;
+    }
+
+    .holiday-alert {
+        padding: 8px;
     }
 
     .status {
         font-size: 0.9rem;
-        padding: 8px 16px;
-        width: auto;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .hours-row {
-        font-size: 0.95rem;
+        padding: 8px 12px;
+        width: calc(100% - 24px); /* Adjust width even further for small screens */
     }
 }
-
