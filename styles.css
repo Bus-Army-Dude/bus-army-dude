@@ -1696,18 +1696,78 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-color);
-    margin: 10px 0;
-    max-width: 1200px; 
-    width: 100%;
+    margin: 10px 0; /* Similar margin to the event section */
+    max-width: 1200px; /* Limit max width for larger screens */
+    width: 100%; /* Full width to match other content */
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
-/* Business Hours Container */
-.hours-container {
-    margin-top: 15px;
-    padding-top: 10px;
+/* Status Styling with Pill Shape */
+.status {
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center; /* Center status */
+    padding: 10px 20px;
+    border-radius: 25px; /* Pill Shape */
+    display: inline-block;
+    font-size: 1.2rem;
     width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Hide anything outside the container */
+    transition: all 0.3s ease;
+}
+
+/* Open Status (Green) */
+.status.open {
+    background-color: lightgreen; /* Lighter green inside */
+    color: darkgreen;
+    border: 3px solid green; /* Border color */
+}
+
+/* Closed Status (Red) */
+.status.closed {
+    background-color: lightcoral; /* Lighter red inside */
+    color: darkred;
+    border: 3px solid red; /* Border color */
+}
+
+/* Border strip effect around pill */
+.status.open:before,
+.status.closed:before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 30px; /* Larger radius for the strip */
+    z-index: -1;
+    transition: all 0.3s ease;
+}
+
+/* Green strip for Open */
+.status.open:before {
+    background: darkgreen; /* Dark green strip around open status */
+}
+
+/* Red strip for Closed */
+.status.closed:before {
+    background: darkred; /* Dark red strip around closed status */
+}
+
+/* Highlight Current Day's Hours */
+.hours-row.current-day {
+    background-color: var(--accent-color); /* Or any color you prefer */
+    color: var(--bg-color); /* Adjust text color if needed */
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px var(--shadow-color);
+    font-weight: bold; /* Make it visually prominent */
 }
 
 /* Contact Info Styling */
@@ -1730,74 +1790,10 @@ body.focus-outline-disabled :focus {
     border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px var(--shadow-color);
-    width: 100%;
-    max-width: 1200px;
+    width: 100%; /* Full width to match business-info width */
+    max-width: 1200px; /* Same width limit as the business-info */
     margin: 0 auto;
     box-sizing: border-box;
-}
-
-/* Timezone Display */
-.timezone {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-/* Hours Title Styling */
-.hours-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-/* Modern status row styling */
-.hours-row {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-color);
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
-
-.hours-row span {
-    font-weight: normal;
-}
-
-.hours-row:last-child {
-    border-bottom: none;
-}
-
-/* Modern Status Styling */
-.status {
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: center; 
-    padding: 15px 20px; /* Added more padding for spacious design */
-    border-radius: 12px; /* Smooth rounded corners */
-    display: inline-block;
-    font-size: 1.2rem;
-    width: calc(100% - 40px); /* Stretch to fit container without touching edges */
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    background-color: var(--bg-color); /* Neutral background for contrast */
-    color: var(--text-color); /* Text color for contrast */
-}
-
-/* Open Status */
-.open {
-    background-color: #4CAF50; /* Light Green for open */
-    border: 2px solid #4CAF50; /* Green border */
-    color: white; /* White text */
-}
-
-/* Closed Status */
-.closed {
-    background-color: #f44336; /* Red for closed */
-    border: 2px solid #f44336; /* Red border */
-    color: white; /* White text */
 }
 
 /* Mobile Responsiveness */
@@ -1820,9 +1816,11 @@ body.focus-outline-disabled :focus {
     }
 
     .status {
-        font-size: 1rem; /* Reduce font size on smaller screens */
+        font-size: 1rem;
         padding: 10px 15px;
-        width: calc(100% - 30px); /* Adjust width for smaller devices */
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -1839,6 +1837,8 @@ body.focus-outline-disabled :focus {
     .status {
         font-size: 0.9rem;
         padding: 8px 12px;
-        width: calc(100% - 24px); /* Adjust width even further for small screens */
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
