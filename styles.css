@@ -1825,6 +1825,12 @@ body.focus-outline-disabled :focus {
     background-color: darkred; /* Darker strip for closed status */
 }
 
+/* Highlight Current Day's Hours */
+.hours-row.current-day {
+    background-color: var(--highlight-color);
+    color: white;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .business-info {
