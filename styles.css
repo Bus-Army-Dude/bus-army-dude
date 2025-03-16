@@ -1751,13 +1751,6 @@ body.focus-outline-disabled :focus {
     text-align: center;
 }
 
-.hours-row.current-day {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
 /* Modern styling for hours rows */
 .hours-row {
     padding: 10px 0;
