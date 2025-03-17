@@ -776,9 +776,8 @@ body {
     border: 2px solid var(--accent-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px var(--shadow-color);
-    display: none;
-    opacity: 0;
     transition: opacity 0.3s ease;
+    /* Removed display: none and opacity: 0 */
 }
 
 .unavailable-message.show {
