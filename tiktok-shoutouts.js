@@ -202,32 +202,16 @@ const tiktokShoutouts = {
 
   showUnavailableMessage(region) {
     const messageContainer = document.querySelector('.unavailable-message');
-    const gridContainer = document.querySelector('.creator-grid');
-    
     if (!messageContainer) return;
 
-    // Update message content
     messageContainer.innerHTML = `
-        <div class="unavailable-message-title">Content Not Available</div>
-        <p>This content is not available in your region (${region}). 
-        We apologize for any inconvenience.</p>
+      <div class="unavailable-message-title">Content Not Available</div>
+      <p>This content is not available in your region (${region}). 
+      We apologize for any inconvenience.</p>
     `;
-
-    // Show message and hide grid
     messageContainer.style.display = 'block';
-    if (gridContainer) {
-        gridContainer.style.display = 'none';
-    }
-
-    // Add status indicator if it doesn't exist
-    let statusIndicator = messageContainer.querySelector('.region-status');
-    if (!statusIndicator) {
-        statusIndicator = document.createElement('div');
-        statusIndicator.className = 'region-status unavailable';
-        statusIndicator.textContent = 'Region Restricted';
-        messageContainer.appendChild(statusIndicator);
-    }
-}
+  }
+};
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
