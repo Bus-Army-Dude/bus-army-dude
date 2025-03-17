@@ -1214,8 +1214,8 @@ footer {
     margin: 2rem auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     transition: all 0.3s var(--transition-timing);
-    max-width: 1200px;
-    width: 95%;
+    width: 100%;  /* Ensuring full width to match event section */
+    max-width: 850px;  /* Set to match the event section */
     box-sizing: border-box; /* Ensure padding is included within the width */
 }
 
@@ -1228,7 +1228,7 @@ footer {
 }
 
 .faq-container {
-    max-width: 900px;
+    max-width: 850px; /* Ensuring max width is consistent with event section */
     margin: 0 auto;
     padding-left: 1rem;  /* Add left and right padding to prevent content from touching the sides */
     padding-right: 1rem;
