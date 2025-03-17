@@ -32,7 +32,15 @@
       gtag('config', 'G-E0RSQS1MS7');
     </script>
 
-    
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed:', err));
+        });
+    }
+</script>        
 <body class="settings-page">
     <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
     <div class="container" role="main" id="main-content">
@@ -170,5 +178,6 @@
     <script src="script.js"></script>
     <script src="ai-features.js"></script>
     <script src="ai-chatbot.js"></script>
+    <script src="no-internet.js"></script>
 </body>
 </html>
