@@ -327,11 +327,9 @@ body {
 }
 
 .social-links-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates 2 columns of equal width */
     gap: 18px;
-    align-items: stretch;
     margin-top: 20px;
     width: 100%;
     box-sizing: border-box;
@@ -372,7 +370,6 @@ body {
         0 0 0 1px var(--accent-color);
 }
 
-/* Social button icon styling */
 .social-button .social-icon {
     font-size: 20px;
     margin-right: 15px;
@@ -392,6 +389,7 @@ body {
     }
 
     .social-links-container {
+        grid-template-columns: 1fr; /* Switch to single column */
         gap: 15px;
     }
 
