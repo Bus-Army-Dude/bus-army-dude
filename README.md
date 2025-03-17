@@ -56,7 +56,7 @@ A centralized platform showcasing:
 ---
 
 ### 🔄 Version Information
-**Current Version:** v1.13.0
+**Current Version:** v1.14.0
 
 ---
 
