@@ -573,6 +573,8 @@ body {
     }
 }
 
+/* Last Updated: 2025-03-17 15:46:33 UTC */
+
 /* TikTok Creator Shoutouts */
 .tiktok-creator-section {
     background-color: var(--content-bg);
@@ -679,8 +681,8 @@ body {
     height: 16px;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 0;  /* No margin */
-    margin-right: 0; /* No margin */
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* Common Bio Styles */
@@ -733,24 +735,111 @@ body {
     color: var(--text-color);
 }
 
+/* Region Detection and Messages */
+.region-message {
+    background-color: var(--content-bg);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border: 2px solid var(--accent-color);
+    display: none;
+    color: var(--text-color);
+}
+
+.region-message-content {
+    text-align: center;
+}
+
+.region-message-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.region-message-text {
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin: 10px 0;
+}
+
 /* Unavailable Message Styles */
 .unavailable-message {
-  color: var(--secondary-text);
-  font-size: 18px;
-  margin-top: 20px;
-  text-align: center;
-  background-color: var(--content-bg);
-  padding: 20px;
-  border: 2px solid var(--accent-color);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px var(--shadow-color);
+    color: var(--secondary-text);
+    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+    background-color: var(--content-bg);
+    padding: 20px;
+    border: 2px solid var(--accent-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.unavailable-message.show {
+    display: block;
+    opacity: 1;
 }
 
 .unavailable-message-title {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: var(--text-color);
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+/* Region Status Indicator */
+.region-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 10px;
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.region-status.available {
+    background-color: #28a745;
+}
+
+.region-status.unavailable {
+    background-color: #dc3545;
+}
+
+/* Debug Panel (remove in production) */
+#region-debug {
+    background-color: var(--content-bg);
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border: 1px solid var(--accent-color);
+    font-size: 0.9em;
+    display: none;
+}
+
+#region-debug p {
+    color: var(--secondary-text);
+    margin: 5px 0;
+}
+
+#region-debug span {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Last Updated Timestamp */
+#tiktok-last-updated-timestamp {
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    text-align: center;
+    margin: 10px 0;
 }
 
 :root {
