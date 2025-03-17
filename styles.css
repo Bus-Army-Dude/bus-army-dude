@@ -415,17 +415,17 @@ body {
     }
 }
 
-/* Theme-specific icon color */
+/* Theme-specific icon colors */
 :root {
-    --icon-color: #212529; /* Default icon color for light mode (dark icon) */
+    --icon-color: #212529; /* Default icon color for dark mode */
 }
 
 .light-mode {
-    --icon-color: #ffffff; /* Lighter icon color for light mode */
+    --icon-color: #212529; /* Dark icon color for light mode */
 }
 
 .dark-mode {
-    --icon-color: #212529; /* Darker icon color for dark mode */
+    --icon-color: #ffffff; /* Light icon color for dark mode */
 }
 
 /* Useful Links Section */
