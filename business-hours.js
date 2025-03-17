@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Business hours in EST (Eastern Standard Time)
     const businessHoursEST = {
-        sunday: { open: "10:00 AM", close: "11:00 PM" },
+        sunday: { open: "Closed", close: "Closed" },
         monday: { open: "10:00 AM", close: "11:00 PM" },
         tuesday: { open: "10:00 AM", close: "11:00 PM" },
         wednesday: { open: "10:00 AM", close: "11:00 PM" },
