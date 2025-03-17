@@ -1,4 +1,6 @@
 const regionConfiguration = {
+  lastUpdatedTime: '2025-03-17 15:38:30',  // Current UTC time
+
   // All ISO 3166-1 alpha-2 country codes with their default status
   regions: {
     // Africa
@@ -106,7 +108,7 @@ const regionConfiguration = {
     SR: true,  // Suriname
     TT: true,  // Trinidad and Tobago
     TC: true,  // Turks and Caicos Islands
-    US: false,  // United States
+    US: false, // United States
     UY: true,  // Uruguay
     VE: true,  // Venezuela
     VI: true,  // U.S. Virgin Islands
@@ -292,6 +294,11 @@ const regionConfiguration = {
     }
   },
 
+  // Get the region configuration version
+  getVersion() {
+    return this.lastUpdatedTime;
+  },
+
   // Initialize the configuration
   init() {
     this.loadRegionSettings();
@@ -299,4 +306,12 @@ const regionConfiguration = {
 };
 
 // Initialize the configuration when the script loads
-regionConfiguration.init();
+document.addEventListener('DOMContentLoaded', () => {
+  regionConfiguration.init();
+  console.log('Region Configuration Initialized:', regionConfiguration.getVersion());
+});
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = regionConfiguration;
+}
