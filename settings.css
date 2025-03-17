@@ -309,6 +309,7 @@ body.settings-page {
     width: 100%;
     max-width: 300px;
     margin-left: auto;
+    position: relative;
 }
 
 .size-value {
@@ -325,6 +326,9 @@ body.settings-page {
     box-shadow: 
         0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    position: relative;
+    width: calc(100% - 32px);
+    margin: 0 auto;
 }
 
 .slider-container {
