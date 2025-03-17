@@ -4,9 +4,7 @@ class CommonManager {
         this.settings = this.loadSettings();
         this.initializeThemeColors();
         this.applySettings();
-        this.addThemeToggleHandling();
-        this.addFontSizeHandling();
-        this.addFocusOutlineHandling();
+        this.initializeControls();
     }
 
     removeNoJsClass() {
@@ -17,8 +15,7 @@ class CommonManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            textSize: 16,
-            focusOutlineDisabled: false,
+            fontSize: 16
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -45,8 +42,7 @@ class CommonManager {
 
     applySettings() {
         this.applyTheme(this.settings.darkMode);
-        this.setFontSize(this.settings.textSize);
-        this.applyFocusOutlineSetting();
+        this.setFontSize(this.settings.fontSize);
     }
 
     applyTheme(isDark = this.settings.darkMode) {
@@ -62,11 +58,7 @@ class CommonManager {
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
     }
 
-    applyFocusOutlineSetting() {
-        document.body.classList.toggle('focus-outline-disabled', this.settings.focusOutlineDisabled);
-    }
-
-    addThemeToggleHandling() {
+    initializeControls() {
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
@@ -76,40 +68,20 @@ class CommonManager {
                 this.saveSettings();
             });
         }
-    }
 
-    addFontSizeHandling() {
+        // Initialize font size slider
         const textSizeSlider = document.getElementById('text-size-slider');
         const textSizeValue = document.getElementById('textSizeValue');
         
         if (textSizeSlider && textSizeValue) {
-            textSizeSlider.value = this.settings.textSize;
-            textSizeValue.textContent = `${this.settings.textSize}px`;
-            this.updateSliderGradient(textSizeSlider);
-
+            textSizeSlider.value = this.settings.fontSize;
+            textSizeValue.textContent = `${this.settings.fontSize}px`;
+            
             textSizeSlider.addEventListener('input', (e) => {
                 const size = parseInt(e.target.value);
-                this.settings.textSize = size;
+                this.settings.fontSize = size;
                 this.setFontSize(size);
                 textSizeValue.textContent = `${size}px`;
-                this.updateSliderGradient(textSizeSlider);
-                this.saveSettings();
-            });
-        }
-    }
-
-    updateSliderGradient(slider) {
-        const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-        slider.style.setProperty('--slider-value', `${value}%`);
-    }
-
-    addFocusOutlineHandling() {
-        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-        if (focusOutlineToggle) {
-            focusOutlineToggle.checked = !this.settings.focusOutlineDisabled;
-            focusOutlineToggle.addEventListener('change', (e) => {
-                this.settings.focusOutlineDisabled = !e.target.checked;
-                this.applyFocusOutlineSetting();
                 this.saveSettings();
             });
         }
@@ -119,6 +91,29 @@ class CommonManager {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
 }
+
+// Accept cookies function
+function acceptCookies() {
+    document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
+}
+
+// Check cookie consent on page load
+window.addEventListener('load', function() {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (!banner) return;
+
+    const cookies = document.cookie.split('; ');
+    const consentCookie = cookies.find(row => row.startsWith('cookieConsent='));
+    if (consentCookie && consentCookie.split('=')[1] === 'true') {
+        banner.style.display = 'none';
+    } else {
+        banner.style.display = 'flex';
+    }
+});
 
 // Initialize CommonManager when the page loads
 document.addEventListener('DOMContentLoaded', () => {
