@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Internet Connection - BusArmyDude</title>
+    <link rel="stylesheet" href="no-internet.css">
+</head>
+<body>
+    <div class="no-internet-container">
+        <div class="header">No Internet Connection</div>
+        
+        <div class="status-message">
+            Unable to connect to BusArmyDude's website
+        </div>
+
+        <div class="offline-info">
+            It seems you're offline. This could be due to:
+            <ul>
+                <li>A poor internet connection</li>
+                <li>A disconnected network cable</li>
+                <li>A router or modem issue</li>
+            </ul>
+        </div>
+
+        <button class="retry-button" onclick="retryConnection()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 3a5 5 0 0 0-5 5H1l3.5 3.5L8 8H6a2 2 0 1 1 2 2v2a4 4 0 1 0-4-4H2a6 6 0 1 1 6 6v-2a4 4 0 0 0 0-8z"/>
+            </svg>
+            Retry Connection
+        </button>
+
+        <div class="connection-status">
+            <span class="status-indicator"></span>
+            Currently Offline
+        </div>
+    </div>
+
+    <script src="no-internet.js"></script>
+</body>
+</html>
