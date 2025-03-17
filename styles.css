@@ -633,12 +633,11 @@ body {
 
 /* YouTube Cover Photo */
 .youtube-cover-photo {
-    width: 100%;
+    width: calc(100% + 30px);
     height: 100px;
     object-fit: cover;
-    border-radius: 10px 10px 0 0;
     margin: -15px -15px 15px -15px;
-    max-width: calc(100% + 30px);
+    display: block;
 }
 
 /* YouTube Creator Info Container */
@@ -646,6 +645,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 0;
 }
 
 .creator-card:hover,
@@ -728,7 +728,7 @@ body {
     margin: 10px 0;
 }
 
-/* Common Visit Profile Button Styles */
+/* Common Visit Profile Button Styles - Unified Design */
 .visit-profile,
 .instagram-visit-profile,
 .youtube-visit-profile {
@@ -736,18 +736,25 @@ body {
     background-color: var(--accent-color);
     color: white;
     text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 8px 20px;
+    border-radius: 25px;
     margin-top: 10px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     text-align: center;
+    font-weight: 500;
+    border: 2px solid var(--accent-color);
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
 }
 
 .visit-profile:hover,
 .instagram-visit-profile:hover,
 .youtube-visit-profile:hover {
-    background-color: var(--hover-color);
-    transform: scale(1.05);
+    background-color: transparent;
+    color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Creator Name Styles */
@@ -800,8 +807,8 @@ body {
     }
 
     .youtube-cover-photo {
+        width: calc(100% + 24px);
         margin: -12px -12px 15px -12px;
-        max-width: calc(100% + 24px);
     }
 }
 
@@ -824,8 +831,8 @@ body {
     }
 
     .youtube-cover-photo {
+        width: calc(100% + 20px);
         margin: -10px -10px 15px -10px;
-        max-width: calc(100% + 20px);
     }
 }
 
