@@ -283,17 +283,26 @@ body {
 
 /* President Section */
 .president-section {
-    background-color: var(--content-bg);
-    padding: 20px;
-    border-radius: 10px;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
+    padding: 30px;
+    border-radius: 16px;
     margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    box-shadow: 
+        0 8px 32px -8px var(--shadow-color),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .president-info {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
+    padding: 10px;
 }
 
 .president-photo {
@@ -302,10 +311,81 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--accent-color);
+    box-shadow: 
+        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 .president-details {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.president-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.president-title {
+    font-size: 18px;
+    color: var(--accent-color);
+    margin: 0;
+}
+
+.president-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.9;
+    margin: 10px 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .president-section {
+        padding: 20px;
+    }
+
+    .president-info {
+        gap: 20px;
+    }
+
+    .president-photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .president-name {
+        font-size: 20px;
+    }
+
+    .president-title {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .president-section {
+        padding: 15px;
+    }
+
+    .president-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .president-photo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .president-description {
+        font-size: 14px;
+    }
 }
 
 /* Social Links Section */
