@@ -1,3 +1,5 @@
+// Last Updated: 2025-03-17 15:55:40 UTC
+
 const tiktokShoutouts = {
   accounts: [
     { username: 'mrbeast', isVerified: true, followers: '115.1M', nickname: 'MrBeast', bio: 'New CEO of Tiktok?', profilePic: 'images/mrbeast.jpeg' },
@@ -21,55 +23,86 @@ const tiktokShoutouts = {
     { username: 'jerridonthelot', isVerified: false, followers: '287', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
     { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' }
   ],
-  lastUpdatedTime: '2025-03-17 15:28:36',
-  cacheDuration: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+  lastUpdatedTime: '2025-03-17 15:55:40',
 
-  get regionAvailability() {
-    return regionConfiguration.regions;
+  async init() {
+    try {
+      // First ensure region configuration is loaded
+      if (typeof regionConfiguration === 'undefined') {
+        console.error('Region configuration not loaded');
+        return;
+      }
+
+      // Get user's region
+      const userRegion = await this.getUserRegion();
+      console.log('Detected Region:', userRegion);
+
+      // Update timestamp first
+      this.setLastUpdatedTime();
+
+      // Get necessary DOM elements
+      const gridContainer = document.querySelector('.creator-grid');
+      const messageContainer = document.querySelector('.unavailable-message');
+
+      if (!gridContainer || !messageContainer) {
+        console.error('Required DOM elements not found');
+        return;
+      }
+
+      // Check region availability
+      const isRegionAvailable = regionConfiguration.regions[userRegion];
+      console.log('Region Available:', isRegionAvailable);
+
+      if (isRegionAvailable) {
+        // Show content for available region
+        gridContainer.style.display = 'grid';
+        messageContainer.style.display = 'none';
+        this.createShoutoutCards();
+      } else {
+        // Show unavailable message for restricted region
+        gridContainer.style.display = 'none';
+        this.showUnavailableMessage(userRegion);
+      }
+    } catch (error) {
+      console.error('Error in TikTok shoutouts initialization:', error);
+      this.showUnavailableMessage('Unknown');
+    }
   },
 
   async getUserRegion() {
-    const cachedRegion = this.getCachedRegion();
-    if (cachedRegion) return cachedRegion;
-
     try {
-      // Method 1: Navigator Language
-      let region = navigator.language.split('-')[1] || navigator.language;
+      // Try to get cached region first
+      const cachedRegion = this.getCachedRegion();
+      if (cachedRegion) return cachedRegion;
 
-      // Method 2: Intl.DateTimeFormat
-      if (!region) {
-        region = Intl.DateTimeFormat().resolvedOptions().locale.split('-')[1];
+      // Method 1: Navigator Language
+      let region = navigator.language?.split('-')[1]?.toUpperCase();
+
+      // Method 2: Intl API
+      if (!region && 'Intl' in window) {
+        try {
+          region = new Intl.DateTimeFormat().resolvedOptions().locale.split('-')[1]?.toUpperCase();
+        } catch (e) {
+          console.warn('Intl API detection failed:', e);
+        }
       }
 
-      // Method 3: Timezone fallback
+      // Method 3: Timezone-based detection
       if (!region) {
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         region = this.getRegionFromTimezone(timezone);
       }
 
-      region = region?.toUpperCase() || 'US';
+      // Fallback to US if no region detected
+      region = region || 'US';
+
+      // Cache the detected region
       this.cacheRegion(region);
       return region;
     } catch (error) {
-      console.warn('Error detecting region:', error);
+      console.error('Error detecting region:', error);
       return 'US';
     }
-  },
-
-  getCachedRegion() {
-    const cachedRegion = localStorage.getItem('userRegion');
-    const cachedTime = localStorage.getItem('userRegionTime');
-    const currentTime = Date.now();
-
-    if (cachedRegion && cachedTime && (currentTime - Number(cachedTime) < this.cacheDuration)) {
-      return cachedRegion;
-    }
-    return null;
-  },
-
-  cacheRegion(region) {
-    localStorage.setItem('userRegion', region);
-    localStorage.setItem('userRegionTime', Date.now().toString());
   },
 
   getRegionFromTimezone(timezone) {
@@ -85,17 +118,41 @@ const tiktokShoutouts = {
     };
 
     for (const [prefix, region] of Object.entries(timezoneMap)) {
-      if (timezone.startsWith(prefix)) {
-        return region;
-      }
+      if (timezone.startsWith(prefix)) return region;
     }
     return 'US';
+  },
+
+  getCachedRegion() {
+    try {
+      const cachedRegion = localStorage.getItem('userRegion');
+      const cachedTime = localStorage.getItem('userRegionTime');
+      
+      if (cachedRegion && cachedTime) {
+        const cacheAge = Date.now() - Number(cachedTime);
+        if (cacheAge < 24 * 60 * 60 * 1000) { // 24 hours
+          return cachedRegion;
+        }
+      }
+    } catch (error) {
+      console.warn('Error accessing localStorage:', error);
+    }
+    return null;
+  },
+
+  cacheRegion(region) {
+    try {
+      localStorage.setItem('userRegion', region);
+      localStorage.setItem('userRegionTime', Date.now().toString());
+    } catch (error) {
+      console.warn('Error saving to localStorage:', error);
+    }
   },
 
   createShoutoutCards() {
     const container = document.querySelector('.creator-grid');
     if (!container) return;
-    
+
     container.innerHTML = '';
     this.accounts.forEach(account => {
       const card = document.createElement('div');
@@ -109,7 +166,7 @@ const tiktokShoutouts = {
           <p class="creator-username">@${account.username}</p>
           <p class="creator-bio">${account.bio || ''}</p>
           <p class="follower-count">${account.followers} Followers</p>
-          <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile">Visit Profile</a>
+          <a href="https://tiktok.com/@${account.username}" target="_blank" rel="noopener noreferrer" class="visit-profile">Visit Profile</a>
         </div>
       `;
       container.appendChild(card);
@@ -120,47 +177,44 @@ const tiktokShoutouts = {
     const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
     if (!lastUpdatedElement) return;
 
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-      timeZone: userTimeZone,
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true
-    });
-    lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+    try {
+      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const lastUpdatedDate = new Date(this.lastUpdatedTime);
+      
+      const formattedDate = lastUpdatedDate.toLocaleString('en-US', {
+        timeZone: userTimeZone,
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true
+      });
+
+      lastUpdatedElement.textContent = `Last Updated: ${formattedDate}`;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      lastUpdatedElement.textContent = `Last Updated: ${this.lastUpdatedTime}`;
+    }
   },
 
   showUnavailableMessage(region) {
     const messageContainer = document.querySelector('.unavailable-message');
     if (!messageContainer) return;
-    
+
     messageContainer.innerHTML = `
-      <div class="unavailable-message-title">System Message</div>
-      <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
+      <div class="unavailable-message-title">Content Not Available</div>
+      <p>This content is not available in your region (${region}). 
+      We apologize for any inconvenience.</p>
     `;
     messageContainer.style.display = 'block';
-  },
-
-  init() {
-    this.getUserRegion().then(userRegion => {
-      if (this.regionAvailability[userRegion]) {
-        this.createShoutoutCards();
-        this.setLastUpdatedTime();
-      } else {
-        this.showUnavailableMessage(userRegion);
-      }
-    }).catch(error => {
-      console.error('Error fetching user region:', error);
-    });
   }
 };
 
-// Initialize TikTok shoutouts
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  tiktokShoutouts.init();
+  // Small delay to ensure region-config.js is loaded
+  setTimeout(() => tiktokShoutouts.init(), 100);
 });
