@@ -372,7 +372,7 @@ body {
         0 0 0 1px var(--accent-color);
 }
 
-/* Apply to social button icons */
+/* Social button icon styling */
 .social-button .social-icon {
     font-size: 20px;
     margin-right: 15px;
@@ -421,24 +421,24 @@ body {
     --icon-color: #212529; /* Default icon color to dark */
 }
 
-.light-mode {
-    --icon-color: #ffffff; /* Light icon color for light mode */
+[data-theme="light"] {
+    --icon-color: #ffffff; /* Light icons for light theme */
 }
 
-.dark-mode {
-    --icon-color: #212529; /* Dark icon color for dark mode */
+[data-theme="dark"] {
+    --icon-color: #212529; /* Dark icons for dark theme */
 }
 
-/* Media query fallback if needed */
-@media (prefers-color-scheme: dark) {
-    .social-button .social-icon {
-        color: #212529;
+/* System preference overrides */
+@media (prefers-color-scheme: light) {
+    :root {
+        --icon-color: #ffffff;
     }
 }
 
-@media (prefers-color-scheme: light) {
-    .social-button .social-icon {
-        color: #ffffff;
+@media (prefers-color-scheme: dark) {
+    :root {
+        --icon-color: #212529;
     }
 }
 
