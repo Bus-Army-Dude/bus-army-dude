@@ -1,4 +1,4 @@
-// Last Updated: 2025-03-17 15:55:40 UTC
+// Last Updated: March 17, 2025 4:22:10 PM
 
 const tiktokShoutouts = {
   accounts: [
@@ -23,7 +23,7 @@ const tiktokShoutouts = {
     { username: 'jerridonthelot', isVerified: false, followers: '287', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
     { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' }
   ],
-  lastUpdatedTime: '2025-03-17 15:55:40',
+  lastUpdatedTime: 'March 17, 2025 4:22:10 PM',
 
   async init() {
     try {
@@ -52,6 +52,9 @@ const tiktokShoutouts = {
       // Check region availability
       const isRegionAvailable = regionConfiguration.regions[userRegion];
       console.log('Region Available:', isRegionAvailable);
+
+      // Update debug panel
+      this.updateDebugPanel(userRegion, isRegionAvailable);
 
       if (isRegionAvailable) {
         // Show content for available region
@@ -210,10 +213,9 @@ const tiktokShoutouts = {
       We apologize for any inconvenience.</p>
     `;
     messageContainer.style.display = 'block';
-  }
-};
+  },
 
-updateDebugPanel(region, isAvailable) {
+  updateDebugPanel(region, isAvailable) {
     const debugPanel = document.getElementById('region-debug');
     if (!debugPanel) return;
 
@@ -230,19 +232,26 @@ updateDebugPanel(region, isAvailable) {
         statusSpan.className = isAvailable ? 'available' : 'unavailable';
     }
 
-    // Update debug time in UTC format
+    // Update debug time in 12-hour format
     const timeSpan = document.getElementById('debug-time');
     if (timeSpan) {
         const now = new Date();
-        const utcString = now.toISOString()
-            .replace('T', ' ')
-            .split('.')[0];
-        timeSpan.textContent = utcString;
+        const formattedTime = now.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+        timeSpan.textContent = formattedTime;
     }
 
     // Show the debug panel
     debugPanel.style.display = 'block';
-}
+  }
+};
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
