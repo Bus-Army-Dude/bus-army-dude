@@ -10,7 +10,7 @@ class SettingsManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            textSize: 'default',
+            textSize: 16, // Changed to numeric value for slider
             focusOutline: 'disabled',    // Default focus outline setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -31,12 +31,19 @@ class SettingsManager {
             });
         }
 
-        // Text Size Adjustment
-        const textSizeSelect = document.getElementById('text-size');
-        if (textSizeSelect) {
-            textSizeSelect.value = this.settings.textSize;
-            textSizeSelect.addEventListener('change', (e) => {
-                this.setTextSize(e.target.value);
+        // Text Size Slider
+        const textSizeSlider = document.getElementById('text-size-slider');
+        const textSizeValue = document.getElementById('textSizeValue');
+        if (textSizeSlider && textSizeValue) {
+            textSizeSlider.value = this.settings.textSize;
+            textSizeValue.textContent = `${this.settings.textSize}px`;
+            this.updateSliderGradient(textSizeSlider);
+
+            textSizeSlider.addEventListener('input', (e) => {
+                const size = parseInt(e.target.value);
+                this.setTextSize(size);
+                textSizeValue.textContent = `${size}px`;
+                this.updateSliderGradient(textSizeSlider);
             });
         }
 
@@ -83,6 +90,11 @@ class SettingsManager {
         }
     }
 
+    updateSliderGradient(slider) {
+        const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.setProperty('--slider-value', `${value}%`);
+    }
+
     applySettings() {
         this.applyTheme(this.settings.darkMode);
         this.setTextSize(this.settings.textSize);
@@ -125,8 +137,7 @@ class SettingsManager {
 
     // Set text size
     setTextSize(size) {
-        document.body.classList.remove('text-default', 'text-large', 'text-larger');
-        document.body.classList.add('text-' + size);
+        document.documentElement.style.setProperty('--font-size-base', `${size}px`);
         this.settings.textSize = size;
         this.saveSettings();
     }
@@ -151,8 +162,8 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            textSize: 'default',
-            focusOutline: 'disabled',  // Default focus outline setting
+            textSize: 16,
+            focusOutline: 'disabled',
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -160,13 +171,18 @@ class SettingsManager {
 
         // Update UI controls
         const darkModeToggle = document.getElementById('darkModeToggle');
-        const textSizeSelect = document.getElementById('text-size');
+        const textSizeSlider = document.getElementById('text-size-slider');
+        const textSizeValue = document.getElementById('textSizeValue');
         const maintenanceModeToggle = document.getElementById('maintenanceModeToggle');
         const profileStatusSelect = document.getElementById('profileStatusSelect');
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
 
         if (darkModeToggle) darkModeToggle.checked = defaultSettings.darkMode;
-        if (textSizeSelect) textSizeSelect.value = defaultSettings.textSize;
+        if (textSizeSlider) {
+            textSizeSlider.value = defaultSettings.textSize;
+            this.updateSliderGradient(textSizeSlider);
+        }
+        if (textSizeValue) textSizeValue.textContent = `${defaultSettings.textSize}px`;
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
