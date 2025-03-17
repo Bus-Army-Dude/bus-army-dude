@@ -310,6 +310,7 @@ body.settings-page {
     max-width: 300px;
     margin-left: auto;
     position: relative;
+    padding: 0 16px; /* Add padding to contain elements */
 }
 
 .size-value {
@@ -444,10 +445,12 @@ body.settings-page {
     .text-size-control {
         margin-left: 0;
         max-width: 100%;
+        padding: 0; /* Remove padding on mobile */
     }
 
     .size-value {
-        width: 100%;
+        width: calc(100% - 32px); /* Account for padding */
+        margin: 0 auto;
     }
 
     .settings-page .settings-header h1 {
@@ -502,11 +505,13 @@ body.settings-page {
 
     .text-size-control {
         gap: 10px;
+        padding: 0; /* Ensure padding is removed */
     }
 
     .size-value {
         padding: 6px 12px;
         font-size: 0.9rem;
+        width: calc(100% - 24px); /* Adjust for smaller padding */
     }
 
     .size-labels {
