@@ -580,29 +580,30 @@ body {
     border-radius: 15px;
     padding: 25px;
     margin: 40px auto;
+    width: calc(100% - 40px);
     max-width: 1400px;
     box-shadow: 0 4px 8px var(--shadow-color);
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 /* Section Headers and Timestamps */
 .shoutouts-section h2 {
     color: var(--text-color);
     margin-bottom: 10px;
-    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
     word-wrap: break-word;
 }
 
-/* Timestamp Styles */
 #tiktok-last-updated-timestamp,
 .last-updated,
 #lastUpdatedYouTube {
     color: var(--secondary-text);
-    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
     margin-bottom: 20px;
     word-wrap: break-word;
+    white-space: pre-wrap;
     overflow-wrap: break-word;
-    max-width: 100%;
 }
 
 /* Common Creator Grid Styles */
@@ -610,12 +611,11 @@ body {
 .instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    padding: 20px 0;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0;
 }
 
 /* Common Creator Card Styles */
@@ -630,6 +630,9 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow-color);
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0; /* Prevents overflow on small screens */
 }
 
 .creator-card:hover,
@@ -766,31 +769,22 @@ body {
 @media screen and (max-width: 768px) {
     .shoutouts-section {
         padding: 15px;
-        margin: 20px 10px;
+        margin: 20px auto;
+        width: calc(100% - 20px);
     }
 
     .creator-grid,
     .instagram-creator-grid,
     .youtube-creator-grid {
         grid-template-columns: 1fr;
-        padding: 10px 0;
         gap: 15px;
     }
 
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
-        margin: 0 auto;
-        width: calc(100% - 20px);
-        max-width: 400px;
-    }
-
-    /* Mobile timestamp adjustments */
-    #tiktok-last-updated-timestamp,
-    .last-updated,
-    #lastUpdatedYouTube {
-        font-size: 0.8rem;
-        padding-right: 10px;
+        margin: 0;
+        width: 100%;
     }
 }
 
@@ -798,14 +792,18 @@ body {
 @media screen and (max-width: 320px) {
     .shoutouts-section {
         padding: 10px;
-        margin: 15px 5px;
     }
 
-    /* Smaller font size for very small screens */
     #tiktok-last-updated-timestamp,
     .last-updated,
     #lastUpdatedYouTube {
         font-size: 0.75rem;
+    }
+
+    .creator-grid,
+    .instagram-creator-grid,
+    .youtube-creator-grid {
+        gap: 10px;
     }
 }
 
