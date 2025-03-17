@@ -522,29 +522,36 @@ body {
 
 /* Useful Links Section */
 .useful-links-section {
-    background-color: var(--content-bg);
-    padding: 40px 20px; /* Adjusted padding */
-    border-radius: 12px;
-    box-shadow: 0 6px 12px var(--shadow-color);
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 
+        0 8px 32px -8px var(--shadow-color),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     margin: 25px 0;
     text-align: center;
+    backdrop-filter: blur(10px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Title Styling */
 .useful-links-section h2 {
-    font-size: 1.8rem; /* Increase the font size of the title */
+    font-size: 1.8rem;
     margin-bottom: 20px;
+    color: var(--text-color);
 }
 
 /* Links Container */
 .links-container {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 20px;
-    align-items: center; /* Center align in the middle */
-    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns for desktop */
+    gap: 18px;
+    margin-top: 20px;
     width: 100%;
-    padding: 0 20px; /* Extra padding to avoid buttons touching the sides */
     box-sizing: border-box;
 }
 
@@ -553,60 +560,68 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 28px;
-    width: 90%; /* Use 90% width to ensure space on mobile */
-    max-width: 400px; /* Max width for larger screens */
-    background-color: var(--accent-color);
-    border-radius: 25px; /* Pill shape */
+    padding: 14px 24px;
+    width: 100%;
+    background: linear-gradient(145deg,
+        var(--accent-color),
+        color-mix(in srgb, var(--accent-color) 80%, #ffffff)
+    );
+    border-radius: 25px;
     text-decoration: none;
     color: white;
     font-weight: 600;
     letter-spacing: 0.5px;
-    font-size: 1.1rem;
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-sizing: border-box;
+    box-shadow: 
+        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 /* Button Hover Effects */
 .link-button:hover {
-    background-color: var(--hover-color);
-    transform: translateY(-5px); /* Move the button up on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Deepen shadow on hover */
+    transform: translateY(-2px);
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--accent-color) 80%, #ffffff),
+        var(--accent-color)
+    );
+    box-shadow: 
+        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
+        0 0 0 1px var(--accent-color);
 }
 
-/* Button Active Effects */
-.link-button:active {
-    transform: translateY(2px); /* Button presses down on click */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Subtle pressed shadow */
-}
-
-/* Responsive Design for Mobile and Tablet */
-@media (max-width: 768px) {
+/* Responsive Design */
+@media screen and (max-width: 768px) {
     .useful-links-section {
-        padding: 30px 15px; /* Adjust padding for mobile */
+        padding: 20px;
     }
 
     .links-container {
-        gap: 16px; /* Adjust gap on smaller screens */
+        grid-template-columns: 1fr; /* Single column for mobile */
+        gap: 15px;
     }
 
-    .link-button {
-        padding: 14px 24px;
-        font-size: 1rem;
-        width: 95%; /* Use 95% to avoid touching borders */
-        max-width: none;
-    }
-}
-
-@media (max-width: 480px) {
     .link-button {
         padding: 12px 20px;
-        font-size: 0.9rem;
-        width: 95%; /* Ensure space on very small screens */
+        font-size: 0.95em;
     }
 
     .useful-links-section h2 {
-        font-size: 1.6rem; /* Slightly smaller title for very small screens */
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .useful-links-section {
+        padding: 15px;
+    }
+
+    .link-button {
+        padding: 12px 16px;
+    }
+
+    .useful-links-section h2 {
+        font-size: 1.4rem;
     }
 }
 
