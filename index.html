@@ -193,16 +193,33 @@ s0.parentNode.insertBefore(s1,s0);
         </section>
         
      <!-- TikTok Shoutouts Section -->
-  <div class="shoutouts-section section">
-      <div id="tiktok-shoutouts">
-          <h2>TikTok Creator Shoutouts</h2>
-          <p id="tiktok-last-updated-timestamp"></p>
-      </div>
-      <div class="creator-grid">
-          <!-- Cards will be dynamically generated here -->
-      </div>
-      <div class="unavailable-message" style="display: none;"></div>
-  </div>
+<div class="shoutouts-section section">
+    <!-- Add region message container at the top of the section -->
+    <div id="region-message" class="region-message" style="display: none;">
+        <div class="region-message-content">
+            <h3 class="region-message-title"></h3>
+            <p class="region-message-text"></p>
+        </div>
+    </div>
+
+    <div id="tiktok-shoutouts">
+        <h2>TikTok Creator Shoutouts</h2>
+        <p id="tiktok-last-updated-timestamp"></p>
+    </div>
+    
+    <div class="creator-grid">
+        <!-- Cards will be dynamically generated here -->
+    </div>
+    
+    <div class="unavailable-message" style="display: none;"></div>
+
+    <!-- Optional: Debug information (remove in production) -->
+    <div id="region-debug" style="display: none;">
+        <p>Current Region: <span id="current-region"></span></p>
+        <p>Region Status: <span id="region-status"></span></p>
+    </div>
+</div>
+
         
         <!-- Instagram Shoutouts Section -->
         <div class="shoutouts-section section">
