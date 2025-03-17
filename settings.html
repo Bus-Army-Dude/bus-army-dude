@@ -60,36 +60,48 @@
             </div>
 
             <!-- Accessibility Section -->
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Accessibility</h2>
+<div class="settings-subsection">
+    <h2 class="subsection-title">Accessibility</h2>
 
-                <!-- Adjustable Text Size -->
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Text Size</h3>
-                        <p class="setting-description">Adjust the text size for better readability</p>
-                    </div>
-                    <label for="text-size">Text Size:</label>
-                    <select id="text-size" onchange="adjustTextSize(this.value)" aria-label="Select text size">
-                        <option value="default">Default</option>
-                        <option value="large">Large</option>
-                        <option value="larger">Larger</option>
-                    </select>
-                </div>
-
-                <!-- Disable Focus Outline -->
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Disable Focus Outline</h3>
-                        <p class="setting-description">Toggle the blue focus outline for accessibility purposes</p>
-                    </div>
-                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
-                        <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
-                        <span class="toggle-slider"></span>
-                    </label>
+    <!-- Adjustable Text Size -->
+    <div class="setting-card">
+        <div class="setting-label">
+            <h3 class="setting-title">Text Size</h3>
+            <p class="setting-description">Adjust the text size for better readability</p>
+        </div>
+        <div class="text-size-control">
+            <div class="size-value" id="textSizeValue">16px</div>
+            <div class="slider-container">
+                <input 
+                    type="range" 
+                    id="text-size-slider" 
+                    min="12" 
+                    max="24" 
+                    value="16" 
+                    step="1"
+                    aria-label="Adjust text size"
+                >
+                <div class="size-labels">
+                    <span class="size-small">A</span>
+                    <span class="size-medium">A</span>
+                    <span class="size-large">A</span>
                 </div>
             </div>
-         </div>
+        </div>
+    </div>
+
+    <!-- Disable Focus Outline -->
+    <div class="setting-card">
+        <div class="setting-label">
+            <h3 class="setting-title">Focus Outline</h3>
+            <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
+        </div>
+        <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
+            <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+</div>
 
             <!-- Owner Only Settings Section -->
             <div class="settings-subsection owner-only">
