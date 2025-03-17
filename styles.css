@@ -314,7 +314,7 @@ body {
         color-mix(in srgb, var(--content-bg) 98%, white),
         var(--content-bg)
     );
-    padding: 30px 20px;
+    padding: 30px;
     border-radius: 16px;
     box-shadow: 
         0 8px 32px -8px var(--shadow-color),
@@ -322,16 +322,17 @@ body {
     margin: 20px 0;
     text-align: center;
     backdrop-filter: blur(10px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .social-links-container {
     display: flex;
-    flex-direction: column; /* Changed to column for full width */
+    flex-direction: column;
     justify-content: center;
     gap: 18px;
-    align-items: stretch; /* Changed to stretch for full width */
+    align-items: stretch;
     margin-top: 20px;
-    padding: 0 20px; /* Added padding to prevent touching sides */
     width: 100%;
     box-sizing: border-box;
 }
@@ -351,7 +352,8 @@ body {
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    width: 100%; /* Full width */
+    width: 100%;
+    box-sizing: border-box;
     box-shadow: 
         0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
         0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
@@ -370,6 +372,7 @@ body {
         0 0 0 1px var(--accent-color);
 }
 
+/* Apply to social button icons */
 .social-button .social-icon {
     font-size: 20px;
     margin-right: 15px;
@@ -385,12 +388,11 @@ body {
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .social-links-section {
-        padding: 20px 15px;
+        padding: 20px;
     }
 
     .social-links-container {
         gap: 15px;
-        padding: 0 15px;
     }
 
     .social-button {
@@ -401,11 +403,7 @@ body {
 
 @media screen and (max-width: 480px) {
     .social-links-section {
-        padding: 15px 10px;
-    }
-
-    .social-links-container {
-        padding: 0 10px;
+        padding: 15px;
     }
 
     .social-button {
@@ -420,15 +418,28 @@ body {
 
 /* Theme-specific icon colors */
 :root {
-    --icon-color: #212529; /* Default icon color for dark mode */
+    --icon-color: #212529; /* Default icon color to dark */
 }
 
 .light-mode {
-    --icon-color: #212529; /* Dark icon color for light mode */
+    --icon-color: #ffffff; /* Light icon color for light mode */
 }
 
 .dark-mode {
-    --icon-color: #ffffff; /* Light icon color for dark mode */
+    --icon-color: #212529; /* Dark icon color for dark mode */
+}
+
+/* Media query fallback if needed */
+@media (prefers-color-scheme: dark) {
+    .social-button .social-icon {
+        color: #212529;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .social-button .social-icon {
+        color: #ffffff;
+    }
 }
 
 /* Useful Links Section */
