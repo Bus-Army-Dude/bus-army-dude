@@ -1526,13 +1526,13 @@ footer {
 
 /* Event Section Container */
 [data-section-id="events"] {
-    border: 1px solid var(--border-color);
-    border-radius: 15px;
-    padding: 20px;
-    margin: 10px 0;
     background-color: var(--content-bg);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .section-content {
@@ -1542,7 +1542,6 @@ footer {
 .section-title {
     text-align: left;
     margin-bottom: 20px;
-    padding-left: 10px;
     color: var(--text-color);
     font-size: var(--title-size);
     font-weight: 600;
@@ -1561,7 +1560,7 @@ footer {
     position: relative;
     padding: 24px;
     border-radius: 12px;
-    background: var(--card-background);
+    background: var(--bg-color);
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
@@ -1639,25 +1638,27 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin: 24px auto 0;  /* Centered margin */
+    margin: 24px auto 0;
     padding: 14px 28px;
     border-radius: 50px;
-    background: #2ecc71;
+    background: var(--accent-color);
     color: white;
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1em;
     border: none;
     transition: all 0.2s ease;
-    width: auto;          /* Auto width by default */
-    max-width: 100%;      /* Never exceed container width */
-    box-sizing: border-box; /* Include padding in width calculation */
+    width: auto;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .event-link:hover {
-    background: #27ae60;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
+    background-color: transparent;
+    color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--accent-color);
 }
 
 .event-link .icon {
@@ -1673,7 +1674,7 @@ footer {
     margin-top: 16px;
     text-align: center;
     font-size: 0.9em;
-    color: var(--text-secondary);
+    color: var(--secondary-text);
 }
 
 /* Empty State */
@@ -1714,11 +1715,11 @@ footer {
     animation: fadeIn 0.3s ease forwards;
 }
 
-/* Mobile Responsiveness - Updated */
-@media (max-width: 768px) {
+/* Media queries for mobile responsiveness */
+@media screen and (max-width: 768px) {
     [data-section-id="events"] {
-        padding: 16px;
-        margin: 5px 0;
+        padding: 15px;
+        margin-bottom: 20px;
     }
 
     .event-card {
@@ -1740,10 +1741,10 @@ footer {
     }
 
     .event-link {
-        width: calc(100% - 32px); /* Account for parent padding */
+        width: 100%;
         margin: 20px auto 0;
-        padding: 12px 20px;    /* Slightly reduced padding */
-        font-size: 1em;        /* Slightly smaller font */
+        padding: 12px 20px;
+        font-size: 1em;
     }
 
     .event-row {
@@ -1751,8 +1752,16 @@ footer {
     }
 }
 
-/* For very small screens */
-@media (max-width: 360px) {
+/* Extra small devices */
+@media screen and (max-width: 380px) {
+    [data-section-id="events"] {
+        padding: 10px;
+    }
+    
+    .event-card {
+        padding: 10px;
+    }
+
     .event-link {
         padding: 10px 16px;
         font-size: 0.95em;
