@@ -148,8 +148,8 @@ header {
     box-shadow: 0 2px 10px color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
-/* Modern Categories Section */
-.category-nav {
+/* Modern Category Dropdown */
+.category-dropdown {
     background: linear-gradient(145deg,
         color-mix(in srgb, var(--content-bg) 98%, white),
         var(--content-bg)
@@ -164,8 +164,15 @@ header {
     backdrop-filter: blur(10px);
 }
 
-/* Modern Select Dropdown */
-.category-nav select {
+.category-dropdown label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+#categories {
     width: 100%;
     padding: 16px 20px;
     font-size: 1rem;
@@ -185,23 +192,18 @@ header {
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
 }
 
-.category-nav::after {
+.category-dropdown::after {
     content: '▼';
     position: absolute;
     right: 35px;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 25px;
     color: var(--accent-color);
     font-size: 0.8rem;
     pointer-events: none;
     transition: transform 0.3s ease;
 }
 
-.category-nav.open::after {
-    transform: translateY(-50%) rotate(180deg);
-}
-
-.category-nav select:hover {
+#categories:hover {
     border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 
@@ -214,7 +216,7 @@ header {
     );
 }
 
-.category-nav select:focus {
+#categories:focus {
     outline: none;
     border-color: var(--accent-color);
     box-shadow: 
@@ -223,31 +225,31 @@ header {
         0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
-/* Custom Select Options */
-.category-nav select option {
+/* Styling for dropdown options */
+#categories option {
     background: var(--content-bg);
     color: var(--text-color);
     padding: 12px;
     font-weight: 500;
 }
 
-/* For Webkit browsers (Chrome, Safari) */
-.category-nav select::-webkit-scrollbar {
+/* Webkit scrollbar customization */
+#categories::-webkit-scrollbar {
     width: 10px;
 }
 
-.category-nav select::-webkit-scrollbar-track {
+#categories::-webkit-scrollbar-track {
     background: var(--bg-color);
     border-radius: 10px;
 }
 
-.category-nav select::-webkit-scrollbar-thumb {
+#categories::-webkit-scrollbar-thumb {
     background: var(--accent-color);
     border-radius: 10px;
 }
 
-/* For Firefox */
-.category-nav select {
+/* Firefox scrollbar customization */
+#categories {
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) var(--bg-color);
 }
@@ -447,6 +449,19 @@ header {
     .buy-now {
         padding: 10px 20px;
     }
+
+    .category-dropdown {
+        padding: 15px;
+    }
+
+    #categories {
+        padding: 14px 18px;
+    }
+
+    .category-dropdown::after {
+        right: 30px;
+        bottom: 22px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -466,5 +481,18 @@ header {
 
     .product-item {
         padding: 12px;
+    }
+
+    .category-dropdown {
+        padding: 12px;
+    }
+
+    #categories {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+
+    .category-dropdown label {
+        font-size: 1rem;
     }
 }
