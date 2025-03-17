@@ -611,6 +611,7 @@ body {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    overflow: visible; /* Changed to visible to prevent cutting off shadows */
 }
 
 /* Common Creator Card Styles */
@@ -628,8 +629,8 @@ body {
     box-sizing: border-box;
     max-width: 100%;
     position: relative;
-    overflow: visible; /* Changed from hidden to visible */
-    min-height: fit-content; /* Added to ensure card expands with content */
+    overflow: hidden; /* Changed back to hidden */
+    min-height: fit-content;
 }
 
 /* YouTube Cover Photo */
@@ -688,10 +689,10 @@ body {
     align-items: center;
     gap: 4px;
     margin-bottom: 10px;
-    flex-wrap: wrap; /* Added to allow wrapping */
-    width: 100%; /* Ensure full width */
-    overflow-wrap: break-word; /* Added to handle long usernames */
-    word-break: break-word; /* Added for better text wrapping */
+    flex-wrap: wrap;
+    width: 100%;
+    overflow: hidden; /* Added to contain text */
+    padding-right: 4px; /* Added to prevent text from touching the edge */
 }
 
 /* Common Username Styles */
@@ -701,9 +702,11 @@ body {
     color: var(--secondary-text);
     font-size: 0.9em;
     margin: 0;
-    width: auto; /* Allow natural width */
-    max-width: 100%; /* Prevent overflow */
-    overflow-wrap: break-word; /* Added to handle long usernames */
+    width: auto;
+    max-width: calc(100% - 20px); /* Adjusted to leave space for verification badge */
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal; /* Added to ensure text wraps */
 }
 
 /* Verification Badge Styles */
@@ -799,6 +802,7 @@ body {
     .shoutouts-section {
         padding: 15px;
         margin-bottom: 20px;
+        overflow: hidden; /* Added to contain content */
     }
 
     .creator-grid,
@@ -806,12 +810,23 @@ body {
     .youtube-creator-grid {
         grid-template-columns: 1fr;
         gap: 15px;
+        overflow: visible; /* Changed to visible for card shadows */
     }
 
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
         padding: 12px;
+        overflow: hidden; /* Added to contain content */
+        height: auto; /* Added to ensure card expands with content */
+        min-height: fit-content; /* Added to ensure proper sizing */
+    }
+
+    .creator-header h3,
+    .instagram-creator-header h3,
+    .youtube-creator-header h3 {
+        overflow-wrap: break-word; /* Added for text wrapping */
+        word-break: break-word; /* Added for text wrapping */
     }
 
     .youtube-cover-photo {
@@ -824,18 +839,23 @@ body {
 @media screen and (max-width: 380px) {
     .shoutouts-section {
         padding: 10px;
+        overflow: hidden; /* Added to contain content */
     }
 
     .creator-grid,
     .instagram-creator-grid,
     .youtube-creator-grid {
         gap: 10px;
+        overflow: visible; /* Changed to visible for card shadows */
     }
 
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
         padding: 10px;
+        overflow: hidden; /* Added to contain content */
+        height: auto; /* Added to ensure card expands with content */
+        min-height: fit-content; /* Added to ensure proper sizing */
     }
 
     .youtube-cover-photo {
