@@ -193,38 +193,16 @@ s0.parentNode.insertBefore(s1,s0);
         </section>
         
      <!-- TikTok Shoutouts Section -->
-<div class="shoutouts-section section">
-    <!-- Region Message Container -->
-    <div id="region-message" class="region-message" style="display: none;">
-        <div class="region-message-content">
-            <h3 class="region-message-title"></h3>
-            <p class="region-message-text"></p>
-        </div>
-    </div>
-
-    <!-- TikTok Section Header -->
-<div id="tiktok-shoutouts" class="tiktok-creator-section">
-    <h2>TikTok Creator Shoutouts</h2>
-    <p id="tiktok-last-updated-timestamp">Last Updated: 2025-03-17 15:48:39</p>
-    
-    <!-- Creator Grid Container -->
-    <div class="creator-grid">
-        <!-- Cards will be dynamically generated here -->
-    </div>
-    
-    <!-- Unavailable Message -->
-    <div class="unavailable-message" style="display: none;">
-        <h3 class="unavailable-message-title">Region Restricted</h3>
-        <p class="unavailable-message-text"></p>
-    </div>
-</div>
-
-<!-- Optional Debug Panel -->
-<div id="region-debug" style="display: none;">
-    <p>Current Region: <span id="current-region"></span></p>
-    <p>Region Status: <span id="region-status"></span></p>
-    <p>Debug Time: <span id="debug-time">2025-03-17 16:15:24</span></p>
-</div>
+  <div class="shoutouts-section section">
+      <div id="tiktok-shoutouts">
+          <h2>TikTok Creator Shoutouts</h2>
+          <p id="tiktok-last-updated-timestamp"></p>
+      </div>
+      <div class="creator-grid">
+          <!-- Cards will be dynamically generated here -->
+      </div>
+      <div class="unavailable-message" style="display: none;"></div>
+  </div>
         
         <!-- Instagram Shoutouts Section -->
         <div class="shoutouts-section section">
@@ -331,32 +309,18 @@ s0.parentNode.insertBefore(s1,s0);
 
 <div class="business-info">
     <h1>Bus Army Dude's Merch Store</h1>
-    
-    <p class="contact-info">
-        <strong>Contact:</strong> 
-        <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a>
-    </p>    
-    
-    <div class="timezone-container">
-        <strong>Your current timezone:</strong> 
-        <span id="user-timezone"></span>
-    </div>
-    
-    <div class="hours-section">
-        <h2>Business Hours</h2>
-        <div id="hours-container"></div>
-    </div>
+    <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>    
+    <p><strong>Your current timezone:</strong> <span id="user-timezone"></span></p>
+    <h2>Business Hours</h2>
+    <div id="hours-container"></div>
 
+    <!-- The holiday alert starts hidden -->
     <div id="holiday-alert" style="display: none;">
         <p><strong>Holiday:</strong> <span id="holiday-name"></span></p>
         <p><strong>Special hours today:</strong> <span id="holiday-hours"></span></p>
     </div>
 
-    <div class="status-container">
-        <div class="status">
-            <strong>Status:</strong> <span id="open-status"></span>
-        </div>
-    </div>
+    <p class="status"><strong>Status:</strong> <span id="open-status"></span></p>
 </div>
         
         <div class="faq-section">
@@ -659,7 +623,7 @@ s0.parentNode.insertBefore(s1,s0);
             <div class="battery-level" style="width: 100%;"></div>
             <div class="battery-percentage">100%</div>
         </div>
-        <p><span>Battery Charge Cycles:</span> 194</p>
+        <p><span>Battery Charge Cycles:</span> 189</p>
     </div>
     
     <!-- Apple Watch Ultra 2 Section -->
@@ -716,8 +680,8 @@ s0.parentNode.insertBefore(s1,s0);
 <div class="version-info-container">
     <div class="version-info-section">
         <div class="version-header">Version Information</div>
-        <div class="version-number">v1.13.1</div>
-        <div class="build-number">2025.3.16</div>
+        <div class="version-number">v1.13.0</div>
+        <div class="build-number">2025.2.26</div>
         <div class="update-time">2025-01-27 21:29:16</div>
         <div class="os-info" id="os-info">Detecting...</div>
         <div class="device-info" id="device-info">Detecting...</div>
@@ -758,7 +722,5 @@ s0.parentNode.insertBefore(s1,s0);
     <script src="device.js"></script>
     <script src="creatorshoutouts.js"></script>
     <script src="business-hours.js"></script>
-    <script src="region-config.js"></script>
-    <script src="tiktok-shoutouts.js"></script>
 </body>
 </html>                
