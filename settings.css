@@ -301,14 +301,130 @@ body.settings-page {
         0 0 0 1px var(--accent-color);
 }
 
+/* Text Size Control Styles */
+.text-size-control {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+}
+
+.size-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--bg-color) 98%, white),
+        var(--bg-color)
+    );
+    padding: 8px 16px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 
+        0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 0;
+}
+
+/* Modern Range Slider */
+#text-size-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right,
+        var(--slider-track-filled-color) var(--slider-value, 50%),
+        var(--slider-track-color) var(--slider-value, 50%)
+    );
+    border-radius: 3px;
+    outline: none;
+    margin: 10px 0;
+}
+
+#text-size-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--slider-thumb-color);
+    cursor: pointer;
+    border: 2px solid var(--bg-color);
+    box-shadow: 
+        0 2px 8px color-mix(in srgb, var(--accent-color) 30%, transparent);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#text-size-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--slider-thumb-color);
+    cursor: pointer;
+    border: 2px solid var(--bg-color);
+    box-shadow: 
+        0 2px 8px color-mix(in srgb, var(--accent-color) 30%, transparent);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#text-size-slider::-webkit-slider-thumb:hover,
+#text-size-slider::-webkit-slider-thumb:active {
+    transform: scale(1.1);
+    box-shadow: 
+        0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
+}
+
+#text-size-slider::-moz-range-thumb:hover,
+#text-size-slider::-moz-range-thumb:active {
+    transform: scale(1.1);
+    box-shadow: 
+        0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
+}
+
+/* Size Labels */
+.size-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 10px;
+    color: var(--text-color);
+}
+
+.size-labels span {
+    transition: all 0.3s ease;
+}
+
+.size-small { 
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.size-medium { 
+    font-size: 16px;
+    opacity: 0.85;
+}
+
+.size-large { 
+    font-size: 24px;
+    opacity: 1;
+}
+
 /* Media Queries */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .settings-page {
         padding: 15px;
     }
 
     .settings-page .container {
         padding: 20px;
+        margin: 15px auto;
     }
 
     .settings-page .settings-subsection {
@@ -321,10 +437,90 @@ body.settings-page {
         gap: 15px;
     }
 
+    .text-size-control {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    .size-value {
+        width: 100%;
+    }
+
+    .settings-page .settings-header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .settings-page {
+        padding: 12px;
+    }
+
+    .settings-page .container {
+        padding: 18px;
+        margin: 12px auto;
+    }
+
+    .settings-page .settings-subsection {
+        padding: 18px;
+    }
+
     #cookie-consent-banner {
         flex-direction: column;
         text-align: center;
         bottom: 10px;
         padding: 15px;
+        width: 85%;
+    }
+
+    .settings-page .settings-header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-page {
+        padding: 10px;
+    }
+
+    .settings-page .container {
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    .settings-page .settings-subsection {
+        padding: 15px;
+    }
+
+    .settings-page .setting-card {
+        padding: 15px;
+    }
+
+    .text-size-control {
+        gap: 10px;
+    }
+
+    .size-value {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .size-labels {
+        padding: 0 5px;
+    }
+
+    .settings-page .settings-header h1 {
+        font-size: 1.3rem;
+    }
+
+    #cookie-consent-banner {
+        padding: 12px;
+        width: 80%;
+        font-size: 0.9rem;
+    }
+
+    #cookie-consent-banner button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
 }
