@@ -72,7 +72,7 @@ const regionConfiguration = {
     BO: true,  // Bolivia
     BR: true,  // Brazil
     VG: true,  // British Virgin Islands
-    CA: true,  // Canada
+    CA: false,  // Canada
     KY: true,  // Cayman Islands
     CL: true,  // Chile
     CO: true,  // Colombia
