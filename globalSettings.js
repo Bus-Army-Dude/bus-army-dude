@@ -11,18 +11,30 @@ class GlobalSettings {
             fontSize: 16,
             lastUpdate: Date.now()
         };
-        return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
+        const savedSettings = localStorage.getItem('websiteSettings');
+        const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+        
+        // Always apply font size on page load
+        this.applyFontSize(settings.fontSize);
+        
+        return settings;
     }
 
     init() {
         this.applyDarkMode(this.settings.darkMode);
         this.applyFontSize(this.settings.fontSize);
 
+        // Listen for changes across tabs/pages
         window.addEventListener('storage', (e) => {
             if (e.key === 'websiteSettings') {
                 this.settings = JSON.parse(e.newValue);
                 this.applyAllSettings();
             }
+        });
+
+        // Apply settings immediately when page loads
+        window.addEventListener('load', () => {
+            this.applyAllSettings();
         });
     }
 
@@ -53,7 +65,34 @@ class GlobalSettings {
 
     applyFontSize(size) {
         size = Math.min(Math.max(size, 12), 24);
-        document.documentElement.style.setProperty('--font-size-base', `${size}px`);
+        
+        // Apply font size to all text elements
+        const textElements = {
+            'body': 1,
+            'h1': 2,
+            'h2': 1.75,
+            'h3': 1.5,
+            'h4': 1.25,
+            'h5': 1.15,
+            'h6': 1.1,
+            'p': 1,
+            'span': 1,
+            'a': 1,
+            'li': 1,
+            'button': 1,
+            'input': 1,
+            'textarea': 1,
+            'label': 1
+        };
+
+        Object.entries(textElements).forEach(([element, scale]) => {
+            const elements = document.getElementsByTagName(element);
+            for (let el of elements) {
+                el.style.fontSize = `${size * scale}px`;
+            }
+        });
+
+        // Update settings
         this.settings.fontSize = size;
         this.saveSettings();
     }
@@ -75,5 +114,17 @@ class GlobalSettings {
     }
 }
 
-// Initialize global settings
+// Initialize global settings immediately
 const globalSettings = new GlobalSettings();
+
+// Reapply settings when dynamic content is loaded
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.addedNodes.length) {
+            globalSettings.applyFontSize(globalSettings.settings.fontSize);
+        }
+    });
+});
+
+// Start observing the document with the configured parameters
+observer.observe(document.body, { childList: true, subtree: true });
