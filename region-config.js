@@ -106,7 +106,7 @@ const regionConfiguration = {
     SR: true,  // Suriname
     TT: true,  // Trinidad and Tobago
     TC: true,  // Turks and Caicos Islands
-    US: true,  // United States
+    US: false,  // United States
     UY: true,  // Uruguay
     VE: true,  // Venezuela
     VI: true,  // U.S. Virgin Islands
