@@ -122,3 +122,36 @@ body {
         font-size: 1em;
     }
 }
+
+/* Add this at the top of your existing CSS */
+.datetime-header {
+    background-color: var(--bg-color);
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    font-size: 0.9em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.datetime-header span {
+    color: var(--accent-color);
+    font-family: 'Roboto Mono', monospace;
+}
+
+#current-datetime {
+    font-weight: 500;
+}
+
+#user-login {
+    font-weight: 600;
+}
+
+/* Add this after the datetime styles to adjust the container positioning */
+.no-internet-container {
+    margin-top: 80px; /* Add space for the datetime header */
+}
