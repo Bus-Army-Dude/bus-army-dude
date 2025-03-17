@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Business hours in EST (Eastern Standard Time)
     const businessHoursEST = {
-        sunday: { open: null, close: null },
+        sunday: { open: null, close: null },  // Closed all day
         monday: { open: "10:00 AM", close: "11:00 PM" },
         tuesday: { open: "10:00 AM", close: "11:00 PM" },
         wednesday: { open: "10:00 AM", close: "11:00 PM" },
         thursday: { open: "10:00 AM", close: "11:00 PM" },
         friday: { open: "10:00 AM", close: "11:00 PM" },
-        saturday: { open: "10:00 AM", close: "11:00 PM" },
+        saturday: { open: "10:00 AM", close: "11:00 PM" }
     };
 
     // Holiday hours
@@ -73,32 +73,24 @@ document.addEventListener("DOMContentLoaded", function () {
         const currentHourEST = nowEST.getHours();
         const currentMinuteEST = nowEST.getMinutes();
 
-        console.log("Current Time (EST):", currentHourEST, currentMinuteEST);
-        console.log("Today's Date:", todayDate);
-        console.log("Holiday Hours for today:", holidayHours[todayDate]);
-
         let openTimeEST;
         let closeTimeEST;
 
         if (holidayHours[todayDate]) {
             const holidayDetails = holidayHours[todayDate];
-            console.log("Holiday Details:", holidayDetails);
             if (holidayDetails.hours === "Closed") {
                 return "Closed";
             } else {
                 [openTimeEST, closeTimeEST] = holidayDetails.hours.split(" - ");
-                console.log("Holiday Open Time (EST):", openTimeEST, "Holiday Close Time (EST):", closeTimeEST);
             }
         } else {
             const todayHoursEST = businessHoursEST[dayOfWeek];
             if (!todayHoursEST) return "Closed";
             openTimeEST = todayHoursEST.open;
             closeTimeEST = todayHoursEST.close;
-            console.log("Regular Open Time (EST):", openTimeEST, "Regular Close Time (EST):", closeTimeEST);
         }
 
         if (!openTimeEST || !closeTimeEST) {
-            console.log("Open or close time is undefined.");
             return "Closed";
         }
 
@@ -108,20 +100,17 @@ document.addEventListener("DOMContentLoaded", function () {
             let hour = hours;
             if (period === 'PM' && hours !== 12) hour += 12;
             if (period === 'AM' && hours === 12) hour = 0;
-            return { hour, minute: minutes }; // Changed 'minute' to 'minute: minutes'
+            return { hour, minute: minutes };
         };
 
         const openTime = parseTime(openTimeEST);
         const closeTime = parseTime(closeTimeEST);
-        console.log("Parsed Open Time:", openTime, "Parsed Close Time:", closeTime);
 
         const currentMinutes = currentHourEST * 60 + currentMinuteEST;
         const openMinutes = openTime.hour * 60 + openTime.minute;
         const closeMinutes = closeTime.hour * 60 + closeTime.minute;
-        console.log("Current Minutes:", currentMinutes, "Open Minutes:", openMinutes, "Close Minutes:", closeMinutes);
 
         const isOpen = (currentMinutes >= openMinutes && currentMinutes < closeMinutes);
-        console.log("Is Open:", isOpen);
         return isOpen ? "Open" : "Closed";
     }
 
@@ -130,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
     hoursContainer.innerHTML = "";
 
     for (const [day, { open, close }] of Object.entries(businessHoursEST)) {
-        const convertedOpen = convertTimeToTimezone(open, userTimezone);
-        const convertedClose = convertTimeToTimezone(close, userTimezone);
+        const convertedOpen = open ? convertTimeToTimezone(open, userTimezone) : "Closed";
+        const convertedClose = close ? convertTimeToTimezone(close, userTimezone) : "Closed";
 
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
@@ -157,7 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (holidayHours[todayDate]) {
         const holidayDetails = holidayHours[todayDate];
-
         let specialHours;
         if (holidayDetails.hours === "Closed") {
             specialHours = "Closed";
