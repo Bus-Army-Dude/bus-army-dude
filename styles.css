@@ -597,6 +597,7 @@ body {
     color: var(--secondary-text);
     font-size: 0.9em;
     margin-bottom: 20px;
+    display: block;
 }
 
 /* Common Creator Grid Styles */
@@ -626,6 +627,25 @@ body {
     width: 100%;
     box-sizing: border-box;
     max-width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* YouTube Cover Photo */
+.youtube-cover-photo {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    margin: -15px -15px 15px -15px;
+    max-width: calc(100% + 30px);
+}
+
+/* YouTube Creator Info Container */
+.youtube-creator-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .creator-card:hover,
@@ -645,6 +665,8 @@ body {
     object-fit: cover;
     border: 3px solid var(--accent-color);
     margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
 }
 
 /* Common Header Styles */
@@ -694,6 +716,7 @@ body {
     margin: 10px 0;
     font-size: 0.9em;
     line-height: 1.4;
+    word-break: break-word;
 }
 
 /* Common Follower/Subscriber Count Styles */
@@ -775,6 +798,11 @@ body {
     .youtube-creator-card {
         padding: 12px;
     }
+
+    .youtube-cover-photo {
+        margin: -12px -12px 15px -12px;
+        max-width: calc(100% + 24px);
+    }
 }
 
 /* Extra small devices */
@@ -793,6 +821,11 @@ body {
     .instagram-creator-card,
     .youtube-creator-card {
         padding: 10px;
+    }
+
+    .youtube-cover-photo {
+        margin: -10px -10px 15px -10px;
+        max-width: calc(100% + 20px);
     }
 }
 
