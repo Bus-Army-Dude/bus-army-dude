@@ -1302,17 +1302,20 @@ body {
 .back-to-top {
     position: fixed;
     bottom: 20px;
-    left: 20px; /* Changed from right to left */
-    background-color: var(--accent-color);
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    left: 20px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
     display: none;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 8px 20px var(--shadow-color);
+    transition: background 0.3s ease, border-left 0.3s ease, transform 0.3s ease;
     z-index: 1000;
 }
 
@@ -1321,8 +1324,9 @@ body {
 }
 
 .back-to-top:hover {
-    background-color: var(--hover-color);
+    border-left: 6px solid var(--hover-color);
     transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Version Info Section */
