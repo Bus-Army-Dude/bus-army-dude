@@ -213,6 +213,37 @@ const tiktokShoutouts = {
   }
 };
 
+updateDebugPanel(region, isAvailable) {
+    const debugPanel = document.getElementById('region-debug');
+    if (!debugPanel) return;
+
+    // Update region
+    const regionSpan = document.getElementById('current-region');
+    if (regionSpan) {
+        regionSpan.textContent = region || 'Unknown';
+    }
+
+    // Update status with appropriate class for color
+    const statusSpan = document.getElementById('region-status');
+    if (statusSpan) {
+        statusSpan.textContent = isAvailable ? 'Available' : 'Restricted';
+        statusSpan.className = isAvailable ? 'available' : 'unavailable';
+    }
+
+    // Update debug time in UTC format
+    const timeSpan = document.getElementById('debug-time');
+    if (timeSpan) {
+        const now = new Date();
+        const utcString = now.toISOString()
+            .replace('T', ' ')
+            .split('.')[0];
+        timeSpan.textContent = utcString;
+    }
+
+    // Show the debug panel
+    debugPanel.style.display = 'block';
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   // Small delay to ensure region-config.js is loaded
