@@ -1,3 +1,143 @@
+// TikTok Shoutouts
+const tiktokShoutouts = {
+    accounts: [
+        { username: 'mrbeast', isVerified: true, followers: '115.1M', nickname: 'MrBeast', bio: 'New CEO of Tiktok?', profilePic: 'images/mrbeast.jpeg' },
+        { username: 'teamtrump', isVerified: true, followers: '9M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
+        { username: 'carterpcs', isVerified: true, followers: '5.7M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'images/carterpcs.jpeg' },
+        { username: 'applesauceandadhd', isVerified: true, followers: '4.2M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'images/applesauceandadhd.jpeg' },
+        { username: 'tatechtips', isVerified: true, followers: '3.3M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
+        { username: 'imparkerburton', isVerified: false, followers: '3M', nickname: 'Parker Burton', bio: 'That Android Guy, Business: parker@imparkerburton.com', profilePic: 'images/imparkerburton.jpeg' },
+        { username: 'kennedylawfirm', isVerified: false, followers: '1.9M', nickname: 'Lawyer Kevin Kennedy', bio: "The Kennedy Law Firm, PLLC, Clarksville, TN, Kev's got you covered™️", profilePic: 'images/kennedylawfirm.jpeg' },
+        { username: 'badge502', isVerified: false, followers: '829K', nickname: 'Badge502', bio: 'NREMT - 911/EMD PO Box 775 Belleville, NJ 07109 *I DONT HAVE A BACKUP ACCOUNT*', profilePic: 'images/badge502.jpeg' },
+        { username: 'mrfatcheeto', isVerified: false, followers: '758.6K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '705.9K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        { username: 'kaylee_mertens_', isVerified: false, followers: '677K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
+        { username: 'trafficlightdoctor', isVerified: false, followers: '386K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
+        { username: 'aggressiveafterdark', isVerified: false, followers: '362.9K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
+        { username: 'captainsteeeve', isVerified: false, followers: '325.1K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },
+        { username: 'rachel_hughes', isVerified: false, followers: '323.8K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/rachel_hughes.jpeg' },        
+        { username: 'badge5022', isVerified: false, followers: '23.8K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
+        { username: 'raisingramsey2023', isVerified: false, followers: '1,197', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
+        { username: 'jerridc4', isVerified: false, followers: '481', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
+        { username: 'jerridonthelot', isVerified: false, followers: '287', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
+        { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
+        // Add more shoutouts here...
+     ],
+  lastUpdatedTime: '2025-03-16T12:52:00', // Manually set the last updated date and time
+  regionAvailability: {
+    AD: true, AE: true, AF: false, AG: true, AI: true, AL: true, AM: true, AO: true, AQ: true, AR: true, AS: true, AT: true, AU: true, AW: true, AX: true, AZ: true, 
+    BA: true, BB: true, BD: true, BE: true, BF: true, BG: true, BH: true, BI: true, BJ: true, BL: true, BM: true, BN: true, BO: true, BQ: true, BR: true, BS: true, BT: true, BV: true, BW: true, BY: true, BZ: true, 
+    CA: true, CC: true, CD: true, CF: true, CG: true, CH: true, CI: true, CK: true, CL: true, CM: true, CN: true, CO: true, CR: true, CU: true, CV: true, CW: true, CX: true, CY: true, CZ: true, 
+    DE: true, DJ: true, DK: true, DM: true, DO: true, DZ: true, 
+    EC: true, EE: true, EG: true, EH: true, ER: true, ES: true, ET: true, 
+    FI: true, FJ: true, FK: true, FM: true, FO: true, FR: true, 
+    GA: true, GB: true, GD: true, GE: true, GF: true, GG: true, GH: true, GI: true, GL: true, GM: true, GN: true, GP: true, GQ: true, GR: true, GT: true, GU: true, GW: true, GY: true, 
+    HK: true, HM: true, HN: true, HR: true, HT: true, HU: true, 
+    ID: true, IE: true, IL: true, IM: true, IN: false, IO: true, IQ: true, IR: false, IS: true, IT: true, 
+    JE: true, JM: true, JO: true, JP: true, 
+    KE: true, KG: false, KH: true, KI: true, KM: true, KN: true, KP: false, KR: true, KW: true, KY: true, KZ: true, 
+    LA: true, LB: true, LC: true, LI: true, LK: true, LR: true, LS: true, LT: true, LU: true, LV: true, LY: true, 
+    MA: true, MC: true, MD: true, ME: true, MF: true, MG: true, MH: true, MK: true, ML: true, MM: true, MN: true, MO: true, MP: true, MQ: true, MR: true, MS: true, MT: true, MU: true, MV: true, MW: true, MX: true, MY: true, MZ: true, 
+    NA: true, NC: true, NE: true, NF: true, NG: true, NI: true, NL: true, NO: true, NP: false, NR: true, NU: true, NZ: true, 
+    OM: true, 
+    PA: true, PE: true, PF: true, PG: true, PH: true, PK: true, PL: true, PM: true, PN: true, PR: true, PT: true, PW: true, PY: true, 
+    QA: true, 
+    RE: true, RO: true, RS: true, RU: true, RW: true, 
+    SA: true, SB: true, SC: true, SD: true, SE: true, SG: true, SH: true, SI: true, SJ: true, SK: true, SL: true, SM: true, SN: true, SO: false, SR: true, SS: true, ST: true, SV: true, SX: true, SY: true, SZ: true, 
+    TC: true, TD: true, TF: true, TG: true, TH: true, TJ: true, TK: true, TL: true, TM: false, TN: true, TO: true, TR: true, TT: true, TV: true, TW: true, TZ: true, 
+    UA: true, UG: true, UM: true, US: true, UY: true, UZ: false, 
+    VA: true, VC: true, VE: true, VG: true, VI: true, VN: true, VU: true, 
+    WF: true, WS: true, 
+    YE: true, YT: true, 
+    ZA: true, ZM: true, ZW: true
+  },
+  apiKey: '062DCABD06640311EA57758404739655', // Replace with your ipgeolocation.io API key
+  init() {
+    this.getUserRegion().then(userRegion => {
+      if (this.regionAvailability[userRegion]) {
+        this.createShoutoutCards();
+        this.setLastUpdatedTime();
+      } else {
+        this.showUnavailableMessage(userRegion);
+      }
+    }).catch(error => {
+      console.error('Error fetching user region:', error);
+    });
+  },
+  createShoutoutCards() {
+    const container = document.querySelector('.creator-grid');
+    if (!container) return;
+    container.innerHTML = '';
+    this.accounts.forEach(account => {
+      const card = document.createElement('div');
+      card.className = 'creator-card';
+      card.innerHTML = `
+        <img src="${account.profilePic}" alt="@${account.username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
+        <div class="creator-info">
+          <div class="creator-header">
+            <h3>${account.nickname} ${account.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
+          </div>
+          <p class="creator-username">@${account.username}</p>
+          <p class="creator-bio">${account.bio || ''}</p>
+          <p class="follower-count">${account.followers} Followers</p>
+          <a href="https://tiktok.com/@${account.username}" target="_blank" class="visit-profile"> Visit Profile </a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  },
+  setLastUpdatedTime() {
+    const lastUpdatedElement = document.getElementById('tiktok-last-updated-timestamp');
+    if (!lastUpdatedElement) return;
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+      timeZone: userTimeZone,
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    });
+    lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+  },
+  async getUserRegion() {
+  const cachedRegion = localStorage.getItem('userRegion');
+  const cachedTime = localStorage.getItem('userRegionTime');
+  const currentTime = Date.now();
+
+  if (cachedRegion && cachedTime && (currentTime - cachedTime < this.cacheDuration)) {
+    return cachedRegion;
+  }
+
+  try {
+    const response = await fetch(`https://api.ip2location.io/?key=${this.apiKey}&format=json`);
+    const data = await response.json();
+    const region = data.country_code; // ip2location.io uses 'country_code' for the country code
+    localStorage.setItem('userRegion', region);
+    localStorage.setItem('userRegionTime', currentTime);
+    return region;
+  } catch (error) {
+    console.error('Error fetching geolocation data:', error);
+    return 'US'; // Default to 'US' if there's an error
+  }
+},
+  showUnavailableMessage(region) {
+    const messageContainer = document.querySelector('.unavailable-message');
+    if (!messageContainer) return;
+    messageContainer.innerHTML = `
+      <div class="unavailable-message-title">System Message</div>
+      <p>Sorry, this section isn't available in ${region}. Sorry for the inconvenience we have caused.</p>
+    `;
+    messageContainer.style.display = 'block';
+  }
+};
+
+// Initialize the TikTok shoutouts
+tiktokShoutouts.init();
+
 const instagramShoutouts = {
     accounts: [
         { username: 'mrbeast', isVerified: true, followers: '66.6M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },
