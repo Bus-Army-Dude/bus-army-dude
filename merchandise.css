@@ -150,8 +150,7 @@ header {
 
 /* Modern Categories Section */
 .category-nav {
-    background: linear-gradient(
-        145deg,
+    background: linear-gradient(145deg,
         color-mix(in srgb, var(--content-bg) 98%, white),
         var(--content-bg)
     );
@@ -172,7 +171,10 @@ header {
     font-size: 1rem;
     font-weight: 500;
     color: var(--text-color);
-    background: color-mix(in srgb, var(--bg-color) 95%, transparent);
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 95%, transparent),
+        color-mix(in srgb, var(--content-bg) 98%, var(--accent-color))
+    );
     border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     border-radius: 12px;
     cursor: pointer;
@@ -206,6 +208,10 @@ header {
         inset 0 2px 4px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 4px 12px color-mix(in srgb, var(--accent-color) 15%, transparent),
         0 0 0 1px var(--accent-color);
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 90%, var(--accent-color)),
+        var(--content-bg)
+    );
 }
 
 .category-nav select:focus {
@@ -215,6 +221,35 @@ header {
         inset 0 2px 4px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 4px 12px color-mix(in srgb, var(--accent-color) 20%, transparent),
         0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+/* Custom Select Options */
+.category-nav select option {
+    background: var(--content-bg);
+    color: var(--text-color);
+    padding: 12px;
+    font-weight: 500;
+}
+
+/* For Webkit browsers (Chrome, Safari) */
+.category-nav select::-webkit-scrollbar {
+    width: 10px;
+}
+
+.category-nav select::-webkit-scrollbar-track {
+    background: var(--bg-color);
+    border-radius: 10px;
+}
+
+.category-nav select::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+
+/* For Firefox */
+.category-nav select {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--bg-color);
 }
 
 /* Product Grid - Modern Layout */
