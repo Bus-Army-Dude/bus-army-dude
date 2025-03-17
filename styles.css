@@ -573,16 +573,14 @@ body {
     }
 }
 
-/* Container for each section - matches site content width */
+/* Container for each section */
 .shoutouts-section {
     background-color: var(--bg-color);
-    border: 2px solid var(--border-color);
-    border-radius: 15px;
-    padding: 25px;
-    margin: 40px auto;
-    width: var(--content-width, 95%); /* Uses your site's content width variable */
-    max-width: var(--max-content-width, 1400px); /* Uses your site's max width */
-    box-shadow: 0 4px 8px var(--shadow-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -597,7 +595,7 @@ body {
 .last-updated,
 #lastUpdatedYouTube {
     color: var(--secondary-text);
-    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    font-size: 0.9em;
     margin-bottom: 20px;
 }
 
@@ -756,7 +754,7 @@ body {
     padding: 20px;
     border: 2px solid var(--accent-color);
     border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .unavailable-message-title {
@@ -769,9 +767,8 @@ body {
 /* Media queries for mobile responsiveness */
 @media screen and (max-width: 768px) {
     .shoutouts-section {
-        width: var(--mobile-content-width, 92%); /* Uses your site's mobile width */
         padding: 15px;
-        margin: 20px auto;
+        margin-bottom: 20px;
     }
 
     .creator-grid,
