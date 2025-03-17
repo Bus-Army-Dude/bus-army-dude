@@ -628,7 +628,8 @@ body {
     box-sizing: border-box;
     max-width: 100%;
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to visible */
+    min-height: fit-content; /* Added to ensure card expands with content */
 }
 
 /* YouTube Cover Photo */
@@ -687,6 +688,10 @@ body {
     align-items: center;
     gap: 4px;
     margin-bottom: 10px;
+    flex-wrap: wrap; /* Added to allow wrapping */
+    width: 100%; /* Ensure full width */
+    overflow-wrap: break-word; /* Added to handle long usernames */
+    word-break: break-word; /* Added for better text wrapping */
 }
 
 /* Common Username Styles */
@@ -696,6 +701,9 @@ body {
     color: var(--secondary-text);
     font-size: 0.9em;
     margin: 0;
+    width: auto; /* Allow natural width */
+    max-width: 100%; /* Prevent overflow */
+    overflow-wrap: break-word; /* Added to handle long usernames */
 }
 
 /* Verification Badge Styles */
