@@ -806,73 +806,105 @@ body {
 
 /* Disabilities Section */
 .disabilities-section {
-    background-color: var(--content-bg);
-    border-radius: 12px;
-    padding: 20px;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
+    padding: 30px;
+    border-radius: 16px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 10px var(--shadow-color);
+    box-shadow: 
+        0 8px 32px -8px var(--shadow-color),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.disabilities-section h2 {
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.disabilities-section p {
+    color: var(--text-color);
+    margin-bottom: 20px;
 }
 
 .disabilities-section ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
 }
 
 .disabilities-section li {
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 10px;
-    overflow: hidden;
+    background: transparent;
+    border-radius: 16px;
 }
 
 .disabilities-section a {
     display: block;
     color: var(--text-color);
     text-decoration: none;
-    padding: 15px;
-    transition: all 0.3s ease, box-shadow 0.2s ease, background-color 0.3s ease, transform 0.3s ease; /* Added transform transition */
+    padding: 20px;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     width: 100%;
     box-sizing: border-box;
-    border-radius: 8px;
-    background-color: var(--bg-color); /* Match the theme when not hovered */
-    border: 1px solid var(--border-color); /* Match the border to theme */
-    transform: translateY(0); /* No pop effect initially */
+    border-radius: 16px;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 95%, white),
+        var(--content-bg)
+    );
+    border: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
+    box-shadow: 
+        0 4px 15px color-mix(in srgb, var(--accent-color) 15%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
-/* Hover effect when button is hovered */
 .disabilities-section a:hover {
-    background-color: rgba(144, 238, 144, 0.3); /* Lighter green background */
-    color: white; /* Change text color to white */
-    transform: translateY(-4px); /* Make the button pop out */
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 15px rgba(144, 238, 144, 0.7); /* Light green glow and shadow */
-    border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border */
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--accent-color) 95%, var(--content-bg)),
+        color-mix(in srgb, var(--accent-color) 85%, var(--content-bg))
+    );
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
+        0 0 0 1px var(--accent-color);
 }
 
-/* Dark mode hover effect */
-@media (prefers-color-scheme: dark) {
-    .disabilities-section a {
-        background-color: var(--bg-color); /* Dark mode background color */
-        border: 1px solid var(--border-color); /* Dark mode border */
+/* Focus styles for accessibility */
+.disabilities-section a:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    .disabilities-section {
+        padding: 20px;
     }
 
-    .disabilities-section a:hover {
-        box-shadow: 0 4px 15px black, 0 0 15px rgba(144, 238, 144, 0.7); /* Dark mode glow with lighter green shadow */
-        border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
+    .disabilities-section ul {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .disabilities-section a {
+        padding: 16px;
     }
 }
 
-/* Light mode hover effect */
-@media (prefers-color-scheme: light) {
-    .disabilities-section a {
-        background-color: var(--bg-color); /* Light mode background color */
-        border: 1px solid var(--border-color); /* Light mode border */
+@media screen and (max-width: 480px) {
+    .disabilities-section {
+        padding: 15px;
     }
 
-    .disabilities-section a:hover {
-        box-shadow: 0 4px 15px white, 0 0 15px rgba(144, 238, 144, 0.7); /* Light mode glow with lighter green shadow */
-        border: 1px solid rgba(144, 238, 144, 0.7); /* Light green border on hover */
+    .disabilities-section a {
+        padding: 14px;
+        font-size: 0.95em;
     }
 }
 
