@@ -372,13 +372,26 @@ body {
 .social-button .social-icon {
     font-size: 20px;
     margin-right: 15px;
-    color: white;
+    color: var(--icon-color); /* Now uses theme-specific color */
     flex-shrink: 0;
 }
 
 .social-button span {
     flex-grow: 1;
     text-align: center;
+}
+
+/* Media Queries */
+@media (prefers-color-scheme: dark) {
+    .social-button .social-icon {
+        color: #ffffff; /* Light icons in dark mode */
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .social-button .social-icon {
+        color: #212529; /* Dark icons in light mode */
+    }
 }
 
 /* Responsive Design */
