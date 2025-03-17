@@ -2,7 +2,10 @@
 function updateDateTime() {
     const now = new Date();
     const utcString = now.toISOString().replace('T', ' ').slice(0, 19);
-    document.getElementById('current-datetime').textContent = utcString;
+    const datetimeElement = document.getElementById('current-datetime');
+    if (datetimeElement) {
+        datetimeElement.textContent = utcString;
+    }
 }
 
 // Function to retry connection
@@ -27,14 +30,14 @@ function updateConnectionStatus() {
     const statusIndicator = document.querySelector('.status-indicator');
     
     if (navigator.onLine) {
-        statusMessage.textContent = 'Reconnecting to BusArmyDude\'s website...';
-        connectionStatus.innerHTML = `
+        if (statusMessage) statusMessage.textContent = 'Reconnecting to BusArmyDude\'s website...';
+        if (connectionStatus) connectionStatus.innerHTML = `
             <span class="status-indicator" style="background: #44ff44;"></span>
             Reconnecting...
         `;
     } else {
-        statusMessage.textContent = 'Unable to connect to BusArmyDude\'s website';
-        connectionStatus.innerHTML = `
+        if (statusMessage) statusMessage.textContent = 'Unable to connect to BusArmyDude\'s website';
+        if (connectionStatus) connectionStatus.innerHTML = `
             <span class="status-indicator" style="background: #ff4444;"></span>
             Currently Offline
         `;
@@ -56,3 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // Update status when connection changes
 window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
+
+// Register the service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+            .then(() => console.log('Service Worker registered'))
+            .catch(err => console.log('Service Worker registration failed:', err));
+    });
+}
