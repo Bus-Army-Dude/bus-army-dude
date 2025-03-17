@@ -1292,14 +1292,12 @@ footer {
 /* FAQ Section Styles */
 .faq-section {
     background-color: var(--content-bg);
-    padding: 2rem;
-    border-radius: 1.25rem;
-    margin: 2rem auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s var(--transition-timing);
-    width: 100%;  /* Ensuring full width to match event section */
-    max-width: 850px;  /* Set to match the event section */
-    box-sizing: border-box; /* Ensure padding is included within the width */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .faq-section h2 {
@@ -1307,14 +1305,11 @@ footer {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    text-align: center;
 }
 
 .faq-container {
-    max-width: 850px; /* Ensuring max width is consistent with event section */
+    width: 100%;
     margin: 0 auto;
-    padding-left: 1rem;  /* Add left and right padding to prevent content from touching the sides */
-    padding-right: 1rem;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -1474,11 +1469,11 @@ footer {
     border-radius: 0.5rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Media queries for mobile responsiveness */
+@media screen and (max-width: 768px) {
     .faq-section {
-        padding: 1.5rem;
-        margin: 1rem auto;
+        padding: 15px;
+        margin-bottom: 20px;
     }
 
     .faq-section h2 {
@@ -1511,11 +1506,10 @@ footer {
     }
 }
 
-/* Small Screen Optimization */
-@media (max-width: 480px) {
+/* Extra small devices */
+@media screen and (max-width: 380px) {
     .faq-section {
-        padding: 1rem;
-        border-radius: 1rem;
+        padding: 10px;
     }
 
     .faq-question {
