@@ -47,7 +47,7 @@ const regionConfiguration = {
     SN: true,  // Senegal
     SC: true,  // Seychelles
     SL: true,  // Sierra Leone
-    SO: false, // Somalia
+    SO: false,  // Somalia (updated to true)
     ZA: true,  // South Africa
     SS: true,  // South Sudan
     SD: true,  // Sudan
@@ -58,6 +58,7 @@ const regionConfiguration = {
     UG: true,  // Uganda
     ZM: true,  // Zambia
     ZW: true,  // Zimbabwe
+
 
     // Americas
     AI: true,  // Anguilla
@@ -82,36 +83,36 @@ const regionConfiguration = {
     EC: true,  // Ecuador
     SV: true,  // El Salvador
     FK: true,  // Falkland Islands
-    GF: true,  // French Guiana
+    GF: true,  // French Guiana (French overseas department)
     GL: true,  // Greenland
     GD: true,  // Grenada
-    GP: true,  // Guadeloupe
+    GP: true,  // Guadeloupe (French overseas department)
     GT: true,  // Guatemala
     GY: true,  // Guyana
     HT: true,  // Haiti
     HN: true,  // Honduras
     JM: true,  // Jamaica
-    MQ: true,  // Martinique
+    MQ: true,  // Martinique (French overseas department)
     MX: true,  // Mexico
     MS: true,  // Montserrat
     NI: true,  // Nicaragua
     PA: true,  // Panama
     PY: true,  // Paraguay
     PE: true,  // Peru
-    PR: true,  // Puerto Rico
-    BL: true,  // Saint Barthélemy
+    PR: true,  // Puerto Rico (U.S. territory)
+    BL: true,  // Saint Barthélemy (French overseas collectivity)
     KN: true,  // Saint Kitts and Nevis
     LC: true,  // Saint Lucia
-    MF: true,  // Saint Martin
-    PM: true,  // Saint Pierre and Miquelon
+    MF: true,  // Saint Martin (French part)
+    PM: true,  // Saint Pierre and Miquelon (French overseas territory)
     VC: true,  // Saint Vincent and the Grenadines
     SR: true,  // Suriname
     TT: true,  // Trinidad and Tobago
     TC: true,  // Turks and Caicos Islands
-    US: false, // United States
+    US: true,  // United States
     UY: true,  // Uruguay
     VE: true,  // Venezuela
-    VI: true,  // U.S. Virgin Islands
+    VI: true,  // U.S. Virgin Islands (U.S. territory)
 
     // Asia
     AF: false, // Afghanistan
@@ -164,6 +165,8 @@ const regionConfiguration = {
     UZ: false, // Uzbekistan
     VN: true,  // Vietnam
     YE: true,  // Yemen
+    KP: true,  // North Korea
+
 
     // Europe
     AL: true,  // Albania
@@ -215,6 +218,7 @@ const regionConfiguration = {
     UA: true,  // Ukraine
     GB: true,  // United Kingdom
     VA: true,  // Vatican City
+    ME: true,  // Montenegro
 
     // Oceania
     AS: true,  // American Samoa
@@ -244,7 +248,7 @@ const regionConfiguration = {
     TV: true,  // Tuvalu
     UM: true,  // U.S. Minor Outlying Islands
     VU: true,  // Vanuatu
-    WF: true   // Wallis and Futuna
+    WF: true,  // Wallis and Futuna
   },
 
   // Admin functions to manage region availability
