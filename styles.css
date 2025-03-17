@@ -580,8 +580,7 @@ body {
     border-radius: 15px;
     padding: 25px;
     margin: 40px auto;
-    width: calc(100% - 40px);
-    max-width: 1400px;
+    width: min(calc(100% - 40px), 1400px);
     box-shadow: 0 4px 8px var(--shadow-color);
     overflow: hidden;
     box-sizing: border-box;
@@ -611,7 +610,7 @@ body {
 .instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     width: 100%;
     box-sizing: border-box;
@@ -624,7 +623,7 @@ body {
 .youtube-creator-card {
     background-color: var(--content-bg);
     border-radius: 10px;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -632,7 +631,9 @@ body {
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    min-width: 0; /* Prevents overflow on small screens */
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .creator-card:hover,
@@ -662,6 +663,8 @@ body {
     align-items: center;
     gap: 8px;
     margin-bottom: 5px;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 /* Username Container with Verification Badge */
@@ -672,6 +675,8 @@ body {
     align-items: center;
     gap: 4px;
     margin-bottom: 10px;
+    flex-wrap: wrap;
+    word-break: break-word;
 }
 
 /* Common Username Styles */
@@ -681,6 +686,7 @@ body {
     color: var(--secondary-text);
     font-size: 0.9em;
     margin: 0;
+    word-break: break-word;
 }
 
 /* Verification Badge Styles */
@@ -693,6 +699,7 @@ body {
     vertical-align: middle;
     margin-left: 0;
     margin-right: 0;
+    flex-shrink: 0;
 }
 
 /* Common Bio Styles */
@@ -703,6 +710,8 @@ body {
     margin: 10px 0;
     font-size: 0.9em;
     line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Common Follower/Subscriber Count Styles */
@@ -727,6 +736,7 @@ body {
     margin-top: 10px;
     transition: all 0.3s ease;
     text-align: center;
+    width: fit-content;
 }
 
 .visit-profile:hover,
@@ -743,6 +753,7 @@ body {
     margin: 0;
     font-size: 1.1em;
     color: var(--text-color);
+    word-break: break-word;
 }
 
 /* Unavailable Message Styles */
@@ -756,6 +767,7 @@ body {
     border: 2px solid var(--accent-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px var(--shadow-color);
+    word-wrap: break-word;
 }
 
 .unavailable-message-title {
@@ -778,6 +790,7 @@ body {
     .youtube-creator-grid {
         grid-template-columns: 1fr;
         gap: 15px;
+        padding: 0 5px;
     }
 
     .creator-card,
@@ -785,12 +798,33 @@ body {
     .youtube-creator-card {
         margin: 0;
         width: 100%;
+        padding: 12px;
+    }
+
+    .creator-header h3,
+    .instagram-creator-header h3,
+    .youtube-creator-header h3 {
+        font-size: 1em;
     }
 }
 
 /* Extra small devices */
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 380px) {
     .shoutouts-section {
+        padding: 10px;
+        width: calc(100% - 10px);
+        margin: 15px auto;
+    }
+
+    .creator-grid,
+    .instagram-creator-grid,
+    .youtube-creator-grid {
+        gap: 10px;
+    }
+
+    .creator-card,
+    .instagram-creator-card,
+    .youtube-creator-card {
         padding: 10px;
     }
 
@@ -798,12 +832,6 @@ body {
     .last-updated,
     #lastUpdatedYouTube {
         font-size: 0.75rem;
-    }
-
-    .creator-grid,
-    .instagram-creator-grid,
-    .youtube-creator-grid {
-        gap: 10px;
     }
 }
 
