@@ -28,6 +28,15 @@
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff"/>
 </head>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed:', err));
+        });
+    }
+</script>    
 <body>
 
 <!-- Maintenance Mode Message -->
@@ -80,5 +89,6 @@
     <script src="ai-features.js"></script>
     <script src="settings.js"></script>
     <script src="merchandise.js"></script> <!-- This will handle product/category logic -->
+    <script src="no-internet.js"></script>
 </body>
 </html>
