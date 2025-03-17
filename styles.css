@@ -63,11 +63,11 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
     padding: 20px;
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .container {
@@ -80,11 +80,17 @@ body {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
-    padding: 20px;
-    background-color: var(--content-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px var(--shadow-color);
-    position: relative; /* Position for the profile status circle */
+    padding: 25px;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
+    border-radius: 16px;
+    box-shadow: 
+        0 8px 32px -8px var(--shadow-color),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    position: relative;
+    backdrop-filter: blur(10px);
 }
 
 .profile-pic {
@@ -94,7 +100,8 @@ body {
     margin: 0 auto;
     display: block;
     border: 3px solid var(--accent-color);
-    position: relative; /* So the status circle can overlap */
+    position: relative;
+    box-shadow: 0 4px 15px color-mix(in srgb, var(--shadow-color) 20%, transparent);
 }
 
 .username-checkmark {
@@ -106,8 +113,15 @@ body {
 
 .username-checkmark h1 {
     margin: 0;
-    font-size: 24px;
-    color: var(--text-color);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 800;
+    background: linear-gradient(120deg, 
+        var(--text-color), 
+        color-mix(in srgb, var(--text-color) 70%, var(--accent-color))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .verified {
@@ -119,92 +133,134 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: 5px; /* Adjust the value to position at the bottom-right of the profile pic */
-    right: 5px; /* Position it on the right of the profile picture */
+    bottom: 5px;
+    right: 5px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: var(--content-bg);
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
     border: 3px solid var(--accent-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Ensures the status is half in and half out */
-    z-index: 2; /* Ensure it's above the profile image */
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
 }
 
 /* Profile Status Styling */
 .profile-status {
-    font-size: 16px; /* Adjust as per your preference */
+    font-size: 16px;
     color: white;
 }
 
 /* Profile Status Colors */
-.profile-status.online { color: green; }
-.profile-status.idle { color: yellow; }
-.profile-status.offline { color: gray; }
+.profile-status.online { color: #34c759; }
+.profile-status.idle { color: #ffd60a; }
+.profile-status.offline { color: #8e8e93; }
 
 /* Settings Button */
 .settings-button {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: url('settings-icon.png') center/18px no-repeat;
-    background-color: #00ff00; /* Green background */
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: url('settings-icon.png') center/18px no-repeat,
+        linear-gradient(145deg,
+            color-mix(in srgb, var(--accent-color) 98%, white),
+            var(--accent-color)
+        );
     border: none;
     cursor: pointer;
     padding: 0;
     z-index: 10;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 
+        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 .settings-button:hover {
-    transform: rotate(45deg);
-    background-color: #00cc00; /* Slightly darker green on hover */
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .settings-button {
-        width: 25px;
-        height: 25px;
-        top: 15px;
-        background-size: 15px;
-    }
+    transform: translateY(-2px) rotate(45deg);
+    box-shadow: 
+        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
+        0 0 0 1px var(--accent-color);
 }
 
 /* Merch Button */
 .merch-button {
     position: absolute;
     top: 20px;
-    left: 20px; /* Positioned to the left */
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: url('gift-bag-icon.png') center/18px no-repeat; /* Use your gift bag icon here */
-    background-color: #ff9900; /* Orange background for Merch button */
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: url('gift-bag-icon.png') center/18px no-repeat,
+        linear-gradient(145deg,
+            #ff9900,
+            #ff8800
+        );
     border: none;
     cursor: pointer;
     padding: 0;
     z-index: 10;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 
+        0 4px 15px rgba(255, 153, 0, 0.3),
+        0 0 0 1px rgba(255, 153, 0, 0.3);
 }
 
 .merch-button:hover {
-    transform: rotate(45deg);
-    background-color: #cc7a00; /* Darker orange on hover */
+    transform: translateY(-2px) rotate(45deg);
+    box-shadow: 
+        0 8px 20px rgba(255, 153, 0, 0.4),
+        0 0 0 1px #ff9900;
+    background: url('gift-bag-icon.png') center/18px no-repeat,
+        linear-gradient(145deg,
+            #ff8800,
+            #ff9900
+        );
 }
 
-/* Responsive adjustments for the Merch Button */
+/* Responsive adjustments */
 @media screen and (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    .profile-section {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .settings-button,
     .merch-button {
-        width: 25px;
-        height: 25px;
-        top: 15px;
-        background-size: 15px;
+        width: 35px;
+        height: 35px;
+        background-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .profile-section {
+        padding: 15px;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+    }
+
+    .settings-button,
+    .merch-button {
+        width: 32px;
+        height: 32px;
+        background-size: 14px;
     }
 }
 
