@@ -1090,12 +1090,20 @@ body {
 
 /* Countdown Styles */
 .countdown-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
+    padding: 30px;
+    border-radius: 16px;
     margin: 30px auto;
     text-align: center;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 
+        0 8px 32px -8px var(--shadow-color),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .countdown-container {
@@ -1113,7 +1121,7 @@ body {
 .flip-clock {
     perspective: 400px;
     margin-bottom: 10px;
-    display: inline-block; /* Ensure flip clock is centered */
+    display: inline-block;
 }
 
 .flip-clock-inner {
@@ -1121,10 +1129,10 @@ body {
     width: 60px;
     height: 80px;
     transform-style: preserve-3d;
-    transition: transform 0.6s;
-    display: flex; /* Flexbox to center the content */
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .flip-clock-inner.flip {
@@ -1142,10 +1150,16 @@ body {
     justify-content: center;
     font-size: 2em;
     font-weight: bold;
-    background-color: var(--content-bg);
-    border: 2px solid var(--accent-color);
-    border-radius: 8px;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--accent-color), var(--content-bg) 85%),
+        var(--content-bg)
+    );
+    border: 2px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
+    border-radius: 12px;
     color: var(--text-color);
+    box-shadow: 
+        0 4px 15px color-mix(in srgb, var(--accent-color) 15%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
 .flip-clock-back {
@@ -1153,15 +1167,40 @@ body {
 }
 
 .countdown-label {
-    color: var(--secondary-text);
+    color: var(--accent-color);
     font-size: 0.9em;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
-    margin-top: 5px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media screen and (max-width: 768px) {
+    .countdown-section {
+        padding: 20px;
+    }
+
+    .countdown-container {
+        gap: 15px;
+    }
+
+    .flip-clock-inner {
+        width: 50px;
+        height: 70px;
+    }
+
+    .flip-clock-front,
+    .flip-clock-back {
+        font-size: 1.8em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .countdown-section {
+        padding: 15px;
+    }
+
     .countdown-container {
         gap: 10px;
     }
@@ -1174,19 +1213,12 @@ body {
     .flip-clock-front,
     .flip-clock-back {
         font-size: 1.5em;
+        border-radius: 8px;
     }
-}
 
-/* Optional: Add a shadow effect during flip */
-.flip-clock-front,
-.flip-clock-back {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Optional: Add a subtle glow effect on hover */
-.flip-clock:hover .flip-clock-front {
-    box-shadow: 0 0 15px var(--accent-color);
-    transition: box-shadow 0.3s ease;
+    .countdown-label {
+        font-size: 0.8em;
+    }
 }
 
 /* Back to Top Button */
