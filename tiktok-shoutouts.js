@@ -1,4 +1,4 @@
-// Last Updated: March 17, 2025 4:22:10 PM
+// Last Updated: March 17, 2025 4:26:13 PM
 
 const tiktokShoutouts = {
   accounts: [
@@ -23,7 +23,7 @@ const tiktokShoutouts = {
     { username: 'jerridonthelot', isVerified: false, followers: '287', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
     { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' }
   ],
-  lastUpdatedTime: 'March 17, 2025 4:22:10 PM',
+  lastUpdatedTime: 'March 17, 2025 4:26:13 PM',
 
   async init() {
     try {
@@ -120,9 +120,35 @@ const tiktokShoutouts = {
       'Atlantic/': 'GB'
     };
 
+    const deviceManufacturers = {
+      'Samsung': 'KR',
+      'LG': 'KR',
+      'Xiaomi': 'CN',
+      'Huawei': 'CN',
+      'Sony': 'JP',
+      'Apple': 'US',
+      'Microsoft': 'US',
+      'Google': 'US'
+    };
+
+    // First try timezone-based detection
     for (const [prefix, region] of Object.entries(timezoneMap)) {
       if (timezone.startsWith(prefix)) return region;
     }
+
+    // Then try device/OS-based detection
+    const userAgent = navigator.userAgent.toLowerCase();
+    for (const [manufacturer, region] of Object.entries(deviceManufacturers)) {
+      if (userAgent.includes(manufacturer.toLowerCase())) {
+        return region;
+      }
+    }
+
+    // OS-specific checks
+    if (userAgent.includes('android')) return 'US';
+    if (userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('mac')) return 'US';
+    if (userAgent.includes('windows')) return 'US';
+
     return 'US';
   },
 
