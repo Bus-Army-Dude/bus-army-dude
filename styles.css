@@ -893,7 +893,7 @@ body {
 }
 
 #tiktok-last-updated-timestamp,
-.last-updated,
+#lastUpdatedInstagram,
 #lastUpdatedYouTube {
     color: var(--secondary-text);
     font-size: 0.9em;
@@ -903,7 +903,7 @@ body {
     gap: 4px;
 }
 
-.last-updated::before,
+#lastUpdatedInstagram::before,
 #tiktok-last-updated-timestamp::before,
 #lastUpdatedYouTube::before {
     content: "\f073"; /* Font Awesome calendar icon */
