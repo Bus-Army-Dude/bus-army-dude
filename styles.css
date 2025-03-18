@@ -901,13 +901,13 @@ body {
 .instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Increased from 260px to 300px */
     gap: 20px;
     width: 100%;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    overflow: visible; /* Changed to visible to prevent cutting off shadows */
+    overflow: visible;
 }
 
 /* Common Creator Card Styles */
@@ -987,8 +987,8 @@ body {
     margin-bottom: 10px;
     flex-wrap: wrap;
     width: 100%;
-    overflow: hidden; /* Added to contain text */
-    padding-right: 4px; /* Added to prevent text from touching the edge */
+    overflow: visible; /* Changed from hidden to visible */
+    padding-right: 8px; /* Increased padding */
 }
 
 /* Common Username Styles */
@@ -999,10 +999,11 @@ body {
     font-size: 0.9em;
     margin: 0;
     width: auto;
-    max-width: calc(100% - 20px); /* Adjusted to leave space for verification badge */
+    max-width: 100%; /* Changed from calc(100% - 20px) to 100% */
     overflow-wrap: break-word;
-    word-break: break-word;
-    white-space: normal; /* Added to ensure text wraps */
+    word-break: break-all; /* Changed from break-word to break-all for better handling of @ usernames */
+    white-space: normal;
+    line-height: 1.4; /* Added line height */
 }
 
 /* Verification Badge Styles */
@@ -1094,11 +1095,19 @@ body {
 }
 
 /* Media queries for mobile responsiveness */
+@media screen and (max-width: 1400px) {
+    .creator-grid,
+    .instagram-creator-grid,
+    .youtube-creator-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
 @media screen and (max-width: 768px) {
     .shoutouts-section {
         padding: 15px;
         margin-bottom: 20px;
-        overflow: hidden; /* Added to contain content */
+        overflow: hidden;
     }
 
     .creator-grid,
@@ -1106,28 +1115,40 @@ body {
     .youtube-creator-grid {
         grid-template-columns: 1fr;
         gap: 15px;
-        overflow: visible; /* Changed to visible for card shadows */
+        overflow: visible;
     }
 
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
         padding: 12px;
-        overflow: hidden; /* Added to contain content */
-        height: auto; /* Added to ensure card expands with content */
-        min-height: fit-content; /* Added to ensure proper sizing */
+        overflow: hidden;
+        height: auto;
+        min-height: fit-content;
     }
 
     .creator-header h3,
     .instagram-creator-header h3,
     .youtube-creator-header h3 {
-        overflow-wrap: break-word; /* Added for text wrapping */
-        word-break: break-word; /* Added for text wrapping */
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
     .youtube-cover-photo {
         width: calc(100% + 24px);
         margin: -12px -12px 15px -12px;
+    }
+
+    .username-container,
+    .instagram-username-container,
+    .youtube-username-container {
+        padding-right: 6px;
+    }
+
+    .creator-username,
+    .instagram-creator-username,
+    .youtube-creator-username {
+        font-size: 0.85em;
     }
 }
 
@@ -1135,28 +1156,40 @@ body {
 @media screen and (max-width: 380px) {
     .shoutouts-section {
         padding: 10px;
-        overflow: hidden; /* Added to contain content */
+        overflow: hidden;
     }
 
     .creator-grid,
     .instagram-creator-grid,
     .youtube-creator-grid {
         gap: 10px;
-        overflow: visible; /* Changed to visible for card shadows */
+        overflow: visible;
     }
 
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
         padding: 10px;
-        overflow: hidden; /* Added to contain content */
-        height: auto; /* Added to ensure card expands with content */
-        min-height: fit-content; /* Added to ensure proper sizing */
+        overflow: hidden;
+        height: auto;
+        min-height: fit-content;
     }
 
     .youtube-cover-photo {
         width: calc(100% + 20px);
         margin: -10px -10px 15px -10px;
+    }
+
+    .username-container,
+    .instagram-username-container,
+    .youtube-username-container {
+        padding-right: 4px;
+    }
+
+    .creator-username,
+    .instagram-creator-username,
+    .youtube-creator-username {
+        font-size: 0.8em;
     }
 }
 
