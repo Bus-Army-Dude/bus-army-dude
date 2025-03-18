@@ -892,6 +892,30 @@ body {
     font-size: 1.8em;
 }
 
+/* TikTok Section Header */
+#tiktok-header::before {
+    content: "\f305"; /* Font Awesome TikTok icon */
+    font-family: "Font Awesome 5 Brands"; 
+    font-weight: 900;
+    color: var(--accent-color);
+}
+
+/* Instagram Section Header */
+#instagram-header::before {
+    content: "\f16d"; /* Font Awesome Instagram icon */
+    font-family: "Font Awesome 5 Brands"; 
+    font-weight: 900;
+    color: var(--accent-color);
+}
+
+/* YouTube Section Header */
+#youtube-header::before {
+    content: "\f167"; /* Font Awesome YouTube icon */
+    font-family: "Font Awesome 5 Brands"; 
+    font-weight: 900;
+    color: var(--accent-color);
+}
+
 #tiktok-last-updated-timestamp,
 #lastUpdatedInstagram,
 #lastUpdatedYouTube {
@@ -909,13 +933,6 @@ body {
     content: "\f073"; /* Font Awesome calendar icon */
     font-family: "Font Awesome 5 Free"; 
     font-weight: 900;
-}
-
-.shoutouts-section h2::before {
-    content: "\f4c1"; /* Font Awesome icon for shoutouts */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    color: var(--accent-color);
 }
 
 /* Common Creator Grid Styles */
