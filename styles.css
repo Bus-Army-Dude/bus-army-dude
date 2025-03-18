@@ -894,24 +894,24 @@ body {
 
 /* TikTok Section Header */
 #tiktok-header::before {
-    content: "\f305"; /* Font Awesome TikTok icon */
-    font-family: "Font Awesome 5 Brands"; 
+    content: '\f305'; /* Font Awesome TikTok icon */
+    font-family: 'Font Awesome 5 Brands';
     font-weight: 900;
     color: var(--accent-color);
 }
 
 /* Instagram Section Header */
 #instagram-header::before {
-    content: "\f16d"; /* Font Awesome Instagram icon */
-    font-family: "Font Awesome 5 Brands"; 
+    content: '\f16d'; /* Font Awesome Instagram icon */
+    font-family: 'Font Awesome 5 Brands';
     font-weight: 900;
     color: var(--accent-color);
 }
 
 /* YouTube Section Header */
 #youtube-header::before {
-    content: "\f167"; /* Font Awesome YouTube icon */
-    font-family: "Font Awesome 5 Brands"; 
+    content: '\f167'; /* Font Awesome YouTube icon */
+    font-family: 'Font Awesome 5 Brands';
     font-weight: 900;
     color: var(--accent-color);
 }
@@ -930,8 +930,8 @@ body {
 #lastUpdatedInstagram::before,
 #tiktok-last-updated-timestamp::before,
 #lastUpdatedYouTube::before {
-    content: "\f073"; /* Font Awesome calendar icon */
-    font-family: "Font Awesome 5 Free"; 
+    content: '\f073'; /* Font Awesome calendar icon */
+    font-family: 'Font Awesome 5 Free';
     font-weight: 900;
 }
 
