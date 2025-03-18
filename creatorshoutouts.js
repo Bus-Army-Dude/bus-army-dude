@@ -187,7 +187,7 @@ const instagramShoutouts = {
         });
     },
     setLastUpdatedTime() {
-        const lastUpdatedElement = document.getElementById('instagram-last-updated-timestamp');
+        const lastUpdatedElement = document.getElementById('lastUpdatedInstagram');
         if (!lastUpdatedElement) return;
 
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
