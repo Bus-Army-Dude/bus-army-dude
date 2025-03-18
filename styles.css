@@ -1370,155 +1370,132 @@ body {
 
 /* Version Info Section */
 .version-info-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
+    background: linear-gradient(145deg, 
+        var(--content-bg),
+        color-mix(in srgb, var(--content-bg) 95%, var(--accent-color))
+    );
+    border-radius: 16px;
+    padding: 25px;
     margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    box-shadow: 
+        0 10px 30px -10px var(--shadow-color),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
+    position: relative;
+}
+
+/* Decorative top border */
+.version-info-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        var(--accent-color),
+        color-mix(in srgb, var(--accent-color) 70%, white),
+        var(--accent-color)
+    );
 }
 
 /* Version Header */
 .version-header {
     color: var(--text-color);
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(var(--accent-color-rgb), 0.1);
 }
 
-/* Version Number Styling */
-.version-number {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.version-number::before {
-    content: "Version:";
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* Build Number Styling */
-.build-number {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.build-number::before {
-    content: "Build:";
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* OS Info Styling */
-.os-info {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.os-info::before {
-    content: "Operating System:";
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* Device Model Styling */
-.device-info {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.device-info::before {
-    content: "Device Model:";
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* Update Time Styling */
+/* Common Info Box Styles */
+.version-number,
+.build-number,
+.os-info,
+.device-info,
 .update-time {
     color: var(--text-color);
     font-size: 1em;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
+    background: color-mix(in srgb, var(--bg-color) 97%, var(--accent-color));
+    padding: 16px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    gap: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 15px -5px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.08);
 }
 
+/* Info Labels (::before elements) */
+.version-number::before,
+.build-number::before,
+.os-info::before,
+.device-info::before,
 .update-time::before {
-    content: "Current Date & Time:";
     color: var(--secondary-text);
     font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    background: color-mix(in srgb, var(--bg-color) 90%, var(--accent-color));
+    min-width: 140px;
+}
+
+/* Hover Effects */
+.version-number:hover,
+.build-number:hover,
+.os-info:hover,
+.device-info:hover,
+.update-time:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px -5px var(--shadow-color);
 }
 
 /* Countdown Styling */
 .countdown {
     color: var(--text-color);
-    font-size: 1em;
+    font-size: 1.1em;
     font-weight: 600;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
+    background: linear-gradient(145deg, 
+        color-mix(in srgb, var(--bg-color) 97%, var(--accent-color)),
+        color-mix(in srgb, var(--bg-color) 95%, var(--accent-color))
+    );
+    padding: 16px;
+    border-radius: 12px;
     text-align: center;
-    border: 1px solid var(--border-color);
-    margin-top: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
+    margin-top: 15px;
+    box-shadow: 0 8px 25px -5px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.countdown:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -5px var(--shadow-color);
 }
 
 /* Version Info Container */
 .version-info-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
-/* Media queries for mobile responsiveness */
+/* Media Queries */
 @media screen and (max-width: 768px) {
     .version-info-section {
-        padding: 15px;
-        margin-bottom: 20px;
-        overflow: hidden;
+        padding: 20px;
+        margin-bottom: 25px;
     }
 
     .version-header {
-        font-size: 1.1em;
+        font-size: 1.2em;
     }
 
     .version-number,
@@ -1527,16 +1504,23 @@ body {
     .device-info,
     .update-time,
     .countdown {
+        padding: 14px;
         font-size: 0.9em;
-        padding: 10px;
+    }
+
+    .version-number::before,
+    .build-number::before,
+    .os-info::before,
+    .device-info::before,
+    .update-time::before {
+        min-width: 120px;
     }
 }
 
-/* Extra small devices */
 @media screen and (max-width: 380px) {
     .version-info-section {
-        padding: 10px;
-        overflow: hidden;
+        padding: 15px;
+        border-radius: 14px;
     }
 
     .version-number,
@@ -1545,8 +1529,20 @@ body {
     .device-info,
     .update-time,
     .countdown {
-        padding: 8px;
+        padding: 12px;
         font-size: 0.85em;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .version-number::before,
+    .build-number::before,
+    .os-info::before,
+    .device-info::before,
+    .update-time::before {
+        width: 100%;
+        min-width: unset;
     }
 }
 
