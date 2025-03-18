@@ -894,7 +894,7 @@ body {
 
 /* TikTok Section Header */
 #tiktok-header::before {
-    content: '\f305'; /* Font Awesome TikTok icon */
+    content: '\e07b'; /* Font Awesome TikTok icon */
     font-family: 'Font Awesome 5 Brands';
     font-weight: 900;
     color: var(--accent-color);
