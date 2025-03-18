@@ -10,7 +10,7 @@ class SettingsManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            textSize: 12, // Changed to numeric value for slider
+            textSize: 16, // Changed to numeric value for slider
             focusOutline: 'disabled',    // Default focus outline setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
@@ -162,7 +162,7 @@ class SettingsManager {
     resetToFactorySettings() {
         const defaultSettings = {
             darkMode: true,
-            textSize: 14,
+            textSize: 16,
             focusOutline: 'disabled',
         };
         this.settings = defaultSettings;
