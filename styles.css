@@ -885,6 +885,9 @@ body {
 .shoutouts-section h2 {
     color: var(--text-color);
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 #tiktok-last-updated-timestamp,
@@ -893,7 +896,15 @@ body {
     color: var(--secondary-text);
     font-size: 0.9em;
     margin-bottom: 20px;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.last-updated::before,
+#tiktok-last-updated-timestamp::before,
+#lastUpdatedYouTube::before {
+    content: "\1F4C5"; /* Calendar emoji as an icon */
 }
 
 /* Common Creator Grid Styles */
