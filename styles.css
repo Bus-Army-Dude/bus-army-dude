@@ -887,7 +887,9 @@ body {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.8em;
 }
 
 #tiktok-last-updated-timestamp,
@@ -904,7 +906,9 @@ body {
 .last-updated::before,
 #tiktok-last-updated-timestamp::before,
 #lastUpdatedYouTube::before {
-    content: "\1F4C5"; /* Calendar emoji as an icon */
+    content: "\f073"; /* Font Awesome calendar icon */
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900;
 }
 
 /* Common Creator Grid Styles */
