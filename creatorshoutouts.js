@@ -2,28 +2,28 @@
 const tiktokShoutouts = {
     accounts: [
         { username: 'mrbeast', isVerified: true, followers: '115.1M', nickname: 'MrBeast', bio: 'New CEO of Tiktok?', profilePic: 'images/mrbeast.jpeg' },
-        { username: 'teamtrump', isVerified: true, followers: '9M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
+        { username: 'teamtrump', isVerified: true, followers: '9.1M', nickname: 'Team Trump', bio: 'The official TikTok page for the Trump Campaign', profilePic: 'images/teamtrump.jpeg' },
         { username: 'carterpcs', isVerified: true, followers: '5.7M', nickname: 'Carterpcs', bio: 'Making Tech Less Of A Snoozefest, LA', profilePic: 'images/carterpcs.jpeg' },
         { username: 'applesauceandadhd', isVerified: true, followers: '4.2M', nickname: 'Jess|Aggressive Tutorials', bio: 'Surviving Not Thriving, TeamJessSecrest@Gersh.com', profilePic: 'images/applesauceandadhd.jpeg' },
         { username: 'tatechtips', isVerified: true, followers: '3.3M', nickname: 'TA TECH TIPS', bio: '🔥 Tech Tips from Nick B 🔥, Enquiries: 📧 hello@TheGoldStudios.com', profilePic: 'images/tatechtips.jpeg' },
         { username: 'imparkerburton', isVerified: false, followers: '3M', nickname: 'Parker Burton', bio: 'That Android Guy, Business: parker@imparkerburton.com', profilePic: 'images/imparkerburton.jpeg' },
         { username: 'kennedylawfirm', isVerified: false, followers: '1.9M', nickname: 'Lawyer Kevin Kennedy', bio: "The Kennedy Law Firm, PLLC, Clarksville, TN, Kev's got you covered™️", profilePic: 'images/kennedylawfirm.jpeg' },
-        { username: 'badge502', isVerified: false, followers: '829K', nickname: 'Badge502', bio: 'NREMT - 911/EMD PO Box 775 Belleville, NJ 07109 *I DONT HAVE A BACKUP ACCOUNT*', profilePic: 'images/badge502.jpeg' },
-        { username: 'mrfatcheeto', isVerified: false, followers: '758.6K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
-        { username: 'meetmeinthemediacenter', isVerified: true, followers: '705.9K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
-        { username: 'kaylee_mertens_', isVerified: false, followers: '677K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
+        { username: 'badge502', isVerified: false, followers: '829.3K', nickname: 'Badge502', bio: 'NREMT - 911/EMD PO Box 775 Belleville, NJ 07109 *I DONT HAVE A BACKUP ACCOUNT*', profilePic: 'images/badge502.jpeg' },
+        { username: 'mrfatcheeto', isVerified: false, followers: '765.9K', nickname: 'Mr Fat Cheeto', bio: 'OH YEAH!', profilePic: 'images/mrfatcheeto.jpeg' },
+        { username: 'meetmeinthemediacenter', isVerified: true, followers: '707.8K', nickname: 'Meet Me In The Media Center', bio: '✌🏻❤️&ToastyBooks, 📚Middle School Librarian, 💌 meetmeinthemediacenter@gmail.com', profilePic: 'images/meetmeinthemediacenter.jpeg' },
+        { username: 'kaylee_mertens_', isVerified: false, followers: '677.1K', nickname: 'Kaylee Mertens|Dancing Baby', bio: 'Just a mom who loves her baby boy 💙,📍Wisconsin, KayleeMertens.collabs@gmail.com', profilePic: 'images/kayleemertens.jpeg' },
         { username: 'trafficlightdoctor', isVerified: false, followers: '386K', nickname: '🚦 Traffic Light Doctor 🚦', bio: '🚦Traffic Signal Tech🚦 Traffic Lights, Family, Food, and Comedy!, Mississippi', profilePic: 'images/trafficlightdoctor.jpeg' },
-        { username: 'aggressiveafterdark', isVerified: false, followers: '362.9K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
-        { username: 'captainsteeeve', isVerified: false, followers: '325.1K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },
-        { username: 'rachel_hughes', isVerified: false, followers: '323.8K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/rachel_hughes.jpeg' },        
-        { username: 'badge5022', isVerified: false, followers: '23.8K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
-        { username: 'raisingramsey2023', isVerified: false, followers: '1,197', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
+        { username: 'aggressiveafterdark', isVerified: false, followers: '363K', nickname: 'ApplesauceandADHD_AfterDark', bio: "Shhhhhhh. It's a secret@Jess|Aggressive Tutorials Official Back-Up", profilePic: 'images/aggressiveafterdark.jpeg' },
+        { username: 'captainsteeeve', isVerified: false, followers: '331.2K', nickname: 'CaptainSteeve', bio: "See all my links!  I'm Captain Steeeve Fly Safe!, linktr.ee/Captainsteeeve", profilePic: 'images/IMG_2371.jpeg' },
+        { username: 'rachel_hughes', isVerified: false, followers: '324.1K', nickname: 'Rachel Hughes', bio: 'houseofhughes@thestation.io, Cerebral Palsy Mama, 20% OFF BUCKED UP: RACHELHUGHES', profilePic: 'images/rachel_hughes.jpeg' },        
+        { username: 'badge5022', isVerified: false, followers: '23.9K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
+        { username: 'raisingramsey2023', isVerified: false, followers: '1,196', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
         { username: 'jerridc4', isVerified: false, followers: '481', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
-        { username: 'jerridonthelot', isVerified: false, followers: '287', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
-        { username: 'officalbusarmydude', isVerified: false, followers: '52', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
+        { username: 'jerridonthelot', isVerified: false, followers: '290', nickname: 'Jerrid on the Lot', bio: 'Your friendly neighborhood Car Salesman and Boy Dad', profilePic: 'images/jerridonthelot.jpeg' },
+        { username: 'officalbusarmydude', isVerified: false, followers: '54', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
      ],
-  lastUpdatedTime: '2025-03-16T12:52:00', // Manually set the last updated date and time
+  lastUpdatedTime: '2025-03-18T12:15:33', // Manually set the last updated date and time
   regionAvailability: {
     AD: true, AE: true, AF: false, AG: true, AI: true, AL: true, AM: true, AO: true, AQ: true, AR: true, AS: true, AT: true, AU: true, AW: true, AX: true, AZ: true, 
     BA: true, BB: true, BD: true, BE: true, BF: true, BG: true, BH: true, BI: true, BJ: true, BL: true, BM: true, BN: true, BO: true, BQ: true, BR: true, BS: true, BT: true, BV: true, BW: true, BY: true, BZ: true, 
@@ -141,22 +141,22 @@ tiktokShoutouts.init();
 const instagramShoutouts = {
     accounts: [
         { username: 'mrbeast', isVerified: true, followers: '66.6M', nickname: 'MrBeast', bio: 'My New Show Beast Games is out now on Prime Video!', profilePic: 'instagram_photos/mrbeast.jpg' },
-        { username: 'applesauceandadhd', isVerified: true, followers: '823K', nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },
-        { username: 'emtbadge502', isVerified: true, followers: '529K', nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },
-        { username: 'mrfattcheeto', isVerified: true, followers: '327K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },
-        { username: 'trafficlightdoctor', isVerified: true, followers: '318K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },
-        { username: 'lisa.remillard', isVerified: true, followers: '122K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },
+        { username: 'applesauceandadhd', isVerified: true, followers: '826K', nickname: 'Jessica', bio: 'TeamJessSecrest@Gersh.com', profilePic: 'instagram_photos/applesauceandadhd.jpeg' },
+        { username: 'emtbadge502', isVerified: true, followers: '530K', nickname: 'Anthony Christian', bio: 'P.O. Box 775, Belleville, NJ 07109, EMT - 911/ EMD - CPR Instructor - Content Creator, Work Hard. Be Kind Always.', profilePic: 'instagram_photos/emtbadge502.jpg' },
+        { username: 'mrfattcheeto', isVerified: true, followers: '328K', nickname: 'Trent Parker', bio: "I'm like some HVAC Genius", profilePic: 'instagram_photos/mrfatcheeto.jpeg' },
+        { username: 'trafficlightdoctor', isVerified: true, followers: '319K', nickname: 'TrafficLightDoctor', bio: 'Follow My YouTube And TikTok!!', profilePic: 'instagram_photos/trafficlightdoctor.jpeg' },
+        { username: 'lisa.remillard', isVerified: true, followers: '123K', nickname: 'Lisa Remillard', bio: 'Public figure 📹 🎙Journalist, ▶️ Subcribe to my YouTube channel (@LisaRemillardOfficial)', profilePic: 'instagram_photos/lisaremillard.jpg' },
         { username: 'heyrachelhughes', isVerified: false, followers: '103K', nickname: 'Rachel Hughes', bio: 'PPersonal blog, YouTube + TikTok: Rachel_Hughes, ALL INQUIRIES: houseofhughes@thestation.io, 20% off Bucked Up: RACHELHUGHES', profilePic: 'instagram_photos/heyrachelhughes.jpg' },
         { username: 'meetmeinthemediacenter', isVerified: true, followers: '51.8K', nickname: 'Jen Miller', bio: '✌🏻❤️&Toasty📚 680K on TikTok ✨Book Return Game 🫶🏻Middle School Librarian', profilePic: 'instagram_photos/meetmeinthemediacenter.jpeg' },
         { username: 'kaylee_mertens_', isVerified: false, followers: '3,176', nickname: 'Kaylee Mertens', bio: 'Tik Tok: Kaylee_Mertens_', profilePic: 'instagram_photos/kayleemertens.jpeg' },
         { username: 'riverkritzar', isVerified: false, followers: '97', nickname: 'River Jordan Kritzar', bio: "Hello, my name is River, I am 20. I am autistic. I love technology.", profilePic: 'instagram_photos/riverkritzar.jpg' },
         { username: 'rose_the_fox24', isVerified: false, followers: '80', nickname: 'Rose Haydu', bio: 'I’m 19, Drp/rp open, I’m taken by the love of my life @_jano_142_ 💜3/1/24💜', profilePic: 'instagram_photos/rosethefox24.jpg' },
-        { username: '_jano_142_', isVerified: false, followers: '51', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },
-        { username: 'busarmydude', isVerified: false, followers: '21', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 20. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
-        { username: 'miss_foxy_ghost_wife', isVerified: false, followers: '5', nickname: 'Foxy Riley', bio: 'hey yo im Miss Foxy! i turn 20 in about two months im very friendly i dint bite hard~ dont be shy come say Hey to your friendly neighborhood Fox 😘', profilePic: 'instagram_photos/missfoxyghostwife.jpg' },
+        { username: '_jano_142_', isVerified: false, followers: '50', nickname: 'Nathan Haydu', bio: 'Cars are love, cars are life. Taken by @rose_the_fox24 ❤️(3/1/24)❤️#bncr33gtr:Best Skyline/🔰Dream car🚗#c7zr1:Last TRUE Vette/🇺🇸Dream car🏎', profilePic: 'instagram_photos/jano142.jpg' },
+        { username: 'busarmydude', isVerified: false, followers: '22', nickname: 'Bus Army Dude', bio: 'Hello, my name is River, I am 20. I am autistic. I love technology.', profilePic: 'instagram_photos/busarmydude.jpg' },
+        { username: 'miss_foxy_ghost_wife', isVerified: false, followers: '7', nickname: 'Foxy Riley', bio: 'hey yo im Miss Foxy! i turn 20 in about two months im very friendly i dint bite hard~ dont be shy come say Hey to your friendly neighborhood Fox 😘', profilePic: 'instagram_photos/missfoxyghostwife.jpg' },
         // Add more Instagram creators as needed
     ],
-    lastUpdatedTime: '2025-03-16T12:54:02', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-03-18T12:24:10', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
@@ -215,7 +215,7 @@ const youtubeShoutouts = {
         {
             username: 'MrBeast',
             isVerified: true,
-            subscribers: '374M',
+            subscribers: '375M',
             nickname: 'MrBeast',
             bio: 'Go Watch Beast Games! https://unfur.ly/BeastGames SUBSCRIBE FOR A COOKIE!',
             profilePic: 'youtube_photoes/mrbeast.jpg',
@@ -269,7 +269,7 @@ const youtubeShoutouts = {
         {
             username: 'CaptainSteeeve',
             isVerified: true,
-            subscribers: '371K',
+            subscribers: '372K',
             nickname: 'Captain Steeeve',
             bio: 'No bio yet',
             profilePic: 'youtube_photoes/IMG_2371.jpeg',
@@ -322,7 +322,7 @@ const youtubeShoutouts = {
         },
         // Add more YouTube creators as needed
     ],
-    lastUpdatedTime: '2025-03-16T12:55:46', // Manually set the last updated date and time
+    lastUpdatedTime: '2025-03-18T12:25:46', // Manually set the last updated date and time
     init() {
         this.createShoutoutCards();
         this.setLastUpdatedTime();
