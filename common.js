@@ -15,7 +15,7 @@ class CommonManager {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 12;
+            fontSize: 12,
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
