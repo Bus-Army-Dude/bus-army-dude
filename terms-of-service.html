@@ -39,16 +39,7 @@
 
     <!-- Microsoft-specific configuration -->
     <meta name="browserconfig" content="/browserconfig.xml">
-</head>
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js')
-                .then(() => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker registration failed:', err));
-        });
-    }
-</script>      
+</head>     
 <body class="terms-of-service-page">
     <div class="container">
         <section class="terms-of-service">
@@ -84,6 +75,5 @@
     <script src="settings.js"></script>
     <script src="https://busarmydudesprofile.statuspage.io/embed/script.js"></script>
     <script src="ai-chatbot.js"></script>
-    <script src="no-internet.js"></script>
 </body>
 </html>
