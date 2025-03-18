@@ -1371,13 +1371,14 @@ body {
 /* Version Info Section */
 .version-info-section {
     background-color: var(--content-bg);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 12px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 /* Version Header */
@@ -1386,104 +1387,49 @@ body {
     margin-bottom: 15px;
     font-size: 1.2em;
     font-weight: 600;
-}
-
-/* Version Number Styling */
-.version-number {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 14px;
-    border-radius: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
-.version-number::before {
-    content: "Version:";
-    color: var(--secondary-text);
-    font-weight: 500;
+.version-header::before {
+    content: "📊";
 }
 
-/* Build Number Styling */
-.build-number {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 14px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-.build-number::before {
-    content: "Build:";
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* OS Info Styling */
-.os-info {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 14px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-.os-info::before {
-    content: "Operating System:";
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* Device Model Styling */
-.device-info {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 14px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-.device-info::before {
-    content: "Device Model:";
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* Update Time Styling */
+/* Common Info Box Styles */
+.version-number,
+.build-number,
+.os-info,
+.device-info,
 .update-time {
     color: var(--text-color);
     font-size: 1em;
     background: var(--bg-color);
-    padding: 14px;
+    padding: 12px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    border: 1px solid var(--border-color);
 }
 
+/* Label Content with Icons */
+.version-number::before { content: "🔢 Version:"; }
+.build-number::before { content: "🏗️ Build:"; }
+.os-info::before { content: "💻 Operating System:"; }
+.device-info::before { content: "📱 Device Model:"; }
+.update-time::before { content: "🕒 Current Date & Time:"; }
+
+/* Label Styling */
+.version-number::before,
+.build-number::before,
+.os-info::before,
+.device-info::before,
 .update-time::before {
-    content: "Current Date & Time:";
     color: var(--secondary-text);
     font-weight: 500;
 }
@@ -1494,27 +1440,27 @@ body {
     font-size: 1em;
     font-weight: 600;
     background: var(--bg-color);
-    padding: 14px;
+    padding: 12px;
     border-radius: 10px;
     text-align: center;
     border: 1px solid var(--border-color);
     margin-top: 10px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-/* Version Info Container */
-.version-info-container {
+    box-shadow: 0 2px 4px var(--shadow-color);
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
-/* Media queries for mobile responsiveness */
+.countdown::before {
+    content: "⏱️";
+}
+
+/* Media queries */
 @media screen and (max-width: 768px) {
     .version-info-section {
         padding: 15px;
         margin-bottom: 20px;
-        overflow: hidden;
     }
 
     .version-header {
@@ -1532,11 +1478,9 @@ body {
     }
 }
 
-/* Extra small devices */
 @media screen and (max-width: 380px) {
     .version-info-section {
         padding: 10px;
-        overflow: hidden;
     }
 
     .version-number,
@@ -1550,7 +1494,6 @@ body {
     }
 }
 
-/* Animation for updates */
 @keyframes updatePulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.01); }
