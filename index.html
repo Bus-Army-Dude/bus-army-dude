@@ -62,16 +62,6 @@
 <!-- Microsoft-specific configuration -->
 <meta name="browserconfig" content="/browserconfig.xml">
 </head>
-
-    <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js')
-                .then(() => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker registration failed:', err));
-        });
-    }
-</script>
 <body class="dark-mode">
     <div class="container">
 
@@ -738,6 +728,5 @@ s0.parentNode.insertBefore(s1,s0);
     <script src="device.js"></script>
     <script src="creatorshoutouts.js"></script>
     <script src="business-hours.js"></script>
-    <script src="no-internet.js"></script>
 </body>
 </html>                
