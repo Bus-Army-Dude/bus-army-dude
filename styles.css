@@ -1370,209 +1370,262 @@ body {
 
 /* Version Info Section */
 .version-info-section {
-    background: linear-gradient(145deg, var(--content-bg), var(--bg-color));
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 35px;
-    box-shadow: 0 10px 30px -10px var(--shadow-color);
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px var(--shadow-color);
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    position: relative;
     overflow: hidden;
-}
-
-.version-info-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, 
-        var(--accent-color), 
-        color-mix(in srgb, var(--accent-color) 70%, white),
-        var(--accent-color)
-    );
 }
 
 /* Version Header */
 .version-header {
     color: var(--text-color);
-    margin-bottom: 20px;
-    font-size: 1.4em;
-    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+/* Version Number Styling */
+.version-number {
+    color: var(--text-color);
+    font-size: 1em;
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-.version-header::before {
-    content: '⚡';
-    font-size: 1.2em;
+.version-number::before {
+    content: "Version:";
+    color: var(--secondary-text);
+    font-weight: 500;
 }
 
-/* Common Info Box Styles */
-.version-number,
-.build-number,
-.os-info,
-.device-info,
+/* Build Number Styling */
+.build-number {
+    color: var(--text-color);
+    font-size: 1em;
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.build-number::before {
+    content: "Build:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* OS Info Styling */
+.os-info {
+    color: var(--text-color);
+    font-size: 1em;
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.os-info::before {
+    content: "Operating System:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Device Model Styling */
+.device-info {
+    color: var(--text-color);
+    font-size: 1em;
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.device-info::before {
+    content: "Device Model:";
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+/* Update Time Styling */
 .update-time {
     color: var(--text-color);
     font-size: 1em;
-    background: color-mix(in srgb, var(--bg-color) 97%, var(--accent-color));
-    padding: 16px;
-    border-radius: 12px;
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px -5px var(--shadow-color);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(var(--accent-color-rgb), 0.08);
+    gap: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-.version-number:hover,
-.build-number:hover,
-.os-info:hover,
-.device-info:hover,
-.update-time:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px -5px var(--shadow-color);
-}
-
-/* Info Labels */
-.version-number::before,
-.build-number::before,
-.os-info::before,
-.device-info::before,
 .update-time::before {
-    color: var(--accent-color);
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.9em;
-    background: color-mix(in srgb, var(--bg-color) 85%, var(--accent-color));
+    content: "Current Date & Time:";
+    color: var(--secondary-text);
+    font-weight: 500;
 }
 
 /* Countdown Styling */
 .countdown {
     color: var(--text-color);
-    font-size: 1.1em;
+    font-size: 1em;
     font-weight: 600;
-    background: linear-gradient(145deg, 
-        color-mix(in srgb, var(--bg-color) 97%, var(--accent-color)),
-        color-mix(in srgb, var(--bg-color) 95%, var(--accent-color))
-    );
-    padding: 20px;
-    border-radius: 12px;
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 10px;
     text-align: center;
-    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
-    margin-top: 15px;
-    box-shadow: 0 8px 25px -5px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    margin-top: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Version Info Container */
+.version-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Media queries for mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .version-info-section {
+        padding: 15px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .version-header {
+        font-size: 1.1em;
+    }
+
+    .version-number,
+    .build-number,
+    .os-info,
+    .device-info,
+    .update-time,
+    .countdown {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 380px) {
+    .version-info-section {
+        padding: 10px;
+        overflow: hidden;
+    }
+
+    .version-number,
+    .build-number,
+    .os-info,
+    .device-info,
+    .update-time,
+    .countdown {
+        padding: 8px;
+        font-size: 0.85em;
+    }
+}
+
+/* Animation for updates */
+@keyframes updatePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+    100% { transform: scale(1); }
+}
+
+.version-update {
+    animation: updatePulse 0.3s ease-in-out;
 }
 
 /* Copyright and Legal Notices */
 .legal-section {
-    background: linear-gradient(145deg, 
-        color-mix(in srgb, var(--content-bg) 97%, #ff4757),
-        var(--content-bg)
-    );
-    border-radius: 16px;
-    padding: 25px;
-    margin: 35px 0;
-    box-shadow: 0 10px 30px -10px var(--shadow-color);
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0;
+    box-shadow: 0 2px 4px var(--shadow-color);
     width: 100%;
     box-sizing: border-box;
-    position: relative;
     overflow: hidden;
-    border: 1px solid rgba(255, 71, 87, 0.1);
-}
-
-.legal-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #ff4757, #ff6b81, #ff4757);
 }
 
 /* Protection Message */
 .copy-protection-message,
 .legal-protection-message,
 .watermark-message {
-    background: color-mix(in srgb, var(--bg-color) 92%, #ff4757);
+    background-color: var(--bg-color);
     color: var(--text-color);
-    padding: 18px;
-    text-align: left;
-    font-size: 0.95em;
-    margin: 15px 0;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px -5px rgba(255, 71, 87, 0.15);
+    padding: 12px;
+    text-align: center;
+    font-size: 0.9em;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
     font-weight: 500;
-    border: 1px solid rgba(255, 71, 87, 0.1);
+    border-left: 4px solid var(--accent-color);
     display: flex;
     align-items: center;
-    gap: 12px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    justify-content: center;
 }
 
-.copy-protection-message::before,
-.legal-protection-message::before,
-.watermark-message::before {
-    content: '⚠️';
-    font-size: 1.2em;
+/* Legal Section Margin for Visual Spacing */
+.legal-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.copy-protection-message:hover,
-.legal-protection-message:hover,
-.watermark-message:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px -8px rgba(255, 71, 87, 0.2);
-}
-
-/* Media Queries */
+/* Media queries for mobile responsiveness */
 @media screen and (max-width: 768px) {
-    .version-info-section,
-    .legal-section {
-        padding: 20px;
-        border-radius: 14px;
-    }
-    
-    .version-number,
-    .build-number,
-    .os-info,
-    .device-info,
-    .update-time,
-    .copy-protection-message,
-    .legal-protection-message,
-    .watermark-message {
-        padding: 14px;
-        font-size: 0.9em;
-    }
-}
-
-@media screen and (max-width: 380px) {
-    .version-info-section,
     .legal-section {
         padding: 15px;
-        border-radius: 12px;
+        margin: 20px 0;
+        overflow: hidden;
     }
-    
-    .version-number,
-    .build-number,
-    .os-info,
-    .device-info,
-    .update-time,
+
     .copy-protection-message,
     .legal-protection-message,
     .watermark-message {
-        padding: 12px;
+        padding: 10px;
         font-size: 0.85em;
+    }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 380px) {
+    .legal-section {
+        padding: 10px;
+        overflow: hidden;
+    }
+
+    .copy-protection-message,
+    .legal-protection-message,
+    .watermark-message {
+        padding: 8px;
+        font-size: 0.8em;
     }
 }
 
