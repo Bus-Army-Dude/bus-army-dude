@@ -8,7 +8,7 @@ class GlobalSettings {
     loadSettings() {
         const defaultSettings = {
             darkMode: true,
-            fontSize: 16,
+            fontSize: 14,
             lastUpdate: Date.now()
         };
         const savedSettings = localStorage.getItem('websiteSettings');
