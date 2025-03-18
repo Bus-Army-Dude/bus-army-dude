@@ -901,7 +901,7 @@ body {
 .instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Increased from 260px to 300px */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Increased minimum width */
     gap: 20px;
     width: 100%;
     box-sizing: border-box;
@@ -925,8 +925,9 @@ body {
     box-sizing: border-box;
     max-width: 100%;
     position: relative;
-    overflow: hidden; /* Changed back to hidden */
+    overflow: visible; /* Changed to visible */
     min-height: fit-content;
+    height: auto; /* Ensure height adjusts with content */
 }
 
 /* YouTube Cover Photo */
@@ -982,13 +983,14 @@ body {
 .instagram-username-container,
 .youtube-username-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Changed from center to flex-start */
     gap: 4px;
     margin-bottom: 10px;
     flex-wrap: wrap;
     width: 100%;
-    overflow: visible; /* Changed from hidden to visible */
-    padding-right: 8px; /* Increased padding */
+    overflow: visible;
+    padding-right: 8px;
+    min-height: min-content; /* Added for flexible height */
 }
 
 /* Common Username Styles */
@@ -996,14 +998,15 @@ body {
 .instagram-creator-username,
 .youtube-creator-username {
     color: var(--secondary-text);
-    font-size: 0.9em;
+    font-size: max(0.9em, 14px); /* Set minimum font size */
     margin: 0;
     width: auto;
-    max-width: 100%; /* Changed from calc(100% - 20px) to 100% */
+    max-width: 100%;
     overflow-wrap: break-word;
-    word-break: break-all; /* Changed from break-word to break-all for better handling of @ usernames */
+    word-break: break-all;
     white-space: normal;
-    line-height: 1.4; /* Added line height */
+    line-height: 1.5; /* Increased line height */
+    hyphens: auto; /* Added for better word breaks */
 }
 
 /* Verification Badge Styles */
@@ -1070,8 +1073,11 @@ body {
 .instagram-creator-header h3,
 .youtube-creator-header h3 {
     margin: 0;
-    font-size: 1.1em;
+    font-size: max(1.1em, 16px); /* Set minimum font size */
     color: var(--text-color);
+    line-height: 1.4;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Unavailable Message Styles */
