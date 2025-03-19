@@ -76,8 +76,9 @@ body {
     padding: 0 20px;
 }
 
-/* Profile Section */
+/* Profile Section - Make sure it has relative positioning */
 .profile-section {
+    position: relative; /* This is important for absolute positioning of buttons */
     text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
@@ -90,7 +91,6 @@ body {
     box-shadow: 
         0 8px 32px -8px var(--shadow-color),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    position: relative;
     backdrop-filter: blur(10px);
 }
 
@@ -165,8 +165,8 @@ body {
 /* Settings Button */
 .settings-button {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 25px; /* Adjusted to be in the corner */
+    right: 25px; /* Adjusted to be in the corner */
     width: 40px;
     height: 40px;
     border-radius: 12px;
@@ -195,8 +195,8 @@ body {
 /* Merch Button */
 .merch-button {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 25px; /* Adjusted to be in the corner */
+    left: 25px; /* Adjusted to be in the corner */
     width: 40px;
     height: 40px;
     border-radius: 12px;
