@@ -967,13 +967,15 @@ body {
 
 /* YouTube Cover Photo */
 .youtube-cover-photo {
-    width: 100%;
-    max-height: 150px;
+    width: calc(100% + 30px); /* Restore the extended width */
+    height: 150px;
     object-fit: contain;
     margin: -15px -15px 15px -15px;
     display: block;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    position: relative; /* Added to ensure proper positioning */
+    left: 0; /* Ensure alignment */
 }
 
 /* YouTube Creator Info Container */
@@ -1178,8 +1180,9 @@ body {
     }
 
     .youtube-cover-photo {
+        width: calc(100% + 24px);
+        height: 120px;
         margin: -12px -12px 12px -12px;
-        max-height: 120px;
     }
 
     .username-container,
@@ -1219,8 +1222,9 @@ body {
     }
 
     .youtube-cover-photo {
+        width: calc(100% + 20px);
+        height: 100px;
         margin: -10px -10px 10px -10px;
-        max-height: 100px;
     }
 
     .username-container,
