@@ -960,22 +960,25 @@ body {
     box-sizing: border-box;
     max-width: 100%;
     position: relative;
-    overflow: visible; /* Changed to visible */
+    overflow: visible;
     min-height: fit-content;
-    height: auto; /* Ensure height adjusts with content */
+    height: auto;
+    padding-top: 0; /* Remove top padding */
 }
 
 /* YouTube Cover Photo */
 .youtube-cover-photo {
-    width: calc(100% + 30px); /* Restore the extended width */
+    width: calc(100% + 30px);
     height: 150px;
     object-fit: contain;
     margin: -15px -15px 15px -15px;
     display: block;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    position: relative; /* Added to ensure proper positioning */
-    left: 0; /* Ensure alignment */
+    position: relative;
+    left: 0;
+    top: 0; /* Added to ensure no top space */
+    padding: 0; /* Remove any padding */
 }
 
 /* YouTube Creator Info Container */
