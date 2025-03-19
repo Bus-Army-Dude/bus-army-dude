@@ -973,9 +973,8 @@ body {
     display: block;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    margin: -15px -15px 15px -15px;
-    position: relative; /* Add this */
-    top: -15px; /* Add this to pull it up */
+    margin: -30px -15px 10px -15px; /* Increased negative top margin and reduced bottom margin */
+    vertical-align: top; /* Add this to remove any implicit spacing */
 }
 
 /* YouTube Creator Info Container */
