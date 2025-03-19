@@ -15,6 +15,15 @@ class EventManager {
                 location: 'Twitch',
                 link: 'https://www.twitch.tv/busarmydude',
                 type: 'stream'
+            },
+            {
+                title: "Bus Army Dude's Gaming Saturday",
+                startDate: new Date('2025-03-23T02:00:00Z'),  // 10:00 PM EDT in UTC
+                endDate: new Date('2025-03-23T04:00:00Z'),    // 12:00 AM EDT in UTC
+                description: "just chilling with my viewers",
+                location: 'Twitch',
+                link: 'https://www.twitch.tv/busarmydude',
+                type: 'stream'
             }
         ];
 
