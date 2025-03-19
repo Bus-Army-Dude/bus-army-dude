@@ -133,34 +133,84 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 30px;
-    height: 30px;
+    bottom: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--content-bg) 95%, white),
+        color-mix(in srgb, var(--content-bg) 98%, black)
     );
-    border: 3px solid var(--accent-color);
+    border: 2px solid var(--accent-color);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     z-index: 2;
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--shadow-color) 20%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 
+        0 4px 12px color-mix(in srgb, var(--shadow-color) 25%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent-color) 10%, transparent);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-status-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 16px color-mix(in srgb, var(--shadow-color) 30%, transparent),
+        0 0 0 2px color-mix(in srgb, var(--accent-color) 15%, transparent);
 }
 
 /* Profile Status Styling */
 .profile-status {
-    font-size: 16px;
+    font-size: 18px;
     color: white;
+    transition: color 0.3s ease;
 }
 
-/* Profile Status Colors */
-.profile-status.online { color: #34c759; }
-.profile-status.idle { color: #ffd60a; }
-.profile-status.offline { color: #8e8e93; }
+/* Profile Status Colors with Modern Glow Effects */
+.profile-status.online { 
+    color: #34c759;
+    text-shadow: 0 0 10px rgba(52, 199, 89, 0.4);
+    animation: pulse 2s infinite;
+}
+
+.profile-status.idle { 
+    color: #ffd60a;
+    text-shadow: 0 0 10px rgba(255, 214, 10, 0.4);
+}
+
+.profile-status.offline { 
+    color: #8e8e93;
+    text-shadow: 0 0 10px rgba(142, 142, 147, 0.2);
+}
+
+/* Pulse Animation for Online Status */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Modern Hover Effects */
+.profile-status-container:hover .profile-status {
+    transform: scale(1.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-status-container {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .profile-status {
+        font-size: 16px;
+    }
+}
 
 /* Settings Button */
 .settings-button {
