@@ -76,6 +76,7 @@ body {
     padding: 0 20px;
 }
 
+/* Profile Section */
 .profile-section {
     text-align: center;
     margin-top: 20px;
@@ -171,7 +172,7 @@ body {
     transition: color 0.3s ease;
 }
 
-/* Profile Status Colors with Modern Glow Effects */
+/* Profile Status Colors */
 .profile-status.online { 
     color: #34c759;
     text-shadow: 0 0 10px rgba(52, 199, 89, 0.4);
@@ -188,28 +189,10 @@ body {
     text-shadow: 0 0 10px rgba(142, 142, 147, 0.2);
 }
 
-/* Pulse Animation for Online Status */
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
-}
-
-/* Modern Hover Effects */
-.profile-status-container:hover .profile-status {
-    transform: scale(1.1);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .profile-status-container {
-        width: 32px;
-        height: 32px;
-    }
-    
-    .profile-status {
-        font-size: 16px;
-    }
 }
 
 /* Settings Button */
@@ -279,10 +262,6 @@ body {
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
-    body {
-        padding: 15px;
-    }
-
     .profile-section {
         padding: 20px;
         margin-bottom: 20px;
