@@ -974,6 +974,8 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin: -15px -15px 15px -15px;
+    position: relative; /* Add this */
+    top: -15px; /* Add this to pull it up */
 }
 
 /* YouTube Creator Info Container */
