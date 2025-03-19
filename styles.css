@@ -951,7 +951,7 @@ body {
 .youtube-creator-card {
     background-color: var(--bg-color);
     border-radius: 10px;
-    padding: 15px;
+    padding: 0 15px 15px 15px; /* Remove top padding, keep padding on other sides */
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -960,25 +960,20 @@ body {
     box-sizing: border-box;
     max-width: 100%;
     position: relative;
-    overflow: visible;
+    overflow: hidden; /* Changed to hidden to ensure clean edges */
     min-height: fit-content;
     height: auto;
-    padding-top: 0; /* Remove top padding */
 }
 
 /* YouTube Cover Photo */
 .youtube-cover-photo {
-    width: calc(100% + 30px);
+    width: 100%;
     height: 150px;
     object-fit: contain;
-    margin: -15px -15px 15px -15px;
     display: block;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    position: relative;
-    left: 0;
-    top: 0; /* Added to ensure no top space */
-    padding: 0; /* Remove any padding */
+    margin: 0 0 15px 0; /* Reset margin to only have bottom margin */
 }
 
 /* YouTube Creator Info Container */
@@ -1169,10 +1164,7 @@ body {
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
-        padding: 12px;
-        overflow: hidden;
-        height: auto;
-        min-height: fit-content;
+        padding: 0 12px 12px 12px;
     }
 
     .creator-header h3,
@@ -1218,10 +1210,7 @@ body {
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
-        padding: 10px;
-        overflow: hidden;
-        height: auto;
-        min-height: fit-content;
+        padding: 0 10px 10px 10px;
     }
 
     .youtube-cover-photo {
