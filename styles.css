@@ -967,11 +967,13 @@ body {
 
 /* YouTube Cover Photo */
 .youtube-cover-photo {
-    width: calc(100% + 30px);
-    height: 100px;
+    width: calc(100% + 50px); /* Increased to account for padding */
+    height: 200px; /* Increased height for better visibility */
     object-fit: cover;
-    margin: -15px -15px 15px -15px;
+    margin: -25px -25px 20px -25px; /* Adjusted to match profile-section padding */
     display: block;
+    border-top-left-radius: 16px; /* Match container's border radius */
+    border-top-right-radius: 16px;
 }
 
 /* YouTube Creator Info Container */
