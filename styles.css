@@ -951,7 +951,7 @@ body {
 .youtube-creator-card {
     background-color: var(--bg-color);
     border-radius: 10px;
-    padding: 0 15px 15px 15px; /* Remove top padding, keep padding on other sides */
+    padding: 15px;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -960,9 +960,9 @@ body {
     box-sizing: border-box;
     max-width: 100%;
     position: relative;
-    overflow: hidden; /* Changed to hidden to ensure clean edges */
+    overflow: visible; /* Changed to visible */
     min-height: fit-content;
-    height: auto;
+    height: auto; /* Ensure height adjusts with content */
 }
 
 /* YouTube Cover Photo */
@@ -973,7 +973,7 @@ body {
     display: block;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    margin: 0 0 15px 0; /* Reset margin to only have bottom margin */
+    margin: 0 0 15px 0;
 }
 
 /* YouTube Creator Info Container */
@@ -1164,7 +1164,10 @@ body {
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
-        padding: 0 12px 12px 12px;
+        padding: 12px;
+        overflow: hidden;
+        height: auto;
+        min-height: fit-content;
     }
 
     .creator-header h3,
@@ -1176,8 +1179,7 @@ body {
 
     .youtube-cover-photo {
         width: calc(100% + 24px);
-        height: 120px;
-        margin: -12px -12px 12px -12px;
+        margin: -12px -12px 15px -12px;
     }
 
     .username-container,
@@ -1210,13 +1212,15 @@ body {
     .creator-card,
     .instagram-creator-card,
     .youtube-creator-card {
-        padding: 0 10px 10px 10px;
+        padding: 10px;
+        overflow: hidden;
+        height: auto;
+        min-height: fit-content;
     }
 
     .youtube-cover-photo {
         width: calc(100% + 20px);
-        height: 100px;
-        margin: -10px -10px 10px -10px;
+        margin: -10px -10px 15px -10px;
     }
 
     .username-container,
