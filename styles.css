@@ -969,7 +969,8 @@ body {
 .youtube-cover-photo {
     width: calc(100% + 30px);
     height: 150px;
-    object-fit: cover;
+    object-fit: contain; /* Changed from cover to contain */
+    background-color: black; /* Add background color to handle letterboxing */
     margin: -15px -15px 15px -15px;
     display: block;
     border-top-left-radius: 10px;
