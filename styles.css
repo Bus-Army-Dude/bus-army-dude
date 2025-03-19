@@ -534,14 +534,6 @@ body {
     box-sizing: border-box;
 }
 
-/* Disability Section Header */
-#useful-links-header::before {
-    content: '\f0c1'; /* Font Awesome Instagram icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
 /* Title Styling */
 .useful-links-section h2 {
     font-size: 1.8rem;
@@ -817,14 +809,6 @@ body {
     box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-/* Disability Section Header */
-#disability-header::before {
-    content: '\f193'; /* Font Awesome Instagram icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
 .disabilities-section h2 {
     margin-bottom: 15px;
     color: var(--text-color);
@@ -942,7 +926,7 @@ body {
 #lastUpdatedInstagram::before,
 #tiktok-last-updated-timestamp::before,
 #lastUpdatedYouTube::before {
-    content: '\f253'; /* Font Awesome calendar icon */
+    content: '\f073'; /* Font Awesome calendar icon */
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
 }
@@ -1506,14 +1490,6 @@ body {
     gap: 8px;
 }
 
-/* Disability Section Header */
-#countdown-header::before {
-    content: '\f073'; /* Font Awesome Instagram icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
 .countdown::before {
     content: "⏱️";
 }
@@ -1855,14 +1831,6 @@ footer {
     box-sizing: border-box;
 }
 
-/* Disability Section Header */
-#faq-header::before {
-    content: '\3f'; /* Font Awesome Instagram icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
 .faq-section h2 {
     color: var(--text-color);
     font-size: 2rem;
@@ -2165,14 +2133,6 @@ footer {
     color: var(--accent-color);
 }
 
-/* Disability Section Header */
-#event-header::before {
-    content: '\f073'; /* Font Awesome Instagram icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
 /* Join Event Button */
 .event-link {
     display: flex;
@@ -2315,14 +2275,6 @@ body.focus-outline-disabled :focus {
     backdrop-filter: blur(10px);
     transform-style: preserve-3d;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* Disability Section Header */
-#business-header::before {
-    content: '\f0b1'; /* Font Awesome Instagram icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
 }
 
 .business-info h1 {
