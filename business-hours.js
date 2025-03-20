@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Holiday hours
     const holidayHours = {
-        "2025-01-01": { name: "New Year's Day", hours: "10:00 AM - 04:00 PM" },
+        "2025-01-01": { name: "New Year's Day", hours: "Closed" },
         "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
         "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
         "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-11-27": { name: "Thanksgiving Day", hours: "Closed" },
         "2025-12-24": { name: "Christmas Eve", hours: "10:00 AM - 06:00 PM" },
         "2025-12-25": { name: "Christmas Day", hours: "Closed" },
-        "2025-12-31": { name: "New Year's Eve", hours: "10:00 AM - 06:00 PM" }
+        "2025-12-31": { name: "New Year's Eve", hours: "10:00 AM - 06:00 PM" },
+        "2026-01-01": { name: "New Year's Day", hours: "Closed" }
     };
 
     // Get user's current timezone
