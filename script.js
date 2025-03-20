@@ -82,20 +82,21 @@ window.onload = function() {
     }, 1000);  // Update both every second
 };
 
-    // New Year countdown with timezone adjustment
+    // Summer Solstice countdown with timezone adjustment
 function updateNewYearCountdown() {
     const now = new Date();
     
     // Get user's local timezone offset in minutes
     const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000; // convert to milliseconds
 
-    // Set the target date (Spring 2025) in UTC
-    const newYearUTC = new Date('2025-03-20T00:01:00Z'); // 'Z' denotes UTC time
+    // Set the target date (Summer Solstice 2025) in UTC
+    // June 20, 2025, at 22:42 UTC is the precise moment of the Summer Solstice
+    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // 'Z' denotes UTC time
     
-    // Adjust the New Year date to the user's local timezone
-    const newYear = new Date(newYearUTC.getTime() + localTimezoneOffset);
+    // Adjust the Summer Solstice date to the user's local timezone
+    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
 
-    const diff = newYear - now;
+    const diff = summerSolstice - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -103,14 +104,14 @@ function updateNewYearCountdown() {
     if (diff <= 0) {
         countdownSection.innerHTML = `
             <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                Spring 2025 is here!!!!
+                Summer 2025 is here!!!
             </h2>
-            <div style="font-size: 1.5em; color: var(--text-color);">🎉 🎊 🎆 🎈</div>
+            <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
         `;
     } else {
-        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365)); // Approximate year
-        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30)); // Approximate month
-        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // More accurate year calculation
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44)); // More accurate month calculation
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
