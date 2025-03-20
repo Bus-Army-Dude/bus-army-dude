@@ -10,7 +10,7 @@
     --light-hover: #45a049;
     --light-link: #007bff;
     --light-shadow: rgba(0, 0, 0, 0.1);
-    --light-icon: #000000; /* Added light mode icon color */
+    --light-icon: #ffffff; /* Changed to white for light mode */
     
     /* Dark Mode Colors */
     --dark-bg: #121212;
@@ -22,7 +22,7 @@
     --dark-hover: #45a049;
     --dark-link: #BB86FC;
     --dark-shadow: rgba(0, 0, 0, 0.2);
-    --dark-icon: #ffffff; /* Added dark mode icon color */
+    --dark-icon: #000000; /* Changed to black for dark mode */
 }
 
 /* Default Theme (Dark Mode) */
