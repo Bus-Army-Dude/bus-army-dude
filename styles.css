@@ -10,7 +10,6 @@
     --light-hover: #45a049;
     --light-link: #007bff;
     --light-shadow: rgba(0, 0, 0, 0.1);
-    --light-icon: #ffffff; /* Added icon color for light mode */
     
     /* Dark Mode Colors */
     --dark-bg: #121212;
@@ -22,9 +21,12 @@
     --dark-hover: #45a049;
     --dark-link: #BB86FC;
     --dark-shadow: rgba(0, 0, 0, 0.2);
-    --dark-icon: #ffffff; /* Added icon color for dark mode */
-    
-    /* Default Theme (Dark) */
+}
+
+/* Default Theme (Dark Mode) */
+body {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
     --bg-color: var(--dark-bg);
     --content-bg: var(--dark-content-bg);
     --text-color: var(--dark-text);
@@ -34,11 +36,12 @@
     --hover-color: var(--dark-hover);
     --link-color: var(--dark-link);
     --shadow-color: var(--dark-shadow);
-    --icon-color: var(--dark-icon); /* Added icon color variable */
 }
 
-/* Theme Classes */
-.light-mode {
+/* Light Mode */
+body.light-mode {
+    background-color: var(--light-bg);
+    color: var(--light-text);
     --bg-color: var(--light-bg);
     --content-bg: var(--light-content-bg);
     --text-color: var(--light-text);
@@ -48,10 +51,12 @@
     --hover-color: var(--light-hover);
     --link-color: var(--light-link);
     --shadow-color: var(--light-shadow);
-    --icon-color: var(--light-icon); /* Added icon color for light mode */
 }
 
-.dark-mode {
+/* Dark Mode - explicitly set to ensure it overrides light mode */
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
     --bg-color: var(--dark-bg);
     --content-bg: var(--dark-content-bg);
     --text-color: var(--dark-text);
@@ -61,7 +66,6 @@
     --hover-color: var(--dark-hover);
     --link-color: var(--dark-link);
     --shadow-color: var(--dark-shadow);
-    --icon-color: var(--dark-icon); /* Added icon color for dark mode */
 }
 
 /* Base Styles */
@@ -405,6 +409,7 @@ body {
     backdrop-filter: blur(10px);
     width: 100%;
     box-sizing: border-box;
+    color: var(--text-color);
 }
 
 .social-links-container {
@@ -427,7 +432,7 @@ body {
     );
     border-radius: 25px;
     text-decoration: none;
-    color: var(--icon-color); /* Updated to use theme icon color */
+    color: #ffffff; /* Always white for contrast on accent color */
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -454,14 +459,14 @@ body {
 .social-button .social-icon {
     font-size: 20px;
     margin-right: 15px;
-    color: var(--icon-color); /* Updated to use theme icon color */
+    color: #ffffff; /* Always white for contrast on accent color */
     flex-shrink: 0;
 }
 
 .social-button span {
     flex-grow: 1;
     text-align: center;
-    color: var(--icon-color); /* Updated to use theme icon color */
+    color: #ffffff; /* Always white for contrast on accent color */
 }
 
 /* Responsive Design */
