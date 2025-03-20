@@ -10,6 +10,7 @@
     --light-hover: #45a049;
     --light-link: #007bff;
     --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-icon: #000000; /* Added light mode icon color */
     
     /* Dark Mode Colors */
     --dark-bg: #121212;
@@ -21,6 +22,7 @@
     --dark-hover: #45a049;
     --dark-link: #BB86FC;
     --dark-shadow: rgba(0, 0, 0, 0.2);
+    --dark-icon: #ffffff; /* Added dark mode icon color */
 }
 
 /* Default Theme (Dark Mode) */
@@ -36,6 +38,7 @@ body {
     --hover-color: var(--dark-hover);
     --link-color: var(--dark-link);
     --shadow-color: var(--dark-shadow);
+    --icon-color: var(--dark-icon); /* Default icon color for dark mode */
 }
 
 /* Light Mode */
@@ -51,9 +54,10 @@ body.light-mode {
     --hover-color: var(--light-hover);
     --link-color: var(--light-link);
     --shadow-color: var(--light-shadow);
+    --icon-color: var(--light-icon); /* Icon color for light mode */
 }
 
-/* Dark Mode - explicitly set to ensure it overrides light mode */
+/* Dark Mode */
 body.dark-mode {
     background-color: var(--dark-bg);
     color: var(--dark-text);
@@ -66,6 +70,7 @@ body.dark-mode {
     --hover-color: var(--dark-hover);
     --link-color: var(--dark-link);
     --shadow-color: var(--dark-shadow);
+    --icon-color: var(--dark-icon); /* Icon color for dark mode */
 }
 
 /* Base Styles */
@@ -432,7 +437,6 @@ body {
     );
     border-radius: 25px;
     text-decoration: none;
-    color: #ffffff; /* Always white for contrast on accent color */
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -459,14 +463,14 @@ body {
 .social-button .social-icon {
     font-size: 20px;
     margin-right: 15px;
-    color: #ffffff; /* Always white for contrast on accent color */
+    color: var(--icon-color); /* Use theme icon color */
     flex-shrink: 0;
 }
 
 .social-button span {
     flex-grow: 1;
     text-align: center;
-    color: #ffffff; /* Always white for contrast on accent color */
+    color: var(--icon-color); /* Use theme icon color */
 }
 
 /* Responsive Design */
