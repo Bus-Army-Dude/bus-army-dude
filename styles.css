@@ -2452,7 +2452,14 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* Add this at the beginning of your weather styles */
+.weather-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    width: 100%;
+}
+
 .weather-section {
     background: var(--bg); /* Match your content background */
     border: 1px solid var(--border); /* Add the border like other sections */
