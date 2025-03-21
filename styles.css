@@ -2455,13 +2455,13 @@ body.focus-outline-disabled :focus {
 /* Weather Section Container */
 .weather-section {
     background: var(--content-bg); /* Dynamic background based on mode */
-    border: 1px solid var(--border-color); /* Matches the site's borders */
+    border: 1px solid var(--border-color); /* Matches site's borders */
     border-radius: 16px; /* Smooth rounded corners */
     padding: 1.5rem; /* Inner spacing for content */
-    margin: 1rem auto; /* Centered with consistent margin */
+    margin: 1rem 0; /* Consistent margin without touching sides */
     box-shadow: var(--shadow-color); /* Consistent shadow effect */
-    max-width: 600px; /* Restrict maximum width for readability */
-    width: calc(100% - 2rem); /* Flexible width with responsive margins */
+    max-width: 100%; /* Full width of container */
+    width: 100%; /* Make container take up full width */
     box-sizing: border-box; /* Include padding and border in width */
     transition: all 0.3s ease; /* Smooth transitions for theme changes */
 }
@@ -2470,58 +2470,62 @@ body.focus-outline-disabled :focus {
 .weather-content {
     display: flex;
     flex-direction: column; /* Stack content vertically */
-    gap: 1.5rem; /* Even spacing between items */
-    align-items: stretch; /* Ensure content stretches uniformly */
+    gap: 2rem; /* More spacing between sections for better organization */
+    align-items: center; /* Center-align content */
 }
 
 /* Weather Header */
 .weather-header {
     text-align: center; /* Center-align header text */
+    margin-bottom: 1.5rem; /* Add space below the header */
 }
 
 /* Location Info */
 .location-info h2 {
     color: var(--text-color); /* Matches text color for mode */
     margin: 0; /* Remove extra margin */
-    font-size: 1.5rem; /* Adjusted for readability */
+    font-size: 1.75rem; /* Adjusted for readability */
 }
 
 /* Last Updated Info */
 .last-updated {
     color: var(--secondary-text); /* Softer color for secondary info */
-    font-size: 0.9rem; /* Subtle text size */
+    font-size: 1rem; /* Subtle text size */
+    margin-top: 0.5rem; /* Space above the last updated info */
 }
 
 /* Primary Weather Display */
 .weather-primary {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center-align items */
-    gap: 1rem; /* Space between items */
+    flex-direction: row; /* Organize icon and temperature side by side */
+    align-items: center; /* Center-align content */
+    gap: 2rem; /* Increase space between icon and temperature */
 }
 
 /* Current Temperature Display */
 .current-temp {
     display: flex;
-    align-items: center; /* Align icon and text */
-    gap: 1rem; /* Space between icon and text */
+    flex-direction: row; /* Align icon and text side by side */
+    align-items: center; /* Center-align items */
+    gap: 1.5rem; /* Space between icon and text */
 }
 
 /* Weather Icon */
 .weather-icon {
-    width: 64px; /* Fixed size for weather icon */
-    height: 64px;
+    width: 80px; /* Larger size for weather icon */
+    height: 80px;
 }
 
 /* Temperature Section */
 .temperature {
     display: flex;
     flex-direction: column; /* Stack temperature info */
+    align-items: flex-start; /* Left-align temperature */
 }
 
 /* Temperature Value */
 .temp-value {
-    font-size: 3rem; /* Larger font for emphasis */
+    font-size: 3.5rem; /* Larger font for emphasis */
     font-weight: bold; /* Highlight temperature */
     color: var(--text-color); /* Match text color for mode */
     line-height: 1; /* Compact line height */
@@ -2529,25 +2533,28 @@ body.focus-outline-disabled :focus {
 
 /* Feels Like Text */
 .feels-like {
-    font-size: 0.9rem; /* Smaller for secondary text */
+    font-size: 1rem; /* Slightly larger for better readability */
     color: var(--secondary-text); /* Softer color for secondary info */
 }
 
 /* Condition Text */
 .condition-text {
     color: var(--text-color); /* Matches primary text color */
-    font-size: 1.2rem; /* Medium size font */
+    font-size: 1.3rem; /* Larger for better emphasis */
     text-align: center; /* Center the condition text */
+    margin-top: 0.5rem; /* Space above condition text */
 }
 
 /* Weather Details Section */
 .weather-details {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Three-column layout */
-    gap: 1rem; /* Space between items */
-    padding: 1rem; /* Inner padding */
+    gap: 1.5rem; /* Space between items */
+    padding: 1.5rem; /* Inner padding */
     background: var(--content-bg); /* Matches the section background */
     border-radius: 12px; /* Smooth rounded corners */
+    width: 100%; /* Full width */
+    max-width: 800px; /* Limit max width */
 }
 
 /* Weather Detail Item */
@@ -2556,18 +2563,18 @@ body.focus-outline-disabled :focus {
     flex-direction: column; /* Stack label and value */
     align-items: center; /* Center-align content */
     text-align: center; /* Align text */
-    gap: 0.25rem; /* Space between label and value */
+    gap: 0.5rem; /* Space between label and value */
 }
 
 /* Detail Label */
 .detail .label {
-    font-size: 0.9rem; /* Subtle size for labels */
+    font-size: 1rem; /* Slightly larger size for labels */
     color: var(--secondary-text); /* Softer color for labels */
 }
 
 /* Detail Value */
 .detail .value {
-    font-size: 1.1rem; /* Slightly larger for emphasis */
+    font-size: 1.3rem; /* Slightly larger for emphasis */
     color: var(--text-color); /* Match primary text color */
     font-weight: 500; /* Medium weight for readability */
 }
@@ -2577,10 +2584,10 @@ body.focus-outline-disabled :focus {
     border: 3px solid var(--border-color); /* Matches site's border color */
     border-top: 3px solid var(--accent-color); /* Accent color for spinner */
     border-radius: 50%; /* Circular spinner */
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     animation: spin 1s linear infinite; /* Smooth spinning animation */
-    margin: 0 auto 1rem; /* Center spinner with bottom margin */
+    margin: 0 auto 2rem; /* Center spinner with bottom margin */
 }
 
 /* Keyframes for Spinner Animation */
@@ -2595,11 +2602,9 @@ body.focus-outline-disabled :focus {
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .weather-section {
-        margin: 1rem; /* Reduce outer margin */
-    }
     .weather-details {
         grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
+        max-width: 100%; /* Full width on smaller screens */
     }
 }
 
@@ -2608,6 +2613,7 @@ body.focus-outline-disabled :focus {
         grid-template-columns: 1fr; /* Single column for phones */
     }
     .temp-value {
-        font-size: 2.5rem; /* Adjust font size for small screens */
+        font-size: 2.75rem; /* Adjust font size for small screens */
     }
 }
+
