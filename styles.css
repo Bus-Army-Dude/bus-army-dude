@@ -2462,6 +2462,7 @@ body.focus-outline-disabled :focus {
     box-shadow: 0 4px 8px var(--shadow-color);
     margin-top: 20px;
     margin-bottom: 20px; /* Add space at the bottom */
+    border-bottom: 2px solid var(--separator-color); /* Add line separator */
 }
 
 /* Weather header styling */
@@ -2513,6 +2514,7 @@ body.focus-outline-disabled :focus {
     flex-wrap: wrap;
     margin-top: 10px;
     margin-bottom: 20px; /* Add space at the bottom */
+    border-bottom: 2px solid var(--separator-color); /* Add line separator */
 }
 
 .weather-details .detail {
@@ -2534,8 +2536,9 @@ body.focus-outline-disabled :focus {
     margin-top: 20px;
     padding: 15px;
     border-radius: 8px;
-    background-color: var(--card-bg); /* Make it match the dark mode */
+    background-color: var(--card-bg); /* Make it match dark mode */
     margin-bottom: 20px; /* Add space at the bottom */
+    border-bottom: 2px solid var(--separator-color); /* Add line separator */
 }
 
 /* Air Quality Index (AQI) value styling */
@@ -2552,13 +2555,13 @@ body.focus-outline-disabled :focus {
 
 .air-quality-section .aqi-value .value {
     font-size: 1.2rem;
-    font-weight: bold;
+    font-weight: normal; /* Remove bold from the value */
     color: var(--text-color); /* Ensure text color works in both light and dark mode */
 }
 
 /* Air quality levels color coding */
 .aqi-good {
-    color: #2ecc71;
+    color: #2ecc71; /* Green for good */
 }
 
 .aqi-moderate {
@@ -2585,6 +2588,7 @@ body.focus-outline-disabled :focus {
 .forecast-section {
     margin-top: 30px;
     margin-bottom: 20px; /* Add space at the bottom */
+    border-bottom: 2px solid var(--separator-color); /* Add line separator */
 }
 
 .forecast-container {
@@ -2643,6 +2647,7 @@ body.focus-outline-disabled :focus {
     border-radius: 8px;
     background-color: var(--card-bg); /* Make it match dark mode */
     margin-bottom: 20px; /* Add space at the bottom */
+    border-bottom: 2px solid var(--separator-color); /* Add line separator */
 }
 
 .astronomy-details {
@@ -2659,6 +2664,12 @@ body.focus-outline-disabled :focus {
 .moon-info .detail {
     font-size: 1rem;
     margin-bottom: 5px;
+}
+
+/* Bold styling for specific Sun and Moon details */
+.sun-times .label,
+.moon-info .label {
+    font-weight: bold;
 }
 
 /* Error handling and loading state */
