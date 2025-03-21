@@ -2452,173 +2452,233 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* Weather Section Container */
+/* General styling for the weather section */
 .weather-section {
-    background: var(--content-bg); /* Dynamic background based on mode */
-    border: 1px solid var(--border-color); /* Matches site's borders */
-    border-radius: 16px; /* Smooth rounded corners */
-    padding: 1.5rem; /* Inner spacing for content */
-    margin: 1rem 0; /* Consistent margin without touching sides */
-    box-shadow: var(--shadow-color); /* Consistent shadow effect */
-    max-width: 100%; /* Full width of container */
-    width: 100%; /* Make container take up full width */
-    box-sizing: border-box; /* Include padding and border in width */
-    transition: all 0.3s ease; /* Smooth transitions for theme changes */
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+    padding: 20px;
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin-top: 20px;
 }
 
-/* Weather Section Layout */
-.weather-content {
-    display: flex;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-    gap: 2rem; /* Space between items */
-    justify-content: space-between; /* Distribute items evenly */
-}
-
-/* Weather Header */
+/* Weather header styling */
 .weather-header {
-    text-align: center; /* Center-align header text */
-    width: 100%; /* Ensure the header spans the full width */
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Location Info */
-.location-info h2 {
-    color: var(--text-color); /* Matches text color for mode */
-    margin: 0; /* Remove extra margin */
-    font-size: 1.75rem; /* Adjusted for readability */
-}
-
-/* Last Updated Info */
-.last-updated {
-    color: var(--secondary-text); /* Softer color for secondary info */
-    font-size: 1rem; /* Subtle text size */
-    margin-top: 0.5rem; /* Space above the last updated info */
-}
-
-/* Primary Weather Display */
+/* Current weather condition display */
 .weather-primary {
     display: flex;
-    flex-direction: row; /* Organize icon and temperature side by side */
-    align-items: center; /* Center-align content */
-    gap: 2rem; /* Increase space between icon and temperature */
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-/* Current Temperature Display */
-.current-temp {
+.weather-primary .current-temp {
     display: flex;
-    flex-direction: row; /* Align icon and text side by side */
-    align-items: center; /* Center-align items */
-    gap: 1.5rem; /* Space between icon and text */
+    align-items: center;
 }
 
-/* Weather Icon */
 .weather-icon {
-    width: 80px; /* Larger size for weather icon */
-    height: 80px;
-}
-
-/* Temperature Section */
-.temperature {
-    display: flex;
-    flex-direction: column; /* Stack temperature info */
-    align-items: flex-start; /* Left-align temperature */
-}
-
-/* Temperature Value */
-.temp-value {
-    font-size: 3.5rem; /* Larger font for emphasis */
-    font-weight: bold; /* Highlight temperature */
-    color: var(--text-color); /* Match text color for mode */
-    line-height: 1; /* Compact line height */
-}
-
-/* Feels Like Text */
-.feels-like {
-    font-size: 1rem; /* Slightly larger for better readability */
-    color: var(--secondary-text); /* Softer color for secondary info */
-}
-
-/* Condition Text */
-.condition-text {
-    color: var(--text-color); /* Matches primary text color */
-    font-size: 1.3rem; /* Larger for better emphasis */
-    text-align: center; /* Center the condition text */
-    margin-top: 0.5rem; /* Space above condition text */
-}
-
-/* Weather Details Section */
-.weather-details {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Three-column layout */
-    gap: 1.5rem; /* Space between items */
-    padding: 1.5rem; /* Inner padding */
-    background: var(--content-bg); /* Matches the section background */
-    border-radius: 12px; /* Smooth rounded corners */
-    width: 100%; /* Full width */
-    max-width: 800px; /* Limit max width */
-}
-
-/* Weather Detail Item */
-.detail {
-    display: flex;
-    flex-direction: column; /* Stack label and value */
-    align-items: center; /* Center-align content */
-    text-align: center; /* Align text */
-    gap: 0.5rem; /* Space between label and value */
-}
-
-/* Detail Label */
-.detail .label {
-    font-size: 1rem; /* Slightly larger size for labels */
-    color: var(--secondary-text); /* Softer color for labels */
-}
-
-/* Detail Value */
-.detail .value {
-    font-size: 1.3rem; /* Slightly larger for emphasis */
-    color: var(--text-color); /* Match primary text color */
-    font-weight: 500; /* Medium weight for readability */
-}
-
-/* Air Quality, Sun & Moon, and 3-Day Forecast */
-.weather-extra {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Three-column layout */
-    gap: 1.5rem; /* Space between items */
-    padding: 1.5rem; /* Inner padding */
-    background: var(--content-bg); /* Matches the section background */
-    border-radius: 12px; /* Smooth rounded corners */
-    width: 100%; /* Full width */
-    max-width: 800px; /* Limit max width */
-}
-
-/* Air Quality, Sun & Moon, and 3-Day Forecast Item */
-.extra-item {
-    display: flex;
-    flex-direction: column; /* Stack label and value */
-    align-items: center; /* Center-align content */
-    text-align: center; /* Align text */
-    gap: 0.5rem; /* Space between label and value */
-}
-
-/* Loading Spinner */
-.loading-spinner {
-    border: 3px solid var(--border-color); /* Matches site's border color */
-    border-top: 3px solid var(--accent-color); /* Accent color for spinner */
-    border-radius: 50%; /* Circular spinner */
     width: 50px;
     height: 50px;
-    animation: spin 1s linear infinite; /* Smooth spinning animation */
-    margin: 0 auto 2rem; /* Center spinner with bottom margin */
+    margin-right: 15px;
 }
 
-/* Keyframes for Spinner Animation */
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+.temperature {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.temperature .temp-value {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.feels-like {
+    font-size: 1rem;
+    color: var(--secondary-text);
+}
+
+/* Weather details section */
+.weather-details {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.weather-details .detail {
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+.weather-details .label {
+    font-weight: bold;
+}
+
+.weather-details .value {
+    font-size: 1rem;
+    color: var(--secondary-text);
+}
+
+/* Air quality section styling */
+.air-quality-section {
+    margin-top: 20px;
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Air Quality Index (AQI) value styling */
+.air-quality-section .aqi-value {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.air-quality-section .aqi-value .label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.air-quality-section .aqi-value .value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Air quality levels color coding */
+.aqi-good {
+    color: #2ecc71;
+}
+
+.aqi-moderate {
+    color: #f39c12;
+}
+
+.aqi-sensitive {
+    color: #e67e22;
+}
+
+.aqi-unhealthy {
+    color: #e74c3c;
+}
+
+.aqi-very-unhealthy {
+    color: #c0392b;
+}
+
+.aqi-hazardous {
+    color: #8e44ad;
+}
+
+/* 3-Day forecast section */
+.forecast-section {
+    margin-top: 30px;
+}
+
+.forecast-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-day {
+    background-color: var(--content-bg);
+    padding: 15px;
+    border-radius: 8px;
+    width: 30%;
+    text-align: center;
+}
+
+.forecast-day .date {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.forecast-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.forecast-temps {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.forecast-temps .high {
+    color: #e74c3c;
+}
+
+.forecast-temps .low {
+    color: #3498db;
+}
+
+.forecast-details {
+    font-size: 0.9rem;
+}
+
+.forecast-details .rain-chance {
+    font-weight: bold;
+}
+
+.forecast-details .condition {
+    color: var(--secondary-text);
+}
+
+/* Astronomy section */
+.astronomy-section {
+    margin-top: 30px;
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.astronomy-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sun-times,
+.moon-info {
+    width: 45%;
+}
+
+.sun-times .detail,
+.moon-info .detail {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+/* Error handling and loading state */
+.weather-error, .weather-loading {
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.weather-error .retry-button, .weather-loading .retry-button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.weather-error .retry-button:hover, .weather-loading .retry-button:hover {
+    background-color: #2980b9;
+}
+
+/* Button styling for retry */
+.retry-button {
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 /* Mobile Responsiveness */
@@ -2639,4 +2699,3 @@ body.focus-outline-disabled :focus {
         font-size: 2.75rem; /* Adjust font size for small screens */
     }
 }
-
