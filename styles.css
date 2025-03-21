@@ -2559,29 +2559,23 @@ body.focus-outline-disabled :focus {
     color: var(--text-color); /* Ensure text color works in both light and dark mode */
 }
 
-/* Air quality levels color coding */
-.aqi-good {
-    color: #2ecc71; /* Green for good */
+/* Air Quality */
+.aqi-good { color: green; }
+.aqi-moderate { color: yellow; }
+.aqi-sensitive { color: orange; }
+.aqi-unhealthy { color: red; }
+.aqi-very-unhealthy { color: purple; }
+.aqi-hazardous { color: maroon; }
+
+/* Bold Labels */
+label b {
+    font-weight: bold;
 }
 
-.aqi-moderate {
-    color: #f39c12;
-}
-
-.aqi-sensitive {
-    color: #e67e22;
-}
-
-.aqi-unhealthy {
-    color: #e74c3c;
-}
-
-.aqi-very-unhealthy {
-    color: #c0392b;
-}
-
-.aqi-hazardous {
-    color: #8e44ad;
+/* Separator line */
+hr {
+    border: 1px solid #ddd;
+    margin: 20px 0;
 }
 
 /* 3-Day forecast section */
