@@ -48,8 +48,8 @@ const weatherModule = {
                          alt="${current.condition.text}"
                          class="weather-icon">
                     <div class="temperature">
-                        <span class="temp-value">${current.temp_c}°C</span>
-                        <span class="feels-like">Feels like ${current.feelslike_c}°C</span>
+                        <span class="temp-value">${current.temp_f}°F</span>
+                        <span class="feels-like">Feels like ${current.feelslike_f}°F</span>
                     </div>
                 </div>
                 <div class="location-info">
@@ -63,7 +63,7 @@ const weatherModule = {
                     </div>
                     <div class="detail">
                         <span class="label">Wind</span>
-                        <span class="value">${current.wind_kph} km/h</span>
+                        <span class="value">${current.wind_mph} mph</span>
                     </div>
                     <div class="detail">
                         <span class="label">UV Index</span>
