@@ -2466,18 +2466,18 @@ body.focus-outline-disabled :focus {
     transition: all 0.3s ease; /* Smooth transitions for theme changes */
 }
 
-/* Weather Content Layout */
+/* Weather Section Layout */
 .weather-content {
     display: flex;
-    flex-direction: column; /* Stack content vertically */
-    gap: 2rem; /* More spacing between sections for better organization */
-    align-items: center; /* Center-align content */
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    gap: 2rem; /* Space between items */
+    justify-content: space-between; /* Distribute items evenly */
 }
 
 /* Weather Header */
 .weather-header {
     text-align: center; /* Center-align header text */
-    margin-bottom: 1.5rem; /* Add space below the header */
+    width: 100%; /* Ensure the header spans the full width */
 }
 
 /* Location Info */
@@ -2579,6 +2579,27 @@ body.focus-outline-disabled :focus {
     font-weight: 500; /* Medium weight for readability */
 }
 
+/* Air Quality, Sun & Moon, and 3-Day Forecast */
+.weather-extra {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three-column layout */
+    gap: 1.5rem; /* Space between items */
+    padding: 1.5rem; /* Inner padding */
+    background: var(--content-bg); /* Matches the section background */
+    border-radius: 12px; /* Smooth rounded corners */
+    width: 100%; /* Full width */
+    max-width: 800px; /* Limit max width */
+}
+
+/* Air Quality, Sun & Moon, and 3-Day Forecast Item */
+.extra-item {
+    display: flex;
+    flex-direction: column; /* Stack label and value */
+    align-items: center; /* Center-align content */
+    text-align: center; /* Align text */
+    gap: 0.5rem; /* Space between label and value */
+}
+
 /* Loading Spinner */
 .loading-spinner {
     border: 3px solid var(--border-color); /* Matches site's border color */
@@ -2602,14 +2623,16 @@ body.focus-outline-disabled :focus {
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .weather-details {
+    .weather-details,
+    .weather-extra {
         grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
         max-width: 100%; /* Full width on smaller screens */
     }
 }
 
 @media (max-width: 480px) {
-    .weather-details {
+    .weather-details,
+    .weather-extra {
         grid-template-columns: 1fr; /* Single column for phones */
     }
     .temp-value {
