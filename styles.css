@@ -2461,6 +2461,7 @@ body.focus-outline-disabled :focus {
     border-radius: 10px;
     box-shadow: 0 4px 8px var(--shadow-color);
     margin-top: 20px;
+    margin-bottom: 20px; /* Add space at the bottom */
 }
 
 /* Weather header styling */
@@ -2511,6 +2512,7 @@ body.focus-outline-disabled :focus {
     display: flex;
     flex-wrap: wrap;
     margin-top: 10px;
+    margin-bottom: 20px; /* Add space at the bottom */
 }
 
 .weather-details .detail {
@@ -2530,9 +2532,10 @@ body.focus-outline-disabled :focus {
 /* Air quality section styling */
 .air-quality-section {
     margin-top: 20px;
-    background-color: #f7f7f7;
     padding: 15px;
     border-radius: 8px;
+    background-color: var(--card-bg); /* Make it match the dark mode */
+    margin-bottom: 20px; /* Add space at the bottom */
 }
 
 /* Air Quality Index (AQI) value styling */
@@ -2550,7 +2553,7 @@ body.focus-outline-disabled :focus {
 .air-quality-section .aqi-value .value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: var(--text-color);
+    color: var(--text-color); /* Ensure text color works in both light and dark mode */
 }
 
 /* Air quality levels color coding */
@@ -2581,6 +2584,7 @@ body.focus-outline-disabled :focus {
 /* 3-Day forecast section */
 .forecast-section {
     margin-top: 30px;
+    margin-bottom: 20px; /* Add space at the bottom */
 }
 
 .forecast-container {
@@ -2635,9 +2639,10 @@ body.focus-outline-disabled :focus {
 /* Astronomy section */
 .astronomy-section {
     margin-top: 30px;
-    background-color: #f7f7f7;
     padding: 15px;
     border-radius: 8px;
+    background-color: var(--card-bg); /* Make it match dark mode */
+    margin-bottom: 20px; /* Add space at the bottom */
 }
 
 .astronomy-details {
