@@ -1,6 +1,6 @@
 // Weather Module
 const weatherModule = {
-    API_KEY: '63267bdce7584921903213518252103', // Replace with your WeatherAPI.com key
+    API_KEY: '63267bdce7584921903213518252103', // Your WeatherAPI.com key
 
     init() {
         this.weatherSection = document.querySelector('.weather-section');
@@ -24,7 +24,9 @@ const weatherModule = {
                 `https://api.weatherapi.com/v1/current.json?key=${this.API_KEY}&q=${lat},${lon}&aqi=yes`
             );
 
-            if (!response.ok) throw new Error('Weather data fetch failed');
+            if (!response.ok) {
+                throw new Error('Weather data fetch failed');
+            }
 
             const data = await response.json();
             this.updateDisplay(data);
@@ -70,7 +72,7 @@ const weatherModule = {
                 </div>
                 ${current.air_quality ? `
                 <div class="air-quality">
-                    <span class="label">Air Quality (US EPA)</span>
+                    <span class="label">Air Quality</span>
                     <span class="value">${this.getAirQualityText(current.air_quality["us-epa-index"])}</span>
                 </div>
                 ` : ''}
@@ -82,7 +84,7 @@ const weatherModule = {
         const aqiTexts = {
             1: 'Good',
             2: 'Moderate',
-            3: 'Unhealthy for sensitive groups',
+            3: 'Unhealthy for sensitive',
             4: 'Unhealthy',
             5: 'Very Unhealthy',
             6: 'Hazardous'
@@ -124,3 +126,9 @@ const weatherModule = {
         `;
     }
 };
+
+// Add this to your existing initialization code
+document.addEventListener('DOMContentLoaded', () => {
+    // Your existing initializations
+    weatherModule.init();
+});
