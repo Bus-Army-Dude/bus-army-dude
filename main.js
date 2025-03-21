@@ -126,9 +126,9 @@ const weatherModule = {
                 <h3>Air Quality</h3>
                 <div class="aqi-value">
                     <span class="label"><b>EPA Index:</b></span>
-                    <span class="value ${this.getAirQualityClass(curr.air_quality["us-epa-index"])}">
-                        ${this.getAirQualityText(curr.air_quality["us-epa-index"])}
-                    </span>
+                <span class="value ${this.getAirQualityClass(curr.air_quality["us-epa-index"])}">
+                    ${this.getAirQualityText(curr.air_quality["us-epa-index"])}
+                </span>
                 </div>
             </div>
             ` : ''}
