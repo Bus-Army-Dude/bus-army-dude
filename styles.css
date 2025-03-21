@@ -2452,13 +2452,14 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* Enhanced Weather Styles */
+/* Add this at the beginning of your weather styles */
 .weather-section {
-    background: var(--card-bg);
+    background: var(--bg); /* Match your content background */
+    border: 1px solid var(--border); /* Add the border like other sections */
     border-radius: 16px;
     padding: 1.5rem;
     margin: 1rem auto;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--shadow); /* Use your site's shadow variable */
     max-width: 600px;
     transition: all 0.3s ease;
 }
