@@ -2452,6 +2452,7 @@ body.focus-outline-disabled :focus {
     }
 }
 
+/* Weather Styles */
 .weather-section {
     background: var(--content-bg);
     border-radius: 16px;
@@ -2475,6 +2476,7 @@ body.focus-outline-disabled :focus {
 .weather-icon {
     width: 64px;
     height: 64px;
+    filter: var(--icon-filter); /* This will match your theme */
 }
 
 .temperature {
@@ -2522,6 +2524,7 @@ body.focus-outline-disabled :focus {
 .weather-error {
     text-align: center;
     color: var(--text-color);
+    padding: 1rem;
 }
 
 .retry-button {
@@ -2537,4 +2540,32 @@ body.focus-outline-disabled :focus {
 
 .retry-button:hover {
     background: var(--hover-color);
+}
+
+.loading-spinner {
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--accent-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .weather-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .weather-details {
+        grid-template-columns: 1fr;
+    }
 }
