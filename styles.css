@@ -2454,11 +2454,12 @@ body.focus-outline-disabled :focus {
 
 /* Weather Styles */
 .weather-section {
-    background: var(--content-bg);
+    background: var(--card-bg);
     border-radius: 16px;
     padding: 1.5rem;
-    margin: 1rem 0;
-    box-shadow: 0 4px 15px var(--shadow-color);
+    margin: 1rem auto;
+    box-shadow: var(--card-shadow);
+    max-width: 400px;
     transition: all 0.3s ease;
 }
 
@@ -2477,7 +2478,6 @@ body.focus-outline-disabled :focus {
 .weather-icon {
     width: 64px;
     height: 64px;
-    filter: var(--icon-filter);
 }
 
 .temperature {
@@ -2488,12 +2488,12 @@ body.focus-outline-disabled :focus {
 .temp-value {
     font-size: 2.5rem;
     font-weight: bold;
-    color: var(--text-color);
+    color: var(--text);
 }
 
 .feels-like {
     font-size: 0.9rem;
-    color: var(--secondary-text);
+    color: var(--text-secondary);
 }
 
 .location-info {
@@ -2504,12 +2504,12 @@ body.focus-outline-disabled :focus {
 }
 
 .condition-text {
-    color: var(--text-color);
+    color: var(--text);
     font-size: 1.1rem;
 }
 
 .location-name {
-    color: var(--secondary-text);
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
@@ -2518,7 +2518,7 @@ body.focus-outline-disabled :focus {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border);
 }
 
 .detail {
@@ -2530,12 +2530,12 @@ body.focus-outline-disabled :focus {
 
 .detail .label {
     font-size: 0.9rem;
-    color: var(--secondary-text);
+    color: var(--text-secondary);
 }
 
 .detail .value {
     font-size: 1.1rem;
-    color: var(--text-color);
+    color: var(--text);
     font-weight: 500;
 }
 
@@ -2544,12 +2544,12 @@ body.focus-outline-disabled :focus {
     flex-direction: column;
     align-items: center;
     padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border);
 }
 
 .loading-spinner {
-    border: 3px solid var(--border-color);
-    border-top: 3px solid var(--accent-color);
+    border: 3px solid var(--border);
+    border-top: 3px solid var(--accent);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -2564,11 +2564,11 @@ body.focus-outline-disabled :focus {
 
 .weather-error {
     text-align: center;
-    color: var(--text-color);
+    color: var(--text);
 }
 
 .retry-button {
-    background: var(--accent-color);
+    background: var(--accent);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -2579,18 +2579,18 @@ body.focus-outline-disabled :focus {
 }
 
 .retry-button:hover {
-    background: var(--hover-color);
+    opacity: 0.9;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .weather-details {
-        grid-template-columns: repeat(2, 1fr);
+    .weather-section {
+        margin: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     .weather-details {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
