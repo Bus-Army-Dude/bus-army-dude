@@ -1,5 +1,5 @@
 // Weather functionality to add to your existing script
-const WEATHER_API_KEY = 'YOUR_API_KEY'; // Replace with your OpenWeather API key
+const WEATHER_API_KEY = 'ebeec5fc4654e84d868f03b3ee28d73a'; // Replace with your OpenWeather API key
 
 // Add this to your existing initialization
 function initializePage() {
