@@ -2559,13 +2559,30 @@ body.focus-outline-disabled :focus {
     color: var(--text-color); /* Ensure text color works in both light and dark mode */
 }
 
-/* Air Quality */
-.aqi-good { color: green; }
-.aqi-moderate { color: yellow; }
-.aqi-sensitive { color: orange; }
-.aqi-unhealthy { color: red; }
-.aqi-very-unhealthy { color: purple; }
-.aqi-hazardous { color: maroon; }
+/* Air Quality Classes */
+.aqi-good {
+    color: green;  /* Good air quality (EPA Index 1) */
+}
+
+.aqi-moderate {
+    color: yellow;  /* Moderate air quality (EPA Index 2) */
+}
+
+.aqi-sensitive {
+    color: orange;  /* Unhealthy for Sensitive Groups (EPA Index 3) */
+}
+
+.aqi-unhealthy {
+    color: red;  /* Unhealthy air quality (EPA Index 4) */
+}
+
+.aqi-very-unhealthy {
+    color: purple;  /* Very Unhealthy air quality (EPA Index 5) */
+}
+
+.aqi-hazardous {
+    color: maroon;  /* Hazardous air quality (EPA Index 6) */
+}
 
 /* Bold Labels */
 label b {
