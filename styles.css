@@ -2452,255 +2452,162 @@ body.focus-outline-disabled :focus {
     }
 }
 
-.weather-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-    width: 100%;
-}
-
+/* Weather Section Container */
 .weather-section {
-    background: var(--bg); /* Match your content background */
-    border: 1px solid var(--border); /* Add the border like other sections */
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin: 1rem auto;
-    box-shadow: var(--shadow); /* Use your site's shadow variable */
-    max-width: 600px;
-    transition: all 0.3s ease;
+    background: var(--content-bg); /* Dynamic background based on mode */
+    border: 1px solid var(--border-color); /* Matches the site's borders */
+    border-radius: 16px; /* Smooth rounded corners */
+    padding: 1.5rem; /* Inner spacing for content */
+    margin: 1rem auto; /* Centered with consistent margin */
+    box-shadow: var(--shadow-color); /* Consistent shadow effect */
+    max-width: 600px; /* Restrict maximum width for readability */
+    width: calc(100% - 2rem); /* Flexible width with responsive margins */
+    box-sizing: border-box; /* Include padding and border in width */
+    transition: all 0.3s ease; /* Smooth transitions for theme changes */
 }
 
+/* Weather Content Layout */
 .weather-content {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    flex-direction: column; /* Stack content vertically */
+    gap: 1.5rem; /* Even spacing between items */
+    align-items: stretch; /* Ensure content stretches uniformly */
 }
 
+/* Weather Header */
 .weather-header {
-    text-align: center;
+    text-align: center; /* Center-align header text */
 }
 
+/* Location Info */
 .location-info h2 {
-    color: var(--text);
-    margin: 0;
-    font-size: 1.5rem;
+    color: var(--text-color); /* Matches text color for mode */
+    margin: 0; /* Remove extra margin */
+    font-size: 1.5rem; /* Adjusted for readability */
 }
 
+/* Last Updated Info */
 .last-updated {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+    color: var(--secondary-text); /* Softer color for secondary info */
+    font-size: 0.9rem; /* Subtle text size */
 }
 
+/* Primary Weather Display */
 .weather-primary {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center-align items */
+    gap: 1rem; /* Space between items */
 }
 
+/* Current Temperature Display */
 .current-temp {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    align-items: center; /* Align icon and text */
+    gap: 1rem; /* Space between icon and text */
 }
 
+/* Weather Icon */
 .weather-icon {
-    width: 64px;
+    width: 64px; /* Fixed size for weather icon */
     height: 64px;
 }
 
+/* Temperature Section */
 .temperature {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack temperature info */
 }
 
+/* Temperature Value */
 .temp-value {
-    font-size: 3rem;
-    font-weight: bold;
-    color: var(--text);
-    line-height: 1;
+    font-size: 3rem; /* Larger font for emphasis */
+    font-weight: bold; /* Highlight temperature */
+    color: var(--text-color); /* Match text color for mode */
+    line-height: 1; /* Compact line height */
 }
 
+/* Feels Like Text */
 .feels-like {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
+    font-size: 0.9rem; /* Smaller for secondary text */
+    color: var(--secondary-text); /* Softer color for secondary info */
 }
 
+/* Condition Text */
 .condition-text {
-    color: var(--text);
-    font-size: 1.2rem;
-    text-align: center;
+    color: var(--text-color); /* Matches primary text color */
+    font-size: 1.2rem; /* Medium size font */
+    text-align: center; /* Center the condition text */
 }
 
+/* Weather Details Section */
 .weather-details {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    padding: 1rem;
-    background: var(--card-bg-secondary);
-    border-radius: 12px;
+    grid-template-columns: repeat(3, 1fr); /* Three-column layout */
+    gap: 1rem; /* Space between items */
+    padding: 1rem; /* Inner padding */
+    background: var(--content-bg); /* Matches the section background */
+    border-radius: 12px; /* Smooth rounded corners */
 }
 
+/* Weather Detail Item */
 .detail {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.25rem;
+    flex-direction: column; /* Stack label and value */
+    align-items: center; /* Center-align content */
+    text-align: center; /* Align text */
+    gap: 0.25rem; /* Space between label and value */
 }
 
+/* Detail Label */
 .detail .label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
+    font-size: 0.9rem; /* Subtle size for labels */
+    color: var(--secondary-text); /* Softer color for labels */
 }
 
+/* Detail Value */
 .detail .value {
-    font-size: 1.1rem;
-    color: var(--text);
-    font-weight: 500;
+    font-size: 1.1rem; /* Slightly larger for emphasis */
+    color: var(--text-color); /* Match primary text color */
+    font-weight: 500; /* Medium weight for readability */
 }
 
-.air-quality-section,
-.astronomy-section,
-.forecast-section {
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-}
-
-.air-quality-section h3,
-.astronomy-section h3,
-.forecast-section h3 {
-    color: var(--text);
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.astronomy-details {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-.forecast-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-}
-
-.forecast-day {
-    background: var(--card-bg-secondary);
-    padding: 1rem;
-    border-radius: 12px;
-    text-align: center;
-    transition: transform 0.2s ease;
-}
-
-.forecast-day:hover {
-    transform: translateY(-2px);
-}
-
-.forecast-day .date {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-
-.forecast-icon {
-    width: 48px;
-    height: 48px;
-    margin: 0.5rem 0;
-}
-
-.forecast-temps {
-    margin: 0.5rem 0;
-    font-size: 1.1rem;
-}
-
-.forecast-temps .high {
-    color: var(--text);
-    font-weight: 500;
-}
-
-.forecast-temps .low {
-    color: var(--text-secondary);
-}
-
-.forecast-temps .separator {
-    color: var(--text-secondary);
-    margin: 0 0.25rem;
-}
-
-.aqi-good { color: #4caf50; }
-.aqi-moderate { color: #ff9800; }
-.aqi-sensitive { color: #fb8c00; }
-.aqi-unhealthy { color: #f44336; }
-.aqi-very-unhealthy { color: #9c27b0; }
-.aqi-hazardous { color: #7d1818; }
-
+/* Loading Spinner */
 .loading-spinner {
-    border: 3px solid var(--border);
-    border-top: 3px solid var(--accent);
-    border-radius: 50%;
+    border: 3px solid var(--border-color); /* Matches site's border color */
+    border-top: 3px solid var(--accent-color); /* Accent color for spinner */
+    border-radius: 50%; /* Circular spinner */
     width: 40px;
     height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
+    animation: spin 1s linear infinite; /* Smooth spinning animation */
+    margin: 0 auto 1rem; /* Center spinner with bottom margin */
 }
 
+/* Keyframes for Spinner Animation */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.weather-error {
-    text-align: center;
-    color: var(--text);
-    padding: 2rem;
-}
-
-.retry-button {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    margin-top: 0.5rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.retry-button:hover {
-    opacity: 0.9;
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .weather-section {
-        margin: 1rem;
+        margin: 1rem; /* Reduce outer margin */
     }
-    
     .weather-details {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .forecast-container {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
-    
-    .astronomy-details {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
     }
 }
 
 @media (max-width: 480px) {
     .weather-details {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Single column for phones */
     }
-    
     .temp-value {
-        font-size: 2.5rem;
+        font-size: 2.5rem; /* Adjust font size for small screens */
     }
 }
