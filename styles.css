@@ -2595,37 +2595,47 @@ hr {
     margin: 20px 0;
 }
 
-/* 3-Day forecast section */
+/* 7-Day Forecast Section */
 .forecast-section {
     margin-top: 30px;
-    margin-bottom: 20px; /* Add space at the bottom */
-    border-bottom: 2px solid var(--separator-color); /* Add line separator */
+    margin-bottom: 20px; /* Space at the bottom */
+    border-bottom: 2px solid var(--separator-color); /* Line separator */
 }
 
+/* Container for the forecast, allowing it to wrap */
 .forecast-container {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribute items evenly */
+    gap: 15px; /* Add space between forecast cards */
 }
 
+/* Individual forecast day card */
 .forecast-day {
     background-color: var(--content-bg);
     padding: 15px;
     border-radius: 8px;
-    width: 30%;
+    width: 100%; /* Full width on small screens */
+    max-width: calc(100% / 7 - 15px); /* Adjust card width for 7 cards with gap */
     text-align: center;
+    box-sizing: border-box; /* Include padding in width calculation */
+    margin-bottom: 10px; /* Add space between cards */
 }
 
+/* Styling the date */
 .forecast-day .date {
     font-size: 1rem;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
+/* Weather icons for forecast */
 .forecast-icon {
     width: 40px;
     height: 40px;
 }
 
+/* Temperature ranges */
 .forecast-temps {
     font-size: 1.2rem;
     margin: 10px 0;
@@ -2639,6 +2649,7 @@ hr {
     color: #3498db;
 }
 
+/* Additional forecast details */
 .forecast-details {
     font-size: 0.9rem;
 }
@@ -2651,78 +2662,21 @@ hr {
     color: var(--secondary-text);
 }
 
-/* Astronomy section */
-.astronomy-section {
-    margin-top: 30px;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: var(--card-bg); /* Make it match dark mode */
-    margin-bottom: 20px; /* Add space at the bottom */
-    border-bottom: 2px solid var(--separator-color); /* Add line separator */
-}
-
-.astronomy-details {
-    display: flex;
-    justify-content: space-between;
-}
-
-.sun-times,
-.moon-info {
-    width: 45%;
-}
-
-.sun-times .detail,
-.moon-info .detail {
-    font-size: 1rem;
-    margin-bottom: 5px;
-}
-
-/* Bold styling for specific Sun and Moon details */
-.sun-times .label,
-.moon-info .label {
-    font-weight: bold;
-}
-
-/* Error handling and loading state */
-.weather-error, .weather-loading {
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-.weather-error .retry-button, .weather-loading .retry-button {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.weather-error .retry-button:hover, .weather-loading .retry-button:hover {
-    background-color: #2980b9;
-}
-
-/* Button styling for retry */
-.retry-button {
-    font-size: 1rem;
-    font-weight: bold;
-}
-
 /* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .forecast-day {
+        max-width: calc(100% / 4 - 15px); /* 4 cards per row on medium screens */
+    }
+}
+
 @media (max-width: 768px) {
-    .weather-details,
-    .weather-extra {
-        grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
-        max-width: 100%; /* Full width on smaller screens */
+    .forecast-day {
+        max-width: calc(100% / 2 - 15px); /* 2 cards per row on smaller screens */
     }
 }
 
 @media (max-width: 480px) {
-    .weather-details,
-    .weather-extra {
-        grid-template-columns: 1fr; /* Single column for phones */
-    }
-    .temp-value {
-        font-size: 2.75rem; /* Adjust font size for small screens */
+    .forecast-day {
+        max-width: 100%; /* Stack cards vertically on phones */
     }
 }
