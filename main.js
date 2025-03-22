@@ -61,7 +61,7 @@ const weatherModule = {
     displayForecast(dailyForecast) {
         const forecastContainer = document.querySelector('.forecast-container');
         forecastContainer.innerHTML = '';
-        
+
         dailyForecast.forEach(day => {
             const date = new Date(day.dt * 1000);
             const iconClass = this.ICONS[day.weather[0].main] || 'wi wi-na'; // Default icon if no match
@@ -129,7 +129,7 @@ const weatherModule = {
             <div class="weather-content">
                 <div class="weather-header">
                     <div class="location-info">
-                        <h2>${data.name}, ${data.sys.country}</h2>
+                        <h2 class="location-name">${data.name}, ${data.sys.country}</h2>
                         <span class="last-updated">Updated: ${new Date().toLocaleTimeString()}</span>
                     </div>
                 </div>
@@ -164,7 +164,12 @@ const weatherModule = {
     },
 
     showLoading() {
-        this.weatherSection.innerHTML = 'Loading...';
+        this.weatherSection.innerHTML = `
+            <div class="weather-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading weather data...</p>
+            </div>
+        `;
     },
 
     handleLocationError() {
