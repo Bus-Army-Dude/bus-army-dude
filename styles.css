@@ -2452,37 +2452,38 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* General Weather Section Styling */
+/* Modern General Weather Section Styling */
 .weather-container {
-    background-color: var(--content-bg);
-    color: var(--text-color);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: #f7f7f7; /* Lighter background */
+    color: #333; /* Darker text */
+    padding: 30px; /* Slightly more padding */
+    border-radius: 15px; /* Slightly more rounded corners */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
     max-width: 100%;
     width: 100%;
-    margin: auto;
+    margin: 30px auto; /* Added some top/bottom margin */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 25px; /* Increased gap */
     transition: all 0.3s ease;
+    border: 1px solid #eee; /* Subtle border */
 }
 
 .weather-container h2 {
-    font-size: 2rem;
+    font-size: 2.2rem; /* Slightly larger heading */
     font-weight: 600;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* Increased margin */
 }
 
 .weather-icon {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 15px;
+    width: 100px; /* Slightly larger icon */
+    height: 100px;
+    margin-bottom: 20px; /* Increased margin */
 }
 
-/* Temperature Section */
+/* Modern Temperature Section */
 .temp-container {
     display: flex;
     flex-direction: column;
@@ -2491,105 +2492,112 @@ body.focus-outline-disabled :focus {
 }
 
 .temp-container .current-temp {
-    font-size: 3.5rem;
+    font-size: 4rem; /* Larger current temperature */
     font-weight: bold;
-    margin-bottom: 15px;
-    color: var(--accent-color);
+    margin-bottom: 20px; /* Increased margin */
+    color: #2980b9; /* A more modern blue */
 }
 
 .temp-container .temp-range {
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Slightly larger range text */
     font-weight: 500;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* Increased margin */
+    color: #777; /* Slightly lighter text for range */
 }
 
 .temp-range .low {
-    color: #00bfff; /* Cool color for low temp */
+    color: #1e90ff; /* Brighter blue for low temp */
 }
 
 .temp-range .high {
-    color: #ff4500; /* Warm color for high temp */
+    color: #ff6347; /* Tomato color for high temp */
 }
 
-/* Weather Details */
+/* Modern Weather Details */
 .weather-details {
     display: flex;
-    justify-content: space-between;
-    gap: 25px;
+    justify-content: center; /* Centered details */
+    gap: 20px; /* Adjusted gap */
     width: 100%;
-    max-width: 450px;
-    margin-top: 20px;
-    font-size: 1rem;
+    max-width: 500px; /* Increased max width */
+    margin-top: 25px; /* Increased margin */
+    font-size: 1.1rem; /* Slightly larger font */
     font-weight: 500;
+    flex-wrap: wrap; /* Allow details to wrap on smaller screens */
 }
 
 .weather-details .detail {
-    background-color: var(--content-bg);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff; /* White detail boxes */
+    padding: 18px; /* Increased padding */
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05); /* Softer shadow */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex: 1 1 140px; /* Distribute space more evenly */
 }
 
 .weather-details .detail .label {
-    color: var(--secondary-text);
+    color: #555; /* Darker secondary text */
 }
 
 .weather-details .detail .value {
-    font-weight: bold;
-    color: var(--text-color);
+    font-weight: 600; /* Slightly bolder value */
+    color: #333;
 }
 
-/* Location Input and Button */
+/* Modern Location Input and Button */
 .location-input-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px; /* Increased gap */
+    margin-top: 30px; /* Increased margin */
+    width: 100%; /* Take full width */
+    max-width: 400px; /* Set a max width for the input area */
 }
 
 .location-input {
-    padding: 12px 20px;
-    font-size: 1rem;
-    width: 250px;
-    border-radius: 8px;
-    border: 2px solid var(--border-color);
-    background-color: var(--content-bg);
-    color: var(--text-color);
+    padding: 14px 22px; /* Increased padding */
+    font-size: 1.1rem; /* Larger font */
+    width: 100%; /* Input takes available width */
+    border-radius: 10px; /* More rounded corners */
+    border: 1px solid #ccc; /* Lighter border */
+    background-color: #fff; /* White background */
+    color: #333;
     transition: border-color 0.3s ease;
 }
 
 .location-input:focus {
-    border-color: var(--accent-color);
+    border-color: #2980b9; /* Modern focus color */
     outline: none;
+    box-shadow: 0px 0px 8px rgba(41, 128, 185, 0.3); /* Subtle focus shadow */
 }
 
 .get-weather-btn {
-    padding: 12px 20px;
-    font-size: 1rem;
-    background-color: var(--accent-color);
+    padding: 14px 24px; /* Increased padding */
+    font-size: 1.1rem; /* Larger font */
+    background-color: #2980b9; /* Modern button color */
     color: #fff;
-    border-radius: 8px;
+    border-radius: 10px; /* More rounded corners */
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
 }
 
 .get-weather-btn:hover {
-    background-color: var(--hover-color);
+    background-color: #1c6ea4; /* Darker hover color */
 }
 
-/* Loading Spinner */
+/* Modern Loading Spinner */
 .weather-loading .loading-spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--accent-color);
+    border: 5px solid #f3f3f3; /* Slightly thicker border */
+    border-top: 5px solid #2980b9; /* Modern spinner color */
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 0.6s linear infinite;
-    margin: 0 auto;
+    width: 50px; /* Slightly larger spinner */
+    height: 50px;
+    animation: spin 0.8s linear infinite; /* Slightly slower spin */
+    margin: 30px auto; /* Increased margin */
 }
 
 @keyframes spin {
@@ -2597,64 +2605,86 @@ body.focus-outline-disabled :focus {
     100% { transform: rotate(360deg); }
 }
 
-/* Responsive Design */
+/* Responsive Design - Modernized */
 @media (max-width: 1200px) {
     .temp-container .current-temp {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
 
     .weather-container h2 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
 
     .weather-details {
-        flex-direction: column;
+        justify-content: space-around; /* More even distribution */
     }
 
     .location-input {
-        width: 70%;
+        width: 80%;
     }
 
     .get-weather-btn {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 }
 
 @media (max-width: 768px) {
     .weather-container {
-        padding: 20px;
+        padding: 25px;
+        margin: 20px auto;
     }
 
     .temp-container .current-temp {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
 
     .weather-details {
         flex-direction: column;
+        align-items: center; /* Center details on smaller screens */
+    }
+
+    .weather-details .detail {
+        width: 80%; /* Make detail boxes wider */
+        margin-bottom: 15px; /* Add margin between detail items */
+    }
+
+    .location-input-container {
+        flex-direction: column; /* Stack input and button */
+        align-items: center;
+        gap: 10px;
+    }
+
+    .location-input {
+        width: 90%;
+    }
+
+    .get-weather-btn {
+        width: 90%;
     }
 }
 
 @media (max-width: 480px) {
     .temp-container .current-temp {
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
 
     .weather-container h2 {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
 
     .location-input {
-        font-size: 0.9rem;
-        padding: 10px;
-        width: 65%;
+        font-size: 1rem;
+        padding: 12px;
     }
 
     .get-weather-btn {
-        font-size: 0.9rem;
-        padding: 10px 15px;
+        font-size: 1rem;
+        padding: 12px 20px;
     }
 
     .weather-details .detail {
-        font-size: 0.9rem;
+        font-size: 1rem;
+        width: 95%;
+        padding: 15px;
     }
 }
