@@ -1,17 +1,22 @@
-// Function to fetch weather data from the API
 async function fetchWeatherData(location) {
     const apiKey = '34ae2d4a53544561a07150106252203';  // Replace with your actual API key
     const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=7&aqi=yes`;
 
     try {
         const response = await fetch(apiUrl);
+        
+        // Log the response for debugging
+        console.log('Response:', response);
+
         const data = await response.json();
+
+        // Log the returned data for debugging
+        console.log('Data:', data);
 
         if (data.error) {
             throw new Error(data.error.message);
         }
 
-        // Update UI with the fetched data
         updateWeatherData(data);
     } catch (error) {
         console.error('Error fetching weather data:', error);
