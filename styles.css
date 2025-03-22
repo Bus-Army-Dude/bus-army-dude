@@ -2455,21 +2455,28 @@ body.focus-outline-disabled :focus {
 /* General Weather Section Styling */
 .weather-section {
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color); /* Adjust based on theme */
-    color: var(--text-color); /* Adjust text color */
-    padding: 20px;
-    border-radius: 10px;
+    background-color: var(--bg-color, #ffffff); /* Default to white if theme variable is missing */
+    color: var(--text-color, #333333); /* Default to dark gray */
+    padding: 25px;
+    border-radius: 12px;
     max-width: 100%;
     margin: 20px auto;
-    box-shadow: 0px 4px 15px var(--shadow-color); /* Soft shadow */
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1); /* Softer shadow for a modern look */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-section:hover {
+    transform: translateY(-5px); /* Subtle hover effect */
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Header Section */
 .weather-header {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 15px;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
     text-align: center;
+    color: var(--accent-color, #007bff); /* Accent color for emphasis */
 }
 
 /* Weather Primary Info */
@@ -2477,120 +2484,146 @@ body.focus-outline-disabled :focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
-    gap: 10px;
+    margin-bottom: 25px;
+    gap: 15px;
 }
 
 .weather-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1)); /* Add depth to the icon */
 }
 
 .temperature {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: bold;
-    color: var(--accent-color);
+    color: var(--accent-color, #007bff);
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
 }
 
 .temperature.low {
-    color: #00bfff; /* Cool color for low temp */
+    color: #00bfff; /* Cool blue for low temp */
 }
 
 .temperature.high {
-    color: #ff4500; /* Warm color for high temp */
+    color: #ff4500; /* Warm orange for high temp */
 }
 
 /* Weather Details */
 .weather-details {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    margin-top: 25px;
 }
 
 .detail {
     font-size: 1rem;
-    background-color: var(--content-bg);
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    background-color: var(--content-bg, #f9f9f9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detail:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.detail .label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-color, #333333);
+}
+
+.detail .value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent-color, #007bff);
 }
 
 /* Air Quality Section */
 .air-quality {
-    margin-top: 20px;
-    padding: 15px;
+    margin-top: 30px;
+    padding: 20px;
     border-radius: 12px;
-    background-color: #f0f4ff;
-    color: var(--text-color);
+    background-color: var(--content-bg, #f0f4ff);
+    color: var(--text-color, #333333);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .air-quality h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--accent-color, #007bff);
 }
 
 .air-quality span {
-    font-weight: bold;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 /* Input for Location */
 .location-input-container {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 .location-input {
-    padding: 12px 20px;
+    padding: 15px 20px;
     font-size: 1rem;
     width: 70%;
-    max-width: 350px;
-    border-radius: 8px;
-    border: 2px solid var(--border-color);
-    transition: border-color 0.3s ease;
-    background-color: var(--content-bg);
-    color: var(--text-color);
+    max-width: 400px;
+    border-radius: 10px;
+    border: 2px solid var(--border-color, #ddd);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--content-bg, #ffffff);
+    color: var(--text-color, #333333);
 }
 
 .location-input:focus {
-    border-color: var(--accent-color);
+    border-color: var(--accent-color, #007bff);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
     outline: none;
 }
 
 .get-weather-btn {
-    padding: 12px 20px;
+    padding: 15px 25px;
     font-size: 1rem;
-    background-color: var(--accent-color);
-    color: #fff;
+    background-color: var(--accent-color, #007bff);
+    color: #ffffff;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .get-weather-btn:hover {
-    background-color: var(--hover-color);
+    background-color: var(--hover-color, #0056b3);
+    transform: translateY(-3px);
 }
 
 /* Loading Spinner */
 .weather-loading .loading-spinner {
     border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--accent-color);
+    border-top: 4px solid var(--accent-color, #007bff);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     animation: spin 0.6s linear infinite;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 @keyframes spin {
@@ -2602,41 +2635,44 @@ body.focus-outline-disabled :focus {
 .forecast-container {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 20px;
+    margin-top: 30px;
     flex-wrap: wrap;
 }
 
 .forecast-day {
-    background-color: var(--content-bg);
-    padding: 15px;
-    border-radius: 10px;
+    background-color: var(--content-bg, #ffffff);
+    padding: 20px;
+    border-radius: 12px;
     width: 100%;
-    max-width: 150px;
+    max-width: 160px;
     text-align: center;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .forecast-day:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .forecast-day .date {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
 .forecast-day .temp {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-top: 8px;
+    margin-top: 10px;
+    color: var(--accent-color, #007bff);
 }
 
 .forecast-day .icon {
-    width: 50px;
-    height: 50px;
-    margin-top: 10px;
+    width: 60px;
+    height: 60px;
+    margin-top: 15px;
 }
 
 /* Responsive Design */
@@ -2647,11 +2683,11 @@ body.focus-outline-disabled :focus {
     }
 
     .temperature {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
 
     .weather-header {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
 }
 
@@ -2667,7 +2703,7 @@ body.focus-outline-disabled :focus {
 
     .forecast-container {
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
     }
     
     .forecast-day {
@@ -2677,21 +2713,21 @@ body.focus-outline-disabled :focus {
 
 @media (max-width: 480px) {
     .temperature {
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
 
     .weather-header {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
 
     .location-input {
         font-size: 0.9rem;
-        padding: 10px;
+        padding: 12px;
     }
 
     .get-weather-btn {
         font-size: 0.9rem;
-        padding: 10px 15px;
+        padding: 12px 20px;
     }
 
     .detail {
@@ -2699,7 +2735,7 @@ body.focus-outline-disabled :focus {
     }
 
     .forecast-day {
-        padding: 8px;
+        padding: 12px;
     }
 }
 
