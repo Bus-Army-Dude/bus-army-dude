@@ -2462,8 +2462,6 @@ body.focus-outline-disabled :focus {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     margin: 20px 0;
     border-bottom: 3px solid var(--separator-color, #e0e0e0);
-    /* Ensure proper spacing at the bottom */
-    margin-bottom: 40px;
 }
 
 /* Weather header styling */
@@ -2481,6 +2479,9 @@ body.focus-outline-disabled :focus {
     display: flex;
     align-items: center;
     margin-bottom: 25px;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--separator-color, #e0e0e0);
+    padding-bottom: 20px;
 }
 
 .weather-primary .current-temp {
@@ -2510,7 +2511,7 @@ body.focus-outline-disabled :focus {
 }
 
 .temperature .temp-value {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
     color: var(--accent-color, #007bff);
 }
@@ -2526,7 +2527,6 @@ body.focus-outline-disabled :focus {
     flex-wrap: wrap;
     margin-top: 15px;
     margin-bottom: 25px;
-    border-bottom: 2px solid var(--separator-color, #e0e0e0);
     justify-content: space-between;
 }
 
@@ -2555,19 +2555,49 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     background-color: var(--content-bg, #f9f9f9);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Air Quality Status */
+/* Air Quality Status Circle */
+.air-quality-status {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.air-quality-status.good {
+    background-color: #28a745; /* Green */
+}
+
+.air-quality-status.moderate {
+    background-color: #ffc107; /* Yellow */
+}
+
+.air-quality-status.unhealthy {
+    background-color: #dc3545; /* Red */
+}
+
+.air-quality-status.very-unhealthy {
+    background-color: #6f42c1; /* Purple */
+}
+
+.air-quality-status.hazardous {
+    background-color: #343a40; /* Dark Gray */
+}
+
+/* Air Quality Overview */
 .air-quality-overview {
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--text-color, #212529);
-}
-
-.air-quality-overview span {
-    font-size: 1rem;
-    font-weight: normal;
-    color: var(--secondary-text, #6c757d);
 }
 
 /* Pollutant Details */
@@ -2602,32 +2632,6 @@ body.focus-outline-disabled :focus {
     font-size: 0.9rem;
     font-weight: bold;
     color: #495057;
-}
-
-/* Good/Moderate/Unhealthy Styling */
-.pollutant-rating.good {
-    color: #28a745; /* Green */
-    font-weight: bold;
-}
-
-.pollutant-rating.moderate {
-    color: #ffc107; /* Yellow */
-    font-weight: bold;
-}
-
-.pollutant-rating.unhealthy {
-    color: #dc3545; /* Red */
-    font-weight: bold;
-}
-
-.pollutant-rating.very-unhealthy {
-    color: #6f42c1; /* Purple */
-    font-weight: bold;
-}
-
-.pollutant-rating.hazardous {
-    color: #343a40; /* Dark Gray */
-    font-weight: bold;
 }
 
 /* Loading spinner */
@@ -2815,4 +2819,3 @@ body.focus-outline-disabled :focus {
         max-width: 100%;
     }
 }
-
