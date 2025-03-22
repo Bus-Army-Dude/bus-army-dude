@@ -9,6 +9,10 @@ async function fetchWeatherData(location) {
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
 
+  // Debugging DOM elements
+  console.log('DOM Element - Loading Spinner:', loadingSpinner);
+  console.log('DOM Element - Weather Content:', weatherContent);
+
   // Show loading spinner
   if (loadingSpinner && weatherContent) {
     loadingSpinner.style.display = 'block';
@@ -16,10 +20,11 @@ async function fetchWeatherData(location) {
   }
 
   try {
+    console.log('Fetching weather data for location:', location); // Debug location
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log('API Response:', data); // Debugging API response
+    console.log('API Response:', data); // Debug API response
 
     if (!data || !data.current || !data.forecast) {
       throw new Error('Weather data is incomplete or invalid.');
@@ -91,13 +96,12 @@ function updateDisplay(data) {
     pressureElement.textContent = data.current.pressure_in ? `${data.current.pressure_in} hPa` : 'N/A';
   }
   if (precipitationElement) {
-    const precipitationAmount = data.current.precip_mm || 0; // Amount in mm
     const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0; // Chance percentage
     const weatherCondition = data.current.condition.text || 'None';
 
     // Dynamically show precipitation based on data
     precipitationElement.textContent =
-      precipitationAmount > 0 || precipitationChance > 0
+      precipitationChance > 0
         ? `${precipitationChance}% chance (${weatherCondition})`
         : `None`;
   }
