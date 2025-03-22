@@ -15,28 +15,33 @@ async function fetchWeatherData(location) {
     }
 
     try {
-        console.log('Fetching weather data for location:', location); // Debug location
-        console.log('API Request URL:', url); // Debug request URL
+    console.log('Fetching weather for:', location);
 
-        const response = await fetch(url);
+    const response = await fetch(url); // Single fetch call
+    console.log('HTTP Response Status:', response.status);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    if (!response.ok) {
+        console.warn(`Failed for ${location}, falling back to default location.`);
+        // Avoid infinite recursion by checking if it's already the fallback
+        if (location !== 'New York, NY, USA') {
+            fetchWeatherData('New York, NY, USA');
+        } else {
+            throw new Error('Default location also failed.');
         }
-
-        const data = await response.json();
-
-        console.log('API Response:', data); // Debug full API response
-
-        if (!data || !data.current || !data.forecast) {
-            throw new Error('Weather data is incomplete or invalid.');
-        }
-
-        updateDisplay(data); // Pass data to update UI
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
-        displayError('Unable to load weather data. Please try again.');
+        return;
     }
+
+    const data = await response.json(); // Parse JSON response
+    console.log('API Response:', data); // Debug full API response
+
+    if (!data || !data.current || !data.forecast) {
+        throw new Error('Weather data is incomplete or invalid.');
+    }
+
+    updateDisplay(data); // Pass data to update the UI
+} catch (error) {
+    console.error('Error fetching weather data:', error);
+    displayError(`Unable to load weather data: ${error.message}`); // Provide detailed error message
 }
 
 // Function to update the HTML content with the weather data
