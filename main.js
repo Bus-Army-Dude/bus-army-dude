@@ -14,6 +14,9 @@ async function fetchWeatherData(location) {
     const response = await fetch(url);
     const data = await response.json();
 
+    // Log data to see the response
+    console.log(data);
+
     // Check if the response contains valid data
     if (data.error) {
       throw new Error(data.error.message);
@@ -54,7 +57,7 @@ function updateDisplay(data) {
   const condition = data.current.condition.text;
   const conditionIcon = data.current.condition.icon;
   
-  document.querySelector('.condition-text').innerHTML = `<i class="wi wi-na" style="background-image: url(${conditionIcon});"></i> ${condition}`;
+  document.querySelector('.condition-text').innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" /> ${condition}`;
 
   // Wind Speed, Humidity, and Pressure
   const windSpeed = data.current.wind_mph;
@@ -71,8 +74,8 @@ function updateDisplay(data) {
 
 // Function to update the Sun and Moon times section
 function updateSunMoon(data) {
-  const sunrise = new Date(data.location.localtime_epoch * 1000).toLocaleTimeString();
-  const sunset = new Date(data.location.localtime_epoch * 1000).toLocaleTimeString();
+  const sunrise = new Date(data.forecast.forecastday[0].astro.sunrise).toLocaleTimeString();
+  const sunset = new Date(data.forecast.forecastday[0].astro.sunset).toLocaleTimeString();
   
   const sunMoonSection = document.querySelector('.sun-moon-section');
   sunMoonSection.innerHTML = `
