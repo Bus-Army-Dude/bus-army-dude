@@ -84,7 +84,6 @@ function updateDisplay(data) {
   const humidityElement = document.querySelector('.weather-details .humidity .value');
   const pressureElement = document.querySelector('.weather-details .pressure .value');
   const precipitationElement = document.querySelector('.weather-details .precipitation .value');
-  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
 
   if (windSpeedElement) {
     windSpeedElement.textContent = data.current.wind_mph ? `${data.current.wind_mph} mph` : 'N/A';
@@ -105,14 +104,81 @@ function updateDisplay(data) {
         ? `${precipitationChance}% chance (${weatherCondition})`
         : `None`;
   }
-  if (airQualityElement && data.current.air_quality) {
-    const aqi = data.current.air_quality["us-epa-index"];
-    airQualityElement.textContent = aqi ? `AQI: ${aqi}` : 'N/A';
-  }
+
+  // Update Air Quality Section
+  updateAirQuality(data);
 
   // Update forecast and Sun/Moon data
   updateForecast(data.forecast.forecastday);
   updateSunMoon(data.forecast.forecastday[0].astro);
+}
+
+// Function to update the Air Quality section
+function updateAirQuality(data) {
+  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
+  const airQualityDetailsElement = document.querySelector('.air-quality-details'); // Ensure this exists in your HTML
+
+  if (data.current.air_quality) {
+    const airQualityIndex = data.current.air_quality["us-epa-index"];
+    const airQualityDescription = getAirQualityDescription(airQualityIndex);
+    const primaryPollutant = getPrimaryPollutant(data.current.air_quality);
+
+    // Overall Air Quality
+    airQualityElement.innerHTML = `
+      <strong>${airQualityDescription}</strong> (AQI: ${airQualityIndex}) <br>
+      Primary Pollutant: ${primaryPollutant}
+    `;
+
+    // Detailed Pollutant Information
+    const pollutants = [
+      { name: 'O3 (Ozone)', value: data.current.air_quality.o3 },
+      { name: 'CO (Carbon Monoxide)', value: data.current.air_quality.co },
+      { name: 'NO2 (Nitrogen Dioxide)', value: data.current.air_quality.no2 },
+      { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 },
+      { name: 'PM10 (Particulate Matter < 10µm)', value: data.current.air_quality.pm10 },
+      { name: 'PM2.5 (Particulate Matter < 2.5µm)', value: data.current.air_quality.pm2_5 },
+    ];
+
+    airQualityDetailsElement.innerHTML = pollutants.map(pollutant => `
+      <div>
+        <span><strong>${pollutant.name}:</strong></span>
+        <span>${pollutant.value.toFixed(2)} µg/m³</span>
+      </div>
+    `).join('');
+  } else {
+    airQualityElement.textContent = 'Air Quality data not available.';
+    airQualityDetailsElement.innerHTML = '';
+  }
+}
+
+// Helper function to get Air Quality Description
+function getAirQualityDescription(aqi) {
+  switch (aqi) {
+    case 1: return "Good";
+    case 2: return "Moderate";
+    case 3: return "Unhealthy for Sensitive Groups";
+    case 4: return "Unhealthy";
+    case 5: return "Very Unhealthy";
+    case 6: return "Hazardous";
+    default: return "Unknown";
+  }
+}
+
+// Helper function to determine the primary pollutant
+function getPrimaryPollutant(airQuality) {
+  const pollutants = [
+    { name: 'Ozone', value: airQuality.o3 },
+    { name: 'Carbon Monoxide', value: airQuality.co },
+    { name: 'Nitrogen Dioxide', value: airQuality.no2 },
+    { name: 'Sulfur Dioxide', value: airQuality.so2 },
+    { name: 'PM10', value: airQuality.pm10 },
+    { name: 'PM2.5', value: airQuality.pm2_5 },
+  ];
+
+  // Sort pollutants by their concentration levels
+  pollutants.sort((a, b) => b.value - a.value);
+
+  return pollutants[0].name; // Return the highest concentration pollutant
 }
 
 // Function to update forecast
@@ -151,7 +217,7 @@ function updateSunMoon(astroData) {
   }
 }
 
-// Function to display errors
+// Function to display errors (e.g., API errors or incomplete data)
 function displayError(message) {
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
@@ -163,18 +229,21 @@ function displayError(message) {
   }
 }
 
-// On page load, fetch weather for default location
+// On page load, fetch weather data for default or last saved location
 window.onload = function () {
-  const lastLocation = localStorage.getItem('lastLocation') || 'New York, NY, USA';
+  const defaultLocation = 'New York, NY, USA';
+  const lastLocation = localStorage.getItem('lastLocation') || defaultLocation;
   console.log('Fetching default city:', lastLocation);
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
 };
 
-// Allow manual location input
+// Allow user to manually input location
 document.querySelector('#searchLocationButton').addEventListener('click', function () {
-  const location = document.querySelector('#locationInput').value.trim();
-  if (location) {
-    localStorage.setItem('lastLocation', location);
-    fetchWeatherData(location);
+  const locationInput = document.querySelector('#locationInput').value.trim();
+  if (locationInput) {
+    // Save the location for future sessions
+    localStorage.setItem('lastLocation', locationInput);
+    console.log('User-input location:', locationInput);
+    fetchWeatherData(locationInput);
   }
 });
