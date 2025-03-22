@@ -2793,16 +2793,5 @@ body.focus-outline-disabled :focus {
     .location-input {
         width: 100%;
     }
-
-    .forecast-day .date {
-        font-size: 1rem;
-    }
-
-    .forecast-temps {
-        font-size: 1.1rem;
-    }
-
-    .forecast-temps .high, .forecast-temps .low {
-        font-size: 1rem;
-    }
 }
+
