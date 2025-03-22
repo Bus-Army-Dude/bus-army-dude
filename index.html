@@ -190,65 +190,77 @@ s0.parentNode.insertBefore(s1,s0);
         </section>
 
      <!-- Weather Section Container -->
-<div class="weather-container">
-    <!-- Weather Section -->
-    <div class="weather-section">
-        <!-- Loading State -->
-        <div class="weather-loading">
-            <div class="loading-spinner"></div>
-            <p>Loading weather data...</p>
-        </div>
-
-        <!-- Weather Content - This will be populated dynamically via JS -->
-        <div class="weather-content">
-            <div class="weather-header">
-                <div class="location-info">
-                    <h2 class="location-name">Location</h2>
-                    <span class="last-updated">Updated: </span>
-                </div>
+    <div class="weather-container">
+        <!-- Weather Section -->
+        <div class="weather-section">
+            <!-- Loading State -->
+            <div class="weather-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading weather data...</p>
             </div>
 
-            <hr>
-
-            <div class="weather-primary">
-                <div class="current-temp">
-                    <div class="temperature">
-                        <span class="temp-value">--°F</span>
-                        <span class="feels-like">Feels Like: --°F</span>
+            <!-- Weather Content - This will be populated dynamically via JS -->
+            <div class="weather-content">
+                <!-- Header Section -->
+                <div class="weather-header">
+                    <div class="location-info">
+                        <h2 class="location-name">Location</h2>
+                        <span class="last-updated">Updated: </span>
                     </div>
                 </div>
-                <div class="condition-text">
-                    <i class="wi wi-na"></i> -- Condition
+
+                <hr>
+
+                <!-- Primary Weather Section -->
+                <div class="weather-primary">
+                    <div class="current-temp">
+                        <div class="temperature">
+                            <span class="temp-value">--°F</span>
+                            <span class="feels-like">Feels Like: --°F</span>
+                        </div>
+                    </div>
+                    <div class="condition-text">
+                        <img src="" alt="Condition Icon" />
+                        <span>-- Condition</span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Weather Details Section -->
+                <div class="weather-details">
+                    <div class="detail">
+                        <span class="label">Wind Speed</span>
+                        <span class="value">-- mph</span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">Humidity</span>
+                        <span class="value">-- %</span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">Pressure</span>
+                        <span class="value">-- hPa</span>
+                    </div>
                 </div>
             </div>
 
-            <hr>
+            <!-- Forecast Section -->
+            <div class="forecast-container">
+                <!-- Dynamically populated -->
+            </div>
 
-            <div class="weather-details">
-                <div class="detail"><span class="label">Wind Speed</span><span class="value">-- mph</span></div>
-                <div class="detail"><span class="label">Humidity</span><span class="value">-- %</span></div>
-                <div class="detail"><span class="label">Pressure</span><span class="value">-- hPa</span></div>
+            <!-- Sun & Moon Section -->
+            <div class="sun-moon-section">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Location Input Section -->
+            <div class="location-input-container">
+                <input type="text" id="locationInput" placeholder="Enter location" />
+                <button id="searchLocationButton">Get Weather</button>
             </div>
         </div>
-
-        <!-- Forecast Section -->
-        <div class="forecast-container">
-            <!-- This will be populated dynamically with forecast data -->
-        </div>
-
-        <!-- Sun & Moon Section -->
-        <div class="sun-moon-section">
-            <!-- This will be populated dynamically with Sun & Moon data -->
-        </div>
-
-        <!-- Location Input Form -->
-        <div class="location-form">
-            <input type="text" id="locationInput" placeholder="Enter location" />
-            <button id="searchLocationButton">Get Weather</button>
-        </div>
     </div>
-</div>
-
         
              <!-- TikTok Shoutouts Section -->
         <div class="shoutouts-section section">
