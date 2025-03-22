@@ -5,7 +5,7 @@ const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 // Function to fetch weather data
 async function fetchWeatherData(location) {
   const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=yes&alerts=no`;
-
+  
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
 
@@ -21,7 +21,14 @@ async function fetchWeatherData(location) {
 
   try {
     console.log('Fetching weather data for location:', location); // Debug location
+    console.log('API Request URL:', url); // Debug request URL
+    
     const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const data = await response.json();
 
     console.log('API Response:', data); // Debug API response
