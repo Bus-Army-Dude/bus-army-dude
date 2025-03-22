@@ -2452,7 +2452,7 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* Modern Weather Section Styling (Inspired by Business Info) */
+/* Modern Weather Section Styling (Adjusted for Content Width and Layout) */
 .weather-container {
     --shadow-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
     background: linear-gradient(
@@ -2477,6 +2477,11 @@ body.focus-outline-disabled :focus {
     gap: 20px;
 }
 
+/* Make content go all the way */
+.weather-container > * {
+    width: 100%;
+}
+
 .weather-container h2 {
     font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: 800;
@@ -2486,12 +2491,14 @@ body.focus-outline-disabled :focus {
     color: transparent;
     margin-bottom: 1.5rem;
     letter-spacing: -0.02em;
+    text-align: center; /* Ensure heading is centered even with full width */
 }
 
 .weather-icon {
     width: 90px;
     height: 90px;
     margin-bottom: 1.5rem;
+    align-self: center; /* Center the icon */
 }
 
 /* Modern Temperature Section */
@@ -2517,24 +2524,23 @@ body.focus-outline-disabled :focus {
 }
 
 .temp-range .low {
-    color: #1e90ff; /* Keep these distinct for clarity */
+    color: #1e90ff;
 }
 
 .temp-range .high {
     color: #ff6347;
 }
 
-/* Modern Weather Details */
+/* Modern Weather Details (assuming this contains current conditions) */
 .weather-details {
-    display: flex;
-    justify-content: center;
-    gap: clamp(10px, 2vw, 20px);
+    display: grid; /* Using grid for a cleaner layout */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust minmax as needed */
+    gap: clamp(10px, 2vw, 15px);
     width: 100%;
-    max-width: 550px;
+    max-width: 600px;
     margin-top: 1.5rem;
     font-size: 1rem;
     font-weight: 500;
-    flex-wrap: wrap;
 }
 
 .weather-details .detail {
@@ -2543,17 +2549,88 @@ body.focus-outline-disabled :focus {
     box-shadow: inset 0 2px 4px color-mix(in srgb, var(--shadow-color) 50%, transparent);
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column; /* Stack label and value */
     align-items: center;
-    flex: 1 1 140px;
+    justify-content: center; /* Center content */
     border: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
+    text-align: center;
 }
 
 .weather-details .detail .label {
     color: var(--secondary-text);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
 }
 
 .weather-details .detail .value {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Modern 7-Day Outlook (assuming this is the container) */
+.seven-day-outlook {
+    display: flex;
+    flex-direction: column; /* Make it rows */
+    gap: 15px;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 700px; /* Adjust as needed */
+}
+
+/* Style for each day in the outlook (assuming this is the class) */
+.day-forecast {
+    background: color-mix(in srgb, var(--content-bg) 97%, var(--accent-color));
+    border-radius: 8px;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--shadow-color) 50%, transparent);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
+}
+
+.day-forecast .day-name {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.day-forecast .forecast-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.day-forecast .temp-range {
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+}
+
+/* Modern Air Quality (assuming this is the container) */
+.air-quality {
+    display: grid; /* Using grid for layout */
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust minmax as needed */
+    gap: 10px;
+    margin-top: 1.5rem;
+    width: 100%;
+    max-width: 500px; /* Adjust as needed */
+}
+
+.air-quality-item {
+    background: color-mix(in srgb, var(--content-bg) 97%, var(--accent-color));
+    border-radius: 8px;
+    box-shadow: inset 0 1px 2px color-mix(in srgb, var(--shadow-color) 50%, transparent);
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
+}
+
+.air-quality-item .label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    margin-bottom: 0.2rem;
+}
+
+.air-quality-item .value {
     font-weight: 600;
     color: var(--text-color);
 }
@@ -2635,13 +2712,11 @@ body.focus-outline-disabled :focus {
     }
 
     .weather-details {
-        justify-content: space-around;
-        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
 
-    .weather-details .detail {
-        flex-basis: calc(50% - 10px); /* Two details per row */
-        margin-bottom: 10px;
+    .seven-day-outlook {
+        gap: 10px;
     }
 
     .location-input-container {
@@ -2672,13 +2747,11 @@ body.focus-outline-disabled :focus {
     }
 
     .weather-details {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
+        grid-template-columns: 1fr; /* Stack details on smaller screens */
     }
 
-    .weather-details .detail {
-        width: 95%;
+    .seven-day-outlook {
+        gap: 8px;
     }
 
     .location-input {
