@@ -2452,19 +2452,26 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* --- General Styling for the Weather Section --- */
+/* --- General styling for the weather section - Matching other sections --- */
 .weather-section {
-    font-family: Arial, sans-serif;
-    color: var(--text-color, #212529);
-    padding: 20px;
-    background-color: var(--content-bg, #f9f9f9);
+    --shadow-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
+    color: var(--text-color);
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    padding: clamp(24px, 4vw, 40px);
     border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color, rgba(0, 0, 0, 0.1));
-    margin: 20px auto; /* Center the section and add margin */
-    border-bottom: 2px solid var(--separator-color, #ddd);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    margin: 20px auto; /* Center and add vertical margin */
     width: 95%; /* Adjust width for better mobile fit */
-    max-width: 1200px; /* Maximum width for larger screens */
+    max-width: 1200px; /* Maximum width for larger screens - adjust if needed */
     box-sizing: border-box;
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* --- Weather Header Styling --- */
@@ -2484,8 +2491,8 @@ body.focus-outline-disabled :focus {
     margin-bottom: 20px;
     width: 100%;
     box-sizing: border-box;
-    flex-direction: row; /* Default to row on larger screens */
-    justify-content: flex-start; /* Align items to the start by default */
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .weather-primary .current-temp {
@@ -2529,7 +2536,7 @@ body.focus-outline-disabled :focus {
 }
 
 .weather-details .detail {
-    width: calc(50% - 10px); /* Two items per row on larger screens */
+    width: calc(50% - 10px);
     margin-bottom: 10px;
     font-size: 1rem;
     box-sizing: border-box;
@@ -2576,7 +2583,7 @@ body.focus-outline-disabled :focus {
 /* --- Forecast Styling --- */
 .forecast-container {
     display: flex;
-    flex-direction: column; /* Display as rows by default */
+    flex-direction: column;
     gap: 10px;
     margin-top: 20px;
     width: 100%;
@@ -2694,16 +2701,14 @@ body.focus-outline-disabled :focus {
 
 /* --- Responsive Design --- */
 @media (max-width: 1024px) {
-    /* Adjustments for tablets */
     .weather-details .detail {
-        width: calc(50% - 10px); /* Keep two columns on tablets */
+        width: calc(50% - 10px);
     }
 }
 
 @media (max-width: 768px) {
-    /* Adjustments for smaller tablets and larger phones */
     .weather-primary {
-        flex-direction: column; /* Stack icon and temperature */
+        flex-direction: column;
         align-items: center;
         text-align: center;
     }
@@ -2719,12 +2724,11 @@ body.focus-outline-disabled :focus {
     }
 
     .weather-details .detail {
-        width: 100%; /* Make details full width on smaller screens */
+        width: 100%;
     }
 }
 
 @media (max-width: 600px) {
-    /* Further adjustments for phones */
     .location-input-container {
         flex-direction: column;
         align-items: center;
@@ -2742,9 +2746,8 @@ body.focus-outline-disabled :focus {
 }
 
 @media (max-width: 480px) {
-    /* Adjustments for smaller phones */
     .weather-primary .temp-value {
-        font-size: 2rem; /* Slightly smaller on very small screens */
+        font-size: 2rem;
     }
 
     .forecast-day {
@@ -2786,6 +2789,6 @@ body.focus-outline-disabled :focus {
 
 /* If air quality is within weather-details */
 .weather-details .air-quality-item {
-    width: 100%; /* Make air quality item full width if inside weather-details */
+    width: 100%;
     margin-bottom: 10px;
 }
