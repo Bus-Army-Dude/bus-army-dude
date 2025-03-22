@@ -2452,93 +2452,80 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* General styling for the weather section */
+/* General Weather Section Styling */
 .weather-section {
     font-family: 'Inter', sans-serif;
-    color: #333;
-    background-color: #222;
+    background-color: var(--bg-color); /* Adjust based on theme */
+    color: var(--text-color); /* Adjust text color */
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
+    border-radius: 10px;
     max-width: 100%;
+    margin: 20px auto;
+    box-shadow: 0px 4px 15px var(--shadow-color); /* Soft shadow */
 }
 
-/* Weather header */
+/* Header Section */
 .weather-header {
     font-size: 1.8rem;
     font-weight: 600;
-    color: #FFF;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 15px;
+    text-align: center;
 }
 
-/* Current weather condition */
+/* Weather Primary Info */
 .weather-primary {
     display: flex;
+    flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+    gap: 10px;
 }
 
 .weather-icon {
-    width: 70px;
-    height: 70px;
-    margin-right: 20px;
+    width: 80px;
+    height: 80px;
 }
 
 .temperature {
     font-size: 3rem;
     font-weight: bold;
-    color: #FF4500; /* Hot temp color */
+    color: var(--accent-color);
 }
 
-.feels-like {
-    font-size: 1rem;
-    color: #ccc;
-    margin-top: 5px;
-    text-align: center;
+.temperature.low {
+    color: #00bfff; /* Cool color for low temp */
 }
 
-/* Weather details */
+.temperature.high {
+    color: #ff4500; /* Warm color for high temp */
+}
+
+/* Weather Details */
 .weather-details {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 15px;
     margin-top: 20px;
 }
 
 .detail {
     font-size: 1rem;
-    background-color: #333;
+    background-color: var(--content-bg);
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    color: #FFF;
 }
 
-/* High and low temp color coding */
-.high-temp {
-    color: #FF4500; /* Red for high temps */
-}
-
-.low-temp {
-    color: #1E90FF; /* Blue for low temps */
-}
-
-/* Air quality */
+/* Air Quality Section */
 .air-quality {
     margin-top: 20px;
     padding: 15px;
     border-radius: 12px;
-    background-color: #444;
-    color: #fff;
+    background-color: #f0f4ff;
+    color: var(--text-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2555,7 +2542,7 @@ body.focus-outline-disabled :focus {
     font-size: 1rem;
 }
 
-/* Input for location */
+/* Input for Location */
 .location-input-container {
     margin-top: 20px;
     display: flex;
@@ -2564,28 +2551,26 @@ body.focus-outline-disabled :focus {
 }
 
 .location-input {
-    padding: 12px 15px;
+    padding: 12px 20px;
     font-size: 1rem;
-    width: 100%;
+    width: 70%;
     max-width: 350px;
     border-radius: 8px;
-    border: 2px solid #444;
-    background-color: #111;
-    color: #FFF;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--border-color);
     transition: border-color 0.3s ease;
+    background-color: var(--content-bg);
+    color: var(--text-color);
 }
 
 .location-input:focus {
-    border-color: #FF4500;
+    border-color: var(--accent-color);
     outline: none;
 }
 
-/* Get weather button */
 .get-weather-btn {
     padding: 12px 20px;
     font-size: 1rem;
-    background-color: #FF4500;
+    background-color: var(--accent-color);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -2594,13 +2579,13 @@ body.focus-outline-disabled :focus {
 }
 
 .get-weather-btn:hover {
-    background-color: #FF6347;
+    background-color: var(--hover-color);
 }
 
-/* Loading spinner */
+/* Loading Spinner */
 .weather-loading .loading-spinner {
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #FF4500;
+    border-top: 4px solid var(--accent-color);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -2613,7 +2598,7 @@ body.focus-outline-disabled :focus {
     100% { transform: rotate(360deg); }
 }
 
-/* Forecast section */
+/* Forecast Section */
 .forecast-container {
     display: flex;
     justify-content: space-between;
@@ -2623,31 +2608,29 @@ body.focus-outline-disabled :focus {
 }
 
 .forecast-day {
-    background-color: #333;
-    padding: 10px;
+    background-color: var(--content-bg);
+    padding: 15px;
     border-radius: 10px;
     width: 100%;
     max-width: 150px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px var(--shadow-color);
     transition: box-shadow 0.3s ease;
 }
 
 .forecast-day:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .forecast-day .date {
     font-size: 1rem;
     font-weight: 500;
-    color: #FFF;
 }
 
 .forecast-day .temp {
     font-size: 1.4rem;
     font-weight: bold;
     margin-top: 8px;
-    color: #FFF;
 }
 
 .forecast-day .icon {
@@ -2659,11 +2642,14 @@ body.focus-outline-disabled :focus {
 /* Responsive Design */
 @media (max-width: 1200px) {
     .weather-primary {
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
     }
+
     .temperature {
         font-size: 2.5rem;
     }
+
     .weather-header {
         font-size: 1.6rem;
     }
@@ -2672,16 +2658,20 @@ body.focus-outline-disabled :focus {
 @media (max-width: 768px) {
     .weather-primary {
         flex-direction: column;
+        justify-content: center;
     }
+
     .weather-details {
         grid-template-columns: 1fr;
     }
+
     .forecast-container {
         flex-direction: column;
         gap: 10px;
     }
+    
     .forecast-day {
-        max-width: none;
+        max-width: 100%;
     }
 }
 
@@ -2689,17 +2679,27 @@ body.focus-outline-disabled :focus {
     .temperature {
         font-size: 2rem;
     }
+
     .weather-header {
         font-size: 1.4rem;
     }
+
     .location-input {
         font-size: 0.9rem;
         padding: 10px;
     }
+
+    .get-weather-btn {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+    }
+
     .detail {
         font-size: 0.9rem;
     }
+
     .forecast-day {
         padding: 8px;
     }
 }
+
