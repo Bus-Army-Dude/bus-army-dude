@@ -2453,269 +2453,208 @@ body.focus-outline-disabled :focus {
 }
 
 /* General Weather Section Styling */
-.weather-section {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--content-bg, #2d2d2d); /* Distinct container background */
-    color: var(--text-color, #e0e0e0); /* Ensure text contrasts with the background */
-    padding: 30px;
+.weather-container {
+    background-color: var(--content-bg);
+    color: var(--text-color);
+    padding: 25px;
     border-radius: 12px;
-    border: 1px solid var(--border-color, #333333); /* Subtle border for definition */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
     max-width: 100%;
-    margin: 20px auto;
-    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.2); /* Depth to distinguish from the background */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Header Section */
-.weather-header {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-align: center;
-    color: var(--accent-color, #4CAF50); /* Accent color for emphasis */
-}
-
-/* Weather Primary Info */
-.weather-primary {
+    width: 100%;
+    margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 25px;
-    gap: 15px;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.weather-container h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .weather-icon {
-    width: 100px;
-    height: 100px;
-    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.2)); /* Adds depth */
+    width: 90px;
+    height: 90px;
+    margin-bottom: 15px;
 }
 
-.temperature {
-    font-size: 3.5rem;
-    font-weight: bold;
-    color: var(--accent-color, #4CAF50);
-    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle text shadow for better visibility */
-}
-
-.temperature.low {
-    color: #00bfff;
-}
-
-.temperature.high {
-    color: #ff4500;
-}
-
-/* Weather Details */
-.weather-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid */
-    gap: 20px;
-    margin-top: 25px;
-}
-
-.detail {
-    font-size: 1rem;
-    background-color: var(--content-bg, #3c3c3c); /* Slightly darker than main content */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Adds more focus */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.detail:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-}
-
-.detail .label {
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--secondary-text, #a0a0a0);
-}
-
-.detail .value {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--accent-color, #4CAF50);
-}
-
-/* Air Quality Section */
-.air-quality {
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 12px;
-    background-color: var(--content-bg, #3c3c3c);
-    color: var(--text-color);
+/* Temperature Section */
+.temp-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    align-items: center;
 }
 
-.air-quality h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
+.temp-container .current-temp {
+    font-size: 3.5rem;
+    font-weight: bold;
     margin-bottom: 15px;
     color: var(--accent-color);
 }
 
-.air-quality span {
-    font-weight: 600;
-    font-size: 1.1rem;
+.temp-container .temp-range {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 20px;
 }
 
-/* Location Input */
+.temp-range .low {
+    color: #00bfff; /* Cool color for low temp */
+}
+
+.temp-range .high {
+    color: #ff4500; /* Warm color for high temp */
+}
+
+/* Weather Details */
+.weather-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    width: 100%;
+    max-width: 450px;
+    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.weather-details .detail {
+    background-color: var(--content-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weather-details .detail .label {
+    color: var(--secondary-text);
+}
+
+.weather-details .detail .value {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Location Input and Button */
 .location-input-container {
-    margin-top: 30px;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .location-input {
-    padding: 15px 20px;
+    padding: 12px 20px;
     font-size: 1rem;
-    width: 70%;
-    max-width: 400px;
-    border-radius: 10px;
-    border: 2px solid var(--border-color, #333333);
-    background-color: var(--content-bg, #3c3c3c);
-    color: var(--text-color, #e0e0e0);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 250px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    background-color: var(--content-bg);
+    color: var(--text-color);
+    transition: border-color 0.3s ease;
 }
 
 .location-input:focus {
-    border-color: var(--accent-color, #4CAF50);
-    box-shadow: 0 0 8px rgba(0, 255, 100, 0.5); /* Bright green glow for focus */
+    border-color: var(--accent-color);
     outline: none;
 }
 
 .get-weather-btn {
-    padding: 15px 25px;
+    padding: 12px 20px;
     font-size: 1rem;
-    background-color: var(--accent-color, #4CAF50);
-    color: #ffffff;
+    background-color: var(--accent-color);
+    color: #fff;
+    border-radius: 8px;
     border: none;
-    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .get-weather-btn:hover {
-    background-color: var(--hover-color, #45a049);
-    transform: translateY(-3px);
+    background-color: var(--hover-color);
 }
 
-/* Fix for Blending Issue */
-.forecast-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 30px;
-    flex-wrap: wrap;
+/* Loading Spinner */
+.weather-loading .loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.6s linear infinite;
+    margin: 0 auto;
 }
 
-.forecast-day {
-    background-color: var(--content-bg, #3c3c3c);
-    padding: 20px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 160px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.forecast-day:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.forecast-day .date {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--secondary-text);
-}
-
-.forecast-day .temp {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 10px;
-    color: var(--accent-color);
-}
-
-.forecast-day .icon {
-    width: 60px;
-    height: 60px;
-    margin-top: 15px;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .weather-primary {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .temperature {
+    .temp-container .current-temp {
         font-size: 3rem;
     }
 
-    .weather-header {
-        font-size: 1.8rem;
+    .weather-container h2 {
+        font-size: 1.6rem;
+    }
+
+    .weather-details {
+        flex-direction: column;
+    }
+
+    .location-input {
+        width: 70%;
+    }
+
+    .get-weather-btn {
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 768px) {
-    .weather-primary {
-        flex-direction: column;
-        justify-content: center;
+    .weather-container {
+        padding: 20px;
+    }
+
+    .temp-container .current-temp {
+        font-size: 2.5rem;
     }
 
     .weather-details {
-        grid-template-columns: 1fr;
-    }
-
-    .forecast-container {
         flex-direction: column;
-        gap: 15px;
-    }
-    
-    .forecast-day {
-        max-width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .temperature {
-        font-size: 2.5rem;
+    .temp-container .current-temp {
+        font-size: 2rem;
     }
 
-    .weather-header {
-        font-size: 1.6rem;
+    .weather-container h2 {
+        font-size: 1.4rem;
     }
 
     .location-input {
         font-size: 0.9rem;
-        padding: 12px;
+        padding: 10px;
+        width: 65%;
     }
 
     .get-weather-btn {
         font-size: 0.9rem;
-        padding: 12px 20px;
+        padding: 10px 15px;
     }
 
-    .detail {
+    .weather-details .detail {
         font-size: 0.9rem;
-    }
-
-    .forecast-day {
-        padding: 12px;
     }
 }
