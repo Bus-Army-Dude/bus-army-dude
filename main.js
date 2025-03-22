@@ -11,6 +11,7 @@ const weatherModule = {
         'Fog': 'wi wi-day-fog',
         'Haze': 'wi wi-day-fog',
         'Dust': 'wi wi-day-dust',
+        'Mostly Cloudy': 'wi wi-day-cloudy',
     },
 
     init() {
@@ -28,14 +29,17 @@ const weatherModule = {
         try {
             this.showLoading();
 
+            // Call geocoding API to get the location name
+            const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=YOUR_OPENCAGE_API_KEY`);
+            const locationData = await locationResponse.json();
+            const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
+
             // Fetch current weather data from Open-Meteo API
-            const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=America%2FNew_York`);
+            const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,pressure_msl,sunrise,sunset,moonphase&timezone=America%2FNew_York`);
             const weatherData = await weatherResponse.json();
 
             if (weatherData && weatherData.current_weather) {
-                this.updateDisplay(weatherData.current_weather);
-                this.getForecast(lat, lon); // Fetch 7-day forecast
-                this.getSunMoonData(lat, lon); // Fetch sun & moon data
+                this.updateDisplay(weatherData, locationName);
             } else {
                 this.handleError();
             }
@@ -45,80 +49,20 @@ const weatherModule = {
         }
     },
 
-    async getForecast(lat, lon) {
-        try {
-            const forecastResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,sunrise,sunset&timezone=America%2FNew_York`);
-            const forecastData = await forecastResponse.json();
+    updateDisplay(data, locationName) {
+        const { current_weather, daily } = data;
+        const { temperature, feels_like, windspeed, humidity, weathercode, pressure_msl } = current_weather;
+        const { temperature_2m_max, temperature_2m_min, precipitation_sum, sunrise, sunset, moonphase } = daily[0];
 
-            this.displayForecast(forecastData.daily);
-        } catch (error) {
-            console.error('Forecast API Error:', error);
-        }
-    },
-
-    displayForecast(dailyForecast) {
-        const forecastContainer = document.querySelector('.forecast-container');
-        forecastContainer.innerHTML = '';
-
-        dailyForecast.forEach(day => {
-            const date = new Date(day.timestamp * 1000); // Convert from UNIX timestamp to Date
-            forecastContainer.innerHTML += `
-                <div class="forecast-day">
-                    <div class="forecast-date">${date.toLocaleDateString()}</div>
-                    <div class="forecast-temp">
-                        <span class="forecast-max-temp">${day.temperature_2m_max}°F</span> /
-                        <span class="forecast-min-temp">${day.temperature_2m_min}°F</span>
-                    </div>
-                    <div class="forecast-precipitation">Precipitation: ${day.precipitation_sum}mm</div>
-                    <div class="forecast-sunrise">Sunrise: ${day.sunrise}</div>
-                    <div class="forecast-sunset">Sunset: ${day.sunset}</div>
-                </div>
-            `;
-        });
-    },
-
-    async getSunMoonData(lat, lon) {
-        try {
-            const sunMoonResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunrise,sunset,moonrise,moonset&timezone=America%2FNew_York`);
-            const sunMoonData = await sunMoonResponse.json();
-
-            this.displaySunMoonData(sunMoonData.daily[0]);
-        } catch (error) {
-            console.error('Sun & Moon API Error:', error);
-        }
-    },
-
-    displaySunMoonData(data) {
-        const sunMoonSection = document.querySelector('.sun-moon-section');
-        sunMoonSection.innerHTML = `
-            <div class="sun-moon-info">
-                <div class="sunrise">
-                    <span>Sunrise: </span><span>${data.sunrise}</span>
-                </div>
-                <div class="sunset">
-                    <span>Sunset: </span><span>${data.sunset}</span>
-                </div>
-                <div class="moonrise">
-                    <span>Moonrise: </span><span>${data.moonrise}</span>
-                </div>
-                <div class="moonset">
-                    <span>Moonset: </span><span>${data.moonset}</span>
-                </div>
-            </div>
-        `;
-    },
-
-    updateDisplay(data) {
-        const unitSystem = this.getUnitSystem();
-        const temperature = data.temperature; // In Fahrenheit (already provided by Open-Meteo)
-        const windSpeed = data.windspeed; // Wind speed in mph
-        const humidity = data.humidity;
-        const pressure = data.pressure;
-        const weatherCode = data.weathercode;
-        const locationName = "Your Location"; // Use a reverse geocoding API to get the name if needed
-        const weatherCondition = this.getWeatherCondition(weatherCode);
-
+        const weatherCondition = this.getWeatherCondition(weathercode);
         const iconClass = this.ICONS[weatherCondition] || 'wi wi-na'; // Default icon if no match
+
+        // Calculate sunrise and sunset times to a readable format
+        const sunriseTime = this.formatTime(sunrise);
+        const sunsetTime = this.formatTime(sunset);
+
+        // Format Moon Phase
+        const moonPhase = this.formatMoonPhase(moonphase);
 
         this.weatherSection.innerHTML = `
             <div class="weather-content">
@@ -135,74 +79,104 @@ const weatherModule = {
                     <div class="current-temp">
                         <div class="temperature">
                             <span class="temp-value">${temperature}°F</span>
-                            <span class="feels-like">Feels Like: ${data.feels_like}°F</span>
+                            <span class="feels-like">Feels Like: ${feels_like}°F</span>
                         </div>
                     </div>
                     <div class="condition-text">
-                        <i class="${iconClass}"></i> ${weatherCondition}
+                        <i class="wi ${iconClass}"></i> ${weatherCondition}
                     </div>
                 </div>
 
                 <hr>
 
                 <div class="weather-details">
-                    <div class="detail"><span class="label">Wind Speed</span><span class="value">${windSpeed} mph</span></div>
-                    <div class="detail"><span class="label">Humidity</span><span class="value">${humidity}%</span></div>
-                    <div class="detail"><span class="label">Pressure</span><span class="value">${pressure} hPa</span></div>
+                    <div class="detail">
+                        <span class="label">Wind Speed</span><span class="value">${windspeed} mph</span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">Humidity</span><span class="value">${humidity} %</span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">Pressure</span><span class="value">${pressure_msl} in</span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">Precipitation</span><span class="value">${precipitation_sum}%</span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="weather-forecast">
+                    <div class="forecast-high-low">
+                        <span class="high-temp">High: ${temperature_2m_max}°F</span> / 
+                        <span class="low-temp">Low: ${temperature_2m_min}°F</span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="sun-moon-section">
+                    <div class="sunrise">
+                        <span>Sunrise: </span><span>${sunriseTime}</span>
+                    </div>
+                    <div class="sunset">
+                        <span>Sunset: </span><span>${sunsetTime}</span>
+                    </div>
+                    <div class="moon-phase">
+                        <span>Moon Phase: </span><span>${moonPhase}</span>
+                    </div>
                 </div>
             </div>
         `;
     },
 
-    getWeatherCondition(weatherCode) {
-        switch (weatherCode) {
+    getWeatherCondition(weathercode) {
+        // Map the weather code to a human-readable condition
+        switch (weathercode) {
             case 0: return 'Clear';
-            case 1: return 'Clouds';
-            case 2: return 'Clouds';
-            case 3: return 'Clouds';
+            case 1: return 'Partly Cloudy';
+            case 2: return 'Mostly Cloudy';
+            case 3: return 'Cloudy';
             case 45: return 'Fog';
-            case 48: return 'Fog';
-            case 51: return 'Drizzle';
-            case 53: return 'Drizzle';
-            case 55: return 'Drizzle';
-            case 56: return 'Rain';
-            case 57: return 'Rain';
-            case 61: return 'Rain';
-            case 63: return 'Rain';
-            case 65: return 'Rain';
-            case 66: return 'Snow';
-            case 67: return 'Snow';
-            case 71: return 'Snow';
-            case 73: return 'Snow';
-            case 75: return 'Snow';
-            case 77: return 'Snow';
-            case 80: return 'Thunderstorm';
-            case 81: return 'Thunderstorm';
-            case 82: return 'Thunderstorm';
+            case 48: return 'Foggy';
+            case 51: return 'Light Rain';
+            case 53: return 'Moderate Rain';
+            case 55: return 'Heavy Rain';
+            case 61: return 'Light Showers';
             default: return 'Unknown';
         }
     },
 
-    getUnitSystem() {
-        return navigator.language.includes('US') ? 'imperial' : 'metric';
+    formatTime(time) {
+        const date = new Date(time * 1000);
+        return date.toLocaleTimeString();
+    },
+
+    formatMoonPhase(moonphase) {
+        switch (moonphase) {
+            case 0: return 'New Moon';
+            case 1: return 'Waxing Crescent';
+            case 2: return 'First Quarter';
+            case 3: return 'Waxing Gibbous';
+            case 4: return 'Full Moon';
+            case 5: return 'Waning Gibbous';
+            case 6: return 'Last Quarter';
+            case 7: return 'Waning Crescent';
+            default: return 'Unknown';
+        }
     },
 
     showLoading() {
-        this.weatherSection.innerHTML = `
-            <div class="weather-loading">
-                <div class="loading-spinner"></div>
-                <p>Loading weather data...</p>
-            </div>
-        `;
-    },
-
-    handleLocationError() {
-        this.weatherSection.innerHTML = 'Unable to retrieve your location.';
+        this.weatherSection.innerHTML = '<div class="loading">Loading weather data...</div>';
     },
 
     handleError() {
-        this.weatherSection.innerHTML = 'Weather data unavailable.';
+        this.weatherSection.innerHTML = '<div class="error">Error retrieving weather data. Please try again later.</div>';
     },
+
+    handleLocationError() {
+        this.weatherSection.innerHTML = '<div class="error">Unable to retrieve location. Please enable location services.</div>';
+    }
 };
 
 weatherModule.init();
