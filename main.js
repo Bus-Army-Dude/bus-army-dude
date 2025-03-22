@@ -1,6 +1,6 @@
 // Enhanced Weather Module with US metrics
 const weatherModule = {
-    API_KEY: '63267bdce7584921903213518252103',
+    API_KEY: '34ae2d4a53544561a07150106252203',
 
     init() {
         this.weatherSection = document.querySelector('.weather-section');
