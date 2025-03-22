@@ -115,135 +115,153 @@ function updateDisplay(data) {
 
 // Function to update the Air Quality section
 function updateAirQuality(data) {
-  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
-  const airQualityDetailsElement = document.querySelector('.air-quality-details'); // Ensure this exists in your HTML
+    const airQualityIndicator = document.querySelector('.air-quality-indicator');
+    const airQualityStatus = document.querySelector('.air-quality-summary .aqi-status');
+    const primaryPollutant = document.querySelector('.air-quality-summary .primary-pollutant');
+    const airQualityDetails = document.querySelector('.air-quality-details');
 
-  if (data.current.air_quality) {
-    const airQualityIndex = data.current.air_quality["us-epa-index"];
-    const airQualityDescription = getAirQualityDescription(airQualityIndex);
-    const primaryPollutant = getPrimaryPollutant(data.current.air_quality);
+    if (data.current.air_quality) {
+        const airQualityIndex = data.current.air_quality["us-epa-index"];
+        const airQualityDescription = getAirQualityDescription(airQualityIndex);
+        const primaryPollutantValue = getPrimaryPollutant(data.current.air_quality);
 
-    // Overall Air Quality
-    airQualityElement.innerHTML = `
-      <strong>${airQualityDescription}</strong> (AQI: ${airQualityIndex}) <br>
-      Primary Pollutant: ${primaryPollutant}
-    `;
+        // Update AQI Circle and Description
+        airQualityIndicator.className = 'air-quality-indicator';
+        airQualityIndicator.classList.add(getAirQualityClass(airQualityIndex));
+        airQualityIndicator.innerHTML = `<span class="aqi-value">${airQualityIndex}</span>`;
+        airQualityStatus.textContent = airQualityDescription;
+        primaryPollutant.textContent = `Primary Pollutant: ${primaryPollutantValue}`;
 
-    // Detailed Pollutant Information
-    const pollutants = [
-      { name: 'O3 (Ozone)', value: data.current.air_quality.o3 },
-      { name: 'CO (Carbon Monoxide)', value: data.current.air_quality.co },
-      { name: 'NO2 (Nitrogen Dioxide)', value: data.current.air_quality.no2 },
-      { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 },
-      { name: 'PM10 (Particulate Matter < 10µm)', value: data.current.air_quality.pm10 },
-      { name: 'PM2.5 (Particulate Matter < 2.5µm)', value: data.current.air_quality.pm2_5 },
-    ];
+        // Update Pollutant Details
+        const pollutants = [
+            { name: 'O3 (Ozone)', value: data.current.air_quality.o3, level: airQualityIndex },
+            { name: 'CO (Carbon Monoxide)', value: data.current.air_quality.co, level: airQualityIndex },
+            { name: 'NO2 (Nitrogen Dioxide)', value: data.current.air_quality.no2, level: airQualityIndex },
+            { name: 'PM10', value: data.current.air_quality.pm10, level: airQualityIndex },
+            { name: 'PM2.5', value: data.current.air_quality.pm2_5, level: airQualityIndex },
+            { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2, level: airQualityIndex }
+        ];
 
-    airQualityDetailsElement.innerHTML = pollutants.map(pollutant => `
-      <div>
-        <span><strong>${pollutant.name}:</strong></span>
-        <span>${pollutant.value.toFixed(2)} µg/m³</span>
-      </div>
-    `).join('');
-  } else {
-    airQualityElement.textContent = 'Air Quality data not available.';
-    airQualityDetailsElement.innerHTML = '';
-  }
+        airQualityDetails.innerHTML = pollutants.map(pollutant => `
+            <div class="pollutant">
+                <span class="pollutant-name">${pollutant.name}:</span>
+                <span class="pollutant-value">${pollutant.value.toFixed(2)} µg/m³</span>
+                <span class="pollutant-rating ${getAirQualityClass(airQualityIndex)}">${airQualityDescription}</span>
+            </div>
+        `).join('');
+    } else {
+        airQualityIndicator.innerHTML = `<span>N/A</span>`;
+        airQualityStatus.textContent = 'Air Quality data not available.';
+        primaryPollutant.textContent = '';
+        airQualityDetails.innerHTML = '';
+    }
 }
 
 // Helper function to get Air Quality Description
 function getAirQualityDescription(aqi) {
-  switch (aqi) {
-    case 1: return "Good";
-    case 2: return "Moderate";
-    case 3: return "Unhealthy for Sensitive Groups";
-    case 4: return "Unhealthy";
-    case 5: return "Very Unhealthy";
-    case 6: return "Hazardous";
-    default: return "Unknown";
-  }
+    switch (aqi) {
+        case 1: return "Good";
+        case 2: return "Moderate";
+        case 3: return "Unhealthy for Sensitive Groups";
+        case 4: return "Unhealthy";
+        case 5: return "Very Unhealthy";
+        case 6: return "Hazardous";
+        default: return "Unknown";
+    }
 }
 
 // Helper function to determine the primary pollutant
 function getPrimaryPollutant(airQuality) {
-  const pollutants = [
-    { name: 'Ozone', value: airQuality.o3 },
-    { name: 'Carbon Monoxide', value: airQuality.co },
-    { name: 'Nitrogen Dioxide', value: airQuality.no2 },
-    { name: 'Sulfur Dioxide', value: airQuality.so2 },
-    { name: 'PM10', value: airQuality.pm10 },
-    { name: 'PM2.5', value: airQuality.pm2_5 },
-  ];
+    const pollutants = [
+        { name: 'Ozone', value: airQuality.o3 },
+        { name: 'Carbon Monoxide', value: airQuality.co },
+        { name: 'Nitrogen Dioxide', value: airQuality.no2 },
+        { name: 'Sulfur Dioxide', value: airQuality.so2 },
+        { name: 'PM10', value: airQuality.pm10 },
+        { name: 'PM2.5', value: airQuality.pm2_5 }
+    ];
 
-  // Sort pollutants by their concentration levels
-  pollutants.sort((a, b) => b.value - a.value);
+    // Sort pollutants by their concentration levels
+    pollutants.sort((a, b) => b.value - a.value);
 
-  return pollutants[0].name; // Return the highest concentration pollutant
+    return pollutants[0].name; // Return the highest concentration pollutant
+}
+
+// Helper function to get the CSS class for AQI styling
+function getAirQualityClass(aqi) {
+    switch (aqi) {
+        case 1: return "good";
+        case 2: return "moderate";
+        case 3: return "unhealthy";
+        case 4: return "very-unhealthy";
+        case 5: return "hazardous";
+        default: return "";
+    }
 }
 
 // Function to update forecast
 function updateForecast(forecastDays) {
-  const forecastContainer = document.querySelector('.forecast-container');
-  forecastContainer.innerHTML = ''; // Clear previous forecasts
+    const forecastContainer = document.querySelector('.forecast-container');
+    forecastContainer.innerHTML = ''; // Clear previous forecasts
 
-  forecastDays.forEach(day => {
-    const forecastElement = document.createElement('div');
-    forecastElement.classList.add('forecast-day');
-    forecastElement.innerHTML = `
-      <div class="date">${day.date}</div>
-      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
-      <div class="forecast-temps">
-        <span class="high">${day.day.maxtemp_f}°F</span>
-        <span class="separator">/</span>
-        <span class="low">${day.day.mintemp_f}°F</span>
-      </div>
-      <div class="forecast-details">
-        <span class="condition">${day.day.condition.text}</span>
-        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
-      </div>
-    `;
-    forecastContainer.appendChild(forecastElement);
-  });
+    forecastDays.forEach(day => {
+        const forecastElement = document.createElement('div');
+        forecastElement.classList.add('forecast-day');
+        forecastElement.innerHTML = `
+            <div class="date">${day.date}</div>
+            <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
+            <div class="forecast-temps">
+                <span class="high">${day.day.maxtemp_f}°F</span>
+                <span class="separator">/</span>
+                <span class="low">${day.day.mintemp_f}°F</span>
+            </div>
+            <div class="forecast-details">
+                <span class="condition">${day.day.condition.text}</span>
+                <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
+            </div>
+        `;
+        forecastContainer.appendChild(forecastElement);
+    });
 }
 
-  // Function to update Sun & Moon times
+// Function to update Sun & Moon times
 function updateSunMoon(astroData) {
-  const sunMoonSection = document.querySelector('.sun-moon-section');
-  if (sunMoonSection) {
-    sunMoonSection.innerHTML = `
-      <div><strong>Sunrise:</strong> ${astroData.sunrise}</div>
-      <div><strong>Sunset:</strong> ${astroData.sunset}</div>
-    `;
-  }
+    const sunMoonSection = document.querySelector('.sun-moon-section');
+    if (sunMoonSection) {
+        sunMoonSection.innerHTML = `
+            <div><strong>Sunrise:</strong> ${astroData.sunrise}</div>
+            <div><strong>Sunset:</strong> ${astroData.sunset}</div>
+        `;
+    }
 }
 
 // Function to display errors (e.g., API errors or incomplete data)
 function displayError(message) {
-  const loadingSpinner = document.querySelector('.weather-loading');
-  const weatherContent = document.querySelector('.weather-content');
+    const loadingSpinner = document.querySelector('.weather-loading');
+    const weatherContent = document.querySelector('.weather-content');
 
-  if (loadingSpinner) loadingSpinner.style.display = 'none';
-  if (weatherContent) {
-    weatherContent.innerHTML = `<p class="error-message">Error: ${message}</p>`;
-    weatherContent.style.display = 'block';
-  }
+    if (loadingSpinner) loadingSpinner.style.display = 'none';
+    if (weatherContent) {
+        weatherContent.innerHTML = `<p class="error-message">Error: ${message}</p>`;
+        weatherContent.style.display = 'block';
+    }
 }
 
 // On page load, fetch weather data for default or last saved location
 window.onload = function () {
-  const defaultLocation = 'New York, NY, USA';
-  const lastLocation = localStorage.getItem('lastLocation') || defaultLocation;
-  console.log('Fetching default city:', lastLocation);
-  fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
+    const defaultLocation = 'New York, NY, USA';
+    const lastLocation = localStorage.getItem('lastLocation') || defaultLocation;
+    console.log('Fetching default city:', lastLocation);
+    fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
 };
 
 // Allow user to manually input location
 document.querySelector('#searchLocationButton').addEventListener('click', function () {
-  const locationInput = document.querySelector('#locationInput').value.trim();
-  if (locationInput) {
-    // Save the location for future sessions
-    localStorage.setItem('lastLocation', locationInput);
-    console.log('User-input location:', locationInput);
-    fetchWeatherData(locationInput);
-  }
+    const locationInput = document.querySelector('#locationInput').value.trim();
+    if (locationInput) {
+        // Save the location for future sessions
+        localStorage.setItem('lastLocation', locationInput);
+        console.log('User-input location:', locationInput);
+        fetchWeatherData(locationInput);
+    }
 });
