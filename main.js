@@ -1,14 +1,16 @@
 const weatherModule = {
     weatherSection: document.querySelector('.weather-section'),
     ICONS: {
-        'Clear sky': 'wi wi-day-sunny',
-        'Partly cloudy': 'wi wi-day-cloudy',
-        'Cloudy': 'wi wi-cloudy',
-        'Light rain': 'wi wi-day-showers',
-        'Moderate rain': 'wi wi-day-rain',
-        'Thunderstorms': 'wi wi-day-thunderstorm',
+        'Clear': 'wi wi-day-sunny',
+        'Clouds': 'wi wi-day-cloudy',
+        'Rain': 'wi wi-day-rain',
         'Snow': 'wi wi-day-snow',
+        'Thunderstorm': 'wi wi-day-thunderstorm',
+        'Drizzle': 'wi wi-day-showers',
+        'Mist': 'wi wi-day-fog',
         'Fog': 'wi wi-day-fog',
+        'Haze': 'wi wi-day-fog',
+        'Dust': 'wi wi-day-dust',
     },
 
     apiKey: 'ebeec5fc4654e84d868f03b3ee28d73a', // Replace with your OpenWeatherMap API key
@@ -28,12 +30,14 @@ const weatherModule = {
         try {
             this.showLoading();
 
-            // Fetch weather data from OpenWeatherMap API
-            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=imperial`);
-            const weatherData = await response.json();
+            // Fetch current weather data from OpenWeatherMap API
+            const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=imperial`);
+            const weatherData = await weatherResponse.json();
 
             if (weatherData.cod === 200) {
                 this.updateDisplay(weatherData);
+                this.getForecast(lat, lon); // Fetch 7-day forecast
+                this.getSunMoonData(lat, lon); // Fetch sun & moon data
             } else {
                 this.handleError();
             }
@@ -43,15 +47,83 @@ const weatherModule = {
         }
     },
 
+    async getForecast(lat, lon) {
+        try {
+            const forecastResponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${this.apiKey}&units=imperial`);
+            const forecastData = await forecastResponse.json();
+
+            this.displayForecast(forecastData.daily);
+        } catch (error) {
+            console.error('Forecast API Error:', error);
+        }
+    },
+
+    displayForecast(dailyForecast) {
+        const forecastContainer = document.querySelector('.forecast-container');
+        forecastContainer.innerHTML = '';
+        
+        dailyForecast.forEach(day => {
+            const date = new Date(day.dt * 1000);
+            const iconClass = this.ICONS[day.weather[0].main] || 'wi wi-na'; // Default icon if no match
+
+            forecastContainer.innerHTML += `
+                <div class="forecast-day">
+                    <div class="forecast-date">${date.toLocaleDateString()}</div>
+                    <div class="forecast-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <div class="forecast-temp">${day.temp.day.toFixed(1)}°F</div>
+                    <div class="forecast-condition">${day.weather[0].description}</div>
+                </div>
+            `;
+        });
+    },
+
+    async getSunMoonData(lat, lon) {
+        try {
+            const sunMoonResponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${this.apiKey}&units=imperial`);
+            const sunMoonData = await sunMoonResponse.json();
+
+            this.displaySunMoonData(sunMoonData);
+        } catch (error) {
+            console.error('Sun & Moon API Error:', error);
+        }
+    },
+
+    displaySunMoonData(sunMoonData) {
+        const sunriseTime = new Date(sunMoonData.current.sunrise * 1000).toLocaleTimeString();
+        const sunsetTime = new Date(sunMoonData.current.sunset * 1000).toLocaleTimeString();
+        const moonriseTime = new Date(sunMoonData.daily[0].moonrise * 1000).toLocaleTimeString();
+        const moonsetTime = new Date(sunMoonData.daily[0].moonset * 1000).toLocaleTimeString();
+
+        const sunMoonSection = document.querySelector('.sun-moon-section');
+        sunMoonSection.innerHTML = `
+            <div class="sun-moon-info">
+                <div class="sunrise">
+                    <span>Sunrise: </span><span>${sunriseTime}</span>
+                </div>
+                <div class="sunset">
+                    <span>Sunset: </span><span>${sunsetTime}</span>
+                </div>
+                <div class="moonrise">
+                    <span>Moonrise: </span><span>${moonriseTime}</span>
+                </div>
+                <div class="moonset">
+                    <span>Moonset: </span><span>${moonsetTime}</span>
+                </div>
+            </div>
+        `;
+    },
+
     updateDisplay(data) {
         const unitSystem = this.getUnitSystem();
         const unitSuffix = unitSystem === 'imperial' ? '°F' : '°C';
         const windSpeedUnit = unitSystem === 'imperial' ? 'mph' : 'm/s';
         const temperature = unitSystem === 'imperial' ? data.main.temp : (data.main.temp - 32) * 5 / 9;
         const feelsLike = unitSystem === 'imperial' ? data.main.feels_like : (data.main.feels_like - 32) * 5 / 9;
-        const windSpeed = unitSystem === 'imperial' ? data.wind.speed : data.wind.speed * 0.44704; // Convert from m/s to mph
+        const windSpeed = unitSystem === 'imperial' ? data.wind.speed : data.wind.speed * 0.44704;
 
-        const iconClass = this.ICONS[data.weather[0].main] || 'wi wi-na'; // Default icon if no match
+        const iconClass = this.ICONS[data.weather[0].main] || 'wi wi-na';
 
         this.weatherSection.innerHTML = `
             <div class="weather-content">
@@ -82,8 +154,6 @@ const weatherModule = {
                     <div class="detail"><span class="label">Wind Speed</span><span class="value">${windSpeed.toFixed(1)} ${windSpeedUnit}</span></div>
                     <div class="detail"><span class="label">Humidity</span><span class="value">${data.main.humidity}%</span></div>
                     <div class="detail"><span class="label">Pressure</span><span class="value">${data.main.pressure} hPa</span></div>
-                    <div class="detail"><span class="label">UV Index</span><span class="value">${data.main.pressure}</span></div>
-                    <div class="detail"><span class="label">Precipitation</span><span class="value">${data.main.pressure}</span></div>
                 </div>
             </div>
         `;
