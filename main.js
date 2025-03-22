@@ -19,7 +19,7 @@ async function fetchWeatherData(location) {
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log('Full API Response:', data); // Debugging API response
+    console.log('API Response:', data); // Debugging API response
 
     if (!data || !data.current || !data.forecast) {
       throw new Error('Weather data is incomplete or invalid.');
