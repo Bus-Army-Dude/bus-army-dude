@@ -2,7 +2,6 @@
 const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
 const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
-// Function to fetch weather data
 async function fetchWeatherData(location) {
     const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=yes&alerts=no`;
 
@@ -16,8 +15,8 @@ async function fetchWeatherData(location) {
     }
 
     try {
-        console.log('Fetching weather data for location:', location);
-        console.log('API Request URL:', url);
+        console.log('Fetching weather data for location:', location); // Debug location
+        console.log('API Request URL:', url); // Debug request URL
 
         const response = await fetch(url);
 
@@ -27,13 +26,13 @@ async function fetchWeatherData(location) {
 
         const data = await response.json();
 
-        console.log('API Response:', data);
+        console.log('API Response:', data); // Debug full API response
 
         if (!data || !data.current || !data.forecast) {
             throw new Error('Weather data is incomplete or invalid.');
         }
 
-        updateDisplay(data);
+        updateDisplay(data); // Pass data to update UI
     } catch (error) {
         console.error('Error fetching weather data:', error);
         displayError('Unable to load weather data. Please try again.');
