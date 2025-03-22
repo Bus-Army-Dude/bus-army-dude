@@ -113,81 +113,72 @@ function updateDisplay(data) {
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
+// Function to update the Air Quality section
 function updateAirQuality(data) {
-    const airQualityOverview = document.querySelector('.air-quality-overview');
-    const airQualityDetails = document.querySelector('.air-quality-details');
+  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
+  const airQualityDetailsElement = document.querySelector('.air-quality-details'); // Ensure this exists in your HTML
 
-    if (data.current.air_quality) {
-        const airQualityIndex = data.current.air_quality["us-epa-index"];
-        const airQualityDescription = getAirQualityDescription(airQualityIndex);
-        const primaryPollutant = getPrimaryPollutant(data.current.air_quality);
+  if (data.current.air_quality) {
+    const airQualityIndex = data.current.air_quality["us-epa-index"];
+    const airQualityDescription = getAirQualityDescription(airQualityIndex);
+    const primaryPollutant = getPrimaryPollutant(data.current.air_quality);
 
-        // Update overview
-        airQualityOverview.innerHTML = `
-            ${airQualityDescription} (AQI: ${airQualityIndex})
-            <span>Primary Pollutant: ${primaryPollutant}</span>
-        `;
+    // Overall Air Quality
+    airQualityElement.innerHTML = `
+      <strong>${airQualityDescription}</strong> (AQI: ${airQualityIndex}) <br>
+      Primary Pollutant: ${primaryPollutant}
+    `;
 
-        // Update details
-        const pollutants = [
-            { name: 'O3 (Ozone)', value: data.current.air_quality.o3 },
-            { name: 'CO (Carbon Monoxide)', value: data.current.air_quality.co },
-            { name: 'NO2 (Nitrogen Dioxide)', value: data.current.air_quality.no2 },
-            { name: 'PM10', value: data.current.air_quality.pm10 },
-            { name: 'PM2.5', value: data.current.air_quality.pm2_5 },
-            { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 }
-        ];
-
-        airQualityDetails.innerHTML = pollutants.map(pollutant => `
-            <div>
-                <span class="pollutant-name">${pollutant.name}:</span>
-                <span class="pollutant-value">${pollutant.value.toFixed(2)} µg/m³</span>
-                <span class="pollutant-rating ${getAirQualityClass(airQualityIndex)}">${airQualityDescription}</span>
-            </div>
-        `).join('');
-    } else {
-        // Fallback message for missing air quality data
-        airQualityOverview.innerHTML = `Air Quality data not available`;
-        airQualityDetails.innerHTML = '';
-    }
-}
-
-// Helper functions
-function getAirQualityDescription(aqi) {
-    switch (aqi) {
-        case 1: return "Good";
-        case 2: return "Moderate";
-        case 3: return "Unhealthy for Sensitive Groups";
-        case 4: return "Unhealthy";
-        case 5: return "Very Unhealthy";
-        case 6: return "Hazardous";
-        default: return "Unknown";
-    }
-}
-
-function getPrimaryPollutant(airQuality) {
+    // Detailed Pollutant Information
     const pollutants = [
-        { name: 'Ozone', value: airQuality.o3 },
-        { name: 'Carbon Monoxide', value: airQuality.co },
-        { name: 'Nitrogen Dioxide', value: airQuality.no2 },
-        { name: 'Sulfur Dioxide', value: airQuality.so2 },
-        { name: 'PM10', value: airQuality.pm10 },
-        { name: 'PM2.5', value: airQuality.pm2_5 }
+      { name: 'O3 (Ozone)', value: data.current.air_quality.o3 },
+      { name: 'CO (Carbon Monoxide)', value: data.current.air_quality.co },
+      { name: 'NO2 (Nitrogen Dioxide)', value: data.current.air_quality.no2 },
+      { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 },
+      { name: 'PM10 (Particulate Matter < 10µm)', value: data.current.air_quality.pm10 },
+      { name: 'PM2.5 (Particulate Matter < 2.5µm)', value: data.current.air_quality.pm2_5 },
     ];
 
-    pollutants.sort((a, b) => b.value - a.value);
-    return pollutants[0].name; // Return the pollutant with the highest concentration
+    airQualityDetailsElement.innerHTML = pollutants.map(pollutant => `
+      <div>
+        <span><strong>${pollutant.name}:</strong></span>
+        <span>${pollutant.value.toFixed(2)} µg/m³</span>
+      </div>
+    `).join('');
+  } else {
+    airQualityElement.textContent = 'Air Quality data not available.';
+    airQualityDetailsElement.innerHTML = '';
+  }
 }
 
-function getAirQualityClass(aqi) {
-    switch (aqi) {
-        case 1: return "good";
-        case 2: return "moderate";
-        case 3: return "unhealthy";
-        case 4: return "very-unhealthy";
-        case 5: return "hazardous";
-        default: return "";
-    }
+// Helper function to get Air Quality Description
+function getAirQualityDescription(aqi) {
+  switch (aqi) {
+    case 1: return "Good";
+    case 2: return "Moderate";
+    case 3: return "Unhealthy for Sensitive Groups";
+    case 4: return "Unhealthy";
+    case 5: return "Very Unhealthy";
+    case 6: return "Hazardous";
+    default: return "Unknown";
+  }
+}
+
+// Helper function to determine the primary pollutant
+function getPrimaryPollutant(airQuality) {
+  const pollutants = [
+    { name: 'Ozone', value: airQuality.o3 },
+    { name: 'Carbon Monoxide', value: airQuality.co },
+    { name: 'Nitrogen Dioxide', value: airQuality.no2 },
+    { name: 'Sulfur Dioxide', value: airQuality.so2 },
+    { name: 'PM10', value: airQuality.pm10 },
+    { name: 'PM2.5', value: airQuality.pm2_5 },
+  ];
+
+  // Sort pollutants by their concentration levels
+  pollutants.sort((a, b) => b.value - a.value);
+
+  return pollutants[0].name; // Return the highest concentration pollutant
 }
 
 // Function to update forecast
