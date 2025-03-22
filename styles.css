@@ -2533,6 +2533,21 @@ body.focus-outline-disabled :focus {
     color: var(--secondary-text, #6c757d);
 }
 
+/* Air Quality section */
+.detail.air-quality {
+    margin-bottom: 15px;
+}
+
+.air-quality-details {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.air-quality-details div {
+    margin-bottom: 5px;
+}
+
 /* Loading spinner */
 .weather-loading .loading-spinner {
     border: 3px solid var(--border-color, #ddd);
