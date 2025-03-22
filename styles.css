@@ -2533,89 +2533,111 @@ body.focus-outline-disabled :focus {
     color: var(--secondary-text, #6c757d);
 }
 
-/* Air Quality Overall Styling */
-.detail.air-quality {
+/* Air Quality Header Styling */
+.air-quality-header {
+    display: flex;
+    align-items: center;
     margin-bottom: 15px;
-    font-size: 1rem;
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 8px;
-    padding: 15px;
-    background-color: var(--content-bg, #f9f9f9);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Air Quality Status and Primary Pollutant */
-.air-quality-overview {
+.air-quality-indicator {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 10px solid #ddd; /* Default grey border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    position: relative;
+}
+
+.air-quality-indicator.good {
+    border-color: #28a745; /* Green for good */
+}
+
+.air-quality-indicator.moderate {
+    border-color: #ffc107; /* Yellow for moderate */
+}
+
+.air-quality-indicator.unhealthy {
+    border-color: #dc3545; /* Red for unhealthy */
+}
+
+.air-quality-indicator.very-unhealthy {
+    border-color: #6f42c1; /* Purple for very unhealthy */
+}
+
+.air-quality-indicator.hazardous {
+    border-color: #343a40; /* Dark gray for hazardous */
+}
+
+.aqi-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #212529;
+    position: absolute;
+}
+
+.air-quality-summary .aqi-status {
     font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;
-    color: var(--text-color, #212529);
+    color: #212529;
 }
 
-.air-quality-overview span {
+.air-quality-summary .primary-pollutant {
     font-size: 0.9rem;
-    font-weight: normal;
-    color: var(--secondary-text, #6c757d);
+    color: #6c757d;
 }
 
-/* Pollutant Details Section */
+/* Pollutant Details Styling */
 .air-quality-details {
     margin-top: 15px;
     font-size: 0.9rem;
     line-height: 1.6;
-    color: var(--secondary-text, #6c757d);
 }
 
-.air-quality-details div {
+.pollutant {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px 0;
-    border-bottom: 1px solid var(--border-color, #eee);
+    border-bottom: 1px solid #eee;
 }
 
-.air-quality-details div:last-child {
+.pollutant:last-child {
     border-bottom: none;
 }
 
-/* Pollutant Name */
 .pollutant-name {
     font-weight: bold;
-    font-size: 1rem;
-    color: var(--text-color, #212529);
+    color: #212529;
 }
 
-/* Pollutant Value Styling */
 .pollutant-value {
     font-size: 0.9rem;
     font-weight: bold;
     color: #495057;
 }
 
-/* Good/Moderate/Unhealthy Styling */
 .pollutant-rating.good {
-    color: #28a745; /* Green */
-    font-weight: bold;
+    color: #28a745; /* Green for good */
 }
 
 .pollutant-rating.moderate {
-    color: #ffc107; /* Yellow */
-    font-weight: bold;
+    color: #ffc107; /* Yellow for moderate */
 }
 
 .pollutant-rating.unhealthy {
-    color: #dc3545; /* Red */
-    font-weight: bold;
+    color: #dc3545; /* Red for unhealthy */
 }
 
 .pollutant-rating.very-unhealthy {
-    color: #6f42c1; /* Purple */
-    font-weight: bold;
+    color: #6f42c1; /* Purple for very unhealthy */
 }
 
 .pollutant-rating.hazardous {
-    color: #343a40; /* Dark Gray */
-    font-weight: bold;
+    color: #343a40; /* Dark gray for hazardous */
 }
 
 /* Loading spinner */
