@@ -63,38 +63,64 @@ function updateDisplay(data) {
   const weatherContent = document.querySelector('.weather-content');
 
   // Hide loading spinner and show content
-  if (loadingSpinner && weatherContent) {
-    loadingSpinner.style.display = 'none';
-    weatherContent.style.display = 'block';
+  if (loadingSpinner) loadingSpinner.style.display = 'none';
+  if (weatherContent) weatherContent.style.display = 'block';
+
+  // Update weather data in the DOM with null checks
+  const locationNameElement = document.querySelector('.location-name');
+  if (locationNameElement) {
+    locationNameElement.textContent = data.location.name;
   }
 
-  // Update weather data on the page
-  document.querySelector('.location-name').textContent = data.location.name;
-  document.querySelector('.last-updated').textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
-  document.querySelector('.temp-value').textContent = `${data.current.temp_f}°F`;
-  document.querySelector('.feels-like').textContent = `Feels Like: ${data.current.feelslike_f}°F`;
+  const lastUpdatedElement = document.querySelector('.last-updated');
+  if (lastUpdatedElement) {
+    lastUpdatedElement.textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
+  }
 
-  const conditionIcon = data.current.condition.icon;
-  const condition = data.current.condition.text;
-  document.querySelector('.condition-text').innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" /> ${condition}`;
+  const tempValueElement = document.querySelector('.temp-value');
+  if (tempValueElement) {
+    tempValueElement.textContent = `${data.current.temp_f}°F`;
+  }
 
-  document.querySelector('.weather-details .wind-speed .value').textContent = `${data.current.wind_mph} mph`;
-  document.querySelector('.weather-details .humidity .value').textContent = `${data.current.humidity} %`;
-  document.querySelector('.weather-details .pressure .value').textContent = `${data.current.pressure_in} hPa`;
+  const feelsLikeElement = document.querySelector('.feels-like');
+  if (feelsLikeElement) {
+    feelsLikeElement.textContent = `Feels Like: ${data.current.feelslike_f}°F`;
+  }
+
+  const conditionTextElement = document.querySelector('.condition-text');
+  if (conditionTextElement) {
+    const conditionIcon = data.current.condition.icon;
+    const condition = data.current.condition.text;
+    conditionTextElement.innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" /> ${condition}`;
+  }
+
+  const windSpeedElement = document.querySelector('.weather-details .wind-speed .value');
+  if (windSpeedElement) {
+    windSpeedElement.textContent = `${data.current.wind_mph} mph`;
+  }
+
+  const humidityElement = document.querySelector('.weather-details .humidity .value');
+  if (humidityElement) {
+    humidityElement.textContent = `${data.current.humidity} %`;
+  }
+
+  const pressureElement = document.querySelector('.weather-details .pressure .value');
+  if (pressureElement) {
+    pressureElement.textContent = `${data.current.pressure_in} hPa`;
+  }
 
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
 // Function to update the Sun and Moon times section
 function updateSunMoon(astroData) {
-  const sunrise = astroData.sunrise;
-  const sunset = astroData.sunset;
-
   const sunMoonSection = document.querySelector('.sun-moon-section');
-  sunMoonSection.innerHTML = `
-    <div><strong>Sunrise:</strong> ${sunrise}</div>
-    <div><strong>Sunset:</strong> ${sunset}</div>
-  `;
+  if (sunMoonSection) {
+    sunMoonSection.innerHTML = `
+      <div><strong>Sunrise:</strong> ${astroData.sunrise}</div>
+      <div><strong>Sunset:</strong> ${astroData.sunset}</div>
+    `;
+  }
 }
 
 // Function to handle errors (e.g., invalid location or API errors)
