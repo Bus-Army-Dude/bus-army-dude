@@ -2455,11 +2455,11 @@ body.focus-outline-disabled :focus {
 /* General styling for the weather section */
 .weather-section {
     font-family: 'Inter', sans-serif;
-    color: var(--text-color); /* Adjusts based on light/dark mode */
-    background-color: var(--content-bg); /* Adjusts based on light/dark mode */
+    color: #333;
+    background-color: #222;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px var(--shadow-color); /* Uses shadow color from the theme */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 20px 0;
     max-width: 100%;
 }
@@ -2468,11 +2468,11 @@ body.focus-outline-disabled :focus {
 .weather-header {
     font-size: 1.8rem;
     font-weight: 600;
+    color: #FFF;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    color: var(--text-color);
 }
 
 /* Current weather condition */
@@ -2493,12 +2493,12 @@ body.focus-outline-disabled :focus {
 .temperature {
     font-size: 3rem;
     font-weight: bold;
-    color: var(--link-color); /* Uses the link color based on the theme */
+    color: #FF4500; /* Hot temp color */
 }
 
 .feels-like {
     font-size: 1rem;
-    color: var(--secondary-text); /* Adjusts based on light/dark mode */
+    color: #ccc;
     margin-top: 5px;
     text-align: center;
 }
@@ -2513,14 +2513,23 @@ body.focus-outline-disabled :focus {
 
 .detail {
     font-size: 1rem;
-    background-color: var(--content-bg); /* Adjusts based on light/dark mode */
-    color: var(--text-color); /* Adjusts based on light/dark mode */
+    background-color: #333;
     padding: 15px;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px var(--shadow-color); /* Shadow color */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    color: #FFF;
+}
+
+/* High and low temp color coding */
+.high-temp {
+    color: #FF4500; /* Red for high temps */
+}
+
+.low-temp {
+    color: #1E90FF; /* Blue for low temps */
 }
 
 /* Air quality */
@@ -2528,8 +2537,8 @@ body.focus-outline-disabled :focus {
     margin-top: 20px;
     padding: 15px;
     border-radius: 12px;
-    background-color: var(--content-bg); /* Adjusts based on light/dark mode */
-    color: var(--text-color); /* Adjusts based on light/dark mode */
+    background-color: #444;
+    color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2551,6 +2560,7 @@ body.focus-outline-disabled :focus {
     margin-top: 20px;
     display: flex;
     justify-content: center;
+    gap: 10px;
 }
 
 .location-input {
@@ -2559,22 +2569,38 @@ body.focus-outline-disabled :focus {
     width: 100%;
     max-width: 350px;
     border-radius: 8px;
-    border: 2px solid var(--border-color); /* Border color from the theme */
-    background-color: var(--content-bg); /* Adjusts based on light/dark mode */
-    color: var(--text-color); /* Adjusts based on light/dark mode */
-    box-shadow: 0 2px 6px var(--shadow-color); /* Shadow color */
+    border: 2px solid #444;
+    background-color: #111;
+    color: #FFF;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: border-color 0.3s ease;
 }
 
 .location-input:focus {
-    border-color: var(--link-color); /* Link color used for focus */
+    border-color: #FF4500;
     outline: none;
+}
+
+/* Get weather button */
+.get-weather-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: #FF4500;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.get-weather-btn:hover {
+    background-color: #FF6347;
 }
 
 /* Loading spinner */
 .weather-loading .loading-spinner {
-    border: 4px solid var(--bg-color); /* Background color used for loading spinner */
-    border-top: 4px solid var(--link-color); /* Link color for the spinner top */
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #FF4500;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -2597,30 +2623,31 @@ body.focus-outline-disabled :focus {
 }
 
 .forecast-day {
-    background-color: var(--content-bg); /* Adjusts based on light/dark mode */
-    color: var(--text-color); /* Adjusts based on light/dark mode */
+    background-color: #333;
     padding: 10px;
     border-radius: 10px;
     width: 100%;
     max-width: 150px;
     text-align: center;
-    box-shadow: 0 2px 8px var(--shadow-color); /* Shadow color */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.3s ease;
 }
 
 .forecast-day:hover {
-    box-shadow: 0 6px 12px var(--shadow-color); /* Hover shadow color */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .forecast-day .date {
     font-size: 1rem;
     font-weight: 500;
+    color: #FFF;
 }
 
 .forecast-day .temp {
     font-size: 1.4rem;
     font-weight: bold;
     margin-top: 8px;
+    color: #FFF;
 }
 
 .forecast-day .icon {
@@ -2676,4 +2703,3 @@ body.focus-outline-disabled :focus {
         padding: 8px;
     }
 }
-
