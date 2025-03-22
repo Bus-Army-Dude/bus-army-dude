@@ -1,83 +1,64 @@
 const weatherModule = {
-    API_URL: 'https://api.open-meteo.com/v1/forecast',
-    OPEN_CAGE_API_KEY: '421c8bcd4a38468e8d8152e997c9c902', // Replace with your OpenCage API Key
+    weatherSection: document.querySelector('.weather-section'),
     ICONS: {
-        '0': 'wi wi-day-sunny', // Clear sky (day)
-        '1': 'wi wi-night-clear', // Clear sky (night)
-        '2': 'wi wi-day-cloudy', // Partly cloudy (day)
-        '3': 'wi wi-night-cloudy', // Partly cloudy (night)
-        '4': 'wi wi-cloudy', // Cloudy
-        '5': 'wi wi-day-showers', // Light rain (day)
-        '6': 'wi wi-night-showers', // Light rain (night)
-        '7': 'wi wi-day-rain', // Moderate rain (day)
-        '8': 'wi wi-night-rain', // Moderate rain (night)
-        '9': 'wi wi-day-thunderstorm', // Thunderstorm (day)
-        '10': 'wi wi-night-thunderstorm', // Thunderstorm (night)
-        '11': 'wi wi-day-snow', // Snow (day)
-        '12': 'wi wi-night-snow', // Snow (night)
-        '13': 'wi wi-day-sleet', // Sleet (day)
-        '14': 'wi wi-night-sleet', // Sleet (night)
-        '15': 'wi wi-day-thunderstorm', // Thunderstorm (day)
-        '16': 'wi wi-night-thunderstorm', // Thunderstorm (night)
-        '17': 'wi wi-day-fog', // Fog (day)
-        '18': 'wi wi-night-fog', // Fog (night)
-        '19': 'wi wi-hail', // Hail
-        '20': 'wi wi-windy', // Windy
-        '21': 'wi wi-tornado', // Tornado
-        '22': 'wi wi-dust', // Dust
-        '23': 'wi wi-volcano', // Volcano ash
+        'Clear sky': 'wi wi-day-sunny',
+        'Partly cloudy': 'wi wi-day-cloudy',
+        'Cloudy': 'wi wi-cloudy',
+        'Light rain': 'wi wi-day-showers',
+        'Moderate rain': 'wi wi-day-rain',
+        'Thunderstorms': 'wi wi-day-thunderstorm',
+        'Snow': 'wi wi-day-snow',
+        'Fog': 'wi wi-day-fog',
     },
 
+    apiKey: 'ebeec5fc4654e84d868f03b3ee28d73a', // Replace with your OpenWeatherMap API key
+
     init() {
-        this.weatherSection = document.querySelector('.weather-section');
         if (!this.weatherSection) return;
 
-        // Get user's location using Geolocation API
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 position => this.getWeatherData(position.coords.latitude, position.coords.longitude),
                 () => this.handleLocationError()
             );
-        } else {
-            this.handleLocationError();
         }
-
-        // Update weather every 5 minutes
-        setInterval(() => this.getWeatherData(), 300000);
     },
 
     async getWeatherData(lat, lon) {
         try {
             this.showLoading();
 
-            const response = await fetch(
-                `${this.API_URL}?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,uv_index_max&timezone=auto`
-            );
+            // Fetch weather data from OpenWeatherMap API
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=imperial`);
             const weatherData = await response.json();
-            this.updateDisplay(weatherData, lat, lon);
+
+            if (weatherData.cod === 200) {
+                this.updateDisplay(weatherData);
+            } else {
+                this.handleError();
+            }
         } catch (error) {
-            console.error('Weather Error:', error);
+            console.error('Weather API Error:', error);
             this.handleError();
         }
     },
 
-    async updateDisplay(data, lat, lon) {
-        if (!this.weatherSection) return;
+    updateDisplay(data) {
+        const unitSystem = this.getUnitSystem();
+        const unitSuffix = unitSystem === 'imperial' ? '°F' : '°C';
+        const windSpeedUnit = unitSystem === 'imperial' ? 'mph' : 'm/s';
+        const temperature = unitSystem === 'imperial' ? data.main.temp : (data.main.temp - 32) * 5 / 9;
+        const feelsLike = unitSystem === 'imperial' ? data.main.feels_like : (data.main.feels_like - 32) * 5 / 9;
+        const windSpeed = unitSystem === 'imperial' ? data.wind.speed : data.wind.speed * 0.44704; // Convert from m/s to mph
 
-        const currentWeather = data.current_weather;
-        const dailyForecast = data.daily;
-
-        // Reverse geocoding to get the location name (e.g., city)
-        const locationName = await this.getLocationName(lat, lon);
-
-        const iconClass = this.ICONS[currentWeather.weathercode] || 'wi wi-na'; // Default icon if no match
+        const iconClass = this.ICONS[data.weather[0].main] || 'wi wi-na'; // Default icon if no match
 
         this.weatherSection.innerHTML = `
             <div class="weather-content">
                 <div class="weather-header">
                     <div class="location-info">
-                        <h2>${locationName}</h2>
-                        <span class="last-updated">Updated: ${this.formatTime(currentWeather.time)}</span>
+                        <h2>${data.name}, ${data.sys.country}</h2>
+                        <span class="last-updated">Updated: ${new Date().toLocaleTimeString()}</span>
                     </div>
                 </div>
 
@@ -86,135 +67,43 @@ const weatherModule = {
                 <div class="weather-primary">
                     <div class="current-temp">
                         <div class="temperature">
-                            <span class="temp-value">${this.convertToFahrenheit(currentWeather.temperature)}°F</span>
-                            <span class="feels-like">Feels Like: ${this.convertToFahrenheit(currentWeather.apparent_temperature)}°F</span>
+                            <span class="temp-value">${temperature.toFixed(1)}${unitSuffix}</span>
+                            <span class="feels-like">Feels Like: ${feelsLike.toFixed(1)}${unitSuffix}</span>
                         </div>
                     </div>
                     <div class="condition-text">
-                        <i class="${iconClass}"></i> ${this.getWeatherDescription(currentWeather.weathercode)}
+                        <i class="${iconClass}"></i> ${data.weather[0].description}
                     </div>
                 </div>
 
                 <hr>
 
                 <div class="weather-details">
-                    <div class="detail"><span class="label">Wind Speed</span><span class="value">${this.convertToMph(currentWeather.windspeed)} mph</span></div>
-                    <div class="detail"><span class="label">Wind Direction</span><span class="value">${currentWeather.winddirection}°</span></div>
-                </div>
-
-                <hr>
-
-                <div class="forecast-section">
-                    <h3>7-Day Forecast</h3>
-                    <div class="forecast-container">
-                        ${dailyForecast.time.map((day, index) => `
-                            <div class="forecast-day">
-                                <div class="date">${this.formatDate(day)}</div>
-                                <div class="forecast-temps">
-                                    <span class="high">${Math.round(dailyForecast.temperature_2m_max[index])}°F</span>
-                                    <span class="separator">/</span>
-                                    <span class="low">${Math.round(dailyForecast.temperature_2m_min[index])}°F</span>
-                                </div>
-                                <div class="forecast-details">
-                                    <div class="rain-chance"><span class="label">Precipitation:</span><span class="value">${dailyForecast.precipitation_sum[index]} in</span></div>
-                                    <div class="condition">UV Index: ${dailyForecast.uv_index_max[index]}</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
+                    <div class="detail"><span class="label">Wind Speed</span><span class="value">${windSpeed.toFixed(1)} ${windSpeedUnit}</span></div>
+                    <div class="detail"><span class="label">Humidity</span><span class="value">${data.main.humidity}%</span></div>
+                    <div class="detail"><span class="label">Pressure</span><span class="value">${data.main.pressure} hPa</span></div>
+                    <div class="detail"><span class="label">UV Index</span><span class="value">${data.main.pressure}</span></div>
+                    <div class="detail"><span class="label">Precipitation</span><span class="value">${data.main.pressure}</span></div>
                 </div>
             </div>
         `;
     },
 
-    async getLocationName(lat, lon) {
-        try {
-            const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${this.OPEN_CAGE_API_KEY}`);
-            const data = await response.json();
-            return data.results[0]?.components.city || "Unknown Location";
-        } catch (error) {
-            console.error('Location error:', error);
-            return "Unknown Location";
-        }
-    },
-
-    formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
-            weekday: 'short', 
-            month: 'short', 
-            day: 'numeric' 
-        });
-    },
-
-    formatTime(timeString) {
-        return new Date(timeString).toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-    },
-
-    convertToFahrenheit(celsius) {
-        return (celsius * 9/5) + 32;
-    },
-
-    convertToMph(mps) {
-        return (mps * 2.23694).toFixed(1); // Convert m/s to mph
+    getUnitSystem() {
+        return navigator.language.includes('US') ? 'imperial' : 'metric';
     },
 
     showLoading() {
-        if (!this.weatherSection) return;
-        this.weatherSection.innerHTML = `
-            <div class="weather-loading">
-                <div class="loading-spinner"></div>
-                <p>Loading weather data...</p>
-            </div>
-        `;
-    },
-
-    handleError() {
-        if (!this.weatherSection) return;
-        this.weatherSection.innerHTML = `
-            <div class="weather-error">
-                <p>Unable to load weather data</p>
-                <button onclick="weatherModule.init()" class="retry-button">Retry</button>
-            </div>
-        `;
+        this.weatherSection.innerHTML = 'Loading...';
     },
 
     handleLocationError() {
-        if (!this.weatherSection) return;
-        this.weatherSection.innerHTML = `
-            <div class="weather-error">
-                <p>Location access needed for weather</p>
-                <button onclick="weatherModule.init()" class="retry-button">Enable Location</button>
-            </div>
-        `;
+        this.weatherSection.innerHTML = 'Unable to retrieve your location.';
     },
 
-    getWeatherDescription(code) {
-        const descriptions = {
-            '0': 'Clear sky',
-            '1': 'Mainly clear',
-            '2': 'Partly cloudy',
-            '3': 'Cloudy',
-            '5': 'Light rain',
-            '6': 'Showers',
-            '7': 'Moderate rain',
-            '8': 'Heavy rain',
-            '9': 'Thunderstorms',
-            '11': 'Snow',
-            '12': 'Sleet',
-            '13': 'Freezing rain',
-            '15': 'Thunderstorms',
-            '16': 'Fog',
-            '17': 'Hail',
-            '20': 'Windy',
-            '21': 'Tornado'
-        };
-        return descriptions[code] || 'Unknown weather';
-    }
+    handleError() {
+        this.weatherSection.innerHTML = 'Weather data unavailable.';
+    },
 };
 
 weatherModule.init();
