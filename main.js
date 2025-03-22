@@ -13,8 +13,6 @@ const weatherModule = {
         'Dust': 'wi wi-day-dust',
     },
 
-    apiKey: 'ebeec5fc4654e84d868f03b3ee28d73a', // Replace with your OpenWeatherMap API key
-
     init() {
         if (!this.weatherSection) return;
 
@@ -30,12 +28,12 @@ const weatherModule = {
         try {
             this.showLoading();
 
-            // Fetch current weather data from OpenWeatherMap API
-            const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=imperial`);
+            // Fetch current weather data from Open-Meteo API
+            const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=America%2FNew_York`);
             const weatherData = await weatherResponse.json();
 
-            if (weatherData.cod === 200) {
-                this.updateDisplay(weatherData);
+            if (weatherData && weatherData.current_weather) {
+                this.updateDisplay(weatherData.current_weather);
                 this.getForecast(lat, lon); // Fetch 7-day forecast
                 this.getSunMoonData(lat, lon); // Fetch sun & moon data
             } else {
@@ -49,7 +47,7 @@ const weatherModule = {
 
     async getForecast(lat, lon) {
         try {
-            const forecastResponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${this.apiKey}&units=imperial`);
+            const forecastResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,sunrise,sunset&timezone=America%2FNew_York`);
             const forecastData = await forecastResponse.json();
 
             this.displayForecast(forecastData.daily);
@@ -63,17 +61,17 @@ const weatherModule = {
         forecastContainer.innerHTML = '';
 
         dailyForecast.forEach(day => {
-            const date = new Date(day.dt * 1000);
-            const iconClass = this.ICONS[day.weather[0].main] || 'wi wi-na'; // Default icon if no match
-
+            const date = new Date(day.timestamp * 1000);
             forecastContainer.innerHTML += `
                 <div class="forecast-day">
                     <div class="forecast-date">${date.toLocaleDateString()}</div>
-                    <div class="forecast-icon">
-                        <i class="${iconClass}"></i>
+                    <div class="forecast-temp">
+                        <span class="forecast-max-temp">${day.temperature_2m_max}°F</span> /
+                        <span class="forecast-min-temp">${day.temperature_2m_min}°F</span>
                     </div>
-                    <div class="forecast-temp">${day.temp.day.toFixed(1)}°F</div>
-                    <div class="forecast-condition">${day.weather[0].description}</div>
+                    <div class="forecast-precipitation">Precipitation: ${day.precipitation_sum}mm</div>
+                    <div class="forecast-sunrise">Sunrise: ${day.sunrise}</div>
+                    <div class="forecast-sunset">Sunset: ${day.sunset}</div>
                 </div>
             `;
         });
@@ -81,35 +79,30 @@ const weatherModule = {
 
     async getSunMoonData(lat, lon) {
         try {
-            const sunMoonResponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${this.apiKey}&units=imperial`);
+            const sunMoonResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunrise,sunset,moonrise,moonset&timezone=America%2FNew_York`);
             const sunMoonData = await sunMoonResponse.json();
 
-            this.displaySunMoonData(sunMoonData);
+            this.displaySunMoonData(sunMoonData.daily[0]);
         } catch (error) {
             console.error('Sun & Moon API Error:', error);
         }
     },
 
-    displaySunMoonData(sunMoonData) {
-        const sunriseTime = new Date(sunMoonData.current.sunrise * 1000).toLocaleTimeString();
-        const sunsetTime = new Date(sunMoonData.current.sunset * 1000).toLocaleTimeString();
-        const moonriseTime = new Date(sunMoonData.daily[0].moonrise * 1000).toLocaleTimeString();
-        const moonsetTime = new Date(sunMoonData.daily[0].moonset * 1000).toLocaleTimeString();
-
+    displaySunMoonData(data) {
         const sunMoonSection = document.querySelector('.sun-moon-section');
         sunMoonSection.innerHTML = `
             <div class="sun-moon-info">
                 <div class="sunrise">
-                    <span>Sunrise: </span><span>${sunriseTime}</span>
+                    <span>Sunrise: </span><span>${data.sunrise}</span>
                 </div>
                 <div class="sunset">
-                    <span>Sunset: </span><span>${sunsetTime}</span>
+                    <span>Sunset: </span><span>${data.sunset}</span>
                 </div>
                 <div class="moonrise">
-                    <span>Moonrise: </span><span>${moonriseTime}</span>
+                    <span>Moonrise: </span><span>${data.moonrise}</span>
                 </div>
                 <div class="moonset">
-                    <span>Moonset: </span><span>${moonsetTime}</span>
+                    <span>Moonset: </span><span>${data.moonset}</span>
                 </div>
             </div>
         `;
@@ -117,19 +110,16 @@ const weatherModule = {
 
     updateDisplay(data) {
         const unitSystem = this.getUnitSystem();
-        const unitSuffix = unitSystem === 'imperial' ? '°F' : '°C';
-        const windSpeedUnit = unitSystem === 'imperial' ? 'mph' : 'm/s';
-        const temperature = unitSystem === 'imperial' ? data.main.temp : (data.main.temp - 32) * 5 / 9;
-        const feelsLike = unitSystem === 'imperial' ? data.main.feels_like : (data.main.feels_like - 32) * 5 / 9;
-        const windSpeed = unitSystem === 'imperial' ? data.wind.speed : data.wind.speed * 0.44704;
+        const temperature = data.temperature; // In Fahrenheit (already provided by Open-Meteo)
+        const windSpeed = data.windspeed; // Wind speed in mph
 
-        const iconClass = this.ICONS[data.weather[0].main] || 'wi wi-na';
+        const iconClass = this.ICONS[data.weathercode] || 'wi wi-na'; // Default icon if no match
 
         this.weatherSection.innerHTML = `
             <div class="weather-content">
                 <div class="weather-header">
                     <div class="location-info">
-                        <h2 class="location-name">${data.name}, ${data.sys.country}</h2>
+                        <h2 class="location-name">Your Location</h2>
                         <span class="last-updated">Updated: ${new Date().toLocaleTimeString()}</span>
                     </div>
                 </div>
@@ -139,21 +129,20 @@ const weatherModule = {
                 <div class="weather-primary">
                     <div class="current-temp">
                         <div class="temperature">
-                            <span class="temp-value">${temperature.toFixed(1)}${unitSuffix}</span>
-                            <span class="feels-like">Feels Like: ${feelsLike.toFixed(1)}${unitSuffix}</span>
+                            <span class="temp-value">${temperature}°F</span>
                         </div>
                     </div>
                     <div class="condition-text">
-                        <i class="${iconClass}"></i> ${data.weather[0].description}
+                        <i class="${iconClass}"></i> ${data.weathercode}
                     </div>
                 </div>
 
                 <hr>
 
                 <div class="weather-details">
-                    <div class="detail"><span class="label">Wind Speed</span><span class="value">${windSpeed.toFixed(1)} ${windSpeedUnit}</span></div>
-                    <div class="detail"><span class="label">Humidity</span><span class="value">${data.main.humidity}%</span></div>
-                    <div class="detail"><span class="label">Pressure</span><span class="value">${data.main.pressure} hPa</span></div>
+                    <div class="detail"><span class="label">Wind Speed</span><span class="value">${windSpeed} mph</span></div>
+                    <div class="detail"><span class="label">Humidity</span><span class="value">${data.humidity}%</span></div>
+                    <div class="detail"><span class="label">Pressure</span><span class="value">${data.pressure} hPa</span></div>
                 </div>
             </div>
         `;
