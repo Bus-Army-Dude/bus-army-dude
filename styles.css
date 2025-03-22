@@ -2463,6 +2463,8 @@ body.focus-outline-disabled :focus {
     margin-top: 20px;
     margin-bottom: 20px;
     border-bottom: 2px solid var(--separator-color, #ddd);
+    width: 100%; /* Ensure it takes full width */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
 
 /* Weather header styling */
@@ -2472,6 +2474,7 @@ body.focus-outline-disabled :focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%; /* Make it full width */
 }
 
 /* Current weather condition display */
@@ -2479,32 +2482,36 @@ body.focus-outline-disabled :focus {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    width: 100%; /* Make it full width */
+    box-sizing: border-box;
 }
 
 .weather-primary .current-temp {
     display: flex;
     align-items: center;
+    width: 100%; /* Allow temp to take more space */
 }
 
 .weather-icon {
-    width: 50px;
-    height: 50px;
-    margin-right: 15px;
+    width: 70px; /* Increased icon size for better visibility */
+    height: 70px;
+    margin-right: 20px; /* Increased spacing */
 }
 
 .temperature {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    flex-grow: 1; /* Allow temperature info to expand */
 }
 
 .temperature .temp-value {
-    font-size: 2rem;
+    font-size: 2.5rem; /* Slightly larger temperature */
     font-weight: bold;
 }
 
 .feels-like {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--secondary-text, #6c757d);
 }
 
@@ -2516,16 +2523,21 @@ body.focus-outline-disabled :focus {
     margin-bottom: 20px;
     border-bottom: 2px solid var(--separator-color, #ddd);
     justify-content: space-between;
+    width: 100%; /* Make it full width */
+    box-sizing: border-box;
 }
 
 .weather-details .detail {
-    width: 48%;
+    width: calc(50% - 10px); /* Adjust width for two items per row with spacing */
     margin-bottom: 10px;
     font-size: 1rem;
+    box-sizing: border-box;
 }
 
 .weather-details .label {
     font-weight: bold;
+    display: block; /* Make label take full line */
+    margin-bottom: 5px;
 }
 
 .weather-details .value {
@@ -2563,51 +2575,59 @@ body.focus-outline-disabled :focus {
 /* Forecast styling */
 .forecast-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 15px;
+    flex-direction: column; /* Make it rows */
+    gap: 10px; /* Adjust spacing between rows */
     margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .forecast-day {
     background-color: var(--content-bg, #f9f9f9);
     padding: 15px;
     border-radius: 8px;
-    width: 100%;
-    max-width: calc(100% / 7 - 15px);
-    text-align: center;
+    width: 100%; /* Make each day take full width for rows */
+    text-align: left; /* Align text to the left for better readability in rows */
     box-sizing: border-box;
     box-shadow: 0 2px 6px var(--shadow-color, rgba(0, 0, 0, 0.1));
+    display: flex;
+    justify-content: space-between; /* Align day info and temps/icon */
+    align-items: center;
 }
 
 .forecast-day .date {
     font-size: 1rem;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 0; /* Remove bottom margin */
 }
 
 .forecast-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
+    width: 40px; /* Adjust icon size in forecast */
+    height: 40px;
+    margin-bottom: 0; /* Remove bottom margin */
+    margin-left: 15px; /* Add spacing between date and icon */
 }
 
 .forecast-temps {
-    font-size: 1.2rem;
-    margin: 10px 0;
+    font-size: 1.1rem;
+    margin: 0; /* Remove default margins */
+    display: flex;
+    align-items: center;
 }
 
 .forecast-temps .high {
     color: #e74c3c;
+    margin-right: 5px;
 }
 
 .forecast-temps .low {
     color: #3498db;
+    margin-left: 5px;
 }
 
 .forecast-temps .separator {
     color: #6c757d;
-    margin: 0 5px;
+    margin: 0 8px;
 }
 
 /* Additional forecast details */
@@ -2621,6 +2641,8 @@ body.focus-outline-disabled :focus {
     margin-top: 20px;
     font-size: 1rem;
     color: var(--text-color, #212529);
+    width: 100%; /* Make it full width */
+    box-sizing: border-box;
 }
 
 .sun-moon-section div {
@@ -2635,6 +2657,8 @@ body.focus-outline-disabled :focus {
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
+    width: 100%; /* Make it full width */
+    box-sizing: border-box;
 }
 
 #locationInput {
@@ -2670,19 +2694,22 @@ body.focus-outline-disabled :focus {
 /* Responsive Design */
 @media (max-width: 1024px) {
     .forecast-day {
-        max-width: calc(100% / 4 - 15px);
+        /* Keep as a column in larger view if desired, or adjust as needed */
     }
 }
 
 @media (max-width: 768px) {
+    .weather-details .detail {
+        width: 100%; /* Make details take full width on smaller screens */
+    }
+
     .forecast-day {
-        max-width: calc(100% / 2 - 15px);
+        flex-direction: row; /* Ensure row layout on smaller screens too */
     }
 }
 
 @media (max-width: 600px) {
     .location-input-container {
-        display: flex;
         flex-direction: column;
         align-items: center;
     }
@@ -2700,6 +2727,11 @@ body.focus-outline-disabled :focus {
 
 @media (max-width: 480px) {
     .forecast-day {
-        max-width: 100%;
+        flex-direction: column; /* Stack elements in forecast day on very small screens if needed */
+        align-items: flex-start;
+    }
+
+    .forecast-temps {
+        margin-top: 5px;
     }
 }
