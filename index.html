@@ -189,16 +189,59 @@ s0.parentNode.insertBefore(s1,s0);
             </div>
         </section>
 
-        <!-- Weather Section Container -->
-        <div class="weather-container">
-            <!-- Weather Section -->
-            <div class="weather-section">
-                <div class="weather-loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading weather data...</p>
+     <!-- Weather Section Container -->
+<div class="weather-container">
+    <!-- Weather Section -->
+    <div class="weather-section">
+        <!-- Loading State -->
+        <div class="weather-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading weather data...</p>
+        </div>
+
+        <!-- Weather Content - This will be populated dynamically via JS -->
+        <div class="weather-content">
+            <div class="weather-header">
+                <div class="location-info">
+                    <h2 class="location-name">Location</h2>
+                    <span class="last-updated">Updated: </span>
                 </div>
             </div>
+
+            <hr>
+
+            <div class="weather-primary">
+                <div class="current-temp">
+                    <div class="temperature">
+                        <span class="temp-value">--°F</span>
+                        <span class="feels-like">Feels Like: --°F</span>
+                    </div>
+                </div>
+                <div class="condition-text">
+                    <i class="wi wi-na"></i> -- Condition
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="weather-details">
+                <div class="detail"><span class="label">Wind Speed</span><span class="value">-- mph</span></div>
+                <div class="detail"><span class="label">Humidity</span><span class="value">-- %</span></div>
+                <div class="detail"><span class="label">Pressure</span><span class="value">-- hPa</span></div>
+            </div>
         </div>
+
+        <!-- Forecast Section -->
+        <div class="forecast-container">
+            <!-- This will be populated dynamically with forecast data -->
+        </div>
+
+        <!-- Sun & Moon Section -->
+        <div class="sun-moon-section">
+            <!-- This will be populated dynamically with Sun & Moon data -->
+        </div>
+    </div>
+</div>
         
              <!-- TikTok Shoutouts Section -->
         <div class="shoutouts-section section">
