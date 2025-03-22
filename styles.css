@@ -2691,3 +2691,69 @@ hr {
         max-width: 100%; /* Stack cards vertically on phones */
     }
 }
+
+/* Location input container */
+.location-input-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#locationInput {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;  /* Full-width on smaller screens */
+  max-width: 300px;  /* Limiting max width */
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Focus state for better accessibility */
+#locationInput:focus {
+  border-color: #007bff;
+  outline: none;  /* Remove default outline */
+}
+
+/* Button styling */
+#searchLocationButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect */
+#searchLocationButton:hover {
+  background-color: #0056b3;
+}
+
+/* Disabled button state */
+#searchLocationButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .location-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #locationInput {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 90%;
+  }
+
+  #searchLocationButton {
+    width: 90%;
+  }
+}
+
