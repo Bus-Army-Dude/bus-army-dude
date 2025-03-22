@@ -91,7 +91,11 @@ function updateDisplay(data) {
     pressureElement.textContent = data.current.pressure_in ? `${data.current.pressure_in} hPa` : 'N/A';
   }
   if (precipitationElement) {
-    precipitationElement.textContent = data.current.precip_in ? `${data.current.precip_in} in` : 'N/A';
+    const precipitationAmount = data.current.precip_mm || 0; // Amount in mm
+    const weatherCondition = data.current.condition.text || 'None';
+    precipitationElement.textContent = precipitationAmount > 0
+      ? `${precipitationAmount} mm (${weatherCondition})`
+      : `None`;
   }
   if (airQualityElement && data.current.air_quality) {
     const aqi = data.current.air_quality["us-epa-index"];
