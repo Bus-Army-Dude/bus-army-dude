@@ -4,7 +4,7 @@ const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
 // Function to fetch weather data
 async function fetchWeatherData(location) {
-  const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=no&alerts=no`;
+  const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=yes&alerts=no`; // Added 'aqi=yes' for air quality
 
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
@@ -78,6 +78,7 @@ function updateDisplay(data) {
   const windSpeedElement = document.querySelector('.weather-details .wind-speed .value');
   const humidityElement = document.querySelector('.weather-details .humidity .value');
   const pressureElement = document.querySelector('.weather-details .pressure .value');
+  const precipitationElement = document.querySelector('.weather-details .precipitation .value');
   if (windSpeedElement) {
     windSpeedElement.textContent = `${data.current.wind_mph} mph`;
   }
@@ -86,6 +87,17 @@ function updateDisplay(data) {
   }
   if (pressureElement) {
     pressureElement.textContent = `${data.current.pressure_in} hPa`;
+  }
+  if (precipitationElement) {
+    precipitationElement.textContent = `${data.current.precip_in} in`;
+  }
+
+  // Air Quality
+  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
+  if (airQualityElement && data.current.air_quality) {
+    const aqi = data.current.air_quality["us-epa-index"]; // Use the EPA Air Quality Index
+    const airQualityDescription = getAirQualityDescription(aqi);
+    airQualityElement.textContent = `${airQualityDescription} (AQI: ${aqi})`;
   }
 
   // 7-Day Forecast and Sun & Moon
@@ -111,6 +123,7 @@ function updateForecast(forecastDays) {
       </div>
       <div class="forecast-details">
         <span class="condition">${day.day.condition.text}</span>
+        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
       </div>
     `;
     forecastContainer.appendChild(forecastElement);
@@ -128,6 +141,19 @@ function updateSunMoon(astroData) {
   }
 }
 
+// Function to get air quality description based on AQI
+function getAirQualityDescription(aqi) {
+  switch (aqi) {
+    case 1: return "Good";
+    case 2: return "Moderate";
+    case 3: return "Unhealthy for Sensitive Groups";
+    case 4: return "Unhealthy";
+    case 5: return "Very Unhealthy";
+    case 6: return "Hazardous";
+    default: return "Unknown";
+  }
+}
+
 // Function to handle errors (e.g., invalid location or API errors)
 function displayError(message) {
   const loadingSpinner = document.querySelector('.weather-loading');
@@ -142,13 +168,13 @@ function displayError(message) {
 
 // On page load, fetch weather data for the default or last saved location
 window.onload = function () {
-  const lastLocation = localStorage.getItem('lastLocation') || 'New York, NY, USA'; // Default location with state and country
+  const lastLocation = localStorage.getItem('lastLocation') || 'New York, NY, USA'; // Default location
   console.log('Fetching default city:', lastLocation);
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
 };
 
 // Allow manual location input as a fallback
-document.querySelector('#searchLocationButton').addEventListener('click', function() {
+document.querySelector('#searchLocationButton').addEventListener('click', function () {
   const location = document.querySelector('#locationInput').value.trim();
   if (location) {
     localStorage.setItem('lastLocation', location);
