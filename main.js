@@ -64,79 +64,87 @@ const weatherModule = {
 }
 
     updateDisplay(data, locationName) {
-        const { current, forecast } = data;
-        const { temp_c, feelslike_c, wind_kph, humidity, condition, pressure_mb } = current;
-        const { maxtemp_c, mintemp_c, totalprecip_mm, astro } = forecast.forecastday[0];
+    const { current, forecast } = data;
 
-        const weatherCondition = condition.text || 'Unknown';
-        const iconClass = this.ICONS[weatherCondition] || 'wi wi-na'; // Default icon if no match
+    // Check if required data exists
+    if (!current || !forecast || !forecast.forecastday[0]) {
+        console.error("Weather data is missing or invalid.");
+        this.handleError(new Error("Weather data is incomplete"));
+        return;
+    }
 
-        // Calculate sunrise and sunset times
-        const sunriseTime = this.formatTime(astro.sunrise);
-        const sunsetTime = this.formatTime(astro.sunset);
+    const { temp_c, feelslike_c, wind_kph, humidity, condition, pressure_mb } = current;
+    const { maxtemp_c, mintemp_c, totalprecip_mm, astro } = forecast.forecastday[0];
 
-        this.weatherSection.innerHTML = `
-            <div class="weather-content">
-                <div class="weather-header">
-                    <div class="location-info">
-                        <h2 class="location-name">${locationName}</h2>
-                        <span class="last-updated">Updated: ${new Date().toLocaleTimeString()}</span>
-                    </div>
-                </div>
+    const weatherCondition = condition ? condition.text : 'Unknown Condition';
+    const iconClass = this.ICONS[weatherCondition] || 'wi wi-na'; // Default icon if no match
 
-                <hr>
+    // Calculate sunrise and sunset times
+    const sunriseTime = this.formatTime(astro.sunrise);
+    const sunsetTime = this.formatTime(astro.sunset);
 
-                <div class="weather-primary">
-                    <div class="current-temp">
-                        <div class="temperature">
-                            <span class="temp-value">${temp_c}°C</span>
-                            <span class="feels-like">Feels Like: ${feelslike_c}°C</span>
-                        </div>
-                    </div>
-                    <div class="condition-text">
-                        <i class="wi ${iconClass}"></i> ${weatherCondition}
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="weather-details">
-                    <div class="detail">
-                        <span class="label">Wind Speed</span><span class="value">${wind_kph} kph</span>
-                    </div>
-                    <div class="detail">
-                        <span class="label">Humidity</span><span class="value">${humidity} %</span>
-                    </div>
-                    <div class="detail">
-                        <span class="label">Pressure</span><span class="value">${pressure_mb} mb</span>
-                    </div>
-                    <div class="detail">
-                        <span class="label">Precipitation</span><span class="value">${totalprecip_mm} mm</span>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="weather-forecast">
-                    <div class="forecast-high-low">
-                        <span class="high-temp">High: ${maxtemp_c}°C</span> / 
-                        <span class="low-temp">Low: ${mintemp_c}°C</span>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="sun-moon-section">
-                    <div class="sunrise">
-                        <span>Sunrise: </span><span>${sunriseTime}</span>
-                    </div>
-                    <div class="sunset">
-                        <span>Sunset: </span><span>${sunsetTime}</span>
-                    </div>
+    this.weatherSection.innerHTML = `
+        <div class="weather-content">
+            <div class="weather-header">
+                <div class="location-info">
+                    <h2 class="location-name">${locationName || 'Unknown Location'}</h2>
+                    <span class="last-updated">Updated: ${new Date().toLocaleTimeString()}</span>
                 </div>
             </div>
-        `;
-    },
+
+            <hr>
+
+            <div class="weather-primary">
+                <div class="current-temp">
+                    <div class="temperature">
+                        <span class="temp-value">${temp_c || 'N/A'}°C</span>
+                        <span class="feels-like">Feels Like: ${feelslike_c || 'N/A'}°C</span>
+                    </div>
+                </div>
+                <div class="condition-text">
+                    <i class="wi ${iconClass}"></i> ${weatherCondition}
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="weather-details">
+                <div class="detail">
+                    <span class="label">Wind Speed</span><span class="value">${wind_kph || 'N/A'} kph</span>
+                </div>
+                <div class="detail">
+                    <span class="label">Humidity</span><span class="value">${humidity || 'N/A'} %</span>
+                </div>
+                <div class="detail">
+                    <span class="label">Pressure</span><span class="value">${pressure_mb || 'N/A'} mb</span>
+                </div>
+                <div class="detail">
+                    <span class="label">Precipitation</span><span class="value">${totalprecip_mm || 'N/A'} mm</span>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="weather-forecast">
+                <div class="forecast-high-low">
+                    <span class="high-temp">High: ${maxtemp_c || 'N/A'}°C</span> / 
+                    <span class="low-temp">Low: ${mintemp_c || 'N/A'}°C</span>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="sun-moon-section">
+                <div class="sunrise">
+                    <span>Sunrise: </span><span>${sunriseTime || 'N/A'}</span>
+                </div>
+                <div class="sunset">
+                    <span>Sunset: </span><span>${sunsetTime || 'N/A'}</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
     formatTime(timeString) {
         const time = new Date(timeString);
