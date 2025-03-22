@@ -2726,6 +2726,39 @@ body.focus-outline-disabled :focus {
     .weather-details .detail {
         width: 100%;
     }
+
+    /* Improved 7-Day Outlook for Mobile */
+    .forecast-container {
+        gap: 15px; /* Increase spacing between forecast days */
+    }
+
+    .forecast-day {
+        flex-direction: column; /* Stack elements vertically on mobile */
+        align-items: flex-start; /* Align text to the left */
+        padding: 15px;
+    }
+
+    .forecast-day .date {
+        margin-bottom: 5px;
+    }
+
+    .forecast-icon {
+        margin-left: 0; /* Remove left margin */
+        margin-bottom: 5px;
+    }
+
+    .forecast-temps {
+        flex-direction: column; /* Stack high/low temps */
+        align-items: flex-start;
+    }
+
+    .forecast-temps .separator {
+        display: none; /* Hide separator when stacked */
+    }
+
+    .forecast-temps .low {
+        margin-left: 0; /* Remove left margin */
+    }
 }
 
 @media (max-width: 600px) {
