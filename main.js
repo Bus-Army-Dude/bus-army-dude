@@ -22,52 +22,52 @@ const weatherModule = {
                 position => this.getWeatherData(position.coords.latitude, position.coords.longitude),
                 () => this.handleLocationError()
             );
+        } else {
+            console.error('Geolocation is not supported');
+            this.handleLocationError();
         }
     },
 
     async getWeatherData(lat, lon) {
-    try {
-        this.showLoading();
+        try {
+            this.showLoading();
 
-        // Call geocoding API to get the location name
-        const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
-        const locationData = await locationResponse.json();
-        
-        if (locationData.status.code !== 200) {
-            throw new Error(`Geocoding API returned an error: ${locationData.status.message}`);
+            // Call geocoding API to get the location name
+            const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
+            const locationData = await locationResponse.json();
+            
+            if (locationData.status.code !== 200 || !locationData.results.length) {
+                throw new Error(`Geocoding API returned an error: ${locationData.status.message}`);
+            }
+
+            const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
+
+            // Fetch weather data from WeatherAPI
+            const weatherResponse = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=34ae2d4a53544561a07150106252203&q=${lat},${lon}&days=1`);
+            const weatherData = await weatherResponse.json();
+
+            if (weatherData && weatherData.current) {
+                this.updateDisplay(weatherData, locationName);
+            } else {
+                throw new Error('Weather API returned invalid data');
+            }
+        } catch (error) {
+            console.error('Error:', error.message);
+            this.handleError(error);
         }
-
-        const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
-
-        // Fetch weather data
-        const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,pressure_msl,sunrise,sunset,moonphase&timezone=America%2FNew_York`);
-        const weatherData = await weatherResponse.json();
-
-        if (weatherData && weatherData.current_weather) {
-            this.updateDisplay(weatherData, locationName);
-        } else {
-            throw new Error('Weather API returned invalid data');
-        }
-    } catch (error) {
-        console.error('Error:', error.message);
-        this.handleError(error);
-    }
-}
+    },
 
     updateDisplay(data, locationName) {
-        const { current_weather, daily } = data;
-        const { temperature, feels_like, windspeed, humidity, weathercode, pressure_msl } = current_weather;
-        const { temperature_2m_max, temperature_2m_min, precipitation_sum, sunrise, sunset, moonphase } = daily[0];
+        const { current, forecast } = data;
+        const { temp_c, feelslike_c, wind_kph, humidity, condition, pressure_mb } = current;
+        const { maxtemp_c, mintemp_c, totalprecip_mm, astro } = forecast.forecastday[0];
 
-        const weatherCondition = this.getWeatherCondition(weathercode);
+        const weatherCondition = condition.text || 'Unknown';
         const iconClass = this.ICONS[weatherCondition] || 'wi wi-na'; // Default icon if no match
 
-        // Calculate sunrise and sunset times to a readable format
-        const sunriseTime = this.formatTime(sunrise);
-        const sunsetTime = this.formatTime(sunset);
-
-        // Format Moon Phase
-        const moonPhase = this.formatMoonPhase(moonphase);
+        // Calculate sunrise and sunset times
+        const sunriseTime = this.formatTime(astro.sunrise);
+        const sunsetTime = this.formatTime(astro.sunset);
 
         this.weatherSection.innerHTML = `
             <div class="weather-content">
@@ -83,8 +83,8 @@ const weatherModule = {
                 <div class="weather-primary">
                     <div class="current-temp">
                         <div class="temperature">
-                            <span class="temp-value">${temperature}°F</span>
-                            <span class="feels-like">Feels Like: ${feels_like}°F</span>
+                            <span class="temp-value">${temp_c}°C</span>
+                            <span class="feels-like">Feels Like: ${feelslike_c}°C</span>
                         </div>
                     </div>
                     <div class="condition-text">
@@ -96,16 +96,16 @@ const weatherModule = {
 
                 <div class="weather-details">
                     <div class="detail">
-                        <span class="label">Wind Speed</span><span class="value">${windspeed} mph</span>
+                        <span class="label">Wind Speed</span><span class="value">${wind_kph} kph</span>
                     </div>
                     <div class="detail">
                         <span class="label">Humidity</span><span class="value">${humidity} %</span>
                     </div>
                     <div class="detail">
-                        <span class="label">Pressure</span><span class="value">${pressure_msl} in</span>
+                        <span class="label">Pressure</span><span class="value">${pressure_mb} mb</span>
                     </div>
                     <div class="detail">
-                        <span class="label">Precipitation</span><span class="value">${precipitation_sum}%</span>
+                        <span class="label">Precipitation</span><span class="value">${totalprecip_mm} mm</span>
                     </div>
                 </div>
 
@@ -113,8 +113,8 @@ const weatherModule = {
 
                 <div class="weather-forecast">
                     <div class="forecast-high-low">
-                        <span class="high-temp">High: ${temperature_2m_max}°F</span> / 
-                        <span class="low-temp">Low: ${temperature_2m_min}°F</span>
+                        <span class="high-temp">High: ${maxtemp_c}°C</span> / 
+                        <span class="low-temp">Low: ${mintemp_c}°C</span>
                     </div>
                 </div>
 
@@ -127,48 +127,14 @@ const weatherModule = {
                     <div class="sunset">
                         <span>Sunset: </span><span>${sunsetTime}</span>
                     </div>
-                    <div class="moon-phase">
-                        <span>Moon Phase: </span><span>${moonPhase}</span>
-                    </div>
                 </div>
             </div>
         `;
     },
 
-    getWeatherCondition(weathercode) {
-        // Map the weather code to a human-readable condition
-        switch (weathercode) {
-            case 0: return 'Clear';
-            case 1: return 'Partly Cloudy';
-            case 2: return 'Mostly Cloudy';
-            case 3: return 'Cloudy';
-            case 45: return 'Fog';
-            case 48: return 'Foggy';
-            case 51: return 'Light Rain';
-            case 53: return 'Moderate Rain';
-            case 55: return 'Heavy Rain';
-            case 61: return 'Light Showers';
-            default: return 'Unknown';
-        }
-    },
-
-    formatTime(time) {
-        const date = new Date(time * 1000);
-        return date.toLocaleTimeString();
-    },
-
-    formatMoonPhase(moonphase) {
-        switch (moonphase) {
-            case 0: return 'New Moon';
-            case 1: return 'Waxing Crescent';
-            case 2: return 'First Quarter';
-            case 3: return 'Waxing Gibbous';
-            case 4: return 'Full Moon';
-            case 5: return 'Waning Gibbous';
-            case 6: return 'Last Quarter';
-            case 7: return 'Waning Crescent';
-            default: return 'Unknown';
-        }
+    formatTime(timeString) {
+        const time = new Date(timeString);
+        return time.toLocaleTimeString();
     },
 
     showLoading() {
