@@ -19,7 +19,7 @@ async function fetchWeatherData(location) {
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log('API Response:', data); // Debug the full API response
+    console.log('Full API Response:', data); // Debugging API response
 
     if (!data || !data.current || !data.forecast) {
       throw new Error('Weather data is incomplete or invalid.');
@@ -28,7 +28,7 @@ async function fetchWeatherData(location) {
     updateDisplay(data);
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    displayError(error.message);
+    displayError('Unable to load weather data. Please try again.');
   }
 }
 
@@ -41,7 +41,40 @@ function updateDisplay(data) {
   if (loadingSpinner) loadingSpinner.style.display = 'none';
   if (weatherContent) weatherContent.style.display = 'block';
 
-  // Weather details
+  // Update location details
+  const locationNameElement = document.querySelector('.location-name');
+  if (locationNameElement) {
+    const city = data.location.name;
+    const stateOrRegion = data.location.region;
+    const country = data.location.country;
+    locationNameElement.textContent = `${city}, ${stateOrRegion}, ${country}`;
+  }
+
+  // Last Updated
+  const lastUpdatedElement = document.querySelector('.last-updated');
+  if (lastUpdatedElement) {
+    lastUpdatedElement.textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
+  }
+
+  // Current Temperature and Feels Like
+  const tempValueElement = document.querySelector('.temp-value');
+  const feelsLikeElement = document.querySelector('.feels-like');
+  if (tempValueElement) {
+    tempValueElement.textContent = `${data.current.temp_f}°F`;
+  }
+  if (feelsLikeElement) {
+    feelsLikeElement.textContent = `Feels Like: ${data.current.feelslike_f}°F`;
+  }
+
+  // Weather Condition
+  const conditionTextElement = document.querySelector('.condition-text');
+  if (conditionTextElement) {
+    const conditionIcon = data.current.condition.icon;
+    const condition = data.current.condition.text;
+    conditionTextElement.innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" /> ${condition}`;
+  }
+
+  // Weather Details
   const windSpeedElement = document.querySelector('.weather-details .wind-speed .value');
   const humidityElement = document.querySelector('.weather-details .humidity .value');
   const pressureElement = document.querySelector('.weather-details .pressure .value');
@@ -64,14 +97,13 @@ function updateDisplay(data) {
     const aqi = data.current.air_quality["us-epa-index"];
     airQualityElement.textContent = aqi ? `AQI: ${aqi}` : 'N/A';
   }
-}
 
-  // 7-Day Forecast and Sun & Moon
+  // Update forecast and Sun/Moon data
   updateForecast(data.forecast.forecastday);
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to update the 7-day forecast section
+// Function to update forecast
 function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
   forecastContainer.innerHTML = ''; // Clear previous forecasts
@@ -96,7 +128,7 @@ function updateForecast(forecastDays) {
   });
 }
 
-// Function to update the Sun and Moon times section
+// Function to update Sun & Moon times
 function updateSunMoon(astroData) {
   const sunMoonSection = document.querySelector('.sun-moon-section');
   if (sunMoonSection) {
@@ -107,39 +139,26 @@ function updateSunMoon(astroData) {
   }
 }
 
-// Function to get air quality description based on AQI
-function getAirQualityDescription(aqi) {
-  switch (aqi) {
-    case 1: return "Good";
-    case 2: return "Moderate";
-    case 3: return "Unhealthy for Sensitive Groups";
-    case 4: return "Unhealthy";
-    case 5: return "Very Unhealthy";
-    case 6: return "Hazardous";
-    default: return "Unknown";
-  }
-}
-
-// Function to handle errors (e.g., invalid location or API errors)
+// Function to display errors
 function displayError(message) {
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
 
   if (loadingSpinner) loadingSpinner.style.display = 'none';
   if (weatherContent) {
-    weatherContent.innerHTML = `<p class="error-message">Unable to load data: ${message}</p>`;
+    weatherContent.innerHTML = `<p class="error-message">Error: ${message}</p>`;
     weatherContent.style.display = 'block';
   }
 }
 
-// On page load, fetch weather data for the default or last saved location
+// On page load, fetch weather for default location
 window.onload = function () {
-  const lastLocation = localStorage.getItem('lastLocation') || 'New York, NY, USA'; // Default location
+  const lastLocation = localStorage.getItem('lastLocation') || 'New York, NY, USA';
   console.log('Fetching default city:', lastLocation);
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
 };
 
-// Allow manual location input as a fallback
+// Allow manual location input
 document.querySelector('#searchLocationButton').addEventListener('click', function () {
   const location = document.querySelector('#locationInput').value.trim();
   if (location) {
