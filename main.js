@@ -30,7 +30,7 @@ const weatherModule = {
         this.showLoading();
 
         // Call geocoding API to get the location name
-        const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=YOUR_OPENCAGE_API_KEY`);
+        const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
         const locationData = await locationResponse.json();
         
         if (locationData.status.code !== 200) {
