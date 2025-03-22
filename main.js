@@ -1,58 +1,30 @@
 const weatherModule = {
     API_URL: 'https://api.open-meteo.com/v1/forecast',
+    OPEN_CAGE_API_KEY: '421c8bcd4a38468e8d8152e997c9c902', // Replace with your OpenCage API Key
     ICONS: {
-        // Clear skies
         '0': 'wi wi-day-sunny', // Clear sky (day)
         '1': 'wi wi-night-clear', // Clear sky (night)
-
-        // Partly cloudy
         '2': 'wi wi-day-cloudy', // Partly cloudy (day)
         '3': 'wi wi-night-cloudy', // Partly cloudy (night)
-
-        // Cloudy
         '4': 'wi wi-cloudy', // Cloudy
-
-        // Light rain
         '5': 'wi wi-day-showers', // Light rain (day)
         '6': 'wi wi-night-showers', // Light rain (night)
-
-        // Moderate rain
         '7': 'wi wi-day-rain', // Moderate rain (day)
         '8': 'wi wi-night-rain', // Moderate rain (night)
-
-        // Heavy rain
         '9': 'wi wi-day-thunderstorm', // Thunderstorm (day)
         '10': 'wi wi-night-thunderstorm', // Thunderstorm (night)
-
-        // Snow
         '11': 'wi wi-day-snow', // Snow (day)
         '12': 'wi wi-night-snow', // Snow (night)
-
-        // Sleet or freezing rain
         '13': 'wi wi-day-sleet', // Sleet (day)
         '14': 'wi wi-night-sleet', // Sleet (night)
-
-        // Thunderstorms
         '15': 'wi wi-day-thunderstorm', // Thunderstorm (day)
         '16': 'wi wi-night-thunderstorm', // Thunderstorm (night)
-
-        // Fog or mist
         '17': 'wi wi-day-fog', // Fog (day)
         '18': 'wi wi-night-fog', // Fog (night)
-
-        // Hail
         '19': 'wi wi-hail', // Hail
-
-        // Windy conditions
         '20': 'wi wi-windy', // Windy
-
-        // Tornado or cyclone
         '21': 'wi wi-tornado', // Tornado
-
-        // Dust or sand
         '22': 'wi wi-dust', // Dust
-
-        // Ash from volcano eruption
         '23': 'wi wi-volcano', // Volcano ash
     },
 
@@ -157,9 +129,9 @@ const weatherModule = {
 
     async getLocationName(lat, lon) {
         try {
-            const response = await fetch(`https://geocode.xyz/${lat},${lon}?json=1`);
+            const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${this.OPEN_CAGE_API_KEY}`);
             const data = await response.json();
-            return data.city || "Unknown Location";
+            return data.results[0]?.components.city || "Unknown Location";
         } catch (error) {
             console.error('Location error:', error);
             return "Unknown Location";
