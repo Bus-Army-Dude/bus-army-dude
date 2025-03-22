@@ -2760,22 +2760,34 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* --- Air Quality Styling (General - Adjust based on your HTML) --- */
+/* --- Improved Air Quality Styling --- */
 .air-quality-container {
     width: 100%;
     margin-top: 15px;
     box-sizing: border-box;
+    background-color: var(--content-bg, #f9f9f9);
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.air-quality-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 10px;
 }
 
 .air-quality-item {
-    background-color: var(--content-bg, #f9f9f9);
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--separator-color, #eee);
+}
+
+.air-quality-item:last-child {
+    border-bottom: none;
 }
 
 .aqi-label {
@@ -2786,6 +2798,41 @@ body.focus-outline-disabled :focus {
 .aqi-value {
     color: var(--secondary-text);
 }
+
+.pollutant-label {
+    color: var(--text-color);
+}
+
+.pollutant-value {
+    font-weight: 500;
+    color: var(--secondary-text);
+}
+
+/* If you have an overall AQI indicator with a color */
+.aqi-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.aqi-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.aqi-level {
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Example AQI color coding (you might need to adjust these) */
+.aqi-level.good { color: green; }
+.aqi-level.moderate { color: orange; }
+.aqi-level.unhealthy-sensitive { color: red; }
+.aqi-level.unhealthy { color: purple; }
+.aqi-level.very-unhealthy { color: maroon; }
+.aqi-level.hazardous { color: darkred; }
 
 /* If air quality is within weather-details */
 .weather-details .air-quality-item {
