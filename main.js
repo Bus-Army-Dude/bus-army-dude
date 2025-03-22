@@ -92,10 +92,14 @@ function updateDisplay(data) {
   }
   if (precipitationElement) {
     const precipitationAmount = data.current.precip_mm || 0; // Amount in mm
+    const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0; // Chance percentage
     const weatherCondition = data.current.condition.text || 'None';
-    precipitationElement.textContent = precipitationAmount > 0
-      ? `${precipitationAmount} mm (${weatherCondition})`
-      : `None`;
+
+    // Dynamically show precipitation based on data
+    precipitationElement.textContent =
+      precipitationAmount > 0 || precipitationChance > 0
+        ? `${precipitationChance}% chance (${weatherCondition})`
+        : `None`;
   }
   if (airQualityElement && data.current.air_quality) {
     const aqi = data.current.air_quality["us-epa-index"];
