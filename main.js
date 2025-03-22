@@ -1,146 +1,180 @@
+// Initialize API key and base URL
+const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
+const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
+
+// Function to fetch weather data
 async function fetchWeatherData(location) {
-    const apiKey = '34ae2d4a53544561a07150106252203';  // Replace with your actual API key
-    const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=7&aqi=yes`;
+  const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=yes&alerts=no`;
 
-    try {
-        const response = await fetch(apiUrl);
-        
-        // Log the response for debugging
-        console.log('Response:', response);
+  const loadingSpinner = document.querySelector('.weather-loading');
+  const weatherContent = document.querySelector('.weather-content');
 
-        const data = await response.json();
+  // Debugging DOM elements
+  console.log('DOM Element - Loading Spinner:', loadingSpinner);
+  console.log('DOM Element - Weather Content:', weatherContent);
 
-        // Log the returned data for debugging
-        console.log('Data:', data);
+  // Show loading spinner
+  if (loadingSpinner && weatherContent) {
+    loadingSpinner.style.display = 'block';
+    weatherContent.style.display = 'none';
+  }
 
-        if (data.error) {
-            throw new Error(data.error.message);
-        }
+  try {
+    console.log('Fetching weather data for location:', location); // Debug location
+    const response = await fetch(url);
+    const data = await response.json();
 
-        updateWeatherData(data);
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
-        displayError('Unable to load weather data.');
+    console.log('API Response:', data); // Debug API response
+
+    if (!data || !data.current || !data.forecast) {
+      throw new Error('Weather data is incomplete or invalid.');
     }
+
+    updateDisplay(data);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    displayError('Unable to load weather data. Please try again.');
+  }
 }
 
-// Function to update the UI with the fetched weather data
-function updateWeatherData(data) {
-    const location = data.location;
-    const current = data.current;
-    const forecast = data.forecast.forecastday;
-    const airQuality = data.current.air_quality;
-    const astro = data.astronomy.astro;
+// Function to update the HTML content with the weather data
+function updateDisplay(data) {
+  const loadingSpinner = document.querySelector('.weather-loading');
+  const weatherContent = document.querySelector('.weather-content');
 
-    // Location info
-    document.querySelector('.location-name').textContent = `${location.name}, ${location.region}, ${location.country}`;
-    document.querySelector('.last-updated').textContent = `Updated: ${formatDate(data.current.last_updated)}`;
+  // Hide loading spinner and show content
+  if (loadingSpinner) loadingSpinner.style.display = 'none';
+  if (weatherContent) weatherContent.style.display = 'block';
 
-    // Weather primary info
-    document.querySelector('.temp-value').textContent = `${current.temp_f}°F`;
-    document.querySelector('.feels-like').textContent = `Feels Like: ${current.feelslike_f}°F`;
-    document.querySelector('.condition-text img').src = `https:${current.condition.icon}`;
-    document.querySelector('.condition-text span').textContent = current.condition.text;
+  // Update location details
+  const locationNameElement = document.querySelector('.location-name');
+  if (locationNameElement) {
+    const city = data.location.name;
+    const stateOrRegion = data.location.region;
+    const country = data.location.country;
+    locationNameElement.textContent = `${city}, ${stateOrRegion}, ${country}`;
+  }
 
-    // Weather details
-    document.querySelector('.wind-speed .value').textContent = `${current.wind_mph} mph`;
-    document.querySelector('.humidity .value').textContent = `${current.humidity} %`;
-    document.querySelector('.pressure .value').textContent = `${current.pressure_mb} hPa`;
-    document.querySelector('.precipitation .value').textContent = `${current.precip_in} in`;
-    
-    // Air quality
-    document.querySelector('.air-quality .value').textContent = `AQI: ${airQuality.us_epa_index}`;
-    document.querySelector('.air-quality-details').innerHTML = `
-        <div><strong>PM2.5:</strong> ${airQuality.pm25}</div>
-        <div><strong>PM10:</strong> ${airQuality.pm10}</div>
-        <div><strong>O3:</strong> ${airQuality.o3}</div>
-    `;
+  // Last Updated
+  const lastUpdatedElement = document.querySelector('.last-updated');
+  if (lastUpdatedElement) {
+    lastUpdatedElement.textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
+  }
 
-    // Update forecast
-    updateForecast(forecast);
+  // Current Temperature and Feels Like
+  const tempValueElement = document.querySelector('.temp-value');
+  const feelsLikeElement = document.querySelector('.feels-like');
+  if (tempValueElement) {
+    tempValueElement.textContent = `${data.current.temp_f}°F`;
+  }
+  if (feelsLikeElement) {
+    feelsLikeElement.textContent = `Feels Like: ${data.current.feelslike_f}°F`;
+  }
 
-    // Update sun and moon data
-    updateSunMoon(astro);
+  // Weather Condition
+  const conditionTextElement = document.querySelector('.condition-text');
+  if (conditionTextElement) {
+    const conditionIcon = data.current.condition.icon;
+    const condition = data.current.condition.text;
+    conditionTextElement.innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" /> ${condition}`;
+  }
 
-    // Show weather content and hide loading spinner
-    document.querySelector('.weather-content').style.display = 'block';
-    document.querySelector('.weather-loading').style.display = 'none';
+  // Weather Details
+  const windSpeedElement = document.querySelector('.weather-details .wind-speed .value');
+  const humidityElement = document.querySelector('.weather-details .humidity .value');
+  const pressureElement = document.querySelector('.weather-details .pressure .value');
+  const precipitationElement = document.querySelector('.weather-details .precipitation .value');
+  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
+
+  if (windSpeedElement) {
+    windSpeedElement.textContent = data.current.wind_mph ? `${data.current.wind_mph} mph` : 'N/A';
+  }
+  if (humidityElement) {
+    humidityElement.textContent = data.current.humidity ? `${data.current.humidity} %` : 'N/A';
+  }
+  if (pressureElement) {
+    pressureElement.textContent = data.current.pressure_in ? `${data.current.pressure_in} hPa` : 'N/A';
+  }
+  if (precipitationElement) {
+    const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0; // Chance percentage
+    const weatherCondition = data.current.condition.text || 'None';
+
+    // Dynamically show precipitation based on data
+    precipitationElement.textContent =
+      precipitationChance > 0
+        ? `${precipitationChance}% chance (${weatherCondition})`
+        : `None`;
+  }
+  if (airQualityElement && data.current.air_quality) {
+    const aqi = data.current.air_quality["us-epa-index"];
+    airQualityElement.textContent = aqi ? `AQI: ${aqi}` : 'N/A';
+  }
+
+  // Update forecast and Sun/Moon data
+  updateForecast(data.forecast.forecastday);
+  updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to update the Sun and Moon times
-function updateSunMoon(astro) {
-    const sunRiseElement = document.querySelector('.sunrise-time');
-    const sunSetElement = document.querySelector('.sunset-time');
-    const moonRiseElement = document.querySelector('.moonrise-time');
-    const moonSetElement = document.querySelector('.moonset-time');
-
-    if (sunRiseElement && sunSetElement && moonRiseElement && moonSetElement) {
-        sunRiseElement.textContent = `Sunrise: ${astro.sunrise}`;
-        sunSetElement.textContent = `Sunset: ${astro.sunset}`;
-        moonRiseElement.textContent = `Moonrise: ${astro.moonrise}`;
-        moonSetElement.textContent = `Moonset: ${astro.moonset}`;
-    }
-}
-
-// Function to update the forecast data
+// Function to update forecast
 function updateForecast(forecastDays) {
-    const forecastContainer = document.querySelector('.forecast-container');
-    
-    if (!forecastContainer) return;
+  const forecastContainer = document.querySelector('.forecast-container');
+  forecastContainer.innerHTML = ''; // Clear previous forecasts
 
-    forecastContainer.innerHTML = ''; // Clear existing forecast data
-
-    forecastDays.forEach(day => {
-        const forecastElement = document.createElement('div');
-        forecastElement.classList.add('forecast-day');
-        
-        const date = new Date(day.date);
-        const dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' });
-        
-        // Create forecast item for each day
-        forecastElement.innerHTML = `
-            <div class="forecast-date">${dayOfWeek}, ${date.toLocaleDateString()}</div>
-            <div class="forecast-icon">
-                <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
-            </div>
-            <div class="forecast-temp">
-                <span class="high">${day.day.maxtemp_f}°F</span> / <span class="low">${day.day.mintemp_f}°F</span>
-            </div>
-            <div class="forecast-condition">${day.day.condition.text}</div>
-        `;
-        
-        forecastContainer.appendChild(forecastElement);
-    });
+  forecastDays.forEach(day => {
+    const forecastElement = document.createElement('div');
+    forecastElement.classList.add('forecast-day');
+    forecastElement.innerHTML = `
+      <div class="date">${day.date}</div>
+      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
+      <div class="forecast-temps">
+        <span class="high">${day.day.maxtemp_f}°F</span>
+        <span class="separator">/</span>
+        <span class="low">${day.day.mintemp_f}°F</span>
+      </div>
+      <div class="forecast-details">
+        <span class="condition">${day.day.condition.text}</span>
+        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
+      </div>
+    `;
+    forecastContainer.appendChild(forecastElement);
+  });
 }
 
-// Function to display error messages
+// Function to update Sun & Moon times
+function updateSunMoon(astroData) {
+  const sunMoonSection = document.querySelector('.sun-moon-section');
+  if (sunMoonSection) {
+    sunMoonSection.innerHTML = `
+      <div><strong>Sunrise:</strong> ${astroData.sunrise}</div>
+      <div><strong>Sunset:</strong> ${astroData.sunset}</div>
+    `;
+  }
+}
+
+// Function to display errors
 function displayError(message) {
-    const errorContainer = document.querySelector('.weather-container');
-    const errorMessage = document.createElement('div');
-    errorMessage.classList.add('error-message');
-    errorMessage.textContent = message;
-    errorContainer.appendChild(errorMessage);
+  const loadingSpinner = document.querySelector('.weather-loading');
+  const weatherContent = document.querySelector('.weather-content');
+
+  if (loadingSpinner) loadingSpinner.style.display = 'none';
+  if (weatherContent) {
+    weatherContent.innerHTML = `<p class="error-message">Error: ${message}</p>`;
+    weatherContent.style.display = 'block';
+  }
 }
 
-// Add event listener to change location
-document.getElementById('searchLocationButton').addEventListener('click', function () {
-    const location = document.getElementById('locationInput').value;
-    if (location) {
-        // Show loading spinner
-        document.querySelector('.weather-loading').style.display = 'block';
-        document.querySelector('.weather-content').style.display = 'none';
-        
-        fetchWeatherData(location);
-    }
-});
+// On page load, fetch weather for default location
+window.onload = function () {
+  const lastLocation = localStorage.getItem('lastLocation') || 'New York, NY, USA';
+  console.log('Fetching default city:', lastLocation);
+  fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
+};
 
-// Load default location when the page loads
-window.addEventListener('DOMContentLoaded', function () {
-    fetchWeatherData('New York, NY, USA');
+// Allow manual location input
+document.querySelector('#searchLocationButton').addEventListener('click', function () {
+  const location = document.querySelector('#locationInput').value.trim();
+  if (location) {
+    localStorage.setItem('lastLocation', location);
+    fetchWeatherData(location);
+  }
 });
-
-// Function to format date for the Last Updated section
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
-}
