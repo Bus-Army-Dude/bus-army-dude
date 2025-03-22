@@ -142,7 +142,7 @@ function displayError(message) {
 
 // On page load, fetch weather data for the default or last saved location
 window.onload = function () {
-  const lastLocation = localStorage.getItem('lastLocation') || 'New York';
+  const lastLocation = localStorage.getItem('lastLocation') || 'New York, NY, USA'; // Default location with state and country
   console.log('Fetching default city:', lastLocation);
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
 };
