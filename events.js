@@ -7,24 +7,6 @@ class EventManager {
         
         // Example events structure with more detailed information
         this.events = [
-            {
-                title: "Bus Army Dude's Friday Streams",
-                startDate: new Date('2025-03-22T02:00:00Z'),  // 10:00 PM EDT in UTC
-                endDate: new Date('2025-03-22T04:00:00Z'),    // 12:00 AM EDT in UTC
-                description: "just chilling with my viewers",
-                location: 'Twitch',
-                link: 'https://www.twitch.tv/busarmydude',
-                type: 'stream'
-            },
-            {
-                title: "Bus Army Dude's Gaming Saturday",
-                startDate: new Date('2025-03-23T02:00:00Z'),  // 10:00 PM EDT in UTC
-                endDate: new Date('2025-03-23T04:00:00Z'),    // 12:00 AM EDT in UTC
-                description: "Playing Video Games",
-                location: 'Twitch',
-                link: 'https://www.twitch.tv/busarmydude',
-                type: 'stream'
-            }
         ];
 
         if (this.eventsContainer) {
