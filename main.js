@@ -29,33 +29,39 @@ const weatherModule = {
     },
 
     async getWeatherData(lat, lon) {
-        try {
-            this.showLoading();
+    try {
+        this.showLoading();
 
-            // Call geocoding API to get the location name
-            const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
-            const locationData = await locationResponse.json();
-            
-            if (locationData.status.code !== 200 || !locationData.results.length) {
-                throw new Error(`Geocoding API returned an error: ${locationData.status.message}`);
-            }
+        // Call geocoding API to get the location name
+        const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
+        const locationData = await locationResponse.json();
+        
+        // Log location data to check if it is returning valid data
+        console.log('Location Data:', locationData);
 
-            const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
-
-            // Fetch weather data from WeatherAPI
-            const weatherResponse = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=34ae2d4a53544561a07150106252203&q=${lat},${lon}&days=1`);
-            const weatherData = await weatherResponse.json();
-
-            if (weatherData && weatherData.current) {
-                this.updateDisplay(weatherData, locationName);
-            } else {
-                throw new Error('Weather API returned invalid data');
-            }
-        } catch (error) {
-            console.error('Error:', error.message);
-            this.handleError(error);
+        if (locationData.status.code !== 200 || !locationData.results.length) {
+            throw new Error(`Geocoding API returned an error: ${locationData.status.message}`);
         }
-    },
+
+        const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
+
+        // Fetch weather data from WeatherAPI
+        const weatherResponse = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=34ae2d4a53544561a07150106252203&q=${lat},${lon}&days=1`);
+        const weatherData = await weatherResponse.json();
+
+        // Log weather data to check if it is returning valid data
+        console.log('Weather Data:', weatherData);
+
+        if (weatherData && weatherData.current) {
+            this.updateDisplay(weatherData, locationName);
+        } else {
+            throw new Error('Weather API returned invalid data');
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+        this.handleError(error);
+    }
+}
 
     updateDisplay(data, locationName) {
         const { current, forecast } = data;
