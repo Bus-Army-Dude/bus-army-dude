@@ -5,7 +5,11 @@ const baseUrl = 'https://api.weatherapi.com/v1/current.json';
 // Function to fetch weather data
 async function fetchWeatherData(location) {
   const url = `${baseUrl}?key=${apiKey}&q=${location}&aqi=no`;
-  
+
+  // Show loading spinner
+  document.querySelector('.weather-loading').style.display = 'block';
+  document.querySelector('.weather-content').style.display = 'none';
+
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -61,56 +65,19 @@ function updateDisplay(data) {
   document.querySelector('.weather-details .humidity .value').textContent = `${humidity} %`;
   document.querySelector('.weather-details .pressure .value').textContent = `${pressure} hPa`;
 
-  // Forecast Section (This section can be updated based on additional forecast API calls if needed)
-  // Example: You can populate a forecast section here if you have forecast data from the API
-  updateForecast(data.forecast);
-
-  // Sun & Moon Times (Example - You may have to add this data in the API request or handle it separately)
+  // Sun & Moon Times
   updateSunMoon(data);
-}
-
-// Function to update the Forecast section (if forecast data is available)
-function updateForecast(forecastData) {
-  if (!forecastData || !forecastData.forecastday) {
-    return;
-  }
-
-  // Dynamically populate the forecast section with the forecast data
-  const forecastContainer = document.querySelector('.forecast-container');
-  forecastContainer.innerHTML = ''; // Clear any existing content
-
-  forecastData.forecastday.forEach(day => {
-    const forecastItem = document.createElement('div');
-    forecastItem.classList.add('forecast-item');
-
-    // Forecast data: Date, Condition, Temp
-    const forecastDate = new Date(day.date).toLocaleDateString();
-    const forecastCondition = day.day.condition.text;
-    const forecastTemp = `${day.day.avgtemp_f}°F`;
-
-    forecastItem.innerHTML = `
-      <h4>${forecastDate}</h4>
-      <div class="forecast-condition">${forecastCondition}</div>
-      <div class="forecast-temp">${forecastTemp}</div>
-    `;
-    forecastContainer.appendChild(forecastItem);
-  });
 }
 
 // Function to update the Sun and Moon times section
 function updateSunMoon(data) {
-  // Extracting sun and moon times from data
-  const sunrise = new Date(data.forecast.forecastday[0].astro.sunrise).toLocaleTimeString();
-  const sunset = new Date(data.forecast.forecastday[0].astro.sunset).toLocaleTimeString();
-  const moonrise = new Date(data.forecast.forecastday[0].astro.moonrise).toLocaleTimeString();
-  const moonset = new Date(data.forecast.forecastday[0].astro.moonset).toLocaleTimeString();
-
+  const sunrise = new Date(data.location.localtime_epoch * 1000).toLocaleTimeString();
+  const sunset = new Date(data.location.localtime_epoch * 1000).toLocaleTimeString();
+  
   const sunMoonSection = document.querySelector('.sun-moon-section');
   sunMoonSection.innerHTML = `
     <div><strong>Sunrise:</strong> ${sunrise}</div>
     <div><strong>Sunset:</strong> ${sunset}</div>
-    <div><strong>Moonrise:</strong> ${moonrise}</div>
-    <div><strong>Moonset:</strong> ${moonset}</div>
   `;
 }
 
@@ -123,14 +90,17 @@ function displayError(message) {
 
 // Call the fetchWeatherData function when the page is ready or after a user input
 window.onload = function () {
-  // Example: Fetch weather data for a default location (e.g., New York)
-  fetchWeatherData('New York');
+  // Try to fetch the last used location from localStorage
+  const lastLocation = localStorage.getItem('lastLocation') || 'New York';
+  fetchWeatherData(lastLocation);
 };
 
 // Optional: Add event listeners for searching by location
 document.querySelector('#searchLocationButton').addEventListener('click', function() {
   const location = document.querySelector('#locationInput').value;
   if (location) {
+    // Store the location in localStorage to remember it for next time
+    localStorage.setItem('lastLocation', location);
     fetchWeatherData(location);
   }
 });
