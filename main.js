@@ -4,7 +4,7 @@ const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
 // Function to fetch weather data
 async function fetchWeatherData(location) {
-  const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=yes&alerts=no`; // Added 'aqi=yes' for air quality
+  const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=yes&alerts=no`;
 
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
@@ -19,7 +19,7 @@ async function fetchWeatherData(location) {
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log('API Response:', data);
+    console.log('API Response:', data); // Debug the full API response
 
     if (!data || !data.current || !data.forecast) {
       throw new Error('Weather data is incomplete or invalid.');
@@ -41,64 +41,30 @@ function updateDisplay(data) {
   if (loadingSpinner) loadingSpinner.style.display = 'none';
   if (weatherContent) weatherContent.style.display = 'block';
 
-  // City, State, and Country Information
-  const locationNameElement = document.querySelector('.location-name');
-  if (locationNameElement) {
-    const city = data.location.name;
-    const stateOrRegion = data.location.region;
-    const country = data.location.country;
-    locationNameElement.textContent = `${city}, ${stateOrRegion}, ${country}`;
-  }
-
-  // Last Updated
-  const lastUpdatedElement = document.querySelector('.last-updated');
-  if (lastUpdatedElement) {
-    lastUpdatedElement.textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
-  }
-
-  // Current Temperature and Feels Like
-  const tempValueElement = document.querySelector('.temp-value');
-  const feelsLikeElement = document.querySelector('.feels-like');
-  if (tempValueElement) {
-    tempValueElement.textContent = `${data.current.temp_f}°F`;
-  }
-  if (feelsLikeElement) {
-    feelsLikeElement.textContent = `Feels Like: ${data.current.feelslike_f}°F`;
-  }
-
-  // Weather Condition
-  const conditionTextElement = document.querySelector('.condition-text');
-  if (conditionTextElement) {
-    const conditionIcon = data.current.condition.icon;
-    const condition = data.current.condition.text;
-    conditionTextElement.innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" /> ${condition}`;
-  }
-
-  // Weather Details
+  // Weather details
   const windSpeedElement = document.querySelector('.weather-details .wind-speed .value');
   const humidityElement = document.querySelector('.weather-details .humidity .value');
   const pressureElement = document.querySelector('.weather-details .pressure .value');
   const precipitationElement = document.querySelector('.weather-details .precipitation .value');
+  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
+
   if (windSpeedElement) {
-    windSpeedElement.textContent = `${data.current.wind_mph} mph`;
+    windSpeedElement.textContent = data.current.wind_mph ? `${data.current.wind_mph} mph` : 'N/A';
   }
   if (humidityElement) {
-    humidityElement.textContent = `${data.current.humidity} %`;
+    humidityElement.textContent = data.current.humidity ? `${data.current.humidity} %` : 'N/A';
   }
   if (pressureElement) {
-    pressureElement.textContent = `${data.current.pressure_in} hPa`;
+    pressureElement.textContent = data.current.pressure_in ? `${data.current.pressure_in} hPa` : 'N/A';
   }
   if (precipitationElement) {
-    precipitationElement.textContent = `${data.current.precip_in} in`;
+    precipitationElement.textContent = data.current.precip_in ? `${data.current.precip_in} in` : 'N/A';
   }
-
-  // Air Quality
-  const airQualityElement = document.querySelector('.weather-details .air-quality .value');
   if (airQualityElement && data.current.air_quality) {
-    const aqi = data.current.air_quality["us-epa-index"]; // Use the EPA Air Quality Index
-    const airQualityDescription = getAirQualityDescription(aqi);
-    airQualityElement.textContent = `${airQualityDescription} (AQI: ${aqi})`;
+    const aqi = data.current.air_quality["us-epa-index"];
+    airQualityElement.textContent = aqi ? `AQI: ${aqi}` : 'N/A';
   }
+}
 
   // 7-Day Forecast and Sun & Moon
   updateForecast(data.forecast.forecastday);
