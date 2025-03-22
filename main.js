@@ -51,8 +51,8 @@ const weatherModule = {
                 <div class="weather-primary">
                     <div class="current-temp">
                         <div class="temperature">
-                            <span class="temp-value">${Math.round(currentWeather.temperature)}°C</span>
-                            <span class="feels-like">Wind Speed: ${Math.round(currentWeather.windspeed)} km/h</span>
+                            <span class="temp-value">${Math.round(currentWeather.temperature)}°f</span>
+                            <span class="feels-like">Wind Speed: ${Math.round(currentWeather.windspeed)} mph</span>
                         </div>
                     </div>
                     <div class="condition-text">Weather Code: ${currentWeather.weathercode}</div>
@@ -67,18 +67,18 @@ const weatherModule = {
                 <hr>
 
                 <div class="forecast-section">
-                    <h3>3-Day Forecast</h3>
+                    <h3>7-Day Forecast</h3>
                     <div class="forecast-container">
                         ${dailyForecast.time.map((day, index) => `
                             <div class="forecast-day">
                                 <div class="date">${this.formatDate(day)}</div>
                                 <div class="forecast-temps">
-                                    <span class="high">${Math.round(dailyForecast.temperature_2m_max[index])}°C</span>
+                                    <span class="high">${Math.round(dailyForecast.temperature_2m_max[index])}°F</span>
                                     <span class="separator">/</span>
-                                    <span class="low">${Math.round(dailyForecast.temperature_2m_min[index])}°C</span>
+                                    <span class="low">${Math.round(dailyForecast.temperature_2m_min[index])}°F</span>
                                 </div>
                                 <div class="forecast-details">
-                                    <div class="rain-chance"><span class="label">Precipitation:</span><span class="value">${dailyForecast.precipitation_sum[index]} mm</span></div>
+                                    <div class="rain-chance"><span class="label">Precipitation:</span><span class="value">${dailyForecast.precipitation_sum[index]} in</span></div>
                                     <div class="condition">UV Index: ${dailyForecast.uv_index_max[index]}</div>
                                 </div>
                             </div>
