@@ -2455,14 +2455,14 @@ body.focus-outline-disabled :focus {
 /* General styling for the weather section */
 .weather-section {
     font-family: Arial, sans-serif;
-    color: var(--text-color);
+    color: var(--text-color, #212529); /* Default to dark text */
     padding: 20px;
-    background-color: var(--content-bg);
+    background-color: var(--content-bg, #f9f9f9); /* Default to light background */
     border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    box-shadow: 0 4px 8px var(--shadow-color, rgba(0, 0, 0, 0.1));
     margin-top: 20px;
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--separator-color);
+    border-bottom: 2px solid var(--separator-color, #ddd);
 }
 
 /* Weather header styling */
@@ -2505,7 +2505,7 @@ body.focus-outline-disabled :focus {
 
 .feels-like {
     font-size: 1rem;
-    color: var(--secondary-text);
+    color: var(--secondary-text, #6c757d);
 }
 
 /* Weather details section */
@@ -2514,7 +2514,7 @@ body.focus-outline-disabled :focus {
     flex-wrap: wrap;
     margin-top: 10px;
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--separator-color);
+    border-bottom: 2px solid var(--separator-color, #ddd);
     justify-content: space-between;
 }
 
@@ -2530,230 +2530,51 @@ body.focus-outline-disabled :focus {
 
 .weather-details .value {
     font-size: 0.9rem;
-    color: var(--secondary-text);
+    color: var(--secondary-text, #6c757d);
 }
 
-@media (max-width: 480px) {
-    .weather-details .detail {
-        width: 100%; /* Stack weather details vertically on small screens */
-    }
+/* Loading spinner */
+.weather-loading .loading-spinner {
+    border: 3px solid var(--border-color, #ddd);
+    border-top: 3px solid var(--accent-color, #007bff);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
 }
 
-/* Air quality section styling */
-.air-quality-section {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: var(--card-bg);
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--separator-color);
-    box-shadow: 0 2px 6px var(--shadow-color);
-}
-
-/* Air Quality Index (AQI) value styling */
-.air-quality-section .aqi-value {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.air-quality-section .aqi-value .label {
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-.air-quality-section .aqi-value .value {
-    font-size: 1.2rem;
-    font-weight: normal;
-    color: var(--text-color);
-}
-
-/* Air Quality Classes */
-.aqi-good {
-    color: green;
-}
-
-.aqi-moderate {
-    color: yellow;
-}
-
-.aqi-sensitive {
-    color: orange;
-}
-
-.aqi-unhealthy {
-    color: red;
-}
-
-.aqi-very-unhealthy {
-    color: purple;
-}
-
-.aqi-hazardous {
-    color: maroon;
-}
-
-/* Bold Labels */
-label b {
-    font-weight: bold;
-}
-
-/* Separator line */
-hr {
-    border: 1px solid #ddd;
-    margin: 20px 0;
-}
-
-/* 7-Day Forecast Section */
-.forecast-section {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--separator-color);
-}
-
-/* Container for the forecast, allowing it to wrap */
-.forecast-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-/* Individual forecast day card */
-.forecast-day {
-    background-color: var(--content-bg);
-    padding: 15px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: calc(100% / 7 - 15px);
+.weather-loading p {
     text-align: center;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 6px var(--shadow-color);
+    color: var(--text-color, #212529);
+    margin-top: 10px;
 }
 
-/* Styling the date */
-.forecast-day .date {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-/* Weather icons for forecast */
-.forecast-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-}
-
-/* Temperature ranges */
-.forecast-temps {
-    font-size: 1.2rem;
-    margin: 10px 0;
-}
-
-.forecast-temps .high {
-    color: #e74c3c;
-}
-
-.forecast-temps .low {
-    color: #3498db;
-}
-
-/* Additional forecast details */
-.forecast-details {
-    font-size: 0.9rem;
-}
-
-.forecast-details .rain-chance {
-    font-weight: bold;
-}
-
-.forecast-details .condition {
-    color: var(--secondary-text);
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 1024px) {
-    .forecast-day {
-        max-width: calc(100% / 4 - 15px); /* 4 cards per row on medium screens */
+/* Keyframes for spinner animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 
-@media (max-width: 768px) {
-    .forecast-day {
-        max-width: calc(100% / 2 - 15px); /* 2 cards per row on smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    .forecast-day {
-        max-width: 100%; /* Stack cards vertically on phones */
-    }
-}
-
-/* Location input container */
-.location-input-container {
-  margin: 20px 0;
-  text-align: center;
-}
-
-#locationInput {
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;  /* Full-width on smaller screens */
-  max-width: 300px;  /* Limiting max width */
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-/* Focus state for better accessibility */
-#locationInput:focus {
-  border-color: #007bff;
-  outline: none;  /* Remove default outline */
-}
-
-/* Button styling */
-#searchLocationButton {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Hover effect */
-#searchLocationButton:hover {
-  background-color: #0056b3;
-}
-
-/* Disabled button state */
-#searchLocationButton:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-/* Mobile responsiveness */
+/* Responsive Design */
 @media (max-width: 600px) {
-  .location-input-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    .location-input-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-  #locationInput {
-    margin-right: 0;
-    margin-bottom: 10px;
-    width: 90%;
-  }
+    #locationInput {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 90%;
+    }
 
-  #searchLocationButton {
-    width: 90%;
-  }
+    #searchLocationButton {
+        width: 90%;
+    }
 }
-
