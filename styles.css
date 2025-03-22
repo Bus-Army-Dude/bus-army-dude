@@ -2461,8 +2461,8 @@ body.focus-outline-disabled :focus {
     border-radius: 10px;
     box-shadow: 0 4px 8px var(--shadow-color);
     margin-top: 20px;
-    margin-bottom: 20px; /* Add space at the bottom */
-    border-bottom: 2px solid var(--separator-color); /* Add line separator */
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--separator-color);
 }
 
 /* Weather header styling */
@@ -2513,13 +2513,15 @@ body.focus-outline-disabled :focus {
     display: flex;
     flex-wrap: wrap;
     margin-top: 10px;
-    margin-bottom: 20px; /* Add space at the bottom */
-    border-bottom: 2px solid var(--separator-color); /* Add line separator */
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--separator-color);
+    justify-content: space-between;
 }
 
 .weather-details .detail {
-    width: 50%;
+    width: 48%;
     margin-bottom: 10px;
+    font-size: 1rem;
 }
 
 .weather-details .label {
@@ -2527,8 +2529,14 @@ body.focus-outline-disabled :focus {
 }
 
 .weather-details .value {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--secondary-text);
+}
+
+@media (max-width: 480px) {
+    .weather-details .detail {
+        width: 100%; /* Stack weather details vertically on small screens */
+    }
 }
 
 /* Air quality section styling */
@@ -2536,9 +2544,10 @@ body.focus-outline-disabled :focus {
     margin-top: 20px;
     padding: 15px;
     border-radius: 8px;
-    background-color: var(--card-bg); /* Make it match dark mode */
-    margin-bottom: 20px; /* Add space at the bottom */
-    border-bottom: 2px solid var(--separator-color); /* Add line separator */
+    background-color: var(--card-bg);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--separator-color);
+    box-shadow: 0 2px 6px var(--shadow-color);
 }
 
 /* Air Quality Index (AQI) value styling */
@@ -2555,33 +2564,33 @@ body.focus-outline-disabled :focus {
 
 .air-quality-section .aqi-value .value {
     font-size: 1.2rem;
-    font-weight: normal; /* Remove bold from the value */
-    color: var(--text-color); /* Ensure text color works in both light and dark mode */
+    font-weight: normal;
+    color: var(--text-color);
 }
 
 /* Air Quality Classes */
 .aqi-good {
-    color: green;  /* Good air quality (EPA Index 1) */
+    color: green;
 }
 
 .aqi-moderate {
-    color: yellow;  /* Moderate air quality (EPA Index 2) */
+    color: yellow;
 }
 
 .aqi-sensitive {
-    color: orange;  /* Unhealthy for Sensitive Groups (EPA Index 3) */
+    color: orange;
 }
 
 .aqi-unhealthy {
-    color: red;  /* Unhealthy air quality (EPA Index 4) */
+    color: red;
 }
 
 .aqi-very-unhealthy {
-    color: purple;  /* Very Unhealthy air quality (EPA Index 5) */
+    color: purple;
 }
 
 .aqi-hazardous {
-    color: maroon;  /* Hazardous air quality (EPA Index 6) */
+    color: maroon;
 }
 
 /* Bold Labels */
@@ -2598,16 +2607,16 @@ hr {
 /* 7-Day Forecast Section */
 .forecast-section {
     margin-top: 30px;
-    margin-bottom: 20px; /* Space at the bottom */
-    border-bottom: 2px solid var(--separator-color); /* Line separator */
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--separator-color);
 }
 
 /* Container for the forecast, allowing it to wrap */
 .forecast-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribute items evenly */
-    gap: 15px; /* Add space between forecast cards */
+    justify-content: space-between;
+    gap: 15px;
 }
 
 /* Individual forecast day card */
@@ -2615,11 +2624,12 @@ hr {
     background-color: var(--content-bg);
     padding: 15px;
     border-radius: 8px;
-    width: 100%; /* Full width on small screens */
-    max-width: calc(100% / 7 - 15px); /* Adjust card width for 7 cards with gap */
+    width: 100%;
+    max-width: calc(100% / 7 - 15px);
     text-align: center;
-    box-sizing: border-box; /* Include padding in width calculation */
-    margin-bottom: 10px; /* Add space between cards */
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px var(--shadow-color);
 }
 
 /* Styling the date */
@@ -2631,8 +2641,9 @@ hr {
 
 /* Weather icons for forecast */
 .forecast-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
 }
 
 /* Temperature ranges */
