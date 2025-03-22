@@ -2455,9 +2455,9 @@ body.focus-outline-disabled :focus {
 /* General styling for the weather section */
 .weather-section {
     font-family: Arial, sans-serif;
-    color: var(--text-color, #212529); /* Default to dark text */
+    color: var(--text-color, #212529);
     padding: 20px;
-    background-color: var(--content-bg, #f9f9f9); /* Default to light background */
+    background-color: var(--content-bg, #f9f9f9);
     border-radius: 10px;
     box-shadow: 0 4px 8px var(--shadow-color, rgba(0, 0, 0, 0.1));
     margin-top: 20px;
@@ -2560,7 +2560,126 @@ body.focus-outline-disabled :focus {
     }
 }
 
+/* Forecast styling */
+.forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.forecast-day {
+    background-color: var(--content-bg, #f9f9f9);
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: calc(100% / 7 - 15px);
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0 2px 6px var(--shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+.forecast-day .date {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.forecast-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.forecast-temps {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.forecast-temps .high {
+    color: #e74c3c;
+}
+
+.forecast-temps .low {
+    color: #3498db;
+}
+
+.forecast-temps .separator {
+    color: #6c757d;
+    margin: 0 5px;
+}
+
+/* Additional forecast details */
+.forecast-details {
+    font-size: 0.9rem;
+    color: var(--secondary-text, #6c757d);
+}
+
+/* Sun & Moon styling */
+.sun-moon-section {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: var(--text-color, #212529);
+}
+
+.sun-moon-section div {
+    margin-bottom: 5px;
+}
+
+/* Input container styling */
+.location-input-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#locationInput {
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#locationInput:focus {
+    border-color: var(--accent-color, #007bff);
+    outline: none;
+}
+
+#searchLocationButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: var(--accent-color, #007bff);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#searchLocationButton:hover {
+    background-color: #0056b3;
+}
+
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .forecast-day {
+        max-width: calc(100% / 4 - 15px);
+    }
+}
+
+@media (max-width: 768px) {
+    .forecast-day {
+        max-width: calc(100% / 2 - 15px);
+    }
+}
+
 @media (max-width: 600px) {
     .location-input-container {
         display: flex;
@@ -2576,5 +2695,11 @@ body.focus-outline-disabled :focus {
 
     #searchLocationButton {
         width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-day {
+        max-width: 100%;
     }
 }
