@@ -1,82 +1,80 @@
 // Initialize API key and base URL
-const apiKey = '34ae2d4a53544561a07150106252203';  // Replace with your WeatherAPI key
-const baseUrl = 'https://api.weatherapi.com/v1/current.json';
+const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
+const baseUrl = 'https://api.weatherapi.com/v1/forecast.json'; // Updated to the forecast endpoint
 
 // Function to fetch weather data
 async function fetchWeatherData(location) {
-  const url = `${baseUrl}?key=${apiKey}&q=${location}&aqi=no`;
+  const url = `${baseUrl}?key=${apiKey}&q=${location}&days=1&aqi=no&alerts=no`; // Added forecast and alerts query
+
+  const loadingSpinner = document.querySelector('.weather-loading');
+  const weatherContent = document.querySelector('.weather-content');
 
   // Show loading spinner
-  document.querySelector('.weather-loading').style.display = 'block';
-  document.querySelector('.weather-content').style.display = 'none';
+  if (loadingSpinner && weatherContent) {
+    loadingSpinner.style.display = 'block';
+    weatherContent.style.display = 'none';
+  } else {
+    console.error('Required DOM elements not found.');
+    return;
+  }
 
   try {
     const response = await fetch(url);
     const data = await response.json();
 
-    // Log data to see the response
-    console.log(data);
+    // Debug API response
+    console.log('Weather data received:', data);
 
-    // Check if the response contains valid data
-    if (data.error) {
-      throw new Error(data.error.message);
+    if (!data || !data.current) {
+      throw new Error('Weather data is incomplete.');
     }
 
     // Update the DOM with the fetched weather data
     updateDisplay(data);
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    // Show error message if fetching weather fails
     displayError(error.message);
   }
 }
 
 // Function to update the HTML content with the weather data
 function updateDisplay(data) {
-  // Hide the loading state
-  document.querySelector('.weather-loading').style.display = 'none';
-  
-  // Show the weather content
-  document.querySelector('.weather-content').style.display = 'block';
+  const loadingSpinner = document.querySelector('.weather-loading');
+  const weatherContent = document.querySelector('.weather-content');
+
+  // Hide loading spinner and show content
+  if (loadingSpinner && weatherContent) {
+    loadingSpinner.style.display = 'none';
+    weatherContent.style.display = 'block';
+  }
 
   // Location and Last Updated
-  const locationName = data.location.name;
-  const lastUpdated = new Date(data.current.last_updated).toLocaleString();
-  
-  document.querySelector('.location-name').textContent = locationName;
-  document.querySelector('.last-updated').textContent = `Updated: ${lastUpdated}`;
+  document.querySelector('.location-name').textContent = data.location.name;
+  document.querySelector('.last-updated').textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
 
   // Current Temperature and Feels Like
-  const currentTemp = data.current.temp_f;
-  const feelsLike = data.current.feelslike_f;
-  
-  document.querySelector('.temp-value').textContent = `${currentTemp}°F`;
-  document.querySelector('.feels-like').textContent = `Feels Like: ${feelsLike}°F`;
+  document.querySelector('.temp-value').textContent = `${data.current.temp_f}°F`;
+  document.querySelector('.feels-like').textContent = `Feels Like: ${data.current.feelslike_f}°F`;
 
   // Weather Condition
-  const condition = data.current.condition.text;
   const conditionIcon = data.current.condition.icon;
-  
+  const condition = data.current.condition.text;
   document.querySelector('.condition-text').innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" /> ${condition}`;
 
-  // Wind Speed, Humidity, and Pressure
-  const windSpeed = data.current.wind_mph;
-  const humidity = data.current.humidity;
-  const pressure = data.current.pressure_in;
-  
-  document.querySelector('.weather-details .wind-speed .value').textContent = `${windSpeed} mph`;
-  document.querySelector('.weather-details .humidity .value').textContent = `${humidity} %`;
-  document.querySelector('.weather-details .pressure .value').textContent = `${pressure} hPa`;
+  // Weather Details
+  document.querySelector('.weather-details .wind-speed .value').textContent = `${data.current.wind_mph} mph`;
+  document.querySelector('.weather-details .humidity .value').textContent = `${data.current.humidity} %`;
+  document.querySelector('.weather-details .pressure .value').textContent = `${data.current.pressure_in} hPa`;
 
   // Sun & Moon Times
-  updateSunMoon(data);
+  updateSunMoon(data.forecast.forecastday[0].astro); // Fixed to use forecast data
 }
 
 // Function to update the Sun and Moon times section
-function updateSunMoon(data) {
-  const sunrise = new Date(data.forecast.forecastday[0].astro.sunrise).toLocaleTimeString();
-  const sunset = new Date(data.forecast.forecastday[0].astro.sunset).toLocaleTimeString();
-  
+function updateSunMoon(astroData) {
+  const sunrise = astroData.sunrise;
+  const sunset = astroData.sunset;
+
   const sunMoonSection = document.querySelector('.sun-moon-section');
   sunMoonSection.innerHTML = `
     <div><strong>Sunrise:</strong> ${sunrise}</div>
@@ -86,23 +84,26 @@ function updateSunMoon(data) {
 
 // Function to handle errors (e.g., invalid location or API errors)
 function displayError(message) {
-  document.querySelector('.weather-loading').style.display = 'none';
+  const loadingSpinner = document.querySelector('.weather-loading');
   const errorContainer = document.querySelector('.weather-content');
-  errorContainer.innerHTML = `<p>Error: ${message}</p>`;
+
+  if (loadingSpinner) loadingSpinner.style.display = 'none';
+  if (errorContainer) {
+    errorContainer.innerHTML = `<p class="error-message">Error: ${message}</p>`;
+    errorContainer.style.display = 'block';
+  }
 }
 
-// Call the fetchWeatherData function when the page is ready or after a user input
+// On page load, fetch weather data
 window.onload = function () {
-  // Try to fetch the last used location from localStorage
   const lastLocation = localStorage.getItem('lastLocation') || 'New York';
   fetchWeatherData(lastLocation);
 };
 
-// Optional: Add event listeners for searching by location
+// Add event listeners for searching by location
 document.querySelector('#searchLocationButton').addEventListener('click', function() {
-  const location = document.querySelector('#locationInput').value;
+  const location = document.querySelector('#locationInput').value.trim();
   if (location) {
-    // Store the location in localStorage to remember it for next time
     localStorage.setItem('lastLocation', location);
     fetchWeatherData(location);
   }
