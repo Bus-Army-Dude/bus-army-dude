@@ -26,33 +26,35 @@ const weatherModule = {
     },
 
     async getWeatherData(lat, lon) {
-        try {
-            this.showLoading();
+    try {
+        this.showLoading();
 
-            // Call geocoding API to get the location name
-            const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
-            const locationData = await locationResponse.json();
-            
-            if (locationData.status.code !== 200) {
-                throw new Error('Geocoding API returned an error');
-            }
-
-            const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
-
-            // Fetch current weather data from Open-Meteo API
-            const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,pressure_msl,sunrise,sunset,moonphase&timezone=America%2FNew_York`);
-            const weatherData = await weatherResponse.json();
-
-            if (weatherData && weatherData.current_weather) {
-                this.updateDisplay(weatherData, locationName);
-            } else {
-                throw new Error('Weather API returned invalid data');
-            }
-        } catch (error) {
-            console.error('Error:', error.message);
-            this.handleError(error);
+        // Call geocoding API to get the location name
+        const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=YOUR_OPENCAGE_API_KEY`);
+        const locationData = await locationResponse.json();
+        
+        if (locationData.status.code !== 200) {
+            throw new Error('Geocoding API returned an error');
         }
-    },
+
+        const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
+
+        // Fetch current weather data from Open-Meteo API
+        const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,pressure_msl,sunrise,sunset,moonphase&timezone=America%2FNew_York`);
+        const weatherData = await weatherResponse.json();
+
+        console.log('Weather Data:', weatherData);  // Log the data to inspect its structure
+
+        if (weatherData && weatherData.current_weather) {
+            this.updateDisplay(weatherData, locationName);
+        } else {
+            throw new Error('Weather API returned invalid data');
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+        this.handleError(error);
+    }
+},
 
     updateDisplay(data, locationName) {
         const { current_weather, daily } = data;
