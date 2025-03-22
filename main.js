@@ -32,6 +32,11 @@ const weatherModule = {
             // Call geocoding API to get the location name
             const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
             const locationData = await locationResponse.json();
+            
+            if (locationData.status.code !== 200) {
+                throw new Error('Geocoding API returned an error');
+            }
+
             const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
 
             // Fetch current weather data from Open-Meteo API
@@ -41,11 +46,11 @@ const weatherModule = {
             if (weatherData && weatherData.current_weather) {
                 this.updateDisplay(weatherData, locationName);
             } else {
-                this.handleError();
+                throw new Error('Weather API returned invalid data');
             }
         } catch (error) {
-            console.error('Weather API Error:', error);
-            this.handleError();
+            console.error('Error:', error.message);
+            this.handleError(error);
         }
     },
 
@@ -170,8 +175,8 @@ const weatherModule = {
         this.weatherSection.innerHTML = '<div class="loading">Loading weather data...</div>';
     },
 
-    handleError() {
-        this.weatherSection.innerHTML = '<div class="error">Error retrieving weather data. Please try again later.</div>';
+    handleError(error) {
+        this.weatherSection.innerHTML = `<div class="error">Error: ${error.message}. Please try again later.</div>`;
     },
 
     handleLocationError() {
