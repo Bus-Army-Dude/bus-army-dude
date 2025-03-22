@@ -1,167 +1,136 @@
-const weatherModule = {
-    weatherSection: document.querySelector('.weather-section'),
-    ICONS: {
-        'Clear': 'wi wi-day-sunny',
-        'Clouds': 'wi wi-day-cloudy',
-        'Rain': 'wi wi-day-rain',
-        'Snow': 'wi wi-day-snow',
-        'Thunderstorm': 'wi wi-day-thunderstorm',
-        'Drizzle': 'wi wi-day-showers',
-        'Mist': 'wi wi-day-fog',
-        'Fog': 'wi wi-day-fog',
-        'Haze': 'wi wi-day-fog',
-        'Dust': 'wi wi-day-dust',
-        'Mostly Cloudy': 'wi wi-day-cloudy',
-    },
+// Initialize API key and base URL
+const apiKey = '34ae2d4a53544561a07150106252203';  // Replace with your WeatherAPI key
+const baseUrl = 'https://api.weatherapi.com/v1/current.json';
 
-    init() {
-        if (!this.weatherSection) return;
+// Function to fetch weather data
+async function fetchWeatherData(location) {
+  const url = `${baseUrl}?key=${apiKey}&q=${location}&aqi=no`;
+  
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => this.getWeatherData(position.coords.latitude, position.coords.longitude),
-                () => this.handleLocationError()
-            );
-        } else {
-            console.error('Geolocation is not supported');
-            this.handleLocationError();
-        }
-    },
-
-    async getWeatherData(lat, lon) {
-    try {
-        this.showLoading();
-
-        // Call geocoding API to get the location name
-        const locationResponse = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=421c8bcd4a38468e8d8152e997c9c902`);
-        const locationData = await locationResponse.json();
-        
-        // Log location data to check if it is returning valid data
-        console.log('Location Data:', locationData);
-
-        if (locationData.status.code !== 200 || !locationData.results.length) {
-            throw new Error(`Geocoding API returned an error: ${locationData.status.message}`);
-        }
-
-        const locationName = locationData.results[0]?.formatted_address || 'Unknown Location';
-
-        // Fetch weather data from WeatherAPI
-        const weatherResponse = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=34ae2d4a53544561a07150106252203&q=${lat},${lon}&days=1`);
-        const weatherData = await weatherResponse.json();
-
-        // Log weather data to check if it is returning valid data
-        console.log('Weather Data:', weatherData);
-
-        if (weatherData && weatherData.current) {
-            this.updateDisplay(weatherData, locationName);
-        } else {
-            throw new Error('Weather API returned invalid data');
-        }
-    } catch (error) {
-        console.error('Error:', error.message);
-        this.handleError(error);
+    // Check if the response contains valid data
+    if (data.error) {
+      throw new Error(data.error.message);
     }
+
+    // Update the DOM with the fetched weather data
+    updateDisplay(data);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    // Show error message if fetching weather fails
+    displayError(error.message);
+  }
 }
 
-    updateDisplay(data, locationName) {
-    const { current, forecast } = data;
+// Function to update the HTML content with the weather data
+function updateDisplay(data) {
+  // Hide the loading state
+  document.querySelector('.weather-loading').style.display = 'none';
+  
+  // Show the weather content
+  document.querySelector('.weather-content').style.display = 'block';
 
-    // Check if required data exists
-    if (!current || !forecast || !forecast.forecastday[0]) {
-        console.error("Weather data is missing or invalid.");
-        this.handleError(new Error("Weather data is incomplete"));
-        return;
-    }
+  // Location and Last Updated
+  const locationName = data.location.name;
+  const lastUpdated = new Date(data.current.last_updated).toLocaleString();
+  
+  document.querySelector('.location-name').textContent = locationName;
+  document.querySelector('.last-updated').textContent = `Updated: ${lastUpdated}`;
 
-    const { temp_c, feelslike_c, wind_kph, humidity, condition, pressure_mb } = current;
-    const { maxtemp_c, mintemp_c, totalprecip_mm, astro } = forecast.forecastday[0];
+  // Current Temperature and Feels Like
+  const currentTemp = data.current.temp_f;
+  const feelsLike = data.current.feelslike_f;
+  
+  document.querySelector('.temp-value').textContent = `${currentTemp}°F`;
+  document.querySelector('.feels-like').textContent = `Feels Like: ${feelsLike}°F`;
 
-    const weatherCondition = condition ? condition.text : 'Unknown Condition';
-    const iconClass = this.ICONS[weatherCondition] || 'wi wi-na'; // Default icon if no match
+  // Weather Condition
+  const condition = data.current.condition.text;
+  const conditionIcon = data.current.condition.icon;
+  
+  document.querySelector('.condition-text').innerHTML = `<i class="wi wi-na" style="background-image: url(${conditionIcon});"></i> ${condition}`;
 
-    // Calculate sunrise and sunset times
-    const sunriseTime = this.formatTime(astro.sunrise);
-    const sunsetTime = this.formatTime(astro.sunset);
+  // Wind Speed, Humidity, and Pressure
+  const windSpeed = data.current.wind_mph;
+  const humidity = data.current.humidity;
+  const pressure = data.current.pressure_in;
+  
+  document.querySelector('.weather-details .wind-speed .value').textContent = `${windSpeed} mph`;
+  document.querySelector('.weather-details .humidity .value').textContent = `${humidity} %`;
+  document.querySelector('.weather-details .pressure .value').textContent = `${pressure} hPa`;
 
-    this.weatherSection.innerHTML = `
-        <div class="weather-content">
-            <div class="weather-header">
-                <div class="location-info">
-                    <h2 class="location-name">${locationName || 'Unknown Location'}</h2>
-                    <span class="last-updated">Updated: ${new Date().toLocaleTimeString()}</span>
-                </div>
-            </div>
+  // Forecast Section (This section can be updated based on additional forecast API calls if needed)
+  // Example: You can populate a forecast section here if you have forecast data from the API
+  updateForecast(data.forecast);
 
-            <hr>
+  // Sun & Moon Times (Example - You may have to add this data in the API request or handle it separately)
+  updateSunMoon(data);
+}
 
-            <div class="weather-primary">
-                <div class="current-temp">
-                    <div class="temperature">
-                        <span class="temp-value">${temp_c || 'N/A'}°C</span>
-                        <span class="feels-like">Feels Like: ${feelslike_c || 'N/A'}°C</span>
-                    </div>
-                </div>
-                <div class="condition-text">
-                    <i class="wi ${iconClass}"></i> ${weatherCondition}
-                </div>
-            </div>
+// Function to update the Forecast section (if forecast data is available)
+function updateForecast(forecastData) {
+  if (!forecastData || !forecastData.forecastday) {
+    return;
+  }
 
-            <hr>
+  // Dynamically populate the forecast section with the forecast data
+  const forecastContainer = document.querySelector('.forecast-container');
+  forecastContainer.innerHTML = ''; // Clear any existing content
 
-            <div class="weather-details">
-                <div class="detail">
-                    <span class="label">Wind Speed</span><span class="value">${wind_kph || 'N/A'} kph</span>
-                </div>
-                <div class="detail">
-                    <span class="label">Humidity</span><span class="value">${humidity || 'N/A'} %</span>
-                </div>
-                <div class="detail">
-                    <span class="label">Pressure</span><span class="value">${pressure_mb || 'N/A'} mb</span>
-                </div>
-                <div class="detail">
-                    <span class="label">Precipitation</span><span class="value">${totalprecip_mm || 'N/A'} mm</span>
-                </div>
-            </div>
+  forecastData.forecastday.forEach(day => {
+    const forecastItem = document.createElement('div');
+    forecastItem.classList.add('forecast-item');
 
-            <hr>
+    // Forecast data: Date, Condition, Temp
+    const forecastDate = new Date(day.date).toLocaleDateString();
+    const forecastCondition = day.day.condition.text;
+    const forecastTemp = `${day.day.avgtemp_f}°F`;
 
-            <div class="weather-forecast">
-                <div class="forecast-high-low">
-                    <span class="high-temp">High: ${maxtemp_c || 'N/A'}°C</span> / 
-                    <span class="low-temp">Low: ${mintemp_c || 'N/A'}°C</span>
-                </div>
-            </div>
-
-            <hr>
-
-            <div class="sun-moon-section">
-                <div class="sunrise">
-                    <span>Sunrise: </span><span>${sunriseTime || 'N/A'}</span>
-                </div>
-                <div class="sunset">
-                    <span>Sunset: </span><span>${sunsetTime || 'N/A'}</span>
-                </div>
-            </div>
-        </div>
+    forecastItem.innerHTML = `
+      <h4>${forecastDate}</h4>
+      <div class="forecast-condition">${forecastCondition}</div>
+      <div class="forecast-temp">${forecastTemp}</div>
     `;
+    forecastContainer.appendChild(forecastItem);
+  });
 }
 
-    formatTime(timeString) {
-        const time = new Date(timeString);
-        return time.toLocaleTimeString();
-    },
+// Function to update the Sun and Moon times section
+function updateSunMoon(data) {
+  // Extracting sun and moon times from data
+  const sunrise = new Date(data.forecast.forecastday[0].astro.sunrise).toLocaleTimeString();
+  const sunset = new Date(data.forecast.forecastday[0].astro.sunset).toLocaleTimeString();
+  const moonrise = new Date(data.forecast.forecastday[0].astro.moonrise).toLocaleTimeString();
+  const moonset = new Date(data.forecast.forecastday[0].astro.moonset).toLocaleTimeString();
 
-    showLoading() {
-        this.weatherSection.innerHTML = '<div class="loading">Loading weather data...</div>';
-    },
+  const sunMoonSection = document.querySelector('.sun-moon-section');
+  sunMoonSection.innerHTML = `
+    <div><strong>Sunrise:</strong> ${sunrise}</div>
+    <div><strong>Sunset:</strong> ${sunset}</div>
+    <div><strong>Moonrise:</strong> ${moonrise}</div>
+    <div><strong>Moonset:</strong> ${moonset}</div>
+  `;
+}
 
-    handleError(error) {
-        this.weatherSection.innerHTML = `<div class="error">Error: ${error.message}. Please try again later.</div>`;
-    },
+// Function to handle errors (e.g., invalid location or API errors)
+function displayError(message) {
+  document.querySelector('.weather-loading').style.display = 'none';
+  const errorContainer = document.querySelector('.weather-content');
+  errorContainer.innerHTML = `<p>Error: ${message}</p>`;
+}
 
-    handleLocationError() {
-        this.weatherSection.innerHTML = '<div class="error">Unable to retrieve location. Please enable location services.</div>';
-    }
+// Call the fetchWeatherData function when the page is ready or after a user input
+window.onload = function () {
+  // Example: Fetch weather data for a default location (e.g., New York)
+  fetchWeatherData('New York');
 };
 
-weatherModule.init();
+// Optional: Add event listeners for searching by location
+document.querySelector('#searchLocationButton').addEventListener('click', function() {
+  const location = document.querySelector('#locationInput').value;
+  if (location) {
+    fetchWeatherData(location);
+  }
+});
