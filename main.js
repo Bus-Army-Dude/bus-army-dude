@@ -60,11 +60,14 @@ const weatherModule = {
         this.weatherSection = document.querySelector('.weather-section');
         if (!this.weatherSection) return;
 
+        // Get user's location using Geolocation API
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 position => this.getWeatherData(position.coords.latitude, position.coords.longitude),
                 () => this.handleLocationError()
             );
+        } else {
+            this.handleLocationError();
         }
 
         // Update weather every 5 minutes
@@ -79,18 +82,21 @@ const weatherModule = {
                 `${this.API_URL}?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,uv_index_max&timezone=auto`
             );
             const weatherData = await response.json();
-            this.updateEnhancedDisplay(weatherData);
+            this.updateDisplay(weatherData, lat, lon);
         } catch (error) {
             console.error('Weather Error:', error);
             this.handleError();
         }
     },
 
-    updateEnhancedDisplay(data) {
+    async updateDisplay(data, lat, lon) {
         if (!this.weatherSection) return;
 
         const currentWeather = data.current_weather;
         const dailyForecast = data.daily;
+
+        // Reverse geocoding to get the location name (e.g., city)
+        const locationName = await this.getLocationName(lat, lon);
 
         const iconClass = this.ICONS[currentWeather.weathercode] || 'wi wi-na'; // Default icon if no match
 
@@ -98,7 +104,7 @@ const weatherModule = {
             <div class="weather-content">
                 <div class="weather-header">
                     <div class="location-info">
-                        <h2>Your Location</h2>
+                        <h2>${locationName}</h2>
                         <span class="last-updated">Updated: ${this.formatTime(currentWeather.time)}</span>
                     </div>
                 </div>
@@ -109,17 +115,18 @@ const weatherModule = {
                     <div class="current-temp">
                         <div class="temperature">
                             <span class="temp-value">${this.convertToFahrenheit(currentWeather.temperature)}°F</span>
-                            <span class="feels-like">Wind Speed: ${this.convertToMph(currentWeather.windspeed)} mph</span>
+                            <span class="feels-like">Feels Like: ${this.convertToFahrenheit(currentWeather.apparent_temperature)}°F</span>
                         </div>
                     </div>
                     <div class="condition-text">
-                        <i class="${iconClass}"></i> ${currentWeather.weathercode}
+                        <i class="${iconClass}"></i> ${this.getWeatherDescription(currentWeather.weathercode)}
                     </div>
                 </div>
 
                 <hr>
 
                 <div class="weather-details">
+                    <div class="detail"><span class="label">Wind Speed</span><span class="value">${this.convertToMph(currentWeather.windspeed)} mph</span></div>
                     <div class="detail"><span class="label">Wind Direction</span><span class="value">${currentWeather.winddirection}°</span></div>
                 </div>
 
@@ -146,6 +153,17 @@ const weatherModule = {
                 </div>
             </div>
         `;
+    },
+
+    async getLocationName(lat, lon) {
+        try {
+            const response = await fetch(`https://geocode.xyz/${lat},${lon}?json=1`);
+            const data = await response.json();
+            return data.city || "Unknown Location";
+        } catch (error) {
+            console.error('Location error:', error);
+            return "Unknown Location";
+        }
     },
 
     formatDate(dateString) {
@@ -201,6 +219,29 @@ const weatherModule = {
                 <button onclick="weatherModule.init()" class="retry-button">Enable Location</button>
             </div>
         `;
+    },
+
+    getWeatherDescription(code) {
+        const descriptions = {
+            '0': 'Clear sky',
+            '1': 'Mainly clear',
+            '2': 'Partly cloudy',
+            '3': 'Cloudy',
+            '5': 'Light rain',
+            '6': 'Showers',
+            '7': 'Moderate rain',
+            '8': 'Heavy rain',
+            '9': 'Thunderstorms',
+            '11': 'Snow',
+            '12': 'Sleet',
+            '13': 'Freezing rain',
+            '15': 'Thunderstorms',
+            '16': 'Fog',
+            '17': 'Hail',
+            '20': 'Windy',
+            '21': 'Tornado'
+        };
+        return descriptions[code] || 'Unknown weather';
     }
 };
 
