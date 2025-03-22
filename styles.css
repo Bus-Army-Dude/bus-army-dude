@@ -2452,7 +2452,7 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* --- General styling for the weather section - Matching other sections --- */
+/* --- General styling for the weather section - Matching Business Info --- */
 .weather-section {
     --shadow-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
     background: linear-gradient(
@@ -2465,13 +2465,13 @@ body.focus-outline-disabled :focus {
     padding: clamp(24px, 4vw, 40px);
     border-radius: 10px;
     box-shadow: 0 2px 4px var(--shadow-color);
-    margin: 20px auto; /* Center and add vertical margin */
-    width: 95%; /* Adjust width for better mobile fit */
-    max-width: 1200px; /* Maximum width for larger screens - adjust if needed */
+    margin-bottom: 30px; /* Matched business info margin */
+    width: 100%; /* Matched business info width */
     box-sizing: border-box;
     backdrop-filter: blur(10px);
     transform-style: preserve-3d;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    margin-top: 20px; /* Keep some top margin */
 }
 
 /* --- Weather Header Styling --- */
