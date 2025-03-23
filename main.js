@@ -248,35 +248,6 @@ function getAirQualityClass(aqi) {
   }
 }
 
-// Function to update forecast section
-function updateForecast(forecastDays) {
-  const forecastContainer = document.querySelector('.forecast-container');
-  forecastContainer.innerHTML = '';
-  
-  forecastDays.forEach((day, index) => {
-    const forecastElement = document.createElement('div');
-    forecastElement.classList.add('forecast-day');
-    
-    // For first day, label as "Today", else format as "Mon 24"
-    let dateLabel = index === 0 ? "Today" : formatForecastDate(day.date);
-    
-    forecastElement.innerHTML = `
-      <div class="date">${dateLabel}</div>
-      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
-      <div class="forecast-temps">
-          <span class="high">${day.day.maxtemp_f}°F</span>
-          <span class="separator">/</span>
-          <span class="low">${day.day.mintemp_f}°F</span>
-      </div>
-      <div class="forecast-details">
-          <span class="condition">${day.day.condition.text}</span>
-          <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
-      </div>
-    `;
-    forecastContainer.appendChild(forecastElement);
-  });
-}
-
 // Helper function to format forecast date (e.g., "Mon 24")
 function formatForecastDate(dateStr) {
   const d = new Date(dateStr);
@@ -284,6 +255,40 @@ function formatForecastDate(dateStr) {
   const dayName = dayNames[d.getDay()];
   const dayNumber = d.getDate();
   return `${dayName} ${dayNumber}`;
+}
+
+// Function to update the forecast section
+function updateForecast(forecastDays) {
+  const forecastContainer = document.querySelector('.forecast-container');
+  forecastContainer.innerHTML = ''; // Clear previous forecasts
+
+  forecastDays.forEach((day, index) => {
+    let dateLabel;
+    if (index === 0) {
+      dateLabel = "Today";
+    } else if (index === 1) {
+      dateLabel = "Tomorrow";
+    } else {
+      dateLabel = formatForecastDate(day.date);
+    }
+
+    const forecastElement = document.createElement('div');
+    forecastElement.classList.add('forecast-day');
+    forecastElement.innerHTML = `
+      <div class="date">${dateLabel}</div>
+      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
+      <div class="forecast-temps">
+        <span class="high">${day.day.maxtemp_f}°F</span>
+        <span class="separator">/</span>
+        <span class="low">${day.day.mintemp_f}°F</span>
+      </div>
+      <div class="forecast-details">
+        <span class="condition">${day.day.condition.text}</span>
+        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
+      </div>
+    `;
+    forecastContainer.appendChild(forecastElement);
+  });
 }
 
 // Function to update Sun & Moon info
