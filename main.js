@@ -17,9 +17,12 @@ async function getWeather(location) {
 }
 
 // Function to update the current weather section
-function updateCurrentWeather(current) {
+function updateCurrentWeather(current, data) {
   const currentWeatherContainer = document.querySelector('.weather-content');
-  currentWeatherContainer.querySelector('.location-name').textContent = current.name;
+  
+  // Update location name
+  currentWeatherContainer.querySelector('.location-name').textContent = `${data.location.name}, ${data.location.region}`;
+
   currentWeatherContainer.querySelector('.last-updated').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
   
   currentWeatherContainer.querySelector('.temp-value').textContent = `${current.temp_f}°F`;
@@ -35,9 +38,13 @@ function updateCurrentWeather(current) {
 
   // Air quality (if available)
   const airQualityContainer = document.querySelector('.air-quality-details');
-  airQualityContainer.innerHTML = `
-    <p>Air Quality: ${current.air_quality["us-epa-index"]}</p>
-  `;
+  if (current.air_quality) {
+    airQualityContainer.innerHTML = `
+      <p>Air Quality: ${current.air_quality["us-epa-index"] || 'No data available'}</p>
+    `;
+  } else {
+    airQualityContainer.innerHTML = '<p>Air Quality data not available</p>';
+  }
 }
 
 // Function to update the 7-day forecast section
@@ -48,13 +55,19 @@ function updateForecast(forecast) {
   forecast.forEach((day) => {
     const forecastCard = document.createElement('div');
     forecastCard.classList.add('forecast-card');
+
+    // Add appropriate date formatting
+    const date = new Date(day.date);
+    const formattedDate = date.toLocaleDateString();
+
     forecastCard.innerHTML = `
-      <h3>${new Date(day.date).toLocaleDateString()}</h3>
-      <img src="${day.day.condition.icon}" alt="${day.day.condition.text}" />
-      <p>${day.day.avgtemp_f}°F</p>
-      <p>${day.day.condition.text}</p>
+      <div class="forecast-date">${formattedDate}</div>
+      <img src="${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon"/>
+      <p class="forecast-temp">${day.day.avgtemp_f}°F</p>
+      <p class="forecast-condition">${day.day.condition.text}</p>
     `;
-    
+
+    // Appending forecast card to the container
     forecastContainer.appendChild(forecastCard);
   });
 }
@@ -91,7 +104,7 @@ async function displayWeather(location) {
   const weatherData = await getWeather(location);
 
   if (weatherData) {
-    updateCurrentWeather(weatherData.current);
+    updateCurrentWeather(weatherData.current, weatherData);
     updateForecast(weatherData.forecast.forecastday);
   }
 }
