@@ -1,7 +1,7 @@
 // ========================
 // Initialize API key and base URL
 // ========================
-const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
+const apiKey = '852033aa68de4c61bbd211007252101'; // Replace with your actual WeatherAPI key
 const baseUrl = 'https://api.weatherapi.com/v1'; // Updated base URL
 
 // Get references to the input and button
@@ -110,7 +110,7 @@ async function fetchWeatherData(location) {
         }
 
         // Process and display weather alerts
-        const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :;
+        const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :; // Corrected line
         console.log('Fetched Alerts:', alerts);
         displayWeatherAlerts(alerts);
 
@@ -202,35 +202,35 @@ function updateDisplay(data) {
 // Display Weather Alerts with Deduplication
 // ========================
 function displayWeatherAlerts(alerts) {
-    const alertsContainer = document.querySelector('#weatherAlertsList');
-    if (!alertsContainer) return;
+    const alertsContainer = document.querySelector('#weatherAlertsList');
+    if (!alertsContainer) return;
 
-    alertsContainer.innerHTML = '';
+    alertsContainer.innerHTML = '';
 
-    const uniqueAlerts = alerts && alerts.length > 0
-        ? alerts.filter((alert, index, self) =>
-            index === self.findIndex(a => a.headline === alert.headline)
-        )
+    const uniqueAlerts = alerts && alerts.length > 0
+        ? alerts.filter((alert, index, self) =>
+            index === self.findIndex(a => a.headline === alert.headline)
+        )
         :;
 
     if (uniqueAlerts.length > 0) {
-        uniqueAlerts.forEach(alert => {
-            const alertItem = document.createElement('li');
-            alertItem.classList.add('alert-item');
-            alertItem.innerHTML = `
-                <strong>${alert.headline || 'Weather Alert'}</strong>
-                <p>${alert.description || 'No description provided.'}</p>
-                <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
-                <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
-                <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
-            `;
-            alertsContainer.appendChild(alertItem);
-        });
-    } else {
-        const noAlertsMessage = document.createElement('li');
-        noAlertsMessage.textContent = 'No weather alerts currently active.';
-        alertsContainer.appendChild(noAlertsMessage);
-    }
+        uniqueAlerts.forEach(alert => {
+            const alertItem = document.createElement('li');
+            alertItem.classList.add('alert-item');
+            alertItem.innerHTML = `
+                <strong>${alert.headline || 'Weather Alert'}</strong>
+                <p>${alert.description || 'No description provided.'}</p>
+                <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
+                <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
+                <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
+            `;
+            alertsContainer.appendChild(alertItem);
+        });
+    } else {
+        const noAlertsMessage = document.createElement('li');
+        noAlertsMessage.textContent = 'No weather alerts currently active.';
+        alertsContainer.appendChild(noAlertsMessage);
+    }
 }
 
 // ========================
