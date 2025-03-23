@@ -2453,31 +2453,31 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/*    Weather Section       */
+/*   Modern Weather Section */
 /* ======================== */
 .weather-section {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--content-bg);
+    /* Mimic the business-info style for container properties */
+    background: linear-gradient(145deg, color-mix(in srgb, var(--content-bg) 98%, white), var(--content-bg));
     color: var(--text-color);
-    padding: 30px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    max-width: 100%;
     margin: 20px auto;
-    box-shadow: 0 8px 30px var(--shadow-color);
-    transition: box-shadow 0.3s ease;
-    width: 100%; /* Ensure it stretches to container width */
-    max-width: 100%; /* No fixed max-width that causes overflow */
-    position: relative;
-    overflow: hidden; /* Contain children */
+    box-sizing: border-box;
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Remove overall hover transform on entire container */
+/* Remove any hover transform on the entire container */
 .weather-section:hover {
-    box-shadow: 0 8px 30px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* ======================== */
-/*      Weather Header      */
+/*       Header Section     */
 /* ======================== */
 .weather-header {
     font-size: 2rem;
@@ -2488,7 +2488,7 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/*  Primary Weather Info    */
+/*   Primary Weather Info   */
 /* ======================== */
 .weather-primary {
     display: flex;
@@ -2518,7 +2518,6 @@ body.focus-outline-disabled :focus {
     color: var(--secondary-text);
 }
 
-/* Condition Display */
 .condition-text {
     display: flex;
     align-items: center;
@@ -2540,6 +2539,7 @@ body.focus-outline-disabled :focus {
     margin-top: 25px;
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 20px;
+    box-sizing: border-box;
 }
 
 .detail {
@@ -2550,7 +2550,6 @@ body.focus-outline-disabled :focus {
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .detail:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
@@ -2574,15 +2573,17 @@ body.focus-outline-disabled :focus {
 .air-quality {
     margin-top: 30px;
     padding: 20px;
-    border-radius: 12px;
-    background-color: var(--content-bg, #3c3c3c);
-    color: var(--text-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;   /* Let it take full width of weather-section */
-    /* Remove auto margins ensuring it stays flush */
+    border-radius: 10px;
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white),
+        var(--content-bg)
+    );
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .air-quality .air-quality-overview {
@@ -2596,13 +2597,12 @@ body.focus-outline-disabled :focus {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 10px solid #ddd; /* default border */
+    border: 10px solid #ddd;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
 }
-
 .aqi-value {
     font-size: 1.8rem;
     font-weight: bold;
@@ -2620,7 +2620,6 @@ body.focus-outline-disabled :focus {
     font-weight: 700;
     color: var(--text-color);
 }
-
 .air-quality-summary .primary-pollutant {
     font-size: 0.9rem;
     color: var(--secondary-text);
@@ -2631,7 +2630,6 @@ body.focus-outline-disabled :focus {
     line-height: 1.6;
     width: 100%;
 }
-
 .air-quality-details .pollutant {
     display: flex;
     justify-content: space-between;
@@ -2639,38 +2637,30 @@ body.focus-outline-disabled :focus {
     padding: 5px 0;
     border-bottom: 1px solid var(--border-color, #eee);
 }
-
 .air-quality-details .pollutant:last-child {
     border-bottom: none;
 }
-
 .pollutant-name {
     font-weight: 600;
     color: var(--text-color);
 }
-
 .pollutant-value {
     font-size: 0.9rem;
     font-weight: bold;
     color: var(--secondary-text);
 }
-
 .pollutant-rating.good {
     color: #28a745;
 }
-
 .pollutant-rating.moderate {
     color: #ffc107;
 }
-
 .pollutant-rating.unhealthy {
     color: #dc3545;
 }
-
 .pollutant-rating.very-unhealthy {
     color: #6f42c1;
 }
-
 .pollutant-rating.hazardous {
     color: #343a40;
 }
@@ -2725,7 +2715,6 @@ body.focus-outline-disabled :focus {
     font-size: 1.1rem;
     margin: 10px 0;
 }
-
 .forecast-temps .high {
     color: #e74c3c;
     margin-bottom: 5px;
@@ -2733,7 +2722,6 @@ body.focus-outline-disabled :focus {
 .forecast-temps .low {
     color: #3498db;
 }
-
 .forecast-temps .separator {
     color: var(--secondary-text);
     margin: 0 8px;
@@ -2764,21 +2752,18 @@ body.focus-outline-disabled :focus {
     padding: 5px 0;
     border-bottom: 1px solid var(--border-color, #ddd);
 }
-
 .sun-moon-section div:last-child {
     border-bottom: none;
 }
-
 .sun-moon-section .label {
     font-weight: 700;
 }
-
 .sun-moon-section .time {
     color: var(--secondary-text);
 }
 
 /* ======================== */
-/*  Location Input Section  */
+/*   Location Input Section */
 /* ======================== */
 .location-input-container {
     margin-top: 30px;
@@ -2827,7 +2812,7 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/*    Weather Alerts        */
+/*     Weather Alerts       */
 /* ======================== */
 .weather-alert {
     background-color: var(--warning-bg, #fff3cd);
