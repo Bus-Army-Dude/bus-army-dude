@@ -2474,6 +2474,31 @@ body.focus-outline-disabled :focus {
     margin-top: 20px; /* Keep some top margin */
 }
 
+/* Style for error state */
+.error {
+  border: 2px solid red;
+  position: relative;
+}
+
+.error-icon {
+  position: absolute;
+  top: 50%;
+  right: -25px;
+  transform: translateY(-50%);
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.error-icon:hover {
+  text-decoration: underline;
+}
+
+/* Tooltip */
+.error-icon[title] {
+  cursor: pointer;
+}
+
 /* --- Weather Header Styling --- */
 .weather-header {
     font-size: 1.5rem;
