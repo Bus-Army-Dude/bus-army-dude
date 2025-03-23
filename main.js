@@ -215,22 +215,27 @@ function updateForecast(forecastDays) {
 
   // Get current date
   const currentDate = new Date();
+  const currentDayOfWeek = currentDate.toLocaleString('en-us', { weekday: 'short' });
+  const currentDayOfMonth = currentDate.getDate();
 
   forecastDays.forEach((day, index) => {
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
 
-    // Get the day of the week (Mon, Tue, etc.) and the day of the month
+    // Get the forecast date (day of the week and day of the month)
     const forecastDate = new Date(day.date);
     const dayOfWeek = forecastDate.toLocaleString('en-us', { weekday: 'short' });
     const dayOfMonth = forecastDate.getDate();
 
-    // Set 'Today' for the current day
-    const displayDay = (index === 0) ? 'Today' : `${dayOfWeek} ${dayOfMonth}`;
+    // Check if the forecast day is today
+    const displayDay = (dayOfWeek === currentDayOfWeek && dayOfMonth === currentDayOfMonth)
+      ? 'Today' // If it matches today, display "Today"
+      : `${dayOfWeek} ${dayOfMonth}`; // Otherwise, show the regular date (e.g., Sun 23)
 
     // Precipitation percentage (if available)
     const precipitationChance = day.day.daily_chance_of_rain || 0;
 
+    // Render the forecast element
     forecastElement.innerHTML = `
       <div class="date">${displayDay}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
