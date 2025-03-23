@@ -18,15 +18,25 @@ async function getWeather(location) {
 
 // Function to update the current weather section
 function updateCurrentWeather(current) {
-  const currentWeatherContainer = document.querySelector('.current-weather');
-  currentWeatherContainer.innerHTML = `
-    <h2>Current Weather</h2>
-    <h3>${current.condition.text}</h3>
-    <img src="${current.condition.icon}" alt="${current.condition.text}" />
-    <p>Temperature: ${current.temp_c}°C</p>
-    <p>Feels Like: ${current.feelslike_c}°C</p>
-    <p>Humidity: ${current.humidity}%</p>
-    <p>Wind: ${current.wind_kph} kph</p>
+  const currentWeatherContainer = document.querySelector('.weather-content');
+  currentWeatherContainer.querySelector('.location-name').textContent = current.name;
+  currentWeatherContainer.querySelector('.last-updated').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+  
+  currentWeatherContainer.querySelector('.temp-value').textContent = `${current.temp_c}°C`;
+  currentWeatherContainer.querySelector('.feels-like').textContent = `Feels Like: ${current.feelslike_c}°C`;
+  currentWeatherContainer.querySelector('.condition-text img').src = current.condition.icon;
+  currentWeatherContainer.querySelector('.condition-text span').textContent = current.condition.text;
+
+  // Weather details
+  currentWeatherContainer.querySelector('.wind-speed .value').textContent = `${current.wind_kph} kph`;
+  currentWeatherContainer.querySelector('.humidity .value').textContent = `${current.humidity}%`;
+  currentWeatherContainer.querySelector('.pressure .value').textContent = `${current.pressure_mb} hPa`;
+  currentWeatherContainer.querySelector('.precipitation .value').textContent = `${current.precip_mm} mm`;
+
+  // Air quality (if available)
+  const airQualityContainer = document.querySelector('.air-quality-details');
+  airQualityContainer.innerHTML = `
+    <p>Air Quality: ${current.air_quality["us-epa-index"]}</p>
   `;
 }
 
@@ -35,30 +45,13 @@ function updateForecast(forecast) {
   const forecastContainer = document.querySelector('.forecast-container');
   forecastContainer.innerHTML = ''; // Clear any previous forecast
 
-  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const today = new Date();
-
   forecast.forEach((day) => {
-    const forecastDate = new Date(day.date);
-
-    let dayLabel;
-
-    // Check if the date is today
-    if (forecastDate.toDateString() === today.toDateString()) {
-      dayLabel = 'Today';
-    } else {
-      const dayOfWeek = daysOfWeek[forecastDate.getDay()]; // Get day of the week (Mon, Tue, etc.)
-      const dayOfMonth = forecastDate.getDate(); // Get the day number (24, 25, etc.)
-      dayLabel = `${dayOfWeek} ${dayOfMonth}`;
-    }
-
-    // Create the forecast card
     const forecastCard = document.createElement('div');
     forecastCard.classList.add('forecast-card');
     forecastCard.innerHTML = `
-      <h3>${dayLabel}</h3>
+      <h3>${new Date(day.date).toLocaleDateString()}</h3>
       <img src="${day.day.condition.icon}" alt="${day.day.condition.text}" />
-      <p>${day.day.avgtemp_f}°F</p>
+      <p>${day.day.avgtemp_c}°C</p>
       <p>${day.day.condition.text}</p>
     `;
     
@@ -104,7 +97,7 @@ async function displayWeather(location) {
 }
 
 // Event listener for search functionality (Click)
-document.querySelector('#searchButton').addEventListener('click', () => {
+document.querySelector('#searchLocationButton').addEventListener('click', () => {
   const locationInput = document.querySelector('#locationInput').value;
   if (locationInput) {
     displayWeather(locationInput);
