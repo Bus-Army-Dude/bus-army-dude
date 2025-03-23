@@ -259,16 +259,18 @@ function updateSunMoon(astroData) {
   const sunMoonContainer = document.querySelector('.sun-moon-info');
 
   if (sunMoonContainer) {
-    const sunrise = new Date(astroData.sunrise).toLocaleTimeString();
-    const sunset = new Date(astroData.sunset).toLocaleTimeString();
-    const moonrise = new Date(astroData.moonrise).toLocaleTimeString();
-    const moonset = new Date(astroData.moonset).toLocaleTimeString();
+    // Use astroData strings directly (they are already in "HH:mm AM/PM" format)
+    const sunrise = astroData.sunrise || '--';
+    const sunset = astroData.sunset || '--';
+    const moonrise = astroData.moonrise || '--';
+    const moonset = astroData.moonset || '--';
 
+    // Dynamically update the sun and moon data
     sunMoonContainer.innerHTML = `
-      <div>Sunrise: ${sunrise}</div>
-      <div>Sunset: ${sunset}</div>
-      <div>Moonrise: ${moonrise}</div>
-      <div>Moonset: ${moonset}</div>
+      <div>🌅 Sunrise: ${sunrise}</div>
+      <div>🌇 Sunset: ${sunset}</div>
+      <div>🌕 Moonrise: ${moonrise}</div>
+      <div>🌑 Moonset: ${moonset}</div>
     `;
   }
 }
