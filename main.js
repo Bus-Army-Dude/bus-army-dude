@@ -22,6 +22,12 @@ async function fetchWeatherData(location) {
   try {
     console.log('Fetching weather data for location:', location); // Debug location
     const response = await fetch(url);
+    
+    // Check if the response was successful
+    if (!response.ok) {
+      throw new Error(`API returned error: ${response.statusText}`);
+    }
+    
     const data = await response.json();
 
     console.log('API Response:', data); // Debug API response
@@ -30,7 +36,8 @@ async function fetchWeatherData(location) {
       throw new Error('Weather data is incomplete or invalid.');
     }
 
-    updateDisplay(data);
+    updateDisplay(data); // Update the UI with the fetched data
+
   } catch (error) {
     console.error('Error fetching weather data:', error);
     displayError('Unable to load weather data. Please try again.');
@@ -96,12 +103,9 @@ function updateDisplay(data) {
   }
   if (precipitationElement) {
     const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0; // Chance percentage
-    const weatherCondition = data.current.condition.text || 'None';
-
-    // Dynamically show precipitation based on data
     precipitationElement.textContent =
       precipitationChance > 0
-        ? `${precipitationChance}% chance (${weatherCondition})`
+        ? `${precipitationChance}% chance of rain`
         : `None`;
   }
 
@@ -236,8 +240,8 @@ function displayError(message) {
 
   if (loadingSpinner) loadingSpinner.style.display = 'none';
   if (weatherContent) {
-    weatherContent.innerHTML = `<p class="error-message">Error: ${message}</p>`;
     weatherContent.style.display = 'block';
+    weatherContent.innerHTML = `<p class="error-message">${message}</p>`;
   }
 }
 
