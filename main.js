@@ -272,13 +272,23 @@ function displayError(message) {
 
 // Event listener for search input
 const searchInput = document.querySelector('.search-input'); 
+
 if (searchInput) {
   searchInput.addEventListener('input', function() {
     const location = searchInput.value.trim();
+
+    // Debugging: Log the location entered
+    console.log('Searching for location:', location);
+
     if (location) {
       fetchWeatherData(location); // Fetch weather for the entered location
+    } else {
+      // Optionally, clear the weather display or show a message
+      console.log('No location entered.');
     }
   });
+} else {
+  console.error('Search input element not found.');
 }
 
 // Example usage: Fetch weather data for a default location initially
