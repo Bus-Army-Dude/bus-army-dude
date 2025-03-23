@@ -2579,55 +2579,61 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* --- Forecast Styling --- */
+/* --- Forecast Container Styling --- */
 .forecast-container {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
     margin-top: 20px;
     width: 100%;
     box-sizing: border-box;
+    justify-content: space-between;
 }
 
+/* --- Individual Forecast Day --- */
 .forecast-day {
     background-color: var(--content-bg, #f9f9f9);
     padding: 15px;
     border-radius: 8px;
-    width: 100%;
-    text-align: left;
+    width: calc(33.33% - 10px); /* Make each day take 1/3 width */
     box-sizing: border-box;
+    text-align: center;
     box-shadow: 0 2px 6px var(--shadow-color, rgba(0, 0, 0, 0.1));
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
 }
 
+/* --- Date Styling for Forecast --- */
 .forecast-day .date {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin-bottom: 0;
+    margin-bottom: 10px;
 }
 
+/* --- Forecast Icon Styling --- */
 .forecast-icon {
-    width: 40px;
-    height: 40px;
-    margin-left: 15px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
 }
 
+/* --- Temperature Styling for Forecast --- */
 .forecast-temps {
     font-size: 1.1rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
 .forecast-temps .high {
     color: #e74c3c;
-    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 .forecast-temps .low {
     color: #3498db;
-    margin-left: 5px;
 }
 
 .forecast-temps .separator {
@@ -2641,19 +2647,37 @@ body.focus-outline-disabled :focus {
     color: var(--secondary-text, #6c757d);
 }
 
-/* --- Sun & Moon Styling --- */
+/* --- Sun & Moon Section --- */
 .sun-moon-section {
     margin-top: 20px;
     font-size: 1rem;
     color: var(--text-color, #212529);
     width: 100%;
+    box-sizing: border-box;
 }
 
 .sun-moon-section div {
     margin-bottom: 5px;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--separator-color, #ddd);
+    padding: 5px 0;
 }
 
-/* --- Input Container Styling --- */
+/* --- Label for Sun & Moon Times --- */
+.sun-moon-section .label {
+    font-weight: bold;
+    color: var(--text-color, #212529);
+}
+
+/* --- Time for Sun & Moon Times --- */
+.sun-moon-section .time {
+    color: var(--secondary-text, #6c757d);
+}
+
+/* --- Location Input Container Styling --- */
 .location-input-container {
     margin-top: 20px;
     display: flex;
@@ -2662,8 +2686,10 @@ body.focus-outline-disabled :focus {
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
+    box-sizing: border-box;
 }
 
+/* --- Location Input Box --- */
 #locationInput {
     padding: 12px;
     font-size: 1rem;
@@ -2677,10 +2703,28 @@ body.focus-outline-disabled :focus {
     transition: all 0.3s ease;
 }
 
+/* --- Location Input Focus --- */
 #locationInput:focus {
     border-color: var(--accent-color, #007bff);
     background-color: var(--background-color, #ffffff);
     outline: none;
+}
+
+/* --- Search Button Styling --- */
+#searchLocationButton {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: var(--accent-color, #007bff);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* --- Search Button Hover Effect --- */
+#searchLocationButton:hover {
+    background-color: var(--accent-color-hover, #0056b3);
 }
 
 /* --- Weather Alerts --- */
@@ -2756,9 +2800,7 @@ body.focus-outline-disabled :focus {
     }
 
     .forecast-day {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px;
+        width: 48%;
     }
 
     .forecast-icon {
@@ -2790,6 +2832,10 @@ body.focus-outline-disabled :focus {
         margin-right: 0;
         margin-bottom: 10px;
         width: 90%;
+    }
+
+    .forecast-day {
+        width: 100%;
     }
 
     #searchLocationButton {
