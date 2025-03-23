@@ -2669,34 +2669,66 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
 }
 
+/* --- Updated Location Input Styling --- */
 #locationInput {
-    padding: 10px;
+    padding: 12px;
     font-size: 1rem;
     width: 100%;
-    max-width: 300px;
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 5px;
+    max-width: 320px;
+    border: 1px solid var(--border-color, #ddd); /* Border color from theme */
+    border-radius: 8px; /* Slightly rounded borders */
+    background-color: var(--content-bg, #f9f9f9); /* Match background */
+    color: var(--text-color, #212529); /* Text color from theme */
     box-sizing: border-box;
+    transition: all 0.3s ease; /* Smooth transition for focus */
 }
 
+/* --- Focused Input --- */
 #locationInput:focus {
-    border-color: var(--accent-color, #007bff);
+    border-color: var(--accent-color, #007bff); /* Accent color for focus */
+    background-color: var(--background-color, #ffffff); /* Lighter background on focus */
     outline: none;
 }
 
-#searchLocationButton {
-    padding: 10px 20px;
+
+/* --- Weather Alerts --- */
+.weather-alert {
+    background-color: var(--warning-bg, #fff3cd); /* Light yellow for alerts */
+    color: var(--warning-text, #856404); /* Darker text color for visibility */
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--warning-border, #ffeeba); /* Light border */
+    border-radius: 8px;
     font-size: 1rem;
-    background-color: var(--accent-color, #007bff);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    width: 100%;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
-#searchLocationButton:hover {
-    background-color: #0056b3;
+/* --- Weather Alert Hover Effect --- */
+.weather-alert:hover {
+    background-color: var(--warning-bg-hover, #ffe8a1); /* Slightly darker yellow */
+    border-color: var(--warning-border-hover, #ffe082); /* Slightly darker border on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect on hover */
+}
+
+/* --- Specific Weather Alerts Based on Severity --- */
+.weather-alert.high {
+    background-color: var(--danger-bg, #f8d7da); /* Light red for high severity */
+    color: var(--danger-text, #721c24); /* Dark red text */
+    border-color: var(--danger-border, #f5c6cb); /* Red border */
+}
+
+.weather-alert.low {
+    background-color: var(--success-bg, #d4edda); /* Light green for low severity */
+    color: var(--success-text, #155724); /* Dark green text */
+    border-color: var(--success-border, #c3e6cb); /* Green border */
+}
+
+.weather-alert.info {
+    background-color: var(--info-bg, #d1ecf1); /* Light blue for info */
+    color: var(--info-text, #0c5460); /* Dark blue text */
+    border-color: var(--info-border, #bee5eb); /* Blue border */
 }
 
 /* --- Responsive Design --- */
