@@ -110,7 +110,7 @@ async function fetchWeatherData(location) {
         }
 
         // Process and display weather alerts
-        const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :; // Corrected line
+        const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert : []; // Corrected line
         console.log('Fetched Alerts:', alerts);
         displayWeatherAlerts(alerts);
 
