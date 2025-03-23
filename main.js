@@ -232,61 +232,40 @@ function updateForecast(forecastDays) {
       <div class="date">${displayDay}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
       <div class="forecast-temps">
-        <span class="high">${day.day.maxtemp_f}°F</span>
-        <span class="separator">/</span>
+        <span class="high">${day.day.maxtemp_f}°F</span> /
         <span class="low">${day.day.mintemp_f}°F</span>
       </div>
+      <div class="forecast-condition">${day.day.condition.text}</div>
     `;
-    
     forecastContainer.appendChild(forecastElement);
   });
 }
 
-// Function to update Sun/Moon data
+// Function to update Sun and Moon times
 function updateSunMoon(astroData) {
-  const sunTimes = document.querySelector('.sun-times');
-  const moonTimes = document.querySelector('.moon-times');
+  const sunElement = document.querySelector('.sun-moon .sunrise');
+  const moonElement = document.querySelector('.sun-moon .moonrise');
 
-  if (sunTimes && moonTimes) {
-    sunTimes.innerHTML = `
-      <strong>Sunrise:</strong> ${astroData.sunrise} <br>
-      <strong>Sunset:</strong> ${astroData.sunset}
-    `;
-    moonTimes.innerHTML = `
-      <strong>Moonrise:</strong> ${astroData.moonrise} <br>
-      <strong>Moonset:</strong> ${astroData.moonset}
-    `;
+  if (sunElement && moonElement) {
+    sunElement.textContent = `Sunrise: ${astroData.sunrise}`;
+    moonElement.textContent = `Moonrise: ${astroData.moonrise}`;
   }
 }
 
-// Function to handle errors
+// Function to display error messages
 function displayError(message) {
-  const errorMessageElement = document.querySelector('.error-message');
-  if (errorMessageElement) {
-    errorMessageElement.textContent = message;
+  const weatherContent = document.querySelector('.weather-content');
+  const errorMessage = document.querySelector('.error-message');
+  
+  if (errorMessage) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+  }
+  
+  if (weatherContent) {
+    weatherContent.style.display = 'none';
   }
 }
 
-// Event listener for search input
-const searchInput = document.querySelector('.search-input'); 
-
-if (searchInput) {
-  searchInput.addEventListener('input', function() {
-    const location = searchInput.value.trim();
-
-    // Debugging: Log the location entered
-    console.log('Searching for location:', location);
-
-    if (location) {
-      fetchWeatherData(location); // Fetch weather for the entered location
-    } else {
-      // Optionally, clear the weather display or show a message
-      console.log('No location entered.');
-    }
-  });
-} else {
-  console.error('Search input element not found.');
-}
-
-// Example usage: Fetch weather data for a default location initially
+// Fetch weather data for a default location (e.g., New York)
 fetchWeatherData('New York');
