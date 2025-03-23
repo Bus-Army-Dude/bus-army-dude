@@ -13,7 +13,7 @@ async function fetchWeatherData(location) {
     loadingSpinner.style.display = 'block';
     weatherContent.style.display = 'none';
   }
-
+  
   try {
     console.log('Fetching weather data for location:', location);
     console.log('API Request URL:', url);
@@ -32,13 +32,14 @@ async function fetchWeatherData(location) {
       throw new Error('Weather data is incomplete or invalid.');
     }
     
-    // Update weather alerts
+    // Extract and display weather alerts
     const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert : [];
     console.log('Weather Alerts:', alerts);
     displayWeatherAlerts(alerts);
     
-    // Update the main display
+    // Update the main weather display
     updateDisplay(data);
+    
   } catch (error) {
     console.error('Error fetching weather data:', error);
     displayError(`Unable to load weather data. ${error.message}`);
@@ -58,7 +59,7 @@ function updateDisplay(data) {
   if (loadingSpinner) loadingSpinner.style.display = 'none';
   if (weatherContent) weatherContent.style.display = 'block';
   
-  // Update location details
+  // Update location
   const locationNameElement = document.querySelector('.location-name');
   if (locationNameElement) {
     const city = data.location.name;
@@ -67,13 +68,13 @@ function updateDisplay(data) {
     locationNameElement.textContent = `${city}, ${stateOrRegion}, ${country}`;
   }
   
-  // Last updated
+  // Last updated time
   const lastUpdatedElement = document.querySelector('.last-updated');
   if (lastUpdatedElement) {
     lastUpdatedElement.textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
   }
   
-  // Current temperature and feels like
+  // Temperature and feels like
   const tempValueElement = document.querySelector('.temp-value');
   const feelsLikeElement = document.querySelector('.feels-like');
   if (tempValueElement) {
@@ -83,7 +84,7 @@ function updateDisplay(data) {
     feelsLikeElement.textContent = `Feels Like: ${data.current.feelslike_f}°F`;
   }
   
-  // Weather condition with icon
+  // Weather condition (icon and text)
   const conditionTextElement = document.querySelector('.condition-text');
   if (conditionTextElement) {
     const conditionIcon = data.current.condition.icon;
@@ -107,62 +108,50 @@ function updateDisplay(data) {
     pressureElement.textContent = data.current.pressure_in ? `${data.current.pressure_in} hPa` : 'N/A';
   }
   if (precipitationElement) {
+    // Use daily chance of rain from forecast (percentage)
     const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0;
-    precipitationElement.textContent =
-      precipitationChance > 0
-        ? `${precipitationChance}% chance of rain`
-        : `None`;
+    precipitationElement.textContent = precipitationChance > 0 
+      ? `${precipitationChance}% chance of rain` 
+      : `None`;
   }
   
   // Update Air Quality Section
   updateAirQuality(data);
   
-  // Update forecast and Sun/Moon data
+  // Update Forecast and Sun/Moon Sections
   updateForecast(data.forecast.forecastday);
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to display weather alerts with deduplication and icon checks
+// Function to display weather alerts with deduplication
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('#weatherAlertsList');
-  if (!alertsContainer) return; // Ensure the container exists
-
-  // Clear any previous alerts
+  if (!alertsContainer) return;
+  
+  // Clear previous alerts
   alertsContainer.innerHTML = '';
-
-  // Deduplicate alerts based on the headline
-  const uniqueAlerts = alerts && alerts.length > 0 
-    ? alerts.filter((alert, index, self) => index === self.findIndex(a => a.headline === alert.headline))
+  
+  // Deduplicate alerts by headline
+  const uniqueAlerts = alerts && alerts.length > 0
+    ? alerts.filter((alert, index, self) =>
+        index === self.findIndex(a => a.headline === alert.headline)
+      )
     : [];
-
+    
   if (uniqueAlerts.length > 0) {
     uniqueAlerts.forEach(alert => {
       const alertItem = document.createElement('li');
       alertItem.classList.add('alert-item');
-
-      // Only render an image element if an icon property exists and is valid.
-      let iconHTML = '';
-      if (alert.icon) {
-        // Use the provided icon if available
-        iconHTML = `<img src="${alert.icon}" alt="Alert Icon" class="alert-icon" />`;
-      }
-      // Otherwise, you could set a default icon if desired:
-      // iconHTML = `<img src="path/to/your/default-icon.png" alt="Alert Icon" class="alert-icon" />`; 
-
       alertItem.innerHTML = `
-        ${iconHTML}
-        <div class="alert-content">
-          <strong>${alert.headline || 'Weather Alert'}</strong>
-          <p>${alert.description || 'No description provided.'}</p>
-          <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
-          <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
-          <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
-        </div>
+        <strong>${alert.headline || 'Weather Alert'}</strong>
+        <p>${alert.description || 'No description provided.'}</p>
+        <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
+        <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
+        <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
       `;
       alertsContainer.appendChild(alertItem);
     });
   } else {
-    // Fallback message if no alerts are present
     const noAlertsMessage = document.createElement('li');
     noAlertsMessage.textContent = 'No weather alerts currently active.';
     alertsContainer.appendChild(noAlertsMessage);
@@ -176,12 +165,11 @@ function updateAirQuality(data) {
   const primaryPollutantElem = document.querySelector('.air-quality-summary .primary-pollutant');
   const airQualityDetailsEl = document.querySelector('.air-quality-details');
 
-  // Check if all required elements exist
   if (!airQualityIndicator || !airQualityStatus || !primaryPollutantElem || !airQualityDetailsEl) {
-      console.error('Missing one or more air quality DOM elements. Ensure your HTML contains: .air-quality-indicator, .air-quality-summary .aqi-status, .air-quality-summary .primary-pollutant, .air-quality-details');
-      return;
+    console.error('Missing air quality DOM elements. Check your HTML structure.');
+    return;
   }
-
+  
   if (data.current.air_quality) {
     const aqi = data.current.air_quality["us-epa-index"];
     const aqiDescription = getAirQualityDescription(aqi);
@@ -195,7 +183,7 @@ function updateAirQuality(data) {
     airQualityStatus.textContent = aqiDescription;
     primaryPollutantElem.textContent = `Primary Pollutant: ${primaryPollutant}`;
     
-    // Pollutant details breakdown
+    // Detailed pollutant breakdown
     const pollutants = [
       { name: 'O3 (Ozone)', value: data.current.air_quality.o3 },
       { name: 'CO (Carbon Monoxide)', value: data.current.air_quality.co },
@@ -212,6 +200,7 @@ function updateAirQuality(data) {
         <span class="pollutant-rating ${getAirQualityClass(aqi)}">${aqiDescription}</span>
       </div>
     `).join('');
+    
   } else {
     airQualityIndicator.innerHTML = `<span>N/A</span>`;
     airQualityStatus.textContent = 'Air Quality data not available.';
@@ -220,7 +209,7 @@ function updateAirQuality(data) {
   }
 }
 
-// Helper function to get Air Quality Description
+// Helper function to get Air Quality Description based on AQI
 function getAirQualityDescription(aqi) {
   switch (aqi) {
     case 1: return "Good";
@@ -243,12 +232,11 @@ function getPrimaryPollutant(airQuality) {
     { name: 'PM10', value: airQuality.pm10 },
     { name: 'PM2.5', value: airQuality.pm2_5 }
   ];
-  
   pollutants.sort((a, b) => b.value - a.value);
   return pollutants[0].name;
 }
 
-// Helper function to get CSS class for AQI rating
+// Helper function to get CSS class based on AQI
 function getAirQualityClass(aqi) {
   switch (aqi) {
     case 1: return "good";
@@ -260,39 +248,51 @@ function getAirQualityClass(aqi) {
   }
 }
 
-// Function to update the forecast section
+// Function to update forecast section
 function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
   forecastContainer.innerHTML = '';
   
-  forecastDays.forEach(day => {
+  forecastDays.forEach((day, index) => {
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
+    
+    // For first day, label as "Today", else format as "Mon 24"
+    let dateLabel = index === 0 ? "Today" : formatForecastDate(day.date);
+    
     forecastElement.innerHTML = `
-      <div class="date">${day.date}</div>
+      <div class="date">${dateLabel}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
       <div class="forecast-temps">
-        <span class="high">${day.day.maxtemp_f}°F</span>
-        <span class="separator">/</span>
-        <span class="low">${day.day.mintemp_f}°F</span>
+          <span class="high">${day.day.maxtemp_f}°F</span>
+          <span class="separator">/</span>
+          <span class="low">${day.day.mintemp_f}°F</span>
       </div>
       <div class="forecast-details">
-        <span class="condition">${day.day.condition.text}</span>
-        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
+          <span class="condition">${day.day.condition.text}</span>
+          <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
       </div>
     `;
     forecastContainer.appendChild(forecastElement);
   });
 }
 
+// Helper function to format forecast date (e.g., "Mon 24")
+function formatForecastDate(dateStr) {
+  const d = new Date(dateStr);
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayName = dayNames[d.getDay()];
+  const dayNumber = d.getDate();
+  return `${dayName} ${dayNumber}`;
+}
+
 // Function to update Sun & Moon info
 function updateSunMoon(astroData) {
-  // Ensure the HTML has elements: .sunrise, .sunset, .moonrise, .moonset
   const sunriseElement = document.querySelector('.sunrise');
   const sunsetElement = document.querySelector('.sunset');
   const moonriseElement = document.querySelector('.moonrise');
   const moonsetElement = document.querySelector('.moonset');
-
+  
   if (astroData) {
     sunriseElement.textContent = `Sunrise: ${astroData.sunrise || '--'}`;
     sunsetElement.textContent = `Sunset: ${astroData.sunset || '--'}`;
@@ -310,7 +310,7 @@ function updateSunMoon(astroData) {
 function displayError(message) {
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
-
+  
   if (loadingSpinner) loadingSpinner.style.display = 'none';
   if (weatherContent) {
     weatherContent.innerHTML = `<p class="error-message">Error: ${message}</p>`;
@@ -318,7 +318,7 @@ function displayError(message) {
   }
 }
 
-// On page load, fetch weather data for default or last saved location
+// On page load, fetch weather for default or last saved location
 window.onload = function () {
   const defaultLocation = 'New York, NY, USA';
   const lastLocation = localStorage.getItem('lastLocation') || defaultLocation;
