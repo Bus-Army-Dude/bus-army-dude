@@ -2453,10 +2453,8 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/*   Weather Section Styles */
+/*    Weather Section       */
 /* ======================== */
-
-/* Container */
 .weather-section {
     font-family: 'Inter', sans-serif;
     background-color: var(--content-bg);
@@ -2465,19 +2463,22 @@ body.focus-outline-disabled :focus {
     border-radius: 12px;
     border: 1px solid var(--border-color);
     margin: 20px auto;
-    box-shadow: 0 8px 30px var(--shadow-color);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Remove the hover animation on the entire section */
+    box-shadow: 0px 8px 30px var(--shadow-color);
+    transition: box-shadow 0.3s ease;
     max-width: 100%;
     box-sizing: border-box;
     backdrop-filter: blur(5px);
 }
 
 .weather-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    /* No overall transform, only a slight increase in shadow for subtle emphasis */
+    box-shadow: 0px 8px 30px var(--shadow-color);
 }
 
-/* Header */
+/* ======================== */
+/*    Weather Header        */
+/* ======================== */
 .weather-header {
     font-size: 2rem;
     font-weight: 700;
@@ -2486,7 +2487,9 @@ body.focus-outline-disabled :focus {
     color: var(--accent-color);
 }
 
-/* Primary Weather Info */
+/* ======================== */
+/*  Weather Primary Info    */
+/* ======================== */
 .weather-primary {
     display: flex;
     flex-direction: row;
@@ -2499,7 +2502,7 @@ body.focus-outline-disabled :focus {
 .weather-icon {
     width: 100px;
     height: 100px;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
 }
 
 .temperature {
@@ -2507,7 +2510,7 @@ body.focus-outline-disabled :focus {
     font-size: 3.5rem;
     font-weight: bold;
     color: var(--accent-color);
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .feels-like {
@@ -2515,7 +2518,7 @@ body.focus-outline-disabled :focus {
     color: var(--secondary-text);
 }
 
-/* Condition */
+/* Condition Display */
 .condition-text {
     display: flex;
     align-items: center;
@@ -2527,7 +2530,9 @@ body.focus-outline-disabled :focus {
     margin-right: 10px;
 }
 
-/* Weather Details */
+/* ======================== */
+/*     Weather Details      */
+/* ======================== */
 .weather-details {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -2535,19 +2540,22 @@ body.focus-outline-disabled :focus {
     margin-top: 25px;
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 20px;
+    box-sizing: border-box;
 }
 
 .detail {
     background-color: var(--content-bg, #3c3c3c);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Only individual details have hover animation */
 }
+
 .detail:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
 }
 
 .detail .label {
@@ -2563,7 +2571,7 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/*       Air Quality        */
+/*      Air Quality         */
 /* ======================== */
 .air-quality {
     margin-top: 30px;
@@ -2575,6 +2583,10 @@ body.focus-outline-disabled :focus {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    /* Limit the width on large screens */
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .air-quality .air-quality-overview {
@@ -2587,7 +2599,7 @@ body.focus-outline-disabled :focus {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 10px solid #ddd;
+    border: 10px solid #ddd; /* default */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2664,6 +2676,7 @@ body.focus-outline-disabled :focus {
     gap: 20px;
     margin-top: 30px;
     justify-content: center;
+    /* Ensure it stays inside the weather container */
 }
 
 .forecast-day {
@@ -2673,13 +2686,14 @@ body.focus-outline-disabled :focus {
     width: 100%;
     max-width: 160px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
 }
 
 .forecast-day:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
 .forecast-day .date {
@@ -2702,13 +2716,16 @@ body.focus-outline-disabled :focus {
     font-size: 1.1rem;
     margin: 10px 0;
 }
+
 .forecast-temps .high {
     color: #e74c3c;
     margin-bottom: 5px;
 }
+
 .forecast-temps .low {
     color: #3498db;
 }
+
 .forecast-temps .separator {
     color: var(--secondary-text);
     margin: 0 8px;
@@ -2749,7 +2766,7 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/*   Location Input Section */
+/*  Location Input Section  */
 /* ======================== */
 .location-input-container {
     margin-top: 30px;
@@ -2761,6 +2778,7 @@ body.focus-outline-disabled :focus {
     width: 100%;
     box-sizing: border-box;
 }
+
 #locationInput {
     padding: 12px 20px;
     font-size: 1rem;
@@ -2773,11 +2791,13 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
+
 #locationInput:focus {
     border-color: var(--accent-color, #4CAF50);
     box-shadow: 0 0 8px rgba(0, 255, 100, 0.5);
     outline: none;
 }
+
 #getSearchLocationButton {
     padding: 15px 25px;
     font-size: 1rem;
@@ -2788,13 +2808,14 @@ body.focus-outline-disabled :focus {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
 #getSearchLocationButton:hover {
     background-color: var(--hover-color, #45a049);
     transform: translateY(-3px);
 }
 
 /* ======================== */
-/*    Weather Alerts Section */
+/*  Weather Alerts Section  */
 /* ======================== */
 .weather-alert {
     background-color: var(--warning-bg, #fff3cd);
@@ -2805,34 +2826,30 @@ body.focus-outline-disabled :focus {
     border-radius: 8px;
     font-size: 1rem;
     width: 100%;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .weather-alerts-title {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 10px;
 }
-
 .weather-alert:hover {
     background-color: var(--warning-bg-hover, #ffe8a1);
     border-color: var(--warning-border-hover, #ffe082);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Specific alert severities */
+/* Specific alert severities (optional) */
 .weather-alert.high {
     background-color: var(--danger-bg, #f8d7da);
     color: var(--danger-text, #721c24);
     border-color: var(--danger-border, #f5c6cb);
 }
-
 .weather-alert.low {
     background-color: var(--success-bg, #d4edda);
     color: var(--success-text, #155724);
     border-color: var(--success-border, #c3e6cb);
 }
-
 .weather-alert.info {
     background-color: var(--info-bg, #d1ecf1);
     color: var(--info-text, #0c5460);
@@ -2840,20 +2857,17 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/* Responsive Styles        */
+/*       Responsive         */
 /* ======================== */
-
 /* Desktop/Tablets */
 @media (max-width: 1024px) {
     .weather-primary {
         flex-direction: column;
         align-items: center;
     }
-
     .temperature {
         font-size: 3rem;
     }
-
     .weather-header {
         font-size: 1.8rem;
     }
@@ -2865,16 +2879,13 @@ body.focus-outline-disabled :focus {
         flex-direction: column;
         justify-content: center;
     }
-
     .weather-details {
         grid-template-columns: 1fr;
     }
-
     .forecast-container {
         flex-direction: column;
         gap: 15px;
     }
-
     .forecast-day {
         max-width: 100%;
     }
@@ -2885,32 +2896,26 @@ body.focus-outline-disabled :focus {
     .temperature {
         font-size: 2.5rem;
     }
-
     .weather-header {
         font-size: 1.6rem;
     }
-
     .location-input-container {
         flex-direction: column;
         gap: 15px;
     }
-
     #locationInput {
         font-size: 1rem;
         padding: 12px;
         width: 90%;
     }
-
     #getSearchLocationButton {
         font-size: 1rem;
         padding: 12px 20px;
         width: 90%;
     }
-
     .detail {
         font-size: 0.9rem;
     }
-
     .forecast-day {
         padding: 12px;
     }
