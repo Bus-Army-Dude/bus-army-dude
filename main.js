@@ -122,16 +122,25 @@ function updateDisplay(data) {
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to display weather alerts
+// Function to display weather alerts with deduplication
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('#weatherAlertsList');
-  if (!alertsContainer) return;
+  if (!alertsContainer) return; // Ensure the container exists
   
-  // Clear previous alerts
+  // Clear any previous alerts
   alertsContainer.innerHTML = '';
-  
+
+  // Deduplicate alerts based on the headline
+  const uniqueAlerts = [];
   if (alerts && alerts.length > 0) {
     alerts.forEach(alert => {
+      // Check if an alert with the same headline already exists in uniqueAlerts
+      if (!uniqueAlerts.some(u => u.headline === alert.headline)) {
+        uniqueAlerts.push(alert);
+      }
+    });
+
+    uniqueAlerts.forEach(alert => {
       const alertItem = document.createElement('li');
       alertItem.classList.add('alert-item');
       alertItem.innerHTML = `
@@ -144,6 +153,7 @@ function displayWeatherAlerts(alerts) {
       alertsContainer.appendChild(alertItem);
     });
   } else {
+    // Fallback if no alerts exist
     const noAlertsMessage = document.createElement('li');
     noAlertsMessage.textContent = 'No weather alerts currently active.';
     alertsContainer.appendChild(noAlertsMessage);
