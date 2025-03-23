@@ -122,38 +122,44 @@ function updateDisplay(data) {
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to display weather alerts with deduplication
+// Function to display weather alerts with deduplication and icon support
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('#weatherAlertsList');
   if (!alertsContainer) return; // Ensure the container exists
-  
+
   // Clear any previous alerts
   alertsContainer.innerHTML = '';
 
-  // Deduplicate alerts based on the headline
-  const uniqueAlerts = [];
-  if (alerts && alerts.length > 0) {
-    alerts.forEach(alert => {
-      // Check if an alert with the same headline already exists in uniqueAlerts
-      if (!uniqueAlerts.some(u => u.headline === alert.headline)) {
-        uniqueAlerts.push(alert);
-      }
-    });
+  // If there are alerts, deduplicate by headline
+  const uniqueAlerts = alerts && alerts.length > 0
+    ? alerts.filter((alert, index, self) =>
+        index === self.findIndex((a) => a.headline === alert.headline)
+      )
+    : [];
 
+  if (uniqueAlerts.length > 0) {
     uniqueAlerts.forEach(alert => {
       const alertItem = document.createElement('li');
       alertItem.classList.add('alert-item');
+
+      // If an alert object contains an icon property, use it; otherwise, use a default icon.
+      const alertIconURL = alert.icon || 'default-alert-icon.png'; // Update this path as needed
+      const iconHTML = `<img src="${alertIconURL}" alt="Alert Icon" class="alert-icon" />`;
+
       alertItem.innerHTML = `
-        <strong>${alert.headline || 'Weather Alert'}</strong>
-        <p>${alert.description || 'No description provided.'}</p>
-        <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
-        <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
-        <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
+        ${iconHTML}
+        <div class="alert-content">
+          <strong>${alert.headline || 'Weather Alert'}</strong>
+          <p>${alert.description || 'No description provided.'}</p>
+          <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
+          <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
+          <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
+        </div>
       `;
       alertsContainer.appendChild(alertItem);
     });
   } else {
-    // Fallback if no alerts exist
+    // Fallback message if no alerts are present
     const noAlertsMessage = document.createElement('li');
     noAlertsMessage.textContent = 'No weather alerts currently active.';
     alertsContainer.appendChild(noAlertsMessage);
