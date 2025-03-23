@@ -9,11 +9,33 @@ async function fetchWeatherData(location) {
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
 
-  // Show loading spinner
   if (loadingSpinner && weatherContent) {
     loadingSpinner.style.display = 'block';
     weatherContent.style.display = 'none';
   }
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+
+    const data = await response.json();
+    console.log('API Response:', data); // Debug full API response
+
+    // Extract alerts and display them
+    const alerts = data.alerts && data.alerts.alert ? data.alerts.alert : [];
+    console.log('Weather Alerts:', alerts); // Debug alerts
+    displayWeatherAlerts(alerts);
+
+    // Update other weather data in the UI
+    updateDisplay(data);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    displayError('Unable to load weather data. Please try again.');
+  } finally {
+    if (loadingSpinner && weatherContent) {
+      loadingSpinner.style.display = 'none';
+      weatherContent.style.display = 'block';
+    }
 
   try {
     console.log('Fetching weather data for location:', location); // Debug location
@@ -115,26 +137,26 @@ function updateDisplay(data) {
 
 // Function to display weather alerts
 function displayWeatherAlerts(alerts) {
-  const alertsContainer = document.querySelector('#weatherAlertsList'); // Target the ul with id "weatherAlertsList"
+  const alertsContainer = document.querySelector('#weatherAlertsList');
   
-  // Clear previous alerts
+  // Clear any previous alerts
   alertsContainer.innerHTML = '';
 
   if (alerts && alerts.length > 0) {
     alerts.forEach(alert => {
-      const alertItem = document.createElement('li'); // Create an li element for each alert
+      const alertItem = document.createElement('li');
       alertItem.classList.add('alert-item');
       alertItem.innerHTML = `
-        <strong>${alert.headline}</strong>
-        <p>${alert.description}</p>
-        <p><strong>Issued by:</strong> ${alert.certainty}</p>
-        <p><strong>Effective:</strong> ${alert.effective}</p>
-        <p><strong>Expires:</strong> ${alert.expires}</p>
+        <strong>${alert.headline || 'Weather Alert'}</strong>
+        <p>${alert.description || 'No description provided.'}</p>
+        <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
+        <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
+        <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
       `;
       alertsContainer.appendChild(alertItem);
     });
   } else {
-    // If no alerts, show a message
+    // If no alerts, show fallback message
     const noAlertsMessage = document.createElement('li');
     noAlertsMessage.textContent = 'No weather alerts currently active.';
     alertsContainer.appendChild(noAlertsMessage);
