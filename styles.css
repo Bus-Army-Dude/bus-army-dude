@@ -2452,7 +2452,7 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* --- General styling for the weather section - Matching Business Info --- */
+/* --- General Styling for the Weather Section - Matching Business Info --- */
 .weather-section {
     --shadow-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
     background: linear-gradient(
@@ -2465,13 +2465,13 @@ body.focus-outline-disabled :focus {
     padding: clamp(24px, 4vw, 40px);
     border-radius: 10px;
     box-shadow: 0 2px 4px var(--shadow-color);
-    margin-bottom: 30px; /* Matched business info margin */
-    width: 100%; /* Matched business info width */
+    margin-bottom: 30px;
+    width: 100%;
     box-sizing: border-box;
     backdrop-filter: blur(10px);
     transform-style: preserve-3d;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    margin-top: 20px; /* Keep some top margin */
+    margin-top: 20px;
 }
 
 /* --- Weather Header Styling --- */
@@ -2490,7 +2490,6 @@ body.focus-outline-disabled :focus {
     align-items: center;
     margin-bottom: 20px;
     width: 100%;
-    box-sizing: border-box;
     flex-direction: row;
     justify-content: flex-start;
 }
@@ -2612,13 +2611,11 @@ body.focus-outline-disabled :focus {
 .forecast-icon {
     width: 40px;
     height: 40px;
-    margin-bottom: 0;
     margin-left: 15px;
 }
 
 .forecast-temps {
     font-size: 1.1rem;
-    margin: 0;
     display: flex;
     align-items: center;
 }
@@ -2650,7 +2647,6 @@ body.focus-outline-disabled :focus {
     font-size: 1rem;
     color: var(--text-color, #212529);
     width: 100%;
-    box-sizing: border-box;
 }
 
 .sun-moon-section div {
@@ -2666,76 +2662,70 @@ body.focus-outline-disabled :focus {
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
-    box-sizing: border-box;
 }
 
-/* --- Updated Location Input Styling --- */
 #locationInput {
     padding: 12px;
     font-size: 1rem;
     width: 100%;
     max-width: 320px;
-    border: 1px solid var(--border-color, #ddd); /* Border color from theme */
-    border-radius: 8px; /* Slightly rounded borders */
-    background-color: var(--content-bg, #f9f9f9); /* Match background */
-    color: var(--text-color, #212529); /* Text color from theme */
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 8px;
+    background-color: var(--content-bg, #f9f9f9);
+    color: var(--text-color, #212529);
     box-sizing: border-box;
-    transition: all 0.3s ease; /* Smooth transition for focus */
+    transition: all 0.3s ease;
 }
 
-/* --- Focused Input --- */
 #locationInput:focus {
-    border-color: var(--accent-color, #007bff); /* Accent color for focus */
-    background-color: var(--background-color, #ffffff); /* Lighter background on focus */
+    border-color: var(--accent-color, #007bff);
+    background-color: var(--background-color, #ffffff);
     outline: none;
 }
 
-
 /* --- Weather Alerts --- */
 .weather-alert {
-    background-color: var(--warning-bg, #fff3cd); /* Light yellow for alerts */
-    color: var(--warning-text, #856404); /* Darker text color for visibility */
+    background-color: var(--warning-bg, #fff3cd);
+    color: var(--warning-text, #856404);
     padding: 12px;
     margin-bottom: 15px;
-    border: 1px solid var(--warning-border, #ffeeba); /* Light border */
+    border: 1px solid var(--warning-border, #ffeeba);
     border-radius: 8px;
     font-size: 1rem;
     box-sizing: border-box;
     width: 100%;
-    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    transition: all 0.3s ease;
 }
 
 .weather-alert-title {
-    /* Remove the display: none; */
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-/* --- Weather Alert Hover Effect --- */
 .weather-alert:hover {
-    background-color: var(--warning-bg-hover, #ffe8a1); /* Slightly darker yellow */
-    border-color: var(--warning-border-hover, #ffe082); /* Slightly darker border on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect on hover */
+    background-color: var(--warning-bg-hover, #ffe8a1);
+    border-color: var(--warning-border-hover, #ffe082);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Specific Weather Alerts Based on Severity --- */
 .weather-alert.high {
-    background-color: var(--danger-bg, #f8d7da); /* Light red for high severity */
-    color: var(--danger-text, #721c24); /* Dark red text */
-    border-color: var(--danger-border, #f5c6cb); /* Red border */
+    background-color: var(--danger-bg, #f8d7da);
+    color: var(--danger-text, #721c24);
+    border-color: var(--danger-border, #f5c6cb);
 }
 
 .weather-alert.low {
-    background-color: var(--success-bg, #d4edda); /* Light green for low severity */
-    color: var(--success-text, #155724); /* Dark green text */
-    border-color: var(--success-border, #c3e6cb); /* Green border */
+    background-color: var(--success-bg, #d4edda);
+    color: var(--success-text, #155724);
+    border-color: var(--success-border, #c3e6cb);
 }
 
 .weather-alert.info {
-    background-color: var(--info-bg, #d1ecf1); /* Light blue for info */
-    color: var(--info-text, #0c5460); /* Dark blue text */
-    border-color: var(--info-border, #bee5eb); /* Blue border */
+    background-color: var(--info-bg, #d1ecf1);
+    color: var(--info-text, #0c5460);
+    border-color: var(--info-border, #bee5eb);
 }
 
 /* --- Responsive Design --- */
@@ -2752,11 +2742,6 @@ body.focus-outline-disabled :focus {
         text-align: center;
     }
 
-    .weather-primary .current-temp {
-        flex-direction: column;
-        align-items: center;
-    }
-
     .weather-icon {
         margin-right: 0;
         margin-bottom: 10px;
@@ -2766,37 +2751,32 @@ body.focus-outline-disabled :focus {
         width: 100%;
     }
 
-    /* Improved 7-Day Outlook for Mobile */
     .forecast-container {
-        gap: 15px; /* Increase spacing between forecast days */
+        gap: 15px;
     }
 
     .forecast-day {
-        flex-direction: column; /* Stack elements vertically on mobile */
-        align-items: flex-start; /* Align text to the left */
+        flex-direction: column;
+        align-items: flex-start;
         padding: 15px;
     }
 
-    .forecast-day .date {
-        margin-bottom: 5px;
-    }
-
     .forecast-icon {
-        margin-left: 0; /* Remove left margin */
+        margin-left: 0;
         margin-bottom: 5px;
     }
 
     .forecast-temps {
-        flex-direction: column; /* Stack high/low temps */
+        flex-direction: column;
         align-items: flex-start;
     }
 
     .forecast-temps .separator {
-        display: none; /* Hide separator when stacked */
+        display: none;
     }
 
     .forecast-temps .low {
-        margin-left: 0; /* Remove left margin */
+        margin-left: 0;
     }
 }
 
@@ -2880,34 +2860,19 @@ body.focus-outline-disabled :focus {
     color: var(--secondary-text);
 }
 
-/* If you have an overall AQI indicator with a color */
-.aqi-indicator {
-    display: flex;
-    align-items: center;
+.aqi-value.good {
+    color: #28a745;
 }
 
-.aqi-number {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-right: 10px;
+.aqi-value.moderate {
+    color: #ffc107;
 }
 
-.aqi-level {
-    font-size: 0.9rem;
-    font-weight: bold;
-    text-transform: uppercase;
+.aqi-value.unhealthy {
+    color: #dc3545;
 }
 
-/* Example AQI color coding (you might need to adjust these) */
-.aqi-level.good { color: green; }
-.aqi-level.moderate { color: orange; }
-.aqi-level.unhealthy-sensitive { color: red; }
-.aqi-level.unhealthy { color: purple; }
-.aqi-level.very-unhealthy { color: maroon; }
-.aqi-level.hazardous { color: darkred; }
-
-/* If air quality is within weather-details */
-.weather-details .air-quality-item {
-    width: 100%;
-    margin-bottom: 10px;
+.aqi-value.hazardous {
+    color: #ff073a;
 }
+
