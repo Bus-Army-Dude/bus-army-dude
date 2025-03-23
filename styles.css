@@ -2474,31 +2474,6 @@ body.focus-outline-disabled :focus {
     margin-top: 20px; /* Keep some top margin */
 }
 
-/* Style for error state */
-.error {
-  border: 2px solid red;
-  position: relative;
-}
-
-.error-icon {
-  position: absolute;
-  top: 50%;
-  right: -25px;
-  transform: translateY(-50%);
-  color: red;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.error-icon:hover {
-  text-decoration: underline;
-}
-
-/* Tooltip */
-.error-icon[title] {
-  cursor: pointer;
-}
-
 /* --- Weather Header Styling --- */
 .weather-header {
     font-size: 1.5rem;
@@ -2850,9 +2825,50 @@ body.focus-outline-disabled :focus {
 
 .aqi-label {
     font-weight: bold;
+    color: var(--text-color);
 }
 
 .aqi-value {
-    font-size: 1.1rem;
-    color: var(--secondary-text, #6c757d);
+    color: var(--secondary-text);
+}
+
+.pollutant-label {
+    color: var(--text-color);
+}
+
+.pollutant-value {
+    font-weight: 500;
+    color: var(--secondary-text);
+}
+
+/* If you have an overall AQI indicator with a color */
+.aqi-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.aqi-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.aqi-level {
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Example AQI color coding (you might need to adjust these) */
+.aqi-level.good { color: green; }
+.aqi-level.moderate { color: orange; }
+.aqi-level.unhealthy-sensitive { color: red; }
+.aqi-level.unhealthy { color: purple; }
+.aqi-level.very-unhealthy { color: maroon; }
+.aqi-level.hazardous { color: darkred; }
+
+/* If air quality is within weather-details */
+.weather-details .air-quality-item {
+    width: 100%;
+    margin-bottom: 10px;
 }
