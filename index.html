@@ -201,12 +201,12 @@ s0.parentNode.insertBefore(s1,s0);
 
         <!-- Weather Alerts Section -->
         <div class="weather-alerts">
-            <h3 class="weather-alerts-title">Weather Alerts</h3>
-            <ul id="weatherAlertsList">
-                <!-- Dynamically populated alerts will go here -->
-                <li>No weather alerts currently active.</li>
-            </ul>
+          <h3 class="weather-alerts-title">Weather Alerts</h3>
+          <ul id="weatherAlertsList">
+            <li>No weather alerts currently active.</li>
+          </ul>
         </div>
+
 
         <!-- Weather Content - This will be populated dynamically via JS -->
         <div class="weather-content" style="display: none;">
@@ -255,11 +255,14 @@ s0.parentNode.insertBefore(s1,s0);
                     <span class="value">-- in</span>
                 </div>
                 <div class="detail air-quality">
-                    <span class="label">Air Quality:</span>
-                    <span class="value">Loading...</span>
-                </div>
-                <div class="air-quality-details">
-                    <!-- This will be dynamically populated -->
+                  <div class="air-quality-overview">
+                    <div class="air-quality-indicator"></div>
+                    <div class="air-quality-summary">
+                      <div class="aqi-status"></div>
+                      <div class="primary-pollutant"></div>
+                    </div>
+                  </div>
+                  <div class="air-quality-details"></div>
                 </div>
             </div>
         </div>
@@ -269,17 +272,17 @@ s0.parentNode.insertBefore(s1,s0);
             <!-- Dynamically populated forecast goes here -->
         </div>
 
-        <div class="sun-moon-info">
-          <div>🌅 Sunrise: --</div>
-          <div>🌇 Sunset: --</div>
-          <div>🌕 Moonrise: --</div>
-          <div>🌑 Moonset: --</div>
+        <div class="sun-moon-section">
+          <div class="sunrise">Sunrise: --</div>
+          <div class="sunset">Sunset: --</div>
+          <div class="moonrise">Moonrise: --</div>
+          <div class="moonset">Moonset: --</div>
         </div>
 
         <!-- Location Input Section with Button -->
         <div class="location-input-container">
-            <input type="text" class="search-input" id="location-input" placeholder="Search City or Zip Code" />
-            <button class="search-button" id="location-submit">Get Weather</button>
+            <input type="text" id="location-input" class="location-input" placeholder="Search City or Zip Code" />            
+            <button id="location-submit" class="get-weather-btn">Get Weather</button>
         </div>
     </div>
 </div>
