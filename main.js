@@ -228,6 +228,9 @@ function updateForecast(forecastDays) {
     // Set 'Today' for the current day
     const displayDay = (index === 0) ? 'Today' : `${dayOfWeek} ${dayOfMonth}`;
 
+    // Precipitation percentage (if available)
+    const precipitationChance = day.day.daily_chance_of_rain || 0;
+
     forecastElement.innerHTML = `
       <div class="date">${displayDay}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
@@ -236,6 +239,7 @@ function updateForecast(forecastDays) {
         <span class="low">${day.day.mintemp_f}°F</span>
       </div>
       <div class="forecast-condition">${day.day.condition.text}</div>
+      <div class="precipitation">Precipitation: ${precipitationChance}%</div>
     `;
     forecastContainer.appendChild(forecastElement);
   });
