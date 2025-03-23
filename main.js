@@ -110,9 +110,10 @@ function updateDisplay(data) {
 
   // Update forecast and Sun/Moon data
   updateForecast(data.forecast.forecastday);
-  updateSunMoon(data.forecast.forecastday[0].astro);
+  updateSunMoon(data.forecast.forecastday[0].astro); // Get Sun/Moon data for today
 }
 
+// Function to display weather alerts
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('#weatherAlertsList'); // Target the ul with id "weatherAlertsList"
   
@@ -274,6 +275,21 @@ function updateSunMoon(astroData) {
 
 // Run weather fetch when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-  const location = 'San Francisco'; // Set your default location
-  fetchWeatherData(location);
+  const locationInput = document.querySelector('#locationInput'); // Ensure the input has this ID
+  const getWeatherButton = document.querySelector('#getWeatherButton'); // Ensure the button has this ID
+
+  // Set default location
+  fetchWeatherData('San Francisco'); 
+
+  // Handle button click
+  if (getWeatherButton) {
+    getWeatherButton.addEventListener('click', () => {
+      const location = locationInput.value.trim();
+      if (location) {
+        fetchWeatherData(location);
+      } else {
+        alert("Please enter a location.");
+      }
+    });
+  }
 });
