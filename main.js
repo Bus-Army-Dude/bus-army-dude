@@ -244,69 +244,36 @@ function updateForecast(forecastDays) {
       <div class="date">${displayDay}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
       <div class="forecast-temps">
-        <span class="high">${day.day.maxtemp_f}°F</span> /
+        <span class="high">${day.day.maxtemp_f}°F</span>
         <span class="low">${day.day.mintemp_f}°F</span>
       </div>
-      <div class="forecast-condition">${day.day.condition.text}</div>
-      <div class="precipitation">Precipitation: ${precipitationChance}%</div>
+      <div class="precipitation">${precipitationChance > 0 ? `${precipitationChance}% chance of rain` : 'No rain'}</div>
     `;
     forecastContainer.appendChild(forecastElement);
   });
 }
 
-// Function to update Sun and Sunset times
+// Function to update Sun and Moon info
 function updateSunMoon(astroData) {
-  const sunElement = document.querySelector('.sun-moon .sunrise');
-  const sunsetElement = document.querySelector('.sun-moon .sunset');
+  const sunMoonContainer = document.querySelector('.sun-moon-info');
 
-  if (sunElement && sunsetElement) {
-    // Convert sunrise and sunset times from UTC to local time
-    const sunrise = new Date(astroData.sunrise);
-    const sunset = new Date(astroData.sunset);
+  if (sunMoonContainer) {
+    const sunrise = new Date(astroData.sunrise).toLocaleTimeString();
+    const sunset = new Date(astroData.sunset).toLocaleTimeString();
+    const moonrise = new Date(astroData.moonrise).toLocaleTimeString();
+    const moonset = new Date(astroData.moonset).toLocaleTimeString();
 
-    // Format the times to "HH:MM AM/PM"
-    const sunriseFormatted = formatTime(sunrise);
-    const sunsetFormatted = formatTime(sunset);
-
-    sunElement.textContent = `Sunrise: ${sunriseFormatted}`;
-    sunsetElement.textContent = `Sunset: ${sunsetFormatted}`;
+    sunMoonContainer.innerHTML = `
+      <div>Sunrise: ${sunrise}</div>
+      <div>Sunset: ${sunset}</div>
+      <div>Moonrise: ${moonrise}</div>
+      <div>Moonset: ${moonset}</div>
+    `;
   }
 }
 
-// Helper function to format time to "HH:MM AM/PM"
-function formatTime(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  return `${hours}:${minutes} ${ampm}`;
-}
-
-// Function to display error messages
-function displayError(message) {
-  const errorElement = document.querySelector('.weather-error');
-  if (errorElement) {
-    errorElement.textContent = message;
-  }
-}
-
-// Listen for the submit button click for manual location input
-const submitButton = document.getElementById('location-submit');
-submitButton.addEventListener('click', () => {
-  const locationInput = document.getElementById('location-input').value;
-  if (locationInput) {
-    fetchWeatherData(locationInput); // Fetch weather data for manually entered location
-  } else {
-    alert('Please enter a location!');
-  }
-});
-
-// Optional: Allow pressing Enter key to submit manual location
-const inputField = document.getElementById('location-input');
-inputField.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    submitButton.click();
-  }
+// Run weather fetch when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  const location = 'San Francisco'; // Set your default location
+  fetchWeatherData(location);
 });
