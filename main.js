@@ -1,7 +1,7 @@
 // ========================
 // Initialize API key and base URL
 // ========================
-const apiKey = '852033aa68de4c61bbd211007252101'; // Replace with your actual WeatherAPI key
+const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
 const baseUrl = 'https://api.weatherapi.com/v1'; // Updated base URL
 
 // Get references to the input and button
@@ -60,21 +60,14 @@ locationInput.addEventListener('input', function() {
     fetchLocationSuggestions(query);
 });
 
-// Optional: Clear suggestions when input loses focus
-locationInput.addEventListener('blur', function() {
-    // Delay clearing to allow click on suggestion
-    setTimeout(() => {
-        suggestionsContainer.innerHTML = '';
-    }, 200);
-});
-
 // Event listener for the submit button
 locationSubmitButton.addEventListener('click', function() {
     const location = locationInput.value.trim();
     if (location) {
         localStorage.setItem('lastLocation', location);
-        console.log('User-input location:', location);
-        fetchWeatherData(location);
+        fetchWeatherData(location); // Call the weather fetch function
+    } else {
+        console.error('No location entered');
     }
 });
 
@@ -86,44 +79,31 @@ async function fetchWeatherData(location) {
     const loadingSpinner = document.querySelector('.weather-loading');
     const weatherContent = document.querySelector('.weather-content');
 
-    // Show loading spinner
     if (loadingSpinner && weatherContent) {
-        loadingSpinner.style.display = 'block';
-        weatherContent.style.display = 'none';
+        loadingSpinner.style.display = 'block'; // Show loading spinner
+        weatherContent.style.display = 'none'; // Hide content while loading
     }
 
     try {
-        console.log('Fetching weather data for location:', location);
-        console.log('API Request URL:', url);
-
         const response = await fetch(url);
-        console.log('HTTP Response Status:', response.status);
         if (!response.ok) {
             throw new Error(`API returned error: ${response.statusText}`);
         }
 
         const data = await response.json();
-        console.log('Full API Response:', data);
+        console.log('Weather Data:', data);
 
         if (!data || !data.current || !data.forecast) {
             throw new Error('Weather data is incomplete or invalid.');
         }
 
-        // Process and display weather alerts
-        const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert : []; // Corrected line
-        console.log('Fetched Alerts:', alerts);
-        displayWeatherAlerts(alerts);
-
-        // Update the main weather display
         updateDisplay(data);
-
     } catch (error) {
         console.error('Error fetching weather data:', error);
-        displayError(`Unable to load weather data. ${error.message}`);
     } finally {
         if (loadingSpinner && weatherContent) {
-            loadingSpinner.style.display = 'none';
-            weatherContent.style.display = 'block';
+            loadingSpinner.style.display = 'none'; // Hide spinner
+            weatherContent.style.display = 'block'; // Show content
         }
     }
 }
