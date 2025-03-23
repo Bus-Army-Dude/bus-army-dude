@@ -2781,17 +2781,17 @@ body.focus-outline-disabled :focus {
     font-size: 1rem;
     width: 100%;
     max-width: 400px;
-    border: none;
-    border-bottom: 2px solid var(--border-color, #ccc);
-    border-radius: 0;
-    background-color: transparent;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    background-color: var(--content-bg, #fff);
     color: var(--text-color, #333);
     box-sizing: border-box;
-    transition: border-bottom-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #location-input:focus {
-    border-bottom-color: var(--accent-color, #007bff);
+    border-color: var(--accent-color, #007bff);
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
     outline: none;
 }
 
