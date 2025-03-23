@@ -2772,93 +2772,7 @@ body.focus-outline-disabled :focus {
     border-color: var(--info-border, #bee5eb);
 }
 
-/* --- Responsive Design --- */
-@media (max-width: 1024px) {
-    .weather-details .detail {
-        width: calc(50% - 10px);
-    }
-}
-
-@media (max-width: 768px) {
-    .weather-primary {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .weather-icon {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-
-    .weather-details .detail {
-        width: 100%;
-    }
-
-    .forecast-container {
-        gap: 15px;
-    }
-
-    .forecast-day {
-        width: 48%;
-    }
-
-    .forecast-icon {
-        margin-left: 0;
-        margin-bottom: 5px;
-    }
-
-    .forecast-temps {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .forecast-temps .separator {
-        display: none;
-    }
-
-    .forecast-temps .low {
-        margin-left: 0;
-    }
-}
-
-@media (max-width: 600px) {
-    .location-input-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #locationInput {
-        margin-right: 0;
-        margin-bottom: 10px;
-        width: 90%;
-    }
-
-    .forecast-day {
-        width: 100%;
-    }
-
-    #searchLocationButton {
-        width: 90%;
-    }
-}
-
-@media (max-width: 480px) {
-    .weather-primary .temp-value {
-        font-size: 2rem;
-    }
-
-    .forecast-day {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .forecast-temps {
-        margin-top: 5px;
-    }
-}
-
-/* --- Improved Air Quality Styling --- */
+/* --- Air Quality Section --- */
 .air-quality-container {
     width: 100%;
     margin-top: 15px;
@@ -2897,28 +2811,79 @@ body.focus-outline-disabled :focus {
     color: var(--secondary-text);
 }
 
-.pollutant-label {
-    color: var(--text-color);
+.pollutant-level {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    color: var(--secondary-text, #6c757d);
 }
 
-.pollutant-value {
-    font-weight: 500;
-    color: var(--secondary-text);
+/* --- Responsive Styles for Mobile Devices --- */
+@media screen and (max-width: 768px) {
+    .weather-header {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 1.2rem;
+    }
+
+    .forecast-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .forecast-day {
+        width: 100%;
+    }
+
+    .location-input-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #locationInput {
+        max-width: 100%;
+    }
+
+    #searchLocationButton {
+        width: 100%;
+    }
 }
 
-.aqi-value.good {
-    color: #28a745;
+/* --- Tablet and Mobile Optimization --- */
+@media screen and (max-width: 480px) {
+    .weather-section {
+        padding: 20px;
+    }
+
+    .weather-primary .current-temp {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .weather-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .forecast-day {
+        width: 100%;
+    }
+
+    .forecast-temps {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .sun-moon-section {
+        font-size: 0.9rem;
+    }
+
+    #locationInput {
+        font-size: 1.1rem;
+    }
+
+    #searchLocationButton {
+        font-size: 1.1rem;
+    }
 }
 
-.aqi-value.moderate {
-    color: #ffc107;
-}
-
-.aqi-value.unhealthy {
-    color: #dc3545;
-}
-
-.aqi-value.hazardous {
-    color: #ff073a;
-}
 
