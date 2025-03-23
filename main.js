@@ -215,45 +215,33 @@ function updateForecast(forecastDays) {
 
   // Get current date
   const currentDate = new Date();
-  const currentDayOfWeek = currentDate.toLocaleString('en-us', { weekday: 'short' });
-  const currentDayOfMonth = currentDate.getDate();
+  
+  // Get the date at midnight to filter out yesterday
+  const currentDateAtMidnight = new Date(currentDate.setHours(0, 0, 0, 0));
 
-  // Add 'Today' label to the first forecast item and order the rest
-  let forecastWithToday = forecastDays.map((day, index) => {
+  // Filter out yesterday's date and any days before today
+  const filteredForecastDays = forecastDays.filter(day => {
+    const forecastDate = new Date(day.date);
+    return forecastDate >= currentDateAtMidnight; // Only include today and future days
+  });
+
+  filteredForecastDays.forEach((day, index) => {
+    const forecastElement = document.createElement('div');
+    forecastElement.classList.add('forecast-day');
+
+    // Get the day of the week (Mon, Tue, etc.) and the day of the month
     const forecastDate = new Date(day.date);
     const dayOfWeek = forecastDate.toLocaleString('en-us', { weekday: 'short' });
     const dayOfMonth = forecastDate.getDate();
 
-    // Check if this day is today
-    const displayDay = (dayOfWeek === currentDayOfWeek && dayOfMonth === currentDayOfMonth)
-      ? 'Today' 
-      : `${dayOfWeek} ${dayOfMonth}`;
-
-    return {
-      ...day,
-      displayDay, // Add the displayDay property to each forecast
-    };
-  });
-
-  // Sort so 'Today' is first, then next 6 days
-  forecastWithToday = forecastWithToday.sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-
-    // Sort by date so Today appears first, then the next days
-    return dateA - dateB;
-  });
-
-  // Limit the forecast to 7 days (today + 6 more)
-  forecastWithToday.slice(0, 7).forEach((day) => {
-    const forecastElement = document.createElement('div');
-    forecastElement.classList.add('forecast-day');
+    // Set 'Today' for the current day
+    const displayDay = (index === 0) ? 'Today' : `${dayOfWeek} ${dayOfMonth}`;
 
     // Precipitation percentage (if available)
     const precipitationChance = day.day.daily_chance_of_rain || 0;
 
     forecastElement.innerHTML = `
-      <div class="date">${day.displayDay}</div>
+      <div class="date">${displayDay}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
       <div class="forecast-temps">
         <span class="high">${day.day.maxtemp_f}°F</span> /
