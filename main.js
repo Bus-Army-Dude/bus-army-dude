@@ -22,16 +22,16 @@ function updateCurrentWeather(current) {
   currentWeatherContainer.querySelector('.location-name').textContent = current.name;
   currentWeatherContainer.querySelector('.last-updated').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
   
-  currentWeatherContainer.querySelector('.temp-value').textContent = `${current.temp_c}°C`;
-  currentWeatherContainer.querySelector('.feels-like').textContent = `Feels Like: ${current.feelslike_c}°C`;
+  currentWeatherContainer.querySelector('.temp-value').textContent = `${current.temp_f}°F`;
+  currentWeatherContainer.querySelector('.feels-like').textContent = `Feels Like: ${current.feelslike_f}°F`;
   currentWeatherContainer.querySelector('.condition-text img').src = current.condition.icon;
   currentWeatherContainer.querySelector('.condition-text span').textContent = current.condition.text;
 
   // Weather details
-  currentWeatherContainer.querySelector('.wind-speed .value').textContent = `${current.wind_kph} kph`;
+  currentWeatherContainer.querySelector('.wind-speed .value').textContent = `${current.wind_mph} mph`;
   currentWeatherContainer.querySelector('.humidity .value').textContent = `${current.humidity}%`;
-  currentWeatherContainer.querySelector('.pressure .value').textContent = `${current.pressure_mb} hPa`;
-  currentWeatherContainer.querySelector('.precipitation .value').textContent = `${current.precip_mm} mm`;
+  currentWeatherContainer.querySelector('.pressure .value').textContent = `${current.pressure_in} in`;
+  currentWeatherContainer.querySelector('.precipitation .value').textContent = `${current.precip_in} in`;
 
   // Air quality (if available)
   const airQualityContainer = document.querySelector('.air-quality-details');
@@ -51,7 +51,7 @@ function updateForecast(forecast) {
     forecastCard.innerHTML = `
       <h3>${new Date(day.date).toLocaleDateString()}</h3>
       <img src="${day.day.condition.icon}" alt="${day.day.condition.text}" />
-      <p>${day.day.avgtemp_c}°C</p>
+      <p>${day.day.avgtemp_f}°F</p>
       <p>${day.day.condition.text}</p>
     `;
     
