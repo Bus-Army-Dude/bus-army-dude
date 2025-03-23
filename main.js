@@ -11,7 +11,7 @@ async function getWeather(location) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching weather data:', error);
+    showError(error.message);
     return null;
   }
 }
@@ -37,12 +37,12 @@ function updateForecast(forecast) {
 
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const today = new Date();
-  
+
   forecast.forEach((day) => {
     const forecastDate = new Date(day.date);
-    
+
     let dayLabel;
-    
+
     // Check if the date is today
     if (forecastDate.toDateString() === today.toDateString()) {
       dayLabel = 'Today';
@@ -66,43 +66,58 @@ function updateForecast(forecast) {
   });
 }
 
-// Function to display error message
+// Function to show error in the search bar
 function showError(message) {
-  const errorContainer = document.querySelector('.error-message');
-  errorContainer.textContent = message;
-  errorContainer.style.display = 'block'; // Show the error message
+  const locationInput = document.querySelector('#locationInput');
+  locationInput.classList.add('error'); // Add error class for styling
+
+  const errorIcon = document.createElement('span');
+  errorIcon.classList.add('error-icon');
+  errorIcon.innerText = '!';
+  locationInput.parentElement.appendChild(errorIcon);
+
+  // Tooltip functionality
+  errorIcon.title = message;
 }
 
-// Function to hide the error message
-function hideError() {
-  const errorContainer = document.querySelector('.error-message');
-  errorContainer.style.display = 'none'; // Hide the error message
+// Function to clear error when location is valid again
+function clearError() {
+  const locationInput = document.querySelector('#locationInput');
+  locationInput.classList.remove('error');
+
+  const errorIcon = locationInput.parentElement.querySelector('.error-icon');
+  if (errorIcon) {
+    errorIcon.remove();
+  }
 }
 
 // Function to fetch and display the weather data
 async function displayWeather(location) {
-  hideError(); // Hide any previous error messages
+  clearError(); // Clear previous errors
+
   const weatherData = await getWeather(location);
 
   if (weatherData) {
     updateCurrentWeather(weatherData.current);
     updateForecast(weatherData.forecast.forecastday);
-  } else {
-    showError('Could not retrieve weather data. Please check your location and try again.');
   }
 }
 
-// Event listener for search functionality
+// Event listener for search functionality (Click)
 document.querySelector('#searchButton').addEventListener('click', () => {
   const locationInput = document.querySelector('#locationInput').value;
-  displayWeather(locationInput);
+  if (locationInput) {
+    displayWeather(locationInput);
+  }
 });
 
-// Event listener for pressing Enter to search
+// Event listener for pressing Enter key
 document.querySelector('#locationInput').addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     const locationInput = document.querySelector('#locationInput').value;
-    displayWeather(locationInput);
+    if (locationInput) {
+      displayWeather(locationInput);
+    }
   }
 });
 
