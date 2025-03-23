@@ -273,16 +273,8 @@ submitButton.addEventListener('click', () => {
 
 // Optional: Allow pressing Enter key to submit manual location
 const inputField = document.getElementById('location-input');
-inputField.addEventListener('keypress', (event) => {
-  if (event.key === 'Enter') {
-    const locationInput = inputField.value;
-    if (locationInput) {
-      fetchWeatherData(locationInput); // Fetch weather data for manually entered location
-    } else {
-      alert('Please enter a location!');
-    }
+inputField.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    submitButton.click();
   }
 });
-
-// Initial fetch with a default location (optional, you can use user's geo-location)
-fetchWeatherData('New York');
