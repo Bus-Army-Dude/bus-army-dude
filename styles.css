@@ -2781,34 +2781,35 @@ body.focus-outline-disabled :focus {
     font-size: 1rem;
     width: 100%;
     max-width: 400px;
-    border: 2px solid var(--border-color, #333333); /* Fallback */
-    border-radius: 10px;
-    background-color: var(--content-bg, #3c3c3c); /* Fallback */
-    color: var(--text-color, #e0e0e0); /* Fallback */
+    border: 1px solid var(--border-color, #ccc); /* Lighter border */
+    border-radius: 8px; /* Slightly less rounded */
+    background-color: var(--content-bg, #fff); /* Or transparent if preferred */
+    color: var(--text-color, #333);
     box-sizing: border-box;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #locationInput:focus {
-    border-color: var(--accent-color, #4CAF50); /* Fallback */
-    box-shadow: 0 0 8px rgba(0, 255, 100, 0.5); /* Consider a variable for the shadow color */
+    border-color: var(--accent-color, #007bff); /* Use your accent color */
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.5); /* Subtle focus shadow */
     outline: none;
 }
 
 #getSearchLocationButton {
     padding: 15px 25px;
     font-size: 1rem;
-    background-color: var(--accent-color, #4CAF50); /* Fallback */
+    background-color: var(--accent-color, #4CAF50); /* Use your accent color */
     color: #ffffff;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #getSearchLocationButton:hover {
-    background-color: var(--hover-color, #45a049); /* Fallback */
-    transform: translateY(-3px);
+    background-color: var(--hover-color, #45a049); /* Slightly darker shade */
+    transform: translateY(-2px); /* Subtle lift on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Add a subtle shadow */
 }
 
 /* ======================== */
