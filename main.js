@@ -1,6 +1,6 @@
 // Function to get weather data from API
 async function getWeather(location) {
-  const apiKey = 'YOUR_API_KEY'; // Replace with your actual API key
+  const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your actual API key
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=7&aqi=no&alerts=no`;
 
   try {
