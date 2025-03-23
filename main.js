@@ -265,10 +265,11 @@ function updateForecast(forecastDays) {
     forecastContainer.appendChild(forecastElement);
   });
 }
+
 // Function to update Sun and Moon times
 function updateSunMoon(astroData) {
-  const sunElement = document.querySelector('.sun-moon .sunrise');
-  const moonElement = document.querySelector('.sun-moon .moonrise');
+  const sunElement = document.querySelector('.sun-moon-section .sunrise');
+  const moonElement = document.querySelector('.sun-moon-section .moonrise');
 
   if (sunElement && moonElement) {
     sunElement.textContent = `Sunrise: ${astroData.sunrise}`;
