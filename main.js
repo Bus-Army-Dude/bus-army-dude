@@ -113,7 +113,7 @@ function updateDisplay(data) {
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to display weather alerts
+/// Function to display weather alerts
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('.weather-alerts');
 
@@ -126,12 +126,26 @@ function displayWeatherAlerts(alerts) {
     alerts.forEach(alert => {
       const alertElement = document.createElement('div');
       alertElement.classList.add('alert');
+
+      // Formatting date (if provided)
+      const formatDate = (date) => {
+        const d = new Date(date);
+        return d.toLocaleString();  // Change this format as needed
+      };
+
+      // Check for missing properties and set fallback values
+      const headline = alert.headline || 'No headline available';
+      const description = alert.description || 'No description available';
+      const certainty = alert.certainty || 'Unknown certainty';
+      const effective = alert.effective ? formatDate(alert.effective) : 'No effective date available';
+      const expires = alert.expires ? formatDate(alert.expires) : 'No expiration date available';
+
       alertElement.innerHTML = `
-        <strong>${alert.headline}</strong>
-        <p>${alert.description}</p>
-        <p><strong>Issued by:</strong> ${alert.certainty}</p>
-        <p><strong>Effective:</strong> ${alert.effective}</p>
-        <p><strong>Expires:</strong> ${alert.expires}</p>
+        <strong>${headline}</strong>
+        <p>${description}</p>
+        <p><strong>Issued by:</strong> ${certainty}</p>
+        <p><strong>Effective:</strong> ${effective}</p>
+        <p><strong>Expires:</strong> ${expires}</p>
       `;
       alertsContainer.appendChild(alertElement);
     });
