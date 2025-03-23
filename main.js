@@ -273,23 +273,22 @@ function updateSunMoon(astroData) {
   }
 }
 
-// Run weather fetch when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-  const locationInput = document.querySelector('#locationInput'); // Ensure the input has this ID
-  const getWeatherButton = document.querySelector('#getWeatherButton'); // Ensure the button has this ID
+// Event listener for the location input and button
+document.getElementById('location-submit').addEventListener('click', function() {
+  const locationInput = document.getElementById('location-input');
+  const location = locationInput.value.trim();
 
-  // Set default location
-  fetchWeatherData('San Francisco'); 
-
-  // Handle button click
-  if (getWeatherButton) {
-    getWeatherButton.addEventListener('click', () => {
-      const location = locationInput.value.trim();
-      if (location) {
-        fetchWeatherData(location);
-      } else {
-        alert("Please enter a location.");
-      }
-    });
+  if (location) {
+    fetchWeatherData(location);
+  } else {
+    alert('Please enter a valid location.');
   }
 });
+
+// Function to display error messages
+function displayError(message) {
+  const weatherContent = document.querySelector('.weather-content');
+  if (weatherContent) {
+    weatherContent.innerHTML = `<p class="error">${message}</p>`;
+  }
+}
