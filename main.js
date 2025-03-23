@@ -248,7 +248,7 @@ function getAirQualityClass(aqi) {
   }
 }
 
-// Helper function to format forecast date (e.g., "Mon 24")
+// Helper function to format a date as "Tue 25"
 function formatForecastDate(dateStr) {
   const d = new Date(dateStr);
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -274,6 +274,7 @@ function updateForecast(forecastDays) {
 
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
+    
     forecastElement.innerHTML = `
       <div class="date">${dateLabel}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
@@ -287,6 +288,7 @@ function updateForecast(forecastDays) {
         <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
       </div>
     `;
+    
     forecastContainer.appendChild(forecastElement);
   });
 }
