@@ -254,15 +254,34 @@ function updateForecast(forecastDays) {
   });
 }
 
-// Function to update Sun and Moon times
+// Function to update Sun and Sunset times
 function updateSunMoon(astroData) {
-  const sunElement = document.querySelector('.sun-moon-section .sunrise');
-  const moonElement = document.querySelector('.sun-moon-section .moonrise');
+  const sunElement = document.querySelector('.sun-moon .sunrise');
+  const sunsetElement = document.querySelector('.sun-moon .sunset');
 
-  if (sunElement && moonElement) {
-    sunElement.textContent = `Sunrise: ${astroData.sunrise}`;
-    moonElement.textContent = `Moonrise: ${astroData.moonrise}`;
+  if (sunElement && sunsetElement) {
+    // Convert sunrise and sunset times from UTC to local time
+    const sunrise = new Date(astroData.sunrise);
+    const sunset = new Date(astroData.sunset);
+
+    // Format the times to "HH:MM AM/PM"
+    const sunriseFormatted = formatTime(sunrise);
+    const sunsetFormatted = formatTime(sunset);
+
+    sunElement.textContent = `Sunrise: ${sunriseFormatted}`;
+    sunsetElement.textContent = `Sunset: ${sunsetFormatted}`;
   }
+}
+
+// Helper function to format time to "HH:MM AM/PM"
+function formatTime(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  return `${hours}:${minutes} ${ampm}`;
 }
 
 // Function to display error messages
