@@ -257,10 +257,18 @@ function getAirQualityClass(aqi) {
 // ========================
 // Update Forecast Section
 // ========================
+function formatForecastDate(dateObj) {
+  return dateObj.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' });
+}
+
+// Updated Forecast Function
 function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
-  forecastContainer.innerHTML = '';
-  
+  forecastContainer.innerHTML = ''; // Clear previous forecasts
+
+  // Use the current date as the reference for labels
+  const today = new Date();
+
   forecastDays.forEach((day, index) => {
     let dateLabel = "";
     if (index === 0) {
@@ -268,9 +276,12 @@ function updateForecast(forecastDays) {
     } else if (index === 1) {
       dateLabel = "Tomorrow";
     } else {
-      dateLabel = formatForecastDate(day.date);
+      // Create a new date object by adding 'index' days to today
+      const futureDate = new Date(today);
+      futureDate.setDate(today.getDate() + index);
+      dateLabel = formatForecastDate(futureDate);
     }
-    
+
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
     forecastElement.innerHTML = `
@@ -288,12 +299,6 @@ function updateForecast(forecastDays) {
     `;
     forecastContainer.appendChild(forecastElement);
   });
-}
-
-function formatForecastDate(dateStr) {
-  const d = new Date(dateStr);
-  const options = { weekday: 'short', day: 'numeric' };
-  return d.toLocaleDateString(undefined, options);
 }
 
 // ========================
