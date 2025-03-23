@@ -1,76 +1,75 @@
-/* Theme Variables */
+/* ======================== */
+/*       Theme Variables    */
+/* ======================== */
 :root {
-    /* Light Mode Colors */
-    --light-bg: #ffffff;
-    --light-content-bg: #f5f5f5;
-    --light-text: #212529;
-    --light-secondary-text: #495057;
-    --light-border: #dee2e6;
-    --light-accent: #4CAF50;
-    --light-hover: #45a049;
-    --light-link: #007bff;
-    --light-shadow: rgba(0, 0, 0, 0.1);
-    --light-icon: #ffffff; /* Changed to white for light mode */
-    
-    /* Dark Mode Colors */
-    --dark-bg: #121212;
-    --dark-content-bg: #2d2d2d;
-    --dark-text: #E0E0E0;
-    --dark-secondary-text: #a0a0a0;
-    --dark-border: #333333;
-    --dark-accent: #4CAF50;
-    --dark-hover: #45a049;
-    --dark-link: #BB86FC;
-    --dark-shadow: rgba(0, 0, 0, 0.2);
-    --dark-icon: #000000; /* Changed to black for dark mode */
+  /* Light Mode Colors */
+  --light-bg: #ffffff;
+  --light-content-bg: #f5f5f5;
+  --light-text: #212529;
+  --light-secondary-text: #495057;
+  --light-border: #dee2e6;
+  --light-accent: #4CAF50;
+  --light-hover: #45a049;
+  --light-link: #007bff;
+  --light-shadow: rgba(0, 0, 0, 0.1);
+  --light-icon: #ffffff;
+  
+  /* Dark Mode Colors */
+  --dark-bg: #121212;
+  --dark-content-bg: #2d2d2d;
+  --dark-text: #E0E0E0;
+  --dark-secondary-text: #a0a0a0;
+  --dark-border: #333333;
+  --dark-accent: #4CAF50;
+  --dark-hover: #45a049;
+  --dark-link: #BB86FC;
+  --dark-shadow: rgba(0, 0, 0, 0.2);
+  --dark-icon: #000000;
+
+  /* Alert-specific properties */
+  --warning-bg: #fff3cd;
+  --warning-text: #856404;
+  --warning-border: #ffeeba;
+  --warning-bg-hover: #ffe8a1;
+  --warning-border-hover: #ffe082;
+  
+  --danger-bg: #f8d7da;
+  --danger-text: #721c24;
+  --danger-border: #f5c6cb;
+
+  --success-bg: #d4edda;
+  --success-text: #155724;
+  --success-border: #c3e6cb;
+  
+  --info-bg: #d1ecf1;
+  --info-text: #0c5460;
+  --info-border: #bee5eb;
+  
+  /* Fallback theme variables if no mode class is applied (default to dark mode) */
+  --bg-color: var(--dark-bg);
+  --content-bg: var(--dark-content-bg);
+  --text-color: var(--dark-text);
+  --secondary-text: var(--dark-secondary-text);
+  --border-color: var(--dark-border);
+  --accent-color: var(--dark-accent);
+  --hover-color: var(--dark-hover);
+  --link-color: var(--dark-link);
+  --shadow-color: var(--dark-shadow);
+  --icon-color: var(--dark-icon);
 }
 
-/* Default Theme (Dark Mode) */
-body {
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
-    --bg-color: var(--dark-bg);
-    --content-bg: var(--dark-content-bg);
-    --text-color: var(--dark-text);
-    --secondary-text: var(--dark-secondary-text);
-    --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --hover-color: var(--dark-hover);
-    --link-color: var(--dark-link);
-    --shadow-color: var(--dark-shadow);
-    --icon-color: var(--dark-icon); /* Default icon color for dark mode */
-}
-
-/* Light Mode */
+/* Light Mode Override */
 body.light-mode {
-    background-color: var(--light-bg);
-    color: var(--light-text);
-    --bg-color: var(--light-bg);
-    --content-bg: var(--light-content-bg);
-    --text-color: var(--light-text);
-    --secondary-text: var(--light-secondary-text);
-    --border-color: var(--light-border);
-    --accent-color: var(--light-accent);
-    --hover-color: var(--light-hover);
-    --link-color: var(--light-link);
-    --shadow-color: var(--light-shadow);
-    --icon-color: var(--light-icon); /* Icon color for light mode */
-}
-
-/* Dark Mode */
-body.dark-mode {
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
-    --bg-color: var(--dark-bg);
-    --content-bg: var(--dark-content-bg);
-    --text-color: var(--dark-text);
-    --secondary-text: var(--dark-secondary-text);
-    --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --hover-color: var(--dark-hover);
-    --link-color: var(--dark-link);
-    --shadow-color: var(--dark-shadow);
-    --icon-color: var(--dark-icon); /* Icon color for dark mode */
+  --bg-color: var(--light-bg);
+  --content-bg: var(--light-content-bg);
+  --text-color: var(--light-text);
+  --secondary-text: var(--light-secondary-text);
+  --border-color: var(--light-border);
+  --accent-color: var(--light-accent);
+  --hover-color: var(--light-hover);
+  --link-color: var(--light-link);
+  --shadow-color: var(--light-shadow);
+  --icon-color: var(--light-icon);
 }
 
 /* Base Styles */
@@ -2456,28 +2455,29 @@ body.focus-outline-disabled :focus {
 /*   Modern Weather Section */
 /* ======================== */
 .weather-section {
-    /* Mimic the business-info style for container properties */
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(145deg, color-mix(in srgb, var(--content-bg) 98%, white), var(--content-bg));
     color: var(--text-color);
-    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     padding: clamp(24px, 4vw, 40px);
     border-radius: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    max-width: 100%;
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     margin: 20px auto;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 90%;  /* Ensures the container doesn’t overflow on large screens */
     box-sizing: border-box;
     backdrop-filter: blur(10px);
     transform-style: preserve-3d;
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Remove any hover transform on the entire container */
 .weather-section:hover {
+    /* Remove overall container transform */
     box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* ======================== */
-/*       Header Section     */
+/*       Weather Header     */
 /* ======================== */
 .weather-header {
     font-size: 2rem;
@@ -2488,7 +2488,7 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/*   Primary Weather Info   */
+/*  Primary Weather Info    */
 /* ======================== */
 .weather-primary {
     display: flex;
@@ -2502,7 +2502,7 @@ body.focus-outline-disabled :focus {
 .weather-icon {
     width: 100px;
     height: 100px;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
 }
 
 .temperature {
@@ -2510,7 +2510,7 @@ body.focus-outline-disabled :focus {
     font-size: 3.5rem;
     font-weight: bold;
     color: var(--accent-color);
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .feels-like {
@@ -2523,6 +2523,7 @@ body.focus-outline-disabled :focus {
     align-items: center;
     font-size: 1.2rem;
 }
+
 .condition-text img.condition-icon {
     width: 60px;
     height: 60px;
@@ -2546,13 +2547,14 @@ body.focus-outline-disabled :focus {
     background-color: var(--content-bg, #3c3c3c);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .detail:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
 }
 
 .detail .label {
@@ -2574,11 +2576,7 @@ body.focus-outline-disabled :focus {
     margin-top: 30px;
     padding: 20px;
     border-radius: 10px;
-    background: linear-gradient(
-        145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
+    background: linear-gradient(145deg, color-mix(in srgb, var(--content-bg) 98%, white), var(--content-bg));
     border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     box-shadow: 0 2px 4px var(--shadow-color);
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -2603,6 +2601,7 @@ body.focus-outline-disabled :focus {
     align-items: center;
     position: relative;
 }
+
 .aqi-value {
     font-size: 1.8rem;
     font-weight: bold;
@@ -2685,14 +2684,14 @@ body.focus-outline-disabled :focus {
     width: 100%;
     max-width: 160px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
 }
 
 .forecast-day:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
 .forecast-day .date {
@@ -2744,7 +2743,6 @@ body.focus-outline-disabled :focus {
     width: 100%;
     box-sizing: border-box;
 }
-
 .sun-moon-section div {
     display: flex;
     justify-content: space-between;
@@ -2775,7 +2773,6 @@ body.focus-outline-disabled :focus {
     width: 100%;
     box-sizing: border-box;
 }
-
 #locationInput {
     padding: 12px 20px;
     font-size: 1rem;
@@ -2788,13 +2785,11 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
-
 #locationInput:focus {
     border-color: var(--accent-color, #4CAF50);
     box-shadow: 0 0 8px rgba(0, 255, 100, 0.5);
     outline: none;
 }
-
 #getSearchLocationButton {
     padding: 15px 25px;
     font-size: 1rem;
@@ -2805,14 +2800,13 @@ body.focus-outline-disabled :focus {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 #getSearchLocationButton:hover {
     background-color: var(--hover-color, #45a049);
     transform: translateY(-3px);
 }
 
 /* ======================== */
-/*     Weather Alerts       */
+/*    Weather Alerts Section */
 /* ======================== */
 .weather-alert {
     background-color: var(--warning-bg, #fff3cd);
@@ -2838,19 +2832,17 @@ body.focus-outline-disabled :focus {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Specific alert severities (optional) */
+/* Specific alert severities */
 .weather-alert.high {
     background-color: var(--danger-bg, #f8d7da);
     color: var(--danger-text, #721c24);
     border-color: var(--danger-border, #f5c6cb);
 }
-
 .weather-alert.low {
     background-color: var(--success-bg, #d4edda);
     color: var(--success-text, #155724);
     border-color: var(--success-border, #c3e6cb);
 }
-
 .weather-alert.info {
     background-color: var(--info-bg, #d1ecf1);
     color: var(--info-text, #0c5460);
