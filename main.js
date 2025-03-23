@@ -122,7 +122,7 @@ function updateDisplay(data) {
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to display weather alerts with deduplication and icon support
+// Function to display weather alerts with deduplication and icon checks
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('#weatherAlertsList');
   if (!alertsContainer) return; // Ensure the container exists
@@ -130,11 +130,9 @@ function displayWeatherAlerts(alerts) {
   // Clear any previous alerts
   alertsContainer.innerHTML = '';
 
-  // If there are alerts, deduplicate by headline
-  const uniqueAlerts = alerts && alerts.length > 0
-    ? alerts.filter((alert, index, self) =>
-        index === self.findIndex((a) => a.headline === alert.headline)
-      )
+  // Deduplicate alerts based on the headline
+  const uniqueAlerts = alerts && alerts.length > 0 
+    ? alerts.filter((alert, index, self) => index === self.findIndex(a => a.headline === alert.headline))
     : [];
 
   if (uniqueAlerts.length > 0) {
@@ -142,9 +140,14 @@ function displayWeatherAlerts(alerts) {
       const alertItem = document.createElement('li');
       alertItem.classList.add('alert-item');
 
-      // If an alert object contains an icon property, use it; otherwise, use a default icon.
-      const alertIconURL = alert.icon || 'default-alert-icon.png'; // Update this path as needed
-      const iconHTML = `<img src="${alertIconURL}" alt="Alert Icon" class="alert-icon" />`;
+      // Only render an image element if an icon property exists and is valid.
+      let iconHTML = '';
+      if (alert.icon) {
+        // Use the provided icon if available
+        iconHTML = `<img src="${alert.icon}" alt="Alert Icon" class="alert-icon" />`;
+      }
+      // Otherwise, you could set a default icon if desired:
+      // iconHTML = `<img src="path/to/your/default-icon.png" alt="Alert Icon" class="alert-icon" />`; 
 
       alertItem.innerHTML = `
         ${iconHTML}
