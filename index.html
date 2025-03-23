@@ -201,9 +201,10 @@ s0.parentNode.insertBefore(s1,s0);
 
         <!-- Weather Alerts Section -->
         <div class="weather-alerts">
-            <h3>Weather Alerts</h3>
+            <h3 class="weather-alerts-title">Weather Alerts</h3>
             <ul id="weatherAlertsList">
                 <!-- Dynamically populated alerts will go here -->
+                <li>No weather alerts at the moment.</li>
             </ul>
         </div>
         
@@ -213,7 +214,7 @@ s0.parentNode.insertBefore(s1,s0);
             <div class="weather-header">
                 <div class="location-info">
                     <h2 class="location-name">Location</h2>
-                    <span class="last-updated">Updated: </span>
+                    <span class="last-updated">Updated: --</span>
                 </div>
             </div>
 
@@ -228,8 +229,8 @@ s0.parentNode.insertBefore(s1,s0);
                     </div>
                 </div>
                 <div class="condition-text">
-                    <img src="" alt="Condition Icon" />
-                    <span>-- Condition</span>
+                    <img src="" alt="Condition Icon" class="condition-icon" />
+                    <span class="condition">-- Condition</span>
                 </div>
             </div>
 
@@ -265,12 +266,12 @@ s0.parentNode.insertBefore(s1,s0);
 
         <!-- Forecast Section -->
         <div class="forecast-container">
-            <!-- Dynamically populated -->
+            <!-- Dynamically populated forecast goes here -->
         </div>
 
         <!-- Sun & Moon Section -->
         <div class="sun-moon-section">
-            <!-- Dynamically populated -->
+            <!-- Dynamically populated sun & moon info goes here -->
         </div>
 
         <!-- Location Input Section -->
