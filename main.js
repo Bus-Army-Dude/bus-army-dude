@@ -2,23 +2,38 @@
 const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
 const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
+// Function to fetch weather data
 async function fetchWeatherData(location) {
   const url = `${baseUrl}?key=${apiKey}&q=${location}&days=7&aqi=yes&alerts=yes`;
 
+  const loadingSpinner = document.querySelector('.weather-loading');
+  const weatherContent = document.querySelector('.weather-content');
+
+  // Show loading spinner
+  if (loadingSpinner && weatherContent) {
+    loadingSpinner.style.display = 'block';
+    weatherContent.style.display = 'none';
+  }
+
   try {
+    console.log('Fetching weather data for location:', location); // Debug location
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`API returned error: ${response.statusText}`);
+
+    // Check if the response was successful
+    if (!response.ok) {
+      throw new Error(`API returned error: ${response.statusText}`);
+    }
+
     const data = await response.json();
+    console.log('API Response:', data); // Debug API response
 
-    console.log('Full API Response:', data); // Debug the full response structure
+    if (!data || !data.current || !data.forecast) {
+      throw new Error('Weather data is incomplete or invalid.');
+    }
 
-    // Extract and display alerts
-    const alerts = data.alerts && data.alerts.alert ? data.alerts.alert : [];
-    displayWeatherAlerts(alerts);
+    updateDisplay(data); // Update the UI with the fetched data
+    displayWeatherAlerts(data.alerts); // Display weather alerts if any
 
-    // Update other UI sections
-    updateDisplay(data);
-    updateSunMoon(data.forecast.forecastday[0].astro);
   } catch (error) {
     console.error('Error fetching weather data:', error);
     displayError('Unable to load weather data. Please try again.');
@@ -98,6 +113,7 @@ function updateDisplay(data) {
   updateSunMoon(data.forecast.forecastday[0].astro); // Get Sun/Moon data for today
 }
 
+// Function to display weather alerts
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('#weatherAlertsList'); // Target the ul with id "weatherAlertsList"
   
@@ -106,19 +122,19 @@ function displayWeatherAlerts(alerts) {
 
   if (alerts && alerts.length > 0) {
     alerts.forEach(alert => {
-      const alertItem = document.createElement('li');
+      const alertItem = document.createElement('li'); // Create an li element for each alert
       alertItem.classList.add('alert-item');
       alertItem.innerHTML = `
-        <strong>${alert.headline || 'Alert'}</strong>
-        <p>${alert.description || 'No description provided.'}</p>
-        <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
-        <p><strong>Effective:</strong> ${alert.effective || 'Not specified'}</p>
-        <p><strong>Expires:</strong> ${alert.expires || 'No expiration'}</p>
+        <strong>${alert.headline}</strong>
+        <p>${alert.description}</p>
+        <p><strong>Issued by:</strong> ${alert.certainty}</p>
+        <p><strong>Effective:</strong> ${alert.effective}</p>
+        <p><strong>Expires:</strong> ${alert.expires}</p>
       `;
       alertsContainer.appendChild(alertItem);
     });
   } else {
-    // Fallback for no alerts
+    // If no alerts, show a message
     const noAlertsMessage = document.createElement('li');
     noAlertsMessage.textContent = 'No weather alerts currently active.';
     alertsContainer.appendChild(noAlertsMessage);
@@ -240,15 +256,22 @@ function updateForecast(forecastDays) {
 
 // Function to update Sun and Moon info
 function updateSunMoon(astroData) {
-  const sunriseElement = document.querySelector('.sunrise');
-  const sunsetElement = document.querySelector('.sunset');
+  const sunMoonContainer = document.querySelector('.sun-moon-info');
 
-  if (astroData) {
-    sunriseElement.textContent = `Sunrise: ${astroData.sunrise || '--'}`;
-    sunsetElement.textContent = `Sunset: ${astroData.sunset || '--'}`;
-  } else {
-    sunriseElement.textContent = 'Sunrise: --';
-    sunsetElement.textContent = 'Sunset: --';
+  if (sunMoonContainer) {
+    // Use astroData strings directly (they are already in "HH:mm AM/PM" format)
+    const sunrise = astroData.sunrise || '--';
+    const sunset = astroData.sunset || '--';
+    const moonrise = astroData.moonrise || '--';
+    const moonset = astroData.moonset || '--';
+
+    // Dynamically update the sun and moon data
+    sunMoonContainer.innerHTML = `
+      <div>🌅 Sunrise: ${sunrise}</div>
+      <div>🌇 Sunset: ${sunset}</div>
+      <div>🌕 Moonrise: ${moonrise}</div>
+      <div>🌑 Moonset: ${moonset}</div>
+    `;
   }
 }
 
