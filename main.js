@@ -1,14 +1,18 @@
+// ========================
 // Initialize API key and base URL
+// ========================
 const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
 const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
-// Function to fetch weather data
+// ========================
+// Fetch Weather Data Function
+// ========================
 async function fetchWeatherData(location) {
   const url = `${baseUrl}?key=${apiKey}&q=${encodeURIComponent(location)}&days=7&aqi=yes&alerts=yes`;
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
 
-  // Show loading spinner if available
+  // Show loading spinner
   if (loadingSpinner && weatherContent) {
     loadingSpinner.style.display = 'block';
     weatherContent.style.display = 'none';
@@ -17,13 +21,13 @@ async function fetchWeatherData(location) {
   try {
     console.log('Fetching weather data for location:', location);
     console.log('API Request URL:', url);
+
     const response = await fetch(url);
     console.log('HTTP Response Status:', response.status);
-
     if (!response.ok) {
       throw new Error(`API returned error: ${response.statusText}`);
     }
-    
+
     const data = await response.json();
     console.log('Full API Response:', data);
 
@@ -31,13 +35,14 @@ async function fetchWeatherData(location) {
       throw new Error('Weather data is incomplete or invalid.');
     }
 
-    // Extract alerts and display them
+    // Process and display weather alerts
     const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert : [];
-    console.log('Weather Alerts:', alerts);
+    console.log('Fetched Alerts:', alerts);
     displayWeatherAlerts(alerts);
 
     // Update the main weather display
     updateDisplay(data);
+
   } catch (error) {
     console.error('Error fetching weather data:', error);
     displayError(`Unable to load weather data. ${error.message}`);
@@ -49,30 +54,31 @@ async function fetchWeatherData(location) {
   }
 }
 
-// Function to update the HTML with weather data
+// ========================
+// Update Weather Display
+// ========================
 function updateDisplay(data) {
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
-  
   if (loadingSpinner) loadingSpinner.style.display = 'none';
   if (weatherContent) weatherContent.style.display = 'block';
 
-  // Update location details
+  // Location
   const locationNameElement = document.querySelector('.location-name');
   if (locationNameElement) {
     const city = data.location.name;
-    const stateOrRegion = data.location.region;
+    const region = data.location.region;
     const country = data.location.country;
-    locationNameElement.textContent = `${city}, ${stateOrRegion}, ${country}`;
+    locationNameElement.textContent = `${city}, ${region}, ${country}`;
   }
-  
-  // Update last updated time
+
+  // Last updated time
   const lastUpdatedElement = document.querySelector('.last-updated');
   if (lastUpdatedElement) {
     lastUpdatedElement.textContent = `Updated: ${new Date(data.current.last_updated).toLocaleString()}`;
   }
-  
-  // Update current temperature and feels like
+
+  // Temperature and feels like
   const tempValueElement = document.querySelector('.temp-value');
   const feelsLikeElement = document.querySelector('.feels-like');
   if (tempValueElement) {
@@ -81,21 +87,21 @@ function updateDisplay(data) {
   if (feelsLikeElement) {
     feelsLikeElement.textContent = `Feels Like: ${data.current.feelslike_f}°F`;
   }
-  
-  // Update weather condition
+
+  // Condition (icon and text)
   const conditionTextElement = document.querySelector('.condition-text');
   if (conditionTextElement) {
     const conditionIcon = data.current.condition.icon;
     const condition = data.current.condition.text;
     conditionTextElement.innerHTML = `<img src="https:${conditionIcon}" alt="${condition}" class="condition-icon" /> ${condition}`;
   }
-  
-  // Update weather details: wind, humidity, pressure, precipitation
+
+  // Weather Details: Wind Speed, Humidity, Pressure, Precipitation
   const windSpeedElement = document.querySelector('.weather-details .wind-speed .value');
   const humidityElement = document.querySelector('.weather-details .humidity .value');
   const pressureElement = document.querySelector('.weather-details .pressure .value');
   const precipitationElement = document.querySelector('.weather-details .precipitation .value');
-  
+
   if (windSpeedElement) {
     windSpeedElement.textContent = data.current.wind_mph ? `${data.current.wind_mph} mph` : 'N/A';
   }
@@ -107,36 +113,32 @@ function updateDisplay(data) {
   }
   if (precipitationElement) {
     const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0;
-    precipitationElement.textContent = precipitationChance > 0 
-      ? `${precipitationChance}% chance of rain` 
-      : `None`;
+    precipitationElement.textContent = precipitationChance > 0 ? `${precipitationChance}% chance of rain` : `None`;
   }
-  
-  // Update Air Quality Section (now a separate container below weather details)
+
+  // Update Air Quality Section
   updateAirQuality(data);
-  
-  // Update Forecast Section
+
+  // Update Forecast and Sun/Moon Sections
   updateForecast(data.forecast.forecastday);
-  
-  // Update Sun & Moon Section
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
-// Function to display weather alerts with deduplication
+// ========================
+// Display Weather Alerts with Deduplication
+// ========================
 function displayWeatherAlerts(alerts) {
   const alertsContainer = document.querySelector('#weatherAlertsList');
   if (!alertsContainer) return;
-  
-  // Clear all previous alerts
+
   alertsContainer.innerHTML = '';
-  
-  // Deduplicate alerts by headline
-  const uniqueAlerts = alerts && alerts.length > 0
+
+  const uniqueAlerts = alerts && alerts.length > 0 
     ? alerts.filter((alert, index, self) =>
         index === self.findIndex(a => a.headline === alert.headline)
       )
     : [];
-    
+
   if (uniqueAlerts.length > 0) {
     uniqueAlerts.forEach(alert => {
       const alertItem = document.createElement('li');
@@ -157,9 +159,10 @@ function displayWeatherAlerts(alerts) {
   }
 }
 
-// Function to update the Air Quality section
+// ========================
+// Update Air Quality Section
+// ========================
 function updateAirQuality(data) {
-  // Note: Air Quality is now in a separate container outside of the weather-details grid.
   const airQualityContainer = document.querySelector('.air-quality');
   if (!airQualityContainer) {
     console.error('Air Quality container not found in HTML.');
@@ -170,24 +173,24 @@ function updateAirQuality(data) {
   const airQualityStatus = airQualityContainer.querySelector('.air-quality-summary .aqi-status');
   const primaryPollutantElem = airQualityContainer.querySelector('.air-quality-summary .primary-pollutant');
   const airQualityDetailsEl = airQualityContainer.querySelector('.air-quality-details');
-  
+
   if (!airQualityIndicator || !airQualityStatus || !primaryPollutantElem || !airQualityDetailsEl) {
-    console.error('Missing one or more air quality DOM elements.');
+    console.error('Missing one or more air quality DOM elements. Please check your HTML.');
     return;
   }
-  
+
   if (data.current.air_quality) {
     const aqi = data.current.air_quality["us-epa-index"];
     const aqiDescription = getAirQualityDescription(aqi);
     const primaryPollutant = getPrimaryPollutant(data.current.air_quality);
-    
+
     airQualityIndicator.className = 'air-quality-indicator';
     airQualityIndicator.classList.add(getAirQualityClass(aqi));
     airQualityIndicator.innerHTML = `<span class="aqi-value">${aqi}</span>`;
-    
+
     airQualityStatus.textContent = aqiDescription;
     primaryPollutantElem.textContent = `Primary Pollutant: ${primaryPollutant}`;
-    
+
     const pollutants = [
       { name: 'O3 (Ozone)', value: data.current.air_quality.o3 },
       { name: 'CO (Carbon Monoxide)', value: data.current.air_quality.co },
@@ -212,7 +215,9 @@ function updateAirQuality(data) {
   }
 }
 
-// Helper function to get Air Quality Description
+// ========================
+// Air Quality Helper Functions
+// ========================
 function getAirQualityDescription(aqi) {
   switch (aqi) {
     case 1: return "Good";
@@ -225,7 +230,6 @@ function getAirQualityDescription(aqi) {
   }
 }
 
-// Helper function to determine the primary pollutant
 function getPrimaryPollutant(airQuality) {
   const pollutants = [
     { name: 'Ozone', value: airQuality.o3 },
@@ -235,12 +239,10 @@ function getPrimaryPollutant(airQuality) {
     { name: 'PM10', value: airQuality.pm10 },
     { name: 'PM2.5', value: airQuality.pm2_5 }
   ];
-  
   pollutants.sort((a, b) => b.value - a.value);
   return pollutants[0].name;
 }
 
-// Helper function to get the CSS class based on AQI
 function getAirQualityClass(aqi) {
   switch (aqi) {
     case 1: return "good";
@@ -252,28 +254,21 @@ function getAirQualityClass(aqi) {
   }
 }
 
-// Helper function to format a forecast date as "Tue 25"
-function formatForecastDate(dateObj) {
-  // Using toLocaleDateString options for abbreviated weekday and numeric day
-  return dateObj.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' });
-}
-
-// Function to update the forecast section
+// ========================
+// Update Forecast Section
+// ========================
 function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
-  forecastContainer.innerHTML = ''; // Clear previous forecasts
-
+  forecastContainer.innerHTML = '';
+  
   forecastDays.forEach((day, index) => {
-    let dateLabel;
+    let dateLabel = "";
     if (index === 0) {
       dateLabel = "Today";
     } else if (index === 1) {
       dateLabel = "Tomorrow";
     } else {
-      // Parse the API date and add one day to shift the label forward
-      let d = new Date(day.date);
-      d.setDate(d.getDate() + 1);
-      dateLabel = formatForecastDate(d);
+      dateLabel = formatForecastDate(day.date);
     }
     
     const forecastElement = document.createElement('div');
@@ -295,14 +290,15 @@ function updateForecast(forecastDays) {
   });
 }
 
-// Helper function to format forecast date
 function formatForecastDate(dateStr) {
   const d = new Date(dateStr);
   const options = { weekday: 'short', day: 'numeric' };
   return d.toLocaleDateString(undefined, options);
 }
 
-// Function to update the Sun & Moon Section
+// ========================
+// Update Sun & Moon Section
+// ========================
 function updateSunMoon(astroData) {
   const sunriseElement = document.querySelector('.sunrise');
   const sunsetElement = document.querySelector('.sunset');
@@ -322,7 +318,9 @@ function updateSunMoon(astroData) {
   }
 }
 
-// Function to display errors to the user
+// ========================
+// Display Error Function
+// ========================
 function displayError(message) {
   const loadingSpinner = document.querySelector('.weather-loading');
   const weatherContent = document.querySelector('.weather-content');
@@ -334,15 +332,16 @@ function displayError(message) {
   }
 }
 
-// On page load, fetch weather data for the default or last saved location
-window.onload = function () {
+// ========================
+// Event Listeners and Initialization
+// ========================
+document.addEventListener('DOMContentLoaded', function () {
   const defaultLocation = 'New York, NY, USA';
   const lastLocation = localStorage.getItem('lastLocation') || defaultLocation;
   console.log('Fetching default city:', lastLocation);
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
-};
+});
 
-// Allow manual location input
 document.querySelector('#location-submit').addEventListener('click', function () {
   const locationInput = document.querySelector('#location-input').value.trim();
   if (locationInput) {
