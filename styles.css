@@ -2705,6 +2705,13 @@ body.focus-outline-disabled :focus {
     transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
+.weather-alert-title {
+    /* Remove the display: none; */
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 /* --- Weather Alert Hover Effect --- */
 .weather-alert:hover {
     background-color: var(--warning-bg-hover, #ffe8a1); /* Slightly darker yellow */
