@@ -186,11 +186,23 @@ function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
   forecastContainer.innerHTML = ''; // Clear previous forecasts
 
-  forecastDays.forEach(day => {
+  // Get current date
+  const currentDate = new Date();
+
+  forecastDays.forEach((day, index) => {
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
+
+    // Get the day of the week (Mon, Tue, etc.) and the day of the month
+    const forecastDate = new Date(day.date);
+    const dayOfWeek = forecastDate.toLocaleString('en-us', { weekday: 'short' });
+    const dayOfMonth = forecastDate.getDate();
+
+    // Set 'Today' for the current day
+    const displayDay = (index === 0) ? 'Today' : `${dayOfWeek} ${dayOfMonth}`;
+
     forecastElement.innerHTML = `
-      <div class="date">${day.date}</div>
+      <div class="date">${displayDay}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
       <div class="forecast-temps">
         <span class="high">${day.day.maxtemp_f}°F</span>
