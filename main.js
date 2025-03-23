@@ -1,10 +1,13 @@
 // Function to get weather data from API
 async function getWeather(location) {
   const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your actual API key
-  const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=7&aqi=no&alerts=no`;
+  const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=7&aqi=no&alerts=no`;
 
   try {
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Location not found');
+    }
     const data = await response.json();
     return data;
   } catch (error) {
@@ -35,7 +38,7 @@ function updateForecast(forecast) {
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const today = new Date();
   
-  forecast.forEach((day, index) => {
+  forecast.forEach((day) => {
     const forecastDate = new Date(day.date);
     
     let dayLabel;
@@ -63,15 +66,29 @@ function updateForecast(forecast) {
   });
 }
 
+// Function to display error message
+function showError(message) {
+  const errorContainer = document.querySelector('.error-message');
+  errorContainer.textContent = message;
+  errorContainer.style.display = 'block'; // Show the error message
+}
+
+// Function to hide the error message
+function hideError() {
+  const errorContainer = document.querySelector('.error-message');
+  errorContainer.style.display = 'none'; // Hide the error message
+}
+
 // Function to fetch and display the weather data
 async function displayWeather(location) {
+  hideError(); // Hide any previous error messages
   const weatherData = await getWeather(location);
 
   if (weatherData) {
     updateCurrentWeather(weatherData.current);
     updateForecast(weatherData.forecast.forecastday);
   } else {
-    console.error('Could not retrieve weather data.');
+    showError('Could not retrieve weather data. Please check your location and try again.');
   }
 }
 
@@ -79,6 +96,14 @@ async function displayWeather(location) {
 document.querySelector('#searchButton').addEventListener('click', () => {
   const locationInput = document.querySelector('#locationInput').value;
   displayWeather(locationInput);
+});
+
+// Event listener for pressing Enter to search
+document.querySelector('#locationInput').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    const locationInput = document.querySelector('#locationInput').value;
+    displayWeather(locationInput);
+  }
 });
 
 // Load default weather for a specific location on page load
