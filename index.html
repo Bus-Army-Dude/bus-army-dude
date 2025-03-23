@@ -189,12 +189,12 @@ s0.parentNode.insertBefore(s1,s0);
             </div>
         </section>
 
-     <!-- Weather Section Container -->
+    <!-- Weather Section Container -->
 <div class="weather-container">
     <!-- Weather Section -->
     <div class="weather-section">
         <!-- Loading State -->
-        <div class="weather-loading">
+        <div class="weather-loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading weather data...</p>
         </div>
@@ -209,7 +209,7 @@ s0.parentNode.insertBefore(s1,s0);
         </div>
         
         <!-- Weather Content - This will be populated dynamically via JS -->
-        <div class="weather-content">
+        <div class="weather-content" style="display: none;">
             <!-- Header Section -->
             <div class="weather-header">
                 <div class="location-info">
@@ -274,9 +274,10 @@ s0.parentNode.insertBefore(s1,s0);
             <!-- Dynamically populated sun & moon info goes here -->
         </div>
 
-        <!-- Location Input Section -->
+        <!-- Location Input Section with Button -->
         <div class="location-input-container">
             <input type="text" class="search-input" placeholder="Enter a location" />
+            <button class="search-button" onclick="fetchWeatherData()">Get Weather</button>
         </div>
     </div>
 </div>
