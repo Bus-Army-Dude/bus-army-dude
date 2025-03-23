@@ -254,18 +254,35 @@ function updateSunMoon(astroData) {
 
 // Function to display error messages
 function displayError(message) {
-  const weatherContent = document.querySelector('.weather-content');
-  const errorMessage = document.querySelector('.error-message');
-  
-  if (errorMessage) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-  }
-  
-  if (weatherContent) {
-    weatherContent.style.display = 'none';
+  const errorElement = document.querySelector('.weather-error');
+  if (errorElement) {
+    errorElement.textContent = message;
   }
 }
 
-// Fetch weather data for a default location (e.g., New York)
+// Listen for the submit button click for manual location input
+const submitButton = document.getElementById('location-submit');
+submitButton.addEventListener('click', () => {
+  const locationInput = document.getElementById('location-input').value;
+  if (locationInput) {
+    fetchWeatherData(locationInput); // Fetch weather data for manually entered location
+  } else {
+    alert('Please enter a location!');
+  }
+});
+
+// Optional: Allow pressing Enter key to submit manual location
+const inputField = document.getElementById('location-input');
+inputField.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    const locationInput = inputField.value;
+    if (locationInput) {
+      fetchWeatherData(locationInput); // Fetch weather data for manually entered location
+    } else {
+      alert('Please enter a location!');
+    }
+  }
+});
+
+// Initial fetch with a default location (optional, you can use user's geo-location)
 fetchWeatherData('New York');
