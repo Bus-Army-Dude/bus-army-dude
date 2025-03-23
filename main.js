@@ -248,13 +248,9 @@ function getAirQualityClass(aqi) {
   }
 }
 
-// Helper function to format a date as "Tue 25"
-function formatForecastDate(dateStr) {
-  const d = new Date(dateStr);
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const dayName = dayNames[d.getDay()];
-  const dayNumber = d.getDate();
-  return `${dayName} ${dayNumber}`;
+// Helper function to format a date as an abbreviated weekday plus day number
+function formatForecastDate(dateObj) {
+  return dateObj.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' });
 }
 
 // Function to update the forecast section
@@ -263,18 +259,21 @@ function updateForecast(forecastDays) {
   forecastContainer.innerHTML = ''; // Clear previous forecasts
 
   forecastDays.forEach((day, index) => {
-    let dateLabel;
+    let dateLabel = "";
     if (index === 0) {
       dateLabel = "Today";
     } else if (index === 1) {
       dateLabel = "Tomorrow";
     } else {
-      dateLabel = formatForecastDate(day.date);
+      // Parse the API's date string into a Date object
+      let dateObj = new Date(day.date);
+      // Add one day to the date for indices ≥2
+      dateObj.setDate(dateObj.getDate() + 1);
+      dateLabel = formatForecastDate(dateObj);
     }
 
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
-    
     forecastElement.innerHTML = `
       <div class="date">${dateLabel}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
@@ -288,7 +287,6 @@ function updateForecast(forecastDays) {
         <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
       </div>
     `;
-    
     forecastContainer.appendChild(forecastElement);
   });
 }
