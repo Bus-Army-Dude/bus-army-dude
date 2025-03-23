@@ -218,26 +218,42 @@ function updateForecast(forecastDays) {
   const currentDayOfWeek = currentDate.toLocaleString('en-us', { weekday: 'short' });
   const currentDayOfMonth = currentDate.getDate();
 
-  forecastDays.forEach((day, index) => {
-    const forecastElement = document.createElement('div');
-    forecastElement.classList.add('forecast-day');
-
-    // Get the forecast date (day of the week and day of the month)
+  // Add 'Today' label to the first forecast item and order the rest
+  let forecastWithToday = forecastDays.map((day, index) => {
     const forecastDate = new Date(day.date);
     const dayOfWeek = forecastDate.toLocaleString('en-us', { weekday: 'short' });
     const dayOfMonth = forecastDate.getDate();
 
-    // Check if the forecast day is today
+    // Check if this day is today
     const displayDay = (dayOfWeek === currentDayOfWeek && dayOfMonth === currentDayOfMonth)
-      ? 'Today' // If it matches today, display "Today"
-      : `${dayOfWeek} ${dayOfMonth}`; // Otherwise, show the regular date (e.g., Sun 23)
+      ? 'Today' 
+      : `${dayOfWeek} ${dayOfMonth}`;
+
+    return {
+      ...day,
+      displayDay, // Add the displayDay property to each forecast
+    };
+  });
+
+  // Sort so 'Today' is first, then next 6 days
+  forecastWithToday = forecastWithToday.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+
+    // Sort by date so Today appears first, then the next days
+    return dateA - dateB;
+  });
+
+  // Limit the forecast to 7 days (today + 6 more)
+  forecastWithToday.slice(0, 7).forEach((day) => {
+    const forecastElement = document.createElement('div');
+    forecastElement.classList.add('forecast-day');
 
     // Precipitation percentage (if available)
     const precipitationChance = day.day.daily_chance_of_rain || 0;
 
-    // Render the forecast element
     forecastElement.innerHTML = `
-      <div class="date">${displayDay}</div>
+      <div class="date">${day.displayDay}</div>
       <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
       <div class="forecast-temps">
         <span class="high">${day.day.maxtemp_f}°F</span> /
@@ -249,7 +265,6 @@ function updateForecast(forecastDays) {
     forecastContainer.appendChild(forecastElement);
   });
 }
-
 // Function to update Sun and Moon times
 function updateSunMoon(astroData) {
   const sunElement = document.querySelector('.sun-moon .sunrise');
