@@ -189,61 +189,92 @@ s0.parentNode.insertBefore(s1,s0);
             </div>
         </section>
 
-              <div class="weather-container">
-            <!-- Loading Spinner -->
-            <div class="weather-loading">
-              <p>Loading...</p>
+     <!-- Weather Section Container -->
+<div class="weather-container">
+    <!-- Weather Section -->
+    <div class="weather-section">
+        <!-- Loading State -->
+        <div class="weather-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading weather data...</p>
+        </div>
+
+        <!-- Weather Content - This will be populated dynamically via JS -->
+        <div class="weather-content">
+            <!-- Header Section -->
+            <div class="weather-header">
+                <div class="location-info">
+                    <h2 class="location-name">Location</h2>
+                    <span class="last-updated">Updated: </span>
+                </div>
             </div>
-        
-            <!-- Weather Content -->
-            <div class="weather-content">
-              <!-- Location Info -->
-              <div class="location">
-                <h2 class="location-name">Location</h2>
-                <p class="last-updated">Updated: N/A</p>
-              </div>
-        
-              <!-- Current Weather -->
-              <div class="current-weather">
-                <div class="temp">
-                  <p class="temp-value">Temperature: N/A</p>
-                  <p class="feels-like">Feels Like: N/A</p>
+
+            <hr>
+
+            <!-- Primary Weather Section -->
+            <div class="weather-primary">
+                <div class="current-temp">
+                    <div class="temperature">
+                        <span class="temp-value">--°F</span>
+                        <span class="feels-like">Feels Like: --°F</span>
+                    </div>
                 </div>
-                <div class="condition-text">Condition: N/A</div>
-              </div>
-        
-              <!-- Weather Details -->
-              <div class="weather-details">
-                <div class="wind-speed">
-                  <strong>Wind Speed:</strong> <span class="value">N/A</span>
+                <div class="condition-text">
+                    <img src="" alt="Condition Icon" />
+                    <span>-- Condition</span>
                 </div>
-                <div class="humidity">
-                  <strong>Humidity:</strong> <span class="value">N/A</span>
-                </div>
-                <div class="pressure">
-                  <strong>Pressure:</strong> <span class="value">N/A</span>
-                </div>
-                <div class="precipitation">
-                  <strong>Precipitation:</strong> <span class="value">N/A</span>
-                </div>
-                <div class="air-quality">
-                  <strong>Air Quality:</strong> <span class="value">N/A</span>
-                </div>
-              </div>
-        
-              <!-- Forecast Section -->
-              <div class="forecast-container"></div>
-        
-              <!-- Sun & Moon Times -->
-              <div class="sun-moon-section"></div>
-        
-              <!-- Search for a New Location -->
-              <div class="search-location">
-                <input type="text" id="locationInput" placeholder="Search City or Zip Code" />
-                <button id="searchLocationButton">Search</button>
-              </div>
             </div>
-          </div>
+
+            <hr>
+
+            <!-- Weather Details Section -->
+            <div class="weather-details">
+                <div class="detail wind-speed">
+                    <span class="label">Wind Speed:</span>
+                    <span class="value">-- mph</span>
+                </div>
+                <div class="detail humidity">
+                    <span class="label">Humidity:</span>
+                    <span class="value">-- %</span>
+                </div>
+                <div class="detail pressure">
+                    <span class="label">Pressure:</span>
+                    <span class="value">-- hPa</span>
+                </div>
+                <div class="detail precipitation">
+                    <span class="label">Precipitation:</span>
+                    <span class="value">-- in</span>
+                </div>
+                <div class="detail air-quality">
+                    <span class="label">Air Quality:</span>
+                    <span class="value">Loading...</span>
+                </div>
+                <div class="air-quality-details">
+                    <!-- This will be dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Forecast Section -->
+        <div class="forecast-container">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- Sun & Moon Section -->
+        <div class="sun-moon-section">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- Location Input Section -->
+        <div class="location-input-container">
+            <input id="locationInput" type="text" placeholder="Enter location">
+            <button id="searchLocationButton">
+                Get Weather
+            </button>
+            <div class="error-icon" title="Error">!</div>
+        </div>
+    </div>
+</div>
         
              <!-- TikTok Shoutouts Section -->
         <div class="shoutouts-section section">
