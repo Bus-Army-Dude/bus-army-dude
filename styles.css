@@ -2453,13 +2453,18 @@ body.focus-outline-disabled :focus {
 
 /* Weather widget container */
 .weather-widget {
-    max-width: 350px;
+    max-width: 1200px; /* Matches business info width */
+    width: 100%;
     margin: 20px auto;
-    padding: 20px;
-    border: 1px solid var(--border-color);
+    padding: clamp(24px, 4vw, 40px);
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     border-radius: 10px;
     background-color: var(--content-bg);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-sizing: border-box;
 }
 
 /* Styling for the header section with input and button */
