@@ -257,13 +257,21 @@ function getAirQualityClass(aqi) {
 // ========================
 // Update Forecast Section
 // ========================
+
 function formatForecastDate(dateObj) {
-  const options = { weekday: 'short', day: 'numeric' };
-  const formattedDate = dateObj.toLocaleDateString('en-US', options); // Ensuring en-US format
-  
-  // Split the formatted date into components
-  const [weekday, day] = formattedDate.match(/[A-Za-z]+|\d+/g);
-  return `${weekday} ${day}`; // Ensures it's "Wed 26"
+  // Option 1: Manual Formatting (Most Reliable)
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const day = dateObj.getDate();
+  const weekdayShort = weekdays[dateObj.getDay()];
+  return `${weekdayShort} ${day}`;
+
+  // Option 2: toLocaleDateString (If Manual Formatting Doesn't Work)
+  // If the above manual format does not work, try uncommenting the code below.
+  // const options = { weekday: 'short', day: 'numeric' };
+  // const formattedDate = dateObj.toLocaleDateString('en-US', options);
+  // console.log("Formatted Date:", formattedDate); // Check the output
+  // const [weekday, day] = formattedDate.match(/[A-Za-z]+|\d+/g);
+  // return `${weekday} ${day}`;
 }
 
 // Updated Forecast Function
@@ -271,17 +279,15 @@ function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
   forecastContainer.innerHTML = ''; // Clear previous forecasts
 
-  // Use the current date as the reference for labels
-  const today = new Date();
+  const today = new Date(); // Current date
 
   forecastDays.forEach((day, index) => {
-    let dateLabel = "";
+    let dateLabel = '';
     if (index === 0) {
-      dateLabel = "Today";
+      dateLabel = 'Today';
     } else if (index === 1) {
-      dateLabel = "Tomorrow";
+      dateLabel = 'Tomorrow';
     } else {
-      // Create a new date object by adding 'index' days to today
       const futureDate = new Date(today);
       futureDate.setDate(today.getDate() + index);
       dateLabel = formatForecastDate(futureDate);
