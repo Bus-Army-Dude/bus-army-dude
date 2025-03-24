@@ -68,19 +68,20 @@ function fetchWeatherData(city, unit) {
                 maxTemp.textContent = `Max Temp: ${Math.round(main.temp_max)}°${unit === 'metric' ? 'C' : 'F'}`;
                 humidity.textContent = `Humidity: ${main.humidity}%`;
                 wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
-                pressure.textContent = `Pressure: ${(main.pressure * 0.02953).toFixed(2)} inHg`;  // Convert hPa to inHg
+                pressure.textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`; // Convert hPa to inHg for Fahrenheit
                 uvIndex.textContent = `UV Index: Not Available`; // Separate call needed for UV Index
                 sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
                 sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
-                aqi.textContent = `Air Quality Index: ${data.main.pressure}`;  // Placeholder for AQI
-                visibility.textContent = `Visibility: ${(data.visibility / 1609.34).toFixed(2)} miles`;  // Convert meters to miles
+                aqi.textContent = `Air Quality Index: ${data.main.pressure}`;
+                visibility.textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`; // Convert visibility to miles for Fahrenheit
                 clouds.textContent = `Cloud Coverage: ${cloudsData.all}%`;
 
-                // Rain and snow measurement
-                rain.textContent = `Rain: ${data.rain ? (data.rain['1h'] * 0.03937).toFixed(2) : 0} in`;  // Convert mm to inches
-                snow.textContent = `Snow: ${data.snow ? (data.snow['1h'] * 0.03937).toFixed(2) : 0} in`;  // Convert mm to inches
+                // Rain and snow values
+                const rainValue = unit === 'metric' ? (data.rain ? data.rain['1h'] : 0) : (data.rain ? (data.rain['1h'] * 0.03937) : 0); // Convert rain from mm to inches for Fahrenheit
+                const snowValue = unit === 'metric' ? (data.snow ? data.snow['1h'] : 0) : (data.snow ? (data.snow['1h'] * 0.03937) : 0); // Convert snow from mm to inches for Fahrenheit
+                rain.textContent = `Rain: ${rainValue.toFixed(2)} ${unit === 'metric' ? 'mm' : 'in'}`;
+                snow.textContent = `Snow: ${snowValue.toFixed(2)} ${unit === 'metric' ? 'mm' : 'in'}`;
 
-                // Last update time
                 lastUpdate.textContent = `Last Update: ${new Date().toLocaleString()}`;
                 locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
             } else {
