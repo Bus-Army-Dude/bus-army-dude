@@ -153,14 +153,39 @@ function displayWeatherAlerts(alerts, userLat, userLon) {
 
   if (relevantAlerts.length > 0) {
     relevantAlerts.forEach(alert => {
+      // Data Validation:
+      let description = alert.description;
+      if (!description || description.trim() === "") {
+        description = "Description not available."; // Provide a fallback
+      }
+
+      let issuedBy = alert.certainty;
+      if (issuedBy.toLowerCase() === "observed") {
+          issuedBy = "Unknown (Observed)";
+      }
+
+      const effectiveDate = new Date(alert.effective);
+      const expiresDate = new Date(alert.expires);
+
+      const currentDate = new Date(); // Get current date
+
+      //Date Validation.
+      if (effectiveDate.getFullYear() > currentDate.getFullYear() + 1 || expiresDate.getFullYear() > currentDate.getFullYear() + 1){
+          description = "Invalid date provided by API.";
+          issuedBy = "Invalid Date.";
+      }
+
+      const effectiveString = effectiveDate.toLocaleString();
+      const expiresString = expiresDate.toLocaleString();
+
       const alertItem = document.createElement('li');
       alertItem.classList.add('alert-item');
       alertItem.innerHTML = `
         <strong>${alert.headline || 'Weather Alert'}</strong>
-        <p>${alert.description || 'No description provided.'}</p>
-        <p><strong>Issued by:</strong> ${alert.certainty || 'Unknown'}</p>
-        <p><strong>Effective:</strong> ${alert.effective || 'Unknown'}</p>
-        <p><strong>Expires:</strong> ${alert.expires || 'Unknown'}</p>
+        <p>${description}</p>
+        <p><strong>Issued by:</strong> ${issuedBy}</p>
+        <p><strong>Effective:</strong> ${effectiveString}</p>
+        <p><strong>Expires:</strong> ${expiresString}</p>
       `;
       alertsContainer.appendChild(alertItem);
     });
