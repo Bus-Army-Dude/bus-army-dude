@@ -2559,10 +2559,25 @@ body.focus-outline-disabled :focus {
 
 /* Dark Mode Adjustments */
 @media (prefers-color-scheme: dark) {
+    #weather-widget #search-input {
+        background-color: var(--input-bg-dark); /* Set a darker background color for dark mode */
+        color: var(--text-color-dark); /* Set a lighter text color for readability */
+        border: 1px solid var(--border-color-dark); /* Ensure the border is visible in dark mode */
+    }
+
+    #weather-widget #search-button {
+        background-color: var(--button-bg-dark); /* Darker button background */
+        color: var(--button-text-dark); /* Lighter button text for contrast */
+    }
+
+    #weather-widget #search-button:hover {
+        background-color: var(--hover-color-dark); /* Darker hover effect */
+    }
+
     #unit-select {
-        background-color: var(--dropdown-background-dark);
-        color: var(--dropdown-text-dark);
-        border: 1px solid var(--dropdown-border-dark);
+        background-color: var(--input-bg-dark); /* Dark input background for unit select */
+        color: var(--text-color-dark); /* Lighter text color for contrast */
+        border: 1px solid var(--border-color-dark); /* Dark border for input */
     }
 
     #unit-select:focus {
@@ -2573,47 +2588,30 @@ body.focus-outline-disabled :focus {
 
 /* Light Mode Adjustments */
 @media (prefers-color-scheme: light) {
+    #weather-widget #search-input {
+        background-color: var(--input-bg-light); /* Lighter background color for light mode */
+        color: var(--text-color-light); /* Darker text color for readability */
+        border: 1px solid var(--border-color-light); /* Ensure the border is visible in light mode */
+    }
+
+    #weather-widget #search-button {
+        background-color: var(--button-bg-light); /* Lighter button background */
+        color: var(--button-text-light); /* Darker button text for contrast */
+    }
+
+    #weather-widget #search-button:hover {
+        background-color: var(--hover-color-light); /* Lighter hover effect */
+    }
+
     #unit-select {
-        background-color: var(--dropdown-background-light);
-        color: var(--dropdown-text-light);
-        border: 1px solid var(--dropdown-border-light);
+        background-color: var(--input-bg-light); /* Lighter input background for unit select */
+        color: var(--text-color-light); /* Darker text color for contrast */
+        border: 1px solid var(--border-color-light); /* Light border for input */
     }
 
     #unit-select:focus {
         border-color: var(--dropdown-focus-border-light);
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    #weather-widget.weather-widget {
-        padding: 15px;
-        margin: 15px auto;
-    }
-
-    #weather-widget .weather-header input,
-    #weather-widget .weather-header button {
-        font-size: 1em;
-    }
-
-    #weather-widget .weather-info {
-        flex-direction: row;
-        justify-content: space-around;
-        gap: 15px;
-    }
-
-    #weather-widget #temperature {
-        font-size: 1.8em;
-    }
-
-    #weather-widget #weather-icon {
-        width: 70px;
-        height: 70px;
-    }
-
-    #weather-widget .weather-details {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 }
 
