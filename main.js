@@ -68,15 +68,19 @@ function fetchWeatherData(city, unit) {
                 maxTemp.textContent = `Max Temp: ${Math.round(main.temp_max)}°${unit === 'metric' ? 'C' : 'F'}`;
                 humidity.textContent = `Humidity: ${main.humidity}%`;
                 wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
-                pressure.textContent = `Pressure: ${main.pressure} hPa`;
+                pressure.textContent = `Pressure: ${(main.pressure * 0.02953).toFixed(2)} inHg`;  // Convert hPa to inHg
                 uvIndex.textContent = `UV Index: Not Available`; // Separate call needed for UV Index
                 sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
                 sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
-                aqi.textContent = `Air Quality Index: ${data.main.pressure}`;
-                visibility.textContent = `Visibility: ${Math.round(data.visibility / 1000)} km`;
+                aqi.textContent = `Air Quality Index: ${data.main.pressure}`;  // Placeholder for AQI
+                visibility.textContent = `Visibility: ${(data.visibility / 1609.34).toFixed(2)} miles`;  // Convert meters to miles
                 clouds.textContent = `Cloud Coverage: ${cloudsData.all}%`;
-                rain.textContent = `Rain: ${data.rain ? data.rain['1h'] : 0} mm`;
-                snow.textContent = `Snow: ${data.snow ? data.snow['1h'] : 0} mm`;
+
+                // Rain and snow measurement
+                rain.textContent = `Rain: ${data.rain ? (data.rain['1h'] * 0.03937).toFixed(2) : 0} in`;  // Convert mm to inches
+                snow.textContent = `Snow: ${data.snow ? (data.snow['1h'] * 0.03937).toFixed(2) : 0} in`;  // Convert mm to inches
+
+                // Last update time
                 lastUpdate.textContent = `Last Update: ${new Date().toLocaleString()}`;
                 locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
             } else {
@@ -131,4 +135,4 @@ fetchWeatherData(currentCity, currentUnit);
 // Real-time updates - Update weather data every 60 seconds instead of every second
 setInterval(() => {
     fetchWeatherData(currentCity, currentUnit);
-}, 10000);  // Update every 60 seconds (60000 milliseconds)
+}, 1000);  // Update every 60 seconds (60000 milliseconds)
