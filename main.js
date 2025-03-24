@@ -133,14 +133,25 @@ function displayWeatherAlerts(alerts) {
 
   alertsContainer.innerHTML = '';
 
-  const uniqueAlerts = alerts && alerts.length > 0 
+  const uniqueAlerts = alerts && alerts.length > 0
     ? alerts.filter((alert, index, self) =>
         index === self.findIndex(a => a.headline === alert.headline)
       )
     : [];
 
-  if (uniqueAlerts.length > 0) {
-    uniqueAlerts.forEach(alert => {
+  // Debugging: Log the raw alerts data
+  console.log("Raw Alerts Data:", uniqueAlerts);
+
+  // Example: Location Filtering (if the API provides location names)
+  const userLocation = "Bowling Green"; // Or get this from your location input
+  const relevantAlerts = uniqueAlerts.filter(alert => {
+    // Check if the alert description or headline contains the user's location
+    const alertText = `${alert.headline} ${alert.description}`.toLowerCase();
+    return alertText.includes(userLocation.toLowerCase());
+  });
+
+  if (relevantAlerts.length > 0) {
+    relevantAlerts.forEach(alert => {
       const alertItem = document.createElement('li');
       alertItem.classList.add('alert-item');
       alertItem.innerHTML = `
@@ -154,7 +165,7 @@ function displayWeatherAlerts(alerts) {
     });
   } else {
     const noAlertsMessage = document.createElement('li');
-    noAlertsMessage.textContent = 'No weather alerts currently active.';
+    noAlertsMessage.textContent = 'No weather alerts currently active for Bowling Green.';
     alertsContainer.appendChild(noAlertsMessage);
   }
 }
