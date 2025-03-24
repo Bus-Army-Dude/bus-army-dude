@@ -27,10 +27,18 @@ const rain = document.getElementById('rain');
 const snow = document.getElementById('snow');
 const lastUpdate = document.getElementById('last-update');
 const locationCoordinates = document.getElementById('location-coordinates');
+const unitSelect = document.getElementById('unit-select');
 
-// Fetch weather data from OpenWeather API
-function fetchWeatherData(city) {
-    const url = `${apiUrl}?q=${city}&units=metric&appid=${apiKey}`;
+// Retrieve the user's city and unit preference from localStorage
+let currentCity = localStorage.getItem('city') || 'New York';  // Default to 'New York' if no city is set
+let currentUnit = localStorage.getItem('unit') || 'metric';  // Default to 'metric' if no unit is set
+
+// Update the unit select dropdown to match the saved unit
+unitSelect.value = currentUnit === 'metric' ? 'Celsius' : 'Fahrenheit';
+
+// Function to fetch weather data from OpenWeather API
+function fetchWeatherData(city, unit) {
+    const url = `${apiUrl}?q=${city}&units=${unit}&appid=${apiKey}`;
 
     fetch(url)
         .then(response => response.json())
@@ -43,7 +51,6 @@ function fetchWeatherData(city) {
                 const sys = data.sys;
                 const cloudsData = data.clouds;
                 const coord = data.coord;
-                const aqiData = data.main.pressure; // Placeholder for AQI if available
 
                 // Update city, region, and time
                 cityName.textContent = data.name;
@@ -51,21 +58,21 @@ function fetchWeatherData(city) {
                 weatherTime.textContent = new Date().toLocaleString();
 
                 // Weather info
-                temperature.textContent = `${Math.round(main.temp)}°C`;
+                temperature.textContent = `${Math.round(main.temp)}°${unit === 'metric' ? 'C' : 'F'}`;
                 weatherCondition.textContent = weather.description;
                 weatherIcon.src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
 
                 // Detailed weather info
-                feelsLike.textContent = `Feels Like: ${Math.round(main.feels_like)}°C`;
-                minTemp.textContent = `Min Temp: ${Math.round(main.temp_min)}°C`;
-                maxTemp.textContent = `Max Temp: ${Math.round(main.temp_max)}°C`;
+                feelsLike.textContent = `Feels Like: ${Math.round(main.feels_like)}°${unit === 'metric' ? 'C' : 'F'}`;
+                minTemp.textContent = `Min Temp: ${Math.round(main.temp_min)}°${unit === 'metric' ? 'C' : 'F'}`;
+                maxTemp.textContent = `Max Temp: ${Math.round(main.temp_max)}°${unit === 'metric' ? 'C' : 'F'}`;
                 humidity.textContent = `Humidity: ${main.humidity}%`;
-                wind.textContent = `Wind: ${Math.round(windData.speed)} km/h`;
+                wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
                 pressure.textContent = `Pressure: ${main.pressure} hPa`;
-                uvIndex.textContent = `UV Index: Not Available`; // You'll need a separate call for UV Index
+                uvIndex.textContent = `UV Index: Not Available`; // Separate call needed for UV Index
                 sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
                 sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
-                aqi.textContent = `Air Quality Index: ${aqiData}`;
+                aqi.textContent = `Air Quality Index: ${data.main.pressure}`;
                 visibility.textContent = `Visibility: ${Math.round(data.visibility / 1000)} km`;
                 clouds.textContent = `Cloud Coverage: ${cloudsData.all}%`;
                 rain.textContent = `Rain: ${data.rain ? data.rain['1h'] : 0} mm`;
@@ -86,10 +93,19 @@ function fetchWeatherData(city) {
 searchButton.addEventListener('click', () => {
     const city = searchInput.value.trim();
     if (city) {
-        fetchWeatherData(city);
+        // Save the city and unit preference to localStorage
+        localStorage.setItem('city', city);
+        fetchWeatherData(city, currentUnit);
     } else {
         alert("Please enter a city or zip code.");
     }
+});
+
+// Event listener for the unit select dropdown
+unitSelect.addEventListener('change', (e) => {
+    currentUnit = e.target.value === 'Celsius' ? 'metric' : 'imperial'; // Celsius -> metric, Fahrenheit -> imperial
+    localStorage.setItem('unit', currentUnit);
+    fetchWeatherData(currentCity, currentUnit);
 });
 
 // Optional: Allow pressing "Enter" key to trigger the search
@@ -99,11 +115,10 @@ searchInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Default city (you can set this to your location or any city)
-let currentCity = 'New York';
-fetchWeatherData(currentCity);
+// Fetch weather data for the saved city and unit
+fetchWeatherData(currentCity, currentUnit);
 
 // Automatically refresh weather data every second
 setInterval(() => {
-    fetchWeatherData(currentCity);
+    fetchWeatherData(currentCity, currentUnit);
 }, 1000);  // Update every second (1000 milliseconds)
