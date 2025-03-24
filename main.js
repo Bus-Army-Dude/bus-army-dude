@@ -1,6 +1,7 @@
 // API key and endpoint (replace with your actual OpenWeather API key)
 const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+const aqiUrl = 'https://api.openweathermap.org/data/2.5/air_pollution';  // API for AQI data
 
 // Elements from the HTML
 const searchButton = document.getElementById('search-button');
@@ -69,12 +70,12 @@ function fetchWeatherData(city, unit) {
                 humidity.textContent = `Humidity: ${main.humidity}%`;
                 wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
                 pressure.textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`; // Convert hPa to inHg for Fahrenheit
-                uvIndex.textContent = `UV Index: Not Available`; // Separate call needed for UV Index
                 sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
                 sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
-                aqi.textContent = `Air Quality Index: ${data.main.pressure}`;
-                visibility.textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`; // Convert visibility to miles for Fahrenheit
                 clouds.textContent = `Cloud Coverage: ${cloudsData.all}%`;
+
+                // AQI - Air Quality Index
+                fetchAirQuality(coord.lat, coord.lon);
 
                 // Rain and snow values
                 const rainValue = unit === 'metric' ? (data.rain ? data.rain['1h'] : 0) : (data.rain ? (data.rain['1h'] * 0.03937) : 0); // Convert rain from mm to inches for Fahrenheit
@@ -84,6 +85,7 @@ function fetchWeatherData(city, unit) {
 
                 lastUpdate.textContent = `Last Update: ${new Date().toLocaleString()}`;
                 locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
+                visibility.textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`; // Convert visibility to miles for Fahrenheit
             } else {
                 alert("Weather data not found!");
             }
@@ -91,6 +93,26 @@ function fetchWeatherData(city, unit) {
         .catch(error => {
             console.error("Error fetching weather data:", error);
             alert("There was an error fetching the weather data. Please try again later.");
+        });
+}
+
+// Function to fetch Air Quality Index (AQI) data
+function fetchAirQuality(lat, lon) {
+    const url = `${aqiUrl}?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.list && data.list[0]) {
+                const aqiValue = data.list[0].main.aqi;
+                aqi.textContent = `Air Quality Index: ${aqiValue}`;
+            } else {
+                aqi.textContent = "Air Quality Index: Not Available";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching AQI data:", error);
+            aqi.textContent = "Air Quality Index: Not Available";
         });
 }
 
@@ -115,12 +137,12 @@ unitSelect.addEventListener('change', (e) => {
     } else if (e.target.value === 'Fahrenheit') {
         currentUnit = 'imperial'; // Fahrenheit -> imperial
     }
-    
+
     // Save unit choice to localStorage
-    localStorage.setItem('unit', currentUnit); 
-    
+    localStorage.setItem('unit', currentUnit);
+
     // Fetch weather with the updated unit
-    fetchWeatherData(currentCity, currentUnit); 
+    fetchWeatherData(currentCity, currentUnit);
 });
 
 // Optional: Allow pressing "Enter" key to trigger the search
@@ -133,7 +155,7 @@ searchInput.addEventListener('keypress', (e) => {
 // Fetch weather data for the saved city and unit when the page loads
 fetchWeatherData(currentCity, currentUnit);
 
-// Real-time updates - Update weather data every 60 seconds instead of every second
+// Real-time updates (refresh weather every 5 minutes instead of every second)
 setInterval(() => {
     fetchWeatherData(currentCity, currentUnit);
-}, 1000);  // Update every 60 seconds (60000 milliseconds)
+}, 1000); // 1000 ms = 1 second
