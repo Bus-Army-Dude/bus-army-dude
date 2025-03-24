@@ -2570,44 +2570,36 @@ body.focus-outline-disabled :focus {
     color: var(--accent-color);
 }
 
-/* 7-Day Forecast Styles */
-#weather-widget .forecast-container {
+#seven-day-outlook {
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-    gap: 15px;
-    justify-content: space-evenly;
-    padding: 15px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-#weather-widget .forecast-day {
-    background-color: var(--card-bg);
-    border: 2px solid var(--border-color);
+.forecast-card {
+    width: 14%;  /* Adjust width to fit 7 items */
+    background-color: #f5f5f5;
+    padding: 15px;
     border-radius: 10px;
-    padding: 15px;
     text-align: center;
-    width: 100%;
-    max-width: 120px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#weather-widget .forecast-day:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+.forecast-card img {
+    width: 50px;
+    height: 50px;
 }
 
-#weather-widget .forecast-day img {
-    width: 60px;
-    height: 60px;
-}
-
-#weather-widget .forecast-day p {
-    margin: 8px 0;
-    font-size: 1em;
-    color: var(--text-color);
-}
-
-#weather-widget .forecast-day p strong {
+.forecast-card h3 {
     font-size: 1.2em;
-    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.forecast-card p {
+    font-size: 0.9em;
+    margin: 5px 0;
 }
 
 /* Air Quality Index (AQI) Styles */
