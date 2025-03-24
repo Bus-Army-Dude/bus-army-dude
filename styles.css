@@ -2447,8 +2447,8 @@ body.focus-outline-disabled :focus {
 /* General Weather Widget Styling */
 #weather-widget.weather-widget {
     width: 100%;
-    max-width: 100%;
-    margin: 20px auto;
+    max-width: 1000px; /* Limit the max width to avoid it stretching too wide on larger screens */
+    margin: 20px auto; /* Center on desktop */
     padding: 25px;
     border-radius: 16px;
     background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(0, 145, 255, 0.15));
@@ -2459,8 +2459,7 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     transition: all 0.3s ease-out;
     backdrop-filter: blur(10px);
-    text-align: left;  /* Align to left instead of center */
-    padding-left: 10%;  /* Add some padding to the left for better alignment */
+    text-align: left;
 }
 
 /* Weather Input and Button Styles */
@@ -2521,7 +2520,7 @@ body.focus-outline-disabled :focus {
 
     #unit-select {
         background-color: var(--input-bg-dark);
-        color: var(--text-color-dark); /* Ensure text is visible */
+        color: var(--text-color-dark);
         border: 2px solid var(--border-color-dark);
     }
 
@@ -2555,7 +2554,7 @@ body.focus-outline-disabled :focus {
 
     #unit-select {
         background-color: var(--input-bg-light);
-        color: var(--text-color-light); /* Ensure text is visible */
+        color: var(--text-color-light); /* Ensure text is visible inside the dropdown */
         border: 2px solid var(--border-color-light);
     }
 
@@ -2573,13 +2572,12 @@ body.focus-outline-disabled :focus {
 /* Weather Info Section */
 #weather-widget .weather-info {
     display: flex;
-    justify-content: space-between; /* Space between items */
-    align-items: flex-start; /* Align items at the top */
-    gap: 30px;
-    text-align: left;
+    justify-content: center; /* Center the weather info on PC */
+    align-items: center;
+    text-align: center;
+    gap: 20px;
     flex-wrap: wrap;
     padding: 20px 0;
-    transition: transform 0.3s ease;
 }
 
 #weather-widget #temperature {
@@ -2599,21 +2597,20 @@ body.focus-outline-disabled :focus {
     width: 100px;
     height: 100px;
     margin: 10px;
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
-    transition: transform 0.3s ease;
 }
 
 #weather-widget #weather-icon:hover {
     transform: rotate(10deg);
 }
 
-/* Detailed Weather Information Cards */
+/* Weather Details Cards */
 #weather-widget .weather-details {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 15px;
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
+    justify-items: center; /* Center items inside the grid */
 }
 
 #weather-widget .weather-details .weather-card {
@@ -2621,8 +2618,6 @@ body.focus-outline-disabled :focus {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    text-align: left;  /* Align text to left instead of center */
     min-width: 250px;
     max-width: 320px;
     border: 2px solid var(--border-color);
