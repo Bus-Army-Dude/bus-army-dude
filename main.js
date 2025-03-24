@@ -126,6 +126,26 @@ searchButton.addEventListener('click', () => {
     }
 });
 
+// Assuming this is the function tied to the button click
+const searchButton = document.getElementById('search-button');
+const searchInput = document.getElementById('search-input');
+
+function fetchWeatherData() {
+    // Replace this with the actual function that fetches the weather data
+    console.log("Fetching weather data for: " + searchInput.value);
+    // You can call your weather-fetching code here
+}
+
+// Button click listener
+searchButton.addEventListener('click', fetchWeatherData);
+
+// Add event listener for the Enter key in the search input
+searchInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        fetchWeatherData(); // Call the function when Enter is pressed
+    }
+});
+
 // Event listener for unit select
 unitSelect.addEventListener('change', (e) => {
     currentUnit = e.target.value === 'Celsius' ? 'metric' : 'imperial';
