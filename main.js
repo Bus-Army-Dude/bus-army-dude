@@ -36,7 +36,7 @@ async function fetchWeatherData(location) {
     }
 
     // Process and display weather alerts
-    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :;
+    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :; // Changed here
     console.log('Fetched Alerts:', alerts);
     displayWeatherAlerts(alerts);
 
@@ -124,6 +124,9 @@ function updateDisplay(data) {
   updateSunMoon(data.forecast.forecastday[0].astro);
 }
 
+// ========================
+// Display Weather Alerts with Deduplication
+// ========================
 // ========================
 // Display Weather Alerts with Deduplication
 // ========================
