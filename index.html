@@ -189,104 +189,39 @@ s0.parentNode.insertBefore(s1,s0);
             </div>
         </section>
 
-   <!-- Weather Wrapper, ensuring separation from other page sections -->
-<div class="weather-wrapper">
-  <!-- Weather Section Container -->
-  <div class="weather-container">
-      <!-- Weather Section -->
-      <div class="weather-section">
-          <!-- Loading State -->
-          <div class="weather-loading" style="display: none;">
-              <div class="loading-spinner"></div>
-              <p>Loading weather data...</p>
-          </div>
-  
-          <!-- Weather Alerts Section -->
-          <div class="weather-alerts">
-            <h3 class="weather-alerts-title">Weather Alerts</h3>
-            <ul id="weatherAlertsList">
-              <!-- Alerts will be dynamically populated here -->
-              <li>No weather alerts currently active.</li>
-            </ul>
-          </div>
-  
-          <!-- Weather Content Section -->
-          <div class="weather-content" style="display: none;">
-              <!-- Header Section -->
-              <div class="weather-header">
-                  <div class="location-info">
-                      <h2 class="location-name">Location</h2>
-                      <span class="last-updated">Updated: --</span>
-                  </div>
-              </div>
-              <hr>
-              <!-- Primary Weather Section -->
-              <div class="weather-primary">
-                  <div class="current-temp">
-                      <div class="temperature">
-                          <span class="temp-value">--°F</span>
-                          <span class="feels-like">Feels Like: --°F</span>
-                      </div>
-                  </div>
-                  <div class="condition-text">
-                      <img src="" alt="Condition Icon" class="condition-icon" />
-                      <span class="condition">-- Condition</span>
-                  </div>
-              </div>
-              <hr>
-              <!-- Weather Details Grid -->
-              <div class="weather-details">
-                  <div class="detail wind-speed">
-                      <span class="label">Wind Speed:</span>
-                      <span class="value">-- mph</span>
-                  </div>
-                  <div class="detail humidity">
-                      <span class="label">Humidity:</span>
-                      <span class="value">-- %</span>
-                  </div>
-                  <div class="detail pressure">
-                      <span class="label">Pressure:</span>
-                      <span class="value">-- hPa</span>
-                  </div>
-                  <div class="detail precipitation">
-                      <span class="label">Precipitation:</span>
-                      <span class="value">-- in</span>
-                  </div>
-              </div>
-              <!-- Air Quality Section (placed immediately after weather details) -->
-              <div class="air-quality">
-                  <div class="air-quality-overview">
-                      <div class="air-quality-indicator"></div>
-                      <div class="air-quality-summary">
-                          <div class="aqi-status"></div>
-                          <div class="primary-pollutant"></div>
-                      </div>
-                  </div>
-                  <div class="air-quality-details"></div>
-              </div>
-          </div>
-          <!-- Forecast Section -->
-          <div class="forecast-container">
-              <!-- Forecast cards will be populated dynamically -->
-          </div>
-          <!-- Sun & Moon Section -->
-          <div class="sun-moon-section">
-              <div class="sunrise">Sunrise: --</div>
-              <div class="sunset">Sunset: --</div>
-              <div class="moonrise">Moonrise: --</div>
-              <div class="moonset">Moonset: --</div>
-          </div>
-          <!-- Location Input Section -->
-          <div class="location-input-container">
-            <input type="text" id="location-input" class="location-input" placeholder="Search City or Zip Code" />
-            <button id="location-submit" class="get-weather-btn">Get Weather</button>
-        </div>
-      </div>
-      <!-- End of Weather Section -->
-  </div>
-  <!-- End of Weather Container -->
+  <div id="weather-widget" class="weather-widget">
+    <div class="weather-header">
+        <input type="text" id="search-input" placeholder="Enter City or Zip Code">
+        <button id="search-button">Search</button>
+    </div>
+    <div class="weather-header">
+        <span id="city-name">City</span>, <span id="region">Region</span>
+        <span id="weather-time">Time</span>
+    </div>
+    <div class="weather-info">
+        <span id="temperature">--°C</span>
+        <span id="weather-condition">Condition</span>
+        <img id="weather-icon" src="" alt="Weather Icon">
+    </div>
+    <div class="weather-details">
+        <p id="feels-like">Feels Like: --°C</p>
+        <p id="min-temp">Min Temp: --°C</p>
+        <p id="max-temp">Max Temp: --°C</p>
+        <p id="humidity">Humidity: --%</p>
+        <p id="wind">Wind: -- km/h</p>
+        <p id="pressure">Pressure: -- hPa</p>
+        <p id="uv-index">UV Index: --</p>
+        <p id="sunrise">Sunrise: --</p>
+        <p id="sunset">Sunset: --</p>
+        <p id="aqi">Air Quality Index: --</p>
+        <p id="visibility">Visibility: -- km</p>
+        <p id="clouds">Cloud Coverage: --%</p>
+        <p id="rain">Rain: -- mm</p>
+        <p id="snow">Snow: -- mm</p>
+        <p id="last-update">Last Update: --</p>
+        <p id="location-coordinates">Coordinates: --</p>
+    </div>
 </div>
-<!-- End of Weather Wrapper -->
         
              <!-- TikTok Shoutouts Section -->
         <div class="shoutouts-section section">
