@@ -95,7 +95,8 @@ searchButton.addEventListener('click', () => {
     if (city) {
         // Save the city and unit preference to localStorage
         localStorage.setItem('city', city);
-        fetchWeatherData(city, currentUnit);
+        currentCity = city;  // Update currentCity with the user input
+        fetchWeatherData(currentCity, currentUnit);  // Fetch weather for the new city
     } else {
         alert("Please enter a city or zip code.");
     }
@@ -104,8 +105,8 @@ searchButton.addEventListener('click', () => {
 // Event listener for the unit select dropdown
 unitSelect.addEventListener('change', (e) => {
     currentUnit = e.target.value === 'Celsius' ? 'metric' : 'imperial'; // Celsius -> metric, Fahrenheit -> imperial
-    localStorage.setItem('unit', currentUnit);
-    fetchWeatherData(currentCity, currentUnit);
+    localStorage.setItem('unit', currentUnit); // Save unit choice to localStorage
+    fetchWeatherData(currentCity, currentUnit); // Fetch weather with the updated unit
 });
 
 // Optional: Allow pressing "Enter" key to trigger the search
@@ -115,10 +116,10 @@ searchInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Fetch weather data for the saved city and unit
+// Fetch weather data for the saved city and unit when the page loads
 fetchWeatherData(currentCity, currentUnit);
 
-// Automatically refresh weather data every second
+// Real-time updates - Update weather data every 60 seconds instead of every second
 setInterval(() => {
     fetchWeatherData(currentCity, currentUnit);
-}, 1000);  // Update every second (1000 milliseconds)
+}, 60000);  // Update every 60 seconds (60000 milliseconds)
