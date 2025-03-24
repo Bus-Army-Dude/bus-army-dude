@@ -2454,70 +2454,71 @@ body.focus-outline-disabled :focus {
 /* Weather widget container */
 .weather-widget {
     width: 100%; /* Full width */
-    max-width: 1000px; /* Control max width for larger screens */
-    margin: 40px auto; /* Center widget and add margin from other sections */
-    padding: 25px; /* Adequate padding for modern look */
-    border-radius: 15px; /* Round corners for a sleek design */
+    margin: 20px auto; /* Adjust top/bottom margin */
+    padding: 20px; /* Slightly reduced padding for a cleaner look */
+    border-radius: 12px; /* Slightly less rounded corners */
     background-color: var(--content-bg); /* Background color */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Deeper shadow for modern touch */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Space between sections */
+    gap: 15px; /* Reduced gap between sections */
     box-sizing: border-box; /* Padding doesn’t affect size */
     transition: all 0.3s ease-in-out;
 }
 
 /* Weather widget header */
 .weather-widget h2 {
-    font-size: 2.4em;
-    font-weight: bold;
+    font-size: 2em; /* Slightly smaller header */
+    font-weight: 600; /* Slightly lighter bold */
     color: var(--text-color);
     text-align: center;
-    margin-bottom: 20px;
-    text-transform: uppercase;
+    margin-bottom: 15px; /* Reduced bottom margin */
+    text-transform: capitalize; /* More modern text transform */
 }
 
 /* Styling for the header section with input and button */
 .weather-header {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Space between input and button */
+    gap: 10px; /* Reduced gap */
     align-items: stretch; /* Make input and button take full width */
 }
 
 .weather-header input {
-    padding: 12px;
-    border-radius: 10px;
+    padding: 10px; /* Slightly reduced padding */
+    border-radius: 8px; /* Less rounded corners */
     border: 1px solid var(--border-color);
     background-color: var(--input-bg);
     width: 100%;
-    font-size: 1.1em;
+    font-size: 1em; /* Adjust font size */
     color: var(--text-color);
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
 .weather-header button {
-    padding: 12px;
-    border-radius: 10px;
+    padding: 10px; /* Slightly reduced padding */
+    border-radius: 8px; /* Less rounded corners */
     background-color: var(--button-bg);
     color: var(--button-text);
     border: none;
     cursor: pointer;
     width: 100%; /* Button should span full width */
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
+    font-size: 1em; /* Adjust font size */
+    transition: background-color 0.2s ease-in-out; /* Smoother transition */
 }
 
 .weather-header button:hover {
-    background-color: darkgreen;
+    background-color: var(--hover-color, darkgreen); /* Use a variable for hover color */
 }
 
 /* Weather city & region display */
 .weather-header span {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: var(--text-color);
+    font-size: 1.1em; /* Slightly smaller */
+    font-weight: 500; /* Lighter bold */
+    color: var(--secondary-text, var(--text-color)); /* Use secondary text color if available */
     text-transform: uppercase;
-    margin-top: 10px;
+    margin-top: 8px; /* Reduced margin */
+    text-align: center; /* Center the location info */
 }
 
 /* Weather information container */
@@ -2525,100 +2526,116 @@ body.focus-outline-disabled :focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px; /* Gap between temperature and weather icon */
+    gap: 20px; /* Reduced gap */
     text-align: center;
     flex-wrap: wrap;
+    padding: 15px 0; /* Add some vertical padding */
 }
 
 .weather-info span {
-    font-size: 2.5em;
+    font-size: 2em; /* Slightly smaller temperature */
     font-weight: bold;
-    color: var(--text-color);
-    margin: 15px;
+    color: var(--accent-color, var(--text-color)); /* Use accent color for emphasis */
+    margin: 10px; /* Reduced margin */
 }
 
 .weather-info #weather-icon {
-    width: 100px;
-    height: 100px;
-    margin: 15px;
+    width: 80px; /* Slightly smaller icon */
+    height: 80px;
+    margin: 10px; /* Reduced margin */
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1)); /* Subtle shadow for the icon */
 }
 
 /* Detailed weather information */
 .weather-details {
-    padding-top: 20px;
-    border-top: 2px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
+    padding-top: 15px; /* Reduced top padding */
+    border-top: 1px solid var(--border-color); /* Lighter border */
+    display: grid; /* Use grid for a more organized layout */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive columns */
     gap: 10px;
 }
 
 .weather-details p {
-    font-size: 1.1em;
-    margin: 8px 0;
+    font-size: 0.95em; /* Slightly smaller font */
+    margin: 6px 0; /* Reduced margin */
     color: var(--text-color);
+    text-align: center; /* Center details */
+}
+
+.weather-details p strong {
+    font-weight: 600; /* Slightly lighter bold for detail labels */
+    color: var(--accent-color, var(--text-color));
 }
 
 /* Responsive design for smaller screens */
 @media (max-width: 1024px) {
     /* Tablet adjustments */
     .weather-widget {
-        padding: 20px;
-        max-width: 90%; /* Full width on tablet screens */
+        padding: 15px;
+        margin: 15px auto; /* Adjust margins for tablets */
     }
 
     .weather-header input,
     .weather-header button {
-        width: 100%; /* Ensure both input and button take full width */
+        font-size: 1em;
     }
 
     .weather-info {
-        flex-direction: column; /* Stack weather info */
-        gap: 20px;
+        flex-direction: row; /* Keep info in a row on larger tablets */
+        justify-content: space-around; /* Distribute items */
+        gap: 15px;
     }
 
     .weather-info span {
-        font-size: 2.1em; /* Adjust font size for tablets */
+        font-size: 1.8em;
     }
 
     .weather-info #weather-icon {
-        width: 90px;
-        height: 90px;
+        width: 70px;
+        height: 70px;
+    }
+
+    .weather-details {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust min width */
     }
 
     .weather-details p {
-        font-size: 1em;
+        font-size: 0.9em;
     }
 }
 
 @media (max-width: 768px) {
     /* Phone adjustments */
     .weather-widget {
-        padding: 15px;
-        max-width: 90%; /* Full width on mobile screens */
+        padding: 10px;
+        margin: 10px auto; /* Further reduce margins for phones */
     }
 
     .weather-header input,
     .weather-header button {
-        width: 100%; /* Full width on mobile */
-        font-size: 1em;
+        font-size: 0.9em;
     }
 
     .weather-info {
-        flex-direction: column; /* Stack weather info vertically */
-        gap: 15px;
+        flex-direction: column; /* Stack info on smaller phones */
+        gap: 10px;
     }
 
     .weather-info span {
-        font-size: 1.8em; /* Adjust font size for phones */
+        font-size: 1.6em;
     }
 
     .weather-info #weather-icon {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
+    }
+
+    .weather-details {
+        grid-template-columns: 1fr; /* Stack details on smaller phones */
     }
 
     .weather-details p {
-        font-size: 1em;
+        font-size: 0.85em;
     }
 }
 
@@ -2631,11 +2648,13 @@ body.focus-outline-disabled :focus {
     .weather-widget {
         background-color: var(--content-bg);
         border: 1px solid var(--border-color);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow in dark mode */
     }
 
     .weather-header input {
         background-color: var(--input-bg);
         border: 1px solid var(--border-color);
+        color: var(--text-color);
     }
 
     .weather-header button {
