@@ -2536,24 +2536,35 @@ body.focus-outline-disabled :focus {
     transform: rotate(10deg);
 }
 
-/* Detailed Weather Information */
+/* Detailed Weather Information Cards */
 #weather-widget .weather-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    font-size: 1.1em;
 }
 
-#weather-widget .weather-details p {
+#weather-widget .weather-details .weather-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    text-align: center;
+}
+
+#weather-widget .weather-details .weather-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+#weather-widget .weather-details .weather-card p {
     margin: 8px 0;
     color: var(--text-color);
-    text-align: center;
-    transition: color 0.3s ease;
 }
 
-#weather-widget .weather-details p strong {
+#weather-widget .weather-details .weather-card p strong {
     font-weight: bold;
     color: var(--accent-color);
 }
@@ -2669,8 +2680,13 @@ body.focus-outline-disabled :focus {
         grid-template-columns: 1fr;
     }
 
-    #weather-widget .weather-details p {
+    #weather-widget .weather-details .weather-card {
+        padding: 15px;
+    }
+
+    #weather-widget .weather-details .weather-card p {
         font-size: 0.95em;
     }
 }
+
 
