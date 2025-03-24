@@ -95,7 +95,6 @@ function fetchWeatherData(query, unit) {
                 fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
                     .then(response => response.json())
                     .then(uvData => {
-                        // If the UV index data is available
                         if (uvData.current) {
                             uvIndex.textContent = `UV Index: ${uvData.current.uvi}`;
                         }
@@ -126,23 +125,10 @@ searchButton.addEventListener('click', () => {
     }
 });
 
-// Assuming this is the function tied to the button click
-const searchButton = document.getElementById('search-button');
-const searchInput = document.getElementById('search-input');
-
-function fetchWeatherData() {
-    // Replace this with the actual function that fetches the weather data
-    console.log("Fetching weather data for: " + searchInput.value);
-    // You can call your weather-fetching code here
-}
-
-// Button click listener
-searchButton.addEventListener('click', fetchWeatherData);
-
-// Add event listener for the Enter key in the search input
+// Event listener for the Enter key in the search input
 searchInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
-        fetchWeatherData(); // Call the function when Enter is pressed
+        fetchWeatherData(searchInput.value, currentUnit); // Call the function when Enter is pressed
     }
 });
 
