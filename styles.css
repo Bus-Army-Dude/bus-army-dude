@@ -2632,7 +2632,7 @@ body.focus-outline-disabled :focus {
     #unit-select {
         background-color: var(--dropdown-background-light, #ffffff); /* Light mode background */
         color: var(--dropdown-text-light, #333333); /* Light mode text color */
-        border: 1px solid var(--dropdown-border-light, #cccccc); /* Light mode border color */
+        border: 1px solid var(--dropdown-border-light, #ddd); /* Light mode border color (lighter than dark mode) */
     }
 
     #unit-select:focus {
