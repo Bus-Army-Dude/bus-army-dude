@@ -26,25 +26,18 @@
   --dark-shadow: rgba(0, 0, 0, 0.2);
   --dark-icon: #000000;
 
-  /* Alert-specific properties */
-  --warning-bg: #fff3cd;
-  --warning-text: #856404;
-  --warning-border: #ffeeba;
-  --warning-bg-hover: #ffe8a1;
-  --warning-border-hover: #ffe082;
-  
-  --danger-bg: #f8d7da;
-  --danger-text: #721c24;
-  --danger-border: #f5c6cb;
+  /* Input and Dropdowns */
+  --input-bg: #ffffff;
+  --dropdown-background-dark: #222222;
+  --dropdown-text-dark: #ffffff;
+  --dropdown-border-dark: #555555;
+  --dropdown-focus-border: #007bff;
+  --dropdown-background-light: #ffffff;
+  --dropdown-text-light: #333333;
+  --dropdown-border-light: #cccccc;
+  --dropdown-focus-border-light: #007bff;
+  --dropdown-focus-border-dark: #ff5722;
 
-  --success-bg: #d4edda;
-  --success-text: #155724;
-  --success-border: #c3e6cb;
-  
-  --info-bg: #d1ecf1;
-  --info-text: #0c5460;
-  --info-border: #bee5eb;
-  
   /* Fallback theme variables if no mode class is applied (default to dark mode) */
   --bg-color: var(--dark-bg);
   --content-bg: var(--dark-content-bg);
@@ -71,22 +64,6 @@ body.light-mode {
   --shadow-color: var(--light-shadow);
   --icon-color: var(--light-icon);
 }
-
-:root {
-    --input-bg: #ffffff;
-    --text-color: #333333;
-    --border-color: #ccc;
-    --dropdown-background-dark: #222222;
-    --dropdown-text-dark: #ffffff;
-    --dropdown-border-dark: #555555;
-    --dropdown-focus-border: #007bff;
-    --dropdown-background-light: #ffffff;
-    --dropdown-text-light: #333333;
-    --dropdown-border-light: #cccccc;
-    --dropdown-focus-border-light: #007bff;
-    --dropdown-focus-border-dark: #ff5722;
-}
-
 
 /* Base Styles */
 body {
@@ -2467,97 +2444,65 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* Weather widget container */
+/* Weather Widget Styling */
 #weather-widget.weather-widget {
-    width: 100%; /* Full width */
-    margin: 20px auto; /* Adjust top/bottom margin */
-    padding: 20px; /* Slightly reduced padding for a cleaner look */
-    border-radius: 12px; /* Slightly less rounded corners */
-    background-color: var(--content-bg); /* Background color */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: var(--content-bg);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Reduced gap between sections */
-    box-sizing: border-box; /* Padding doesn’t affect size */
+    gap: 15px;
+    box-sizing: border-box;
     transition: all 0.3s ease-in-out;
 }
 
-/* Weather widget header (for input and button) */
-#weather-widget .weather-header:first-child {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Reduced gap */
-    align-items: stretch; /* Make input and button take full width */
-    margin-bottom: 10px; /* Add some margin below */
-}
-
+/* Weather Input and Button Styles */
 #weather-widget #search-input {
-    padding: 10px; /* Slightly reduced padding */
-    border-radius: 8px; /* Less rounded corners */
+    padding: 10px;
+    border-radius: 8px;
     border: 1px solid var(--border-color);
     background-color: var(--input-bg);
     width: 100%;
-    font-size: 1em; /* Adjust font size */
+    font-size: 1em;
     color: var(--text-color);
-    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    box-sizing: border-box;
 }
 
 #weather-widget #search-button {
-    padding: 10px; /* Slightly reduced padding */
-    border-radius: 8px; /* Less rounded corners */
+    padding: 10px;
+    border-radius: 8px;
     background-color: var(--button-bg);
     color: var(--button-text);
     border: none;
     cursor: pointer;
-    width: 100%; /* Button should span full width */
-    font-size: 1em; /* Adjust font size */
-    transition: background-color 0.2s ease-in-out; /* Smoother transition */
+    width: 100%;
+    font-size: 1em;
+    transition: background-color 0.2s ease-in-out;
 }
 
 #weather-widget #search-button:hover {
-    background-color: var(--hover-color, darkgreen); /* Use a variable for hover color */
+    background-color: var(--hover-color);
 }
 
-/* Weather city, region & time display */
-#weather-widget .weather-header:nth-child(2) {
-    display: flex;
-    justify-content: space-around; /* Distribute city, region, time */
-    align-items: center;
-    margin-bottom: 15px; /* Reduced margin */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 5px;
-    text-align: center;
-}
-
-#weather-widget #city-name,
-#weather-widget #region {
-    font-size: 1.1em; /* Slightly smaller */
-    font-weight: 500; /* Lighter bold */
-    color: var(--secondary-text, var(--text-color)); /* Use secondary text color if available */
-    text-transform: uppercase;
-}
-
-#weather-widget #weather-time {
-    font-size: 0.9em;
-    color: var(--secondary-text, var(--text-color));
-}
-
-/* Weather information container */
+/* Weather Info */
 #weather-widget .weather-info {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px; /* Reduced gap */
+    gap: 20px;
     text-align: center;
     flex-wrap: wrap;
-    padding: 15px 0; /* Add some vertical padding */
+    padding: 15px 0;
 }
 
 #weather-widget #temperature {
-    font-size: 2em; /* Slightly smaller temperature */
+    font-size: 2em;
     font-weight: bold;
-    color: var(--accent-color, var(--text-color)); /* Use accent color for emphasis */
-    margin: 10px; /* Reduced margin */
+    color: var(--accent-color);
+    margin: 10px;
 }
 
 #weather-widget #weather-condition {
@@ -2567,86 +2512,84 @@ body.focus-outline-disabled :focus {
 }
 
 #weather-widget #weather-icon {
-    width: 80px; /* Slightly smaller icon */
+    width: 80px;
     height: 80px;
-    margin: 10px; /* Reduced margin */
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1)); /* Subtle shadow for the icon */
+    margin: 10px;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
 }
 
-/* Detailed weather information */
+/* Detailed Weather Information */
 #weather-widget .weather-details {
-    padding-top: 15px; /* Reduced top padding */
-    border-top: 1px solid var(--border-color); /* Lighter border */
-    display: grid; /* Use grid for a more organized layout */
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive columns - increased minmax for better layout */
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 10px;
 }
 
 #weather-widget .weather-details p {
-    font-size: 0.95em; /* Slightly smaller font */
-    margin: 6px 0; /* Reduced margin */
+    font-size: 0.95em;
+    margin: 6px 0;
     color: var(--text-color);
-    text-align: center; /* Center details */
+    text-align: center;
 }
 
 #weather-widget .weather-details p strong {
-    font-weight: 600; /* Slightly lighter bold for detail labels */
-    color: var(--accent-color, var(--text-color));
+    font-weight: 600;
+    color: var(--accent-color);
 }
 
 /* General Styles for the Unit Select Dropdown */
 #unit-select {
-    background-color: var(--input-bg, #ffffff); /* Default to white or use theme variable */
-    color: var(--text-color, #333333); /* Default text color */
-    border: 1px solid var(--border-color, #ccc); /* Border color */
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 8px 16px;
     font-size: 16px;
-    font-family: inherit; /* Matches the website font */
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition for theme change */
+    font-family: inherit;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-/* Focus State */
 #unit-select:focus {
     outline: none;
-    border-color: var(--dropdown-focus-border, #007bff); /* Custom focus border color */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Custom focus shadow */
+    border-color: var(--dropdown-focus-border);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Dark Mode Styles */
+/* Dark Mode Adjustments */
 @media (prefers-color-scheme: dark) {
     #unit-select {
-        background-color: var(--dropdown-background-dark, #222222); /* Dark mode background */
-        color: var(--dropdown-text-dark, #ffffff); /* Dark mode text color */
-        border: 1px solid var(--dropdown-border-dark, #555555); /* Dark mode border color */
+        background-color: var(--dropdown-background-dark);
+        color: var(--dropdown-text-dark);
+        border: 1px solid var(--dropdown-border-dark);
     }
 
     #unit-select:focus {
-        border-color: var(--dropdown-focus-border-dark, #ff5722); /* Custom dark mode focus border */
-        box-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Dark mode focus shadow */
+        border-color: var(--dropdown-focus-border-dark);
+        box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
     }
 }
 
-/* Light Mode Styles (default) */
+/* Light Mode Adjustments */
 @media (prefers-color-scheme: light) {
     #unit-select {
-        background-color: var(--dropdown-background-light, #ffffff); /* Light mode background */
-        color: var(--dropdown-text-light, #333333); /* Light mode text color */
-        border: 1px solid var(--dropdown-border-light, #ddd); /* Light mode border color (lighter than dark mode) */
+        background-color: var(--dropdown-background-light);
+        color: var(--dropdown-text-light);
+        border: 1px solid var(--dropdown-border-light);
     }
 
     #unit-select:focus {
-        border-color: var(--dropdown-focus-border-light, #007bff); /* Light mode focus border */
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Light mode focus shadow */
+        border-color: var(--dropdown-focus-border-light);
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 }
 
-/* Responsive design for smaller screens */
+/* Responsive Design */
 @media (max-width: 1024px) {
-    /* Tablet adjustments */
     #weather-widget.weather-widget {
         padding: 15px;
-        margin: 15px auto; /* Adjust margins for tablets */
+        margin: 15px auto;
     }
 
     #weather-widget .weather-header input,
@@ -2655,8 +2598,8 @@ body.focus-outline-disabled :focus {
     }
 
     #weather-widget .weather-info {
-        flex-direction: row; /* Keep info in a row on larger tablets */
-        justify-content: space-around; /* Distribute items */
+        flex-direction: row;
+        justify-content: space-around;
         gap: 15px;
     }
 
@@ -2670,19 +2613,14 @@ body.focus-outline-disabled :focus {
     }
 
     #weather-widget .weather-details {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust min width */
-    }
-
-    #weather-widget .weather-details p {
-        font-size: 0.9em;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 }
 
 @media (max-width: 768px) {
-    /* Phone adjustments */
     #weather-widget.weather-widget {
         padding: 10px;
-        margin: 10px auto; /* Further reduce margins for phones */
+        margin: 10px auto;
     }
 
     #weather-widget .weather-header input,
@@ -2691,7 +2629,7 @@ body.focus-outline-disabled :focus {
     }
 
     #weather-widget .weather-info {
-        flex-direction: column; /* Stack info on smaller phones */
+        flex-direction: column;
         gap: 10px;
     }
 
@@ -2705,38 +2643,10 @@ body.focus-outline-disabled :focus {
     }
 
     #weather-widget .weather-details {
-        grid-template-columns: 1fr; /* Stack details on smaller phones */
+        grid-template-columns: 1fr;
     }
 
     #weather-widget .weather-details p {
         font-size: 0.85em;
-    }
-}
-
-/* Light/dark mode support */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: var(--bg-color);
-    }
-
-    #weather-widget.weather-widget {
-        background-color: var(--content-bg);
-        border: 1px solid var(--border-color);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    #weather-widget #search-input {
-        background-color: var(--input-bg);
-        border: 1px solid var(--border-color);
-        color: var(--text-color);
-    }
-
-    #weather-widget #search-button {
-        background-color: var(--button-bg);
-        color: var(--button-text);
-    }
-
-    #weather-widget .weather-details p {
-        color: var(--text-color);
     }
 }
