@@ -189,41 +189,82 @@ s0.parentNode.insertBefore(s1,s0);
             </div>
         </section>
 
-  <div id="weather-widget" class="weather-widget">
+ <div id="weather-widget" class="weather-widget">
+    <!-- Weather Search Section -->
     <div class="weather-header">
-        <input type="text" id="search-input" placeholder="Enter City or Zip Code">
+        <input type="text" id="search-input" placeholder="Enter City or Zip Code" />
         <button id="search-button">Search</button>
     </div>
+
+    <!-- City, Region, and Time Display -->
     <div class="weather-header">
         <span id="city-name">City</span>, <span id="region">Region</span>
         <span id="weather-time">Time</span>
     </div>
+
+    <!-- Unit Selection Dropdown -->
     <select id="unit-select">
         <option value="Celsius">Celsius (°C)</option>
         <option value="Fahrenheit">Fahrenheit (°F)</option>
     </select>
+
+    <!-- Weather Info Section -->
     <div class="weather-info">
         <span id="temperature">--°C</span>
         <span id="weather-condition">Condition</span>
-        <img id="weather-icon" src="" alt="Weather Icon">
+        <img id="weather-icon" src="" alt="Weather Icon" />
     </div>
+
+    <!-- Detailed Weather Information in Individual Containers -->
     <div class="weather-details">
-        <p id="feels-like">Feels Like: --°C</p>
-        <p id="min-temp">Min Temp: --°C</p>
-        <p id="max-temp">Max Temp: --°C</p>
-        <p id="humidity">Humidity: --%</p>
-        <p id="wind">Wind: -- km/h</p>
-        <p id="pressure">Pressure: -- hPa</p>
-        <p id="uv-index">UV Index: --</p>
-        <p id="sunrise">Sunrise: --</p>
-        <p id="sunset">Sunset: --</p>
-        <p id="aqi">Air Quality Index: --</p>
-        <p id="visibility">Visibility: -- km</p>
-        <p id="clouds">Cloud Coverage: --%</p>
-        <p id="rain">Rain: -- mm</p>
-        <p id="snow">Snow: -- mm</p>
-        <p id="last-update">Last Update: --</p>
-        <p id="location-coordinates">Coordinates: --</p>
+        <div class="weather-detail-container">
+            <p id="feels-like"><strong>Feels Like:</strong> --°C</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="min-temp"><strong>Min Temp:</strong> --°C</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="max-temp"><strong>Max Temp:</strong> --°C</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="humidity"><strong>Humidity:</strong> --%</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="wind"><strong>Wind:</strong> -- km/h</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="pressure"><strong>Pressure:</strong> -- hPa</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="uv-index"><strong>UV Index:</strong> --</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="sunrise"><strong>Sunrise:</strong> --</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="sunset"><strong>Sunset:</strong> --</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="aqi"><strong>Air Quality Index:</strong> --</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="visibility"><strong>Visibility:</strong> -- km</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="clouds"><strong>Cloud Coverage:</strong> --%</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="rain"><strong>Rain:</strong> -- mm</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="snow"><strong>Snow:</strong> -- mm</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="last-update"><strong>Last Update:</strong> --</p>
+        </div>
+        <div class="weather-detail-container">
+            <p id="location-coordinates"><strong>Coordinates:</strong> --</p>
+        </div>
     </div>
 </div>
         
