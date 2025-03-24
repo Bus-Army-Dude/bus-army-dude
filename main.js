@@ -1,7 +1,7 @@
 // API key and endpoint
 const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-const aqiUrl = 'https://api.openweathermap.org/data/2.5/air_pollution';  // API for AQI data
+const oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall';  // API for UV Index and Air Quality Index (AQI)
 
 // Elements from the HTML
 const searchButton = document.getElementById('search-button');
@@ -118,22 +118,6 @@ function fetchWeatherData(query, unit) {
         .catch(error => {
             console.error("Error fetching weather data:", error);
             alert("There was an error fetching the weather data. Please try again later.");
-        });
-}
-
-// Function to fetch AQI data
-function fetchAQIData(lat, lon) {
-    const url = `${aqiUrl}?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-    
-    fetch(url)
-        .then(response => response.json())
-        .then(aqiData => {
-            const aqiValue = aqiData.list[0].main.aqi;
-            aqi.textContent = `Air Quality Index: ${aqiValue}`;
-        })
-        .catch(error => {
-            console.error("Error fetching AQI data:", error);
-            aqi.textContent = "Air Quality Index: Not Available";
         });
 }
 
