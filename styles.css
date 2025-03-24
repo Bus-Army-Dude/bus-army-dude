@@ -2502,6 +2502,74 @@ body.focus-outline-disabled :focus {
     transform: translateY(0);
 }
 
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    #weather-widget #search-input {
+        background-color: var(--input-bg-dark);
+        color: var(--text-color-dark); /* Ensure text is visible */
+        border: 2px solid var(--border-color-dark);
+    }
+
+    #weather-widget #search-button {
+        background-color: var(--button-bg-dark);
+        color: var(--button-text-dark);
+    }
+
+    #weather-widget #search-button:hover {
+        background-color: var(--hover-color-dark);
+    }
+
+    #unit-select {
+        background-color: var(--input-bg-dark);
+        color: var(--text-color-dark); /* Ensure text is visible */
+        border: 2px solid var(--border-color-dark);
+    }
+
+    #unit-select:focus {
+        border-color: var(--dropdown-focus-border-dark);
+        box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+    }
+
+    /* Smooth Dark Mode Transition */
+    #weather-widget, #weather-widget * {
+        transition: all 0.5s ease;
+    }
+}
+
+/* Light Mode Adjustments */
+@media (prefers-color-scheme: light) {
+    #weather-widget #search-input {
+        background-color: var(--input-bg-light);
+        color: var(--text-color-light); /* Ensure text is visible */
+        border: 2px solid var(--border-color-light);
+    }
+
+    #weather-widget #search-button {
+        background-color: var(--button-bg-light);
+        color: var(--button-text-light);
+    }
+
+    #weather-widget #search-button:hover {
+        background-color: var(--hover-color-light);
+    }
+
+    #unit-select {
+        background-color: var(--input-bg-light);
+        color: var(--text-color-light); /* Ensure text is visible */
+        border: 2px solid var(--border-color-light);
+    }
+
+    #unit-select:focus {
+        border-color: var(--dropdown-focus-border-light);
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Smooth Light Mode Transition */
+    #weather-widget, #weather-widget * {
+        transition: all 0.5s ease;
+    }
+}
+
 /* Weather Info Section */
 #weather-widget .weather-info {
     display: flex;
