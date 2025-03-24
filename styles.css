@@ -2447,8 +2447,7 @@ body.focus-outline-disabled :focus {
 /* General Weather Widget Styling */
 #weather-widget.weather-widget {
     width: 100%;
-    max-width: 600px;  /* Add a max-width to limit how wide it gets */
-    margin: 20px auto;
+    max-width: 600px; /* Max width to avoid excessive stretching */
     padding: 25px;
     border-radius: 16px;
     background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(0, 145, 255, 0.15));
@@ -2459,8 +2458,7 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     transition: all 0.3s ease-out;
     backdrop-filter: blur(10px);
-    align-items: center;  /* Ensures all child elements are centered */
-    justify-content: center; /* Centers vertically inside the container */
+    margin: 0 auto; /* Centers horizontally within its container */
 }
 
 /* Weather Input and Button Styles */
