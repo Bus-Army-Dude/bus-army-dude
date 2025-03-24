@@ -143,6 +143,8 @@ unitSelect.addEventListener('change', () => {
     unit = unitSelect.value;
     localStorage.setItem('unit', unit);
     const query = searchInput.value.trim();
+
+    // Re-fetch the weather data using the new unit and keep the same query (city or zip code)
     if (query) {
         fetchWeatherData(query, unit);
     }
