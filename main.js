@@ -259,11 +259,11 @@ function getAirQualityClass(aqi) {
 // ========================
 function formatForecastDate(dateObj) {
   const options = { weekday: 'short', day: 'numeric' };
-  const formattedDate = dateObj.toLocaleDateString(undefined, options);
+  const formattedDate = dateObj.toLocaleDateString('en-US', options); // Ensuring en-US format
   
-  // Swap the order to ensure it's "Wed 26" format
-  const [weekday, day] = formattedDate.split(' ');
-  return `${weekday} ${day}`;
+  // Split the formatted date into components
+  const [weekday, day] = formattedDate.match(/[A-Za-z]+|\d+/g);
+  return `${weekday} ${day}`; // Ensures it's "Wed 26"
 }
 
 // Updated Forecast Function
