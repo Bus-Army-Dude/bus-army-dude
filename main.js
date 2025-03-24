@@ -113,7 +113,7 @@ function updateDisplay(data) {
   }
   if (precipitationElement) {
     const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0;
-    precipitationElement.textContent = precipitationChance > 0 ? `${precipitationChance}% chance of rain` : 'None';
+    precipitationElement.textContent = precipitationChance > 0 ? `${precipitationChance}% chance of rain` : `None`;
   }
 
   // Update Air Quality Section
@@ -200,13 +200,13 @@ function updateAirQuality(data) {
       { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 }
     ];
     
-    airQualityDetailsEl.innerHTML = pollutants.map(pollutant => 
-      `<div class="pollutant">
+    airQualityDetailsEl.innerHTML = pollutants.map(pollutant => `
+      <div class="pollutant">
         <span class="pollutant-name">${pollutant.name}:</span>
         <span class="pollutant-value">${pollutant.value.toFixed(2)} µg/m³</span>
         <span class="pollutant-rating ${getAirQualityClass(aqi)}">${aqiDescription}</span>
-      </div>`
-    ).join('');
+      </div>
+    `).join('');
   } else {
     airQualityIndicator.innerHTML = `<span>N/A</span>`;
     airQualityStatus.textContent = 'Air Quality data not available.';
@@ -230,86 +230,110 @@ function getAirQualityDescription(aqi) {
   }
 }
 
-function getAirQualityClass(aqi) {
-  switch (aqi) {
-    case 1: return 'good';
-    case 2: return 'moderate';
-    case 3: return 'unhealthy-for-sensitive-groups';
-    case 4: return 'unhealthy';
-    case 5: return 'very-unhealthy';
-    case 6: return 'hazardous';
-    default: return 'unknown';
-  }
+function getPrimaryPollutant(airQuality) {
+  const pollutants = [
+    { name: 'Ozone', value: airQuality.o3 },
+    { name: 'Carbon Monoxide', value: airQuality.co },
+    { name: 'Nitrogen Dioxide', value: airQuality.no2 },
+    { name: 'Sulfur Dioxide', value: airQuality.so2 },
+    { name: 'PM10', value: airQuality.pm10 },
+    { name: 'PM2.5', value: airQuality.pm2_5 }
+  ];
+  pollutants.sort((a, b) => b.value - a.value);
+  return pollutants[0].name;
 }
 
-function getPrimaryPollutant(airQualityData) {
-  if (!airQualityData) return 'Unknown';
-
-  let maxValue = 0;
-  let primaryPollutant = 'Unknown';
-
-  Object.entries(airQualityData).forEach(([pollutant, value]) => {
-    if (pollutant !== 'us-epa-index' && value > maxValue) {
-      maxValue = value;
-      primaryPollutant = pollutant;
-    }
-  });
-
-  return primaryPollutant.toUpperCase();
+function getAirQualityClass(aqi) {
+  switch (aqi) {
+    case 1: return "good";
+    case 2: return "moderate";
+    case 3: return "unhealthy";
+    case 4: return "very-unhealthy";
+    case 5: return "hazardous";
+    default: return "";
+  }
 }
 
 // ========================
 // Update Forecast Section
 // ========================
+function formatForecastDate(dateObj) {
+  return dateObj.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' });
+}
+
+// Updated Forecast Function
 function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
-  if (!forecastContainer) return;
+  forecastContainer.innerHTML = ''; // Clear previous forecasts
 
-  forecastContainer.innerHTML = '';
+  // Use the current date as the reference for labels
+  const today = new Date();
 
-  forecastDays.forEach(day => {
+  forecastDays.forEach((day, index) => {
+    let dateLabel = "";
+    if (index === 0) {
+      dateLabel = "Today";
+    } else if (index === 1) {
+      dateLabel = "Tomorrow";
+    } else {
+      // Create a new date object by adding 'index' days to today
+      const futureDate = new Date(today);
+      futureDate.setDate(today.getDate() + index);
+      dateLabel = formatForecastDate(futureDate);
+    }
+
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
     forecastElement.innerHTML = `
-      <div class="date">${new Date(day.date).toLocaleDateString()}</div>
-      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" />
-      <div class="temp">
-        <span class="high">${day.day.maxtemp_f}°F</span> / <span class="low">${day.day.mintemp_f}°F</span>
+      <div class="date">${dateLabel}</div>
+      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
+      <div class="forecast-temps">
+        <span class="high">${day.day.maxtemp_f}°F</span>
+        <span class="separator">/</span>
+        <span class="low">${day.day.mintemp_f}°F</span>
       </div>
-      <div class="condition">${day.day.condition.text}</div>
-      <div class="precipitation">Chance of precipitation: ${day.day.daily_chance_of_rain}%</div>
+      <div class="forecast-details">
+        <span class="condition">${day.day.condition.text}</span>
+        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
+      </div>
     `;
     forecastContainer.appendChild(forecastElement);
   });
 }
 
 // ========================
-// Update Sun/Moon Section
+// Update Sun & Moon Section
 // ========================
-function updateSunMoon(astro) {
-  const sunMoonContainer = document.querySelector('.sun-moon-container');
+function updateSunMoon(astroData) {
+  const sunriseElement = document.querySelector('.sunrise');
+  const sunsetElement = document.querySelector('.sunset');
+  const moonriseElement = document.querySelector('.moonrise');
+  const moonsetElement = document.querySelector('.moonset');
 
-  const sunriseElement = sunMoonContainer.querySelector('.sunrise .value');
-  const sunsetElement = sunMoonContainer.querySelector('.sunset .value');
-  const moonriseElement = sunMoonContainer.querySelector('.moonrise .value');
-  const moonsetElement = sunMoonContainer.querySelector('.moonset .value');
-  const moonPhaseElement = sunMoonContainer.querySelector('.moon-phase .value');
-
-  if (sunriseElement) sunriseElement.textContent = astro.sunrise;
-  if (sunsetElement) sunsetElement.textContent = astro.sunset;
-  if (moonriseElement) moonriseElement.textContent = astro.moonrise;
-  if (moonsetElement) moonsetElement.textContent = astro.moonset;
-  if (moonPhaseElement) moonPhaseElement.textContent = astro.moon_phase;
+  if (astroData) {
+    sunriseElement.textContent = `Sunrise: ${astroData.sunrise || '--'}`;
+    sunsetElement.textContent = `Sunset: ${astroData.sunset || '--'}`;
+    moonriseElement.textContent = `Moonrise: ${astroData.moonrise || '--'}`;
+    moonsetElement.textContent = `Moonset: ${astroData.moonset || '--'}`;
+  } else {
+    sunriseElement.textContent = 'Sunrise: --';
+    sunsetElement.textContent = 'Sunset: --';
+    moonriseElement.textContent = 'Moonrise: --';
+    moonsetElement.textContent = 'Moonset: --';
+  }
 }
 
 // ========================
-// Error Handling
+// Display Error Function
 // ========================
 function displayError(message) {
-  const errorElement = document.querySelector('.weather-error');
-  if (errorElement) {
-    errorElement.textContent = message;
-    errorElement.style.display = 'block';
+  const loadingSpinner = document.querySelector('.weather-loading');
+  const weatherContent = document.querySelector('.weather-content');
+
+  if (loadingSpinner) loadingSpinner.style.display = 'none';
+  if (weatherContent) {
+    weatherContent.innerHTML = `<p class="error-message">Error: ${message}</p>`;
+    weatherContent.style.display = 'block';
   }
 }
 
@@ -323,8 +347,8 @@ document.addEventListener('DOMContentLoaded', function () {
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
 });
 
-document.querySelector('#location-submit')?.addEventListener('click', function () {
-  const locationInput = document.querySelector('#location-input')?.value?.trim();
+document.querySelector('#location-submit').addEventListener('click', function () {
+  const locationInput = document.querySelector('#location-input').value.trim();
   if (locationInput) {
     localStorage.setItem('lastLocation', locationInput);
     console.log('User-input location:', locationInput);
