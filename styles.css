@@ -2448,16 +2448,20 @@ body.focus-outline-disabled :focus {
 #weather-widget.weather-widget {
     width: 100%;
     margin: 20px auto;
-    padding: 25px;
+    padding: 30px; /* Adjusted padding to match president section */
     border-radius: 16px;
-    background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(0, 145, 255, 0.15));
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(145deg, 
+        color-mix(in srgb, var(--content-bg) 98%, white), 
+        var(--content-bg));
+    box-shadow: 
+        0 8px 32px -8px var(--shadow-color), 
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     gap: 20px;
     box-sizing: border-box;
     transition: all 0.3s ease-out;
-    backdrop-filter: blur(10px);
 }
 
 /* Weather Input and Button Styles */
@@ -2661,9 +2665,8 @@ body.focus-outline-disabled :focus {
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     #weather-widget.weather-widget {
-        padding: 15px;
-        margin: 10px;
-        margin-right: 15px; /* Fixed right margin alignment */
+        padding: 20px;
+        margin: 15px;
     }
 
     #weather-widget .weather-info {
