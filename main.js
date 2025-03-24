@@ -1,7 +1,7 @@
 // API key and endpoint
 const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-const oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall'; // For UV Index and Air Quality Index (AQI)
+const oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall'; // UV Index and additional details
 
 // HTML Elements
 const searchButton = document.getElementById('search-button');
@@ -41,32 +41,24 @@ function isZipCode(input) {
 
 // Fetch weather data including UV Index and Air Quality
 async function fetchWeatherData(query, unit) {
-  let url;
-
-  // Set the correct URL for ZIP code or city-based searches
-  if (isZipCode(query)) {
-    url = `${apiUrl}?zip=${query}&units=${unit}&appid=${apiKey}`;
-  } else {
-    url = `${apiUrl}?q=${query}&units=${unit}&appid=${apiKey}`;
-  }
+  let url = isZipCode(query)
+    ? `${apiUrl}?zip=${query}&units=${unit}&appid=${apiKey}`
+    : `${apiUrl}?q=${query}&units=${unit}&appid=${apiKey}`;
 
   try {
     const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Unable to fetch weather data. Status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`Unable to fetch weather data. Status: ${response.status}`);
     const data = await response.json();
 
-    // Log the weather data for debugging
-    console.log('Weather Data:', data);
+    console.log('Weather Data:', data); // Debugging
 
     updateWeatherUI(data);
 
     // Fetch additional details like UV Index and Air Quality
-    fetchAdditionalDetails(data.coord.lat, data.coord.lon, unit);
+    await fetchAdditionalDetails(data.coord.lat, data.coord.lon, unit);
   } catch (error) {
     console.error('Error fetching weather data:', error.message);
-    alert('Unable to fetch weather data. Please check the city or ZIP code and try again.');
+    alert('Unable to fetch weather data. Please check your input and try again.');
   }
 }
 
@@ -74,38 +66,38 @@ async function fetchWeatherData(query, unit) {
 async function fetchAdditionalDetails(lat, lon, unit) {
   try {
     const response = await fetch(`${oneCallUrl}?lat=${lat}&lon=${lon}&units=${unit}&appid=${apiKey}`);
-    if (!response.ok) {
-      throw new Error(`Unable to fetch UV or Air Quality data. Status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`Unable to fetch UV or Air Quality data. Status: ${response.status}`);
     const data = await response.json();
 
-    // Log the forecast data for debugging
-    console.log('One Call API Data:', data);
+    console.log('One Call API Data:', data); // Debugging
 
     // Update UV Index
-    uvIndex.textContent = data.current.uvi ? `UV Index: ${data.current.uvi}` : 'UV Index: Not Available';
+    uvIndex.textContent = data.current.uvi
+      ? `UV Index: ${data.current.uvi}`
+      : 'UV Index: Not Available';
 
-    // Update Air Quality Index (optional - OWM API doesn't provide AQI directly in One Call)
+    // Update Air Quality Index (if available)
     aqi.textContent = 'Air Quality Index: Not Available'; // Placeholder if AQI isn't part of the API
 
     // Update sunrise and sunset
     sunrise.textContent = `Sunrise: ${new Date(data.current.sunrise * 1000).toLocaleTimeString()}`;
     sunset.textContent = `Sunset: ${new Date(data.current.sunset * 1000).toLocaleTimeString()}`;
   } catch (error) {
-    console.error('Error fetching UV or Air Quality data:', error.message);
+    console.error('Error fetching additional details:', error.message);
     uvIndex.textContent = 'UV Index: Not Available';
     aqi.textContent = 'Air Quality Index: Not Available';
+    sunrise.textContent = '--';
+    sunset.textContent = '--';
   }
 }
 
 // Update the weather UI
 function updateWeatherUI(data) {
-  // General weather information
   cityName.textContent = data.name || 'Unknown Location';
   region.textContent = data.sys.country || 'N/A';
   weatherTime.textContent = `Last Updated: ${new Date(data.dt * 1000).toLocaleString()}`;
 
-  // Temperature and conditions
+  // Temperature: No need for conversion, use API-provided values
   temperature.textContent = `${Math.round(data.main.temp)}°${currentUnit === 'metric' ? 'C' : 'F'}`;
   feelsLike.textContent = `Feels Like: ${Math.round(data.main.feels_like)}°${currentUnit === 'metric' ? 'C' : 'F'}`;
   minTemp.textContent = `Min Temp: ${Math.round(data.main.temp_min)}°${currentUnit === 'metric' ? 'C' : 'F'}`;
@@ -113,12 +105,19 @@ function updateWeatherUI(data) {
   weatherCondition.textContent = data.weather[0].description || 'N/A';
   weatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
 
-  // Additional details
-  humidity.textContent = `Humidity: ${data.main.humidity}%`;
-  wind.textContent = `Wind Speed: ${Math.round(data.wind.speed)} ${currentUnit === 'metric' ? 'm/s' : 'mph'}`;
-  pressure.textContent = `Pressure: ${data.main.pressure} hPa`;
-  visibility.textContent = `Visibility: ${Math.round(data.visibility / 1000)} km`;
+  // Wind Speed: Switch between m/s (metric) and mph (imperial)
+  wind.textContent = `Wind Speed: ${currentUnit === 'metric' ? `${data.wind.speed} m/s` : `${(data.wind.speed * 2.237).toFixed(1)} mph`}`;
+
+  // Pressure: Convert to inHg for imperial units
+  pressure.textContent = `Pressure: ${currentUnit === 'metric' ? `${data.main.pressure} hPa` : `${(data.main.pressure * 0.02953).toFixed(2)} inHg`}`;
+
+  // Visibility: Convert meters to km (metric) or miles (imperial)
+  visibility.textContent = `Visibility: ${currentUnit === 'metric' ? `${Math.round(data.visibility / 1000)} km` : `${(data.visibility / 1609).toFixed(1)} miles`}`;
+
+  // Cloud Coverage
   clouds.textContent = `Cloud Coverage: ${data.clouds.all}%`;
+
+  // Rain and Snow
   rain.textContent = data.rain ? `Rain: ${data.rain['1h']} mm` : 'Rain: Not Available';
   snow.textContent = data.snow ? `Snow: ${data.snow['1h']} mm` : 'Snow: Not Available';
   locationCoordinates.textContent = `Coordinates: Lat ${data.coord.lat}, Lon ${data.coord.lon}`;
