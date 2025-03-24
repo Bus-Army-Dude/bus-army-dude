@@ -1,7 +1,6 @@
 // API key and endpoint
 const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-const oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall';  // 7-day forecast and other data
 const aqiUrl = 'https://api.openweathermap.org/data/2.5/air_pollution';  // API for AQI data
 
 // Elements from the HTML
@@ -42,10 +41,11 @@ function isZipCode(input) {
     return /^[0-9]{5}(?:-[0-9]{4})?$/.test(input);  // Matches US ZIP codes
 }
 
-// Fetch the current weather data including UV Index and Air Quality Index
+// Fetch weather data (current and forecast) including UV and AQI
 function fetchWeatherData(query, unit) {
     let url;
 
+    // Set the correct URL for ZIP code or city-based searches
     if (isZipCode(query)) {
         url = `${apiUrl}?zip=${query}&units=${unit}&appid=${apiKey}`;
     } else {
@@ -62,62 +62,55 @@ function fetchWeatherData(query, unit) {
                 const sys = data.sys;
                 const coord = data.coord;
 
-                // Update UI with the weather data
-                cityName.textContent = data.name;
-                region.textContent = sys.country;
-                weatherTime.textContent = new Date().toLocaleString();
-                temperature.textContent = `${Math.round(main.temp)}°${unit === 'metric' ? 'C' : 'F'}`;
-                weatherCondition.textContent = weather.description;
-                weatherIcon.src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
+                // Update general weather data
+                document.getElementById('city-name').textContent = data.name;
+                document.getElementById('region').textContent = sys.country;
+                document.getElementById('weather-time').textContent = new Date().toLocaleString();
+                document.getElementById('temperature').textContent = `${Math.round(main.temp)}°${unit === 'metric' ? 'C' : 'F'}`;
+                document.getElementById('weather-condition').textContent = weather.description;
+                document.getElementById('weather-icon').src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
 
-                feelsLike.textContent = `Feels Like: ${Math.round(main.feels_like)}°${unit === 'metric' ? 'C' : 'F'}`;
-                minTemp.textContent = `Min Temp: ${Math.round(main.temp_min)}°${unit === 'metric' ? 'C' : 'F'}`;
-                maxTemp.textContent = `Max Temp: ${Math.round(main.temp_max)}°${unit === 'metric' ? 'C' : 'F'}`;
-                humidity.textContent = `Humidity: ${main.humidity}%`;
-                wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
-                pressure.textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`;
-                sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
-                sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
-                visibility.textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`;
-                clouds.textContent = `Cloud Coverage: ${data.clouds.all}%`;
+                // Other weather details
+                document.getElementById('feels-like').textContent = `Feels Like: ${Math.round(main.feels_like)}°${unit === 'metric' ? 'C' : 'F'}`;
+                document.getElementById('min-temp').textContent = `Min Temp: ${Math.round(main.temp_min)}°${unit === 'metric' ? 'C' : 'F'}`;
+                document.getElementById('max-temp').textContent = `Max Temp: ${Math.round(main.temp_max)}°${unit === 'metric' ? 'C' : 'F'}`;
+                document.getElementById('humidity').textContent = `Humidity: ${main.humidity}%`;
+                document.getElementById('wind').textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
+                document.getElementById('pressure').textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`;
+                document.getElementById('sunrise').textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
+                document.getElementById('sunset').textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
+                document.getElementById('visibility').textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`;
+                document.getElementById('clouds').textContent = `Cloud Coverage: ${data.clouds.all}%`;
 
-                // Rain and snow values
-                const rainValue = unit === 'metric' ? (data.rain ? data.rain['1h'] : 0) : (data.rain ? (data.rain['1h'] * 0.03937) : 0);
-                const snowValue = unit === 'metric' ? (data.snow ? data.snow['1h'] : 0) : (data.snow ? (data.snow['1h'] * 0.03937) : 0);
-                rain.textContent = `Rain: ${rainValue.toFixed(2)} ${unit === 'metric' ? 'mm' : 'in'}`;
-                snow.textContent = `Snow: ${snowValue.toFixed(2)} ${unit === 'metric' ? 'mm' : 'in'}`;
+                // Log the weather data for debugging
+                console.log('Weather Data:', data);
 
-                lastUpdate.textContent = `Last Update: ${new Date().toLocaleString()}`;
-                locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
-
-                // Fetch UV Index (from OneCall API)
+                // Fetch UV Index and Air Quality data using the OneCall API
                 fetch(`${oneCallUrl}?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
                     .then(response => response.json())
                     .then(forecastData => {
-                        // Log the data to check if we have UV data
-                        console.log(forecastData);
+                        // Log the forecast data to check UV and AQI values
+                        console.log('Forecast Data (UV & AQI):', forecastData);
 
+                        // Update the UV Index if available
                         if (forecastData.current && forecastData.current.uvi !== undefined) {
-                            const uvIndexValue = forecastData.current.uvi;
-                            uvIndex.textContent = `UV Index: ${uvIndexValue}`;
+                            document.getElementById('uv-index').textContent = `UV Index: ${forecastData.current.uvi}`;
                         } else {
-                            uvIndex.textContent = 'UV Index: Not Available';
+                            document.getElementById('uv-index').textContent = 'UV Index: Not Available';
                         }
 
-                        // Fetch Air Quality Data (if available)
+                        // Update the Air Quality Index if available
                         if (forecastData.current && forecastData.current.aqi !== undefined) {
-                            const aqiValue = forecastData.current.aqi;
-                            airQualityIndex.textContent = `Air Quality Index: ${aqiValue}`;
+                            document.getElementById('aqi').textContent = `Air Quality Index: ${forecastData.current.aqi}`;
                         } else {
-                            airQualityIndex.textContent = 'Air Quality Index: Not Available';
+                            document.getElementById('aqi').textContent = 'Air Quality Index: Not Available';
                         }
                     })
                     .catch(error => {
                         console.error("Error fetching UV or Air Quality data:", error);
-                        uvIndex.textContent = 'UV Index: Not Available';
-                        airQualityIndex.textContent = 'Air Quality Index: Not Available';
+                        document.getElementById('uv-index').textContent = 'UV Index: Not Available';
+                        document.getElementById('aqi').textContent = 'Air Quality Index: Not Available';
                     });
-
             } else {
                 alert("Weather data not found for the entered city or ZIP code.");
             }
