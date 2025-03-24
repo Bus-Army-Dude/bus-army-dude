@@ -65,7 +65,10 @@ function fetchWeatherData(query, unit) {
                 // Update general weather data
                 document.getElementById('city-name').textContent = data.name;
                 document.getElementById('region').textContent = sys.country;
-                document.getElementById('weather-time').textContent = new Date().toLocaleString();
+                
+                // Last update (from the 'dt' property of weather data)
+                const lastUpdated = new Date(data.dt * 1000).toLocaleString();
+                document.getElementById('weather-time').textContent = lastUpdated;
                 document.getElementById('temperature').textContent = `${Math.round(main.temp)}°${unit === 'metric' ? 'C' : 'F'}`;
                 document.getElementById('weather-condition').textContent = weather.description;
                 document.getElementById('weather-icon').src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
@@ -81,6 +84,22 @@ function fetchWeatherData(query, unit) {
                 document.getElementById('sunset').textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
                 document.getElementById('visibility').textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`;
                 document.getElementById('clouds').textContent = `Cloud Coverage: ${data.clouds.all}%`;
+
+                // Coordinates (lat, lon)
+                document.getElementById('location-coordinates').textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
+
+                // Handle Rain and Snow (these are not always available)
+                if (data.rain) {
+                    document.getElementById('rain').textContent = `Rain: ${data.rain['1h']} mm/h`;
+                } else {
+                    document.getElementById('rain').textContent = 'Rain: Not Available';
+                }
+
+                if (data.snow) {
+                    document.getElementById('snow').textContent = `Snow: ${data.snow['1h']} mm/h`;
+                } else {
+                    document.getElementById('snow').textContent = 'Snow: Not Available';
+                }
 
                 // Log the weather data for debugging
                 console.log('Weather Data:', data);
