@@ -144,54 +144,66 @@ function displayWeatherAlerts(alerts, userLat, userLon) {
 
   if (relevantAlerts.length > 0) {
     relevantAlerts.forEach(alert => {
-      const listItem = document.createElement('li');
-      listItem.classList.add('alert-item');
+      // Data Validation and Mapping:
+      const headline = alert.headline || 'Weather Alert';
+      const action = alert.action || 'N/A';
+      const issuer = alert.issuer || 'N/A';
+      const area = alert.area || 'N/A';
+      const description = alert.description || 'N/A';
+      const what = alert.what || 'N/A';
+      const where = alert.where || 'N/A';
+      const when = alert.when || 'N/A';
+      const impacts = alert.impacts || 'N/A';
+      const instruction = alert.instruction || 'N/A';
 
       // Date formatting:
       const effectiveDate = alert.effective ? new Date(alert.effective).toLocaleString() : 'N/A';
       const expiresDate = alert.expires ? new Date(alert.expires).toLocaleString() : 'N/A';
 
+      const listItem = document.createElement('li');
+      listItem.classList.add('alert-item');
+
       listItem.innerHTML = `
         <div class="alert-header">
-          <span class="alert-title">${alert.headline || 'Weather Alert'}</span>
+          <span class="alert-title">${headline}</span>
           <span class="alert-time">${effectiveDate} - ${expiresDate}</span>
         </div>
         <div class="alert-details">
           <div class="alert-section">
             <strong>Action Recommended</strong>
-            <p>${alert.action || 'N/A'}</p>
+            <p>${action}</p>
           </div>
           <div class="alert-section">
             <strong>Issued By</strong>
-            <p>${alert.issuer || 'N/A'}</p>
+            <p>${issuer}</p>
           </div>
           <div class="alert-section">
             <strong>Affected Area</strong>
-            <p>${alert.area || 'N/A'}</p>
+            <p>${area}</p>
           </div>
           <div class="alert-section">
             <strong>Description</strong>
-            <p>${alert.description || 'N/A'}</p>
+            <p>${description}</p>
           </div>
           <div class="alert-section">
             <strong>WHAT...</strong>
-            <p>${alert.what || 'N/A'}</p>
+            <p>${what}</p>
           </div>
           <div class="alert-section">
             <strong>WHERE...</strong>
-            <p>${alert.where || 'N/A'}</p>
+            <p>${where}</p>
           </div>
           <div class="alert-section">
             <strong>WHEN...</strong>
-            <p>${alert.when || 'N/A'}</p>
+            <p>${when}</p>
           </div>
           <div class="alert-section">
             <strong>IMPACTS...</strong>
-            <p>${alert.impacts || 'N/A'}</p>
+            <p>${impacts}</p>
           </div>
           <div class="alert-section">
             <strong>PRECAUTIONARY/PREPAREDNESS ACTIONS...</strong>
-            <p>${alert.instruction || 'N/A'}</p>
+            <p>${instruction}</p>
           </div>
         </div>
       `;
