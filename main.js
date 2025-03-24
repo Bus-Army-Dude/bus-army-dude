@@ -76,7 +76,21 @@ function fetchWeatherData(query, unit) {
                 humidity.textContent = `Humidity: ${main.humidity}%`;
                 wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
                 pressure.textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`;
-                uvIndex.textContent = `UV Index: Not Available`;
+                
+                // UV Index
+                if (data.coord.lat && data.coord.lon) {
+                    fetch(`${aqiUrl}?lat=${data.coord.lat}&lon=${data.coord.lon}&appid=${apiKey}`)
+                        .then(aqiResponse => aqiResponse.json())
+                        .then(aqiData => {
+                            if (aqiData && aqiData.list && aqiData.list[0] && aqiData.list[0].components) {
+                                const uv = aqiData.list[0].components;
+                                uvIndex.textContent = `UV Index: ${uv['uv'] ? uv['uv'] : 'Not Available'}`;
+                            }
+                        });
+                } else {
+                    uvIndex.textContent = 'UV Index: Not Available';
+                }
+
                 sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
                 sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
                 aqi.textContent = `Air Quality Index: ${data.main.pressure}`;
@@ -105,7 +119,8 @@ function fetchWeatherData(query, unit) {
 searchButton.addEventListener('click', () => {
     const query = searchInput.value.trim();
     if (query) {
-        localStorage.setItem('city', query);  // Save city or ZIP code
+        currentCity = query;  // Update currentCity with user input
+        localStorage.setItem('city', currentCity);  // Save city or ZIP code
         fetchWeatherData(query, currentUnit);  // Fetch weather data
     } else {
         alert("Please enter a city or ZIP code.");
@@ -122,7 +137,7 @@ unitSelect.addEventListener('change', (e) => {
 // Fetch saved city and unit data when the page loads
 fetchWeatherData(currentCity, currentUnit);
 
-// Real-time updates (refresh weather every 5 minutes instead of every second)
+// Real-time updates (refresh weather every 5 minutes)
 setInterval(() => {
     fetchWeatherData(currentCity, currentUnit);
-}, 1000); // 1000 ms = 1 second
+}, 1000); // 1 second (1000 ms)
