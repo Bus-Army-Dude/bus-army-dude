@@ -1,7 +1,7 @@
 // API key and endpoint
 const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-const oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall';  // API for UV Index and Air Quality Index (AQI)
+const oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall'; // API for UV Index and Air Quality Index (AQI)
 
 // Elements from the HTML
 const searchButton = document.getElementById('search-button');
@@ -37,7 +37,7 @@ unitSelect.value = currentUnit === 'metric' ? 'Celsius' : 'Fahrenheit';
 
 // Function to determine if the input is a valid ZIP code or city
 function isZipCode(input) {
-    return /^[0-9]{5}(?:-[0-9]{4})?$/.test(input);  // Matches US ZIP codes
+    return /^[0-9]{5}(?:-[0-9]{4})?$/.test(input); // Matches US ZIP codes
 }
 
 // Fetch weather data (current and forecast) including UV and AQI
@@ -46,13 +46,18 @@ function fetchWeatherData(query, unit) {
 
     // Set the correct URL for ZIP code or city-based searches
     if (isZipCode(query)) {
-        url = `${apiUrl}?zip=${query}&units=${unit}&appid=${apiKey}`;
+        url = `<span class="math-inline">\{apiUrl\}?zip\=</span>{query}&units=<span class="math-inline">\{unit\}&appid\=</span>{apiKey}`;
     } else {
-        url = `${apiUrl}?q=${query}&units=${unit}&appid=${apiKey}`;
+        url = `<span class="math-inline">\{apiUrl\}?q\=</span>{query}&units=<span class="math-inline">\{unit\}&appid\=</span>{apiKey}`;
     }
 
     fetch(url)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.cod === 200) {
                 const weather = data.weather[0];
@@ -62,72 +67,60 @@ function fetchWeatherData(query, unit) {
                 const coord = data.coord;
 
                 // Update general weather data
-                document.getElementById('city-name').textContent = data.name;
-                document.getElementById('region').textContent = sys.country;
+                cityName.textContent = data.name;
+                region.textContent = sys.country;
 
                 // Last update (from the 'dt' property of weather data)
                 const lastUpdated = new Date(data.dt * 1000).toLocaleString();
-                document.getElementById('weather-time').textContent = lastUpdated;
-                document.getElementById('temperature').textContent = `${Math.round(main.temp)}°${unit === 'metric' ? 'C' : 'F'}`;
-                document.getElementById('weather-condition').textContent = weather.description;
-                document.getElementById('weather-icon').src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
+                weatherTime.textContent = lastUpdated;
+                temperature.textContent = `<span class="math-inline">\{Math\.round\(main\.temp\)\}°</span>{unit === 'metric' ? 'C' : 'F'}`;
+                weatherCondition.textContent = weather.description;
+                weatherIcon.src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
 
                 // Other weather details
-                document.getElementById('feels-like').textContent = `Feels Like: ${Math.round(main.feels_like)}°${unit === 'metric' ? 'C' : 'F'}`;
-                document.getElementById('min-temp').textContent = `Min Temp: ${Math.round(main.temp_min)}°${unit === 'metric' ? 'C' : 'F'}`;
-                document.getElementById('max-temp').textContent = `Max Temp: ${Math.round(main.temp_max)}°${unit === 'metric' ? 'C' : 'F'}`;
-                document.getElementById('humidity').textContent = `Humidity: ${main.humidity}%`;
-                document.getElementById('wind').textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
-                document.getElementById('pressure').textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`;
-                document.getElementById('sunrise').textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
-                document.getElementById('sunset').textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
-                document.getElementById('visibility').textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`;
-                document.getElementById('clouds').textContent = `Cloud Coverage: ${data.clouds.all}%`;
+                feelsLike.textContent = `Feels Like: <span class="math-inline">\{Math\.round\(main\.feels\_like\)\}°</span>{unit === 'metric' ? 'C' : 'F'}`;
+                minTemp.textContent = `Min Temp: <span class="math-inline">\{Math\.round\(main\.temp\_min\)\}°</span>{unit === 'metric' ? 'C' : 'F'}`;
+                maxTemp.textContent = `Max Temp: <span class="math-inline">\{Math\.round\(main\.temp\_max\)\}°</span>{unit === 'metric' ? 'C' : 'F'}`;
+                humidity.textContent = `Humidity: ${main.humidity}%`;
+                wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
+                pressure.textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`;
+                sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
+                sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
+                visibility.textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`;
+                clouds.textContent = `Cloud Coverage: ${data.clouds.all}%`;
 
                 // Coordinates (lat, lon)
-                document.getElementById('location-coordinates').textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
+                locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
 
                 // Rain and Snow - only show if present
-                if (data.rain && data.rain['1h']) {
-                    document.getElementById('rain').textContent = `Rain: ${data.rain['1h']} mm/h`;
-                } else {
-                    document.getElementById('rain').textContent = 'Rain: Not Available';
-                }
-
-                if (data.snow && data.snow['1h']) {
-                    document.getElementById('snow').textContent = `Snow: ${data.snow['1h']} mm/h`;
-                } else {
-                    document.getElementById('snow').textContent = 'Snow: Not Available';
-                }
+                rain.textContent = data.rain && data.rain['1h'] ? `Rain: ${data.rain['1h']} mm/h` : 'Rain: Not Available';
+                snow.textContent = data.snow && data.snow['1h'] ? `Snow: ${data.snow['1h']} mm/h` : 'Snow: Not Available';
 
                 // Log the weather data for debugging
                 console.log('Weather Data:', data);
 
                 // Fetch UV Index and Air Quality data using the OneCall API
-                fetch(`${oneCallUrl}?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
-                    .then(response => response.json())
+                fetch(`<span class="math-inline">\{oneCallUrl\}?lat\=</span>{coord.lat}&lon=<span class="math-inline">\{coord\.lon\}&units\=</span>{unit}&appid=${apiKey}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(forecastData => {
                         // Log the forecast data to check UV and AQI values
                         console.log('Forecast Data (UV & AQI):', forecastData);
 
                         // Update the UV Index if available
-                        if (forecastData.current && forecastData.current.uvi !== undefined) {
-                            document.getElementById('uv-index').textContent = `UV Index: ${forecastData.current.uvi}`;
-                        } else {
-                            document.getElementById('uv-index').textContent = 'UV Index: Not Available';
-                        }
+                        uvIndex.textContent = forecastData.current && forecastData.current.uvi !== undefined ? `UV Index: ${forecastData.current.uvi}` : 'UV Index: Not Available';
 
                         // Update the Air Quality Index if available
-                        if (forecastData.current && forecastData.current.aqi !== undefined) {
-                            document.getElementById('aqi').textContent = `Air Quality Index: ${forecastData.current.aqi}`;
-                        } else {
-                            document.getElementById('aqi').textContent = 'Air Quality Index: Not Available';
-                        }
+                        aqi.textContent = forecastData.current && forecastData.current.aqi !== undefined ? `Air Quality Index: ${forecastData.current.aqi}` : 'Air Quality Index: Not Available';
                     })
                     .catch(error => {
                         console.error("Error fetching UV or Air Quality data:", error);
-                        document.getElementById('uv-index').textContent = 'UV Index: Not Available';
-                        document.getElementById('aqi').textContent = 'Air Quality Index: Not Available';
+                        uvIndex.textContent = 'UV Index: Not Available';
+                        aqi.textContent = 'Air Quality Index: Not Available';
                     });
             } else {
                 alert("Weather data not found for the entered city or ZIP code.");
@@ -140,7 +133,7 @@ function fetchWeatherData(query, unit) {
 }
 
 // Event listener for the search button
-searchButton.addEventListener('click', function() {
+searchButton.addEventListener('click', function () {
     const query = searchInput.value.trim(); // Get the value from input
     if (query) {
         currentCity = query; // Update currentCity with user input
@@ -152,7 +145,7 @@ searchButton.addEventListener('click', function() {
 });
 
 // Event listener for the Enter key in the search input
-searchInput.addEventListener('keypress', function(event) {
+searchInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         const query = searchInput.value.trim(); // Get the value from input
         if (query) {
@@ -166,8 +159,10 @@ searchInput.addEventListener('keypress', function(event) {
 });
 
 // Event listener for the unit select dropdown
-unitSelect.addEventListener('change', function() {
+unitSelect.addEventListener('change', function () {
     currentUnit = unitSelect.value === 'Celsius' ? 'metric' : 'imperial';
     localStorage.setItem('unit', currentUnit); // Save selected unit
     fetchWeatherData(currentCity, currentUnit); // Fetch weather data
 });
+
+//
