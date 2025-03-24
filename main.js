@@ -29,8 +29,16 @@ const lastUpdate = document.getElementById('last-update');
 const locationCoordinates = document.getElementById('location-coordinates');
 
 // Fetch weather data from OpenWeather API
-function fetchWeatherData(city) {
-    const url = `${apiUrl}?q=${city}&units=metric&appid=${apiKey}`;
+function fetchWeatherData(query) {
+    // Check if the input is a number (zip code) or string (city name)
+    let url;
+    if (isNaN(query)) {
+        // If it's a city name
+        url = `${apiUrl}?q=${query}&units=metric&appid=${apiKey}`;
+    } else {
+        // If it's a zip code (Assuming it's a US zip code, update the country code if needed)
+        url = `${apiUrl}?zip=${query},us&units=metric&appid=${apiKey}`;
+    }
 
     fetch(url)
         .then(response => response.json())
@@ -72,6 +80,9 @@ function fetchWeatherData(city) {
                 snow.textContent = `Snow: ${data.snow ? data.snow['1h'] : 0} mm`;
                 lastUpdate.textContent = `Last Update: ${new Date().toLocaleString()}`;
                 locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
+
+                // Save the user’s query to localStorage to remember it
+                localStorage.setItem('weatherQuery', query);
             } else {
                 alert("Weather data not found!");
             }
@@ -84,9 +95,9 @@ function fetchWeatherData(city) {
 
 // Event listener for the search button
 searchButton.addEventListener('click', () => {
-    const city = searchInput.value.trim();
-    if (city) {
-        fetchWeatherData(city);
+    const query = searchInput.value.trim();
+    if (query) {
+        fetchWeatherData(query);
     } else {
         alert("Please enter a city or zip code.");
     }
@@ -99,5 +110,11 @@ searchInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Default city (you can set this to your location or any city)
-fetchWeatherData('New York');
+// Check if there's a saved query in localStorage and fetch weather for it
+const savedQuery = localStorage.getItem('weatherQuery');
+if (savedQuery) {
+    fetchWeatherData(savedQuery);
+} else {
+    // Default city (you can set this to your location or any city)
+    fetchWeatherData('New York');
+}
