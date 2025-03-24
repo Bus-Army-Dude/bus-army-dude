@@ -42,10 +42,10 @@ function isZipCode(input) {
     return /^[0-9]{5}(?:-[0-9]{4})?$/.test(input);  // Matches US ZIP codes
 }
 
-// Fetch the current weather data including UV Index
+// Fetch the current weather data including UV Index and Air Quality Index
 function fetchWeatherData(query, unit) {
     let url;
-    
+
     if (isZipCode(query)) {
         url = `${apiUrl}?zip=${query}&units=${unit}&appid=${apiKey}`;
     } else {
@@ -94,16 +94,28 @@ function fetchWeatherData(query, unit) {
                 fetch(`${oneCallUrl}?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
                     .then(response => response.json())
                     .then(forecastData => {
+                        // Log the data to check if we have UV data
+                        console.log(forecastData);
+
                         if (forecastData.current && forecastData.current.uvi !== undefined) {
                             const uvIndexValue = forecastData.current.uvi;
                             uvIndex.textContent = `UV Index: ${uvIndexValue}`;
                         } else {
                             uvIndex.textContent = 'UV Index: Not Available';
                         }
+
+                        // Fetch Air Quality Data (if available)
+                        if (forecastData.current && forecastData.current.aqi !== undefined) {
+                            const aqiValue = forecastData.current.aqi;
+                            airQualityIndex.textContent = `Air Quality Index: ${aqiValue}`;
+                        } else {
+                            airQualityIndex.textContent = 'Air Quality Index: Not Available';
+                        }
                     })
                     .catch(error => {
-                        console.error("Error fetching UV Index data:", error);
+                        console.error("Error fetching UV or Air Quality data:", error);
                         uvIndex.textContent = 'UV Index: Not Available';
+                        airQualityIndex.textContent = 'Air Quality Index: Not Available';
                     });
 
             } else {
