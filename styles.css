@@ -2578,6 +2578,53 @@ body.focus-outline-disabled :focus {
     color: var(--accent-color, var(--text-color));
 }
 
+/* General Styles for the Unit Select Dropdown */
+#unit-select {
+    background-color: var(--dropdown-background, #ffffff); /* Default to white or use theme variable */
+    color: var(--dropdown-text, #333333); /* Default text color */
+    border: 1px solid var(--dropdown-border, #ccc); /* Border color */
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-family: inherit; /* Matches the website font */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition for theme change */
+}
+
+/* Focus State */
+#unit-select:focus {
+    outline: none;
+    border-color: var(--dropdown-focus-border, #007bff); /* Custom focus border color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Custom focus shadow */
+}
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+    #unit-select {
+        background-color: var(--dropdown-background-dark, #333333); /* Dark mode background */
+        color: var(--dropdown-text-dark, #ffffff); /* Dark mode text color */
+        border: 1px solid var(--dropdown-border-dark, #555555); /* Dark mode border color */
+    }
+
+    #unit-select:focus {
+        border-color: var(--dropdown-focus-border-dark, #ff5722); /* Custom dark mode focus border */
+        box-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Dark mode focus shadow */
+    }
+}
+
+/* Light Mode Styles (default) */
+@media (prefers-color-scheme: light) {
+    #unit-select {
+        background-color: var(--dropdown-background-light, #ffffff); /* Light mode background */
+        color: var(--dropdown-text-light, #333333); /* Light mode text color */
+        border: 1px solid var(--dropdown-border-light, #ccc); /* Light mode border color */
+    }
+
+    #unit-select:focus {
+        border-color: var(--dropdown-focus-border-light, #007bff); /* Light mode focus border */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Light mode focus shadow */
+    }
+}
+
 /* Responsive design for smaller screens */
 @media (max-width: 1024px) {
     /* Tablet adjustments */
