@@ -133,6 +133,9 @@ function displayWeatherAlerts(alerts, userLat, userLon) {
 
   alertsList.innerHTML = ''; // Clear previous alerts
 
+  // Debugging: Log the alerts data
+  console.log('Alerts data inside displayWeatherAlerts:', alerts);
+
   const relevantAlerts = alerts.filter(alert => {
     if (alert.lat && alert.lon) {
       const distance = calculateDistance(userLat, userLon, alert.lat, alert.lon);
@@ -165,45 +168,45 @@ function displayWeatherAlerts(alerts, userLat, userLon) {
 
       listItem.innerHTML = `
         <div class="alert-header">
-          <span class="alert-title">${headline}</span>
-          <span class="alert-time">${effectiveDate} - ${expiresDate}</span>
-        </div>
-        <div class="alert-details">
-          <div class="alert-section">
-            <strong>Action Recommended</strong>
-            <p>${action}</p>
+          <span class="alert-title"><span class="math-inline">\{headline\}</span\>
+<span class\="alert\-time"\></span>{effectiveDate} - <span class="math-inline">\{expiresDate\}</span\>
+</div\>
+<div class\="alert\-details"\>
+<div class\="alert\-section"\>
+<strong\>Action Recommended</strong\>
+<p\></span>{action}</p>
           </div>
           <div class="alert-section">
             <strong>Issued By</strong>
-            <p>${issuer}</p>
-          </div>
-          <div class="alert-section">
-            <strong>Affected Area</strong>
-            <p>${area}</p>
+            <p><span class="math-inline">\{issuer\}</p\>
+</div\>
+<div class\="alert\-section"\>
+<strong\>Affected Area</strong\>
+<p\></span>{area}</p>
           </div>
           <div class="alert-section">
             <strong>Description</strong>
-            <p>${description}</p>
-          </div>
-          <div class="alert-section">
-            <strong>WHAT...</strong>
-            <p>${what}</p>
+            <p><span class="math-inline">\{description\}</p\>
+</div\>
+<div class\="alert\-section"\>
+<strong\>WHAT\.\.\.</strong\>
+<p\></span>{what}</p>
           </div>
           <div class="alert-section">
             <strong>WHERE...</strong>
-            <p>${where}</p>
-          </div>
-          <div class="alert-section">
-            <strong>WHEN...</strong>
-            <p>${when}</p>
+            <p><span class="math-inline">\{where\}</p\>
+</div\>
+<div class\="alert\-section"\>
+<strong\>WHEN\.\.\.</strong\>
+<p\></span>{when}</p>
           </div>
           <div class="alert-section">
             <strong>IMPACTS...</strong>
-            <p>${impacts}</p>
-          </div>
-          <div class="alert-section">
-            <strong>PRECAUTIONARY/PREPAREDNESS ACTIONS...</strong>
-            <p>${instruction}</p>
+            <p><span class="math-inline">\{impacts\}</p\>
+</div\>
+<div class\="alert\-section"\>
+<strong\>PRECAUTIONARY/PREPAREDNESS ACTIONS\.\.\.</strong\>
+<p\></span>{instruction}</p>
           </div>
         </div>
       `;
@@ -228,6 +231,111 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   const distance = R * c; // Distance in km
   return distance;
 }
+
+// ========================
+// Update Forecast Section
+// ========================
+
+function formatForecastDate(dateObj) {
+  // Option 1: Manual Formatting (Most Reliable)
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const day = dateObj.getDate();
+  const weekdayShort = weekdays[dateObj.getDay()];
+  return `${weekdayShort} ${day}`;
+
+  // Option 2: toLocaleDateString (If Manual Formatting Doesn't Work)
+  // If the above manual format does not work, try uncommenting the code below.
+  // const options = { weekday: 'short', day: 'numeric' };
+  // const formattedDate = dateObj.toLocaleDateString('en-US', options);
+  // console.log("Formatted Date:", formattedDate); // Check the output
+  // const [weekday, day] = formattedDate.match(/[A-Za-z]+|\d+/g);
+  // return `${weekday} ${day}`;
+}
+
+// Updated Forecast Function
+function updateForecast(forecastDays) {
+  const forecastContainer = document.querySelector('.forecast-container');
+  forecastContainer.innerHTML = ''; // Clear previous forecasts
+
+  const today = new Date(); // Current date
+
+  forecastDays.forEach((day, index) => {
+    let dateLabel = '';
+    if (index === 0) {
+      dateLabel = 'Today';
+    } else if (index === 1) {
+      dateLabel = 'Tomorrow';
+    } else {
+      const futureDate = new Date(today);
+      futureDate.setDate(today.getDate() + index);
+      dateLabel = formatForecastDate(futureDate);
+    }
+
+    const forecastElement = document.createElement('div');
+    forecastElement.classList.add('forecast-day');
+    forecastElement.innerHTML = `
+      <div class="date"><span class="math-inline">\{dateLabel\}</div\>
+<img src\="https\:</span>{day.day.condition.icon}" alt="<span class="math-inline">\{day\.day\.condition\.text\}" class\="forecast\-icon" /\>
+<div class\="forecast\-temps"\>
+<span class\="high"\></span>{day.day.maxtemp_f}°F</span>
+        <span class="separator">/</span>
+        <span class="low"><span class="math-inline">\{day\.day\.mintemp\_f\}°F</span\>
+</div\>
+<div class\="forecast\-details"\>
+<span class\="condition"\></span>{day.day.condition.text}</span>
+        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
+      </div>
+    `;
+    forecastContainer.appendChild(forecastElement);
+  });
+}
+
+// Function to get user's location
+function getUserLocation() {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+          resolve({ userLat, userLon });
+        },
+        error => {
+          reject(error);
+        }
+      );
+    } else {
+      reject('Geolocation is not supported by this browser.');
+    }
+  });
+}
+
+// Function to fetch weather.gov alerts
+async function fetchNWSAlerts(userLat, userLon) {
+  try {
+    const apiUrl = `https://api.weather.gov/alerts/active?point=<span class="math-inline">\{userLat\},</span>{userLon}`;
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data.features; // Alerts are in the "features" array
+  } catch (error) {
+    console.error('Error fetching NWS alerts:', error);
+    return [];
+  }
+}
+
+// Function to fetch OpenWeatherMap alerts
+async function fetchOpenWeatherAlerts(userLat, userLon) {
+  try {
+    const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4'; // Replace with your API key
+    const apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=<span class="math-inline">\{userLat\}&lon\=</span>{userLon}&exclude=minutely,hourly,daily&appid=${apiKey}`;
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data =
 
 // ========================
 // Update Air Quality Section
@@ -322,64 +430,6 @@ function getAirQualityClass(aqi) {
     case 5: return "hazardous";
     default: return "";
   }
-}
-
-// ========================
-// Update Forecast Section
-// ========================
-
-function formatForecastDate(dateObj) {
-  // Option 1: Manual Formatting (Most Reliable)
-  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const day = dateObj.getDate();
-  const weekdayShort = weekdays[dateObj.getDay()];
-  return `${weekdayShort} ${day}`;
-
-  // Option 2: toLocaleDateString (If Manual Formatting Doesn't Work)
-  // If the above manual format does not work, try uncommenting the code below.
-  // const options = { weekday: 'short', day: 'numeric' };
-  // const formattedDate = dateObj.toLocaleDateString('en-US', options);
-  // console.log("Formatted Date:", formattedDate); // Check the output
-  // const [weekday, day] = formattedDate.match(/[A-Za-z]+|\d+/g);
-  // return `${weekday} ${day}`;
-}
-
-// Updated Forecast Function
-function updateForecast(forecastDays) {
-  const forecastContainer = document.querySelector('.forecast-container');
-  forecastContainer.innerHTML = ''; // Clear previous forecasts
-
-  const today = new Date(); // Current date
-
-  forecastDays.forEach((day, index) => {
-    let dateLabel = '';
-    if (index === 0) {
-      dateLabel = 'Today';
-    } else if (index === 1) {
-      dateLabel = 'Tomorrow';
-    } else {
-      const futureDate = new Date(today);
-      futureDate.setDate(today.getDate() + index);
-      dateLabel = formatForecastDate(futureDate);
-    }
-
-    const forecastElement = document.createElement('div');
-    forecastElement.classList.add('forecast-day');
-    forecastElement.innerHTML = `
-      <div class="date">${dateLabel}</div>
-      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
-      <div class="forecast-temps">
-        <span class="high">${day.day.maxtemp_f}°F</span>
-        <span class="separator">/</span>
-        <span class="low">${day.day.mintemp_f}°F</span>
-      </div>
-      <div class="forecast-details">
-        <span class="condition">${day.day.condition.text}</span>
-        <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
-      </div>
-    `;
-    forecastContainer.appendChild(forecastElement);
-  });
 }
 
 // ========================
