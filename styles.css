@@ -2580,9 +2580,9 @@ body.focus-outline-disabled :focus {
 
 /* General Styles for the Unit Select Dropdown */
 #unit-select {
-    background-color: var(--dropdown-background, #ffffff); /* Default to white or use theme variable */
-    color: var(--dropdown-text, #333333); /* Default text color */
-    border: 1px solid var(--dropdown-border, #ccc); /* Border color */
+    background-color: var(--input-bg); /* Default to white or use theme variable */
+    color: var(--text-color); /* Default text color */
+    border: 1px solid var(--border-color); /* Border color */
     border-radius: 5px;
     padding: 8px 16px;
     font-size: 16px;
