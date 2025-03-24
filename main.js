@@ -1,7 +1,7 @@
 // ========================
 // Initialize API key and base URL
 // ========================
-const apiKey = 'YOUR_WEATHERAPI_KEY'; // Replace with your WeatherAPI key
+const apiKey = '852033aa68de4c61bbd211007252101'; // Replace with your WeatherAPI key
 const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
 // ========================
