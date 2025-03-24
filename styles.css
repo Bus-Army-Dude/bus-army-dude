@@ -2447,8 +2447,8 @@ body.focus-outline-disabled :focus {
 /* General Weather Widget Styling */
 #weather-widget.weather-widget {
     width: 100%;
-    max-width: 1000px; /* Limit the max width to avoid it stretching too wide on larger screens */
-    margin: 20px auto; /* Center on desktop */
+    max-width: 100%; /* Ensure full-width on all devices */
+    margin: 20px 0; /* Keep the top and bottom margins for spacing */
     padding: 25px;
     border-radius: 16px;
     background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(0, 145, 255, 0.15));
@@ -2459,7 +2459,7 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     transition: all 0.3s ease-out;
     backdrop-filter: blur(10px);
-    text-align: left;
+    text-align: left; /* Center text inside the widget */
 }
 
 /* Weather Input and Button Styles */
@@ -2519,11 +2519,11 @@ body.focus-outline-disabled :focus {
     }
 
     #unit-select {
-        background-color: var(--input-bg-dark);
+        background-color: var(--dark-bg);
         color: var(--text-color-dark);
         border: 2px solid var(--border-color-dark);
     }
-
+  
     #unit-select:focus {
         border-color: var(--dropdown-focus-border-dark);
         box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
@@ -2572,7 +2572,7 @@ body.focus-outline-disabled :focus {
 /* Weather Info Section */
 #weather-widget .weather-info {
     display: flex;
-    justify-content: center; /* Center the weather info on PC */
+    justify-content: center; /* Center the weather info inside the full-width container */
     align-items: center;
     text-align: center;
     gap: 20px;
@@ -2606,11 +2606,11 @@ body.focus-outline-disabled :focus {
 /* Weather Details Cards */
 #weather-widget .weather-details {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Make sure it stays responsive */
     gap: 15px;
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
-    justify-items: center; /* Center items inside the grid */
+    justify-content: center; /* Center the entire grid content */
 }
 
 #weather-widget .weather-details .weather-card {
