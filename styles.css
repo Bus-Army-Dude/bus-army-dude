@@ -2552,6 +2552,8 @@ body.focus-outline-disabled :focus {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     text-align: center;
+    min-width: 250px; /* Ensure cards don't get too narrow on small screens */
+    max-width: 320px; /* Optional: Adjust this based on your preference */
 }
 
 #weather-widget .weather-details .weather-card:hover {
@@ -2672,8 +2674,8 @@ body.focus-outline-disabled :focus {
     }
 
     #weather-widget #weather-icon {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
     }
 
     #weather-widget .weather-details {
@@ -2688,5 +2690,3 @@ body.focus-outline-disabled :focus {
         font-size: 0.95em;
     }
 }
-
-
