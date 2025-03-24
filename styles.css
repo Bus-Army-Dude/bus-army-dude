@@ -2444,200 +2444,225 @@ body.focus-outline-disabled :focus {
     }
 }
 
-/* Weather Widget Styling */
+/* General Weather Widget Styling */
 #weather-widget.weather-widget {
     width: 100%;
     margin: 20px auto;
-    padding: 20px;
-    border-radius: 12px;
-    background-color: var(--content-bg);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(0, 145, 255, 0.15));
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     box-sizing: border-box;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-out;
+    backdrop-filter: blur(10px);
 }
 
 /* Weather Input and Button Styles */
 #weather-widget #search-input {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
     background-color: var(--input-bg);
     width: 100%;
     font-size: 1em;
     color: var(--text-color);
     box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#weather-widget #search-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
 #weather-widget #search-button {
-    padding: 10px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 12px;
     background-color: var(--button-bg);
     color: var(--button-text);
     border: none;
     cursor: pointer;
     width: 100%;
-    font-size: 1em;
-    transition: background-color 0.2s ease-in-out;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #weather-widget #search-button:hover {
     background-color: var(--hover-color);
+    transform: translateY(-2px);
 }
 
-/* Weather Info */
+#weather-widget #search-button:active {
+    transform: translateY(0);
+}
+
+/* Weather Info Section */
 #weather-widget .weather-info {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
     text-align: center;
     flex-wrap: wrap;
-    padding: 15px 0;
+    padding: 20px 0;
+    transition: transform 0.3s ease;
 }
 
 #weather-widget #temperature {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: bold;
     color: var(--accent-color);
-    margin: 10px;
+    margin: 10px 0;
 }
 
 #weather-widget #weather-condition {
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: var(--text-color);
     text-transform: capitalize;
 }
 
 #weather-widget #weather-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     margin: 10px;
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+#weather-widget #weather-icon:hover {
+    transform: rotate(10deg);
 }
 
 /* Detailed Weather Information */
 #weather-widget .weather-details {
-    padding-top: 15px;
+    padding-top: 20px;
     border-top: 1px solid var(--border-color);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
+    gap: 15px;
+    font-size: 1.1em;
 }
 
 #weather-widget .weather-details p {
-    font-size: 0.95em;
-    margin: 6px 0;
+    margin: 8px 0;
     color: var(--text-color);
     text-align: center;
+    transition: color 0.3s ease;
 }
 
 #weather-widget .weather-details p strong {
-    font-weight: 600;
+    font-weight: bold;
     color: var(--accent-color);
 }
 
-/* General Styles for the Unit Select Dropdown */
+/* Modern Unit Select Dropdown */
 #unit-select {
     background-color: var(--input-bg);
     color: var(--text-color);
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color);
     border-radius: 5px;
-    padding: 8px 16px;
+    padding: 10px 20px;
     font-size: 16px;
     font-family: inherit;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 #unit-select:focus {
     outline: none;
     border-color: var(--dropdown-focus-border);
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
 /* Dark Mode Adjustments */
 @media (prefers-color-scheme: dark) {
     #weather-widget #search-input {
-        background-color: var(--input-bg-dark); /* Set a darker background color for dark mode */
-        color: var(--text-color-dark); /* Set a lighter text color for readability */
-        border: 1px solid var(--border-color-dark); /* Ensure the border is visible in dark mode */
+        background-color: var(--input-bg-dark);
+        color: var(--text-color-dark);
+        border: 2px solid var(--border-color-dark);
     }
 
     #weather-widget #search-button {
-        background-color: var(--button-bg-dark); /* Darker button background */
-        color: var(--button-text-dark); /* Lighter button text for contrast */
+        background-color: var(--button-bg-dark);
+        color: var(--button-text-dark);
     }
 
     #weather-widget #search-button:hover {
-        background-color: var(--hover-color-dark); /* Darker hover effect */
+        background-color: var(--hover-color-dark);
     }
 
     #unit-select {
-        background-color: var(--input-bg-dark); /* Dark input background for unit select */
-        color: var(--text-color-dark); /* Lighter text color for contrast */
-        border: 1px solid var(--border-color-dark); /* Dark border for input */
+        background-color: var(--input-bg-dark);
+        color: var(--text-color-dark);
+        border: 2px solid var(--border-color-dark);
     }
 
     #unit-select:focus {
         border-color: var(--dropdown-focus-border-dark);
-        box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
+        box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+    }
+
+    /* Smooth Dark Mode Transition */
+    #weather-widget, #weather-widget * {
+        transition: all 0.5s ease;
     }
 }
 
 /* Light Mode Adjustments */
 @media (prefers-color-scheme: light) {
     #weather-widget #search-input {
-        background-color: var(--input-bg-light); /* Lighter background color for light mode */
-        color: var(--text-color-light); /* Darker text color for readability */
-        border: 1px solid var(--border-color-light); /* Ensure the border is visible in light mode */
+        background-color: var(--input-bg-light);
+        color: var(--text-color-light);
+        border: 2px solid var(--border-color-light);
     }
 
     #weather-widget #search-button {
-        background-color: var(--button-bg-light); /* Lighter button background */
-        color: var(--button-text-light); /* Darker button text for contrast */
+        background-color: var(--button-bg-light);
+        color: var(--button-text-light);
     }
 
     #weather-widget #search-button:hover {
-        background-color: var(--hover-color-light); /* Lighter hover effect */
+        background-color: var(--hover-color-light);
     }
 
     #unit-select {
-        background-color: var(--input-bg-light); /* Lighter input background for unit select */
-        color: var(--text-color-light); /* Darker text color for contrast */
-        border: 1px solid var(--border-color-light); /* Light border for input */
+        background-color: var(--input-bg-light);
+        color: var(--text-color-light);
+        border: 2px solid var(--border-color-light);
     }
 
     #unit-select:focus {
         border-color: var(--dropdown-focus-border-light);
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Smooth Light Mode Transition */
+    #weather-widget, #weather-widget * {
+        transition: all 0.5s ease;
     }
 }
 
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
     #weather-widget.weather-widget {
-        padding: 10px;
-        margin: 10px auto;
-    }
-
-    #weather-widget .weather-header input,
-    #weather-widget .weather-header button {
-        font-size: 0.9em;
+        padding: 15px;
+        margin: 10px;
     }
 
     #weather-widget .weather-info {
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
     }
 
     #weather-widget #temperature {
-        font-size: 1.6em;
+        font-size: 2.2em;
     }
 
     #weather-widget #weather-icon {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
     }
 
     #weather-widget .weather-details {
@@ -2645,6 +2670,7 @@ body.focus-outline-disabled :focus {
     }
 
     #weather-widget .weather-details p {
-        font-size: 0.85em;
+        font-size: 0.95em;
     }
 }
+
