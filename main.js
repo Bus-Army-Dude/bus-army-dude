@@ -95,6 +95,7 @@ function fetchWeatherData(query, unit) {
                 fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
                     .then(response => response.json())
                     .then(uvData => {
+                        // If the UV index data is available
                         if (uvData.current) {
                             uvIndex.textContent = `UV Index: ${uvData.current.uvi}`;
                         }
@@ -114,12 +115,12 @@ function fetchWeatherData(query, unit) {
 }
 
 // Event listener for the search button
-searchButton.addEventListener('click', () => {
-    const query = searchInput.value.trim();
+searchButton.addEventListener('click', function() {
+    const query = searchInput.value.trim(); // Get the value from input
     if (query) {
-        currentCity = query;  // Update currentCity with user input
-        localStorage.setItem('city', currentCity);  // Save city or ZIP code
-        fetchWeatherData(query, currentUnit);  // Fetch weather data
+        currentCity = query; // Update currentCity with user input
+        localStorage.setItem('city', currentCity); // Save city or ZIP code
+        fetchWeatherData(query, currentUnit); // Fetch weather data
     } else {
         alert("Please enter a city or ZIP code.");
     }
@@ -128,7 +129,14 @@ searchButton.addEventListener('click', () => {
 // Event listener for the Enter key in the search input
 searchInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
-        fetchWeatherData(searchInput.value, currentUnit); // Call the function when Enter is pressed
+        const query = searchInput.value.trim();
+        if (query) {
+            currentCity = query; // Update currentCity with user input
+            localStorage.setItem('city', currentCity); // Save city or ZIP code
+            fetchWeatherData(query, currentUnit); // Fetch weather data
+        } else {
+            alert("Please enter a city or ZIP code.");
+        }
     }
 });
 
@@ -136,7 +144,7 @@ searchInput.addEventListener('keypress', function(event) {
 unitSelect.addEventListener('change', (e) => {
     currentUnit = e.target.value === 'Celsius' ? 'metric' : 'imperial';
     localStorage.setItem('unit', currentUnit);
-    fetchWeatherData(currentCity, currentUnit);  // Fetch weather data with updated unit
+    fetchWeatherData(currentCity, currentUnit); // Fetch weather data with updated unit
 });
 
 // Fetch saved city and unit data when the page loads
