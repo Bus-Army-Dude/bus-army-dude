@@ -76,21 +76,6 @@ function fetchWeatherData(query, unit) {
                 humidity.textContent = `Humidity: ${main.humidity}%`;
                 wind.textContent = `Wind: ${Math.round(windData.speed)} ${unit === 'metric' ? 'km/h' : 'mph'}`;
                 pressure.textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`;
-                
-                // UV Index
-                if (data.coord.lat && data.coord.lon) {
-                    fetch(`${aqiUrl}?lat=${data.coord.lat}&lon=${data.coord.lon}&appid=${apiKey}`)
-                        .then(aqiResponse => aqiResponse.json())
-                        .then(aqiData => {
-                            if (aqiData && aqiData.list && aqiData.list[0] && aqiData.list[0].components) {
-                                const uv = aqiData.list[0].components;
-                                uvIndex.textContent = `UV Index: ${uv['uv'] ? uv['uv'] : 'Not Available'}`;
-                            }
-                        });
-                } else {
-                    uvIndex.textContent = 'UV Index: Not Available';
-                }
-
                 sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
                 sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
                 aqi.textContent = `Air Quality Index: ${data.main.pressure}`;
@@ -105,6 +90,20 @@ function fetchWeatherData(query, unit) {
 
                 lastUpdate.textContent = `Last Update: ${new Date().toLocaleString()}`;
                 locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
+
+                // Fetch UV Index from the onecall endpoint using the same coordinates
+                fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
+                    .then(response => response.json())
+                    .then(uvData => {
+                        // If the UV index data is available
+                        if (uvData.current) {
+                            uvIndex.textContent = `UV Index: ${uvData.current.uvi}`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching UV index data:", error);
+                        uvIndex.textContent = "UV Index: Not Available";
+                    });
             } else {
                 alert("Weather data not found for the entered city or ZIP code.");
             }
