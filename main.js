@@ -1,7 +1,7 @@
 // ========================
 // Initialize API key and base URL
 // ========================
-const apiKey = '34ae2d4a53544561a07150106252203'; // Replace with your WeatherAPI key
+const apiKey = 'YOUR_WEATHERAPI_KEY'; // Replace with your WeatherAPI key
 const baseUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
 // ========================
@@ -36,7 +36,7 @@ async function fetchWeatherData(location) {
     }
 
     // Process and display weather alerts
-    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert : [];
+    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :;
     console.log('Fetched Alerts:', alerts);
     displayWeatherAlerts(alerts);
 
@@ -133,11 +133,11 @@ function displayWeatherAlerts(alerts) {
 
   alertsContainer.innerHTML = '';
 
-  const uniqueAlerts = alerts && alerts.length > 0 
+  const uniqueAlerts = alerts && alerts.length > 0
     ? alerts.filter((alert, index, self) =>
         index === self.findIndex(a => a.headline === alert.headline)
       )
-    : [];
+    :;
 
   if (uniqueAlerts.length > 0) {
     uniqueAlerts.forEach(alert => {
@@ -168,7 +168,7 @@ function updateAirQuality(data) {
     console.error('Air Quality container not found in HTML.');
     return;
   }
-  
+
   const airQualityIndicator = airQualityContainer.querySelector('.air-quality-indicator');
   const airQualityStatus = airQualityContainer.querySelector('.air-quality-summary .aqi-status');
   const primaryPollutantElem = airQualityContainer.querySelector('.air-quality-summary .primary-pollutant');
@@ -199,11 +199,11 @@ function updateAirQuality(data) {
       { name: 'PM2.5', value: data.current.air_quality.pm2_5 },
       { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 }
     ];
-    
+
     airQualityDetailsEl.innerHTML = pollutants.map(pollutant => `
       <div class="pollutant">
         <span class="pollutant-name">${pollutant.name}:</span>
-        <span class="pollutant-value">${pollutant.value.toFixed(2)} µg/m³</span>
+        <span class="pollutant-value">${pollutant.value !== undefined ? pollutant.value.toFixed(2) : 'N/A'} µg/m³</span>
         <span class="pollutant-rating ${getAirQualityClass(aqi)}">${aqiDescription}</span>
       </div>
     `).join('');
@@ -231,16 +231,30 @@ function getAirQualityDescription(aqi) {
 }
 
 function getPrimaryPollutant(airQuality) {
+  if (airQuality && airQuality.pm2_5 !== undefined) {
+    return 'PM2.5';
+  }
+  if (airQuality && airQuality.pm10 !== undefined) {
+    return 'PM10';
+  }
+  // Fallback to the pollutant with the highest value if PM2.5 and PM10 are not available or undefined
+  let primaryPollutant = 'N/A';
+  let highestValue = -1;
+
   const pollutants = [
-    { name: 'Ozone', value: airQuality.o3 },
-    { name: 'Carbon Monoxide', value: airQuality.co },
-    { name: 'Nitrogen Dioxide', value: airQuality.no2 },
-    { name: 'Sulfur Dioxide', value: airQuality.so2 },
-    { name: 'PM10', value: airQuality.pm10 },
-    { name: 'PM2.5', value: airQuality.pm2_5 }
+    { name: 'Ozone', value: airQuality && airQuality.o3 !== undefined ? airQuality.o3 : -1 },
+    { name: 'Carbon Monoxide', value: airQuality && airQuality.co !== undefined ? airQuality.co : -1 },
+    { name: 'Nitrogen Dioxide', value: airQuality && airQuality.no2 !== undefined ? airQuality.no2 : -1 },
+    { name: 'Sulfur Dioxide', value: airQuality && airQuality.so2 !== undefined ? airQuality.so2 : -1 }
   ];
-  pollutants.sort((a, b) => b.value - a.value);
-  return pollutants[0].name;
+
+  for (const pollutant of pollutants) {
+    if (pollutant.value > highestValue) {
+      highestValue = pollutant.value;
+      primaryPollutant = pollutant.name;
+    }
+  }
+  return primaryPollutant;
 }
 
 function getAirQualityClass(aqi) {
@@ -341,7 +355,7 @@ function displayError(message) {
 // Event Listeners and Initialization
 // ========================
 document.addEventListener('DOMContentLoaded', function () {
-  const defaultLocation = 'New York, NY, USA';
+  const defaultLocation = 'Bowling Green, Ohio, USA';
   const lastLocation = localStorage.getItem('lastLocation') || defaultLocation;
   console.log('Fetching default city:', lastLocation);
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
