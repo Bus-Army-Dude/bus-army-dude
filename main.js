@@ -99,36 +99,30 @@ function fetchWeatherData(query, unit) {
                             uvIndex.textContent = `UV Index: ${forecastData.current.uvi}`;
                         }
 
-                        function display7DayForecast(dailyData) {
-    const forecastContainer = document.getElementById('seven-day-outlook');
-    forecastContainer.innerHTML = '';  // Clear previous data
+                        // Display 7-day forecast
+                        const dailyForecast = forecastData.daily;
+                        forecastContainer.innerHTML = ''; // Clear previous forecast
+                        dailyForecast.forEach((day, index) => {
+                            if (index === 0) return; // Skip the current day, only show future days
 
-    // Loop through the daily forecast data
-    dailyData.forEach((day, index) => {
-        // Create a new div for each day's forecast
-        const forecastCard = document.createElement('div');
-        forecastCard.classList.add('forecast-card');
-        
-        // Format the date
-        const date = new Date(day.dt * 1000); // Convert Unix timestamp to JS Date
-        const dayOfWeek = date.toLocaleString('en-US', { weekday: 'long' });
+                            const date = new Date(day.dt * 1000).toLocaleDateString();
+                            const dayTemp = `${Math.round(day.temp.day)}°${unit === 'metric' ? 'C' : 'F'}`;
+                            const nightTemp = `${Math.round(day.temp.night)}°${unit === 'metric' ? 'C' : 'F'}`;
+                            const forecastIcon = `http://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
+                            const description = day.weather[0].description;
 
-        // Format the weather icon
-        const icon = `http://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
-
-        // Create the content for the card
-        forecastCard.innerHTML = `
-            <h3>${dayOfWeek}</h3>
-            <img src="${icon}" alt="Weather Icon" />
-            <p><strong>Temp:</strong> ${day.temp.day}°C</p>
-            <p><strong>Condition:</strong> ${day.weather[0].description}</p>
-            <p><strong>Min:</strong> ${day.temp.min}°C / <strong>Max:</strong> ${day.temp.max}°C</p>
-        `;
-        
-        // Append the card to the container
-        forecastContainer.appendChild(forecastCard);
-    });
-}
+                            // Append forecast data to container
+                            forecastContainer.innerHTML += `
+                                <div class="forecast-day">
+                                    <div>${date}</div>
+                                    <img src="${forecastIcon}" alt="${description}">
+                                    <div>Day: ${dayTemp}</div>
+                                    <div>Night: ${nightTemp}</div>
+                                    <div>${description}</div>
+                                </div>
+                            `;
+                        });
+                    });
 
                 // Fetch AQI data
                 fetchAQIData(coord.lat, coord.lon);
