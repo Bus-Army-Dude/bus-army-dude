@@ -128,75 +128,82 @@ function updateDisplay(data) {
 // Display Weather Alerts with Deduplication
 // ========================
 function displayWeatherAlerts(alerts, userLat, userLon) {
-  const alertsContainer = document.querySelector('#weatherAlertsList');
-  if (!alertsContainer) return;
+  const alertsList = document.querySelector('#weatherAlertsList');
+  if (!alertsList) return;
 
-  alertsContainer.innerHTML = '';
+  alertsList.innerHTML = ''; // Clear previous alerts
 
-  const uniqueAlerts = alerts && alerts.length > 0
-    ? alerts.filter((alert, index, self) =>
-        index === self.findIndex(a => a.headline === alert.headline)
-      )
-    : [];
-
-  // Debugging: Log the raw alerts data
-  console.log("Raw Alerts Data:", uniqueAlerts);
-
-  const relevantAlerts = uniqueAlerts.filter(alert => {
-    if (alert.lat && alert.lon) { // Check if alert has coordinates
+  const relevantAlerts = alerts.filter(alert => {
+    if (alert.lat && alert.lon) {
       const distance = calculateDistance(userLat, userLon, alert.lat, alert.lon);
-      return distance <= 100; // Show alerts within 100km (adjust radius as needed)
+      return distance <= 100; // Adjust radius as needed
     } else {
-      return true; // Show alerts without coordinates (or handle differently)
+      return true; // Handle alerts without coordinates
     }
   });
 
   if (relevantAlerts.length > 0) {
     relevantAlerts.forEach(alert => {
-      // Data Validation:
-      let description = alert.description;
-      if (!description || description.trim() === "") {
-        description = "Description not available."; // Provide a fallback
-      }
+      const listItem = document.createElement('li');
+      listItem.classList.add('alert-item');
 
-      let issuedBy = alert.certainty;
-      if (issuedBy.toLowerCase() === "observed") {
-          issuedBy = "Unknown (Observed)";
-      }
+      // Date formatting:
+      const effectiveDate = alert.effective ? new Date(alert.effective).toLocaleString() : 'N/A';
+      const expiresDate = alert.expires ? new Date(alert.expires).toLocaleString() : 'N/A';
 
-      const effectiveDate = new Date(alert.effective);
-      const expiresDate = new Date(alert.expires);
-
-      const currentDate = new Date(); // Get current date
-
-      //Date Validation.
-      if (effectiveDate.getFullYear() > currentDate.getFullYear() + 1 || expiresDate.getFullYear() > currentDate.getFullYear() + 1){
-          description = "Invalid date provided by API.";
-          issuedBy = "Invalid Date.";
-      }
-
-      const effectiveString = effectiveDate.toLocaleString();
-      const expiresString = expiresDate.toLocaleString();
-
-      const alertItem = document.createElement('li');
-      alertItem.classList.add('alert-item');
-      alertItem.innerHTML = `
-        <strong>${alert.headline || 'Weather Alert'}</strong>
-        <p>${description}</p>
-        <p><strong>Issued by:</strong> ${issuedBy}</p>
-        <p><strong>Effective:</strong> ${effectiveString}</p>
-        <p><strong>Expires:</strong> ${expiresString}</p>
+      listItem.innerHTML = `
+        <div class="alert-header">
+          <span class="alert-title">${alert.headline || 'Weather Alert'}</span>
+          <span class="alert-time">${effectiveDate} - ${expiresDate}</span>
+        </div>
+        <div class="alert-details">
+          <div class="alert-section">
+            <strong>Action Recommended</strong>
+            <p>${alert.action || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>Issued By</strong>
+            <p>${alert.issuer || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>Affected Area</strong>
+            <p>${alert.area || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>Description</strong>
+            <p>${alert.description || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>WHAT...</strong>
+            <p>${alert.what || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>WHERE...</strong>
+            <p>${alert.where || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>WHEN...</strong>
+            <p>${alert.when || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>IMPACTS...</strong>
+            <p>${alert.impacts || 'N/A'}</p>
+          </div>
+          <div class="alert-section">
+            <strong>PRECAUTIONARY/PREPAREDNESS ACTIONS...</strong>
+            <p>${alert.instruction || 'N/A'}</p>
+          </div>
+        </div>
       `;
-      alertsContainer.appendChild(alertItem);
+
+      alertsList.appendChild(listItem);
     });
   } else {
-    const noAlertsMessage = document.createElement('li');
-    noAlertsMessage.textContent = 'No weather alerts currently active within 100km.';
-    alertsContainer.appendChild(noAlertsMessage);
+    alertsList.innerHTML = '<li>No weather alerts currently active.</li>';
   }
 }
 
-// Function to calculate the distance between two coordinates (Haversine formula)
+// Function to calculate distance (Haversine)
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the Earth in km
   const dLat = (lat2 - lat1) * (Math.PI / 180);
