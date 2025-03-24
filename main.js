@@ -36,7 +36,7 @@ async function fetchWeatherData(location) {
     }
 
     // Process and display weather alerts
-    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert : [];
+    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :;
     console.log('Fetched Alerts:', alerts);
     displayWeatherAlerts(alerts);
 
@@ -112,16 +112,20 @@ function updateDisplay(data) {
     pressureElement.textContent = data.current.pressure_in ? `${data.current.pressure_in} hPa` : 'N/A';
   }
   if (precipitationElement) {
-    const precipitationChance = data.forecast.forecastday[0].day.daily_chance_of_rain || 0;
-    precipitationElement.textContent = precipitationChance > 0 ? `${precipitationChance}% chance of rain` : `None`;
+    const precipitationChance = data.forecast.forecastday[0]?.day?.daily_chance_of_rain || 0;
+    precipitationElement.textContent = precipitationChance > 0 ? `${precipitationChance}% chance of rain` : 'None';
   }
 
   // Update Air Quality Section
   updateAirQuality(data);
 
   // Update Forecast and Sun/Moon Sections
-  updateForecast(data.forecast.forecastday);
-  updateSunMoon(data.forecast.forecastday[0].astro);
+  if (data.forecast && data.forecast.forecastday) {
+    updateForecast(data.forecast.forecastday);
+    if (data.forecast.forecastday[0] && data.forecast.forecastday[0].astro) {
+      updateSunMoon(data.forecast.forecastday[0].astro);
+    }
+  }
 }
 
 // ========================
@@ -133,11 +137,11 @@ function displayWeatherAlerts(alerts) {
 
   alertsContainer.innerHTML = '';
 
-  const uniqueAlerts = alerts && alerts.length > 0 
+  const uniqueAlerts = alerts && alerts.length > 0
     ? alerts.filter((alert, index, self) =>
         index === self.findIndex(a => a.headline === alert.headline)
       )
-    : [];
+    :;
 
   if (uniqueAlerts.length > 0) {
     uniqueAlerts.forEach(alert => {
@@ -168,7 +172,7 @@ function updateAirQuality(data) {
     console.error('Air Quality container not found in HTML.');
     return;
   }
-  
+
   const airQualityIndicator = airQualityContainer.querySelector('.air-quality-indicator');
   const airQualityStatus = airQualityContainer.querySelector('.air-quality-summary .aqi-status');
   const primaryPollutantElem = airQualityContainer.querySelector('.air-quality-summary .primary-pollutant');
@@ -179,7 +183,7 @@ function updateAirQuality(data) {
     return;
   }
 
-  if (data.current.air_quality) {
+  if (data?.current?.air_quality) {
     const aqi = data.current.air_quality["us-epa-index"];
     const aqiDescription = getAirQualityDescription(aqi);
     const primaryPollutant = getPrimaryPollutant(data.current.air_quality);
@@ -199,16 +203,16 @@ function updateAirQuality(data) {
       { name: 'PM2.5', value: data.current.air_quality.pm2_5 },
       { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 }
     ];
-    
+
     airQualityDetailsEl.innerHTML = pollutants.map(pollutant => `
       <div class="pollutant">
         <span class="pollutant-name">${pollutant.name}:</span>
-        <span class="pollutant-value">${pollutant.value.toFixed(2)} µg/m³</span>
+        <span class="pollutant-value">${pollutant.value?.toFixed(2)} µg/m³</span>
         <span class="pollutant-rating ${getAirQualityClass(aqi)}">${aqiDescription}</span>
       </div>
     `).join('');
   } else {
-    airQualityIndicator.innerHTML = `<span>N/A</span>`;
+    airQualityIndicator.innerHTML = '<span>N/A</span>';
     airQualityStatus.textContent = 'Air Quality data not available.';
     primaryPollutantElem.textContent = '';
     airQualityDetailsEl.innerHTML = '';
@@ -232,15 +236,16 @@ function getAirQualityDescription(aqi) {
 
 function getPrimaryPollutant(airQuality) {
   const pollutants = [
-    { name: 'Ozone', value: airQuality.o3 },
-    { name: 'Carbon Monoxide', value: airQuality.co },
-    { name: 'Nitrogen Dioxide', value: airQuality.no2 },
-    { name: 'Sulfur Dioxide', value: airQuality.so2 },
-    { name: 'PM10', value: airQuality.pm10 },
-    { name: 'PM2.5', value: airQuality.pm2_5 }
+    { name: 'Ozone', value: airQuality?.o3 },
+    { name: 'Carbon Monoxide', value: airQuality?.co },
+    { name: 'Nitrogen Dioxide', value: airQuality?.no2 },
+    { name: 'Sulfur Dioxide', value: airQuality?.so2 },
+    { name: 'PM10', value: airQuality?.pm10 },
+    { name: 'PM2.5', value: airQuality?.pm2_5 }
   ];
-  pollutants.sort((a, b) => b.value - a.value);
-  return pollutants[0].name;
+  // Sort in descending order based on value, handle potential null/undefined values
+  pollutants.sort((a, b) => (b.value === undefined || b.value === null ? -1 : (a.value === undefined || a.value === null ? 1 : b.value - a.value)));
+  return pollutants[0]?.name || 'N/A';
 }
 
 function getAirQualityClass(aqi) {
@@ -264,6 +269,7 @@ function formatForecastDate(dateObj) {
 // Updated Forecast Function
 function updateForecast(forecastDays) {
   const forecastContainer = document.querySelector('.forecast-container');
+  if (!forecastContainer) return;
   forecastContainer.innerHTML = ''; // Clear previous forecasts
 
   // Use the current date as the reference for labels
@@ -310,17 +316,10 @@ function updateSunMoon(astroData) {
   const moonriseElement = document.querySelector('.moonrise');
   const moonsetElement = document.querySelector('.moonset');
 
-  if (astroData) {
-    sunriseElement.textContent = `Sunrise: ${astroData.sunrise || '--'}`;
-    sunsetElement.textContent = `Sunset: ${astroData.sunset || '--'}`;
-    moonriseElement.textContent = `Moonrise: ${astroData.moonrise || '--'}`;
-    moonsetElement.textContent = `Moonset: ${astroData.moonset || '--'}`;
-  } else {
-    sunriseElement.textContent = 'Sunrise: --';
-    sunsetElement.textContent = 'Sunset: --';
-    moonriseElement.textContent = 'Moonrise: --';
-    moonsetElement.textContent = 'Moonset: --';
-  }
+  if (sunriseElement) sunriseElement.textContent = `Sunrise: ${astroData?.sunrise || '--'}`;
+  if (sunsetElement) sunsetElement.textContent = `Sunset: ${astroData?.sunset || '--'}`;
+  if (moonriseElement) moonriseElement.textContent = `Moonrise: ${astroData?.moonrise || '--'}`;
+  if (moonsetElement) moonsetElement.textContent = `Moonset: ${astroData?.moonset || '--'}`;
 }
 
 // ========================
@@ -347,8 +346,8 @@ document.addEventListener('DOMContentLoaded', function () {
   fetchWeatherData(lastLocation).catch(error => console.error('Failed to load default city:', error));
 });
 
-document.querySelector('#location-submit').addEventListener('click', function () {
-  const locationInput = document.querySelector('#location-input').value.trim();
+document.querySelector('#location-submit')?.addEventListener('click', function () {
+  const locationInput = document.querySelector('#location-input')?.value?.trim();
   if (locationInput) {
     localStorage.setItem('lastLocation', locationInput);
     console.log('User-input location:', locationInput);
