@@ -2447,7 +2447,7 @@ body.focus-outline-disabled :focus {
 /* General Weather Widget Styling */
 #weather-widget.weather-widget {
     width: 100%;
-    max-width: 100%;  /* Ensure it uses full width available */
+    max-width: 100%;
     margin: 20px auto;
     padding: 25px;
     border-radius: 16px;
@@ -2459,15 +2459,8 @@ body.focus-outline-disabled :focus {
     box-sizing: border-box;
     transition: all 0.3s ease-out;
     backdrop-filter: blur(10px);
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    /* Centers content */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
+    text-align: left;  /* Align to left instead of center */
+    padding-left: 10%;  /* Add some padding to the left for better alignment */
 }
 
 /* Weather Input and Button Styles */
@@ -2512,10 +2505,10 @@ body.focus-outline-disabled :focus {
 /* Weather Info Section */
 #weather-widget .weather-info {
     display: flex;
-    justify-content: center; /* Centering the items */
-    align-items: center;
+    justify-content: space-between; /* Space between items */
+    align-items: flex-start; /* Align items at the top */
     gap: 30px;
-    text-align: center;
+    text-align: left;
     flex-wrap: wrap;
     padding: 20px 0;
     transition: transform 0.3s ease;
@@ -2561,10 +2554,10 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    text-align: center;
+    text-align: left;  /* Align text to left instead of center */
     min-width: 250px;
     max-width: 320px;
-    border: 2px solid var(--border-color); /* Added border around each card */
+    border: 2px solid var(--border-color);
 }
 
 #weather-widget .weather-details .weather-card:hover {
@@ -2600,79 +2593,12 @@ body.focus-outline-disabled :focus {
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
-/* Dark Mode Adjustments */
-@media (prefers-color-scheme: dark) {
-    #weather-widget #search-input {
-        background-color: var(--input-bg-dark);
-        color: var(--text-color-dark);
-        border: 2px solid var(--border-color-dark);
-    }
-
-    #weather-widget #search-button {
-        background-color: var(--button-bg-dark);
-        color: var(--button-text-dark);
-    }
-
-    #weather-widget #search-button:hover {
-        background-color: var(--hover-color-dark);
-    }
-
-    #unit-select {
-        background-color: var(--input-bg-dark);
-        color: var(--text-color-dark);
-        border: 2px solid var(--border-color-dark);
-    }
-
-    #unit-select:focus {
-        border-color: var(--dropdown-focus-border-dark);
-        box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
-    }
-
-    /* Smooth Dark Mode Transition */
-    #weather-widget, #weather-widget * {
-        transition: all 0.5s ease;
-    }
-}
-
-/* Light Mode Adjustments */
-@media (prefers-color-scheme: light) {
-    #weather-widget #search-input {
-        background-color: var(--input-bg-light);
-        color: var(--text-color-light);
-        border: 2px solid var(--border-color-light);
-    }
-
-    #weather-widget #search-button {
-        background-color: var(--button-bg-light);
-        color: var(--button-text-light);
-    }
-
-    #weather-widget #search-button:hover {
-        background-color: var(--hover-color-light);
-    }
-
-    #unit-select {
-        background-color: var(--input-bg-light);
-        color: var(--text-color-light);
-        border: 2px solid var(--border-color-light);
-    }
-
-    #unit-select:focus {
-        border-color: var(--dropdown-focus-border-light);
-        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-    }
-
-    /* Smooth Light Mode Transition */
-    #weather-widget, #weather-widget * {
-        transition: all 0.5s ease;
-    }
-}
-
 /* Mobile and Tablet Responsiveness */
 @media (max-width: 1024px) {
     #weather-widget.weather-widget {
         padding: 20px;
         margin: 15px auto;
+        padding-left: 5%; /* More balanced padding */
     }
 
     #weather-widget .weather-info {
@@ -2707,6 +2633,7 @@ body.focus-outline-disabled :focus {
     #weather-widget.weather-widget {
         padding: 20px;
         margin: 10px auto;
+        padding-left: 5%;
     }
 
     #weather-widget #temperature {
@@ -2756,16 +2683,16 @@ body.focus-outline-disabled :focus {
     #weather-widget.weather-widget {
         padding: 15px;
         margin: 5px auto;
-        width: 95%;  /* Ensures the widget doesn't overflow */
+        width: 95%;
     }
 
     #weather-widget #temperature {
-        font-size: 1.5em;  /* Adjusted for smaller screens */
+        font-size: 1.5em;
     }
 
     #weather-widget #weather-icon {
         width: 60px;
-        height: 60px;  /* Resize icon for smaller screens */
+        height: 60px;
     }
 
     #weather-widget .weather-info {
@@ -2783,7 +2710,7 @@ body.focus-outline-disabled :focus {
     }
 
     #weather-widget .weather-details .weather-card p {
-        font-size: 0.8em;  /* Smaller text for small screens */
+        font-size: 0.8em;
     }
 
     #unit-select {
