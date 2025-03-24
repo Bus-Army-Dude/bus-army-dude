@@ -2453,27 +2453,27 @@ body.focus-outline-disabled :focus {
 
 /* Weather widget container */
 .weather-widget {
-    max-width: 1200px; /* Matches business info width */
-    width: 100%;
-    margin: 20px auto;
-    padding: 24px;
-    border-radius: 15px;
-    background-color: var(--content-bg);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    transform-style: preserve-3d;
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-sizing: border-box;
+    width: 100%; /* Full width */
+    max-width: 1000px; /* Control max width for larger screens */
+    margin: 0 auto; /* Center it */
+    padding: 20px 30px; /* Ample padding */
+    border-radius: 12px; /* Smooth rounded corners */
+    background-color: var(--content-bg); /* Background color */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for a sleek feel */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    gap: 20px; /* Space between sections */
+    box-sizing: border-box; /* Ensures padding doesn't affect size */
+    transition: all 0.3s ease-in-out;
 }
 
-/* Title section for the weather widget */
+/* Weather widget header */
 .weather-widget h2 {
-    font-size: 1.8em;
-    font-weight: 600;
+    font-size: 2.2em;
+    font-weight: bold;
     color: var(--text-color);
+    text-align: center;
     margin-bottom: 15px;
 }
 
@@ -2482,8 +2482,7 @@ body.focus-outline-disabled :focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
+    gap: 10px; /* Space between input and button */
 }
 
 .weather-header input {
@@ -2493,6 +2492,7 @@ body.focus-outline-disabled :focus {
     background-color: var(--input-bg);
     width: 70%;
     font-size: 1em;
+    color: var(--text-color);
 }
 
 .weather-header button {
@@ -2507,51 +2507,45 @@ body.focus-outline-disabled :focus {
     transition: background-color 0.3s ease;
 }
 
-/* On hover, change button color */
 .weather-header button:hover {
     background-color: darkgreen;
 }
 
 /* Weather city & region display */
 .weather-header span {
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: bold;
     color: var(--text-color);
     text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
 /* Weather information container */
 .weather-info {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
+    gap: 20px;
     text-align: center;
     flex-wrap: wrap;
 }
 
-/* Weather info text */
 .weather-info span {
-    font-size: 1.6em;
+    font-size: 2.5em;
     font-weight: bold;
     color: var(--text-color);
-    margin: 5px;
+    margin: 10px;
 }
 
-/* Icon and temperature */
 .weather-info #weather-icon {
-    width: 80px;
-    height: 80px;
-    margin: 10px 0;
+    width: 90px;
+    height: 90px;
+    margin: 10px;
 }
 
 /* Detailed weather information */
 .weather-details {
-    width: 100%;
     padding-top: 15px;
-    border-top: 2px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -2559,15 +2553,16 @@ body.focus-outline-disabled :focus {
 
 .weather-details p {
     font-size: 1.1em;
-    margin: 5px 0;
+    margin: 8px 0;
     color: var(--text-color);
 }
 
 /* Responsive design for smaller screens */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    /* Tablet adjustments */
     .weather-widget {
-        width: 90%;
-        padding: 20px;
+        padding: 15px;
+        max-width: 800px; /* Control max width for tablet screens */
     }
 
     .weather-header {
@@ -2583,11 +2578,51 @@ body.focus-outline-disabled :focus {
 
     .weather-info {
         flex-direction: column;
-        align-items: center;
     }
 
     .weather-info span {
-        font-size: 1.3em;
+        font-size: 2em;
+    }
+
+    .weather-info #weather-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .weather-details p {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Phone adjustments */
+    .weather-widget {
+        padding: 15px;
+        max-width: 90%; /* Full width on smaller screens */
+    }
+
+    .weather-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .weather-header input,
+    .weather-header button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .weather-info {
+        flex-direction: column;
+    }
+
+    .weather-info span {
+        font-size: 1.5em; /* Adjust text size for phones */
+    }
+
+    .weather-info #weather-icon {
+        width: 70px;
+        height: 70px;
     }
 
     .weather-details p {
@@ -2620,4 +2655,3 @@ body.focus-outline-disabled :focus {
         color: var(--text-color);
     }
 }
-
