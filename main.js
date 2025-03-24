@@ -42,7 +42,7 @@ function isZipCode(input) {
     return /^[0-9]{5}(?:-[0-9]{4})?$/.test(input);  // Matches US ZIP codes
 }
 
-// Function to fetch weather data from OpenWeather API
+// Fetch the current weather data including UV Index
 function fetchWeatherData(query, unit) {
     let url;
     
@@ -90,42 +90,22 @@ function fetchWeatherData(query, unit) {
                 lastUpdate.textContent = `Last Update: ${new Date().toLocaleString()}`;
                 locationCoordinates.textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
 
-                // Fetch 7-day forecast from OneCall API
+                // Fetch UV Index (from OneCall API)
                 fetch(`${oneCallUrl}?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
                     .then(response => response.json())
                     .then(forecastData => {
-                        // Update UV Index
-                        if (forecastData.current) {
-                            uvIndex.textContent = `UV Index: ${forecastData.current.uvi}`;
+                        if (forecastData.current && forecastData.current.uvi !== undefined) {
+                            const uvIndexValue = forecastData.current.uvi;
+                            uvIndex.textContent = `UV Index: ${uvIndexValue}`;
+                        } else {
+                            uvIndex.textContent = 'UV Index: Not Available';
                         }
-
-                        // Display 7-day forecast
-                        const dailyForecast = forecastData.daily;
-                        forecastContainer.innerHTML = ''; // Clear previous forecast
-                        dailyForecast.forEach((day, index) => {
-                            if (index === 0) return; // Skip the current day, only show future days
-
-                            const date = new Date(day.dt * 1000).toLocaleDateString();
-                            const dayTemp = `${Math.round(day.temp.day)}°${unit === 'metric' ? 'C' : 'F'}`;
-                            const nightTemp = `${Math.round(day.temp.night)}°${unit === 'metric' ? 'C' : 'F'}`;
-                            const forecastIcon = `http://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
-                            const description = day.weather[0].description;
-
-                            // Append forecast data to container
-                            forecastContainer.innerHTML += `
-                                <div class="forecast-day">
-                                    <div>${date}</div>
-                                    <img src="${forecastIcon}" alt="${description}">
-                                    <div>Day: ${dayTemp}</div>
-                                    <div>Night: ${nightTemp}</div>
-                                    <div>${description}</div>
-                                </div>
-                            `;
-                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching UV Index data:", error);
+                        uvIndex.textContent = 'UV Index: Not Available';
                     });
 
-                // Fetch AQI data
-                fetchAQIData(coord.lat, coord.lon);
             } else {
                 alert("Weather data not found for the entered city or ZIP code.");
             }
