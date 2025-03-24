@@ -127,7 +127,7 @@ function updateDisplay(data) {
 // ========================
 // Display Weather Alerts with Deduplication
 // ========================
-function displayWeatherAlerts(alerts) {
+function displayWeatherAlerts(alerts, userLat, userLon) {
   const alertsContainer = document.querySelector('#weatherAlertsList');
   if (!alertsContainer) return;
 
@@ -142,12 +142,13 @@ function displayWeatherAlerts(alerts) {
   // Debugging: Log the raw alerts data
   console.log("Raw Alerts Data:", uniqueAlerts);
 
-  // Example: Location Filtering (if the API provides location names)
-  const userLocation = "Bowling Green"; // Or get this from your location input
   const relevantAlerts = uniqueAlerts.filter(alert => {
-    // Check if the alert description or headline contains the user's location
-    const alertText = `${alert.headline} ${alert.description}`.toLowerCase();
-    return alertText.includes(userLocation.toLowerCase());
+    if (alert.lat && alert.lon) { // Check if alert has coordinates
+      const distance = calculateDistance(userLat, userLon, alert.lat, alert.lon);
+      return distance <= 100; // Show alerts within 100km (adjust radius as needed)
+    } else {
+      return true; // Show alerts without coordinates (or handle differently)
+    }
   });
 
   if (relevantAlerts.length > 0) {
@@ -165,9 +166,23 @@ function displayWeatherAlerts(alerts) {
     });
   } else {
     const noAlertsMessage = document.createElement('li');
-    noAlertsMessage.textContent = 'No weather alerts currently active for Bowling Green.';
+    noAlertsMessage.textContent = 'No weather alerts currently active within 100km.';
     alertsContainer.appendChild(noAlertsMessage);
   }
+}
+
+// Function to calculate the distance between two coordinates (Haversine formula)
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radius of the Earth in km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in km
+  return distance;
 }
 
 // ========================
