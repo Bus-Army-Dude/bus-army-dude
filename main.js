@@ -36,9 +36,17 @@ async function fetchWeatherData(location) {
     }
 
     // Process and display weather alerts
-    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert : [];
+    const alerts = (data.alerts && data.alerts.alert) ? data.alerts.alert :;
     console.log('Fetched Alerts:', alerts);
-    displayWeatherAlerts(alerts);
+
+    // Get user's location to filter alerts
+    try {
+      const userLocation = await getUserLocation();
+      displayWeatherAlerts(alerts, userLocation.userLat, userLocation.userLon);
+    } catch (locationError) {
+      console.warn('Could not get user location for filtering alerts:', locationError);
+      displayWeatherAlerts(alerts, null, null); // Pass null if location is not available
+    }
 
     // Update the main weather display
     updateDisplay(data);
@@ -137,11 +145,11 @@ function displayWeatherAlerts(alerts, userLat, userLon) {
   console.log('Alerts data inside displayWeatherAlerts:', alerts);
 
   const relevantAlerts = alerts.filter(alert => {
-    if (alert.lat && alert.lon) {
+    if (userLat !== null && userLon !== null && alert.lat && alert.lon) {
       const distance = calculateDistance(userLat, userLon, alert.lat, alert.lon);
       return distance <= 100; // Adjust radius as needed
     } else {
-      return true; // Handle alerts without coordinates
+      return true; // Show all alerts if user location is not available or alert has no coordinates
     }
   });
 
@@ -168,45 +176,45 @@ function displayWeatherAlerts(alerts, userLat, userLon) {
 
       listItem.innerHTML = `
         <div class="alert-header">
-          <span class="alert-title"><span class="math-inline">\{headline\}</span\>
-<span class\="alert\-time"\></span>{effectiveDate} - <span class="math-inline">\{expiresDate\}</span\>
-</div\>
-<div class\="alert\-details"\>
-<div class\="alert\-section"\>
-<strong\>Action Recommended</strong\>
-<p\></span>{action}</p>
+          <span class="alert-title">${headline}</span>
+          <span class="alert-time">${effectiveDate} - ${expiresDate}</span>
+        </div>
+        <div class="alert-details">
+          <div class="alert-section">
+            <strong>Action Recommended</strong>
+            <p>${action}</p>
           </div>
           <div class="alert-section">
             <strong>Issued By</strong>
-            <p><span class="math-inline">\{issuer\}</p\>
-</div\>
-<div class\="alert\-section"\>
-<strong\>Affected Area</strong\>
-<p\></span>{area}</p>
+            <p>${issuer}</p>
+          </div>
+          <div class="alert-section">
+            <strong>Affected Area</strong>
+            <p>${area}</p>
           </div>
           <div class="alert-section">
             <strong>Description</strong>
-            <p><span class="math-inline">\{description\}</p\>
-</div\>
-<div class\="alert\-section"\>
-<strong\>WHAT\.\.\.</strong\>
-<p\></span>{what}</p>
+            <p>${description}</p>
+          </div>
+          <div class="alert-section">
+            <strong>WHAT...</strong>
+            <p>${what}</p>
           </div>
           <div class="alert-section">
             <strong>WHERE...</strong>
-            <p><span class="math-inline">\{where\}</p\>
-</div\>
-<div class\="alert\-section"\>
-<strong\>WHEN\.\.\.</strong\>
-<p\></span>{when}</p>
+            <p>${where}</p>
+          </div>
+          <div class="alert-section">
+            <strong>WHEN...</strong>
+            <p>${when}</p>
           </div>
           <div class="alert-section">
             <strong>IMPACTS...</strong>
-            <p><span class="math-inline">\{impacts\}</p\>
-</div\>
-<div class\="alert\-section"\>
-<strong\>PRECAUTIONARY/PREPAREDNESS ACTIONS\.\.\.</strong\>
-<p\></span>{instruction}</p>
+            <p>${impacts}</p>
+          </div>
+          <div class="alert-section">
+            <strong>PRECAUTIONARY/PREPAREDNESS ACTIONS...</strong>
+            <p>${instruction}</p>
           </div>
         </div>
       `;
@@ -274,15 +282,15 @@ function updateForecast(forecastDays) {
     const forecastElement = document.createElement('div');
     forecastElement.classList.add('forecast-day');
     forecastElement.innerHTML = `
-      <div class="date"><span class="math-inline">\{dateLabel\}</div\>
-<img src\="https\:</span>{day.day.condition.icon}" alt="<span class="math-inline">\{day\.day\.condition\.text\}" class\="forecast\-icon" /\>
-<div class\="forecast\-temps"\>
-<span class\="high"\></span>{day.day.maxtemp_f}°F</span>
+      <div class="date">${dateLabel}</div>
+      <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="forecast-icon" />
+      <div class="forecast-temps">
+        <span class="high">${day.day.maxtemp_f}°F</span>
         <span class="separator">/</span>
-        <span class="low"><span class="math-inline">\{day\.day\.mintemp\_f\}°F</span\>
-</div\>
-<div class\="forecast\-details"\>
-<span class\="condition"\></span>{day.day.condition.text}</span>
+        <span class="low">${day.day.mintemp_f}°F</span>
+      </div>
+      <div class="forecast-details">
+        <span class="condition">${day.day.condition.text}</span>
         <span class="precipitation">Precipitation: ${day.day.daily_chance_of_rain}%</span>
       </div>
     `;
@@ -313,7 +321,7 @@ function getUserLocation() {
 // Function to fetch weather.gov alerts
 async function fetchNWSAlerts(userLat, userLon) {
   try {
-    const apiUrl = `https://api.weather.gov/alerts/active?point=<span class="math-inline">\{userLat\},</span>{userLon}`;
+    const apiUrl = `https://api.weather.gov/alerts/active?point=${userLat},${userLon}`;
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -322,7 +330,7 @@ async function fetchNWSAlerts(userLat, userLon) {
     return data.features; // Alerts are in the "features" array
   } catch (error) {
     console.error('Error fetching NWS alerts:', error);
-    return [];
+    return;
   }
 }
 
@@ -330,12 +338,18 @@ async function fetchNWSAlerts(userLat, userLon) {
 async function fetchOpenWeatherAlerts(userLat, userLon) {
   try {
     const apiKey = '88a889bce78f9ea1dc4fc0ef692e8ca4'; // Replace with your API key
-    const apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=<span class="math-inline">\{userLat\}&lon\=</span>{userLon}&exclude=minutely,hourly,daily&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${userLat}&lon=${userLon}&exclude=minutely,hourly,daily&appid=${apiKey}`;
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    const data =
+    const data = await response.json();
+    return data.alerts ||; // Alerts are in the "alerts" array
+  } catch (error) {
+    console.error('Error fetching OpenWeatherMap alerts:', error);
+    return;
+  }
+}
 
 // ========================
 // Update Air Quality Section
@@ -346,7 +360,7 @@ function updateAirQuality(data) {
     console.error('Air Quality container not found in HTML.');
     return;
   }
-  
+
   const airQualityIndicator = airQualityContainer.querySelector('.air-quality-indicator');
   const airQualityStatus = airQualityContainer.querySelector('.air-quality-summary .aqi-status');
   const primaryPollutantElem = airQualityContainer.querySelector('.air-quality-summary .primary-pollutant');
@@ -377,11 +391,11 @@ function updateAirQuality(data) {
       { name: 'PM2.5', value: data.current.air_quality.pm2_5 },
       { name: 'SO2 (Sulfur Dioxide)', value: data.current.air_quality.so2 }
     ];
-    
+
     airQualityDetailsEl.innerHTML = pollutants.map(pollutant => `
       <div class="pollutant">
         <span class="pollutant-name">${pollutant.name}:</span>
-        <span class="pollutant-value">${pollutant.value.toFixed(2)} µg/m³</span>
+        <span class="pollutant-value">${pollutant.value !== undefined ? pollutant.value.toFixed(2) : 'N/A'} µg/m³</span>
         <span class="pollutant-rating ${getAirQualityClass(aqi)}">${aqiDescription}</span>
       </div>
     `).join('');
@@ -417,17 +431,23 @@ function getPrimaryPollutant(airQuality) {
     { name: 'PM10', value: airQuality.pm10 },
     { name: 'PM2.5', value: airQuality.pm2_5 }
   ];
-  pollutants.sort((a, b) => b.value - a.value);
-  return pollutants[0].name;
+  // Filter out undefined values before sorting
+  const validPollutants = pollutants.filter(p => p.value !== undefined);
+  if (validPollutants.length === 0) {
+    return 'N/A';
+  }
+  validPollutants.sort((a, b) => b.value - a.value);
+  return validPollutants[0].name;
 }
 
 function getAirQualityClass(aqi) {
   switch (aqi) {
     case 1: return "good";
     case 2: return "moderate";
-    case 3: return "unhealthy";
-    case 4: return "very-unhealthy";
-    case 5: return "hazardous";
+    case 3: return "unhealthy-sensitive";
+    case 4: return "unhealthy";
+    case 5: return "very-unhealthy";
+    case 6: return "hazardous";
     default: return "";
   }
 }
