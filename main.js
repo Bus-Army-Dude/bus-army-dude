@@ -104,9 +104,18 @@ searchButton.addEventListener('click', () => {
 
 // Event listener for the unit select dropdown
 unitSelect.addEventListener('change', (e) => {
-    currentUnit = e.target.value === 'Celsius' ? 'metric' : 'imperial'; // Celsius -> metric, Fahrenheit -> imperial
-    localStorage.setItem('unit', currentUnit); // Save unit choice to localStorage
-    fetchWeatherData(currentCity, currentUnit); // Fetch weather with the updated unit
+    // Determine the unit based on the selected dropdown value
+    if (e.target.value === 'Celsius') {
+        currentUnit = 'metric'; // Celsius -> metric
+    } else if (e.target.value === 'Fahrenheit') {
+        currentUnit = 'imperial'; // Fahrenheit -> imperial
+    }
+    
+    // Save unit choice to localStorage
+    localStorage.setItem('unit', currentUnit); 
+    
+    // Fetch weather with the updated unit
+    fetchWeatherData(currentCity, currentUnit); 
 });
 
 // Optional: Allow pressing "Enter" key to trigger the search
