@@ -72,6 +72,22 @@ body.light-mode {
   --icon-color: var(--light-icon);
 }
 
+:root {
+    --input-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #ccc;
+    --dropdown-background-dark: #222222;
+    --dropdown-text-dark: #ffffff;
+    --dropdown-border-dark: #555555;
+    --dropdown-focus-border: #007bff;
+    --dropdown-background-light: #ffffff;
+    --dropdown-text-light: #333333;
+    --dropdown-border-light: #cccccc;
+    --dropdown-focus-border-light: #007bff;
+    --dropdown-focus-border-dark: #ff5722;
+}
+
+
 /* Base Styles */
 body {
     background-color: var(--bg-color);
