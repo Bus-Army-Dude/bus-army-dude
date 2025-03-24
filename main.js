@@ -29,7 +29,6 @@ const snow = document.getElementById('snow');
 const lastUpdate = document.getElementById('last-update');
 const locationCoordinates = document.getElementById('location-coordinates');
 const unitSelect = document.getElementById('unit-select');
-const forecastContainer = document.getElementById('forecast-container');  // 7-day forecast container
 
 // Retrieve city and unit preferences from localStorage
 let currentCity = localStorage.getItem('city') || 'New York';
@@ -65,7 +64,7 @@ function fetchWeatherData(query, unit) {
                 // Update general weather data
                 document.getElementById('city-name').textContent = data.name;
                 document.getElementById('region').textContent = sys.country;
-                
+
                 // Last update (from the 'dt' property of weather data)
                 const lastUpdated = new Date(data.dt * 1000).toLocaleString();
                 document.getElementById('weather-time').textContent = lastUpdated;
@@ -88,14 +87,14 @@ function fetchWeatherData(query, unit) {
                 // Coordinates (lat, lon)
                 document.getElementById('location-coordinates').textContent = `Coordinates: Lat ${coord.lat}, Lon ${coord.lon}`;
 
-                // Handle Rain and Snow (these are not always available)
-                if (data.rain) {
+                // Rain and Snow - only show if present
+                if (data.rain && data.rain['1h']) {
                     document.getElementById('rain').textContent = `Rain: ${data.rain['1h']} mm/h`;
                 } else {
                     document.getElementById('rain').textContent = 'Rain: Not Available';
                 }
 
-                if (data.snow) {
+                if (data.snow && data.snow['1h']) {
                     document.getElementById('snow').textContent = `Snow: ${data.snow['1h']} mm/h`;
                 } else {
                     document.getElementById('snow').textContent = 'Snow: Not Available';
@@ -172,8 +171,3 @@ unitSelect.addEventListener('change', function() {
     localStorage.setItem('unit', currentUnit); // Save selected unit
     fetchWeatherData(currentCity, currentUnit); // Fetch weather data
 });
-
-// Real-time updates (refresh weather every 1 second)
-setInterval(() => {
-    fetchWeatherData(currentCity, currentUnit);
-}, 1000); // 1 second refresh interval
