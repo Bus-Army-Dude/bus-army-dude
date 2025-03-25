@@ -19,7 +19,7 @@ const tiktokShoutouts = {
         { username: 'badge5022', isVerified: false, followers: '24.1K', nickname: 'Badge502', bio: 'Backup Account', profilePic: 'images/badge5022.jpeg' },
         { username: 'raisingramsey2023', isVerified: false, followers: '1,196', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
         { username: 'jerridc4', isVerified: false, followers: '481', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
-        { username: 'missfoxy0142', isVerified: false, followers: '64', nickname: 'Miss Foxy 0142', bio: 'No bio yet', profilePic: 'images/missfoxy0142.jpeg' },
+        { username: 'missfoxy0142', isVerified: false, followers: '64', nickname: 'Miss Foxy 0142', bio: "hey I'm Miss Foxy/Rose!I also struggle with depression F1 cures it for me🏎️🏁", profilePic: 'images/missfoxy0142.jpeg' },
         { username: 'officalbusarmydude', isVerified: false, followers: '54', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
      ],
