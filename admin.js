@@ -1,9 +1,4 @@
-// Constants and Configuration
-const ADMIN_USERNAME = 'BusArmyDude';
-const ADMIN_PASSWORD = 'admin123';
-const CURRENT_TIME = '2025-03-26 14:03:39';
-
-// Load your existing data structures
+// Initial Data Structure
 const defaultData = {
     socialLinks: [
         { platform: 'tiktok', url: 'https://www.tiktok.com/@officalbusarmydude', icon: 'fab fa-tiktok' },
@@ -18,11 +13,11 @@ const defaultData = {
         { platform: 'youtube-music', url: 'https://music.youtube.com/@BusArmyDude', icon: 'fab fa-youtube-square' }
     ],
     shoutouts: {
-        tiktok: tiktokShoutouts.accounts,
-        youtube: youtubeShoutouts.accounts,
-        instagram: instagramShoutouts.accounts
+        tiktok: [],
+        youtube: [],
+        instagram: []
     },
-    businessHours: businessHoursEST,
+    events: [],
     techInfo: {
         iphone: {
             model: 'iPhone 16 Pro',
@@ -58,252 +53,276 @@ const defaultData = {
             osVersion: 'macOS Sequoia 15.4 Beta (24E5238a)'
         }
     },
+    faq: [
+        {
+            question: 'Who is Bus Army Dude?',
+            answer: `Content Creator focusing on:
+                    - Gaming (primarily simulation games)
+                    - Tech reviews and updates
+                    - Lifestyle content`
+        },
+        {
+            question: 'What games do you play?',
+            answer: `Currently Installed and Active:
+                    - Farming Simulator 2025
+
+                    Also Own (Currently Not Installed):
+                    - American Truck Simulator
+                    - Car Mechanic Simulator 2018
+                    - Ark: Survival of the Fittest
+                    - Cities: Skylines
+                    - Planet Coaster
+                    - X-Plane 11
+                    - X-Plane 12`
+        }
+    ],
+    businessHours: {
+        monday: { open: '09:00', close: '17:00', closed: false },
+        tuesday: { open: '09:00', close: '17:00', closed: false },
+        wednesday: { open: '09:00', close: '17:00', closed: false },
+        thursday: { open: '09:00', close: '17:00', closed: false },
+        friday: { open: '09:00', close: '17:00', closed: false },
+        saturday: { open: '10:00', close: '15:00', closed: false },
+        sunday: { open: '00:00', close: '00:00', closed: true }
+    },
     settings: {
-        theme: 'dark',
-        maintenanceMode: false,
-        profileStatus: 'online',
-        lastUpdate: CURRENT_TIME
+        theme: 'light',
+        lastUpdate: '2025-03-26 13:42:51'
     }
 };
 
-// Admin Portal Class
-class AdminPortal {
-    constructor() {
-        this.initializeData();
-        this.attachEventListeners();
-        this.checkLoginStatus();
-    }
+// Authentication Configuration
+const ADMIN_USERNAME = 'BusArmyDude';
+const ADMIN_PASSWORD = 'admin123'; // Change this to your desired password
 
-    initializeData() {
-        if (!localStorage.getItem('adminData')) {
-            localStorage.setItem('adminData', JSON.stringify(defaultData));
-        }
-        this.data = JSON.parse(localStorage.getItem('adminData'));
-    }
+// DOM Elements
+let loginSection;
+let adminPanel;
+let loginForm;
 
-    attachEventListeners() {
-        // Login form
-        const loginForm = document.getElementById('login-form');
-        if (loginForm) {
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.handleLogin();
-            });
-        }
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    loginSection = document.getElementById('login-section');
+    adminPanel = document.getElementById('admin-panel');
+    loginForm = document.getElementById('login-form');
 
-        // Logout button
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => this.handleLogout());
-        }
+    // Add event listeners
+    loginForm.addEventListener('submit', handleLogin);
+    document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+    
+    // Setup navigation
+    setupNavigation();
+    
+    // Initialize data
+    initializeData();
+    
+    // Check login status
+    checkLoginStatus();
+});
 
-        // Navigation
-        document.querySelectorAll('.nav-menu li').forEach(item => {
-            item.addEventListener('click', () => {
-                this.navigateToSection(item.dataset.section);
-            });
-        });
+// Authentication Functions
+function handleLogin(e) {
+    e.preventDefault();
 
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.querySelector('.sidebar');
-        if (menuToggle && sidebar) {
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-            });
-        }
-    }
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-    handleLogin() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('lastLogin', CURRENT_TIME);
-            this.showAdminPanel();
-            this.showToast('Login successful!', 'success');
-        } else {
-            this.showToast('Invalid credentials', 'error');
-        }
-    }
-
-    handleLogout() {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('lastLogin');
-        this.hideAdminPanel();
-        this.showToast('Logged out successfully', 'success');
-    }
-
-    checkLoginStatus() {
-        if (localStorage.getItem('isLoggedIn') === 'true') {
-            this.showAdminPanel();
-        }
-    }
-
-    showAdminPanel() {
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'grid';
-        this.loadDashboard();
-    }
-
-    hideAdminPanel() {
-        document.getElementById('login-section').style.display = 'flex';
-        document.getElementById('admin-panel').style.display = 'none';
-    }
-
-    navigateToSection(section) {
-        // Hide all sections
-        document.querySelectorAll('.content-section').forEach(s => {
-            s.style.display = 'none';
-        });
-        
-        // Show selected section
-        const selectedSection = document.getElementById(`${section}-section`);
-        if (selectedSection) {
-            selectedSection.style.display = 'block';
-        }
-        
-        // Update active nav item
-        document.querySelectorAll('.nav-menu li').forEach(item => {
-            item.classList.remove('active');
-            if (item.dataset.section === section) {
-                item.classList.add('active');
-            }
-        });
-        
-        // Load section data
-        this.loadSectionData(section);
-    }
-
-    loadSectionData(section) {
-        switch(section) {
-            case 'dashboard':
-                this.loadDashboard();
-                break;
-            case 'social':
-                this.loadSocialLinks();
-                break;
-            case 'shoutouts':
-                this.loadCreatorShoutouts();
-                break;
-            case 'tech':
-                this.loadTechInfo();
-                break;
-            case 'hours':
-                this.loadBusinessHours();
-                break;
-            case 'settings':
-                this.loadSettings();
-                break;
-        }
-    }
-
-    loadDashboard() {
-        this.updateStats();
-        this.updateLastUpdateTime();
-    }
-
-    updateStats() {
-        document.getElementById('social-count').textContent = this.data.socialLinks.length;
-        document.getElementById('shoutouts-count').textContent = 
-            Object.values(this.data.shoutouts).flat().length;
-    }
-
-    updateLastUpdateTime() {
-        const element = document.getElementById('last-update-time');
-        if (element) {
-            element.textContent = CURRENT_TIME;
-        }
-    }
-
-    loadSocialLinks() {
-        const container = document.getElementById('social-links-container');
-        if (!container) return;
-
-        container.innerHTML = this.data.socialLinks.map((link, index) => `
-            <div class="social-link-item">
-                <i class="${link.icon}"></i>
-                <input type="text" value="${link.url}" data-index="${index}">
-                <button onclick="adminPortal.updateSocialLink(${index})">
-                    <i class="fas fa-save"></i>
-                </button>
-                <button onclick="adminPortal.deleteSocialLink(${index})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
-    }
-
-    updateSocialLink(index) {
-        const input = document.querySelector(`[data-index="${index}"]`);
-        if (input) {
-            this.data.socialLinks[index].url = input.value;
-            this.saveData();
-            this.showToast('Social link updated', 'success');
-        }
-    }
-
-    deleteSocialLink(index) {
-        this.data.socialLinks.splice(index, 1);
-        this.saveData();
-        this.loadSocialLinks();
-        this.showToast('Social link deleted', 'success');
-    }
-
-    addSocialLink() {
-        this.data.socialLinks.push({
-            platform: 'new',
-            url: '',
-            icon: 'fab fa-link'
-        });
-        this.saveData();
-        this.loadSocialLinks();
-    }
-
-    saveData() {
-        this.data.settings.lastUpdate = CURRENT_TIME;
-        localStorage.setItem('adminData', JSON.stringify(this.data));
-        this.updateLastUpdateTime();
-    }
-
-    showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-        
-        const container = document.getElementById('toast-container');
-        if (container) {
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-    }
-
-    // Additional methods for other sections...
-    loadCreatorShoutouts() {
-        // Implementation for creator shoutouts
-    }
-
-    loadTechInfo() {
-        // Implementation for tech info
-    }
-
-    loadBusinessHours() {
-        // Implementation for business hours
-    }
-
-    loadSettings() {
-        // Implementation for settings
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('lastLogin', getCurrentDateTime());
+        showAdminPanel();
+        showToast('Login successful!', 'success');
+        loadDashboardData();
+    } else {
+        showToast('Invalid credentials', 'error');
     }
 }
 
-// Initialize the admin portal
-const adminPortal = new AdminPortal();
+function handleLogout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('lastLogin');
+    hideAdminPanel();
+    showToast('Logged out successfully', 'success');
+}
 
-// Make adminPortal available globally for button onclick handlers
-window.adminPortal = adminPortal;
+function checkLoginStatus() {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        showAdminPanel();
+        loadDashboardData();
+    } else {
+        hideAdminPanel();
+    }
+}
 
-// Initialize when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    adminPortal.attachEventListeners();
-});
+// UI Functions
+function showAdminPanel() {
+    loginSection.style.display = 'none';
+    adminPanel.style.display = 'grid';
+    navigateToSection('dashboard');
+    updateLastLoginTime();
+}
+
+function hideAdminPanel() {
+    loginSection.style.display = 'flex';
+    adminPanel.style.display = 'none';
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    
+    const container = document.getElementById('toast-container');
+    container.appendChild(toast);
+    
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// Navigation Functions
+function setupNavigation() {
+    document.querySelectorAll('.nav-menu li').forEach(item => {
+        item.addEventListener('click', () => {
+            navigateToSection(item.dataset.section);
+        });
+    });
+}
+
+function navigateToSection(section) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(s => {
+        s.style.display = 'none';
+    });
+    
+    // Show selected section
+    const selectedSection = document.getElementById(`${section}-section`);
+    if (selectedSection) {
+        selectedSection.style.display = 'block';
+    }
+    
+    // Update active nav item
+    document.querySelectorAll('.nav-menu li').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.section === section) {
+            item.classList.add('active');
+        }
+    });
+    
+    // Load section data
+    loadSectionData(section);
+}
+
+// Data Management Functions
+function initializeData() {
+    if (!localStorage.getItem('adminData')) {
+        localStorage.setItem('adminData', JSON.stringify(defaultData));
+    }
+}
+
+function loadDashboardData() {
+    const data = getAdminData();
+    updateDashboardStats(data);
+}
+
+function loadSectionData(section) {
+    const data = getAdminData();
+    
+    switch(section) {
+        case 'dashboard':
+            updateDashboardStats(data);
+            break;
+        case 'social':
+            renderSocialLinks(data.socialLinks);
+            break;
+        case 'shoutouts':
+            renderShoutouts(data.shoutouts);
+            break;
+        case 'events':
+            renderEvents(data.events);
+            break;
+        case 'tech':
+            renderTechInfo(data.techInfo);
+            break;
+        case 'faq':
+            renderFAQ(data.faq);
+            break;
+        case 'hours':
+            renderBusinessHours(data.businessHours);
+            break;
+        case 'settings':
+            renderSettings(data.settings);
+            break;
+    }
+}
+
+// Render Functions
+function updateDashboardStats(data) {
+    document.getElementById('social-count').textContent = data.socialLinks.length;
+    document.getElementById('shoutouts-count').textContent = 
+        Object.values(data.shoutouts).flat().length;
+    document.getElementById('events-count').textContent = data.events.length;
+    document.getElementById('faq-count').textContent = data.faq.length;
+}
+
+function renderSocialLinks(links) {
+    const container = document.getElementById('social-links-container');
+    container.innerHTML = links.map((link, index) => `
+        <div class="social-link-item">
+            <i class="${link.icon}"></i>
+            <input type="text" value="${link.url}" data-index="${index}">
+            <button onclick="updateSocialLink(${index})">
+                <i class="fas fa-save"></i>
+            </button>
+            <button onclick="deleteSocialLink(${index})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `).join('');
+}
+
+// Utility Functions
+function getCurrentDateTime() {
+    const now = new Date();
+    return now.toISOString().slice(0, 19).replace('T', ' ');
+}
+
+function getAdminData() {
+    return JSON.parse(localStorage.getItem('adminData'));
+}
+
+function saveAdminData(data) {
+    data.settings.lastUpdate = getCurrentDateTime();
+    localStorage.setItem('adminData', JSON.stringify(data));
+    showToast('Changes saved successfully', 'success');
+}
+
+// CRUD Operations
+function addSocialLink() {
+    const data = getAdminData();
+    data.socialLinks.push({
+        platform: '',
+        url: '',
+        icon: 'fab fa-link'
+    });
+    saveAdminData(data);
+    loadSectionData('social');
+}
+
+function updateSocialLink(index) {
+    const data = getAdminData();
+    const input = document.querySelector(`[data-index="${index}"]`);
+    if (input) {
+        data.socialLinks[index].url = input.value;
+        saveAdminData(data);
+    }
+}
+
+function deleteSocialLink(index) {
+    const data = getAdminData();
+    data.socialLinks.splice(index, 1);
+    saveAdminData(data);
+    loadSectionData('social');
+}
+
+// Initialize application
+checkLoginStatus();
