@@ -1,16 +1,88 @@
 // Global Constants
-const CURRENT_TIME = '2025-03-26 15:04:48';
-const CURRENT_USER = 'BusArmyDude';
+const CONFIG = {
+    CURRENT_TIME: '2025-03-26 15:17:31',
+    CURRENT_USER: 'BusArmyDude',
+    VERSION: '1.14.0',
+    BUILD: '2025.3.17'
+};
+
+// Default Data Structure
+const defaultData = {
+    socialLinks: [
+        { platform: 'tiktok', url: 'https://www.tiktok.com/@officalbusarmydude', icon: 'fab fa-tiktok', label: 'TikTok' },
+        { platform: 'youtube', url: 'https://www.youtube.com/@BusArmyDude', icon: 'fab fa-youtube', label: 'YouTube' },
+        { platform: 'snapchat', url: 'https://www.snapchat.com/add/calebkritzar', icon: 'fab fa-snapchat-ghost', label: 'Snapchat' },
+        { platform: 'twitter', url: 'https://x.com/KritzarRiver', icon: 'fab fa-twitter', label: 'X/Twitter' },
+        { platform: 'twitch', url: 'https://m.twitch.tv/BusArmyDude', icon: 'fab fa-twitch', label: 'Twitch' },
+        { platform: 'facebook', url: 'https://www.facebook.com/profile.php?id=61569972389004', icon: 'fab fa-facebook', label: 'Facebook' },
+        { platform: 'steam', url: 'https://steamcommunity.com/profiles/76561199283946668', icon: 'fab fa-steam', label: 'Steam' },
+        { platform: 'discord', url: 'https://discord.gg/NjMtuZYc52', icon: 'fab fa-discord', label: 'Discord' },
+        { platform: 'instagram', url: 'https://www.instagram.com/busarmydude/', icon: 'fab fa-instagram', label: 'Instagram' },
+        { platform: 'youtube-music', url: 'https://music.youtube.com/@BusArmyDude', icon: 'fab fa-youtube-square', label: 'YouTube Music' }
+    ],
+    techInfo: {
+        iphone: {
+            model: 'iPhone 16 Pro',
+            material: 'Titanium',
+            storage: '128GB',
+            batteryCapacity: '3,582mAh',
+            color: 'Natural Titanium',
+            price: '$1,067.49',
+            releaseDate: 'September 20, 2024',
+            purchaseDate: 'November 08, 2024',
+            osVersion: 'iOS 18.4 (22E5232a)',
+            batteryHealth: '99',
+            chargeCycles: '208'
+        },
+        watch: {
+            model: 'Apple Watch Ultra 2',
+            material: 'Titanium',
+            storage: '64GB',
+            batteryCapacity: '564mAh',
+            color: 'Natural Titanium',
+            price: '$853.98',
+            releaseDate: 'September 22, 2023',
+            purchaseDate: 'May 17, 2024',
+            osVersion: 'WatchOS 11.4 (22T5244a)',
+            batteryHealth: '97'
+        },
+        mac: {
+            model: '2023 Mac Mini M2',
+            material: 'Aluminum',
+            storage: '256GB SSD',
+            color: 'Grey',
+            price: '$742.29',
+            releaseDate: 'January 17, 2023',
+            purchaseDate: 'May 16, 2024',
+            osVersion: 'macOS Sequoia 15.4 Beta (24E5238a)'
+        }
+    },
+    businessHours: {
+        monday: { open: '09:00', close: '17:00', closed: false },
+        tuesday: { open: '09:00', close: '17:00', closed: false },
+        wednesday: { open: '09:00', close: '17:00', closed: false },
+        thursday: { open: '09:00', close: '17:00', closed: false },
+        friday: { open: '09:00', close: '17:00', closed: false },
+        saturday: { open: '10:00', close: '15:00', closed: false },
+        sunday: { open: '00:00', close: '00:00', closed: true }
+    },
+    settings: {
+        theme: 'dark',
+        profileStatus: 'online',
+        maintenanceMode: false,
+        lastUpdate: CONFIG.CURRENT_TIME
+    }
+};
 
 // DOM Elements and Global Variables
 let loginSection;
 let adminPanel;
 let loginForm;
-let lastLoginTime = localStorage.getItem('lastLogin') || CURRENT_TIME;
+let lastLoginTime = localStorage.getItem('lastLogin') || CONFIG.CURRENT_TIME;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing admin portal for:', CURRENT_USER);
+    console.log('Initializing admin portal for:', CONFIG.CURRENT_USER);
     
     // Get DOM elements
     loginSection = document.getElementById('login-section');
@@ -52,22 +124,44 @@ function setupEventListeners() {
 
     // Button event listeners
     setupButtonListeners();
+
+    // Platform tabs in Shoutouts section
+    document.querySelectorAll('.platform-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const platform = tab.getAttribute('data-platform');
+            switchPlatform(platform);
+        });
+    });
 }
 
 function setupButtonListeners() {
-    // Logout button
+    // Core buttons
     document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
-
-    // Mobile menu toggle
     document.getElementById('menuToggle')?.addEventListener('click', toggleSidebar);
-
-    // Settings controls
     document.getElementById('theme-select')?.addEventListener('change', handleThemeChange);
     document.getElementById('status-select')?.addEventListener('change', handleStatusChange);
     document.getElementById('maintenance-toggle')?.addEventListener('change', handleMaintenanceToggle);
 
-    // Add social link button
-    document.querySelector('.add-social-btn')?.addEventListener('click', addSocialLink);
+    // Section-specific buttons
+    setupSectionButtons();
+}
+
+function setupSectionButtons() {
+    // Add buttons
+    document.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const section = this.closest('.content-section').id.replace('-section', '');
+            handleAdd(section);
+        });
+    });
+
+    // Save buttons
+    document.querySelectorAll('.save-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const section = this.closest('.content-section').id.replace('-section', '');
+            handleSave(section);
+        });
+    });
 }
 
 // Authentication Functions
@@ -75,11 +169,11 @@ function handleLogin() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    if (username === CURRENT_USER && password === 'admin123') {
+    if (username === CONFIG.CURRENT_USER && password === 'admin123') {
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('lastLogin', CURRENT_TIME);
+        localStorage.setItem('lastLogin', CONFIG.CURRENT_TIME);
         showAdminPanel();
-        showToast('Welcome back, ' + CURRENT_USER + '!', 'success');
+        showToast('Welcome back, ' + CONFIG.CURRENT_USER + '!', 'success');
         loadDashboardData();
     } else {
         showToast('Invalid credentials', 'error');
@@ -156,7 +250,7 @@ function getAdminData() {
 }
 
 function saveAdminData(data) {
-    data.settings.lastUpdate = CURRENT_TIME;
+    data.settings.lastUpdate = CONFIG.CURRENT_TIME;
     localStorage.setItem('adminData', JSON.stringify(data));
     updateTimeDisplays();
     showToast('Changes saved successfully', 'success');
@@ -164,7 +258,7 @@ function saveAdminData(data) {
 
 function updateTimeDisplays() {
     document.getElementById('last-login-time').textContent = lastLoginTime;
-    document.getElementById('last-update-time').textContent = CURRENT_TIME;
+    document.getElementById('last-update-time').textContent = CONFIG.CURRENT_TIME;
 }
 
 // Section Loading Functions
@@ -179,7 +273,7 @@ function loadSectionData(section) {
             renderSocialLinks(data.socialLinks);
             break;
         case 'shoutouts':
-            renderShoutouts(data.shoutouts);
+            loadCreatorShoutouts();
             break;
         case 'tech':
             renderTechInfo(data.techInfo);
@@ -196,146 +290,50 @@ function loadSectionData(section) {
     }
 }
 
-// Section Render Functions
-function updateDashboardStats(data) {
-    document.getElementById('social-count').textContent = data.socialLinks.length;
-    document.getElementById('shoutouts-count').textContent = 
-        Object.values(data.shoutouts).flat().length;
-    document.getElementById('events-count').textContent = data.events.length;
-    document.getElementById('faq-count').textContent = data.faq.length;
+// Creator Shoutouts Management
+function loadCreatorShoutouts() {
+    const defaultPlatform = 'tiktok';
+    document.querySelector(`[data-platform="${defaultPlatform}"]`)?.click();
 }
 
-function renderSocialLinks(links) {
-    const container = document.getElementById('social-links-container');
-    if (!container) return;
-    
-    container.innerHTML = links.map((link, index) => `
-        <div class="social-link-item">
-            <i class="${link.icon}"></i>
-            <input type="text" value="${link.url}" class="form-control" data-index="${index}">
-            <button class="btn btn-primary" onclick="updateSocialLink(${index})">
-                <i class="fas fa-save"></i>
-            </button>
-            <button class="btn btn-danger" onclick="deleteSocialLink(${index})">
-                <i class="fas fa-trash"></i>
-            </button>
-        </div>
-    `).join('');
+function switchPlatform(platform) {
+    document.querySelectorAll('.platform-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.dataset.platform === platform) {
+            tab.classList.add('active');
+        }
+    });
+
+    // Load creators from the appropriate shoutouts object
+    const creators = window[`${platform}Shoutouts`].accounts;
+    renderCreators(platform, creators);
 }
 
-function renderShoutouts(shoutouts) {
+function renderCreators(platform, creators) {
     const container = document.getElementById('shoutouts-container');
     if (!container) return;
 
-    container.innerHTML = Object.entries(shoutouts).map(([platform, items]) => `
-        <div class="platform-section">
-            <h3><i class="fab fa-${platform}"></i> ${platform.charAt(0).toUpperCase() + platform.slice(1)}</h3>
-            <div class="shoutout-list">
-                ${items.map((item, index) => `
-                    <div class="shoutout-item">
-                        <img src="${item.avatar}" alt="${item.username}">
-                        <div class="shoutout-details">
-                            <h4>${item.username}</h4>
-                            <p>${item.message}</p>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `).join('');
-}
-
-function renderTechInfo(techInfo) {
-    const container = document.querySelector('.tech-grid');
-    if (!container) return;
-
-    container.innerHTML = Object.entries(techInfo).map(([device, info]) => `
-        <div class="tech-card">
-            <h3>${info.model}</h3>
-            <div class="tech-details">
-                ${Object.entries(info).map(([key, value]) => 
-                    key !== 'model' ? `
-                        <div class="tech-detail">
-                            <span class="detail-label">${key}:</span>
-                            <span class="detail-value">${value}</span>
-                        </div>
-                    ` : ''
-                ).join('')}
-            </div>
-            ${info.batteryHealth ? `
-                <div class="battery-health">
-                    <div class="battery-bar">
-                        <div class="battery-level" style="width: ${parseInt(info.batteryHealth)}%"></div>
-                    </div>
-                    <span>Battery Health: ${info.batteryHealth}</span>
+    container.innerHTML = creators.map(creator => `
+        <div class="creator-card">
+            <img src="${creator.profilePic}" alt="${creator.username}" class="creator-pic">
+            <div class="creator-info">
+                <div class="creator-header">
+                    <h3>${creator.nickname} ${creator.isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''}</h3>
                 </div>
-            ` : ''}
-        </div>
-    `).join('');
-}
-
-function renderBusinessHours(hours) {
-    const container = document.getElementById('hours-container');
-    if (!container) return;
-
-    container.innerHTML = `
-        <div class="hours-grid">
-            ${Object.entries(hours).map(([day, time]) => `
-                <div class="hours-row">
-                    <div class="day-label">${day.charAt(0).toUpperCase() + day.slice(1)}</div>
-                    <div class="hours-inputs">
-                        <input type="time" value="${time.open}" 
-                               ${time.closed ? 'disabled' : ''}
-                               onchange="updateBusinessHours('${day}', 'open', this.value)">
-                        <span>to</span>
-                        <input type="time" value="${time.close}"
-                               ${time.closed ? 'disabled' : ''}
-                               onchange="updateBusinessHours('${day}', 'close', this.value)">
-                        <label class="closed-toggle">
-                            <input type="checkbox" ${time.closed ? 'checked' : ''}
-                                   onchange="toggleDayClosed('${day}')">
-                            Closed
-                        </label>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
-}
-
-function renderFAQ(faq) {
-    const container = document.getElementById('faq-container');
-    if (!container) return;
-
-    container.innerHTML = `
-        ${faq.map((item, index) => `
-            <div class="faq-item">
-                <input type="text" class="form-control" value="${item.question}" placeholder="Question">
-                <textarea class="form-control" placeholder="Answer">${item.answer}</textarea>
-                <div class="faq-actions">
-                    <button class="btn btn-primary" onclick="updateFAQItem(${index})">
-                        <i class="fas fa-save"></i> Save
+                <p class="creator-username">@${creator.username}</p>
+                <p class="creator-bio">${creator.bio || ''}</p>
+                <p class="follower-count">${creator.followers} Followers</p>
+                <div class="creator-actions">
+                    <button class="btn btn-primary" onclick="editCreator('${platform}', '${creator.username}')">
+                        <i class="fas fa-edit"></i> Edit
                     </button>
-                    <button class="btn btn-danger" onclick="deleteFAQItem(${index})">
+                    <button class="btn btn-danger" onclick="deleteCreator('${platform}', '${creator.username}')">
                         <i class="fas fa-trash"></i> Delete
                     </button>
                 </div>
             </div>
-        `).join('')}
-        <button class="btn btn-primary add-faq-btn">
-            <i class="fas fa-plus"></i> Add FAQ Item
-        </button>
-    `;
-}
-
-function renderSettings(settings) {
-    const themeSelect = document.getElementById('theme-select');
-    const statusSelect = document.getElementById('status-select');
-    const maintenanceToggle = document.getElementById('maintenance-toggle');
-
-    if (themeSelect) themeSelect.value = settings.theme;
-    if (statusSelect) statusSelect.value = settings.profileStatus;
-    if (maintenanceToggle) maintenanceToggle.checked = settings.maintenanceMode;
+        </div>
+    `).join('');
 }
 
 // Toast Notifications
