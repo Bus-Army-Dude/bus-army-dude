@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus Army Dude - Admin Portal</title>
+    <title>Admin Portal - Bus Army Dude</title>
     <link rel="stylesheet" href="admin-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
+<body class="dark-mode">
     <!-- Login Section -->
     <div id="login-section" class="login-section">
         <div class="login-container">
@@ -29,18 +29,18 @@
     <!-- Admin Panel -->
     <div id="admin-panel" class="admin-panel" style="display: none;">
         <!-- Mobile Menu Toggle -->
-        <button class="menu-toggle" id="menuToggle">
+        <button id="menuToggle" class="menu-toggle">
             <i class="fas fa-bars"></i>
         </button>
 
-        <!-- Sidebar -->
+        <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="sidebar-header">
                 <img src="profile.jpg" alt="Admin" class="admin-avatar">
                 <h3>Bus Army Dude</h3>
-                <p>Last update: <span id="last-update-time"></span></p>
+                <p>Last login: <span id="last-login"></span></p>
             </div>
-            
+
             <ul class="nav-menu">
                 <li data-section="dashboard" class="active">
                     <i class="fas fa-home"></i> Dashboard
@@ -64,13 +64,13 @@
                     <i class="fas fa-cog"></i> Settings
                 </li>
             </ul>
-            
+
             <button id="logout-btn" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
         </nav>
 
-        <!-- Main Content -->
+        <!-- Main Content Area -->
         <main class="main-content">
             <!-- Dashboard Section -->
             <section id="dashboard-section" class="content-section">
@@ -87,10 +87,18 @@
                         <p id="shoutouts-count">0</p>
                     </div>
                     <div class="stat-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Events</h3>
+                        <p id="events-count">0</p>
+                    </div>
+                    <div class="stat-card">
                         <i class="fas fa-question-circle"></i>
                         <h3>FAQ Items</h3>
                         <p id="faq-count">0</p>
                     </div>
+                </div>
+                <div class="last-update">
+                    Last Updated: <span id="last-update-time">2025-03-26 14:20:12</span>
                 </div>
             </section>
 
@@ -106,50 +114,25 @@
             <!-- Creator Shoutouts Section -->
             <section id="shoutouts-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-bullhorn"></i> Creator Shoutouts</h2>
-                
-                <div class="platform-tabs">
-                    <button class="platform-tab active" data-platform="tiktok">
-                        <i class="fab fa-tiktok"></i> TikTok
-                    </button>
-                    <button class="platform-tab" data-platform="youtube">
-                        <i class="fab fa-youtube"></i> YouTube
-                    </button>
-                    <button class="platform-tab" data-platform="instagram">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </button>
-                </div>
-
                 <div id="shoutouts-container"></div>
-                <button class="add-btn" onclick="addShoutout()">
-                    <i class="fas fa-plus"></i> Add Shoutout
-                </button>
             </section>
 
             <!-- Tech Info Section -->
             <section id="tech-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-microchip"></i> Tech Information</h2>
-                <div class="tech-grid">
-                    <!-- Tech info cards will be loaded here -->
-                </div>
+                <div class="tech-grid"></div>
             </section>
 
             <!-- Business Hours Section -->
             <section id="hours-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-clock"></i> Business Hours</h2>
-                <div id="hours-container">
-                    <!-- Business hours will be loaded here -->
-                </div>
+                <div id="hours-container"></div>
             </section>
 
             <!-- FAQ Section -->
             <section id="faq-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-question-circle"></i> FAQ Management</h2>
-                <div id="faq-container">
-                    <!-- FAQ items will be loaded here -->
-                </div>
-                <button class="add-btn" onclick="addFAQ()">
-                    <i class="fas fa-plus"></i> Add FAQ
-                </button>
+                <div id="faq-container"></div>
             </section>
 
             <!-- Settings Section -->
@@ -159,19 +142,17 @@
                     <div class="settings-card">
                         <h3>Theme Settings</h3>
                         <div class="form-group">
-                            <label for="theme-select">Choose Theme</label>
+                            <label for="theme-select">Theme Mode</label>
                             <select id="theme-select">
                                 <option value="light">Light</option>
-                                <option value="dark">Dark</option>
-                                <option value="auto">System Default</option>
+                                <option value="dark" selected>Dark</option>
                             </select>
                         </div>
                     </div>
-                    
                     <div class="settings-card">
                         <h3>Profile Status</h3>
                         <div class="form-group">
-                            <label for="status-select">Status</label>
+                            <label for="status-select">Current Status</label>
                             <select id="status-select">
                                 <option value="online">Online</option>
                                 <option value="idle">Idle</option>
@@ -184,9 +165,16 @@
         </main>
     </div>
 
-    <!-- Toast Messages -->
-    <div id="toast-container"></div>
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 
+    <!-- Version Info -->
+    <div class="version-info">
+        <p>Version 1.0.0</p>
+        <p>Last Updated: 2025-03-26 14:20:12</p>
+    </div>
+
+    <!-- Scripts -->
     <script src="admin.js"></script>
 </body>
 </html>
