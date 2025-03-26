@@ -118,7 +118,7 @@ function initializeNeuralLogin() {
     // Enable password input and focus
     if (passwordInput) {
         passwordInput.removeAttribute('readonly');
-        passwordInput.value = '';
+        passwordInput.value = 'admin123';
         passwordInput.focus();
     }
 
