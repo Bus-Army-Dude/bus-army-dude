@@ -1,40 +1,24 @@
+// Global Constants
+const CURRENT_TIME = '2025-03-26 15:04:48';
+const CURRENT_USER = 'BusArmyDude';
+
 // DOM Elements and Global Variables
 let loginSection;
 let adminPanel;
 let loginForm;
-let lastLoginTime = localStorage.getItem('lastLogin') || '2025-03-26 14:59:57';
+let lastLoginTime = localStorage.getItem('lastLogin') || CURRENT_TIME;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Loaded'); // Debug log
+    console.log('Initializing admin portal for:', CURRENT_USER);
     
     // Get DOM elements
     loginSection = document.getElementById('login-section');
     adminPanel = document.getElementById('admin-panel');
     loginForm = document.getElementById('login-form');
     
-    // Verify elements are found
-    if (!loginSection || !adminPanel || !loginForm) {
-        console.error('Required elements not found');
-        return;
-    }
-
-    // Add login form submit listener
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        console.log('Login attempt'); // Debug log
-        handleLogin();
-    });
-
-    // Add other event listeners
-    document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
-    document.getElementById('menuToggle')?.addEventListener('click', toggleSidebar);
-    document.getElementById('theme-select')?.addEventListener('change', handleThemeChange);
-    document.getElementById('status-select')?.addEventListener('change', handleStatusChange);
-    document.getElementById('maintenance-toggle')?.addEventListener('change', handleMaintenanceToggle);
-    
-    // Setup navigation
-    setupNavigation();
+    // Setup Event Listeners
+    setupEventListeners();
     
     // Initialize data
     initializeData();
@@ -46,85 +30,101 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTimeDisplays();
 });
 
+function setupEventListeners() {
+    // Login form
+    loginForm?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleLogin();
+    });
+
+    // Navigation menu items
+    document.querySelectorAll('.nav-menu li').forEach(item => {
+        item.addEventListener('click', function() {
+            const section = this.getAttribute('data-section');
+            navigateToSection(section);
+            
+            // Update mobile menu
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        });
+    });
+
+    // Button event listeners
+    setupButtonListeners();
+}
+
+function setupButtonListeners() {
+    // Logout button
+    document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+
+    // Mobile menu toggle
+    document.getElementById('menuToggle')?.addEventListener('click', toggleSidebar);
+
+    // Settings controls
+    document.getElementById('theme-select')?.addEventListener('change', handleThemeChange);
+    document.getElementById('status-select')?.addEventListener('change', handleStatusChange);
+    document.getElementById('maintenance-toggle')?.addEventListener('change', handleMaintenanceToggle);
+
+    // Add social link button
+    document.querySelector('.add-social-btn')?.addEventListener('click', addSocialLink);
+}
+
 // Authentication Functions
 function handleLogin() {
-    console.log('Handle Login Called'); // Debug log
-    
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    console.log('Login attempt:', username); // Debug log
-
-    if (username === 'BusArmyDude' && password === 'admin123') {
-        console.log('Login successful'); // Debug log
+    if (username === CURRENT_USER && password === 'admin123') {
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('lastLogin', '2025-03-26 14:59:57');
+        localStorage.setItem('lastLogin', CURRENT_TIME);
         showAdminPanel();
-        showToast('Login successful!', 'success');
+        showToast('Welcome back, ' + CURRENT_USER + '!', 'success');
         loadDashboardData();
     } else {
-        console.log('Login failed'); // Debug log
         showToast('Invalid credentials', 'error');
+    }
+}
+
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('isLoggedIn');
+        hideAdminPanel();
+        showToast('Logged out successfully', 'success');
+    }
+}
+
+function checkLoginStatus() {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        showAdminPanel();
+        loadDashboardData();
+    } else {
+        hideAdminPanel();
     }
 }
 
 // UI Functions
 function showAdminPanel() {
-    console.log('Showing admin panel'); // Debug log
-    if (loginSection && adminPanel) {
-        loginSection.style.display = 'none';
-        adminPanel.style.display = 'grid';
-        navigateToSection('dashboard');
-        updateLastLoginTime();
-    } else {
-        console.error('Required elements not found for showing admin panel');
-    }
+    loginSection.style.display = 'none';
+    adminPanel.style.display = 'grid';
+    navigateToSection('dashboard');
+    updateLastLoginTime();
 }
 
 function hideAdminPanel() {
-    if (loginSection && adminPanel) {
-        loginSection.style.display = 'flex';
-        adminPanel.style.display = 'none';
-    }
+    loginSection.style.display = 'flex';
+    adminPanel.style.display = 'none';
 }
 
-function updateLastLoginTime() {
-    const lastLoginElement = document.getElementById('last-login-time');
-    if (lastLoginElement) {
-        lastLoginElement.textContent = lastLoginTime;
-    }
-}
-
-// Toast Notification Function
-function showToast(message, type = 'info') {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
-
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.textContent = message;
-    
-    container.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar?.classList.toggle('active');
 }
 
 // Navigation Functions
-function setupNavigation() {
-    document.querySelectorAll('.nav-menu li').forEach(item => {
-        item.addEventListener('click', () => {
-            navigateToSection(item.dataset.section);
-        });
-    });
-}
-
 function navigateToSection(section) {
     // Hide all sections
-    document.querySelectorAll('.content-section').forEach(s => {
-        s.style.display = 'none';
-    });
+    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
     
     // Show selected section
     const selectedSection = document.getElementById(`${section}-section`);
@@ -135,7 +135,7 @@ function navigateToSection(section) {
     // Update active nav item
     document.querySelectorAll('.nav-menu li').forEach(item => {
         item.classList.remove('active');
-        if (item.dataset.section === section) {
+        if (item.getAttribute('data-section') === section) {
             item.classList.add('active');
         }
     });
@@ -152,14 +152,19 @@ function initializeData() {
 }
 
 function getAdminData() {
-    return JSON.parse(localStorage.getItem('adminData'));
+    return JSON.parse(localStorage.getItem('adminData')) || defaultData;
 }
 
 function saveAdminData(data) {
-    data.settings.lastUpdate = CONFIG.CURRENT_TIME;
+    data.settings.lastUpdate = CURRENT_TIME;
     localStorage.setItem('adminData', JSON.stringify(data));
-    showToast('Changes saved successfully', 'success');
     updateTimeDisplays();
+    showToast('Changes saved successfully', 'success');
+}
+
+function updateTimeDisplays() {
+    document.getElementById('last-login-time').textContent = lastLoginTime;
+    document.getElementById('last-update-time').textContent = CURRENT_TIME;
 }
 
 // Section Loading Functions
@@ -191,7 +196,7 @@ function loadSectionData(section) {
     }
 }
 
-// Render Functions
+// Section Render Functions
 function updateDashboardStats(data) {
     document.getElementById('social-count').textContent = data.socialLinks.length;
     document.getElementById('shoutouts-count').textContent = 
@@ -200,7 +205,6 @@ function updateDashboardStats(data) {
     document.getElementById('faq-count').textContent = data.faq.length;
 }
 
-// Social Links Functions
 function renderSocialLinks(links) {
     const container = document.getElementById('social-links-container');
     if (!container) return;
@@ -219,36 +223,139 @@ function renderSocialLinks(links) {
     `).join('');
 }
 
-function addSocialLink() {
-    const data = getAdminData();
-    data.socialLinks.push({
-        platform: '',
-        url: '',
-        icon: 'fab fa-link'
-    });
-    saveAdminData(data);
-    loadSectionData('social');
+function renderShoutouts(shoutouts) {
+    const container = document.getElementById('shoutouts-container');
+    if (!container) return;
+
+    container.innerHTML = Object.entries(shoutouts).map(([platform, items]) => `
+        <div class="platform-section">
+            <h3><i class="fab fa-${platform}"></i> ${platform.charAt(0).toUpperCase() + platform.slice(1)}</h3>
+            <div class="shoutout-list">
+                ${items.map((item, index) => `
+                    <div class="shoutout-item">
+                        <img src="${item.avatar}" alt="${item.username}">
+                        <div class="shoutout-details">
+                            <h4>${item.username}</h4>
+                            <p>${item.message}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
 }
 
-function updateSocialLink(index) {
-    const data = getAdminData();
-    const input = document.querySelector(`[data-index="${index}"]`);
-    if (input) {
-        data.socialLinks[index].url = input.value;
-        saveAdminData(data);
-    }
+function renderTechInfo(techInfo) {
+    const container = document.querySelector('.tech-grid');
+    if (!container) return;
+
+    container.innerHTML = Object.entries(techInfo).map(([device, info]) => `
+        <div class="tech-card">
+            <h3>${info.model}</h3>
+            <div class="tech-details">
+                ${Object.entries(info).map(([key, value]) => 
+                    key !== 'model' ? `
+                        <div class="tech-detail">
+                            <span class="detail-label">${key}:</span>
+                            <span class="detail-value">${value}</span>
+                        </div>
+                    ` : ''
+                ).join('')}
+            </div>
+            ${info.batteryHealth ? `
+                <div class="battery-health">
+                    <div class="battery-bar">
+                        <div class="battery-level" style="width: ${parseInt(info.batteryHealth)}%"></div>
+                    </div>
+                    <span>Battery Health: ${info.batteryHealth}</span>
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
 }
 
-function deleteSocialLink(index) {
-    if (confirm('Are you sure you want to delete this social link?')) {
-        const data = getAdminData();
-        data.socialLinks.splice(index, 1);
-        saveAdminData(data);
-        loadSectionData('social');
-    }
+function renderBusinessHours(hours) {
+    const container = document.getElementById('hours-container');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="hours-grid">
+            ${Object.entries(hours).map(([day, time]) => `
+                <div class="hours-row">
+                    <div class="day-label">${day.charAt(0).toUpperCase() + day.slice(1)}</div>
+                    <div class="hours-inputs">
+                        <input type="time" value="${time.open}" 
+                               ${time.closed ? 'disabled' : ''}
+                               onchange="updateBusinessHours('${day}', 'open', this.value)">
+                        <span>to</span>
+                        <input type="time" value="${time.close}"
+                               ${time.closed ? 'disabled' : ''}
+                               onchange="updateBusinessHours('${day}', 'close', this.value)">
+                        <label class="closed-toggle">
+                            <input type="checkbox" ${time.closed ? 'checked' : ''}
+                                   onchange="toggleDayClosed('${day}')">
+                            Closed
+                        </label>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
 }
 
-// Settings Functions
+function renderFAQ(faq) {
+    const container = document.getElementById('faq-container');
+    if (!container) return;
+
+    container.innerHTML = `
+        ${faq.map((item, index) => `
+            <div class="faq-item">
+                <input type="text" class="form-control" value="${item.question}" placeholder="Question">
+                <textarea class="form-control" placeholder="Answer">${item.answer}</textarea>
+                <div class="faq-actions">
+                    <button class="btn btn-primary" onclick="updateFAQItem(${index})">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteFAQItem(${index})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `).join('')}
+        <button class="btn btn-primary add-faq-btn">
+            <i class="fas fa-plus"></i> Add FAQ Item
+        </button>
+    `;
+}
+
+function renderSettings(settings) {
+    const themeSelect = document.getElementById('theme-select');
+    const statusSelect = document.getElementById('status-select');
+    const maintenanceToggle = document.getElementById('maintenance-toggle');
+
+    if (themeSelect) themeSelect.value = settings.theme;
+    if (statusSelect) statusSelect.value = settings.profileStatus;
+    if (maintenanceToggle) maintenanceToggle.checked = settings.maintenanceMode;
+}
+
+// Toast Notifications
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Settings Handlers
 function handleThemeChange(e) {
     const theme = e.target.value;
     document.body.setAttribute('data-theme', theme);
