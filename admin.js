@@ -926,3 +926,164 @@ function removeNeuralGlow(element) {
 document.addEventListener('DOMContentLoaded', () => {
     initializeSidebar();
 });
+
+// Theme Management
+function handleThemeChange(event) {
+    const newTheme = event?.target?.value || 'dark';
+    const data = getAdminData();
+    
+    // Update theme in data
+    data.settings.theme = newTheme;
+    saveAdminData(data);
+    
+    // Apply theme
+    applyTheme(newTheme);
+    
+    // Show neural effect
+    showThemeTransitionEffect(newTheme);
+    
+    // Show confirmation toast
+    showNeuralToast(`Neural interface switched to ${newTheme} mode`, 'info');
+}
+
+function applyTheme(theme) {
+    // Remove all theme classes
+    document.body.classList.remove('light', 'dark', 'neural', 'quantum');
+    
+    // Add new theme class
+    document.body.classList.add(theme);
+    
+    // Update meta theme color
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', getThemeColor(theme));
+    }
+    
+    // Save theme preference
+    localStorage.setItem('preferred_theme', theme);
+    
+    // Update neural interface elements
+    updateNeuralElements(theme);
+}
+
+function getThemeColor(theme) {
+    const themeColors = {
+        light: '#ffffff',
+        dark: '#1a1a1a',
+        neural: '#00ff9d',
+        quantum: '#7b00ff'
+    };
+    return themeColors[theme] || themeColors.dark;
+}
+
+function showThemeTransitionEffect(newTheme) {
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'theme-transition-overlay';
+    document.body.appendChild(overlay);
+    
+    // Add neural circuit pattern
+    for (let i = 0; i < 20; i++) {
+        const circuit = document.createElement('div');
+        circuit.className = 'neural-circuit';
+        circuit.style.setProperty('--angle', `${Math.random() * 360}deg`);
+        circuit.style.setProperty('--delay', `${Math.random() * 0.5}s`);
+        overlay.appendChild(circuit);
+    }
+    
+    // Animate overlay
+    requestAnimationFrame(() => {
+        overlay.style.opacity = '1';
+        
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.remove(), 500);
+        }, 600);
+    });
+}
+
+function updateNeuralElements(theme) {
+    // Update neural particles
+    const particles = document.querySelectorAll('.neural-particle');
+    particles.forEach(particle => {
+        particle.style.setProperty('--particle-color', getNeuralParticleColor(theme));
+    });
+    
+    // Update hologram effects
+    const holograms = document.querySelectorAll('.hologram-effect');
+    holograms.forEach(hologram => {
+        hologram.style.setProperty('--hologram-color', getHologramColor(theme));
+    });
+    
+    // Update neural pulses
+    const pulses = document.querySelectorAll('.neural-pulse');
+    pulses.forEach(pulse => {
+        pulse.style.setProperty('--pulse-color', getPulseColor(theme));
+    });
+}
+
+function getNeuralParticleColor(theme) {
+    const particleColors = {
+        light: 'rgba(0, 0, 0, 0.2)',
+        dark: 'rgba(255, 255, 255, 0.2)',
+        neural: 'rgba(0, 255, 157, 0.3)',
+        quantum: 'rgba(123, 0, 255, 0.3)'
+    };
+    return particleColors[theme] || particleColors.dark;
+}
+
+function getHologramColor(theme) {
+    const hologramColors = {
+        light: '0, 150, 255',
+        dark: '0, 255, 157',
+        neural: '0, 255, 157',
+        quantum: '123, 0, 255'
+    };
+    return hologramColors[theme] || hologramColors.dark;
+}
+
+function getPulseColor(theme) {
+    const pulseColors = {
+        light: '#0096ff',
+        dark: '#00ff9d',
+        neural: '#00ff9d',
+        quantum: '#7b00ff'
+    };
+    return pulseColors[theme] || pulseColors.dark;
+}
+
+// Initialize theme on load
+function initializeTheme() {
+    const data = getAdminData();
+    const savedTheme = data.settings.theme || localStorage.getItem('preferred_theme') || 'dark';
+    
+    // Update theme select if it exists
+    const themeSelect = document.getElementById('theme-select');
+    if (themeSelect) {
+        themeSelect.value = savedTheme;
+    }
+    
+    // Apply the theme
+    applyTheme(savedTheme);
+}
+
+// Add to your existing initialization code
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTheme();
+});
+
+// Add theme-related event listeners
+function setupThemeEventListeners() {
+    const themeSelect = document.getElementById('theme-select');
+    if (themeSelect) {
+        themeSelect.addEventListener('change', handleThemeChange);
+    }
+    
+    // Optional: Add keyboard shortcut for theme toggle
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+            const currentTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+            handleThemeChange({ target: { value: currentTheme } });
+        }
+    });
+}
