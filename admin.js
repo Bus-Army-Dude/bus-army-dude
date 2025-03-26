@@ -1,10 +1,119 @@
 // Global Constants
 const NEURAL_CONFIG = {
-    CURRENT_TIME: '2025-03-26 16:10:24',
+    CURRENT_TIME: '2025-03-26 16:29:13',
     CURRENT_USER: 'BusArmyDude',
     VERSION: '1.14.0',
-    BUILD: '2025.3.17'
+    BUILD: '2025.3.26',
+    TIME_FORMAT: 'YYYY-MM-DD HH:mm:ss',
+    TIME_ZONE: 'UTC',
+    
+    updateTime(newTime) {
+        this.CURRENT_TIME = newTime;
+        this.updateTimeDisplays();
+        this.saveConfig();
+    },
+    
+    updateUser(newUser) {
+        this.CURRENT_USER = newUser;
+        this.updateUserDisplays();
+        this.saveConfig();
+    },
+    
+    updateTimeDisplays() {
+        document.querySelectorAll('.neural-time').forEach(display => {
+            display.textContent = this.CURRENT_TIME;
+        });
+    },
+    
+    updateUserDisplays() {
+        document.querySelectorAll('.neural-user').forEach(display => {
+            display.textContent = this.CURRENT_USER;
+        });
+        const avatar = document.querySelector('.profile-hologram');
+        if (avatar) {
+            avatar.alt = this.CURRENT_USER;
+        }
+    },
+    
+    saveConfig() {
+        localStorage.setItem('neural_config', JSON.stringify({
+            time: this.CURRENT_TIME,
+            user: this.CURRENT_USER
+        }));
+    },
+    
+    loadConfig() {
+        const saved = localStorage.getItem('neural_config');
+        if (saved) {
+            const config = JSON.parse(saved);
+            this.CURRENT_TIME = config.time;
+            this.CURRENT_USER = config.user;
+        }
+    },
+    
+    formatDate(date) {
+        if (typeof date === 'string') {
+            date = new Date(date);
+        }
+        const pad = (num) => String(num).padStart(2, '0');
+        const year = date.getUTCFullYear();
+        const month = pad(date.getUTCMonth() + 1);
+        const day = pad(date.getUTCDate());
+        const hours = pad(date.getUTCHours());
+        const minutes = pad(date.getUTCMinutes());
+        const seconds = pad(date.getUTCSeconds());
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
 };
+
+// Time Management Functions
+function initializeTimeManagement() {
+    NEURAL_CONFIG.loadConfig();
+    NEURAL_CONFIG.updateTimeDisplays();
+    NEURAL_CONFIG.updateUserDisplays();
+    
+    if (DEBUG_MODE.enabled) {
+        addTimeControls();
+    }
+}
+
+function addTimeControls() {
+    const debugPanel = document.getElementById('debug-panel');
+    if (!debugPanel) return;
+    
+    const timeControls = document.createElement('div');
+    timeControls.className = 'debug-time-controls';
+    timeControls.innerHTML = `
+        <div class="time-control">
+            <label>System Time (UTC):</label>
+            <input type="datetime-local" 
+                   value="${NEURAL_CONFIG.CURRENT_TIME.replace(' ', 'T')}"
+                   step="1"
+                   onchange="updateSystemTime(this.value)">
+        </div>
+        <div class="user-control">
+            <label>Current User:</label>
+            <input type="text" 
+                   value="${NEURAL_CONFIG.CURRENT_USER}"
+                   onchange="updateSystemUser(this.value)">
+        </div>
+    `;
+    
+    debugPanel.insertBefore(timeControls, debugPanel.querySelector('.debug-log'));
+}
+
+function updateSystemTime(newTime) {
+    if (newTime.includes('T')) {
+        newTime = newTime.replace('T', ' ');
+    }
+    NEURAL_CONFIG.updateTime(newTime);
+    showNeuralToast('System time updated', 'info');
+}
+
+function updateSystemUser(newUser) {
+    NEURAL_CONFIG.updateUser(newUser);
+    showNeuralToast('System user updated', 'info');
+}
 
 // Default Data Structure
 const defaultData = {
@@ -70,7 +179,7 @@ const defaultData = {
         theme: 'dark',
         profileStatus: 'online',
         maintenanceMode: false,
-        lastUpdate: NEURAL_CONFIG.CURRENT_TIME
+        lastUpdate: '2025-03-26 16:30:28'
     }
 };
 
@@ -78,31 +187,22 @@ const defaultData = {
 let loginSection;
 let adminPanel;
 let loginForm;
-let lastLoginTime = localStorage.getItem('lastLogin') || NEURAL_CONFIG.CURRENT_TIME;
+let lastLoginTime = localStorage.getItem('lastLogin') || '2025-03-26 16:30:28';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Initializing admin portal for:', NEURAL_CONFIG.CURRENT_USER);
     
-    // Get DOM elements
     loginSection = document.getElementById('login-section');
     adminPanel = document.getElementById('admin-panel');
     loginForm = document.getElementById('login-form');
     
-    // Setup Event Listeners
     setupEventListeners();
-    
-    // Initialize data
     initializeData();
-    
-    // Check login status
     checkLoginStatus();
-
-    // Update time displays
     updateTimeDisplays();
-
-    // Initialize Neural Login System
     initializeNeuralLogin();
+    initializeTimeManagement();
 });
 
 function initializeNeuralLogin() {
@@ -110,31 +210,23 @@ function initializeNeuralLogin() {
     const loginButton = document.querySelector('.neural-button');
     const timeDisplay = document.querySelector('.neural-time');
 
-    // Update system time
     if (timeDisplay) {
         timeDisplay.textContent = NEURAL_CONFIG.CURRENT_TIME;
     }
 
-    // Enable password input and focus
     if (passwordInput) {
         passwordInput.removeAttribute('readonly');
-        passwordInput.value = 'admin123';
+        passwordInput.value = '';
         passwordInput.focus();
     }
 
-    // Handle form submission
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Get password value
             const password = passwordInput.value.trim();
-            
-            // Disable form during authentication
             passwordInput.disabled = true;
             loginButton.disabled = true;
             
-            // Update button state
             loginButton.innerHTML = `
                 <span class="button-text">
                     <i class="fas fa-spinner fa-spin"></i> 
@@ -143,7 +235,6 @@ function initializeNeuralLogin() {
                 <div class="button-glow"></div>
             `;
 
-            // Simulate neural connection sequence
             initiateNeuralSequence(password);
         });
     }
@@ -158,9 +249,8 @@ function initiateNeuralSequence(password) {
     ];
 
     let currentStep = 0;
-
-    // Create toast container if it doesn't exist
     let toastContainer = document.getElementById('toast-container');
+    
     if (!toastContainer) {
         toastContainer = document.createElement('div');
         toastContainer.id = 'toast-container';
@@ -173,7 +263,6 @@ function initiateNeuralSequence(password) {
             currentStep++;
             setTimeout(showSequenceStep, sequences[currentStep - 1].delay);
         } else {
-            // Authentication check
             if (password === 'admin123') {
                 handleSuccessfulLogin();
             } else {
@@ -185,14 +274,13 @@ function initiateNeuralSequence(password) {
     showSequenceStep();
 }
 
+// Admin Panel Functions
 function setupEventListeners() {
-    // Navigation menu items
     document.querySelectorAll('.nav-menu li').forEach(item => {
         item.addEventListener('click', function() {
             const section = this.getAttribute('data-section');
             navigateToSection(section);
             
-            // Update mobile menu
             if (window.innerWidth <= 768) {
                 toggleSidebar();
             }
@@ -206,7 +294,6 @@ function setupEventListeners() {
     document.getElementById('status-select')?.addEventListener('change', handleStatusChange);
     document.getElementById('maintenance-toggle')?.addEventListener('change', handleMaintenanceToggle);
 
-    // Section-specific buttons
     setupSectionButtons();
 }
 
@@ -242,22 +329,25 @@ function showNeuralToast(message, type = 'info', duration = 3000) {
         <div class="toast-progress"></div>
     `;
 
-    const container = document.getElementById('toast-container');
+    const container = document.getElementById('toast-container') || 
+                     (() => {
+                         const cont = document.createElement('div');
+                         cont.id = 'toast-container';
+                         document.body.appendChild(cont);
+                         return cont;
+                     })();
+
     container.appendChild(toast);
 
-    // Add appear animation
     requestAnimationFrame(() => {
         toast.classList.add('show');
+        const progress = toast.querySelector('.toast-progress');
+        progress.style.transition = `width ${duration}ms linear`;
+        requestAnimationFrame(() => {
+            progress.style.width = '0%';
+        });
     });
 
-    // Start progress bar
-    const progress = toast.querySelector('.toast-progress');
-    progress.style.transition = `width ${duration}ms linear`;
-    requestAnimationFrame(() => {
-        progress.style.width = '0%';
-    });
-
-    // Remove toast after duration
     setTimeout(() => {
         toast.classList.add('hide');
         setTimeout(() => toast.remove(), 300);
@@ -265,75 +355,62 @@ function showNeuralToast(message, type = 'info', duration = 3000) {
 }
 
 function getToastIcon(type) {
-    const icons = {
+    return {
         success: 'check-circle',
         error: 'exclamation-circle',
         warning: 'exclamation-triangle',
         info: 'info-circle'
-    };
-    return icons[type] || 'info-circle';
+    }[type] || 'info-circle';
 }
 
 function handleSuccessfulLogin() {
-    // Save login state
     localStorage.setItem('neural_auth', JSON.stringify({
         timestamp: NEURAL_CONFIG.CURRENT_TIME,
         user: NEURAL_CONFIG.CURRENT_USER
     }));
 
-    // Show success message
     showNeuralToast('Neural link established successfully', 'success');
 
-    // Redirect to admin panel
     setTimeout(() => {
-        const loginSection = document.getElementById('login-section');
-        if (loginSection) {
-            loginSection.style.opacity = '0';
-            setTimeout(() => {
-                loginSection.style.display = 'none';
-                window.location.reload(); // Reload to initialize admin panel
-            }, 500);
-        }
+        loginSection.style.opacity = '0';
+        setTimeout(() => {
+            loginSection.style.display = 'none';
+            adminPanel.classList.add('active');
+            initializeAdminPanel();
+        }, 500);
     }, 1000);
 }
 
 function handleFailedLogin() {
-    // Reset form
-    const loginForm = document.getElementById('login-form');
     const passwordInput = document.getElementById('password');
     const loginButton = document.querySelector('.neural-button');
 
-    if (loginButton) {
-        loginButton.innerHTML = `
-            <span class="button-text">Initialize Connection</span>
-            <div class="button-glow"></div>
-        `;
-        loginButton.disabled = false;
-    }
+    loginButton.innerHTML = `
+        <span class="button-text">Initialize Connection</span>
+        <div class="button-glow"></div>
+    `;
+    
+    loginButton.disabled = false;
+    passwordInput.disabled = false;
+    passwordInput.value = '';
+    passwordInput.focus();
 
-    if (passwordInput) {
-        passwordInput.disabled = false;
-        passwordInput.value = '';
-        passwordInput.focus();
-    }
-
-    // Show error message
     showNeuralToast('Neural authentication failed: Invalid access key', 'error');
+
+    const loginContainer = document.querySelector('.login-container');
+    loginContainer.classList.add('shake');
+    setTimeout(() => loginContainer.classList.remove('shake'), 650);
 }
 
-// Section Navigation and Data Management
 function navigateToSection(section) {
-    // Hide all sections
     document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
     
-    // Show selected section
     const selectedSection = document.getElementById(`${section}-section`);
     if (selectedSection) {
         selectedSection.style.display = 'block';
         selectedSection.classList.add('fade-in');
     }
     
-    // Update active nav item
     document.querySelectorAll('.nav-menu li').forEach(item => {
         item.classList.remove('active');
         if (item.getAttribute('data-section') === section) {
@@ -341,7 +418,6 @@ function navigateToSection(section) {
         }
     });
     
-    // Load section data
     loadSectionData(section);
 }
 
@@ -370,12 +446,11 @@ function loadSectionData(section) {
 function updateDashboardStats(data) {
     const stats = {
         lastLogin: lastLoginTime,
-        activeLinks: Object.keys(data.socialLinks).length,
+        activeLinks: data.socialLinks.length,
         systemStatus: data.settings.maintenanceMode ? 'Maintenance' : 'Operational',
         lastUpdate: data.settings.lastUpdate
     };
 
-    // Update stats display
     Object.entries(stats).forEach(([key, value]) => {
         const element = document.getElementById(`${key}-stat`);
         if (element) {
@@ -385,195 +460,7 @@ function updateDashboardStats(data) {
         }
     });
 
-    // Update neural metrics
     updateNeuralMetrics();
-}
-
-function renderSocialLinks(links) {
-    const container = document.getElementById('social-links-container');
-    if (!container) return;
-
-    container.innerHTML = links.map(link => `
-        <div class="neural-card social-card" data-platform="${link.platform}">
-            <div class="card-icon">
-                <i class="${link.icon}"></i>
-            </div>
-            <div class="card-content">
-                <h3>${link.label}</h3>
-                <p class="username">@${extractUsername(link.url)}</p>
-            </div>
-            <div class="card-actions">
-                <button class="neural-btn" onclick="window.open('${link.url}', '_blank')">
-                    <i class="fas fa-external-link-alt"></i>
-                </button>
-                <button class="neural-btn edit" onclick="editSocialLink('${link.platform}')">
-                    <i class="fas fa-edit"></i>
-                </button>
-            </div>
-            <div class="neural-glow"></div>
-        </div>
-    `).join('');
-}
-
-function renderTechInfo(techInfo) {
-    const container = document.getElementById('tech-section');
-    if (!container) return;
-
-    const techGrid = document.createElement('div');
-    techGrid.className = 'tech-grid';
-
-    Object.entries(techInfo).forEach(([device, specs]) => {
-        const card = createTechCard(device, specs);
-        techGrid.appendChild(card);
-    });
-
-    const existingGrid = container.querySelector('.tech-grid');
-    if (existingGrid) {
-        existingGrid.replaceWith(techGrid);
-    } else {
-        container.appendChild(techGrid);
-    }
-}
-
-function createTechCard(device, specs) {
-    const card = document.createElement('div');
-    card.className = 'neural-card tech-card';
-    card.setAttribute('data-device', device);
-
-    card.innerHTML = `
-        <div class="tech-header">
-            <div class="tech-icon">
-                <i class="fas fa-${getTechIcon(device)}"></i>
-            </div>
-            <h3>${specs.model}</h3>
-        </div>
-        <div class="tech-specs">
-            <div class="spec-item">
-                <i class="fas fa-microchip"></i>
-                <span>${specs.storage}</span>
-            </div>
-            ${specs.batteryCapacity ? `
-            <div class="spec-item">
-                <i class="fas fa-battery-full"></i>
-                <span>${specs.batteryCapacity}</span>
-            </div>
-            ` : ''}
-            <div class="spec-item">
-                <i class="fas fa-clock"></i>
-                <span>${specs.purchaseDate}</span>
-            </div>
-        </div>
-        <div class="tech-status">
-            <div class="status-label">System Health</div>
-            <div class="progress-bar">
-                <div class="progress" style="width: ${specs.batteryHealth || 100}%"></div>
-            </div>
-            <div class="status-value">${specs.batteryHealth ? `${specs.batteryHealth}%` : 'Optimal'}</div>
-        </div>
-        <div class="tech-footer">
-            <span class="os-version">${specs.osVersion}</span>
-            <button class="neural-btn" onclick="showTechDetails('${device}')">
-                <i class="fas fa-info-circle"></i>
-            </button>
-        </div>
-        <div class="neural-glow"></div>
-    `;
-
-    return card;
-}
-
-function renderBusinessHours(hours) {
-    const container = document.getElementById('hours-container');
-    if (!container) return;
-
-    container.innerHTML = `
-        <div class="schedule-grid">
-            ${Object.entries(hours).map(([day, schedule]) => `
-                <div class="schedule-card neural-card ${schedule.closed ? 'closed' : ''}">
-                    <div class="day-header">
-                        <h3>${capitalizeFirst(day)}</h3>
-                        <label class="neural-switch">
-                            <input type="checkbox" 
-                                ${!schedule.closed ? 'checked' : ''} 
-                                onchange="toggleDay('${day}')">
-                            <span class="switch-slider"></span>
-                        </label>
-                    </div>
-                    <div class="hours-container">
-                        <div class="time-input">
-                            <label>Open</label>
-                            <input type="time" 
-                                value="${schedule.open}" 
-                                onchange="updateHours('${day}', 'open', this.value)"
-                                ${schedule.closed ? 'disabled' : ''}>
-                        </div>
-                        <div class="time-input">
-                            <label>Close</label>
-                            <input type="time" 
-                                value="${schedule.close}" 
-                                onchange="updateHours('${day}', 'close', this.value)"
-                                ${schedule.closed ? 'disabled' : ''}>
-                        </div>
-                    </div>
-                    <div class="neural-glow"></div>
-                </div>
-            `).join('')}
-        </div>
-    `;
-}
-
-// Settings Management and Neural Effects
-function renderSettings(settings) {
-    // Update theme selector
-    const themeSelect = document.getElementById('theme-select');
-    if (themeSelect) {
-        themeSelect.value = settings.theme;
-    }
-
-    // Update status selector
-    const statusSelect = document.getElementById('status-select');
-    if (statusSelect) {
-        statusSelect.value = settings.profileStatus;
-    }
-
-    // Update maintenance toggle
-    const maintenanceToggle = document.getElementById('maintenance-toggle');
-    if (maintenanceToggle) {
-        maintenanceToggle.checked = settings.maintenanceMode;
-    }
-
-    // Update last sync time
-    const lastSyncDisplay = document.getElementById('last-sync');
-    if (lastSyncDisplay) {
-        lastSyncDisplay.textContent = NEURAL_CONFIG.CURRENT_TIME;
-    }
-}
-
-function handleThemeChange(theme) {
-    document.body.className = theme;
-    const data = getAdminData();
-    data.settings.theme = theme;
-    saveAdminData(data);
-    showNeuralToast('Neural interface theme updated', 'success');
-}
-
-function handleStatusChange(status) {
-    const statusIndicator = document.querySelector('.status-indicator');
-    if (statusIndicator) {
-        statusIndicator.className = 'status-indicator ' + status;
-    }
-    
-    const data = getAdminData();
-    data.settings.profileStatus = status;
-    saveAdminData(data);
-    showNeuralToast(`Status updated to: ${status}`, 'info');
-}
-
-function handleMaintenanceToggle(enabled) {
-    const data = getAdminData();
-    data.settings.maintenanceMode = enabled;
-    saveAdminData(data);
-    showNeuralToast(`Maintenance mode ${enabled ? 'enabled' : 'disabled'}`, 'warning');
 }
 
 // Neural Effects and Animations
@@ -617,23 +504,15 @@ function startPulseEffects() {
 
 // Real-time Updates
 function initializeRealTimeUpdates() {
-    // Update system time
     setInterval(updateSystemTime, 1000);
-    
-    // Update neural metrics
     setInterval(updateNeuralMetrics, 5000);
-    
-    // Check system status
     setInterval(checkSystemStatus, 10000);
 }
 
 function updateSystemTime() {
     const timeDisplays = document.querySelectorAll('.neural-time');
-    const now = new Date();
-    const timeString = now.toISOString().replace('T', ' ').split('.')[0];
-    
     timeDisplays.forEach(display => {
-        display.textContent = timeString;
+        display.textContent = NEURAL_CONFIG.CURRENT_TIME;
     });
 }
 
@@ -658,50 +537,6 @@ function checkSystemStatus() {
     }
 }
 
-// Utility Functions
-function getAdminData() {
-    try {
-        const stored = localStorage.getItem('admin_data');
-        return stored ? JSON.parse(stored) : defaultData;
-    } catch (error) {
-        console.error('Error loading admin data:', error);
-        return defaultData;
-    }
-}
-
-function saveAdminData(data) {
-    try {
-        data.settings.lastUpdate = NEURAL_CONFIG.CURRENT_TIME;
-        localStorage.setItem('admin_data', JSON.stringify(data));
-        return true;
-    } catch (error) {
-        console.error('Error saving admin data:', error);
-        return false;
-    }
-}
-
-function extractUsername(url) {
-    try {
-        const urlObj = new URL(url);
-        return urlObj.pathname.split('/').filter(Boolean).pop();
-    } catch {
-        return url;
-    }
-}
-
-function capitalizeFirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function getTechIcon(device) {
-    const icons = {
-        iphone: 'mobile-alt',
-        watch: 'clock',
-        mac: 'laptop'
-    };
-    return icons[device] || 'microchip';
-}
-
 // Error Handling and System Recovery
 class NeuralSystemError extends Error {
     constructor(message, code, context) {
@@ -709,7 +544,7 @@ class NeuralSystemError extends Error {
         this.name = 'NeuralSystemError';
         this.code = code;
         this.context = context;
-        this.timestamp = '2025-03-26 16:15:06';
+        this.timestamp = NEURAL_CONFIG.CURRENT_TIME;
     }
 }
 
@@ -726,12 +561,10 @@ function handleSystemError(error, context = 'system') {
 
     showNeuralToast(errorMessages[context] || error.message, 'error');
 
-    // Attempt recovery for specific error types
     if (['data', 'sync'].includes(context)) {
         attemptSystemRecovery(context);
     }
 
-    // Force logout on critical errors
     if (['auth', 'connection'].includes(context)) {
         setTimeout(handleLogout, 2000);
     }
@@ -741,16 +574,10 @@ async function attemptSystemRecovery(context) {
     showNeuralToast('Initiating neural system recovery...', 'warning');
 
     try {
-        // Backup current state
         const currentData = getAdminData();
         localStorage.setItem('neural_backup', JSON.stringify(currentData));
-
-        // Reset to default state
         await resetSystemState();
-
-        // Restore verified data
         await restoreVerifiedData();
-
         showNeuralToast('Neural system recovery complete', 'success');
     } catch (error) {
         console.error('Recovery failed:', error);
@@ -759,111 +586,12 @@ async function attemptSystemRecovery(context) {
     }
 }
 
-async function resetSystemState() {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            localStorage.setItem('admin_data', JSON.stringify(defaultData));
-            resolve();
-        }, 1000);
-    });
-}
-
-async function restoreVerifiedData() {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            const backup = localStorage.getItem('neural_backup');
-            if (backup) {
-                try {
-                    const data = JSON.parse(backup);
-                    // Verify and restore only valid data
-                    const verified = verifyDataIntegrity(data);
-                    if (verified) {
-                        localStorage.setItem('admin_data', JSON.stringify(data));
-                    }
-                } catch (e) {
-                    console.error('Data restoration failed:', e);
-                }
-            }
-            resolve();
-        }, 1000);
-    });
-}
-
-function verifyDataIntegrity(data) {
-    // Check required data structure
-    const requiredKeys = ['socialLinks', 'techInfo', 'businessHours', 'settings'];
-    return requiredKeys.every(key => key in data);
-}
-
-// Debug Mode
-const DEBUG_MODE = {
-    enabled: false,
-    lastLog: '2025-03-26 16:15:06',
-    metrics: new Map()
-};
-
-function toggleDebugMode() {
-    DEBUG_MODE.enabled = !DEBUG_MODE.enabled;
-    document.body.classList.toggle('debug-mode', DEBUG_MODE.enabled);
-
-    if (DEBUG_MODE.enabled) {
-        initializeDebugTools();
-    } else {
-        removeDebugTools();
-    }
-
-    showNeuralToast(`Debug mode ${DEBUG_MODE.enabled ? 'enabled' : 'disabled'}`, 'info');
-}
-
-function initializeDebugTools() {
-    const debugPanel = document.createElement('div');
-    debugPanel.id = 'debug-panel';
-    debugPanel.className = 'neural-card debug-panel';
-    
-    debugPanel.innerHTML = `
-        <h3>Neural Debug Console</h3>
-        <div class="debug-metrics">
-            <p>User: ${NEURAL_CONFIG.CURRENT_USER}</p>
-            <p>Version: ${NEURAL_CONFIG.VERSION}</p>
-            <p>Build: ${NEURAL_CONFIG.BUILD}</p>
-            <p>Session Start: ${DEBUG_MODE.lastLog}</p>
-        </div>
-        <div class="debug-actions">
-            <button onclick="forceSyncData()">Force Sync</button>
-            <button onclick="clearNeuralCache()">Clear Cache</button>
-            <button onclick="simulateError()">Simulate Error</button>
-        </div>
-        <div class="debug-log"></div>
-    `;
-    
-    document.body.appendChild(debugPanel);
-    startDebugMetrics();
-}
-
-function removeDebugTools() {
-    document.getElementById('debug-panel')?.remove();
-    stopDebugMetrics();
-}
-
-// Service Worker Registration
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/neural-sw.js')
-            .then(registration => {
-                console.log('Neural ServiceWorker registered:', registration);
-            })
-            .catch(error => {
-                console.error('Neural ServiceWorker registration failed:', error);
-            });
-    });
-}
-
 // Final System Initialization
 class NeuralSystem {
     constructor() {
         this.initialized = false;
-        this.startTime = '2025-03-26 16:15:06';
-        this.user = 'BusArmyDude';
+        this.startTime = NEURAL_CONFIG.CURRENT_TIME;
+        this.user = NEURAL_CONFIG.CURRENT_USER;
     }
 
     async initialize() {
@@ -883,14 +611,12 @@ class NeuralSystem {
     }
 
     async initializeCore() {
-        // Initialize core components
         document.body.classList.add(getAdminData().settings.theme);
         initializeNeuralEffects();
         setupEventListeners();
     }
 
     async initializeModules() {
-        // Initialize all modules
         await Promise.all([
             this.initializeAuth(),
             this.initializeData(),
@@ -906,7 +632,7 @@ class NeuralSystem {
     checkSystemHealth() {
         const healthMetrics = {
             memory: performance.memory?.usedJSHeapSize,
-            timestamp: this.startTime,
+            timestamp: NEURAL_CONFIG.CURRENT_TIME,
             uptime: (Date.now() - new Date(this.startTime).getTime()) / 1000
         };
 
