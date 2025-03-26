@@ -3,31 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal - Bus Army Dude</title>
+    <title>Bus Army Dude - Admin Portal</title>
     <link rel="stylesheet" href="admin-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-theme="light">
-    <!-- Update just the login form section in your index.html -->
-<div id="login-section" class="login-section">
-    <div class="login-container">
-        <h1><i class="fas fa-lock"></i> Admin Portal</h1>
-        <form id="login-form">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" class="form-control" value="BusArmyDude" readonly>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-sign-in-alt"></i> Login
-            </button>
-        </form>
+    <!-- Login Section -->
+    <div id="login-section" class="login-section">
+        <div class="login-container">
+            <img src="profile.jpg" alt="Bus Army Dude" class="login-profile">
+            <h1>Admin Portal</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" value="BusArmyDude" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
     </div>
-</div>
 
     <!-- Admin Panel -->
     <div id="admin-panel" class="admin-panel" style="display: none;">
@@ -39,9 +40,14 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <img src="images/profile.jpg" alt="BusArmyDude" class="admin-avatar">
-                <h3>Bus Army Dude</h3>
-                <p class="last-login">Last login: <span id="last-login-time"></span></p>
+                <img src="profile.jpg" alt="Bus Army Dude" class="admin-avatar">
+                <div class="admin-info">
+                    <h3>Bus Army Dude</h3>
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Online</span>
+                    </div>
+                </div>
             </div>
 
             <ul class="nav-menu">
@@ -51,14 +57,17 @@
                 <li data-section="social">
                     <i class="fas fa-share-alt"></i> Social Links
                 </li>
-                <li data-section="shoutouts">
-                    <i class="fas fa-bullhorn"></i> Creator Shoutouts
-                </li>
                 <li data-section="tech">
                     <i class="fas fa-microchip"></i> Tech Info
                 </li>
+                <li data-section="shoutouts">
+                    <i class="fas fa-bullhorn"></i> Creator Shoutouts
+                </li>
                 <li data-section="hours">
                     <i class="fas fa-clock"></i> Business Hours
+                </li>
+                <li data-section="events">
+                    <i class="fas fa-calendar-alt"></i> Events
                 </li>
                 <li data-section="faq">
                     <i class="fas fa-question-circle"></i> FAQ
@@ -68,9 +77,15 @@
                 </li>
             </ul>
 
-            <button id="logout-btn" class="btn btn-danger">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                <div class="version-info">
+                    <span>Version 1.14.0</span>
+                    <span>Build 2025.3.17</span>
+                </div>
+            </div>
         </nav>
 
         <!-- Main Content Area -->
@@ -80,44 +95,59 @@
                 <h2><i class="fas fa-home"></i> Dashboard</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <i class="fas fa-share-alt"></i>
+                        <i class="fas fa-link"></i>
                         <h3>Social Links</h3>
-                        <p id="social-count">0</p>
+                        <p id="social-count">10</p>
                     </div>
                     <div class="stat-card">
-                        <i class="fas fa-bullhorn"></i>
-                        <h3>Creator Shoutouts</h3>
-                        <p id="shoutouts-count">0</p>
+                        <i class="fas fa-users"></i>
+                        <h3>Total Shoutouts</h3>
+                        <p id="shoutouts-count">45</p>
                     </div>
                     <div class="stat-card">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h3>Events</h3>
-                        <p id="events-count">0</p>
+                        <i class="fas fa-microchip"></i>
+                        <h3>Tech Devices</h3>
+                        <p id="tech-count">3</p>
                     </div>
                     <div class="stat-card">
-                        <i class="fas fa-question-circle"></i>
+                        <i class="fas fa-question"></i>
                         <h3>FAQ Items</h3>
-                        <p id="faq-count">0</p>
+                        <p id="faq-count">11</p>
                     </div>
                 </div>
-                <div class="last-update">
-                    Last Updated: <span id="last-update-time">2025-03-26 14:50:39</span>
+
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="toggleMaintenanceMode()">
+                            <i class="fas fa-tools"></i> Toggle Maintenance Mode
+                        </button>
+                        <button class="btn btn-primary" onclick="updateAllData()">
+                            <i class="fas fa-sync"></i> Update All Data
+                        </button>
+                        <button class="btn btn-primary" onclick="backupData()">
+                            <i class="fas fa-download"></i> Backup Data
+                        </button>
+                    </div>
+                </div>
+
+                <div class="system-status">
+                    <h3>System Status</h3>
+                    <div class="status-info">
+                        <p>Last Login: <span id="last-login-time">2025-03-26 15:12:30</span></p>
+                        <p>Last Update: <span id="last-update-time">2025-03-26 15:12:30</span></p>
+                        <p>Current Status: <span id="site-status">Online</span></p>
+                    </div>
                 </div>
             </section>
 
             <!-- Social Links Section -->
             <section id="social-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-share-alt"></i> Social Links</h2>
-                <div id="social-links-container"></div>
-                <button class="btn btn-primary" onclick="addSocialLink()">
+                <div id="social-links-container" class="social-links-grid"></div>
+                <button class="btn btn-primary add-btn">
                     <i class="fas fa-plus"></i> Add Social Link
                 </button>
-            </section>
-
-            <!-- Creator Shoutouts Section -->
-            <section id="shoutouts-section" class="content-section" style="display: none;">
-                <h2><i class="fas fa-bullhorn"></i> Creator Shoutouts</h2>
-                <div id="shoutouts-container"></div>
             </section>
 
             <!-- Tech Info Section -->
@@ -126,16 +156,48 @@
                 <div class="tech-grid"></div>
             </section>
 
+            <!-- Creator Shoutouts Section -->
+            <section id="shoutouts-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-bullhorn"></i> Creator Shoutouts</h2>
+                <div class="platform-tabs">
+                    <button class="platform-tab active" data-platform="tiktok">
+                        <i class="fab fa-tiktok"></i> TikTok (19)
+                    </button>
+                    <button class="platform-tab" data-platform="instagram">
+                        <i class="fab fa-instagram"></i> Instagram (14)
+                    </button>
+                    <button class="platform-tab" data-platform="youtube">
+                        <i class="fab fa-youtube"></i> YouTube (12)
+                    </button>
+                </div>
+                <div id="shoutouts-container"></div>
+            </section>
+
             <!-- Business Hours Section -->
             <section id="hours-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-clock"></i> Business Hours</h2>
-                <div id="hours-container"></div>
+                <div id="hours-container" class="hours-grid"></div>
+                <button class="btn btn-primary save-hours-btn">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-calendar-alt"></i> Events</h2>
+                <div id="events-container"></div>
+                <button class="btn btn-primary add-btn">
+                    <i class="fas fa-plus"></i> Add Event
+                </button>
             </section>
 
             <!-- FAQ Section -->
             <section id="faq-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-question-circle"></i> FAQ Management</h2>
                 <div id="faq-container"></div>
+                <button class="btn btn-primary add-btn">
+                    <i class="fas fa-plus"></i> Add FAQ Item
+                </button>
             </section>
 
             <!-- Settings Section -->
@@ -158,7 +220,8 @@
                             <label for="status-select">Current Status</label>
                             <select id="status-select" class="form-control">
                                 <option value="online">Online</option>
-                                <option value="idle">Idle</option>
+                                <option value="away">Away</option>
+                                <option value="busy">Busy</option>
                                 <option value="offline">Offline</option>
                             </select>
                         </div>
@@ -180,12 +243,6 @@
 
     <!-- Toast Container -->
     <div id="toast-container" class="toast-container"></div>
-
-    <!-- Version Info -->
-    <div class="version-info">
-        <p>Version 1.0.0</p>
-        <p>Last Updated: 2025-03-26 14:50:39</p>
-    </div>
 
     <!-- Scripts -->
     <script src="config.js"></script>
