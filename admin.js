@@ -790,3 +790,139 @@ setInterval(() => {
         }
     }
 }, 60000); // Check every minute
+
+// Sidebar Management
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    const menuToggle = document.getElementById('menuToggle');
+    
+    if (sidebar && mainContent) {
+        const isSidebarOpen = sidebar.classList.contains('open');
+        
+        // Toggle sidebar
+        sidebar.classList.toggle('open');
+        mainContent.classList.toggle('sidebar-open');
+        
+        // Update menu icon
+        if (menuToggle) {
+            menuToggle.innerHTML = isSidebarOpen ? 
+                '<i class="fas fa-bars"></i>' : 
+                '<i class="fas fa-times"></i>';
+                
+            // Add neural effect to menu icon
+            menuToggle.classList.add('neural-pulse');
+            setTimeout(() => menuToggle.classList.remove('neural-pulse'), 500);
+        }
+        
+        // Update ARIA attributes
+        sidebar.setAttribute('aria-expanded', !isSidebarOpen);
+        if (menuToggle) {
+            menuToggle.setAttribute('aria-label', 
+                isSidebarOpen ? 'Open Navigation Menu' : 'Close Navigation Menu');
+        }
+        
+        // Show neural effect
+        showSidebarEffect(!isSidebarOpen);
+        
+        // Save state
+        localStorage.setItem('sidebarState', !isSidebarOpen ? 'open' : 'closed');
+    }
+}
+
+function showSidebarEffect(isOpening) {
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return;
+
+    // Clear existing particles
+    const existingParticles = sidebar.querySelectorAll('.sidebar-particle');
+    existingParticles.forEach(particle => particle.remove());
+
+    // Create new particles
+    for (let i = 0; i < 10; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'sidebar-particle';
+        
+        // Random position along the edge
+        const position = Math.random() * 100;
+        
+        if (isOpening) {
+            particle.style.left = '0';
+            particle.style.top = `${position}%`;
+        } else {
+            particle.style.right = '0';
+            particle.style.top = `${position}%`;
+        }
+        
+        sidebar.appendChild(particle);
+        
+        // Trigger animation
+        requestAnimationFrame(() => {
+            particle.style.transform = `translate(${isOpening ? '100px' : '-100px'}, 0)`;
+            particle.style.opacity = '0';
+        });
+        
+        // Clean up
+        setTimeout(() => particle.remove(), 1000);
+    }
+}
+
+function initializeSidebar() {
+    // Restore sidebar state
+    const savedState = localStorage.getItem('sidebarState');
+    if (savedState === 'open') {
+        toggleSidebar();
+    }
+    
+    // Add hover effects to sidebar items
+    const sidebarItems = document.querySelectorAll('.nav-menu li');
+    sidebarItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            item.classList.add('hover');
+            addNeuralGlow(item);
+        });
+        
+        item.addEventListener('mouseleave', () => {
+            item.classList.remove('hover');
+            removeNeuralGlow(item);
+        });
+    });
+    
+    // Handle responsive behavior
+    window.addEventListener('resize', handleSidebarResize);
+}
+
+function handleSidebarResize() {
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    
+    if (window.innerWidth <= 768) {
+        // Mobile view
+        if (sidebar && sidebar.classList.contains('open')) {
+            toggleSidebar(); // Close sidebar on mobile
+        }
+    }
+}
+
+function addNeuralGlow(element) {
+    const glow = document.createElement('div');
+    glow.className = 'neural-glow';
+    element.appendChild(glow);
+    
+    requestAnimationFrame(() => {
+        glow.style.opacity = '1';
+    });
+}
+
+function removeNeuralGlow(element) {
+    const glow = element.querySelector('.neural-glow');
+    if (glow) {
+        glow.style.opacity = '0';
+        setTimeout(() => glow.remove(), 300);
+    }
+}
+
+// Add this to your existing initialization code
+document.addEventListener('DOMContentLoaded', () => {
+    initializeSidebar();
+});
