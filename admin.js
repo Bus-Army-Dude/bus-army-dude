@@ -87,13 +87,14 @@ const defaultData = {
     },
     settings: {
         theme: 'light',
-        lastUpdate: '2025-03-26 13:42:51'
+        lastUpdate: '2025-03-26 14:13:00'
     }
 };
 
 // Authentication Configuration
 const ADMIN_USERNAME = 'BusArmyDude';
 const ADMIN_PASSWORD = 'admin123'; // Change this to your desired password
+const CURRENT_TIME = '2025-03-26 14:13:00';
 
 // DOM Elements
 let loginSection;
@@ -130,7 +131,7 @@ function handleLogin(e) {
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('lastLogin', getCurrentDateTime());
+        localStorage.setItem('lastLogin', CURRENT_TIME);
         showAdminPanel();
         showToast('Login successful!', 'success');
         loadDashboardData();
@@ -266,6 +267,8 @@ function updateDashboardStats(data) {
 
 function renderSocialLinks(links) {
     const container = document.getElementById('social-links-container');
+    if (!container) return;
+    
     container.innerHTML = links.map((link, index) => `
         <div class="social-link-item">
             <i class="${link.icon}"></i>
@@ -280,10 +283,161 @@ function renderSocialLinks(links) {
     `).join('');
 }
 
+function renderShoutouts(shoutouts) {
+    const container = document.getElementById('shoutouts-container');
+    if (!container) return;
+
+    // Create platform tabs
+    container.innerHTML = `
+        <div class="platform-tabs">
+            <button class="platform-tab active" data-platform="tiktok">
+                <i class="fab fa-tiktok"></i> TikTok
+            </button>
+            <button class="platform-tab" data-platform="youtube">
+                <i class="fab fa-youtube"></i> YouTube
+            </button>
+            <button class="platform-tab" data-platform="instagram">
+                <i class="fab fa-instagram"></i> Instagram
+            </button>
+        </div>
+        <div class="shoutouts-list"></div>
+        <button class="add-btn" onclick="addShoutout()">
+            <i class="fas fa-plus"></i> Add Shoutout
+        </button>
+    `;
+
+    // Add tab click listeners
+    container.querySelectorAll('.platform-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            container.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            renderPlatformShoutouts(shoutouts[tab.dataset.platform], tab.dataset.platform);
+        });
+    });
+
+    // Load initial platform
+    renderPlatformShoutouts(shoutouts.tiktok, 'tiktok');
+}
+
+function renderPlatformShoutouts(creators, platform) {
+    const container = document.querySelector('.shoutouts-list');
+    if (!container) return;
+
+    container.innerHTML = creators.map((creator, index) => `
+        <div class="creator-card" data-index="${index}">
+            <img src="${creator.profilePic}" alt="${creator.username}" class="creator-pic">
+            <div class="creator-info">
+                <input type="text" class="creator-nickname" value="${creator.nickname}" placeholder="Nickname">
+                <input type="text" class="creator-username" value="${creator.username}" placeholder="Username">
+                <input type="text" class="creator-followers" value="${creator.followers}" placeholder="Followers">
+                <textarea class="creator-bio" placeholder="Bio">${creator.bio || ''}</textarea>
+                <label class="verified-toggle">
+                    <input type="checkbox" ${creator.isVerified ? 'checked' : ''}>
+                    Verified
+                </label>
+                <div class="creator-actions">
+                    <button onclick="updateCreator('${platform}', ${index})">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button onclick="deleteCreator('${platform}', ${index})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderTechInfo(techInfo) {
+    const container = document.getElementById('tech-section');
+    if (!container) return;
+
+    container.innerHTML = Object.entries(techInfo).map(([device, info]) => `
+        <div class="tech-card" data-device="${device}">
+            <h3>${info.model}</h3>
+            ${Object.entries(info).map(([key, value]) => `
+                <div class="tech-detail">
+                    <label>${key}:</label>
+                    <input type="text" value="${value}" 
+                           data-field="${key}"
+                           onchange="updateTechField('${device}', '${key}', this.value)">
+                </div>
+            `).join('')}
+            ${info.batteryHealth ? `
+                <div class="battery-health">
+                    <div class="battery-bar">
+                        <div class="battery-level" style="width: ${parseInt(info.batteryHealth)}%"></div>
+                    </div>
+                    <span>Battery Health: ${info.batteryHealth}</span>
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+function renderBusinessHours(hours) {
+    const container = document.getElementById('hours-container');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="hours-header">
+            <h3>Business Hours (${Intl.DateTimeFormat().resolvedOptions().timeZone})</h3>
+            <p>Current time: ${CURRENT_TIME}</p>
+        </div>
+        ${Object.entries(hours).map(([day, time]) => `
+            <div class="hours-row" data-day="${day}">
+                <div class="day-label">${day.charAt(0).toUpperCase() + day.slice(1)}</div>
+                <div class="hours-inputs">
+                    <input type="time" value="${time.open}" 
+                           ${time.closed ? 'disabled' : ''}
+                           onchange="updateBusinessHours('${day}', 'open', this.value)">
+                    <span>to</span>
+                    <input type="time" value="${time.close}"
+                           ${time.closed ? 'disabled' : ''}
+                           onchange="updateBusinessHours('${day}', 'close', this.value)">
+                    <label class="closed-toggle">
+                        <input type="checkbox" ${time.closed ? 'checked' : ''}
+                               onchange="toggleDayClosed('${day}')">
+                        Closed
+                    </label>
+                </div>
+            </div>
+        `).join('')}
+        <button class="save-btn" onclick="saveBusinessHours()">
+            <i class="fas fa-save"></i> Save Changes
+        </button>
+    `;
+}
+
+function renderFAQ(faq) {
+    const container = document.getElementById('faq-container');
+    if (!container) return;
+
+    container.innerHTML = `
+        ${faq.map((item, index) => `
+            <div class="faq-item" data-index="${index}">
+                <div class="faq-header">
+                    <input type="text" class="faq-question" value="${item.question}"
+                           placeholder="Question">
+                    <button onclick="deleteFAQItem(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <textarea class="faq-answer" placeholder="Answer">${item.answer}</textarea>
+                <button onclick="updateFAQItem(${index})">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        `).join('')}
+        <button class="add-btn" onclick="addFAQItem()">
+            <i class="fas fa-plus"></i> Add FAQ Item
+        </button>
+    `;
+}
+
 // Utility Functions
 function getCurrentDateTime() {
-    const now = new Date();
-    return now.toISOString().slice(0, 19).replace('T', ' ');
+    return CURRENT_TIME;
 }
 
 function getAdminData() {
@@ -296,7 +450,7 @@ function saveAdminData(data) {
     showToast('Changes saved successfully', 'success');
 }
 
-// CRUD Operations
+// CRUD Operations for Social Links
 function addSocialLink() {
     const data = getAdminData();
     data.socialLinks.push({
