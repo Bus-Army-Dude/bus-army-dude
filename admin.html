@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BusArmyDude - Neural Admin Interface</title>
-    <link rel="stylesheet" href="admin-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet"></head>
-<body data-theme="dark" class="neural-interface">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body class="neural-interface">
     <!-- Neural Login Interface -->
     <div id="login-section" class="login-section neural-bg">
         <div class="neural-particles"></div>
@@ -18,8 +19,11 @@
             </div>
             <h1 class="neural-text">Neural Admin Interface</h1>
             <div class="system-status">
-                <span class="status-indicator"></span>
-                <span class="neural-time">2025-03-26 15:28:25</span>
+                <div class="status-indicator">
+                    <span class="status-dot pulse"></span>
+                    <span>System Online</span>
+                </div>
+                <span class="neural-time">2025-03-26 17:34:57</span>
             </div>
             <form id="login-form" class="neural-form">
                 <div class="form-group">
@@ -31,7 +35,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Access Key</label>
+                    <label for="password">Neural Key</label>
                     <div class="input-container">
                         <i class="fas fa-lock"></i>
                         <input type="password" id="password" class="neural-input" required>
@@ -39,7 +43,8 @@
                     </div>
                 </div>
                 <button type="submit" class="neural-button">
-                    <span class="button-text">Initialize Connection</span>
+                    <i class="fas fa-brain"></i>
+                    <span>Initialize Neural Link</span>
                     <div class="button-glow"></div>
                 </button>
             </form>
@@ -72,50 +77,58 @@
 
             <ul class="nav-menu">
                 <li data-section="dashboard" class="active">
-                    <i class="fas fa-cube"></i> Command Center
+                    <i class="fas fa-cube"></i>
+                    <span>Command Center</span>
                 </li>
                 <li data-section="social">
-                    <i class="fas fa-network-wired"></i> Neural Networks
+                    <i class="fas fa-network-wired"></i>
+                    <span>Neural Networks</span>
                 </li>
                 <li data-section="tech">
-                    <i class="fas fa-microchip"></i> Tech Matrix
+                    <i class="fas fa-microchip"></i>
+                    <span>Tech Matrix</span>
                 </li>
                 <li data-section="shoutouts">
-                    <i class="fas fa-broadcast-tower"></i> Creator Nexus
+                    <i class="fas fa-broadcast-tower"></i>
+                    <span>Creator Nexus</span>
                 </li>
                 <li data-section="hours">
-                    <i class="fas fa-clock"></i> Temporal Control
+                    <i class="fas fa-clock"></i>
+                    <span>Temporal Control</span>
                 </li>
                 <li data-section="events">
-                    <i class="fas fa-calendar-alt"></i> Event Horizon
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Event Horizon</span>
                 </li>
                 <li data-section="faq">
-                    <i class="fas fa-brain"></i> Knowledge Base
+                    <i class="fas fa-brain"></i>
+                    <span>Knowledge Base</span>
                 </li>
                 <li data-section="settings">
-                    <i class="fas fa-sliders-h"></i> Neural Config
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Neural Config</span>
                 </li>
             </ul>
 
             <div class="sidebar-footer">
                 <button id="logout-btn" class="neural-button danger">
-                    <i class="fas fa-power-off"></i> 
+                    <i class="fas fa-power-off"></i>
                     <span>Terminate Session</span>
                 </button>
-                <div class="version-info">
+                <div class="version-info neural-mono">
                     <span>Neural Core v1.14.0</span>
                     <span>Build 2025.3.17</span>
                 </div>
             </div>
         </nav>
 
-        <!-- Main Interface -->
+        <!-- Main Content -->
         <main class="main-content">
             <!-- Command Center Section -->
             <section id="dashboard-section" class="content-section">
                 <div class="section-header">
                     <h2><i class="fas fa-cube"></i> Command Center</h2>
-                    <div class="neural-time">2025-03-26 15:28:25</div>
+                    <span class="neural-time">2025-03-26 17:34:57</span>
                 </div>
                 
                 <div class="stats-grid">
@@ -127,7 +140,6 @@
                             <h3>Neural Links</h3>
                             <p id="social-count" class="stat-value">10</p>
                         </div>
-                        <div class="stat-graph"></div>
                     </div>
                     <div class="stat-card glass-panel">
                         <div class="stat-icon">
@@ -137,7 +149,6 @@
                             <h3>Creator Matrix</h3>
                             <p id="shoutouts-count" class="stat-value">45</p>
                         </div>
-                        <div class="stat-graph"></div>
                     </div>
                     <div class="stat-card glass-panel">
                         <div class="stat-icon">
@@ -147,7 +158,6 @@
                             <h3>Tech Nodes</h3>
                             <p id="tech-count" class="stat-value">3</p>
                         </div>
-                        <div class="stat-graph"></div>
                     </div>
                     <div class="stat-card glass-panel">
                         <div class="stat-icon">
@@ -157,7 +167,6 @@
                             <h3>Knowledge Cores</h3>
                             <p id="faq-count" class="stat-value">11</p>
                         </div>
-                        <div class="stat-graph"></div>
                     </div>
                 </div>
             </section>
@@ -166,12 +175,13 @@
             <section id="social-section" class="content-section">
                 <div class="section-header">
                     <h2><i class="fas fa-network-wired"></i> Neural Networks</h2>
-                    <button class="neural-button add-btn">
-                        <i class="fas fa-plus"></i> Add Neural Link
+                    <button class="neural-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Neural Link</span>
                     </button>
                 </div>
-                <div id="social-links-container" class="neural-grid">
-                    <!-- Social links will be dynamically inserted here -->
+                <div id="social-links-container" class="neural-grid glass-panel">
+                    <!-- Dynamic content -->
                 </div>
             </section>
 
@@ -180,8 +190,8 @@
                 <div class="section-header">
                     <h2><i class="fas fa-microchip"></i> Tech Matrix</h2>
                 </div>
-                <div class="tech-grid">
-                    <!-- Tech cards will be dynamically inserted here -->
+                <div class="tech-grid glass-panel">
+                    <!-- Dynamic content -->
                 </div>
             </section>
 
@@ -190,11 +200,8 @@
                 <div class="section-header">
                     <h2><i class="fas fa-broadcast-tower"></i> Creator Nexus</h2>
                 </div>
-                <div class="platform-tabs">
-                    <!-- Platform tabs will be dynamically inserted here -->
-                </div>
-                <div id="shoutouts-container" class="creators-grid">
-                    <!-- Creator cards will be dynamically inserted here -->
+                <div id="shoutouts-container" class="creators-grid glass-panel">
+                    <!-- Dynamic content -->
                 </div>
             </section>
 
@@ -204,7 +211,7 @@
                     <h2><i class="fas fa-clock"></i> Temporal Control</h2>
                 </div>
                 <div id="hours-container" class="temporal-grid glass-panel">
-                    <!-- Business hours will be dynamically inserted here -->
+                    <!-- Dynamic content -->
                 </div>
             </section>
 
@@ -212,12 +219,13 @@
             <section id="events-section" class="content-section">
                 <div class="section-header">
                     <h2><i class="fas fa-calendar-alt"></i> Event Horizon</h2>
-                    <button class="neural-button add-btn">
-                        <i class="fas fa-plus"></i> New Event Node
+                    <button class="neural-button">
+                        <i class="fas fa-plus"></i>
+                        <span>New Event Node</span>
                     </button>
                 </div>
-                <div id="events-container" class="events-grid">
-                    <!-- Events will be dynamically inserted here -->
+                <div id="events-container" class="events-grid glass-panel">
+                    <!-- Dynamic content -->
                 </div>
             </section>
 
@@ -225,12 +233,13 @@
             <section id="faq-section" class="content-section">
                 <div class="section-header">
                     <h2><i class="fas fa-brain"></i> Knowledge Base</h2>
-                    <button class="neural-button add-btn">
-                        <i class="fas fa-plus"></i> Add Knowledge Node
+                    <button class="neural-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Knowledge Node</span>
                     </button>
                 </div>
-                <div id="faq-container" class="knowledge-grid">
-                    <!-- FAQ items will be dynamically inserted here -->
+                <div id="faq-container" class="knowledge-grid glass-panel">
+                    <!-- Dynamic content -->
                 </div>
             </section>
 
@@ -242,7 +251,7 @@
                 <div class="settings-grid glass-panel">
                     <div class="setting-group">
                         <h3>Interface Theme</h3>
-                        <select id="theme-select" aria-label="Select Theme">
+                        <select id="theme-select" class="neural-input">
                             <option value="dark">Dark Theme</option>
                             <option value="light">Light Theme</option>
                             <option value="neural">Neural Theme</option>
@@ -251,7 +260,7 @@
                     </div>
                     <div class="setting-group">
                         <h3>Neural Status</h3>
-                        <select id="status-select" class="neural-select">
+                        <select id="status-select" class="neural-input">
                             <option value="online">Online</option>
                             <option value="away">Away</option>
                             <option value="busy">Busy</option>
