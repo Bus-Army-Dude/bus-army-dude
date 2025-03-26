@@ -667,3 +667,126 @@ if (typeof module !== 'undefined' && module.exports) {
         DEBUG_MODE
     };
 }
+
+// Authentication and Session Management
+function checkLoginStatus() {
+    const auth = localStorage.getItem('neural_auth');
+    if (auth) {
+        try {
+            const { timestamp, user } = JSON.parse(auth);
+            const authAge = new Date(NEURAL_CONFIG.CURRENT_TIME) - new Date(timestamp);
+            
+            if (authAge < 24 * 60 * 60 * 1000 && user === NEURAL_CONFIG.CURRENT_USER) { // 24 hours
+                handleSuccessfulLogin();
+                return;
+            }
+        } catch (error) {
+            console.error('Auth validation error:', error);
+        }
+    }
+    
+    showLoginScreen();
+}
+
+function handleLogout() {
+    showNeuralToast('Initiating neural link disconnection...', 'info');
+    
+    // Disable interactive elements during logout
+    document.querySelectorAll('button, input, select').forEach(el => {
+        el.disabled = true;
+    });
+
+    // Save last login time
+    localStorage.setItem('lastLogin', NEURAL_CONFIG.CURRENT_TIME);
+
+    // Animate logout sequence
+    const sequences = [
+        { message: 'Saving neural patterns...', delay: 500 },
+        { message: 'Closing quantum channels...', delay: 400 },
+        { message: 'Terminating bio-signatures...', delay: 300 }
+    ];
+
+    let currentStep = 0;
+    
+    const processLogoutSequence = () => {
+        if (currentStep < sequences.length) {
+            showNeuralToast(sequences[currentStep].message, 'info');
+            currentStep++;
+            setTimeout(processLogoutSequence, sequences[currentStep - 1].delay);
+        } else {
+            completeLogout();
+        }
+    };
+
+    processLogoutSequence();
+}
+
+function completeLogout() {
+    // Clear authentication
+    localStorage.removeItem('neural_auth');
+    
+    // Save current state if needed
+    const currentData = getAdminData();
+    localStorage.setItem('admin_backup', JSON.stringify(currentData));
+
+    // Show final message
+    showNeuralToast('Neural link disconnected successfully', 'success');
+
+    // Fade out admin panel
+    if (adminPanel) {
+        adminPanel.style.opacity = '0';
+        setTimeout(() => {
+            adminPanel.style.display = 'none';
+            adminPanel.classList.remove('active');
+            showLoginScreen();
+        }, 500);
+    } else {
+        showLoginScreen();
+    }
+}
+
+function showLoginScreen() {
+    if (loginSection) {
+        // Reset login form
+        if (loginForm) {
+            loginForm.reset();
+        }
+        
+        // Show login section with animation
+        loginSection.style.display = 'flex';
+        setTimeout(() => {
+            loginSection.style.opacity = '1';
+            
+            // Focus password input if exists
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) {
+                passwordInput.focus();
+            }
+            
+            // Enable all form elements
+            document.querySelectorAll('button, input, select').forEach(el => {
+                el.disabled = false;
+            });
+        }, 100);
+    } else {
+        console.error('Login section not found');
+        showNeuralToast('Error loading login interface', 'error');
+    }
+}
+
+function handleSessionTimeout() {
+    showNeuralToast('Session timeout detected', 'warning');
+    handleLogout();
+}
+
+// Session timeout checker
+setInterval(() => {
+    const auth = localStorage.getItem('neural_auth');
+    if (auth) {
+        const { timestamp } = JSON.parse(auth);
+        const authAge = new Date(NEURAL_CONFIG.CURRENT_TIME) - new Date(timestamp);
+        if (authAge > 24 * 60 * 60 * 1000) { // 24 hours
+            handleSessionTimeout();
+        }
+    }
+}, 60000); // Check every minute
