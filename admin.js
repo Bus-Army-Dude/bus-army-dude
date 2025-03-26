@@ -1,6 +1,6 @@
-// Global Constants
+// Neural System Configuration and Core Setup
 const NEURAL_CONFIG = {
-    CURRENT_TIME: '2025-03-26 16:29:13',
+    CURRENT_TIME: '2025-03-26 16:38:34',
     CURRENT_USER: 'BusArmyDude',
     VERSION: '1.14.0',
     BUILD: '2025.3.26',
@@ -66,54 +66,12 @@ const NEURAL_CONFIG = {
     }
 };
 
-// Time Management Functions
-function initializeTimeManagement() {
-    NEURAL_CONFIG.loadConfig();
-    NEURAL_CONFIG.updateTimeDisplays();
-    NEURAL_CONFIG.updateUserDisplays();
-    
-    if (DEBUG_MODE.enabled) {
-        addTimeControls();
-    }
-}
-
-function addTimeControls() {
-    const debugPanel = document.getElementById('debug-panel');
-    if (!debugPanel) return;
-    
-    const timeControls = document.createElement('div');
-    timeControls.className = 'debug-time-controls';
-    timeControls.innerHTML = `
-        <div class="time-control">
-            <label>System Time (UTC):</label>
-            <input type="datetime-local" 
-                   value="${NEURAL_CONFIG.CURRENT_TIME.replace(' ', 'T')}"
-                   step="1"
-                   onchange="updateSystemTime(this.value)">
-        </div>
-        <div class="user-control">
-            <label>Current User:</label>
-            <input type="text" 
-                   value="${NEURAL_CONFIG.CURRENT_USER}"
-                   onchange="updateSystemUser(this.value)">
-        </div>
-    `;
-    
-    debugPanel.insertBefore(timeControls, debugPanel.querySelector('.debug-log'));
-}
-
-function updateSystemTime(newTime) {
-    if (newTime.includes('T')) {
-        newTime = newTime.replace('T', ' ');
-    }
-    NEURAL_CONFIG.updateTime(newTime);
-    showNeuralToast('System time updated', 'info');
-}
-
-function updateSystemUser(newUser) {
-    NEURAL_CONFIG.updateUser(newUser);
-    showNeuralToast('System user updated', 'info');
-}
+// Debug Mode Configuration
+const DEBUG_MODE = {
+    enabled: false,
+    lastLog: '2025-03-26 16:38:34',
+    metrics: new Map()
+};
 
 // Default Data Structure
 const defaultData = {
@@ -179,15 +137,73 @@ const defaultData = {
         theme: 'dark',
         profileStatus: 'online',
         maintenanceMode: false,
-        lastUpdate: '2025-03-26 16:30:28'
+        lastUpdate: '2025-03-26 16:39:23'
     }
 };
+
+// Data Management Functions
+function getAdminData() {
+    try {
+        const stored = localStorage.getItem('admin_data');
+        return stored ? JSON.parse(stored) : defaultData;
+    } catch (error) {
+        console.error('Error loading admin data:', error);
+        handleSystemError(error, 'data');
+        return defaultData;
+    }
+}
+
+function saveAdminData(data) {
+    try {
+        data.settings.lastUpdate = NEURAL_CONFIG.CURRENT_TIME;
+        localStorage.setItem('admin_data', JSON.stringify(data));
+        return true;
+    } catch (error) {
+        console.error('Error saving admin data:', error);
+        handleSystemError(error, 'data');
+        return false;
+    }
+}
+
+function initializeData() {
+    if (!localStorage.getItem('admin_data')) {
+        localStorage.setItem('admin_data', JSON.stringify(defaultData));
+    }
+    
+    // Update current time in default data
+    const data = getAdminData();
+    data.settings.lastUpdate = NEURAL_CONFIG.CURRENT_TIME;
+    saveAdminData(data);
+}
+
+// Utility Functions
+function extractUsername(url) {
+    try {
+        const urlObj = new URL(url);
+        return urlObj.pathname.split('/').filter(Boolean).pop();
+    } catch {
+        return url;
+    }
+}
+
+function capitalizeFirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function getTechIcon(device) {
+    const icons = {
+        iphone: 'mobile-alt',
+        watch: 'clock',
+        mac: 'laptop'
+    };
+    return icons[device] || 'microchip';
+}
 
 // DOM Elements and Global Variables
 let loginSection;
 let adminPanel;
 let loginForm;
-let lastLoginTime = localStorage.getItem('lastLogin') || '2025-03-26 16:30:28';
+let lastLoginTime = localStorage.getItem('lastLogin') || '2025-03-26 16:40:28';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
@@ -204,6 +220,46 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNeuralLogin();
     initializeTimeManagement();
 });
+
+function setupEventListeners() {
+    document.querySelectorAll('.nav-menu li').forEach(item => {
+        item.addEventListener('click', function() {
+            const section = this.getAttribute('data-section');
+            navigateToSection(section);
+            
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        });
+    });
+
+    // Core button event listeners
+    document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+    document.getElementById('menuToggle')?.addEventListener('click', toggleSidebar);
+    document.getElementById('theme-select')?.addEventListener('change', handleThemeChange);
+    document.getElementById('status-select')?.addEventListener('change', handleStatusChange);
+    document.getElementById('maintenance-toggle')?.addEventListener('change', handleMaintenanceToggle);
+
+    setupSectionButtons();
+}
+
+function setupSectionButtons() {
+    // Add buttons
+    document.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const section = this.closest('.content-section').id.replace('-section', '');
+            handleAdd(section);
+        });
+    });
+
+    // Save buttons
+    document.querySelectorAll('.save-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const section = this.closest('.content-section').id.replace('-section', '');
+            handleSave(section);
+        });
+    });
+}
 
 function initializeNeuralLogin() {
     const passwordInput = document.getElementById('password');
@@ -274,45 +330,85 @@ function initiateNeuralSequence(password) {
     showSequenceStep();
 }
 
-// Admin Panel Functions
-function setupEventListeners() {
-    document.querySelectorAll('.nav-menu li').forEach(item => {
-        item.addEventListener('click', function() {
-            const section = this.getAttribute('data-section');
-            navigateToSection(section);
-            
-            if (window.innerWidth <= 768) {
-                toggleSidebar();
-            }
-        });
-    });
+function handleSuccessfulLogin() {
+    localStorage.setItem('neural_auth', JSON.stringify({
+        timestamp: NEURAL_CONFIG.CURRENT_TIME,
+        user: NEURAL_CONFIG.CURRENT_USER
+    }));
 
-    // Core button event listeners
-    document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
-    document.getElementById('menuToggle')?.addEventListener('click', toggleSidebar);
-    document.getElementById('theme-select')?.addEventListener('change', handleThemeChange);
-    document.getElementById('status-select')?.addEventListener('change', handleStatusChange);
-    document.getElementById('maintenance-toggle')?.addEventListener('change', handleMaintenanceToggle);
+    showNeuralToast('Neural link established successfully', 'success');
 
-    setupSectionButtons();
+    setTimeout(() => {
+        loginSection.style.opacity = '0';
+        setTimeout(() => {
+            loginSection.style.display = 'none';
+            adminPanel.classList.add('active');
+            initializeAdminPanel();
+        }, 500);
+    }, 1000);
 }
 
-function setupSectionButtons() {
-    // Add buttons
-    document.querySelectorAll('.add-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const section = this.closest('.content-section').id.replace('-section', '');
-            handleAdd(section);
-        });
-    });
+function handleFailedLogin() {
+    const passwordInput = document.getElementById('password');
+    const loginButton = document.querySelector('.neural-button');
 
-    // Save buttons
-    document.querySelectorAll('.save-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const section = this.closest('.content-section').id.replace('-section', '');
-            handleSave(section);
-        });
+    loginButton.innerHTML = `
+        <span class="button-text">Initialize Connection</span>
+        <div class="button-glow"></div>
+    `;
+    
+    loginButton.disabled = false;
+    passwordInput.disabled = false;
+    passwordInput.value = '';
+    passwordInput.focus();
+
+    showNeuralToast('Neural authentication failed: Invalid access key', 'error');
+
+    const loginContainer = document.querySelector('.login-container');
+    loginContainer.classList.add('shake');
+    setTimeout(() => loginContainer.classList.remove('shake'), 650);
+}
+
+// UI Components and Navigation
+function navigateToSection(section) {
+    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+    
+    const selectedSection = document.getElementById(`${section}-section`);
+    if (selectedSection) {
+        selectedSection.style.display = 'block';
+        selectedSection.classList.add('fade-in');
+    }
+    
+    document.querySelectorAll('.nav-menu li').forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('data-section') === section) {
+            item.classList.add('active');
+        }
     });
+    
+    loadSectionData(section);
+}
+
+function loadSectionData(section) {
+    const data = getAdminData();
+    
+    switch(section) {
+        case 'dashboard':
+            updateDashboardStats(data);
+            break;
+        case 'social':
+            renderSocialLinks(data.socialLinks);
+            break;
+        case 'tech':
+            renderTechInfo(data.techInfo);
+            break;
+        case 'hours':
+            renderBusinessHours(data.businessHours);
+            break;
+        case 'settings':
+            renderSettings(data.settings);
+            break;
+    }
 }
 
 function showNeuralToast(message, type = 'info', duration = 3000) {
@@ -361,106 +457,6 @@ function getToastIcon(type) {
         warning: 'exclamation-triangle',
         info: 'info-circle'
     }[type] || 'info-circle';
-}
-
-function handleSuccessfulLogin() {
-    localStorage.setItem('neural_auth', JSON.stringify({
-        timestamp: NEURAL_CONFIG.CURRENT_TIME,
-        user: NEURAL_CONFIG.CURRENT_USER
-    }));
-
-    showNeuralToast('Neural link established successfully', 'success');
-
-    setTimeout(() => {
-        loginSection.style.opacity = '0';
-        setTimeout(() => {
-            loginSection.style.display = 'none';
-            adminPanel.classList.add('active');
-            initializeAdminPanel();
-        }, 500);
-    }, 1000);
-}
-
-function handleFailedLogin() {
-    const passwordInput = document.getElementById('password');
-    const loginButton = document.querySelector('.neural-button');
-
-    loginButton.innerHTML = `
-        <span class="button-text">Initialize Connection</span>
-        <div class="button-glow"></div>
-    `;
-    
-    loginButton.disabled = false;
-    passwordInput.disabled = false;
-    passwordInput.value = '';
-    passwordInput.focus();
-
-    showNeuralToast('Neural authentication failed: Invalid access key', 'error');
-
-    const loginContainer = document.querySelector('.login-container');
-    loginContainer.classList.add('shake');
-    setTimeout(() => loginContainer.classList.remove('shake'), 650);
-}
-
-function navigateToSection(section) {
-    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
-    
-    const selectedSection = document.getElementById(`${section}-section`);
-    if (selectedSection) {
-        selectedSection.style.display = 'block';
-        selectedSection.classList.add('fade-in');
-    }
-    
-    document.querySelectorAll('.nav-menu li').forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('data-section') === section) {
-            item.classList.add('active');
-        }
-    });
-    
-    loadSectionData(section);
-}
-
-function loadSectionData(section) {
-    const data = getAdminData();
-    
-    switch(section) {
-        case 'dashboard':
-            updateDashboardStats(data);
-            break;
-        case 'social':
-            renderSocialLinks(data.socialLinks);
-            break;
-        case 'tech':
-            renderTechInfo(data.techInfo);
-            break;
-        case 'hours':
-            renderBusinessHours(data.businessHours);
-            break;
-        case 'settings':
-            renderSettings(data.settings);
-            break;
-    }
-}
-
-function updateDashboardStats(data) {
-    const stats = {
-        lastLogin: lastLoginTime,
-        activeLinks: data.socialLinks.length,
-        systemStatus: data.settings.maintenanceMode ? 'Maintenance' : 'Operational',
-        lastUpdate: data.settings.lastUpdate
-    };
-
-    Object.entries(stats).forEach(([key, value]) => {
-        const element = document.getElementById(`${key}-stat`);
-        if (element) {
-            element.textContent = value;
-            element.classList.add('pulse');
-            setTimeout(() => element.classList.remove('pulse'), 1000);
-        }
-    });
-
-    updateNeuralMetrics();
 }
 
 // Neural Effects and Animations
@@ -516,27 +512,6 @@ function updateSystemTime() {
     });
 }
 
-function updateNeuralMetrics() {
-    document.querySelectorAll('.neural-metric').forEach(metric => {
-        const value = Math.floor(Math.random() * 100);
-        metric.style.setProperty('--value', `${value}%`);
-        
-        const valueDisplay = metric.querySelector('.metric-value');
-        if (valueDisplay) {
-            valueDisplay.textContent = `${value}%`;
-        }
-    });
-}
-
-function checkSystemStatus() {
-    const data = getAdminData();
-    const statusIndicator = document.querySelector('.status-indicator');
-    
-    if (statusIndicator) {
-        statusIndicator.className = `status-indicator ${data.settings.profileStatus}`;
-    }
-}
-
 // Error Handling and System Recovery
 class NeuralSystemError extends Error {
     constructor(message, code, context) {
@@ -586,7 +561,40 @@ async function attemptSystemRecovery(context) {
     }
 }
 
-// Final System Initialization
+async function resetSystemState() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            localStorage.setItem('admin_data', JSON.stringify(defaultData));
+            resolve();
+        }, 1000);
+    });
+}
+
+async function restoreVerifiedData() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            const backup = localStorage.getItem('neural_backup');
+            if (backup) {
+                try {
+                    const data = JSON.parse(backup);
+                    if (verifyDataIntegrity(data)) {
+                        localStorage.setItem('admin_data', JSON.stringify(data));
+                    }
+                } catch (e) {
+                    console.error('Data restoration failed:', e);
+                }
+            }
+            resolve();
+        }, 1000);
+    });
+}
+
+function verifyDataIntegrity(data) {
+    const requiredKeys = ['socialLinks', 'techInfo', 'businessHours', 'settings'];
+    return requiredKeys.every(key => key in data);
+}
+
+// Neural System Class
 class NeuralSystem {
     constructor() {
         this.initialized = false;
