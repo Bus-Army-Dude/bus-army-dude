@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal - Bus Army Dude</title>
     <link rel="stylesheet" href="admin-style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="dark-mode">
+<body data-theme="light">
     <!-- Login Section -->
     <div id="login-section" class="login-section">
         <div class="login-container">
@@ -15,13 +16,15 @@
             <form id="login-form">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" value="BusArmyDude" readonly>
+                    <input type="text" id="username" value="BusArmyDude" readonly class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" required>
+                    <input type="password" id="password" required class="form-control">
                 </div>
-                <button type="submit" class="btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
             </form>
         </div>
     </div>
@@ -36,9 +39,9 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <img src="profile.jpg" alt="Admin" class="admin-avatar">
+                <img src="images/profile.jpg" alt="BusArmyDude" class="admin-avatar">
                 <h3>Bus Army Dude</h3>
-                <p>Last login: <span id="last-login"></span></p>
+                <p class="last-login">Last login: <span id="last-login-time"></span></p>
             </div>
 
             <ul class="nav-menu">
@@ -65,7 +68,7 @@
                 </li>
             </ul>
 
-            <button id="logout-btn" class="logout-btn">
+            <button id="logout-btn" class="btn btn-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
         </nav>
@@ -98,7 +101,7 @@
                     </div>
                 </div>
                 <div class="last-update">
-                    Last Updated: <span id="last-update-time">2025-03-26 14:20:12</span>
+                    Last Updated: <span id="last-update-time">2025-03-26 14:50:39</span>
                 </div>
             </section>
 
@@ -106,7 +109,7 @@
             <section id="social-section" class="content-section" style="display: none;">
                 <h2><i class="fas fa-share-alt"></i> Social Links</h2>
                 <div id="social-links-container"></div>
-                <button class="add-btn" onclick="addSocialLink()">
+                <button class="btn btn-primary" onclick="addSocialLink()">
                     <i class="fas fa-plus"></i> Add Social Link
                 </button>
             </section>
@@ -143,9 +146,9 @@
                         <h3>Theme Settings</h3>
                         <div class="form-group">
                             <label for="theme-select">Theme Mode</label>
-                            <select id="theme-select">
+                            <select id="theme-select" class="form-control">
                                 <option value="light">Light</option>
-                                <option value="dark" selected>Dark</option>
+                                <option value="dark">Dark</option>
                             </select>
                         </div>
                     </div>
@@ -153,11 +156,21 @@
                         <h3>Profile Status</h3>
                         <div class="form-group">
                             <label for="status-select">Current Status</label>
-                            <select id="status-select">
+                            <select id="status-select" class="form-control">
                                 <option value="online">Online</option>
                                 <option value="idle">Idle</option>
                                 <option value="offline">Offline</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Maintenance Mode</h3>
+                        <div class="form-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="maintenance-toggle">
+                                <span class="toggle-slider"></span>
+                                Enable Maintenance Mode
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -171,10 +184,11 @@
     <!-- Version Info -->
     <div class="version-info">
         <p>Version 1.0.0</p>
-        <p>Last Updated: 2025-03-26 14:20:12</p>
+        <p>Last Updated: 2025-03-26 14:50:39</p>
     </div>
 
     <!-- Scripts -->
+    <script src="config.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>
