@@ -1087,3 +1087,171 @@ function setupThemeEventListeners() {
         }
     });
 }
+
+// Status and Maintenance Management
+function handleStatusChange(event) {
+    const newStatus = event?.target?.value || 'online';
+    const data = getAdminData();
+    
+    data.settings.profileStatus = newStatus;
+    saveAdminData(data);
+    
+    // Update status indicator
+    updateStatusIndicator(newStatus);
+    
+    showNeuralToast(`Neural status updated to: ${newStatus}`, 'info');
+}
+
+function handleMaintenanceToggle(event) {
+    const isEnabled = event?.target?.checked || false;
+    const data = getAdminData();
+    
+    data.settings.maintenanceMode = isEnabled;
+    saveAdminData(data);
+    
+    // Update UI elements
+    document.body.classList.toggle('maintenance-mode', isEnabled);
+    
+    showNeuralToast(
+        `Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}`,
+        isEnabled ? 'warning' : 'success'
+    );
+}
+
+// Dashboard and Section Renders
+function updateDashboardStats(data) {
+    const stats = {
+        socialCount: data.socialLinks.length,
+        deviceCount: Object.keys(data.techInfo).length,
+        openDays: Object.values(data.businessHours).filter(day => !day.closed).length,
+        lastUpdate: data.settings.lastUpdate
+    };
+    
+    // Update stat displays
+    Object.entries(stats).forEach(([key, value]) => {
+        const element = document.getElementById(`${key}-stat`);
+        if (element) {
+            element.textContent = value;
+            element.classList.add('neural-pulse');
+            setTimeout(() => element.classList.remove('neural-pulse'), 1000);
+        }
+    });
+}
+
+function renderSocialLinks(links) {
+    const container = document.getElementById('social-links-container');
+    if (!container) return;
+    
+    container.innerHTML = links.map(link => `
+        <div class="social-link-card neural-card" data-platform="${link.platform}">
+            <i class="${link.icon} neural-icon"></i>
+            <div class="social-link-content">
+                <h3>${link.label}</h3>
+                <p>${extractUsername(link.url)}</p>
+                <a href="${link.url}" target="_blank" rel="noopener noreferrer">
+                    Visit Profile <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            <div class="neural-glow"></div>
+        </div>
+    `).join('');
+}
+
+function renderTechInfo(techInfo) {
+    const container = document.getElementById('tech-info-container');
+    if (!container) return;
+    
+    container.innerHTML = Object.entries(techInfo).map(([device, info]) => `
+        <div class="tech-card neural-card">
+            <div class="tech-icon">
+                <i class="fas fa-${getTechIcon(device)}"></i>
+            </div>
+            <div class="tech-details">
+                <h3>${info.model}</h3>
+                ${Object.entries(info).map(([key, value]) => 
+                    `<p><strong>${capitalizeFirst(key)}:</strong> ${value}</p>`
+                ).join('')}
+            </div>
+            <div class="neural-glow"></div>
+        </div>
+    `).join('');
+}
+
+function renderBusinessHours(hours) {
+    const container = document.getElementById('business-hours-container');
+    if (!container) return;
+    
+    container.innerHTML = Object.entries(hours).map(([day, schedule]) => `
+        <div class="hours-row ${schedule.closed ? 'closed' : ''}" data-day="${day}">
+            <div class="day-name">${capitalizeFirst(day)}</div>
+            <div class="hours-input">
+                <input type="time" value="${schedule.open}" 
+                    ${schedule.closed ? 'disabled' : ''}
+                    onchange="updateHours('${day}', 'open', this.value)">
+                <span>to</span>
+                <input type="time" value="${schedule.close}" 
+                    ${schedule.closed ? 'disabled' : ''}
+                    onchange="updateHours('${day}', 'close', this.value)">
+            </div>
+            <div class="closed-toggle">
+                <label class="neural-switch">
+                    <input type="checkbox" ${schedule.closed ? 'checked' : ''}
+                        onchange="toggleDay('${day}')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderSettings(settings) {
+    // Update theme selector
+    const themeSelect = document.getElementById('theme-select');
+    if (themeSelect) {
+        themeSelect.value = settings.theme;
+    }
+    
+    // Update status selector
+    const statusSelect = document.getElementById('status-select');
+    if (statusSelect) {
+        statusSelect.value = settings.profileStatus;
+    }
+    
+    // Update maintenance toggle
+    const maintenanceToggle = document.getElementById('maintenance-toggle');
+    if (maintenanceToggle) {
+        maintenanceToggle.checked = settings.maintenanceMode;
+    }
+    
+    // Update last update time
+    const lastUpdateDisplay = document.getElementById('last-update');
+    if (lastUpdateDisplay) {
+        lastUpdateDisplay.textContent = settings.lastUpdate;
+    }
+}
+
+// Time Management
+function updateTimeDisplays() {
+    document.querySelectorAll('.neural-time').forEach(display => {
+        display.textContent = NEURAL_CONFIG.CURRENT_TIME;
+    });
+}
+
+function initializeTimeManagement() {
+    // Update time every second
+    setInterval(updateTimeDisplays, 1000);
+    
+    // Update config time
+    setInterval(() => {
+        const now = new Date();
+        NEURAL_CONFIG.CURRENT_TIME = now.toISOString().replace('T', ' ').split('.')[0];
+    }, 1000);
+}
+
+function updateStatusIndicator(status) {
+    const indicator = document.querySelector('.status-indicator');
+    if (indicator) {
+        indicator.className = `status-indicator ${status}`;
+        indicator.setAttribute('data-status', status);
+    }
+}
