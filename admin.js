@@ -1,18 +1,32 @@
-// DOM Elements
+// DOM Elements and Global Variables
 let loginSection;
 let adminPanel;
 let loginForm;
-let lastLoginTime = localStorage.getItem('lastLogin') || CONFIG.CURRENT_TIME;
+let lastLoginTime = localStorage.getItem('lastLogin') || '2025-03-26 14:59:57';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Loaded'); // Debug log
+    
     // Get DOM elements
     loginSection = document.getElementById('login-section');
     adminPanel = document.getElementById('admin-panel');
     loginForm = document.getElementById('login-form');
     
-    // Add event listeners
-    loginForm.addEventListener('submit', handleLogin);
+    // Verify elements are found
+    if (!loginSection || !adminPanel || !loginForm) {
+        console.error('Required elements not found');
+        return;
+    }
+
+    // Add login form submit listener
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Login attempt'); // Debug log
+        handleLogin();
+    });
+
+    // Add other event listeners
     document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
     document.getElementById('menuToggle')?.addEventListener('click', toggleSidebar);
     document.getElementById('theme-select')?.addEventListener('change', handleThemeChange);
@@ -33,72 +47,68 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Authentication Functions
-function handleLogin(e) {
-    e.preventDefault();
-
+function handleLogin() {
+    console.log('Handle Login Called'); // Debug log
+    
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    if (username === CONFIG.ADMIN_USERNAME && password === CONFIG.ADMIN_PASSWORD) {
+    console.log('Login attempt:', username); // Debug log
+
+    if (username === 'BusArmyDude' && password === 'admin123') {
+        console.log('Login successful'); // Debug log
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('lastLogin', CONFIG.CURRENT_TIME);
+        localStorage.setItem('lastLogin', '2025-03-26 14:59:57');
         showAdminPanel();
         showToast('Login successful!', 'success');
         loadDashboardData();
     } else {
+        console.log('Login failed'); // Debug log
         showToast('Invalid credentials', 'error');
-    }
-}
-
-function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('isLoggedIn');
-        hideAdminPanel();
-        showToast('Logged out successfully', 'success');
-    }
-}
-
-function checkLoginStatus() {
-    if (localStorage.getItem('isLoggedIn') === 'true') {
-        showAdminPanel();
-        loadDashboardData();
-    } else {
-        hideAdminPanel();
     }
 }
 
 // UI Functions
 function showAdminPanel() {
-    loginSection.style.display = 'none';
-    adminPanel.style.display = 'grid';
-    navigateToSection('dashboard');
-    updateLastLoginTime();
+    console.log('Showing admin panel'); // Debug log
+    if (loginSection && adminPanel) {
+        loginSection.style.display = 'none';
+        adminPanel.style.display = 'grid';
+        navigateToSection('dashboard');
+        updateLastLoginTime();
+    } else {
+        console.error('Required elements not found for showing admin panel');
+    }
 }
 
 function hideAdminPanel() {
-    loginSection.style.display = 'flex';
-    adminPanel.style.display = 'none';
+    if (loginSection && adminPanel) {
+        loginSection.style.display = 'flex';
+        adminPanel.style.display = 'none';
+    }
 }
 
-function updateTimeDisplays() {
-    document.getElementById('last-login-time').textContent = lastLoginTime;
-    document.getElementById('last-update-time').textContent = CONFIG.CURRENT_TIME;
+function updateLastLoginTime() {
+    const lastLoginElement = document.getElementById('last-login-time');
+    if (lastLoginElement) {
+        lastLoginElement.textContent = lastLoginTime;
+    }
 }
 
+// Toast Notification Function
 function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
     
-    const container = document.getElementById('toast-container');
     container.appendChild(toast);
     
-    setTimeout(() => toast.remove(), 3000);
-}
-
-function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('active');
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
 
 // Navigation Functions
