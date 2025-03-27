@@ -219,7 +219,7 @@ export const updateWeather = (lat, lon) => {
                     <h3 class="title-3">Feels Like</h3>
                     <div class="wrapper">
                         <span class="m-icon">thermostat</span>
-                        <p class="title-1" data-temperature data-original-value="${feels_like}">${Math.round(feels_like)}&deg;<sup>c</sup></p>
+                        <p class="title-1" data-temperature data-original-value="${feels_like}">${Math.round(feels_like)}&deg;</p>
                     </div>
                 </div>
             </div>
@@ -309,6 +309,70 @@ export const updateWeather = (lat, lon) => {
         });
     });
 }
+
+// Load user settings and apply them
+const loadUserSettings = () => {
+    const settings = JSON.parse(localStorage.getItem("weatherSettings"));
+    if (settings) {
+        applySettings(settings);
+    }
+};
+
+const applySettings = (settings) => {
+    document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
+
+    const temperatureElements = document.querySelectorAll("[data-temperature]");
+    temperatureElements.forEach(element => {
+        let tempValue = parseFloat(element.getAttribute("data-original-value"));
+        if (settings.temperature === "fahrenheit") {
+            tempValue = (tempValue * 9/5) + 32;
+            element.textContent = `${Math.round(tempValue)} °F`;
+        } else if (settings.temperature === "kelvin") {
+            tempValue = tempValue + 273.15;
+            element.textContent = `${Math.round(tempValue)} K`;
+        } else {
+            element.textContent = `${Math.round(tempValue)} °C`;
+        }
+    });
+
+    const windSpeedElements = document.querySelectorAll("[data-wind-speed]");
+    windSpeedElements.forEach(element => {
+        let speedValue = parseFloat(element.getAttribute("data-original-value"));
+        if (settings.windSpeed === "mph") {
+            speedValue = speedValue * 2.23694;
+            element.textContent = `${Math.round(speedValue)} mph`;
+        } else if (settings.windSpeed === "kph") {
+            speedValue = speedValue * 3.6;
+            element.textContent = `${Math.round(speedValue)} km/h`;
+        } else if (settings.windSpeed === "knots") {
+            speedValue = speedValue * 1.94384;
+            element.textContent = `${Math.round(speedValue)} knots`;
+        } else if (settings.windSpeed === "beaufort") {
+            speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2 / 3)), 0), 12);
+            element.textContent = `${speedValue} Bft`;
+        } else {
+            element.textContent = `${Math.round(speedValue)} m/s`;
+        }
+    });
+
+    const pressureElements = document.querySelectorAll("[data-pressure]");
+    pressureElements.forEach(element => {
+        let pressureValue = parseFloat(element.getAttribute("data-original-value"));
+        if (settings.pressure === "inhg") {
+            pressureValue = pressureValue * 0.02953;
+            element.textContent = `${Math.round(pressureValue)} inHg`;
+        } else if (settings.pressure === "mmhg") {
+            pressureValue = pressureValue * 0.75006;
+            element.textContent = `${Math.round(pressureValue)} mmHg`;
+        } else {
+            element.textContent = `${Math.round(pressureValue)} hPa`;
+        }
+    });
+};
+
+// Load user settings on page load
+document.addEventListener("DOMContentLoaded", loadUserSettings);
+
 export const error404 = () => {
     errorContent.style.display = "flex"
 };
