@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const applySettings = (settings) => {
     document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
 
-    // Apply temperature unit conversion
     const temperatureElements = document.querySelectorAll("[data-temperature]");
     temperatureElements.forEach(element => {
       let tempValue = parseFloat(element.getAttribute("data-original-value"));
@@ -68,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Apply wind speed unit conversion
     const windSpeedElements = document.querySelectorAll("[data-wind-speed]");
     windSpeedElements.forEach(element => {
       let speedValue = parseFloat(element.getAttribute("data-original-value"));
@@ -82,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
         speedValue = speedValue * 1.94384;
         element.textContent = `${Math.round(speedValue)} knots`;
       } else if (settings.windSpeed === "beaufort") {
-        // Convert to Beaufort scale (simplified example)
         speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2 / 3)), 0), 12);
         element.textContent = `${speedValue} Bft`;
       } else {
@@ -90,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Apply pressure unit conversion
     const pressureElements = document.querySelectorAll("[data-pressure]");
     pressureElements.forEach(element => {
       let pressureValue = parseFloat(element.getAttribute("data-original-value"));
@@ -105,12 +101,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Apply 24-hour time format
     const timeElements = document.querySelectorAll("[data-time]");
     timeElements.forEach(element => {
       let timeValue = element.getAttribute("data-original-value");
       if (settings.timeFormat) {
-        // Convert to 24-hour format (simplified example)
         let [hours, minutes] = timeValue.split(":");
         let period = timeValue.split(" ")[1];
         hours = parseInt(hours);
@@ -121,7 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         element.textContent = `${hours.toString().padStart(2, "0")}:${minutes}`;
       } else {
-        // Convert to 12-hour format (simplified example)
         let [hours, minutes] = timeValue.split(":");
         hours = parseInt(hours);
         let period = "AM";
@@ -137,28 +130,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Apply location services setting (example implementation)
     if (settings.locationServices) {
-      // Enable location services
       console.log("Location services enabled");
     } else {
-      // Disable location services
       console.log("Location services disabled");
     }
   };
 
-  // Event listeners for opening and closing the settings modal
   settingsBtn.addEventListener("click", openSettingsModal);
   settingsClose.addEventListener("click", closeSettingsModal);
   settingsSave.addEventListener("click", saveSettings);
 
-  // Close the modal when clicking outside of it
   window.addEventListener("click", (event) => {
     if (event.target === settingsModal) {
       closeSettingsModal();
     }
   });
 
-  // Load settings on page load
   loadSettings();
 });
