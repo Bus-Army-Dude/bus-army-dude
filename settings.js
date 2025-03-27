@@ -82,7 +82,7 @@ class SettingsManager {
         const resetButton = document.getElementById('resetSettings');
         if (resetButton) {
             resetButton.addEventListener('click', () => {
-                this.showResetConfirmationDialog();
+                this.resetToFactorySettings();
             });
         }
 
@@ -96,13 +96,6 @@ class SettingsManager {
             focusOutlineToggle.addEventListener('change', (e) => {
                 this.toggleFocusOutline(e.target.checked);
             });
-        }
-    }
-
-    showResetConfirmationDialog() {
-        const confirmation = confirm('Are you sure you want to reset all settings to factory defaults?');
-        if (confirmation) {
-            this.resetToFactorySettings();
         }
     }
 
