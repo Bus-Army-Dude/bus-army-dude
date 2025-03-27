@@ -267,7 +267,7 @@ export const updateWeather = (lat, lon) => {
                     <div class="card card-sm slider-card">
                         <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
                         <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform: rotate(${windDirection - 180}deg)">
-                        <p class="body-3" data-wind-speed data-original-value="${module.mps_to_kmh(windSpeed)}">${Math.round(module.mps_to_kmh(windSpeed))} Km/h</p>
+                        <p class="body-3" data-wind-speed data-original-value="${module.mps_to_kmh(windSpeed)}">${Math.round(module.mps_to_kmh(windSpeed))}</p>
                     </div>
                 `;
                 hourlySection.querySelector("[data-wind]").appendChild(windLi);
@@ -326,12 +326,12 @@ const applySettings = (settings) => {
         let tempValue = parseFloat(element.getAttribute("data-original-value"));
         if (settings.temperature === "fahrenheit") {
             tempValue = (tempValue * 9/5) + 32;
-            element.textContent = `${Math.round(tempValue)} °F`;
+            element.textContent = `${Math.round(tempValue)}°`;
         } else if (settings.temperature === "kelvin") {
             tempValue = tempValue + 273.15;
-            element.textContent = `${Math.round(tempValue)} K`;
+            element.textContent = `${Math.round(tempValue)}°`;
         } else {
-            element.textContent = `${Math.round(tempValue)} °C`;
+            element.textContent = `${Math.round(tempValue)}°`;
         }
     });
 
