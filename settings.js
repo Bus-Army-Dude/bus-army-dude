@@ -5,6 +5,15 @@ class SettingsManager {
         this.isOwner = this.checkIfOwner();  // Check if current user is the owner
         this.initializeControls();
         this.applySettings();
+
+        // Listen for changes across tabs/windows
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'websiteSettings') {
+                this.settings = JSON.parse(e.newValue);
+                this.applySettings();
+                this.refreshUI();
+            }
+        });
     }
 
     loadSettings() {
@@ -12,6 +21,8 @@ class SettingsManager {
             darkMode: true,
             textSize: 16, // Changed to numeric value for slider
             focusOutline: 'disabled',    // Default focus outline setting
+            maintenanceMode: false, // Assuming this is a setting
+            profileStatus: 'offline' // Assuming this is a setting
         };
         return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
     }
@@ -164,6 +175,8 @@ class SettingsManager {
             darkMode: true,
             textSize: 16,
             focusOutline: 'disabled',
+            maintenanceMode: false, // Assuming this is a setting
+            profileStatus: 'offline' // Assuming this is a setting
         };
         this.settings = defaultSettings;
         this.applySettings();
@@ -186,6 +199,15 @@ class SettingsManager {
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
+
+        // Force UI refresh
+        this.refreshUI();
+    }
+
+    // Method to force UI refresh
+    refreshUI() {
+        // Re-initialize controls to reflect the updated settings
+        this.initializeControls();
     }
 
     // Set Maintenance Mode
