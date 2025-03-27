@@ -1,341 +1,132 @@
-### Bus Army Dude's Link In Bio
-Your comprehensive tech specs and information hub.
+# Weatherio Website Documentation
+![1600x1200](/screenshots/1600x1200.png)
+[Weatherio](https://omar-mazen.github.io/weatherio/)
+## Introduction
 
----
+Weatherio is a web application that provides real-time weather information. It offers features such as viewing the current weather, a 5-day forecast, wind speed, temperature for the current day, sunrise and sunset times, air quality, humidity, visibility, feels like temperature, and atmospheric pressure.
 
-### 🌟 Overview
-A centralized platform showcasing:
-- Detailed device info
-- Accessibility resources
-- Social media shoutouts
+The application is developed using HTML, CSS, and JavaScript, and it utilizes the OpenWeather API to fetch weather data for different cities around the world.
 
----
+## Table of Contents
 
-### 🚀 Features
-- **Device Information**: Displaying detailed tech specs and software versions
-- **Battery Status**: Real-time battery information
-- **Accessibility Resources**:
-  - Verified medical resources
-  - NIMH/NINDS integration
-  - Comprehensive conditions list
-- **Social Media Shoutouts**:
-  - TikTok creator shoutouts
-  - Instagram creator shoutouts
-  - YouTube creator shoutouts
-- **Profile Information**: Easily display your profile and content
-- **Content Protection**:
-  - Enhanced copy protection
-  - Image security measures
-  - Content control system
-  - Selection management
-  - Last Updated Feature for Follower/Subscriber count
-- **Theme Consistency**: Unified website theme across all sections
-- **Settings Page Access Button**: Quick access to settings from the top profile section
-- **Light/Dark Mode Toggle**: Easily switch between light and dark modes in settings
-- **Maintenance Mode (Owner Only)**: Show a maintenance message on the website when necessary
-- **Profile Status (Owner Only)**: Display your online, idle, or offline status
+1. [Project Overview](#project-overview)
+2. [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+3. [Project Structure](#project-structure)
+4. [HTML](#html)
+    - [index.html](#index.html)
+5. [CSS](#css)
+    - [style.css](#style.css)
+6. [JavaScript](#javascript)
+    - [api.js](#api.js)
+    - [module.js](#module.js)
+    - [app.js](#app.js)
+    - [route.js](#route.js)
+7. [Functionality](#functionality)
+8. [Screenshots](#screenshots)
+9. [Contributing](#contributing)
+10. [License](#license)
 
----
+## Project Overview
 
-### 💻 Supported Operating Systems
-- iOS
-- iPadOS
-- Windows
-- Linux
-- macOS
-- Android
+The Weather Website is a user-friendly and responsive web application that allows users to search for cities and get detailed weather information. The data is presented in a visually appealing format with easy-to-understand icons and labels.
 
----
+Key Features:
+- View current weather conditions (temperature, weather icon, and description).
+- Get a 5-day weather forecast.
+- Display wind speed and temperature every 2 hours for the current day.
+- Show sunrise and sunset times for the selected city.
+- Provide information about air quality, humidity, visibility, feels like temperature, and atmospheric pressure.
 
-### 🛠️ Technical Requirements
-- Modern web browser
-- JavaScript enabled
-- **Minimum screen width:** 320px
-- Stable internet connection
+## Getting Started
 
----
+### Prerequisites
 
-### 🔄 Version Information
-**Current Version:** v1.14.0
+- Modern web browser (Chrome, Firefox, Safari, etc.).
+- Internet connection to fetch weather data from the OpenWeather API.
 
----
+### Installation
 
-### 📱 Browser Support
-- **Chrome**: 134.0.6998.23
-- **Firefox Desktop**: 135.0.1
-- **Firefox iOS**: 135.2
-- **Safari**: 18.3
-- **Safari (In-App)**: 18.3
-- **Edge**: 132.0.2957.171
-- **Opera**: Opera One R2
-- **Mozilla**: 135.0.1 (Desktop) and 135.2 (iOS)
-- **Samsung Internet**: 27.0.7.17
-  
----
-### 🌍 TikTok Creator Shoutouts Availability
+1. Clone the repository or download the project files to your local machine.
+2. Open `index.html` in your web browser.
 
- #### Last Updated: March 13, 2025 at 5:06 PM
+## Project Structure
 
-Check if TikTok creator shoutouts are available in your region:
+The project is organized into multiple files for better code organization and separation of concerns:
 
-| Region Code | Region Name            | Availability  |
-| ----------- | ---------------------- | ------------- |
-| AD          | Andorra                | 🟢 Available  |
-| AE          | United Arab Emirates    | 🟢 Available  |
-| AF          | Afghanistan            | 🔴  Unavailable|
-| AG          | Antigua and Barbuda     | 🟢 Available  |
-| AI          | Anguilla               | 🟢 Available  |
-| AL          | Albania                | 🟢 Available  |
-| AM          | Armenia                | 🟢 Available  |
-| AO          | Angola                 | 🟢 Available  |
-| AQ          | Antarctica             | 🟢 Available  |
-| AR          | Argentina              | 🟢 Available  |
-| AS          | American Samoa         | 🟢 Available  |
-| AT          | Austria                | 🟢 Available  |
-| AU          | Australia              | 🟢 Available  |
-| AW          | Aruba                  | 🟢 Available  |
-| AX          | Åland Islands          | 🟢 Available  |
-| AZ          | Azerbaijan             | 🟢 Available  |
-| BA          | Bosnia and Herzegovina | 🟢 Available  |
-| BB          | Barbados               | 🟢 Available  |
-| BD          | Bangladesh             | 🟢 Available  |
-| BE          | Belgium                | 🟢 Available  |
-| BF          | Burkina Faso           | 🟢 Available  |
-| BG          | Bulgaria               | 🟢 Available  |
-| BH          | Bahrain                | 🟢 Available  |
-| BI          | Burundi                | 🟢 Available  |
-| BJ          | Benin                  | 🟢 Available  |
-| BL          | Saint Barthélemy       | 🟢 Available  |
-| BM          | Bermuda                | 🟢 Available  |
-| BN          | Brunei Darussalam      | 🟢 Available  |
-| BO          | Bolivia                | 🟢 Available  |
-| BQ          | Bonaire, Sint Eustatius and Saba | 🟢 Available  |
-| BR          | Brazil                 | 🟢 Available  |
-| BS          | Bahamas                | 🟢 Available  |
-| BT          | Bhutan                 | 🟢 Available  |
-| BV          | Bouvet Island          | 🟢 Available  |
-| BW          | Botswana               | 🟢 Available  |
-| BY          | Belarus                | 🟢 Available  |
-| BZ          | Belize                 | 🟢 Available  |
-| CA          | Canada                 | 🟢 Available  |
-| CC          | Cocos (Keeling) Islands| 🟢 Available  |
-| CD          | Democratic Republic of the Congo | 🟢 Available  |
-| CF          | Central African Republic | 🟢 Available  |
-| CG          | Republic of the Congo  | 🟢 Available  |
-| CH          | Switzerland            | 🟢 Available  |
-| CI          | Côte d'Ivoire          | 🟢 Available  |
-| CK          | Cook Islands           | 🟢 Available  |
-| CL          | Chile                  | 🟢 Available  |
-| CM          | Cameroon               | 🟢 Available  |
-| CN          | China                  | 🟢 Available  |
-| CO          | Colombia               | 🟢 Available  |
-| CR          | Costa Rica             | 🟢 Available  |
-| CU          | Cuba                   | 🟢 Available  |
-| CV          | Cabo Verde             | 🟢 Available  |
-| CW          | Curaçao                | 🟢 Available  |
-| CX          | Christmas Island       | 🟢 Available  |
-| CY          | Cyprus                 | 🟢 Available  |
-| CZ          | Czechia                | 🟢 Available  |
-| DE          | Germany                | 🟢 Available  |
-| DJ          | Djibouti               | 🟢 Available  |
-| DK          | Denmark                | 🟢 Available  |
-| DM          | Dominica               | 🟢 Available  |
-| DO          | Dominican Republic     | 🟢 Available  |
-| DZ          | Algeria                | 🟢 Available  |
-| EC          | Ecuador                | 🟢 Available  |
-| EE          | Estonia                | 🟢 Available  |
-| EG          | Egypt                  | 🟢 Available  |
-| EH          | Western Sahara         | 🟢 Available  |
-| ER          | Eritrea                | 🟢 Available  |
-| ES          | Spain                  | 🟢 Available  |
-| ET          | Ethiopia               | 🟢 Available  |
-| FI          | Finland                | 🟢 Available  |
-| FJ          | Fiji                   | 🟢 Available  |
-| FK          | Falkland Islands       | 🟢 Available  |
-| FM          | Micronesia (Federated States of) | 🟢 Available  |
-| FO          | Faroe Islands          | 🟢 Available  |
-| FR          | France                 | 🟢 Available  |
-| GA          | Gabon                  | 🟢 Available  |
-| GB          | United Kingdom         | 🟢 Available  |
-| GD          | Grenada                | 🟢 Available  |
-| GE          | Georgia                | 🟢 Available  |
-| GF          | French Guiana          | 🟢 Available  |
-| GG          | Guernsey               | 🟢 Available  |
-| GH          | Ghana                  | 🟢 Available  |
-| GI          | Gibraltar              | 🟢 Available  |
-| GL          | Greenland              | 🟢 Available  |
-| GM          | Gambia                 | 🟢 Available  |
-| GN          | Guinea                 | 🟢 Available  |
-| GP          | Guadeloupe             | 🟢 Available  |
-| GQ          | Equatorial Guinea      | 🟢 Available  |
-| GR          | Greece                 | 🟢 Available  |
-| GT          | Guatemala              | 🟢 Available  |
-| GU          | Guam                   | 🟢 Available  |
-| GW          | Guinea-Bissau          | 🟢 Available  |
-| GY          | Guyana                 | 🟢 Available  |
-| HK          | Hong Kong              | 🟢 Available  |
-| HM          | Heard Island and McDonald Islands | 🟢 Available  |
-| HN          | Honduras               | 🟢 Available  |
-| HR          | Croatia                | 🟢 Available  |
-| HT          | Haiti                  | 🟢 Available  |
-| HU          | Hungary                | 🟢 Available  |
-| ID          | Indonesia              | 🟢 Available  |
-| IE          | Ireland                | 🟢 Available  |
-| IL          | Israel                 | 🟢 Available  |
-| IM          | Isle of Man            | 🟢 Available  |
-| IN          | India                  | 🔴 Unavailable|
-| IO          | British Indian Ocean Territory | 🟢 Available  |
-| IQ          | Iraq                   | 🟢 Available  |
-| IR          | Iran                   | 🔴 Unavailable|
-| IS          | Iceland                | 🟢 Available  |
-| IT          | Italy                  | 🟢 Available  |
-| JE          | Jersey                 | 🟢 Available  |
-| JM          | Jamaica                | 🟢 Available  |
-| JO          | Jordan                 | 🟢 Available  |
-| JP          | Japan                  | 🟢 Available  |
-| KE          | Kenya                  | 🟢 Available  |
-| KG          | Kyrgyzstan             | 🔴 Unavailable|
-| KH          | Cambodia               | 🟢 Available  |
-| KI          | Kiribati               | 🟢 Available  |
-| KM          | Comoros                | 🟢 Available  |
-| KN          | Saint Kitts and Nevis  | 🟢 Available  |
-| KP          | North Korea            | 🔴 Unavailable|
-| KR          | South Korea            | 🟢 Available  |
-| KW          | Kuwait                 | 🟢 Available  |
-| KY          | Cayman Islands         | 🟢 Available  |
-| KZ          | Kazakhstan             | 🟢 Available  |
-| LA          | Laos                   | 🟢 Available  |
-| LB          | Lebanon                | 🟢 Available  |
-| LC          | Saint Lucia            | 🟢 Available  |
-| LI          | Liechtenstein          | 🟢 Available  |
-| LK          | Sri Lanka              | 🟢 Available  |
-| LR          | Liberia                | 🟢 Available  |
-| LS          | Lesotho                | 🟢 Available  |
-| LT          | Lithuania              | 🟢 Available  |
-| LU          | Luxembourg             | 🟢 Available  |
-| LV          | Latvia                 | 🟢 Available  |
-| LY          | Libya                  | 🟢 Available  |
-| MA          | Morocco                | 🟢 Available  |
-| MC          | Monaco                 | 🟢 Available  |
-| MD          | Moldova                | 🟢 Available  |
-| ME          | Montenegro             | 🟢 Available  |
-| MF          | Saint Martin (French part) | 🟢 Available  |
-| MG          | Madagascar             | 🟢 Available  |
-| MH          | Marshall Islands       | 🟢 Available  |
-| MK          | North Macedonia        | 🟢 Available  |
-| ML          | Mali                   | 🟢 Available  |
-| MM          | Myanmar                | 🟢 Available  |
-| MN          | Mongolia               | 🟢 Available  |
-| MO          | Macao                  | 🟢 Available  |
-| MP          | Northern Mariana Islands | 🟢 Available  |
-| MQ          | Martinique             | 🟢 Available  |
-| MR          | Mauritania             | 🟢 Available  |
-| MS          | Montserrat             | 🟢 Available  |
-| MT          | Malta                  | 🟢 Available  |
-| MU          | Mauritius              | 🟢 Available  |
-| MV          | Maldives               | 🟢 Available  |
-| MW          | Malawi                 | 🟢 Available  |
-| MX          | Mexico                 | 🟢 Available  |
-| MY          | Malaysia               | 🟢 Available  |
-| MZ          | Mozambique             | 🟢 Available  |
-| NA          | Namibia                | 🟢 Available  |
-| NC          | New Caledonia          | 🟢 Available  |
-| NE          | Niger                  | 🟢 Available  |
-| NF          | Norfolk Island         | 🟢 Available  |
-| NG          | Nigeria                | 🟢 Available  |
-| NI          | Nicaragua              | 🟢 Available  |
-| NL          | Netherlands            | 🟢 Available  |
-| NO          | Norway                 | 🟢 Available  |
-| NP          | Nepal                  | 🔴 Unavailable  |
-| NR          | Nauru                  | 🟢 Available  |
-| NU          | Niue                   | 🟢 Available  |
-| NZ          | New Zealand            | 🟢 Available  |
-| OM          | Oman                   | 🟢 Available  |
-| PA          | Panama                 | 🟢 Available  |
-| PE          | Peru                   | 🟢 Available  |
-| PF          | French Polynesia       | 🟢 Available  |
-| PG          | Papua New Guinea       | 🟢 Available  |
-| PH          | Philippines            | 🟢 Available  |
-| PK          | Pakistan               | 🟢 Available  |
-| PL          | Poland                 | 🟢 Available  |
-| PM          | Saint Pierre and Miquelon | 🟢 Available  |
-| PN          | Pitcairn               | 🟢 Available  |
-| PR          | Puerto Rico            | 🟢 Available  |
-| PT          | Portugal               | 🟢 Available  |
-| PW          | Palau                  | 🟢 Available  |
-| PY          | Paraguay               | 🟢 Available  |
-| QA          | Qatar                  | 🟢 Available  |
-| RE          | Réunion                | 🟢 Available  |
-| RO          | Romania                | 🟢 Available  |
-| RS          | Serbia                 | 🟢 Available  |
-| RU          | Russia                 | 🟢 Available  |
-| RW          | Rwanda                 | 🟢 Available  |
-| SA          | Saudi Arabia           | 🟢 Available  |
-| SB          | Solomon Islands        | 🟢 Available  |
-| SC          | Seychelles             | 🟢 Available  |
-| SD          | Sudan                  | 🟢 Available  |
-| SE          | Sweden                 | 🟢 Available  |
-| SG          | Singapore              | 🟢 Available  |
-| SH          | Saint Helena, Ascension and Tristan da Cunha | 🟢 Available  |
-| SI          | Slovenia               | 🟢 Available  |
-| SJ          | Svalbard and Jan Mayen  | 🟢 Available  |
-| SK          | Slovakia               | 🟢 Available  |
-| SL          | Sierra Leone           | 🟢 Available  |
-| SM          | San Marino             | 🟢 Available  |
-| SN          | Senegal                | 🟢 Available  |
-| SO          | Somalia                | 🔴 Unavailable|
-| SR          | Suriname               | 🟢 Available  |
-| SS          | South Sudan            | 🟢 Available  |
-| ST          | Sao Tome and Principe  | 🟢 Available  |
-| SV          | El Salvador            | 🟢 Available  |
-| SX          | Sint Maarten (Dutch part) | 🟢 Available  |
-| SY          | Syria                  | 🟢 Available  |
-| SZ          | Eswatini               | 🟢 Available  |
-| TC          | Turks and Caicos Islands | 🟢 Available  |
-| TD          | Chad                   | 🟢 Available  |
-| TF          | French Southern Territories | 🟢 Available  |
-| TG          | Togo                   | 🟢 Available  |
-| TH          | Thailand               | 🟢 Available  |
-| TJ          | Tajikistan             | 🟢 Available  |
-| TK          | Tokelau                | 🟢 Available  |
-| TL          | Timor-Leste            | 🟢 Available  |
-| TM          | Turkmenistan           | 🔴 Unavailable  |
-| TN          | Tunisia                | 🟢 Available  |
-| TO          | Tonga                  | 🟢 Available  |
-| TR          | Turkey                 | 🟢 Available  |
-| TT          | Trinidad and Tobago    | 🟢 Available  |
-| TV          | Tuvalu                 | 🟢 Available  |
-| TZ          | Tanzania               | 🟢 Available  |
-| UA          | Ukraine                | 🟢 Available  |
-| UG          | Uganda                 | 🟢 Available  |
-| UM          | United States Minor Outlying Islands | 🟢 Available  |
-| US          | United States          | 🟢 Available  |
-| UY          | Uruguay                | 🟢 Available  |
-| UZ          | Uzbekistan             | 🔴 Unavailable  |
-| VA          | Vatican City           | 🟢 Available  |
-| VC          | Saint Vincent and the Grenadines | 🟢 Available  |
-| VE          | Venezuela              | 🟢 Available  |
-| VG          | British Virgin Islands | 🟢 Available  |
-| VI          | U.S. Virgin Islands    | 🟢 Available  |
-| VN          | Vietnam                | 🟢 Available  |
-| VU          | Vanuatu                | 🟢 Available  |
-| WF          | Wallis and Futuna      | 🟢 Available  |
-| WS          | Samoa                  | 🟢 Available  |
-| YE          | Yemen                  | 🟢 Available  |
-| YT          | Mayotte                | 🟢 Available  |
-| ZA          | South Africa           | 🟢 Available  |
-| ZM          | Zambia                 | 🟢 Available  |
-| ZW          | Zimbabwe               | 🟢 Available  |
+- `index.html`: The main HTML file that contains the user interface.
+- `style.css`: The CSS file that defines the styling for the web application.
+- `api.js`: Contains functions to interact with the OpenWeather API.
+- `module.js`: Contains utility functions related to weather data conversion and calculations.
+- `app.js`: Contains the main application logic, including event handling and rendering.
+- `route.js`: Defines the application routes and handles URL hash changes.
 
----
+## HTML
 
-### 📞 Support
-For technical support or inquiries:
+### index.html
 
-**Discord:** busarmydude  
-**Business Email:** busarmydude@gmail.com
+The main HTML file contains the structure of the Weather Website. It consists of different sections, including a search bar, current weather display, forecast section, and additional weather details. The page is designed to be responsive and adapts to different screen sizes.
 
----
+## CSS
 
-### 📜 License
-- Proprietary - see the LICENSE.md file for details
+### style.css
+
+The `style.css` file contains all the CSS styles used to create a visually appealing and user-friendly interface. It defines global variables, reset styles, and custom styles for various components like buttons, cards, headers, and footers. The CSS is organized using class selectors for specific components and follows a mobile-first approach with media queries for responsive design.
+
+## JavaScript
+
+### api.js
+
+The `api.js` file contains functions to interact with the OpenWeather API. It includes functions to fetch weather data based on city names and coordinates using asynchronous JavaScript (async/await) and the Fetch API. The API key required for accessing the OpenWeather API is stored as a constant.
+
+### module.js
+
+The `module.js` file defines utility functions related to weather data conversion and calculations. It includes functions to convert temperature units from Kelvin to Celsius and Fahrenheit, convert wind speed units, and calculate air quality index (AQI) level and its corresponding message.
+
+### app.js
+
+The `app.js` file contains the main application logic. It defines functions to update the weather information on the user interface based on the data fetched from the API. This file handles event listeners for user interactions, such as searching for a city, updating the UI for current weather and forecast, and displaying error messages when necessary.
+
+### route.js
+
+The `route.js` file manages the application's routing system. It defines routes for different sections of the website and handles URL hash changes. The routes are associated with specific functions in `app.js` to render the appropriate content based on the user's actions.
+
+## Functionality
+
+- Users can search for a city to view its weather information.
+- The application fetches real-time weather data from the OpenWeather API.
+- The current weather section displays the temperature, weather icon, and description.
+- The 5-day forecast shows the weather conditions for the next five days.
+- The hourly forecast provides wind speed and temperature details for the current day.
+- Sunrise and sunset times are displayed for the selected city.
+- Additional weather details, including air quality, humidity, visibility, feels like temperature, and atmospheric pressure, are shown.
+- The application is responsive and adapts to different screen sizes.
+
+## Screenshots
+
+### iPhone SE
+![iPhone SE](/screenshots/iPhoneSE.png)
+
+### iPad Mini
+![iPad Mini](/screenshots/iPadMini.png)
+
+### iPad Pro
+![iPad Pro](/screenshots/iPadPro.png)
+
+### 1024x768 Resolution
+![1024x768](/screenshots/1024x768.png)
+
+### 1280x1024 Resolution
+![1280x1024](/screenshots/1280x1024.png)
+
+### 1600x1200 Resolution
+![1600x1200](/screenshots/1600x1200.png)
+
+## Contributing
+
+We welcome contributions to enhance the project! If you find any issues or have ideas for improvements, please don't hesitate to report them through GitHub issues. You can also suggest enhancements or submit pull requests to help make this project even better.
+
+## License
+
+This project is distributed under the GNU General Public License (GPL). You can find the full text of the license in the [LICENSE](https://github.com/omar-mazen/weatherio/blob/main/LICENSE) file.

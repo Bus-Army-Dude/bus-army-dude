@@ -1,741 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="8Z9aIwfUPs4hH7zGtkp0-jnHUEAQngGhOLfWm1mMEzc" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Bus Army Dude's Profile</title>
-    
-    <!-- Link to external CSS files -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ai-features.css">
-    <link rel="stylesheet" href="settings.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-eCaCGRE6XYWjCDhLMQLCJamT9mr3CWUyWXmeEvCnFA=="
-          crossorigin=""/>
-    
-    <!-- Font Awesome CDN -->
-    <script src="https://kit.fontawesome.com/ffa5e5607e.js" crossorigin="anonymous"></script>
-    
-    <!-- Meta tag to refresh the page every 300 seconds -->
-    <meta http-equiv="refresh" content="300">
-</head>
-
-    
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GQRS2F1JVF"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
-      gtag('config', 'G-E0RSQS1MS7');
+      gtag('config', 'G-GQRS2F1JVF');
     </script>
+        
+    <title>weatherio</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="weatherio">
+    <meta name="description" content="Explore accurate and real-time weather information for cities around the world with Weatherio. Get current weather conditions, 5-day forecasts, wind speed, sunrise and sunset times, air quality, humidity, and more.  Stay informed about weather changes effortlessly. Visit Weatherio now!">
     
-   <!-- Favicons and Icons -->
-<link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="assest/css/style.css">
 
-<!-- Web App Manifest -->
-<link rel="manifest" href="/manifest.json" />
-
-<!-- Microsoft-specific configuration -->
-<meta name="msapplication-TileColor" content="#ffffff" />
-<meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-<meta name="theme-color" content="#ffffff"/>
-
-<!-- Apple Touch Icons -->
-<!-- Light mode icon -->
-<link rel="apple-touch-icon" media="(prefers-color-scheme: light)" href="/assets/light-icon/180.png">
-
-<!-- Dark mode icon -->
-<link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="/assets/dark-icon/180.png">
-
-<!-- Default (fallback) icon -->
-<link rel="apple-touch-icon" href="/assets/light-icon/180.png">
-
-<!-- Additional sizes for better compatibility -->
-<link rel="apple-touch-icon" sizes="120x120" href="/assets/light-icon/120.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/assets/light-icon/152.png">
-<link rel="apple-touch-icon" sizes="512x512" href="/assets/light-icon/512.png">
-
-<!-- Microsoft-specific configuration -->
-<meta name="browserconfig" content="/browserconfig.xml">
+    <script type="module" src="./assest/js/app.js"></script>
+    <script type="module" src="./assest/js/route.js"></script>
 </head>
-<body class="dark-mode">
-    <div class="container">
-
-
-   <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/67c601544306a6190e7290e0/1ilenad13';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
-    
-<!-- Maintenance Mode Message -->
-<div id="maintenanceModeMessage" style="display: none; background-color: var(--bg-color); color: var(--text-color); text-align: center; padding: 30px; border: 2px solid var(--accent-color); border-radius: 16px; box-shadow: 0 8px 20px var(--shadow-color); margin: 20px;">
-    <h2 style="color: var(--accent-color); font-family: 'Inter', sans-serif; font-size: 2em; margin-bottom: 20px;">We're Performing Some Upgrades!</h2>
-    <p style="font-family: 'Roboto', sans-serif; font-size: 1.2em; line-height: 1.6; margin-bottom: 20px;">
-        Our website is currently undergoing scheduled maintenance to improve your experience. We’re making some big updates, so things will be smoother, faster, and even better when we're done.
-    </p>
-    <p style="font-family: 'Roboto', sans-serif; font-size: 1.2em; line-height: 1.6; margin-bottom: 20px;">
-        During this time, certain features may be temporarily unavailable, and you might not be able to access all parts of the site. But don’t worry, we’re working hard to get everything back up and running as quickly as possible.
-    </p>
-    <p style="font-family: 'Roboto', sans-serif; font-size: 1.2em; line-height: 1.6; margin-bottom: 20px;">
-        Please check back soon, or follow our social media pages for updates on when we’ll be live again. We appreciate your patience and can’t wait to show you what’s new!
-    </p>
-    <p style="font-family: 'Roboto', sans-serif; font-size: 1.3em; font-weight: bold;">
-        Thank you for your understanding!
-    </p>
-</div>
-        
- <!-- Profile Section -->
-<div class="profile-section">
-    <!-- Merch Button -->
-    <button class="merch-button" aria-label="Merch" onclick="window.location.href='https://bus-army-dude.github.io/bus-army-dude/merchandise.html'"></button>
-
-    <!-- Settings Button -->
-    <button class="settings-button" aria-label="Settings" onclick="window.location.href='settings.html'"></button>
-    
-    <div class="profile-pic-wrapper">
-        <!-- Profile Picture -->
-        <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
-        
-        <!-- Profile Status Circle (half in, half out) -->
-        <div class="profile-status-container">
-            <span class="profile-status">🟢</span>
-        </div>
-    </div>
-
-    <div class="username-checkmark">
-        <h1>Bus Army Dude</h1>
-        <img src="check.png" alt="Verified" class="verified">
-    </div>
-    <p>CURRENT PRESIDENT: Trump (2025-2029)</p>
-    <p>POLITICAL PARTY: Republican</p>
-</div>
-        
-     <!-- Social Links Section -->
-    <div class="social-links-section">
-        <h2>Connect with Me</h2>
-        <div class="social-links-container">
-            <a href="https://www.tiktok.com/@officalbusarmydude" class="social-button">
-                <i class="fab fa-tiktok social-icon"></i>
-                <span>TikTok</span>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="" class="logo">
+                <img src="assest/images/logo.png" alt="logo">
             </a>
-            <a href="https://www.youtube.com/@BusArmyDude" class="social-button">
-                <i class="fab fa-youtube social-icon"></i>
-                <span>YouTube</span>
-            </a>
-            <a href="https://www.snapchat.com/add/calebkritzar" class="social-button">
-                <i class="fab fa-snapchat-ghost social-icon"></i>
-                <span>Snapchat</span>
-            </a>
-            <a href="https://x.com/KritzarRiver" class="social-button">
-                <i class="fab fa-twitter social-icon"></i>
-                <span>X (Twitter)</span>
-            </a>
-            <a href="https://m.twitch.tv/BusArmyDude" class="social-button">
-                <i class="fab fa-twitch social-icon social-icon"></i>
-                <span>Twitch</span>
-            </a>
-            <a href="https://www.facebook.com/profile.php?id=61569972389004" class="social-button">
-                <i class="fab fa-facebook social-icon"></i>
-                <span>Facebook</span>
-            </a>
-            <a href="https://steamcommunity.com/profiles/76561199283946668" class="social-button">
-                <i class="fab fa-steam social-icon"></i>
-                <span>Steam</span>
-            </a>
-            <a href="https://discord.gg/NjMtuZYc52" class="social-button">
-                <i class="fab fa-discord social-icon"></i>
-                <span>Discord</span>
-            </a>
-            <a href="https://www.instagram.com/busarmydude/" class="social-button">
-                <i class="fab fa-instagram social-icon"></i>
-                <span>Instagram</span>
-            </a>
-            <a href="https://music.youtube.com/@BusArmyDude" class="social-button">
-                <i class="fab fa-youtube-square social-icon"></i>
-                <span>YouTube Music</span>
-            </a>
-        </div>
-    </div>
-        
-        <!-- Current President -->        
-        <section id="current-president" class="president-section">
-            <h2 class="section-title">Current U.S. President</h2>
-            <div class="president-info">
-                <img src="donaldtrump.jpg" alt="President Donald J. Trump" class="president-photo">
-                <div class="president-details">
-                    <h3 class="president-name">Donald J. Trump</h3>
-                    <p><strong>Born:</strong> June 14, 1946</p>
-                    <p><strong>Height:</strong> 6'3" (190.5 cm)</p>
-                    <p><strong>Party:</strong> Republican Party</p>
-                    <p class="presidential-term"><strong>Presidential Term:</strong> 1/20/25 at 12:00 PM - 1/20/29 at 12:00 PM</p>
-                    <p><strong>Vice President:</strong> James David Vance</p>
+            <div class="search-view" data-search-view>
+                <div class="search-wrapper">
+                    <input type="search" name="search" class="search-field" placeholder="search city ..." autocomplete="off" data-search-field>
+                    <span class="m-icon leading-icon">search</span>
+                    <button class="icon-btn leading-icon has-state" aria-label="close search" data-search-toggler>
+                        <span class="m-icon">arrow_back</span>
+                    </button>
+                </div>
+                <div class="search-result" data-search-result>
                 </div>
             </div>
-        </section>
-        
-             <!-- TikTok Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="tiktok-shoutouts">
-                <h2 id="tiktok-header">TikTok Creator Shoutouts</h2>
-                <p id="tiktok-last-updated-timestamp"></p>
-            </div>
-            <div class="creator-grid">
-                <!-- Cards will be dynamically generated here -->
-            </div>
-            <div class="unavailable-message" style="display: none;"></div>
-        </div>
-        
-        <!-- Instagram Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="instagram-shoutouts">
-                <h2 id="instagram-header">Instagram Creator Shoutouts</h2>
-                <p id="lastUpdatedInstagram"></p>
-            </div>
-            <div class="instagram-creator-grid">
-                <!-- Instagram creator cards will be dynamically generated here -->
+            <div class="header-actions">
+                <button class="icon-btn has-state" aria-label="open search" data-search-toggler>
+                    <span class="m-icon">search</span>
+                </button>
+                <a href="#/current-location" class="btn-primary has-state" data-current-location-btn>
+                    <span class="m-icon">my_location</span>
+                    <span class="span">Current Location</span>
+                </a>
             </div>
         </div>
-        
-        <!-- YouTube Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="youtube-shoutouts">
-                <h2 id="youtube-header">YouTube Creator Shoutouts</h2>
-                <p id="lastUpdatedYouTube"></p>
+    </header>
+    <main>
+        <article class="container" data-container>
+            <div class="content-left">
+                <!-- current weater -->
+                <section class="section current-weather" aria-label="current weather" data-current-weather></section>
+                <!-- forecast -->
+                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
             </div>
-            <div class="youtube-creator-grid">
-                <!-- YouTube creator cards will be dynamically generated here -->
+            <div class="content-right">
+                <!-- highlight -->
+                <section class="section highlights" aria-labelledby="highlights-lable" data-highlights></section>
+                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
             </div>
-        </div>
-        
-        <!-- Useful Links Section -->
-    <div class="useful-links-section section">
-        <h2 class="section-title">Useful Links</h2>
-        <div class="links-container">
-            <a href="https://riverkritzar-shop.fourthwall.com/" target="_blank" class="link-button">Merch Store (Fourthwall)</a>
-            <a href="https://discord.gg/NjMtuZYc52" target="_blank" class="link-button">Join the Bus Army Dude's Community Discord Server!</a>
-            <a href="https://bus-army-dude.instatus.com/" target="_blank" class="link-button">Bus Army Dude's Website Status Page</a>
-            <a href="https://busarmydude.tawk.help/" target="_blank" class="link-button">Bus Army Dude's Knowledge Portal</a>
-            <a href="https://rkritzar52.github.io/riversportfolio/" target="_blank" class="link-button">River's Portfolio</a>
-        </div>
-    </div>
-
-        <!-- Countdown Section -->
-        <div class="countdown-section">
-            <h2>Countdown to WWDC 2025!</h2>
-            <div class="countdown-container">
-                <div class="countdown-block">
-                    <div id="countdown-years" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Years</div>
-                </div>
-                <div class="countdown-block">
-                    <div id="countdown-months" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Months</div>
-                </div>
-                <div class="countdown-block">
-                    <div id="countdown-days" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Days</div>
-                </div>
-                <div class="countdown-block">
-                    <div id="countdown-hours" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-block">
-                    <div id="countdown-minutes" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-block">
-                    <div id="countdown-seconds" class="flip-clock">
-                        <div class="flip-clock-inner">
-                            <div class="flip-clock-front">00</div>
-                            <div class="flip-clock-back">00</div>
-                        </div>
-                    </div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
+            <div class="loading" data-loading>
             </div>
-        </div>
-
-<!-- Calendar Section -->
-<section class="section" data-section-id="events">
-    <div class="section-content">
-        <h2 class="section-title">Upcoming Events</h2>
-        <div class="events-container" id="eventsContainer"></div>
-    </div>
-</section>
-
-<div class="business-info">
-    <h1>Bus Army Dude's Merch Store</h1>
-    <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>    
-    <p><strong>Your current timezone:</strong> <span id="user-timezone"></span></p>
-    <h2>Business Hours</h2>
-    <div id="hours-container"></div>
-
-    <!-- The holiday alert starts hidden -->
-    <div id="holiday-alert" style="display: none;">
-        <p><strong>Holiday:</strong> <span id="holiday-name"></span></p>
-        <p><strong>Special hours today:</strong> <span id="holiday-hours"></span></p>
-    </div>
-
-    <p class="status"><strong>Status:</strong> <span id="open-status"></span></p>
-</div>
-        
-        <div class="faq-section">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faq-container">
-        <!-- Basic Information -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Who is Bus Army Dude?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Key Information:</p>
-                <ul>
-                    <li>Content Creator focusing on:
-                        <ul>
-                            <li>Gaming (primarily simulation games)</li>
-                            <li>Tech reviews and updates</li>
-                            <li>Lifestyle content</li>
-                        </ul>
-                    </li>
-                    <li>Platform Presence:
-                        <ul>
-                            <li>Primary: TikTok</li>
-                            <li>Secondary: Instagram</li>
-                            <li>This website for updates</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Gaming Content -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What games do you play?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Currently Installed and Active:</p>
-                <ul>
-                    <li>Farming Simulator 2025</li>
-                </ul>
-                <p>Also Own (Currently Not Installed):</p>
-                <ul>
-                    <li>American Truck Simulator</li>
-                    <li>Car Mechanic Simulator 2018</li>
-                    <li>Ark: Survival of the Fittest</li>
-                    <li>Cities: Skylines</li>
-                    <li>Planet Coaster</li>
-                    <li>X-Plane 11</li>
-                    <li>X-Plane 12</li>
-                </ul>
-                <p>All games are played through Steam, focusing primarily on simulation games.</p>
-            </div>
-        </div>
-
-        <!-- Tech Setup -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What tech do you use?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>I'm fully integrated into the Apple ecosystem:</p>
-                <ul>
-                    <li>iPhone 16 Pro - For mobile content creation and streaming</li>
-                    <li>2023 Mac Mini - For gaming and content editing</li>
-                    <li>Apple Watch Ultra 2 - For daily wear and notifications</li>
-                </ul>
-                <p>This setup allows me to create high-quality content and maintain seamless connectivity across devices.</p>
-            </div>
-        </div>
-
-        <!-- Streaming Information -->
-        <div class="faq-item">
-            <button class="faq-question">
-                When and where do you stream?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>I stream regularly on TikTok. My next stream is scheduled for:</p>
-                <ul>
-                    <li>No upcoming events scheduled</li>
-                </ul>
-                <p>Check the Events section for all upcoming stream schedules.</p>
-            </div>
-        </div>
-
-        <!-- Platform Backup Plan -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What if TikTok gets banned? Where can I find you?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>In case TikTok becomes unavailable:</p>
-                <ul>
-                    <li>Visit bus-army-dude.github.io (this website)</li>
-                    <li>Follow my Instagram (primary backup platform)</li>
-                    <li>Check other social media platforms (links above)</li>
-                </ul>
-                <p>To stay connected:</p>
-                <ul>
-                    <li>Bookmark this website</li>
-                    <li>Follow all backup platforms now</li>
-                    <li>Enable notifications on all platforms</li>
-                    <li>Check this website regularly for updates</li>
-                </ul>
-                <p>This website will always have the most current information about where to find my content.</p>
-            </div>
-        </div>
-
-        <!-- Gaming Specifics -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Tell me about your Farming Simulator 2025 content
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Farming Simulator 2025 is one of my primary games. During streams I:</p>
-                <ul>
-                    <li>Show different farming techniques</li>
-                    <li>Explore various maps and equipment</li>
-                    <li>Share strategies and tips</li>
-                    <li>Take viewer suggestions</li>
-                    <li>Demonstrate new mods and features</li>
-                </ul>
-                <p>Join my streams to see my current farm progress!</p>
-            </div>
-        </div>
-
-        <!-- Website Technical Details -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Tell me about this website's technical details
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Website Technical Specifications:</p>
-                <ul>
-                    <li>Repository Information:
-                        <ul>
-                            <li>Owner: Bus Army Dude</li>
-                            <li>Description: A link in bio for social media accounts</li>
-                        </ul>
-                    </li>
-                    <li>Technology Stack:
-                        <ul>
-                            <li>JavaScript (35.8%)</li>
-                            <li>CSS (37.9%)</li>
-                            <li>HTML (26.3%)</li>
-                        </ul>
-                    </li>
-                    <li>Last Updated: March 20th, 2025 11:06:48 PM EST</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Content Protection -->
-        <div class="faq-item">
-            <button class="faq-question">
-                How is the website's content protected?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Content Protection Features:</p>
-                <ul>
-                    <li>Text Protection:
-                        <ul>
-                            <li>Copy-paste disabled for all text content</li>
-                            <li>Text selection disabled</li>
-                            <li>Right-click context menu disabled</li>
-                            <li>Keyboard shortcuts for copying blocked (Ctrl+C, ⌘+C)</li>
-                            <li>Drag-and-drop text selection prevented</li>
-                        </ul>
-                    </li>
-                    <li>Image Protection:
-                        <ul>
-                            <li>Right-click saving disabled</li>
-                            <li>Image dragging prevented</li>
-                            <li>Mobile long-press save disabled</li>
-                            <li>Image download blocking</li>
-                        </ul>
-                    </li>
-                    <li>Print Prevention:
-                        <ul>
-                            <li>Print shows a blank screen</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Additional Security Features -->
-        <div class="faq-item">
-            <button class="faq-question">
-                What other security features are implemented?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Additional Security Measures:</p>
-                <ul>
-                    <li>Cross-Platform Protection:
-                        <ul>
-                            <li>Mobile browser save restrictions</li>
-                            <li>Tablet content protection</li>
-                            <li>Desktop browser security</li>
-                            <li>All major browsers supported</li>
-                        </ul>
-                    </li>
-                    <li>Additional Security:
-                        <ul>
-                            <li>View-source restrictions</li>
-                            <li>Developer tools detection</li>
-                            <li>Iframe embedding prevention</li>
-                            <li>Content scraping protection</li>
-                        </ul>
-                    </li>
-                    <li>Repository Security:
-                        <ul>
-                            <li>Version control through Git</li>
-                            <li>Protected branches</li>
-                            <li>Deployment protection rules</li>
-                            <li>Regular security updates</li>
-                        </ul>
-                    </li>
-                </ul>
-                <p>Last Security Update: January 28th, 2025 4:11:11 PM EST</p>
-            </div>
-        </div>
-
-        <!-- Website Updates -->
-        <div class="faq-item">
-            <button class="faq-question">
-                How often is the website updated?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Update Schedule:</p>
-                <ul>
-                    <li>Regular Updates:
-                        <ul>
-                            <li>Content updates (daily)</li>
-                            <li>Schedule updates (weekly)</li>
-                            <li>Feature updates (as needed)</li>
-                            <li>Security patches (immediate)</li>
-                        </ul>
-                    </li>
-                    <li>Version Control:
-                        <ul>
-                            <li>All changes tracked via Git</li>
-                            <li>Public commit history available</li>
-                            <li>Automated deployment process</li>
-                        </ul>
-                    </li>
-                </ul>
-                <p>Last Updated: January 28th, 2025 4:11:11 PM EST</p>
-            </div>
-        </div>
-
-        <!-- Final Notes -->
-        <div class="faq-item">
-            <button class="faq-question">
-                Any final notes for the community?
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>Important Reminders:</p>
-                <ul>
-                    <li>Follow all backup platforms</li>
-                    <li>Bookmark this website</li>
-                    <li>Enable notifications</li>
-                    <li>Join our supportive community</li>
-                </ul>
-                <p>Thank you for being part of this journey!</p>
-            </div>
-        </div>
-    </div>
-</div>
-        
-        <!-- Tech Section -->
-<div class="tech-section section">
-    <h2><i class="fas fa-microchip"></i> Tech Information</h2>
-    
-    <!-- iPhone Section -->
-    <div class="tech-item">
-        <h3><i class="fas fa-mobile-alt"></i> iPhone 16 Pro</h3>
-        <div class="tech-detail"><i class="fas fa-info-circle"></i><span>Model:</span> iPhone 16 Pro</div>
-        <div class="tech-detail"><i class="fas fa-layer-group"></i><span>Material:</span> Titanium</div>
-        <div class="tech-detail"><i class="fas fa-hdd"></i><span>Storage:</span> 128GB</div>
-        <div class="tech-detail"><i class="fas fa-battery-full"></i><span>Battery Capacity:</span> 3,582mAh</div>
-        <div class="tech-detail"><i class="fas fa-palette"></i><span>Color:</span> Natural Titanium</div>
-        <div class="tech-detail"><i class="fas fa-tag"></i><span>Price:</span> $1,067.49</div>
-        <div class="tech-detail"><i class="fas fa-calendar-plus"></i><span>Date Released:</span> September 20, 2024</div>
-        <div class="tech-detail"><i class="fas fa-shopping-cart"></i><span>Date Bought:</span> November 08, 2024</div>
-        <div class="tech-detail"><i class="fab fa-apple"></i><span>OS Version:</span> iOS 18.4 (22E239)</div>
-        <div class="tech-detail"><i class="fas fa-heart"></i><span>Battery Health:</span></div>
-        <div class="battery-container">
-            <div class="battery-icon">
-                <div class="battery-level" style="width: 99%;"></div>
-                <div class="battery-percentage">99%</div>
-            </div>
-        </div>
-        <div class="tech-detail"><i class="fas fa-sync"></i><span>Battery Charge Cycles:</span> 209</div>
-    </div>
-    
-    <!-- Apple Watch Ultra 2 Section -->
-    <div class="tech-item">
-        <h3><i class="fas fa-stopwatch"></i> Apple Watch Ultra 2</h3>
-        <div class="tech-detail"><i class="fas fa-info-circle"></i><span>Model:</span> Apple Watch Ultra 2</div>
-        <div class="tech-detail"><i class="fas fa-layer-group"></i><span>Material:</span> Titanium</div>
-        <div class="tech-detail"><i class="fas fa-hdd"></i><span>Storage:</span> 64GB</div>
-        <div class="tech-detail"><i class="fas fa-battery-full"></i><span>Battery Capacity:</span> 564mAh</div>
-        <div class="tech-detail"><i class="fas fa-palette"></i><span>Color:</span> Natural Titanium</div>
-        <div class="tech-detail"><i class="fas fa-tag"></i><span>Price:</span> $853.98</div>
-        <div class="tech-detail"><i class="fas fa-calendar-plus"></i><span>Date Released:</span> September 22, 2023</div>
-        <div class="tech-detail"><i class="fas fa-shopping-cart"></i><span>Date Bought:</span> May 17, 2024</div>
-        <div class="tech-detail"><i class="fab fa-apple"></i><span>OS Version:</span> WatchOS 11.4 (22T5244a)</div>
-        <div class="tech-detail"><i class="fas fa-heart"></i><span>Battery Health:</span></div>
-        <div class="battery-container">
-            <div class="battery-icon">
-                <div class="battery-level" style="width: 97%;"></div>
-                <div class="battery-percentage">97%</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mac Mini Section -->
-    <div class="tech-item">
-        <h3><i class="fas fa-desktop"></i> 2023 Mac Mini M2</h3>
-        <div class="tech-detail"><i class="fas fa-info-circle"></i><span>Model:</span> 2023 Mac Mini M2</div>
-        <div class="tech-detail"><i class="fas fa-layer-group"></i><span>Material:</span> Aluminum</div>
-        <div class="tech-detail"><i class="fas fa-hdd"></i><span>Storage:</span> 256GB SSD</div>
-        <div class="tech-detail"><i class="fas fa-palette"></i><span>Color:</span> Grey</div>
-        <div class="tech-detail"><i class="fas fa-tag"></i><span>Price:</span> $742.29</div>
-        <div class="tech-detail"><i class="fas fa-calendar-plus"></i><span>Date Released:</span> January 17, 2023</div>
-        <div class="tech-detail"><i class="fas fa-shopping-cart"></i><span>Date Bought:</span> May 16, 2024</div>
-        <div class="tech-detail"><i class="fab fa-apple"></i><span>OS Version:</span> macOS Sequoia 15.4 (24E246)</div>
-    </div>
-</div>
-
-
-      <!-- Disabilities Section -->
-        <div class="disabilities-section section">
-            <h2>Disabilities</h2>
-            <p>I have the following disabilities:</p>
-            <ul>
-                <li><a href="https://www.nimh.nih.gov/health/topics/autism-spectrum-disorders-asd" target="_blank">Autism Spectrum Disorder (ASD)</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/attention-deficit-hyperactivity-disorder-adhd" target="_blank">Attention Deficit Hyperactivity Disorder (ADHD)</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/anxiety-disorders" target="_blank">Anxiety Disorder</a></li>
-                <li><a href="https://www.ninds.nih.gov/health-information/disorders/hydrocephalus" target="_blank">Hydrocephalus</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/obsessive-compulsive-disorder-ocd" target="_blank">Obsessive-Compulsive Disorder (OCD)</a></li>
-                <li><a href="https://www.nimh.nih.gov/health/topics/post-traumatic-stress-disorder-ptsd" target="_blank">Post-Traumatic Stress Disorder (PTSD)</a></li>
-                <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3070692/" target="_blank">Idiopathic Toe Walking</a></li>
-            </ul>
-        </div>
-    </div>
-    
-    <!-- Version Panel Section -->
-<div class="version-info-container">
-    <div class="version-info-section">
-        <div class="version-header">Version Information</div>
-        <div class="version-number">v1.14.0</div>
-        <div class="build-number">2025.3.17</div>
-        <div class="update-time">2025-01-27 21:29:16</div>
-        <div class="os-info" id="os-info">Detecting...</div>
-        <div class="device-info" id="device-info">Detecting...</div>
-        <div class="countdown">5 minutes</div>
-    </div>
-</div>
-
-    
-   <!-- The back to top button should be placed just before the notice-container div -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
-    
- <div class="legal-section">
-    <div class="legal-header">Legal Information</div>
-    
-    <div class="copy-protection-message">
-        This content is protected by copyright law. Unauthorized reproduction or distribution is prohibited.
-    </div>
-    
-    <div class="legal-protection-message">
-        All rights reserved. Any attempt to copy or redistribute this content will result in legal action.
-    </div>
-    
-    <div class="watermark-message">
-        This website is protected by digital watermarking and tracking technology.
-    </div>
-    
-    <div class="last-updated">
-        Last updated: 2025-03-18 19:03:38 UTC by BusArmyDude
-    </div>
-</div>
-
-<!-- Footer -->
-<footer>
-    <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
-</footer>
-
-    <!-- Scripts -->
-    <script src="common.js"></script>
-    <script src="globalSettings.js"></script>
-    <script src="script.js"></script>
-    <script src="ai-features.js"></script>
-    <script src="settings.js"></script>
-    <script src="events.js"></script>
-    <script src="version.js"></script>
-    <script src="device.js"></script>
-    <script src="creatorshoutouts.js"></script>
-    <script src="business-hours.js"></script>
-    <script src="main.js"></script>
-    <script src="admin.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCkoGXLKEW/Hg/rrU7mccJKgzNVqbqR8lS8JavRpg=="
-            crossorigin=""></script>
+        </article>
+    </main>
+    <!-- 404 Section -->
+    <section class="error-content" data-error-content>
+        <h2 class="heading">404</h2>
+        <p class="body-1">Page not found!</p>
+        <a href="" class="btn-primary">
+            <span class="span">Go Home</span>
+        </a>
+    </section>
 </body>
-</html>                
+</html>
