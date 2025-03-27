@@ -2444,6 +2444,7 @@ body.focus-outline-disabled :focus {
     }
 }
 
+/* Provided CSS from the user */
 .glass-panel {
     background: rgba(9, 9, 12, 0.8);
     border-radius: 16px;
@@ -2845,15 +2846,17 @@ body.focus-outline-disabled :focus {
     justify-content: center;
     align-items: center;
     color: #777;
+    position: relative; /* For absolute positioning of controls */
 }
 
 .weather-map .map-controls {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    top: 10px; /* Changed from bottom to top */
+    left: 10px; /* Changed from right to left */
     display: flex;
     flex-direction: column;
     gap: 5px;
+    z-index: 1000; /* Ensure controls are above the map */
 }
 
 .weather-map .map-controls button {
@@ -2966,6 +2969,11 @@ body.focus-outline-disabled :focus {
 
 .unit-options .unit.active {
     background-color: #5cb85c;
+    color: #fff;
+}
+
+.unit-options .unit:hover {
+    background-color: #333;
     color: #fff;
 }
 
