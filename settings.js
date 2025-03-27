@@ -119,6 +119,7 @@ class SettingsManager {
         this.settings.profileStatus = status;
         this.saveSettings();
         this.applyProfileStatus(status); // Apply status change to the profile
+        this.refreshUI();
     }
 
     applyProfileStatus(status) {
@@ -144,6 +145,7 @@ class SettingsManager {
         document.body.classList.toggle('light-mode', !isDark);
         this.settings.darkMode = isDark;
         this.saveSettings();
+        this.refreshUI();
     }
 
     // Set text size
@@ -151,6 +153,7 @@ class SettingsManager {
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
         this.settings.textSize = size;
         this.saveSettings();
+        this.refreshUI();
     }
 
     // Focus outline enabling and disabling
@@ -162,6 +165,7 @@ class SettingsManager {
         }
         this.settings.focusOutline = enable ? 'enabled' : 'disabled';
         this.saveSettings();
+        this.refreshUI();
     }
 
     // Save settings to localStorage
@@ -215,6 +219,7 @@ class SettingsManager {
         this.settings.maintenanceMode = isEnabled;
         this.saveSettings();
         this.applyMaintenanceMode(isEnabled);
+        this.refreshUI();
     }
 
     applyMaintenanceMode(isEnabled) {
