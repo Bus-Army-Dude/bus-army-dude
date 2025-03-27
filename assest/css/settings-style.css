@@ -115,5 +115,5 @@ input:checked + .toggle-slider:before {
 
 .settings-close {
   background-color: var(--outline);
-  color: var (--on-surface);
+  color: var(--on-surface);
 }
