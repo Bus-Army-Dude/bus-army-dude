@@ -465,8 +465,6 @@ body {
 /* main */
 
 main {
-  /* height: calc(100vh - 80px);
-  height: calc(100svh - 80px); */ /* Removed fixed height */
   padding-bottom: 40px; /* Added some padding at the bottom */
 }
 article.container {
@@ -500,19 +498,19 @@ article.container::before {
   margin-block-end: 16px;
 }
 /* current-weather-card */
-.current-weather-card .weapper {
+.current-weather .weapper {
   margin-block: 12px;
   display: flex;
   gap: 8px;
   align-items: center;
 }
-.current-weather-card .weather-icon {
+.current-weather .weather-icon {
   margin-inline: auto;
 }
-.current-weather-card > .body-3 {
+.current-weather > .body-3 {
   text-transform: capitalize;
 }
-.current-weather-card .meta-list {
+.current-weather .meta-list {
   -webkit-margin-before: 16px;
   margin-block-start: 16px;
   -webkit-padding-before: 16px;
@@ -520,41 +518,41 @@ article.container::before {
   -webkit-border-before: 1px solid var(--outline);
   border-block-start: 1px solid var(--outline);
 }
-.current-weather-card .meta-item {
+.current-weather .meta-item {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.current-weather-card .meta-item:not(:last-child) {
+.current-weather .meta-item:not(:last-child) {
   -webkit-margin-after: 12px;
   margin-block-end: 12px;
 }
-.current-weather-card .meta-text {
+.current-weather .meta-text {
   color: var(--on-surface-variant);
 }
 
 /* highlights */
 
-.forecast-card .title-2 {
+.forecast .title-2 {
   -webkit-margin-after: 0;
   margin-block-end: 0;
 }
-.forecast-card :is(.card-item, .icon-wrapper) {
+.forecast :is(.card-item, .icon-wrapper) {
   display: flex;
   align-items: center;
 }
-.forecast-card .card-item:not(:last-child) {
+.forecast .card-item:not(:last-child) {
   -webkit-margin-after: 12px;
   margin-block-end: 12px;
 }
-.forecast-card .icon-wrapper {
+.forecast .icon-wrapper {
   gap: 8px;
 }
-.forecast-card .label-1 {
+.forecast .label-1 {
   color: var(--on-surface-variant);
   font-weight: var(--weight-semiBold);
 }
-.forecast-card .card-item > .label-1 {
+.forecast .card-item > .label-1 {
   width: 100%;
   text-align: right;
 }
@@ -795,61 +793,48 @@ footer .body-3:last-child {
   /* main */
 
   main {
-    /* height: calc(100vh - 96px);
-    height: calc(100svh - 96px); */ /* Removed fixed height here as well */
+    padding-bottom: 40px;
   }
   article.container {
-    -webkit-padding-before: 0;
-    padding-block-start: 0;
-    grid-template-columns: 280px minmax(0, 1fr);
-    align-items: flex-start;
-    gap: 24px;
+    display: grid; /* Ensure grid is enabled */
+    grid-template-columns: 280px minmax(0, 1fr); /* Left column width and right column takes remaining space */
+    align-items: flex-start; /* Align items to the top */
+    gap: 24px; /* Gap between columns */
+    padding: 24px; /* Add some padding around the container */
   }
   .content-left {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
+    /* You might not need specific styling here unless you want to add padding or a background */
   }
-  .section:not(:last-child) {
-    margin-block: 20px;
+  .content-right {
+    display: grid; /* Use grid for the right column to stack highlights and hourly forecast */
+    grid-template-columns: 1fr; /* Single column layout for right side items */
+    gap: 24px; /* Gap between items in the right column */
   }
-  .forecast-card .card-item:not(:last-child) {
-    -webkit-margin-after: 16px;
-    margin-block-end: 16px;
+  .current-weather {
+    @apply card-lg; /* Apply card-lg styles */
+  }
+  .forecast {
+    @apply card-lg; /* Apply card-lg styles */
+  }
+  .forecast .card-list {
+    display: grid; /* Use grid for the 5-day forecast items */
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust minmax as needed */
+    gap: 8px; /* Gap between forecast items */
+  }
+  .highlights {
+    @apply card-lg; /* Apply card-lg styles */
   }
   .highlight-list {
-    grid-template-columns: 1fr 1fr;
+    display: grid; /* Use grid for the highlights */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust minmax as needed */
+    gap: 16px; /* Gap between highlights */
   }
-  .highlight-card:nth-child(-n + 2) {
-    grid-column: span 2;
-    height: 160px;
+  .hourly-forecast {
+    @apply card-lg; /* Apply card-lg styles */
   }
-  .highlight-card:nth-child(n + 3) {
-    height: 120px;
-  }
-  .highlights .m-icon {
-    font-size: 3.6rem;
-  }
-  .highlight-card.one .card-item {
-    width: 25%;
-    flex-direction: column-reverse;
-    gap: 8px;
-  }
-  .slider-container {
-    margin-inline: 0 -24px;
-    border-bottom-left-radius: var(--radius-16);
-    border-top-left-radius: var(--radius-16);
-  }
-  .slider-container::before {
-    display: none;
-  }
-  .slider-container::after {
-    min-width: 12px;
-  }
-  .hourly-forecast .card-sm {
-    padding: 16px;
-  }
+  /* ... other styles ... */
 }
+
 @media (min-width: 1200px) {
   :root {
     --headign: 8rem;
@@ -962,32 +947,22 @@ footer .body-3:last-child {
   /* main */
 
   main {
-    /* height: calc(100vh - 120px);
-    height: calc(100svh - 120px); */ /* Removed fixed height here as well */
+    padding-bottom: 40px;
   }
   article.container {
-    -webkit-padding-before: 0;
-    padding-block-start: 0;
-    grid-template-columns: 360px minmax(0, 1fr);
+    grid-template-columns: 360px minmax(0, 1fr); /* Wider left column on larger screens */
     gap: 40px;
+    padding: 40px;
   }
-  .current-weather .weather-icon {
-    width: 80px;
+  .content-right {
+    gap: 40px; /* Larger gap on larger screens */
   }
-  .forecast-card .title-2 {
-    --title-2: 2.2rem;
+  .forecast .card-list {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust minmax as needed */
+    gap: 12px;
   }
-  .highlight-card:nth-child(-n + 2) {
-    height: 200px;
-  }
-  .highlight-card:nth-child(n + 3) {
-    height: 150px;
-  }
-  .highlight-card .m-icon {
-    font-size: 4rem;
-  }
-  .slider-list {
-    gap: 16px;
+  .highlight-list {
+    grid-template-columns: repeat(4, 1fr); /* Four highlights in a row on very large screens */
   }
 }
 @media (min-width: 1400px) {
