@@ -45,10 +45,8 @@ function fetchWeatherData(query, unit) {
     let url;
     
     if (isZipCode(query)) {
-        // If it's a ZIP code, use the zip code format
         url = `${apiUrl}?zip=${query}&units=${unit}&appid=${apiKey}`;
     } else {
-        // Otherwise, assume it's a city name
         url = `${apiUrl}?q=${query}&units=${unit}&appid=${apiKey}`;
     }
 
@@ -78,7 +76,23 @@ function fetchWeatherData(query, unit) {
                 pressure.textContent = `Pressure: ${unit === 'metric' ? main.pressure + ' hPa' : (main.pressure * 0.02953).toFixed(2) + ' inHg'}`;
                 sunrise.textContent = `Sunrise: ${new Date(sys.sunrise * 1000).toLocaleTimeString()}`;
                 sunset.textContent = `Sunset: ${new Date(sys.sunset * 1000).toLocaleTimeString()}`;
-                aqi.textContent = `Air Quality Index: ${data.main.pressure}`;
+
+                // Fetch AQI data
+                fetch(`${aqiUrl}?lat=${coord.lat}&lon=${coord.lon}&appid=${apiKey}`)
+                    .then(response => response.json())
+                    .then(aqiData => {
+                        if (aqiData.list && aqiData.list.length > 0) {
+                            const aqiValue = aqiData.list[0].main.aqi;
+                            aqi.textContent = `Air Quality Index: ${aqiValue}`;
+                        } else {
+                            aqi.textContent = "Air Quality Index: Not Available";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching AQI data:", error);
+                        aqi.textContent = "Air Quality Index: Not Available";
+                    });
+
                 visibility.textContent = `Visibility: ${unit === 'metric' ? (Math.round(data.visibility / 1000)) + ' km' : (Math.round(data.visibility / 1609)) + ' miles'}`;
                 clouds.textContent = `Cloud Coverage: ${data.clouds.all}%`;
 
@@ -95,7 +109,6 @@ function fetchWeatherData(query, unit) {
                 fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${coord.lat}&lon=${coord.lon}&units=${unit}&appid=${apiKey}`)
                     .then(response => response.json())
                     .then(uvData => {
-                        // If the UV index data is available
                         if (uvData.current) {
                             uvIndex.textContent = `UV Index: ${uvData.current.uvi}`;
                         }
@@ -116,11 +129,11 @@ function fetchWeatherData(query, unit) {
 
 // Event listener for the search button
 searchButton.addEventListener('click', function() {
-    const query = searchInput.value.trim(); // Get the value from input
+    const query = searchInput.value.trim();
     if (query) {
-        currentCity = query; // Update currentCity with user input
-        localStorage.setItem('city', currentCity); // Save city or ZIP code
-        fetchWeatherData(query, currentUnit); // Fetch weather data
+        currentCity = query;
+        localStorage.setItem('city', currentCity);
+        fetchWeatherData(query, currentUnit);
     } else {
         alert("Please enter a city or ZIP code.");
     }
@@ -131,9 +144,9 @@ searchInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
         const query = searchInput.value.trim();
         if (query) {
-            currentCity = query; // Update currentCity with user input
-            localStorage.setItem('city', currentCity); // Save city or ZIP code
-            fetchWeatherData(query, currentUnit); // Fetch weather data
+            currentCity = query;
+            localStorage.setItem('city', currentCity);
+            fetchWeatherData(query, currentUnit);
         } else {
             alert("Please enter a city or ZIP code.");
         }
@@ -144,7 +157,7 @@ searchInput.addEventListener('keypress', function(event) {
 unitSelect.addEventListener('change', (e) => {
     currentUnit = e.target.value === 'Celsius' ? 'metric' : 'imperial';
     localStorage.setItem('unit', currentUnit);
-    fetchWeatherData(currentCity, currentUnit); // Fetch weather data with updated unit
+    fetchWeatherData(currentCity, currentUnit);
 });
 
 // Fetch saved city and unit data when the page loads
