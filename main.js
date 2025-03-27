@@ -153,4 +153,4 @@ fetchWeatherData(currentCity, currentUnit);
 // Real-time updates (refresh weather every 5 minutes)
 setInterval(() => {
     fetchWeatherData(currentCity, currentUnit);
-}, 1000); // 1 second (1000 ms)
+}, 1000); // 1 Second (1000 ms)
