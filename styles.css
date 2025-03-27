@@ -67,8 +67,8 @@ body.light-mode {
 
 /* Base Styles */
 body {
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
     padding: 20px;
@@ -89,11 +89,9 @@ body {
     margin-top: 20px;
     margin-bottom: 30px;
     padding: 25px;
-    background: linear-gradient(145deg, #ffffff 98%, #f0f0f0);
+    background: var(--content-bg);
     border-radius: 16px;
-    box-shadow: 
-        0 8px 32px -8px rgba(0, 0, 0, 0.2),
-        0 0 0 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px -8px var(--shadow-color), 0 0 0 1px var(--border-color);
     backdrop-filter: blur(10px);
 }
 
@@ -111,9 +109,9 @@ body {
     border-radius: 50%;
     margin: 0 auto;
     display: block;
-    border: 3px solid #007bff;
+    border: 3px solid var(--link-color);
     position: relative;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px var(--shadow-color);
 }
 
 /* Profile Status Container */
@@ -124,19 +122,20 @@ body {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #ffffff 98%, #f0f0f0);
-    border: 3px solid #007bff;
+    background: var(--content-bg);
+    border: 3px solid var(--link-color);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .profile-status {
     font-size: 16px;
 }
 
+/* Username Checkmark */
 .username-checkmark {
     display: flex;
     align-items: center;
@@ -148,7 +147,7 @@ body {
     margin: 0;
     font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: 800;
-    background: linear-gradient(120deg, #333, #007bff);
+    background: linear-gradient(120deg, var(--secondary-text), var(--link-color));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -168,23 +167,18 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: url('settings-icon.png') center/18px no-repeat,
-        linear-gradient(145deg, #007bff, #0056b3);
+    background: url('settings-icon.png') center/18px no-repeat, var(--link-color);
     border: none;
     cursor: pointer;
     padding: 0;
     z-index: 10;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 
-        0 4px 15px rgba(0, 123, 255, 0.3),
-        0 0 0 1px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 .settings-button:hover {
     transform: translateY(-2px) rotate(45deg);
-    box-shadow: 
-        0 8px 20px rgba(0, 123, 255, 0.4),
-        0 0 0 1px #007bff;
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Merch Button */
@@ -195,25 +189,18 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: url('gift-bag-icon.png') center/18px no-repeat,
-        linear-gradient(145deg, #ff9900, #ff8800);
+    background: url('gift-bag-icon.png') center/18px no-repeat, var(--accent-color);
     border: none;
     cursor: pointer;
     padding: 0;
     z-index: 10;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 
-        0 4px 15px rgba(255, 153, 0, 0.3),
-        0 0 0 1px rgba(255, 153, 0, 0.3);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
 .merch-button:hover {
     transform: translateY(-2px) rotate(45deg);
-    box-shadow: 
-        0 8px 20px rgba(255, 153, 0, 0.4),
-        0 0 0 1px #ff9900;
-    background: url('gift-bag-icon.png') center/18px no-repeat,
-        linear-gradient(145deg, #ff8800, #ff9900);
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
 /* Weather Button */
@@ -224,23 +211,18 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: url('weather-icon.png') center/18px no-repeat,
-        linear-gradient(145deg, #42a1ff, #007bff);
+    background: url('weather-icon.png') center/18px no-repeat, var(--link-color);
     border: none;
     cursor: pointer;
     padding: 0;
     z-index: 10;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 
-        0 4px 15px rgba(66, 161, 255, 0.3),
-        0 0 0 1px rgba(66, 161, 255, 0.3);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 .weather-button:hover {
     transform: translateY(-2px) rotate(45deg);
-    box-shadow: 
-        0 8px 20px rgba(66, 161, 255, 0.4),
-        0 0 0 1px #42a1ff;
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Media Queries */
@@ -279,6 +261,7 @@ body {
         font-size: 1.5rem;
     }
 }
+
 
 /* Current Date/Time Section */
 .datetime-section {
