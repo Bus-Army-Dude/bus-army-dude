@@ -1,4 +1,6 @@
+// settings.js
 export const Settings = {
+    // Default settings
     defaults: {
         units: {
             temperature: 'celsius',
@@ -14,6 +16,7 @@ export const Settings = {
         }
     },
 
+    // Unit Converters
     converters: {
         temperature: {
             celsius: {
@@ -71,23 +74,29 @@ export const Settings = {
         }
     },
 
+    // Current settings
     current: null,
 
+    // Initialize settings
     init() {
         const saved = localStorage.getItem('weather-settings');
         this.current = saved ? JSON.parse(saved) : {...this.defaults};
         this.applySettings();
     },
 
+    // Save settings
     save() {
         localStorage.setItem('weather-settings', JSON.stringify(this.current));
         this.applySettings();
     },
 
+    // Apply settings
     applySettings() {
         document.documentElement.setAttribute('data-theme', this.current.display.theme);
+        // Add more visual settings here
     },
 
+    // Convert units
     convert(value, type, from, to) {
         if (from === to) return value;
         
@@ -103,6 +112,7 @@ export const Settings = {
         return converter[from][to](value);
     },
 
+    // Format values
     format(value, type, unit) {
         switch(type) {
             case 'temperature':
