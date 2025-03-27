@@ -230,10 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
     // Manually set maintenance mode
-    settingsManager.setMaintenanceModeManually(true);
+    settingsManager.setMaintenanceModeManually(false);
 
     // Manually set profile status
-    settingsManager.setProfileStatusManually('online');
+    settingsManager.setProfileStatusManually('idle');
 });
 
 // Function to accept cookies and hide the banner
