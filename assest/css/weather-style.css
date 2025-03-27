@@ -465,9 +465,9 @@ body {
 /* main */
 
 main {
-  height: calc(100vh - 80px);
-  height: calc(100svh - 80px);
-  /* overflow: hidden; */
+  /* height: calc(100vh - 80px);
+  height: calc(100svh - 80px); */ /* Removed fixed height */
+  padding-bottom: 40px; /* Added some padding at the bottom */
 }
 article.container {
   position: relative;
@@ -795,8 +795,8 @@ footer .body-3:last-child {
   /* main */
 
   main {
-    height: calc(100vh - 96px);
-    height: calc(100svh - 96px);
+    /* height: calc(100vh - 96px);
+    height: calc(100svh - 96px); */ /* Removed fixed height here as well */
   }
   article.container {
     -webkit-padding-before: 0;
@@ -962,8 +962,8 @@ footer .body-3:last-child {
   /* main */
 
   main {
-    height: calc(100vh - 120px);
-    height: calc(100svh - 120px);
+    /* height: calc(100vh - 120px);
+    height: calc(100svh - 120px); */ /* Removed fixed height here as well */
   }
   article.container {
     -webkit-padding-before: 0;
