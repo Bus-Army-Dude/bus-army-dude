@@ -113,7 +113,7 @@ export const updateWeather = (lat, lon) => {
         card.innerHTML = `
             <h2 class="title-2 card-title">Now</h2>
             <div class="wrapper">
-                <p class="heading" data-temperature>${parseInt(temp)}&deg;<sup>c</sup></p>
+                <p class="heading" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;<sup>c</sup></p>
                 <img src="./assest/images/weather_icons/${icon}.png" width="64" height="64" alt="${description}" class="weather-icon">
             </div>
             <p class="body-3">${description}</p>
@@ -205,7 +205,7 @@ export const updateWeather = (lat, lon) => {
                     <h3 class="title-3">Pressure</h3>
                     <div class="wrapper">
                         <span class="m-icon">airwave</span>
-                        <p class="title-1" data-pressure>${pressure} <sub>hPa</sub></p>
+                        <p class="title-1" data-pressure data-original-value="${pressure}">${Math.round(pressure)} <sub>hPa</sub></p>
                     </div>
                 </div>
                 <div class="card card-sm highlight-card">
@@ -219,7 +219,7 @@ export const updateWeather = (lat, lon) => {
                     <h3 class="title-3">Feels Like</h3>
                     <div class="wrapper">
                         <span class="m-icon">thermostat</span>
-                        <p class="title-1">${parseInt(feels_like)}&deg;<sup>c</sup></p>
+                        <p class="title-1" data-temperature data-original-value="${feels_like}">${Math.round(feels_like)}&deg;<sup>c</sup></p>
                     </div>
                 </div>
             </div>
@@ -257,7 +257,7 @@ export const updateWeather = (lat, lon) => {
                     <div class="card card-sm slider-card">
                         <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
                         <img src="./assest/images/weather_icons/${icon}.png" width="48" height="48" loading="lazy" alt="${description}" class="weather-icon" title="${description}">
-                        <p class="body-3" data-temperature>${temp}&deg;</p>
+                        <p class="body-3" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
                     </div>
                     `;
                 hourlySection.querySelector("[data-temp]").appendChild(tempLi);
@@ -267,7 +267,7 @@ export const updateWeather = (lat, lon) => {
                     <div class="card card-sm slider-card">
                         <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
                         <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform: rotate(${windDirection - 180}deg)">
-                        <p class="body-3" data-wind-speed>${parseInt(module.mps_to_kmh(windSpeed))} Km/h</p>
+                        <p class="body-3" data-wind-speed data-original-value="${module.mps_to_kmh(windSpeed)}">${Math.round(module.mps_to_kmh(windSpeed))} Km/h</p>
                     </div>
                 `;
                 hourlySection.querySelector("[data-wind]").appendChild(windLi);
@@ -295,7 +295,7 @@ export const updateWeather = (lat, lon) => {
                     <div class="icon-wrapper">
                         <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
                         <span class="span">
-                        <p class="title-2" data-temperature>${parseInt(temp_max)}&deg;</p>
+                        <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
                         </span>
                     </div>
                     <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
