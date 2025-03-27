@@ -56,59 +56,59 @@ document.addEventListener("DOMContentLoaded", () => {
     // Apply temperature unit conversion
     const temperatureElements = document.querySelectorAll("[data-temperature]");
     temperatureElements.forEach(element => {
-      let tempValue = parseFloat(element.textContent);
+      let tempValue = parseFloat(element.getAttribute("data-original-value"));
       if (settings.temperature === "fahrenheit") {
         tempValue = (tempValue * 9/5) + 32;
-        element.textContent = `${tempValue.toFixed(2)} °F`;
+        element.textContent = `${Math.round(tempValue)} °F`;
       } else if (settings.temperature === "kelvin") {
         tempValue = tempValue + 273.15;
-        element.textContent = `${tempValue.toFixed(2)} K`;
+        element.textContent = `${Math.round(tempValue)} K`;
       } else {
-        element.textContent = `${tempValue.toFixed(2)} °C`;
+        element.textContent = `${Math.round(tempValue)} °C`;
       }
     });
 
     // Apply wind speed unit conversion
     const windSpeedElements = document.querySelectorAll("[data-wind-speed]");
     windSpeedElements.forEach(element => {
-      let speedValue = parseFloat(element.textContent);
+      let speedValue = parseFloat(element.getAttribute("data-original-value"));
       if (settings.windSpeed === "mph") {
         speedValue = speedValue * 2.23694;
-        element.textContent = `${speedValue.toFixed(2)} mph`;
+        element.textContent = `${Math.round(speedValue)} mph`;
       } else if (settings.windSpeed === "kph") {
         speedValue = speedValue * 3.6;
-        element.textContent = `${speedValue.toFixed(2)} km/h`;
+        element.textContent = `${Math.round(speedValue)} km/h`;
       } else if (settings.windSpeed === "knots") {
         speedValue = speedValue * 1.94384;
-        element.textContent = `${speedValue.toFixed(2)} knots`;
+        element.textContent = `${Math.round(speedValue)} knots`;
       } else if (settings.windSpeed === "beaufort") {
         // Convert to Beaufort scale (simplified example)
         speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2 / 3)), 0), 12);
         element.textContent = `${speedValue} Bft`;
       } else {
-        element.textContent = `${speedValue.toFixed(2)} m/s`;
+        element.textContent = `${Math.round(speedValue)} m/s`;
       }
     });
 
     // Apply pressure unit conversion
     const pressureElements = document.querySelectorAll("[data-pressure]");
     pressureElements.forEach(element => {
-      let pressureValue = parseFloat(element.textContent);
+      let pressureValue = parseFloat(element.getAttribute("data-original-value"));
       if (settings.pressure === "inhg") {
         pressureValue = pressureValue * 0.02953;
-        element.textContent = `${pressureValue.toFixed(2)} inHg`;
+        element.textContent = `${Math.round(pressureValue)} inHg`;
       } else if (settings.pressure === "mmhg") {
         pressureValue = pressureValue * 0.75006;
-        element.textContent = `${pressureValue.toFixed(2)} mmHg`;
+        element.textContent = `${Math.round(pressureValue)} mmHg`;
       } else {
-        element.textContent = `${pressureValue.toFixed(2)} hPa`;
+        element.textContent = `${Math.round(pressureValue)} hPa`;
       }
     });
 
     // Apply 24-hour time format
     const timeElements = document.querySelectorAll("[data-time]");
     timeElements.forEach(element => {
-      let timeValue = element.textContent;
+      let timeValue = element.getAttribute("data-original-value");
       if (settings.timeFormat) {
         // Convert to 24-hour format (simplified example)
         let [hours, minutes] = timeValue.split(":");
