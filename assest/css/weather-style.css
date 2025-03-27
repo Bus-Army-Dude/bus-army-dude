@@ -914,7 +914,7 @@ footer .body-3:last-child {
   }
   .search-field,
   .search-view .view-list {
-    background-color: var(--surface);
+    background-color: var (--surface);
   }
   .search-field {
     height: 56px;
