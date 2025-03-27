@@ -188,22 +188,28 @@ const instagramShoutouts = {
     },
     setLastUpdatedTime() {
         const lastUpdatedElement = document.getElementById('lastUpdatedInstagram');
+        console.log("lastUpdatedElement", lastUpdatedElement); // Add this line for debugging.
         if (!lastUpdatedElement) return;
 
-        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
-            timeZone: userTimeZone,
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
-        });
+        try {
+            const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const lastUpdatedDate = new Date(this.lastUpdatedTime).toLocaleString('en-US', {
+                timeZone: userTimeZone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true
+            });
 
-        lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+            lastUpdatedElement.textContent = `Last Updated: ${lastUpdatedDate}`;
+        } catch (error) {
+            console.error('Error formatting last updated time:', error);
+            lastUpdatedElement.textContent = 'Last Updated: Error'; // Display an error message
+        }
     }
 };
 
