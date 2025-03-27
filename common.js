@@ -5,6 +5,14 @@ class CommonManager {
         this.initializeThemeColors();
         this.applySettings();
         this.initializeControls();
+
+        // Listen for changes across tabs/windows
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'websiteSettings') {
+                this.settings = JSON.parse(e.newValue);
+                this.applySettings();
+            }
+        });
     }
 
     removeNoJsClass() {
