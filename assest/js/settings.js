@@ -58,12 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
       let tempValue = parseFloat(element.getAttribute("data-original-value"));
       if (settings.temperature === "fahrenheit") {
         tempValue = (tempValue * 9/5) + 32;
-        element.textContent = `${Math.round(tempValue)} °F`;
+        element.textContent = `${Math.round(tempValue)}°`;
       } else if (settings.temperature === "kelvin") {
         tempValue = tempValue + 273.15;
-        element.textContent = `${Math.round(tempValue)} K`;
+        element.textContent = `${Math.round(tempValue)}°`;
       } else {
-        element.textContent = `${Math.round(tempValue)} °C`;
+        element.textContent = `${Math.round(tempValue)}°`;
       }
     });
 
