@@ -189,210 +189,287 @@ s0.parentNode.insertBefore(s1,s0);
             </div>
         </section>
 
- <div id="weather-widget" class="weather-widget">
-    <!-- Sidebar with Tabs -->
-    <div class="sidebar">
-        <ul class="tabs">
-            <li class="tab active" id="weather-tab">Weather</li>
-            <li class="tab" id="cities-tab">Cities</li>
-            <li class="tab" id="map-tab">Map</li>
-            <li class="tab" id="settings-tab">Settings</li>
-        </ul>
+ <div class="weather-widget glass-panel">
+        <div class="widget-sidebar">
+            <ul class="widget-tabs">
+                <li class="tab-button active" data-tab="weather">Weather</li>
+                <li class="tab-button" data-tab="cities">Cities</li>
+                <li class="tab-button" data-tab="map">Map</li>
+                <li class="tab-button" data-tab="settings">Settings</li>
+            </ul>
+        </div>
+        <div class="widget-content">
+            <div id="weather" class="tab-panel active">
+                <div class="weather-search">
+                    <input type="text" placeholder="Enter a City or Zip Code">
+                </div>
+                <div class="current-weather">
+                    <h3 class="city-state">City Name, State</h3>
+                    <p>Chance of rain: <span class="rain-chance">--%</span></p>
+                    <p><span class="temperature">--</span><span class="celsius">°C</span>/<span class="fahrenheit">°F</span></p>
+                    <div class="air-conditions">
+                        <h4>Air Conditions <span class="see-more">See more</span></h4>
+                        <div class="condition">Real Feel: <span class="real-feel-temp">--</span><span class="celsius">°C</span>/<span class="fahrenheit">°F</span></div>
+                        <div class="condition">Wind: <span class="wind-speed">--</span> <span class="wind-units">km/h</span></div>
+                        <div class="condition">Chance of rain: <span class="rain-chance-detail">--</span>%</div>
+                        <div class="condition">UV Index: <span class="uv-index">#</span></div>
+                    </div>
+                    <div class="more-conditions">
+                        <div class="condition">Humidity: <span class="humidity">--</span>%</div>
+                        <div class="condition">Feels Like: <span class="feels-like-temp">--</span><span class="celsius">°C</span>/<span class="fahrenheit">°F</span></div>
+                        <div class="condition">Pressure: <span class="pressure">----</span> <span class="pressure-units">hPa</span></div>
+                        <div class="condition">Visibility: <span class="visibility">--</span> <span class="visibility-units">km</span></div>
+                        <div class="condition">Sunset: <span class="sunset-time">--:-- AM</span></div>
+                    </div>
+                </div>
+                <div class="today-forecast">
+                    <h4>Today's Forecast</h4>
+                    <div class="forecast-times">
+                        <div class="forecast-item">
+                            <span class="time">6 AM</span>
+                            <div class="weather-icon">{Icon}</div>
+                            <span class="conditions">Conditions</span>
+                            <span class="temp">--<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        </div>
+                        <div class="forecast-item">
+                            <span class="time">9 AM</span>
+                            <div class="weather-icon">{Icon}</div>
+                            <span class="conditions">Conditions</span>
+                            <span class="temp">--<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        </div>
+                        <div class="forecast-item">
+                            <span class="time">12 PM</span>
+                            <div class="weather-icon">{Icon}</div>
+                            <span class="conditions">Conditions</span>
+                            <span class="temp">--<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        </div>
+                        <div class="forecast-item">
+                            <span class="time">3 PM</span>
+                            <div class="weather-icon">{Icon}</div>
+                            <span class="conditions">Conditions</span>
+                            <span class="temp">--<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        </div>
+                        <div class="forecast-item">
+                            <span class="time">6 PM</span>
+                            <div class="weather-icon">{Icon}</div>
+                            <span class="conditions">Conditions</span>
+                            <span class="temp">--<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        </div>
+                        <div class="forecast-item">
+                            <span class="time">9 PM</span>
+                            <div class="weather-icon">{Icon}</div>
+                            <span class="conditions">Conditions</span>
+                            <span class="temp">--<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="seven-day-forecast">
+                    <h4>7-Day Forecast</h4>
+                    <div class="daily-forecast">
+                        <span class="day">Today</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="conditions">Weather conditions</span>
+                        <span class="high-low">High/Low --<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <hr>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Tue</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="conditions">Weather conditions</span>
+                        <span class="high-low">High/Low --<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <hr>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Wed</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="conditions">Weather conditions</span>
+                        <span class="high-low">High/Low --<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <hr>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Thu</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="conditions">Weather conditions</span>
+                        <span class="high-low">High/Low --<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <hr>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Fri</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="conditions">Weather conditions</span>
+                        <span class="high-low">High/Low --<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <hr>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Sat</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="conditions">Weather conditions</span>
+                        <span class="high-low">High/Low --<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <hr>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Sun</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="conditions">Weather conditions</span>
+                        <span class="high-low">High/Low --<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cities" class="tab-panel">
+                <div class="cities-search">
+                    <input type="text" placeholder="Enter a City or Zip Code">
+                </div>
+                <div class="added-cities">
+                    <div class="city-item">
+                        <div class="weather-icon">{Icon}</div>
+                        <div class="city-info">
+                            <h4 class="city-name">City, ST</h4>
+                            <span class="time">--:-- AM</span>
+                        </div>
+                        <span class="temp">--<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                    </div>
+                    </div>
+            </div>
+            <div class="selected-city-details">
+                <h3 class="city-state">City, ST</h3>
+                <p>Chance of rain: <span class="rain-chance">---%</span></p>
+                <p><span class="temperature">---</span><span class="celsius">°C</span>/<span class="fahrenheit">°F</span></p>
+                <div class="weather-icon large">{Icon}</div>
+                <hr>
+                <h4>Today's Forecast</h4>
+                <div class="forecast-times">
+                    <div class="forecast-item">
+                        <span class="time">6 AM</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="temp">---<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                    </div>
+                    <div class="forecast-item">
+                        <span class="time">9 AM</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="temp">---<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                    </div>
+                    <div class="forecast-item">
+                        <span class="time">12 PM</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="temp">---<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                    </div>
+                </div>
+                <hr>
+                <h4>3-Day Forecast</h4>
+                <div class="three-day-forecast">
+                    <div class="daily-forecast">
+                        <span class="day">Today</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="high-low">High/Low ---<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Tomorrow</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="high-low">High/Low ---<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                    </div>
+                    <div class="daily-forecast">
+                        <span class="day">Day After</span>
+                        <div class="weather-icon">{Icon}</div>
+                        <span class="high-low">High/Low ---<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="map" class="tab-panel">
+                <div class="map-search">
+                    <input type="text" placeholder="Search for city or zip code">
+                </div>
+                <div class="weather-map">
+                    <div class="map-placeholder">Live Weather Map</div>
+                    <div class="map-controls">
+                        <button>+</button>
+                        <button>-</button>
+                        <button>Current Location</button>
+                    </div>
+                </div>
+                <div class="cities-on-map">
+                    <div class="map-city-item">
+                        <div class="weather-icon">{Icon}</div>
+                        <h4 class="city-name">City, ST</h4>
+                        <span class="time">--:-- AM</span>
+                        <span class="temp">---<span class="celsius">°C</span>/<span class="fahrenheit">°F</span></span>
+                        <button class="see-details">See details</button>
+                    </div>
+                    </div>
+            </div>
+
+            <div id="settings" class="tab-panel">
+                <div class="settings-search">
+                    <input type="text" placeholder="Search for cities or zip codes">
+                </div>
+                <div class="units-settings">
+                    <h3>Units</h3>
+                    <div class="unit-group">
+                        <h4>Temperature</h4>
+                        <div class="unit-options">
+                            <span class="unit active">Celsius</span>
+                            <span class="unit">Fahrenheit</span>
+                        </div>
+                    </div>
+                    <div class="unit-group">
+                        <h4>Wind Speed</h4>
+                        <div class="unit-options">
+                            <span class="unit">km/h</span>
+                            <span class="unit active">m/s</span>
+                            <span class="unit">Knots</span>
+                        </div>
+                    </div>
+                    <div class="unit-group">
+                        <h4>Pressure</h4>
+                        <div class="unit-options">
+                            <span class="unit">hPa</span>
+                            <span class="unit">Inches</span>
+                            <span class="unit active">kPa</span>
+                            <span class="unit">mm</span>
+                        </div>
+                    </div>
+                    <div class="unit-group">
+                        <h4>Precipitation</h4>
+                        <div class="unit-options">
+                            <span class="unit active">Millimeters</span>
+                            <span class="unit">Inches</span>
+                        </div>
+                    </div>
+                    <div class="unit-group">
+                        <h4>Distance</h4>
+                        <div class="unit-options">
+                            <span class="unit active">Kilometers</span>
+                            <span class="unit">Miles</span>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="general-settings">
+                    <h3>General</h3>
+                    <div class="setting-item">
+                        <span class="setting-label">12-hour Time</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <hr>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            Location
+                            <p class="setting-description">Get weather of your location</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Weather Tab Content -->
-    <div id="weather-tab-content" class="tab-content">
-        <!-- Search Section -->
-        <div class="search-section">
-            <input type="text" id="search-input" class="search-input" placeholder="Enter City or Zip Code" />
-            <button id="search-button" class="search-button">Search</button>
-        </div>
-
-        <!-- Current Weather Info -->
-        <div class="weather-header">
-            <span id="city-name">City</span>, <span id="region">Region</span>
-            <span id="weather-time">Time</span>
-        </div>
-
-        <!-- Rain Chance and Temperature -->
-        <div class="rain-temp">
-            <span id="chance-of-rain">Chance of Rain: --%</span>
-            <span id="temperature">--°C/F</span>
-        </div>
-
-        <!-- Today's Forecast -->
-        <div class="forecast-section">
-            <h3>Today's Forecast</h3>
-            <div class="forecast-times">
-                <div class="forecast-time">
-                    <span class="time">6 AM</span>
-                    <img id="forecast-icon-6am" class="forecast-icon" src="" alt="Weather Icon">
-                    <span id="forecast-temp-6am">--°C/F</span>
-                </div>
-                <div class="forecast-time">
-                    <span class="time">9 AM</span>
-                    <img id="forecast-icon-9am" class="forecast-icon" src="" alt="Weather Icon">
-                    <span id="forecast-temp-9am">--°C/F</span>
-                </div>
-                <div class="forecast-time">
-                    <span class="time">12 PM</span>
-                    <img id="forecast-icon-12pm" class="forecast-icon" src="" alt="Weather Icon">
-                    <span id="forecast-temp-12pm">--°C/F</span>
-                </div>
-                <div class="forecast-time">
-                    <span class="time">3 PM</span>
-                    <img id="forecast-icon-3pm" class="forecast-icon" src="" alt="Weather Icon">
-                    <span id="forecast-temp-3pm">--°C/F</span>
-                </div>
-                <div class="forecast-time">
-                    <span class="time">6 PM</span>
-                    <img id="forecast-icon-6pm" class="forecast-icon" src="" alt="Weather Icon">
-                    <span id="forecast-temp-6pm">--°C/F</span>
-                </div>
-                <div class="forecast-time">
-                    <span class="time">9 PM</span>
-                    <img id="forecast-icon-9pm" class="forecast-icon" src="" alt="Weather Icon">
-                    <span id="forecast-temp-9pm">--°C/F</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Air Conditions -->
-        <div class="air-conditions">
-            <h3>Air Conditions</h3>
-            <div class="air-condition">
-                <span id="real-feel">Real Feel: --°C/F</span>
-                <span id="wind-speed">Wind: -- km/h</span>
-            </div>
-            <div class="air-condition">
-                <span id="rain-chance">Chance of Rain: --%</span>
-                <span id="uv-index">UV Index: --</span>
-            </div>
-        </div>
-
-        <!-- 7-Day Forecast -->
-        <div class="seven-day-forecast">
-            <h3>7-Day Forecast</h3>
-            <div class="day-forecast">
-                <span>Today</span>
-                <img id="day-icon-today" class="forecast-icon" src="" alt="Weather Icon">
-                <span id="high-low-today">High/Low --°C/F</span>
-            </div>
-            <div class="day-forecast">
-                <span>Tue</span>
-                <img id="day-icon-tue" class="forecast-icon" src="" alt="Weather Icon">
-                <span id="high-low-tue">High/Low --°C/F</span>
-            </div>
-            <div class="day-forecast">
-                <span>Wed</span>
-                <img id="day-icon-wed" class="forecast-icon" src="" alt="Weather Icon">
-                <span id="high-low-wed">High/Low --°C/F</span>
-            </div>
-            <div class="day-forecast">
-                <span>Thu</span>
-                <img id="day-icon-thu" class="forecast-icon" src="" alt="Weather Icon">
-                <span id="high-low-thu">High/Low --°C/F</span>
-            </div>
-            <div class="day-forecast">
-                <span>Fri</span>
-                <img id="day-icon-fri" class="forecast-icon" src="" alt="Weather Icon">
-                <span id="high-low-fri">High/Low --°C/F</span>
-            </div>
-            <div class="day-forecast">
-                <span>Sat</span>
-                <img id="day-icon-sat" class="forecast-icon" src="" alt="Weather Icon">
-                <span id="high-low-sat">High/Low --°C/F</span>
-            </div>
-            <div class="day-forecast">
-                <span>Sun</span>
-                <img id="day-icon-sun" class="forecast-icon" src="" alt="Weather Icon">
-                <span id="high-low-sun">High/Low --°C/F</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cities Tab Content -->
-    <div id="cities-tab-content" class="tab-content">
-        <!-- Search Bar for Cities -->
-        <div class="search-section">
-            <input type="text" id="city-search-input" class="search-input" placeholder="Search for Cities or Zip Codes" />
-            <button id="city-search-button" class="search-button">Search</button>
-        </div>
-        
-        <!-- Added Cities List -->
-        <div id="cities-list" class="cities-list"></div>
-    </div>
-
-    <!-- Map Tab Content -->
-    <div id="map-tab-content" class="tab-content">
-        <div class="map-section">
-            <div class="map"></div>
-            <button id="current-location-button">Use Current Location</button>
-        </div>
-    </div>
-
-    <!-- Settings Tab Content -->
-    <div id="settings-tab-content" class="tab-content">
-        <!-- Units Settings -->
-        <div class="settings-section">
-            <h3>Units</h3>
-            <div class="unit-settings">
-                <div class="unit-option">
-                    <label>Temperature:</label>
-                    <select id="temperature-units">
-                        <option value="celsius">Celsius</option>
-                        <option value="fahrenheit">Fahrenheit</option>
-                    </select>
-                </div>
-                <div class="unit-option">
-                    <label>Wind Speed:</label>
-                    <select id="wind-units">
-                        <option value="kmh">km/h</option>
-                        <option value="ms">m/s</option>
-                        <option value="knots">Knots</option>
-                    </select>
-                </div>
-                <div class="unit-option">
-                    <label>Pressure:</label>
-                    <select id="pressure-units">
-                        <option value="hpa">hPa</option>
-                        <option value="inches">Inches</option>
-                        <option value="kpa">kPa</option>
-                        <option value="mm">mm</option>
-                    </select>
-                </div>
-                <div class="unit-option">
-                    <label>Precipitation:</label>
-                    <select id="precipitation-units">
-                        <option value="mm">Millimeters</option>
-                        <option value="inches">Inches</option>
-                    </select>
-                </div>
-                <div class="unit-option">
-                    <label>Distance:</label>
-                    <select id="distance-units">
-                        <option value="kilometers">Kilometers</option>
-                        <option value="miles">Miles</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- General Settings -->
-        <div class="general-settings">
-            <h3>General</h3>
-            <div class="toggle-option">
-                <label>12-hour Time:</label>
-                <input type="checkbox" id="time-format-toggle" />
-            </div>
-            <div class="toggle-option">
-                <label>Location:</label>
-                <input type="checkbox" id="location-toggle" />
-            </div>
-        </div>
-    </div>
-</div>
-
         
              <!-- TikTok Shoutouts Section -->
         <div class="shoutouts-section section">
