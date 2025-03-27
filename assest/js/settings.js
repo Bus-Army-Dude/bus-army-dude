@@ -31,21 +31,21 @@ document.addEventListener("DOMContentLoaded", () => {
       locationServices: locationToggle.checked,
     };
     localStorage.setItem("weatherSettings", JSON.stringify(settings));
-    closeSettingsModal();
     applySettings(settings);
+    closeSettingsModal();
   };
 
   // Function to load settings from local storage
   const loadSettings = () => {
-    const settings = JSON.parse(localStorage.getItem("weatherSettings"));
-    if (settings) {
-      tempSelect.value = settings.temperature;
-      speedSelect.value = settings.windSpeed;
-      pressureSelect.value = settings.pressure;
-      themeToggle.checked = settings.darkMode;
-      timeToggle.checked = settings.timeFormat;
-      locationToggle.checked = settings.locationServices;
-      applySettings(settings);
+    const storedSettings = JSON.parse(localStorage.getItem("weatherSettings"));
+    if (storedSettings) {
+      tempSelect.value = storedSettings.temperature;
+      speedSelect.value = storedSettings.windSpeed;
+      pressureSelect.value = storedSettings.pressure;
+      themeToggle.checked = storedSettings.darkMode;
+      timeToggle.checked = storedSettings.timeFormat;
+      locationToggle.checked = storedSettings.locationServices;
+      applySettings(storedSettings);
     }
   };
 
@@ -53,54 +53,64 @@ document.addEventListener("DOMContentLoaded", () => {
   const applySettings = (settings) => {
     document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
 
+    // Apply temperature setting
     const temperatureElements = document.querySelectorAll("[data-temperature]");
     temperatureElements.forEach(element => {
-      let tempValue = parseFloat(element.getAttribute("data-original-value"));
+      const originalTemp = parseFloat(element.getAttribute("data-original-value"));
+      let tempValue = originalTemp;
+
       if (settings.temperature === "fahrenheit") {
-        tempValue = (tempValue * 9/5) + 32;
-        element.textContent = `${Math.round(tempValue)}°`;
+        tempValue = (originalTemp * 9 / 5) + 32;
+        element.textContent = `${Math.round(tempValue)}°F`;
       } else if (settings.temperature === "kelvin") {
-        tempValue = tempValue + 273.15;
-        element.textContent = `${Math.round(tempValue)}°`;
+        tempValue = originalTemp + 273.15;
+        element.textContent = `${Math.round(tempValue)}K`;
       } else {
-        element.textContent = `${Math.round(tempValue)}°`;
+        element.textContent = `${Math.round(originalTemp)}°C`;
       }
     });
 
+    // Apply wind speed setting
     const windSpeedElements = document.querySelectorAll("[data-wind-speed]");
     windSpeedElements.forEach(element => {
-      let speedValue = parseFloat(element.getAttribute("data-original-value"));
+      const originalSpeed = parseFloat(element.getAttribute("data-original-value"));
+      let speedValue = originalSpeed;
+
       if (settings.windSpeed === "mph") {
-        speedValue = speedValue * 2.23694;
+        speedValue = originalSpeed * 2.23694;
         element.textContent = `${Math.round(speedValue)} mph`;
       } else if (settings.windSpeed === "kph") {
-        speedValue = speedValue * 3.6;
+        speedValue = originalSpeed * 3.6;
         element.textContent = `${Math.round(speedValue)} km/h`;
       } else if (settings.windSpeed === "knots") {
-        speedValue = speedValue * 1.94384;
+        speedValue = originalSpeed * 1.94384;
         element.textContent = `${Math.round(speedValue)} knots`;
       } else if (settings.windSpeed === "beaufort") {
-        speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2 / 3)), 0), 12);
+        speedValue = Math.min(Math.max(Math.ceil(Math.pow(originalSpeed / 0.836, 2 / 3)), 0), 12);
         element.textContent = `${speedValue} Bft`;
       } else {
-        element.textContent = `${Math.round(speedValue)} m/s`;
+        element.textContent = `${Math.round(originalSpeed)} m/s`;
       }
     });
 
+    // Apply pressure setting
     const pressureElements = document.querySelectorAll("[data-pressure]");
     pressureElements.forEach(element => {
-      let pressureValue = parseFloat(element.getAttribute("data-original-value"));
+      const originalPressure = parseFloat(element.getAttribute("data-original-value"));
+      let pressureValue = originalPressure;
+
       if (settings.pressure === "inhg") {
-        pressureValue = pressureValue * 0.02953;
+        pressureValue = originalPressure * 0.02953;
         element.textContent = `${Math.round(pressureValue)} inHg`;
       } else if (settings.pressure === "mmhg") {
-        pressureValue = pressureValue * 0.75006;
+        pressureValue = originalPressure * 0.75006;
         element.textContent = `${Math.round(pressureValue)} mmHg`;
       } else {
-        element.textContent = `${Math.round(pressureValue)} hPa`;
+        element.textContent = `${Math.round(originalPressure)} hPa`;
       }
     });
 
+    // Apply time format setting
     const timeElements = document.querySelectorAll("[data-time]");
     timeElements.forEach(element => {
       let timeValue = element.getAttribute("data-original-value");
@@ -137,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Event listeners for opening, closing, and saving settings
   settingsBtn.addEventListener("click", openSettingsModal);
   settingsClose.addEventListener("click", closeSettingsModal);
   settingsSave.addEventListener("click", saveSettings);
@@ -147,5 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Load settings on page load
   loadSettings();
 });
