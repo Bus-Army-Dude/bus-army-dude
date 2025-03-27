@@ -84,7 +84,7 @@ body {
 
 /* Profile Section - Make sure it has relative positioning */
 .profile-section {
-    position: relative; /* This is important for absolute positioning of buttons */
+    position: relative; /* Make sure buttons are positioned relative to this */
     text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
@@ -100,12 +100,14 @@ body {
     backdrop-filter: blur(10px);
 }
 
+/* Profile Pic Wrapper */
 .profile-pic-wrapper {
-    position: relative;
+    position: relative; /* This should remain relative to position the profile pic */
     width: 150px;
     margin: 0 auto;
 }
 
+/* Profile Picture */
 .profile-pic {
     width: 150px;
     height: 150px;
