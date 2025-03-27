@@ -5,22 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="title" content="weatherio">
-    <meta name="description" content="Explore accurate and real-time weather information for cities around the world with Weatherio. Get current weather conditions, 5-day forecasts, wind speed, sunrise and sunset times, air quality, humidity, and more.">
+    <meta name="description" content="Weather App with real-time data">
     
     <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assest/css/weather-style.css">
-
-    <script type="module" src="./assest/js/app.js"></script>
-    <script type="module" src="./assest/js/route.js"></script>
+    <link rel="stylesheet" href="./assets/css/weather-style.css">
 </head>
 <body>
     <header class="header">
         <div class="container">
             <a href="" class="logo">
-                <img src="assest/images/logo.png" alt="logo">
+                <img src="./assets/images/logo.png" alt="logo">
             </a>
             <div class="search-view" data-search-view>
                 <div class="search-wrapper">
@@ -60,9 +57,10 @@
                 <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
                 <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
             </div>
-            <div class="loading" data-loading></div>
         </article>
     </main>
+
+    <div class="loading" data-loading></div>
 
     <!-- Settings Modal -->
     <div class="settings-modal" data-settings-modal>
@@ -70,81 +68,70 @@
             <h2 class="title-2">Settings</h2>
             
             <div class="settings-sections">
-                <!-- Temperature Units -->
                 <div class="settings-section">
-                    <h3 class="title-3">Temperature</h3>
-                    <select class="settings-select" data-settings-temp>
-                        <option value="celsius">Celsius (°C)</option>
-                        <option value="fahrenheit">Fahrenheit (°F)</option>
-                        <option value="kelvin">Kelvin (K)</option>
-                    </select>
+                    <h3 class="title-3">Units</h3>
+                    
+                    <div class="settings-option">
+                        <select class="settings-select" data-settings-temp>
+                            <option value="celsius">Temperature: Celsius (°C)</option>
+                            <option value="fahrenheit">Temperature: Fahrenheit (°F)</option>
+                            <option value="kelvin">Temperature: Kelvin (K)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <select class="settings-select" data-settings-speed>
+                            <option value="ms">Wind Speed: m/s</option>
+                            <option value="mph">Wind Speed: mph</option>
+                            <option value="kph">Wind Speed: km/h</option>
+                            <option value="knots">Wind Speed: knots</option>
+                            <option value="beaufort">Wind Speed: Beaufort</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <select class="settings-select" data-settings-pressure>
+                            <option value="hpa">Pressure: hPa</option>
+                            <option value="inhg">Pressure: inHg</option>
+                            <option value="mmhg">Pressure: mmHg</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Wind Speed Units -->
-                <div class="settings-section">
-                    <h3 class="title-3">Wind Speed</h3>
-                    <select class="settings-select" data-settings-speed>
-                        <option value="ms">Meters per second (m/s)</option>
-                        <option value="mph">Miles per hour (mph)</option>
-                        <option value="kph">Kilometers per hour (km/h)</option>
-                        <option value="knots">Knots (kts)</option>
-                        <option value="beaufort">Beaufort scale</option>
-                    </select>
-                </div>
-
-                <!-- Pressure Units -->
-                <div class="settings-section">
-                    <h3 class="title-3">Pressure</h3>
-                    <select class="settings-select" data-settings-pressure>
-                        <option value="hpa">Hectopascals (hPa)</option>
-                        <option value="inhg">Inches of Mercury (inHg)</option>
-                        <option value="mmhg">Millimeters of Mercury (mmHg)</option>
-                    </select>
-                </div>
-
-                <!-- Display Settings -->
                 <div class="settings-section">
                     <h3 class="title-3">Display</h3>
-                    <div class="settings-options">
-                        <label class="setting-item">
-                            <span class="setting-label">Dark Mode</span>
-                            <div class="toggle-switch">
-                                <input type="checkbox" data-settings-theme>
-                                <span class="toggle-slider"></span>
-                            </div>
+                    <div class="settings-option">
+                        <label class="toggle-switch">
+                            <input type="checkbox" data-settings-theme>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Dark Mode</span>
                         </label>
-                        <label class="setting-item">
-                            <span class="setting-label">24-hour Time</span>
-                            <div class="toggle-switch">
-                                <input type="checkbox" data-settings-time>
-                                <span class="toggle-slider"></span>
-                            </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <label class="toggle-switch">
+                            <input type="checkbox" data-settings-time>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">24-hour Time</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- Privacy Settings -->
                 <div class="settings-section">
                     <h3 class="title-3">Privacy</h3>
-                    <div class="settings-options">
-                        <label class="setting-item">
-                            <span class="setting-label">Location Services</span>
-                            <div class="toggle-switch">
-                                <input type="checkbox" checked data-settings-location>
-                                <span class="toggle-slider"></span>
-                            </div>
+                    <div class="settings-option">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked data-settings-location>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Location Services</span>
                         </label>
                     </div>
                 </div>
             </div>
 
             <div class="settings-actions">
-                <button class="btn-primary settings-save" data-settings-save>
-                    <span class="span">Save Changes</span>
-                </button>
-                <button class="btn-secondary settings-close" data-settings-close>
-                    <span class="span">Cancel</span>
-                </button>
+                <button class="btn-primary settings-save" data-settings-save>Save Changes</button>
+                <button class="btn-secondary settings-close" data-settings-close>Cancel</button>
             </div>
         </div>
     </div>
@@ -157,5 +144,9 @@
             <span class="span">Go Home</span>
         </a>
     </section>
+
+    <script src="./assets/js/config.js"></script>
+    <script type="module" src="./assets/js/app.js"></script>
+    <script type="module" src="./assets/js/route.js"></script>
 </body>
 </html>
