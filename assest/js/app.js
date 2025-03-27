@@ -313,12 +313,37 @@ export const updateWeather = (lat, lon) => {
 // Load user settings and apply them
 const loadUserSettings = () => {
     const settings = JSON.parse(localStorage.getItem("weatherSettings")) || {
-        darkMode: false,
+        darkMode: document.documentElement.getAttribute("data-theme") === "dark", // Initialize with current theme
         temperature: "celsius",
-        windSpeed: "m/s",
-        pressure: "hPa"
+        windSpeed: "ms", // Corrected to match the option value
+        pressure: "hpa" // Corrected to match the option value
     };
     applySettings(settings);
+
+    // Set initial dropdown values based on loaded settings
+    const tempUnitControl = document.querySelector("[data-settings-temp]");
+    if (tempUnitControl && settings.temperature) {
+        tempUnitControl.value = settings.temperature;
+    }
+
+    const windSpeedUnitControl = document.querySelector("[data-settings-speed]");
+    if (windSpeedUnitControl && settings.windSpeed) {
+        // Ensure the stored value matches the select option value
+        const storedWindSpeed = settings.windSpeed === 'm/s' ? 'ms' : settings.windSpeed;
+        windSpeedUnitControl.value = storedWindSpeed;
+    }
+
+    const pressureUnitControl = document.querySelector("[data-settings-pressure]");
+    if (pressureUnitControl && settings.pressure) {
+        // Ensure the stored value matches the select option value
+        const storedPressure = settings.pressure === 'hPa' ? 'hpa' : settings.pressure;
+        pressureUnitControl.value = storedPressure;
+    }
+
+    const themeToggle = document.querySelector("[data-settings-theme]");
+    if (themeToggle) {
+        themeToggle.checked = settings.darkMode;
+    }
 };
 
 const applySettings = (settings) => {
@@ -353,7 +378,7 @@ const applySettings = (settings) => {
         } else if (settings.windSpeed === "beaufort") {
             speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2 / 3)), 0), 12);
             element.textContent = `${speedValue} Bft`;
-        } else {
+        } else { // Default to m/s if no match
             element.textContent = `${Math.round(speedValue)} m/s`;
         }
     });
@@ -367,7 +392,7 @@ const applySettings = (settings) => {
         } else if (settings.pressure === "mmhg") {
             pressureValue = pressureValue * 0.75006;
             element.textContent = `${Math.round(pressureValue)} mmHg`;
-        } else {
+        } else { // Default to hPa if no match
             element.textContent = `${Math.round(pressureValue)} hPa`;
         }
     });
@@ -378,9 +403,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loadUserSettings();
 
     // Add event listeners for unit changes
-    const temperatureUnitControl = document.getElementById("temperature-unit");
-    const windSpeedUnitControl = document.getElementById("wind-speed-unit");
-    const pressureUnitControl = document.getElementById("pressure-unit");
+    const temperatureUnitControl = document.querySelector("[data-settings-temp]");
+    const windSpeedUnitControl = document.querySelector("[data-settings-speed]");
+    const pressureUnitControl = document.querySelector("[data-settings-pressure]");
+    const themeToggle = document.querySelector("[data-settings-theme]");
 
     if (temperatureUnitControl) {
         temperatureUnitControl.addEventListener("change", () => {
@@ -396,7 +422,8 @@ document.addEventListener("DOMContentLoaded", () => {
         windSpeedUnitControl.addEventListener("change", () => {
             const selectedUnit = windSpeedUnitControl.value;
             const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
-            currentSettings.windSpeed = selectedUnit;
+            // Map the select value to the setting value
+            currentSettings.windSpeed = selectedUnit === 'ms' ? 'm/s' : selectedUnit;
             localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
             applySettings(currentSettings);
         });
@@ -406,7 +433,18 @@ document.addEventListener("DOMContentLoaded", () => {
         pressureUnitControl.addEventListener("change", () => {
             const selectedUnit = pressureUnitControl.value;
             const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
-            currentSettings.pressure = selectedUnit;
+            // Map the select value to the setting value
+            currentSettings.pressure = selectedUnit === 'hpa' ? 'hPa' : selectedUnit;
+            localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
+            applySettings(currentSettings);
+        });
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener("change", () => {
+            const isDarkMode = themeToggle.checked;
+            const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
+            currentSettings.darkMode = isDarkMode;
             localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
             applySettings(currentSettings);
         });
