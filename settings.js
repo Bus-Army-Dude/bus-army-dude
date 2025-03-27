@@ -167,16 +167,20 @@ class SettingsManager {
 
     // Reset to default settings
     resetToFactorySettings() {
-        const defaultSettings = {
-            darkMode: true,
-            textSize: 16,
-            focusOutline: 'disabled',
-            maintenanceMode: false, // Assuming this is a setting
-            profileStatus: 'offline' // Assuming this is a setting
-        };
-        this.settings = defaultSettings;
-        this.applySettings();
-        this.saveSettings();
+    // Reset the settings object
+    this.settings = {
+        darkMode: true,
+        textSize: 16,
+        focusOutline: 'disabled',
+        maintenanceMode: false,
+        profileStatus: 'offline'
+    };
+    this.applySettings();
+    this.saveSettings();
+
+    // Reinitialize all controls to reflect the reset state
+    this.initializeControls();  // Reapply event listeners and control values
+}
 
         // Update UI controls
         const darkModeToggle = document.getElementById('darkModeToggle');
