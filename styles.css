@@ -2444,13 +2444,17 @@ body.focus-outline-disabled :focus {
     }
 }
 
+/* ======================== */
+/* Core Design - Weather Widget */
+/* ======================== */
+
 /* Weather Widget Container */
 .weather-widget {
     display: flex;
     width: 90%; /* Adjust as needed */
     max-width: 1200px; /* Adjust as needed */
     margin: var(--space-xl) auto;
-    background: var(--widget-bg);
+    background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
@@ -2511,9 +2515,9 @@ body.focus-outline-disabled :focus {
     display: flex;
 }
 
-/* --- Weather Tab Styles --- */
+/* --- Weather Tab Styles - Updated based on Screenshot --- */
 #weather {
-    flex-direction: column;
+    flex-direction: column; /* Default to column for smaller screens */
 }
 
 .weather-search input {
@@ -2527,19 +2531,13 @@ body.focus-outline-disabled :focus {
     font-size: var(--font-size-base);
 }
 
-.current-weather,
-.today-forecast,
-.seven-day-forecast {
+.current-weather {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: var(--card-radius);
     padding: var(--space-md);
     margin-bottom: var(--space-md);
-    width: 100%; /* Take full width initially */
-}
-
-.current-weather {
-    position: relative; /* For "See more" positioning */
+    width: 100%;
 }
 
 .current-weather .city-state {
@@ -2551,9 +2549,15 @@ body.focus-outline-disabled :focus {
     margin-bottom: var(--space-xs);
 }
 
+.current-weather .temperature {
+    font-size: 2.5rem; /* Larger temperature */
+    font-weight: bold;
+}
+
 .current-weather .fahrenheit,
 .current-weather .celsius {
-    color: var(--neural-primary); /* Make sure these are visible */
+    font-size: 1rem;
+    color: var(--neural-primary);
 }
 
 .air-conditions {
@@ -2574,8 +2578,22 @@ body.focus-outline-disabled :focus {
     color: var(--neural-accent);
 }
 
-.air-conditions .condition {
+.air-conditions > div { /* Direct children for initial layout */
+    display: inline-block;
+    width: calc(50% - var(--space-sm) / 2);
     margin-bottom: var(--space-xs);
+}
+
+.air-conditions > div:nth-child(odd) {
+    padding-right: var(--space-sm) / 2;
+}
+
+.air-conditions > div:nth-child(even) {
+    padding-left: var(--space-sm) / 2;
+}
+
+.air-conditions .condition {
+    margin-bottom: 0; /* Remove extra margin for inline-block */
 }
 
 .more-conditions {
@@ -2596,21 +2614,28 @@ body.focus-outline-disabled :focus {
 }
 
 .today-forecast {
-    width: 100%; /* Initially full width */
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    width: 100%;
 }
 
 .today-forecast .forecast-times {
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start; /* Align items to the top */
     padding: var(--space-sm);
+    overflow-x: auto; /* Allow scrolling for more times */
 }
 
 .today-forecast .forecast-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    min-width: 80px; /* Ensure minimum width for each item */
 }
 
 .today-forecast .time {
@@ -2633,11 +2658,22 @@ body.focus-outline-disabled :focus {
 }
 
 .seven-day-forecast {
-    width: 100%; /* Initially full width */
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding: var(--space-md);
+    width: 100%;
+}
+
+.seven-day-forecast h4 {
+    margin-bottom: var(--space-md); /* More space below title */
 }
 
 .seven-day-forecast .daily-forecast {
     padding: var(--space-sm) 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .seven-day-forecast .daily-forecast hr {
@@ -2650,37 +2686,43 @@ body.focus-outline-disabled :focus {
     display: none;
 }
 
-.seven-day-forecast .daily-forecast {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .seven-day-forecast .day {
     font-weight: bold;
+    width: 60px; /* Adjust width for day text */
 }
 
 .seven-day-forecast .weather-icon {
     font-size: 1.2rem; /* Placeholder for icon */
+    width: 40px; /* Adjust width for icon */
+    text-align: center;
 }
 
 .seven-day-forecast .conditions {
     font-size: var(--font-size-sm);
+    flex-grow: 1;
+    text-align: center;
 }
 
 .seven-day-forecast .high-low {
     font-size: var(--font-size-sm);
+    width: 80px; /* Adjust width for high/low temp */
+    text-align: right;
 }
 
-/* --- Cities Tab Styles --- */
+/* --- Cities Tab Styles - Updated based on Screenshot --- */
 #cities {
-    flex-direction: column;
+    flex-direction: row; /* Two-column layout */
+    align-items: flex-start;
+}
+
+.cities-search {
+    width: 100%;
+    margin-bottom: var(--space-md);
 }
 
 .cities-search input {
     width: 100%;
     padding: var(--space-sm);
-    margin-bottom: var(--space-md);
     background: rgba(10, 10, 15, 0.3);
     border: 1px solid var(--glass-border);
     border-radius: calc(var(--card-radius) / 2);
@@ -2691,6 +2733,7 @@ body.focus-outline-disabled :focus {
 .added-cities {
     flex-grow: 1;
     overflow-y: auto;
+    margin-right: var(--space-md);
 }
 
 .added-cities .city-item {
@@ -2702,6 +2745,12 @@ body.focus-outline-disabled :focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer; /* Indicate it's selectable */
+    transition: border-color var(--transition-normal);
+}
+
+.added-cities .city-item.selected {
+    border-color: var(--neural-secondary); /* Blue outline for selected city */
 }
 
 .added-cities .city-item .weather-icon {
@@ -2733,8 +2782,8 @@ body.focus-outline-disabled :focus {
     border: 1px solid var(--glass-border);
     border-radius: var(--card-radius);
     padding: var(--space-md);
-    margin-top: var(--space-md);
-    width: 100%;
+    width: 40%; /* Adjust width of the right column */
+    min-width: 300px; /* Minimum width for the details */
 }
 
 .selected-city-details h3 {
@@ -2748,7 +2797,13 @@ body.focus-outline-disabled :focus {
 
 .selected-city-details .weather-icon.large {
     font-size: 2rem; /* Placeholder for icon */
-    text-align: center;
+    text-align: right;
+    margin: var(--space-md) 0;
+}
+
+.selected-city-details hr {
+    border: none;
+    border-top: 1px solid var(--glass-border);
     margin: var(--space-md) 0;
 }
 
@@ -2760,63 +2815,77 @@ body.focus-outline-disabled :focus {
 
 .selected-city-details .forecast-times {
     display: flex;
-    gap: var(--space-md);
+    flex-direction: column;
+    gap: var(--space-sm);
     padding: var(--space-sm);
 }
 
 .selected-city-details .forecast-item {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.selected-city-details .forecast-item:last-child {
+    border-bottom: none;
 }
 
 .selected-city-details .forecast-item .time {
     font-size: var(--font-size-sm);
-    margin-bottom: var(--space-xs);
 }
 
 .selected-city-details .forecast-item .weather-icon {
     font-size: 1.2rem; /* Placeholder for icon */
-    margin-bottom: var(--space-xs);
 }
 
 .selected-city-details .forecast-item .temp {
     font-size: var(--font-size-base);
+    font-weight: bold;
 }
 
 .selected-city-details .three-day-forecast {
-    display: flex;
-    gap: var(--space-md);
     padding: var(--space-sm);
 }
 
 .selected-city-details .three-day-forecast .daily-forecast {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
 }
 
 .selected-city-details .three-day-forecast .day {
     font-weight: bold;
     display: block;
-    margin-bottom: var(--space-xs);
 }
 
 .selected-city-details .three-day-forecast .weather-icon {
     font-size: 1.2rem; /* Placeholder for icon */
     display: block;
-    margin-bottom: var(--space-xs);
 }
 
 .selected-city-details .three-day-forecast .high-low {
     font-size: var(--font-size-sm);
+    font-weight: bold;
 }
 
-/* --- Map Tab Styles --- */
+/* --- Map Tab Styles - Updated based on Screenshot --- */
 #map {
-    flex-direction: column;
+    flex-direction: row; /* Two-column layout */
+    align-items: flex-start;
+    gap: var(--space-md);
+}
+
+.map-search {
+    width: 100%;
+    margin-bottom: var(--space-md);
 }
 
 .map-search input {
     width: 100%;
     padding: var(--space-sm);
-    margin-bottom: var(--space-md);
     background: rgba(10, 10, 15, 0.3);
     border: 1px solid var(--glass-border);
     border-radius: calc(var(--card-radius) / 2);
@@ -2826,8 +2895,9 @@ body.focus-outline-disabled :focus {
 
 .weather-map {
     position: relative;
-    width: 100%;
-    height: 300px; /* Adjust map height */
+    width: 60%; /* Adjust map width */
+    min-width: 400px;
+    height: 400px; /* Adjust map height */
     background-color: #333; /* Placeholder for map */
     border-radius: var(--card-radius);
     overflow: hidden;
@@ -2860,6 +2930,8 @@ body.focus-outline-disabled :focus {
     padding: var(--space-xs) var(--space-sm);
     cursor: pointer;
     transition: background-color var(--transition-normal);
+    font-size: 1rem;
+    line-height: 1;
 }
 
 .weather-map .map-controls button:hover {
@@ -2869,8 +2941,10 @@ body.focus-outline-disabled :focus {
 .cities-on-map {
     flex-grow: 1;
     overflow-y: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    width: 35%; /* Adjust width for the right column */
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-md);
 }
 
@@ -2879,14 +2953,16 @@ body.focus-outline-disabled :focus {
     border: 1px solid var(--glass-border);
     border-radius: var(--card-radius);
     padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     position: relative;
 }
 
 .cities-on-map .map-city-item .weather-icon {
     font-size: 1.5rem; /* Placeholder for icon */
-    display: block;
-    margin: 0 auto var(--space-xs);
+    margin-bottom: var(--space-xs);
 }
 
 .cities-on-map .map-city-item h4 {
@@ -2899,7 +2975,6 @@ body.focus-outline-disabled :focus {
 .cities-on-map .map-city-item .time {
     font-size: var(--font-size-sm);
     opacity: 0.8;
-    display: block;
     margin-bottom: var(--space-xs);
 }
 
@@ -2911,35 +2986,52 @@ body.focus-outline-disabled :focus {
 .cities-on-map .map-city-item .see-details {
     position: absolute;
     bottom: var(--space-sm);
-    right: var(--space-sm);
+    left: 50%;
+    transform: translateX(-50%);
     background: var(--neural-gradient);
     color: var(--bg-darker);
     border: none;
     border-radius: calc(var(--card-radius) / 4);
-    padding: var(--space-xs) var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
     cursor: pointer;
     font-size: var(--font-size-sm);
     transition: transform var(--transition-normal);
+    white-space: nowrap;
 }
 
 .cities-on-map .map-city-item .see-details:hover {
-    transform: translateY(-2px);
+    transform: translateX(-50%) translateY(-2px);
 }
 
-/* --- Settings Tab Styles --- */
+/* --- Settings Tab Styles - Updated based on Screenshots --- */
 #settings {
     flex-direction: column;
+}
+
+.settings-search {
+    width: 100%;
+    margin-bottom: var(--space-md);
 }
 
 .settings-search input {
     width: 100%;
     padding: var(--space-sm);
-    margin-bottom: var(--space-md);
     background: rgba(10, 10, 15, 0.3);
     border: 1px solid var(--glass-border);
     border-radius: calc(var(--card-radius) / 2);
     color: var(--bg-light);
     font-size: var(--font-size-base);
+}
+
+.units-settings,
+.general-settings {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    width: 100%;
+    max-width: 600px; /* Limit width of settings sections */
 }
 
 .units-settings h3,
@@ -2949,11 +3041,7 @@ body.focus-outline-disabled :focus {
 }
 
 .unit-group {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--card-radius);
-    padding: var(--space-md);
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-lg);
 }
 
 .unit-group h4 {
@@ -2962,8 +3050,9 @@ body.focus-outline-disabled :focus {
 }
 
 .unit-options {
-    display: flex;
-    gap: var(--space-md);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: var(--space-sm);
 }
 
 .unit-options .unit {
@@ -2971,6 +3060,7 @@ body.focus-outline-disabled :focus {
     border-radius: calc(var(--card-radius) / 4);
     cursor: pointer;
     transition: background-color var(--transition-normal);
+    text-align: center;
 }
 
 .unit-options .unit:hover {
@@ -2981,13 +3071,6 @@ body.focus-outline-disabled :focus {
     background-color: var(--neural-gradient);
     color: var(--bg-darker);
     font-weight: bold;
-}
-
-.general-settings {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--card-radius);
-    padding: var(--space-md);
 }
 
 .general-settings .setting-item {
@@ -3069,22 +3152,21 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-/* --- Responsive Adjustments for Weather Tab Layout --- */
+/* --- Responsive Adjustments for Weather Tab --- */
 @media (min-width: 992px) {
     #weather {
         flex-direction: row;
         align-items: flex-start;
+        gap: var(--space-md); /* Space between columns */
     }
 
     .current-weather {
         width: 45%;
-        margin-right: var(--space-md);
         margin-bottom: 0;
     }
 
     .today-forecast {
         width: 45%;
-        margin-left: var(--space-md);
         margin-bottom: 0;
     }
 
@@ -3094,39 +3176,35 @@ input:checked + .slider:before {
     }
 }
 
+/* --- Responsive Adjustments for Cities Tab --- */
 @media (max-width: 768px) {
-    .widget-content {
-        flex-direction: column; /* Stack content on smaller screens */
-    }
-
-    .tab-panel {
+    #cities {
         flex-direction: column;
     }
 
-    #weather {
-        flex-direction: column;
-    }
-
-    .current-weather,
-    .today-forecast,
-    .seven-day-forecast {
+    .selected-city-details {
         width: 100%;
+        margin-top: var(--space-md);
+    }
+
+    .added-cities {
         margin-right: 0;
-        margin-left: 0;
-        margin-bottom: var(--space-md);
-    }
-
-    .today-forecast .forecast-times {
-        flex-wrap: wrap;
-    }
-
-    .today-forecast .forecast-item {
-        width: calc(50% - var(--space-sm)); /* Two items per row on smaller screens */
-        margin-bottom: var(--space-md);
     }
 }
 
-/* --- General Utility Classes --- */
-.fahrenheit, .celsius {
-    color: var(--neural-primary); /* Ensure visibility */
+/* --- Responsive Adjustments for Map Tab --- */
+@media (max-width: 768px) {
+    #map {
+        flex-direction: column;
+    }
+
+    .weather-map {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .cities-on-map {
+        width: 100%;
+        min-width: auto;
+    }
 }
