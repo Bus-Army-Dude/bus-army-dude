@@ -90,6 +90,13 @@ class CommonManager {
     saveSettings() {
         localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
     }
+
+    // Method to reset settings to default
+    resetToDefaults() {
+        localStorage.removeItem('websiteSettings');
+        this.settings = this.loadSettings();
+        this.applySettings();
+    }
 }
 
 // Accept cookies function
