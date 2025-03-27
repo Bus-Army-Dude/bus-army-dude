@@ -113,7 +113,7 @@ export const updateWeather = (lat, lon) => {
         card.innerHTML = `
             <h2 class="title-2 card-title">Now</h2>
             <div class="wrapper">
-                <p class="heading" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;<sup>c</sup></p>
+                <p class="heading" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
                 <img src="./assest/images/weather_icons/${icon}.png" width="64" height="64" alt="${description}" class="weather-icon">
             </div>
             <p class="body-3">${description}</p>
