@@ -2477,7 +2477,7 @@ body.focus-outline-disabled :focus {
 
 #weather-widget #search-input:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 8px var(--focus-shadow-color); /* Matching shoutout focus shadow */
+    box-shadow: 0 0 8px var(--focus-shadow-color);
 }
 
 #weather-widget #search-button {
@@ -2529,6 +2529,7 @@ body.focus-outline-disabled :focus {
     width: 100px;
     height: 100px;
     margin: 10px;
+    transition: transform 0.3s ease;
 }
 
 #weather-widget #weather-icon:hover {
@@ -2549,15 +2550,16 @@ body.focus-outline-disabled :focus {
     background-color: var(--card-bg);
     border-radius: 10px;
     padding: 20px;
-    box-shadow: var(--card-shadow); /* Matching shoutout card shadow */
+    box-shadow: var(--card-shadow);
     min-width: 250px;
     max-width: 320px;
     border: 2px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #weather-widget .weather-details .weather-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--card-hover-shadow); /* Matching shoutout hover shadow */
+    box-shadow: var(--card-hover-shadow);
 }
 
 #weather-widget .weather-details .weather-card p {
@@ -2586,6 +2588,7 @@ body.focus-outline-disabled :focus {
     border-radius: 10px;
     text-align: center;
     box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .forecast-card img {
@@ -2601,6 +2604,11 @@ body.focus-outline-disabled :focus {
 .forecast-card p {
     font-size: 0.9em;
     margin: 5px 0;
+}
+
+.forecast-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
 }
 
 /* Air Quality Index (AQI) Styles */
@@ -2620,6 +2628,7 @@ body.focus-outline-disabled :focus {
     text-align: center;
     width: 250px;
     box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #weather-widget .aqi-card:hover {
@@ -2659,7 +2668,7 @@ body.focus-outline-disabled :focus {
 /* Dark Mode Adjustments */
 @media (prefers-color-scheme: dark) {
     #weather-widget {
-        background-color: var(--container-bg-dark); /* Dark mode background */
+        background-color: var(--container-bg-dark);
         box-shadow: var(--container-shadow-dark);
     }
 
@@ -2698,7 +2707,7 @@ body.focus-outline-disabled :focus {
 /* Light Mode Adjustments */
 @media (prefers-color-scheme: light) {
     #weather-widget {
-        background-color: var(--container-bg-light); /* Light mode background */
+        background-color: var(--container-bg-light);
         box-shadow: var(--container-shadow-light);
     }
 
