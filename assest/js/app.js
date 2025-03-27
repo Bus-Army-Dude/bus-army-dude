@@ -266,8 +266,8 @@ export const updateWeather = (lat, lon) => {
                 windLi.innerHTML = `
                     <div class="card card-sm slider-card">
                         <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
-                        <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform :rotate(${windDirection - 180}deg)">
-                        <p class="body-3" data-wind-speed>${parseInt(module.mps_to_kmh(windSpeed)) }Km/h</p>
+                        <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform: rotate(${windDirection - 180}deg)">
+                        <p class="body-3" data-wind-speed>${parseInt(module.mps_to_kmh(windSpeed))} Km/h</p>
                     </div>
                 `;
                 hourlySection.querySelector("[data-wind]").appendChild(windLi);
