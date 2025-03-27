@@ -3,7 +3,7 @@ import { fetchData, url } from "./api.js";
 import * as module from "./module.js";
 
 /**
- * 
+ *
  * @param {NodeList} elements Elemetns node array
  * @param {String} eventType Event Type e.g: "click","mouseover"
  * @param {Function} callback callback function
@@ -144,85 +144,85 @@ export const updateWeather = (lat, lon) => {
             const card = document.createElement("div");
             card.classList.add("card", "card-lg");
             card.innerHTML = `
-            <h2 class="title-2" id="highlights-label">Today Highlights</h2>
-            <div class="highlight-list">
-                <div class="card card-sm highlight-card one">
-                    <h3 class="title-3">Air Quality Index</h3>
-                    <div class="wrapper">
-                        <span class="m-icon">air</span>
-                        <ul class="card-list">
-                            <li class="card-item">
-                                <p class="title-1">${pm2_5.toPrecision(3)}</p>
-                                <p class="label-1">PM<sub>2.5</sub></p>
-                            </li>
-                            <li class="card-item">
-                                <p class="title-1">${so2.toPrecision(3)}</p>
-                                <p class="label-1">SO<sub>2</sub></p>
-                            </li>
-                            <li class="card-item">
-                                <p class="title-1">${no2.toPrecision(3)}</p>
-                                <p class="label-1">No<sub>2</sub></p>
-                            </li>
-                            <li class="card-item">
-                                <p class="title-1">${o3.toPrecision(3)}</p>
-                                <p class="label-1">O<sub>3</sub></p>
-                            </li>
-                        </ul>
+                <h2 class="title-2" id="highlights-label">Today Highlights</h2>
+                <div class="highlight-list">
+                    <div class="card card-sm highlight-card one">
+                        <h3 class="title-3">Air Quality Index</h3>
+                        <div class="wrapper">
+                            <span class="m-icon">air</span>
+                            <ul class="card-list">
+                                <li class="card-item">
+                                    <p class="title-1">${pm2_5.toPrecision(3)}</p>
+                                    <p class="label-1">PM<sub>2.5</sub></p>
+                                </li>
+                                <li class="card-item">
+                                    <p class="title-1">${so2.toPrecision(3)}</p>
+                                    <p class="label-1">SO<sub>2</sub></p>
+                                </li>
+                                <li class="card-item">
+                                    <p class="title-1">${no2.toPrecision(3)}</p>
+                                    <p class="label-1">No<sub>2</sub></p>
+                                </li>
+                                <li class="card-item">
+                                    <p class="title-1">${o3.toPrecision(3)}</p>
+                                    <p class="label-1">O<sub>3</sub></p>
+                                </li>
+                            </ul>
+                        </div>
+                        <span class="badge aqi-${aqi} label-${aqi}" title="${module.aqiText[aqi].message}">
+                            ${module.aqiText[aqi].level}
+                        </span>
                     </div>
-                    <span class="badge aqi-${aqi} label-${aqi}" title="${module.aqiText[aqi].message}">
-                        ${module.aqiText[aqi].level}
-                    </span> 
-                </div>
-                <div class="card card-sm highlight-card two">
-                    <h3 class="title-3">Sunrise & Sunset</h3>
-                    <div class="wrapper">
-                        <div class="card-list">
-                            <div class="card-item">
-                                <span class="m-icon">clear_day</span>
-                                <div class="label-1">
-                                    <p class="label-1">Sunrise</p>
-                                    <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
+                    <div class="card card-sm highlight-card two">
+                        <h3 class="title-3">Sunrise & Sunset</h3>
+                        <div class="wrapper">
+                            <div class="card-list">
+                                <div class="card-item">
+                                    <span class="m-icon">clear_day</span>
+                                    <div class="label-1">
+                                        <p class="label-1">Sunrise</p>
+                                        <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-item">
-                                <span class="m-icon">clear_night</span>
-                                <div class="label-1">
-                                    <p class="label">Sunset</p>
-                                    <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
+                                <div class="card-item">
+                                    <span class="m-icon">clear_night</span>
+                                    <div class="label-1">
+                                        <p class="label">Sunset</p>
+                                        <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card card-sm highlight-card">
-                    <h3 class="title-3">Humidity</h3>
-                    <div class="wrapper">
-                        <span class="m-icon">humidity_percentage</span>
-                        <p class="title-1">${humidity}<sub>%</sub></p>
+                    <div class="card card-sm highlight-card">
+                        <h3 class="title-3">Humidity</h3>
+                        <div class="wrapper">
+                            <span class="m-icon">humidity_percentage</span>
+                            <p class="title-1">${humidity}<sub>%</sub></p>
+                        </div>
+                    </div>
+                    <div class="card card-sm highlight-card">
+                        <h3 class="title-3">Pressure</h3>
+                        <div class="wrapper">
+                            <span class="m-icon">airwave</span>
+                            <p class="title-1" data-pressure data-original-value="${pressure}">${Math.round(pressure)} <sub>hPa</sub></p>
+                        </div>
+                    </div>
+                    <div class="card card-sm highlight-card">
+                        <h3 class="title-3">Visibility</h3>
+                        <div class="wrapper">
+                            <span class="m-icon">visibility</span>
+                            <p class="title-1">${visibility / 1000} <sub>KM</sub></p>
+                        </div>
+                    </div>
+                    <div class="card card-sm highlight-card">
+                        <h3 class="title-3">Feels Like</h3>
+                        <div class="wrapper">
+                            <span class="m-icon">thermostat</span>
+                            <p class="title-1" data-temperature data-original-value="${feels_like}">${Math.round(feels_like)}&deg;</p>
+                        </div>
                     </div>
                 </div>
-                <div class="card card-sm highlight-card">
-                    <h3 class="title-3">Pressure</h3>
-                    <div class="wrapper">
-                        <span class="m-icon">airwave</span>
-                        <p class="title-1" data-pressure data-original-value="${pressure}">${Math.round(pressure)} <sub>hPa</sub></p>
-                    </div>
-                </div>
-                <div class="card card-sm highlight-card">
-                    <h3 class="title-3">Visibility</h3>
-                    <div class="wrapper">
-                        <span class="m-icon">visibility</span>
-                        <p class="title-1">${visibility / 1000} <sub>KM</sub></p>
-                    </div>
-                </div>
-                <div class="card card-sm highlight-card">
-                    <h3 class="title-3">Feels Like</h3>
-                    <div class="wrapper">
-                        <span class="m-icon">thermostat</span>
-                        <p class="title-1" data-temperature data-original-value="${feels_like}">${Math.round(feels_like)}&deg;</p>
-                    </div>
-                </div>
-            </div>
             `;
             highlightSection.appendChild(card)
         })
@@ -302,7 +302,7 @@ export const updateWeather = (lat, lon) => {
                     <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
                 `;
                 forecastSection.querySelector("[data-forecast-list]").appendChild(li)
-                
+
             }
             loading.style.display = "none";
             container.classList.add("fade-in");
@@ -312,10 +312,13 @@ export const updateWeather = (lat, lon) => {
 
 // Load user settings and apply them
 const loadUserSettings = () => {
-    const settings = JSON.parse(localStorage.getItem("weatherSettings"));
-    if (settings) {
-        applySettings(settings);
-    }
+    const settings = JSON.parse(localStorage.getItem("weatherSettings")) || {
+        darkMode: false,
+        temperature: "celsius",
+        windSpeed: "m/s",
+        pressure: "hPa"
+    };
+    applySettings(settings);
 };
 
 const applySettings = (settings) => {
@@ -371,7 +374,44 @@ const applySettings = (settings) => {
 };
 
 // Load user settings on page load
-document.addEventListener("DOMContentLoaded", loadUserSettings);
+document.addEventListener("DOMContentLoaded", () => {
+    loadUserSettings();
+
+    // Add event listeners for unit changes
+    const temperatureUnitControl = document.getElementById("temperature-unit");
+    const windSpeedUnitControl = document.getElementById("wind-speed-unit");
+    const pressureUnitControl = document.getElementById("pressure-unit");
+
+    if (temperatureUnitControl) {
+        temperatureUnitControl.addEventListener("change", () => {
+            const selectedUnit = temperatureUnitControl.value;
+            const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
+            currentSettings.temperature = selectedUnit;
+            localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
+            applySettings(currentSettings);
+        });
+    }
+
+    if (windSpeedUnitControl) {
+        windSpeedUnitControl.addEventListener("change", () => {
+            const selectedUnit = windSpeedUnitControl.value;
+            const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
+            currentSettings.windSpeed = selectedUnit;
+            localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
+            applySettings(currentSettings);
+        });
+    }
+
+    if (pressureUnitControl) {
+        pressureUnitControl.addEventListener("change", () => {
+            const selectedUnit = pressureUnitControl.value;
+            const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
+            currentSettings.pressure = selectedUnit;
+            localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
+            applySettings(currentSettings);
+        });
+    }
+});
 
 export const error404 = () => {
     errorContent.style.display = "flex"
