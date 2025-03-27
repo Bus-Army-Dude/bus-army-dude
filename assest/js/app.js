@@ -353,49 +353,51 @@ const applySettings = (settings) => {
     const temperatureElements = document.querySelectorAll("[data-temperature]");
     temperatureElements.forEach(element => {
         let tempValue = parseFloat(element.getAttribute("data-original-value"));
+        let unit = '°C'; // Default to Celsius
+
         if (settings.temperature === "fahrenheit") {
             tempValue = (tempValue * 9/5) + 32;
-            element.textContent = `${Math.round(tempValue)}°`;
+            unit = '°F';
         } else if (settings.temperature === "kelvin") {
             tempValue = tempValue + 273.15;
-            element.textContent = `${Math.round(tempValue)}°`;
-        } else {
-            element.textContent = `${Math.round(tempValue)}°`;
+            unit = ' K'; // Note the space before K for better readability
         }
+
+        element.textContent = `${Math.round(tempValue)}${unit}`;
     });
 
     const windSpeedElements = document.querySelectorAll("[data-wind-speed]");
     windSpeedElements.forEach(element => {
         let speedValue = parseFloat(element.getAttribute("data-original-value"));
+        let unit = ' m/s';
         if (settings.windSpeed === "mph") {
             speedValue = speedValue * 2.23694;
-            element.textContent = `${Math.round(speedValue)} mph`;
+            unit = ' mph';
         } else if (settings.windSpeed === "kph") {
             speedValue = speedValue * 3.6;
-            element.textContent = `${Math.round(speedValue)} km/h`;
+            unit = ' km/h';
         } else if (settings.windSpeed === "knots") {
             speedValue = speedValue * 1.94384;
-            element.textContent = `${Math.round(speedValue)} knots`;
+            unit = ' knots';
         } else if (settings.windSpeed === "beaufort") {
             speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2 / 3)), 0), 12);
-            element.textContent = `${speedValue} Bft`;
-        } else { // Default to m/s if no match
-            element.textContent = `${Math.round(speedValue)} m/s`;
+            unit = ' Bft';
         }
+        element.textContent = `${Math.round(speedValue)}${unit}`;
     });
 
     const pressureElements = document.querySelectorAll("[data-pressure]");
     pressureElements.forEach(element => {
         let pressureValue = parseFloat(element.getAttribute("data-original-value"));
+        let unit = ' hPa';
         if (settings.pressure === "inhg") {
             pressureValue = pressureValue * 0.02953;
-            element.textContent = `${Math.round(pressureValue)} inHg`;
+            unit = ' inHg';
         } else if (settings.pressure === "mmhg") {
             pressureValue = pressureValue * 0.75006;
-            element.textContent = `${Math.round(pressureValue)} mmHg`;
-        } else { // Default to hPa if no match
-            element.textContent = `${Math.round(pressureValue)} hPa`;
+            unit = ' mmHg';
         }
+        element.textContent = `${Math.round(pressureValue)}${unit}`;
     });
 };
 
