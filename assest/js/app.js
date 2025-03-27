@@ -187,8 +187,8 @@ export const updateWeather = (lat, lon) => {
                                         <p class="label">Sunset</p>
                                         <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
                                     </div>
-                                </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
@@ -277,7 +277,7 @@ export const updateWeather = (lat, lon) => {
                 `;
                 for (let i = 7, len = forecastList.length; i < len; i += 8) {
                     const {
-                        main: { temp_max },
+                        main: { temp_max, temp_min }, // Include temp_min
                         weather,
                         dt_txt
                     } = forecastList[i];
@@ -289,14 +289,13 @@ export const updateWeather = (lat, lon) => {
                         <div class="icon-wrapper">
                             <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
                             <span class="span">
-                            <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
+                                <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
                             </span>
                         </div>
                         <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
                         <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
                     `;
                     forecastSection.querySelector("[data-forecast-list]").appendChild(li);
-
                 }
                 loading.style.display = "none";
                 container.classList.add("fade-in");
@@ -405,6 +404,18 @@ const applySettings = (settings) => {
         }
         element.textContent = `${Math.round(pressureValue)}${unit}`;
     });
+
+    // No direct changes to applySettings needed for time format in app.js
+    // The time format logic is handled in module.js's getTime function.
+    // However, we can trigger an update of the displayed time if needed.
+    const timeElements = document.querySelectorAll(".body-3:first-child, .meta-list .meta-item:last-child .meta-text");
+    timeElements.forEach(element => {
+        const timestamp = parseInt(element.getAttribute("data-timestamp"));
+        const timezoneOffset = parseInt(element.getAttribute("data-timezone"));
+        if (timestamp && timezoneOffset) {
+            element.textContent = module.getTime(timestamp, timezoneOffset);
+        }
+    });
 };
 
 // Load user settings on page load
