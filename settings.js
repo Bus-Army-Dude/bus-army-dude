@@ -38,7 +38,9 @@ class SettingsManager {
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
             darkModeToggle.addEventListener('change', (e) => {
-                this.applyTheme(e.target.checked);
+                this.settings.darkMode = e.target.checked;
+                this.applyTheme(this.settings.darkMode);
+                this.saveSettings();
             });
         }
 
@@ -52,9 +54,11 @@ class SettingsManager {
 
             textSizeSlider.addEventListener('input', (e) => {
                 const size = parseInt(e.target.value);
+                this.settings.textSize = size;
                 this.setTextSize(size);
                 textSizeValue.textContent = `${size}px`;
                 this.updateSliderGradient(textSizeSlider);
+                this.saveSettings();
             });
         }
 
@@ -64,7 +68,9 @@ class SettingsManager {
             profileStatusSelect.value = this.settings.profileStatus;
             profileStatusSelect.disabled = !this.isOwner;  // Disable if not owner
             profileStatusSelect.addEventListener('change', (e) => {
-                this.setProfileStatus(e.target.value);
+                this.settings.profileStatus = e.target.value;
+                this.setProfileStatus(this.settings.profileStatus);
+                this.saveSettings();
             });
         }
 
@@ -74,7 +80,9 @@ class SettingsManager {
             maintenanceModeToggle.checked = this.settings.maintenanceMode;
             maintenanceModeToggle.disabled = !this.isOwner;
             maintenanceModeToggle.addEventListener('change', (e) => {
-                this.setMaintenanceMode(e.target.checked);
+                this.settings.maintenanceMode = e.target.checked;
+                this.setMaintenanceMode(this.settings.maintenanceMode);
+                this.saveSettings();
             });
         }
 
@@ -94,7 +102,9 @@ class SettingsManager {
         if (focusOutlineToggle) {
             focusOutlineToggle.checked = this.settings.focusOutline === 'enabled';
             focusOutlineToggle.addEventListener('change', (e) => {
-                this.toggleFocusOutline(e.target.checked);
+                this.settings.focusOutline = e.target.checked ? 'enabled' : 'disabled';
+                this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
+                this.saveSettings();
             });
         }
     }
@@ -114,13 +124,6 @@ class SettingsManager {
 
     // Set the profile status
     setProfileStatus(status) {
-        this.settings.profileStatus = status;
-        this.saveSettings();
-        this.applyProfileStatus(status); // Apply status change to the profile
-        this.refreshUI();
-    }
-
-    applyProfileStatus(status) {
         const statusElement = document.querySelector('.profile-status');
         if (statusElement) {
             statusElement.classList.remove('online', 'idle', 'offline');  // Remove previous status classes
@@ -141,17 +144,11 @@ class SettingsManager {
     applyTheme(isDark = this.settings.darkMode) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
-        this.settings.darkMode = isDark;
-        this.saveSettings();
-        this.refreshUI();
     }
 
     // Set text size
     setTextSize(size) {
         document.documentElement.style.setProperty('--font-size-base', `${size}px`);
-        this.settings.textSize = size;
-        this.saveSettings();
-        this.refreshUI();
     }
 
     // Focus outline enabling and disabling
@@ -161,9 +158,6 @@ class SettingsManager {
         } else {
             document.body.classList.add('focus-outline-disabled');
         }
-        this.settings.focusOutline = enable ? 'enabled' : 'disabled';
-        this.saveSettings();
-        this.refreshUI();
     }
 
     // Save settings to localStorage
@@ -201,46 +195,16 @@ class SettingsManager {
         if (maintenanceModeToggle) maintenanceModeToggle.checked = defaultSettings.maintenanceMode;
         if (profileStatusSelect) profileStatusSelect.value = defaultSettings.profileStatus;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaultSettings.focusOutline === 'enabled';
-
-        // Force UI refresh
-        this.refreshUI();
-    }
-
-    // Method to force UI refresh
-    refreshUI() {
-        // Re-initialize controls to reflect the updated settings
-        this.initializeControls();
     }
 
     // Set Maintenance Mode
     setMaintenanceMode(isEnabled) {
-        this.settings.maintenanceMode = isEnabled;
-        this.saveSettings();
-        this.applyMaintenanceMode(isEnabled);
-        this.refreshUI();
-    }
-
-    applyMaintenanceMode(isEnabled) {
         const maintenanceMessage = document.getElementById('maintenanceModeMessage');
         if (maintenanceMessage) {
             maintenanceMessage.style.display = isEnabled ? 'block' : 'none';
         }
     }
 
-    // Set profile status manually (for owner)
-    setProfileStatusManually(status) {
-        if (['online', 'idle', 'offline'].includes(status)) {
-            this.setProfileStatus(status);
-        } else {
-            console.error('Invalid profile status');
-        }
-    }
-
-    // Set maintenance mode manually (for owner)
-    setMaintenanceModeManually(isEnabled) {
-        this.setMaintenanceMode(isEnabled);
-    }
-    
     // Dynamically update footer year
     updateFooterYear() {
         const footerYear = document.getElementById('year');
@@ -255,10 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsManager = new SettingsManager();
 
     // Manually set maintenance mode
-    settingsManager.setMaintenanceModeManually(false);
+    settingsManager.setMaintenanceMode(false);
 
     // Manually set profile status
-    settingsManager.setProfileStatusManually('online');
+    settingsManager.setProfileStatus('online');
 });
 
 // Function to accept cookies and hide the banner
