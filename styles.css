@@ -171,8 +171,8 @@ body {
 /* Settings Button */
 .settings-button {
     position: absolute;
-    top: 25px; /* Adjusted to be in the corner */
-    right: 25px; /* Adjusted to be in the corner */
+    top: 20px; /* Adjusted to be in the corner */
+    right: 20px; /* Adjusted to be in the corner */
     width: 40px;
     height: 40px;
     border-radius: 12px;
@@ -201,8 +201,8 @@ body {
 /* Merch Button */
 .merch-button {
     position: absolute;
-    top: 25px; /* Adjusted to be in the corner */
-    left: 25px; /* Adjusted to be in the corner */
+    top: 20px; /* Adjusted to be in the corner */
+    left: 20px; /* Adjusted to be in the corner */
     width: 40px;
     height: 40px;
     border-radius: 12px;
@@ -265,7 +265,6 @@ body {
         background-size: 14px;
     }
 }
-
 
 /* Current Date/Time Section */
 .datetime-section {
