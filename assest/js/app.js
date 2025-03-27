@@ -289,7 +289,7 @@ export const updateWeather = (lat, lon) => {
                         <div class="icon-wrapper">
                             <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
                             <span class="span">
-                            <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
+                            <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}</p>
                             </span>
                         </div>
                         <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
@@ -353,17 +353,25 @@ const applySettings = (settings) => {
     const temperatureElements = document.querySelectorAll("[data-temperature]");
     temperatureElements.forEach(element => {
         let tempValue = parseFloat(element.getAttribute("data-original-value"));
-        let unit = '°C'; // Default to Celsius
+        let unit = ''; // Initialize unit as empty for 5-day forecast
 
         if (settings.temperature === "fahrenheit") {
             tempValue = (tempValue * 9/5) + 32;
             unit = '°F';
         } else if (settings.temperature === "kelvin") {
             tempValue = tempValue + 273.15;
-            unit = ' K'; // Note the space before K for better readability
+            unit = ' K';
+        } else {
+            unit = '°C';
         }
 
-        element.textContent = `${Math.round(tempValue)}${unit}`;
+        // Check if the element is within the 5-day forecast to conditionally apply the unit
+        const forecastItem = element.closest('[data-forecast-list] li');
+        if (!forecastItem) {
+            element.textContent = `${Math.round(tempValue)}${unit}`;
+        } else {
+            element.textContent = `${Math.round(tempValue)}`; // Remove unit from 5-day forecast
+        }
     });
 
     const windSpeedElements = document.querySelectorAll("[data-wind-speed]");
