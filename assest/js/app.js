@@ -77,7 +77,6 @@ const errorContent = document.querySelector("[data-error-content]")
 
 export const updateWeather = (lat, lon) => {
     loading.style.display = "grid";
-    //container.style.overflowY = "hidden";
     container.classList.remove("fade-in");
     errorContent.style.display = "none";
 
@@ -86,10 +85,10 @@ export const updateWeather = (lat, lon) => {
     const hourlySection = document.querySelector("[data-hourly-forecast]");
     const forecastSection = document.querySelector("[data-5-day-forecast]");
 
-    currentWeatherSection.innerHTML = ""
-    highlightSection.innerHTML = ""
-    hourlySection.innerHTML = ""
-    forecastSection.innerHTML = ""
+    currentWeatherSection.innerHTML = "";
+    highlightSection.innerHTML = "";
+    hourlySection.innerHTML = "";
+    forecastSection.innerHTML = "";
 
     if (window.location.hash == "#/current-location")
         currentLocationBtn.setAttribute("disabled", "");
@@ -97,7 +96,6 @@ export const updateWeather = (lat, lon) => {
         currentLocationBtn.removeAttribute("disabled");
 
     //CURRENT WEATHER
-
     fetchData(url.currentWeather(lat, lon), (currentWeather) => {
         const {
             weather,
@@ -130,11 +128,10 @@ export const updateWeather = (lat, lon) => {
         `
         fetchData(url.reverseGeo(lat, lon), ([{ name, country }]) => {
             card.querySelector("[data-location]").innerHTML = `${name}, ${country}`;
-        })
+        });
         currentWeatherSection.appendChild(card);
 
         //today's highlights
-
         fetchData(url.airPollution(lat, lon), (airPollution) => {
             const [{
                 main: { aqi },
@@ -224,101 +221,130 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 </div>
             `;
-            highlightSection.appendChild(card)
-        })
+            highlightSection.appendChild(card);
 
-        //24H forecast
-
-        fetchData(url.forecast(lat, lon), (forecast) => {
-            const {
-                list: forecastList,
-                city: { timezone }
-            } = forecast;
-            hourlySection.innerHTML = `
-                <h2 class="title-2">Today at</h2>
-                <div class="slider-container">
-                    <ul class="slider-list" data-temp></ul>
-                    <ul class="slider-list" data-wind></ul>
-                </div>
-            `;
-            for (const [index, data] of forecastList.entries()) {
-                if (index > 7)
-                    break
+            //24H forecast
+            fetchData(url.forecast(lat, lon), (forecast) => {
                 const {
-                    dt: dateTimeUnix,
-                    main: { temp },
-                    weather,
-                    wind: { deg: windDirection, speed: windSpeed }
-                } = data;
-                const [{ icon, description }] = weather;
-                const tempLi = document.createElement("li");
-                tempLi.classList.add("slider-item");
-                tempLi.innerHTML = `
-                    <div class="card card-sm slider-card">
-                        <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
-                        <img src="./assest/images/weather_icons/${icon}.png" width="48" height="48" loading="lazy" alt="${description}" class="weather-icon" title="${description}">
-                        <p class="body-3" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
+                    list: forecastList,
+                    city: { timezone }
+                } = forecast;
+                hourlySection.innerHTML = `
+                    <h2 class="title-2">Today at</h2>
+                    <div class="slider-container">
+                        <ul class="slider-list" data-temp></ul>
+                        <ul class="slider-list" data-wind></ul>
                     </div>
+                `;
+                for (const [index, data] of forecastList.entries()) {
+                    if (index > 7)
+                        break
+                    const {
+                        dt: dateTimeUnix,
+                        main: { temp },
+                        weather,
+                        wind: { deg: windDirection, speed: windSpeed }
+                    } = data;
+                    const [{ icon, description }] = weather;
+                    const tempLi = document.createElement("li");
+                    tempLi.classList.add("slider-item");
+                    tempLi.innerHTML = `
+                        <div class="card card-sm slider-card">
+                            <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
+                            <img src="./assest/images/weather_icons/${icon}.png" width="48" height="48" loading="lazy" alt="${description}" class="weather-icon" title="${description}">
+                            <p class="body-3" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
+                        </div>
+                        `;
+                    hourlySection.querySelector("[data-temp]").appendChild(tempLi);
+                    const windLi = document.createElement("li");
+                    windLi.classList.add("slider-item");
+                    windLi.innerHTML = `
+                        <div class="card card-sm slider-card">
+                            <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
+                            <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform: rotate(${windDirection - 180}deg)">
+                            <p class="body-3" data-wind-speed data-original-value="${module.mps_to_kmh(windSpeed)}">${Math.round(module.mps_to_kmh(windSpeed))}</p>
+                        </div>
                     `;
-                hourlySection.querySelector("[data-temp]").appendChild(tempLi);
-                const windLi = document.createElement("li");
-                windLi.classList.add("slider-item");
-                windLi.innerHTML = `
-                    <div class="card card-sm slider-card">
-                        <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
-                        <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform: rotate(${windDirection - 180}deg)">
-                        <p class="body-3" data-wind-speed data-original-value="${module.mps_to_kmh(windSpeed)}">${Math.round(module.mps_to_kmh(windSpeed))}</p>
+                    hourlySection.querySelector("[data-wind]").appendChild(windLi);
+                }
+
+                //5 day forecast
+                forecastSection.innerHTML = `
+                    <h2 class="title-2" id="forecast-label">5 Days Forecast</h2>
+                    <div class="card card-lg forecast-card">
+                        <ul data-forecast-list></ul>
                     </div>
                 `;
-                hourlySection.querySelector("[data-wind]").appendChild(windLi);
-            }
+                for (let i = 7, len = forecastList.length; i < len; i += 8) {
+                    const {
+                        main: { temp_max },
+                        weather,
+                        dt_txt
+                    } = forecastList[i];
+                    const [{ icon, description }] = weather;
+                    const date = new Date(dt_txt);
+                    const li = document.createElement("li");
+                    li.classList.add("card-item");
+                    li.innerHTML = `
+                        <div class="icon-wrapper">
+                            <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
+                            <span class="span">
+                            <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
+                            </span>
+                        </div>
+                        <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
+                        <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
+                    `;
+                    forecastSection.querySelector("[data-forecast-list]").appendChild(li);
 
-            //5 day forecast
+                }
+                loading.style.display = "none";
+                container.classList.add("fade-in");
 
-            forecastSection.innerHTML = `
-                <h2 class="title-2" id="forecast-label">5 Days Forecast</h2>
-                <div class="card card-lg forecast-card">
-                    <ul data-forecast-list></ul>
-                </div>
-            `;
-            for (let i = 7, len = forecastList.length; i < len; i += 8) {
-                const {
-                    main: { temp_max },
-                    weather,
-                    dt_txt
-                } = forecastList[i];
-                const [{ icon, description }] = weather;
-                const date = new Date(dt_txt);
-                const li = document.createElement("li");
-                li.classList.add("card-item");
-                li.innerHTML = `
-                    <div class="icon-wrapper">
-                        <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
-                        <span class="span">
-                        <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
-                        </span>
-                    </div>
-                    <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
-                    <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
-                `;
-                forecastSection.querySelector("[data-forecast-list]").appendChild(li)
-
-            }
-            loading.style.display = "none";
-            container.classList.add("fade-in");
+                // APPLY SETTINGS HERE, AFTER ALL DATA IS RENDERED
+                const savedSettings = JSON.parse(localStorage.getItem("weatherSettings"));
+                if (savedSettings) {
+                    applySettings(savedSettings);
+                }
+            });
         });
     });
-}
+};
 
 // Load user settings and apply them
 const loadUserSettings = () => {
     const settings = JSON.parse(localStorage.getItem("weatherSettings")) || {
-        darkMode: false,
+        darkMode: document.documentElement.getAttribute("data-theme") === "dark", // Initialize with current theme
         temperature: "celsius",
-        windSpeed: "m/s",
-        pressure: "hPa"
+        windSpeed: "ms", // Corrected to match the option value
+        pressure: "hpa" // Corrected to match the option value
     };
     applySettings(settings);
+
+    // Set initial dropdown values based on loaded settings
+    const tempUnitControl = document.querySelector("[data-settings-temp]");
+    if (tempUnitControl && settings.temperature) {
+        tempUnitControl.value = settings.temperature;
+    }
+
+    const windSpeedUnitControl = document.querySelector("[data-settings-speed]");
+    if (windSpeedUnitControl && settings.windSpeed) {
+        // Ensure the stored value matches the select option value
+        const storedWindSpeed = settings.windSpeed === 'm/s' ? 'ms' : settings.windSpeed;
+        windSpeedUnitControl.value = storedWindSpeed;
+    }
+
+    const pressureUnitControl = document.querySelector("[data-settings-pressure]");
+    if (pressureUnitControl && settings.pressure) {
+        // Ensure the stored value matches the select option value
+        const storedPressure = settings.pressure === 'hPa' ? 'hpa' : settings.pressure;
+        pressureUnitControl.value = storedPressure;
+    }
+
+    const themeToggle = document.querySelector("[data-settings-theme]");
+    if (themeToggle) {
+        themeToggle.checked = settings.darkMode;
+    }
 };
 
 const applySettings = (settings) => {
@@ -327,49 +353,51 @@ const applySettings = (settings) => {
     const temperatureElements = document.querySelectorAll("[data-temperature]");
     temperatureElements.forEach(element => {
         let tempValue = parseFloat(element.getAttribute("data-original-value"));
+        let unit = '°C'; // Default to Celsius
+
         if (settings.temperature === "fahrenheit") {
             tempValue = (tempValue * 9/5) + 32;
-            element.textContent = `${Math.round(tempValue)}°`;
+            unit = '°F';
         } else if (settings.temperature === "kelvin") {
             tempValue = tempValue + 273.15;
-            element.textContent = `${Math.round(tempValue)}°`;
-        } else {
-            element.textContent = `${Math.round(tempValue)}°`;
+            unit = ' K'; // Note the space before K for better readability
         }
+
+        element.textContent = `${Math.round(tempValue)}${unit}`;
     });
 
     const windSpeedElements = document.querySelectorAll("[data-wind-speed]");
     windSpeedElements.forEach(element => {
         let speedValue = parseFloat(element.getAttribute("data-original-value"));
+        let unit = ' m/s';
         if (settings.windSpeed === "mph") {
             speedValue = speedValue * 2.23694;
-            element.textContent = `${Math.round(speedValue)} mph`;
+            unit = ' mph';
         } else if (settings.windSpeed === "kph") {
             speedValue = speedValue * 3.6;
-            element.textContent = `${Math.round(speedValue)} km/h`;
+            unit = ' km/h';
         } else if (settings.windSpeed === "knots") {
             speedValue = speedValue * 1.94384;
-            element.textContent = `${Math.round(speedValue)} knots`;
+            unit = ' knots';
         } else if (settings.windSpeed === "beaufort") {
             speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2 / 3)), 0), 12);
-            element.textContent = `${speedValue} Bft`;
-        } else {
-            element.textContent = `${Math.round(speedValue)} m/s`;
+            unit = ' Bft';
         }
+        element.textContent = `${Math.round(speedValue)}${unit}`;
     });
 
     const pressureElements = document.querySelectorAll("[data-pressure]");
     pressureElements.forEach(element => {
         let pressureValue = parseFloat(element.getAttribute("data-original-value"));
+        let unit = ' hPa';
         if (settings.pressure === "inhg") {
             pressureValue = pressureValue * 0.02953;
-            element.textContent = `${Math.round(pressureValue)} inHg`;
+            unit = ' inHg';
         } else if (settings.pressure === "mmhg") {
             pressureValue = pressureValue * 0.75006;
-            element.textContent = `${Math.round(pressureValue)} mmHg`;
-        } else {
-            element.textContent = `${Math.round(pressureValue)} hPa`;
+            unit = ' mmHg';
         }
+        element.textContent = `${Math.round(pressureValue)}${unit}`;
     });
 };
 
@@ -378,9 +406,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loadUserSettings();
 
     // Add event listeners for unit changes
-    const temperatureUnitControl = document.getElementById("temperature-unit");
-    const windSpeedUnitControl = document.getElementById("wind-speed-unit");
-    const pressureUnitControl = document.getElementById("pressure-unit");
+    const temperatureUnitControl = document.querySelector("[data-settings-temp]");
+    const windSpeedUnitControl = document.querySelector("[data-settings-speed]");
+    const pressureUnitControl = document.querySelector("[data-settings-pressure]");
+    const themeToggle = document.querySelector("[data-settings-theme]");
 
     if (temperatureUnitControl) {
         temperatureUnitControl.addEventListener("change", () => {
@@ -396,7 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
         windSpeedUnitControl.addEventListener("change", () => {
             const selectedUnit = windSpeedUnitControl.value;
             const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
-            currentSettings.windSpeed = selectedUnit;
+            // Map the select value to the setting value
+            currentSettings.windSpeed = selectedUnit === 'ms' ? 'm/s' : selectedUnit;
             localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
             applySettings(currentSettings);
         });
@@ -406,7 +436,18 @@ document.addEventListener("DOMContentLoaded", () => {
         pressureUnitControl.addEventListener("change", () => {
             const selectedUnit = pressureUnitControl.value;
             const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
-            currentSettings.pressure = selectedUnit;
+            // Map the select value to the setting value
+            currentSettings.pressure = selectedUnit === 'hpa' ? 'hPa' : selectedUnit;
+            localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
+            applySettings(currentSettings);
+        });
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener("change", () => {
+            const isDarkMode = themeToggle.checked;
+            const currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || {};
+            currentSettings.darkMode = isDarkMode;
             localStorage.setItem("weatherSettings", JSON.stringify(currentSettings));
             applySettings(currentSettings);
         });
