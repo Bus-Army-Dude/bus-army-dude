@@ -166,27 +166,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to fetch location (checks locationAllowed)
   const fetchLocation = () => {
-    if (!locationAllowed) {
-      alert("Location services are disabled. Enable them in settings to fetch your location.");
-      console.error("Location fetching is disabled by user settings!");
-      return; // Prevent the browser from accessing the Geolocation API
-    }
+  if (!locationAllowed) {
+    alert("Location services are disabled. Enable them in settings to fetch your location.");
+    console.error("Location fetching is disabled by user settings!");
+    return; // Prevent the browser from accessing the Geolocation API
+  }
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          alert(`Your location is:\nLatitude: ${position.coords.latitude}\nLongitude: ${position.coords.longitude}`);
-        },
-        (error) => {
-          alert("Failed to fetch location. Please try again.");
-          console.error("Error fetching location:", error);
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by your browser.");
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
+  if (navigator.geolocation) {
+    locationBtn.setAttribute("disabled", true); // Temporarily grey out the button
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        locationBtn.removeAttribute("disabled"); // Re-enable the button after a successful fetch
+        const latitude = position.coords.latitude.toFixed(4);
+        const longitude = position.coords.longitude.toFixed(4);
+        locationDisplay.textContent = `Lat: ${latitude}, Lon: ${longitude}`; // Display fetched location
+        console.log(`Fetched location: Latitude - ${latitude}, Longitude - ${longitude}`);
+      },
+      (error) => {
+        locationBtn.removeAttribute("disabled"); // Re-enable the button if fetching fails
+        alert("Failed to fetch location. Please try again.");
+        console.error("Error fetching location:", error);
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by your browser.");
+    console.error("Geolocation is not supported by this browser.");
+  }
+};
 
   // Event listeners for opening, closing, and saving settings
   settingsBtn.addEventListener("click", openSettingsModal);
