@@ -495,17 +495,17 @@ body.settings-page {
 }
 
 @media (prefers-color-scheme: light) {
-  /* Ensure option text is black in light mode - more specific */
+  /* Ensure option text is black in light mode */
   body.settings-page .select-input option {
-    color: #000000 !important;
-    background-color: #ffffff !important; /* Also ensuring white background */
+    color: #000000;
+    background-color: #ffffff; /* Ensure white background */
   }
 }
 
 @media (prefers-color-scheme: dark) {
     .settings-page .select-input option {
-        background-color: #2d2d2d !important;
-        color: #ffffff !important;
+        background-color: #2d2d2d;
+        color: #ffffff;
     }
 }
 
