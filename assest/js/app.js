@@ -482,23 +482,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Add this to your existing route.js or where you handle navigation
-window.addEventListener('beforeunload', (event) => {
+// Load saved city on startup
+window.addEventListener('load', () => {
     const savedCity = localStorage.getItem('weatherCity');
     if (savedCity) {
-        sessionStorage.setItem('lastWeatherCity', savedCity);
-    }
-});
-
-// Modify your existing load event listener to check both storage types
-window.addEventListener('load', () => {
-    // Try to get from localStorage first, then sessionStorage as backup
-    let savedCity = localStorage.getItem('weatherCity') || sessionStorage.getItem('lastWeatherCity');
-    
-    if (savedCity) {
         const { lat, lon } = JSON.parse(savedCity);
-        // Save back to localStorage to ensure persistence
-        localStorage.setItem('weatherCity', savedCity);
         window.location.hash = `#/weather?${lat}&${lon}`;
     } else if (!window.location.hash) {
         window.location.hash = "#/current-location";
