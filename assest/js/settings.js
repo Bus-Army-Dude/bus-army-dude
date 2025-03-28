@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tempSelect = document.querySelector("[data-settings-temp]");
     const speedSelect = document.querySelector("[data-settings-speed]");
     const pressureSelect = document.querySelector("[data-settings-pressure]");
+    const distanceSelect = document.querySelector("[data-settings-distance]"); // Add this line
     const themeToggle = document.querySelector("[data-settings-theme]");
     const timeToggle = document.querySelector("[data-settings-time]");
     const locationToggle = document.querySelector("[data-settings-location]");
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         temperature: "celsius",
         windSpeed: "ms",
         pressure: "hpa",
+        distance: "km", // Add this line
         darkMode: true,
         timeFormat: false,
         locationServices: true
@@ -33,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tempSelect.value = savedSettings.temperature;
         speedSelect.value = savedSettings.windSpeed;
         pressureSelect.value = savedSettings.pressure;
+        distanceSelect.value = savedSettings.distance; // Add this line
         themeToggle.checked = savedSettings.darkMode;
         timeToggle.checked = savedSettings.timeFormat;
         locationToggle.checked = savedSettings.locationServices;
@@ -47,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
             temperature: tempSelect.value,
             windSpeed: speedSelect.value,
             pressure: pressureSelect.value,
+            distance: distanceSelect.value, // Add this line
             darkMode: themeToggle.checked,
             timeFormat: timeToggle.checked,
             locationServices: locationToggle.checked
