@@ -515,9 +515,9 @@ article.container::before {
 [data-current-weather] .weapper {
     margin-block: 12px;
     display: flex;
-    gap: 16px; /* Increased gap for spacing */
+    gap: 16px; 
     align-items: center;
-    justify-content: flex-start; /* Align temperature and icon to the start */
+    justify-content: flex-start;
 }
 
 [data-current-weather] .weather-icon {
@@ -529,9 +529,11 @@ article.container::before {
     padding: 10px 15px;
 }
 
-[data-current-weather] .body-3 {
+/* Move .body-3 into the weapper div */
+[data-current-weather] .weapper .body-3 {
     text-transform: capitalize;
-    margin-top: 8px;
+    margin-top: 0; /* Remove top margin */
+    margin-left: 16px; /* Add left margin for spacing */
 }
 
 [data-current-weather] .meta-list {
