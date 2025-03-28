@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.querySelector("[data-settings-theme]");
   const timeToggle = document.querySelector("[data-settings-time]");
   const locationToggle = document.querySelector("[data-settings-location]");
+  const locationBtn = document.querySelector("[data-current-location-btn]");
 
   let locationAllowed = true; // Default value to allow location access
 
@@ -54,6 +55,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to apply settings
   const applySettings = (settings) => {
     document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
+
+    // Update locationAllowed based on settings
+    locationAllowed = settings.locationServices;
+
+    // Handle location button state
+    if (!locationAllowed) {
+      locationBtn.classList.add("disabled");
+      locationBtn.setAttribute("aria-disabled", "true");
+      locationBtn.style.pointerEvents = "none"; // Prevent clicking
+    } else {
+      locationBtn.classList.remove("disabled");
+      locationBtn.setAttribute("aria-disabled", "false");
+      locationBtn.style.pointerEvents = "auto"; // Enable clicking
+    }
 
     // Apply temperature setting
     const temperatureElements = document.querySelectorAll("[data-temperature]");
@@ -142,32 +157,33 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Handle location services
-    locationAllowed = settings.locationServices;
     if (!locationAllowed) {
-      console.log("Location services disabled. Blocking location fetching.");
+      console.log("Location services disabled.");
     } else {
       console.log("Location services enabled.");
     }
   };
 
-  // Example: Function to fetch location (checks locationAllowed)
+  // Function to fetch location (checks locationAllowed)
   const fetchLocation = () => {
     if (!locationAllowed) {
-      console.error("Location fetching is disabled!");
-      return;
+      alert("Location services are disabled. Enable them in settings to fetch your location.");
+      console.error("Location fetching is disabled by user settings!");
+      return; // Prevent the browser from accessing the Geolocation API
     }
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log(`Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`);
+          alert(`Your location is:\nLatitude: ${position.coords.latitude}\nLongitude: ${position.coords.longitude}`);
         },
         (error) => {
+          alert("Failed to fetch location. Please try again.");
           console.error("Error fetching location:", error);
         }
       );
     } else {
+      alert("Geolocation is not supported by your browser.");
       console.error("Geolocation is not supported by this browser.");
     }
   };
@@ -183,8 +199,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Example: Trigger fetchLocation for demonstration
-  document.querySelector("[data-fetch-location]").addEventListener("click", fetchLocation);
+  // Add event listener for location button
+  locationBtn.addEventListener("click", fetchLocation);
 
   // Load settings on page load
   loadSettings();
