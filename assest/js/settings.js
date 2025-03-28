@@ -10,15 +10,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const timeToggle = document.querySelector("[data-settings-time]");
   const locationToggle = document.querySelector("[data-settings-location]");
   const locationBtn = document.querySelector("[data-current-location-btn]");
-  const locationInput = document.querySelector("[data-search-input]"); // Input field for custom location
-  const locationSearchBtn = document.querySelector("[data-search-btn]"); // Button to search a location
-  const locationDisplay = document.querySelector("[data-location-display]"); // Display for location
+  const locationDisplay = document.querySelector("[data-location-display]"); // Where the location is displayed
 
   let locationAllowed = true; // Default value to allow location access
 
   // Function to check if Geolocation API is available
   const isGeolocationAvailable = () => {
     return "geolocation" in navigator; // Checks if the browser's Geolocation API is available
+  };
+
+  // Function to update the Current Location button state
+  const updateLocationButtonState = () => {
+    if (!locationAllowed || !isGeolocationAvailable()) {
+      // Grey out the button if location is disabled in settings OR by system-level privacy
+      locationBtn.classList.add("disabled");
+      locationBtn.setAttribute("disabled", true);
+      locationBtn.style.pointerEvents = "none"; // Prevent interaction
+    } else {
+      // Enable the button if geolocation is available and allowed in settings
+      locationBtn.classList.remove("disabled");
+      locationBtn.removeAttribute("disabled");
+      locationBtn.style.pointerEvents = "auto"; // Allow interaction
+    }
   };
 
   // Function to open the settings modal
@@ -30,11 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeSettingsModal = () => {
     settingsModal.classList.remove("active");
   };
-
-  // Event listeners for opening and closing settings modal
-  settingsBtn.addEventListener("click", openSettingsModal);
-  settingsClose.addEventListener("click", closeSettingsModal);
-});
 
   // Function to save settings to local storage
   const saveSettings = () => {
@@ -64,12 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       applySettings(storedSettings);
     }
   };
-
-  // Event listener for saving settings
-  settingsSave.addEventListener("click", saveSettings);
-
-  // Load settings on page load
-  loadSettings();
 
   // Function to apply settings
   const applySettings = (settings) => {
@@ -186,8 +188,8 @@ document.addEventListener("DOMContentLoaded", () => {
           locationBtn.removeAttribute("disabled"); // Re-enable the button after successful fetch
           const latitude = position.coords.latitude.toFixed(4);
           const longitude = position.coords.longitude.toFixed(4);
-          const locationText = `Lat: ${latitude}, Lon: ${longitude}`;
-          displayLocation(locationText);
+          locationDisplay.textContent = `Lat: ${latitude}, Lon: ${longitude}`; // Display fetched location
+          console.log(`Fetched location: Latitude - ${latitude}, Longitude - ${longitude}`);
         },
         (error) => {
           locationBtn.removeAttribute("disabled"); // Re-enable the button if fetching fails
@@ -201,79 +203,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Function to save and display the selected location
-  const saveLocation = (location) => {
-    localStorage.setItem("selectedLocation", location);
-    displayLocation(location);
-  };
+  // Event listeners for opening, closing, and saving settings
+  settingsBtn.addEventListener("click", openSettingsModal);
+  settingsClose.addEventListener("click", closeSettingsModal);
+  settingsSave.addEventListener("click", saveSettings);
 
-  // Function to display the location on the page
-  const displayLocation = (location) => {
-    locationDisplay.textContent = location; // Update the displayed location
-  };
-
-  // Function to load the saved location or fallback
-  const loadLocation = () => {
-    const savedLocation = localStorage.getItem("selectedLocation");
-    if (savedLocation) {
-      displayLocation(savedLocation); // Display the saved location
-    } else if (locationAllowed && navigator.geolocation) {
-      fetchLocation(); // Fetch current location if no saved location
-    } else {
-      displayLocation("No location set"); // Default message
-    }
-  };
-
-  // Event listener for the Current Location button
-  locationBtn.addEventListener("click", fetchLocation);
-
-  // Event listener for the search bar and search button
-  locationSearchBtn.addEventListener("click", () => {
-    const userInput = locationInput.value.trim();
-    if (userInput) {
-      saveLocation(userInput); // Save and display the user's input
-    } else {
-      alert("Please enter a valid location.");
+  window.addEventListener("click", (event) => {
+    if (event.target === settingsModal) {
+      closeSettingsModal();
     }
   });
 
-  // Load the location on page load
-  loadLocation();
+  // Add event listener for location button
+  locationBtn.addEventListener("click", fetchLocation);
 
-  // Function to check if Geolocation API is available
-  const isGeolocationAvailable = () => {
-    return "geolocation" in navigator; // Checks if the browser's Geolocation API is available
-  };
-
-  // Function to update the Current Location button state
-  const updateLocationButtonState = () => {
-    if (!locationAllowed || !isGeolocationAvailable()) {
-      // Grey out the button if location is disabled in settings OR by system-level privacy
-      locationBtn.classList.add("disabled");
-      locationBtn.setAttribute("disabled", true);
-      locationBtn.style.pointerEvents = "none"; // Prevent interaction
-    } else {
-      // Enable the button if geolocation is available and allowed in settings
-      locationBtn.classList.remove("disabled");
-      locationBtn.removeAttribute("disabled");
-      locationBtn.style.pointerEvents = "auto"; // Allow interaction
-    }
-  };
-
-  // Initialize the page on load
-  const initializePage = () => {
-    // Load settings and apply them
-    loadSettings();
-    
-    // Update the button state based on geolocation and settings
-    updateLocationButtonState();
-
-    // Load and display the current or saved location
-    loadLocation();
-
-    console.log("Page initialized successfully.");
-  };
-
-  // Call the initializePage function on page load
-  initializePage();
+  // Load settings on page load
+  loadSettings();
+  updateLocationButtonState(); // Check geolocation availability on page load
 });
