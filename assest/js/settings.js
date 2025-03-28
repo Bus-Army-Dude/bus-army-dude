@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const settingsBtn = document.querySelector("[data-settings-btn]");
   const settingsModal = document.querySelector("[data-settings-modal]");
   const settingsClose = document.querySelector("[data-settings-close]");
-  const settingsSave = document.querySelector("[data-settings-save]");
   const tempSelect = document.querySelector("[data-settings-temp]");
   const speedSelect = document.querySelector("[data-settings-speed]");
   const pressureSelect = document.querySelector("[data-settings-pressure]");
@@ -40,8 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsModal.classList.remove("active");
   };
 
-  // Function to save settings to local storage
-  const saveSettings = () => {
+  // Function to save settings to local storage (for persistence)
+  const saveSettingsToLocalStorage = () => {
     const settings = {
       temperature: tempSelect.value,
       windSpeed: speedSelect.value,
@@ -53,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     localStorage.setItem("weatherSettings", JSON.stringify(settings));
     applySettings(settings);
-    closeSettingsModal();
   };
 
   // Function to load settings from local storage
@@ -72,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Function to apply settings
+  // Function to apply settings live
   const applySettings = (settings) => {
     document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
 
@@ -151,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   settingsBtn.addEventListener("click", openSettingsModal);
   settingsClose.addEventListener("click", closeSettingsModal);
-  settingsSave.addEventListener("click", saveSettings);
 
   window.addEventListener("click", (event) => {
     if (event.target === settingsModal) {
@@ -159,18 +156,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Immediately apply settings when toggles are changed
   locationToggle.addEventListener("change", (event) => {
     locationAllowed = event.target.checked;
     updateLocationButtonState();
+    saveSettingsToLocalStorage(); // Save settings instantly
   });
 
   citySelect.addEventListener("change", (event) => {
     selectedCity = event.target.value;
     locationDisplay.textContent = `City: ${selectedCity}`;
-    saveSettings();
+    saveSettingsToLocalStorage(); // Save settings instantly
   });
 
+  // Fetch location when the button is clicked
   locationBtn.addEventListener("click", fetchLocation);
 
-  loadSettings(); // Load settings on page load
+  // Load settings from localStorage when the page loads
+  loadSettings();
 });
