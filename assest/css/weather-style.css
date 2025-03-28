@@ -499,6 +499,7 @@ article.container::before {
   -webkit-margin-after: 16px;
   margin-block-end: 16px;
 }
+
 /* current-weather-card */
 .current-weather-card .weapper {
   margin-block: 12px;
