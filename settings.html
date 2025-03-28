@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ai-features.css">
     <link rel="stylesheet" href="settings.css">
-    <link rel="stylesheet" href="colorblind-modes.css">
 
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
@@ -134,32 +133,20 @@
                         <option value="mmhg">Millimeters of Mercury (mmHg)</option>
                     </select>
                 </div>
-                
+            </div>
+            
+            <div class="settings-subsection">
+                <h2 class="subsection-title">Privacy</h2>
                 <div class="setting-card">
                     <div class="setting-label">
                         <h3 class="setting-title">Location Services</h3>
-                        <p class="setting-description">Enable weather updates based on your current location</p>
-                    </div>
-                    <label for="currentLocationToggle" class="toggle-switch" aria-label="Toggle current location for weather">
-                        <input type="checkbox" id="currentLocationToggle" data-settings-location>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Privacy - Location Services</h3>
-                        <p class="setting-description">Control location services for weather updates</p>
+                        <p class="setting-description">Control location services for the application</p>
                     </div>
                     <label for="privacyLocationToggle" class="toggle-switch" aria-label="Toggle privacy location services">
                         <input type="checkbox" checked data-settings-location id="privacyLocationToggle">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-            </div>
-            
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Privacy</h2>
             </div>
 
             <div class="settings-subsection owner-only">
