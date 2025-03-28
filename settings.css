@@ -84,7 +84,7 @@ body.settings-page {
         var(--content-bg)
     );
     border-radius: 16px;
-    box-shadow: 
+    box-shadow:
         0 8px 32px -8px var(--shadow-color),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     backdrop-filter: blur(10px);
@@ -108,8 +108,8 @@ body.settings-page {
     margin: 0;
     font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: 800;
-    background: linear-gradient(120deg, 
-        var(--text-color), 
+    background: linear-gradient(120deg,
+        var(--text-color),
         color-mix(in srgb, var(--text-color) 70%, var(--accent-color))
     );
     -webkit-background-clip: text;
@@ -125,7 +125,7 @@ body.settings-page {
     );
     border-radius: 16px;
     margin-bottom: 30px;
-    box-shadow: 
+    box-shadow:
         0 8px 32px -8px var(--shadow-color),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     backdrop-filter: blur(10px);
@@ -134,7 +134,7 @@ body.settings-page {
 
 .settings-page .settings-subsection:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         0 12px 40px -8px var(--shadow-color),
         0 0 0 1px var(--accent-color);
 }
@@ -144,8 +144,8 @@ body.settings-page {
     font-weight: 700;
     margin-bottom: 20px;
     color: var(--text-color);
-    background: linear-gradient(120deg, 
-        var(--text-color), 
+    background: linear-gradient(120deg,
+        var(--text-color),
         color-mix(in srgb, var(--text-color) 70%, var(--accent-color))
     );
     -webkit-background-clip: text;
@@ -160,7 +160,7 @@ body.settings-page {
     );
     padding: 20px;
     border-radius: 14px;
-    box-shadow: 
+    box-shadow:
         0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     display: flex;
@@ -173,7 +173,7 @@ body.settings-page {
 
 .settings-page .setting-card:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         0 8px 20px color-mix(in srgb, var(--shadow-color) 20%, transparent),
         0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
@@ -234,14 +234,14 @@ body.settings-page {
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 
+    box-shadow:
         0 4px 15px rgba(255, 59, 48, 0.3),
         0 0 0 1px rgba(255, 59, 48, 0.3);
 }
 
 .settings-page .reset-button:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         0 8px 20px rgba(255, 59, 48, 0.4),
         0 0 0 1px rgba(255, 59, 48, 1);
     background: linear-gradient(145deg, #ff1744, #ff3b30);
@@ -261,7 +261,7 @@ body.settings-page {
         color-mix(in srgb, var(--bg-color) 98%, white),
         var(--bg-color)
     );
-    box-shadow: 
+    box-shadow:
         0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
 }
@@ -269,7 +269,7 @@ body.settings-page {
 .settings-page .back-link:hover {
     transform: translateY(-2px);
     color: var(--hover-color);
-    box-shadow: 
+    box-shadow:
         0 8px 20px color-mix(in srgb, var(--accent-color) 15%, transparent),
         0 0 0 1px var(--accent-color);
 }
@@ -286,7 +286,7 @@ body.settings-page {
     color: var(--text-color);
     padding: 20px;
     border-radius: 16px;
-    box-shadow: 
+    box-shadow:
         0 8px 32px -8px var(--shadow-color),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     backdrop-filter: blur(10px);
@@ -310,7 +310,7 @@ body.settings-page {
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 
+    box-shadow:
         0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
         0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
     white-space: nowrap;
@@ -318,7 +318,7 @@ body.settings-page {
 
 #cookie-consent-banner button:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
         0 0 0 1px var(--accent-color);
 }
@@ -345,7 +345,7 @@ body.settings-page {
     padding: 8px 16px;
     border-radius: 12px;
     text-align: center;
-    box-shadow: 
+    box-shadow:
         0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     position: relative;
@@ -382,7 +382,7 @@ body.settings-page {
     background: var(--slider-thumb-color);
     cursor: pointer;
     border: 2px solid var(--bg-color);
-    box-shadow: 
+    box-shadow:
         0 2px 8px color-mix(in srgb, var(--accent-color) 30%, transparent);
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -394,7 +394,7 @@ body.settings-page {
     background: var(--slider-thumb-color);
     cursor: pointer;
     border: 2px solid var(--bg-color);
-    box-shadow: 
+    box-shadow:
         0 2px 8px color-mix(in srgb, var(--accent-color) 30%, transparent);
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -402,14 +402,14 @@ body.settings-page {
 #text-size-slider::-webkit-slider-thumb:hover,
 #text-size-slider::-webkit-slider-thumb:active {
     transform: scale(1.1);
-    box-shadow: 
+    box-shadow:
         0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 #text-size-slider::-moz-range-thumb:hover,
 #text-size-slider::-moz-range-thumb:active {
     transform: scale(1.1);
-    box-shadow: 
+    box-shadow:
         0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
@@ -425,17 +425,17 @@ body.settings-page {
     transition: all 0.3s ease;
 }
 
-.size-small { 
+.size-small {
     font-size: 12px;
     opacity: 0.7;
 }
 
-.size-medium { 
+.size-medium {
     font-size: 16px;
     opacity: 0.85;
 }
 
-.size-large { 
+.size-large {
     font-size: 24px;
     opacity: 1;
 }
@@ -456,7 +456,7 @@ body.settings-page {
     cursor: pointer;
     width: 200px;
     box-sizing: border-box;
-    box-shadow: 
+    box-shadow:
         0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     transition: all 0.3s cubic-bezier(0.2, 0.2, 0.2, 1);
@@ -475,7 +475,7 @@ body.settings-page {
 
 .settings-page .select-input:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         0 8px 20px color-mix(in srgb, var(--shadow-color) 20%, transparent),
         0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
@@ -483,7 +483,7 @@ body.settings-page {
 .settings-page .select-input:focus {
     outline: none;
     border-color: var(--select-focus);
-    box-shadow: 
+    box-shadow:
         0 8px 20px color-mix(in srgb, var(--accent-color) 20%, transparent),
         0 0 0 1px var(--select-focus);
 }
