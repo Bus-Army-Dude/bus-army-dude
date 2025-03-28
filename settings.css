@@ -1,24 +1,23 @@
 :root {
-    --font-size-base: 16px; /* Default base font size */
+    --font-size-base: 16px;
     --bg-color: #ffffff;
     --text-color: #000000;
     --secondary-text: #666666;
     --border-color: #dddddd;
-    --accent-color: #007aff; /* Apple-like blue accent color */
+    --accent-color: #007aff;
     --hover-color: #005bb5;
     --content-bg: #f5f5f5;
-    --slider-thumb-color: #007aff; /* Custom slider thumb color */
-    --slider-track-color: #ddd; /* Custom slider track color */
-    --slider-track-filled-color: #007aff; /* Custom slider track filled color */
-    --toggle-on: #34c759; /* Green for on */
-    --toggle-off: #dddddd; /* Gray for off */
-    --focus-outline-color: #005fcc; /* Default focus outline color */
+    --slider-thumb-color: #007aff;
+    --slider-track-color: #ddd;
+    --slider-track-filled-color: #007aff;
+    --toggle-on: #34c759;
+    --toggle-off: #dddddd;
+    --focus-outline-color: #005fcc;
     --select-bg: #ffffff;
     --select-border: #ddd;
     --select-focus: #007aff;
 }
 
-/* Dark Mode Variables */
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-color: #1a1a1a;
@@ -39,7 +38,6 @@
     }
 }
 
-/* General Styles for Settings Page */
 body.settings-page {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -51,7 +49,6 @@ body.settings-page {
     min-height: 100vh;
 }
 
-/* Container Styles */
 .settings-page .container {
     max-width: 800px;
     margin: 20px auto;
@@ -67,7 +64,6 @@ body.settings-page {
     backdrop-filter: blur(10px);
 }
 
-/* Settings Section Styles */
 .settings-page .settings-section {
     padding: 20px;
     margin-bottom: 40px;
@@ -95,7 +91,6 @@ body.settings-page {
     color: transparent;
 }
 
-/* Settings Subsection */
 .settings-page .settings-subsection {
     padding: 25px;
     background: linear-gradient(145deg,
@@ -132,7 +127,6 @@ body.settings-page {
     color: transparent;
 }
 
-/* Setting Card Styles */
 .settings-page .setting-card {
     background: linear-gradient(145deg,
         color-mix(in srgb, var(--bg-color) 98%, white),
@@ -158,7 +152,6 @@ body.settings-page {
         0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
-/* Toggle Switch Styles */
 .settings-page .toggle-switch {
     position: relative;
     display: inline-block;
@@ -206,7 +199,6 @@ body.settings-page {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Reset Button Styles */
 .settings-page .reset-button {
     background: linear-gradient(145deg, #ff3b30, #ff1744);
     color: white;
@@ -229,7 +221,6 @@ body.settings-page {
     background: linear-gradient(145deg, #ff1744, #ff3b30);
 }
 
-/* Back Link Styles */
 .settings-page .back-link {
     display: inline-flex;
     align-items: center;
@@ -257,7 +248,6 @@ body.settings-page {
         0 0 0 1px var(--accent-color);
 }
 
-/* Cookie Consent Banner */
 #cookie-consent-banner {
     position: fixed;
     bottom: 20px;
@@ -307,7 +297,6 @@ body.settings-page {
         0 0 0 1px var(--accent-color);
 }
 
-/* Text Size Control Styles */
 .text-size-control {
     display: flex;
     flex-direction: column;
@@ -316,7 +305,7 @@ body.settings-page {
     max-width: 300px;
     margin-left: auto;
     position: relative;
-    padding: 0 16px; /* Add padding to contain elements */
+    padding: 0 16px;
 }
 
 .size-value {
@@ -346,7 +335,6 @@ body.settings-page {
     padding: 10px 0;
 }
 
-/* Modern Range Slider */
 #text-size-slider {
     -webkit-appearance: none;
     width: 100%;
@@ -399,7 +387,6 @@ body.settings-page {
         0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
-/* Size Labels */
 .size-labels {
     display: flex;
     justify-content: space-between;
@@ -427,7 +414,6 @@ body.settings-page {
     opacity: 1;
 }
 
-/* Modern Select Styles */
 .settings-page .select-input {
     appearance: none;
     -webkit-appearance: none;
@@ -455,7 +441,6 @@ body.settings-page {
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--select-focus) 20%, transparent);
 }
 
-/* Media Queries */
 @media (max-width: 768px) {
     .settings-page {
         padding: 15px;
@@ -479,11 +464,11 @@ body.settings-page {
     .text-size-control {
         margin-left: 0;
         max-width: 100%;
-        padding: 0; /* Remove padding on mobile */
+        padding: 0;
     }
 
     .size-value {
-        width: calc(100% - 32px); /* Account for padding */
+        width: calc(100% - 32px);
         margin: 0 auto;
     }
 
@@ -540,13 +525,13 @@ body.settings-page {
 
     .text-size-control {
         gap: 10px;
-        padding: 0; /* Ensure padding is removed */
+        padding: 0;
     }
 
     .size-value {
         padding: 6px 12px;
         font-size: 0.9rem;
-        width: calc(100% - 24px); /* Adjust for smaller padding */
+        width: calc(100% - 24px);
     }
 
     .size-labels {
