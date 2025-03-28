@@ -1,163 +1,157 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <title>weatherio</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="weatherio">
-    <meta name="description" content="Explore accurate and real-time weather information for cities around the world with Weatherio. Get current weather conditions, 5-day forecasts, wind speed, sunrise and sunset times, air quality, humidity, and more.">
-    
-    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assest/css/weather-style.css">
-    <link rel="stylesheet" href="assest/css/settings-style.css">
+    <title>weatherio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="weatherio">
+    <meta name="description" content="Explore accurate and real-time weather information for cities around the world with Weatherio. Get current weather conditions, 5-day forecasts, wind speed, sunrise and sunset times, air quality, humidity, and more.">
+   
+    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assest/css/weather-style.css">
+    <link rel="stylesheet" href="assest/css/settings-style.css">
 
-    <script type="module" src="assest/js/app.js"></script>
-    <script type="module" src="assest/js/route.js"></script>
-    <script type="module" src="assest/js/settings.js"></script>
+    <script type="module" src="assest/js/app.js"></script>
+    <script type="module" src="assest/js/route.js"></script>
+    <script type="module" src="assest/js/settings.js"></script>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="" class="logo">
-                <img src="assest/images/logo.png" alt="logo">
-            </a>
-            <div class="search-view" data-search-view>
-                <div class="search-wrapper">
-                    <input type="search" name="search" class="search-field" placeholder="Search city..." autocomplete="off" data-search-field>
-                    <span class="m-icon leading-icon">search</span>
-                    <button class="icon-btn leading-icon has-state" aria-label="close search" data-search-toggler>
-                        <span class="m-icon">arrow_back</span>
-                    </button>
-                </div>
-                <div class="search-result" data-search-result></div>
-            </div>
-            <div class="header-actions">
-                <a href="#/current-location" class="btn-primary has-state" data-current-location-btn>
-                    <span class="m-icon">my_location</span>
-                    <span class="span">Current Location</span>
-                </a>
+    <header class="header">
+        <div class="container">
+            <a href="" class="logo">
+                <img src="assest/images/logo.png" alt="logo">
+            </a>
+            <div class="header-actions">
+                <a href="index.html" class="btn-primary has-state">
+                    <span class="m-icon">home</span>
+                    <span class="span">Home</span>
+                </a>
+                <a href="#/current-location" class="btn-primary has-state" data-current-location-btn>
+                    <span class="m-icon">my_location</span>
+                    <span class="span">Current Location</span>
+                </a>
 
-                <button class="btn-primary has-state" data-settings-btn>
-                    <span class="m-icon">settings</span>
-                    <span class="span">Settings</span>
-                </button>
+                <button class="btn-primary has-state" data-settings-btn>
+                    <span class="m-icon">settings</span>
+                    <span class="span">Settings</span>
+                </button>
 
-                <button class="icon-btn has-state" aria-label="open search" data-search-toggler>
-                    <span class="m-icon">search</span>
-                </button>
-            </div>
-        </div>
-    </header>
+                <button class="icon-btn has-state" aria-label="open search" data-search-toggler>
+                    <span class="m-icon">search</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-    <main>
-        <article class="container" data-container>
-            <div class="content-left">
-                <section class="section current-weather" aria-label="current weather" data-current-weather></section>
-                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
-            </div>
-            <div class="content-right">
-                <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
-                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
-            </div>
-            <div class="loading" data-loading></div>
-        </article>
-    </main>
+    <main>
+        <article class="container" data-container>
+            <div class="content-left">
+                <section class="section current-weather" aria-label="current weather" data-current-weather>
+                    <h2 class="title-1">Now</h2>
+                    <p class="current-date" data-current-date></p>
+                    <div class="weather-details">
+                        <span class="temp" data-current-temp></span>
+                        <p class="weather-status" data-current-status></p>
+                    </div>
+                </section>
+                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
+            </div>
+            <div class="content-right">
+                <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
+                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
+            </div>
+            <div class="loading" data-loading></div>
+        </article>
+    </main>
 
-    <!-- Settings Modal -->
-    <div class="settings-modal" data-settings-modal>
-        <div class="settings-content card">
-            <h2 class="title-2">Settings</h2>
-            
-            <div class="settings-sections">
-                <!-- Temperature Units -->
-                <div class="settings-section">
-                    <h3 class="title-3">Temperature</h3>
-                    <select class="settings-select" data-settings-temp>
-                        <option value="celsius">Celsius (°C)</option>
-                        <option value="fahrenheit">Fahrenheit (°F)</option>
-                        <option value="kelvin">Kelvin (K)</option>
-                    </select>
-                </div>
+        <div class="settings-modal" data-settings-modal>
+        <div class="settings-content card">
+            <h2 class="title-2">Settings</h2>
+           
+            <div class="settings-sections">
+                                <div class="settings-section">
+                    <h3 class="title-3">Temperature</h3>
+                    <select class="settings-select" data-settings-temp>
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                </div>
 
-                <!-- Wind Speed Units -->
-                <div class="settings-section">
-                    <h3 class="title-3">Wind Speed</h3>
-                    <select class="settings-select" data-settings-speed>
-                        <option value="ms">Meters per second (m/s)</option>
-                        <option value="mph">Miles per hour (mph)</option>
-                        <option value="kph">Kilometers per hour (km/h)</option>
-                        <option value="knots">Knots (kts)</option>
-                        <option value="beaufort">Beaufort scale</option>
-                    </select>
-                </div>
+                                <div class="settings-section">
+                    <h3 class="title-3">Wind Speed</h3>
+                    <select class="settings-select" data-settings-speed>
+                        <option value="ms">Meters per second (m/s)</option>
+                        <option value="mph">Miles per hour (mph)</option>
+                        <option value="kph">Kilometers per hour (km/h)</option>
+                        <option value="knots">Knots (kts)</option>
+                        <option value="beaufort">Beaufort scale</option>
+                    </select>
+                </div>
 
-                <!-- Pressure Units -->
-                <div class="settings-section">
-                    <h3 class="title-3">Pressure</h3>
-                    <select class="settings-select" data-settings-pressure>
-                        <option value="hpa">Hectopascals (hPa)</option>
-                        <option value="inhg">Inches of Mercury (inHg)</option>
-                        <option value="mmhg">Millimeters of Mercury (mmHg)</option>
-                    </select>
-                </div>
+                                <div class="settings-section">
+                    <h3 class="title-3">Pressure</h3>
+                    <select class="settings-select" data-settings-pressure>
+                        <option value="hpa">Hectopascals (hPa)</option>
+                        <option value="inhg">Inches of Mercury (inHg)</option>
+                        <option value="mmhg">Millimeters of Mercury (mmHg)</option>
+                    </select>
+                </div>
 
-                <!-- Display Settings -->
-                <div class="settings-section">
-                    <h3 class="title-3">Display</h3>
-                    <div class="settings-options">
-                        <label class="setting-item">
-                            <span class="setting-label">Dark Mode</span>
-                            <div class="toggle-switch">
-                                <input type="checkbox" data-settings-theme>
-                                <span class="toggle-slider"></span>
-                            </div>
-                        </label>
-                        <label class="setting-item">
-                            <span class="setting-label">24-hour Time</span>
-                            <div class="toggle-switch">
-                                <input type="checkbox" data-settings-time>
-                                <span class="toggle-slider"></span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
+                                <div class="settings-section">
+                    <h3 class="title-3">Display</h3>
+                    <div class="settings-options">
+                        <label class="setting-item">
+                            <span class="setting-label">Dark Mode</span>
+                            <div class="toggle-switch">
+                                <input type="checkbox" data-settings-theme>
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </label>
+                        <label class="setting-item">
+                            <span class="setting-label">24-hour Time</span>
+                            <div class="toggle-switch">
+                                <input type="checkbox" data-settings-time>
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
 
-                <!-- Privacy Settings -->
-                <div class="settings-section">
-                    <h3 class="title-3">Privacy</h3>
-                    <div class="settings-options">
-                        <label class="setting-item">
-                            <span class="setting-label">Location Services</span>
-                            <div class="toggle-switch">
-                                <input type="checkbox" checked data-settings-location>
-                                <span class="toggle-slider"></span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </div>
+                                <div class="settings-section">
+                    <h3 class="title-3">Privacy</h3>
+                    <div class="settings-options">
+                        <label class="setting-item">
+                            <span class="setting-label">Location Services</span>
+                            <div class="toggle-switch">
+                                <input type="checkbox" checked data-settings-location>
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-            <div class="settings-actions">
-                <button class="btn-primary settings-save" data-settings-save>
-                    <span class="span">Save Changes</span>
-                </button>
-                <button class="btn-secondary settings-close" data-settings-close>
-                    <span class="span">Cancel</span>
-                </button>
-            </div>
-        </div>
-    </div>
+            <div class="settings-actions">
+                <button class="btn-primary settings-save" data-settings-save>
+                    <span class="span">Save Changes</span>
+                </button>
+                <button class="btn-secondary settings-close" data-settings-close>
+                    <span class="span">Cancel</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Error Section -->
-    <section class="error-content" data-error-content>
-        <h2 class="heading">404</h2>
-        <p class="body-1">Page not found!</p>
-        <a href="" class="btn-primary">
-            <span class="span">Go Home</span>
-        </a>
-    </section>
+        <section class="error-content" data-error-content>
+        <h2 class="heading">404</h2>
+        <p class="body-1">Page not found!</p>
+        <a href="" class="btn-primary">
+            <span class="span">Go Home</span>
+        </a>
+    </section>
 </body>
 </html>
