@@ -13,8 +13,9 @@
     --toggle-on: #34c759;
     --toggle-off: #dddddd;
     --focus-outline-color: #005fcc;
-    --select-bg: #ffffff;
-    --select-border: #ddd;
+    --select-bg: #ffffff; /* White background for light mode */
+    --select-text: #000000; /* Dark text for light mode */
+    --select-border: #dddddd; /* Light border for light mode */
     --select-focus: #007aff;
 }
 
@@ -32,8 +33,9 @@
         --slider-track-filled-color: #007aff;
         --toggle-on: #34c759;
         --toggle-off: #666666;
-        --select-bg: #333;
-        --select-border: #555;
+        --select-bg: #2d2d2d; /* Dark background for dark mode */
+        --select-text: #ffffff; /* Light text for dark mode */
+        --select-border: #555; /* Darker border for dark mode */
         --select-focus: #007aff;
     }
 }
@@ -423,7 +425,7 @@ body.settings-page {
     border-radius: 8px;
     padding: 10px 15px;
     font-size: 1rem;
-    color: var(--text-color);
+    color: var(--select-text); /* Use the specified text color */
     cursor: pointer;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
