@@ -9,7 +9,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 1000;
 }
 
 .settings-modal.active {
@@ -23,6 +23,7 @@
     padding: 20px;
     width: 90%;
     max-width: 400px;
+    box-shadow: var(--shadow-1);
 }
 
 .settings-sections {
@@ -33,6 +34,11 @@
     margin-bottom: 20px;
 }
 
+.settings-section h3 {
+    margin-bottom: 10px;
+    color: var(--on-surface-variant);
+}
+
 .settings-select {
     width: 100%;
     padding: 10px;
@@ -40,29 +46,50 @@
     border: 1px solid var(--outline);
     background-color: var(--background);
     color: var(--on-background);
-    font: inherit; /* Add this to ensure consistent font */
+    font: inherit;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.settings-select:hover {
+    border-color: var(--primary);
+}
+
+.settings-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-opacity);
 }
 
 .settings-options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .setting-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px 0;
 }
 
+.setting-label {
+    color: var(--on-surface);
+    font-size: 0.9rem;
+}
+
+/* Toggle Switch */
 .toggle-switch {
     position: relative;
-    width: 40px;
-    height: 20px;
+    width: 44px;
+    height: 22px;
 }
 
 .toggle-switch input {
-    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .toggle-slider {
@@ -74,14 +101,14 @@
     bottom: 0;
     background-color: var(--outline);
     transition: 0.4s;
-    border-radius: var(--radius-pill);
+    border-radius: 34px;
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
+    height: 18px;
+    width: 18px;
     left: 2px;
     bottom: 2px;
     background-color: var(--on-surface);
@@ -94,22 +121,28 @@ input:checked + .toggle-slider {
 }
 
 input:checked + .toggle-slider:before {
-    transform: translateX(20px);
+    transform: translateX(22px);
+    background-color: white;
 }
 
+/* Settings Actions */
 .settings-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 10px;
     margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--outline);
 }
 
 .settings-save,
 .settings-close {
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: var(--radius-pill);
-    border: none; /* Remove default button border */
-    cursor: pointer; /* Add cursor for better UX */
-    font: inherit; /* Add this to ensure consistent font */
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    transition: all 0.3s ease;
 }
 
 .settings-save {
@@ -117,7 +150,131 @@ input:checked + .toggle-slider:before {
     color: var(--on-primary);
 }
 
+.settings-save:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
 .settings-close {
+    background-color: var(--surface-variant);
+    color: var(--on-surface-variant);
+}
+
+.settings-close:hover {
+    background-color: var(--surface-variant-hover);
+}
+
+/* Disabled States */
+.btn-primary.disabled,
+.btn-primary[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
     background-color: var(--outline);
+}
+
+.settings-modal .toggle-switch input:disabled + .toggle-slider {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Theme Transition */
+:root {
+    transition: all 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .settings-content {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .settings-section {
+        margin-bottom: 15px;
+    }
+
+    .settings-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .settings-save,
+    .settings-close {
+        width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.settings-modal.active .settings-content {
+    animation: modalFadeIn 0.3s ease forwards;
+}
+
+/* Additional Utility Classes */
+.settings-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
     color: var(--on-surface);
+}
+
+.settings-description {
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    margin-bottom: 8px;
+}
+
+/* Focus States */
+.settings-save:focus,
+.settings-close:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-opacity);
+}
+
+/* Hover Effects */
+.setting-item:hover {
+    background-color: var(--surface-variant);
+    border-radius: var(--radius-8);
+}
+
+/* Dark Mode Specific Styles */
+[data-theme="dark"] .settings-content {
+    background-color: var(--surface-dark);
+    border: 1px solid var(--outline-dark);
+}
+
+[data-theme="dark"] .settings-select {
+    background-color: var(--background-dark);
+    border-color: var(--outline-dark);
+    color: var(--on-surface);
+}
+
+/* Custom Scrollbar */
+.settings-sections::-webkit-scrollbar {
+    width: 8px;
+}
+
+.settings-sections::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-radius: 4px;
+}
+
+.settings-sections::-webkit-scrollbar-thumb {
+    background: var(--outline);
+    border-radius: 4px;
+}
+
+.settings-sections::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
 }
