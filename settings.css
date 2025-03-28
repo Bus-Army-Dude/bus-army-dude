@@ -439,30 +439,50 @@ body.settings-page {
 }
 
 .settings-page .select-input {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: var(--select-bg) !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--bg-color) 98%, white),
+        var(--bg-color)
+    ) !important;
     border: 1px solid var(--select-border);
-    border-radius: 8px;
-    padding: 10px 15px;
+    border-radius: 14px;
+    padding: 12px 15px;
     font-size: 1rem;
     color: var(--select-text);
     cursor: pointer;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
+    width: 200px;
     box-sizing: border-box;
-    background-image: linear-gradient(45deg, transparent 50%, rgba(0, 0, 0, 0.2) 50%),
-        linear-gradient(135deg, rgba(0, 0, 0, 0.2) 50%, transparent 50%);
-    background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
-    background-size: 5px 5px, 5px 5px;
-    background-repeat: no-repeat;
+    box-shadow: 
+        0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    transition: all 0.3s cubic-bezier(0.2, 0.2, 0.2, 1);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: calc(100% - 15px) center !important;
+    padding-right: 40px;
+}
+
+.settings-page .select-input:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 20px color-mix(in srgb, var(--shadow-color) 20%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 .settings-page .select-input:focus {
-    border-color: var(--select-focus);
     outline: none;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--select-focus) 20%, transparent);
+    border-color: var(--select-focus);
+    box-shadow: 
+        0 8px 20px color-mix(in srgb, var(--accent-color) 20%, transparent),
+        0 0 0 1px var(--select-focus);
+}
+
+.settings-page .select-input option {
+    background-color: var(--select-bg);
+    color: var(--select-text);
+    padding: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
