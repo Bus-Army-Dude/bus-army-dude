@@ -113,8 +113,8 @@ export const updateWeather = (lat, lon) => {
             <div class="wrapper">
                 <p class="heading" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
                 <img src="./assest/images/weather_icons/${icon}.png" width="64" height="64" alt="${description}" class="weather-icon">
+                <p class="body-3">${description}</p> 
             </div>
-            <p class="body-3">${description}</p>
             <ul class="meta-list">
                 <li class="meta-item">
                     <span class="m-icon">calendar_today</span>
@@ -125,11 +125,12 @@ export const updateWeather = (lat, lon) => {
                     <p class="title-3 meta-text" data-location></p>
                 </li>
             </ul>
-        `
+        `;
         fetchData(url.reverseGeo(lat, lon), ([{ name, country }]) => {
             card.querySelector("[data-location]").innerHTML = `${name}, ${country}`;
         });
         currentWeatherSection.appendChild(card);
+    });
 
         //today's highlights
         fetchData(url.airPollution(lat, lon), (airPollution) => {
