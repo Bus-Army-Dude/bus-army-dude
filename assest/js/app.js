@@ -482,6 +482,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// Load saved city on startup
+window.addEventListener('load', () => {
+    const savedCity = localStorage.getItem('weatherCity');
+    if (savedCity) {
+        const { lat, lon } = JSON.parse(savedCity);
+        window.location.hash = `#/weather?${lat}&${lon}`;
+    } else if (!window.location.hash) {
+        window.location.hash = "#/current-location";
+    }
+});
+
 export const error404 = () => {
     errorContent.style.display = "flex";
 };
