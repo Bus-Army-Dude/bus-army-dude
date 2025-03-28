@@ -59,48 +59,91 @@
             </div>
 
             <!-- Accessibility Section -->
-<div class="settings-subsection">
-    <h2 class="subsection-title">Accessibility</h2>
+            <div class="settings-subsection">
+                <h2 class="subsection-title">Accessibility</h2>
 
-    <!-- Adjustable Text Size -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">Text Size</h3>
-            <p class="setting-description">Adjust the text size for better readability</p>
-        </div>
-        <div class="text-size-control">
-            <div class="size-value" id="textSizeValue">16px</div>
-            <div class="slider-container">
-                <input 
-                    type="range" 
-                    id="text-size-slider" 
-                    min="12" 
-                    max="24" 
-                    value="16" 
-                    step="1"
-                    aria-label="Adjust text size"
-                >
-                <div class="size-labels">
-                    <span class="size-small">A</span>
-                    <span class="size-medium">A</span>
-                    <span class="size-large">A</span>
+                <!-- Adjustable Text Size -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Text Size</h3>
+                        <p class="setting-description">Adjust the text size for better readability</p>
+                    </div>
+                    <div class="text-size-control">
+                        <div class="size-value" id="textSizeValue">16px</div>
+                        <div class="slider-container">
+                            <input 
+                                type="range" 
+                                id="text-size-slider" 
+                                min="12" 
+                                max="24" 
+                                value="16" 
+                                step="1"
+                                aria-label="Adjust text size"
+                            >
+                            <div class="size-labels">
+                                <span class="size-small">A</span>
+                                <span class="size-medium">A</span>
+                                <span class="size-large">A</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disable Focus Outline -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Focus Outline</h3>
+                        <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
+                    </div>
+                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
+                        <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Disable Focus Outline -->
-    <div class="setting-card">
-        <div class="setting-label">
-            <h3 class="setting-title">Focus Outline</h3>
-            <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
-        </div>
-        <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
-            <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
-</div>
+            <!-- Weather Settings Section -->
+            <div class="settings-subsection">
+                <h2 class="subsection-title">Weather Settings</h2>
+
+                <!-- Current Location Weather -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Use Current Location</h3>
+                        <p class="setting-description">Enable weather updates based on your current location</p>
+                    </div>
+                    <label for="currentLocationToggle" class="toggle-switch" aria-label="Toggle current location for weather">
+                        <input type="checkbox" id="currentLocationToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Weather Unit -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Weather Unit</h3>
+                        <p class="setting-description">Choose the unit of measurement for weather (Celsius or Fahrenheit)</p>
+                    </div>
+                    <select id="weatherUnitSelect" class="select-input" aria-label="Select weather unit">
+                        <option value="metric">°C (Celsius)</option>
+                        <option value="imperial">°F (Fahrenheit)</option>
+                    </select>
+                </div>
+
+                <!-- Update Frequency -->
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Update Frequency</h3>
+                        <p class="setting-description">Choose how often weather data should be updated</p>
+                    </div>
+                    <select id="updateFrequencySelect" class="select-input" aria-label="Select update frequency">
+                        <option value="5">Every 5 minutes</option>
+                        <option value="10">Every 10 minutes</option>
+                        <option value="15">Every 15 minutes</option>
+                        <option value="30">Every 30 minutes</option>
+                    </select>
+                </div>
+            </div>
 
             <!-- Owner Only Settings Section -->
             <div class="settings-subsection owner-only">
