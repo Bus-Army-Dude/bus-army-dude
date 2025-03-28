@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const locationToggle = document.querySelector("[data-settings-location]");
   const locationBtn = document.querySelector("[data-current-location-btn]");
   const locationDisplay = document.querySelector("[data-location-display]"); // Where the location is displayed
+  const cityInput = document.querySelector("[data-city-input]"); // Input for city selection
+  const citySelectBtn = document.querySelector("[data-city-select-btn]"); // City select button
 
   let locationAllowed = true; // Default value to allow location access
 
@@ -22,12 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to update the Current Location button state
   const updateLocationButtonState = () => {
     if (!locationAllowed || !isGeolocationAvailable()) {
-      // Grey out the button if location is disabled in settings OR by system-level privacy
       locationBtn.classList.add("disabled");
       locationBtn.setAttribute("disabled", true);
       locationBtn.style.pointerEvents = "none"; // Prevent interaction
     } else {
-      // Enable the button if geolocation is available and allowed in settings
       locationBtn.classList.remove("disabled");
       locationBtn.removeAttribute("disabled");
       locationBtn.style.pointerEvents = "auto"; // Allow interaction
@@ -76,11 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to apply settings
   const applySettings = (settings) => {
     document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
-
-    // Update locationAllowed based on settings
     locationAllowed = settings.locationServices;
-
-    // Update location button state
     updateLocationButtonState();
 
     // Apply temperature setting
@@ -189,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const latitude = position.coords.latitude.toFixed(4);
           const longitude = position.coords.longitude.toFixed(4);
           locationDisplay.textContent = `Lat: ${latitude}, Lon: ${longitude}`; // Display fetched location
+          localStorage.setItem("weatherLocation", JSON.stringify({ latitude, longitude }));
           console.log(`Fetched location: Latitude - ${latitude}, Longitude - ${longitude}`);
         },
         (error) => {
@@ -217,7 +214,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add event listener for location button
   locationBtn.addEventListener("click", fetchLocation);
 
-  // Load settings on page load
+  // Add event listener for city input and selection
+  citySelectBtn.addEventListener("click", () => {
+    const selectedCity = cityInput.value;
+    if (selectedCity) {
+      locationDisplay.textContent = `City: ${selectedCity}`;
+      localStorage.setItem("weatherCity", selectedCity);
+    }
+  });
+
+  // Load settings and location data on page load
   loadSettings();
   updateLocationButtonState(); // Check geolocation availability on page load
+
+  // Apply saved city if available
+  const savedCity = localStorage.getItem("weatherCity");
+  if (savedCity) {
+    locationDisplay.textContent = `City: ${savedCity}`;
+  } else {
+    // Check for saved location data
+    const savedLocation = JSON.parse(localStorage.getItem("weatherLocation"));
+    if (savedLocation) {
+      locationDisplay.textContent = `Lat: ${savedLocation.latitude}, Lon: ${savedLocation.longitude}`;
+    }
+  }
 });
