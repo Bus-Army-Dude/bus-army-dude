@@ -500,60 +500,38 @@ article.container::before {
   margin-block-end: 16px;
 }
 
-[data-current-weather] .current-weather-card {
-    background-color: var(--surface);
-    color: var(--on-surface);
-    border-radius: var(--radius-28);
-    padding: 20px;
+/* current-weather-card */
+.current-weather-card .weapper {
+  margin-block: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
-
-[data-current-weather] .title-2 {
-    font-size: var(--title-2);
-    margin-bottom: 12px;
+.current-weather-card .weather-icon {
+  margin-inline: auto;
 }
-
-[data-current-weather] .wrapper {
-    margin-block: 12px;
-    display: flex;
-    gap: 16px; 
-    align-items: center;
-    justify-content: flex-start;
+.current-weather-card > .body-3 {
+  text-transform: capitalize;
 }
-
-[data-current-weather] .weather-icon {
-    margin-inline: 0;
-    width: 60px;
-    height: 40px;
-    background-color: lightblue; /* Replace with your actual cloud color */
-    border-radius: 20px;
-    padding: 10px 15px;
+.current-weather-card .meta-list {
+  -webkit-margin-before: 16px;
+  margin-block-start: 16px;
+  -webkit-padding-before: 16px;
+  padding-block-start: 16px;
+  -webkit-border-before: 1px solid var(--outline);
+  border-block-start: 1px solid var(--outline);
 }
-
-/* Move .body-3 into the weapper div */
-[data-current-weather] .wrapper .body-3 {
-    text-transform: capitalize;
-    margin-top: 0; /* Remove top margin */
-    margin-left: 16px; /* Add left margin for spacing */
+.current-weather-card .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-
-[data-current-weather] .meta-list {
-    margin-block-start: 16px;
-    padding-block-start: 16px;
-    border-block-start: 1px solid var(--outline);
+.current-weather-card .meta-item:not(:last-child) {
+  -webkit-margin-after: 12px;
+  margin-block-end: 12px;
 }
-
-[data-current-weather] .meta-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-[data-current-weather] .meta-item:not(:last-child) {
-    margin-block-end: 12px;
-}
-
-[data-current-weather] .meta-text {
-    color: var(--on-surface-variant);
+.current-weather-card .meta-text {
+  color: var(--on-surface-variant);
 }
 
 /* highlights */
