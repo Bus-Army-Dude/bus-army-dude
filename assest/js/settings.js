@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const timeToggle = document.querySelector("[data-settings-time]");
   const locationToggle = document.querySelector("[data-settings-location]");
   const locationBtn = document.querySelector("[data-current-location-btn]");
+  const locationInput = document.querySelector("[data-location-input]"); // Input field for custom location
+  const locationDisplay = document.querySelector("[data-location-display]"); // Display for location
 
   let locationAllowed = true; // Default value to allow location access
 
@@ -32,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       darkMode: themeToggle.checked,
       timeFormat: timeToggle.checked,
       locationServices: locationToggle.checked,
+      customLocation: locationInput.value.trim(), // Save user input location
     };
     localStorage.setItem("weatherSettings", JSON.stringify(settings));
     applySettings(settings);
@@ -48,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       themeToggle.checked = storedSettings.darkMode;
       timeToggle.checked = storedSettings.timeFormat;
       locationToggle.checked = storedSettings.locationServices;
+      locationInput.value = storedSettings.customLocation || ""; // Load custom location if it exists
       applySettings(storedSettings);
     }
   };
@@ -164,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Function to fetch location (checks locationAllowed)
+  // Function to fetch current location (checks locationAllowed)
   const fetchLocation = () => {
     if (!locationAllowed) {
       alert("Location services are disabled. Enable them in settings to fetch your location.");
@@ -175,7 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          alert(`Your location is:\nLatitude: ${position.coords.latitude}\nLongitude: ${position.coords.longitude}`);
+          const latitude = position.coords.latitude.toFixed(4);
+          const longitude = position.coords.longitude.toFixed(4);
+          locationDisplay.textContent = `Lat: ${latitude}, Lon: ${longitude}`; // Display fetched location
+          console.log(`Fetched location: Latitude - ${latitude}, Longitude - ${longitude}`);
         },
         (error) => {
           alert("Failed to fetch location. Please try again.");
