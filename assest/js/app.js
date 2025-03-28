@@ -305,3 +305,20 @@ document.addEventListener("DOMContentLoaded", () => {
         updateWeather(settings.lastLat, settings.lastLon);
     }
 });
+
+// Debug logging
+console.log('Location Services Status:', geolocationAllowed);
+
+// Test geolocation access
+if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            console.log("Geolocation success:", position);
+        },
+        (error) => {
+            console.log("Geolocation error:", error);
+        }
+    );
+} else {
+    console.log("Geolocation is not supported");
+}
