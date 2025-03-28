@@ -1,214 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - Bus Army Dude's Profile</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ai-features.css">
-    <link rel="stylesheet" href="settings.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Bus Army Dude's Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ai-features.css">
+    <link rel="stylesheet" href="settings.css">
 
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-E0RSQS1MS7');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E0RSQS1MS7');
 </script>
 
 <body class="settings-page">
-    <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
-    <div class="container" role="main" id="main-content">
-        <div class="settings-section">
-            <div class="settings-header">
-                <h1>Settings</h1>
-                <span class="version">v1.14.0</span>
-            </div>
+    <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
+    <div class="container" role="main" id="main-content">
+        <div class="settings-header">
+            <h1>Settings</h1>
+            <span class="version">v1.14.0</span>
+        </div>
 
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Appearance</h2>
+        <nav class="settings-navigation">
+            <ul>
+                <li><a href="#appearance-settings">Appearance</a></li>
+                <li><a href="#accessibility-settings">Accessibility</a></li>
+                <li><a href="#weather-settings">Weather</a></li>
+                <li><a href="#privacy-settings">Privacy</a></li>
+                <li class="owner-only"><a href="#owner-settings">Owner Only</a></li>
+                <li class="danger-zone"><a href="#danger-settings">Danger Zone</a></li>
+            </ul>
+        </nav>
 
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Dark Mode</h3>
-                        <p class="setting-description">Switch between light and dark theme</p>
-                    </div>
-                    <label for="darkModeToggle" class="toggle-switch" aria-label="Toggle dark mode">
-                        <input type="checkbox" id="darkModeToggle" data-settings-theme>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
+        <div class="settings-content">
+            <section id="appearance-settings" class="settings-subsection">
+                <h2 class="subsection-title">Appearance</h2>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Dark Mode</h3>
+                        <p class="setting-description">Switch between light and dark theme</p>
+                    </div>
+                    <label for="darkModeToggle" class="toggle-switch" aria-label="Toggle dark mode">
+                        <input type="checkbox" id="darkModeToggle" data-settings-theme>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </section>
 
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Accessibility</h2>
+            <section id="accessibility-settings" class="settings-subsection">
+                <h2 class="subsection-title">Accessibility</h2>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Text Size</h3>
+                        <p class="setting-description">Adjust the text size for better readability</p>
+                    </div>
+                    <div class="text-size-control">
+                        <div class="size-value" id="textSizeValue">16px</div>
+                        <div class="slider-container">
+                            <input type="range" id="text-size-slider" min="12" max="24" value="16" step="1" aria-label="Adjust text size">
+                            <div class="size-labels">
+                                <span class="size-small">A</span>
+                                <span class="size-medium">A</span>
+                                <span class="size-large">A</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Focus Outline</h3>
+                        <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
+                    </div>
+                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
+                        <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </section>
 
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Text Size</h3>
-                        <p class="setting-description">Adjust the text size for better readability</p>
-                    </div>
-                    <div class="text-size-control">
-                        <div class="size-value" id="textSizeValue">16px</div>
-                        <div class="slider-container">
-                            <input
-                                type="range"
-                                id="text-size-slider"
-                                min="12"
-                                max="24"
-                                value="16"
-                                step="1"
-                                aria-label="Adjust text size"
-                            >
-                            <div class="size-labels">
-                                <span class="size-small">A</span>
-                                <span class="size-medium">A</span>
-                                <span class="size-large">A</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <section id="weather-settings" class="settings-subsection">
+                <h2 class="subsection-title">Weather Settings</h2>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Temperature Units</h3>
+                        <p class="setting-description">Choose your preferred temperature unit</p>
+                    </div>
+                    <select class="select-input" data-settings-temp>
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                </div>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Wind Speed Units</h3>
+                        <p class="setting-description">Choose your preferred wind speed unit</p>
+                    </div>
+                    <select class="select-input" data-settings-speed>
+                        <option value="ms">Meters per second (m/s)</option>
+                        <option value="mph">Miles per hour (mph)</option>
+                        <option value="kph">Kilometers per hour (km/h)</option>
+                        <option value="knots">Knots (kts)</option>
+                        <option value="beaufort">Beaufort scale</option>
+                    </select>
+                </div>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Pressure Units</h3>
+                        <p class="setting-description">Choose your preferred pressure unit</p>
+                    </div>
+                    <select class="select-input" data-settings-pressure>
+                        <option value="hpa">Hectopascals (hPa)</option>
+                        <option value="inhg">Inches of Mercury (inHg)</option>
+                        <option value="mmhg">Millimeters of Mercury (mmHg)</option>
+                    </select>
+                </div>
+            </section>
 
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Focus Outline</h3>
-                        <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
-                    </div>
-                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
-                        <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
+            <section id="privacy-settings" class="settings-subsection">
+                <h2 class="subsection-title">Privacy</h2>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Location Services</h3>
+                        <p class="setting-description">Control location services for the application</p>
+                    </div>
+                    <label for="privacyLocationToggle" class="toggle-switch" aria-label="Toggle privacy location services">
+                        <input type="checkbox" checked data-settings-location id="privacyLocationToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </section>
 
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Weather Settings</h2>
+            <section id="owner-settings" class="settings-subsection owner-only">
+                <h2 class="subsection-title">Owner Only Settings</h2>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Maintenance Mode</h3>
+                        <p class="setting-description">Put the site into maintenance mode for updates</p>
+                    </div>
+                    <label for="maintenanceModeToggle" class="toggle-switch" aria-label="Toggle maintenance mode">
+                        <input type="checkbox" id="maintenanceModeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Profile Status</h3>
+                        <p class="setting-description">Set profile status (Online, Idle, Offline)</p>
+                    </div>
+                    <select id="profileStatusSelect" class="select-input" disabled aria-label="Select profile status">
+                        <option value="online">🟢 Online</option>
+                        <option value="idle">🟡 Idle</option>
+                        <option value="offline">🔘 Offline</option>
+                    </select>
+                </div>
+            </section>
 
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Temperature Units</h3>
-                        <p class="setting-description">Choose your preferred temperature unit</p>
-                    </div>
-                    <select class="select-input" data-settings-temp>
-                        <option value="celsius" style="color: green;">Celsius (°C)</option>
-                        <option value="fahrenheit">Fahrenheit (°F)</option>
-                        <option value="kelvin">Kelvin (K)</option>
-                    </select>
-                </div>
+            <section id="danger-settings" class="settings-subsection danger-zone">
+                <h2 class="subsection-title">Danger Zone</h2>
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <h3 class="setting-title">Reset to Factory Settings</h3>
+                        <p class="setting-description">Restore all settings to their default values</p>
+                    </div>
+                    <button id="resetSettings" class="reset-button" aria-label="Reset to factory settings">Reset</button>
+                </div>
+            </section>
 
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Wind Speed Units</h3>
-                        <p class="setting-description">Choose your preferred wind speed unit</p>
-                    </div>
-                    <select class="select-input" data-settings-speed>
-                        <option value="ms">Meters per second (m/s)</option>
-                        <option value="mph">Miles per hour (mph)</option>
-                        <option value="kph">Kilometers per hour (km/h)</option>
-                        <option value="knots">Knots (kts)</option>
-                        <option value="beaufort">Beaufort scale</option>
-                    </select>
-                </div>
+            <a href="index.html" class="back-link" tabindex="0" aria-label="Back to Profile">← Back to Profile</a>
+        </div>
+    </div>
 
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Pressure Units</h3>
-                        <p class="setting-description">Choose your preferred pressure unit</p>
-                    </div>
-                    <select class="select-input" data-settings-pressure>
-                        <option value="hpa">Hectopascals (hPa)</option>
-                        <option value="inhg">Inches of Mercury (inHg)</option>
-                        <option value="mmhg">Millimeters of Mercury (mmHg)</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Privacy</h2>
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Location Services</h3>
-                        <p class="setting-description">Control location services for the application</p>
-                    </div>
-                    <label for="privacyLocationToggle" class="toggle-switch" aria-label="Toggle privacy location services">
-                        <input type="checkbox" checked data-settings-location id="privacyLocationToggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
+    <footer>
+        <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
+        <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+        <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+        <a href="accessibility-statement.html" aria-label="Accessibility Statement">Accessibility Statement</a>
+    </footer>
 
-            <div class="settings-subsection owner-only">
-                <h2 class="subsection-title">Owner Only Settings</h2>
+    <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description">
+        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.</p>
+        <button onclick="acceptCookies()" aria-label="Accept cookies">Accept</button>
+    </div>
 
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Maintenance Mode</h3>
-                        <p class="setting-description">Put the site into maintenance mode for updates</p>
-                    </div>
-                    <label for="maintenanceModeToggle" class="toggle-switch" aria-label="Toggle maintenance mode">
-                        <input type="checkbox" id="maintenanceModeToggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Profile Status</h3>
-                        <p class="setting-description">Set profile status (Online, Idle, Offline)</p>
-                    </div>
-                    <select id="profileStatusSelect" class="select-input" disabled aria-label="Select profile status">
-                        <option value="online">🟢 Online</option>
-                        <option value="idle">🟡 Idle</option>
-                        <option value="offline">🔘 Offline</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="settings-subsection danger-zone">
-                <h2 class="subsection-title">Danger Zone</h2>
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Reset to Factory Settings</h3>
-                        <p class="setting-description">Restore all settings to their default values</p>
-                    </div>
-                    <button id="resetSettings" class="reset-button" aria-label="Reset to factory settings">Reset</button>
-                </div>
-            </div>
-
-            <a href="index.html" class="back-link" tabindex="0" aria-label="Back to Profile">← Back to Profile</a>
-        </div>
-    </div>
-
-    <footer>
-        <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
-        <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
-        <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
-        <a href="accessibility-statement.html" aria-label="Accessibility Statement">Accessibility Statement</a>
-    </footer>
-
-    <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description">
-        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.</p>
-        <button onclick="acceptCookies()" aria-label="Accept cookies">Accept</button>
-    </div>
-
-    <script src="settings.js"></script>
-    <script src="globalSettings.js"></script>
-    <script src="common.js"></script>
-    <script src="script.js"></script>
-    <script src="ai-features.js"></script>
-    <script src="ai-chatbot.js"></script>
-    <script src="admin.js"></script>
+    <script src="settings.js"></script>
+    <script src="globalSettings.js"></script>
+    <script src="common.js"></script>
+    <script src="script.js"></script>
+    <script src="ai-features.js"></script>
 </body>
 </html>
