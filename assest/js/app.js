@@ -269,37 +269,61 @@ export const updateWeather = (lat, lon) => {
                 }
 
                 //5 day forecast
-                forecastSection.innerHTML = `
-                    <h2 class="title-2" id="forecast-label">5 Days Forecast</h2>
-                    <div class="card card-lg forecast-card">
-                        <ul data-forecast-list></ul>
-                    </div>
-                `;
-                for (let i = 7, len = forecastList.length; i < len; i += 8) {
-                    const {
-                        main: { temp_max },
-                        weather,
-                        dt_txt
-                    } = forecastList[i];
-                    const [{ icon, description }] = weather;
-                    const date = new Date(dt_txt);
-                    const li = document.createElement("li");
-                    li.classList.add("card-item");
-                    li.innerHTML = `
-                        <div class="icon-wrapper">
-                            <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
-                            <span class="span">
-                            <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
-                            </span>
-                        </div>
-                        <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
-                        <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
-                    `;
-                    forecastSection.querySelector("[data-forecast-list]").appendChild(li);
+                forecastSection.innerHTML = `
+                    <h2 class="title-2" id="forecast-label">5 Days Forecast</h2>
+                    <div class="card card-lg forecast-card">
+                        <ul data-forecast-list></ul>
+                    </div>
+                `;
+                const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
+                let forecastDayCount = 0;
+                let lastForecastedDay = null;
 
-                }
-                loading.style.display = "none";
-                container.classList.add("fade-in");
+                for (const forecast of forecastList) {
+                    const date = new Date(forecast.dt_txt);
+                    const day = date.getUTCDate();
+                    const month = date.getUTCMonth();
+                    const forecastDate = `${day}-${month}`;
+                    const today = new Date();
+                    const currentDay = today.getUTCDate();
+                    const currentMonth = today.getUTCMonth();
+                    const todayDate = `${currentDay}-${currentMonth}`;
+
+                    // Skip if it's the current day
+                    if (forecastDate === todayDate) {
+                        continue;
+                    }
+
+                    if (forecastDayCount < 5 && forecastDate !== lastForecastedDay) {
+                        const {
+                            main: { temp_max },
+                            weather,
+                            dt_txt
+                        } = forecast;
+                        const [{ icon, description }] = weather;
+                        const li = document.createElement("li");
+                        li.classList.add("card-item");
+                        li.innerHTML = `
+                            <div class="icon-wrapper">
+                                <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
+                                <span class="span">
+                                <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
+                                </span>
+                            </div>
+                            <p class="label-1">${day} ${module.monthNames[month]}</p>
+                            <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
+                        `;
+                        forecastListElement.appendChild(li);
+                        lastForecastedDay = forecastDate;
+                        forecastDayCount++;
+                    }
+                    if (forecastDayCount >= 5) {
+                        break;
+                    }
+                }
+
+                loading.style.display = "none";
+                container.classList.add("fade-in");
 
                 // APPLY SETTINGS HERE, AFTER ALL DATA IS RENDERED
                 const savedSettings = JSON.parse(localStorage.getItem("weatherSettings"));
