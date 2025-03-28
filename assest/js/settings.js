@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const locationDisplay = document.querySelector("[data-location-display]");
   const citySelect = document.querySelector("[data-city-select]");
 
-  let locationAllowed = true; // Default value to allow location access
-  let selectedCity = ""; // Default for the city selection
+  // Set initial values for locationAllowed and selectedCity
+  let locationAllowed = true; // Default location access is allowed
+  let selectedCity = ""; // Default to no city selected
 
   // Function to check if Geolocation API is available
   const isGeolocationAvailable = () => {
@@ -24,15 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to update the Current Location button state
   const updateLocationButtonState = () => {
     if (!locationAllowed || !isGeolocationAvailable()) {
-      // Grey out the button if location is disabled in settings OR by system-level privacy
       locationBtn.classList.add("disabled");
       locationBtn.setAttribute("disabled", true);
-      locationBtn.style.pointerEvents = "none"; // Prevent interaction
+      locationBtn.style.pointerEvents = "none";
     } else {
-      // Enable the button if geolocation is available and allowed in settings
       locationBtn.classList.remove("disabled");
       locationBtn.removeAttribute("disabled");
-      locationBtn.style.pointerEvents = "auto"; // Allow interaction
+      locationBtn.style.pointerEvents = "auto";
     }
   };
 
@@ -73,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       timeToggle.checked = storedSettings.timeFormat;
       locationToggle.checked = storedSettings.locationServices;
       selectedCity = storedSettings.city || ""; // Load saved city or default
+      locationAllowed = storedSettings.locationServices || true; // Load saved location preference or default to true
       applySettings(storedSettings);
     }
   };
@@ -81,20 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const applySettings = (settings) => {
     document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
 
-    // Update locationAllowed based on settings
     locationAllowed = settings.locationServices;
-
-    // Update location button state
     updateLocationButtonState();
 
-    // Apply city selection
     if (selectedCity) {
-      locationDisplay.textContent = `City: ${selectedCity}`; // Display the saved city
+      locationDisplay.textContent = `City: ${selectedCity}`;
     } else {
-      locationDisplay.textContent = "Location not set"; // Default text if no city is selected
+      locationDisplay.textContent = "Location not set";
     }
 
-    // Apply temperature, speed, pressure, etc.
     const temperatureElements = document.querySelectorAll("[data-temperature]");
     temperatureElements.forEach(element => {
       const originalTemp = parseFloat(element.getAttribute("data-original-value"));
@@ -111,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Apply wind speed and pressure if necessary
     const speedElements = document.querySelectorAll("[data-wind-speed]");
     speedElements.forEach(element => {
       const originalSpeed = parseFloat(element.getAttribute("data-original-value"));
@@ -150,21 +144,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!locationAllowed) {
       alert("Location services are disabled. Enable them in settings to fetch your location.");
       console.error("Location fetching is disabled by user settings!");
-      return; // Prevent the browser from accessing the Geolocation API
+      return;
     }
 
     if (navigator.geolocation) {
-      locationBtn.setAttribute("disabled", true); // Temporarily grey out the button
+      locationBtn.setAttribute("disabled", true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          locationBtn.removeAttribute("disabled"); // Re-enable the button after successful fetch
+          locationBtn.removeAttribute("disabled");
           const latitude = position.coords.latitude.toFixed(4);
           const longitude = position.coords.longitude.toFixed(4);
-          locationDisplay.textContent = `Lat: ${latitude}, Lon: ${longitude}`; // Display fetched location
+          locationDisplay.textContent = `Lat: ${latitude}, Lon: ${longitude}`;
           console.log(`Fetched location: Latitude - ${latitude}, Longitude - ${longitude}`);
         },
         (error) => {
-          locationBtn.removeAttribute("disabled"); // Re-enable the button if fetching fails
+          locationBtn.removeAttribute("disabled");
           alert("Failed to fetch location. Please try again.");
           console.error("Error fetching location:", error);
         }
@@ -175,7 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Event listeners for opening, closing, and saving settings
   settingsBtn.addEventListener("click", openSettingsModal);
   settingsClose.addEventListener("click", closeSettingsModal);
   settingsSave.addEventListener("click", saveSettings);
@@ -186,22 +179,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Event listener to toggle location services in settings
   locationToggle.addEventListener("change", (event) => {
-    locationAllowed = event.target.checked; // Update locationAllowed based on the toggle
-    updateLocationButtonState(); // Update location button state
+    locationAllowed = event.target.checked;
+    updateLocationButtonState();
   });
 
-  // Event listener for selecting a city manually
   citySelect.addEventListener("change", (event) => {
     selectedCity = event.target.value;
-    locationDisplay.textContent = `City: ${selectedCity}`; // Display the selected city
-    saveSettings(); // Save the selected city in settings
+    locationDisplay.textContent = `City: ${selectedCity}`;
+    saveSettings();
   });
 
-  // Event listener to fetch current location when button is clicked
   locationBtn.addEventListener("click", fetchLocation);
 
-  // Load settings when the page loads
-  loadSettings();
+  loadSettings(); // Load settings on page load
 });
