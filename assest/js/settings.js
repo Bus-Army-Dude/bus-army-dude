@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const timeToggle = document.querySelector("[data-settings-time]");
   const locationToggle = document.querySelector("[data-settings-location]");
 
+  let locationAllowed = true; // Default value to allow location access
+
   // Function to open the settings modal
   const openSettingsModal = () => {
     settingsModal.classList.add("active");
@@ -140,10 +142,33 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    if (settings.locationServices) {
-      console.log("Location services enabled");
+    // Handle location services
+    locationAllowed = settings.locationServices;
+    if (!locationAllowed) {
+      console.log("Location services disabled. Blocking location fetching.");
     } else {
-      console.log("Location services disabled");
+      console.log("Location services enabled.");
+    }
+  };
+
+  // Example: Function to fetch location (checks locationAllowed)
+  const fetchLocation = () => {
+    if (!locationAllowed) {
+      console.error("Location fetching is disabled!");
+      return;
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log(`Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`);
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
     }
   };
 
@@ -157,6 +182,9 @@ document.addEventListener("DOMContentLoaded", () => {
       closeSettingsModal();
     }
   });
+
+  // Example: Trigger fetchLocation for demonstration
+  document.querySelector("[data-fetch-location]").addEventListener("click", fetchLocation);
 
   // Load settings on page load
   loadSettings();
