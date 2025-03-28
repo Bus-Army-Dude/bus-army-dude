@@ -11,6 +11,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const locationBtn = document.querySelector("[data-current-location-btn]");
   const locationDisplay = document.querySelector("[data-location-display]");
   const citySelect = document.querySelector("[data-city-select]");
+  const saveBtn = document.querySelector("[data-settings-save]");  // Save button
+  
+  // Track changes locally
+  let tempSettings = {
+    temperature: "celsius",
+    windSpeed: "ms",
+    pressure: "hpa",
+    darkMode: false,
+    timeFormat: false,
+    locationServices: true,
+    city: ""
+  };
 
   // Set initial values for locationAllowed and selectedCity
   let locationAllowed = true; // Default location access is allowed
@@ -41,23 +53,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to save settings to local storage (for persistence)
   const saveSettingsToLocalStorage = () => {
-    const settings = {
-      temperature: tempSelect.value,
-      windSpeed: speedSelect.value,
-      pressure: pressureSelect.value,
-      darkMode: themeToggle.checked,
-      timeFormat: timeToggle.checked,
-      locationServices: locationToggle.checked,
-      city: selectedCity, // Save selected city
-    };
-    localStorage.setItem("weatherSettings", JSON.stringify(settings));
-    applySettings(settings);
+    localStorage.setItem("weatherSettings", JSON.stringify(tempSettings));
+    applySettings(tempSettings);  // Apply the saved settings after saving
   };
 
   // Function to load settings from local storage
   const loadSettings = () => {
     const storedSettings = JSON.parse(localStorage.getItem("weatherSettings"));
     if (storedSettings) {
+      // Set the tempSettings object with stored values
+      tempSettings = storedSettings;
+
       tempSelect.value = storedSettings.temperature;
       speedSelect.value = storedSettings.windSpeed;
       pressureSelect.value = storedSettings.pressure;
@@ -66,7 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
       locationToggle.checked = storedSettings.locationServices;
       selectedCity = storedSettings.city || ""; // Load saved city or default
       locationAllowed = storedSettings.locationServices || true; // Load saved location preference or default to true
-      applySettings(storedSettings);
+
+      applySettings(storedSettings);  // Apply settings on load
     }
   };
 
@@ -156,21 +163,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Immediately apply settings when toggles are changed
+  // Event listeners for toggling settings
   locationToggle.addEventListener("change", (event) => {
-    locationAllowed = event.target.checked;
+    tempSettings.locationServices = event.target.checked;  // Store temporary change
     updateLocationButtonState();
-    saveSettingsToLocalStorage(); // Save settings instantly
+  });
+
+  tempSelect.addEventListener("change", (event) => {
+    tempSettings.temperature = event.target.value;
+  });
+
+  speedSelect.addEventListener("change", (event) => {
+    tempSettings.windSpeed = event.target.value;
+  });
+
+  pressureSelect.addEventListener("change", (event) => {
+    tempSettings.pressure = event.target.value;
+  });
+
+  themeToggle.addEventListener("change", (event) => {
+    tempSettings.darkMode = event.target.checked;
+  });
+
+  timeToggle.addEventListener("change", (event) => {
+    tempSettings.timeFormat = event.target.checked;
   });
 
   citySelect.addEventListener("change", (event) => {
     selectedCity = event.target.value;
     locationDisplay.textContent = `City: ${selectedCity}`;
-    saveSettingsToLocalStorage(); // Save settings instantly
+    tempSettings.city = selectedCity;  // Update the temporary city
   });
 
-  // Fetch location when the button is clicked
-  locationBtn.addEventListener("click", fetchLocation);
+  // Save changes when the save button is clicked
+  saveBtn.addEventListener("click", () => {
+    saveSettingsToLocalStorage();  // Save all the settings
+    closeSettingsModal();  // Close the modal after saving
+  });
 
   // Load settings from localStorage when the page loads
   loadSettings();
