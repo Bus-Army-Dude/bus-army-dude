@@ -497,9 +497,9 @@ body.settings-page {
 @media (prefers-color-scheme: light) {
   /* Ensure option text is black in light mode */
   body.settings-page .select-input option {
-    color: #000000;
-    background-color: #ffffff; /* Ensure white background */
-  }
+    background-color: var(--select-bg);
+    color: var(--select-text);
+    padding: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
