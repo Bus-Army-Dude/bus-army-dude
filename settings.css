@@ -35,7 +35,7 @@
         --toggle-on: #34c759;
         --toggle-off: #666666;
         --select-bg: #2d2d2d;
-        --select-text: #000000; /* Changed to black */
+        --select-text: #000000; /* Changed to black for dark mode */
         --select-border: #555;
         --select-focus: #007aff;
         --shadow-color: rgba(0, 0, 0, 0.3);
@@ -88,17 +88,19 @@ body.settings-page {
         0 8px 32px -8px var(--shadow-color),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Space between header, navigation, and content */
+}
+
+.settings-page .settings-section {
+    padding: 20px;
+    margin-bottom: 40px;
 }
 
 .settings-page .settings-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px; /* Reduced margin */
-    padding-bottom: 10px; /* Reduced padding */
+    margin-bottom: 30px;
+    padding-bottom: 15px;
     border-bottom: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
 
@@ -113,58 +115,6 @@ body.settings-page {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-}
-
-/* New Navigation Styles */
-.settings-page nav.settings-navigation {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    border-radius: 14px;
-    box-shadow:
-        0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
-    padding: 15px;
-    margin-bottom: 20px;
-}
-
-.settings-page nav.settings-navigation ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.settings-page nav.settings-navigation li a {
-    display: block;
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 12px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.settings-page nav.settings-navigation li a:hover {
-    background-color: color-mix(in srgb, var(--accent-color) 20%, transparent);
-    color: var(--accent-color);
-}
-
-.settings-page nav.settings-navigation li.owner-only a {
-    /* You can add specific styling for owner-only links if needed */
-}
-
-.settings-page nav.settings-navigation li.danger-zone a {
-    /* You can add specific styling for danger zone links if needed */
-    color: #ff4d4d; /* Example: Red color for danger zone */
-}
-
-/* Settings Content Area */
-.settings-page .settings-content {
-    /* Add any specific styling for the main content area if needed */
 }
 
 .settings-page .settings-subsection {
@@ -551,7 +501,6 @@ body.settings-page {
     color: var(--select-text);
     padding: 12px;
 }
-}
 
 @media (prefers-color-scheme: dark) {
     .settings-page .select-input option {
@@ -568,13 +517,6 @@ body.settings-page {
     .settings-page .container {
         padding: 20px;
         margin: 15px auto;
-        flex-direction: column; /* Ensure content flows vertically on smaller screens */
-        gap: 15px;
-    }
-
-    .settings-page nav.settings-navigation ul {
-        flex-direction: column;
-        gap: 10px;
     }
 
     .settings-page .settings-subsection {
@@ -617,11 +559,6 @@ body.settings-page {
         margin: 12px auto;
     }
 
-    .settings-page nav.settings-navigation ul {
-        flex-direction: column;
-        gap: 8px;
-    }
-
     .settings-page .settings-subsection {
         padding: 18px;
     }
@@ -648,16 +585,6 @@ body.settings-page {
     .settings-page .container {
         padding: 15px;
         margin: 10px auto;
-    }
-
-    .settings-page nav.settings-navigation ul {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .settings-page nav.settings-navigation li a {
-        padding: 8px 12px;
-        font-size: 0.9rem;
     }
 
     .settings-page .settings-subsection {
