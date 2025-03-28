@@ -13,9 +13,9 @@
     --toggle-on: #34c759;
     --toggle-off: #dddddd;
     --focus-outline-color: #005fcc;
-    --select-bg: #ffffff;  /* White background for light mode */
-    --select-text: #000000; /* Dark text for light mode */
-    --select-border: #dddddd; /* Light border for light mode */
+    --select-bg: #ffffff;
+    --select-text: #000000;
+    --select-border: #dddddd;
     --select-focus: #007aff;
 }
 
@@ -24,7 +24,7 @@
         --bg-color: #1a1a1a;
         --text-color: #ffffff;
         --secondary-text: #a0a0a0;
-        --border--color: #333333;
+        --border-color: #333333;
         --accent-color: #007aff;
         --hover-color: #005bb5;
         --content-bg: #2d2d2d;
@@ -33,9 +33,31 @@
         --slider-track-filled-color: #007aff;
         --toggle-on: #34c759;
         --toggle-off: #666666;
-        --select-bg: #2d2d2d; /* Dark background for dark mode */
-        --select-text: #ffffff; /* Light text for dark mode */
-        --select-border: #555; /* Darker border for dark mode */
+        --select-bg: #2d2d2d;
+        --select-text: #ffffff;
+        --select-border: #555;
+        --select-focus: #007aff;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color: #ffffff;
+        --text-color: #000000;
+        --secondary-text: #666666;
+        --border-color: #dddddd;
+        --accent-color: #007aff;
+        --hover-color: #005bb5;
+        --content-bg: #f5f5f5;
+        --slider-thumb-color: #007aff;
+        --slider-track-color: #ddd;
+        --slider-track-filled-color: #007aff;
+        --toggle-on: #34c759;
+        --toggle-off: #dddddd;
+        --focus-outline-color: #005fcc;
+        --select-bg: #ffffff;
+        --select-text: #000000;
+        --select-border: #dddddd;
         --select-focus: #007aff;
     }
 }
@@ -420,12 +442,12 @@ body.settings-page {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: var(--select-bg); /* Use root variable for background color */
-    border: 1px solid var(--select-border); /* Use root variable for border */
+    background-color: var(--select-bg) !important;
+    border: 1px solid var(--select-border);
     border-radius: 8px;
     padding: 10px 15px;
     font-size: 1rem;
-    color: var(--select-text); /* Use root variable for text color */
+    color: var(--select-text);
     cursor: pointer;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
