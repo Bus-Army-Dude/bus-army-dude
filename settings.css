@@ -105,7 +105,7 @@ body.settings-page {
         0 8px 32px -8px var(--shadow-color),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.2, 0.2, 0.2, 1);
 }
 
 .settings-page .settings-subsection:hover {
@@ -142,7 +142,7 @@ body.settings-page {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.2, 0.2, 0.2, 1);
     margin-bottom: 20px;
     backdrop-filter: blur(10px);
 }
