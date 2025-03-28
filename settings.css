@@ -13,7 +13,7 @@
     --toggle-on: #34c759;
     --toggle-off: #dddddd;
     --focus-outline-color: #005fcc;
-    --select-bg: #ffffff; /* White background for light mode */
+    --select-bg: #ffffff;  /* White background for light mode */
     --select-text: #000000; /* Dark text for light mode */
     --select-border: #dddddd; /* Light border for light mode */
     --select-focus: #007aff;
@@ -24,7 +24,7 @@
         --bg-color: #1a1a1a;
         --text-color: #ffffff;
         --secondary-text: #a0a0a0;
-        --border-color: #333333;
+        --border--color: #333333;
         --accent-color: #007aff;
         --hover-color: #005bb5;
         --content-bg: #2d2d2d;
@@ -420,12 +420,12 @@ body.settings-page {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: var(--select-bg);
-    border: 1px solid var(--select-border);
+    background-color: var(--select-bg); /* Use root variable for background color */
+    border: 1px solid var(--select-border); /* Use root variable for border */
     border-radius: 8px;
     padding: 10px 15px;
     font-size: 1rem;
-    color: var(--select-text); /* Use the specified text color */
+    color: var(--select-text); /* Use root variable for text color */
     cursor: pointer;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
