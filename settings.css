@@ -13,6 +13,9 @@
     --toggle-on: #34c759; /* Green for on */
     --toggle-off: #dddddd; /* Gray for off */
     --focus-outline-color: #005fcc; /* Default focus outline color */
+    --select-bg: #ffffff;
+    --select-border: #ddd;
+    --select-focus: #007aff;
 }
 
 /* Dark Mode Variables */
@@ -30,6 +33,9 @@
         --slider-track-filled-color: #007aff;
         --toggle-on: #34c759;
         --toggle-off: #666666;
+        --select-bg: #333;
+        --select-border: #555;
+        --select-focus: #007aff;
     }
 }
 
@@ -421,6 +427,34 @@ body.settings-page {
     opacity: 1;
 }
 
+/* Modern Select Styles */
+.settings-page .select-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--select-bg);
+    border: 1px solid var(--select-border);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+        linear-gradient(135deg, gray 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+}
+
+.settings-page .select-input:focus {
+    border-color: var(--select-focus);
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--select-focus) 20%, transparent);
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
     .settings-page {
@@ -478,6 +512,7 @@ body.settings-page {
         bottom: 10px;
         padding: 15px;
         width: 85%;
+        font-size: 0.9rem;
     }
 
     .settings-page .settings-header h1 {
