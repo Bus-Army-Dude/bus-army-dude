@@ -23,15 +23,15 @@
 </head>
 
 <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-E0RSQS1MS7');
-    </script>
-      
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-E0RSQS1MS7');
+</script>
+
 <body class="settings-page">
     <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
     <div class="container" role="main" id="main-content">
@@ -102,10 +102,42 @@
                 </div>
             </div>
 
-            <!-- Weather Settings Section -->
+                        <!-- Weather Settings Section -->
             <div class="settings-subsection">
                 <h2 class="subsection-title">Weather Settings</h2>
-
+            
+                <!-- Temperature Units -->
+                <div class="settings-section">
+                    <h3 class="title-3">Temperature</h3>
+                    <select class="settings-select" data-settings-temp>
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                </div>
+            
+                <!-- Wind Speed Units -->
+                <div class="settings-section">
+                    <h3 class="title-3">Wind Speed</h3>
+                    <select class="settings-select" data-settings-speed>
+                        <option value="ms">Meters per second (m/s)</option>
+                        <option value="mph">Miles per hour (mph)</option>
+                        <option value="kph">Kilometers per hour (km/h)</option>
+                        <option value="knots">Knots (kts)</option>
+                        <option value="beaufort">Beaufort scale</option>
+                    </select>
+                </div>
+            
+                <!-- Pressure Units -->
+                <div class="settings-section">
+                    <h3 class="title-3">Pressure</h3>
+                    <select class="settings-select" data-settings-pressure>
+                        <option value="hpa">Hectopascals (hPa)</option>
+                        <option value="inhg">Inches of Mercury (inHg)</option>
+                        <option value="mmhg">Millimeters of Mercury (mmHg)</option>
+                    </select>
+                </div>
+            
                 <!-- Current Location Weather -->
                 <div class="setting-card">
                     <div class="setting-label">
@@ -117,7 +149,7 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-
+            
                 <!-- Weather Unit -->
                 <div class="setting-card">
                     <div class="setting-label">
@@ -129,19 +161,19 @@
                         <option value="imperial">°F (Fahrenheit)</option>
                     </select>
                 </div>
-
-                <!-- Update Frequency -->
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Update Frequency</h3>
-                        <p class="setting-description">Choose how often weather data should be updated</p>
-                    </div>
-                    <select id="updateFrequencySelect" class="select-input" aria-label="Select update frequency">
-                        <option value="5">Every 5 minutes</option>
-                        <option value="10">Every 10 minutes</option>
-                        <option value="15">Every 15 minutes</option>
-                        <option value="30">Every 30 minutes</option>
-                    </select>
+            </div>
+            
+            <!-- Privacy Settings -->
+            <div class="settings-subsection">
+                <h2 class="subsection-title">Privacy</h2>
+                <div class="settings-options">
+                    <label class="setting-item">
+                        <span class="setting-label">Location Services</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" checked data-settings-location>
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
                 </div>
             </div>
 
