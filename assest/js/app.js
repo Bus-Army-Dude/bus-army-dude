@@ -96,42 +96,42 @@ export const updateWeather = (lat, lon) => {
         currentLocationBtn.removeAttribute("disabled");
 
     //CURRENT WEATHER
-    fetchData(url.currentWeather(lat, lon), (currentWeather) => {
-        const {
+
+    fetchData(url.currentWeather(lat,lon),(currentWeather)=>{
+        const{
             weather,
             dt: dateUnix,
-            sys: { sunrise: sunriseUnixUTC, sunset: sunsetUnixUTC },
-            main: { temp, feels_like, pressure, humidity },
+            sys:{sunrise: sunriseUnixUTC, sunset: sunsetUnixUTC},
+            main: {temp, feels_like, pressure, humidity},
             visibility,
             timezone
         } = currentWeather;
-        const [{ description, icon }] = weather;
+        const[{description,icon}] = weather;
         const card = document.createElement("div");
-        card.classList.add("card", "card-lg", "current-weather-card");
-        card.innerHTML = `
+        card.classList.add("card","card-lg","current-weather-card");
+        card.innerHTML=`
             <h2 class="title-2 card-title">Now</h2>
-            <div class="wrapper">
-                <p class="heading" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
+            <div class="weapper">
+                <p class="heading">${parseInt(temp)}&deg;<sup>c</sup></p>
                 <img src="./assest/images/weather_icons/${icon}.png" width="64" height="64" alt="${description}" class="weather-icon">
-                <p class="body-3">${description}</p> 
             </div>
+            <p class="body-3">${description}</p>
             <ul class="meta-list">
                 <li class="meta-item">
                     <span class="m-icon">calendar_today</span>
-                    <p class="title-3 meta-text">${module.getDate(dateUnix, timezone)}</p>
+                    <p class="title-3 meta-text">${module.getDate(dateUnix,timezone)}</p>
                 </li>
                 <li class="meta-item">
                     <span class="m-icon">location_on</span>
                     <p class="title-3 meta-text" data-location></p>
                 </li>
             </ul>
-        `;
-        fetchData(url.reverseGeo(lat, lon), ([{ name, country }]) => {
-            card.querySelector("[data-location]").innerHTML = `${name}, ${country}`;
-        });
+        `
+        fetchData(url.reverseGeo(lat,lon),([{name,country}])=>{
+            card.querySelector("[data-location]").innerHTML=`${name}, ${country}`;
+        })
         currentWeatherSection.appendChild(card);
-    });
-
+        
         //today's highlights
         fetchData(url.airPollution(lat, lon), (airPollution) => {
             const [{
