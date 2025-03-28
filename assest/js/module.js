@@ -33,18 +33,26 @@ export const getDate = function (dateUnix, timezone) {
     return `${weekDayName} ${date.getUTCDate()}, ${monthName}`;
 }
 
-export const getTime = function(timeUnix, timezone) {
+export const getTime = function (timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000);
     const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Add padding
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12}:${minutes} ${period}`;
 }
 
+export const getHours = function (timeUnix, timezone) {
+    const date = new Date((timeUnix + timezone) * 1000);
+    const hours = date.getUTCHours();
+    const period = hours >= 12 ? "PM" : "AM";
+
+    return `${hours % 12 || 12} ${period}`;
+}
+
 export const mps_to_kmh = mps => {
-    const mph = mps * 3600;
-    return mph / 1000;
+    const km_per_hour = mps * 3600 / 1000;
+    return km_per_hour.toFixed(2);
 }
 
 export const aqiText = {
