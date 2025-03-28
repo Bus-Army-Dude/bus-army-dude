@@ -489,8 +489,8 @@ body.settings-page {
 }
 
 .settings-page .select-input option {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--select-bg); /* Use your defined variable */
+    color: var(--select-text); /* Use your defined variable */
     padding: 12px;
 }
 
