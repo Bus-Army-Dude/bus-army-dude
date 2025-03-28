@@ -50,15 +50,21 @@ searchField.addEventListener("input", () => {
                             <p class="item-title">${name}</p>
                             <p class="label-2 item-subtitle">${state || ""} ${country}</p>
                         </div>
-                        <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
+                        <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler data-location-name="${name}, ${country}"></a>
                     `;
                     searchResult.querySelector("[data-search-list]").appendChild(searchItem);
-                    items.push(searchItem.querySelector("[data-search-toggler]"))
+                    items.push(searchItem.querySelector("[data-search-toggler]"));
                 }
-                addEventOnElements(items, "click", () => {
+                addEventOnElements(items, "click", function() {
+                    const locationData = {
+                        name: this.getAttribute("data-location-name"),
+                        lat: `lat=${this.href.split("lat=")[1].split("&")[0]}`,
+                        lon: `lon=${this.href.split("lon=")[1]}`
+                    };
+                    localStorage.setItem('lastLocation', JSON.stringify(locationData));
                     toggleSearch();
-                    searchResult.classList.remove("active")
-                })
+                    searchResult.classList.remove("active");
+                });
             });
         }, searchTimeOutDuration);
     }
@@ -123,6 +129,12 @@ export const updateWeather = (lat, lon) => {
 
         fetchData(url.reverseGeo(lat, lon), ([{ name, country }]) => {
             card.querySelector("[data-location]").innerHTML = `${name}, ${country}`;
+            const locationData = {
+                name: `${name}, ${country}`,
+                lat: lat,
+                lon: lon
+            };
+            localStorage.setItem('lastLocation', JSON.stringify(locationData));
         });
         currentWeatherSection.appendChild(card);
 
@@ -309,177 +321,13 @@ export const updateWeather = (lat, lon) => {
     });
 };
 
-// Settings functionality
-const loadUserSettings = () => {
-    const settings = JSON.parse(localStorage.getItem("weatherSettings")) || {
-        darkMode: document.documentElement.getAttribute("data-theme") === "dark",
-        temperature: "celsius",
-        windSpeed: "ms",
-        pressure: "hpa",
-        distance: "km",
-        timeFormat: false,
-        locationServices: true
-    };
-    applySettings(settings);
-
-    // Set initial values
-    const controls = {
-        temp: document.querySelector("[data-settings-temp]"),
-        speed: document.querySelector("[data-settings-speed]"),
-        pressure: document.querySelector("[data-settings-pressure]"),
-        distance: document.querySelector("[data-settings-distance]"),
-        theme: document.querySelector("[data-settings-theme]"),
-        time: document.querySelector("[data-settings-time]"),
-        location: document.querySelector("[data-settings-location]")
-    };
-
-    if (controls.temp) controls.temp.value = settings.temperature;
-    if (controls.speed) controls.speed.value = settings.windSpeed;
-    if (controls.pressure) controls.pressure.value = settings.pressure;
-    if (controls.distance) controls.distance.value = settings.distance;
-    if (controls.theme) controls.theme.checked = settings.darkMode;
-    if (controls.time) controls.time.checked = settings.timeFormat;
-    if (controls.location) controls.location.checked = settings.locationServices;
-};
-
-const applySettings = (settings) => {
-    // Apply theme
-    document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
-
-    // Temperature conversion
-    document.querySelectorAll("[data-temperature]").forEach(element => {
-        let tempValue = parseFloat(element.getAttribute("data-original-value"));
-        let unit = '';
-
-        if (settings.temperature === "fahrenheit") {
-            tempValue = (tempValue * 9/5) + 32;
-            unit = '°F';
-        } else if (settings.temperature === "kelvin") {
-            tempValue = tempValue + 273.15;
-            unit = 'K';
-        } else {
-            unit = '°C';
-        }
-        element.textContent = `${Math.round(tempValue)}${unit}`;
-    });
-
-    // Wind speed conversion
-    document.querySelectorAll("[data-wind-speed]").forEach(element => {
-        let speedValue = parseFloat(element.getAttribute("data-original-value"));
-        let unit = 'm/s';
-
-        switch(settings.windSpeed) {
-            case "kph":
-                speedValue = speedValue * 3.6;
-                unit = 'km/h';
-                break;
-            case "mph":
-                speedValue = speedValue * 2.237;
-                unit = 'mph';
-                break;
-            case "knots":
-                speedValue = speedValue * 1.944;
-                unit = 'knots';
-                break;
-            case "beaufort":
-                speedValue = Math.min(Math.max(Math.ceil(Math.pow(speedValue / 0.836, 2/3)), 0), 12);
-                unit = 'Bft';
-                break;
-        }
-        element.textContent = `${Math.round(speedValue)} ${unit}`;
-    });
-
-    // Pressure conversion
-    document.querySelectorAll("[data-pressure]").forEach(element => {
-        let pressureValue = parseFloat(element.getAttribute("data-original-value"));
-        let unit = 'hPa';
-
-        if (settings.pressure === "inhg") {
-            pressureValue = pressureValue * 0.02953;
-            unit = 'inHg';
-        } else if (settings.pressure === "mmhg") {
-            pressureValue = pressureValue * 0.75006;
-            unit = 'mmHg';
-        } else if (settings.pressure === "kpa") {
-            pressureValue = pressureValue / 10;
-            unit = 'kPa';
-        }
-        element.textContent = `${Math.round(pressureValue)} ${unit}`;
-    });
-
-    // Visibility conversion
-    document.querySelectorAll("[data-visibility]").forEach(element => {
-        let visibilityValue = parseFloat(element.getAttribute("data-original-value"));
-        let unit = 'km';
-
-        if (settings.distance === "miles") {
-            visibilityValue = visibilityValue * 0.000621371; // Convert meters to miles
-            unit = 'mi';
-        } else {
-            visibilityValue = visibilityValue / 1000; // Convert meters to kilometers
-        }
-        element.textContent = `${visibilityValue.toFixed(1)} ${unit}`;
-    });
-};
-
-// Event Listeners for Settings
-document.addEventListener("DOMContentLoaded", () => {
-    loadUserSettings();
-
-    const settingsModal = document.querySelector("[data-settings-modal]");
-    const settingsBtn = document.querySelector("[data-settings-btn]");
-    const settingsClose = document.querySelector("[data-settings-close]");
-    const saveBtn = document.querySelector("[data-settings-save]");
-
-    // Settings controls
-    const controls = {
-        temp: document.querySelector("[data-settings-temp]"),
-        speed: document.querySelector("[data-settings-speed]"),
-        pressure: document.querySelector("[data-settings-pressure]"),
-        distance: document.querySelector("[data-settings-distance]"),
-        theme: document.querySelector("[data-settings-theme]"),
-        time: document.querySelector("[data-settings-time]"),
-        location: document.querySelector("[data-settings-location]")
-    };
-
-    // Modal controls
-    if (settingsBtn) {
-        settingsBtn.addEventListener("click", () => {
-            settingsModal.classList.add("active");
-        });
+// Load last location on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const lastLocation = localStorage.getItem('lastLocation');
+    if (lastLocation) {
+        const { lat, lon } = JSON.parse(lastLocation);
+        updateWeather(lat, lon);
     }
-
-    if (settingsClose) {
-        settingsClose.addEventListener("click", () => {
-            settingsModal.classList.remove("active");
-        });
-    }
-
-    // Save settings
-    if (saveBtn) {
-        saveBtn.addEventListener("click", () => {
-            const settings = {
-                temperature: controls.temp ? controls.temp.value : "celsius",
-                windSpeed: controls.speed ? controls.speed.value : "ms",
-                pressure: controls.pressure ? controls.pressure.value : "hpa",
-                distance: controls.distance ? controls.distance.value : "km",
-                darkMode: controls.theme ? controls.theme.checked : false,
-                timeFormat: controls.time ? controls.time.checked : false,
-                locationServices: controls.location ? controls.location.checked : true
-            };
-
-            localStorage.setItem("weatherSettings", JSON.stringify(settings));
-            applySettings(settings);
-            settingsModal.classList.remove("active");
-        });
-    }
-
-    // Close modal when clicking outside
-    window.addEventListener("click", (event) => {
-        if (event.target === settingsModal) {
-            settingsModal.classList.remove("active");
-        }
-    });
 });
 
 export const error404 = () => {
