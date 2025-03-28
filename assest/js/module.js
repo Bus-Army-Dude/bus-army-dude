@@ -26,26 +26,25 @@ export const monthNames = [
 ];
 
 export const getDate = function (dateUnix, timezone) {
-    const date = new Date((dateUnix + timezone) * 1000);
-    const weekDayName = weekDayNames[date.getDay()];
-    const monthName = monthNames[date.getMonth()];
+    const date = new Date((dateUnix + timezone) * 1000); // Correctly apply timezone offset
+    const weekDayName = weekDayNames[date.getUTCDay()]; // Use UTC day
+    const monthName = monthNames[date.getUTCMonth()]; // Use UTC month
 
-    return `${weekDayName} ${date.getDate()}, ${monthName}`;
+    return `${weekDayName} ${date.getUTCDate()}, ${monthName}`;
 }
 
 export const getTime = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
+    const hours = date.getUTCHours(); // Use UTC hours
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Use UTC minutes
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12}:${minutes} ${period}`;
 }
 
 export const getHours = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date
-    .getHours();
+    const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
+    const hours = date.getUTCHours(); // Use UTC hours
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} ${period}`;
