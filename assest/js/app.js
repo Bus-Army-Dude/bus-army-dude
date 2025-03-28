@@ -292,7 +292,7 @@ export const updateWeather = (lat, lon) => {
                             </span>
                         </div>
                         <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
-                        <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
+                        <p class="label-1">${module.weekDayNames[date.getDay()]}</p>
                     `;
                     forecastSection.querySelector("[data-forecast-list]").appendChild(li);
                 }
