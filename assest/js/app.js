@@ -100,6 +100,18 @@ export const updateWeather = (lat, lon) => {
         } = currentWeather;
         const [{ description, icon }] = weather;
 
+        // --- ADDED FOR DEBUGGING ---
+        console.log("Timezone from API:", timezone);
+        console.log("Sunrise (UTC Unix):", sunriseUnixUTC);
+        console.log("Sunset (UTC Unix):", sunsetUnixUTC);
+
+        const sunriseDate = new Date((sunriseUnixUTC + timezone) * 1000);
+        const sunsetDate = new Date((sunsetUnixUTC + timezone) * 1000);
+
+        console.log("Sunrise (Calculated Local):", sunriseDate.toLocaleTimeString());
+        console.log("Sunset (Calculated Local):", sunsetDate.toLocaleTimeString());
+        // --- END OF DEBUGGING LINES ---
+
         const card = document.createElement("div");
         card.classList.add("card", "card-lg", "current-weather-card");
         card.innerHTML = `
@@ -215,7 +227,7 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 </div>
             `;
-            
+
             highlightSection.appendChild(card);
 
             fetchData(url.forecast(lat, lon), (forecast) => {
