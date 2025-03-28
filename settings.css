@@ -17,6 +17,7 @@
     --select-text: #000000;
     --select-border: #dddddd;
     --select-focus: #007aff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -37,6 +38,7 @@
         --select-text: #ffffff;
         --select-border: #555;
         --select-focus: #007aff;
+        --shadow-color: rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -439,9 +441,9 @@ body.settings-page {
 }
 
 .settings-page .select-input {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     background: linear-gradient(145deg,
         color-mix(in srgb, var(--bg-color) 98%, white),
         var(--bg-color)
@@ -458,10 +460,17 @@ body.settings-page {
         0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
         0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
     transition: all 0.3s cubic-bezier(0.2, 0.2, 0.2, 1);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
-    background-repeat: no-repeat !important;
-    background-position: calc(100% - 15px) center !important;
-    padding-right: 40px;
+    position: relative;
+}
+
+.settings-page .select-input::after {
+    content: "▼";
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: var(--text-color);
+    pointer-events: none;
 }
 
 .settings-page .select-input:hover {
@@ -480,15 +489,22 @@ body.settings-page {
 }
 
 .settings-page .select-input option {
-    background-color: var(--select-bg);
-    color: var(--select-text);
+    background-color: #ffffff;
+    color: #000000;
     padding: 12px;
 }
 
+@media (prefers-color-scheme: light) {
+    .settings-page .select-input option {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
 @media (prefers-color-scheme: dark) {
-    .settings-page .select-input {
-        background-image: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.3) 50%),
-            linear-gradient(135deg, rgba(255, 255, 255, 0.3) 50%, transparent 50%);
+    .settings-page .select-input option {
+        background-color: #2d2d2d;
+        color: #ffffff;
     }
 }
 
@@ -525,6 +541,10 @@ body.settings-page {
 
     .settings-page .settings-header h1 {
         font-size: 1.8rem;
+    }
+
+    .settings-page .select-input {
+        width: 100%;
     }
 }
 
