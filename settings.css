@@ -428,8 +428,8 @@ body.settings-page {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
     box-sizing: border-box;
-    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-        linear-gradient(135deg, gray 50%, transparent 50%);
+    background-image: linear-gradient(45deg, transparent 50%, rgba(0, 0, 0, 0.2) 50%),
+        linear-gradient(135deg, rgba(0, 0, 0, 0.2) 50%, transparent 50%);
     background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
     background-size: 5px 5px, 5px 5px;
     background-repeat: no-repeat;
@@ -439,6 +439,13 @@ body.settings-page {
     border-color: var(--select-focus);
     outline: none;
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--select-focus) 20%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+    .settings-page .select-input {
+        background-image: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.3) 50%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.3) 50%, transparent 50%);
+    }
 }
 
 @media (max-width: 768px) {
