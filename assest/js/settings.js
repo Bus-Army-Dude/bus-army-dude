@@ -17,14 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let locationAllowed = true; // Default location access is allowed
   let selectedCity = ""; // Default to no city selected
 
-  // Function to check if Geolocation API is available
-  const isGeolocationAvailable = () => {
-    return "geolocation" in navigator; // Checks if the browser's Geolocation API is available
-  };
-
   // Function to update the Current Location button state
   const updateLocationButtonState = () => {
-    if (!locationAllowed || !isGeolocationAvailable()) {
+    if (!locationAllowed) {
       locationBtn.classList.add("disabled");
       locationBtn.setAttribute("disabled", true);
       locationBtn.style.pointerEvents = "none";
@@ -139,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Function to fetch current location
+  // Function to fetch location based on the selected city
   const fetchLocation = () => {
     if (!locationAllowed) {
       alert("Location services are disabled. Enable them in settings to fetch your location.");
@@ -147,26 +142,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (navigator.geolocation) {
-      locationBtn.setAttribute("disabled", true);
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          locationBtn.removeAttribute("disabled");
-          const latitude = position.coords.latitude.toFixed(4);
-          const longitude = position.coords.longitude.toFixed(4);
-          locationDisplay.textContent = `Lat: ${latitude}, Lon: ${longitude}`;
-          console.log(`Fetched location: Latitude - ${latitude}, Longitude - ${longitude}`);
-        },
-        (error) => {
-          locationBtn.removeAttribute("disabled");
-          alert("Failed to fetch location. Please try again.");
-          console.error("Error fetching location:", error);
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by your browser.");
-      console.error("Geolocation is not supported by this browser.");
-    }
+    const city = selectedCity || "Default City"; // Fallback to a default city if none selected
+
+    // Fetch location info based on selected city (you can use a weather API here)
+    locationDisplay.textContent = `City: ${city}`;
+    console.log(`Fetching location for city: ${city}`);
   };
 
   settingsBtn.addEventListener("click", openSettingsModal);
