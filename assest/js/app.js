@@ -269,87 +269,46 @@ export const updateWeather = (lat, lon) => {
                 }
 
                 //5 day forecast
+                forecastSection.innerHTML = `
+                    <h2 class="title-2" id="forecast-label">5 Days Forecast</h2>
+                    <div class="card card-lg forecast-card">
+                        <ul data-forecast-list></ul>
+                    </div>
+                `;
+                for (let i = 7, len = forecastList.length; i < len; i += 8) {
+                    const {
+                        main: { temp_max },
+                        weather,
+                        dt_txt
+                    } = forecastList[i];
+                    const [{ icon, description }] = weather;
+                    const date = new Date(dt_txt);
+                    const li = document.createElement("li");
+                    li.classList.add("card-item");
+                    li.innerHTML = `
+                        <div class="icon-wrapper">
+                            <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
+                            <span class="span">
+                            <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
+                            </span>
+                        </div>
+                        <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
+                        <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
+                    `;
+                    forecastSection.querySelector("[data-forecast-list]").appendChild(li);
 
-                forecastSection.innerHTML = `
+                }
+                loading.style.display = "none";
+                container.classList.add("fade-in");
 
-                    <h2 class="title-2" id="forecast-label">5 Days Forecast</h2>
-
-                    <div class="card card-lg forecast-card">
-
-                        <ul data-forecast-list></ul>
-
-                    </div>
-
-                `;
-
-                for (let i = 7, len = forecastList.length; i < len; i += 8) {
-
-                    const {
-
-                        main: { temp_max },
-
-                        weather,
-
-                        dt_txt
-
-                    } = forecastList[i];
-
-                    const [{ icon, description }] = weather;
-
-                    const date = new Date(dt_txt);
-
-                    const li = document.createElement("li");
-
-                    li.classList.add("card-item");
-
-                    li.innerHTML = `
-
-                        <div class="icon-wrapper">
-
-                            <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon">
-
-                            <span class="span">
-
-                            <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
-
-                            </span>
-
-                        </div>
-
-                        <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
-
-                        <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
-
-                    `;
-
-                    forecastSection.querySelector("[data-forecast-list]").appendChild(li);
-
-
-
-                }
-
-                loading.style.display = "none";
-
-                container.classList.add("fade-in");
-
-
-
-                // APPLY SETTINGS HERE, AFTER ALL DATA IS RENDERED
-
-                const savedSettings = JSON.parse(localStorage.getItem("weatherSettings"));
-
-                if (savedSettings) {
-
-                    applySettings(savedSettings);
-
-                }
-
-            });
-
-        });
-
-    });
-
+                // APPLY SETTINGS HERE, AFTER ALL DATA IS RENDERED
+                const savedSettings = JSON.parse(localStorage.getItem("weatherSettings"));
+                if (savedSettings) {
+                    applySettings(savedSettings);
+                }
+            });
+        });
+    });
 };
 
 // Load user settings and apply them
