@@ -264,12 +264,12 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 `;
 
-                const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
+                 const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
                 const today = new Date();
                 today.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                 const forecastDays = [];
                 let daysAdded = 0;
-                
+
                 for (const data of forecastList) {
                     const { main: { temp_max }, weather, dt_txt } = data;
                     const [{ icon, description }] = weather;
@@ -296,9 +296,10 @@ export const updateWeather = (lat, lon) => {
                         forecastListElement.appendChild(li);
                     }
 
-                    if (daysAdded === 7) {
-                        break;
-                    }
+                    // Remove this line to potentially show more days:
+                    // if (daysAdded === 7) {
+                    //     break;
+                    // }
                 }
 
                 loading.style.display = "none";
