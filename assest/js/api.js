@@ -16,10 +16,10 @@ export const url ={
         return `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric`
     },
     airPollution(lat,lon){
-        return `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon`
+        return `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon&appid=${apiKey}`
     },
     reverseGeo(lat,lon){
-        return `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon&limit=5`
+        return `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon&limit=5&appid=${apiKey}`
     },
     /**
      * @param {string} query search query e.g. :"london" , "New Yourk"
