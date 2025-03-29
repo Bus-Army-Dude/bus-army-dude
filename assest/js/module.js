@@ -6,7 +6,8 @@ export const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug
 
 // Converts Unix timestamp to a readable date
 export const getDate = function (dateUnix, timezoneOffset) {
-    const date = new Date((dateUnix + timezoneOffset) * 1000); // Apply timezone offset in seconds
+    const localTimestamp = (dateUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
+    const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
     const weekDayName = weekDayNames[date.getDay()]; // Local weekday
     const monthName = monthNames[date.getMonth()]; // Local month
 
@@ -15,10 +16,10 @@ export const getDate = function (dateUnix, timezoneOffset) {
 
 // Converts Unix timestamp to a readable time with AM/PM
 export const getTime = function (timeUnix, timezoneOffset) {
-    // Adjust timestamp for the timezone offset
-    const localTime = new Date((timeUnix + timezoneOffset) * 1000);
-    const hours = localTime.getHours();
-    const minutes = localTime.getMinutes().toString().padStart(2, '0');
+    const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
+    const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
+    const hours = date.getHours(); // Local hours
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // Local minutes
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12}:${minutes} ${period}`;
@@ -26,8 +27,9 @@ export const getTime = function (timeUnix, timezoneOffset) {
 
 // Converts Unix timestamp to only hours with AM/PM
 export const getHours = function (timeUnix, timezoneOffset) {
-    const localTime = new Date((timeUnix + timezoneOffset) * 1000);
-    const hours = localTime.getHours();
+    const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
+    const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
+    const hours = date.getHours(); // Local hours
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} ${period}`;
