@@ -25,31 +25,24 @@ export const monthNames = [
     "Dec"
 ];
 
-// Function to get the formatted date with an optional format
-export const getDate = (dateUnix, timezone, format = 'short') => {
+export const getDate = (dateUnix, timezone) => {
     const date = new Date(dateUnix * 1000);
     const localDate = new Date(date.getTime() + (timezone * 1000));
-
+    
     const day = weekDayNames[localDate.getUTCDay()];
     const month = monthNames[localDate.getUTCMonth()];
     const dateNum = localDate.getUTCDate();
-    const year = localDate.getUTCFullYear();
 
-    if (format === 'short') {
-        return `${day} ${dateNum}, ${month}`;
-    } else {
-        return `${day}, ${month} ${dateNum}, ${year}`;
-    }
+    return `${day} ${dateNum}, ${month}`;
 };
 
-// Function to get formatted time in 12-hour or 24-hour format
 export const getTime = function (timeUnix, timezone, is24Hour = false) {
     const date = new Date(timeUnix * 1000);
     const localDate = new Date(date.getTime() + (timezone * 1000));
-
+    
     const hours = localDate.getUTCHours();
     const minutes = localDate.getUTCMinutes().toString().padStart(2, '0');
-
+    
     if (is24Hour) {
         return `${hours.toString().padStart(2, '0')}:${minutes}`;
     } else {
@@ -58,13 +51,12 @@ export const getTime = function (timeUnix, timezone, is24Hour = false) {
     }
 };
 
-// Function to get only hours in 12-hour or 24-hour format
 export const getHours = function (timeUnix, timezone, is24Hour = false) {
     const date = new Date(timeUnix * 1000);
     const localDate = new Date(date.getTime() + (timezone * 1000));
-
+    
     const hours = localDate.getUTCHours();
-
+    
     if (is24Hour) {
         return `${hours.toString().padStart(2, '0')}`;
     } else {
@@ -73,50 +65,30 @@ export const getHours = function (timeUnix, timezone, is24Hour = false) {
     }
 };
 
-// Convert wind speed from m/s to km/h
 export const mps_to_kmh = mps => {
     const km_per_hour = mps * 3600 / 1000;
     return km_per_hour.toFixed(2);
 };
 
-// Air Quality Index (AQI) levels with corresponding messages
 export const aqiText = {
     1: {
         level: "Good",
-        message: "Air quality is considered satisfactory, and air pollution poses little or no risk."
+        message: "Air quality is considered satisfactory, and air pollution poses little or no risk"
     },
     2: {
         level: "Fair",
-        message: "Air quality is acceptable; however, for some pollutants, there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution."
+        message: "Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution"
     },
     3: {
         level: "Moderate",
-        message: "Members of sensitive groups may experience health effects. The general public is not likely to be affected."
+        message: "Members of sensitive groups may experience health effects. The general public is not likely to be affected"
     },
     4: {
         level: "Poor",
-        message: "Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects."
+        message: "Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects"
     },
     5: {
         level: "Very Poor",
-        message: "Health warnings of emergency conditions. The entire population is more likely to be affected."
+        message: "Health warnings of emergency conditions. The entire population is more likely to be affected"
     }
-};
-
-// Convert temperature unit (Celsius to Fahrenheit, Kelvin to Celsius, etc.)
-export const convertTemp = (temp, fromUnit, toUnit) => {
-    if (fromUnit === 'celsius' && toUnit === 'fahrenheit') {
-        return (temp * 9/5) + 32; // Convert Celsius to Fahrenheit
-    } else if (fromUnit === 'celsius' && toUnit === 'kelvin') {
-        return temp + 273.15; // Convert Celsius to Kelvin
-    } else if (fromUnit === 'fahrenheit' && toUnit === 'celsius') {
-        return (temp - 32) * 5/9; // Convert Fahrenheit to Celsius
-    } else if (fromUnit === 'fahrenheit' && toUnit === 'kelvin') {
-        return ((temp - 32) * 5/9) + 273.15; // Convert Fahrenheit to Kelvin
-    } else if (fromUnit === 'kelvin' && toUnit === 'celsius') {
-        return temp - 273.15; // Convert Kelvin to Celsius
-    } else if (fromUnit === 'kelvin' && toUnit === 'fahrenheit') {
-        return ((temp - 273.15) * 9/5) + 32; // Convert Kelvin to Fahrenheit
-    }
-    return temp; // If no conversion is needed, return the same temperature
 };
