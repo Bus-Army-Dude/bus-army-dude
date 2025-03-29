@@ -254,19 +254,21 @@ export const updateWeather = (lat, lon) => {
 
                 const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
                 const today = new Date();
+                today.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                 const forecastDays = [];
                 let daysAdded = 0;
-
+                
                 for (const data of forecastList) {
                     const { main: { temp_max }, weather, dt_txt } = data;
                     const [{ icon, description }] = weather;
                     const date = new Date(dt_txt);
+                    date.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                     const day = date.toDateString();
-
+                
                     if (date > today && !forecastDays.includes(day)) {
                         forecastDays.push(day);
                         daysAdded++;
-
+                
                         const li = document.createElement("li");
                         li.classList.add("card-item");
                         li.innerHTML = `
@@ -281,7 +283,7 @@ export const updateWeather = (lat, lon) => {
                         `;
                         forecastListElement.appendChild(li);
                     }
-
+                
                     if (daysAdded === 5) {
                         break;
                     }
