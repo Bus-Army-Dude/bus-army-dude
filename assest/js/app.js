@@ -201,7 +201,7 @@ export const updateWeather = (lat, lon) => {
                         <h3 class="title-3">Visibility</h3>
                         <div class="wrapper">
                             <span class="m-icon">visibility</span>
-                            <p class="title-1" data-visibility data-original-value="${visibility}">${visibility / 1000} <sub>km</sub></p>
+                            <p class="title-1" data-visibility data-original-value="${visibility}">${visibility} <sub>m</sub></p>
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
@@ -421,15 +421,22 @@ const applySettings = (settings) => {
     // Visibility conversion
     document.querySelectorAll("[data-visibility]").forEach(element => {
         let visibilityValue = parseFloat(element.getAttribute("data-original-value"));
-        let unit = 'km';
-
+        let unit = '';
+        
         if (settings.distance === "miles") {
-            visibilityValue = visibilityValue * 0.000621371; // Convert meters to miles
+            // Convert meters to miles (1 mile = 1609.344 meters)
+            visibilityValue = (visibilityValue / 1609.344).toFixed(1);
             unit = 'mi';
         } else {
-            visibilityValue = visibilityValue / 1000; // Convert meters to kilometers
+            // Convert meters to kilometers
+            visibilityValue = (visibilityValue / 1000).toFixed(1);
+            unit = 'km';
         }
-        element.textContent = `${visibilityValue.toFixed(1)} ${unit}`;
+        
+        // Remove trailing zeros after decimal point if the decimal part is 0
+        visibilityValue = visibilityValue.replace(/\.0$/, '');
+        
+        element.textContent = `${visibilityValue} ${unit}`;
     });
 };
 
