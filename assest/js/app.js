@@ -100,18 +100,6 @@ export const updateWeather = (lat, lon) => {
         } = currentWeather;
         const [{ description, icon }] = weather;
 
-        // --- ADDED FOR DEBUGGING ---
-        console.log("Timezone from API:", timezone);
-        console.log("Sunrise (UTC Unix):", sunriseUnixUTC);
-        console.log("Sunset (UTC Unix):", sunsetUnixUTC);
-
-        const sunriseDate = new Date((sunriseUnixUTC - timezone) * 1000);
-        const sunsetDate = new Date((sunsetUnixUTC - timezone) * 1000);
-
-        console.log("Sunrise (Calculated Local):", sunriseDate.toLocaleTimeString());
-        console.log("Sunset (Calculated Local):", sunsetDate.toLocaleTimeString());
-        // --- END OF DEBUGGING LINES ---
-
         const card = document.createElement("div");
         card.classList.add("card", "card-lg", "current-weather-card");
         card.innerHTML = `
@@ -184,14 +172,14 @@ export const updateWeather = (lat, lon) => {
                                     <span class="m-icon">clear_day</span>
                                     <div class="label-1">
                                         <p class="label-1">Sunrise</p>
-                                        <p class="title-1">${module.getTime(sunriseUnix, timezoneOffset)}</p>
+                                        <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
                                     </div>
                                 </div>
                                 <div class="card-item">
                                     <span class="m-icon">clear_night</span>
                                     <div class="label-1">
                                         <p class="label">Sunset</p>
-                                        <p class="title-1">${module.getTime(sunsetUnix, timezoneOffset)}</p>
+                                        <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -227,7 +215,7 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 </div>
             `;
-
+            
             highlightSection.appendChild(card);
 
             fetchData(url.forecast(lat, lon), (forecast) => {
@@ -285,7 +273,7 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 `;
 
-                for (let i = 6, len = forecastList.length; i < len; i += 8) {
+                for (let i = 7, len = forecastList.length; i < len; i += 8) {
                     const {
                         main: { temp_max },
                         weather,
@@ -454,6 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
         location: document.querySelector("[data-settings-location]")
     };
 
+    // Modal controls
     if (settingsBtn) {
         settingsBtn.addEventListener("click", () => {
             settingsModal.classList.add("active");
@@ -466,6 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Save settings
     if (saveBtn) {
         saveBtn.addEventListener("click", () => {
             const settings = {
@@ -484,22 +474,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Close modal when clicking outside
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
             settingsModal.classList.remove("active");
         }
     });
-});
-
-// Load saved city on startup
-window.addEventListener('load', () => {
-    const savedCity = localStorage.getItem('weatherCity');
-    if (savedCity) {
-        const { lat, lon } = JSON.parse(savedCity);
-        window.location.hash = `#/weather?${lat}&${lon}`;
-    } else if (!window.location.hash) {
-        window.location.hash = "#/current-location";
-    }
 });
 
 export const error404 = () => {
