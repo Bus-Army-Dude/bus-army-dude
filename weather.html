@@ -76,13 +76,13 @@
         </article>
     </main>
 
-    <!-- Settings Modal -->
+      <!-- Modified Settings Modal -->
     <div class="settings-modal" data-settings-modal>
         <div class="settings-content card">
             <h2 class="title-2">Settings</h2>
             
             <div class="settings-sections">
-                <!-- Temperature Units -->
+                <!-- Temperature Units - unchanged -->
                 <div class="settings-section">
                     <h3 class="title-3">Temperature</h3>
                     <select class="settings-select" data-settings-temp>
@@ -92,7 +92,7 @@
                     </select>
                 </div>
 
-                <!-- Wind Speed Units -->
+                <!-- Wind Speed Units - unchanged -->
                 <div class="settings-section">
                     <h3 class="title-3">Wind Speed</h3>
                     <select class="settings-select" data-settings-speed>
@@ -104,7 +104,7 @@
                     </select>
                 </div>
 
-                <!-- Pressure Units -->
+                <!-- Pressure Units - unchanged -->
                 <div class="settings-section">
                     <h3 class="title-3">Pressure</h3>
                     <select class="settings-select" data-settings-pressure>
@@ -116,8 +116,7 @@
                     </select>
                 </div>
 
-
-                <!-- Display Settings -->
+                <!-- Display Settings - 24-hour toggle disabled -->
                 <div class="settings-section">
                     <h3 class="title-3">Display</h3>
                     <div class="settings-options">
@@ -131,14 +130,17 @@
                     </div>
                 </div>
 
-                <!-- Privacy Settings -->
+                <!-- Modified Privacy Settings -->
                 <div class="settings-section">
                     <h3 class="title-3">Privacy</h3>
                     <div class="settings-options">
                         <label class="setting-item">
                             <span class="setting-label">Location Services</span>
                             <div class="toggle-switch">
-                                <input type="checkbox" checked data-settings-location>
+                                <input type="checkbox" 
+                                       id="location-toggle" 
+                                       data-settings-location 
+                                       checked>
                                 <span class="toggle-slider"></span>
                             </div>
                         </label>
