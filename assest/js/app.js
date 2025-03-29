@@ -90,23 +90,15 @@ export const updateWeather = (lat, lon) => {
         currentLocationBtn.removeAttribute("disabled");
 
     fetchData(url.currentWeather(lat, lon), (currentWeather) => {
-    const {
-        weather,
-        dt: dateUnix,
-        sys: { sunrise: sunriseUnixUTC, sunset: sunsetUnixUTC },
-        main: { temp, feels_like, pressure, humidity },
-        visibility,
-        timezone
-    } = currentWeather;
-    const [{ description, icon }] = weather;
-
-    // Adjust sunrise and sunset times by the timezone
-    const sunriseUnixLocal = sunriseUnixUTC + timezone;
-    const sunsetUnixLocal = sunsetUnixUTC + timezone;
-
-    // Update sunrise and sunset times in your HTML
-    document.getElementById("sunrise-time").textContent = module.getTime(sunriseUnixLocal, 0);
-    document.getElementById("sunset-time").textContent = module.getTime(sunsetUnixLocal, 0);
+        const {
+            weather,
+            dt: dateUnix,
+            sys: { sunrise: sunriseUnixUTC, sunset: sunsetUnixUTC },
+            main: { temp, feels_like, pressure, humidity },
+            visibility,
+            timezone
+        } = currentWeather;
+        const [{ description, icon }] = weather;
 
         const card = document.createElement("div");
         card.classList.add("card", "card-lg", "current-weather-card");
