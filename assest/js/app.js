@@ -215,8 +215,7 @@ export const updateWeather = (lat, lon) => {
                         <h3 class="title-3">Visibility</h3>
                         <div class="wrapper">
                             <span class="m-icon">visibility</span>
-                            <p class="title-1" data-visibility data-original-value="${visibility}">
-                                ${Number(visibility / 1000).toFixed(1)} <sub>km</sub></p>
+                            <p class="title-1" data-visibility data-original-value="${visibility}">${visibility / 1000} <sub>km</sub></p>
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
@@ -286,7 +285,7 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 `;
 
-                for (let i = 7, len = forecastList.length; i < len; i += 8) {
+                for (let i = 6, len = forecastList.length; i < len; i += 8) {
                     const {
                         main: { temp_max },
                         weather,
@@ -455,7 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
         location: document.querySelector("[data-settings-location]")
     };
 
-    // Modal controls
     if (settingsBtn) {
         settingsBtn.addEventListener("click", () => {
             settingsModal.classList.add("active");
@@ -468,7 +466,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Save settings
     if (saveBtn) {
         saveBtn.addEventListener("click", () => {
             const settings = {
@@ -487,7 +484,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Close modal when clicking outside
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
             settingsModal.classList.remove("active");
