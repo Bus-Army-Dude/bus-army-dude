@@ -25,17 +25,17 @@ const searchResult = document.querySelector("[data-search-result]");
 let searchTimeOut = null;
 let searchTimeOutDuration = 500;
 
-// Function to check if the input is a postal code
+// Improved Postal Code Detection (Basic)
 const isPostalCode = (input) => {
-    // This simple regex checks for US and Canadian postal codes, you can extend it for other formats
-    const postalCodeRegex = /^[0-9]{5}(-[0-9]{4})?$|^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/;
+    // This regex handles various international patterns (not exhaustive)
+    const postalCodeRegex = /^[A-Z\d\s-]{3,20}$/i;
     return postalCodeRegex.test(input);
 }
 
 // Handle search input
 searchField.addEventListener("input", () => {
     searchTimeOut ?? clearTimeout(searchTimeOut);
-    
+
     if (!searchField.value) {
         searchResult.classList.remove("active");
         searchResult.innerHTML = "";
@@ -48,17 +48,13 @@ searchField.addEventListener("input", () => {
         searchTimeOut = setTimeout(() => {
             const query = searchField.value.trim();
 
-            // If it's a postal code, query with postal code
-            if (isPostalCode(query)) {
-                fetchData(url.geo(query), (locations) => {
+            fetchData(url.geo(query), (locations) => {
+                if (locations && locations.length > 0) {
                     displaySearchResults(locations);
-                });
-            } else {
-                // Otherwise, treat it as a city
-                fetchData(url.geo(query), (locations) => {
-                    displaySearchResults(locations);
-                });
-            }
+                } else {
+                    displayNoResults(); // Display message for no results
+                }
+            });
         }, searchTimeOutDuration);
     }
 });
@@ -89,6 +85,13 @@ const displaySearchResults = (locations) => {
         toggleSearch();
         searchResult.classList.remove("active");
     });
+};
+
+// Function to display "no results" message
+const displayNoResults = () => {
+    searchField.classList.remove("searching");
+    searchResult.classList.add("active");
+    searchResult.innerHTML = `<p class="no-results">No results found.</p>`;
 };
 
 const container = document.querySelector("[data-container]");
