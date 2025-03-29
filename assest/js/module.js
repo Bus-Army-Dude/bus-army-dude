@@ -1,36 +1,19 @@
 'use strict';
 
 export const weekDayNames = [
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
+    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
 ];
 
 export const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
 export const getDate = function (dateUnix, timezone) {
     const date = new Date((dateUnix + timezone) * 1000); // Correctly apply timezone offset
-    const weekDayName = weekDayNames[date.getUTCDay()]; // Use UTC day
-    const monthName = monthNames[date.getUTCMonth()]; // Use UTC month
+    const weekDayName = weekDayNames[date.getDay()]; // Use local day
+    const monthName = monthNames[date.getMonth()]; // Use local month
 
-    return `${weekDayName} ${date.getUTCDate()}, ${monthName}`;
+    return `${weekDayName} ${date.getDate()}, ${monthName}`;
 }
 
 export const getTime = function (timeUnix, timezoneOffset) {
@@ -45,7 +28,7 @@ export const getTime = function (timeUnix, timezoneOffset) {
 
 export const getHours = function (timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
-    const hours = date.getUTCHours(); // Use UTC hours
+    const hours = date.getHours(); // Use local hours
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} ${period}`;
