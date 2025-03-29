@@ -284,7 +284,7 @@ export const updateWeather = (lat, lon) => {
                         forecastListElement.appendChild(li);
                     }
                 
-                    if (daysAdded === 5) {
+                    if (daysAdded === 7) {
                         break;
                     }
                 }
