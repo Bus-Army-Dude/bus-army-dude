@@ -44,7 +44,7 @@ searchField.addEventListener("input", () => {
                 for (const { name, lat, lon, country, state } of locations) {
                     const searchItem = document.createElement("li");
                     searchItem.classList.add("view-item");
-                
+
                     // Adjusted logic to check if 'state' exists and render accordingly
                     searchItem.innerHTML = `
                         <span class="m-icon">location_on</span>
@@ -54,7 +54,7 @@ searchField.addEventListener("input", () => {
                         </div>
                         <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
                     `;
-                
+
                     searchResult.querySelector("[data-search-list]").appendChild(searchItem);
                     items.push(searchItem.querySelector("[data-search-toggler]"));
                 }
@@ -124,8 +124,8 @@ export const updateWeather = (lat, lon) => {
             </ul>
         `;
 
-        fetchData(url.reverseGeo(lat, lon), ([{ name, country }]) => {
-            card.querySelector("[data-location]").innerHTML = `${name}, ${country}`;
+        fetchData(url.reverseGeo(lat, lon), ([{ name, country, state }]) => {
+            card.querySelector("[data-location]").innerHTML = `${name}, ${state ? state + ', ' : ''}${country}`;
         });
         currentWeatherSection.appendChild(card);
 
@@ -167,7 +167,7 @@ export const updateWeather = (lat, lon) => {
                             ${module.aqiText[aqi].level}
                         </span>
                     </div>
-                       <div class="card card-sm highlight-card two">
+                     <div class="card card-sm highlight-card two">
                         <h3 class="title-3">Sunrise & Sunset</h3>
                         <div class="card-list">
                             <div class="card-item">
@@ -267,7 +267,7 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 `;
 
-                 const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
+                const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
                 const today = new Date();
                 today.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                 const forecastDays = [];
@@ -298,11 +298,6 @@ export const updateWeather = (lat, lon) => {
                         `;
                         forecastListElement.appendChild(li);
                     }
-
-                    // Remove this line to potentially show more days:
-                    // if (daysAdded === 7) {
-                    //     break;
-                    // }
                 }
 
                 loading.style.display = "none";
@@ -462,7 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
         });
     }
-    
+
     // Close modal when clicking outside
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
