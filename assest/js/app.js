@@ -44,16 +44,19 @@ searchField.addEventListener("input", () => {
                 for (const { name, lat, lon, country, state } of locations) {
                     const searchItem = document.createElement("li");
                     searchItem.classList.add("view-item");
+                
+                    // Adjusted logic to check if 'state' exists and render accordingly
                     searchItem.innerHTML = `
                         <span class="m-icon">location_on</span>
                         <div>
                             <p class="item-title">${name}</p>
-                            <p class="label-2 item-subtitle">${state || ""} ${country}</p>
+                            <p class="label-2 item-subtitle">${state ? `${state}, ` : ""}${country}</p>
                         </div>
                         <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
                     `;
+                
                     searchResult.querySelector("[data-search-list]").appendChild(searchItem);
-                    items.push(searchItem.querySelector("[data-search-toggler]"))
+                    items.push(searchItem.querySelector("[data-search-toggler]"));
                 }
                 addEventOnElements(items, "click", () => {
                     toggleSearch();
