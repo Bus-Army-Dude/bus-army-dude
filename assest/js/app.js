@@ -31,17 +31,37 @@ const isPostalCode = (input) => {
 
 // Function to handle search query
 const handleSearch = (query) => {
+    if (!query.trim()) return; // Don't run if search field is empty
+
     if (isPostalCode(query)) {
         // If it's a postal code, call postal code API
         fetchData(url.zip(query), (locations) => {
-            updateSearchResults(locations);
+            if (locations.length > 0) {
+                updateSearchResults(locations);
+            } else {
+                showError("No results found for postal code.");
+            }
+        }).catch(() => {
+            showError("Error fetching postal code data.");
         });
     } else {
         // If it's not a postal code, assume it's a city name and call city API
         fetchData(url.geo(query), (locations) => {
-            updateSearchResults(locations);
+            if (locations.length > 0) {
+                updateSearchResults(locations);
+            } else {
+                showError("No results found for city.");
+            }
+        }).catch(() => {
+            showError("Error fetching city data.");
         });
     }
+};
+
+// Function to show an error message
+const showError = (message) => {
+    searchResult.classList.add("active");
+    searchResult.innerHTML = `<p>${message}</p>`;
 };
 
 // Function to update the search results UI
