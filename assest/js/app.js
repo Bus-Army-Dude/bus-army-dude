@@ -239,7 +239,7 @@ export const updateWeather = (lat, lon) => {
                             ${module.aqiText[aqi].level}
                         </span>
                     </div>
-                       <div class="card card-sm highlight-card two">
+                     <div class="card card-sm highlight-card two">
                         <h3 class="title-3">Sunrise & Sunset</h3>
                         <div class="card-list">
                             <div class="card-item">
@@ -344,7 +344,7 @@ export const updateWeather = (lat, lon) => {
                 today.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                 const forecastDays = [];
                 let daysAdded = 0;
-                
+
                 for (const data of forecastList) {
                     const { main: { temp_max }, weather, dt_txt } = data;
                     const [{ icon, description }] = weather;
@@ -490,7 +490,7 @@ const applySettings = (settings) => {
     document.querySelectorAll("[data-visibility]").forEach(element => {
         let visibilityValue = parseFloat(element.getAttribute("data-original-value"));
         let unit = '';
-        
+
         if (settings.distance === "miles") {
             // Convert meters to miles (1 mile = 1609.344 meters)
             visibilityValue = (visibilityValue / 1609.344).toFixed(1);
@@ -500,10 +500,10 @@ const applySettings = (settings) => {
             visibilityValue = (visibilityValue / 1000).toFixed(1);
             unit = 'km';
         }
-        
+
         // Remove trailing zeros after decimal point if the decimal part is 0
         visibilityValue = visibilityValue.replace(/\.0$/, '');
-        
+
         element.textContent = `${visibilityValue} ${unit}`;
     });
 };
@@ -540,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
         });
     }
-    
+
     // Close modal when clicking outside
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
@@ -552,3 +552,43 @@ document.addEventListener("DOMContentLoaded", () => {
 export const error404 = () => {
     errorContent.style.display = "flex";
 };
+
+const init = () => {
+    // Check if there's a location stored in localStorage and load it
+    const storedLocation = localStorage.getItem('lastLocation');
+    if (storedLocation) {
+        const { lat, lon } = JSON.parse(storedLocation);
+        updateWeather(lat, lon);
+    } else if (window.location.hash.startsWith("#/weather")) {
+        const params = new URLSearchParams(window.location.hash.substring(window.location.hash.indexOf('?') + 1));
+        const lat = params.get('lat');
+        const lon = params.get('lon');
+        if (lat && lon) {
+            updateWeather(lat, lon);
+        } else {
+            // Handle case where lat or lon are missing in the hash
+            console.error("Latitude or longitude missing in URL hash");
+            error404(); // Or some other error handling
+        }
+    } else {
+        // Potentially load weather for a default location or prompt for location
+        // For now, we can leave this empty or show a welcome message
+    }
+};
+
+window.addEventListener('hashchange', () => {
+    if (window.location.hash.startsWith("#/weather")) {
+        const params = new URLSearchParams(window.location.hash.substring(window.location.hash.indexOf('?') + 1));
+        const lat = params.get('lat');
+        const lon = params.get('lon');
+        if (lat && lon) {
+            updateWeather(lat, lon);
+        } else {
+            console.error("Latitude or longitude missing in URL hash");
+            error404(); // Or some other error handling
+        }
+    }
+});
+
+// Call init when the page loads
+window.addEventListener('load', init);
