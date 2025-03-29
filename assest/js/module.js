@@ -36,25 +36,33 @@ export const getDate = (dateUnix, timezone) => {
     return `${day} ${dateNum}, ${month}`;
 };
 
-export const getTime = function (timeUnix, timezone) {
+export const getTime = function (timeUnix, timezone, is24Hour = false) {
     const date = new Date(timeUnix * 1000);
     const localDate = new Date(date.getTime() + (timezone * 1000));
     
     const hours = localDate.getUTCHours();
     const minutes = localDate.getUTCMinutes().toString().padStart(2, '0');
-    const period = hours >= 12 ? "PM" : "AM";
-
-    return `${hours % 12 || 12}:${minutes} ${period}`;
+    
+    if (is24Hour) {
+        return `${hours.toString().padStart(2, '0')}:${minutes}`;
+    } else {
+        const period = hours >= 12 ? "PM" : "AM";
+        return `${hours % 12 || 12}:${minutes} ${period}`;
+    }
 };
 
-export const getHours = function (timeUnix, timezone) {
+export const getHours = function (timeUnix, timezone, is24Hour = false) {
     const date = new Date(timeUnix * 1000);
     const localDate = new Date(date.getTime() + (timezone * 1000));
     
     const hours = localDate.getUTCHours();
-    const period = hours >= 12 ? "PM" : "AM";
-
-    return `${hours % 12 || 12} ${period}`;
+    
+    if (is24Hour) {
+        return `${hours.toString().padStart(2, '0')}`;
+    } else {
+        const period = hours >= 12 ? "PM" : "AM";
+        return `${hours % 12 || 12} ${period}`;
+    }
 };
 
 export const mps_to_kmh = mps => {
