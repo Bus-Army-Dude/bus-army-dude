@@ -100,6 +100,14 @@ export const updateWeather = (lat, lon) => {
         } = currentWeather;
         const [{ description, icon }] = weather;
 
+        // Adjust sunrise and sunset times by the timezone
+        const sunriseUnixLocal = sunriseUnixUTC + timezone;
+        const sunsetUnixLocal = sunsetUnixUTC + timezone;
+
+        // Update sunrise and sunset times in your HTML
+        document.getElementById("sunrise-time").textContent = module.getTime(sunriseUnixLocal, 0);
+        document.getElementById("sunset-time").textContent = module.getTime(sunsetUnixLocal, 0);
+
         const card = document.createElement("div");
         card.classList.add("card", "card-lg", "current-weather-card");
         card.innerHTML = `
@@ -164,7 +172,7 @@ export const updateWeather = (lat, lon) => {
                             ${module.aqiText[aqi].level}
                         </span>
                     </div>
-                       <div class="card card-sm highlight-card two">
+                    <div class="card card-sm highlight-card two">
                         <h3 class="title-3">Sunrise & Sunset</h3>
                         <div class="card-list">
                             <div class="card-item">
@@ -267,8 +275,6 @@ export const updateWeather = (lat, lon) => {
                 forecastSection.innerHTML = `
                     <h2 class="title-2" id="forecast-label">5 Days Forecast</h2>
                     <div class="card card-lg forecast-card">
-                        <ul data-forecast-list></ul>
-                    </div>
                 `;
 
                 const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
