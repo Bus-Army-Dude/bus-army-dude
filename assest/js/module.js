@@ -25,23 +25,24 @@ export const monthNames = [
     "Dec"
 ];
 
-export const getDate = (dateUnix, timezone) => {
-    const date = new Date((dateUnix + timezone) * 1000);
-    const day = weekDayNames[date.getDay()]; // Use getDay() for local day
-    const month = monthNames[date.getMonth()]; // Use getMonth() for local month
-    const dateNum = date.getDate(); // Use getDate() for local date
-
-    return `${day} ${dateNum}, ${month}`;
+export const getTime = function (timeUnix, timezone) {
+    const date = new Date(timeUnix * 1000); // Keep Unix timestamp as is
+    return date.toLocaleTimeString('en-US', {
+        timeZone: timezone, // Use proper timezone string like 'America/New_York'
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
 };
 
-export const getTime = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const period = hours >= 12 ? "PM" : "AM";
-
-    return `${hours % 12 || 12}:${minutes} ${period}`;
-}
+export const getHours = function (timeUnix, timezone) {
+    const date = new Date(timeUnix * 1000); // Same, without manually adding timezone
+    return date.toLocaleTimeString('en-US', {
+        timeZone: timezone,
+        hour: '2-digit',
+        hour12: true
+    });
+};
 
 export const getHours = function (timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000);
