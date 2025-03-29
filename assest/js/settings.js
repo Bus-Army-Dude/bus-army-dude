@@ -2,8 +2,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     // Get all the necessary elements
-    const settingsBtn = document.querySelector("[data-settings-toggler]");
-    const settingsModal = document.querySelector("[data-settings]");
+    const settingsBtn = document.querySelector("[data-settings-btn]");
+    const settingsModal = document.querySelector("[data-settings-modal]");
     const settingsClose = document.querySelector("[data-settings-close]");
     const settingsForm = document.querySelector("[data-settings-form]");
     const currentLocationBtn = document.querySelector("[data-current-location-btn]");
@@ -223,40 +223,63 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Location services handling
-    let locationTempSetting = localStorage.getItem("locationServices") === "true";
-    
+    // Location services handling with override
     locationToggle.addEventListener("change", async (event) => {
-        locationTempSetting = event.target.checked;
+        const isEnabled = event.target.checked;
         
-        if (event.target.checked) {
+        if (isEnabled) {
             try {
+                // Force location permission prompt with high accuracy
                 const permission = await new Promise((resolve) => {
                     navigator.geolocation.getCurrentPosition(
                         () => resolve(true),
                         () => resolve(false),
-                        { timeout: 5000 }
+                        { 
+                            enableHighAccuracy: true,
+                            timeout: 5000,
+                            maximumAge: 0
+                        }
                     );
                 });
 
                 if (!permission) {
                     event.target.checked = false;
-                    locationTempSetting = false;
                     alert("Please enable location access in your browser settings to use location services.");
                 }
             } catch (error) {
                 console.error("Error requesting location permission:", error);
                 event.target.checked = false;
-                locationTempSetting = false;
             }
         }
         
-        localStorage.setItem("locationServices", locationTempSetting);
+        // Save location setting immediately
+        const settings = saveSettings();
+        applySettings(settings);
+
+        // Update last known position if location is enabled
+        if (isEnabled && window.location.hash === '#/current-location') {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const { latitude, longitude } = position.coords;
+                    window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
+                },
+                () => {
+                    const lastLocation = localStorage.getItem('lastSearchedLocation');
+                    window.location.hash = lastLocation || '#/weather?lat=51.5073219&lon=-0.1276474';
+                }
+            );
+        }
     });
 
     // Modal event listeners
-    settingsBtn?.addEventListener("click", () => settingsModal.classList.add("active"));
-    settingsClose?.addEventListener("click", () => settingsModal.classList.remove("active"));
+    settingsBtn?.addEventListener("click", () => {
+        settingsModal.classList.add("active");
+        loadSettings(); // Reload settings when opening modal
+    });
+    
+    settingsClose?.addEventListener("click", () => {
+        settingsModal.classList.remove("active");
+    });
 
     // Close modal when clicking outside
     window.addEventListener("click", (event) => {
@@ -273,14 +296,14 @@ document.addEventListener("DOMContentLoaded", () => {
         settingsModal.classList.remove("active");
     });
 
-    // Save settings when any setting changes
+    // Save settings when any setting changes (except location)
     settingsForm?.addEventListener("change", (event) => {
-        if (event.target.name !== "location") { // Don't auto-save location changes
+        if (event.target.name !== "location") {
             const settings = saveSettings();
             applySettings(settings);
         }
     });
 
-    // Initialize
+    // Initialize settings
     loadSettings();
 });
