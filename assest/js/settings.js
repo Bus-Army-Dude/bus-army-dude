@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         timeToggle.checked = savedSettings.timeFormat;
         locationToggle.checked = savedSettings.locationServices;
 
-        // Apply settings immediately
+        // Apply settings immediately (for initial load)
         applySettings(savedSettings);
     };
 
@@ -70,9 +70,23 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update sunrise and sunset times
         updateSunriseSunset(settings.timeFormat);
 
-        // Re-render hourly forecast if time format changed
+        // Update "Today at" time
+        updateTodayAtTime(settings.timeFormat);
+
+        // Re-render hourly forecast
         if (typeof renderHourlyForecast === 'function') {
             renderHourlyForecast();
+        }
+    };
+
+    const updateTodayAtTime = (is24HourFormat) => {
+        const todayTimeElement = document.querySelector("[data-today-time]");
+        const timezoneOffset = parseInt(localStorage.getItem("timezoneOffset")) || 0;
+
+        if (todayTimeElement) {
+            const now = new Date();
+            const currentTimeUnix = Math.floor(now.getTime() / 1000);
+            todayTimeElement.textContent = formatSunriseSunsetTime(currentTimeUnix, timezoneOffset, is24HourFormat);
         }
     };
 
@@ -166,9 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     unit = "inHg";
                 } else if (settings.pressure === "mmhg") {
                     converted = value * 0.75006;
-                    unit = "mmHg";
                 }
-
                 element.textContent = `${Math.round(converted)} ${unit}`;
             }
         });
@@ -190,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Location toggle specific handling
+    // Location toggle specific handling (no change needed here)
     locationToggle.addEventListener("change", (event) => {
         const locationBtn = document.querySelector("[data-current-location-btn]");
         if (!event.target.checked) {
@@ -202,13 +214,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Time toggle specific handling
+    // Time toggle specific handling - REMOVED immediate updates
     timeToggle.addEventListener("change", () => {
-        const is24HourFormat = timeToggle.checked;
-        updateSunriseSunset(is24HourFormat); // Update sunrise/sunset immediately
-        if (typeof renderHourlyForecast === 'function') {
-            renderHourlyForecast(); // Re-render hourly forecast
-        }
+        // No immediate update here, it will happen on save
     });
 
     // Load settings on page load
