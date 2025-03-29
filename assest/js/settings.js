@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updateTodayAtTime = (is24HourFormat) => {
         const todayTimeElement = document.querySelector("[data-today-time]");
-        const timezoneOffset = parseInt(localStorage.getItem("timezoneOffset")) || 0;
+        const timezoneOffset = new Date().getTimezoneOffset() * -60; // Dynamic timezone offset
 
         if (todayTimeElement) {
             const now = new Date();
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateSunriseSunset = (is24HourFormat) => {
         const sunriseElement = document.querySelector("[data-sunrise]");
         const sunsetElement = document.querySelector("[data-sunset]");
-        const timezoneOffset = parseInt(localStorage.getItem("timezoneOffset")) || 0; // Retrieve timezone offset
+        const timezoneOffset = new Date().getTimezoneOffset() * -60; // Dynamic timezone offset
 
         if (sunriseElement && sunsetElement) {
             const sunriseTimeUnix = parseInt(sunriseElement.getAttribute("data-original-value"));
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Location toggle specific handling (no change needed here)
+    // Location toggle specific handling
     locationToggle.addEventListener("change", (event) => {
         const locationBtn = document.querySelector("[data-current-location-btn]");
         if (!event.target.checked) {
@@ -214,9 +214,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Time toggle specific handling - REMOVED immediate updates
+    // Time toggle specific handling - Apply updates immediately
     timeToggle.addEventListener("change", () => {
-        // No immediate update here, it will happen on save
+        const is24HourFormat = timeToggle.checked;
+        updateSunriseSunset(is24HourFormat);
+        updateTodayAtTime(is24HourFormat);
     });
 
     // Load settings on page load
