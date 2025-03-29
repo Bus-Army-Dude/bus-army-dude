@@ -264,11 +264,11 @@ export const updateWeather = (lat, lon) => {
                     const date = new Date(dt_txt);
                     date.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                     const day = date.toDateString();
-                
+
                     if (date > today && !forecastDays.includes(day)) {
                         forecastDays.push(day);
                         daysAdded++;
-                
+
                         const li = document.createElement("li");
                         li.classList.add("card-item");
                         li.innerHTML = `
@@ -283,7 +283,7 @@ export const updateWeather = (lat, lon) => {
                         `;
                         forecastListElement.appendChild(li);
                     }
-                
+
                     if (daysAdded === 7) {
                         break;
                     }
@@ -446,26 +446,7 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
         });
     }
-
-    // Save settings
-    if (saveBtn) {
-        saveBtn.addEventListener("click", () => {
-            const settings = {
-                temperature: controls.temp ? controls.temp.value : "celsius",
-                windSpeed: controls.speed ? controls.speed.value : "ms",
-                pressure: controls.pressure ? controls.pressure.value : "hpa",
-                distance: controls.distance ? controls.distance.value : "km",
-                darkMode: controls.theme ? controls.theme.checked : false,
-                timeFormat: controls.time ? controls.time.checked : false,
-                locationServices: controls.location ? controls.location.checked : true
-            };
-
-            localStorage.setItem("weatherSettings", JSON.stringify(settings));
-            applySettings(settings);
-            settingsModal.classList.remove("active");
-        });
-    }
-
+    
     // Close modal when clicking outside
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
