@@ -48,13 +48,24 @@ searchField.addEventListener("input", () => {
         searchTimeOut = setTimeout(() => {
             const query = searchField.value.trim();
 
-            fetchData(url.geo(query), (locations) => {
-                if (locations && locations.length > 0) {
-                    displaySearchResults(locations);
-                } else {
-                    displayNoResults(); // Display message for no results
-                }
-            });
+            if (isPostalCode(query)) {
+                // Assuming US country code for postal codes (you can adjust this)
+                fetchData(url.zip(query, "US"), (location) => {
+                    if (location) { // zip endpoint returns a single object not array
+                        displayZipResult(location);
+                    } else {
+                        displayNoResults();
+                    }
+                });
+            } else {
+                fetchData(url.geo(query), (locations) => {
+                    if (locations && locations.length > 0) {
+                        displaySearchResults(locations);
+                    } else {
+                        displayNoResults();
+                    }
+                });
+            }
         }, searchTimeOutDuration);
     }
 });
@@ -82,6 +93,31 @@ const displaySearchResults = (locations) => {
         items.push(searchItem.querySelector("[data-search-toggler]"));
     }
     addEventOnElements(items, "click", () => {
+        toggleSearch();
+        searchResult.classList.remove("active");
+    });
+};
+
+// Function to display zip code search result
+const displayZipResult = (location) => {
+    searchField.classList.remove("searching");
+    searchResult.classList.add("active");
+    searchResult.innerHTML = `
+        <ul class="view-list" data-search-list></ul>
+    `;
+
+    const searchItem = document.createElement("li");
+    searchItem.classList.add("view-item");
+    searchItem.innerHTML = `
+        <span class="m-icon">location_on</span>
+        <div>
+            <p class="item-title">${location.name}</p>
+            <p class="label-2 item-subtitle">${location.country}</p>
+        </div>
+        <a href="#/weather?lat=${location.lat}&lon=${location.lon}" class="item-link has-state" aria-label="${location.name} weather" data-search-toggler></a>
+    `;
+    searchResult.querySelector("[data-search-list]").appendChild(searchItem);
+    addEventOnElements([searchItem.querySelector("[data-search-toggler]")], "click", () => {
         toggleSearch();
         searchResult.classList.remove("active");
     });
