@@ -15,22 +15,16 @@ export const getDate = function (dateUnix, timezoneOffset) {
 };
 
 export const getTime = function (timeUnix, timezoneOffset) {
-    console.log("Raw Timestamp:", timeUnix); // Debug the raw Unix timestamp
-    console.log("Timezone Offset:", timezoneOffset); // Debug the timezone offset
+    // Adjust the Unix timestamp by the timezone offset
+    const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Convert to milliseconds
+    const date = new Date(localTimestamp); // Create a Date object based on the adjusted timestamp
 
-    const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
-    console.log("Adjusted Local Timestamp (Milliseconds):", localTimestamp); // Debug the adjusted local timestamp
+    const hours = date.getHours(); // Get local hours
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // Format minutes
+    const period = hours >= 12 ? "PM" : "AM"; // Determine AM/PM period
 
-    const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
-
-    const hours = date.getHours(); // Local hours
-    const minutes = date.getMinutes().toString().padStart(2, '0'); // Local minutes
-    const period = hours >= 12 ? "PM" : "AM";
-
-    const localTime = `${hours % 12 || 12}:${minutes} ${period}`;
-    console.log("Computed Local Time:", localTime); // Debug the computed local time
-
-    return localTime;
+    // Format the time in 12-hour format
+    return `${hours % 12 || 12}:${minutes} ${period}`;
 };
 
 
