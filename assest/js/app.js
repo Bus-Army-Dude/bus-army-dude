@@ -74,22 +74,22 @@ export const updateWeather = (lat, lon) => {
     container.classList.remove("fade-in");
     errorContent.style.display = "none";
 
-    const WeatherSection = document.querySelector("[data--weather]");
+    const currentWeatherSection = document.querySelector("[data-current-weather]");
     const highlightSection = document.querySelector("[data-highlights]");
     const hourlySection = document.querySelector("[data-hourly-forecast]");
     const forecastSection = document.querySelector("[data-5-day-forecast]");
 
-    WeatherSection.innerHTML = "";
+    currentWeatherSection.innerHTML = "";
     highlightSection.innerHTML = "";
     hourlySection.innerHTML = "";
     forecastSection.innerHTML = "";
 
-    if (window.location.hash === "#/-location")
-        LocationBtn.setAttribute("disabled", "");
+    if (window.location.hash === "#/current-location")
+        currentLocationBtn.setAttribute("disabled", "");
     else
-        LocationBtn.removeAttribute("disabled");
+        currentLocationBtn.removeAttribute("disabled");
 
-    fetchData(url.Weather(lat, lon), (Weather) => {
+    fetchData(url.currentWeather(lat, lon), (currentWeather) => {
         const {
             weather,
             dt: dateUnix,
@@ -97,11 +97,11 @@ export const updateWeather = (lat, lon) => {
             main: { temp, feels_like, pressure, humidity },
             visibility,
             timezone
-        } = Weather;
+        } = currentWeather;
         const [{ description, icon }] = weather;
 
         const card = document.createElement("div");
-        card.classList.add("card", "card-lg", "-weather-card");
+        card.classList.add("card", "card-lg", "current-weather-card");
         card.innerHTML = `
             <h2 class="title-2 card-title">Now</h2>
             <div class="wrapper">
@@ -124,7 +124,7 @@ export const updateWeather = (lat, lon) => {
         fetchData(url.reverseGeo(lat, lon), ([{ name, country }]) => {
             card.querySelector("[data-location]").innerHTML = `${name}, ${country}`;
         });
-        WeatherSection.appendChild(card);
+        currentWeatherSection.appendChild(card);
 
         fetchData(url.airPollution(lat, lon), (airPollution) => {
             const [{
@@ -196,24 +196,6 @@ export const updateWeather = (lat, lon) => {
             `;
 
             highlightSection.appendChild(card);
-
-            // Function to update the current date
-function updateCurrentDate() {
-    const currentDateElement = document.querySelector("[data-current-date]");
-    const now = new Date();
-    currentDateElement.textContent = `${module.weekDayNames[now.getDay()]} ${now.getDate()}, ${module.monthNames[now.getMonth()]}`;
-}
-
-// Call the function to update the date initially
-updateCurrentDate();
-
-// Set an interval to update the date at midnight
-const now = new Date();
-const timeToMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0) - now;
-setTimeout(() => {
-    updateCurrentDate();
-    setInterval(updateCurrentDate, 24 * 60 * 60 * 1000); // Update every 24 hours
-}, timeToMidnight);
 
             fetchData(url.forecast(lat, lon), (forecast) => {
                 const {
@@ -302,7 +284,7 @@ setTimeout(() => {
                         forecastListElement.appendChild(li);
                     }
                 
-                    if (daysAdded === 5) {
+                    if (daysAdded === 7) {
                         break;
                     }
                 }
