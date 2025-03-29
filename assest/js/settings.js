@@ -214,18 +214,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Time toggle specific handling - Now updates correctly
     timeToggle.addEventListener("change", () => {
-        const newSettings = {
-            temperature: tempSelect.value,
-            windSpeed: speedSelect.value,
-            pressure: pressureSelect.value,
-            timeFormat: timeToggle.checked,
-            locationServices: locationToggle.checked
-        };
-        saveSettings();
-        applySettings(newSettings); // Reapply settings with the new time format
-    });
+    // Update immediately on toggle change
+    const savedSettings = {
+        temperature: tempSelect.value,
+        windSpeed: speedSelect.value,
+        pressure: pressureSelect.value,
+        timeFormat: timeToggle.checked,
+        locationServices: locationToggle.checked
+    };
+
+    // Apply settings and update time displays
+    applySettings(savedSettings);
+});
 
     // Load settings on page load
     loadSettings();
