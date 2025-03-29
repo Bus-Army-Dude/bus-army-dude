@@ -163,7 +163,7 @@ export const updateWeather = (lat, lon) => {
                             ${module.aqiText[aqi].level}
                         </span>
                     </div>
-                     <div class="card card-sm highlight-card two">
+                       <div class="card card-sm highlight-card two">
                         <h3 class="title-3">Sunrise & Sunset</h3>
                         <div class="card-list">
                             <div class="card-item">
@@ -194,6 +194,13 @@ export const updateWeather = (lat, lon) => {
                         <div class="wrapper">
                             <span class="m-icon">airwave</span>
                             <p class="title-1" data-pressure data-original-value="${pressure}">${pressure} <sub>hPa</sub></p>
+                        </div>
+                    </div>
+                    <div class="card card-sm highlight-card">
+                        <h3 class="title-3">Visibility</h3>
+                        <div class="wrapper">
+                            <span class="m-icon">visibility</span>
+                            <p class="title-1" data-visibility data-original-value="${visibility}">${visibility / 1000} <sub>km</sub></p>
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
@@ -268,7 +275,7 @@ export const updateWeather = (lat, lon) => {
                 today.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                 const forecastDays = [];
                 let daysAdded = 0;
-
+                
                 for (const data of forecastList) {
                     const { main: { temp_max }, weather, dt_txt } = data;
                     const [{ icon, description }] = weather;
@@ -294,6 +301,10 @@ export const updateWeather = (lat, lon) => {
                         `;
                         forecastListElement.appendChild(li);
                     }
+
+                    if (daysAdded === 7) {
+                        break;
+                    }
                 }
 
                 loading.style.display = "none";
@@ -311,6 +322,7 @@ export const updateWeather = (lat, lon) => {
 // Settings functionality
 const loadUserSettings = () => {
     const settings = JSON.parse(localStorage.getItem("weatherSettings")) || {
+        darkMode: document.documentElement.getAttribute("data-theme") === "dark",
         temperature: "celsius",
         windSpeed: "ms",
         pressure: "hpa",
@@ -332,17 +344,15 @@ const loadUserSettings = () => {
     if (controls.temp) controls.temp.value = settings.temperature;
     if (controls.speed) controls.speed.value = settings.windSpeed;
     if (controls.pressure) controls.pressure.value = settings.pressure;
-    if (controls.theme) {
-        const themeControl = document.querySelector("[data-settings-theme]");
-        if (themeControl) {
-            themeControl.checked = false; // Removed dark mode functionality
-        }
-    }
+    if (controls.theme) controls.theme.checked = settings.darkMode;
     if (controls.time) controls.time.checked = settings.timeFormat;
     if (controls.location) controls.location.checked = settings.locationServices;
 };
 
 const applySettings = (settings) => {
+    // Apply theme
+    document.documentElement.setAttribute("data-theme", settings.darkMode ? "dark" : "light");
+
     // Temperature conversion
     document.querySelectorAll("[data-temperature]").forEach(element => {
         let tempValue = parseFloat(element.getAttribute("data-original-value"));
@@ -403,7 +413,6 @@ const applySettings = (settings) => {
         }
         element.textContent = `${Math.round(pressureValue)} ${unit}`;
     });
-};
 
 // Event Listeners for Settings
 document.addEventListener("DOMContentLoaded", () => {
@@ -436,28 +445,13 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
         });
     }
-
+    
     // Close modal when clicking outside
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
             settingsModal.classList.remove("active");
         }
     });
-
-    if (saveBtn) {
-        saveBtn.addEventListener("click", () => {
-            const settings = {
-                temperature: controls.temp?.value || "celsius",
-                windSpeed: controls.speed?.value || "ms",
-                pressure: controls.pressure?.value || "hpa",
-                timeFormat: controls.time?.checked || false,
-                locationServices: controls.location?.checked || true
-            };
-            localStorage.setItem("weatherSettings", JSON.stringify(settings));
-            applySettings(settings);
-            settingsModal.classList.remove("active");
-        });
-    }
 });
 
 export const error404 = () => {
