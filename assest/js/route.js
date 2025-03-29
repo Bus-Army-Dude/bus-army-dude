@@ -43,7 +43,20 @@ const currentLocation = () => {
 };
 
 // Function to search for location based on the query
-const searchedLocation = (query) => updateWeather(...query.split('&'));
+const searchedLocation = (query) => {
+  if (query) {
+    // Make sure the query is valid (either city or postal code)
+    if (query.includes("&lat") && query.includes("&lon")) {
+      updateWeather(...query.split('&'));
+    } else {
+      console.error("Invalid query format");
+      error404();
+    }
+  } else {
+    console.error("No query provided");
+    error404();
+  }
+};
 
 // Routes mapping
 const routes = new Map([
