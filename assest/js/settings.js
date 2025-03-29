@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     unit = "inHg";
                 } else if (settings.pressure === "mmhg") {
                     converted = value * 0.75006;
+                    unit = "mmHg";  // Corrected to mmHg
                 }
                 element.textContent = `${Math.round(converted)} ${unit}`;
             }
@@ -202,31 +203,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Location toggle specific handling (no change needed here)
+    // Location toggle specific handling (only updates after Save Changes)
+    let locationTempSetting = locationToggle.checked;  // Store initial state
     locationToggle.addEventListener("change", (event) => {
-        const locationBtn = document.querySelector("[data-current-location-btn]");
-        if (!event.target.checked) {
-            locationBtn.classList.add("disabled");
-            locationBtn.setAttribute("disabled", "");
-        } else {
-            locationBtn.classList.remove("disabled");
-            locationBtn.removeAttribute("disabled");
-        }
+        locationTempSetting = event.target.checked; // Update temporary setting
     });
 
     timeToggle.addEventListener("change", () => {
-    // Update immediately on toggle change
-    const savedSettings = {
-        temperature: tempSelect.value,
-        windSpeed: speedSelect.value,
-        pressure: pressureSelect.value,
-        timeFormat: timeToggle.checked,
-        locationServices: locationToggle.checked
-    };
+        // Update immediately on toggle change
+        const savedSettings = {
+            temperature: tempSelect.value,
+            windSpeed: speedSelect.value,
+            pressure: pressureSelect.value,
+            timeFormat: timeToggle.checked,
+            locationServices: locationTempSetting  // Use temporary location setting
+        };
 
-    // Apply settings and update time displays
-    applySettings(savedSettings);
-});
+        // Apply settings and update time displays
+        applySettings(savedSettings);
+    });
+
+    saveBtn.addEventListener("click", () => {
+        // Apply location setting only when save is clicked
+        const savedSettings = {
+            temperature: tempSelect.value,
+            windSpeed: speedSelect.value,
+            pressure: pressureSelect.value,
+            timeFormat: timeToggle.checked,
+            locationServices: locationToggle.checked
+        };
+
+        applySettings(savedSettings);
+    });
 
     // Load settings on page load
     loadSettings();
