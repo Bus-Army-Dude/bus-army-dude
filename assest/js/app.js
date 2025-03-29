@@ -24,8 +24,8 @@ let searchTimeOutDuration = 500;
 
 // Function to detect if the input is a postal code
 const isPostalCode = (input) => {
-    // Simple postal code format check (adjust this regex for global coverage)
-    const postalCodeRegex = /^[A-Za-z0-9\s\-]+$/;  // Regex to match alphanumeric postal codes with possible spaces/dashes
+    // Basic postal code regex (matches alphanumeric codes, spaces, or dashes)
+    const postalCodeRegex = /^[A-Za-z0-9\s\-]+$/;
     return postalCodeRegex.test(input);
 };
 
@@ -45,7 +45,7 @@ const handleSearch = (query) => {
             showError("Error fetching postal code data.");
         });
     } else {
-        // If it's not a postal code, assume it's a city name and call city API
+        // If it's a city name, call the city API
         fetchData(url.geo(query), (locations) => {
             if (locations.length > 0) {
                 updateSearchResults(locations);
