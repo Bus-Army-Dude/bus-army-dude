@@ -95,6 +95,7 @@ export const updateWeather = (lat, lon) => {
             dt: dateUnix,
             sys: { sunrise: sunriseUnixUTC, sunset: sunsetUnixUTC },
             main: { temp, feels_like, pressure, humidity },
+            visibility,
             timezone
         } = currentWeather;
         const [{ description, icon }] = weather;
@@ -320,6 +321,7 @@ const loadUserSettings = () => {
         temperature: "celsius",
         windSpeed: "ms",
         pressure: "hpa",
+        distance: "km",
         timeFormat: false,
         locationServices: true
     };
@@ -330,6 +332,7 @@ const loadUserSettings = () => {
         temp: document.querySelector("[data-settings-temp]"),
         speed: document.querySelector("[data-settings-speed]"),
         pressure: document.querySelector("[data-settings-pressure]"),
+        distance: document.querySelector("[data-settings-distance]"),
         theme: document.querySelector("[data-settings-theme]"),
         time: document.querySelector("[data-settings-time]"),
         location: document.querySelector("[data-settings-location]")
@@ -338,6 +341,8 @@ const loadUserSettings = () => {
     if (controls.temp) controls.temp.value = settings.temperature;
     if (controls.speed) controls.speed.value = settings.windSpeed;
     if (controls.pressure) controls.pressure.value = settings.pressure;
+    if (controls.distance) controls.distance.value = settings.distance;
+    if (controls.theme) controls.theme.checked = settings.darkMode;
     if (controls.time) controls.time.checked = settings.timeFormat;
     if (controls.location) controls.location.checked = settings.locationServices;
 };
@@ -407,6 +412,21 @@ const applySettings = (settings) => {
         element.textContent = `${Math.round(pressureValue)} ${unit}`;
     });
 
+    // Visibility conversion
+    document.querySelectorAll("[data-visibility]").forEach(element => {
+        let visibilityValue = parseFloat(element.getAttribute("data-original-value"));
+        let unit = 'km';
+
+        if (settings.distance === "miles") {
+            visibilityValue = visibilityValue * 0.000621371; // Convert meters to miles
+            unit = 'mi';
+        } else {
+            visibilityValue = visibilityValue / 1000; // Convert meters to kilometers
+        }
+        element.textContent = `${visibilityValue.toFixed(1)} ${unit}`;
+    });
+};
+
 // Event Listeners for Settings
 document.addEventListener("DOMContentLoaded", () => {
     loadUserSettings();
@@ -421,6 +441,7 @@ document.addEventListener("DOMContentLoaded", () => {
         temp: document.querySelector("[data-settings-temp]"),
         speed: document.querySelector("[data-settings-speed]"),
         pressure: document.querySelector("[data-settings-pressure]"),
+        distance: document.querySelector("[data-settings-distance]"),
         theme: document.querySelector("[data-settings-theme]"),
         time: document.querySelector("[data-settings-time]"),
         location: document.querySelector("[data-settings-location]")
