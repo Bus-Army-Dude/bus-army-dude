@@ -42,13 +42,13 @@ export const getTime = function (timeUnix, timezone) {
     return `${hours % 12 || 12}:${minutes} ${period}`;
 }
 
-export const getHours = function (timeUnix, timezone) {
+export const getTime = function (timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date
-    .getHours();
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
     const period = hours >= 12 ? "PM" : "AM";
 
-    return `${hours % 12 || 12} ${period}`;
+    return `${hours % 12 || 12}:${minutes} ${period}`;
 }
 
 export const mps_to_kmh = mps => {
