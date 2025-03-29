@@ -243,8 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const settings = saveSettings();
         applySettings(settings);
 
+        // Fetch current location and update hash only if location services are enabled
         if (settings.locationServices) {
-            // Fetch current location and update hash only if location services are enabled
             currentLocationBtn.classList.add("disabled");
             currentLocationBtn.setAttribute("disabled", "");
             currentLocationBtn.style.pointerEvents = "none";
@@ -277,8 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsForm?.addEventListener("change", (event) => {
         // Only save and apply location settings immediately
         if (event.target.name === "location") {
-            // Do not save or apply immediately for location, it's handled on submit now
-            return;
+            return; // Do not save or apply immediately for location
         } else {
             const settings = saveSettings();
             applySettings(settings);
@@ -293,6 +292,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const locationToggleInput = settingsForm?.querySelector("[name='location']");
         if (locationToggleInput) {
             locationToggleInput.checked = !locationToggleInput.checked; // Toggle the checkbox
+        }
+        // Disable the button immediately after clicking to prevent multiple toggles
+        currentLocationBtn.classList.add("disabled");
+        currentLocationBtn.setAttribute("disabled", "");
+        currentLocationBtn.style.pointerEvents = "none";
+        currentLocationBtn.style.opacity = "0.5";
+    });
+
+    // Re-enable Current Location button when the settings modal is closed
+    settingsClose?.addEventListener("click", () => {
+        settingsModal?.classList.remove("active");
+        currentLocationBtn.classList.remove("disabled");
+        currentLocationBtn.removeAttribute("disabled");
+        currentLocationBtn.style.pointerEvents = "auto";
+        currentLocationBtn.style.opacity = "1";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === settingsModal) {
+            settingsModal.classList.remove("active");
+            currentLocationBtn.classList.remove("disabled");
+            currentLocationBtn.removeAttribute("disabled");
+            currentLocationBtn.style.pointerEvents = "auto";
+            currentLocationBtn.style.opacity = "1";
         }
     });
 
