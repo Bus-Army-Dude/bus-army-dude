@@ -25,13 +25,14 @@ export const monthNames = [
     "Dec"
 ];
 
-export const getDate = function (dateUnix, timezone) {
+export const getDate = (dateUnix, timezone) => {
     const date = new Date((dateUnix + timezone) * 1000);
-    const weekDayName = weekDayNames[date.getDay()];
-    const monthName = monthNames[date.getMonth()];
+    const day = weekDayNames[date.getUTCDay()];
+    const month = monthNames[date.getUTCMonth()];
+    const dateNum = date.getUTCDate();
 
-    return `${weekDayName} ${date.getDate()}, ${monthName}`;
-}
+    return `${day} ${dateNum}, ${month}`;
+};
 
 export const getTime = function (timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000);
