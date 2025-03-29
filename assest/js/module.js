@@ -17,7 +17,7 @@ export const getDate = function (dateUnix, timezone) {
 }
 
 export const getTime = function (timeUnix, timezoneOffset) {
-    const localTimestamp = (timeUnix + timezoneOffset) * 1000;
+    const localTimestamp = (timeUnix - timezoneOffset) * 1000;
     const date = new Date(localTimestamp);
     const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
