@@ -70,8 +70,6 @@ const currentLocationBtn = document.querySelector("[data-current-location-btn]")
 const errorContent = document.querySelector("[data-error-content]");
 
 export const updateWeather = (lat, lon) => {
-    localStorage.setItem('weatherCity', JSON.stringify({ lat: parseFloat(lat), lon: parseFloat(lon) }));
-
     loading.style.display = "grid";
     container.classList.remove("fade-in");
     errorContent.style.display = "none";
