@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsForm.querySelector("[name='location']").checked = savedSettings.locationServices;
         }
 
-        // Apply settings immediately
+        // Apply settings immediately (for initial load)
         applySettings(savedSettings);
     };
 
@@ -76,16 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!settings.locationServices) {
                 currentLocationBtn.classList.add("disabled");
                 currentLocationBtn.setAttribute("disabled", "");
-
-                // Only redirect if currently on current-location
-                if (window.location.hash === '#/current-location') {
-                    const lastLocation = localStorage.getItem('lastSearchedLocation');
-                    if (lastLocation) {
-                        window.location.hash = lastLocation;
-                    } else {
-                        window.location.hash = '#/weather?lat=51.5073219&lon=-0.1276474'; // Default location
-                    }
-                }
             } else {
                 currentLocationBtn.classList.remove("disabled");
                 currentLocationBtn.removeAttribute("disabled");
@@ -233,50 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Location services handling with override
     locationToggle?.addEventListener("change", async (event) => {
-        const isEnabled = event.target.checked;
-
-        if (isEnabled) {
-            try {
-                // Force location permission prompt with high accuracy
-                const permission = await new Promise((resolve) => {
-                    navigator.geolocation.getCurrentPosition(
-                        () => resolve(true),
-                        () => resolve(false),
-                        {
-                            enableHighAccuracy: true,
-                            timeout: 5000,
-                            maximumAge: 0
-                        }
-                    );
-                });
-
-                if (!permission) {
-                    event.target.checked = false;
-                    alert("Please enable location access in your browser settings to use location services.");
-                }
-            } catch (error) {
-                console.error("Error requesting location permission:", error);
-                event.target.checked = false;
-            }
-        }
-
-        // Save location setting immediately
-        const settings = saveSettings();
-        applySettings(settings);
-
-        // Update last known position if location is enabled
-        if (isEnabled && window.location.hash === '#/current-location') {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    const { latitude, longitude } = position.coords;
-                    window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
-                },
-                () => {
-                    const lastLocation = localStorage.getItem('lastSearchedLocation');
-                    window.location.hash = lastLocation || '#/weather?lat=51.5073219&lon=-0.1276474';
-                }
-            );
-        }
+        // No immediate save or apply here
     });
 
     // Modal event listeners
@@ -304,18 +251,33 @@ document.addEventListener("DOMContentLoaded", () => {
         settingsModal?.classList.remove("active");
     });
 
-    // Save settings when any setting changes (including location)
+    // Save settings when any setting changes (except location, which is handled on submit)
     settingsForm?.addEventListener("change", (event) => {
-        const settings = saveSettings();
-        applySettings(settings);
+        if (event.target.name !== "location") {
+            const settings = saveSettings();
+            applySettings(settings);
+        }
+    });
 
-        // If location setting changed, handle redirection
-        if (event.target.name === "location") {
-            if (!settings.locationServices && window.location.hash === '#/current-location') {
+    // Handle "Current Location" button click
+    currentLocationBtn?.addEventListener("click", () => {
+        const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
+        if (!savedSettings.locationServices) {
+            alert("Please enable Location Services in the settings to use this feature.");
+            return;
+        }
+
+        // Proceed with getting current location if enabled
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const { latitude, longitude } = position.coords;
+                window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
+            },
+            () => {
                 const lastLocation = localStorage.getItem('lastSearchedLocation');
                 window.location.hash = lastLocation || '#/weather?lat=51.5073219&lon=-0.1276474';
             }
-        }
+        );
     });
 
     // Initialize settings
