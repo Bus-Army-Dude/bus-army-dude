@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         temperature: "celsius",
         windSpeed: "ms",
         pressure: "hpa",
-        timeFormat: false,
+        timeFormat: false,  // false = 12-hour, true = 24-hour
         locationServices: true
     };
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
             temperature: tempSelect.value,
             windSpeed: speedSelect.value,
             pressure: pressureSelect.value,
-            timeFormat: timeToggle.checked,
+            timeFormat: timeToggle.checked,  // Save the 24-hour toggle status
             locationServices: locationToggle.checked
         };
 
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updateTodayAtTime = (is24HourFormat) => {
         const todayTimeElement = document.querySelector("[data-today-time]");
-        const timezoneOffset = new Date().getTimezoneOffset() * -60; // Dynamic timezone offset
+        const timezoneOffset = parseInt(localStorage.getItem("timezoneOffset")) || 0;
 
         if (todayTimeElement) {
             const now = new Date();
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateSunriseSunset = (is24HourFormat) => {
         const sunriseElement = document.querySelector("[data-sunrise]");
         const sunsetElement = document.querySelector("[data-sunset]");
-        const timezoneOffset = new Date().getTimezoneOffset() * -60; // Dynamic timezone offset
+        const timezoneOffset = parseInt(localStorage.getItem("timezoneOffset")) || 0; // Retrieve timezone offset
 
         if (sunriseElement && sunsetElement) {
             const sunriseTimeUnix = parseInt(sunriseElement.getAttribute("data-original-value"));
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Location toggle specific handling
+    // Location toggle specific handling (no change needed here)
     locationToggle.addEventListener("change", (event) => {
         const locationBtn = document.querySelector("[data-current-location-btn]");
         if (!event.target.checked) {
@@ -214,11 +214,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Time toggle specific handling - Apply updates immediately
+    // Time toggle specific handling - Now updates correctly
     timeToggle.addEventListener("change", () => {
-        const is24HourFormat = timeToggle.checked;
-        updateSunriseSunset(is24HourFormat);
-        updateTodayAtTime(is24HourFormat);
+        const newSettings = {
+            temperature: tempSelect.value,
+            windSpeed: speedSelect.value,
+            pressure: pressureSelect.value,
+            timeFormat: timeToggle.checked,
+            locationServices: locationToggle.checked
+        };
+        saveSettings();
+        applySettings(newSettings); // Reapply settings with the new time format
     });
 
     // Load settings on page load
