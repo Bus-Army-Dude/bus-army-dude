@@ -26,36 +26,41 @@ export const monthNames = [
 ];
 
 export const getDate = (dateUnix, timezone) => {
-    const date = new Date((dateUnix + timezone) * 1000);
-    const day = weekDayNames[date.getUTCDay()];
-    const month = monthNames[date.getUTCMonth()];
-    const dateNum = date.getUTCDate();
+    const date = new Date(dateUnix * 1000);
+    const localDate = new Date(date.getTime() + (timezone * 1000));
+    
+    const day = weekDayNames[localDate.getUTCDay()];
+    const month = monthNames[localDate.getUTCMonth()];
+    const dateNum = localDate.getUTCDate();
 
     return `${day} ${dateNum}, ${month}`;
 };
 
 export const getTime = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const date = new Date(timeUnix * 1000);
+    const localDate = new Date(date.getTime() + (timezone * 1000));
+    
+    const hours = localDate.getUTCHours();
+    const minutes = localDate.getUTCMinutes().toString().padStart(2, '0');
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12}:${minutes} ${period}`;
-}
+};
 
 export const getHours = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date
-    .getHours();
+    const date = new Date(timeUnix * 1000);
+    const localDate = new Date(date.getTime() + (timezone * 1000));
+    
+    const hours = localDate.getUTCHours();
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} ${period}`;
-}
+};
 
 export const mps_to_kmh = mps => {
     const km_per_hour = mps * 3600 / 1000;
     return km_per_hour.toFixed(2);
-}
+};
 
 export const aqiText = {
     1: {
@@ -78,4 +83,4 @@ export const aqiText = {
         level: "Very Poor",
         message: "Health warnings of emergency conditions. The entire population is more likely to be affected"
     }
-}
+};
