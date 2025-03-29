@@ -33,7 +33,7 @@ export const getDate = (dateUnix, timezone) => {
 }
 
 export const getTime = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000);
+    const date = new Date(timeUnix * 1000); // We are now directly using the timestamp without adding the timezone here
     const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const period = hours >= 12 ? "PM" : "AM";
