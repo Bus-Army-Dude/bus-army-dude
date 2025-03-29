@@ -6,18 +6,19 @@ export const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug
 
 // Converts Unix timestamp to a readable date
 export const getDate = function (dateUnix, timezoneOffset) {
-    const date = new Date((dateUnix + timezoneOffset) * 1000); // Apply timezone offset
-    const weekDayName = weekDayNames[date.getDay()]; // Local day name
-    const monthName = monthNames[date.getMonth()]; // Local month name
+    const date = new Date((dateUnix + timezoneOffset) * 1000); // Apply timezone offset in seconds
+    const weekDayName = weekDayNames[date.getDay()]; // Local weekday
+    const monthName = monthNames[date.getMonth()]; // Local month
 
     return `${weekDayName} ${date.getDate()}, ${monthName}`;
 };
 
 // Converts Unix timestamp to a readable time with AM/PM
 export const getTime = function (timeUnix, timezoneOffset) {
-    const date = new Date((timeUnix + timezoneOffset) * 1000); // Apply timezone offset
-    const hours = date.getHours(); // Local hours
-    const minutes = date.getMinutes().toString().padStart(2, '0'); // Local minutes
+    // Adjust timestamp for the timezone offset
+    const localTime = new Date((timeUnix + timezoneOffset) * 1000);
+    const hours = localTime.getHours();
+    const minutes = localTime.getMinutes().toString().padStart(2, '0');
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12}:${minutes} ${period}`;
@@ -25,8 +26,8 @@ export const getTime = function (timeUnix, timezoneOffset) {
 
 // Converts Unix timestamp to only hours with AM/PM
 export const getHours = function (timeUnix, timezoneOffset) {
-    const date = new Date((timeUnix + timezoneOffset) * 1000); // Apply timezone offset
-    const hours = date.getHours(); // Local hours
+    const localTime = new Date((timeUnix + timezoneOffset) * 1000);
+    const hours = localTime.getHours();
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} ${period}`;
