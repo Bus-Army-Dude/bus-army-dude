@@ -5,15 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsBtn = document.querySelector("[data-settings-btn]");
     const settingsModal = document.querySelector("[data-settings-modal]");
     const settingsClose = document.querySelector("[data-settings-close]");
-    const settingsForm = document.querySelector("[data-settings-form]");
+    const settingsForm = settingsModal?.querySelector("[data-settings-form]"); // Ensure settingsForm is within the modal
     const currentLocationBtn = document.querySelector("[data-current-location-btn]");
-    
+
     // Settings controls (form inputs)
-    const tempUnit = settingsForm.querySelector("[name='temperature']");
-    const windSpeedUnit = settingsForm.querySelector("[name='windSpeed']");
-    const pressureUnit = settingsForm.querySelector("[name='pressure']");
-    const timeFormat = settingsForm.querySelector("[name='timeFormat']");
-    const locationToggle = settingsForm.querySelector("[name='location']");
+    const tempUnit = settingsForm?.querySelector("[name='temperature']");
+    const windSpeedUnit = settingsForm?.querySelector("[name='windSpeed']");
+    const pressureUnit = settingsForm?.querySelector("[name='pressure']");
+    const timeFormat = settingsForm?.querySelector("[name='timeFormat']");
+    const locationToggle = settingsForm?.querySelector("[name='location']");
 
     // Default settings
     const defaultSettings = {
@@ -29,20 +29,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
 
         // Apply saved settings to form controls
-        settingsForm.querySelectorAll("[name='temperature']").forEach(input => {
+        settingsForm?.querySelectorAll("[name='temperature']").forEach(input => {
             input.checked = input.value === savedSettings.temperature;
         });
 
-        settingsForm.querySelectorAll("[name='windSpeed']").forEach(input => {
+        settingsForm?.querySelectorAll("[name='windSpeed']").forEach(input => {
             input.checked = input.value === savedSettings.windSpeed;
         });
 
-        settingsForm.querySelectorAll("[name='pressure']").forEach(input => {
+        settingsForm?.querySelectorAll("[name='pressure']").forEach(input => {
             input.checked = input.value === savedSettings.pressure;
         });
 
-        settingsForm.querySelector("[name='timeFormat']").checked = savedSettings.timeFormat;
-        settingsForm.querySelector("[name='location']").checked = savedSettings.locationServices;
+        if (settingsForm?.querySelector("[name='timeFormat']")) {
+            settingsForm.querySelector("[name='timeFormat']").checked = savedSettings.timeFormat;
+        }
+        if (settingsForm?.querySelector("[name='location']")) {
+            settingsForm.querySelector("[name='location']").checked = savedSettings.locationServices;
+        }
 
         // Apply settings immediately
         applySettings(savedSettings);
@@ -50,6 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Save settings to localStorage
     const saveSettings = () => {
+        if (!settingsForm) return defaultSettings; // Handle case where form might not be present
+
         const formData = new FormData(settingsForm);
         const settings = {
             temperature: formData.get("temperature"),
@@ -66,22 +72,24 @@ document.addEventListener("DOMContentLoaded", () => {
     // Apply settings to the UI
     const applySettings = (settings) => {
         // Handle location services button state
-        if (!settings.locationServices) {
-            currentLocationBtn.classList.add("disabled");
-            currentLocationBtn.setAttribute("disabled", "");
-            
-            // Only redirect if currently on current-location
-            if (window.location.hash === '#/current-location') {
-                const lastLocation = localStorage.getItem('lastSearchedLocation');
-                if (lastLocation) {
-                    window.location.hash = lastLocation;
-                } else {
-                    window.location.hash = '#/weather?lat=51.5073219&lon=-0.1276474'; // Default location
+        if (currentLocationBtn) {
+            if (!settings.locationServices) {
+                currentLocationBtn.classList.add("disabled");
+                currentLocationBtn.setAttribute("disabled", "");
+
+                // Only redirect if currently on current-location
+                if (window.location.hash === '#/current-location') {
+                    const lastLocation = localStorage.getItem('lastSearchedLocation');
+                    if (lastLocation) {
+                        window.location.hash = lastLocation;
+                    } else {
+                        window.location.hash = '#/weather?lat=51.5073219&lon=-0.1276474'; // Default location
+                    }
                 }
+            } else {
+                currentLocationBtn.classList.remove("disabled");
+                currentLocationBtn.removeAttribute("disabled");
             }
-        } else {
-            currentLocationBtn.classList.remove("disabled");
-            currentLocationBtn.removeAttribute("disabled");
         }
 
         // Update unit displays
@@ -224,9 +232,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Location services handling with override
-    locationToggle.addEventListener("change", async (event) => {
+    locationToggle?.addEventListener("change", async (event) => {
         const isEnabled = event.target.checked;
-        
+
         if (isEnabled) {
             try {
                 // Force location permission prompt with high accuracy
@@ -234,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     navigator.geolocation.getCurrentPosition(
                         () => resolve(true),
                         () => resolve(false),
-                        { 
+                        {
                             enableHighAccuracy: true,
                             timeout: 5000,
                             maximumAge: 0
@@ -251,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.target.checked = false;
             }
         }
-        
+
         // Save location setting immediately
         const settings = saveSettings();
         applySettings(settings);
@@ -273,12 +281,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Modal event listeners
     settingsBtn?.addEventListener("click", () => {
-        settingsModal.classList.add("active");
+        settingsModal?.classList.add("active");
         loadSettings(); // Reload settings when opening modal
     });
-    
+
     settingsClose?.addEventListener("click", () => {
-        settingsModal.classList.remove("active");
+        settingsModal?.classList.remove("active");
     });
 
     // Close modal when clicking outside
@@ -293,15 +301,14 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const settings = saveSettings();
         applySettings(settings);
-        settingsModal.classList.remove("active");
+        settingsModal?.classList.remove("active");
     });
 
-    // Modified part in settings.js
     // Save settings when any setting changes (including location)
     settingsForm?.addEventListener("change", (event) => {
         const settings = saveSettings();
         applySettings(settings);
-        
+
         // If location setting changed, handle redirection
         if (event.target.name === "location") {
             if (!settings.locationServices && window.location.hash === '#/current-location') {
@@ -310,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
-    
+
     // Initialize settings
     loadSettings();
 });
