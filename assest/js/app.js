@@ -49,8 +49,17 @@ searchField.addEventListener("input", () => {
             const query = searchField.value.trim();
 
             if (isPostalCode(query)) {
-                // Assuming US country code for postal codes (you can adjust this)
-                fetchData(url.zip(query, "US"), (location) => {
+                let postalCode = query;
+                let countryCode = null;
+
+                // Try to split the query by comma to see if a country code is provided
+                const parts = query.split(',').map(part => part.trim());
+                if (parts.length === 2) {
+                    postalCode = parts[0];
+                    countryCode = parts[1].toUpperCase(); // Ensure country code is uppercase
+                }
+
+                fetchData(url.zip(postalCode, countryCode), (location) => {
                     if (location) { // zip endpoint returns a single object not array
                         displayZipResult(location);
                     } else {
