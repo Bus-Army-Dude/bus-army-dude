@@ -10,28 +10,21 @@ export const fetchData = (URL,callback)=>{
 
 export const url ={
     currentWeather(lat,lon){
-        return `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric`
+        return `https://api.openweathermap.org/data/2.5/weather?${lat}&${lon}&units=metric`
     },
     forecast(lat,lon){
-        return `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric`
+        return `https://api.openweathermap.org/data/2.5/forecast?${lat}&${lon}&units=metric`
     },
     airPollution(lat,lon){
-        return `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon&appid=${apiKey}`
+        return `https://api.openweathermap.org/data/2.5/air_pollution?${lat}&${lon}`
     },
     reverseGeo(lat,lon){
-        return `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon&limit=5&appid=${apiKey}`
+        return `https://api.openweathermap.org/geo/1.0/reverse?${lat}&${lon}&limit=5`
     },
     /**
-     * @param {string} query search query e.g. :"london" , "New Yourk"
+     * @param {string} query search query e.g. :"london" , "New Yourk"  
      */
     geo(query){
         return `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5`
-    },
-    zip(query, countryCode) {
-        if (countryCode) {
-            return `https://api.openweathermap.org/data/2.5/weather?zip=${query},${countryCode}&units=metric`;
-        } else {
-            return `https://api.openweathermap.org/data/2.5/weather?zip=${query}&units=metric`;
-        }
     }
 }
