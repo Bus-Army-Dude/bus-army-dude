@@ -90,15 +90,24 @@ export const updateWeather = (lat, lon) => {
         currentLocationBtn.removeAttribute("disabled");
 
     fetchData(url.currentWeather(lat, lon), (currentWeather) => {
-        const {
-            weather,
-            dt: dateUnix,
-            sys: { sunrise: sunriseUnixUTC, sunset: sunsetUnixUTC },
-            main: { temp, feels_like, pressure, humidity },
-            visibility,
-            timezone
-        } = currentWeather;
-        const [{ description, icon }] = weather;
+    const {
+        weather,
+        dt: dateUnix,
+        sys: { sunrise: sunriseUnixUTC, sunset: sunsetUnixUTC },
+        main: { temp, feels_like, pressure, humidity },
+        visibility,
+        timezone
+    } = currentWeather;
+    const [{ description, icon }] = weather;
+    
+    // Calculate the local times for sunrise and sunset using the timezone
+    const sunriseLocal = sunriseUnixUTC + timezone;
+    const sunsetLocal = sunsetUnixUTC + timezone;
+
+    // Format the times and update the HTML
+    document.getElementById("sunrise-time").textContent = module.getTime(sunriseLocal, 0);  // Localized sunrise time
+    document.getElementById("sunset-time").textContent = module.getTime(sunsetLocal, 0);    // Localized sunset time
+});
 
         const card = document.createElement("div");
         card.classList.add("card", "card-lg", "current-weather-card");
@@ -171,14 +180,14 @@ export const updateWeather = (lat, lon) => {
                                 <span class="m-icon">clear_day</span>
                                 <div>
                                     <p class="label-1">Sunrise</p>
-                                    <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
+                                    <p class="title-1" id="sunrise-time">Loading...</p> <!-- This will display the sunrise time -->
                                 </div>
                             </div>
                             <div class="card-item">
                                 <span class="m-icon">clear_night</span>
                                 <div>
                                     <p class="label-1">Sunset</p>
-                                    <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
+                                    <p class="title-1" id="sunset-time">Loading...</p> <!-- This will display the sunset time -->
                                 </div>
                             </div>
                         </div>
