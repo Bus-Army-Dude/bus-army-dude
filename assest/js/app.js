@@ -201,7 +201,9 @@ export const updateWeather = (lat, lon) => {
                         <h3 class="title-3">Visibility</h3>
                         <div class="wrapper">
                             <span class="m-icon">visibility</span>
-                            <p class="title-1" data-visibility data-original-value="${visibility}">${visibility} <sub>m</sub></p>
+                            <p class="title-1" data-visibility data-original-value="${visibility}">
+                                ${visibilityMi} mi / ${visibilityKm} km
+                            </p>
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
