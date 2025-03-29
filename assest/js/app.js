@@ -105,9 +105,6 @@ export const updateWeather = (lat, lon) => {
         console.log("Sunrise (UTC Unix):", sunriseUnixUTC);
         console.log("Sunset (UTC Unix):", sunsetUnixUTC);
 
-        const sunriseDate = new Date((sunriseUnixUTC + timezone) * 1000);
-        const sunsetDate = new Date((sunsetUnixUTC + timezone) * 1000);
-
         console.log("Sunrise (Calculated Local):", sunriseDate.toLocaleTimeString());
         console.log("Sunset (Calculated Local):", sunsetDate.toLocaleTimeString());
         // --- END OF DEBUGGING LINES ---
@@ -184,14 +181,14 @@ export const updateWeather = (lat, lon) => {
                                     <span class="m-icon">clear_day</span>
                                     <div class="label-1">
                                         <p class="label-1">Sunrise</p>
-                                        <p class="title-1">${module.getTime(sunriseUnixUTC, timezone * -1)}</p>
+                                        <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
                                     </div>
                                 </div>
                                 <div class="card-item">
                                     <span class="m-icon">clear_night</span>
                                     <div class="label-1">
                                         <p class="label">Sunset</p>
-                                        <p class="title-1">${module.getTime(sunsetUnixUTC, timezone * -1)}</p>
+                                        <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
                                     </div>
                                 </div>
                             </div>
