@@ -32,11 +32,13 @@ export const getDate = (dateUnix, timezone) => {
     return `${day} ${month}`;
 }
 
-export const getTime = (timeUnix, timezone) => {
+export const getTime = function (timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date.getHours().toString().padStart(2, '0');
+    const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+    const period = hours >= 12 ? "PM" : "AM";
+
+    return `${hours % 12 || 12}:${minutes} ${period}`;
 }
 
 export const aqiText = {
