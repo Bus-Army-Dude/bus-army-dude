@@ -1,60 +1,44 @@
 'use strict';
 
-export const weekDayNames = [
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
-];
+// Weekday and month names
+export const weekDayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+export const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-];
-
-export const getDate = function (dateUnix, timezone) {
-    const date = new Date((dateUnix + timezone) * 1000); // Correctly apply timezone offset
+// Converts Unix timestamp to a readable date globally
+export const getDate = function (dateUnix, timezoneOffset) {
+    const date = new Date((dateUnix + timezoneOffset) * 1000); // Apply timezone offset in seconds
     const weekDayName = weekDayNames[date.getUTCDay()]; // Use UTC day
     const monthName = monthNames[date.getUTCMonth()]; // Use UTC month
 
     return `${weekDayName} ${date.getUTCDate()}, ${monthName}`;
-}
+};
 
-export const getTime = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
+// Converts Unix timestamp to a readable time globally with AM/PM
+export const getTime = function (timeUnix, timezoneOffset) {
+    const date = new Date((timeUnix + timezoneOffset) * 1000); // Apply timezone offset in seconds
     const hours = date.getUTCHours(); // Use UTC hours
     const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Use UTC minutes
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12}:${minutes} ${period}`;
-}
+};
 
-export const getHours = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
+// Converts Unix timestamp to only hours globally with AM/PM
+export const getHours = function (timeUnix, timezoneOffset) {
+    const date = new Date((timeUnix + timezoneOffset) * 1000); // Apply timezone offset in seconds
     const hours = date.getUTCHours(); // Use UTC hours
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} ${period}`;
-}
+};
 
+// Converts meters per second to kilometers per hour
 export const mps_to_kmh = mps => {
     const km_per_hour = mps * 3600 / 1000;
     return km_per_hour.toFixed(2);
-}
+};
 
+// Air Quality Index descriptions
 export const aqiText = {
     1: {
         level: "Good",
@@ -76,4 +60,4 @@ export const aqiText = {
         level: "Very Poor",
         message: "Health warnings of emergency conditions. The entire population is more likely to be affected"
     }
-}
+};
