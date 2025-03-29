@@ -171,14 +171,14 @@ export const updateWeather = (lat, lon) => {
                                 <span class="m-icon">clear_day</span>
                                 <div>
                                     <p class="label-1">Sunrise</p>
-                                    <p class="title-1">${module.getTime(weatherData.sys.sunrise + weatherData.timezone, 0)}</p>
+                                    <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
                                 </div>
                             </div>
                             <div class="card-item">
                                 <span class="m-icon">clear_night</span>
                                 <div>
                                     <p class="label-1">Sunset</p>
-                                    <p class="title-1">${module.getTime(weatherData.sys.sunset + weatherData.timezone, 0)}</p>
+                                    <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
                                 </div>
                             </div>
                         </div>
