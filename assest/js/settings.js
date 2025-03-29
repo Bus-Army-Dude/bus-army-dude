@@ -71,15 +71,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // Apply settings to the UI
     const applySettings = (settings) => {
         if (currentLocationBtn) {
-            if (!settings.locationServices) {
+            const isLocationServicesEnabled = settings.locationServices;
+            const displayedLatitude = parseFloat(document.querySelector('[data-lat]')?.textContent);
+            const displayedLongitude = parseFloat(document.querySelector('[data-lon]')?.textContent);
+            const userLatitude = parseFloat(localStorage.getItem('userLatitude'));
+            const userLongitude = parseFloat(localStorage.getItem('userLongitude'));
+
+            const isCurrentLocationDisplayed = isLocationServicesEnabled &&
+                userLatitude !== undefined && userLongitude !== undefined &&
+                displayedLatitude !== undefined && displayedLongitude !== undefined &&
+                Math.abs(userLatitude - displayedLatitude) < 0.001 &&
+                Math.abs(userLongitude - displayedLongitude) < 0.001;
+
+            if (!isLocationServicesEnabled || isCurrentLocationDisplayed) {
                 currentLocationBtn.classList.add("disabled");
                 currentLocationBtn.setAttribute("disabled", "");
-                currentLocationBtn.style.pointerEvents = "none"; // Prevent clicking
-                currentLocationBtn.style.opacity = "0.5"; // Visually gray out
+                currentLocationBtn.style.pointerEvents = "none";
+                currentLocationBtn.style.opacity = "0.5";
             } else {
                 currentLocationBtn.classList.remove("disabled");
                 currentLocationBtn.removeAttribute("disabled");
-                currentLocationBtn.style.pointerEvents = "auto"; // Allow clicking
+                currentLocationBtn.style.pointerEvents = "auto";
                 currentLocationBtn.style.opacity = "1";
             }
         }
@@ -266,6 +278,8 @@ document.addEventListener("DOMContentLoaded", () => {
         navigator.geolocation.getCurrentPosition(
             position => {
                 const { latitude, longitude } = position.coords;
+                localStorage.setItem('userLatitude', latitude);
+                localStorage.setItem('userLongitude', longitude);
                 window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
                 // Re-enable the button after successfully fetching location
                 currentLocationBtn.classList.remove("disabled");
