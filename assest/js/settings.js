@@ -296,14 +296,21 @@ document.addEventListener("DOMContentLoaded", () => {
         settingsModal.classList.remove("active");
     });
 
-    // Save settings when any setting changes (except location)
+    // Modified part in settings.js
+    // Save settings when any setting changes (including location)
     settingsForm?.addEventListener("change", (event) => {
-        if (event.target.name !== "location") {
-            const settings = saveSettings();
-            applySettings(settings);
+        const settings = saveSettings();
+        applySettings(settings);
+        
+        // If location setting changed, handle redirection
+        if (event.target.name === "location") {
+            if (!settings.locationServices && window.location.hash === '#/current-location') {
+                const lastLocation = localStorage.getItem('lastSearchedLocation');
+                window.location.hash = lastLocation || '#/weather?lat=51.5073219&lon=-0.1276474';
+            }
         }
     });
-
+    
     // Initialize settings
     loadSettings();
 });
