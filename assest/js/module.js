@@ -34,13 +34,15 @@ export const getDate = (dateUnix, timezone) => {
     return `${day} ${dateNum}, ${month}`;
 };
 
-export const getTime = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const period = hours >= 12 ? "PM" : "AM";
+function formatTime(unixTimestamp, timezoneOffset) {
+    const date = new Date((unixTimestamp + timezoneOffset) * 1000); // Convert to milliseconds
+    let hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12 || 12; // Convert 24-hour time to 12-hour
 
-    return `${hours % 12 || 12}:${minutes} ${period}`;
+    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 }
 
 export const getHours = function (timeUnix, timezone) {
