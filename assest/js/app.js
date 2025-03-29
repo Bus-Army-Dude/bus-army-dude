@@ -194,7 +194,7 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 </div>
             `;
-            
+
             highlightSection.appendChild(card);
 
             fetchData(url.forecast(lat, lon), (forecast) => {
@@ -252,28 +252,39 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 `;
 
-                for (let i = 7, len = forecastList.length; i < len; i += 8) {
-                    const {
-                        main: { temp_max },
-                        weather,
-                        dt_txt
-                    } = forecastList[i];
+                const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
+                const today = new Date();
+                const forecastDays = [];
+                let daysAdded = 0;
+
+                for (const data of forecastList) {
+                    const { main: { temp_max }, weather, dt_txt } = data;
                     const [{ icon, description }] = weather;
                     const date = new Date(dt_txt);
+                    const day = date.toDateString();
 
-                    const li = document.createElement("li");
-                    li.classList.add("card-item");
-                    li.innerHTML = `
-                        <div class="icon-wrapper">
-                            <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon" title="${description}">
-                            <span class="span">
-                                <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
-                            </span>
-                        </div>
-                        <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
-                        <p class="label-1">${module.weekDayNames[date.getDay()]}</p>
-                    `;
-                    forecastSection.querySelector("[data-forecast-list]").appendChild(li);
+                    if (date > today && !forecastDays.includes(day)) {
+                        forecastDays.push(day);
+                        daysAdded++;
+
+                        const li = document.createElement("li");
+                        li.classList.add("card-item");
+                        li.innerHTML = `
+                            <div class="icon-wrapper">
+                                <img src="./assest/images/weather_icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon" title="${description}">
+                                <span class="span">
+                                    <p class="title-2" data-temperature data-original-value="${temp_max}">${Math.round(temp_max)}&deg;</p>
+                                </span>
+                            </div>
+                            <p class="label-1">${date.getDate()} ${module.monthNames[date.getMonth()]}</p>
+                            <p class="label-1">${module.weekDayNames[date.getDay()]}</p>
+                        `;
+                        forecastListElement.appendChild(li);
+                    }
+
+                    if (daysAdded === 5) {
+                        break;
+                    }
                 }
 
                 loading.style.display = "none";
