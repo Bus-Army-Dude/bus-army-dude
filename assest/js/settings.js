@@ -242,35 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const settings = saveSettings();
         applySettings(settings);
-
-        // Fetch current location and update hash only if location services are enabled
-        if (settings.locationServices) {
-            currentLocationBtn.classList.add("disabled");
-            currentLocationBtn.setAttribute("disabled", "");
-            currentLocationBtn.style.pointerEvents = "none";
-            currentLocationBtn.style.opacity = "0.5";
-
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    const { latitude, longitude } = position.coords;
-                    window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
-                    // Re-enable the button after attempting to fetch location
-                    currentLocationBtn.classList.remove("disabled");
-                    currentLocationBtn.removeAttribute("disabled");
-                    currentLocationBtn.style.pointerEvents = "auto";
-                    currentLocationBtn.style.opacity = "1";
-                },
-                () => {
-                    const lastLocation = localStorage.getItem('lastSearchedLocation');
-                    window.location.hash = lastLocation || '#/weather?lat=51.5073219&lon=-0.1276474';
-                    // Re-enable the button even if fetching fails
-                    currentLocationBtn.classList.remove("disabled");
-                    currentLocationBtn.removeAttribute("disabled");
-                    currentLocationBtn.style.pointerEvents = "auto";
-                    currentLocationBtn.style.opacity = "1";
-                }
-            );
-        }
         settingsModal?.classList.remove("active");
     });
 
@@ -286,37 +257,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle "Current Location" button click
     currentLocationBtn?.addEventListener("click", () => {
-        settingsModal?.classList.add("active");
-        loadSettings(); // Ensure settings are loaded when modal opens
-
-        const locationToggleInput = settingsForm?.querySelector("[name='location']");
-        if (locationToggleInput) {
-            locationToggleInput.checked = !locationToggleInput.checked; // Toggle the checkbox
-        }
-        // Disable the button immediately after clicking to prevent multiple toggles
+        // Disable the button temporarily
         currentLocationBtn.classList.add("disabled");
         currentLocationBtn.setAttribute("disabled", "");
         currentLocationBtn.style.pointerEvents = "none";
         currentLocationBtn.style.opacity = "0.5";
-    });
 
-    // Re-enable Current Location button when the settings modal is closed
-    settingsClose?.addEventListener("click", () => {
-        settingsModal?.classList.remove("active");
-        currentLocationBtn.classList.remove("disabled");
-        currentLocationBtn.removeAttribute("disabled");
-        currentLocationBtn.style.pointerEvents = "auto";
-        currentLocationBtn.style.opacity = "1";
-    });
-
-    window.addEventListener("click", (event) => {
-        if (event.target === settingsModal) {
-            settingsModal.classList.remove("active");
-            currentLocationBtn.classList.remove("disabled");
-            currentLocationBtn.removeAttribute("disabled");
-            currentLocationBtn.style.pointerEvents = "auto";
-            currentLocationBtn.style.opacity = "1";
-        }
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const { latitude, longitude } = position.coords;
+                window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
+                // Re-enable the button after successfully fetching location
+                currentLocationBtn.classList.remove("disabled");
+                currentLocationBtn.removeAttribute("disabled");
+                currentLocationBtn.style.pointerEvents = "auto";
+                currentLocationBtn.style.opacity = "1";
+            },
+            () => {
+                alert("Could not retrieve your current location. Please ensure location services are enabled and try again.");
+                // Re-enable the button even if fetching fails
+                currentLocationBtn.classList.remove("disabled");
+                currentLocationBtn.removeAttribute("disabled");
+                currentLocationBtn.style.pointerEvents = "auto";
+                currentLocationBtn.style.opacity = "1";
+            }
+        );
     });
 
     // Re-enable Current Location button when a new city is searched
