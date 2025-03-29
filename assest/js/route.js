@@ -43,17 +43,7 @@ const currentLocation = () => {
 };
 
 // Function to search for location based on the query
-const searchedLocation = (query) => {
-  const isPostalCode = /^\d{5}(-\d{4})?$/.test(query); // Check if the query is a postal code (US ZIP code format)
-  
-  if (isPostalCode) {
-    // If postal code, call the API with the postal code format
-    updateWeather(`zip=${query},us`); // For U.S. postal code (add the country if needed)
-  } else {
-    // Otherwise, treat it as a city
-    updateWeather(...query.split('&'));
-  }
-};
+const searchedLocation = (query) => updateWeather(...query.split('&'));
 
 // Routes mapping
 const routes = new Map([
