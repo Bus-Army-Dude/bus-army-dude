@@ -197,13 +197,6 @@ export const updateWeather = (lat, lon) => {
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
-                        <h3 class="title-3">Visibility</h3>
-                        <div class="wrapper">
-                            <span class="m-icon">visibility</span>
-                            <p class="title-1" data-visibility data-original-value="${visibility}">${visibility / 1000} <sub>km</sub></p>
-                        </div>
-                    </div>
-                    <div class="card card-sm highlight-card">
                         <h3 class="title-3">Feels Like</h3>
                         <div class="wrapper">
                             <span class="m-icon">thermostat</span>
@@ -270,12 +263,12 @@ export const updateWeather = (lat, lon) => {
                     </div>
                 `;
 
-                const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
+                 const forecastListElement = forecastSection.querySelector("[data-forecast-list]");
                 const today = new Date();
                 today.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                 const forecastDays = [];
                 let daysAdded = 0;
-                
+
                 for (const data of forecastList) {
                     const { main: { temp_max }, weather, dt_txt } = data;
                     const [{ icon, description }] = weather;
@@ -302,9 +295,10 @@ export const updateWeather = (lat, lon) => {
                         forecastListElement.appendChild(li);
                     }
 
-                    if (daysAdded === 7) {
-                        break;
-                    }
+                    // Remove this line to potentially show more days:
+                    // if (daysAdded === 7) {
+                    //     break;
+                    // }
                 }
 
                 loading.style.display = "none";
@@ -344,7 +338,6 @@ const loadUserSettings = () => {
     if (controls.temp) controls.temp.value = settings.temperature;
     if (controls.speed) controls.speed.value = settings.windSpeed;
     if (controls.pressure) controls.pressure.value = settings.pressure;
-    if (controls.theme) controls.theme.checked = settings.darkMode;
     if (controls.time) controls.time.checked = settings.timeFormat;
     if (controls.location) controls.location.checked = settings.locationServices;
 };
