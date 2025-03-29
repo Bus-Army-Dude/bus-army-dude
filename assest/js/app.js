@@ -3,6 +3,7 @@
 import { fetchData, url } from "./api.js";
 import * as module from "./module.js";
 
+// Function to add event listeners on multiple elements
 const addEventOnElements = (elements, eventType, callback) => {
     for (const element of elements)
         element.addEventListener(eventType, callback);
@@ -10,95 +11,85 @@ const addEventOnElements = (elements, eventType, callback) => {
 
 const searchView = document.querySelector("[data-search-view]");
 const searchTogglers = document.querySelectorAll("[data-search-toggler]");
+
+// Toggle search modal visibility
 const toggleSearch = () => {
     searchView.classList.toggle("active");
 }
 addEventOnElements(searchTogglers, "click", toggleSearch);
 
-// search integration
+// Search integration
 const searchField = document.querySelector("[data-search-field]");
 const searchResult = document.querySelector("[data-search-result]");
 
 let searchTimeOut = null;
 let searchTimeOutDuration = 500;
 
+// Function to check if the input is a postal code
+const isPostalCode = (input) => {
+    // This simple regex checks for US and Canadian postal codes, you can extend it for other formats
+    const postalCodeRegex = /^[0-9]{5}(-[0-9]{4})?$|^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/;
+    return postalCodeRegex.test(input);
+}
+
+// Handle search input
 searchField.addEventListener("input", () => {
     searchTimeOut ?? clearTimeout(searchTimeOut);
+    
     if (!searchField.value) {
         searchResult.classList.remove("active");
         searchResult.innerHTML = "";
         searchField.classList.remove("searching");
-    }
-    else {
+    } else {
         searchField.classList.add("searching");
     }
+
     if (searchField.value) {
         searchTimeOut = setTimeout(() => {
-            // Check if the query is a postal code or city name
             const query = searchField.value.trim();
-            const isPostalCode = /^\d{5}(-\d{4})?$/.test(query); // For U.S. Zip code pattern (e.g., 43402 or 43402-1234)
-            const isPostalCodeCanada = /^\w\d\w\s?\d\w\d$/.test(query); // For Canada Postal Code pattern (e.g., M5A 1A1)
 
-            // If it's a postal code (U.S. or Canada), pass it to the API
-            if (isPostalCode || isPostalCodeCanada) {
+            // If it's a postal code, query with postal code
+            if (isPostalCode(query)) {
                 fetchData(url.geo(query), (locations) => {
-                    searchField.classList.remove("searching");
-                    searchResult.classList.add("active");
-                    searchResult.innerHTML = `
-                        <ul class="view-list" data-search-list></ul>
-                    `;
-                    const items = [];
-                    for (const { name, lat, lon, country, state } of locations) {
-                        const searchItem = document.createElement("li");
-                        searchItem.classList.add("view-item");
-                        searchItem.innerHTML = `
-                            <span class="m-icon">location_on</span>
-                            <div>
-                                <p class="item-title">${name}</p>
-                                <p class="label-2 item-subtitle">${state || ""} ${country}</p>
-                            </div>
-                            <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
-                        `;
-                        searchResult.querySelector("[data-search-list]").appendChild(searchItem);
-                        items.push(searchItem.querySelector("[data-search-toggler]"));
-                    }
-                    addEventOnElements(items, "click", () => {
-                        toggleSearch();
-                        searchResult.classList.remove("active")
-                    })
+                    displaySearchResults(locations);
                 });
             } else {
-                // Otherwise, it's a city name (so fetch based on city name)
+                // Otherwise, treat it as a city
                 fetchData(url.geo(query), (locations) => {
-                    searchField.classList.remove("searching");
-                    searchResult.classList.add("active");
-                    searchResult.innerHTML = `
-                        <ul class="view-list" data-search-list></ul>
-                    `;
-                    const items = [];
-                    for (const { name, lat, lon, country, state } of locations) {
-                        const searchItem = document.createElement("li");
-                        searchItem.classList.add("view-item");
-                        searchItem.innerHTML = `
-                            <span class="m-icon">location_on</span>
-                            <div>
-                                <p class="item-title">${name}</p>
-                                <p class="label-2 item-subtitle">${state || ""} ${country}</p>
-                            </div>
-                            <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
-                        `;
-                        searchResult.querySelector("[data-search-list]").appendChild(searchItem);
-                        items.push(searchItem.querySelector("[data-search-toggler]"));
-                    }
-                    addEventOnElements(items, "click", () => {
-                        toggleSearch();
-                        searchResult.classList.remove("active")
-                    })
+                    displaySearchResults(locations);
                 });
             }
         }, searchTimeOutDuration);
     }
 });
+
+// Function to display search results
+const displaySearchResults = (locations) => {
+    searchField.classList.remove("searching");
+    searchResult.classList.add("active");
+    searchResult.innerHTML = `
+        <ul class="view-list" data-search-list></ul>
+    `;
+    const items = [];
+    for (const { name, lat, lon, country, state } of locations) {
+        const searchItem = document.createElement("li");
+        searchItem.classList.add("view-item");
+        searchItem.innerHTML = `
+            <span class="m-icon">location_on</span>
+            <div>
+                <p class="item-title">${name}</p>
+                <p class="label-2 item-subtitle">${state || ""} ${country}</p>
+            </div>
+            <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
+        `;
+        searchResult.querySelector("[data-search-list]").appendChild(searchItem);
+        items.push(searchItem.querySelector("[data-search-toggler]"));
+    }
+    addEventOnElements(items, "click", () => {
+        toggleSearch();
+        searchResult.classList.remove("active");
+    });
+};
 
 const container = document.querySelector("[data-container]");
 const loading = document.querySelector("[data-loading]");
