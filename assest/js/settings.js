@@ -255,12 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle "Current Location" button click
     currentLocationBtn?.addEventListener("click", () => {
-        const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
-        if (!savedSettings.locationServices) {
-            alert("Please enable Location Services in the settings to use this feature.");
-            return;
-        }
-
         // Disable the button temporarily
         currentLocationBtn.classList.add("disabled");
         currentLocationBtn.setAttribute("disabled", "");
