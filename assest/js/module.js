@@ -33,14 +33,15 @@ export const getDate = function (dateUnix, timezone) {
     return `${weekDayName} ${date.getUTCDate()}, ${monthName}`;
 }
 
-export const getTime = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
-    const hours = date.getUTCHours(); // Use UTC hours
-    const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Use UTC minutes
+export const getTime = function (timeUnix, timezoneOffset) {
+    const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
+    const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
+    const hours = date.getHours(); // Local hours
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // Local minutes
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12}:${minutes} ${period}`;
-}
+};
 
 export const getHours = function (timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
