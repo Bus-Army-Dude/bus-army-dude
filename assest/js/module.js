@@ -14,16 +14,25 @@ export const getDate = function (dateUnix, timezoneOffset) {
     return `${weekDayName} ${date.getDate()}, ${monthName}`;
 };
 
-// Converts Unix timestamp to a readable time with AM/PM
 export const getTime = function (timeUnix, timezoneOffset) {
+    console.log("Raw Timestamp:", timeUnix); // Debug the raw Unix timestamp
+    console.log("Timezone Offset:", timezoneOffset); // Debug the timezone offset
+
     const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
+    console.log("Adjusted Local Timestamp (Milliseconds):", localTimestamp); // Debug the adjusted local timestamp
+
     const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
+
     const hours = date.getHours(); // Local hours
     const minutes = date.getMinutes().toString().padStart(2, '0'); // Local minutes
     const period = hours >= 12 ? "PM" : "AM";
 
-    return `${hours % 12 || 12}:${minutes} ${period}`;
+    const localTime = `${hours % 12 || 12}:${minutes} ${period}`;
+    console.log("Computed Local Time:", localTime); // Debug the computed local time
+
+    return localTime;
 };
+
 
 // Converts Unix timestamp to only hours with AM/PM
 export const getHours = function (timeUnix, timezoneOffset) {
