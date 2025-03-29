@@ -216,7 +216,7 @@ export const updateWeather = (lat, lon) => {
                         <div class="wrapper">
                             <span class="m-icon">visibility</span>
                             <p class="title-1" data-visibility data-original-value="${visibility}">
-                                ${Number(visibility / 1000).toFixed(1)} <sub>km</sub></p>
+                              ${Number(visibility / 1000).toFixed(1)} <sub>km</sub></p>
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
