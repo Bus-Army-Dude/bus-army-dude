@@ -198,13 +198,6 @@ export const updateWeather = (lat, lon) => {
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
-                        <h3 class="title-3">Visibility</h3>
-                        <div class="wrapper">
-                            <span class="m-icon">visibility</span>
-                            <p class="title-1" data-visibility data-original-value="${visibility}">${visibility / 1000} <sub>km</sub></p>
-                        </div>
-                    </div>
-                    <div class="card card-sm highlight-card">
                         <h3 class="title-3">Feels Like</h3>
                         <div class="wrapper">
                             <span class="m-icon">thermostat</span>
