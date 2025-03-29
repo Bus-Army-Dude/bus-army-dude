@@ -1,21 +1,20 @@
 'use strict';
 
-export const weekDayNames = [
-    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-];
+// Weekday and month names
+export const weekDayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+export const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export const monthNames = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-];
-
-export const getDate = function (dateUnix, timezone) {
-    const date = new Date((dateUnix + timezone) * 1000); // Correctly apply timezone offset
-    const weekDayName = weekDayNames[date.getDay()]; // Use local day
-    const monthName = monthNames[date.getMonth()]; // Use local month
+// Converts Unix timestamp to a readable date
+export const getDate = function (dateUnix, timezoneOffset) {
+    const localTimestamp = (dateUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
+    const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
+    const weekDayName = weekDayNames[date.getDay()]; // Local weekday
+    const monthName = monthNames[date.getMonth()]; // Local month
 
     return `${weekDayName} ${date.getDate()}, ${monthName}`;
-}
+};
 
+// Converts Unix timestamp to a readable time with AM/PM
 export const getTime = function (timeUnix, timezoneOffset) {
     const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
     const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
@@ -26,19 +25,23 @@ export const getTime = function (timeUnix, timezoneOffset) {
     return `${hours % 12 || 12}:${minutes} ${period}`;
 };
 
-export const getHours = function (timeUnix, timezone) {
-    const date = new Date((timeUnix + timezone) * 1000); // Correctly apply timezone offset
-    const hours = date.getHours(); // Use local hours
+// Converts Unix timestamp to only hours with AM/PM
+export const getHours = function (timeUnix, timezoneOffset) {
+    const localTimestamp = (timeUnix + timezoneOffset) * 1000; // Apply timezone offset in milliseconds
+    const date = new Date(localTimestamp); // Create a Date object with the adjusted timestamp
+    const hours = date.getHours(); // Local hours
     const period = hours >= 12 ? "PM" : "AM";
 
     return `${hours % 12 || 12} ${period}`;
-}
+};
 
+// Converts meters per second to kilometers per hour
 export const mps_to_kmh = mps => {
     const km_per_hour = mps * 3600 / 1000;
     return km_per_hour.toFixed(2);
-}
+};
 
+// Air Quality Index descriptions
 export const aqiText = {
     1: {
         level: "Good",
@@ -60,4 +63,4 @@ export const aqiText = {
         level: "Very Poor",
         message: "Health warnings of emergency conditions. The entire population is more likely to be affected"
     }
-}
+};
