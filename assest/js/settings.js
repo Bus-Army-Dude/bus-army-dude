@@ -131,13 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const convertWindSpeed = (mps, unit) => {
         switch (unit) {
             case "kmh":
-                return [mps * 3.6, "km/h"];
+                return [mps * 3.6, "(km/h)"]; // Corrected unit
             case "mph":
                 return [mps * 2.237, "mph"];
             case "knots":
                 return [mps * 1.944, "kn"];
             case "bft":
-                return [Math.floor(Math.cbrt((mps / 0.836) ** 2)), "bft"];
+                return [Math.floor(Math.cbrt((mps / 0.836) ** 2)), "(bft)"]; // Corrected unit
             default: // m/s
                 return [mps, "m/s"];
         }
@@ -246,8 +246,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     settingsForm?.addEventListener("change", (event) => {
-        // Save other settings immediately
-        if (event.target.name !== "location") {
+        // Only save and apply location settings immediately
+        if (event.target.name === "location") {
             const settings = saveSettings();
             applySettings(settings);
         }
@@ -271,11 +271,11 @@ document.addEventListener("DOMContentLoaded", () => {
             position => {
                 const { latitude, longitude } = position.coords;
                 window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
-                // Re-enable the button after successfully fetching location (or when a new city is searched, see below)
-                // currentLocationBtn.classList.remove("disabled");
-                // currentLocationBtn.removeAttribute("disabled");
-                // currentLocationBtn.style.pointerEvents = "auto";
-                // currentLocationBtn.style.opacity = "1";
+                // Re-enable the button after successfully fetching location
+                currentLocationBtn.classList.remove("disabled");
+                currentLocationBtn.removeAttribute("disabled");
+                currentLocationBtn.style.pointerEvents = "auto";
+                currentLocationBtn.style.opacity = "1";
             },
             () => {
                 const lastLocation = localStorage.getItem('lastSearchedLocation');
