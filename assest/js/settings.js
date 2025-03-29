@@ -160,7 +160,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         break;
                     case "knots":
                         converted = value * 1.944;
-                        unit = "knots";
+                        unit = "kn";
+                        break;
+                    case "bft":
+                        converted = Math.floor(Math.cbrt((value / 0.836) ** 2)); // Approximate Beaufort
+                        unit = "bft";
                         break;
                 }
 
@@ -175,13 +179,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 let converted = value;
                 let unit = "hPa";
 
-                if (settings.pressure === "inhg") {
-                    converted = value * 0.02953;
-                    unit = "inHg";
-                } else if (settings.pressure === "mmhg") {
-                    converted = value * 0.75006;
-                    unit = "mmHg";  // Corrected to mmHg
+                switch(settings.pressure) {
+                    case "inhg":
+                        converted = value * 0.02953;
+                        unit = "inHg";
+                        break;
+                    case "mmhg":
+                        converted = value * 0.75006;
+                        unit = "mmHg";
+                        break;
+                    case "mbar":
+                        converted = value;  // Millibars is the same as the input value
+                        unit = "mbar";
+                        break;
+                    case "kpa":
+                        converted = value / 10;
+                        unit = "kPa";
+                        break;
                 }
+
                 element.textContent = `${Math.round(converted)} ${unit}`;
             }
         });
@@ -230,12 +246,12 @@ document.addEventListener("DOMContentLoaded", () => {
             windSpeed: speedSelect.value,
             pressure: pressureSelect.value,
             timeFormat: timeToggle.checked,
-            locationServices: locationToggle.checked
+            locationServices: locationTempSetting
         };
 
         applySettings(savedSettings);
     });
 
-    // Load settings on page load
+    // Load initial settings on page load
     loadSettings();
 });
