@@ -34,15 +34,13 @@ export const getDate = (dateUnix, timezone) => {
     return `${day} ${dateNum}, ${month}`;
 };
 
-function formatTime(unixTimestamp, timezoneOffset) {
-    const date = new Date((unixTimestamp + timezoneOffset) * 1000); // Convert to milliseconds
-    let hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    
-    hours = hours % 12 || 12; // Convert 24-hour time to 12-hour
+export const getTime = function (timeUnix, timezone) {
+    const date = new Date((timeUnix + timezone) * 1000);
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const period = hours >= 12 ? "PM" : "AM";
 
-    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+    return `${hours % 12 || 12}:${minutes} ${period}`;
 }
 
 export const getHours = function (timeUnix, timezone) {
@@ -81,5 +79,4 @@ export const aqiText = {
         message: "Health warnings of emergency conditions. The entire population is more likely to be affected"
     }
 }
-
 
