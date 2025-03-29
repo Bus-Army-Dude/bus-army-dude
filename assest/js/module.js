@@ -27,9 +27,9 @@ export const monthNames = [
 
 export const getDate = (dateUnix, timezone) => {
     const date = new Date((dateUnix + timezone) * 1000);
-    const day = weekDayNames[date.getUTCDay()];
-    const month = monthNames[date.getUTCMonth()];
-    const dateNum = date.getUTCDate();
+    const day = weekDayNames[date.getDay()]; // Use getDay() for local day
+    const month = monthNames[date.getMonth()]; // Use getMonth() for local month
+    const dateNum = date.getDate(); // Use getDate() for local date
 
     return `${day} ${dateNum}, ${month}`;
 };
