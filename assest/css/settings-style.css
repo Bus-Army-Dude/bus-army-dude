@@ -165,17 +165,25 @@ input:checked + .toggle-slider:before {
 }
 
 /* Disabled States */
-.btn-primary.disabled,
-.btn-primary[disabled] {
+.settings-section .setting-item[disabled], 
+.settings-section .toggle-switch input:disabled + .toggle-slider {
     opacity: 0.5;
-    cursor: not-allowed;
     pointer-events: none;
-    background-color: var(--outline);
+    cursor: not-allowed;
+}
+
+.settings-section .setting-item[disabled] .setting-label {
+    color: var(--on-surface-variant); /* Make text more muted */
 }
 
 .settings-modal .toggle-switch input:disabled + .toggle-slider {
+    background-color: var(--outline); /* Greyed-out toggle slider */
+}
+
+/* Grey-out effect for the entire settings item */
+.settings-section[disabled] {
     opacity: 0.5;
-    cursor: not-allowed;
+    pointer-events: none;
 }
 
 /* Theme Transition */
