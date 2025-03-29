@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
             temperature: tempSelect.value,
             windSpeed: speedSelect.value,
             pressure: pressureSelect.value,
-            timeFormat: timeToggle.checked,  // Save the 24-hour toggle status
+            timeFormat: timeToggle.checked,
             locationServices: locationToggle.checked
         };
 
@@ -59,6 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!settings.locationServices) {
             locationBtn.classList.add("disabled");
             locationBtn.setAttribute("disabled", "");
+            if (window.location.hash === '#/current-location') {
+                window.location.hash = '#/weather?lat=51.5073219&lon=-0.1276474'; // Default to London
+            }
         } else {
             locationBtn.classList.remove("disabled");
             locationBtn.removeAttribute("disabled");
@@ -73,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update "Today at" time
         updateTodayAtTime(settings.timeFormat);
 
-        // Re-render hourly forecast
+        // Re-render hourly forecast if function exists
         if (typeof renderHourlyForecast === 'function') {
             renderHourlyForecast();
         }
@@ -93,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateSunriseSunset = (is24HourFormat) => {
         const sunriseElement = document.querySelector("[data-sunrise]");
         const sunsetElement = document.querySelector("[data-sunset]");
-        const timezoneOffset = parseInt(localStorage.getItem("timezoneOffset")) || 0; // Retrieve timezone offset
+        const timezoneOffset = parseInt(localStorage.getItem("timezoneOffset")) || 0;
 
         if (sunriseElement && sunsetElement) {
             const sunriseTimeUnix = parseInt(sunriseElement.getAttribute("data-original-value"));
@@ -108,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formatSunriseSunsetTime = function (timeUnix, timezone, is24Hour) {
         const date = new Date(timeUnix * 1000);
-        const localDate = new Date(date.getTime() + (timezone * 1000)); // Apply timezone offset
+        const localDate = new Date(date.getTime() + (timezone * 1000));
 
         const hours = localDate.getUTCHours();
         const minutes = localDate.getUTCMinutes().toString().padStart(2, '0');
@@ -163,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         unit = "kn";
                         break;
                     case "bft":
-                        converted = Math.floor(Math.cbrt((value / 0.836) ** 2)); // Approximate Beaufort
+                        converted = Math.floor(Math.cbrt((value / 0.836) ** 2));
                         unit = "bft";
                         break;
                 }
@@ -189,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         unit = "mmHg";
                         break;
                     case "mbar":
-                        converted = value;  // Millibars is the same as the input value
+                        converted = value;
                         unit = "mbar";
                         break;
                     case "kpa":
@@ -204,10 +207,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Event Listeners
-    settingsBtn.addEventListener("click", () => settingsModal.classList.add("active"));
-    settingsClose.addEventListener("click", () => settingsModal.classList.remove("active"));
+    settingsBtn?.addEventListener("click", () => settingsModal.classList.add("active"));
+    settingsClose?.addEventListener("click", () => settingsModal.classList.remove("active"));
 
-    saveBtn.addEventListener("click", () => {
+    saveBtn?.addEventListener("click", () => {
         saveSettings();
         settingsModal.classList.remove("active");
     });
@@ -219,28 +222,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Location toggle specific handling (only updates after Save Changes)
-    let locationTempSetting = locationToggle.checked;  // Store initial state
-    locationToggle.addEventListener("change", (event) => {
-        locationTempSetting = event.target.checked; // Update temporary setting
+    // Location toggle specific handling
+    let locationTempSetting = locationToggle.checked;
+    locationToggle.addEventListener("change", async (event) => {
+        locationTempSetting = event.target.checked;
+        
+        if (event.target.checked) {
+            try {
+                const permission = await new Promise((resolve) => {
+                    navigator.geolocation.getCurrentPosition(
+                        () => resolve(true),
+                        () => resolve(false),
+                        { timeout: 5000 }
+                    );
+                });
+
+                if (!permission) {
+                    event.target.checked = false;
+                    locationTempSetting = false;
+                    alert("Please enable location access in your browser settings to use location services.");
+                }
+            } catch (error) {
+                console.error("Error requesting location permission:", error);
+                event.target.checked = false;
+                locationTempSetting = false;
+            }
+        } else {
+            if (window.location.hash === '#/current-location') {
+                window.location.hash = '#/weather?lat=51.5073219&lon=-0.1276474';
+            }
+        }
     });
 
+    // Time format toggle handling
     timeToggle.addEventListener("change", () => {
-        // Update immediately on toggle change
         const savedSettings = {
             temperature: tempSelect.value,
             windSpeed: speedSelect.value,
             pressure: pressureSelect.value,
             timeFormat: timeToggle.checked,
-            locationServices: locationTempSetting  // Use temporary location setting
+            locationServices: locationTempSetting
         };
-
-        // Apply settings and update time displays
         applySettings(savedSettings);
     });
 
+    // Save button final handler
     saveBtn.addEventListener("click", () => {
-        // Apply location setting only when save is clicked
         const savedSettings = {
             temperature: tempSelect.value,
             windSpeed: speedSelect.value,
@@ -249,9 +276,11 @@ document.addEventListener("DOMContentLoaded", () => {
             locationServices: locationTempSetting
         };
 
+        localStorage.setItem("weatherSettings", JSON.stringify(savedSettings));
         applySettings(savedSettings);
+        settingsModal.classList.remove("active");
     });
 
-    // Load initial settings on page load
+    // Load initial settings
     loadSettings();
 });
