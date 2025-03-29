@@ -3,7 +3,6 @@
 import { fetchData, url } from "./api.js";
 import * as module from "./module.js";
 
-// Function to add event listeners on multiple elements
 const addEventOnElements = (elements, eventType, callback) => {
     for (const element of elements)
         element.addEventListener(eventType, callback);
@@ -11,133 +10,59 @@ const addEventOnElements = (elements, eventType, callback) => {
 
 const searchView = document.querySelector("[data-search-view]");
 const searchTogglers = document.querySelectorAll("[data-search-toggler]");
-
-// Toggle search modal visibility
 const toggleSearch = () => {
     searchView.classList.toggle("active");
 }
 addEventOnElements(searchTogglers, "click", toggleSearch);
 
-// Search integration
+// search integration
 const searchField = document.querySelector("[data-search-field]");
 const searchResult = document.querySelector("[data-search-result]");
 
 let searchTimeOut = null;
 let searchTimeOutDuration = 500;
 
-// Improved Postal Code Detection (Basic)
-const isPostalCode = (input) => {
-    // This regex handles various international patterns (not exhaustive)
-    const postalCodeRegex = /^[A-Z\d\s-]{3,20}$/i;
-    return postalCodeRegex.test(input);
-}
-
-// Handle search input
 searchField.addEventListener("input", () => {
     searchTimeOut ?? clearTimeout(searchTimeOut);
-
     if (!searchField.value) {
         searchResult.classList.remove("active");
         searchResult.innerHTML = "";
         searchField.classList.remove("searching");
-    } else {
+    }
+    else {
         searchField.classList.add("searching");
     }
-
     if (searchField.value) {
         searchTimeOut = setTimeout(() => {
-            const query = searchField.value.trim();
-
-            if (isPostalCode(query)) {
-                let postalCode = query;
-                let countryCode = null;
-
-                // Try to split the query by comma to see if a country code is provided
-                const parts = query.split(',').map(part => part.trim());
-                if (parts.length === 2) {
-                    postalCode = parts[0];
-                    countryCode = parts[1].toUpperCase(); // Ensure country code is uppercase
+            fetchData(url.geo(searchField.value), (locations) => {
+                searchField.classList.remove("searching");
+                searchResult.classList.add("active");
+                searchResult.innerHTML = `
+                    <ul class="view-list" data-search-list></ul>
+                `;
+                const items = [];
+                for (const { name, lat, lon, country, state } of locations) {
+                    const searchItem = document.createElement("li");
+                    searchItem.classList.add("view-item");
+                    searchItem.innerHTML = `
+                        <span class="m-icon">location_on</span>
+                        <div>
+                            <p class="item-title">${name}</p>
+                            <p class="label-2 item-subtitle">${state || ""} ${country}</p>
+                        </div>
+                        <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
+                    `;
+                    searchResult.querySelector("[data-search-list]").appendChild(searchItem);
+                    items.push(searchItem.querySelector("[data-search-toggler]"))
                 }
-
-                fetchData(url.zip(postalCode, countryCode), (location) => {
-                    if (location) { // zip endpoint returns a single object not array
-                        displayZipResult(location);
-                    } else {
-                        displayNoResults();
-                    }
-                });
-            } else {
-                fetchData(url.geo(query), (locations) => {
-                    if (locations && locations.length > 0) {
-                        displaySearchResults(locations);
-                    } else {
-                        displayNoResults();
-                    }
-                });
-            }
+                addEventOnElements(items, "click", () => {
+                    toggleSearch();
+                    searchResult.classList.remove("active")
+                })
+            });
         }, searchTimeOutDuration);
     }
 });
-
-// Function to display search results
-const displaySearchResults = (locations) => {
-    searchField.classList.remove("searching");
-    searchResult.classList.add("active");
-    searchResult.innerHTML = `
-        <ul class="view-list" data-search-list></ul>
-    `;
-    const items = [];
-    for (const { name, lat, lon, country, state } of locations) {
-        const searchItem = document.createElement("li");
-        searchItem.classList.add("view-item");
-        searchItem.innerHTML = `
-            <span class="m-icon">location_on</span>
-            <div>
-                <p class="item-title">${name}</p>
-                <p class="label-2 item-subtitle">${state || ""} ${country}</p>
-            </div>
-            <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
-        `;
-        searchResult.querySelector("[data-search-list]").appendChild(searchItem);
-        items.push(searchItem.querySelector("[data-search-toggler]"));
-    }
-    addEventOnElements(items, "click", () => {
-        toggleSearch();
-        searchResult.classList.remove("active");
-    });
-};
-
-// Function to display zip code search result
-const displayZipResult = (location) => {
-    searchField.classList.remove("searching");
-    searchResult.classList.add("active");
-    searchResult.innerHTML = `
-        <ul class="view-list" data-search-list></ul>
-    `;
-
-    const searchItem = document.createElement("li");
-    searchItem.classList.add("view-item");
-    searchItem.innerHTML = `
-        <span class="m-icon">location_on</span>
-        <div>
-            <p class="item-title">${location.name}</p>
-            <p class="label-2 item-subtitle">${location.country}</p>
-        </div>
-        <a href="#/weather?lat=${location.lat}&lon=${location.lon}" class="item-link has-state" aria-label="${location.name} weather" data-search-toggler></a>
-    `;
-    searchResult.querySelector("[data-search-list]").appendChild(searchItem);
-    addEventOnElements([searchItem.querySelector("[data-search-toggler]")], "click", () => {
-        toggleSearch();
-        searchResult.classList.remove("active");
-    });
-};
-
-// Function to display "no results" message
-const displayNoResults = () => {
-    searchField.classList.remove("searching");
-    searchResult.classList.add("active");
-    searchResult.innerHTML = `<p class="no-results">No results found.</p>`;
-};
 
 const container = document.querySelector("[data-container]");
 const loading = document.querySelector("[data-loading]");
@@ -239,7 +164,7 @@ export const updateWeather = (lat, lon) => {
                             ${module.aqiText[aqi].level}
                         </span>
                     </div>
-                     <div class="card card-sm highlight-card two">
+                       <div class="card card-sm highlight-card two">
                         <h3 class="title-3">Sunrise & Sunset</h3>
                         <div class="card-list">
                             <div class="card-item">
@@ -270,6 +195,15 @@ export const updateWeather = (lat, lon) => {
                         <div class="wrapper">
                             <span class="m-icon">airwave</span>
                             <p class="title-1" data-pressure data-original-value="${pressure}">${pressure} <sub>hPa</sub></p>
+                        </div>
+                    </div>
+                    <div class="card card-sm highlight-card">
+                        <h3 class="title-3">Visibility</h3>
+                        <div class="wrapper">
+                            <span class="m-icon">visibility</span>
+                            <p class="title-1" data-visibility data-original-value="${visibility}">
+                                ${visibilityMi} mi / ${visibilityKm} km
+                            </p>
                         </div>
                     </div>
                     <div class="card card-sm highlight-card">
@@ -344,7 +278,7 @@ export const updateWeather = (lat, lon) => {
                 today.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                 const forecastDays = [];
                 let daysAdded = 0;
-
+                
                 for (const data of forecastList) {
                     const { main: { temp_max }, weather, dt_txt } = data;
                     const [{ icon, description }] = weather;
@@ -490,7 +424,7 @@ const applySettings = (settings) => {
     document.querySelectorAll("[data-visibility]").forEach(element => {
         let visibilityValue = parseFloat(element.getAttribute("data-original-value"));
         let unit = '';
-
+        
         if (settings.distance === "miles") {
             // Convert meters to miles (1 mile = 1609.344 meters)
             visibilityValue = (visibilityValue / 1609.344).toFixed(1);
@@ -500,10 +434,10 @@ const applySettings = (settings) => {
             visibilityValue = (visibilityValue / 1000).toFixed(1);
             unit = 'km';
         }
-
+        
         // Remove trailing zeros after decimal point if the decimal part is 0
         visibilityValue = visibilityValue.replace(/\.0$/, '');
-
+        
         element.textContent = `${visibilityValue} ${unit}`;
     });
 };
@@ -540,7 +474,7 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
         });
     }
-
+    
     // Close modal when clicking outside
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
@@ -552,43 +486,3 @@ document.addEventListener("DOMContentLoaded", () => {
 export const error404 = () => {
     errorContent.style.display = "flex";
 };
-
-const init = () => {
-    // Check if there's a location stored in localStorage and load it
-    const storedLocation = localStorage.getItem('lastLocation');
-    if (storedLocation) {
-        const { lat, lon } = JSON.parse(storedLocation);
-        updateWeather(lat, lon);
-    } else if (window.location.hash.startsWith("#/weather")) {
-        const params = new URLSearchParams(window.location.hash.substring(window.location.hash.indexOf('?') + 1));
-        const lat = params.get('lat');
-        const lon = params.get('lon');
-        if (lat && lon) {
-            updateWeather(lat, lon);
-        } else {
-            // Handle case where lat or lon are missing in the hash
-            console.error("Latitude or longitude missing in URL hash");
-            error404(); // Or some other error handling
-        }
-    } else {
-        // Potentially load weather for a default location or prompt for location
-        // For now, we can leave this empty or show a welcome message
-    }
-};
-
-window.addEventListener('hashchange', () => {
-    if (window.location.hash.startsWith("#/weather")) {
-        const params = new URLSearchParams(window.location.hash.substring(window.location.hash.indexOf('?') + 1));
-        const lat = params.get('lat');
-        const lon = params.get('lon');
-        if (lat && lon) {
-            updateWeather(lat, lon);
-        } else {
-            console.error("Latitude or longitude missing in URL hash");
-            error404(); // Or some other error handling
-        }
-    }
-});
-
-// Call init when the page loads
-window.addEventListener('load', init);
