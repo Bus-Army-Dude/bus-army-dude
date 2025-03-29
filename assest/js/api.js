@@ -6,7 +6,6 @@ export const fetchData = (URL, callback) => {
     fetch(`${URL}&appid=${apiKey}`)
         .then(res => res.json())
         .then(data => callback(data))
-        .catch(error => console.error('Error fetching data:', error));
 }
 
 export const url = {
