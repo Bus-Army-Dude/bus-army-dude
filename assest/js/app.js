@@ -105,6 +105,9 @@ export const updateWeather = (lat, lon) => {
         console.log("Sunrise (UTC Unix):", sunriseUnixUTC);
         console.log("Sunset (UTC Unix):", sunsetUnixUTC);
 
+        const sunriseDate = new Date((sunriseUnixUTC - timezone) * 1000);
+        const sunsetDate = new Date((sunsetUnixUTC - timezone) * 1000);
+
         console.log("Sunrise (Calculated Local):", sunriseDate.toLocaleTimeString());
         console.log("Sunset (Calculated Local):", sunsetDate.toLocaleTimeString());
         // --- END OF DEBUGGING LINES ---
