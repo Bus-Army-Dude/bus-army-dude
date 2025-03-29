@@ -22,44 +22,69 @@ const searchResult = document.querySelector("[data-search-result]");
 let searchTimeOut = null;
 let searchTimeOutDuration = 500;
 
+// Function to detect if the input is a postal code
+const isPostalCode = (input) => {
+    // Simple postal code format check (adjust this regex for global coverage)
+    const postalCodeRegex = /^[A-Za-z0-9\s\-]+$/;  // Regex to match alphanumeric postal codes with possible spaces/dashes
+    return postalCodeRegex.test(input);
+};
+
+// Function to handle search query
+const handleSearch = (query) => {
+    if (isPostalCode(query)) {
+        // If it's a postal code, call postal code API
+        fetchData(url.zip(query), (locations) => {
+            updateSearchResults(locations);
+        });
+    } else {
+        // If it's not a postal code, assume it's a city name and call city API
+        fetchData(url.geo(query), (locations) => {
+            updateSearchResults(locations);
+        });
+    }
+};
+
+// Function to update the search results UI
+const updateSearchResults = (locations) => {
+    searchField.classList.remove("searching");
+    searchResult.classList.add("active");
+    searchResult.innerHTML = `
+        <ul class="view-list" data-search-list></ul>
+    `;
+    const items = [];
+    for (const { name, lat, lon, country, state } of locations) {
+        const searchItem = document.createElement("li");
+        searchItem.classList.add("view-item");
+        searchItem.innerHTML = `
+            <span class="m-icon">location_on</span>
+            <div>
+                <p class="item-title">${name}</p>
+                <p class="label-2 item-subtitle">${state || ""} ${country}</p>
+            </div>
+            <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
+        `;
+        searchResult.querySelector("[data-search-list]").appendChild(searchItem);
+    }
+    // Add event listener for items
+    const itemsLinks = searchResult.querySelectorAll("[data-search-toggler]");
+    addEventOnElements(itemsLinks, "click", () => {
+        toggleSearch();
+        searchResult.classList.remove("active");
+    });
+};
+
 searchField.addEventListener("input", () => {
     searchTimeOut ?? clearTimeout(searchTimeOut);
     if (!searchField.value) {
         searchResult.classList.remove("active");
         searchResult.innerHTML = "";
         searchField.classList.remove("searching");
-    }
-    else {
+    } else {
         searchField.classList.add("searching");
     }
     if (searchField.value) {
         searchTimeOut = setTimeout(() => {
-            fetchData(url.geo(searchField.value), (locations) => {
-                searchField.classList.remove("searching");
-                searchResult.classList.add("active");
-                searchResult.innerHTML = `
-                    <ul class="view-list" data-search-list></ul>
-                `;
-                const items = [];
-                for (const { name, lat, lon, country, state } of locations) {
-                    const searchItem = document.createElement("li");
-                    searchItem.classList.add("view-item");
-                    searchItem.innerHTML = `
-                        <span class="m-icon">location_on</span>
-                        <div>
-                            <p class="item-title">${name}</p>
-                            <p class="label-2 item-subtitle">${state || ""} ${country}</p>
-                        </div>
-                        <a href="#/weather?lat=${lat}&lon=${lon}" class="item-link has-state" aria-label="${name} weather" data-search-toggler></a>
-                    `;
-                    searchResult.querySelector("[data-search-list]").appendChild(searchItem);
-                    items.push(searchItem.querySelector("[data-search-toggler]"))
-                }
-                addEventOnElements(items, "click", () => {
-                    toggleSearch();
-                    searchResult.classList.remove("active")
-                })
-            });
+            handleSearch(searchField.value);
         }, searchTimeOutDuration);
     }
 });
