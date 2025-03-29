@@ -24,7 +24,8 @@ let searchTimeOutDuration = 500;
 
 searchField.addEventListener("input", () => {
     searchTimeOut ?? clearTimeout(searchTimeOut);
-    if (!searchField.value) {
+    const trimmedValue = searchField.value.trim(); // Trim whitespace
+    if (!trimmedValue) {
         searchResult.classList.remove("active");
         searchResult.innerHTML = "";
         searchField.classList.remove("searching");
@@ -32,9 +33,9 @@ searchField.addEventListener("input", () => {
     else {
         searchField.classList.add("searching");
     }
-    if (searchField.value) {
+    if (trimmedValue) {
         searchTimeOut = setTimeout(() => {
-            fetchData(url.geo(searchField.value), (locations) => {
+            fetchData(url.geo(trimmedValue), (locations) => {
                 searchField.classList.remove("searching");
                 searchResult.classList.add("active");
                 searchResult.innerHTML = `
