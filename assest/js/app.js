@@ -164,27 +164,6 @@ export const updateWeather = (lat, lon) => {
                             ${module.aqiText[aqi].level}
                         </span>
                     </div>
-                    <div class="card card-sm highlight-card two">
-                        <h3 class="title-3">Sunrise & Sunset</h3>
-                        <div class="wrapper">
-                            <div class="card-list">
-                                <div class="card-item">
-                                    <span class="m-icon">clear_day</span>
-                                    <div class="label-1">
-                                        <p class="label-1">Sunrise</p>
-                                        <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
-                                    </div>
-                                </div>
-                                <div class="card-item">
-                                    <span class="m-icon">clear_night</span>
-                                    <div class="label-1">
-                                        <p class="label">Sunset</p>
-                                        <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card card-sm highlight-card">
                         <h3 class="title-3">Humidity</h3>
                         <div class="wrapper">
