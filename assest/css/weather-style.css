@@ -70,16 +70,16 @@
 
 /* Light Mode Variables */
 [data-theme="light"] {
-  --primary: #b5a1e5; /* Keep primary consistent or adjust */
-  --on-primary: #100e17; /* Keep on-primary consistent or adjust */
+  --primary: #b5a1e5;
+  --on-primary: #100e17;
   --background: #f8f8f8;
   --on-background: #222;
   --surface: #fff;
   --on-surface: #333;
-  --on-surface-variant: #666; /* Adjust for light mode */
-  --on-surface-variant-2: #888; /* Adjust for light mode */
+  --on-surface-variant: #666;
+  --on-surface-variant-2: #888;
   --outline: #ddd;
-  --bg-aqi-1: #c2f0c2; /* Lighter shades for light mode */
+  --bg-aqi-1: #c2f0c2;
   --on-bg-aqi-1: #1f331f;
   --bg-aqi-2: #f0eed2;
   --on-bg-aqi-2: #33311f;
@@ -956,7 +956,8 @@ article.container::before {
 [data-theme="light"] .card {
   background-color: var(--surface);
   color: var(--on-surface);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--outline);
 }
 
 /* You might need to adjust specific container styles if they have overrides */
@@ -965,4 +966,19 @@ article.container::before {
 [data-theme="light"] .forecast-card {
   background-color: var(--surface);
   color: var(--on-surface);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--outline);
+}
+
+/* Header Button Adjustments for Light Mode */
+[data-theme="light"] .icon-btn {
+  background-color: #f0f0f0; /* Slightly darker background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a light shadow */
+  border: 1px solid var(--outline); /* Add a light border */
+}
+
+/* Optional: Adjust hover/focus states */
+[data-theme="light"] .icon-btn:hover,
+[data-theme="light"] .icon-btn:focus {
+  background-color: #e8e8e8; /* Slightly darker on hover/focus */
 }
