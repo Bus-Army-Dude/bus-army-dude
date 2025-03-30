@@ -992,66 +992,50 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 /* Ensure containers have a visible background in light mode */
 [data-theme="light"] .card,
-[data-theme="light"] .card-lg, /* Added card-lg */
-[data-theme="light"] .card-sm  /* Added card-sm */
-{
-  background-color: var(--surface-light);
-  color: var(--on-surface-light);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Consider using CSS variables */
-  border: 1px solid var(--outline);
-}
-
-/* Specific container styles that might need adjustment (already covered by above) */
-/* Redundant if .card, .card-lg, .card-sm are handled */
-/*
-[data-theme="light"] .highlight-card,
-[data-theme="light"] .current-weather-card,
-[data-theme="light"] .forecast-card {
+[data-theme="light"] .card-lg,
+[data-theme="light"] .card-sm {
   background-color: var(--surface-light);
   color: var(--on-surface-light);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--outline);
 }
-*/
 
 /* Header Button Adjustments for Light Mode */
 [data-theme="light"] .icon-btn {
-  background-color: #e8e8e8; /* More distinct background - Consider a variable */
-  color: var(--on-surface-light); /* Ensure icon color contrasts */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consider variable */
+  background-color: #e8e8e8;
+  color: var(--on-surface-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--outline);
 }
 
 /* Optional: Adjust hover/focus states for light mode buttons */
 [data-theme="light"] .icon-btn:hover,
 [data-theme="light"] .icon-btn:focus {
-  background-color: #e0e0e0; /* Slightly darker on hover/focus - Consider variable */
+  background-color: #e0e0e0;
 }
 
 /* Search Field Container Styles */
 /* Light Mode */
 [data-theme="light"] .search-field {
-  background-color: #fff; /* White background */
-  color: var(--on-surface-light); /* Text color */
+  background-color: #fff;
+  color: var(--on-surface-light);
   border: 1px solid var(--outline);
 }
 [data-theme="light"] .search-field::placeholder {
-  color: var(--on-surface-variant-light); /* Placeholder color */
+  color: var(--on-surface-variant-light);
 }
 [data-theme="light"] .search-wrapper .leading-icon {
- color: var(--on-surface-variant-light); /* Icon color */
+  color: var(--on-surface-variant-light);
 }
-
 
 /* Dark mode Search Field Container (Already defined earlier, but good to group) */
 /* Ensure this doesn't conflict with the @media 1200px rule for background-color */
 .search-field {
-    background-color: var(--surface);
-    border: 1px solid var(--outline); /* Might be redundant */
-    /* color is inherited */
+  background-color: var(--surface);
+  border: 1px solid var(--outline); /* Might be redundant */
+  /* color is inherited */
 }
 /* Placeholder and icon color is inherited or set by default rules */
-
 
 /* --- Fix for "Now" Temperature in Light Mode --- */
 /* Ensure "Now" temperature (heading) is visible in light mode */
