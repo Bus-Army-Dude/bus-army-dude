@@ -434,7 +434,7 @@ body {
 .search-wrapper .leading-icon {
   position: absolute;
   top: 50%;
-  left: 16px; /* Corrected search icon placement */
+  left: 16px;
   transform: translateY(-50%);
 }
 
@@ -982,4 +982,10 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 [data-theme="light"] .icon-btn:hover,
 [data-theme="light"] .icon-btn:focus {
   background-color: #e0e0e0; /* Slightly darker on hover/focus */
+}
+
+/* Search Field Container in Light Mode */
+[data-theme="light"] .search-field {
+  background-color: #fff; /* White background */
+  border: 1px solid var(--outline);
 }
