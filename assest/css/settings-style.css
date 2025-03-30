@@ -28,12 +28,12 @@
     box-shadow: var(--shadow-1);
     max-height: 85vh;
     overflow-y: auto;
-    animation: modalFadeIn 0.3s ease forwards;
+    box-sizing: border-box; /* Ensure scrollbar stays inside the container */
 }
 
 /* Settings Header */
 .title-2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--on-surface);
     margin-bottom: 20px;
@@ -57,7 +57,7 @@
 }
 
 .settings-section-title {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--on-surface);
     margin-bottom: 16px;
@@ -80,7 +80,7 @@
 
 .setting-label {
     color: var(--on-surface);
-    font-size: 0.98rem;
+    font-size: 0.95rem;
     font-weight: 500;
 }
 
@@ -93,11 +93,12 @@
     opacity: 0.9;
 }
 
-/* Redesigned Modern Toggle Switch */
+/* Modern Toggle Switch with Visible Grey Container when Off */
 .toggle-switch {
     position: relative;
     width: 56px;
     height: 32px;
+    display: inline-block;
 }
 
 .toggle-switch input {
@@ -113,9 +114,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(var(--on-surface-rgb), 0.2);
-    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: rgba(var(--on-surface-rgb), 0.3); /* Grey when off */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 34px;
+    border: 2px solid rgba(var(--on-surface-rgb), 0.5);
+    box-sizing: border-box;
 }
 
 .toggle-slider:before {
@@ -128,21 +131,22 @@
     background-color: var(--on-surface);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50%;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--primary);
+    background-color: var(--primary); /* Purple when on */
+    border-color: var(--primary);
 }
 
 input:checked + .toggle-slider:before {
     transform: translateX(24px);
-    background-color: var(--on-primary);
+    background-color: white;
 }
 
 /* Hover and Focus States */
 .toggle-switch:hover .toggle-slider {
-    background-color: rgba(var(--primary-rgb), 0.6);
+    border-color: var(--primary);
 }
 
 input:checked:hover + .toggle-slider {
@@ -151,8 +155,12 @@ input:checked:hover + .toggle-slider {
 
 /* Active Animation for Toggle */
 .toggle-slider:active:before {
-    width: 30px;
+    width: 26px;
     transition: 0.1s ease;
+}
+
+input:checked + .toggle-slider:active:before {
+    transform: translateX(20px);
 }
 
 /* Select Inputs */
@@ -167,6 +175,7 @@ input:checked:hover + .toggle-slider {
     cursor: pointer;
     transition: all 0.3s ease;
     appearance: none;
+    -webkit-appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 12px center;
@@ -237,13 +246,30 @@ input:checked:hover + .toggle-slider {
     }
 }
 
+.settings-modal.active .settings-content {
+    animation: modalFadeIn 0.3s ease forwards;
+}
+
 /* Dark Mode Adjustments */
 [data-theme="dark"] .settings-content {
     background-color: var(--surface-dark);
 }
 
+[data-theme="dark"] .settings-select {
+    background-color: var(--background-dark);
+}
+
 [data-theme="dark"] .toggle-slider {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2); /* Light grey when off in dark mode */
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="dark"] input:checked + .toggle-slider {
+    background-color: var(--primary-dark);
+}
+
+[data-theme="dark"] input:checked:hover + .toggle-slider {
+    background-color: var(--primary-dark-hover);
 }
 
 /* Responsive Design */
@@ -263,4 +289,46 @@ input:checked:hover + .toggle-slider {
     .settings-close {
         width: 100%;
     }
+}
+
+/* Refresh Message */
+.refresh-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--surface);
+    padding: 16px;
+    border-radius: var(--radius-12);
+    box-shadow: var(--shadow-1);
+    z-index: 1001;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.refresh-content {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.refresh-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
 }
