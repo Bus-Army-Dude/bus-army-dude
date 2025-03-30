@@ -989,3 +989,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   background-color: #fff; /* White background */
   border: 1px solid var(--outline);
 }
+
+/* Dark mode Search Field Container */
+.search-field {
+    background-color: var(--surface);
+    border: 1px solid var(--outline);
+}
