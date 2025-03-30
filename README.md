@@ -216,9 +216,17 @@ This website is built using a combination of **JavaScript**, **CSS**, and **HTML
 ## Version History
 
 - **v1.15.0**: Introduced the **Weather Page**, including detailed weather conditions, forecasts, and highlights.
-- **v1.14.0**: Accessibility improvements and minor bug fixes.
-- **v1.13.0**: Enhanced security features and performance improvements.
-- **v1.12.0**: UI improvements for better mobile responsiveness.
+- **v1.14.0**: Theme Consistency and performance optimization.
+- **v1.13.0**: added the toggle button focus outline, also enhancements.
+- **v1.12.0**: added a merch store page.
+- **v1.11.0**: added a settings page for dark mode and light modem, font adjustments, and reset to factory settings.
+- **v1.10.1**: added a current day highlighted and also enhanced the event module and enhanced the theme.
+- **v1.10.0**: added a faq section, added a event calendar, and bug fixes.
+- **v1.9.0**: added a weather and tiktok creator shoutouts, added a tech information section, added disabilites, version information, and legal and copyright notice.
+- **v1.8.0**: added rednote same format as youtube and instagram, and General Enhancements.
+- **v1.7.0**: Security enhancements such as preventing media saving and also text copying.
+- **v1.6.0**: Bug fixes and added instagram and youtube creator shoutouts and last updated stamps.
+- **v1.5.0**: Bug fixes and improvements.
 
 ---
 
