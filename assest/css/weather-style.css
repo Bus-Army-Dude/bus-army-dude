@@ -1,4 +1,5 @@
 :root {
+  /* Dark Mode Variables (Default) */
   --primary: #b5a1e5;
   --on-primary: #100e17;
   --background: #131214;
@@ -65,6 +66,33 @@
 
   /* Transition */
   --transition-short: 100ms ease;
+}
+
+/* Light Mode Variables */
+[data-theme="light"] {
+  --primary: #b5a1e5; /* Keep primary consistent or adjust */
+  --on-primary: #100e17; /* Keep on-primary consistent or adjust */
+  --background: #f8f8f8;
+  --on-background: #222;
+  --surface: #fff;
+  --on-surface: #333;
+  --on-surface-variant: #666; /* Adjust for light mode */
+  --on-surface-variant-2: #888; /* Adjust for light mode */
+  --outline: #ddd;
+  --bg-aqi-1: #c2f0c2; /* Lighter shades for light mode */
+  --on-bg-aqi-1: #1f331f;
+  --bg-aqi-2: #f0eed2;
+  --on-bg-aqi-2: #33311f;
+  --bg-aqi-3: #f0e3d2;
+  --on-bg-aqi-3: #332b1f;
+  --bg-aqi-4: #f0c2c2;
+  --on-bg-aqi-4: #331f1f;
+  --bg-aqi-5: #f0c2e3;
+  --on-bg-aqi-5: #331f29;
+  --white: hsl(0, 0%, 100%);
+  --white-alpha-4: hsla(0, 0%, 100%, 0.04);
+  --white-alpha-8: hsla(0, 0%, 100%, 0.08);
+  --black-alpha-10: hsla(0, 0%, 0%, 0.1);
 }
 
 /* RESET */
@@ -922,4 +950,19 @@ article.container::before {
   .highlight-list {
     grid-template-columns: repeat(4, 1fr);
   }
+}
+
+/* Ensure containers have a visible background in light mode */
+[data-theme="light"] .card {
+  background-color: var(--surface);
+  color: var(--on-surface);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for depth */
+}
+
+/* You might need to adjust specific container styles if they have overrides */
+[data-theme="light"] .highlight-card,
+[data-theme="light"] .current-weather-card,
+[data-theme="light"] .forecast-card {
+  background-color: var(--surface);
+  color: var(--on-surface);
 }
