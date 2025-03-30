@@ -1,7 +1,7 @@
 'use strict';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Get all the necessary elements
+    // Get all necessary elements
     const settingsBtn = document.querySelector("[data-settings-btn]");
     const settingsModal = document.querySelector("[data-settings-modal]");
     const settingsClose = document.querySelector("[data-settings-close]");
@@ -44,12 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tempSettings = { ...currentSettings };
         
         // Apply current settings
-        applySettings(currentSettings, false);
+        applySettings(currentSettings);
         
         return currentSettings;
     };
 
-    // Store form values in tempSettings without applying
+    // Store form values without applying them
     const storeFormValues = () => {
         if (!settingsForm) return;
 
@@ -63,55 +63,13 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     };
 
-    // Save and apply settings
-    const saveAndApplySettings = () => {
-        if (!tempSettings) return;
-
-        // Save to localStorage
-        localStorage.setItem("weatherSettings", JSON.stringify(tempSettings));
-        currentSettings = { ...tempSettings };
-        
-        // Apply all settings
-        applySettings(currentSettings, false);
-    };
-
-    // Apply settings to the UI
-    const applySettings = (settings, isPreview = false) => {
+    // Apply settings
+    const applySettings = (settings) => {
         if (!settings) return;
 
-        // Remove any duplicate current conditions cards
-        const currentConditionsCards = document.querySelectorAll(".current-weather");
-        if (currentConditionsCards.length > 1) {
-            for (let i = 1; i < currentConditionsCards.length; i++) {
-                currentConditionsCards[i].remove();
-            }
-        }
-
-        // Only update display elements when not previewing
-        if (!isPreview) {
-            updateWeatherUnits(settings);
-            updateTimeFormats(settings.timeFormat);
-            updateLocationServices(settings.locationServices);
-        }
-    };
-
-    // Update location services
-    const updateLocationServices = (enabled) => {
-        if (currentLocationBtn) {
-            if (!enabled) {
-                currentLocationBtn.classList.add("disabled");
-                currentLocationBtn.setAttribute("disabled", "");
-                currentLocationBtn.style.pointerEvents = "none";
-                currentLocationBtn.style.opacity = "0.5";
-                localStorage.setItem("locationServicesEnabled", "false");
-            } else {
-                currentLocationBtn.classList.remove("disabled");
-                currentLocationBtn.removeAttribute("disabled");
-                currentLocationBtn.style.pointerEvents = "auto";
-                currentLocationBtn.style.opacity = "1";
-                localStorage.setItem("locationServicesEnabled", "true");
-            }
-        }
+        updateWeatherUnits(settings);
+        updateTimeDisplay(settings.timeFormat);
+        updateLocationServices(settings.locationServices);
     };
 
     // Update weather units display
@@ -144,7 +102,57 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // Conversion helpers with unit objects
+    // Update time display format
+    const updateTimeDisplay = (is24Hour) => {
+        const formatTime = (date) => {
+            const hours = date.getHours();
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            
+            if (is24Hour) {
+                return `${hours.toString().padStart(2, '0')}:${minutes}`;
+            } else {
+                const period = hours >= 12 ? "PM" : "AM";
+                const displayHours = hours % 12 || 12;
+                return `${displayHours}:${minutes} ${period}`;
+            }
+        };
+
+        // Update all time elements
+        document.querySelectorAll("[data-time], [data-sunrise], [data-sunset], [data-forecast-time]").forEach(element => {
+            const timeUnix = parseInt(element.getAttribute("data-original-value"));
+            if (!isNaN(timeUnix)) {
+                const date = new Date(timeUnix * 1000);
+                element.textContent = formatTime(date);
+            }
+        });
+
+        // Update current time if present
+        const currentTimeElement = document.querySelector("[data-current-time]");
+        if (currentTimeElement) {
+            currentTimeElement.textContent = formatTime(new Date());
+        }
+    };
+
+    // Update location services
+    const updateLocationServices = (enabled) => {
+        if (currentLocationBtn) {
+            if (!enabled) {
+                currentLocationBtn.classList.add("disabled");
+                currentLocationBtn.setAttribute("disabled", "");
+                currentLocationBtn.style.pointerEvents = "none";
+                currentLocationBtn.style.opacity = "0.5";
+                localStorage.setItem("locationServicesEnabled", "false");
+            } else {
+                currentLocationBtn.classList.remove("disabled");
+                currentLocationBtn.removeAttribute("disabled");
+                currentLocationBtn.style.pointerEvents = "auto";
+                currentLocationBtn.style.opacity = "1";
+                localStorage.setItem("locationServicesEnabled", "true");
+            }
+        }
+    };
+
+    // Conversion helpers
     const convertTemperature = (celsius, unit) => {
         switch (unit) {
             case "fahrenheit":
@@ -189,63 +197,42 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Update time formats
-    const updateTimeFormats = (is24Hour) => {
-        const formatTimeString = (timeUnix) => {
-            const date = new Date(timeUnix * 1000);
-            const hours = date.getHours();
-            const minutes = date.getMinutes().toString().padStart(2, '0');
-
-            if (is24Hour) {
-                return `${hours.toString().padStart(2, '0')}:${minutes}`;
-            } else {
-                const period = hours >= 12 ? "PM" : "AM";
-                const displayHours = hours % 12 || 12;
-                return `${displayHours}:${minutes} ${period}`;
-            }
-        };
-
-        // Update all time elements
-        document.querySelectorAll("[data-time], [data-sunrise], [data-sunset], [data-forecast-time]").forEach(element => {
-            const timeUnix = parseInt(element.getAttribute("data-original-value"));
-            if (!isNaN(timeUnix)) {
-                element.textContent = formatTimeString(timeUnix);
-            }
-        });
-
-        // Update current time if present
-        const currentTimeElement = document.querySelector("[data-current-time]");
-        if (currentTimeElement) {
-            const currentTime = Math.floor(Date.now() / 1000);
-            currentTimeElement.textContent = formatTimeString(currentTime);
-        }
-    };
-
     // Event Listeners
-    settingsForm?.addEventListener("change", () => {
-        storeFormValues(); // Only store the values, don't apply them
-    });
-
     settingsForm?.addEventListener("submit", (event) => {
         event.preventDefault();
-        saveAndApplySettings(); // Save and apply all changes
+        const formData = new FormData(settingsForm);
+        const newSettings = {
+            temperature: formData.get("temperature"),
+            windSpeed: formData.get("windSpeed"),
+            pressure: formData.get("pressure"),
+            timeFormat: formData.get("timeFormat") === "on",
+            locationServices: formData.get("location") === "on"
+        };
+
+        // Save and apply immediately
+        localStorage.setItem("weatherSettings", JSON.stringify(newSettings));
+        currentSettings = newSettings;
+        applySettings(newSettings);
+        
         settingsModal?.classList.remove("active");
     });
 
     settingsBtn?.addEventListener("click", () => {
         settingsModal?.classList.add("active");
-        loadSettings(); // Load current settings into form
+        loadSettings();
     });
 
     settingsClose?.addEventListener("click", () => {
         settingsModal?.classList.remove("active");
-        loadSettings(); // Revert form to current settings
+        // Revert any changes
+        applySettings(currentSettings);
     });
 
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
             settingsModal.classList.remove("active");
-            loadSettings(); // Revert form to current settings
+            // Revert any changes
+            applySettings(currentSettings);
         }
     });
 
@@ -291,10 +278,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initialize settings
     loadSettings();
 
-    // Update time display periodically
+    // Update time display every second
     setInterval(() => {
         if (currentSettings?.timeFormat !== undefined) {
-            updateTimeFormats(currentSettings.timeFormat);
+            updateTimeDisplay(currentSettings.timeFormat);
         }
     }, 1000);
 });
