@@ -1055,6 +1055,6 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 /* --- Fix for "Now" Temperature in Light Mode --- */
 /* Ensure "Now" temperature (heading) is visible in light mode */
-[data-theme="light"] .current-weather-card > .heading {
+[data-theme="light"] .current-weather-card .heading { /* CORRECTED: Use space (descendant) */
   color: var(--on-surface-light); /* Set the heading color to on-surface-light */
 }
