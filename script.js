@@ -104,7 +104,7 @@ function updateNewYearCountdown() {
     if (diff <= 0) {
         countdownSection.innerHTML = `
             <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                WWDC 2025 has started!!!
+                Welcome to Summer!!!
             </h2>
             <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
         `;
