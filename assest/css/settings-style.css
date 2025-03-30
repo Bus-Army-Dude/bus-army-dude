@@ -115,12 +115,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(var(--on-surface-rgb), 0.3);
+    background-color: rgba(var(--on-surface-rgb), 0.4); /* Slightly darker background when off */
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 34px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(var(--on-surface-rgb), 0.3);
+    border: 1px solid rgba(var(--on-surface-rgb), 0.5); /* Slightly darker border when off */
 }
 
 .toggle-slider:before {
@@ -215,8 +215,8 @@ input:checked + .toggle-slider:hover {
 
 .settings-save:hover {
     background-color: var(--primary-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.3);
+    box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.4);
+    filter: brightness(105%);
 }
 
 .settings-close {
@@ -255,7 +255,8 @@ input:checked + .toggle-slider:hover {
 }
 
 [data-theme="dark"] .toggle-slider {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.3); /* Light background when off in dark mode */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Light border when off in dark mode */
 }
 
 [data-theme="dark"] input:checked + .toggle-slider {
