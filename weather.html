@@ -28,11 +28,11 @@
             <div class="search-view" data-search-view>
                 <div class="search-wrapper">
                     <input type="search"
-                           name="search"
-                           class="search-field"
-                           placeholder="Search city..."
-                           autocomplete="off"
-                           data-search-field>
+                               name="search"
+                               class="search-field"
+                               placeholder="Search city..."
+                               autocomplete="off"
+                               data-search-field>
                     <span class="m-icon">search</span>
                     <button class="icon-btn leading-icon has-state" aria-label="close search" data-search-toggler>
                         <span class="m-icon">arrow_back</span>
@@ -75,6 +75,9 @@
             </div>
             <div class="loading" data-loading></div>
         </article>
+
+        <div class="weather-alerts">
+            </div>
     </main>
 
     <div class="settings-modal" data-settings-modal>
@@ -85,7 +88,7 @@
                 <h3 class="settings-section-title">Units</h3>
                 <div class="setting-item">
                     <label class="setting-label" for="temperature">Temperature:</label>
-                    <select name="temperature" class="settings-select">
+                    <select name="temperature" class="settings-select" data-settings-temp>
                         <option value="celsius">Celsius (°C)</option>
                         <option value="fahrenheit">Fahrenheit (°F)</option>
                         <option value="kelvin">Kelvin (K)</option>
@@ -94,9 +97,9 @@
                 </div>
                 <div class="setting-item">
                     <label class="setting-label" for="windSpeed">Wind Speed:</label>
-                    <select name="windSpeed" class="settings-select">
-                        <option value="mps">m/s</option>
-                        <option value="kmh">km/h</option>
+                    <select name="windSpeed" class="settings-select" data-settings-speed>
+                        <option value="ms">m/s</option>
+                        <option value="kph">km/h</option>
                         <option value="mph">mph</option>
                         <option value="knots">knots</option>
                         <option value="beaufort">Beaufort</option>
@@ -105,7 +108,7 @@
                 </div>
                 <div class="setting-item">
                     <label class="setting-label" for="pressure">Pressure:</label>
-                    <select name="pressure" class="settings-select">
+                    <select name="pressure" class="settings-select" data-settings-pressure>
                         <option value="hpa">hPa</option>
                         <option value="inhg">inHg</option>
                         <option value="mmhg">mmHg</option>
@@ -120,7 +123,7 @@
                 <div class="setting-item">
                     <label class="setting-label" for="timeFormat">24-Hour Time:</label>
                     <label class="toggle-switch">
-                        <input type="checkbox" name="timeFormat">
+                        <input type="checkbox" name="timeFormat" data-settings-time>
                         <span class="toggle-slider"></span>
                     </label>
                     <p class="settings-description">
@@ -131,7 +134,7 @@
                 <div class="setting-item">
                     <label class="setting-label" for="location">Location Services:</label>
                     <label class="toggle-switch">
-                        <input type="checkbox" name="location">
+                        <input type="checkbox" name="location" data-settings-location>
                         <span class="toggle-slider"></span>
                     </label>
                     <p class="settings-description">Enable or disable location services for automatic location detection.</p>
@@ -142,21 +145,20 @@
                  <div class="setting-item">
                     <label class="setting-label" for="darkMode">Dark Mode:</label>
                     <label class="toggle-switch">
-                        <input type="checkbox" name="darkMode" data-dark-mode-toggle>
+                        <input type="checkbox" name="darkMode" data-dark-mode-toggle data-settings-theme>
                         <span class="toggle-slider"></span>
                     </label>
                     <p class="settings-description">Toggle between light and dark color themes.</p>
                 </div>
             </div>
             <div class="settings-actions">
-                <button type="submit" class="settings-save">Save</button>
+                <button type="submit" class="settings-save" data-settings-save>Save</button>
                 <button type="button" class="settings-close" data-settings-close>Close</button>
             </div>
         </form>
     </div>
 </div>
     
-    <!-- Error Section -->
     <section class="error-content" data-error-content>
         <h2 class="heading">404</h2>
         <p class="body-1">Page not found!</p>
