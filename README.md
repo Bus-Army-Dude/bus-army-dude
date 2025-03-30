@@ -23,10 +23,13 @@ The **Home Page** contains the following sections:
 #### 3. **Current President**
    - Shows the current president or leader of the United States of America.
    - **Information Provided**:
-       - **PM2.5**
-       - **SO2**
-       - **NO2**
-       - **O3**
+       - **Picture:** Shows the photo of the president.
+       - **Name:** Shows the First Name, Middle Initial, and Last Name. 
+       - **Born:** Shows when the president was born (Month, Day, Year).
+       - **Height:** Shows how tall the president is.
+       - **Party:** Shows what Political Party the president is (Republican or Democrat)
+       - **Presidential Term:** Shows the term of the president (Start date from when they took office icluding the time, then the last date they will leave office including the time).
+       - **Vice President:** Shows who the presidents Vice President is.
 
 #### 4. **TikTok, Instagram, YouTube Creator Shoutouts**
    - Lists creators on TikTok, Instagram, and YouTube who I follow or collaborate with.
@@ -38,16 +41,62 @@ The **Home Page** contains the following sections:
 
 #### 6. **Countdown**
    - Shows a countdown timer to a specified event (e.g., product launch or personal event).
+      - The countdown is based off the users timezone from there device.
+      - Has the following (Year, Month, Day, Hour, Minute, and Second)
 
 #### 7. **Upcoming Events**
    - Displays a list of upcoming events, including details like event names, dates, and locations.
+        - The events times and how long till the event starts shows based off the users timezone of there                 devices.
+    
+#### 8. **Business Information**
+   - Displays the owners business information as follows:
+        - Business Name
+        - Conatact Email
+        - The users current timezone
+        - Then business hours (the times also match the users timezone differences)
+        - then the status (Open/Closed)
+        - Holiday Hours (only shows when there is a holiday also affects normal hours. Shows the open and 
+        closing times or if the business is closed)
+        - Special Hours (only shows when there is a special day also affects normal hours. Shows the open and 
+        closing times or if the business is closed)
 
-#### 8. **FAQ**
+#### 9. **FAQ**
    - Provides answers to frequently asked questions about me or the website.
+   - Only one faq can be open at a time.
 
-#### 9. **Tech Information**
-   - Displays technical details about the website's framework and technology stack.
+#### 10. **Tech Information**
+   - Displays the current tech that the owner has and it displays the following:
+        - Model
+        - Material
+        - Storage
+        - Battery Capacity
+        - Color
+        - Price
+        - Date released
+        - Date Bought
+        - OS Version
+        - Battery Health (If applicaple)
+        - Battery Charge Cyles (If applicaple)
+    
+#### 11. **Disabilities**
+   - Displays the disabilities the owner has.
+        - Each disability also is a button that takes the user to the offical website to tell them about the            disability
+        - and when the user hover's over the button it has a hover animation.
 
+#### 12. **Version Information**
+   - Displays the version info of the website as follows:
+        - Version Number
+        - Build Number
+        - The users current Date and Time
+        - The users operating system
+        - The users device
+        - then when the page will refresh (every 5 minutes)
+
+#### 13. **Notice Information**
+   - This website displays the following:
+        - Watermark notice
+        - Legal Notice
+   
 ---
 
 ## Weather Page (Introduced in v1.15.0)
