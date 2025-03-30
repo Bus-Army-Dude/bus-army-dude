@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsClose = document.querySelector("[data-settings-close]");
     const settingsForm = settingsModal?.querySelector("[data-settings-form]");
     const currentLocationBtn = document.querySelector("[data-current-location-btn]");
-    const searchField = document.querySelector("[data-search-field]");
 
-    // Temporary storage for unsaved changes
+    // Storage for current and temporary settings
+    let currentSettings = null;
     let tempSettings = null;
 
     // Default settings
@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load settings from localStorage
     const loadSettings = () => {
-        const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
+        currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
         
-        // Initialize form with saved settings
+        // Initialize form with current settings
         if (settingsForm) {
             const tempUnit = settingsForm.querySelector("[name='temperature']");
             const windSpeedUnit = settingsForm.querySelector("[name='windSpeed']");
@@ -33,24 +33,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const timeFormat = settingsForm.querySelector("[name='timeFormat']");
             const locationToggle = settingsForm.querySelector("[name='location']");
 
-            if (tempUnit) tempUnit.value = savedSettings.temperature;
-            if (windSpeedUnit) windSpeedUnit.value = savedSettings.windSpeed;
-            if (pressureUnit) pressureUnit.value = savedSettings.pressure;
-            if (timeFormat) timeFormat.checked = savedSettings.timeFormat;
-            if (locationToggle) locationToggle.checked = savedSettings.locationServices;
+            if (tempUnit) tempUnit.value = currentSettings.temperature;
+            if (windSpeedUnit) windSpeedUnit.value = currentSettings.windSpeed;
+            if (pressureUnit) pressureUnit.value = currentSettings.pressure;
+            if (timeFormat) timeFormat.checked = currentSettings.timeFormat;
+            if (locationToggle) locationToggle.checked = currentSettings.locationServices;
         }
 
         // Initialize temporary settings
-        tempSettings = { ...savedSettings };
+        tempSettings = { ...currentSettings };
         
-        // Apply current settings immediately
-        applySettings(savedSettings, false);
+        // Apply current settings
+        applySettings(currentSettings, false);
         
-        return savedSettings;
+        return currentSettings;
     };
 
-    // Preview settings without saving
-    const previewSettings = () => {
+    // Store form values in tempSettings without applying
+    const storeFormValues = () => {
         if (!settingsForm) return;
 
         const formData = new FormData(settingsForm);
@@ -61,26 +61,24 @@ document.addEventListener("DOMContentLoaded", () => {
             timeFormat: formData.get("timeFormat") === "on",
             locationServices: formData.get("location") === "on"
         };
-
-        // Apply preview changes
-        applySettings(tempSettings, true);
     };
 
-    // Save settings to localStorage and apply them
-    const saveSettings = () => {
-        if (!tempSettings) return defaultSettings;
+    // Save and apply settings
+    const saveAndApplySettings = () => {
+        if (!tempSettings) return;
 
         // Save to localStorage
         localStorage.setItem("weatherSettings", JSON.stringify(tempSettings));
+        currentSettings = { ...tempSettings };
         
-        // Force update location services state in localStorage
-        localStorage.setItem("locationServicesEnabled", tempSettings.locationServices.toString());
-        
-        return tempSettings;
+        // Apply all settings
+        applySettings(currentSettings, false);
     };
 
     // Apply settings to the UI
     const applySettings = (settings, isPreview = false) => {
+        if (!settings) return;
+
         // Remove any duplicate current conditions cards
         const currentConditionsCards = document.querySelectorAll(".current-weather");
         if (currentConditionsCards.length > 1) {
@@ -89,10 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        updateWeatherUnits(settings);
-        updateTimeFormats(settings.timeFormat);
-        
+        // Only update display elements when not previewing
         if (!isPreview) {
+            updateWeatherUnits(settings);
+            updateTimeFormats(settings.timeFormat);
             updateLocationServices(settings.locationServices);
         }
     };
@@ -105,14 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentLocationBtn.setAttribute("disabled", "");
                 currentLocationBtn.style.pointerEvents = "none";
                 currentLocationBtn.style.opacity = "0.5";
-                // Store the disabled state
                 localStorage.setItem("locationServicesEnabled", "false");
             } else {
                 currentLocationBtn.classList.remove("disabled");
                 currentLocationBtn.removeAttribute("disabled");
                 currentLocationBtn.style.pointerEvents = "auto";
                 currentLocationBtn.style.opacity = "1";
-                // Store the enabled state
                 localStorage.setItem("locationServicesEnabled", "true");
             }
         }
@@ -124,8 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll("[data-temperature]").forEach(element => {
             const value = parseFloat(element.getAttribute("data-original-value"));
             if (!isNaN(value)) {
-                const [convertedValue, unit] = convertTemperature(value, settings.temperature);
-                element.textContent = `${Math.round(convertedValue)}${unit}`;
+                const converted = convertTemperature(value, settings.temperature);
+                element.textContent = `${Math.round(converted.value)}${converted.unit}`;
             }
         });
 
@@ -133,8 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll("[data-wind-speed]").forEach(element => {
             const value = parseFloat(element.getAttribute("data-original-value"));
             if (!isNaN(value)) {
-                const [convertedValue, unit] = convertWindSpeed(value, settings.windSpeed);
-                element.textContent = `${Math.round(convertedValue)} ${unit}`;
+                const converted = convertWindSpeed(value, settings.windSpeed);
+                element.textContent = `${Math.round(converted.value)} ${converted.unit}`;
             }
         });
 
@@ -142,132 +138,120 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll("[data-pressure]").forEach(element => {
             const value = parseFloat(element.getAttribute("data-original-value"));
             if (!isNaN(value)) {
-                const [convertedValue, unit] = convertPressure(value, settings.pressure);
-                element.textContent = `${Math.round(convertedValue)} ${unit}`;
+                const converted = convertPressure(value, settings.pressure);
+                element.textContent = `${Math.round(converted.value)} ${converted.unit}`;
             }
         });
     };
 
-    // Conversion helpers remain the same...
+    // Conversion helpers with unit objects
     const convertTemperature = (celsius, unit) => {
         switch (unit) {
             case "fahrenheit":
-                return [(celsius * 9/5) + 32, "°F"];
+                return { value: (celsius * 9/5) + 32, unit: "°F" };
             case "kelvin":
-                return [celsius + 273.15, "K"];
-            default: // celsius
-                return [celsius, "°C"];
+                return { value: celsius + 273.15, unit: "K" };
+            default:
+                return { value: celsius, unit: "°C" };
         }
     };
 
     const convertWindSpeed = (mps, unit) => {
         switch (unit) {
             case "kmh":
-                return [mps * 3.6, "km/h"];
+                return { value: mps * 3.6, unit: "km/h" };
             case "mph":
-                return [mps * 2.237, "mph"];
+                return { value: mps * 2.237, unit: "mph" };
             case "knots":
-                return [mps * 1.944, "kn"];
+                return { value: mps * 1.944, unit: "kts" };
             case "beaufort":
-                return [Math.floor(Math.cbrt((mps / 0.836) ** 2)), "Bft"];
-            default: // m/s
-                return [mps, "m/s"];
+                return {
+                    value: Math.min(Math.max(Math.ceil(Math.pow(mps / 0.836, 2/3)), 0), 12),
+                    unit: "Bft"
+                };
+            default:
+                return { value: mps, unit: "m/s" };
         }
     };
 
     const convertPressure = (hpa, unit) => {
         switch (unit) {
             case "inhg":
-                return [hpa * 0.02953, "inHg"];
+                return { value: hpa * 0.02953, unit: "inHg" };
             case "mmhg":
-                return [hpa * 0.75006, "mmHg"];
+                return { value: hpa * 0.75006, unit: "mmHg" };
             case "kpa":
-                return [hpa / 10, "kPa"];
+                return { value: hpa / 10, unit: "kPa" };
             case "mbar":
-                return [hpa, "mbar"];
-            default: // hPa
-                return [hpa, "hPa"];
+                return { value: hpa, unit: "mbar" };
+            default:
+                return { value: hpa, unit: "hPa" };
         }
     };
 
     // Update time formats
     const updateTimeFormats = (is24Hour) => {
-        const updateTimeElement = (element) => {
-            const timeUnix = parseInt(element.getAttribute("data-original-value"));
-            if (!isNaN(timeUnix)) {
-                element.textContent = formatTime(timeUnix, is24Hour);
+        const formatTimeString = (timeUnix) => {
+            const date = new Date(timeUnix * 1000);
+            const hours = date.getHours();
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+
+            if (is24Hour) {
+                return `${hours.toString().padStart(2, '0')}:${minutes}`;
+            } else {
+                const period = hours >= 12 ? "PM" : "AM";
+                const displayHours = hours % 12 || 12;
+                return `${displayHours}:${minutes} ${period}`;
             }
         };
 
-        // Update all time displays
-        document.querySelectorAll("[data-sunrise], [data-sunset], [data-forecast-time]").forEach(updateTimeElement);
+        // Update all time elements
+        document.querySelectorAll("[data-time], [data-sunrise], [data-sunset], [data-forecast-time]").forEach(element => {
+            const timeUnix = parseInt(element.getAttribute("data-original-value"));
+            if (!isNaN(timeUnix)) {
+                element.textContent = formatTimeString(timeUnix);
+            }
+        });
 
         // Update current time if present
         const currentTimeElement = document.querySelector("[data-current-time]");
         if (currentTimeElement) {
             const currentTime = Math.floor(Date.now() / 1000);
-            currentTimeElement.textContent = formatTime(currentTime, is24Hour);
-        }
-    };
-
-    // Time formatting helper
-    const formatTime = (timeUnix, is24Hour) => {
-        const date = new Date(timeUnix * 1000);
-        const hours = date.getHours();
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-
-        if (is24Hour) {
-            return `${hours.toString().padStart(2, '0')}:${minutes}`;
-        } else {
-            const period = hours >= 12 ? "PM" : "AM";
-            const displayHours = hours % 12 || 12;
-            return `${displayHours}:${minutes} ${period}`;
+            currentTimeElement.textContent = formatTimeString(currentTime);
         }
     };
 
     // Event Listeners
     settingsForm?.addEventListener("change", () => {
-        previewSettings(); // Only preview changes
+        storeFormValues(); // Only store the values, don't apply them
     });
 
     settingsForm?.addEventListener("submit", (event) => {
         event.preventDefault();
-        const settings = saveSettings(); // Save settings
-        applySettings(settings, false); // Apply changes immediately
+        saveAndApplySettings(); // Save and apply all changes
         settingsModal?.classList.remove("active");
     });
 
     settingsBtn?.addEventListener("click", () => {
         settingsModal?.classList.add("active");
-        loadSettings();
+        loadSettings(); // Load current settings into form
     });
 
     settingsClose?.addEventListener("click", () => {
         settingsModal?.classList.remove("active");
-        // Revert changes by reloading saved settings
-        const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
-        applySettings(savedSettings, false);
+        loadSettings(); // Revert form to current settings
     });
 
     window.addEventListener("click", (event) => {
         if (event.target === settingsModal) {
             settingsModal.classList.remove("active");
-            // Revert changes when clicking outside
-            const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
-            applySettings(savedSettings, false);
+            loadSettings(); // Revert form to current settings
         }
-    });
-
-    // Handle page loads and navigation
-    window.addEventListener("load", () => {
-        const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
-        applySettings(savedSettings, false);
     });
 
     // Current Location button handling
     currentLocationBtn?.addEventListener("click", () => {
-        // Check if location services are enabled in settings
-        const settings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
+        const settings = currentSettings || loadSettings();
         if (!settings.locationServices) {
             alert("Location services are disabled in settings. Please enable them to use this feature.");
             return;
@@ -307,13 +291,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initialize settings
     loadSettings();
 
-    // Prevent duplicate cards on page load
-    document.addEventListener("DOMContentLoaded", () => {
-        const currentConditionsCards = document.querySelectorAll(".current-weather");
-        if (currentConditionsCards.length > 1) {
-            for (let i = 1; i < currentConditionsCards.length; i++) {
-                currentConditionsCards[i].remove();
-            }
+    // Update time display periodically
+    setInterval(() => {
+        if (currentSettings?.timeFormat !== undefined) {
+            updateTimeFormats(currentSettings.timeFormat);
         }
-    });
+    }, 1000);
 });
