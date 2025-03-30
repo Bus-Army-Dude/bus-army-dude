@@ -28,7 +28,7 @@
     box-shadow: var(--shadow-1);
     max-height: 85vh;
     overflow-y: auto;
-    box-sizing: border-box; /* Ensure scrollbar stays inside the container */
+    box-sizing: border-box;
 }
 
 /* Settings Header */
@@ -329,6 +329,13 @@ input:checked + .toggle-slider:active:before {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    font: inherit;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.refresh-close svg {
+    width: 16px;
+    height: 16px;
 }
