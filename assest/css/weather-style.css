@@ -509,7 +509,16 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   margin-block-end: 16px;
 }
 
-/* CURRENT WEATHER */
+/* Base Styles for Current Weather Card */
+.current-weather-card {
+  background-color: var(--surface);
+  color: var(--on-surface);
+  border-radius: var(--radius-12);
+  padding: 16px;
+  box-shadow: var(--shadow-1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .current-weather-card .weapper {
   margin-block: 12px;
   display: flex;
@@ -543,6 +552,26 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 .current-weather-card .meta-text {
   color: var(--on-surface-variant);
+}
+
+/* Light Mode Adjustments */
+[data-theme="light"] .current-weather-card {
+  background-color: var(--surface-light); /* Light but not pure white */
+  color: var(--on-surface-light);
+}
+
+[data-theme="light"] .current-weather-card .meta-text {
+  color: var(--on-surface-variant-light);
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .current-weather-card {
+  background-color: var(--surface-dark); /* Dark background for dark mode */
+  color: var(--on-surface-dark);
+}
+
+[data-theme="dark"] .current-weather-card .meta-text {
+  color: var(--on-surface-variant-dark);
 }
 
 /* HIGHLIGHTS */
