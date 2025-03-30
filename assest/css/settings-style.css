@@ -6,11 +6,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(20px); /* Stronger blur for Apple-like effect */
+    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
 
@@ -19,45 +19,45 @@
 }
 
 .settings-content {
-    background-color: rgba(255, 255, 255, 0.9); /* Light, translucent background */
-    color: #333; /* Darker text for contrast */
-    border-radius: 14px; /* Slightly more rounded corners */
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-radius: 14px;
     padding: 24px;
     width: 90%;
-    max-width: 500px; /* Slightly wider */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Softer shadow */
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     max-height: 90vh;
     overflow-y: auto;
     box-sizing: border-box;
 }
 
 /* Settings Header */
-.title-2 {
-    font-size: 1.7rem; /* Adjusted title size */
+.settings-content .title-2 { /* Scope title styling */
+    font-size: 1.7rem;
     font-weight: 600;
-    color: #1d1d1f; /* Darker title color */
+    color: #1d1d1f;
     margin-bottom: 20px;
-    text-align: left; /* Left-aligned title */
+    text-align: left;
 }
 
 /* Settings Sections */
-.settings-sections {
+.settings-content .settings-sections { /* Scope settings sections */
     margin-top: 20px;
 }
 
-.settings-section {
+.settings-content .settings-section { /* Scope setting section */
     margin-bottom: 28px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #eee; /* Lighter border */
+    border-bottom: 1px solid #eee;
 }
 
-.settings-section:last-child {
+.settings-content .settings-section:last-child { /* Scope setting section last child */
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
-.settings-section-title {
+.settings-content .settings-section-title { /* Scope setting section titles */
     font-size: 1.1rem;
     font-weight: 500;
     color: #1d1d1f;
@@ -65,7 +65,7 @@
 }
 
 /* Setting Items */
-.setting-item {
+.settings-content .setting-item { /* Scope setting items */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -75,18 +75,18 @@
     margin: 8px 0;
 }
 
-.setting-item:hover {
-    background-color: #f0f0f0; /* Light hover background */
+.settings-content .setting-item:hover { /* Scope setting item hover */
+    background-color: #f0f0f0;
 }
 
-.setting-label {
+.settings-content .setting-label { /* Scope setting label */
     color: #333;
     font-size: 0.95rem;
     font-weight: 400;
 }
 
 /* Settings Description */
-.settings-description {
+.settings-content .settings-description { /* Scope setting description */
     font-size: 0.85rem;
     color: #666;
     margin-top: 12px;
@@ -115,11 +115,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #e0e0e0; /* Light grey when off */
+    background-color: #e0e0e0;
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 34px;
-    border: 1px solid #c0c0c0; /* Slightly darker border for definition */
+    border: 1px solid #c0c0c0;
 }
 
 .toggle-slider:before {
@@ -127,8 +127,8 @@
     content: "";
     height: 23px;
     width: 23px;
+    top: 3px;
     left: 3px;
-    bottom: 3px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
@@ -137,7 +137,7 @@
 }
 
 input:checked + .toggle-slider {
-    background-color: #0a84ff; /* Apple blue when on */
+    background-color: #0a84ff;
     border: 1px solid #0a84ff;
 }
 
@@ -157,11 +157,11 @@ input:checked + .toggle-slider:hover {
 }
 
 /* Select Inputs */
-.settings-select {
+.settings-content .settings-select { /* Scope select inputs */
     width: 100%;
     padding: 12px 14px;
     border-radius: 8px;
-    border: 1px solid #ddd; /* Lighter border */
+    border: 1px solid #ddd;
     background-color: white;
     color: #333;
     font: inherit;
@@ -176,18 +176,18 @@ input:checked + .toggle-slider:hover {
     padding-right: 36px;
 }
 
-.settings-select:hover {
-    border-color: #0a84ff; /* Apple blue hover */
+.settings-content .settings-select:hover { /* Scope select input hover */
+    border-color: #0a84ff;
 }
 
-.settings-select:focus {
+.settings-content .settings-select:focus { /* Scope select input focus */
     outline: none;
     border-color: #0a84ff;
-    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2); /* Apple blue focus */
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2);
 }
 
 /* Action Buttons */
-.settings-actions {
+.settings-content .settings-actions { /* Scope settings actions */
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -196,8 +196,8 @@ input:checked + .toggle-slider:hover {
     border-top: 1px solid #eee;
 }
 
-.settings-save,
-.settings-close {
+.settings-content .settings-save,
+.settings-content .settings-close { /* Scope settings save and close buttons */
     padding: 10px 20px;
     border-radius: 20px;
     border: none;
@@ -207,22 +207,22 @@ input:checked + .toggle-slider:hover {
     transition: all 0.3s ease;
 }
 
-.settings-save {
-    background-color: #0a84ff; /* Apple blue */
+.settings-content .settings-save { /* Scope save button */
+    background-color: #0a84ff;
     color: white;
 }
 
-.settings-save:hover {
-    background-color: #007aff; /* Darker Apple blue hover */
+.settings-content .settings-save:hover { /* Scope save button hover */
+    background-color: #007aff;
     box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
 }
 
-.settings-close {
+.settings-content .settings-close { /* Scope close button */
     background-color: #f0f0f0;
     color: #333;
 }
 
-.settings-close:hover {
+.settings-content .settings-close:hover { /* Scope close button hover */
     background-color: #e0e0e0;
 }
 
@@ -244,23 +244,23 @@ input:checked + .toggle-slider:hover {
 
 /* Dark Mode Adjustments */
 [data-theme="dark"] .settings-content {
-    background-color: rgba(28, 28, 30, 0.9); /* Dark translucent background */
+    background-color: rgba(28, 28, 30, 0.9);
     color: #eee;
 }
 
-[data-theme="dark"] .title-2,
-[data-theme="dark"] .settings-section-title,
-[data-theme="dark"] .setting-label {
+[data-theme="dark"] .settings-content .title-2,
+[data-theme="dark"] .settings-content .settings-section-title,
+[data-theme="dark"] .settings-content .setting-label {
     color: #fff;
 }
 
-[data-theme="dark"] .settings-select {
+[data-theme="dark"] .settings-content .settings-select {
     background-color: #333;
     color: #eee;
     border-color: #444;
 }
 
-[data-theme="dark"] .setting-item:hover {
+[data-theme="dark"] .settings-content .setting-item:hover {
     background-color: #444;
 }
 
@@ -281,13 +281,13 @@ input:checked + .toggle-slider:hover {
         padding: 20px;
     }
 
-    .settings-actions {
+    .settings-content .settings-actions {
         flex-direction: column;
         gap: 8px;
     }
 
-    .settings-save,
-    .settings-close {
+    .settings-content .settings-save,
+    .settings-content .settings-close {
         width: 100%;
     }
 }
