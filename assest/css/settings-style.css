@@ -24,6 +24,8 @@
     width: 90%;
     max-width: 400px;
     box-shadow: var(--shadow-1);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .settings-sections {
@@ -32,11 +34,29 @@
 
 .settings-section {
     margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--outline);
 }
 
-.settings-section h3 {
-    margin-bottom: 10px;
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.settings-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--on-surface);
+}
+
+.settings-description {
+    font-size: 0.85rem;
     color: var(--on-surface-variant);
+    margin-bottom: 12px;
+    line-height: 1.4;
+    opacity: 0.9;
 }
 
 .settings-select {
@@ -71,12 +91,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 0;
+    padding: 8px;
+    border-radius: var(--radius-8);
+    transition: background-color 0.3s ease;
+}
+
+.setting-item:hover {
+    background-color: var(--surface-variant);
 }
 
 .setting-label {
     color: var(--on-surface);
     font-size: 0.9rem;
+}
+
+.setting-note {
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
+    font-style: italic;
+    margin-top: 4px;
 }
 
 /* Toggle Switch */
@@ -173,14 +206,13 @@ input:checked + .toggle-slider:before {
 }
 
 .settings-section .setting-item[disabled] .setting-label {
-    color: var(--on-surface-variant); /* Make text more muted */
+    color: var(--on-surface-variant);
 }
 
 .settings-modal .toggle-switch input:disabled + .toggle-slider {
-    background-color: var(--outline); /* Greyed-out toggle slider */
+    background-color: var(--outline);
 }
 
-/* Grey-out effect for the entire settings item */
 .settings-section[disabled] {
     opacity: 0.5;
     pointer-events: none;
@@ -196,6 +228,7 @@ input:checked + .toggle-slider:before {
     .settings-content {
         width: 95%;
         padding: 15px;
+        max-height: 85vh;
     }
 
     .settings-section {
@@ -210,6 +243,10 @@ input:checked + .toggle-slider:before {
     .settings-save,
     .settings-close {
         width: 100%;
+    }
+
+    .settings-description {
+        font-size: 0.8rem;
     }
 }
 
@@ -229,45 +266,6 @@ input:checked + .toggle-slider:before {
     animation: modalFadeIn 0.3s ease forwards;
 }
 
-/* Additional Utility Classes */
-.settings-section-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: var(--on-surface);
-}
-
-.settings-description {
-    font-size: 0.85rem;
-    color: var(--on-surface-variant);
-    margin-bottom: 8px;
-}
-
-/* Focus States */
-.settings-save:focus,
-.settings-close:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--primary-opacity);
-}
-
-/* Hover Effects */
-.setting-item:hover {
-    background-color: var(--surface-variant);
-    border-radius: var(--radius-8);
-}
-
-/* Dark Mode Specific Styles */
-[data-theme="dark"] .settings-content {
-    background-color: var(--surface-dark);
-    border: 1px solid var(--outline-dark);
-}
-
-[data-theme="dark"] .settings-select {
-    background-color: var(--background-dark);
-    border-color: var(--outline-dark);
-    color: var(--on-surface);
-}
-
 /* Custom Scrollbar */
 .settings-sections::-webkit-scrollbar {
     width: 8px;
@@ -285,4 +283,43 @@ input:checked + .toggle-slider:before {
 
 .settings-sections::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
+}
+
+/* Dark Mode Specific Styles */
+[data-theme="dark"] .settings-content {
+    background-color: var(--surface-dark);
+    border: 1px solid var(--outline-dark);
+}
+
+[data-theme="dark"] .settings-select {
+    background-color: var(--background-dark);
+    border-color: var(--outline-dark);
+    color: var(--on-surface);
+}
+
+/* Focus States */
+.settings-save:focus,
+.settings-close:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-opacity);
+}
+
+/* Additional Styles for Options */
+.settings-select option {
+    padding: 8px;
+    background-color: var(--surface);
+    color: var(--on-surface);
+}
+
+/* Improved Spacing for Settings Groups */
+.settings-section + .settings-section {
+    margin-top: 20px;
+}
+
+/* Settings Header */
+.title-2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--on-surface);
+    margin-bottom: 16px;
 }
