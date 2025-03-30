@@ -93,6 +93,11 @@
   --white-alpha-4: hsla(0, 0%, 100%, 0.04);
   --white-alpha-8: hsla(0, 0%, 100%, 0.08);
   --black-alpha-10: hsla(0, 0%, 0%, 0.1);
+
+  /* Specific overrides for light mode */
+  --surface-light: #f0f0f0; /* Define a light surface color */
+  --on-surface-light: #333; /* Define light on-surface color */
+  --on-surface-variant-light: #666; /* Define light on-surface-variant color */
 }
 
 /* RESET */
@@ -565,14 +570,15 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 /* Dark Mode Adjustments */
-[data-theme="dark"] .current-weather-card {
-  background-color: var(--surface-dark); /* Dark background for dark mode */
-  color: var(--on-surface-dark);
+/* Define dark mode specific colors if needed, otherwise defaults will apply */
+/* [data-theme="dark"] .current-weather-card {
+  background-color: var(--surface);
+  color: var(--on-surface);
 }
 
 [data-theme="dark"] .current-weather-card .meta-text {
-  color: var(--on-surface-variant-dark);
-}
+  color: var(--on-surface-variant);
+} */
 
 /* HIGHLIGHTS */
 .forecast-card .title-2 {
@@ -984,8 +990,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 /* Ensure containers have a visible background in light mode */
 [data-theme="light"] .card {
-  background-color: var(--surface);
-  color: var(--on-surface);
+  background-color: var(--surface-light);
+  color: var(--on-surface-light);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--outline);
 }
@@ -994,8 +1000,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 [data-theme="light"] .highlight-card,
 [data-theme="light"] .current-weather-card,
 [data-theme="light"] .forecast-card {
-  background-color: var(--surface);
-  color: var(--on-surface);
+  background-color: var(--surface-light);
+  color: var(--on-surface-light);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--outline);
 }
@@ -1023,4 +1029,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .search-field {
     background-color: var(--surface);
     border: 1px solid var(--outline);
+}
+
+/* Ensure "Now" temperature is visible in light mode */
+[data-theme="light"] .current-weather-card > .heading {
+  color: var(--on-surface-light); /* Set the heading color to on-surface-light in light mode */
 }
