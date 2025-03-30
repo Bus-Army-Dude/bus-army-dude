@@ -227,6 +227,20 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Close modal
         settingsModal?.classList.remove("active");
+
+        // Show refresh message for time format changes
+        if (currentSettings.timeFormat !== newSettings.timeFormat) {
+            const refreshMsg = document.createElement('div');
+            refreshMsg.className = 'refresh-message';
+            refreshMsg.innerHTML = `
+                <div class="refresh-content">
+                    <p>Please refresh the page for time format changes to take effect.</p>
+                    <button onclick="location.reload()">Refresh Now</button>
+                    <button onclick="this.parentElement.remove()">Later</button>
+                </div>
+            `;
+            document.body.appendChild(refreshMsg);
+        }
     });
 
     settingsBtn?.addEventListener("click", () => {
