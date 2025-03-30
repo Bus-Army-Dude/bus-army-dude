@@ -36,9 +36,13 @@ export const getDate = (dateUnix, timezone) => {
     return `${day}, ${month}, ${dateNum}`;
 };
 
-export const getTime = function (timeUnix, timezone, is24Hour = false) {
+export const getTime = function (timeUnix, timezone) {
     const date = new Date(timeUnix * 1000);
     const localDate = new Date(date.getTime() + (timezone * 1000));
+    
+    // Get settings from localStorage
+    const settings = JSON.parse(localStorage.getItem("weatherSettings")) || { timeFormat: false };
+    const is24Hour = settings.timeFormat;
     
     const hours = localDate.getUTCHours();
     const minutes = localDate.getUTCMinutes().toString().padStart(2, '0');
@@ -51,9 +55,13 @@ export const getTime = function (timeUnix, timezone, is24Hour = false) {
     }
 };
 
-export const getHours = function (timeUnix, timezone, is24Hour = false) {
+export const getHours = function (timeUnix, timezone) {
     const date = new Date(timeUnix * 1000);
     const localDate = new Date(date.getTime() + (timezone * 1000));
+    
+    // Get settings from localStorage
+    const settings = JSON.parse(localStorage.getItem("weatherSettings")) || { timeFormat: false };
+    const is24Hour = settings.timeFormat;
     
     const hours = localDate.getUTCHours();
     
@@ -62,6 +70,30 @@ export const getHours = function (timeUnix, timezone, is24Hour = false) {
     } else {
         const period = hours >= 12 ? "PM" : "AM";
         return `${hours % 12 || 12} ${period}`;
+    }
+};
+
+// Helper function to format time with preview support
+export const formatTime = (timeUnix, timezone, usePreview = false) => {
+    const date = new Date(timeUnix * 1000);
+    const localDate = new Date(date.getTime() + (timezone * 1000));
+    
+    let settings;
+    if (usePreview) {
+        settings = window.tempSettings || { timeFormat: false };
+    } else {
+        settings = JSON.parse(localStorage.getItem("weatherSettings")) || { timeFormat: false };
+    }
+    
+    const is24Hour = settings.timeFormat;
+    const hours = localDate.getUTCHours();
+    const minutes = localDate.getUTCMinutes().toString().padStart(2, '0');
+    
+    if (is24Hour) {
+        return `${hours.toString().padStart(2, '0')}:${minutes}`;
+    } else {
+        const period = hours >= 12 ? "PM" : "AM";
+        return `${hours % 12 || 12}:${minutes} ${period}`;
     }
 };
 
@@ -91,4 +123,10 @@ export const aqiText = {
         level: "Very Poor",
         message: "Health warnings of emergency conditions. The entire population is more likely to be affected"
     }
+};
+
+// Add helper function to determine if time format is 24-hour
+export const is24HourFormat = () => {
+    const settings = JSON.parse(localStorage.getItem("weatherSettings")) || { timeFormat: false };
+    return settings.timeFormat;
 };
