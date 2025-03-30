@@ -69,7 +69,8 @@
 /* Setting Items */
 .settings-content .setting-item {
     display: flex;
-    align-items: center; /* Align items vertically in center */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start (left) */
     padding: 14px 16px;
     border-radius: 10px;
     transition: background-color 0.3s ease;
@@ -84,14 +85,14 @@
     color: #333;
     font-size: 0.95rem;
     font-weight: 400;
-    margin-right: 16px; /* Add space between label and toggle */
+    margin-bottom: 8px; /* Add space between label and toggle */
 }
 
 /* Settings Description */
 .settings-content .settings-description {
     font-size: 0.85rem;
     color: #666;
-    margin-left: 16px; /* Add space between toggle and description */
+    margin-top: 8px; /* Add space between toggle and description */
     line-height: 1.5;
     opacity: 0.9;
 }
@@ -102,7 +103,8 @@
     display: inline-block;
     width: 51px;
     height: 31px;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
+    margin-bottom: 8px; /* Add space between toggle and description */
 }
 
 .toggle-switch input {
@@ -292,18 +294,6 @@ input:checked + .toggle-slider:hover {
     .settings-content .settings-save,
     .settings-content .settings-close {
         width: 100%;
-    }
-
-    .settings-content .setting-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .settings-content .setting-label,
-    .settings-content .settings-description {
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom: 8px;
     }
 }
 
