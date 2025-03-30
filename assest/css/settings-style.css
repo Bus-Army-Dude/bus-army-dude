@@ -1,3 +1,5 @@
+/* settings-style.css */
+
 /* Settings Modal Base (Apple-Themed) */
 .settings-modal {
     display: none;
@@ -32,7 +34,7 @@
 }
 
 /* Settings Header */
-.settings-content .title-2 { /* Scope title styling */
+.settings-content .title-2 {
     font-size: 1.7rem;
     font-weight: 600;
     color: #1d1d1f;
@@ -41,23 +43,23 @@
 }
 
 /* Settings Sections */
-.settings-content .settings-sections { /* Scope settings sections */
+.settings-content .settings-sections {
     margin-top: 20px;
 }
 
-.settings-content .settings-section { /* Scope setting section */
+.settings-content .settings-section {
     margin-bottom: 28px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
 
-.settings-content .settings-section:last-child { /* Scope setting section last child */
+.settings-content .settings-section:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
-.settings-content .settings-section-title { /* Scope setting section titles */
+.settings-content .settings-section-title {
     font-size: 1.1rem;
     font-weight: 500;
     color: #1d1d1f;
@@ -65,7 +67,7 @@
 }
 
 /* Setting Items */
-.settings-content .setting-item { /* Scope setting items */
+.settings-content .setting-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -75,18 +77,18 @@
     margin: 8px 0;
 }
 
-.settings-content .setting-item:hover { /* Scope setting item hover */
+.settings-content .setting-item:hover {
     background-color: #f0f0f0;
 }
 
-.settings-content .setting-label { /* Scope setting label */
+.settings-content .setting-label {
     color: #333;
     font-size: 0.95rem;
     font-weight: 400;
 }
 
 /* Settings Description */
-.settings-content .settings-description { /* Scope setting description */
+.settings-content .settings-description {
     font-size: 0.85rem;
     color: #666;
     margin-top: 12px;
@@ -157,7 +159,7 @@ input:checked + .toggle-slider:hover {
 }
 
 /* Select Inputs */
-.settings-content .settings-select { /* Scope select inputs */
+.settings-content .settings-select {
     width: 100%;
     padding: 12px 14px;
     border-radius: 8px;
@@ -176,18 +178,18 @@ input:checked + .toggle-slider:hover {
     padding-right: 36px;
 }
 
-.settings-content .settings-select:hover { /* Scope select input hover */
+.settings-content .settings-select:hover {
     border-color: #0a84ff;
 }
 
-.settings-content .settings-select:focus { /* Scope select input focus */
+.settings-content .settings-select:focus {
     outline: none;
     border-color: #0a84ff;
     box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2);
 }
 
 /* Action Buttons */
-.settings-content .settings-actions { /* Scope settings actions */
+.settings-content .settings-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -197,7 +199,7 @@ input:checked + .toggle-slider:hover {
 }
 
 .settings-content .settings-save,
-.settings-content .settings-close { /* Scope settings save and close buttons */
+.settings-content .settings-close {
     padding: 10px 20px;
     border-radius: 20px;
     border: none;
@@ -207,22 +209,22 @@ input:checked + .toggle-slider:hover {
     transition: all 0.3s ease;
 }
 
-.settings-content .settings-save { /* Scope save button */
+.settings-content .settings-save {
     background-color: #0a84ff;
     color: white;
 }
 
-.settings-content .settings-save:hover { /* Scope save button hover */
+.settings-content .settings-save:hover {
     background-color: #007aff;
     box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
 }
 
-.settings-content .settings-close { /* Scope close button */
+.settings-content .settings-close {
     background-color: #f0f0f0;
     color: #333;
 }
 
-.settings-content .settings-close:hover { /* Scope close button hover */
+.settings-content .settings-close:hover {
     background-color: #e0e0e0;
 }
 
@@ -244,29 +246,29 @@ input:checked + .toggle-slider:hover {
 
 /* Dark Mode Adjustments */
 [data-theme="dark"] .settings-content {
-    background-color: rgba(28, 28, 30, 0.9);
-    color: #eee;
+    background-color: var(--surface);
+    color: var(--on-surface);
 }
 
 [data-theme="dark"] .settings-content .title-2,
 [data-theme="dark"] .settings-content .settings-section-title,
 [data-theme="dark"] .settings-content .setting-label {
-    color: #fff;
+    color: var(--on-surface);
 }
 
 [data-theme="dark"] .settings-content .settings-select {
-    background-color: #333;
-    color: #eee;
-    border-color: #444;
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border-color: var(--outline);
 }
 
 [data-theme="dark"] .settings-content .setting-item:hover {
-    background-color: #444;
+    background-color: var(--outline);
 }
 
 [data-theme="dark"] .toggle-slider {
-    background-color: #4a4a4a;
-    border: 1px solid #666;
+    background-color: var(--on-surface-variant);
+    border: 1px solid var(--outline);
 }
 
 [data-theme="dark"] input:checked + .toggle-slider {
