@@ -104,7 +104,7 @@ The **Weather Page** was added in version **v1.15.0** and is designed to provide
         - **Wind Speed**: Select the unit for wind speed (m/s, mph, km/h, knots, or Beaufort scale).
         - **Pressure**: Choose the unit for pressure (mbar, inHg, mmHg, hPa, kPa).
      2. **Display**:
-        - **24-Hour Format**: Enable or disable 24-hour format for time display.
+        - **24-Hour Format**: Currently Disabled and can't be enabled (feature coming soon).
      3. **Privacy**:
         - **Location Services**: When turned off, this option disables the website's ability to fetch the user’s location automatically.
 
