@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsClose = document.querySelector("[data-settings-close]");
     const settingsForm = settingsModal?.querySelector("[data-settings-form]");
     const currentLocationBtn = document.querySelector("[data-current-location-btn]");
+    const darkModeToggle = document.querySelector('[data-dark-mode-toggle]');
 
     // Storage for current settings
     let currentSettings = null;
@@ -17,13 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
         windSpeed: "kmh",
         pressure: "hpa",
         timeFormat: false,
-        locationServices: true
+        locationServices: true,
+        darkMode: localStorage.getItem('darkMode') === 'enabled' // Get dark mode from local storage
     };
 
     // Load settings from localStorage
     const loadSettings = () => {
         currentSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
-        
+
         // Initialize form with current settings
         if (settingsForm) {
             const tempUnit = settingsForm.querySelector("[name='temperature']");
@@ -31,17 +33,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const pressureUnit = settingsForm.querySelector("[name='pressure']");
             const timeFormat = settingsForm.querySelector("[name='timeFormat']");
             const locationToggle = settingsForm.querySelector("[name='location']");
+            const darkModeToggleInput = settingsForm.querySelector("[name='darkMode']");
 
             if (tempUnit) tempUnit.value = currentSettings.temperature;
             if (windSpeedUnit) windSpeedUnit.value = currentSettings.windSpeed;
             if (pressureUnit) pressureUnit.value = currentSettings.pressure;
             if (timeFormat) timeFormat.checked = currentSettings.timeFormat;
             if (locationToggle) locationToggle.checked = currentSettings.locationServices;
+            if (darkModeToggleInput) darkModeToggleInput.checked = currentSettings.darkMode; // Set dark mode toggle
         }
-        
+
         // Apply current settings
         applySettings(currentSettings);
-        
+
         return currentSettings;
     };
 
@@ -51,12 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update all time displays with new format
         updateTimeDisplays(settings.timeFormat);
-        
+
         // Update weather units
         updateWeatherUnits(settings);
-        
+
         // Update location services
         updateLocationServices(settings.locationServices);
+
+        // Update dark mode
+        updateTheme(settings.darkMode);
     };
 
     // Update time displays across the app
@@ -64,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const formatTime = (date) => {
             const hours = date.getHours();
             const minutes = date.getMinutes().toString().padStart(2, '0');
-            
+
             if (is24Hour) {
                 return `${hours.toString().padStart(2, '0')}:${minutes}`;
             } else {
@@ -161,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const convertTemperature = (celsius, unit) => {
         switch (unit) {
             case "fahrenheit":
-                return { value: (celsius * 9/5) + 32, unit: "°F" };
+                return { value: (celsius * 9 / 5) + 32, unit: "°F" };
             case "kelvin":
                 return { value: celsius + 273.15, unit: "K" };
             default:
@@ -179,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return { value: mps * 1.944, unit: "kts" };
             case "beaufort":
                 return {
-                    value: Math.min(Math.max(Math.ceil(Math.pow(mps / 0.836, 2/3)), 0), 12),
+                    value: Math.min(Math.max(Math.ceil(Math.pow(mps / 0.836, 2 / 3)), 0), 12),
                     unit: "Bft"
                 };
             default:
@@ -202,10 +209,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // Function to update CSS variables based on theme
+    function updateTheme(isDark) {
+        if (isDark) {
+            document.documentElement.style.setProperty('--primary', '#b5a1e5');
+            document.documentElement.style.setProperty('--on-primary', '#100e17');
+            document.documentElement.style.setProperty('--background', '#131214');
+            document.documentElement.style.setProperty('--on-background', '#eae6f2');
+            document.documentElement.style.setProperty('--surface', '#1d1c1f');
+            document.documentElement.style.setProperty('--on-surface', '#dddae5');
+            document.documentElement.style.setProperty('--on-surface-variant', '#7b7980');
+            document.documentElement.style.setProperty('--on-surface-variant-2', '#b9b6bf');
+            document.documentElement.style.setProperty('--outline', '#3e3d40');
+        } else {
+            document.documentElement.style.setProperty('--primary', '#yourLightPrimary'); // Replace with your light mode primary color
+            document.documentElement.style.setProperty('--on-primary', '#yourLightOnPrimary'); // Replace with your light mode on-primary color
+            document.documentElement.style.setProperty('--background', '#yourLightBackground'); // Replace with your light mode background color
+            document.documentElement.style.setProperty('--on-background', '#yourLightOnBackground'); // Replace with your light mode on-background color
+            document.documentElement.style.setProperty('--surface', '#yourLightSurface'); // Replace with your light mode surface color
+            document.documentElement.style.setProperty('--on-surface', '#yourLightOnSurface'); // Replace with your light mode on-surface color
+            document.documentElement.style.setProperty('--on-surface-variant', '#yourLightOnSurfaceVariant'); // Replace with your light mode on-surface-variant color
+            document.documentElement.style.setProperty('--on-surface-variant-2', '#yourLightOnSurfaceVariant2'); // Replace with your light mode on-surface-variant-2 color
+            document.documentElement.style.setProperty('--outline', '#yourLightOutline'); // Replace with your light mode outline color
+        }
+    }
+
     // Event Listeners
     settingsForm?.addEventListener("submit", (event) => {
         event.preventDefault();
-        
+
         // Get form data
         const formData = new FormData(settingsForm);
         const newSettings = {
@@ -213,18 +245,19 @@ document.addEventListener("DOMContentLoaded", () => {
             windSpeed: formData.get("windSpeed"),
             pressure: formData.get("pressure"),
             timeFormat: formData.get("timeFormat") === "on",
-            locationServices: formData.get("location") === "on"
+            locationServices: formData.get("location") === "on",
+            darkMode: formData.get("darkMode") === "on"
         };
 
         // Save to localStorage
         localStorage.setItem("weatherSettings", JSON.stringify(newSettings));
-        
+
         // Update current settings
         currentSettings = newSettings;
-        
+
         // Apply new settings immediately
         applySettings(newSettings);
-        
+
         // Close modal
         settingsModal?.classList.remove("active");
 
@@ -277,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem('userLatitude', latitude);
                 localStorage.setItem('userLongitude', longitude);
                 window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
-                
+
                 if (settings.locationServices) {
                     currentLocationBtn.classList.remove("disabled");
                     currentLocationBtn.removeAttribute("disabled");
