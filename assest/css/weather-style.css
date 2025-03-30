@@ -518,7 +518,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .current-weather-card {
   background-color: var(--surface);
   color: var(--on-surface);
-  border-radius: var(--radius-12);
+  border-radius: var(--radius-12); /* Should probably be radius-16 or radius-28 like others */
   padding: 16px;
   box-shadow: var(--shadow-1);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -747,7 +747,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   background-color: var(--background);
   place-items: center;
   z-index: 1;
-  display: none;
+  display: none; /* Should be grid or flex when active */
 }
 
 .loading::before {
@@ -772,7 +772,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  display: none;
+  display: none; /* Should be flex when active */
   z-index: 8;
 }
 
@@ -792,7 +792,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   .card-sm {
     padding: 20px;
-    display: grid;
+    display: grid; /* This might need review depending on card content */
   }
 
   .badge {
@@ -829,7 +829,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
     top: 0;
   }
 
-  .section:not(:last-child) { margin-block: 20px; }
+  .section:not(:last-child) { margin-block: 20px; } /* Should be margin-block-end? */
 
   .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
 
@@ -877,7 +877,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   .card-sm { padding: 24px; }
 
-  .title-2 { margin-block-end: 12px; }
+  .title-2 { margin-block-end: 12px; } /* Reverts previous media query change */
 
   .highlight-card.two .card-item { column-gap: 24px; }
 
@@ -921,7 +921,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
     border-radius: var(--radius-28);
   }
 
-  .search-result,
+  .search-result, /* Consider renaming to .search-view .view-list */
   .search-view:not(:focus-within) .search-result { display: none; }
 
   .search-result,
@@ -940,11 +940,11 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
     max-height: 360px;
     border-radius: 0 0 var(--radius-28) var(--radius-28);
     border-block-start: 1px solid var(--outline);
-    overflow-y: overlay;
+    overflow-y: overlay; /* Deprecated, use auto or scroll */
   }
 
   .search-view .view-list:empty {
-    min-height: 120px;
+    min-height: 120px; /* Consider padding or different approach */
   }
 
   .search-view .view-list::-webkit-scrollbar-button {
@@ -969,7 +969,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
     gap: 40px;
   }
 
-  .current-weather .weather-icon { width: 80px; }
+  .current-weather .weather-icon { width: 80px; } /* Should be .current-weather-card? */
 
   .forecast-card .title-2 { --title-2: 2.2rem; }
 
@@ -988,15 +988,22 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   }
 }
 
+/* --- Light Mode Specific Overrides --- */
+
 /* Ensure containers have a visible background in light mode */
-[data-theme="light"] .card {
+[data-theme="light"] .card,
+[data-theme="light"] .card-lg, /* Added card-lg */
+[data-theme="light"] .card-sm  /* Added card-sm */
+{
   background-color: var(--surface-light);
   color: var(--on-surface-light);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Consider using CSS variables */
   border: 1px solid var(--outline);
 }
 
-/* You might need to adjust specific container styles if they have overrides */
+/* Specific container styles that might need adjustment (already covered by above) */
+/* Redundant if .card, .card-lg, .card-sm are handled */
+/*
 [data-theme="light"] .highlight-card,
 [data-theme="light"] .current-weather-card,
 [data-theme="light"] .forecast-card {
@@ -1005,33 +1012,49 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--outline);
 }
+*/
 
 /* Header Button Adjustments for Light Mode */
 [data-theme="light"] .icon-btn {
-  background-color: #e8e8e8; /* More distinct background */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #e8e8e8; /* More distinct background - Consider a variable */
+  color: var(--on-surface-light); /* Ensure icon color contrasts */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consider variable */
   border: 1px solid var(--outline);
 }
 
-/* Optional: Adjust hover/focus states */
+/* Optional: Adjust hover/focus states for light mode buttons */
 [data-theme="light"] .icon-btn:hover,
 [data-theme="light"] .icon-btn:focus {
-  background-color: #e0e0e0; /* Slightly darker on hover/focus */
+  background-color: #e0e0e0; /* Slightly darker on hover/focus - Consider variable */
 }
 
-/* Search Field Container in Light Mode */
+/* Search Field Container Styles */
+/* Light Mode */
 [data-theme="light"] .search-field {
   background-color: #fff; /* White background */
+  color: var(--on-surface-light); /* Text color */
   border: 1px solid var(--outline);
 }
-
-/* Dark mode Search Field Container */
-.search-field {
-    background-color: var(--surface);
-    border: 1px solid var(--outline);
+[data-theme="light"] .search-field::placeholder {
+  color: var(--on-surface-variant-light); /* Placeholder color */
+}
+[data-theme="light"] .search-wrapper .leading-icon {
+ color: var(--on-surface-variant-light); /* Icon color */
 }
 
-/* Ensure "Now" temperature is visible in light mode */
+
+/* Dark mode Search Field Container (Already defined earlier, but good to group) */
+/* Ensure this doesn't conflict with the @media 1200px rule for background-color */
+.search-field {
+    background-color: var(--surface);
+    border: 1px solid var(--outline); /* Might be redundant */
+    /* color is inherited */
+}
+/* Placeholder and icon color is inherited or set by default rules */
+
+
+/* --- Fix for "Now" Temperature in Light Mode --- */
+/* Ensure "Now" temperature (heading) is visible in light mode */
 [data-theme="light"] .current-weather-card > .heading {
-  color: var(--on-surface-light); /* Set the heading color to on-surface-light in light mode */
+  color: var(--on-surface-light); /* Set the heading color to on-surface-light */
 }
