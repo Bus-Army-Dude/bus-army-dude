@@ -82,11 +82,15 @@ export const updateWeather = (lat, lon) => {
     const highlightSection = document.querySelector("[data-highlights]");
     const hourlySection = document.querySelector("[data-hourly-forecast]");
     const forecastSection = document.querySelector("[data-5-day-forecast]");
+    const alertContainer = document.querySelector('.weather-alerts'); // Get the alert container
 
     currentWeatherSection.innerHTML = "";
     highlightSection.innerHTML = "";
     hourlySection.innerHTML = "";
     forecastSection.innerHTML = "";
+    if (alertContainer) {
+        alertContainer.innerHTML = ''; // Clear previous alerts
+    }
 
     if (window.location.hash === "#/current-location")
         currentLocationBtn.setAttribute("disabled", "");
@@ -308,9 +312,47 @@ export const updateWeather = (lat, lon) => {
                 if (savedSettings) {
                     applySettings(savedSettings);
                 }
+
+                // Fetch and display weather alerts
+                fetchData(url.alerts(lat, lon), displayWeatherAlerts);
             });
         });
     });
+};
+
+// Function to display weather alerts
+const displayWeatherAlerts = (alertData) => {
+    const alertContainer = document.querySelector('.weather-alerts'); // Get the alert container
+
+    if (alertContainer) {
+        if (alertData && alertData.alerts && alertData.alerts.length > 0) {
+            alertContainer.innerHTML = ''; // Clear any previous alerts
+            alertData.alerts.forEach(alert => {
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('weather-alert'); // You can style this with CSS
+
+                const eventHeading = document.createElement('h3');
+                eventHeading.textContent = alert.event;
+
+                const descriptionParagraph = document.createElement('p');
+                descriptionParagraph.textContent = alert.description;
+
+                const startTime = new Date(alert.start * 1000).toLocaleString();
+                const endTime = new Date(alert.end * 1000).toLocaleString();
+                const timeParagraph = document.createElement('p');
+                timeParagraph.textContent = `Starts: ${startTime}, Ends: ${endTime}`;
+
+                alertDiv.appendChild(eventHeading);
+                alertDiv.appendChild(descriptionParagraph);
+                alertDiv.appendChild(timeParagraph);
+                alertContainer.appendChild(alertDiv);
+            });
+        } else {
+            alertContainer.innerHTML = '<p>No active weather alerts for this area.</p>';
+        }
+    } else {
+        console.log("Weather alerts container element not found.");
+    }
 };
 
 // Settings functionality
@@ -469,4 +511,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
 export const error404 = () => {
     errorContent.style.display = "flex";
+};
+
+// Function to display weather alerts
+const displayWeatherAlerts = (alertData) => {
+    const alertContainer = document.querySelector('.weather-alerts'); // Get the alert container
+
+    if (alertContainer) {
+        if (alertData && alertData.alerts && alertData.alerts.length > 0) {
+            alertContainer.innerHTML = ''; // Clear any previous alerts
+            alertData.alerts.forEach(alert => {
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('weather-alert'); // You can style this with CSS
+
+                const eventHeading = document.createElement('h3');
+                eventHeading.textContent = alert.event;
+
+                const descriptionParagraph = document.createElement('p');
+                descriptionParagraph.textContent = alert.description;
+
+                const startTime = new Date(alert.start * 1000).toLocaleString();
+                const endTime = new Date(alert.end * 1000).toLocaleString();
+                const timeParagraph = document.createElement('p');
+                timeParagraph.textContent = `Starts: ${startTime}, Ends: ${endTime}`;
+
+                alertDiv.appendChild(eventHeading);
+                alertDiv.appendChild(descriptionParagraph);
+                alertDiv.appendChild(timeParagraph);
+                alertContainer.appendChild(alertDiv);
+            });
+        } else {
+            alertContainer.innerHTML = '<p>No active weather alerts for this area.</p>';
+        }
+    } else {
+        console.log("Weather alerts container element not found.");
+    }
 };
