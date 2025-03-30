@@ -74,7 +74,7 @@
   --on-primary: #100e17;
   --background: #f8f8f8;
   --on-background: #222;
-  --surface: #fff;
+  --surface: #f0f0f0; /* Slightly darker surface */
   --on-surface: #333;
   --on-surface-variant: #666;
   --on-surface-variant-2: #888;
@@ -434,8 +434,8 @@ body {
 .search-wrapper .leading-icon {
   position: absolute;
   top: 50%;
-  left: 28px;
-  transform: translate(-50%, -50%);
+  left: 16px; /* Corrected search icon placement */
+  transform: translateY(-50%);
 }
 
 .search-wrapper > .m-icon {
@@ -492,7 +492,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   background-color: var(--white-alpha-8);
 }
 
-article.container::before {
+/* Removed bottom shadow */
+/* article.container::before {
   content: "";
   position: fixed;
   bottom: 0;
@@ -502,7 +503,7 @@ article.container::before {
   background-image: var(--gradient-1);
   pointer-events: none;
   z-index: 1;
-}
+} */
 
 .section:not(:last-child) {
   margin-block-end: 16px;
@@ -972,13 +973,13 @@ article.container::before {
 
 /* Header Button Adjustments for Light Mode */
 [data-theme="light"] .icon-btn {
-  background-color: #f0f0f0; /* Slightly darker background */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a light shadow */
-  border: 1px solid var(--outline); /* Add a light border */
+  background-color: #e8e8e8; /* More distinct background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--outline);
 }
 
 /* Optional: Adjust hover/focus states */
 [data-theme="light"] .icon-btn:hover,
 [data-theme="light"] .icon-btn:focus {
-  background-color: #e8e8e8; /* Slightly darker on hover/focus */
+  background-color: #e0e0e0; /* Slightly darker on hover/focus */
 }
