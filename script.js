@@ -91,7 +91,7 @@ function updateNewYearCountdown() {
 
     // Set the target date (Summer Solstice 2025) in UTC
     // June 20, 2025, at 22:42 UTC is the precise moment of the Summer Solstice
-    const summerSolsticeUTC = new Date('2025-06-09T13:00:00Z'); // 'Z' denotes UTC time
+    const summerSolsticeUTC = new Date('2025-06-20T00:00:00Z'); // 'Z' denotes UTC time
     
     // Adjust the Summer Solstice date to the user's local timezone
     const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
