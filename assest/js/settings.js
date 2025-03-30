@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Initialize temporary settings
         tempSettings = { ...savedSettings };
         
+        // Apply current settings immediately
+        applySettings(savedSettings, false);
+        
         return savedSettings;
     };
 
@@ -63,16 +66,29 @@ document.addEventListener("DOMContentLoaded", () => {
         applySettings(tempSettings, true);
     };
 
-    // Save settings to localStorage
+    // Save settings to localStorage and apply them
     const saveSettings = () => {
         if (!tempSettings) return defaultSettings;
 
+        // Save to localStorage
         localStorage.setItem("weatherSettings", JSON.stringify(tempSettings));
+        
+        // Force update location services state in localStorage
+        localStorage.setItem("locationServicesEnabled", tempSettings.locationServices.toString());
+        
         return tempSettings;
     };
 
     // Apply settings to the UI
     const applySettings = (settings, isPreview = false) => {
+        // Remove any duplicate current conditions cards
+        const currentConditionsCards = document.querySelectorAll(".current-weather");
+        if (currentConditionsCards.length > 1) {
+            for (let i = 1; i < currentConditionsCards.length; i++) {
+                currentConditionsCards[i].remove();
+            }
+        }
+
         updateWeatherUnits(settings);
         updateTimeFormats(settings.timeFormat);
         
@@ -89,11 +105,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentLocationBtn.setAttribute("disabled", "");
                 currentLocationBtn.style.pointerEvents = "none";
                 currentLocationBtn.style.opacity = "0.5";
+                // Store the disabled state
+                localStorage.setItem("locationServicesEnabled", "false");
             } else {
                 currentLocationBtn.classList.remove("disabled");
                 currentLocationBtn.removeAttribute("disabled");
                 currentLocationBtn.style.pointerEvents = "auto";
                 currentLocationBtn.style.opacity = "1";
+                // Store the enabled state
+                localStorage.setItem("locationServicesEnabled", "true");
             }
         }
     };
@@ -128,33 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // Update time formats
-    const updateTimeFormats = (is24Hour) => {
-        // Update sunrise/sunset times
-        document.querySelectorAll("[data-sunrise], [data-sunset]").forEach(element => {
-            const timeUnix = parseInt(element.getAttribute("data-original-value"));
-            if (!isNaN(timeUnix)) {
-                element.textContent = formatTime(timeUnix, is24Hour);
-            }
-        });
-
-        // Update hourly forecast times
-        document.querySelectorAll("[data-forecast-time]").forEach(element => {
-            const timeUnix = parseInt(element.getAttribute("data-original-value"));
-            if (!isNaN(timeUnix)) {
-                element.textContent = formatTime(timeUnix, is24Hour);
-            }
-        });
-
-        // Update current time if present
-        const currentTimeElement = document.querySelector("[data-current-time]");
-        if (currentTimeElement) {
-            const currentTime = Math.floor(Date.now() / 1000);
-            currentTimeElement.textContent = formatTime(currentTime, is24Hour);
-        }
-    };
-
-    // Conversion helpers
+    // Conversion helpers remain the same...
     const convertTemperature = (celsius, unit) => {
         switch (unit) {
             case "fahrenheit":
@@ -196,6 +190,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // Update time formats
+    const updateTimeFormats = (is24Hour) => {
+        const updateTimeElement = (element) => {
+            const timeUnix = parseInt(element.getAttribute("data-original-value"));
+            if (!isNaN(timeUnix)) {
+                element.textContent = formatTime(timeUnix, is24Hour);
+            }
+        };
+
+        // Update all time displays
+        document.querySelectorAll("[data-sunrise], [data-sunset], [data-forecast-time]").forEach(updateTimeElement);
+
+        // Update current time if present
+        const currentTimeElement = document.querySelector("[data-current-time]");
+        if (currentTimeElement) {
+            const currentTime = Math.floor(Date.now() / 1000);
+            currentTimeElement.textContent = formatTime(currentTime, is24Hour);
+        }
+    };
+
     // Time formatting helper
     const formatTime = (timeUnix, is24Hour) => {
         const date = new Date(timeUnix * 1000);
@@ -218,8 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     settingsForm?.addEventListener("submit", (event) => {
         event.preventDefault();
-        const settings = saveSettings(); // Save and apply changes
-        applySettings(settings);
+        const settings = saveSettings(); // Save settings
+        applySettings(settings, false); // Apply changes immediately
         settingsModal?.classList.remove("active");
     });
 
@@ -232,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
         settingsModal?.classList.remove("active");
         // Revert changes by reloading saved settings
         const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
-        applySettings(savedSettings);
+        applySettings(savedSettings, false);
     });
 
     window.addEventListener("click", (event) => {
@@ -240,12 +254,25 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
             // Revert changes when clicking outside
             const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
-            applySettings(savedSettings);
+            applySettings(savedSettings, false);
         }
+    });
+
+    // Handle page loads and navigation
+    window.addEventListener("load", () => {
+        const savedSettings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
+        applySettings(savedSettings, false);
     });
 
     // Current Location button handling
     currentLocationBtn?.addEventListener("click", () => {
+        // Check if location services are enabled in settings
+        const settings = JSON.parse(localStorage.getItem("weatherSettings")) || defaultSettings;
+        if (!settings.locationServices) {
+            alert("Location services are disabled in settings. Please enable them to use this feature.");
+            return;
+        }
+
         currentLocationBtn.classList.add("disabled");
         currentLocationBtn.setAttribute("disabled", "");
         currentLocationBtn.style.pointerEvents = "none";
@@ -257,21 +284,36 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem('userLatitude', latitude);
                 localStorage.setItem('userLongitude', longitude);
                 window.location.hash = `#/weather?lat=${latitude}&lon=${longitude}`;
-                currentLocationBtn.classList.remove("disabled");
-                currentLocationBtn.removeAttribute("disabled");
-                currentLocationBtn.style.pointerEvents = "auto";
-                currentLocationBtn.style.opacity = "1";
+                
+                if (settings.locationServices) {
+                    currentLocationBtn.classList.remove("disabled");
+                    currentLocationBtn.removeAttribute("disabled");
+                    currentLocationBtn.style.pointerEvents = "auto";
+                    currentLocationBtn.style.opacity = "1";
+                }
             },
             () => {
                 alert("Could not retrieve your current location. Please ensure location services are enabled and try again.");
-                currentLocationBtn.classList.remove("disabled");
-                currentLocationBtn.removeAttribute("disabled");
-                currentLocationBtn.style.pointerEvents = "auto";
-                currentLocationBtn.style.opacity = "1";
+                if (settings.locationServices) {
+                    currentLocationBtn.classList.remove("disabled");
+                    currentLocationBtn.removeAttribute("disabled");
+                    currentLocationBtn.style.pointerEvents = "auto";
+                    currentLocationBtn.style.opacity = "1";
+                }
             }
         );
     });
 
     // Initialize settings
     loadSettings();
+
+    // Prevent duplicate cards on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        const currentConditionsCards = document.querySelectorAll(".current-weather");
+        if (currentConditionsCards.length > 1) {
+            for (let i = 1; i < currentConditionsCards.length; i++) {
+                currentConditionsCards[i].remove();
+            }
+        }
+    });
 });
