@@ -13,15 +13,20 @@ The current version of the website is **v1.15.0**, with the addition of the new 
 The **Home Page** contains the following sections:
 
 #### 1. **Profile Section**
-   - Displays my personal profile information, including a bio, profile image, and my social media links.
-   - The links provide direct access to my social media profiles such as Instagram, TikTok, YouTube, and more.
+   - Displays my username, including a bio, profile image.
+   - The buttons to take you to all of the other pages of my website (weather, settings, and merch pages)
 
 #### 2. **Connect with Me**
-   - Contains links to various social media platforms and direct contact options (like email).
+   - Contains links to various social media platforms.
    - Users can click these links, but cannot modify or alter them.
 
 #### 3. **Current President**
-   - Dynamically shows the current president or leader of the visitor's country, based on location.
+   - Shows the current president or leader of the United States of America.
+   - **Information Provided**:
+       - **PM2.5**
+       - **SO2**
+       - **NO2**
+       - **O3**
 
 #### 4. **TikTok, Instagram, YouTube Creator Shoutouts**
    - Lists creators on TikTok, Instagram, and YouTube who I follow or collaborate with.
