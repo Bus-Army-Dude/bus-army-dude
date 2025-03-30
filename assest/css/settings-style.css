@@ -1,4 +1,4 @@
-/* Settings Modal */
+/* Settings Modal Base */
 .settings-modal {
     display: none;
     position: fixed;
@@ -10,32 +10,38 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .settings-modal.active {
     display: flex;
+    animation: modalFadeIn 0.3s ease forwards;
 }
 
 .settings-content {
     background-color: var(--surface);
     color: var(--on-surface);
     border-radius: var(--radius-28);
-    padding: 20px;
+    padding: 24px;
     width: 90%;
-    max-width: 400px;
+    max-width: 420px;
     box-shadow: var(--shadow-1);
-    max-height: 90vh;
+    max-height: 85vh;
     overflow-y: auto;
+    position: relative;
+    border: 1px solid rgba(var(--on-surface-rgb), 0.1);
 }
 
+/* Settings Sections */
 .settings-sections {
     margin-top: 20px;
 }
 
 .settings-section {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--outline);
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(var(--on-surface-rgb), 0.1);
 }
 
 .settings-section:last-child {
@@ -47,76 +53,24 @@
 .settings-section-title {
     font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 8px;
     color: var(--on-surface);
+    margin-bottom: 8px;
 }
 
 .settings-description {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--on-surface-variant);
-    margin-bottom: 12px;
-    line-height: 1.4;
+    margin-bottom: 16px;
+    line-height: 1.5;
     opacity: 0.9;
 }
 
-.settings-select {
-    width: 100%;
-    padding: 10px;
-    border-radius: var(--radius-16);
-    border: 1px solid var(--outline);
-    background-color: var(--background);
-    color: var(--on-background);
-    font: inherit;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-}
-
-.settings-select:hover {
-    border-color: var(--primary);
-}
-
-.settings-select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px var(--primary-opacity);
-}
-
-.settings-options {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    border-radius: var(--radius-8);
-    transition: background-color 0.3s ease;
-}
-
-.setting-item:hover {
-    background-color: var(--surface-variant);
-}
-
-.setting-label {
-    color: var(--on-surface);
-    font-size: 0.9rem;
-}
-
-.setting-note {
-    font-size: 0.75rem;
-    color: var(--on-surface-variant);
-    font-style: italic;
-    margin-top: 4px;
-}
-
-/* Toggle Switch */
+/* Modern Toggle Switch */
 .toggle-switch {
     position: relative;
-    width: 44px;
-    height: 22px;
+    width: 52px;
+    height: 28px;
+    margin: 0 8px;
 }
 
 .toggle-switch input {
@@ -132,49 +86,117 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--outline);
-    transition: 0.4s;
+    background-color: rgba(var(--on-surface-rgb), 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 34px;
+    border: 2px solid rgba(var(--on-surface-rgb), 0.2);
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
+    height: 20px;
+    width: 20px;
     left: 2px;
     bottom: 2px;
     background-color: var(--on-surface);
-    transition: 0.4s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 input:checked + .toggle-slider {
     background-color: var(--primary);
+    border-color: var(--primary);
 }
 
 input:checked + .toggle-slider:before {
-    transform: translateX(22px);
+    transform: translateX(24px);
     background-color: white;
 }
 
-/* Settings Actions */
+/* Setting Items */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: var(--radius-12);
+    transition: background-color 0.3s ease;
+    margin: 8px 0;
+    cursor: pointer;
+}
+
+.setting-item:hover {
+    background-color: rgba(var(--on-surface-rgb), 0.05);
+}
+
+.setting-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.setting-title {
+    color: var(--on-surface);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.setting-note {
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
+    font-style: italic;
+}
+
+/* Select Inputs */
+.settings-select {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-12);
+    border: 2px solid rgba(var(--on-surface-rgb), 0.1);
+    background-color: var(--background);
+    color: var(--on-surface);
+    font: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.settings-select:hover {
+    border-color: var(--primary);
+}
+
+.settings-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Action Buttons */
 .settings-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid var(--outline);
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(var(--on-surface-rgb), 0.1);
 }
 
 .settings-save,
 .settings-close {
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: var(--radius-pill);
     border: none;
     cursor: pointer;
     font: inherit;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
@@ -186,6 +208,7 @@ input:checked + .toggle-slider:before {
 .settings-save:hover {
     background-color: var(--primary-hover);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
 }
 
 .settings-close {
@@ -197,42 +220,42 @@ input:checked + .toggle-slider:before {
     background-color: var(--surface-variant-hover);
 }
 
-/* Disabled States */
-.settings-section .setting-item[disabled], 
-.settings-section .toggle-switch input:disabled + .toggle-slider {
-    opacity: 0.5;
-    pointer-events: none;
-    cursor: not-allowed;
-}
-
-.settings-section .setting-item[disabled] .setting-label {
-    color: var(--on-surface-variant);
-}
-
-.settings-modal .toggle-switch input:disabled + .toggle-slider {
-    background-color: var(--outline);
-}
-
-.settings-section[disabled] {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-/* Theme Transition */
-:root {
-    transition: all 0.3s ease;
+/* Animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
     .settings-content {
         width: 95%;
-        padding: 15px;
-        max-height: 85vh;
+        padding: 20px;
+        max-height: 90vh;
     }
 
-    .settings-section {
-        margin-bottom: 15px;
+    .toggle-switch {
+        width: 48px;
+        height: 26px;
+    }
+
+    .toggle-slider:before {
+        height: 18px;
+        width: 18px;
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(22px);
+    }
+
+    .setting-item {
+        padding: 10px 12px;
     }
 
     .settings-actions {
@@ -244,82 +267,62 @@ input:checked + .toggle-slider:before {
     .settings-close {
         width: 100%;
     }
-
-    .settings-description {
-        font-size: 0.8rem;
-    }
 }
 
-/* Animations */
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.settings-modal.active .settings-content {
-    animation: modalFadeIn 0.3s ease forwards;
-}
-
-/* Custom Scrollbar */
-.settings-sections::-webkit-scrollbar {
-    width: 8px;
-}
-
-.settings-sections::-webkit-scrollbar-track {
-    background: var(--surface);
-    border-radius: 4px;
-}
-
-.settings-sections::-webkit-scrollbar-thumb {
-    background: var(--outline);
-    border-radius: 4px;
-}
-
-.settings-sections::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
-}
-
-/* Dark Mode Specific Styles */
+/* Dark Mode Adjustments */
 [data-theme="dark"] .settings-content {
     background-color: var(--surface-dark);
-    border: 1px solid var(--outline-dark);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .settings-select {
     background-color: var(--background-dark);
-    border-color: var(--outline-dark);
-    color: var(--on-surface);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Custom Scrollbar */
+.settings-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.settings-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.settings-content::-webkit-scrollbar-thumb {
+    background: rgba(var(--on-surface-rgb), 0.2);
+    border-radius: 4px;
+}
+
+.settings-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--on-surface-rgb), 0.3);
+}
+
+/* Disabled States */
+.setting-item[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.toggle-switch input:disabled + .toggle-slider {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Focus States */
 .settings-save:focus,
 .settings-close:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--primary-opacity);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
 }
 
-/* Additional Styles for Options */
-.settings-select option {
-    padding: 8px;
-    background-color: var(--surface);
-    color: var(--on-surface);
+/* Active States */
+.toggle-switch:active .toggle-slider:before {
+    width: 26px;
+    transition: width 0.1s ease;
 }
 
-/* Improved Spacing for Settings Groups */
-.settings-section + .settings-section {
-    margin-top: 20px;
-}
-
-/* Settings Header */
-.title-2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--on-surface);
-    margin-bottom: 16px;
+input:checked + .toggle-slider:active:before {
+    transform: translateX(20px);
 }
