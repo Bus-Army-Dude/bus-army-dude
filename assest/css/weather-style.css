@@ -953,45 +953,23 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   }
 }
 
-/* Ensure containers have a visible background in light mode */
-[data-theme="light"] .card {
-  background-color: var(--surface);
-  color: var(--on-surface);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--outline);
+/* Light Mode Specific Adjustments */
+[data-theme="light"] .current-weather-card {
+  color: var(--on-surface); /* Ensure temperature text is visible */
 }
 
-/* You might need to adjust specific container styles if they have overrides */
-[data-theme="light"] .highlight-card,
-[data-theme="light"] .current-weather-card,
-[data-theme="light"] .forecast-card {
-  background-color: var(--surface);
-  color: var(--on-surface);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--outline);
+[data-theme="light"] .current-weather-card .body-3 {
+    color : var(--on-surface);
 }
 
-/* Header Button Adjustments for Light Mode */
-[data-theme="light"] .icon-btn {
-  background-color: #e8e8e8; /* More distinct background */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--outline);
+[data-theme="light"] .current-weather-card .meta-text {
+    color: var(--on-surface-variant)
 }
 
-/* Optional: Adjust hover/focus states */
-[data-theme="light"] .icon-btn:hover,
-[data-theme="light"] .icon-btn:focus {
-  background-color: #e0e0e0; /* Slightly darker on hover/focus */
+[data-theme="light"] .highlight-card.one .card-item {
+    align-items: flex-start;
 }
 
-/* Search Field Container in Light Mode */
-[data-theme="light"] .search-field {
-  background-color: #fff; /* White background */
-  border: 1px solid var(--outline);
-}
-
-/* Dark mode Search Field Container */
-.search-field {
-    background-color: var(--surface);
-    border: 1px solid var(--outline);
+[data-theme="light"] .highlight-card.one .card-item .label-1 {
+    text-align: left;
 }
