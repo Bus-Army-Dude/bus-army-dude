@@ -77,111 +77,103 @@
         </article>
     </main>
 
-<!-- Settings Modal -->
-    <div class="settings-modal" data-settings-modal>
-        <div class="settings-content card">
-            <h2 class="title-2">Settings</h2>
-            <form data-settings-form>
-                <div class="settings-sections">
-                    <!-- Temperature Section -->
-                    <div class="settings-section">
-                        <h3 class="settings-section-title">Temperature</h3>
-                        <select class="settings-select" name="temperature" data-settings-temp>
-                            <option value="celsius">Celsius (°C)</option>
-                            <option value="fahrenheit">Fahrenheit (°F)</option>
-                            <option value="kelvin">Kelvin (K)</option>
-                        </select>
-                        <p class="settings-description">
-                            Choose how temperature values are displayed throughout the app.
-                            Standard metric unit worldwide.
-                        </p>
-                    </div>
-
-                    <!-- Wind Speed Section -->
-                    <div class="settings-section">
-                        <h3 class="settings-section-title">Wind Speed</h3>
-                        <select class="settings-select" name="windSpeed" data-settings-speed>
-                            <option value="kmh">Kilometers per hour (km/h)</option>
-                            <option value="mph">Miles per hour (mph)</option>
-                            <option value="ms">Meters per second (m/s)</option>
-                            <option value="knots">Knots (kts)</option>
-                            <option value="beaufort">Beaufort scale (Bft)</option>
-                        </select>
-                        <p class="settings-description">
-                            Select your preferred unit for wind speed measurements.
-                            Different units are used in various fields and regions.
-                        </p>
-                    </div>
-
-                    <!-- Pressure Section -->
-                    <div class="settings-section">
-                        <h3 class="settings-section-title">Pressure</h3>
-                        <select class="settings-select" name="pressure" data-settings-pressure>
-                            <option value="hpa">Hectopascals (hPa)</option>
-                            <option value="inhg">Inches of Mercury (inHg)</option>
-                            <option value="mmhg">Millimeters of Mercury (mmHg)</option>
-                            <option value="mbar">Millibars (mbar)</option>
-                            <option value="kpa">Kilopascals (kPa)</option>
-                        </select>
-                        <p class="settings-description">
-                            Choose how atmospheric pressure is displayed.
-                            Different regions use different pressure units.
-                        </p>
-                    </div>
-
-                    <!-- Time Format Section -->
-                    <div class="settings-section">
-                        <h3 class="settings-section-title">Time Format</h3>
-                        <div class="settings-options">
-                            <label class="setting-item">
-                                <span class="setting-label">24-hour Time</span>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" 
-                                           name="timeFormat" 
-                                           data-settings-time>
-                                    <span class="toggle-slider"></span>
-                                </div>
-                            </label>
-                        </div>
-                        <p class="settings-description">
-                            Switch between 12-hour (1:00 PM) and 24-hour (13:00) format.
-                            Page refresh required for this change to take effect.
-                        </p>
-                    </div>
-
-                    <!-- Location Services Section -->
-                    <div class="settings-section">
-                        <h3 class="settings-section-title">Location Services</h3>
-                        <div class="settings-options">
-                            <label class="setting-item">
-                                <span class="setting-label">Enable Location</span>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" 
-                                           name="location" 
-                                           data-settings-location>
-                                    <span class="toggle-slider"></span>
-                                </div>
-                            </label>
-                        </div>
-                        <p class="settings-description">
-                            Allow automatic location detection for local weather updates.
-                            Required for current location features.
-                        </p>
-                    </div>
+<!-- Settings Modal Section -->
+<div class="settings-modal" data-settings-modal>
+    <div class="settings-content card">
+        <h2 class="title-2">Settings</h2>
+        <form data-settings-form>
+            <div class="settings-sections">
+                <!-- Temperature Section -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Temperature</h3>
+                    <select class="settings-select" name="temperature" data-settings-temp>
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                    <p class="settings-description">
+                        Choose how temperature values are displayed throughout the app
+                    </p>
                 </div>
 
-                <div class="settings-actions">
-                    <button type="submit" class="btn-primary settings-save" data-settings-save>
-                        <span class="span">Save Changes</span>
-                    </button>
-                    <button type="button" class="btn-secondary settings-close" data-settings-close>
-                        <span class="span">Cancel</span>
-                    </button>
+                <!-- Wind Speed Section -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Wind Speed</h3>
+                    <select class="settings-select" name="windSpeed" data-settings-speed>
+                        <option value="kmh">Kilometers per hour (km/h)</option>
+                        <option value="mph">Miles per hour (mph)</option>
+                        <option value="ms">Meters per second (m/s)</option>
+                        <option value="knots">Knots (kts)</option>
+                        <option value="beaufort">Beaufort scale (Bft)</option>
+                    </select>
+                    <p class="settings-description">
+                        Select your preferred unit for wind speed measurements
+                    </p>
                 </div>
-            </form>
-        </div>
+
+                <!-- Pressure Section -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Pressure</h3>
+                    <select class="settings-select" name="pressure" data-settings-pressure>
+                        <option value="hpa">Hectopascals (hPa)</option>
+                        <option value="inhg">Inches of Mercury (inHg)</option>
+                        <option value="mmhg">Millimeters of Mercury (mmHg)</option>
+                        <option value="mbar">Millibars (mbar)</option>
+                        <option value="kpa">Kilopascals (kPa)</option>
+                    </select>
+                    <p class="settings-description">
+                        Choose how atmospheric pressure is displayed
+                    </p>
+                </div>
+
+                <!-- Time Format Section -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Time Format</h3>
+                    <div class="settings-options">
+                        <label class="setting-item">
+                            <span class="setting-label">24-hour Time</span>
+                            <div class="toggle-switch">
+                                <input type="checkbox" name="timeFormat" data-settings-time>
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <p class="settings-description">
+                        Toggle between 12-hour (1:00 PM) and 24-hour (13:00) format.
+                        Page refresh required after changing.
+                    </p>
+                </div>
+
+                <!-- Location Services Section -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Location Services</h3>
+                    <div class="settings-options">
+                        <label class="setting-item">
+                            <span class="setting-label">Enable Location</span>
+                            <div class="toggle-switch">
+                                <input type="checkbox" name="location" data-settings-location>
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <p class="settings-description">
+                        Allow automatic location detection for local weather updates
+                    </p>
+                </div>
+            </div>
+
+            <div class="settings-actions">
+                <button type="submit" class="btn-primary settings-save" data-settings-save>
+                    <span class="span">Save Changes</span>
+                </button>
+                <button type="button" class="btn-secondary settings-close" data-settings-close>
+                    <span class="span">Cancel</span>
+                </button>
+            </div>
+        </form>
     </div>
-
+</div>
+    
     <!-- Error Section -->
     <section class="error-content" data-error-content>
         <h2 class="heading">404</h2>
