@@ -33,7 +33,7 @@ export const getDate = (dateUnix, timezone) => {
     const month = monthNames[localDate.getUTCMonth()];
     const dateNum = localDate.getUTCDate();
 
-    return `${day} ${month}, ${dateNum}`;
+    return `${day}, ${month}, ${dateNum}`;
 };
 
 export const getTime = function (timeUnix, timezone, is24Hour = false) {
