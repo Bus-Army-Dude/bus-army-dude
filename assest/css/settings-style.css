@@ -6,12 +6,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px); /* More pronounced blur */
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .settings-modal.active {
@@ -21,33 +21,34 @@
 .settings-content {
     background-color: var(--surface);
     color: var(--on-surface);
-    border-radius: var(--radius-28);
-    padding: 24px;
+    border-radius: 16px; /* Rounded corners */
+    padding: 32px; /* Increased padding */
     width: 90%;
-    max-width: 420px;
-    box-shadow: var(--shadow-1);
-    max-height: 85vh;
+    max-width: 480px; /* Slightly wider */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Softer shadow */
+    max-height: 90vh;
     overflow-y: auto;
     box-sizing: border-box;
 }
 
 /* Settings Header */
 .title-2 {
-    font-size: 1.5rem;
+    font-size: 2rem; /* Larger title */
     font-weight: 600;
     color: var(--on-surface);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    text-align: center; /* Centered title */
 }
 
 /* Settings Sections */
 .settings-sections {
-    margin-top: 20px;
+    margin-top: 24px;
 }
 
 .settings-section {
-    margin-bottom: 24px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(var(--on-surface-rgb), 0.1);
+    margin-bottom: 32px; /* Increased spacing */
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(var(--on-surface-rgb), 0.15); /* Slightly darker border */
 }
 
 .settings-section:last-child {
@@ -57,10 +58,10 @@
 }
 
 .settings-section-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem; /* Larger section titles */
     font-weight: 600;
     color: var(--on-surface);
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 /* Setting Items */
@@ -68,28 +69,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    border-radius: var(--radius-12);
+    padding: 16px 20px; /* Increased padding */
+    border-radius: 12px;
     transition: background-color 0.3s ease;
-    margin: 8px 0;
+    margin: 12px 0; /* Increased spacing */
 }
 
 .setting-item:hover {
-    background-color: rgba(var(--on-surface-rgb), 0.05);
+    background-color: rgba(var(--on-surface-rgb), 0.08); /* Slightly darker hover */
 }
 
 .setting-label {
     color: var(--on-surface);
-    font-size: 0.95rem;
+    font-size: 1rem; /* Larger labels */
     font-weight: 500;
 }
 
 /* Settings Description */
 .settings-description {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     color: var(--on-surface-variant);
-    margin-top: 12px;
-    line-height: 1.5;
+    margin-top: 16px;
+    line-height: 1.6; /* Increased line height */
     opacity: 0.9;
 }
 
@@ -97,8 +98,8 @@
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 28px;
+    width: 52px;
+    height: 30px;
 }
 
 .toggle-switch input {
@@ -118,63 +119,48 @@
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 34px;
-    border: 2px solid rgba(var(--on-surface-rgb), 0.5);
-    box-sizing: border-box;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 20px;
-    width: 20px;
+    height: 22px;
+    width: 22px;
     left: 4px;
     bottom: 4px;
-    background-color: var(--on-surface);
+    background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* More defined shadow */
 }
 
 input:checked + .toggle-slider {
     background-color: var(--primary);
-    border-color: var(--primary);
 }
 
 input:checked + .toggle-slider:before {
     -webkit-transform: translateX(22px);
     -ms-transform: translateX(22px);
     transform: translateX(22px);
-    background-color: white;
 }
 
 /* Hover and Focus States */
 .toggle-switch:hover .toggle-slider {
-    border-color: var(--primary);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 input:checked:hover + .toggle-slider {
     background-color: var(--primary-hover);
 }
 
-/* Active Animation for Toggle */
-.toggle-slider:active:before {
-    width: 22px;
-    transition: 0.1s ease;
-}
-
-input:checked + .toggle-slider:active:before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-}
-
 /* Select Inputs */
 .settings-select {
     width: 100%;
-    padding: 12px;
-    border-radius: var(--radius-12);
-    border: 2px solid rgba(var(--on-surface-rgb), 0.1);
+    padding: 14px 16px; /* Increased padding */
+    border-radius: 12px;
+    border: 1px solid rgba(var(--on-surface-rgb), 0.2); /* Thinner border */
     background-color: var(--background);
     color: var(--on-surface);
     font: inherit;
@@ -184,9 +170,9 @@ input:checked + .toggle-slider:active:before {
     -webkit-appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 40px;
+    background-position: right 16px center; /* Adjusted position */
+    background-size: 18px; /* Slightly larger icon */
+    padding-right: 48px; /* Adjusted padding */
 }
 
 .settings-select:hover {
@@ -203,16 +189,16 @@ input:checked + .toggle-slider:active:before {
 .settings-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(var(--on-surface-rgb), 0.1);
+    gap: 16px; /* Increased spacing */
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(var(--on-surface-rgb), 0.15);
 }
 
 .settings-save,
 .settings-close {
-    padding: 10px 20px;
-    border-radius: var(--radius-pill);
+    padding: 12px 24px; /* Increased padding */
+    border-radius: 24px; /* More rounded */
     border: none;
     cursor: pointer;
     font: inherit;
@@ -222,33 +208,33 @@ input:checked + .toggle-slider:active:before {
 
 .settings-save {
     background-color: var(--primary);
-    color: var(--on-primary);
+    color: white; /* White text for contrast */
 }
 
 .settings-save:hover {
     background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.3);
 }
 
 .settings-close {
-    background-color: var(--surface-variant);
-    color: var(--on-surface-variant);
+    background-color: rgba(var(--on-surface-rgb), 0.1); /* Lighter background */
+    color: var(--on-surface);
 }
 
 .settings-close:hover {
-    background-color: var(--surface-variant-hover);
+    background-color: rgba(var(--on-surface-rgb), 0.2);
 }
 
 /* Animations */
 @keyframes modalFadeIn {
     from {
         opacity: 0;
-        transform: scale(0.95);
+        transform: translateY(-20px);
     }
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0);
     }
 }
 
@@ -263,11 +249,11 @@ input:checked + .toggle-slider:active:before {
 
 [data-theme="dark"] .settings-select {
     background-color: var(--background-dark);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .toggle-slider {
-    background-color: rgba(255, 255, 255, 0.2); /* Light grey when off in dark mode */
-    border-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 [data-theme="dark"] input:checked + .toggle-slider {
@@ -282,13 +268,12 @@ input:checked + .toggle-slider:active:before {
 @media (max-width: 480px) {
     .settings-content {
         width: 95%;
-        padding: 20px;
-        max-height: 90vh;
+        padding: 24px;
     }
 
     .settings-actions {
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
     }
 
     .settings-save,
@@ -304,9 +289,9 @@ input:checked + .toggle-slider:active:before {
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--surface);
-    padding: 16px;
-    border-radius: var(--radius-12);
-    box-shadow: var(--shadow-1);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 1001;
     display: flex;
     gap: 12px;
@@ -316,7 +301,7 @@ input:checked + .toggle-slider:active:before {
 
 @keyframes slideUp {
     from {
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, 40px);
         opacity: 0;
     }
     to {
@@ -342,6 +327,6 @@ input:checked + .toggle-slider:active:before {
 }
 
 .refresh-close svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
 }
