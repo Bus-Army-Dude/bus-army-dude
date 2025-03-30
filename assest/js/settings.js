@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsClose = document.querySelector("[data-settings-close]");
     const settingsForm = settingsModal?.querySelector("[data-settings-form]");
     const currentLocationBtn = document.querySelector("[data-current-location-btn]");
-    const darkModeToggle = document.querySelector('[data-dark-mode-toggle]');
 
     // Storage for current settings
     let currentSettings = null;
@@ -19,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pressure: "hpa",
         timeFormat: false,
         locationServices: true,
-        darkMode: localStorage.getItem('darkMode') === 'enabled' // Get dark mode from local storage
+        darkMode: localStorage.getItem('darkMode') === 'enabled'
     };
 
     // Load settings from localStorage
@@ -40,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (pressureUnit) pressureUnit.value = currentSettings.pressure;
             if (timeFormat) timeFormat.checked = currentSettings.timeFormat;
             if (locationToggle) locationToggle.checked = currentSettings.locationServices;
-            if (darkModeToggleInput) darkModeToggleInput.checked = currentSettings.darkMode; // Set dark mode toggle
+            if (darkModeToggleInput) darkModeToggleInput.checked = currentSettings.darkMode;
         }
 
         // Apply current settings
@@ -211,6 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to update CSS variables based on theme
     function updateTheme(isDark) {
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
         if (isDark) {
             document.documentElement.style.setProperty('--primary', '#b5a1e5');
             document.documentElement.style.setProperty('--on-primary', '#100e17');
@@ -222,15 +222,15 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.style.setProperty('--on-surface-variant-2', '#b9b6bf');
             document.documentElement.style.setProperty('--outline', '#3e3d40');
         } else {
-            document.documentElement.style.setProperty('--primary', '#yourLightPrimary'); // Replace with your light mode primary color
-            document.documentElement.style.setProperty('--on-primary', '#yourLightOnPrimary'); // Replace with your light mode on-primary color
-            document.documentElement.style.setProperty('--background', '#yourLightBackground'); // Replace with your light mode background color
-            document.documentElement.style.setProperty('--on-background', '#yourLightOnBackground'); // Replace with your light mode on-background color
-            document.documentElement.style.setProperty('--surface', '#yourLightSurface'); // Replace with your light mode surface color
-            document.documentElement.style.setProperty('--on-surface', '#yourLightOnSurface'); // Replace with your light mode on-surface color
-            document.documentElement.style.setProperty('--on-surface-variant', '#yourLightOnSurfaceVariant'); // Replace with your light mode on-surface-variant color
-            document.documentElement.style.setProperty('--on-surface-variant-2', '#yourLightOnSurfaceVariant2'); // Replace with your light mode on-surface-variant-2 color
-            document.documentElement.style.setProperty('--outline', '#yourLightOutline'); // Replace with your light mode outline color
+            document.documentElement.style.setProperty('--primary', '#yourLightPrimary');
+            document.documentElement.style.setProperty('--on-primary', '#yourLightOnPrimary');
+            document.documentElement.style.setProperty('--background', '#yourLightBackground');
+            document.documentElement.style.setProperty('--on-background', '#yourLightOnBackground');
+            document.documentElement.style.setProperty('--surface', '#yourLightSurface');
+            document.documentElement.style.setProperty('--on-surface', '#yourLightOnSurface');
+            document.documentElement.style.setProperty('--on-surface-variant', '#yourLightOnSurfaceVariant');
+            document.documentElement.style.setProperty('--on-surface-variant-2', '#yourLightOnSurfaceVariant2');
+            document.documentElement.style.setProperty('--outline', '#yourLightOutline');
         }
     }
 
@@ -260,20 +260,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Close modal
         settingsModal?.classList.remove("active");
-
-        // Show refresh message for time format changes
-        if (currentSettings.timeFormat !== newSettings.timeFormat) {
-            const refreshMsg = document.createElement('div');
-            refreshMsg.className = 'refresh-message';
-            refreshMsg.innerHTML = `
-                <div class="refresh-content">
-                    <p>Please refresh the page for time format changes to take effect.</p>
-                    <button onclick="location.reload()">Refresh Now</button>
-                    <button onclick="this.parentElement.remove()">Later</button>
-                </div>
-            `;
-            document.body.appendChild(refreshMsg);
-        }
     });
 
     settingsBtn?.addEventListener("click", () => {
