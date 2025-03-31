@@ -388,6 +388,7 @@ body {
   padding-inline: 12px;
 }
 
+/* SEARCH VIEW */
 .search-view {
   position: fixed;
   top: 0;
@@ -419,6 +420,7 @@ body {
   position: relative;
   border-block-end: 1px solid var(--outline-color);
   width: 100%; /* Take full width on mobile */
+  margin-top: 80px; /* Push below header when active */
 }
 
 .search-wrapper::before {
@@ -515,6 +517,49 @@ body {
   position: absolute;
   inset: 0;
   box-shadow: none;
+}
+
+/* Style the search result container */
+.search-view .search-result {
+  background-color: var(--surface-color); /* Use surface color for the container */
+  color: var(--on-surface-color);
+  border: 1px solid var(--outline-color);
+  border-top: none;
+  border-radius: 0 0 var(--radius-16) var(--radius-16);
+  box-shadow: var(--shadow-2);
+  position: absolute;
+  top: 56px; /* Adjusted top for mobile search input height */
+  left: 0;
+  width: 100%; /* Make it the same width as the input */
+  max-height: 300px; /* Adjust as needed */
+  overflow-y: auto;
+  z-index: 8; /* Increased z-index to be above view-list */
+  display: none; /* Initially hidden */
+}
+
+/* Show search result when the search view is active AND the input is focused */
+.search-view.active:focus-within .search-result {
+  display: block;
+}
+
+.search-view .search-result > div { /* Style individual results */
+  padding: 8px 16px; /* Adjusted padding */
+  font-size: var(--body-3-font-size); /* Adjusted font size */
+  cursor: pointer;
+}
+
+.search-view .search-result > div:hover {
+  background-color: var(--white-alpha-8); /* Subtle hover feedback */
+}
+
+[data-theme="light"] .search-view .search-result {
+  background-color: var(--surface-color-light);
+  color: var(--on-surface-color-light);
+  border-color: var(--outline-color);
+}
+
+[data-theme="light"] .search-view .search-result > div:hover {
+  background-color: #e0e0e0;
 }
 
 /* MAIN */
@@ -1088,8 +1133,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .search-result, .search-view:not(:focus-within) .search-result {
       display: none; /* Hide results by default */
     }
-  .search-view:focus-within .search-result.active {
-      display: block; /* Show results when input is focused and results exist */
+  .search-view:focus-within .search-result { /* Show when focused */
+      display: block;
     }
   .search-view:has(.search-result.active):focus-within .search-field {
       border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
@@ -1168,6 +1213,16 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .highlight-card:nth-child(n + 3) { height: 150px; } /* Taller secondary highlight cards */
   .highlight-card .m-icon { font-size: 4rem; }
   .slider-list { gap: 16px; }
+
+  /* Desktop Search Dropdown Fix */
+  .search-view.active {
+    display: flex; /* Keep flex for alignment in header */
+    align-items: center;
+  }
+
+  .search-view .search-result {
+    top: 40px; /* Adjusted top position for desktop search input */
+  }
 }
 
 /* Wider Desktop Styles */
@@ -1289,13 +1344,15 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   top: 56px; /* Adjusted top for mobile search input height */
   left: 0;
   width: 100%; /* Make it the same width as the input */
-  max-height: 200px; /* Adjust as needed */
+  max-height: 300px; /* Adjust as needed */
   overflow-y: auto;
-  z-index: 7; /* Increased z-index to be above view-list */
+  z-index: 8; /* Increased z-index to be above view-list */
+  display: none; /* Initially hidden */
 }
 
-.search-view.active .search-result {
-  display: block; /* Only show when search is active */
+/* Show search result when the search view is active AND the input is focused */
+.search-view.active:focus-within .search-result {
+  display: block;
 }
 
 .search-view .search-result > div { /* Style individual results */
@@ -1371,9 +1428,8 @@ article.container {
 
 /* Desktop Search Dropdown Fix */
 @media (min-width: 1200px) {
-  .search-view.active {
-    display: flex; /* Keep flex for alignment in header */
-    align-items: center;
+  .search-view.active .search-wrapper {
+    margin-top: 0; /* Reset margin for desktop */
   }
 
   .search-view .search-result {
@@ -1386,8 +1442,8 @@ article.container {
   display: none;
 }
 
-/* Show search result when the search view is active AND the input is focused AND there are results (indicated by .active class on .search-result - this class needs to be added via JS) */
-.search-view.active:focus-within .search-result.active {
+/* Show search result when the search view is active AND the input is focused */
+.search-view.active:focus-within .search-result {
   display: block;
 }
 
