@@ -1,6 +1,4 @@
-/* settings-style.css */
-
-/* Settings Modal Base */
+/* Futuristic Settings Modal */
 .settings-modal {
     display: none;
     position: fixed;
@@ -8,12 +6,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.85);
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
 }
 
 .settings-modal.active {
@@ -21,49 +20,51 @@
 }
 
 .settings-content {
-    background-color: var(--surface-color);
-    color: var(--on-surface-color);
-    border-radius: var(--radius-16);
-    padding: 24px;
+    background: rgba(20, 20, 30, 0.95);
+    color: #0ff;
+    border-radius: 18px;
+    padding: 32px;
     width: 90%;
-    max-width: 500px;
-    box-shadow: var(--shadow-2);
-    max-height: 90vh;
+    max-width: 600px;
+    box-shadow: 0 10px 60px rgba(0, 255, 255, 0.3);
+    max-height: 85vh;
     overflow-y: auto;
     box-sizing: border-box;
+    border: 1px solid rgba(0, 255, 255, 0.1);
 }
 
 /* Settings Header */
 .settings-content .title-2 {
-    font-size: 1.7rem;
-    font-weight: var(--weight-semiBold);
-    color: var(--on-surface-color);
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00ffff;
     margin-bottom: 20px;
     text-align: left;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 /* Settings Sections */
 .settings-content .settings-sections {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .settings-content .settings-section {
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--outline-color);
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.3);
 }
 
 .settings-content .settings-section:last-child {
     border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
 }
 
 .settings-content .settings-section-title {
-    font-size: 1.1rem;
-    font-weight: var(--weight-medium);
-    color: var(--on-surface-color);
-    margin-bottom: 12px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #00ffff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
 /* Setting Items */
@@ -71,40 +72,43 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 12px 16px;
-    border-radius: var(--radius-12);
-    transition: background-color 0.3s ease;
-    margin: 6px 0;
+    padding: 18px;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 12px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.1);
 }
 
 .settings-content .setting-item:hover {
-    background-color: var(--black-alpha-8);
+    background-color: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
 }
 
 .settings-content .setting-label {
-    color: var(--on-surface-color);
-    font-size: 0.95rem;
-    font-weight: var(--weight-regular);
-    margin-bottom: 6px;
+    color: #0ff;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
 }
 
 /* Settings Description */
 .settings-content .settings-description {
-    font-size: 0.85rem;
-    color: var(--on-surface-variant-color);
-    margin-top: 6px;
-    line-height: 1.4;
-    opacity: 0.9;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 8px;
+    line-height: 1.6;
+    opacity: 0.85;
 }
 
-/* Apple-Style Toggle Switch (Adjusted Colors) */
+/* Futuristic Toggle Switch */
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 51px;
-    height: 31px;
+    width: 60px;
+    height: 36px;
     flex-shrink: 0;
-    margin-bottom: 6px;
+    margin-bottom: 12px;
 }
 
 .toggle-switch input {
@@ -120,121 +124,107 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--outline-color);
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 34px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: 0.4s;
+    border-radius: 40px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 23px;
-    width: 23px;
+    height: 28px;
+    width: 28px;
     top: 4px;
     left: 4px;
-    background-color: var(--surface-color);
-    -webkit-transition: .4s;
-    transition: .4s;
+    background: linear-gradient(135deg, #00ffff, #00ff99);
+    transition: 0.4s;
     border-radius: 50%;
-    box-shadow: var(--shadow-1);
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.4);
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--primary-color);
+    background-color: rgba(0, 255, 255, 0.3);
 }
 
 input:checked + .toggle-slider:before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-}
-
-/* Hover and Focus States */
-.toggle-switch:hover .toggle-slider {
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-input:checked + .toggle-slider:hover {
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    transform: translateX(24px);
+    background: linear-gradient(135deg, #0ff, #00ff99);
 }
 
 /* Select Inputs */
 .settings-content .settings-select {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: var(--radius-8);
-    border: 1px solid var(--outline-color);
-    background-color: var(--surface-color);
-    color: var(--on-surface-color);
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #00ffff;
     font: inherit;
     cursor: pointer;
     transition: all 0.3s ease;
     appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;...");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
-    padding-right: 36px;
 }
 
 .settings-content .settings-select:hover {
-    border-color: var(--primary-color);
+    border-color: #00ffcc;
 }
 
 .settings-content .settings-select:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb, 98, 0, 238), 0.2); /* Use RGB if needed */
+    border-color: #00ffff;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
 }
 
 /* Action Buttons */
 .settings-content .settings-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
+    gap: 16px;
+    margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px solid var(--outline-color);
+    border-top: 1px solid rgba(0, 255, 255, 0.3);
 }
 
 .settings-content .settings-save,
 .settings-content .settings-close {
-    padding: 10px 20px;
-    border-radius: var(--radius-pill);
+    padding: 12px 24px;
+    border-radius: 24px;
     border: none;
     cursor: pointer;
     font: inherit;
-    font-weight: var(--weight-medium);
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .settings-content .settings-save {
-    background-color: var(--primary-color);
-    color: var(--on-primary-color);
+    background: linear-gradient(135deg, #00ffff, #00ffcc);
+    color: black;
 }
 
 .settings-content .settings-save:hover {
-    background-color: var(--primary-variant-color);
-    box-shadow: var(--shadow-2);
+    background: linear-gradient(135deg, #00ffcc, #00ffff);
+    box-shadow: 0 6px 18px rgba(0, 255, 255, 0.4);
 }
 
 .settings-content .settings-close {
-    background-color: var(--surface-color);
-    color: var(--on-surface-color);
-    border: 1px solid var(--outline-color);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #00ffff;
 }
 
 .settings-content .settings-close:hover {
-    background-color: var(--black-alpha-8);
+    background-color: rgba(0, 255, 255, 0.2);
 }
 
-/* Animations */
-@keyframes modalFadeIn {
+/* Futuristic Animations */
+@keyframes modalSlideIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-50px);
     }
     to {
         opacity: 1;
@@ -243,74 +233,47 @@ input:checked + .toggle-slider:hover {
 }
 
 .settings-modal.active .settings-content {
-    animation: modalFadeIn 0.3s ease forwards;
+    animation: modalSlideIn 0.4s ease forwards;
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .settings-content {
+    background-color: rgba(10, 10, 20, 0.95);
+    color: #0ff;
+}
+
+[data-theme="dark"] .settings-content .title-2,
+[data-theme="dark"] .settings-content .settings-section-title,
+[data-theme="dark"] .settings-content .setting-label {
+    color: #00ffff;
+}
+
+[data-theme="dark"] .settings-content .setting-item:hover {
+    background-color: rgba(0, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .toggle-slider {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] input:checked + .toggle-slider {
+    background-color: rgba(0, 255, 255, 0.3);
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
     .settings-content {
         width: 95%;
-        padding: 20px;
+        padding: 24px;
     }
 
     .settings-content .settings-actions {
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
     }
 
     .settings-content .settings-save,
     .settings-content .settings-close {
         width: 100%;
     }
-}
-
-/* Refresh Message */
-.refresh-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--surface-color);
-    color: var(--on-surface-color);
-    padding: 12px 16px;
-    border-radius: var(--radius-10);
-    box-shadow: var(--shadow-1);
-    z-index: 1001;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translate(-50%, 20px);
-        opacity: 0;
-    }
-    to {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-}
-
-.refresh-content {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.refresh-close {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.refresh-close svg {
-    width: 16px;
-    height: 16px;
-    fill: var(--on-surface-color); /* Ensure icon color */
 }
