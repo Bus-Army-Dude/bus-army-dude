@@ -1,104 +1,104 @@
 :root {
-  /* Dark Mode Variables (Default) */
-  --primary: #b5a1e5;
-  --on-primary: #100e17;
-  --background: #131214;
-  --on-background: #eae6f2;
-  --surface: #1d1c1f;
-  --on-surface: #dddae5;
-  --on-surface-variant: #7b7980;
-  --on-surface-variant-2: #b9b6bf;
-  --outline: #3e3d40;
-  --bg-aqi-1: #89e589;
-  --on-bg-aqi-1: #1f331f;
-  --bg-aqi-2: #e5dd89;
-  --on-bg-aqi-2: #33311f;
-  --bg-aqi-3: #e5c089;
-  --on-bg-aqi-3: #332b1f;
-  --bg-aqi-4: #e58989;
-  --on-bg-aqi-4: #331f1f;
-  --bg-aqi-5: #e589b7;
-  --on-bg-aqi-5: #331f29;
-  --white: hsl(0, 0%, 100%);
-  --white-alpha-4: hsla(0, 0%, 100%, 0.04);
-  --white-alpha-8: hsla(0, 0%, 100%, 0.08);
-  --black-alpha-10: hsla(0, 0%, 0%, 0.1);
+  /* Apple Style Inspired Variables (Dark Mode Default) */
+  --primary: #007aff; /* Apple blue */
+  --on-primary: #ffffff;
+  --background: #000000; /* True black for dark mode */
+  --on-background: #ffffff;
+  --surface: #1c1c1e; /* Dark gray surface */
+  --on-surface: #ffffff;
+  --on-surface-variant: #8e8e93; /* Lighter gray for less important text */
+  --on-surface-variant-2: #aeaeb2;
+  --outline: #3a3a3c; /* Subtle dark outline */
+  --bg-aqi-1: #4cd964; /* Apple green */
+  --on-bg-aqi-1: #000000;
+  --bg-aqi-2: #ffcc00; /* Apple yellow */
+  --on-bg-aqi-2: #000000;
+  --bg-aqi-3: #ff9500; /* Apple orange */
+  --on-bg-aqi-3: #000000;
+  --bg-aqi-4: #ff3b30; /* Apple red */
+  --on-bg-aqi-4: #ffffff;
+  --bg-aqi-5: #5856d6; /* Apple purple */
+  --on-bg-aqi-5: #ffffff;
+  --white: #ffffff;
+  --white-alpha-4: rgba(255, 255, 255, 0.04);
+  --white-alpha-8: rgba(255, 255, 255, 0.08);
+  --black-alpha-10: rgba(0, 0, 0, 0.1);
 
-  /* Gradients */
+  /* Gradients (more subtle) */
   --gradient-1: linear-gradient(
     180deg,
-    hsla(270, 5%, 7%, 0) 0%,
-    hsla(270, 5%, 7%, 0.8) 65%,
-    hsl(270, 5%, 7%) 100%
+    rgba(28, 28, 30, 0) 0%,
+    rgba(28, 28, 30, 0.6) 65%,
+    #1c1c1e 100%
   );
   --gradient-2: linear-gradient(
     180deg,
-    hsla(260, 5%, 12%, 0) 0%,
-    hsla(260, 5%, 12%, 0.8) 65%,
-    hsl(260, 5%, 12%) 100%
+    rgba(34, 34, 36, 0) 0%,
+    rgba(34, 34, 36, 0.6) 65%,
+    #222224 100%
   );
 
-  /* Typography */
-  --ff-nunito-sans: "Nunito Sans", sans-serif;
-  --heading: 5.6rem;
-  --title-1: 2rem;
-  --title-2: 1.8rem;
-  --title-3: 1.6rem;
-  --body-1: 2.2rem;
-  --body-2: 2rem;
-  --body-3: 1.6rem;
-  --label-1: 1.4rem;
-  --label-2: 1.2rem;
+  /* Typography (using system font for Apple feel, keeping Nunito Sans as fallback) */
+  --ff-nunito-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif, "Nunito Sans", sans-serif;
+  --heading: 4.8rem; /* Slightly smaller heading */
+  --title-1: 1.7rem; /* Adjust title sizes */
+  --title-2: 1.5rem;
+  --title-3: 1.3rem;
+  --body-1: 1.6rem; /* Adjust body sizes */
+  --body-2: 1.4rem;
+  --body-3: 1.2rem;
+  --label-1: 1.1rem; /* Adjust label sizes */
+  --label-2: 1rem;
 
   /* Font Weight */
   --weight-regular: 400;
   --weight-semiBold: 600;
 
-  /* Box Shadow */
-  --shadow-1: 0px 1px 3px hsla(0, 0%, 0%, 0.5);
-  --shadow-2: 0px 3px 6px hsla(0, 0%, 0%, 0.4);
+  /* Box Shadow (more subtle) */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  /* Border Radius */
-  --radius-28: 28px;
-  --radius-16: 16px;
-  --radius-pill: 500px;
+  /* Border Radius (more rounded) */
+  --radius-28: 14px;
+  --radius-16: 8px;
+  --radius-pill: 100px;
   --radius-circle: 50%;
-  --radius-12: 12px; /* Added radius for current weather card */
+  --radius-12: 6px; /* Added radius for current weather card */
 
   /* Transition */
-  --transition-short: 100ms ease;
+  --transition-short: 150ms ease-in-out;
 }
 
-/* Light Mode Variables */
+/* Light Mode Variables (Apple Inspired) */
 [data-theme="light"] {
-  --primary: #b5a1e5;
-  --on-primary: #100e17;
-  --background: #f8f8f8;
-  --on-background: #222;
-  --surface: #f0f0f0;
-  --on-surface: #333;
-  --on-surface-variant: #666;
-  --on-surface-variant-2: #888;
-  --outline: #ddd;
-  --bg-aqi-1: #c2f0c2;
-  --on-bg-aqi-1: #1f331f;
-  --bg-aqi-2: #f0eed2;
-  --on-bg-aqi-2: #33311f;
-  --bg-aqi-3: #f0e3d2;
-  --on-bg-aqi-3: #332b1f;
-  --bg-aqi-4: #f0c2c2;
-  --on-bg-aqi-4: #331f1f;
-  --bg-aqi-5: #f0c2e3;
-  --on-bg-aqi-5: #331f29;
-  --white: hsl(0, 0%, 100%);
-  --white-alpha-4: hsla(0, 0%, 100%, 0.04);
-  --white-alpha-8: hsla(0, 0%, 100%, 0.08);
-  --black-alpha-10: hsla(0, 0%, 0%, 0.1);
+  --primary: #007aff; /* Apple blue */
+  --on-primary: #ffffff;
+  --background: #f2f2f7; /* Light gray background */
+  --on-background: #000000;
+  --surface: #ffffff; /* White surface */
+  --on-surface: #000000;
+  --on-surface-variant: #8e8e93; /* Lighter gray */
+  --on-surface-variant-2: #aeaeb2;
+  --outline: #d1d1d6; /* Light gray outline */
+  --bg-aqi-1: #4cd964; /* Apple green */
+  --on-bg-aqi-1: #000000;
+  --bg-aqi-2: #ffcc00; /* Apple yellow */
+  --on-bg-aqi-2: #000000;
+  --bg-aqi-3: #ff9500; /* Apple orange */
+  --on-bg-aqi-3: #000000;
+  --bg-aqi-4: #ff3b30; /* Apple red */
+  --on-bg-aqi-4: #ffffff;
+  --bg-aqi-5: #5856d6; /* Apple purple */
+  --on-bg-aqi-5: #ffffff;
+  --white: #ffffff;
+  --white-alpha-4: rgba(255, 255, 255, 0.04);
+  --white-alpha-8: rgba(255, 255, 255, 0.08);
+  --black-alpha-10: rgba(0, 0, 0, 0.1);
 
   /* Specific overrides for light mode */
-  --surface-light: #f0f0f0;
-  --on-surface-light: #333;
-  --on-surface-variant-light: #666;
+  --surface-light: #ffffff;
+  --on-surface-light: #000000;
+  --on-surface-variant-light: #8e8e93;
 }
 
 /* RESET */
@@ -170,21 +170,22 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--white);
+  outline: 2px solid var(--primary); /* Apple blue focus */
   outline-offset: 2px;
 }
 
 ::selection {
-  background-color: var(--white-alpha-8);
+  background-color: var(--primary); /* Apple blue selection */
+  color: var(--on-primary);
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--white-alpha-8);
+  background-color: var(--on-surface-variant);
   border-radius: var(--radius-pill);
 }
 
@@ -200,7 +201,7 @@ body {
   font-family: "Material Symbols Rounded";
   font-weight: normal;
   font-style: normal;
-  font-size: 2.4rem;
+  font-size: 2.2rem; /* Slightly smaller icons */
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -217,7 +218,7 @@ body {
 
 /* REUSED STYLES */
 .container {
-  max-width: 1600px;
+  max-width: 1200px; /* Adjust container width for Apple style */
   width: 100%;
   margin-inline: auto;
   padding: 16px;
@@ -225,8 +226,8 @@ body {
 
 .icon-btn {
   background-color: var(--white-alpha-8);
-  width: 48px;
-  height: 48px;
+  width: 40px; /* Smaller icon buttons */
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: var(--radius-circle);
@@ -258,7 +259,8 @@ body {
 }
 
 .has-state:is(:focus, :focus-visible)::before {
-  background-color: var(--white-alpha-8);
+  background-color: var(--primary); /* Apple blue focus highlight */
+  opacity: 0.2;
   animation: ripple 250ms ease forwards;
 }
 
@@ -274,14 +276,15 @@ body {
 .btn-primary {
   background-color: var(--primary);
   color: var(--on-primary);
-  height: 48px;
-  line-height: 48px;
+  height: 36px; /* Smaller primary buttons */
+  line-height: 36px;
   max-width: max-content;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding-inline: 16px;
+  gap: 8px; /* Smaller gap in buttons */
+  padding-inline: 12px;
   border-radius: var(--radius-pill);
+  font-size: var(--body-3);
 }
 
 .btn-primary .span {
@@ -292,6 +295,7 @@ body {
   background-color: var(--outline);
   color: var(--on-surface-variant);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .btn-primary[disabled]::before {
@@ -301,35 +305,37 @@ body {
 .card {
   background-color: var(--surface);
   color: var(--on-surface);
+  border-radius: var(--radius-16);
 }
 
 .card-lg {
   border-radius: var(--radius-28);
-  padding: 20px;
+  padding: 16px;
 }
 
 .card-sm {
-  padding: 16px;
-  border-radius: var(--radius-16);
+  padding: 12px;
+  border-radius: var(--radius-12);
 }
 
 .heading {
   color: var(--white);
   font-size: var(--heading);
   line-height: 1.1;
+  font-weight: 700; /* Make heading bolder */
 }
 
-.title-1 { font-size: var(--title-1); }
-.title-2 { font-size: var(--title-2); }
-.title-3 { font-size: var(--title-3); }
+.title-1 { font-size: var(--title-1); font-weight: 600; }
+.title-2 { font-size: var(--title-2); font-weight: 600; }
+.title-3 { font-size: var(--title-3); font-weight: 600; }
 .body-1 { font-size: var(--body-1); }
 .body-2 { font-size: var(--body-2); }
 .body-3 { font-size: var(--body-3); }
-.label-1 { font-size: var(--label-1); }
-.label-2 { font-size: var(--label-2); }
+.label-1 { font-size: var(--label-1); color: var(--on-surface-variant); }
+.label-2 { font-size: var(--label-2); color: var(--on-surface-variant); }
 
 .title-2 {
-  margin-block-end: 12px;
+  margin-block-end: 8px;
 }
 
 .title-3 {
@@ -354,8 +360,10 @@ body {
   /* Making header sticky or fixed if desired */
   /* position: sticky; */
   /* top: 0; */
-  /* z-index: 5; */ /* Ensure it's above other content */
-  /* background-color: var(--background); */ /* Give it a background */
+  z-index: 5; /* Ensure it's above other content */
+  background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent dark header */
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
 }
 
 .header .btn-primary .span {
@@ -363,7 +371,7 @@ body {
 }
 
 .logo img {
-  width: 150px;
+  width: 120px; /* Smaller logo */
 }
 
 .header .container,
@@ -374,16 +382,16 @@ body {
 
 .header .container {
   justify-content: space-between;
-  /* Ensure header height is consistent */
-  /* height: 80px; */ /* Match main's calc */
+  height: 56px; /* Smaller header height */
 }
 
 .header-actions {
-  gap: 16px;
+  gap: 8px;
 }
 
 .header .btn-primary {
-  padding-inline: 12px;
+  padding-inline: 8px;
+  font-size: var(--label-1);
 }
 
 .search-view {
@@ -394,34 +402,34 @@ body {
   height: 100%; /* Cover whole screen */
   background-color: var(--surface);
   color: var(--on-surface);
-  clip-path: circle(4% at calc(100% - 102px) 5%);
+  clip-path: circle(3% at calc(100% - 50px) 50%); /* Adjust for smaller header */
   opacity: 0;
   visibility: hidden;
   z-index: 4;
-  transition: clip-path 500ms ease, visibility 0ms 500ms, opacity 500ms ease; /* Improved transition */
+  transition: clip-path 300ms ease-out, visibility 0ms 300ms, opacity 300ms ease-out; /* Smoother transition */
 }
 
 .search-view.active {
   opacity: 1;
   visibility: visible;
-  clip-path: circle(130% at 73% 5%);
-  transition: clip-path 500ms ease, visibility 0ms 0ms, opacity 500ms ease; /* Improved transition */
+  clip-path: circle(100% at 50% 50%);
+  transition: clip-path 300ms ease-in, visibility 0ms 0ms, opacity 300ms ease-in; /* Smoother transition */
 }
 
 .search-wrapper {
   position: relative;
-  border-block-end: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
 }
 
 .search-wrapper::before {
   content: "";
   position: absolute;
   top: 50%;
-  right: 16px;
+  right: 12px;
   transform: translateY(-50%); /* Center vertically */
-  width: 24px;
-  height: 24px;
-  border: 3px solid var(--on-surface);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--on-surface);
   border-block-start-color: transparent;
   border-radius: var(--radius-circle);
   animation: loading 500ms linear infinite;
@@ -438,17 +446,18 @@ body {
 }
 
 .search-field {
-  height: 80px;
-  line-height: 80px;
-  padding-inline: 56px 16px;
+  height: 48px; /* Smaller search field */
+  line-height: 48px;
+  padding-inline: 40px 12px;
   outline: none;
   width: 100%; /* Ensure it takes full width */
   background-color: transparent; /* Inherit from parent */
   color: inherit; /* Inherit from parent */
+  font-size: var(--body-2);
 }
 
 .search-field::placeholder {
-  color: var(--on-surface-variant-2);
+  color: var(--on-surface-variant);
 }
 
 .search-field::-webkit-search-cancel-button {
@@ -458,10 +467,11 @@ body {
 .search-wrapper .leading-icon {
   position: absolute;
   top: 50%;
-  left: 16px;
+  left: 12px;
   transform: translateY(-50%);
   pointer-events: none; /* Prevent icon from intercepting clicks */
   color: var(--on-surface-variant); /* Ensure icon color */
+  font-size: 1.8rem;
 }
 
 .search-wrapper > .m-icon { /* This seems intended for larger screens only */
@@ -471,7 +481,7 @@ body {
 .search-wrapper .icon-btn { /* Style for the back button */
   background-color: transparent;
   box-shadow: none;
-   /* Ensure it's clickable */
+  /* Ensure it's clickable */
   position: absolute;
   top: 50%;
   left: 0; /* Position it left */
@@ -481,24 +491,26 @@ body {
 
 
 .search-view .view-list {
-  padding-block: 8px 16px;
+  padding-block: 4px 8px;
   /* Add scrolling if list is long */
-  max-height: calc(100% - 80px); /* Adjust based on search field height */
+  max-height: calc(100% - 48px); /* Adjust based on search field height */
   overflow-y: auto;
 }
 
 .search-view .view-item {
   position: relative;
-  height: 56px;
+  height: 40px; /* Smaller list items */
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 16px;
-  padding-inline: 16px 24px;
+  gap: 8px;
+  padding-inline: 12px 16px;
+  font-size: var(--body-3);
 }
 
 .search-view .view-item :is(.m-icon, .item-subtitle) {
   color: var(--on-surface-variant);
+  font-size: 1.6rem;
 }
 
 .search-view .view-item .item-link {
@@ -509,27 +521,26 @@ body {
 
 /* MAIN */
 main {
-  height: calc(100vh - 80px); /* Fallback for older browsers - adjust 80px if header height changes */
-  height: calc(100svh - 80px); /* Use small viewport height - adjust 80px if header height changes */
+  height: calc(100vh - 56px); /* Adjust for smaller header */
+  height: calc(100svh - 56px);
   overflow-y: auto; /* Allow vertical scrolling if content overflows */
-  /* Ensure main starts below the header if header is fixed/sticky */
-  /* padding-top: 80px; */ /* If header is fixed/sticky */
+  padding: 16px; /* Add default padding to main */
 }
 
 article.container {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 20px;
+  gap: 16px;
 }
 
 /* Style scrollbar specifically for main for better control */
 main::-webkit-scrollbar {
-   width: 8px;
+  width: 4px;
 }
 
 main::-webkit-scrollbar-thumb {
-  background-color: var(--white-alpha-8);
+  background-color: var(--on-surface-variant);
   border-radius: var(--radius-pill);
 }
 main::-webkit-scrollbar-track {
@@ -543,15 +554,15 @@ article.container::-webkit-scrollbar-thumb {
 }
 
 article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
-   /* This rule might not be needed if main handles the primary scroll */
-  background-color: var(--white-alpha-8);
+  /* This rule might not be needed if main handles the primary scroll */
+  background-color: var(--on-surface-variant);
 }
 
 /* Ensure the fixed bottom overlay rule is REMOVED or COMMENTED OUT */
 /* article.container::before { ... } */
 
 .section:not(:last-child) {
-  margin-block-end: 16px;
+  margin-block-end: 12px;
 }
 
 /* Base Styles for Current Weather Card */
@@ -559,50 +570,66 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   background-color: var(--surface);
   color: var(--on-surface);
   border-radius: var(--radius-12); /* Use specific radius */
-  padding: 16px;
+  padding: 12px;
   box-shadow: var(--shadow-1);
   transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center; /* Center content for Apple style */
 }
 
 .current-weather-card .wrapper { /* Corrected typo from 'weapper' */
-  margin-block: 12px;
+  margin-block: 8px;
   display: flex;
-  gap: 8px;
+  flex-direction: column; /* Stack items vertically */
+  gap: 4px;
   align-items: center;
 }
 
 .current-weather-card .weather-icon {
   margin-inline: auto;
+  width: 60px; /* Adjust icon size */
+  height: 60px;
 }
 
 .current-weather-card > .body-3 {
   text-transform: capitalize;
+  font-size: var(--body-2); /* Slightly larger for condition */
+}
+
+.current-weather-card .heading {
+  font-size: 3.2rem; /* Adjust temperature size */
 }
 
 .current-weather-card .meta-list {
-  margin-block-start: 16px;
-  padding-block-start: 16px;
+  margin-block-start: 12px;
+  padding-block-start: 12px;
   border-block-start: 1px solid var(--outline);
+  display: flex; /* Arrange meta items horizontally */
+  justify-content: space-around;
+  align-items: center;
 }
 
 .current-weather-card .meta-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .current-weather-card .meta-item:not(:last-child) {
-  margin-block-end: 12px;
+  margin-block-end: 0; /* Remove vertical margin */
 }
 
 .current-weather-card .meta-text {
   color: var(--on-surface-variant);
+  font-size: var(--label-1);
 }
 
 /* Light Mode Adjustments */
 [data-theme="light"] .current-weather-card {
   background-color: var(--surface-light);
   color: var(--on-surface-light);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--outline);
 }
 
 [data-theme="light"] .current-weather-card .meta-text {
@@ -625,7 +652,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 .forecast-card .card-item:not(:last-child) {
-  margin-block-end: 12px;
+  margin-block-end: 8px;
 }
 
 .forecast-card .icon-wrapper {
@@ -643,24 +670,27 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 .highlights .m-icon { /* Icon size within highlight cards */
-  font-size: 3.2rem;
+  font-size: 2.4rem;
 }
 
 .highlight-list {
   display: grid;
-  gap: 20px;
+  gap: 12px;
 }
 
 .highlight-list .title-3 { /* "Today's Highlights" title */
   color: var(--on-surface-variant);
-  margin-block-end: 20px;
+  margin-block-end: 12px;
 }
 
 .highlights .card-sm { /* Style for individual highlight cards */
-  background-color: var(--black-alpha-10); /* Semi-transparent black */
+  background-color: var(--surface); /* Use surface color */
+  color: var(--on-surface);
   position: relative; /* Needed for absolute positioning of badge */
-  padding: 16px; /* Overrides base card-sm padding if needed */
-  border-radius: var(--radius-16); /* Ensure radius */
+  padding: 12px; /* Overrides base card-sm padding if needed */
+  border-radius: var(--radius-12); /* Ensure radius */
+  box-shadow: var(--shadow-1);
+  border: 1px solid var(--outline);
 }
 
 .highlight-card :is(.wrapper, .card-list, .card-item) {
@@ -671,13 +701,13 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 .highlight-card .wrapper { /* Wraps icon and value list */
   justify-content: space-between;
-  gap: 16px;
+  gap: 8px;
 }
 
 .highlight-card .card-list { /* List of values (e.g., PM2.5, SO2 OR Sunrise/Sunset) */
   flex-wrap: wrap;
   flex-grow: 1;
-  row-gap: 8px;
+  row-gap: 4px;
 }
 
 .highlight-card .card-item { /* Individual value item */
@@ -688,13 +718,14 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 .highlight-card .label-1 { /* Text like "PM2.5" */
   color: var(--on-surface-variant);
+  font-size: var(--label-2);
 }
 
 .badge { /* AQI Badge */
   position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 2px 12px;
+  top: 8px;
+  right: 8px;
+  padding: 2px 8px;
   border-radius: var(--radius-pill);
   font-weight: var(--weight-semiBold);
   font-size: var(--label-2); /* Smaller font size for badge */
@@ -714,54 +745,54 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .highlight-card.two .card-list {
   display: flex;
   justify-content: space-between; /* Key change: Push items apart */
-  align-items: center;           /* Align items vertically */
-  width: 100%;                   /* Use full width */
-  gap: 16px;                     /* Optional gap between items */
-  flex-wrap: nowrap;             /* Prevent wrapping */
-  flex-grow: 1;                  /* Ensure it takes available space */
-  row-gap: 0;                    /* Override base row-gap */
+  align-items: center;         /* Align items vertically */
+  width: 100%;               /* Use full width */
+  gap: 8px;                   /* Optional gap between items */
+  flex-wrap: nowrap;          /* Prevent wrapping */
+  flex-grow: 1;               /* Ensure it takes available space */
+  row-gap: 0;                 /* Override base row-gap */
 }
 
 /* Style the individual Sunrise/Sunset blocks (.card-item) */
 .highlight-card.two .card-item {
-  display: flex;                 /* Internal layout: icon beside text block */
-  align-items: center;           /* Vertically center icon and text block */
-  gap: 8px;                      /* Space between icon and text block */
-  flex-basis: auto;              /* Allow width based on content */
+  display: flex;             /* Internal layout: icon beside text block */
+  align-items: center;         /* Vertically center icon and text block */
+  gap: 4px;                   /* Space between icon and text block */
+  flex-basis: auto;            /* Allow width based on content */
   /* Reset properties that might cause stacking or incorrect width */
   width: auto;
   flex-wrap: nowrap;
   justify-content: flex-start; /* Align internal content left */
-  flex-grow: 0;                 /* Prevent items from growing unevenly */
+  flex-grow: 0;               /* Prevent items from growing unevenly */
   flex-shrink: 0;
 }
 
 /* Style the text block (div containing label and time) */
 .highlight-card.two .card-item > div {
   display: flex;
-  flex-direction: column;       /* Stack label and time vertically */
+  flex-direction: column;      /* Stack label and time vertically */
   align-items: flex-start;      /* Align text to the left */
 }
 
 /* Style the paragraphs (label and time) */
 .highlight-card.two .card-item p {
-  margin: 0;                    /* Remove default paragraph margins */
-  line-height: 1.3;             /* Adjust line height for clarity */
+  margin: 0;                   /* Remove default paragraph margins */
+  line-height: 1.2;             /* Adjust line height for clarity */
 }
 
 /* Style the label ("Sunrise", "Sunset") */
 .highlight-card.two .card-item .label-1 {
-   white-space: nowrap;          /* Prevent wrapping */
-   color: var(--on-surface-variant); /* Ensure correct color */
-   font-size: var(--label-1);    /* Ensure correct font size */
-   font-weight: var(--weight-regular); /* Use regular weight for label */
+    white-space: nowrap;        /* Prevent wrapping */
+    color: var(--on-surface-variant); /* Ensure correct color */
+    font-size: var(--label-2);    /* Ensure correct font size */
+    font-weight: var(--weight-regular); /* Use regular weight for label */
 }
 
 /* Style the time */
 .highlight-card.two .card-item .body-3 {
-   font-weight: var(--weight-semiBold); /* Make time stand out */
-   font-size: var(--body-2);      /* Use slightly larger font size for time */
-   white-space: nowrap;          /* Prevent time wrapping */
+    font-weight: var(--weight-semiBold); /* Make time stand out */
+    font-size: var(--body-2);      /* Use slightly larger font size for time */
+    white-space: nowrap;        /* Prevent time wrapping */
 }
 
 /* --- End Sunrise/Sunset Fix --- */
@@ -773,6 +804,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   margin-inline: -16px; /* Extend scroll area slightly */
   padding-inline: 12px; /* Add padding so cards don't touch edge */
   scroll-snap-type: x mandatory; /* Optional: snap scrolling */
+  padding-bottom: 8px; /* Add some bottom padding */
 }
 
 .slider-container::-webkit-scrollbar {
@@ -781,12 +813,12 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 .slider-list {
   display: flex;
-  gap: 12px;
+  gap: 8px; /* Smaller gap */
   padding-block: 4px; /* Add some vertical padding */
 }
 
 .slider-list:first-child { /* Hourly forecast list */
-  margin-block-end: 16px;
+  margin-block-end: 12px;
 }
 
 /* Remove min-width spacers if using padding on container */
@@ -794,8 +826,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .slider-list::after { ... } */
 
 .slider-item {
-  min-width: 110px;
-  flex: 1 1 100%;
+  min-width: 80px; /* Smaller width for Apple style */
+  flex: 0 0 auto; /* Prevent stretching */
   scroll-snap-align: start; /* Optional: snap scrolling */
 }
 
@@ -803,15 +835,24 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   background-color: var(--surface); /* Give cards a background */
   color: var(--on-surface);
   border-radius: var(--radius-12);
-  padding: 12px; /* Padding inside the card */
+  padding: 8px; /* Smaller padding inside the card */
   text-align: center;
 }
 
 .slider-item .weather-icon {
   margin-inline: auto;
-  margin-block: 12px;
-  width: 48px; /* Example fixed size */
-  height: 48px;
+  margin-block: 8px;
+  width: 32px; /* Smaller icon size */
+  height: 32px;
+}
+
+.slider-card .body-3 { /* Day or time */
+  font-size: var(--label-1);
+}
+
+.slider-card .body-2 { /* Temperature */
+  font-size: var(--body-3);
+  font-weight: var(--weight-semiBold);
 }
 
 /* LOADING */
@@ -838,9 +879,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 .loading::before { /* Spinner */
   content: "";
-  width: 48px;
-  height: 48px;
-  border: 4px solid var(--on-background);
+  width: 32px; /* Smaller spinner */
+  height: 32px;
+  border: 3px solid var(--on-background);
   border-block-start-color: transparent;
   border-radius: var(--radius-circle);
   animation: loading 500ms linear infinite;
@@ -874,42 +915,43 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 .error-content .m-icon { /* Error Icon */
-  font-size: 6rem;
+  font-size: 4rem; /* Smaller error icon */
   color: var(--primary);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .error-content .btn-primary {
-  margin-block-start: 20px;
+  margin-block-start: 16px;
+  font-size: var(--body-3);
 }
 
 /* WEATHER ALERTS */
 .weather-alerts { /* Section containing alerts */
-  margin: 20px auto;
-  padding: 16px;
-  max-width: 800px;
+  margin: 16px auto;
+  padding: 12px;
+  max-width: 600px; /* Adjust max width */
   width: 100%;
 }
 
 .weather-alert { /* Individual alert card */
   background-color: var(--surface);
   color: var(--on-surface);
-  border-radius: var(--radius-16);
-  padding: 16px;
-  margin-bottom: 16px;
+  border-radius: var(--radius-12);
+  padding: 12px;
+  margin-bottom: 12px;
   border: 1px solid var(--outline); /* Added border for better visibility */
 }
 
 .weather-alert h3 { /* Alert Title (e.g., Event Name) */
   font-size: var(--title-3);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: var(--primary); /* Highlight the event title */
 }
 
 .weather-alert p { /* Alert Description/Details */
   font-size: var(--body-3);
-  line-height: 1.4;
-  margin-bottom: 8px;
+  line-height: 1.3;
+  margin-bottom: 6px;
 }
 
 .weather-alert p:last-child {
@@ -944,98 +986,100 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   }
 
   .container { padding: 24px; }
-  .title-1 { --title-1: 2.4rem; }
-  .section > .title-2 { margin-block-end: 16px; }
-  .card-lg { padding: 24px; }
-  .card-sm { padding: 20px; } /* Remove display: grid; unless needed */
-  .badge { top: 20px; right: 20px; }
+  .title-1 { --title-1: 2rem; }
+  .section > .title-2 { margin-block-end: 12px; }
+  .card-lg { padding: 20px; }
+  .card-sm { padding: 16px; } /* Remove display: grid; unless needed */
+  .badge { top: 12px; right: 12px; }
 
   .header {
     /* Adjust header styles for tablet if necessary */
-    /* height: 96px; */ /* Example */
+    /* height: 64px; */ /* Example */
   }
   .header .btn-primary .span { display: block; }
-  .header .btn-primary { padding-inline: 16px 24px; }
-  .header-actions { gap: 24px; }
+  .header .btn-primary { padding-inline: 12px 16px; font-size: var(--body-2); }
+  .header-actions { gap: 12px; }
 
   /* Adjust search view animation origin if header size/layout changes */
-  .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
+  .search-view { clip-path: circle(3% at calc(100% - 100px) 28px); }
 
   main {
-     height: calc(100vh - 96px); /* Adjust height for potentially taller header */
-     height: calc(100svh - 96px);
-     /* padding-top: 96px; */ /* If header is fixed/sticky */
-   }
-  article.container {
-    padding-block-start: 0;
-    grid-template-columns: 280px minmax(0, 1fr); /* Two-column layout */
-    align-items: flex-start;
-    gap: 24px;
-   }
-  .content-left { /* Left column (current weather, forecast) */
-     position: sticky;
-     top: 24px; /* Add space from top */
-     /* Adjust max-height based on header and top offset */
-     /* max-height: calc(100svh - 96px - 24px); */
-     /* overflow-y: auto; */ /* Allow left column to scroll if needed */
+    height: calc(100vh - 64px); /* Adjust height for potentially taller header */
+    height: calc(100svh - 64px);
+    padding: 24px;
   }
-  .section:not(:last-child) { margin-block: 20px; } /* Adjust vertical spacing */
-  .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
+  article.container {
+    grid-template-columns: 240px minmax(0, 1fr); /* Two-column layout */
+    gap: 16px;
+  }
+  .content-left { /* Left column (current weather, forecast) */
+    position: sticky;
+    top: 24px; /* Add space from top */
+    /* Adjust max-height based on header and top offset */
+    /* max-height: calc(100svh - 64px - 24px); */
+    /* overflow-y: auto; */ /* Allow left column to scroll if needed */
+  }
+  .section:not(:last-child) { margin-block: 16px; } /* Adjust vertical spacing */
+  .forecast-card .card-item:not(:last-child) { margin-block-end: 12px; }
 
-  .highlight-list { grid-template-columns: 1fr 1fr; } /* Two columns for highlights */
+  .highlight-list { grid-template-columns: 1fr 1fr; gap: 16px; } /* Two columns for highlights */
   .highlight-card:nth-child(-n + 2) { /* AQI and Sunrise/Sunset */
     grid-column: span 2; /* Span full width */
-    height: 160px; /* Adjust height */
+    height: auto; /* Adjust height */
   }
   .highlight-card:nth-child(n + 3) { /* Feels Like, Wind, etc. */
-    height: 120px; /* Adjust height */
-   }
-  .highlights .m-icon { font-size: 3.6rem; }
+    height: auto; /* Adjust height */
+  }
+  .highlights .m-icon { font-size: 2.8rem; }
 
   /* AQI card items layout (unchanged) */
   .highlight-card.one .card-item {
-     width: 25%;
-     flex-direction: column-reverse;
-     gap: 8px;
-   }
-   /* Sunrise/Sunset layout already fixed globally */
+    width: 25%;
+    flex-direction: column-reverse;
+    gap: 4px;
+  }
+  /* Sunrise/Sunset layout already fixed globally */
 
   .slider-container { /* Make slider fit within right column */
-      margin-inline: 0; /* Remove negative margin */
-      padding-inline: 0; /* Remove padding */
-      border-radius: var(--radius-16); /* Add radius */
-      /* background-color: var(--surface); */ /* Optional: background for slider area */
+    margin-inline: 0; /* Remove negative margin */
+    padding-inline: 0; /* Remove padding */
+    border-radius: var(--radius-12); /* Add radius */
+    /* background-color: var(--surface); */ /* Optional: background for slider area */
+    padding-bottom: 12px;
   }
-   .slider-list {
-      padding-inline: 16px; /* Add padding back inside list */
-   }
+  .slider-list {
+    padding-inline: 16px; /* Add padding back inside list */
+  }
 
-  .hourly-forecast .card-sm { padding: 16px; } /* Adjust padding if needed */
+  .hourly-forecast .card-sm { padding: 12px; } /* Adjust padding if needed */
 }
 
 /* Desktop Styles */
 @media (min-width: 1200px) {
   :root {
-      --heading: 8rem;
-      --title-2: 2rem;
-      /* Increase base font size slightly for desktop? */
-      /* font-size: 10.5px; */
-   }
-  .container { padding: 40px; }
-  .title-1 { --title-1: 2.6rem; }
-  .card-lg { padding: 36px; }
-  .card-sm { padding: 24px; }
-  .title-2 { margin-block-end: 12px; }
+    --heading: 4rem;
+    --title-2: 1.7rem;
+    /* Increase base font size slightly for desktop? */
+    /* font-size: 10.5px; */
+  }
+  .container { padding: 32px; }
+  .title-1 { --title-1: 2.2rem; }
+  .card-lg { padding: 28px; }
+  .card-sm { padding: 20px; }
+  .title-2 { margin-block-end: 10px; }
   /* Sunrise/Sunset layout already fixed globally */
   /* .highlight-card.two .card-item { column-gap: 24px; } /* Remove if causing issues */
 
   .header {
-     position: relative; /* Can be relative if not sticky */
-     height: 120px; /* Taller header */
-     z-index: 4;
-   }
+    position: relative; /* Can be relative if not sticky */
+    height: 64px; /* Taller header */
+    z-index: 4;
+    background-color: rgba(0, 0, 0, 0.9); /* More opaque on desktop */
+    -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+  }
   .header .icon-btn { display: none; } /* Hide mobile search icon */
-  .logo img { width: 200px; }
+  .logo img { width: 140px; }
   .header .container { padding-block: 0; height: 100%; }
 
   /* Desktop Search View - Integrated into header */
@@ -1043,91 +1087,95 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
     all: unset; /* Reset mobile styles */
     display: block;
     position: relative;
-    width: 500px; /* Fixed width */
+    width: 400px; /* Fixed width */
     animation: none;
   }
-  .search-wrapper { border-block-end: none; }
-  .search-wrapper > .m-icon { display: block; } /* Show search icon inside field */
-   .search-wrapper .leading-icon { /* Adjust leading icon position */
-    left: 16px;
+  .search-wrapper { border-bottom: none; background-color: var(--surface); border-radius: var(--radius-pill); }
+  .search-wrapper > .m-icon { display: block; color: var(--on-surface-variant); font-size: 2rem; margin-left: 12px; } /* Show search icon inside field */
+  .search-wrapper .leading-icon { /* Adjust leading icon position */
+    left: 12px;
   }
-   .search-wrapper .icon-btn { display: none; } /* Hide back button */
+  .search-wrapper .icon-btn { display: none; } /* Hide back button */
 
   .search-field, .search-view .view-list {
-     background-color: var(--surface); /* Explicit background */
-   }
-  .search-field {
-     height: 56px;
-     line-height: 56px;
-     border-radius: var(--radius-28);
-     padding-inline: 56px 16px; /* Keep padding for icon */
-   }
-   /* Search Results Dropdown */
-  .search-result, .search-view:not(:focus-within) .search-result {
-     display: none; /* Hide results by default */
-   }
-  .search-view:focus-within .search-result.active {
-     display: block; /* Show results when input is focused and results exist */
-   }
-  .search-view:has(.search-result.active):focus-within .search-field {
-     border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
-     border-bottom-right-radius: 0;
-   }
-  .search-view .view-list {
-     position: absolute;
-     top: 100%; /* Position below search field */
-     left: 0;
-     width: 100%;
-     max-height: 360px;
-     border-radius: 0 0 var(--radius-28) var(--radius-28);
-     border: 1px solid var(--outline); /* Add border */
-     border-block-start: none; /* Remove top border */
-     overflow-y: auto; /* Keep overlay for webkit */
-     z-index: 5; /* Above other content */
-     box-shadow: var(--shadow-2); /* Add shadow */
+    background-color: transparent; /* Inherit from wrapper */
   }
-   .search-view .view-list:empty {
-     /* Optional: style for empty results */
-     /* min-height: 120px; */
-     /* display: none; */ /* Or hide it completely */
-   }
+  .search-field {
+    height: 40px;
+    line-height: 40px;
+    border-radius: var(--radius-pill);
+    padding-inline: 40px 16px; /* Keep padding for icon */
+    font-size: var(--body-3);
+  }
+  /* Search Results Dropdown */
+  .search-result, .search-view:not(:focus-within) .search-result {
+    display: none; /* Hide results by default */
+  }
+  .search-view:focus-within .search-result.active {
+    display: block; /* Show results when input is focused and results exist */
+  }
+  .search-view:has(.search-result.active):focus-within .search-field {
+    border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
+    border-bottom-right-radius: 0;
+    border-radius: var(--radius-16) var(--radius-16) 0 0;
+  }
+  .search-view .view-list {
+    position: absolute;
+    top: 100%; /* Position below search field */
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    border-radius: 0 0 var(--radius-16) var(--radius-16);
+    border: 1px solid var(--outline); /* Add border */
+    border-block-start: none; /* Remove top border */
+    overflow-y: auto; /* Keep overlay for webkit */
+    z-index: 5; /* Above other content */
+    box-shadow: var(--shadow-2); /* Add shadow */
+    background-color: var(--surface);
+  }
+  .search-view .view-list:empty {
+    /* Optional: style for empty results */
+    /* min-height: 120px; */
+    /* display: none; */ /* Or hide it completely */
+  }
 
   main {
-     height: calc(100vh - 120px); /* Adjust height for taller header */
-     height: calc(100svh - 120px);
-      /* padding-top: 120px; */ /* If header is fixed/sticky */
-   }
+    height: calc(100vh - 64px); /* Adjust height for taller header */
+    height: calc(100svh - 64px);
+    padding: 32px;
+  }
   article.container {
-     grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
-     gap: 40px;
-   }
-    .content-left {
-      top: 40px; /* Adjust sticky top offset */
-      /* max-height: calc(100svh - 120px - 40px); */ /* Adjust max height */
-    }
+    grid-template-columns: 300px minmax(0, 1fr); /* Wider left column */
+    gap: 32px;
+  }
+  .content-left {
+    top: 32px; /* Adjust sticky top offset */
+    /* max-height: calc(100svh - 64px - 32px); */ /* Adjust max height */
+  }
 
-  .current-weather .weather-icon { width: 80px; height: 80px;}
-  .forecast-card .title-2 { --title-2: 2.2rem; }
+  .current-weather .weather-icon { width: 72px; height: 72px;}
+  .forecast-card .title-2 { --title-2: 1.9rem; }
 
-  .highlight-card:nth-child(-n + 2) { height: 200px; } /* Taller main highlight cards */
-  .highlight-card:nth-child(n + 3) { height: 150px; } /* Taller secondary highlight cards */
-  .highlight-card .m-icon { font-size: 4rem; }
-  .slider-list { gap: 16px; }
+  .highlight-card:nth-child(-n + 2) { height: auto; } /* Taller main highlight cards */
+  .highlight-card:nth-child(n + 3) { height: auto; } /* Taller secondary highlight cards */
+  .highlight-card .m-icon { font-size: 3.2rem; }
+  .slider-list { gap: 12px; }
 }
 
 /* Wider Desktop Styles */
 @media (min-width: 1400px) {
   .highlight-list {
-     grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
-   }
-   .highlight-card:nth-child(-n + 2) {
-     grid-column: span 2; /* AQI/Sunrise still span 2 */
-     height: 200px;
-   }
-   .highlight-card:nth-child(n + 3) {
-     grid-column: span 1; /* Others take 1 column */
-     height: 150px;
-   }
+    grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
+    gap: 16px;
+  }
+  .highlight-card:nth-child(-n + 2) {
+    grid-column: span 2; /* AQI/Sunrise still span 2 */
+    height: auto;
+  }
+  .highlight-card:nth-child(n + 3) {
+    grid-column: span 1; /* Others take 1 column */
+    height: auto;
+  }
 }
 
 /* --- Light Mode Specific Overrides --- */
@@ -1140,20 +1188,20 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 {
   background-color: var(--surface-light);
   color: var(--on-surface-light);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Softer shadow for light mode */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Softer shadow for light mode */
   border: 1px solid var(--outline);
 }
 
 /* Specific card background overrides if needed */
 [data-theme="light"] .highlights .card-sm {
-  background-color: hsla(0, 0%, 0%, 0.05); /* Very light gray for highlight cards */
+  background-color: var(--surface-light); /* Very light gray for highlight cards */
 }
 
 
 [data-theme="light"] .icon-btn {
   background-color: #e8e8e8;
   color: var(--on-surface-light);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--outline);
 }
 
@@ -1178,16 +1226,21 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 [data-theme="light"] .search-view .view-list { /* Search results dropdown light */
-   background-color: var(--white);
-   border-color: var(--outline);
-   box-shadow: var(--shadow-2);
+    background-color: var(--white);
+    border-color: var(--outline);
+    box-shadow: var(--shadow-1);
 }
 
 /* Ensure base search field styles are set for dark mode too */
 .search-field {
-  background-color: var(--surface);
+  background-color: transparent; /* Inherit from wrapper in desktop */
   border: 1px solid var(--outline);
   color: var(--on-surface);
+}
+@media (max-width: 1199px) {
+  .search-field {
+    background-color: var(--surface); /* For mobile */
+  }
 }
 
 /* Scrollbar light mode */
