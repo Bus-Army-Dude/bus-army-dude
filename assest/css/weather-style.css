@@ -1,30 +1,32 @@
 :root {
-  /* Dark Mode Variables (Default) */
-  --primary: #b5a1e5;
-  --on-primary: #100e17;
-  --background: #131214;
-  --on-background: #eae6f2;
-  --surface: #1d1c1f;
-  --on-surface: #dddae5;
-  --on-surface-variant: #7b7980;
-  --on-surface-variant-2: #b9b6bf;
-  --outline: #3e3d40;
-  --bg-aqi-1: #89e589;
-  --on-bg-aqi-1: #1f331f;
-  --bg-aqi-2: #e5dd89;
-  --on-bg-aqi-2: #33311f;
-  --bg-aqi-3: #e5c089;
-  --on-bg-aqi-3: #332b1f;
-  --bg-aqi-4: #e58989;
-  --on-bg-aqi-4: #331f1f;
-  --bg-aqi-5: #e589b7;
-  --on-bg-aqi-5: #331f29;
-  --white: hsl(0, 0%, 100%);
+  /* --- Dark Mode Variables (Default) --- */
+  --primary-color: #b5a1e5; /* Primary accent color */
+  --on-primary-color: #100e17; /* Color on primary background */
+  --background-color: #131214; /* Main background color */
+  --on-background-color: #eae6f2; /* Color on main background */
+  --surface-color: #1d1c1f; /* Background color for cards, panels */
+  --on-surface-color: #dddae5; /* Color on surface backgrounds (primary text) */
+  --on-surface-variant-color: #7b7980; /* Secondary text/icon color on surface */
+  --on-surface-variant-color-2: #b9b6bf; /* Another secondary text/icon color */
+  --outline-color: #3e3d40; /* Border/outline color */
+  --white-color: hsl(0, 0%, 100%);
   --white-alpha-4: hsla(0, 0%, 100%, 0.04);
   --white-alpha-8: hsla(0, 0%, 100%, 0.08);
   --black-alpha-10: hsla(0, 0%, 0%, 0.1);
 
-  /* Gradients */
+  /* --- AQI Colors --- */
+  --aqi-excellent-bg: #89e589;
+  --on-aqi-excellent-bg: #1f331f;
+  --aqi-good-bg: #e5dd89;
+  --on-aqi-good-bg: #33311f;
+  --aqi-moderate-bg: #e5c089;
+  --on-aqi-moderate-bg: #332b1f;
+  --aqi-poor-bg: #e58989;
+  --on-aqi-poor-bg: #331f1f;
+  --aqi-very-poor-bg: #e589b7;
+  --on-aqi-very-poor-bg: #331f29;
+
+  /* --- Gradients --- */
   --gradient-1: linear-gradient(
     180deg,
     hsla(270, 5%, 7%, 0) 0%,
@@ -38,67 +40,67 @@
     hsl(260, 5%, 12%) 100%
   );
 
-  /* Typography */
+  /* --- Typography --- */
   --ff-nunito-sans: "Nunito Sans", sans-serif;
-  --heading: 5.6rem;
-  --title-1: 2rem;
-  --title-2: 1.8rem;
-  --title-3: 1.6rem;
-  --body-1: 2.2rem;
-  --body-2: 2rem;
-  --body-3: 1.6rem;
-  --label-1: 1.4rem;
-  --label-2: 1.2rem;
+  --heading-font-size: 5.6rem;
+  --title-1-font-size: 2rem;
+  --title-2-font-size: 1.8rem;
+  --title-3-font-size: 1.6rem;
+  --body-1-font-size: 2.2rem;
+  --body-2-font-size: 2rem;
+  --body-3-font-size: 1.6rem;
+  --label-1-font-size: 1.4rem;
+  --label-2-font-size: 1.2rem;
 
-  /* Font Weight */
+  /* --- Font Weight --- */
   --weight-regular: 400;
   --weight-semiBold: 600;
 
-  /* Box Shadow */
+  /* --- Box Shadow --- */
   --shadow-1: 0px 1px 3px hsla(0, 0%, 0%, 0.5);
   --shadow-2: 0px 3px 6px hsla(0, 0%, 0%, 0.4);
 
-  /* Border Radius */
+  /* --- Border Radius --- */
   --radius-28: 28px;
   --radius-16: 16px;
   --radius-pill: 500px;
   --radius-circle: 50%;
   --radius-12: 12px; /* Added radius for current weather card */
 
-  /* Transition */
+  /* --- Transition --- */
   --transition-short: 100ms ease;
 }
 
 /* Light Mode Variables */
 [data-theme="light"] {
-  --primary: #b5a1e5;
-  --on-primary: #100e17;
-  --background: #f8f8f8;
-  --on-background: #222;
-  --surface: #f0f0f0;
-  --on-surface: #333;
-  --on-surface-variant: #666;
-  --on-surface-variant-2: #888;
-  --outline: #ddd;
-  --bg-aqi-1: #c2f0c2;
-  --on-bg-aqi-1: #1f331f;
-  --bg-aqi-2: #f0eed2;
-  --on-bg-aqi-2: #33311f;
-  --bg-aqi-3: #f0e3d2;
-  --on-bg-aqi-3: #332b1f;
-  --bg-aqi-4: #f0c2c2;
-  --on-bg-aqi-4: #331f1f;
-  --bg-aqi-5: #f0c2e3;
-  --on-bg-aqi-5: #331f29;
-  --white: hsl(0, 0%, 100%);
+  --primary-color: #b5a1e5;
+  --on-primary-color: #100e17;
+  --background-color: #f8f8f8;
+  --on-background-color: #222;
+  --surface-color: #f0f0f0;
+  --on-surface-color: #333;
+  --on-surface-variant-color: #666;
+  --on-surface-variant-color-2: #888;
+  --outline-color: #ddd;
+  --aqi-excellent-bg: #c2f0c2;
+  --on-aqi-excellent-bg: #1f331f;
+  --aqi-good-bg: #f0eed2;
+  --on-aqi-good-bg: #33311f;
+  --aqi-moderate-bg: #f0e3d2;
+  --on-aqi-moderate-bg: #332b1f;
+  --aqi-poor-bg: #f0c2c2;
+  --on-aqi-poor-bg: #331f1f;
+  --aqi-very-poor-bg: #f0c2e3;
+  --on-aqi-very-poor-bg: #331f29;
+  --white-color: hsl(0, 0%, 100%);
   --white-alpha-4: hsla(0, 0%, 100%, 0.04);
   --white-alpha-8: hsla(0, 0%, 100%, 0.08);
   --black-alpha-10: hsla(0, 0%, 0%, 0.1);
 
   /* Specific overrides for light mode */
-  --surface-light: #f0f0f0;
-  --on-surface-light: #333;
-  --on-surface-variant-light: #666;
+  --surface-color-light: #f0f0f0;
+  --on-surface-color-light: #333;
+  --on-surface-variant-color-light: #666;
 }
 
 /* RESET */
