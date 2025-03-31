@@ -1,123 +1,110 @@
-/* General Modal Styles */
+/* settings-style.css */
+
+/* Settings Modal Base (Apple-Themed) */
 .settings-modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
-    top: 20px; /* Add space from the top */
-    bottom: 20px; /* Add space from the bottom */
+    top: 0;
     left: 0;
-    right: 0;
-    margin: auto; /* Center the modal horizontally */
-    max-height: calc(100vh - 40px); /* Prevent touching top/bottom */
     width: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Subtle dark overlay */
-    z-index: 9999;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(10px); /* Smooth blur effect */
-    overflow-y: auto; /* Allow scrolling for larger content */
-    padding: 20px;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
 .settings-modal.active {
-    display: flex; /* Show modal when active */
+    display: flex;
 }
 
-/* Modal Content */
 .settings-content {
-    background: linear-gradient(135deg, #1e1e2f, #3c3c4d); /* Clean gradient background */
-    padding: 25px;
-    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-radius: 14px;
+    padding: 24px;
+    width: 90%;
     max-width: 500px;
-    width: 100%; /* Scales content width dynamically */
-    color: #ffffff;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); /* Creates a floating effect */
-    position: relative;
-    overflow-y: auto; /* Ensure overflow is scrollable if needed */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
-/* Titles */
-.settings-section-title {
-    font-size: 1.6rem;
-    color: #00fff0; /* Vibrant aqua color for standout titles */
+/* Settings Header */
+.settings-content .title-2 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #1d1d1f;
     margin-bottom: 20px;
-    text-align: center;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    text-align: left;
+}
+
+/* Settings Sections */
+.settings-content .settings-sections {
+    margin-top: 20px;
+}
+
+.settings-content .settings-section {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.settings-content .settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.settings-content .settings-section-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 16px;
 }
 
 /* Setting Items */
-.setting-item {
-    margin-bottom: 20px;
-}
-
-.setting-label {
-    display: block;
-    font-size: 1.2rem;
-    color: #ffffff;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.settings-description {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* Dropdown Customization */
-.settings-select-container {
-    position: relative;
-    width: 100%;
-}
-
-.settings-select {
-    width: 100%;
-    padding: 12px 16px;
+.settings-content .setting-item {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start (left) */
+    padding: 14px 16px;
     border-radius: 10px;
-    background: linear-gradient(135deg, #333348, #1f1f2f); /* Sleek gradient background */
-    color: #00ffff; /* Aqua text color */
-    font-size: 1rem;
-    font-weight: bold;
-    border: 2px solid rgba(0, 255, 255, 0.5); /* Aqua border */
-    cursor: pointer;
-    appearance: none; /* Remove default browser dropdown styles */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Adds depth to dropdown */
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s ease;
+    margin: 8px 0;
 }
 
-.settings-select-container::after {
-    content: "▼"; /* Custom dropdown arrow */
-    font-size: 16px;
-    color: #00ffff;
-    position: absolute;
-    top: 50%;
-    right: 14px;
-    transform: translateY(-50%);
-    pointer-events: none;
+.settings-content .setting-item:hover {
+    background-color: #f0f0f0;
 }
 
-.settings-select:hover,
-.settings-select:focus {
-    border-color: #00ffff;
-    background: linear-gradient(135deg, #1f1f2f, #333348); /* Reverse gradient on hover */
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8); /* Glow effect */
-    outline: none;
+.settings-content .setting-label {
+    color: #333;
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin-bottom: 8px; /* Add space between label and toggle */
 }
 
-/* Dropdown Options */
-.settings-select option {
-    background: #333348; /* Match dropdown background */
-    color: #00ffff; /* Aqua text color for options */
-    font-size: 1rem;
-    padding: 10px;
+/* Settings Description */
+.settings-content .settings-description {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 8px; /* Add space between toggle and description */
+    line-height: 1.5;
+    opacity: 0.9;
 }
 
-/* Toggle Switch */
+/* Apple-Style Toggle Switch */
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 30px;
+    width: 51px;
+    height: 31px;
+    flex-shrink: 0;
+    margin-bottom: 8px; /* Add space between toggle and description */
 }
 
 .toggle-switch input {
@@ -133,87 +120,233 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #555, #333348);
-    transition: background 0.4s;
-    border-radius: 30px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    background-color: #e0e0e0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+    border: 1px solid #c0c0c0;
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 24px;
-    width: 24px;
+    height: 23px;
+    width: 23px;
+    top: 3px;
     left: 3px;
-    bottom: 3px;
     background-color: white;
-    transition: transform 0.4s;
+    -webkit-transition: .4s;
+    transition: .4s;
     border-radius: 50%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 input:checked + .toggle-slider {
-    background: linear-gradient(135deg, #00ffff, #0094ff);
+    background-color: #0a84ff;
+    border: 1px solid #0a84ff;
 }
 
 input:checked + .toggle-slider:before {
-    transform: translateX(28px); /* Slide the toggle */
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
 }
 
-/* Buttons */
-.settings-actions {
-    display: flex;
-    justify-content: space-between; /* Align buttons side by side */
-    margin-top: 20px;
+/* Hover and Focus States */
+.toggle-switch:hover .toggle-slider {
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-.settings-actions button {
-    padding: 12px 20px;
+input:checked + .toggle-slider:hover {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Select Inputs */
+.settings-content .settings-select {
+    width: 100%;
+    padding: 12px 14px;
     border-radius: 8px;
-    border: none;
-    font-size: 1rem;
+    border: 1px solid #ddd;
+    background-color: white;
+    color: #333;
+    font: inherit;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 36px;
 }
 
-.settings-save {
-    background: linear-gradient(135deg, #00a2ff, #00ffff);
-    color: #1f1f2f;
-    font-weight: bold;
-    text-transform: uppercase;
-    border: 2px solid #0094ff;
+.settings-content .settings-select:hover {
+    border-color: #0a84ff;
 }
 
-.settings-save:hover {
-    background: linear-gradient(135deg, #0094ff, #00ffff);
-    box-shadow: 0 5px 15px rgba(0, 162, 255, 0.6);
+.settings-content .settings-select:focus {
+    outline: none;
+    border-color: #0a84ff;
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2);
 }
 
-.settings-close {
-    background: linear-gradient(135deg, #ff3b3b, #ff7373);
+/* Action Buttons */
+.settings-content .settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.settings-content .settings-save,
+.settings-content .settings-close {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.settings-content .settings-save {
+    background-color: #0a84ff;
     color: white;
-    font-weight: bold;
 }
 
-.settings-close:hover {
-    background: linear-gradient(135deg, #e33333, #ff4f4f);
-    box-shadow: 0 5px 15px rgba(255, 59, 59, 0.6);
+.settings-content .settings-save:hover {
+    background-color: #007aff;
+    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
+.settings-content .settings-close {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.settings-content .settings-close:hover {
+    background-color: #e0e0e0;
+}
+
+/* Animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.settings-modal.active .settings-content {
+    animation: modalFadeIn 0.3s ease forwards;
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .settings-content {
+    background-color: var(--surface);
+    color: var(--on-surface);
+}
+
+[data-theme="dark"] .settings-content .title-2,
+[data-theme="dark"] .settings-content .settings-section-title,
+[data-theme="dark"] .settings-content .setting-label {
+    color: var(--on-surface);
+}
+
+[data-theme="dark"] .settings-content .settings-select {
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border-color: var(--outline);
+}
+
+[data-theme="dark"] .settings-content .setting-item:hover {
+    background-color: var(--outline);
+}
+
+[data-theme="dark"] .toggle-slider {
+    background-color: var(--on-surface-variant);
+    border: 1px solid var(--outline);
+}
+
+[data-theme="dark"] input:checked + .toggle-slider {
+    background-color: #0a84ff;
+    border: 1px solid #0a84ff;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
     .settings-content {
-        max-width: 95%; /* Adjust for smaller devices */
+        width: 95%;
         padding: 20px;
     }
 
-    .settings-section-title {
-        font-size: 1.4rem;
+    .settings-content .settings-actions {
+        flex-direction: column;
+        gap: 8px;
     }
 
-    .settings-save,
-    .settings-close {
-        font-size: 1rem;
-        padding: 12px;
+    .settings-content .settings-save,
+    .settings-content .settings-close {
+        width: 100%;
     }
+}
+
+/* Refresh Message */
+.refresh-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 12px 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    animation: slideUp 0.3s ease;
+}
+
+[data-theme="dark"] .refresh-message{
+    background-color: #333;
+    color: #eee;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 20px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.refresh-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.refresh-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.refresh-close svg {
+    width: 16px;
+    height: 16px;
 }
