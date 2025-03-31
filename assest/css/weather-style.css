@@ -1038,17 +1038,22 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       position: relative; /* Can be relative if not sticky */
       height: 120px; /* Taller header */
       z-index: 4;
-    }
+      display: flex; /* Enable flex layout for header container */
+      align-items: center;
+      justify-content: space-between; /* Distribute space between logo and actions */
+      padding: 0 40px; /* Add horizontal padding to the header */
+  }
   .header .icon-btn { display: none; } /* Hide mobile search icon */
   .logo img { width: 200px; }
-  .header .container { padding-block: 0; height: 100%; }
+  .header-actions { gap: 24px; }
 
   /* Desktop Search View - Integrated into header */
   .search-view, .search-view.active {
     all: unset; /* Reset mobile styles */
     display: block;
     position: relative;
-    width: 500px; /* Fixed width */
+    width: 40%; /* Adjusted width to take more space */
+    min-width: 300px; /* Minimum width for the search bar */
     animation: none;
   }
   .search-wrapper { border-block-end: none; }
@@ -1066,6 +1071,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       line-height: 56px;
       border-radius: var(--radius-28);
       padding-inline: 56px 16px; /* Keep padding for icon */
+      width: 100%; /* Ensure search field takes full width of its container */
     }
     /* Search Results Dropdown */
   .search-result, .search-view:not(:focus-within) .search-result {
@@ -1133,6 +1139,14 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       grid-column: span 1; /* Others take 1 column */
       height: 150px;
     }
+
+  /* Adjust search view width for wider screens */
+  .header {
+    padding: 0 60px; /* Increased header padding */
+  }
+  .search-view, .search-view.active {
+    width: 50%; /* Slightly wider on very large screens */
+  }
 }
 
 /* --- Light Mode Specific Overrides --- */
@@ -1217,9 +1231,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   border-radius: 0 0 var(--radius-16) var(--radius-16);
   box-shadow: var(--shadow-2);
   position: absolute;
-  top: 80px; /* Adjust based on search input height */
+  top: 56px; /* Adjust based on desktop search input height */
   left: 0;
-  width: 100%;
+  width: 100%; /* Make it the same width as the input */
   max-height: 200px; /* Adjust as needed */
   overflow-y: auto;
   z-index: 7; /* Increased z-index to be above view-list */
