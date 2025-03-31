@@ -485,6 +485,7 @@ body {
   /* Add scrolling if list is long */
   max-height: calc(100% - 80px); /* Adjust based on search field height */
   overflow-y: auto;
+  z-index: 7; /* Increased z-index */
 }
 
 .search-view .view-item {
@@ -524,6 +525,7 @@ article.container {
   grid-template-columns: minmax(0, 1fr);
   gap: 20px;
   flex-grow: 1; /* Added to make it take up available vertical space */
+  z-index: 1; /* Ensure main content is below the search dropdown */
 }
 
 /* Style scrollbar specifically for main for better control */
@@ -1154,8 +1156,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 
 [data-theme="light"] .icon-btn {
-  background-color: #e8e8e8;
-  color: var(--on-surface-light);
+  background-color: var(--on-background); /* Solid background */
+  color: var(--background); /* Ensure text color is visible */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--outline);
 }
@@ -1220,7 +1222,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   width: 100%;
   max-height: 200px; /* Adjust as needed */
   overflow-y: auto;
-  z-index: 6; /* Ensure it's above other elements */
+  z-index: 7; /* Increased z-index to be above view-list */
 }
 
 .search-view.active .search-result {
@@ -1255,20 +1257,23 @@ main {
 
 article.container {
   flex-grow: 1; /* Allow container to grow and fill vertical space */
+  z-index: 1; /* Ensure main content is below the search dropdown */
 }
 
-/* Light mode button colors */
+/* Light mode button colors - Non-transparent */
 [data-theme="light"] .btn-primary {
   background-color: var(--primary);
   color: var(--on-primary);
 }
 
 [data-theme="light"] .icon-btn {
-  background-color: var(--on-background); /* Use on-background for light mode icon buttons */
-  color: var(--background);
+  background-color: var(--on-background); /* Solid background */
+  color: var(--background); /* Ensure text color is visible */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--outline);
 }
 [data-theme="light"] .header-actions .icon-btn {
-    background-color: var(--white-alpha-8); /* Keep header icon buttons slightly transparent */
+    background-color: var(--surface-light); /* Solid background for header icons in light mode */
     color: var(--on-background);
 }
 [data-theme="light"] .header .btn-primary {
