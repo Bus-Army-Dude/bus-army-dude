@@ -27,7 +27,7 @@ export const url ={
     geo(query){
         return `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5`
     },
-    alerts(lat,lon){
-        return `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,daily&units=metric`
+     alerts(lat,lon){
+        return `https://api.openweathermap.org/data/3.0/onecall?lat=<span class="math-inline">\{lat\}&lon\=</span>{lon}&exclude=current,minutely,hourly,daily&units=metric`
     }
 }
