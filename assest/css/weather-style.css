@@ -704,15 +704,27 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 .highlight-card .card-list { /* List of values (e.g., PM2.5, SO2 OR Sunrise/Sunset) */
+  display: flex; /* Ensure items are in a row */
   flex-wrap: wrap;
   flex-grow: 1;
   row-gap: 4px;
+  gap: 10px; /* Adjust gap between AQI values */
+}
+
+.highlight-card.one .card-list { /* Specific to AQI */
+  justify-content: space-around; /* Distribute AQI values more evenly */
 }
 
 .highlight-card .card-item { /* Individual value item */
-  width: 50%; /* Default for AQI-style cards */
-  justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 4px;
+  text-align: center; /* Center AQI labels and values */
+}
+
+.highlight-card.one .card-item {
+  width: auto; /* Adjust width for AQI items */
 }
 
 .highlight-card .label-1 { /* Text like "PM2.5" */
@@ -756,7 +768,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .highlight-card.two .card-item {
   display: flex;             /* Internal layout: icon beside text block */
   align-items: center;         /* Vertically center icon and text block */
-  gap: 4px;                   /* Space between icon and text block */
+  gap: 6px;                   /* Space between icon and text block */
   flex-basis: auto;            /* Allow width based on content */
   /* Reset properties that might cause stacking or incorrect width */
   width: auto;
@@ -1033,9 +1045,13 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   /* AQI card items layout (unchanged) */
   .highlight-card.one .card-item {
-    width: 25%;
+    width: auto;
     flex-direction: column-reverse;
     gap: 4px;
+  }
+  .highlight-card.one .card-list {
+    justify-content: space-around;
+    gap: 16px; /* Adjust gap for tablet */
   }
   /* Sunrise/Sunset layout already fixed globally */
 
