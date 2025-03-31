@@ -2,21 +2,24 @@
 .settings-modal {
     display: none; /* Hidden by default */
     position: fixed;
-    top: 0;
+    top: 20px; /* Add space from the top */
+    bottom: 20px; /* Add space from the bottom */
     left: 0;
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
+    right: 0;
+    margin: auto; /* Center the modal horizontally */
+    max-height: calc(100vh - 40px); /* Prevent touching top/bottom */
+    width: 100%;
     background: rgba(0, 0, 0, 0.8); /* Subtle dark overlay */
     z-index: 9999;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(10px); /* Modern blur effect */
-    overflow-y: auto; /* Allows scrolling if content exceeds screen height */
-    padding: 20px; /* Adds padding around modal edges */
+    backdrop-filter: blur(10px); /* Smooth blur effect */
+    overflow-y: auto; /* Allow scrolling for larger content */
+    padding: 20px;
 }
 
 .settings-modal.active {
-    display: flex; /* Shows the modal when the 'active' class is applied */
+    display: flex; /* Show modal when active */
 }
 
 /* Modal Content */
@@ -24,7 +27,7 @@
     background: linear-gradient(135deg, #1e1e2f, #3c3c4d); /* Clean gradient background */
     padding: 25px;
     border-radius: 16px;
-    max-width: 500px; /* Keeps modal content compact */
+    max-width: 500px;
     width: 100%; /* Scales content width dynamically */
     color: #ffffff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); /* Creates a floating effect */
@@ -130,7 +133,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #555;
+    background: linear-gradient(135deg, #555, #333348);
     transition: background 0.4s;
     border-radius: 30px;
     border: 2px solid rgba(255, 255, 255, 0.5);
@@ -150,7 +153,7 @@
 }
 
 input:checked + .toggle-slider {
-    background-color: #00ffff;
+    background: linear-gradient(135deg, #00ffff, #0094ff);
 }
 
 input:checked + .toggle-slider:before {
@@ -158,6 +161,12 @@ input:checked + .toggle-slider:before {
 }
 
 /* Buttons */
+.settings-actions {
+    display: flex;
+    justify-content: space-between; /* Align buttons side by side */
+    margin-top: 20px;
+}
+
 .settings-actions button {
     padding: 12px 20px;
     border-radius: 8px;
