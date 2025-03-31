@@ -1,77 +1,81 @@
 /* General Modal Styles */
 .settings-modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none; /* Hidden by default, controlled by JavaScript */
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8); /* Dark transparent background */
     z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-modal.active {
+    display: flex; /* Shows the modal when the 'active' class is applied */
 }
 
 .settings-content {
-    background-color: #1f1f2e;
-    padding: 20px;
+    background-color: #27293d;
+    padding: 25px;
     border-radius: 12px;
     max-width: 600px;
     width: 90%;
     color: #fff;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow-y: auto;
 }
 
-/* Section Headings */
+/* Section Titles */
 .settings-section-title {
     font-size: 1.5rem;
-    color: #00ffff;
+    color: #00fff0;
     margin-bottom: 1rem;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
-/* Form Items */
+/* Input, Labels, Descriptions */
 .setting-item {
     margin-bottom: 20px;
 }
 
-/* Custom Dropdown Styling */
+.setting-label {
+    display: block;
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.settings-description {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Dropdown Customization */
 .settings-select {
     width: 100%;
     padding: 14px;
     border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(0, 255, 255, 0.3);
+    background-color: #333348;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #00ffff;
     font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     position: relative;
 }
 
-.settings-select:hover {
-    border-color: #00ffcc;
-}
-
-.settings-select:focus {
-    outline: none;
-    border-color: #00ffff;
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
-}
-
-/* Custom dropdown arrow */
 .settings-select-container {
     position: relative;
-    display: inline-block;
-    width: 100%;
 }
 
 .settings-select-container::after {
     content: "▼";
-    font-size: 12px;
+    font-size: 14px;
     color: #00ffff;
     position: absolute;
     top: 50%;
@@ -80,19 +84,18 @@
     pointer-events: none;
 }
 
-/* Custom Dropdown Option Styling */
-.settings-select option {
-    background-color: #1f1f2e;
-    color: #00ffff;
-    padding: 10px;
+.settings-select:hover,
+.settings-select:focus {
+    border-color: #00ffff;
+    outline: none;
 }
 
 /* Toggle Switch */
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 50px;
+    height: 26px;
 }
 
 .toggle-switch input {
@@ -108,7 +111,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #555;
     transition: .4s;
     border-radius: 34px;
 }
@@ -116,10 +119,10 @@
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
     background-color: white;
     transition: .4s;
     border-radius: 50%;
@@ -130,12 +133,12 @@ input:checked + .toggle-slider {
 }
 
 input:checked + .toggle-slider:before {
-    transform: translateX(26px);
+    transform: translateX(22px);
 }
 
-/* Button Styles */
+/* Buttons */
 .settings-actions button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 8px;
     border: none;
     font-size: 1rem;
@@ -145,7 +148,7 @@ input:checked + .toggle-slider:before {
 
 .settings-save {
     background-color: #00ffff;
-    color: #1f1f2e;
+    color: #27293d;
 }
 
 .settings-save:hover {
@@ -162,41 +165,9 @@ input:checked + .toggle-slider:before {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Additional form styles */
-.setting-label {
-    font-size: 1.1rem;
-    color: #ffffff;
-    margin-bottom: 6px;
-}
-
-.settings-description {
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* General form structure */
-.settings-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.settings-section {
-    margin-bottom: 20px;
-}
-
-/* Responsive design */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
     .settings-content {
         max-width: 90%;
-    }
-
-    .settings-save {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .settings-close {
-        width: 100%;
-        margin-top: 10px;
     }
 }
