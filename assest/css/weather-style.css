@@ -393,26 +393,32 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; /* Cover whole screen */
+  height: 80px; /* Match header height */
   background-color: var(--surface-color);
   color: var(--on-surface-color);
-  clip-path: circle(4% at calc(100% - 102px) 5%);
+  clip-path: circle(4% at calc(100% - 102px) 40px); /* Adjusted center for header height */
   opacity: 0;
   visibility: hidden;
   z-index: 4;
   transition: clip-path 500ms ease, visibility 0ms 500ms, opacity 500ms ease; /* Improved transition */
+  display: flex; /* Use flex to align items */
+  align-items: center;
+  padding-inline: 16px; /* Add padding for mobile view */
 }
 
 .search-view.active {
   opacity: 1;
   visibility: visible;
-  clip-path: circle(130% at 73% 5%);
+  clip-path: circle(100% at 50% 50%); /* Expand to full screen */
   transition: clip-path 500ms ease, visibility 0ms 0ms, opacity 500ms ease; /* Improved transition */
+  flex-direction: column; /* Stack search bar and results */
+  justify-content: flex-start; /* Align content from the top */
 }
 
 .search-wrapper {
   position: relative;
   border-block-end: 1px solid var(--outline-color);
+  width: 100%; /* Take full width on mobile */
 }
 
 .search-wrapper::before {
@@ -440,8 +446,8 @@ body {
 }
 
 .search-field {
-  height: 80px;
-  line-height: 80px;
+  height: 56px; /* Adjusted height for mobile */
+  line-height: 56px;
   padding-inline: 56px 16px;
   outline: none;
   width: 100%; /* Ensure it takes full width */
@@ -485,9 +491,10 @@ body {
 .search-view .view-list {
   padding-block: 8px 16px;
   /* Add scrolling if list is long */
-  max-height: calc(100% - 80px); /* Adjust based on search field height */
+  max-height: calc(100% - 56px); /* Adjust based on mobile search field height */
   overflow-y: auto;
   z-index: 7; /* Increased z-index */
+  width: 100%; /* Take full width on mobile */
 }
 
 .search-view .view-item {
@@ -778,7 +785,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .slider-container {
   overflow-x: auto;
   margin-inline: -16px; /* Extend scroll area slightly */
-  padding-inline: 12px; /* Add padding so cards don't touch edge */
+  padding-inline: 16px; /* Add padding so cards don't touch edge */
   scroll-snap-type: x mandatory; /* Optional: snap scrolling */
 }
 
@@ -1009,7 +1016,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   .slider-container { /* Make slider fit within right column */
         margin-inline: 0; /* Remove negative margin */
-        padding-inline: 0; /* Remove padding */
+        padding-inline: 16px; /* Add padding back inside list */
         border-radius: var(--radius-16); /* Add radius */
         /* background-color: var(--surface-color); */ /* Optional: background for slider area */
   }
@@ -1052,7 +1059,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   /* Desktop Search View - Integrated into header */
   .search-view, .search-view.active {
     all: unset; /* Reset mobile styles */
-    display: block;
+    display: flex; /* Use flex to align items horizontally in the header */
+    align-items: center; /* Vertically align items in the header */
     position: relative;
     width: 40%; /* Adjusted width to take more space */
     min-width: 300px; /* Minimum width for the search bar */
@@ -1072,7 +1080,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       height: 40px; /* Adjusted search field height */
       line-height: 40px; /* Adjusted line height */
       border-radius: var(--radius-28);
-      padding-inline: 16px 16px; /* Adjusted padding */
+      padding-inline: 36px 16px; /* Adjusted padding to accommodate leading icon */
       width: 100%; /* Ensure search field takes full width of its container */
       font-size: var(--body-3-font-size); /* Adjusted font size for search input */
     }
@@ -1278,7 +1286,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   border-radius: 0 0 var(--radius-16) var(--radius-16);
   box-shadow: var(--shadow-2);
   position: absolute;
-  top: 40px; /* Adjust based on desktop search input height */
+  top: 56px; /* Adjusted top for mobile search input height */
   left: 0;
   width: 100%; /* Make it the same width as the input */
   max-height: 200px; /* Adjust as needed */
@@ -1340,4 +1348,53 @@ article.container {
 [data-theme="light"] .header .btn-primary {
     background-color: var(--primary-color);
     color: var(--on-primary-color);
+}
+
+/* --- Fixes for Search Section --- */
+
+/* Mobile Search Dropdown Fix */
+.search-view.active {
+  clip-path: circle(100% at 50% 50%); /* Expand to full screen */
+  /* Remove top and left to ensure it starts at the top */
+  top: 0;
+  left: 0;
+  height: auto; /* Adjust height to content */
+}
+
+.search-view.active .search-wrapper {
+  margin-top: 80px; /* Push the search bar down below the header */
+}
+
+.search-view.active .view-list {
+  max-height: calc(100vh - 80px - 56px); /* Adjust max height based on header and input */
+}
+
+/* Desktop Search Dropdown Fix */
+@media (min-width: 1200px) {
+  .search-view.active {
+    display: flex; /* Keep flex for alignment in header */
+    align-items: center;
+  }
+
+  .search-view .search-result {
+    top: 40px; /* Adjusted top position for desktop search input */
+  }
+}
+
+/* Ensure search result is initially hidden */
+.search-view .search-result {
+  display: none;
+}
+
+/* Show search result when the search view is active AND the input is focused AND there are results (indicated by .active class on .search-result - this class needs to be added via JS) */
+.search-view.active:focus-within .search-result.active {
+  display: block;
+}
+
+/* --- Fix for "Today at" Cards --- */
+.slider-container {
+  overflow-x: auto;
+  margin-inline: -16px; /* Extend scroll area slightly */
+  padding-inline: 16px; /* Add padding so cards don't touch edge */
+  scroll-snap-type: x mandatory; /* Optional: snap scrolling */
 }
