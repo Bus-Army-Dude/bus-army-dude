@@ -479,8 +479,9 @@ body {
 
 /* MAIN */
 main {
-  height: calc(100vh - 80px);
-  height: calc(100svh - 80px);
+  height: calc(100vh - 80px); /* Fallback for older browsers */
+  height: calc(100svh - 80px); /* Use small viewport height */
+  overflow-y: auto; /* <<< FIX: Allow vertical scrolling if content overflows */
 }
 
 article.container {
@@ -488,7 +489,20 @@ article.container {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 20px;
+  /* Add padding-bottom if needed to prevent content sticking to the very bottom edge */
+  padding-bottom: 20px; /* Example padding */
 }
+
+/* Optional: Style scrollbar specifically for main if desired */
+/* main::-webkit-scrollbar {
+   width: 8px;
+}
+
+main::-webkit-scrollbar-thumb {
+  background-color: var(--white-alpha-8);
+  border-radius: var(--radius-pill);
+} */
+
 
 article.container::-webkit-scrollbar-thumb {
   background-color: transparent;
@@ -525,7 +539,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.current-weather-card .weapper {
+.current-weather-card .weapper { /* Note: Typo 'weapper', should be 'wrapper'? */
   margin-block: 12px;
   display: flex;
   gap: 8px;
@@ -737,8 +751,21 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   background-color: var(--background);
   place-items: center;
   z-index: 1;
-  display: none;
+  display: grid; /* Use grid instead of none to make it visible */
+  /* Ensure it covers content */
+  opacity: 1;
+  visibility: visible;
+  /* Add transition if needed */
+  /* transition: opacity 300ms ease; */
 }
+
+/* Control visibility via a class, e.g., .loading.is-active */
+/* .loading:not(.is-active) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+} */
+
 
 .loading::before {
   content: "";
@@ -762,64 +789,24 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  display: none;
+  display: flex; /* Use flex instead of none to make it visible */
+   /* Ensure it covers content */
+  opacity: 1;
+  visibility: visible;
   z-index: 8;
+  /* Add transition if needed */
+  /* transition: opacity 300ms ease; */
 }
+
+/* Control visibility via a class, e.g., .error-content.is-active */
+/* .error-content:not(.is-active) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+} */
 
 .error-content .btn-primary {
   margin-block-start: 20px;
-}
-
-/* WEATHER ALERTS */
-.weather-alerts {
-  margin: 20px auto;
-  padding: 16px;
-  max-width: 800px;
-  width: 100%;
-}
-
-.weather-alert {
-  background-color: var(--surface);
-  color: var(--on-surface);
-  border-radius: var(--radius-16);
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid var(--outline); /* Added border for better visibility */
-}
-
-.weather-alert h3 {
-  font-size: var(--title-3);
-  margin-bottom: 8px;
-  color: var(--primary); /* Highlight the event title */
-}
-
-.weather-alert p {
-  font-size: var(--body-3);
-  line-height: 1.4;
-  margin-bottom: 8px;
-}
-
-.weather-alert p:last-child {
-  margin-bottom: 0;
-}
-
-/* Light Mode for Weather Alerts */
-[data-theme="light"] .weather-alerts {
-  background-color: var(--background); /* Match light mode background */
-}
-
-[data-theme="light"] .weather-alert {
-  background-color: var(--surface-light);
-  color: var(--on-surface-light);
-  border-color: var(--outline);
-}
-
-[data-theme="light"] .weather-alert h3 {
-  color: var(--primary);
-}
-
-[data-theme="light"] .weather-alert p {
-  color: var(--on-surface-light);
 }
 
 /* MEDIA QUERIES */
@@ -834,9 +821,25 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .header .btn-primary { padding-inline: 16px 24px; }
   .header-actions { gap: 24px; }
   .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
-  main { height: calc(100vh - 96px); height: calc(100svh - 96px); }
-  article.container { padding-block-start: 0; grid-template-columns: 280px minmax(0, 1fr); align-items: flex-start; gap: 24px; }
-  .content-left { position: sticky; top: 0; }
+  main {
+     height: calc(100vh - 96px); /* Adjust height for larger header */
+     height: calc(100svh - 96px);
+     /* overflow-y: auto; is already set globally */
+   }
+  article.container {
+    padding-block-start: 0;
+    grid-template-columns: 280px minmax(0, 1fr);
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 24px; /* Adjust padding if needed */
+   }
+  .content-left {
+     position: sticky;
+     top: 0;
+     /* Consider adding max-height and overflow-y for left content if it can get long */
+     /* max-height: calc(100svh - 96px); */
+     /* overflow-y: auto; */
+  }
   .section:not(:last-child) { margin-block: 20px; }
   .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
   .highlight-list { grid-template-columns: 1fr 1fr; }
@@ -875,8 +878,21 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .search-view .view-list::-webkit-scrollbar-button { height: 20px; }
   .search-view:is(:hover, :has(.view-list):hover) { filter: drop-shadow(var(--shadow-1)); }
   .search-view:is(:focus-within, :has(.view-list):focus-within) { filter: drop-shadow(var(--shadow-2)); }
-  main { height: calc(100vh - 120px); height: calc(100svh - 120px); }
-  article.container { grid-template-columns: 360px minmax(0, 1fr); gap: 40px; }
+  main {
+    height: calc(100vh - 120px); /* Adjust height for larger header */
+    height: calc(100svh - 120px);
+    /* overflow-y: auto; is already set globally */
+   }
+  article.container {
+     grid-template-columns: 360px minmax(0, 1fr);
+     gap: 40px;
+     padding-bottom: 40px; /* Adjust padding if needed */
+   }
+   /* Adjust sticky top position if needed */
+   /* .content-left {
+     top: 20px; /* Example adjustment */
+     /* max-height: calc(100svh - 120px - 20px); Example max-height adjustment */
+   /* } */
   .current-weather .weather-icon { width: 80px; }
   .forecast-card .title-2 { --title-2: 2.2rem; }
   .highlight-card:nth-child(-n + 2) { height: 200px; }
@@ -926,10 +942,14 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   color: var(--on-surface-variant-light);
 }
 
+/* Ensure search field base styles are consistent */
 .search-field {
+  /* These might be defined earlier, ensure they are correct */
   background-color: var(--surface);
-  border: 1px solid var(--outline);
+  border: 1px solid var(--outline); /* Ensure border exists in dark mode too if intended */
+  color: var(--on-surface); /* Ensure text color is set */
 }
+
 
 [data-theme="light"] .current-weather-card .heading {
   color: var(--on-surface-light);
