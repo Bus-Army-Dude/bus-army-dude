@@ -809,6 +809,58 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   margin-block-start: 20px;
 }
 
+/* WEATHER ALERTS */
+.weather-alerts {
+  margin: 20px auto;
+  padding: 16px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.weather-alert {
+  background-color: var(--surface);
+  color: var(--on-surface);
+  border-radius: var(--radius-16);
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--outline); /* Added border for better visibility */
+}
+
+.weather-alert h3 {
+  font-size: var(--title-3);
+  margin-bottom: 8px;
+  color: var(--primary); /* Highlight the event title */
+}
+
+.weather-alert p {
+  font-size: var(--body-3);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.weather-alert p:last-child {
+  margin-bottom: 0;
+}
+
+/* Light Mode for Weather Alerts */
+[data-theme="light"] .weather-alerts {
+  background-color: var(--background); /* Match light mode background */
+}
+
+[data-theme="light"] .weather-alert {
+  background-color: var(--surface-light);
+  color: var(--on-surface-light);
+  border-color: var(--outline);
+}
+
+[data-theme="light"] .weather-alert h3 {
+  color: var(--primary);
+}
+
+[data-theme="light"] .weather-alert p {
+  color: var(--on-surface-light);
+}
+
 /* MEDIA QUERIES */
 @media (min-width: 768px) {
   .container { padding: 24px; }
