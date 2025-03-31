@@ -471,7 +471,7 @@ body {
 .search-wrapper .icon-btn { /* Style for the back button */
   background-color: transparent;
   box-shadow: none;
-    /* Ensure it's clickable */
+   /* Ensure it's clickable */
   position: absolute;
   top: 50%;
   left: 0; /* Position it left */
@@ -485,7 +485,6 @@ body {
   /* Add scrolling if list is long */
   max-height: calc(100% - 80px); /* Adjust based on search field height */
   overflow-y: auto;
-  z-index: 7; /* Increased z-index */
 }
 
 .search-view .view-item {
@@ -515,8 +514,6 @@ main {
   overflow-y: auto; /* Allow vertical scrolling if content overflows */
   /* Ensure main starts below the header if header is fixed/sticky */
   /* padding-top: 80px; */ /* If header is fixed/sticky */
-  display: flex; /* Added to enable flex-grow on container */
-  flex-direction: column; /* Added to enable flex-grow on container */
 }
 
 article.container {
@@ -524,13 +521,11 @@ article.container {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 20px;
-  flex-grow: 1; /* Added to make it take up available vertical space */
-  z-index: 1; /* Ensure main content is below the search dropdown */
 }
 
 /* Style scrollbar specifically for main for better control */
 main::-webkit-scrollbar {
-    width: 8px;
+   width: 8px;
 }
 
 main::-webkit-scrollbar-thumb {
@@ -548,7 +543,7 @@ article.container::-webkit-scrollbar-thumb {
 }
 
 article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
-    /* This rule might not be needed if main handles the primary scroll */
+   /* This rule might not be needed if main handles the primary scroll */
   background-color: var(--white-alpha-8);
 }
 
@@ -719,54 +714,54 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .highlight-card.two .card-list {
   display: flex;
   justify-content: space-between; /* Key change: Push items apart */
-  align-items: center;        /* Align items vertically */
-  width: 100%;            /* Use full width */
-  gap: 16px;              /* Optional gap between items */
-  flex-wrap: nowrap;          /* Prevent wrapping */
-  flex-grow: 1;          /* Ensure it takes available space */
-  row-gap: 0;            /* Override base row-gap */
+  align-items: center;           /* Align items vertically */
+  width: 100%;                   /* Use full width */
+  gap: 16px;                     /* Optional gap between items */
+  flex-wrap: nowrap;             /* Prevent wrapping */
+  flex-grow: 1;                  /* Ensure it takes available space */
+  row-gap: 0;                    /* Override base row-gap */
 }
 
 /* Style the individual Sunrise/Sunset blocks (.card-item) */
 .highlight-card.two .card-item {
-  display: flex;          /* Internal layout: icon beside text block */
-  align-items: center;        /* Vertically center icon and text block */
-  gap: 8px;              /* Space between icon and text block */
-  flex-basis: auto;        /* Allow width based on content */
+  display: flex;                 /* Internal layout: icon beside text block */
+  align-items: center;           /* Vertically center icon and text block */
+  gap: 8px;                      /* Space between icon and text block */
+  flex-basis: auto;              /* Allow width based on content */
   /* Reset properties that might cause stacking or incorrect width */
   width: auto;
   flex-wrap: nowrap;
   justify-content: flex-start; /* Align internal content left */
-  flex-grow: 0;          /* Prevent items from growing unevenly */
+  flex-grow: 0;                 /* Prevent items from growing unevenly */
   flex-shrink: 0;
 }
 
 /* Style the text block (div containing label and time) */
 .highlight-card.two .card-item > div {
   display: flex;
-  flex-direction: column;        /* Stack label and time vertically */
-  align-items: flex-start;    /* Align text to the left */
+  flex-direction: column;       /* Stack label and time vertically */
+  align-items: flex-start;      /* Align text to the left */
 }
 
 /* Style the paragraphs (label and time) */
 .highlight-card.two .card-item p {
-  margin: 0;              /* Remove default paragraph margins */
-  line-height: 1.3;          /* Adjust line height for clarity */
+  margin: 0;                    /* Remove default paragraph margins */
+  line-height: 1.3;             /* Adjust line height for clarity */
 }
 
 /* Style the label ("Sunrise", "Sunset") */
 .highlight-card.two .card-item .label-1 {
-    white-space: nowrap;          /* Prevent wrapping */
-    color: var(--on-surface-variant); /* Ensure correct color */
-    font-size: var(--label-1);      /* Ensure correct font size */
-    font-weight: var(--weight-regular); /* Use regular weight for label */
+   white-space: nowrap;          /* Prevent wrapping */
+   color: var(--on-surface-variant); /* Ensure correct color */
+   font-size: var(--label-1);    /* Ensure correct font size */
+   font-weight: var(--weight-regular); /* Use regular weight for label */
 }
 
 /* Style the time */
 .highlight-card.two .card-item .body-3 {
-    font-weight: var(--weight-semiBold); /* Make time stand out */
-    font-size: var(--body-2);        /* Use slightly larger font size for time */
-    white-space: nowrap;          /* Prevent time wrapping */
+   font-weight: var(--weight-semiBold); /* Make time stand out */
+   font-size: var(--body-2);      /* Use slightly larger font size for time */
+   white-space: nowrap;          /* Prevent time wrapping */
 }
 
 /* --- End Sunrise/Sunset Fix --- */
@@ -952,7 +947,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .title-1 { --title-1: 2.4rem; }
   .section > .title-2 { margin-block-end: 16px; }
   .card-lg { padding: 24px; }
-  .card-sm { padding: 20px; /* Remove display: grid; unless needed */ }
+  .card-sm { padding: 20px; } /* Remove display: grid; unless needed */
   .badge { top: 20px; right: 20px; }
 
   .header {
@@ -967,22 +962,22 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
 
   main {
-      height: calc(100vh - 96px); /* Adjust height for potentially taller header */
-      height: calc(100svh - 96px);
-      /* padding-top: 96px; */ /* If header is fixed/sticky */
-    }
+     height: calc(100vh - 96px); /* Adjust height for potentially taller header */
+     height: calc(100svh - 96px);
+     /* padding-top: 96px; */ /* If header is fixed/sticky */
+   }
   article.container {
     padding-block-start: 0;
     grid-template-columns: 280px minmax(0, 1fr); /* Two-column layout */
     align-items: flex-start;
     gap: 24px;
-  }
+   }
   .content-left { /* Left column (current weather, forecast) */
-      position: sticky;
-      top: 24px; /* Add space from top */
-      /* Adjust max-height based on header and top offset */
-      /* max-height: calc(100svh - 96px - 24px); */
-      /* overflow-y: auto; */ /* Allow left column to scroll if needed */
+     position: sticky;
+     top: 24px; /* Add space from top */
+     /* Adjust max-height based on header and top offset */
+     /* max-height: calc(100svh - 96px - 24px); */
+     /* overflow-y: auto; */ /* Allow left column to scroll if needed */
   }
   .section:not(:last-child) { margin-block: 20px; } /* Adjust vertical spacing */
   .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
@@ -994,26 +989,26 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   }
   .highlight-card:nth-child(n + 3) { /* Feels Like, Wind, etc. */
     height: 120px; /* Adjust height */
-    }
+   }
   .highlights .m-icon { font-size: 3.6rem; }
 
   /* AQI card items layout (unchanged) */
   .highlight-card.one .card-item {
-      width: 25%;
-      flex-direction: column-reverse;
-      gap: 8px;
-    }
-    /* Sunrise/Sunset layout already fixed globally */
+     width: 25%;
+     flex-direction: column-reverse;
+     gap: 8px;
+   }
+   /* Sunrise/Sunset layout already fixed globally */
 
   .slider-container { /* Make slider fit within right column */
-        margin-inline: 0; /* Remove negative margin */
-        padding-inline: 0; /* Remove padding */
-        border-radius: var(--radius-16); /* Add radius */
-        /* background-color: var(--surface); */ /* Optional: background for slider area */
+      margin-inline: 0; /* Remove negative margin */
+      padding-inline: 0; /* Remove padding */
+      border-radius: var(--radius-16); /* Add radius */
+      /* background-color: var(--surface); */ /* Optional: background for slider area */
   }
-    .slider-list {
-        padding-inline: 16px; /* Add padding back inside list */
-    }
+   .slider-list {
+      padding-inline: 16px; /* Add padding back inside list */
+   }
 
   .hourly-forecast .card-sm { padding: 16px; } /* Adjust padding if needed */
 }
@@ -1025,7 +1020,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       --title-2: 2rem;
       /* Increase base font size slightly for desktop? */
       /* font-size: 10.5px; */
-    }
+   }
   .container { padding: 40px; }
   .title-1 { --title-1: 2.6rem; }
   .card-lg { padding: 36px; }
@@ -1035,87 +1030,81 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   /* .highlight-card.two .card-item { column-gap: 24px; } /* Remove if causing issues */
 
   .header {
-      position: relative; /* Can be relative if not sticky */
-      height: 120px; /* Taller header */
-      z-index: 4;
-      display: flex; /* Enable flex layout for header container */
-      align-items: center;
-      justify-content: space-between; /* Distribute space between logo and actions */
-      padding: 0 40px; /* Add horizontal padding to the header */
-  }
+     position: relative; /* Can be relative if not sticky */
+     height: 120px; /* Taller header */
+     z-index: 4;
+   }
   .header .icon-btn { display: none; } /* Hide mobile search icon */
   .logo img { width: 200px; }
-  .header-actions { gap: 24px; }
+  .header .container { padding-block: 0; height: 100%; }
 
   /* Desktop Search View - Integrated into header */
   .search-view, .search-view.active {
     all: unset; /* Reset mobile styles */
     display: block;
     position: relative;
-    width: 40%; /* Adjusted width to take more space */
-    min-width: 300px; /* Minimum width for the search bar */
+    width: 500px; /* Fixed width */
     animation: none;
   }
   .search-wrapper { border-block-end: none; }
   .search-wrapper > .m-icon { display: block; } /* Show search icon inside field */
-    .search-wrapper .leading-icon { /* Adjust leading icon position */
+   .search-wrapper .leading-icon { /* Adjust leading icon position */
     left: 16px;
   }
-    .search-wrapper .icon-btn { display: none; } /* Hide back button */
+   .search-wrapper .icon-btn { display: none; } /* Hide back button */
 
   .search-field, .search-view .view-list {
-      background-color: var(--surface); /* Explicit background */
-    }
+     background-color: var(--surface); /* Explicit background */
+   }
   .search-field {
-      height: 56px;
-      line-height: 56px;
-      border-radius: var(--radius-28);
-      padding-inline: 56px 16px; /* Keep padding for icon */
-      width: 100%; /* Ensure search field takes full width of its container */
-    }
-    /* Search Results Dropdown */
+     height: 56px;
+     line-height: 56px;
+     border-radius: var(--radius-28);
+     padding-inline: 56px 16px; /* Keep padding for icon */
+   }
+   /* Search Results Dropdown */
   .search-result, .search-view:not(:focus-within) .search-result {
-      display: none; /* Hide results by default */
-    }
+     display: none; /* Hide results by default */
+   }
   .search-view:focus-within .search-result.active {
-      display: block; /* Show results when input is focused and results exist */
-    }
+     display: block; /* Show results when input is focused and results exist */
+   }
   .search-view:has(.search-result.active):focus-within .search-field {
-      border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
-      border-bottom-right-radius: 0;
-    }
+     border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
+     border-bottom-right-radius: 0;
+   }
   .search-view .view-list {
-      position: absolute;
-      top: 100%; /* Position below search field */
-      left: 0;
-      width: 100%;
-      max-height: 360px;
-      border-radius: 0 0 var(--radius-28) var(--radius-28);
-      border: 1px solid var(--outline); /* Add border */
-      border-block-start: none; /* Remove top border */
-      overflow-y: auto; /* Keep overlay for webkit */
-      z-index: 5; /* Above other content */
-      box-shadow: var(--shadow-2); /* Add shadow */
-    }
-    .search-view .view-list:empty {
-      /* Optional: style for empty results */
-      /* min-height: 120px; */
-      /* display: none; */ /* Or hide it completely */
-    }
+     position: absolute;
+     top: 100%; /* Position below search field */
+     left: 0;
+     width: 100%;
+     max-height: 360px;
+     border-radius: 0 0 var(--radius-28) var(--radius-28);
+     border: 1px solid var(--outline); /* Add border */
+     border-block-start: none; /* Remove top border */
+     overflow-y: auto; /* Keep overlay for webkit */
+     z-index: 5; /* Above other content */
+     box-shadow: var(--shadow-2); /* Add shadow */
+  }
+   .search-view .view-list:empty {
+     /* Optional: style for empty results */
+     /* min-height: 120px; */
+     /* display: none; */ /* Or hide it completely */
+   }
 
   main {
-      height: calc(100vh - 120px); /* Adjust height for taller header */
-      height: calc(100svh - 120px);
-        /* padding-top: 120px; */ /* If header is fixed/sticky */
-    }
+     height: calc(100vh - 120px); /* Adjust height for taller header */
+     height: calc(100svh - 120px);
+      /* padding-top: 120px; */ /* If header is fixed/sticky */
+   }
   article.container {
-      grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
-      gap: 40px;
+     grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
+     gap: 40px;
+   }
+    .content-left {
+      top: 40px; /* Adjust sticky top offset */
+      /* max-height: calc(100svh - 120px - 40px); */ /* Adjust max height */
     }
-      .content-left {
-        top: 40px; /* Adjust sticky top offset */
-        /* max-height: calc(100svh - 120px - 40px); */ /* Adjust max height */
-      }
 
   .current-weather .weather-icon { width: 80px; height: 80px;}
   .forecast-card .title-2 { --title-2: 2.2rem; }
@@ -1129,24 +1118,16 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 /* Wider Desktop Styles */
 @media (min-width: 1400px) {
   .highlight-list {
-      grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
-    }
-    .highlight-card:nth-child(-n + 2) {
-      grid-column: span 2; /* AQI/Sunrise still span 2 */
-      height: 200px;
-    }
-    .highlight-card:nth-child(n + 3) {
-      grid-column: span 1; /* Others take 1 column */
-      height: 150px;
-    }
-
-  /* Adjust search view width for wider screens */
-  .header {
-    padding: 0 60px; /* Increased header padding */
-  }
-  .search-view, .search-view.active {
-    width: 50%; /* Slightly wider on very large screens */
-  }
+     grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
+   }
+   .highlight-card:nth-child(-n + 2) {
+     grid-column: span 2; /* AQI/Sunrise still span 2 */
+     height: 200px;
+   }
+   .highlight-card:nth-child(n + 3) {
+     grid-column: span 1; /* Others take 1 column */
+     height: 150px;
+   }
 }
 
 /* --- Light Mode Specific Overrides --- */
@@ -1170,8 +1151,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 
 [data-theme="light"] .icon-btn {
-  background-color: var(--on-background); /* Solid background */
-  color: var(--background); /* Ensure text color is visible */
+  background-color: #e8e8e8;
+  color: var(--on-surface-light);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--outline);
 }
@@ -1197,9 +1178,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 [data-theme="light"] .search-view .view-list { /* Search results dropdown light */
-    background-color: var(--white);
-    border-color: var(--outline);
-    box-shadow: var(--shadow-2);
+   background-color: var(--white);
+   border-color: var(--outline);
+   box-shadow: var(--shadow-2);
 }
 
 /* Ensure base search field styles are set for dark mode too */
@@ -1218,79 +1199,4 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 [data-theme="light"] main::-webkit-scrollbar-track {
   background-color: transparent;
-}
-
-/* --- New styles to address the issues --- */
-
-/* Style the search result container */
-.search-view .search-result {
-  background-color: var(--surface); /* Use surface color for the container */
-  color: var(--on-surface);
-  border: 1px solid var(--outline);
-  border-top: none;
-  border-radius: 0 0 var(--radius-16) var(--radius-16);
-  box-shadow: var(--shadow-2);
-  position: absolute;
-  top: 56px; /* Adjust based on desktop search input height */
-  left: 0;
-  width: 100%; /* Make it the same width as the input */
-  max-height: 200px; /* Adjust as needed */
-  overflow-y: auto;
-  z-index: 7; /* Increased z-index to be above view-list */
-}
-
-.search-view.active .search-result {
-  display: block; /* Only show when search is active */
-}
-
-.search-view .search-result > div { /* Style individual results */
-  padding: 12px 16px;
-  font-size: var(--body-2);
-  cursor: pointer;
-}
-
-.search-view .search-result > div:hover {
-  background-color: var(--white-alpha-8); /* Subtle hover feedback */
-}
-
-[data-theme="light"] .search-view .search-result {
-  background-color: var(--surface-light);
-  color: var(--on-surface-light);
-  border-color: var(--outline);
-}
-
-[data-theme="light"] .search-view .search-result > div:hover {
-  background-color: #e0e0e0;
-}
-
-/* Ensure main takes full height */
-main {
-  display: flex;
-  flex-direction: column;
-}
-
-article.container {
-  flex-grow: 1; /* Allow container to grow and fill vertical space */
-  z-index: 1; /* Ensure main content is below the search dropdown */
-}
-
-/* Light mode button colors - Non-transparent */
-[data-theme="light"] .btn-primary {
-  background-color: var(--primary);
-  color: var(--on-primary);
-}
-
-[data-theme="light"] .icon-btn {
-  background-color: var(--on-background); /* Solid background */
-  color: var(--background); /* Ensure text color is visible */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--outline);
-}
-[data-theme="light"] .header-actions .icon-btn {
-    background-color: var(--surface-light); /* Solid background for header icons in light mode */
-    color: var(--on-background);
-}
-[data-theme="light"] .header .btn-primary {
-    background-color: var(--primary);
-    color: var(--on-primary);
 }
