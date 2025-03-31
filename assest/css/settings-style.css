@@ -4,65 +4,57 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(50, 50, 50, 0.9));
-    z-index: 999;
+    width: 100%; /* Use full width of viewport */
+    height: 100%; /* Use full height of viewport */
+    background: rgba(0, 0, 0, 0.8); /* Subtle dark overlay */
+    z-index: 9999;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(10px); /* Smooth background blur for a modern effect */
-    overflow: hidden;
+    backdrop-filter: blur(6px); /* Smooth blur effect */
+    overflow-y: auto; /* Allow scrolling for larger content */
 }
 
 .settings-modal.active {
-    display: flex; /* Show the modal when active */
+    display: flex; /* Show modal when active */
 }
 
 /* Modal Content */
 .settings-content {
-    background: linear-gradient(145deg, #1e1e2f, #3c3c4d); /* Depth effect with gradients */
-    padding: 30px;
+    background-color: #1e1e2f;
+    padding: 25px;
     border-radius: 16px;
-    max-width: 700px;
+    max-width: 600px;
     width: 90%;
-    color: #ffffff;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); /* Deep shadow for floating effect */
+    color: #f0f0f0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
     position: relative;
-    overflow-y: auto;
 }
 
-/* Section Titles */
+/* Titles */
 .settings-section-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: #4ae8c4; /* Vibrant aqua color */
     margin-bottom: 20px;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Subtle shadow for emphasis */
-    text-align: center;
-}
-
-/* Setting Items */
-.setting-item {
-    margin-bottom: 25px;
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    background-color: rgba(60, 60, 75, 0.4);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.setting-label {
-    font-size: 1.2rem;
-    color: #ffffff;
-    margin-bottom: 8px;
+    text-align: center; /* Align titles for a clean look */
     font-weight: bold;
 }
 
-.settings-description {
+/* Input and Labels */
+.setting-item {
+    margin-bottom: 25px;
+}
+
+.setting-label {
+    display: block;
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/.settings-description {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* Dropdown Customization */
@@ -73,36 +65,40 @@
 
 .settings-select {
     width: 100%;
-    padding: 14px 18px;
+    padding: 14px;
     border-radius: 10px;
-    background: linear-gradient(135deg, #1f1f2f, #34344c);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #4ae8c4;
+    background: #333348;
+    color: #00ffff;
     font-size: 1rem;
     font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    appearance: none; /* Remove browser styles */
     cursor: pointer;
-    appearance: none; /* Remove default browser styles */
-    position: relative;
-}
-
-.settings-select:hover,
-.settings-select:focus {
-    border-color: #4ae8c4;
-    outline: none;
-    box-shadow: 0 0 10px rgba(74, 232, 196, 0.8); /* Aqua glow */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .settings-select-container::after {
     content: "▼"; /* Custom dropdown arrow */
     font-size: 16px;
-    color: #4ae8c4;
+    color: #00ffff;
     position: absolute;
     top: 50%;
     right: 14px;
     transform: translateY(-50%);
     pointer-events: none;
+}
+
+.settings-select:hover,
+.settings-select:focus {
+    border-color: #00ffff;
+    outline: none;
+}
+
+/* Dropdown Overflow Fix */
+.settings-select {
+    overflow: visible; /* Ensures dropdown menu isn't cut off */
+    position: relative;
+    z-index: 10000; /* Forces dropdown to be above everything */
 }
 
 /* Toggle Switch */
@@ -126,10 +122,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #333348, #1f1f2f);
+    background: #555;
     transition: background 0.4s;
     border-radius: 30px;
-    border: 2px solid rgba(74, 232, 196, 0.5); /* Aqua outline */
+    border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 .toggle-slider:before {
@@ -146,7 +142,7 @@
 }
 
 input:checked + .toggle-slider {
-    background: linear-gradient(135deg, #1f1f2f, #4ae8c4); /* Active background */
+    background-color: #00ffff;
 }
 
 input:checked + .toggle-slider:before {
@@ -164,28 +160,26 @@ input:checked + .toggle-slider:before {
 }
 
 .settings-save {
-    background: linear-gradient(135deg, #00a2ff, #00ffff);
+    background: #00ffff;
     color: #1f1f2f;
     font-weight: bold;
-    text-transform: uppercase;
+    border: 2px solid #0094ff;
 }
 
 .settings-save:hover {
-    background: linear-gradient(135deg, #0094e3, #00e3e3);
-    transform: translateY(-2px); /* Lift effect */
-    box-shadow: 0 5px 15px rgba(0, 162, 255, 0.6);
+    background: #00a2ff;
+    box-shadow: 0 0 15px rgba(0, 162, 255, 0.8);
 }
 
 .settings-close {
-    background: linear-gradient(135deg, #ff3b3b, #ff7373);
+    background: #ff3b3b;
     color: white;
     font-weight: bold;
 }
 
 .settings-close:hover {
-    background: linear-gradient(135deg, #e33333, #ff4f4f);
-    transform: translateY(-2px); /* Lift effect */
-    box-shadow: 0 5px 15px rgba(255, 59, 59, 0.6);
+    background: #e33333;
+    box-shadow: 0 0 15px rgba(255, 59, 59, 0.8);
 }
 
 /* Mobile Responsiveness */
@@ -193,15 +187,5 @@ input:checked + .toggle-slider:before {
     .settings-content {
         max-width: 95%;
         padding: 20px;
-    }
-
-    .settings-section-title {
-        font-size: 1.4rem;
-    }
-
-    .settings-save,
-    .settings-close {
-        font-size: 1rem;
-        padding: 12px 16px;
     }
 }
