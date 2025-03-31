@@ -410,10 +410,12 @@ body {
 .search-view.active {
   opacity: 1;
   visibility: visible;
-  clip-path: circle(100% at 50% 50%); /* Expand to full screen */
+  /* clip-path: circle(100% at 50% 50%); /* Expand to full screen */ */
+  clip-path: circle(130% at 73% 5%); /* Use the clip-path from the second snippet */
   transition: clip-path 500ms ease, visibility 0ms 0ms, opacity 500ms ease; /* Improved transition */
   flex-direction: column; /* Stack search bar and results */
   justify-content: flex-start; /* Align content from the top */
+  height: 100%; /* Add full height */
 }
 
 .search-wrapper {
@@ -1011,18 +1013,18 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   .header {
     /* Adjust header styles for tablet if necessary */
-    /* height: 96px; */ /* Example */
+    height: 64px; /* Adjusted header height */
   }
   .header .btn-primary .span { display: block; }
   .header .btn-primary { padding-inline: 16px 24px; }
   .header-actions { gap: 24px; }
 
   /* Adjust search view animation origin if header size/layout changes */
-  .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
+  .search-view { clip-path: circle(3% at calc(100% - 273px) 32px); /* Adjusted clip-path center */ }
 
   main {
-      height: calc(100vh - 96px); /* Adjust height for potentially taller header */
-      height: calc(100svh - 96px);
+      height: calc(100vh - 64px); /* Adjust height for potentially taller header */
+      height: calc(100svh - 64px);
       /* padding-top: 96px; */ /* If header is fixed/sticky */
     }
   article.container {
@@ -1090,7 +1092,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   .header {
       position: relative; /* Can be relative if not sticky */
-      height: 80px; /* Adjusted header height to match screenshot */
+      height: 64px; /* Adjusted header height */
       z-index: 4;
       display: flex; /* Enable flex layout for header container */
       align-items: center;
@@ -1193,8 +1195,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   }
 
   main {
-      height: calc(100vh - 80px); /* Adjust height for taller header */
-      height: calc(100svh - 80px);
+      height: calc(100vh - 64px); /* Adjust height for potentially taller header */
+      height: calc(100svh - 64px);
         /* padding-top: 80px; */ /* If header is fixed/sticky */
     }
   article.container {
@@ -1202,7 +1204,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       gap: 40px;
     }
       .content-left {
-        top: 40px; /* Adjust sticky top offset */
+        top: 24px; /* Adjust sticky top offset */
         /* max-height: calc(100svh - 80px - 40px); */ /* Adjust max height */
       }
 
