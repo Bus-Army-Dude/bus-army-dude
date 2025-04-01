@@ -1836,7 +1836,7 @@ footer {
 .faq-question {
     font-size: 1.2rem;
     color: var(--text-color);
-    font-weight: 600;
+    font-weight: 700;  /* Increased weight for better readability */
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -1844,6 +1844,7 @@ footer {
     transition: color 0.3s ease, transform 0.2s ease;
 }
 
+/* FAQ Question Active State */
 .faq-item.active .faq-question {
     color: var(--button-text);
 }
