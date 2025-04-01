@@ -1941,9 +1941,10 @@ footer {
  }
 
  .faq-item.active .faq-answer {
-  padding: 0 1.5rem 1.5rem;
-  /* max-height: 1000px; */ /* Removed max-height to allow full content */
+  padding: 1.5rem; /* Increased padding all around */
+  max-height: none; /* Ensure no max-height restriction */
   opacity: 1;
+  overflow: visible; /* Allow content to overflow if necessary */
  }
 
  .faq-item.active .faq-icon {
@@ -1980,6 +1981,10 @@ footer {
   height: 20px;
   font-size: 0.875rem;
   }
+
+  .faq-item.active .faq-answer {
+  padding: 1.25rem; /* Adjust padding in media query as well */
+  }
  }
 
  @media screen and (max-width: 480px) {
@@ -1996,6 +2001,10 @@ footer {
   width: 18px;
   height: 18px;
   margin-left: 0.5rem;
+  }
+
+  .faq-item.active .faq-answer {
+  padding: 1rem; /* Adjust padding in media query as well */
   }
  }
 
