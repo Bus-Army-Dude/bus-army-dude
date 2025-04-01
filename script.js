@@ -190,33 +190,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Modern FAQ functionality
 document.addEventListener('DOMContentLoaded', function() {
     const faqItems = document.querySelectorAll('.faq-item');
 
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
 
         question.addEventListener('click', () => {
-            // Check if this item is already active
             const isActive = item.classList.contains('active');
 
-            // Close all FAQ items first
+            // Close all FAQ items first (with closing animation)
             faqItems.forEach(faqItem => {
-                // Add a closing animation class if it was active
-                if (faqItem.classList.contains('active')) {
+                if (faqItem !== item && faqItem.classList.contains('active')) {
                     faqItem.classList.add('closing');
                     setTimeout(() => {
                         faqItem.classList.remove('closing');
-                    }, 300); // Match this with your CSS transition time
+                        faqItem.classList.remove('active');
+                        faqItem.querySelector('.faq-answer').style.maxHeight = null; // Ensure it closes
+                    }, 300); // Match with CSS transition
                 }
-                faqItem.classList.remove('active');
             });
 
-            // If the clicked item wasn't active before, open it
-            if (!isActive) {
+            // Toggle the clicked item
+            if (isActive) {
+                item.classList.remove('active');
+                answer.style.maxHeight = null; // Collapse the answer
+            } else {
                 item.classList.add('active');
-                // Scroll the item into view if it's not fully visible
+                answer.style.maxHeight = answer.scrollHeight + 'px'; // Expand the answer
+                // Scroll into view if the item is not fully visible
                 const rect = item.getBoundingClientRect();
                 const isInViewport = (
                     rect.top >= 0 &&
@@ -233,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Close FAQ when clicking outside
+    // Close all FAQs if clicked outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.faq-item')) {
             faqItems.forEach(item => {
@@ -241,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.add('closing');
                     setTimeout(() => {
                         item.classList.remove('active', 'closing');
+                        item.querySelector('.faq-answer').style.maxHeight = null; // Ensure the content collapses
                     }, 300);
                 }
             });
