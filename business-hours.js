@@ -50,6 +50,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Display current timezone on the page
+    const timezoneElement = document.getElementById("timezone");
+    if (timezoneElement) {
+        timezoneElement.textContent = `Your current timezone is: ${userTimezone}`;
+    }
+
     // Get current date/time in user's timezone
     const currentDate = new Date();
     const currentDay = currentDate.toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
@@ -91,11 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Check if currently within temporary unavailable period
         if (temporaryHours[todayDate]) {
-            for (const { from, to, reason } of temporaryHours[todayDate]) {
+            for (const { from, to } of temporaryHours[todayDate]) {
                 const fromMinutes = parseTime(from);
                 const toMinutes = parseTime(to);
                 if (currentMinutesEST >= fromMinutes && currentMinutesEST < toMinutes) {
-                    return `Temporarily Unavailable (${reason})`;
+                    return "Temporarily Unavailable";
                 }
             }
         }
@@ -167,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (activeTemp) {
-            tempReasonElement.textContent = activeTemp.reason;
+            tempReasonElement.textContent = "Temporarily Unavailable";
             tempHoursElement.textContent = `${convertTimeToTimezone(activeTemp.from, userTimezone)} - ${convertTimeToTimezone(activeTemp.to, userTimezone)}`;
             tempAlertElement.style.display = "block";
         } else {
