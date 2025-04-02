@@ -20,7 +20,7 @@ const tiktokShoutouts = {
         { username: 'raisingramsey2023', isVerified: false, followers: '1,203', nickname: 'RaisingRamsey2023', bio: 'The Adventures of Raising Ramsey. Come along as we watch Ramsey Play and Learn', profilePic: 'images/raisingramsey2023.jpeg' },
         { username: 'jerridc4', isVerified: false, followers: '482', nickname: 'Jerrid Cook', bio: '@raisingramsey2023, @benz.the beard', profilePic: 'images/jerridc4.jpeg' },
         { username: 'missfoxy0142', isVerified: false, followers: '63', nickname: 'Miss Foxy 0142', bio: "hey I'm Miss Foxy/Rose!I also struggle with depression F1 cures it for me🏎️🏁", profilePic: 'images/missfoxy0142.jpeg' },
-        { username: 'officalbusarmydude', isVerified: false, followers: '55', nickname: 'Bus Army Dude', bio: 'https://bus-army-dude.github.io/bus-army-dude/index.html', profilePic: 'images/busarmydude.jpg' },
+        { username: 'bus.army.dude', isVerified: false, followers: '1', nickname: 'Bus Army Dude', bio: 'No bio yet.', profilePic: 'images/busarmydude.jpg' },
         // Add more shoutouts here...
      ],
   lastUpdatedTime: '2025-04-01T10:07:05', // Manually set the last updated date and time
