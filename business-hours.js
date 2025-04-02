@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const todayDate = currentDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
     const currentDay = currentDate.toLocaleString("en-US", { weekday: "long", timeZone: userTimeZone }).toLowerCase();
 
-    // Function to convert ET time to user's local time zone
+    // Function to convert ET time to user's local time zone (generic, works for any time zone)
     function convertETtoUserTime(etTimeStr) {
         if (!etTimeStr) return "Closed";
 
@@ -55,19 +55,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if (period === 'PM' && hours !== 12) estHours += 12;
         if (period === 'AM' && hours === 12) estHours = 0;
 
-        // Create Date object in ET
+        // Create Date object in ET (set it to 12:00 PM EST on today's date)
         const etDate = new Date();
         etDate.setHours(estHours, minutes, 0, 0);
 
-        // Convert to the user's local time zone (considering daylight saving time, etc.)
-        const userTime = etDate.toLocaleString("en-US", {
-            timeZone: userTimeZone, // Use the detected user's time zone
+        // Convert to user's local time zone using Intl.DateTimeFormat
+        return new Intl.DateTimeFormat("en-US", {
+            timeZone: userTimeZone,
             hour: "numeric",
             minute: "2-digit",
             hour12: true
-        });
-
-        return userTime;
+        }).format(etDate);
     }
 
     // Check if business is open
