@@ -82,21 +82,16 @@ window.onload = function() {
     }, 1000);  // Update both every second
 };
 
-    // Summer Solstice countdown with timezone adjustment
+// Summer Solstice countdown with timezone adjustment
 function updateNewYearCountdown() {
     const now = new Date();
-    
-    // Get user's local timezone offset in minutes
-    const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000; // convert to milliseconds
 
     // Set the target date (Summer Solstice 2025) in UTC
     // June 20, 2025, at 22:42 UTC is the precise moment of the Summer Solstice
-    const summerSolsticeUTC = new Date('2025-06-09T13:00:00Z'); // 'Z' denotes UTC time
-    
-    // Adjust the Summer Solstice date to the user's local timezone
-    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
+    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // 'Z' denotes UTC time
 
-    const diff = summerSolstice - now;
+    // Get time difference in milliseconds
+    const diff = summerSolsticeUTC - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -139,6 +134,8 @@ function updateNewYearCountdown() {
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
+    if (!clock) return; // Prevent errors if element is missing
+
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
     const valueStr = value.toString().padStart(2, '0');
