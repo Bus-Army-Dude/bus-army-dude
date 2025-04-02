@@ -313,32 +313,33 @@ export const updateWeather = (lat, lon) => {
                     applySettings(savedSettings);
                 }
 
-                // Fetch and display weather alerts
-                fetchData(url.weatherAlerts(lat, lon), displayWeatherAlerts);
+                // Fetch and display weather alerts from weather.gov
+                fetchData(url.weatherGovAlerts(lat, lon), displayWeatherAlertsGov);
             });
         });
     });
 };
 
-// Function to display weather alerts
-const displayWeatherAlerts = (alertData) => {
-    const alertContainer = document.querySelector('.weather-alerts'); // Get the alert container
+// Function to display weather alerts from weather.gov
+const displayWeatherAlertsGov = (alertData) => {
+    const alertContainer = document.querySelector('.weather-alerts');
 
     if (alertContainer) {
-        if (alertData && alertData.alerts && alertData.alerts.length > 0) {
+        if (alertData && alertData.features && alertData.features.length > 0) {
             alertContainer.innerHTML = ''; // Clear any previous alerts
-            alertData.alerts.forEach(alert => {
+            alertData.features.forEach(feature => {
+                const properties = feature.properties;
                 const alertDiv = document.createElement('div');
-                alertDiv.classList.add('weather-alert'); // You can style this with CSS
+                alertDiv.classList.add('weather-alert');
 
                 const eventHeading = document.createElement('h3');
-                eventHeading.textContent = alert.event;
+                eventHeading.textContent = properties.event;
 
                 const descriptionParagraph = document.createElement('p');
-                descriptionParagraph.textContent = alert.description;
+                descriptionParagraph.textContent = properties.description;
 
-                const startTime = new Date(alert.start * 1000).toLocaleString();
-                const endTime = new Date(alert.end * 1000).toLocaleString();
+                const startTime = new Date(properties.effective).toLocaleString();
+                const endTime = new Date(properties.expires).toLocaleString();
                 const timeParagraph = document.createElement('p');
                 timeParagraph.textContent = `Starts: ${startTime}, Ends: ${endTime}`;
 
@@ -348,7 +349,7 @@ const displayWeatherAlerts = (alertData) => {
                 alertContainer.appendChild(alertDiv);
             });
         } else {
-            console.log("No alerts logic executed"); // Added console log
+            console.log("No active weather alerts from weather.gov for this area.");
             alertContainer.innerHTML = '<p>No active weather alerts for this area.</p>';
         }
     } else {
