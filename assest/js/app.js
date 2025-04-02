@@ -314,7 +314,7 @@ export const updateWeather = (lat, lon) => {
                 }
 
                 // Fetch and display weather alerts
-                fetchData(url.alerts(lat, lon), displayWeatherAlerts);
+                fetchData(url.weatherAlerts(lat, lon), displayWeatherAlerts);
             });
         });
     });
@@ -348,6 +348,7 @@ const displayWeatherAlerts = (alertData) => {
                 alertContainer.appendChild(alertDiv);
             });
         } else {
+            console.log("No alerts logic executed"); // Added console log
             alertContainer.innerHTML = '<p>No active weather alerts for this area.</p>';
         }
     } else {
