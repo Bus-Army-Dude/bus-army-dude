@@ -21,11 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Temporary Unavailability
     const temporaryHours = {
         "2025-04-02": [
-            { from: "6:30 PM", to: "7:30 PM", reason: "Personal Break" }
+            { from: "6:30 PM", to: "7:00 PM", reason: "Personal Break" }
         ],
-        "2025-04-03": [
-            { from: "2:00 PM", to: "3:00 PM", reason: "Doctor's Appointment" }
-        ]
     };
 
     // Get user's current timezone
