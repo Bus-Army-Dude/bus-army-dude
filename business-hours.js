@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Check for temporary unavailability
     const tempAlertElement = document.getElementById("temporary-alert");
     const tempHoursElement = document.getElementById("temporary-hours");
+    const tempReasonElement = document.getElementById("temporary-reason");
 
     if (temporaryHours[todayDate]) {
         const activeTemp = temporaryHours[todayDate].find(({ from, to }) => {
@@ -168,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (activeTemp) {
+            tempReasonElement.textContent = activeTemp.reason;
             tempHoursElement.textContent = `${convertTimeToTimezone(activeTemp.from, userTimezone)} - ${convertTimeToTimezone(activeTemp.to, userTimezone)}`;
             tempAlertElement.style.display = "block";
         } else {
