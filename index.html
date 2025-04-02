@@ -295,6 +295,7 @@ s0.parentNode.insertBefore(s1,s0);
     <h1>Bus Army Dude's Merch Store</h1>
     <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>    
     <p><strong>Your current timezone:</strong> <span id="user-timezone"></span></p>
+    
     <h2>Business Hours</h2>
     <div id="hours-container"></div>
 
@@ -307,8 +308,9 @@ s0.parentNode.insertBefore(s1,s0);
     <p class="status"><strong>Status:</strong> <span id="open-status"></span></p>
 
     <!-- Temporarily Unavailable Message -->
-    <div class="unavailable-container" id="unavailable-message" style="display: none;">
-        <p>Temporarily Unavailable. Please check back later.</p>
+    <div id="temporary-alert" style="display: none;">
+        <p><strong>Temporarily Unavailable:</strong> <span id="temporary-reason"></span></p>
+        <p><strong>Unavailable Time:</strong> <span id="temporary-hours"></span></p>
     </div>
 </div>
         
