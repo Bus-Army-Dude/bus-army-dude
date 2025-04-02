@@ -46,10 +46,10 @@ export const getDate = function(dateUnix, timezone) {
 export const getTime = function(timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000);
     const settings = JSON.parse(localStorage.getItem("weatherSettings")) || { timeFormat: false };
-    
+
     const hours = date.getUTCHours();
     const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-    
+
     if (settings.timeFormat) { // 24-hour format
         return `${hours.toString().padStart(2, '0')}:${minutes}`;
     } else { // 12-hour format
@@ -67,9 +67,9 @@ export const getTime = function(timeUnix, timezone) {
 export const getHours = function(timeUnix, timezone) {
     const date = new Date((timeUnix + timezone) * 1000);
     const settings = JSON.parse(localStorage.getItem("weatherSettings")) || { timeFormat: false };
-    
+
     const hours = date.getUTCHours();
-    
+
     if (settings.timeFormat) { // 24-hour format
         return hours.toString().padStart(2, '0');
     } else { // 12-hour format
@@ -135,7 +135,7 @@ export const getWeatherDesc = function(code) {
 export const convertUnit = function(value, type) {
     const settings = JSON.parse(localStorage.getItem("weatherSettings")) || {
         temperature: "celsius",
-        windSpeed: "kmh",
+        windSpeed: "ms",
         pressure: "hpa"
     };
 
@@ -149,10 +149,10 @@ export const convertUnit = function(value, type) {
                 default:
                     return { value, unit: "°C" };
             }
-        
+
         case "windSpeed":
             switch(settings.windSpeed) {
-                case "kmh":
+                case "kph":
                     return { value: value * 3.6, unit: "km/h" };
                 case "mph":
                     return { value: value * 2.237, unit: "mph" };
@@ -164,7 +164,7 @@ export const convertUnit = function(value, type) {
                 default:
                     return { value, unit: "m/s" };
             }
-        
+
         case "pressure":
             switch(settings.pressure) {
                 case "inhg":
@@ -174,11 +174,11 @@ export const convertUnit = function(value, type) {
                 case "kpa":
                     return { value: value / 10, unit: "kPa" };
                 case "mbar":
-                    return { value: value, unit: "mbar" };
+                    return { value, unit: "mbar" };
                 default:
                     return { value, unit: "hPa" };
             }
-        
+
         default:
             return { value, unit: "" };
     }
