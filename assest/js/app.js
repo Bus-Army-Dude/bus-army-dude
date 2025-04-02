@@ -246,7 +246,7 @@ export const updateWeather = (lat, lon) => {
                     tempLi.classList.add("slider-item");
                     tempLi.innerHTML = `
                         <div class="card card-sm slider-card">
-                            <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
+                            <p class="body-3">${module.getHours(dateTimeUnix, timezone)}</p>
                             <img src="./assest/images/weather_icons/${icon}.png" width="48" height="48" loading="lazy" alt="${description}" class="weather-icon" title="${description}">
                             <p class="body-3" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
                         </div>
@@ -257,7 +257,7 @@ export const updateWeather = (lat, lon) => {
                     windLi.classList.add("slider-item");
                     windLi.innerHTML = `
                         <div class="card card-sm slider-card">
-                            <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
+                            <p class="body-3">${module.getHours(dateTimeUnix, timezone)}</p>
                             <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform: rotate(${windDirection - 180}deg)">
                             <p class="body-3" data-wind-speed data-original-value="${windSpeed}">${Math.round(windSpeed)} m/s</p>
                         </div>
@@ -509,6 +509,24 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
         }
     });
+
+    // Save settings
+    if (saveBtn) {
+        saveBtn.addEventListener("click", () => {
+            const settings = {
+                darkMode: controls.theme?.checked || false,
+                temperature: controls.temp?.value || "celsius",
+                windSpeed: controls.speed?.value || "ms",
+                pressure: controls.pressure?.value || "hpa",
+                distance: controls.distance?.value || "km",
+                timeFormat: controls.time?.checked || false,
+                locationServices: controls.location?.checked || true
+            };
+            localStorage.setItem("weatherSettings", JSON.stringify(settings));
+            applySettings(settings);
+            settingsModal.classList.remove("active");
+        });
+    }
 });
 
 export const error404 = () => {
