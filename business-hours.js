@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Get user's current timezone
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const userTimezoneElement = document.getElementById("user-timezone");
+    userTimezoneElement.textContent = userTimezone; // Populate the user's timezone in the UI
 
     // Helper function to convert time from EST to user's timezone
     function convertTimeToTimezone(timeStr, toTimezone) {
@@ -48,12 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
             minute: '2-digit',
             hour12: true
         });
-    }
-
-    // Display current timezone on the page
-    const timezoneElement = document.getElementById("timezone");
-    if (timezoneElement) {
-        timezoneElement.textContent = `Your current timezone is: ${userTimezone}`;
     }
 
     // Get current date/time in user's timezone
@@ -152,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Check for temporary unavailability
     const tempAlertElement = document.getElementById("temporary-alert");
-    const tempReasonElement = document.getElementById("temporary-reason");
     const tempHoursElement = document.getElementById("temporary-hours");
 
     if (temporaryHours[todayDate]) {
@@ -173,7 +168,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (activeTemp) {
-            tempReasonElement.textContent = "Temporarily Unavailable";
             tempHoursElement.textContent = `${convertTimeToTimezone(activeTemp.from, userTimezone)} - ${convertTimeToTimezone(activeTemp.to, userTimezone)}`;
             tempAlertElement.style.display = "block";
         } else {
