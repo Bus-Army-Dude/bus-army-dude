@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Temporary unavailability periods (Eastern Time)
     const unavailableTimesET = {
         "2025-04-02": [
+            { start: "1:00 PM", end: "2:00 PM", reason: "Test" },
             { start: "2:00 PM", end: "3:00 PM", reason: "Group Meeting" },
             { start: "4:30 PM", end: "5:30 PM", reason: "Work Meeting" }
         ]
