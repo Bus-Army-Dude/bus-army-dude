@@ -13,20 +13,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Holiday hours
     const holidayHours = {
         "2025-01-01": { name: "New Year's Day", hours: "Closed" },
-        "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
         "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
-        "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
         "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 12:00 PM" },
-        "2025-05-26": { name: "Memorial Day", hours: "Closed" },
-        "2025-07-04": { name: "Independence Day", hours: "Closed" },
-        "2025-09-01": { name: "Labor Day", hours: "Closed" },
-        "2025-10-13": { name: "Columbus Day", hours: "10:00 AM - 11:00 PM" },
-        "2025-11-11": { name: "Veterans Day", hours: "Closed" },
-        "2025-11-27": { name: "Thanksgiving Day", hours: "Closed" },
-        "2025-12-24": { name: "Christmas Eve", hours: "10:00 AM - 06:00 PM" },
-        "2025-12-25": { name: "Christmas Day", hours: "Closed" },
-        "2025-12-31": { name: "New Year's Eve", hours: "10:00 AM - 06:00 PM" },
-        "2026-01-01": { name: "New Year's Day", hours: "Closed" }
+        "2025-12-25": { name: "Christmas Day", hours: "Closed" }
+    };
+
+    // Temporary Unavailability
+    const temporaryHours = {
+        "2025-04-02": [
+            { from: "6:30 PM", to: "7:30 PM", reason: "Personal Break" }
+        ],
+        "2025-04-03": [
+            { from: "2:00 PM", to: "3:00 PM", reason: "Doctor's Appointment" }
+        ]
     };
 
     // Get user's current timezone
@@ -41,59 +40,42 @@ document.addEventListener("DOMContentLoaded", function () {
         if (period === 'PM' && hours !== 12) estHours += 12;
         if (period === 'AM' && hours === 12) estHours = 0;
 
-        const dateEST = new Date('2025-03-15T' + estHours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':00-04:00');
+        const dateEST = new Date(`2025-04-02T${estHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00-04:00`);
 
-        const targetTime = dateEST.toLocaleString('en-US', {
+        return dateEST.toLocaleString('en-US', {
             timeZone: toTimezone,
             hour: 'numeric',
             minute: '2-digit',
             hour12: true
         });
-
-        return targetTime;
     }
-
-    // Set user's timezone display
-    document.getElementById("user-timezone").textContent = userTimezone;
 
     // Get current date/time in user's timezone
     const currentDate = new Date();
-    const currentDay = currentDate.toLocaleString("en-US", {
-        weekday: "long",
-        timeZone: userTimezone
-    }).toLowerCase();
+    const currentDay = currentDate.toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
+    const todayDate = currentDate.toLocaleDateString("en-CA", { timeZone: userTimezone });
 
-    const todayDate = currentDate.toLocaleDateString("en-CA", {
-        timeZone: userTimezone
-    });
-
-    // Function to check if the business is currently open (comparing times in EST)
+    // Function to check if the business is currently open
     function isBusinessOpen(dayOfWeek, todayDate) {
-        const now = new Date();
-        const nowEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const nowEST = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
         const currentHourEST = nowEST.getHours();
         const currentMinuteEST = nowEST.getMinutes();
+        const currentMinutesEST = currentHourEST * 60 + currentMinuteEST;
 
-        let openTimeEST;
-        let closeTimeEST;
+        let openTimeEST, closeTimeEST;
 
         if (holidayHours[todayDate]) {
             const holidayDetails = holidayHours[todayDate];
-            if (holidayDetails.hours === "Closed") {
-                return "Closed";
-            } else {
-                [openTimeEST, closeTimeEST] = holidayDetails.hours.split(" - ");
-            }
+            if (holidayDetails.hours === "Closed") return "Closed";
+            [openTimeEST, closeTimeEST] = holidayDetails.hours.split(" - ");
         } else {
             const todayHoursEST = businessHoursEST[dayOfWeek];
-            if (!todayHoursEST) return "Closed";
+            if (!todayHoursEST || !todayHoursEST.open) return "Closed";
             openTimeEST = todayHoursEST.open;
             closeTimeEST = todayHoursEST.close;
         }
 
-        if (!openTimeEST || !closeTimeEST) {
-            return "Closed";
-        }
+        if (!openTimeEST || !closeTimeEST) return "Closed";
 
         const parseTime = (timeStr) => {
             const [time, period] = timeStr.split(' ');
@@ -101,18 +83,24 @@ document.addEventListener("DOMContentLoaded", function () {
             let hour = hours;
             if (period === 'PM' && hours !== 12) hour += 12;
             if (period === 'AM' && hours === 12) hour = 0;
-            return { hour, minute: minutes };
+            return hour * 60 + minutes;
         };
 
-        const openTime = parseTime(openTimeEST);
-        const closeTime = parseTime(closeTimeEST);
+        const openMinutes = parseTime(openTimeEST);
+        const closeMinutes = parseTime(closeTimeEST);
 
-        const currentMinutes = currentHourEST * 60 + currentMinuteEST;
-        const openMinutes = openTime.hour * 60 + openTime.minute;
-        const closeMinutes = closeTime.hour * 60 + closeTime.minute;
+        // Check if currently within temporary unavailable period
+        if (temporaryHours[todayDate]) {
+            for (const { from, to, reason } of temporaryHours[todayDate]) {
+                const fromMinutes = parseTime(from);
+                const toMinutes = parseTime(to);
+                if (currentMinutesEST >= fromMinutes && currentMinutesEST < toMinutes) {
+                    return `Temporarily Unavailable (${reason})`;
+                }
+            }
+        }
 
-        const isOpen = (currentMinutes >= openMinutes && currentMinutes < closeMinutes);
-        return isOpen ? "Open" : "Closed";
+        return currentMinutesEST >= openMinutes && currentMinutesEST < closeMinutes ? "Open" : "Closed";
     }
 
     // Render business hours
@@ -138,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const statusElement = document.getElementById("open-status");
     const status = isBusinessOpen(currentDay, todayDate);
     statusElement.textContent = status;
-    statusElement.className = status.toLowerCase();
+    statusElement.className = status.toLowerCase().replace(/\s+/g, "-");
 
     // Check for holiday hours
     const holidayAlertElement = document.getElementById("holiday-alert");
@@ -147,15 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (holidayHours[todayDate]) {
         const holidayDetails = holidayHours[todayDate];
-        let specialHours;
-        if (holidayDetails.hours === "Closed") {
-            specialHours = "Closed";
-        } else {
-            const [open, close] = holidayDetails.hours.split(" - ");
-            const convertedOpen = convertTimeToTimezone(open, userTimezone);
-            const convertedClose = convertTimeToTimezone(close, userTimezone);
-            specialHours = `${convertedOpen} - ${convertedClose}`;
-        }
+        let specialHours = holidayDetails.hours === "Closed" ? "Closed" : holidayDetails.hours;
 
         holidayNameElement.textContent = holidayDetails.name;
         holidayHoursElement.textContent = specialHours;
@@ -164,7 +144,39 @@ document.addEventListener("DOMContentLoaded", function () {
         holidayAlertElement.style.display = "none";
     }
 
-    // Helper function to capitalize first letter
+    // Check for temporary unavailability
+    const tempAlertElement = document.getElementById("temporary-alert");
+    const tempReasonElement = document.getElementById("temporary-reason");
+    const tempHoursElement = document.getElementById("temporary-hours");
+
+    if (temporaryHours[todayDate]) {
+        const activeTemp = temporaryHours[todayDate].find(({ from, to }) => {
+            const nowEST = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+            const currentMinutesEST = nowEST.getHours() * 60 + nowEST.getMinutes();
+
+            const parseTime = (timeStr) => {
+                const [time, period] = timeStr.split(' ');
+                const [hours, minutes] = time.split(':').map(Number);
+                let hour = hours;
+                if (period === 'PM' && hours !== 12) hour += 12;
+                if (period === 'AM' && hours === 12) hour = 0;
+                return hour * 60 + minutes;
+            };
+
+            return currentMinutesEST >= parseTime(from) && currentMinutesEST < parseTime(to);
+        });
+
+        if (activeTemp) {
+            tempReasonElement.textContent = activeTemp.reason;
+            tempHoursElement.textContent = `${convertTimeToTimezone(activeTemp.from, userTimezone)} - ${convertTimeToTimezone(activeTemp.to, userTimezone)}`;
+            tempAlertElement.style.display = "block";
+        } else {
+            tempAlertElement.style.display = "none";
+        }
+    } else {
+        tempAlertElement.style.display = "none";
+    }
+
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
