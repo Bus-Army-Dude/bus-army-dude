@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Business hours in Eastern Time (ET)
-    const businessHoursET = {
+    // Business hours in EST (Eastern Standard Time)
+    const businessHoursEST = {
         sunday: { open: null, close: null },  // Closed all day
         monday: { open: "10:00 AM", close: "11:00 PM" },
         tuesday: { open: "10:00 AM", close: "11:00 PM" },
@@ -10,21 +10,23 @@ document.addEventListener("DOMContentLoaded", function () {
         saturday: { open: "10:00 AM", close: "11:00 PM" }
     };
 
-    // Holiday hours in Eastern Time (ET)
+    // Holiday hours in Eastern Time
     const holidayHours = {
         "2025-01-01": { name: "New Year's Day", hours: "Closed" },
-        "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "10:00 AM - 6:00 PM" },
-        "2025-02-17": { name: "Presidents' Day", hours: "10:00 AM - 6:00 PM" },
-        "2025-04-20": { name: "Easter Sunday", hours: "Closed" },
-        "2025-05-26": { name: "Memorial Day", hours: "10:00 AM - 6:00 PM" },
+        "2025-01-20": { name: "Martin Luther King Jr. Day", hours: "Closed" },
+        "2025-02-17": { name: "Presidents' Day", hours: "Closed" },
+        "2025-02-27": { name: "Bus Army Dude's Birthday", hours: "Closed" },
+        "2025-03-15": { name: "Out Of Office", hours: "10:00 AM - 12:00 PM" },
+        "2025-05-26": { name: "Memorial Day", hours: "Closed" },
         "2025-07-04": { name: "Independence Day", hours: "Closed" },
-        "2025-09-01": { name: "Labor Day", hours: "10:00 AM - 6:00 PM" },
-        "2025-10-13": { name: "Columbus Day", hours: "10:00 AM - 6:00 PM" },
-        "2025-11-11": { name: "Veterans Day", hours: "10:00 AM - 6:00 PM" },
+        "2025-09-01": { name: "Labor Day", hours: "Closed" },
+        "2025-10-13": { name: "Columbus Day", hours: "10:00 AM - 11:00 PM" },
+        "2025-11-11": { name: "Veterans Day", hours: "Closed" },
         "2025-11-27": { name: "Thanksgiving Day", hours: "Closed" },
-        "2025-12-24": { name: "Christmas Eve", hours: "10:00 AM - 6:00 PM" },
+        "2025-12-24": { name: "Christmas Eve", hours: "10:00 AM - 06:00 PM" },
         "2025-12-25": { name: "Christmas Day", hours: "Closed" },
-        "2025-12-31": { name: "New Year's Eve", hours: "10:00 AM - 6:00 PM" }
+        "2025-12-31": { name: "New Year's Eve", hours: "10:00 AM - 06:00 PM" },
+        "2026-01-01": { name: "New Year's Day", hours: "Closed" }
     };
 
     // Temporary unavailability periods (Eastern Time)
@@ -35,87 +37,113 @@ document.addEventListener("DOMContentLoaded", function () {
         ]
     };
 
-    // Detect user's time zone
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    document.getElementById("user-timezone").textContent = userTimeZone;
+    // Get user's current timezone
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // Get current date/time in user's local time zone
-    const currentDate = new Date();
-    const todayDate = currentDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-    const currentDay = currentDate.toLocaleString("en-US", { weekday: "long", timeZone: userTimeZone }).toLowerCase();
+    // Helper function to convert time from EST to user's timezone
+    function convertTimeToTimezone(timeStr, toTimezone) {
+        if (!timeStr) return "Closed";
 
-    // Function to convert ET time to user's local time zone
-    function convertETtoUserTime(etTimeStr) {
-        if (!etTimeStr) return "Closed";
-
-        const nowET = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-        const [time, period] = etTimeStr.split(' ');
+        const nowEST = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const [time, period] = timeStr.split(' ');
         const [hours, minutes] = time.split(':').map(Number);
+
         let estHours = hours;
         if (period === 'PM' && hours !== 12) estHours += 12;
         if (period === 'AM' && hours === 12) estHours = 0;
 
-        nowET.setHours(estHours, minutes, 0, 0);
+        nowEST.setHours(estHours, minutes, 0, 0);
 
-        return new Intl.DateTimeFormat("en-US", {
-            timeZone: userTimeZone,
-            hour: "numeric",
-            minute: "2-digit",
+        return new Intl.DateTimeFormat('en-US', {
+            timeZone: toTimezone,
+            hour: 'numeric',
+            minute: '2-digit',
             hour12: true
-        }).format(nowET);
+        }).format(nowEST);
     }
 
-    // Check if business is open
-    function isBusinessOpen(dayOfWeek, todayDate) {
-        const nowET = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-        const currentMinutesET = nowET.getHours() * 60 + nowET.getMinutes();
+    // Set user's timezone display
+    document.getElementById("user-timezone").textContent = userTimezone;
 
-        let openTimeET, closeTimeET;
+    // Get current date/time in user's timezone
+    const currentDate = new Date();
+    const currentDay = currentDate.toLocaleString("en-US", {
+        weekday: "long",
+        timeZone: userTimezone
+    }).toLowerCase();
+
+    const todayDate = currentDate.toLocaleDateString("en-CA", {
+        timeZone: userTimezone
+    });
+
+    // Function to check if the business is currently open (comparing times in EST)
+    function isBusinessOpen(dayOfWeek, todayDate) {
+        const now = new Date();
+        const nowEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const currentHourEST = nowEST.getHours();
+        const currentMinuteEST = nowEST.getMinutes();
+        const currentMinutesEST = currentHourEST * 60 + currentMinuteEST;
+
+        let openTimeEST;
+        let closeTimeEST;
 
         if (holidayHours[todayDate]) {
-            if (holidayHours[todayDate].hours === "Closed") return "Closed";
-            [openTimeET, closeTimeET] = holidayHours[todayDate].hours.split(" - ");
+            const holidayDetails = holidayHours[todayDate];
+            if (holidayDetails.hours === "Closed") {
+                return "Closed";
+            } else {
+                [openTimeEST, closeTimeEST] = holidayDetails.hours.split(" - ");
+            }
         } else {
-            const todayHoursET = businessHoursET[dayOfWeek];
-            if (!todayHoursET || !todayHoursET.open || !todayHoursET.close) return "Closed";
-            openTimeET = todayHoursET.open;
-            closeTimeET = todayHoursET.close;
+            const todayHoursEST = businessHoursEST[dayOfWeek];
+            if (!todayHoursEST || todayHoursEST.open === null || todayHoursEST.close === null) return "Closed";
+            openTimeEST = todayHoursEST.open;
+            closeTimeEST = todayHoursEST.close;
         }
 
-        // Convert ET time to minutes
+        if (!openTimeEST || !closeTimeEST) {
+            return "Closed";
+        }
+
         const parseTime = (timeStr) => {
-            const [time, period] = timeStr.split(" ");
-            const [hours, minutes] = time.split(":").map(Number);
+            const [time, period] = timeStr.split(' ');
+            const [hours, minutes] = time.split(':').map(Number);
             let hour = hours;
-            if (period === "PM" && hours !== 12) hour += 12;
-            if (period === "AM" && hours === 12) hour = 0;
-            return hour * 60 + minutes;
+            if (period === 'PM' && hours !== 12) hour += 12;
+            if (period === 'AM' && hours === 12) hour = 0;
+            return { hour, minute: minutes };
         };
 
-        const openMinutes = parseTime(openTimeET);
-        const closeMinutes = parseTime(closeTimeET);
+        const openTime = parseTime(openTimeEST);
+        const closeTime = parseTime(closeTimeEST);
+
+        const openMinutes = openTime.hour * 60 + openTime.minute;
+        const closeMinutes = closeTime.hour * 60 + closeTime.minute;
 
         // Check for temporary unavailability
         if (unavailableTimesET[todayDate]) {
             for (const { start, end, reason } of unavailableTimesET[todayDate]) {
-                const startMinutes = parseTime(start);
-                const endMinutes = parseTime(end);
-                if (currentMinutesET >= startMinutes && currentMinutesET < endMinutes) {
+                const startTime = parseTime(start);
+                const endTime = parseTime(end);
+                const startMinutes = startTime.hour * 60 + startTime.minute;
+                const endMinutes = endTime.hour * 60 + endTime.minute;
+                if (currentMinutesEST >= startMinutes && currentMinutesEST < endMinutes) {
                     return `Temporarily Unavailable (${reason})`;
                 }
             }
         }
 
-        return (currentMinutesET >= openMinutes && currentMinutesET < closeMinutes) ? "Open" : "Closed";
+        const isOpen = (currentMinutesEST >= openMinutes && currentMinutesEST < closeMinutes);
+        return isOpen ? "Open" : "Closed";
     }
 
-    // Display business hours
+    // Render business hours
     const hoursContainer = document.getElementById("hours-container");
     hoursContainer.innerHTML = "";
 
-    for (const [day, { open, close }] of Object.entries(businessHoursET)) {
-        const convertedOpen = open ? convertETtoUserTime(open) : "Closed";
-        const convertedClose = close ? convertETtoUserTime(close) : "Closed";
+    for (const [day, { open, close }] of Object.entries(businessHoursEST)) {
+        const convertedOpen = open ? convertTimeToTimezone(open, userTimezone) : "Closed";
+        const convertedClose = close ? convertTimeToTimezone(close, userTimezone) : "Closed";
 
         const dayElement = document.createElement("div");
         dayElement.classList.add("hours-row");
@@ -134,10 +162,25 @@ document.addEventListener("DOMContentLoaded", function () {
     statusElement.textContent = status;
     statusElement.className = status.toLowerCase().replace(/\s+/g, "-");
 
-    // Show holiday notice if applicable
+    // Check for holiday hours
     const holidayAlertElement = document.getElementById("holiday-alert");
+    const holidayNameElement = document.getElementById("holiday-name");
+    const holidayHoursElement = document.getElementById("holiday-hours");
+
     if (holidayHours[todayDate]) {
-        holidayAlertElement.textContent = `Special Hours: ${holidayHours[todayDate].name} - ${holidayHours[todayDate].hours}`;
+        const holidayDetails = holidayHours[todayDate];
+        let specialHours;
+        if (holidayDetails.hours === "Closed") {
+            specialHours = "Closed";
+        } else {
+            const [open, close] = holidayDetails.hours.split(" - ");
+            const convertedOpen = convertTimeToTimezone(open, userTimezone);
+            const convertedClose = convertTimeToTimezone(close, userTimezone);
+            specialHours = `${convertedOpen} - ${convertedClose}`;
+        }
+
+        holidayNameElement.textContent = holidayDetails.name;
+        holidayHoursElement.textContent = specialHours;
         holidayAlertElement.style.display = "block";
     } else {
         holidayAlertElement.style.display = "none";
