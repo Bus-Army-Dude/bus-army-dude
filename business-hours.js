@@ -59,13 +59,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const etDate = new Date();
         etDate.setHours(estHours, minutes, 0, 0);
 
-        // Convert to user's local time zone
-        return etDate.toLocaleTimeString("en-US", {
-            timeZone: userTimeZone,
+        // Convert to the user's local time zone (considering daylight saving time, etc.)
+        const userTime = etDate.toLocaleString("en-US", {
+            timeZone: userTimeZone, // Use the detected user's time zone
             hour: "numeric",
             minute: "2-digit",
             hour12: true
         });
+
+        return userTime;
     }
 
     // Check if business is open
