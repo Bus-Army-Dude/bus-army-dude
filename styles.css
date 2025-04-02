@@ -2243,9 +2243,8 @@ body.focus-outline-disabled :focus {
     outline: none; /* No outline when focus outline is disabled */
 }
 
-/* Modern Business Info Section 2025 */
+/* Business Info Section */
 .business-info {
-    --shadow-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
     background: linear-gradient(
         145deg,
         color-mix(in srgb, var(--content-bg) 98%, white),
@@ -2255,59 +2254,28 @@ body.focus-outline-disabled :focus {
     border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     padding: clamp(24px, 4vw, 40px);
     border-radius: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
     width: 100%;
     box-sizing: border-box;
     backdrop-filter: blur(10px);
-    transform-style: preserve-3d;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.business-info h1 {
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 800;
-    background: linear-gradient(120deg, var(--text-color), color-mix(in srgb, var(--text-color) 70%, var(--accent-color)));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
-}
-
-.contact-info {
-    margin: 1.5rem 0;
-    font-size: 1.1rem;
-}
-
-.contact-info a {
-    color: var(--link-color);
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    background: color-mix(in srgb, var(--link-color) 10%, transparent);
-    transition: all 0.3s ease;
-    display: inline-block;
-}
-
-.contact-info a:hover {
-    background: color-mix(in srgb, var(--link-color) 15%, transparent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--link-color) 20%, transparent);
-}
-
+/* Timezone Section */
 .timezone-container {
     margin: 1rem 0;
     padding: 0.75rem;
     background: color-mix(in srgb, var(--content-bg) 95%, var(--accent-color));
     border-radius: 8px;
     font-size: 0.95rem;
+    font-weight: 600;
 }
 
 #user-timezone {
+    display: inline-block;
     font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
-    font-weight: 500;
+    font-weight: bold;
     color: var(--accent-color);
     padding: 0.25rem 0.75rem;
     border-radius: 6px;
@@ -2315,102 +2283,58 @@ body.focus-outline-disabled :focus {
     margin-left: 0.5rem;
 }
 
-.hours-section {
-    margin: 2rem 0;
-}
-
-.hours-section h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-}
-
-#hours-container {
-    background: color-mix(in srgb, var(--content-bg) 97%, var(--accent-color));
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: inset 0 2px 4px color-mix(in srgb, var(--shadow-color) 50%, transparent);
-}
-
-.hours-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
-    transition: all 0.3s ease;
-}
-
-.hours-row:last-child {
-    border-bottom: none;
-}
-
-.hours-row.current-day {
-    background: color-mix(in srgb, var(--accent-color) 10%, transparent);
-    border-radius: 8px;
-    transform: scale(1.02);
-    font-weight: 600;
-}
-
-/* Updated Status Section */
+/* Status Section */
 .status-container {
     margin: 1.5rem 0;
     padding: 1.25rem;
     background: color-mix(in srgb, var(--content-bg) 97%, var(--accent-color));
     border-radius: 10px;
-    box-shadow: inset 0 2px 4px color-mix(in srgb, var(--shadow-color) 50%, transparent);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.status {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.25rem;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
+/* Default Status Styling */
 #open-status {
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: gray;
+    color: white;
     transition: all 0.3s ease;
 }
 
-/* Status Colors */
+/* Open Status */
 #open-status.open {
-    background: color-mix(in srgb, rgb(0, 200, 83) 10%, transparent);
+    background: rgba(0, 200, 83, 0.1);
     color: rgb(0, 160, 67);
-    border: 1px solid color-mix(in srgb, rgb(0, 200, 83) 20%, transparent);
+    border: 2px solid rgba(0, 200, 83, 0.5);
 }
 
+/* Closed Status */
 #open-status.closed {
-    background: color-mix(in srgb, rgb(255, 59, 48) 10%, transparent);
+    background: rgba(255, 59, 48, 0.1);
     color: rgb(220, 40, 30);
-    border: 1px solid color-mix(in srgb, rgb(255, 59, 48) 20%, transparent);
+    border: 2px solid rgba(255, 59, 48, 0.5);
 }
 
+/* Temporarily Unavailable Status (Bold Orange) */
 #open-status.temporarily-unavailable {
-    background: color-mix(in srgb, rgb(255, 165, 0) 10%, transparent);
+    background: rgba(255, 140, 0, 0.2);
     color: rgb(255, 140, 0);
-    border: 1px solid color-mix(in srgb, rgb(255, 165, 0) 20%, transparent);
-    padding: 0.75rem 1.25rem;  /* Slightly increased padding for better spacing */
-    border-radius: 8px;         /* Rounded corners */
-    font-weight: bold;          /* Bold text for emphasis */
-    text-transform: uppercase;  /* Make text uppercase for consistency */
-    letter-spacing: 1px;        /* Added spacing between letters */
-    box-shadow: 0 2px 4px rgba(255, 140, 0, 0.3);  /* Subtle shadow for depth */
-    transition: all 0.3s ease;  /* Smooth transition for hover effects */
+    border: 2px solid rgba(255, 140, 0, 0.7);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 4px rgba(255, 140, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
+/* Subtle Hover Effect */
 #open-status.temporarily-unavailable:hover {
-    background: color-mix(in srgb, rgb(255, 165, 0) 15%, transparent); /* Slight color darkening on hover */
-    transform: scale(1.02); /* Slight scale effect on hover */
-    box-shadow: 0 4px 8px rgba(255, 140, 0, 0.4); /* Stronger shadow on hover */
+    background: rgba(255, 140, 0, 0.3);
+    transform: scale(1.015);
+    box-shadow: 0 4px 8px rgba(255, 140, 0, 0.4);
 }
 
 /* Holiday Alert */
@@ -2423,14 +2347,14 @@ body.focus-outline-disabled :focus {
         color-mix(in srgb, var(--accent-color) 5%, transparent)
     );
     border-radius: 10px;
-    border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
+    border: 1px solid rgba(255, 165, 0, 0.2);
     color: black;
     font-weight: bold;
     text-align: center;
     display: none;
 }
 
-/* Modern Responsive Design */
+/* Responsive Design */
 @media (max-width: 768px) {
     .business-info {
         padding: 15px;
@@ -2441,14 +2365,8 @@ body.focus-outline-disabled :focus {
         padding: 1rem;
     }
 
-    .status {
-        padding: 0.875rem 1rem;
+    #open-status {
         font-size: 1rem;
-    }
-
-    .hours-row {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.95rem;
     }
 }
 
@@ -2461,17 +2379,8 @@ body.focus-outline-disabled :focus {
         font-size: 1.5rem;
     }
 
-    .status-container {
-        padding: 0.875rem;
-    }
-
-    .status {
-        padding: 0.75rem;
-        font-size: 0.95rem;
-    }
-
     #open-status {
-        padding: 0.375rem 0.75rem;
+        font-size: 0.95rem;
     }
 }
 
