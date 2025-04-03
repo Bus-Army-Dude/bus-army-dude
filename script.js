@@ -1,15 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Enhanced Copy Protection
-    const enhancedCopyProtection = {
+    const copyProtection = {
         init() {
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('selectstart', e => e.preventDefault());
-            document.addEventListener('copy', e => e.preventDefault());
+            // Disable right-click context menu
+            document.addEventListener('contextmenu', event => event.preventDefault());
+
+            // Disable text selection
+            document.addEventListener('selectstart', event => event.preventDefault());
+
+            // Disable copying
+            document.addEventListener('copy', event => event.preventDefault());
+
+            // Disable clipboard interactions (cut & paste)
+            document.addEventListener('cut', event => event.preventDefault());
+            document.addEventListener('paste', event => event.preventDefault());
+
+            // Disable drag and drop for all elements
+            document.addEventListener('dragstart', event => event.preventDefault());
+            document.addEventListener('drop', event => event.preventDefault());
+
+            // Disable keyboard shortcuts for copying/viewing source
+            document.addEventListener('keydown', event => {
+                if (
+                    (event.ctrlKey || event.metaKey) && 
+                    (event.key === 'c' || event.key === 'x' || event.key === 'v' || event.key === 'u' || event.key === 's')
+                ) {
+                    event.preventDefault();
+                }
+            });
         }
     };
 
-    // Initialize copy protection
-    enhancedCopyProtection.init();
+    // Initialize the protection
+    copyProtection.init();
+});
 
    // Time update function
 function updateTime() {
