@@ -3203,15 +3203,16 @@ input:checked + .slider:before {
   background: var(--content-bg);
   padding: 30px;
   border-radius: 10px;
-  width: 80%;
-  max-width: 1000px;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  max-width: none;
   box-shadow: 0px 4px 6px var(--shadow-color);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   position: relative;
+  overflow-y: auto;
 }
 
 .close-button {
@@ -3280,7 +3281,9 @@ input:checked + .slider:before {
 /* ======================== */
 @media (max-width: 768px) {
   .modal-content {
-    width: 95%;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
   }
 
   .modal-header, .modal-body, .modal-footer {
