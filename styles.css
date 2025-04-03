@@ -117,8 +117,8 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
+    bottom: 0px; /* Adjusted to move it up */
+    right: 0px; /* Adjusted to move it left */
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -140,7 +140,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 15px 0;
+    margin: 10px 0; /* Reduced top and bottom margin */
 }
 
 .username-checkmark h1 {
@@ -156,7 +156,7 @@ body {
 .verified {
     width: 20px;
     height: 20px;
-    margin-left: 5px;
+    margin-left: 2px; /* Reduced left margin */
 }
 
 /* Settings Button */
@@ -247,6 +247,11 @@ body {
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
+/* Styles for the bio spacing */
+.profile-section p {
+    margin-bottom: 4px; /* Reduced margin-bottom */
+}
+
 /* Media Queries */
 @media screen and (max-width: 768px) {
     .profile-pic {
@@ -285,7 +290,6 @@ body {
         font-size: 1.5rem;
     }
 }
-
 
 /* Current Date/Time Section */
 .datetime-section {
