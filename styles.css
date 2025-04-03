@@ -3072,43 +3072,47 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/* Navigation Tabs         */
+/* Navigation Tabs          */
 /* ======================== */
 .nav-tabs {
   display: flex;
   justify-content: center;
   background: var(--content-bg);
-  padding: 10px 0;
-  border-bottom: 2px solid var(--border-color);
+  padding: 15px 20px; /* Slightly increased padding */
+  border-bottom: 1px solid var(--border-color); /* Thinner border */
   flex-wrap: wrap;
+  gap: 10px; /* Add some spacing between tabs */
 }
 
 .nav-tabs a {
-  padding: 12px 20px;
+  padding: 10px 15px; /* Adjusted padding */
   color: var(--text-color);
   text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
-  font-size: 16px;
-  border: none; /* No dots or border */
+  font-weight: 500; /* Slightly lighter font-weight */
+  transition: color 0.2s ease-in-out; /* Smoother transition */
+  font-size: 1rem; /* Use rem for better scalability */
+  border: none;
+  border-radius: 8px; /* Add slight rounded corners */
 }
 
 .nav-tabs a:hover {
   color: var(--accent-color);
+  background-color: var(--hover-bg); /* Add a subtle background on hover */
 }
 
 .nav-tabs .active {
-  border-bottom: 3px solid var(--accent-color);
+  border-bottom: 2px solid var(--accent-color); /* Thinner active indicator */
+  color: var(--accent-color); /* Make active tab text more prominent */
+  background-color: transparent; /* Ensure no background for active state */
 }
 
 /* ======================== */
-/* Dropdown Filter         */
+/* Dropdown Filter          */
 /* ======================== */
 .filter-section {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 10px;
+  padding: 15px 20px; /* Slightly increased padding */
   background: var(--content-bg);
   margin-bottom: 30px;
 }
@@ -3117,11 +3121,11 @@ input:checked + .slider:before {
   background: var(--dropdown-background-dark);
   color: var(--dropdown-text-dark);
   border: 1px solid var(--dropdown-border-dark);
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 14px;
+  padding: 10px 15px; /* Adjusted padding */
+  border-radius: 8px; /* More rounded corners */
+  font-size: 0.9rem; /* Use rem for scalability */
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.2s ease-in-out; /* Smoother transition */
 }
 
 #time-filter:hover {
@@ -3139,75 +3143,82 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/* Articles Grid           */
+/* Articles Grid            */
 /* ======================== */
 .articles-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 40px;
-  padding: 0 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Slightly wider min width */
+  gap: 30px; /* Adjusted gap */
+  padding: 20px; /* Adjusted padding */
 }
 
 .article-card {
   background: var(--content-bg);
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0px 4px 6px var(--shadow-color);
-  transition: transform 0.3s ease;
-  margin: 10px 0;
+  border-radius: 12px; /* More rounded corners */
+  padding: 20px; /* Adjusted padding */
+  box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1); /* More subtle shadow using rgba */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smoother transitions */
+  margin: 0; /* Removed default margin, rely on grid gap */
 }
 
 .article-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px); /* Slightly more pronounced hover effect */
+  box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.15); /* Enhanced shadow on hover */
 }
 
 .article-card img {
   width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 10px; /* More rounded corners for images */
+  margin-bottom: 12px; /* Add some space below the image */
 }
 
 .article-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 10px 0;
+  font-size: 1.1rem; /* Use rem */
+  font-weight: 600; /* Slightly bolder */
+  margin: 8px 0; /* Adjusted margin */
+  color: var(--text-color);
 }
 
 .short-description {
-  font-size: 14px;
+  font-size: 0.9rem; /* Use rem */
   color: var(--secondary-text);
+  line-height: 1.6; /* Improved readability */
 }
 
 .article-category {
-  font-size: 12px;
+  font-size: 0.8rem; /* Use rem */
   color: var(--accent-color);
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Adjusted margin */
+  text-transform: uppercase; /* Make category stand out */
+  letter-spacing: 0.5px; /* Slight letter spacing */
 }
 
 /* ======================== */
-/* Modal Styling           */
+/* Modal Styling            */
 /* ======================== */
 .modal {
-  display: none;
+  display: none; /* Keep it hidden by default */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8); /* Slightly darker background */
   justify-content: center;
   align-items: center;
   padding: 0;
+  z-index: 1000; /* Ensure it's on top of everything */
 }
 
 .modal-content {
   background: var(--content-bg);
-  padding: 30px;
-  border-radius: 10px;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  box-shadow: 0px 4px 6px var(--shadow-color);
+  padding: 40px; /* Increased padding */
+  border-radius: 12px; /* More rounded corners */
+  width: 90%; /* Adjust width for better responsiveness */
+  max-width: 800px; /* Limit maximum width */
+  max-height: 90%; /* Limit maximum height */
+  box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.2); /* More pronounced shadow */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -3219,18 +3230,25 @@ input:checked + .slider:before {
 .close-button {
   background: none;
   border: none;
-  font-size: 30px;
+  font-size: 2rem; /* Use rem for better scaling */
   cursor: pointer;
   color: var(--text-color);
   position: absolute;
   top: 15px;
-  right: 15px;
-  z-index: 1;
-  padding: 5px;
+  right: 20px; /* Adjust position slightly */
+  z-index: 1001; /* Ensure it's above modal-content */
+  padding: 0; /* Remove default padding which can affect alignment */
+  line-height: 1; /* Adjust line-height for better vertical alignment */
+  opacity: 0.7; /* Slightly less prominent initially */
+  transition: opacity 0.2s ease-in-out;
+}
+
+.close-button:hover {
+  opacity: 1;
 }
 
 .modal-header {
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* Increased margin */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -3238,69 +3256,128 @@ input:checked + .slider:before {
 }
 
 #category-name {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 0.9rem; /* Use rem */
+  font-weight: 500; /* Slightly lighter */
   color: var(--accent-color);
   margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 #article-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 10px 0;
+  font-size: 1.75rem; /* Use rem */
+  font-weight: 700; /* Bolder title */
+  margin: 10px 0 15px; /* Adjusted margin */
   color: var(--text-color);
+  line-height: 1.3;
 }
 
 #article-content {
-  font-size: 16px;
+  font-size: 1rem; /* Use rem */
   color: var(--text-color);
+  line-height: 1.7; /* Improved readability */
 }
 
 .modal-body p {
-  font-size: 14px;
+  font-size: 0.9rem; /* Use rem */
   color: var(--secondary-text);
-  margin-top: 10px;
+  margin-top: 15px; /* Increased margin */
+  line-height: 1.6;
 }
 
 .modal-body img {
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  border-radius: 10px; /* More rounded corners */
+  margin-top: 25px; /* Increased margin */
+  margin-bottom: 25px; /* Increased margin */
 }
 
 .modal-footer {
-  margin-top: 20px;
+  margin-top: 30px; /* Increased margin */
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  font-size: 0.85rem; /* Slightly smaller font for footer */
+  color: var(--secondary-text);
 }
 
 /* ======================== */
-/* Responsive Fixes         */
+/* Responsive Fixes          */
 /* ======================== */
 @media (max-width: 768px) {
-  .modal-content {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
+  .nav-tabs {
+    padding: 10px;
   }
 
-  .modal-header, .modal-body, .modal-footer {
-    width: 100%;
+  .nav-tabs a {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .filter-section {
+    padding: 10px;
+  }
+
+  #time-filter {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .articles-container {
+    padding: 10px;
+    gap: 20px;
+  }
+
+  .article-card {
+    padding: 15px;
+  }
+
+  .modal-content {
+    padding: 30px;
   }
 
   #article-title {
-    font-size: 22px;
+    font-size: 1.5rem;
   }
 
   .modal-body p {
-    font-size: 16px;
+    font-size: 0.95rem;
   }
 
   .close-button {
-    font-size: 32px;
+    font-size: 2.2rem;
+    top: 10px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav-tabs a {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+
+  .articles-container {
+    grid-template-columns: 1fr; /* Stack articles on smaller screens */
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+
+  #article-title {
+    font-size: 1.3rem;
+  }
+
+  .modal-body p {
+    font-size: 0.9rem;
+  }
+
+  .close-button {
+    font-size: 2rem;
+    top: 10px;
+    right: 10px;
   }
 }
