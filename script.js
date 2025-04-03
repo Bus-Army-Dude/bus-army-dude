@@ -1,4 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize DevTools detection and protection
+    let devtoolsOpen = false;
+    const threshold = 160; // Adjust this to your needs for detecting DevTools
+
+    // Function to detect if DevTools is open by comparing window size
+    const detectDevTools = () => {
+        const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+        const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+
+        if (widthThreshold || heightThreshold) {
+            devtoolsOpen = true;
+        } else {
+            devtoolsOpen = false;
+        }
+
+        if (devtoolsOpen) {
+            // Create an overlay when DevTools is detected
+            if (!document.getElementById('devtools-overlay')) {
+                const overlay = document.createElement('div');
+                overlay.id = 'devtools-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = 0;
+                overlay.style.left = 0;
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                overlay.style.zIndex = '9999';
+                overlay.style.pointerEvents = 'none'; // Prevent overlay interaction
+                document.body.appendChild(overlay);
+            }
+        } else {
+            const overlay = document.getElementById('devtools-overlay');
+            if (overlay) overlay.remove();
+        }
+    };
+
+    // Detect DevTools opening every 500ms
+    setInterval(detectDevTools, 500);
+
+    // Copy Protection
     const copyProtection = {
         init() {
             // Disable right-click context menu
@@ -30,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Initialize the protection
+    // Initialize the copy protection
     copyProtection.init();
 });
 
