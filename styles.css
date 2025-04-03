@@ -84,182 +84,214 @@ body {
 
 /* Profile Section */
 .profile-section {
-    position: relative;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    padding: 25px;
-    background: var(--content-bg);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px -8px var(--shadow-color), 0 0 0 1px var(--border-color);
-    backdrop-filter: blur(10px);
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 25px;
+    background: var(--content-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px -8px var(--shadow-color), 0 0 0 1px var(--border-color);
+    backdrop-filter: blur(10px);
 }
 
 /* Profile Pic Wrapper */
 .profile-pic-wrapper {
-    position: relative;
-    width: 150px;
-    margin: 0 auto;
+    position: relative;
+    width: 150px;
+    margin: 0 auto;
 }
 
 /* Profile Picture */
 .profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin: 0 auto;
-    display: block;
-    border: 3px solid var(--link-color);
-    position: relative;
-    box-shadow: 0 4px 15px var(--shadow-color);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+    border: 3px solid var(--link-color);
+    position: relative;
+    box-shadow: 0 4px 15px var(--shadow-color);
 }
 
 /* Profile Status Container */
 .profile-status-container {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--content-bg);
-    border: 3px solid var(--link-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--content-bg);
+    border: 3px solid var(--link-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .profile-status {
-    font-size: 16px;
+    font-size: 16px;
 }
 
 /* Username Checkmark */
 .username-checkmark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
 }
 
 .username-checkmark h1 {
-    margin: 0;
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 800;
-    background: linear-gradient(120deg, var(--secondary-text), var(--link-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 800;
+    background: linear-gradient(120deg, var(--secondary-text), var(--link-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .verified {
-    width: 20px;
-    height: 20px;
-    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
 }
 
 /* Settings Button */
 .settings-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('settings-icon.png') center/18px no-repeat, var(--link-color);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: url('settings-icon.png') center/18px no-repeat, var(--link-color);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 .settings-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
+    transform: translateY(-2px) rotate(45deg);
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Merch Button */
 .merch-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('gift-bag-icon.png') center/18px no-repeat, var(--accent-color);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--accent-color);
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: url('gift-bag-icon.png') center/18px no-repeat, var(--accent-color);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
 .merch-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
+    transform: translateY(-2px) rotate(45deg);
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
 /* Weather Button */
 .weather-button {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('weather-icon.png') center/18px no-repeat, var(--link-color);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: url('weather-icon.png') center/18px no-repeat, var(--link-color);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 .weather-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
+    transform: translateY(-2px) rotate(45deg);
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
+}
+
+/* Blog Button */
+.blog-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: url('blog.png') center/18px no-repeat, var(--link-color); /* Replace 'blog-icon.png' with your actual icon */
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
+}
+
+.blog-button:hover {
+    transform: translateY(-2px) rotate(45deg);
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Media Queries */
 @media screen and (max-width: 768px) {
-    .profile-pic {
-        width: 120px;
-        height: 120px;
-    }
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+    }
 
-    .settings-button,
-    .merch-button,
-    .weather-button {
-        width: 35px;
-        height: 35px;
-    }
+    .settings-button,
+    .merch-button,
+    .weather-button {
+        width: 35px;
+        height: 35px;
+    }
 
-    .username-checkmark h1 {
-        font-size: 1.8rem;
-    }
+    .username-checkmark h1 {
+        font-size: 1.8rem;
+    }
+
+    .blog-button {
+        width: 35px;
+        height: 35px;
+    }
 }
 
 @media screen and (max-width: 480px) {
-    .profile-pic {
-        width: 100px;
-        height: 100px;
-    }
+    .profile-pic {
+        width: 100px;
+        height: 100px;
+    }
 
-    .settings-button,
-    .merch-button,
-    .weather-button {
-        width: 30px;
-        height: 30px;
-    }
+    .settings-button,
+    .merch-button,
+    .weather-button {
+        width: 30px;
+        height: 30px;
+    }
 
-    .username-checkmark h1 {
-        font-size: 1.5rem;
-    }
+    .username-checkmark h1 {
+        font-size: 1.5rem;
+    }
+
+    .blog-button {
+        width: 30px;
+        height: 30px;
+    }
 }
 
 
