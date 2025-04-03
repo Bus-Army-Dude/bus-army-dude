@@ -3072,7 +3072,7 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/*       Navigation Tabs    */
+/* Navigation Tabs         */
 /* ======================== */
 .nav-tabs {
   display: flex;
@@ -3101,7 +3101,7 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/*       Dropdown Filter    */
+/* Dropdown Filter         */
 /* ======================== */
 .filter-section {
   display: flex;
@@ -3137,35 +3137,32 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/*     Articles Grid       */
+/* Articles Grid           */
 /* ======================== */
 .articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px; /* Increased gap between cards */
+  gap: 20px;
   padding: 20px;
+  margin-top: 20px;  /* Space between the filter and articles */
 }
 
 .article-card {
   background: var(--content-bg);
   border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  margin-bottom: 30px; /* Space between cards */
+  padding: 15px;
+  box-shadow: 0px 4px 6px var(--shadow-color);
+  transition: transform 0.3s ease;
 }
 
 .article-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* More prominent shadow on hover */
 }
 
 .article-card img {
   width: 100%;
   height: auto;
   border-radius: 8px;
-  margin-bottom: 15px; /* Space between image and text */
 }
 
 .article-title {
@@ -3179,8 +3176,14 @@ input:checked + .slider:before {
   color: var(--secondary-text);
 }
 
+.article-category {
+  font-size: 12px;
+  color: var(--accent-color);
+  margin-bottom: 10px;
+}
+
 /* ======================== */
-/*        Modal Styling     */
+/* Modal Styling           */
 /* ======================== */
 .modal {
   display: none;
@@ -3192,16 +3195,16 @@ input:checked + .slider:before {
   background: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
 }
 
 .modal-content {
   background: var(--content-bg);
-  padding: 30px;
+  padding: 20px;
   border-radius: 10px;
-  max-width: 800px;
+  max-width: 700px;
   width: 90%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 4px 6px var(--shadow-color);
 }
 
 .close-button {
@@ -3248,7 +3251,7 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/*   Responsive Fixes       */
+/* Responsive Fixes         */
 /* ======================== */
 @media (max-width: 768px) {
   .nav-tabs {
@@ -3258,7 +3261,6 @@ input:checked + .slider:before {
 
   .articles-container {
     grid-template-columns: 1fr;
-    padding: 10px;
   }
 
   .modal-content {
@@ -3269,4 +3271,3 @@ input:checked + .slider:before {
     font-size: 16px;
   }
 }
-
