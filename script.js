@@ -70,79 +70,65 @@ function smoothReload() {
     }, 500); // Delay the reload to allow fade-out
 }
 
-window.onload = function () {
+// Call the functions on page load
+window.onload = function() {
     updateTime();
     updateNewYearCountdown();
 
+    // Synchronize both time and countdown updates every second
     setInterval(() => {
         updateTime();
         updateNewYearCountdown();
-    }, 1000);
+    }, 1000);  // Update both every second
 };
 
+// Summer Solstice countdown with timezone adjustment
 function updateNewYearCountdown() {
     const now = new Date();
-    
-    // Summer Solstice 2025 (June 20, 22:42 UTC)
-    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z');
-    
-    // Convert to user's local timezone
-    const localOffset = now.getTimezoneOffset() * 60 * 1000;
-    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localOffset);
-    
-    if (now >= summerSolstice) {
-        document.querySelector('.countdown-section').innerHTML = `
+
+    // Get user's local timezone offset in milliseconds
+    const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000;
+
+    // Set the target date (Summer Solstice 2025) in UTC
+    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // Corrected solstice time
+
+    // Adjust the Summer Solstice date to the user's local timezone
+    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
+
+    const diff = summerSolstice - now;
+
+    const countdownSection = document.querySelector('.countdown-section');
+    if (!countdownSection) return;
+
+    if (diff <= 0) {
+        countdownSection.innerHTML = `
             <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
                 Summer 2025 is here!!!
             </h2>
             <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
         `;
-        return;
-    }
+    } else {
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    // Calculate time difference properly
-    let years = summerSolstice.getFullYear() - now.getFullYear();
-    let months = summerSolstice.getMonth() - now.getMonth();
-    let days = summerSolstice.getDate() - now.getDate();
-    let hours = summerSolstice.getHours() - now.getHours();
-    let minutes = summerSolstice.getMinutes() - now.getMinutes();
-    let seconds = summerSolstice.getSeconds() - now.getSeconds();
-
-    // Adjust negative values
-    if (seconds < 0) {
-        seconds += 60;
-        minutes--;
+        // Update flip clocks
+        updateFlipClock('countdown-years', years);
+        updateFlipClock('countdown-months', months);
+        updateFlipClock('countdown-days', days);
+        updateFlipClock('countdown-hours', hours);
+        updateFlipClock('countdown-minutes', minutes);
+        updateFlipClock('countdown-seconds', seconds);
     }
-    if (minutes < 0) {
-        minutes += 60;
-        hours--;
-    }
-    if (hours < 0) {
-        hours += 24;
-        days--;
-    }
-    if (days < 0) {
-        const lastMonth = new Date(summerSolstice.getFullYear(), summerSolstice.getMonth(), 0).getDate();
-        days += lastMonth;
-        months--;
-    }
-    if (months < 0) {
-        months += 12;
-        years--;
-    }
-
-    // Update flip clocks
-    updateFlipClock('countdown-years', years);
-    updateFlipClock('countdown-months', months);
-    updateFlipClock('countdown-days', days);
-    updateFlipClock('countdown-hours', hours);
-    updateFlipClock('countdown-minutes', minutes);
-    updateFlipClock('countdown-seconds', seconds);
 }
 
+// Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return;
+    if (!clock) return; // Prevent errors if element is missing
 
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
@@ -154,16 +140,20 @@ function updateFlipClock(id, value) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
+        // Trigger the flip animation
         flipInner.classList.add('flip');
+
         setTimeout(() => {
             flipInner.classList.remove('flip');
-        }, 600);
+        }, 600); // Match animation duration
     }
 }
 
-// Initialize on page load
+// Initialize everything
 updateTime();
+tiktokShoutouts.init();
 updateNewYearCountdown();
+
 setInterval(updateTime, 1000);
 setInterval(updateNewYearCountdown, 1000);
 
