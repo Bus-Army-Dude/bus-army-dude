@@ -2398,12 +2398,6 @@ body.focus-outline-disabled :focus {
     transition: all 0.3s ease;  /* Smooth transition for hover effects */
 }
 
-#open-status.temporarily-unavailable:hover {
-    background: color-mix(in srgb, rgb(255, 165, 0) 15%, transparent); /* Slight color darkening on hover */
-    transform: scale(1.02); /* Slight scale effect on hover */
-    box-shadow: 0 4px 8px rgba(255, 140, 0, 0.4); /* Stronger shadow on hover */
-}
-
 /* Holiday Alert */
 #holiday-alert {
     margin: 1.5rem 0;
