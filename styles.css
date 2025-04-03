@@ -3078,25 +3078,29 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   background: var(--content-bg);
-  padding: 10px 0;
+  padding: 15px 0;
   border-bottom: 2px solid var(--border-color);
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .nav-tabs a {
-  padding: 12px 15px;
+  padding: 12px 20px;
   color: var(--text-color);
   text-decoration: none;
   font-weight: bold;
-  transition: 0.3s;
-  font-size: 16px;
+  font-size: 18px;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+  text-transform: uppercase;
 }
 
 .nav-tabs a:hover {
   color: var(--accent-color);
+  border-bottom: 3px solid var(--accent-color);
 }
 
 .nav-tabs .active {
+  color: var(--accent-color);
   border-bottom: 3px solid var(--accent-color);
 }
 
@@ -3106,23 +3110,29 @@ input:checked + .slider:before {
 .filter-container {
   display: flex;
   justify-content: center;
-  padding: 10px;
+  padding: 12px 0;
 }
 
 .filter-dropdown {
   background: var(--dropdown-background-dark);
   color: var(--dropdown-text-dark);
-  border: 1px solid var(--dropdown-border-dark);
-  padding: 10px;
+  border: 2px solid var(--dropdown-border-dark);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  border-radius: 5px;
-  font-size: 14px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .light-mode .filter-dropdown {
   background: var(--dropdown-background-light);
   color: var(--dropdown-text-light);
-  border: 1px solid var(--dropdown-border-light);
+  border: 2px solid var(--dropdown-border-light);
+}
+
+.filter-dropdown:hover {
+  background: var(--dropdown-hover-background);
+  border-color: var(--dropdown-hover-border);
 }
 
 /* ======================== */
@@ -3130,38 +3140,51 @@ input:checked + .slider:before {
 /* ======================== */
 .articles-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
   padding: 20px;
+  margin-top: 20px;
 }
 
 .article-card {
   background: var(--content-bg);
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0px 4px 6px var(--shadow-color);
-  transition: transform 0.3s ease;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 6px 12px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .article-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0px 10px 20px var(--shadow-color);
 }
 
 .article-card img {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .article-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  margin: 10px 0;
+  margin: 15px 0;
+  color: var(--text-color);
 }
 
 .short-description {
+  font-size: 16px;
+  color: var(--secondary-text);
+  margin-bottom: 15px;
+}
+
+.posted-by-date {
   font-size: 14px;
   color: var(--secondary-text);
+  font-style: italic;
 }
 
 /* ======================== */
@@ -3178,24 +3201,42 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   padding: 10px;
+  z-index: 9999;
 }
 
 .modal-content {
   background: var(--content-bg);
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 600px;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 800px;
   width: 90%;
-  box-shadow: 0px 4px 6px var(--shadow-color);
+  box-shadow: 0px 6px 15px var(--shadow-color);
+  animation: fadeIn 0.5s ease;
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 30px;
   cursor: pointer;
   color: var(--text-color);
-  float: right;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: var(--accent-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ======================== */
@@ -3205,14 +3246,33 @@ input:checked + .slider:before {
   .nav-tabs {
     flex-direction: column;
     align-items: center;
+    padding: 10px 0;
+  }
+
+  .nav-tabs a {
+    font-size: 16px;
+    padding: 10px 15px;
   }
 
   .articles-container {
     grid-template-columns: 1fr;
   }
 
+  .article-card {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
   .modal-content {
     width: 95%;
+    padding: 20px;
+  }
+
+  .close-button {
+    font-size: 28px;
+    top: 15px;
+    right: 15px;
   }
 }
+
 
