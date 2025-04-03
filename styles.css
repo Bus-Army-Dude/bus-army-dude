@@ -1892,25 +1892,7 @@ footer {
   line-height: 1.6;
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   margin-top: 0.5rem;
-}
-
-.faq-answer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0;
-}
-
-.faq-answer li {
-  padding-left: 1.5rem;
-  position: relative;
-  margin-bottom: 0.5rem;
-}
-
-.faq-answer li::before {
-  content: "•";
-  color: var(--accent-color);
-  position: absolute;
-  left: 0;
+  visibility: hidden;
 }
 
 /* Active State Styling */
@@ -1919,10 +1901,11 @@ footer {
 }
 
 .faq-item.active .faq-answer {
-  padding: 1.5rem; 
-  max-height: 500px;
+  padding: 1.5rem;
+  max-height: 1000px; /* Increase max-height to allow more space for content */
   opacity: 1;
   overflow: visible;
+  visibility: visible; /* Make the answer visible when expanded */
 }
 
 .faq-item.active .faq-icon {
@@ -1959,7 +1942,7 @@ footer {
 
   .faq-item.active .faq-answer {
     padding: 1.5rem 1.5rem 1.5rem 1.5rem;
-    max-height: 500px; 
+    max-height: 1000px; /* Ensure it expands properly */
   }
 }
 
@@ -1981,7 +1964,7 @@ footer {
 
   .faq-item.active .faq-answer {
     padding: 1.25rem 1.5rem;
-    max-height: 500px; 
+    max-height: 1000px; /* Ensure it expands fully on smaller screens */
   }
 }
 
