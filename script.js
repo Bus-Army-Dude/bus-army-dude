@@ -1,78 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize DevTools detection and protection
-    let devtoolsOpen = false;
-    const threshold = 160; // Adjust this to your needs for detecting DevTools
-
-    // Function to detect if DevTools is open by comparing window size
-    const detectDevTools = () => {
-        const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-        const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-
-        if (widthThreshold || heightThreshold) {
-            devtoolsOpen = true;
-        } else {
-            devtoolsOpen = false;
-        }
-
-        if (devtoolsOpen) {
-            // Create an overlay when DevTools is detected
-            if (!document.getElementById('devtools-overlay')) {
-                const overlay = document.createElement('div');
-                overlay.id = 'devtools-overlay';
-                overlay.style.position = 'fixed';
-                overlay.style.top = 0;
-                overlay.style.left = 0;
-                overlay.style.width = '100%';
-                overlay.style.height = '100%';
-                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                overlay.style.zIndex = '9999';
-                overlay.style.pointerEvents = 'none'; // Prevent overlay interaction
-                document.body.appendChild(overlay);
-            }
-        } else {
-            const overlay = document.getElementById('devtools-overlay');
-            if (overlay) overlay.remove();
-        }
-    };
-
-    // Detect DevTools opening every 500ms
-    setInterval(detectDevTools, 500);
-
-    // Copy Protection
-    const copyProtection = {
+    // Enhanced Copy Protection
+    const enhancedCopyProtection = {
         init() {
-            // Disable right-click context menu
-            document.addEventListener('contextmenu', event => event.preventDefault());
-
-            // Disable text selection
-            document.addEventListener('selectstart', event => event.preventDefault());
-
-            // Disable copying
-            document.addEventListener('copy', event => event.preventDefault());
-
-            // Disable clipboard interactions (cut & paste)
-            document.addEventListener('cut', event => event.preventDefault());
-            document.addEventListener('paste', event => event.preventDefault());
-
-            // Disable drag and drop for all elements
-            document.addEventListener('dragstart', event => event.preventDefault());
-            document.addEventListener('drop', event => event.preventDefault());
-
-            // Disable keyboard shortcuts for copying/viewing source
-            document.addEventListener('keydown', event => {
-                if (
-                    (event.ctrlKey || event.metaKey) && 
-                    (event.key === 'c' || event.key === 'x' || event.key === 'v' || event.key === 'u' || event.key === 's')
-                ) {
-                    event.preventDefault();
-                }
-            });
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('copy', e => e.preventDefault());
         }
     };
 
-    // Initialize the copy protection
-    copyProtection.init();
-});
+    // Initialize copy protection
+    enhancedCopyProtection.init();
 
    // Time update function
 function updateTime() {
@@ -145,16 +82,21 @@ window.onload = function() {
     }, 1000);  // Update both every second
 };
 
-// Summer Solstice countdown with timezone adjustment
+    // Summer Solstice countdown with timezone adjustment
 function updateNewYearCountdown() {
     const now = new Date();
+    
+    // Get user's local timezone offset in minutes
+    const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000; // convert to milliseconds
 
     // Set the target date (Summer Solstice 2025) in UTC
     // June 20, 2025, at 22:42 UTC is the precise moment of the Summer Solstice
-    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // 'Z' denotes UTC time
+    const summerSolsticeUTC = new Date('2025-06-09T13:00:00Z'); // 'Z' denotes UTC time
+    
+    // Adjust the Summer Solstice date to the user's local timezone
+    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
 
-    // Get time difference in milliseconds
-    const diff = summerSolsticeUTC - now;
+    const diff = summerSolstice - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -197,8 +139,6 @@ function updateNewYearCountdown() {
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return; // Prevent errors if element is missing
-
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
     const valueStr = value.toString().padStart(2, '0');
@@ -230,11 +170,11 @@ if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
 
+// Back to top button functionality
 document.addEventListener('DOMContentLoaded', function() {
     const backToTopButton = document.getElementById('backToTop');
 
     window.addEventListener('scroll', () => {
-        // Check if the scroll position is past a certain point (e.g., 300px)
         if (window.scrollY > 300) {
             backToTopButton.classList.add('visible');
         } else {
@@ -250,36 +190,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Modern FAQ functionality
 document.addEventListener('DOMContentLoaded', function() {
     const faqItems = document.querySelectorAll('.faq-item');
 
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
-        const answer = item.querySelector('.faq-answer');
 
         question.addEventListener('click', () => {
+            // Check if this item is already active
             const isActive = item.classList.contains('active');
 
-            // Close all FAQ items first (with closing animation)
+            // Close all FAQ items first
             faqItems.forEach(faqItem => {
-                if (faqItem !== item && faqItem.classList.contains('active')) {
+                // Add a closing animation class if it was active
+                if (faqItem.classList.contains('active')) {
                     faqItem.classList.add('closing');
                     setTimeout(() => {
                         faqItem.classList.remove('closing');
-                        faqItem.classList.remove('active');
-                        faqItem.querySelector('.faq-answer').style.maxHeight = null; // Ensure it closes
-                    }, 300); // Match with CSS transition
+                    }, 300); // Match this with your CSS transition time
                 }
+                faqItem.classList.remove('active');
             });
 
-            // Toggle the clicked item
-            if (isActive) {
-                item.classList.remove('active');
-                answer.style.maxHeight = null; // Collapse the answer
-            } else {
+            // If the clicked item wasn't active before, open it
+            if (!isActive) {
                 item.classList.add('active');
-                answer.style.maxHeight = answer.scrollHeight + 'px'; // Expand the answer
-                // Scroll into view if the item is not fully visible
+                // Scroll the item into view if it's not fully visible
                 const rect = item.getBoundingClientRect();
                 const isInViewport = (
                     rect.top >= 0 &&
@@ -296,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Close all FAQs if clicked outside
+    // Close FAQ when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.faq-item')) {
             faqItems.forEach(item => {
@@ -304,7 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.add('closing');
                     setTimeout(() => {
                         item.classList.remove('active', 'closing');
-                        item.querySelector('.faq-answer').style.maxHeight = null; // Ensure the content collapses
                     }, 300);
                 }
             });
