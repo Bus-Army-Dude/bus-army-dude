@@ -3167,7 +3167,7 @@ input:checked + .slider:before {
   box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   margin-bottom: 30px; /* Increased margin-bottom */
-  margin-top: 0; /* Ensure no top margin is interfering */
+  margin-top: 0;
   margin-left: 0;
   margin-right: 0;
 }
