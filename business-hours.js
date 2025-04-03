@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Temporary Unavailability
     const temporaryHours = {
         "2025-04-02": [
-            { from: "6:30 PM", to: "7:00 PM", reason: "Personal Break" }
+            { from: "8:00 PM", to: "8:45 PM", reason: "Busy be right back" }
         ],
     };
 
