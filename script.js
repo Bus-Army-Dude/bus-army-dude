@@ -232,13 +232,13 @@ if (window.location.protocol !== 'https:') {
 
 document.addEventListener('DOMContentLoaded', function() {
     const backToTopButton = document.getElementById('backToTop');
-    const profileSection = document.querySelector('.profile-section');  // Using class to target profile section
+    const profileSection = document.querySelector('.profile-section');  // Profile section to determine scroll trigger
 
     window.addEventListener('scroll', () => {
         // Get the position of the bottom of the profile section
         const profileSectionPosition = profileSection.offsetTop + profileSection.offsetHeight;
 
-        // Show the back to top button if the user scrolls past the profile section
+        // Show the back to top button when scrolling past the profile section
         if (window.scrollY > profileSectionPosition) {
             backToTopButton.classList.add('visible');
         } else {
