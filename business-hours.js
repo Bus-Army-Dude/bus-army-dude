@@ -23,6 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "2025-04-02": [
             { from: "8:00 PM", to: "8:45 PM", reason: "Busy be right back" }
         ],
+        "2025-04-03": [
+            { from: "10:30 AM", to: "11:00 AM", reason: "In a meeting" }
+        ],
+        "2025-04-03": [
+            { from: "11:00 AM", to: "12:00 PM", reason: "In a meeting" }
+        ]
     };
 
     // Get user's current timezone
