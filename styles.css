@@ -3151,12 +3151,12 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/* Articles Grid          */
+/* Articles Grid            */
 /* ======================== */
 .articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 60px; /* Increased gap to 60px */
+  gap: 60px; /* Increased gap further */
   padding: 20px;
 }
 
@@ -3166,7 +3166,7 @@ input:checked + .slider:before {
   padding: 20px;
   box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  margin: 0;
+  margin: 0 0 30px 0; /* Increased margin-bottom significantly */
 }
 
 .article-card:hover {
@@ -3237,19 +3237,20 @@ input:checked + .slider:before {
 }
 
 .close-button {
-  background: none; /* Ensure no background is hiding the X */
+  background: transparent; /* Explicitly set background to transparent */
   border: none;
-  font-size: 2.5rem; /* Increased size for better visibility */
+  font-size: 3.5rem; /* Increased size significantly */
   cursor: pointer;
   color: var(--text-color);
   position: absolute;
-  top: 20px; /* Adjust position for full screen */
-  right: 30px; /* Further adjust position */
-  z-index: 1001; /* Ensure it's above modal-content */
+  top: 10px; /* Adjusted top position */
+  right: 20px; /* Adjusted right position */
+  z-index: 1002; /* Increased z-index to be definitely on top */
   padding: 0;
   line-height: 1;
-  opacity: 0.8; /* Slightly more visible initially */
+  opacity: 0.9; /* Make it more visible initially */
   transition: opacity 0.2s ease-in-out;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for better contrast */
 }
 
 .close-button:hover {
@@ -3336,11 +3337,12 @@ input:checked + .slider:before {
 
   .articles-container {
     padding: 10px;
-    gap: 30px; /* Adjust gap for smaller screens */
+    gap: 40px; /* Adjust gap for smaller screens */
   }
 
   .article-card {
     padding: 15px;
+    margin-bottom: 25px; /* Adjust margin for smaller screens */
   }
 
   .modal-content {
@@ -3356,9 +3358,9 @@ input:checked + .slider:before {
   }
 
   .close-button {
-    font-size: 2.5rem; /* Keep size consistent */
-    top: 15px;
-    right: 20px;
+    font-size: 3rem; /* Keep size consistent */
+    top: 10px;
+    right: 15px;
   }
 }
 
@@ -3370,7 +3372,7 @@ input:checked + .slider:before {
 
   .articles-container {
     grid-template-columns: 1fr; /* Stack articles on smaller screens */
-    gap: 40px; /* Adjust gap for smaller screens */
+    gap: 30px; /* Adjust gap for smaller screens */
   }
 
   .modal-content {
@@ -3386,8 +3388,8 @@ input:checked + .slider:before {
   }
 
   .close-button {
-    font-size: 2.2rem; /* Adjust size for very small screens */
+    font-size: 2.8rem; /* Adjust size for very small screens */
     top: 10px;
-    right: 15px;
+    right: 10px;
   }
 }
