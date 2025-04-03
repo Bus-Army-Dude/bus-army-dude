@@ -73,116 +73,94 @@ function smoothReload() {
 // Call the functions on page load
 window.onload = function() {
     updateTime();
-    updateNewYearCountdown();
+    updateCountdown();
 
     // Synchronize both time and countdown updates every second
     setInterval(() => {
         updateTime();
-        updateNewYearCountdown();
+        updateCountdown();
     }, 1000);  // Update both every second
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    function countdownToSummerSolstice() {
-        const now = new Date();
-        const currentYear = now.getFullYear();
+// Summer Solstice countdown with timezone adjustment
+function updateNewYearCountdown() {
+    const now = new Date();
 
-        // Get the date of the Summer Solstice
-        const summerSolstice = new Date(currentYear, 5, 21); // June 21st, tentatively
+    // Set the target date (Summer Solstice 2025) in UTC
+    // June 20, 2025, at 22:42 UTC is the precise moment of the Summer Solstice
+    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // 'Z' denotes UTC time
 
-        // Adjust for the Southern Hemisphere
-        const hemisphere = "north"; // Replace with user's hemisphere if known
-        if (hemisphere.toLowerCase() === "south") {
-            summerSolstice.setMonth(11); // December for Southern Hemisphere
-            summerSolstice.setDate(21);
-        }
+    // Get time difference in milliseconds
+    const diff = summerSolsticeUTC - now;
 
-        // If the solstice has already passed this year, target next year
-        if (now > summerSolstice) {
-            summerSolstice.setFullYear(currentYear + 1);
-        }
+    const countdownSection = document.querySelector('.countdown-section');
+    if (!countdownSection) return;
 
-        const timeRemaining = summerSolstice.getTime() - now.getTime();
+    if (diff <= 0) {
+        countdownSection.innerHTML = `
+            <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
+                Summer 2025 is here!!!
+            </h2>
+            <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
+        `;
+    } else {
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // More accurate year calculation
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44)); // More accurate month calculation
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        if (timeRemaining <= 0) {
-            return "Summer Solstice is here!";
-        }
+        // Update flip clock for years
+        updateFlipClock('countdown-years', years);
 
-        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        // Update flip clock for months
+        updateFlipClock('countdown-months', months);
 
-        return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+        // Update flip clock for days
+        updateFlipClock('countdown-days', days);
+
+        // Update flip clock for hours
+        updateFlipClock('countdown-hours', hours);
+
+        // Update flip clock for minutes
+        updateFlipClock('countdown-minutes', minutes);
+
+        // Update flip clock for seconds
+        updateFlipClock('countdown-seconds', seconds);
     }
+}
 
-    // Summer Solstice countdown with automatic timezone adjustment (now using the simple function)
-    function updateNewYearCountdown() {
-        const countdownResult = countdownToSummerSolstice();
-        const countdownSection = document.querySelector('.countdown-section');
-        if (!countdownSection) return;
+// Function to update flip clock value
+function updateFlipClock(id, value) {
+    const clock = document.getElementById(id);
+    if (!clock) return; // Prevent errors if element is missing
 
-        if (countdownResult === "Summer Solstice is here!") {
-            countdownSection.innerHTML = `
-                <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                    Summer Solstice is here!
-                </h2>
-                <div style="font-size: 1.5em; color: var(--text-color);">🌞</div>
-            `;
-        } else {
-            const parts = countdownResult.match(/(\d+) days, (\d+) hours, (\d+) minutes, (\d+) seconds/);
-            if (parts) {
-                const days = parseInt(parts[1]);
-                const hours = parseInt(parts[2]);
-                const minutes = parseInt(parts[3]);
-                const seconds = parseInt(parts[4]);
+    const front = clock.querySelector('.flip-clock-front');
+    const back = clock.querySelector('.flip-clock-back');
+    const valueStr = value.toString().padStart(2, '0');
 
-                // Update flip clock
-                updateFlipClock('countdown-years', 0); // Years will be 0 with this function
-                updateFlipClock('countdown-months', 0); // Months will be 0 with this function
-                updateFlipClock('countdown-days', days);
-                updateFlipClock('countdown-hours', hours);
-                updateFlipClock('countdown-minutes', minutes);
-                updateFlipClock('countdown-seconds', seconds);
-            } else {
-                countdownSection.textContent = countdownResult; // Fallback if parsing fails
-            }
-        }
+    if (front.textContent !== valueStr) {
+        front.textContent = valueStr;
+        back.textContent = valueStr;
+
+        // Trigger the flip animation
+        clock.querySelector('.flip-clock-inner').classList.add('flip');
+
+        setTimeout(() => {
+            clock.querySelector('.flip-clock-inner').classList.remove('flip');
+        }, 600); // match the animation duration
     }
+}
 
-    // Function to update flip clock value
-    function updateFlipClock(id, value) {
-        const clock = document.getElementById(id);
-        if (!clock) return;
+// Initialize everything
+updateTime();
+tiktokShoutouts.init();
+updateNewYearCountdown();
 
-        const front = clock.querySelector('.flip-clock-front');
-        const back = clock.querySelector('.flip-clock-back');
-        const valueStr = value.toString().padStart(2, '0');
-
-        if (front.textContent !== valueStr) {
-            front.textContent = valueStr;
-            back.textContent = valueStr;
-
-            clock.querySelector('.flip-clock-inner').classList.add('flip');
-            setTimeout(() => {
-                clock.querySelector('.flip-clock-inner').classList.remove('flip');
-            }, 600);
-        }
-    }
-
-    // Assuming these functions are defined elsewhere in your script
-    function updateTime() {}
-    const tiktokShoutouts = { init: () => {} };
-    function updateCountdown() {}
-
-    // Initialize everything
-    updateTime();
-    tiktokShoutouts.init();
-    updateNewYearCountdown();
-
-    setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 1000);
-    setInterval(updateNewYearCountdown, 1000);
+setInterval(updateTime, 1000);
+setInterval(updateCountdown, 1000);
+setInterval(updateNewYearCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
@@ -209,33 +187,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Modern FAQ functionality
 document.addEventListener('DOMContentLoaded', function() {
     const faqItems = document.querySelectorAll('.faq-item');
 
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
 
         question.addEventListener('click', () => {
-            // Check if this item is already active
             const isActive = item.classList.contains('active');
 
-            // Close all FAQ items first
+            // Close all FAQ items first (with closing animation)
             faqItems.forEach(faqItem => {
-                // Add a closing animation class if it was active
-                if (faqItem.classList.contains('active')) {
+                if (faqItem !== item && faqItem.classList.contains('active')) {
                     faqItem.classList.add('closing');
                     setTimeout(() => {
                         faqItem.classList.remove('closing');
-                    }, 300); // Match this with your CSS transition time
+                        faqItem.classList.remove('active');
+                        faqItem.querySelector('.faq-answer').style.maxHeight = null; // Ensure it closes
+                    }, 300); // Match with CSS transition
                 }
-                faqItem.classList.remove('active');
             });
 
-            // If the clicked item wasn't active before, open it
-            if (!isActive) {
+            // Toggle the clicked item
+            if (isActive) {
+                item.classList.remove('active');
+                answer.style.maxHeight = null; // Collapse the answer
+            } else {
                 item.classList.add('active');
-                // Scroll the item into view if it's not fully visible
+                answer.style.maxHeight = answer.scrollHeight + 'px'; // Expand the answer
+                // Scroll into view if the item is not fully visible
                 const rect = item.getBoundingClientRect();
                 const isInViewport = (
                     rect.top >= 0 &&
@@ -252,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Close FAQ when clicking outside
+    // Close all FAQs if clicked outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.faq-item')) {
             faqItems.forEach(item => {
@@ -260,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.add('closing');
                     setTimeout(() => {
                         item.classList.remove('active', 'closing');
+                        item.querySelector('.faq-answer').style.maxHeight = null; // Ensure the content collapses
                     }, 300);
                 }
             });
