@@ -3196,20 +3196,20 @@ input:checked + .slider:before {
   background: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 0; /* Full screen, no padding */
 }
 
 .modal-content {
   background: var(--content-bg);
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 700px;
-  width: 90%;
+  padding: 30px; /* Add padding for content */
+  border-radius: 0px; /* Remove border radius for full screen */
+  width: 100%; /* Make it full width */
+  height: 100%; /* Make it full height */
   box-shadow: 0px 4px 6px var(--shadow-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* Ensures content is centered */
+  align-items: center;
 }
 
 .close-button {
@@ -3275,12 +3275,5 @@ input:checked + .slider:before {
   .modal-body p {
     font-size: 16px;
   }
-
-  .article-title {
-    font-size: 18px; /* Adjust title for mobile */
-  }
-
-  .article-card {
-    padding: 10px; /* Adjust padding for smaller screens */
-  }
 }
+
