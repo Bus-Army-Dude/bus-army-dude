@@ -3143,8 +3143,8 @@ input:checked + .slider:before {
 .articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;  /* More space between the cards */
-  padding: 0 20px; /* Added padding to ensure space on the left and right */
+  gap: 40px;  /* Increased gap to 40px for more space between cards */
+  padding: 0 20px; /* Ensures space on both sides of the container */
 }
 
 .article-card {
