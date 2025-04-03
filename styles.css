@@ -3156,8 +3156,8 @@ input:checked + .slider:before {
 .articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 60px; /* Increased gap further */
-  padding: 20px;
+  gap: 40px; /* Adjusted gap */
+  padding: 30px; /* Slightly increased padding around the container */
 }
 
 .article-card {
@@ -3166,7 +3166,10 @@ input:checked + .slider:before {
   padding: 20px;
   box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  margin: 0 0 30px 0; /* Increased margin-bottom significantly */
+  margin-bottom: 30px; /* Increased margin-bottom */
+  margin-top: 0; /* Ensure no top margin is interfering */
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .article-card:hover {
@@ -3337,7 +3340,7 @@ input:checked + .slider:before {
 
   .articles-container {
     padding: 10px;
-    gap: 40px; /* Adjust gap for smaller screens */
+    gap: 30px; /* Adjust gap for smaller screens */
   }
 
   .article-card {
@@ -3372,7 +3375,7 @@ input:checked + .slider:before {
 
   .articles-container {
     grid-template-columns: 1fr; /* Stack articles on smaller screens */
-    gap: 30px; /* Adjust gap for smaller screens */
+    gap: 20px; /* Adjust gap for smaller screens */
   }
 
   .modal-content {
