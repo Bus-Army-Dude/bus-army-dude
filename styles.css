@@ -162,8 +162,8 @@ body {
 }
 
 /* Settings Button */
-.settings-button {
-    position: fixed;
+.profile-section .settings-button {
+    position: absolute;
     top: 20px;
     right: 20px;
     width: 40px;
@@ -178,14 +178,14 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
-.settings-button:hover {
+.profile-section .settings-button:hover {
     transform: translateY(-2px) rotate(45deg);
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Merch Button */
-.merch-button {
-    position: fixed;
+.profile-section .merch-button {
+    position: absolute;
     top: 20px;
     left: 20px;
     width: 40px;
@@ -200,14 +200,14 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
-.merch-button:hover {
+.profile-section .merch-button:hover {
     transform: translateY(-2px) rotate(45deg);
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
 /* Weather Button */
-.weather-button {
-    position: fixed;
+.profile-section .weather-button {
+    position: absolute;
     bottom: 20px;
     left: 20px;
     width: 40px;
@@ -222,14 +222,14 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
-.weather-button:hover {
+.profile-section .weather-button:hover {
     transform: translateY(-2px) rotate(45deg);
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Blog Button */
-.blog-button {
-    position: fixed;
+.profile-section .blog-button {
+    position: absolute;
     bottom: 20px;
     right: 20px;
     width: 40px;
@@ -244,14 +244,14 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
-.blog-button:hover {
+.profile-section .blog-button:hover {
     transform: translateY(-2px) rotate(45deg);
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Styles for the bio spacing */
 .profile-section p {
-    margin-bottom: 8px; /* Reverted to original for now, adjust if needed */
+    margin-bottom: 8px;
 }
 
 /* Media Queries */
@@ -261,10 +261,10 @@ body {
         height: 120px;
     }
 
-    .settings-button,
-    .merch-button,
-    .weather-button,
-    .blog-button {
+    .profile-section .settings-button,
+    .profile-section .merch-button,
+    .profile-section .weather-button,
+    .profile-section .blog-button {
         width: 35px;
         height: 35px;
     }
@@ -280,10 +280,10 @@ body {
         height: 100px;
     }
 
-    .settings-button,
-    .merch-button,
-    .weather-button,
-    .blog-button {
+    .profile-section .settings-button,
+    .profile-section .merch-button,
+    .profile-section .weather-button,
+    .profile-section .blog-button {
         width: 30px;
         height: 30px;
     }
