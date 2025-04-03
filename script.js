@@ -85,17 +85,17 @@ window.onload = function() {
 // Summer Solstice countdown with timezone adjustment
 function updateNewYearCountdown() {
     const now = new Date();
+    
+    // Get the user's timezone dynamically
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Summer Solstice 2025 (June 20, 2025, at 22:42 UTC)
+    const summerSolsticeUTC = new Date(Date.UTC(2025, 5, 20, 22, 42, 0));
 
-    // Get user's local timezone offset in milliseconds
-    const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000;
+    // Convert the Summer Solstice time to the user's local timezone
+    const summerSolsticeLocal = new Date(summerSolsticeUTC.toLocaleString("en-US", { timeZone: userTimeZone }));
 
-    // Set the target date (Summer Solstice 2025) in UTC
-    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // Corrected solstice time
-
-    // Adjust the Summer Solstice date to the user's local timezone
-    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
-
-    const diff = summerSolstice - now;
+    const diff = summerSolsticeLocal - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -115,7 +115,6 @@ function updateNewYearCountdown() {
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Update flip clocks
         updateFlipClock('countdown-years', years);
         updateFlipClock('countdown-months', months);
         updateFlipClock('countdown-days', days);
@@ -128,24 +127,21 @@ function updateNewYearCountdown() {
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return; // Prevent errors if element is missing
-
+    if (!clock) return;
+    
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
-    const flipInner = clock.querySelector('.flip-clock-inner');
-
     const valueStr = value.toString().padStart(2, '0');
 
     if (front.textContent !== valueStr) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
-        // Trigger the flip animation
-        flipInner.classList.add('flip');
+        clock.querySelector('.flip-clock-inner').classList.add('flip');
 
         setTimeout(() => {
-            flipInner.classList.remove('flip');
-        }, 600); // Match animation duration
+            clock.querySelector('.flip-clock-inner').classList.remove('flip');
+        }, 600);
     }
 }
 
@@ -155,6 +151,7 @@ tiktokShoutouts.init();
 updateNewYearCountdown();
 
 setInterval(updateTime, 1000);
+setInterval(updateCountdown, 1000);
 setInterval(updateNewYearCountdown, 1000);
 
 if (window.location.protocol !== 'https:') {
