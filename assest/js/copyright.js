@@ -1,34 +1,38 @@
-'use strict';
+document.addEventListener('DOMContentLoaded', () => {
+    const protectContent = {
+        init() {
+            // Disable Right Click
+            document.addEventListener('contextmenu', e => e.preventDefault());
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Prevent text selection
-    document.addEventListener("selectstart", (event) => {
-        event.preventDefault();
-    });
+            // Disable Text Selection
+            document.addEventListener('selectstart', e => e.preventDefault());
 
-    // Prevent right-click context menu
-    document.addEventListener("contextmenu", (event) => {
-        event.preventDefault();
-    });
+            // Disable Copy, Cut, and Paste
+            document.addEventListener('copy', e => e.preventDefault());
+            document.addEventListener('cut', e => e.preventDefault());
+            document.addEventListener('paste', e => e.preventDefault());
 
-    // Prevent copying content
-    document.addEventListener("copy", (event) => {
-        event.preventDefault();
-    });
+            // Disable Drag and Drop (Text & Images)
+            document.addEventListener('dragstart', e => e.preventDefault());
+            document.addEventListener('drop', e => e.preventDefault());
 
-    // Prevent drag and drop for ALL images
-    document.querySelectorAll("img").forEach((img) => {
-        img.addEventListener("dragstart", (event) => {
-            event.preventDefault();
-        });
-    });
+            // Disable Save As (Ctrl+S / Cmd+S)
+            document.addEventListener('keydown', e => {
+                if (
+                    (e.ctrlKey || e.metaKey) && 
+                    ['s', 'u', 'c', 'x', 'v'].includes(e.key.toLowerCase()) // Prevent Save, View Source, Copy, Cut, Paste
+                ) {
+                    e.preventDefault();
+                }
 
-    // Prevent drag and drop for ALL elements
-    document.addEventListener("dragstart", (event) => {
-        event.preventDefault();
-    });
+                // Disable F12, Ctrl+Shift+I (Dev Tools)
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    };
 
-    document.addEventListener("drop", (event) => {
-        event.preventDefault();
-    });
+    // Activate Content Protection
+    protectContent.init();
 });
