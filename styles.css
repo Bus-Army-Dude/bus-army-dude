@@ -117,8 +117,8 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: 0px; /* Adjusted to move it up */
-    right: 0px; /* Adjusted to move it left */
+    bottom: 0px; /* Adjusted for half in/out */
+    right: 0px; /* Adjusted for half in/out */
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -140,7 +140,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 0; /* Reduced top and bottom margin */
+    margin: 10px 0; /* Reduced vertical margin */
 }
 
 .username-checkmark h1 {
