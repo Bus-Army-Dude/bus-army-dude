@@ -117,8 +117,8 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: -10px; /* Adjusted for halfway in */
-    right: -10px; /* Adjusted for halfway in */
+    bottom: 5px;
+    right: 5px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -139,7 +139,7 @@ body {
 .username-checkmark {
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the username and checkmark */
+    justify-content: center;
     margin: 15px 0;
 }
 
@@ -151,18 +151,16 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    display: flex; /* To align items inline */
-    align-items: center; /* Vertically align username and checkmark */
 }
 
 .verified {
     width: 20px;
     height: 20px;
-    margin-left: 0; /* Removed space */
+    margin-left: 5px;
 }
 
 /* Settings Button */
-.profile-section .settings-button {
+.settings-button {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -178,13 +176,13 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
-.profile-section .settings-button:hover {
+.settings-button:hover {
     transform: translateY(-2px) rotate(45deg);
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
 /* Merch Button */
-.profile-section .merch-button {
+.merch-button {
     position: absolute;
     top: 20px;
     left: 20px;
@@ -200,13 +198,13 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
-.profile-section .merch-button:hover {
+.merch-button:hover {
     transform: translateY(-2px) rotate(45deg);
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
 /* Weather Button */
-.profile-section .weather-button {
+.weather-button {
     position: absolute;
     bottom: 20px;
     left: 20px;
@@ -222,36 +220,9 @@ body {
     box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
 }
 
-.profile-section .weather-button:hover {
+.weather-button:hover {
     transform: translateY(-2px) rotate(45deg);
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
-}
-
-/* Blog Button */
-.profile-section .blog-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('blog-icon.png') center/18px no-repeat, var(--link-color); /* Replace 'blog-icon.png' with your actual icon */
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
-}
-
-.profile-section .blog-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
-}
-
-/* Styles for the bio spacing */
-.profile-section p {
-    margin-bottom: 8px;
 }
 
 /* Media Queries */
@@ -261,10 +232,9 @@ body {
         height: 120px;
     }
 
-    .profile-section .settings-button,
-    .profile-section .merch-button,
-    .profile-section .weather-button,
-    .profile-section .blog-button {
+    .settings-button,
+    .merch-button,
+    .weather-button {
         width: 35px;
         height: 35px;
     }
@@ -280,10 +250,9 @@ body {
         height: 100px;
     }
 
-    .profile-section .settings-button,
-    .profile-section .merch-button,
-    .profile-section .weather-button,
-    .profile-section .blog-button {
+    .settings-button,
+    .merch-button,
+    .weather-button {
         width: 30px;
         height: 30px;
     }
