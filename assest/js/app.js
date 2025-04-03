@@ -246,7 +246,7 @@ export const updateWeather = (lat, lon) => {
                     tempLi.classList.add("slider-item");
                     tempLi.innerHTML = `
                         <div class="card card-sm slider-card">
-                            <p class="body-3">${module.getHours(dateTimeUnix, timezone)}</p>
+                            <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
                             <img src="./assest/images/weather_icons/${icon}.png" width="48" height="48" loading="lazy" alt="${description}" class="weather-icon" title="${description}">
                             <p class="body-3" data-temperature data-original-value="${temp}">${Math.round(temp)}&deg;</p>
                         </div>
@@ -257,7 +257,7 @@ export const updateWeather = (lat, lon) => {
                     windLi.classList.add("slider-item");
                     windLi.innerHTML = `
                         <div class="card card-sm slider-card">
-                            <p class="body-3">${module.getHours(dateTimeUnix, timezone)}</p>
+                            <p class="body-3">${module.getTime(dateTimeUnix, timezone)}</p>
                             <img src="./assest/images/weather_icons/direction.png" width="48" height="48" loading="lazy" alt="" class="weather-icon" style="transform: rotate(${windDirection - 180}deg)">
                             <p class="body-3" data-wind-speed data-original-value="${windSpeed}">${Math.round(windSpeed)} m/s</p>
                         </div>
@@ -285,7 +285,7 @@ export const updateWeather = (lat, lon) => {
                     date.setHours(0, 0, 0, 0); // Set the time to midnight to accurately compare dates
                     const day = date.toDateString();
 
-                    if (date > today && !forecastDays.includes(day) && daysAdded < 5) {
+                    if (date > today && !forecastDays.includes(day)) {
                         forecastDays.push(day);
                         daysAdded++;
 
@@ -313,33 +313,32 @@ export const updateWeather = (lat, lon) => {
                     applySettings(savedSettings);
                 }
 
-                // Fetch and display weather alerts from weather.gov
-                fetchData(url.weatherGovAlerts(lat, lon), displayWeatherAlertsGov);
+                // Fetch and display weather alerts
+                fetchData(url.alerts(lat, lon), displayWeatherAlerts);
             });
         });
     });
 };
 
-// Function to display weather alerts from weather.gov
-const displayWeatherAlertsGov = (alertData) => {
-    const alertContainer = document.querySelector('.weather-alerts');
+// Function to display weather alerts
+const displayWeatherAlerts = (alertData) => {
+    const alertContainer = document.querySelector('.weather-alerts'); // Get the alert container
 
     if (alertContainer) {
-        if (alertData && alertData.features && alertData.features.length > 0) {
+        if (alertData && alertData.alerts && alertData.alerts.length > 0) {
             alertContainer.innerHTML = ''; // Clear any previous alerts
-            alertData.features.forEach(feature => {
-                const properties = feature.properties;
+            alertData.alerts.forEach(alert => {
                 const alertDiv = document.createElement('div');
-                alertDiv.classList.add('weather-alert');
+                alertDiv.classList.add('weather-alert'); // You can style this with CSS
 
                 const eventHeading = document.createElement('h3');
-                eventHeading.textContent = properties.event;
+                eventHeading.textContent = alert.event;
 
                 const descriptionParagraph = document.createElement('p');
-                descriptionParagraph.textContent = properties.description;
+                descriptionParagraph.textContent = alert.description;
 
-                const startTime = new Date(properties.effective).toLocaleString();
-                const endTime = new Date(properties.expires).toLocaleString();
+                const startTime = new Date(alert.start * 1000).toLocaleString();
+                const endTime = new Date(alert.end * 1000).toLocaleString();
                 const timeParagraph = document.createElement('p');
                 timeParagraph.textContent = `Starts: ${startTime}, Ends: ${endTime}`;
 
@@ -349,7 +348,6 @@ const displayWeatherAlertsGov = (alertData) => {
                 alertContainer.appendChild(alertDiv);
             });
         } else {
-            console.log("No active weather alerts from weather.gov for this area.");
             alertContainer.innerHTML = '<p>No active weather alerts for this area.</p>';
         }
     } else {
@@ -509,26 +507,43 @@ document.addEventListener("DOMContentLoaded", () => {
             settingsModal.classList.remove("active");
         }
     });
-
-    // Save settings
-    if (saveBtn) {
-        saveBtn.addEventListener("click", () => {
-            const settings = {
-                darkMode: controls.theme?.checked || false,
-                temperature: controls.temp?.value || "celsius",
-                windSpeed: controls.speed?.value || "ms",
-                pressure: controls.pressure?.value || "hpa",
-                distance: controls.distance?.value || "km",
-                timeFormat: controls.time?.checked || false,
-                locationServices: controls.location?.checked || true
-            };
-            localStorage.setItem("weatherSettings", JSON.stringify(settings));
-            applySettings(settings);
-            settingsModal.classList.remove("active");
-        });
-    }
 });
 
 export const error404 = () => {
     errorContent.style.display = "flex";
 };
+
+// Function to display weather alerts (REMOVE THIS DUPLICATE DEFINITION)
+// const displayWeatherAlerts = (alertData) => {
+//     const alertContainer = document.querySelector('.weather-alerts'); // Get the alert container
+//
+//     if (alertContainer) {
+//         if (alertData && alertData.alerts && alertData.alerts.length > 0) {
+//             alertContainer.innerHTML = ''; // Clear any previous alerts
+//             alertData.alerts.forEach(alert => {
+//                 const alertDiv = document.createElement('div');
+//                 alertDiv.classList.add('weather-alert'); // You can style this with CSS
+//
+//                 const eventHeading = document.createElement('h3');
+//                 eventHeading.textContent = alert.event;
+//
+//                 const descriptionParagraph = document.createElement('p');
+//                 descriptionParagraph.textContent = alert.description;
+//
+//                 const startTime = new Date(alert.start * 1000).toLocaleString();
+//                 const endTime = new Date(alert.end * 1000).toLocaleString();
+//                 const timeParagraph = document.createElement('p');
+//                 timeParagraph.textContent = `Starts: ${startTime}, Ends: ${endTime}`;
+//
+//                 alertDiv.appendChild(eventHeading);
+//                 alertDiv.appendChild(descriptionParagraph);
+//                 alertDiv.appendChild(timeParagraph);
+//                 alertContainer.appendChild(alertDiv);
+//             });
+//         } else {
+//             alertContainer.innerHTML = '<p>No active weather alerts for this area.</p>';
+//         }
+//     } else {
+//         console.log("Weather alerts container element not found.");
+//     }
+// };
