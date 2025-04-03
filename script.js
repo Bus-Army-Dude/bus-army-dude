@@ -86,16 +86,17 @@ window.onload = function() {
 function updateNewYearCountdown() {
     const now = new Date();
     
-    // Get the user's timezone dynamically
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Get user's local timezone offset in minutes
+    const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000; // convert to milliseconds
+
+    // Set the target date (Summer Solstice 2025) in UTC
+    // June 20, 2025, at 22:42 UTC is the precise moment of the Summer Solstice
+    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // 'Z' denotes UTC time
     
-    // Summer Solstice 2025 (June 20, 2025, at 22:42 UTC)
-    const summerSolsticeUTC = new Date(Date.UTC(2025, 5, 20, 22, 42, 0));
+    // Adjust the Summer Solstice date to the user's local timezone
+    const summerSolstice = new Date(summerSolsticeUTC.getTime() - localTimezoneOffset); // SUBTRACT the offset
 
-    // Convert the Summer Solstice time to the user's local timezone
-    const summerSolsticeLocal = new Date(summerSolsticeUTC.toLocaleString("en-US", { timeZone: userTimeZone }));
-
-    const diff = summerSolsticeLocal - now;
+    const diff = summerSolstice - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -108,18 +109,29 @@ function updateNewYearCountdown() {
             <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
         `;
     } else {
-        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // More accurate year calculation
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44)); // More accurate month calculation
         const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+        // Update flip clock for years
         updateFlipClock('countdown-years', years);
+
+        // Update flip clock for months
         updateFlipClock('countdown-months', months);
+
+        // Update flip clock for days
         updateFlipClock('countdown-days', days);
+
+        // Update flip clock for hours
         updateFlipClock('countdown-hours', hours);
+
+        // Update flip clock for minutes
         updateFlipClock('countdown-minutes', minutes);
+
+        // Update flip clock for seconds
         updateFlipClock('countdown-seconds', seconds);
     }
 }
@@ -127,8 +139,8 @@ function updateNewYearCountdown() {
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return;
-    
+    if (!clock) return; //added error protection
+
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
     const valueStr = value.toString().padStart(2, '0');
@@ -137,20 +149,21 @@ function updateFlipClock(id, value) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
+        // Trigger the flip animation
         clock.querySelector('.flip-clock-inner').classList.add('flip');
 
         setTimeout(() => {
             clock.querySelector('.flip-clock-inner').classList.remove('flip');
-        }, 600);
+        }, 600); // match the animation duration
     }
 }
 
 // Initialize everything
-updateTime();
-tiktokShoutouts.init();
+updateTime(); 
+tiktokShoutouts.init(); 
 updateNewYearCountdown();
 
-setInterval(updateTime, 1000);
+setInterval(updateTime, 1000); 
 setInterval(updateCountdown, 1000);
 setInterval(updateNewYearCountdown, 1000);
 
