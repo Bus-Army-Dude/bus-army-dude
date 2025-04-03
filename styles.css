@@ -3078,40 +3078,40 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   background: var(--content-bg);
-  padding: 15px 20px; /* Slightly increased padding */
-  border-bottom: 1px solid var(--border-color); /* Thinner border */
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
-  gap: 10px; /* Add some spacing between tabs */
-  list-style: none; /* Remove default list styling (dots) */
-  margin: 0; /* Remove default margin for lists */
-  padding-left: 0; /* Remove default padding for lists */
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
 }
 
 .nav-tabs li {
-  list-style: none; /* Ensure no list style on individual items */
-  margin: 0; /* Remove default margin for list items */
+  list-style: none;
+  margin: 0;
 }
 
 .nav-tabs a {
-  padding: 10px 15px; /* Adjusted padding */
+  padding: 10px 15px;
   color: var(--text-color);
   text-decoration: none;
-  font-weight: 500; /* Slightly lighter font-weight */
-  transition: color 0.2s ease-in-out; /* Smoother transition */
-  font-size: 1rem; /* Use rem for better scalability */
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+  font-size: 1rem;
   border: none;
-  border-radius: 8px; /* Add slight rounded corners */
+  border-radius: 8px;
 }
 
 .nav-tabs a:hover {
   color: var(--accent-color);
-  background-color: var(--hover-bg); /* Add a subtle background on hover */
+  background-color: var(--hover-bg);
 }
 
 .nav-tabs .active {
-  border-bottom: 2px solid var(--accent-color); /* Thinner active indicator */
-  color: var(--accent-color); /* Make active tab text more prominent */
-  background-color: transparent; /* Ensure no background for active state */
+  border-bottom: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  background-color: transparent;
 }
 
 /* ======================== */
@@ -3120,7 +3120,7 @@ input:checked + .slider:before {
 .filter-section {
   display: flex;
   justify-content: center;
-  padding: 15px 20px; /* Slightly increased padding */
+  padding: 15px 20px;
   background: var(--content-bg);
   margin-bottom: 30px;
 }
@@ -3129,11 +3129,11 @@ input:checked + .slider:before {
   background: var(--dropdown-background-dark);
   color: var(--dropdown-text-dark);
   border: 1px solid var(--dropdown-border-dark);
-  padding: 10px 15px; /* Adjusted padding */
-  border-radius: 8px; /* More rounded corners */
-  font-size: 0.9rem; /* Use rem for scalability */
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out; /* Smoother transition */
+  transition: background-color 0.2s ease-in-out;
 }
 
 #time-filter:hover {
@@ -3155,51 +3155,51 @@ input:checked + .slider:before {
 /* ======================== */
 .articles-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Slightly wider min width */
-  gap: 30px; /* Adjusted gap */
-  padding: 20px; /* Adjusted padding */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 40px; /* Increased gap to ensure spacing between cards */
+  padding: 20px;
 }
 
 .article-card {
   background: var(--content-bg);
-  border-radius: 12px; /* More rounded corners */
-  padding: 20px; /* Adjusted padding */
-  box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1); /* More subtle shadow using rgba */
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smoother transitions */
-  margin: 0; /* Removed default margin, rely on grid gap */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  margin: 0;
 }
 
 .article-card:hover {
-  transform: translateY(-8px); /* Slightly more pronounced hover effect */
-  box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.15); /* Enhanced shadow on hover */
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.15);
 }
 
 .article-card img {
   width: 100%;
   height: auto;
-  border-radius: 10px; /* More rounded corners for images */
-  margin-bottom: 12px; /* Add some space below the image */
+  border-radius: 10px;
+  margin-bottom: 12px;
 }
 
 .article-title {
-  font-size: 1.1rem; /* Use rem */
-  font-weight: 600; /* Slightly bolder */
-  margin: 8px 0; /* Adjusted margin */
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 8px 0;
   color: var(--text-color);
 }
 
 .short-description {
-  font-size: 0.9rem; /* Use rem */
+  font-size: 0.9rem;
   color: var(--secondary-text);
-  line-height: 1.6; /* Improved readability */
+  line-height: 1.6;
 }
 
 .article-category {
-  font-size: 0.8rem; /* Use rem */
+  font-size: 0.8rem;
   color: var(--accent-color);
-  margin-bottom: 8px; /* Adjusted margin */
-  text-transform: uppercase; /* Make category stand out */
-  letter-spacing: 0.5px; /* Slight letter spacing */
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* ======================== */
@@ -3221,12 +3221,13 @@ input:checked + .slider:before {
 
 .modal-content {
   background: var(--content-bg);
-  padding: 40px; /* Increased padding */
-  border-radius: 12px; /* More rounded corners */
-  width: 90%; /* Adjust width for better responsiveness */
-  max-width: 800px; /* Limit maximum width */
-  max-height: 90%; /* Limit maximum height */
-  box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.2); /* More pronounced shadow */
+  padding: 30px; /* Adjusted padding - might need further tweaking */
+  border-radius: 0; /* Remove border-radius for full screen */
+  width: 100%; /* Take up full width */
+  height: 100%; /* Take up full height */
+  max-width: none; /* Ensure it overrides any max width */
+  max-height: none; /* Ensure it overrides any max height */
+  box-shadow: none; /* Remove shadow for full screen */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -3238,16 +3239,16 @@ input:checked + .slider:before {
 .close-button {
   background: none;
   border: none;
-  font-size: 2rem; /* Use rem for better scaling */
+  font-size: 2rem;
   cursor: pointer;
   color: var(--text-color);
   position: absolute;
-  top: 15px;
-  right: 20px; /* Adjust position slightly */
-  z-index: 1001; /* Ensure it's above modal-content */
-  padding: 0; /* Remove default padding which can affect alignment */
-  line-height: 1; /* Adjust line-height for better vertical alignment */
-  opacity: 0.7; /* Slightly less prominent initially */
+  top: 20px; /* Adjust position for full screen */
+  right: 20px; /* Adjust position for full screen */
+  z-index: 1001;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.7;
   transition: opacity 0.2s ease-in-out;
 }
 
@@ -3256,7 +3257,7 @@ input:checked + .slider:before {
 }
 
 .modal-header {
-  margin-bottom: 25px; /* Increased margin */
+  margin-bottom: 25px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -3264,8 +3265,8 @@ input:checked + .slider:before {
 }
 
 #category-name {
-  font-size: 0.9rem; /* Use rem */
-  font-weight: 500; /* Slightly lighter */
+  font-size: 0.9rem;
+  font-weight: 500;
   color: var(--accent-color);
   margin-bottom: 10px;
   text-transform: uppercase;
@@ -3273,41 +3274,41 @@ input:checked + .slider:before {
 }
 
 #article-title {
-  font-size: 1.75rem; /* Use rem */
-  font-weight: 700; /* Bolder title */
-  margin: 10px 0 15px; /* Adjusted margin */
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 10px 0 15px;
   color: var(--text-color);
   line-height: 1.3;
 }
 
 #article-content {
-  font-size: 1rem; /* Use rem */
+  font-size: 1rem;
   color: var(--text-color);
-  line-height: 1.7; /* Improved readability */
+  line-height: 1.7;
 }
 
 .modal-body p {
-  font-size: 0.9rem; /* Use rem */
+  font-size: 0.9rem;
   color: var(--secondary-text);
-  margin-top: 15px; /* Increased margin */
+  margin-top: 15px;
   line-height: 1.6;
 }
 
 .modal-body img {
   width: 100%;
   height: auto;
-  border-radius: 10px; /* More rounded corners */
-  margin-top: 25px; /* Increased margin */
-  margin-bottom: 25px; /* Increased margin */
+  border-radius: 8px;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .modal-footer {
-  margin-top: 30px; /* Increased margin */
+  margin-top: 30px;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-size: 0.85rem; /* Slightly smaller font for footer */
+  font-size: 0.85rem;
   color: var(--secondary-text);
 }
 
@@ -3335,7 +3336,7 @@ input:checked + .slider:before {
 
   .articles-container {
     padding: 10px;
-    gap: 20px;
+    gap: 20px; /* Adjust gap for smaller screens if needed */
   }
 
   .article-card {
@@ -3343,7 +3344,7 @@ input:checked + .slider:before {
   }
 
   .modal-content {
-    padding: 30px;
+    padding: 20px; /* Adjust padding for smaller screens */
   }
 
   #article-title {
@@ -3356,7 +3357,7 @@ input:checked + .slider:before {
 
   .close-button {
     font-size: 2.2rem;
-    top: 10px;
+    top: 15px;
     right: 15px;
   }
 }
@@ -3369,10 +3370,11 @@ input:checked + .slider:before {
 
   .articles-container {
     grid-template-columns: 1fr; /* Stack articles on smaller screens */
+    gap: 30px; /* Adjust gap for smaller screens if needed */
   }
 
   .modal-content {
-    padding: 20px;
+    padding: 15px; /* Adjust padding for smaller screens */
   }
 
   #article-title {
