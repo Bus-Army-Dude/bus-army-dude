@@ -3082,6 +3082,14 @@ input:checked + .slider:before {
   border-bottom: 1px solid var(--border-color); /* Thinner border */
   flex-wrap: wrap;
   gap: 10px; /* Add some spacing between tabs */
+  list-style: none; /* Remove default list styling (dots) */
+  margin: 0; /* Remove default margin for lists */
+  padding-left: 0; /* Remove default padding for lists */
+}
+
+.nav-tabs li {
+  list-style: none; /* Ensure no list style on individual items */
+  margin: 0; /* Remove default margin for list items */
 }
 
 .nav-tabs a {
