@@ -230,12 +230,16 @@ if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
 }
 
-// Back to top button functionality
 document.addEventListener('DOMContentLoaded', function() {
     const backToTopButton = document.getElementById('backToTop');
+    const profileSection = document.querySelector('.profile-section');  // Using class to target profile section
 
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
+        // Get the position of the bottom of the profile section
+        const profileSectionPosition = profileSection.offsetTop + profileSection.offsetHeight;
+
+        // Show the back to top button if the user scrolls past the profile section
+        if (window.scrollY > profileSectionPosition) {
             backToTopButton.classList.add('visible');
         } else {
             backToTopButton.classList.remove('visible');
