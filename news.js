@@ -48,6 +48,12 @@ function createArticleCard(article) {
   image.alt = article.title;
   articleCard.appendChild(image);
 
+  // Article category
+  const category = document.createElement('div');
+  category.classList.add('article-category');
+  category.textContent = article.category; // Display category on the card
+  articleCard.appendChild(category);
+
   // Article title
   const title = document.createElement('h3');
   title.classList.add('article-title');
@@ -94,39 +100,45 @@ function closeModal() {
   document.getElementById('modal').style.display = 'none';
 }
 
-// Function to filter articles by time range
-function filterArticlesByTime(range) {
-  let filteredArticles;
+// Function to filter articles by time range and category
+function filterArticles(range, selectedCategory) {
+  let filteredArticles = articles;
 
   const now = new Date();
 
-  switch(range) {
+  // First, filter by time range
+  switch (range) {
     case 'past-hour':
-      filteredArticles = articles.filter(article => {
+      filteredArticles = filteredArticles.filter(article => {
         const articleDate = new Date(article.postedOn);
         return now - articleDate <= 60 * 60 * 1000; // 1 hour
       });
       break;
     case 'past-24-hours':
-      filteredArticles = articles.filter(article => {
+      filteredArticles = filteredArticles.filter(article => {
         const articleDate = new Date(article.postedOn);
         return now - articleDate <= 24 * 60 * 60 * 1000; // 24 hours
       });
       break;
     case 'past-week':
-      filteredArticles = articles.filter(article => {
+      filteredArticles = filteredArticles.filter(article => {
         const articleDate = new Date(article.postedOn);
         return now - articleDate <= 7 * 24 * 60 * 60 * 1000; // 7 days
       });
       break;
     case 'past-year':
-      filteredArticles = articles.filter(article => {
+      filteredArticles = filteredArticles.filter(article => {
         const articleDate = new Date(article.postedOn);
         return now - articleDate <= 365 * 24 * 60 * 60 * 1000; // 1 year
       });
       break;
     default:
-      filteredArticles = articles;
+      break; // No time filter
+  }
+
+  // Filter by selected category
+  if (selectedCategory !== 'all') {
+    filteredArticles = filteredArticles.filter(article => article.category === selectedCategory);
   }
 
   // Clear the existing articles and load filtered ones
@@ -150,7 +162,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add event listener to the time filter dropdown
   const timeFilter = document.getElementById('time-filter');
   timeFilter.addEventListener('change', (event) => {
-    filterArticlesByTime(event.target.value);
+    const categoryFilter = document.getElementById('category-filter').value;
+    filterArticles(event.target.value, categoryFilter);
+  });
+
+  // Add event listener to the category filter dropdown
+  const categoryFilter = document.getElementById('category-filter');
+  categoryFilter.addEventListener('change', (event) => {
+    const timeFilterValue = document.getElementById('time-filter').value;
+    filterArticles(timeFilterValue, event.target.value);
   });
 });
 
