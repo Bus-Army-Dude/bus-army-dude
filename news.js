@@ -20,6 +20,36 @@ const articles = [
         author: "Jane Smith",
         category: "Business"
     },
+    {
+        id: 3,
+        title: "World Leaders Meet for Climate Talks",
+        shortDescription: "Leaders from around the globe are convening to discuss the pressing issue of climate change.",
+        content: "Details about the climate talks...",
+        imageUrl: "https://via.placeholder.com/150",
+        postedOn: "2025-04-01T14:00:00Z",
+        author: "Alice Brown",
+        category: "World"
+    },
+    {
+        id: 4,
+        title: "New Study Links Exercise to Better Mental Health",
+        shortDescription: "Research suggests that regular physical activity has significant benefits for mental well-being.",
+        content: "Findings of the mental health study...",
+        imageUrl: "https://via.placeholder.com/150",
+        postedOn: "2025-04-03T09:00:00Z",
+        author: "Bob Green",
+        category: "Health"
+    },
+    {
+        id: 5,
+        title: "Local Sports Team Wins Championship",
+        shortDescription: "The city celebrates as their beloved sports team brings home the championship trophy.",
+        content: "Coverage of the championship game...",
+        imageUrl: "https://via.placeholder.com/150",
+        postedOn: "2025-04-03T12:00:00Z",
+        author: "Charlie White",
+        category: "Sports"
+    },
     // Add more articles as needed
 ];
 
@@ -101,7 +131,7 @@ function closeModal() {
 }
 
 // Function to filter articles by time range and category
-function filterArticles(range, selectedCategory) {
+function filterArticles(range, category) {
     let filteredArticles = articles;
 
     const now = new Date();
@@ -109,36 +139,24 @@ function filterArticles(range, selectedCategory) {
     // First, filter by time range
     switch (range) {
         case 'past-hour':
-            filteredArticles = filteredArticles.filter(article => {
-                const articleDate = new Date(article.postedOn);
-                return now - articleDate <= 60 * 60 * 1000; // 1 hour
-            });
+            filteredArticles = filteredArticles.filter(article => now - new Date(article.postedOn) <= 60 * 60 * 1000);
             break;
         case 'past-24-hours':
-            filteredArticles = filteredArticles.filter(article => {
-                const articleDate = new Date(article.postedOn);
-                return now - articleDate <= 24 * 60 * 60 * 1000; // 24 hours
-            });
+            filteredArticles = filteredArticles.filter(article => now - new Date(article.postedOn) <= 24 * 60 * 60 * 1000);
             break;
         case 'past-week':
-            filteredArticles = filteredArticles.filter(article => {
-                const articleDate = new Date(article.postedOn);
-                return now - articleDate <= 7 * 24 * 60 * 60 * 1000; // 7 days
-            });
+            filteredArticles = filteredArticles.filter(article => now - new Date(article.postedOn) <= 7 * 24 * 60 * 60 * 1000);
             break;
         case 'past-year':
-            filteredArticles = filteredArticles.filter(article => {
-                const articleDate = new Date(article.postedOn);
-                return now - articleDate <= 365 * 24 * 60 * 60 * 1000; // 1 year
-            });
+            filteredArticles = filteredArticles.filter(article => now - new Date(article.postedOn) <= 365 * 24 * 60 * 60 * 1000);
             break;
         default:
-            break; // No time filter
+            break; // 'anytime' - no time filter
     }
 
-    // Filter by selected category
-    if (selectedCategory !== 'all') {
-        filteredArticles = filteredArticles.filter(article => article.category === selectedCategory);
+    // Then, filter by category
+    if (category !== 'home') { // 'home' will show all categories
+        filteredArticles = filteredArticles.filter(article => article.category.toLowerCase() === category);
     }
 
     // Clear the existing articles and load filtered ones
@@ -155,25 +173,37 @@ function loadArticles() {
     });
 }
 
+// Function to handle navigation tab clicks
+function handleNavTabClick(event) {
+    event.preventDefault(); // Prevent the default link behavior
+    const category = event.target.dataset.category;
+    const timeFilterValue = document.getElementById('time-filter').value;
+    filterArticles(timeFilterValue, category);
+
+    // Update the active class on the navigation tabs
+    document.querySelectorAll('.nav-tabs a').forEach(link => {
+        link.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
 // Wait for DOM content to be loaded before initializing
 document.addEventListener('DOMContentLoaded', () => {
-    loadArticles();
+    loadArticles(); // Load all articles initially
+
+    // Add event listeners to the navigation tabs
+    const navTabs = document.querySelectorAll('.nav-tabs a');
+    navTabs.forEach(tab => {
+        tab.addEventListener('click', handleNavTabClick);
+    });
 
     // Add event listener to the time filter dropdown
     const timeFilter = document.getElementById('time-filter');
     timeFilter.addEventListener('change', (event) => {
-        const categoryFilter = document.getElementById('category-filter').value;
-        filterArticles(event.target.value, categoryFilter);
+        const activeCategory = document.querySelector('.nav-tabs a.active');
+        const categoryValue = activeCategory ? activeCategory.dataset.category : 'home';
+        filterArticles(event.target.value, categoryValue);
     });
-
-    // Add event listener to the category filter dropdown (assuming you'll add this dropdown later)
-    // const categoryFilter = document.getElementById('category-filter');
-    // if (categoryFilter) {
-    //     categoryFilter.addEventListener('change', (event) => {
-    //         const timeFilterValue = document.getElementById('time-filter').value;
-    //         filterArticles(timeFilterValue, event.target.value);
-    //     });
-    // }
 
     // Add event listener for the close button
     const closeButton = document.querySelector('.close-button');
@@ -187,4 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+
+    // Initially set the 'Home' tab as active
+    const homeTab = document.querySelector('.nav-tabs a[data-category="home"]');
+    if (homeTab) {
+        homeTab.classList.add('active');
+    }
 });
