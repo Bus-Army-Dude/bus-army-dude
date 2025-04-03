@@ -3366,6 +3366,29 @@ input:checked + .slider:before {
   }
 }
 
+.home-button-container {
+  text-align: center;
+  padding: 15px 20px;
+  background: var(--content-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.home-button-container button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--button-bg, #eee); /* You can define --button-bg in your CSS */
+  color: var(--button-text, #333); /* You can define --button-text in your CSS */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.home-button-container button:hover {
+  background-color: var(--hover-bg); /* You can define --hover-bg in your CSS */
+  color: var(--accent-color); /* You can define --accent-color in your CSS */
+}
+
 @media (max-width: 576px) {
   .nav-tabs a {
     font-size: 0.85rem;
