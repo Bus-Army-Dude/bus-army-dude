@@ -82,44 +82,62 @@ window.onload = function () {
 
 function updateNewYearCountdown() {
     const now = new Date();
-    const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000;
     
     // Summer Solstice 2025 (June 20, 22:42 UTC)
     const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z');
-    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
     
-    const diff = summerSolstice - now;
-    const countdownSection = document.querySelector('.countdown-section');
-    if (!countdownSection) return;
-
-    if (diff <= 0) {
-        countdownSection.innerHTML = `
+    // Convert to user's local timezone
+    const localOffset = now.getTimezoneOffset() * 60 * 1000;
+    const summerSolstice = new Date(summerSolsticeUTC.getTime() + localOffset);
+    
+    if (now >= summerSolstice) {
+        document.querySelector('.countdown-section').innerHTML = `
             <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
                 Summer 2025 is here!!!
             </h2>
             <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
         `;
-    } else {
-        // Calculate time differences
-        const totalSeconds = Math.floor(diff / 1000);
-        const seconds = totalSeconds % 60;
-        const totalMinutes = Math.floor(totalSeconds / 60);
-        const minutes = totalMinutes % 60;
-        const totalHours = Math.floor(totalMinutes / 60);
-        const hours = totalHours % 24;
-        const totalDays = Math.floor(totalHours / 24);
-        const days = totalDays % 30; // Approximate
-        const months = Math.floor(totalDays / 30); // Approximate
-        const years = Math.floor(totalDays / 365);
-
-        // Update flip clocks
-        updateFlipClock('countdown-years', years);
-        updateFlipClock('countdown-months', months);
-        updateFlipClock('countdown-days', days);
-        updateFlipClock('countdown-hours', hours);
-        updateFlipClock('countdown-minutes', minutes);
-        updateFlipClock('countdown-seconds', seconds);
+        return;
     }
+
+    // Calculate time difference properly
+    let years = summerSolstice.getFullYear() - now.getFullYear();
+    let months = summerSolstice.getMonth() - now.getMonth();
+    let days = summerSolstice.getDate() - now.getDate();
+    let hours = summerSolstice.getHours() - now.getHours();
+    let minutes = summerSolstice.getMinutes() - now.getMinutes();
+    let seconds = summerSolstice.getSeconds() - now.getSeconds();
+
+    // Adjust negative values
+    if (seconds < 0) {
+        seconds += 60;
+        minutes--;
+    }
+    if (minutes < 0) {
+        minutes += 60;
+        hours--;
+    }
+    if (hours < 0) {
+        hours += 24;
+        days--;
+    }
+    if (days < 0) {
+        const lastMonth = new Date(summerSolstice.getFullYear(), summerSolstice.getMonth(), 0).getDate();
+        days += lastMonth;
+        months--;
+    }
+    if (months < 0) {
+        months += 12;
+        years--;
+    }
+
+    // Update flip clocks
+    updateFlipClock('countdown-years', years);
+    updateFlipClock('countdown-months', months);
+    updateFlipClock('countdown-days', days);
+    updateFlipClock('countdown-hours', hours);
+    updateFlipClock('countdown-minutes', minutes);
+    updateFlipClock('countdown-seconds', seconds);
 }
 
 function updateFlipClock(id, value) {
