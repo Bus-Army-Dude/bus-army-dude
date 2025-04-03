@@ -3156,7 +3156,7 @@ input:checked + .slider:before {
 .articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 40px; /* Increased gap to ensure spacing between cards */
+  gap: 50px; /* Increased gap significantly */
   padding: 20px;
 }
 
@@ -3221,7 +3221,7 @@ input:checked + .slider:before {
 
 .modal-content {
   background: var(--content-bg);
-  padding: 30px; /* Adjusted padding - might need further tweaking */
+  padding: 30px; /* Adjusted padding */
   border-radius: 0; /* Remove border-radius for full screen */
   width: 100%; /* Take up full width */
   height: 100%; /* Take up full height */
@@ -3237,18 +3237,18 @@ input:checked + .slider:before {
 }
 
 .close-button {
-  background: none;
+  background: none; /* Ensure no background is hiding the X */
   border: none;
-  font-size: 2rem;
+  font-size: 2.5rem; /* Increased size for better visibility */
   cursor: pointer;
   color: var(--text-color);
   position: absolute;
   top: 20px; /* Adjust position for full screen */
-  right: 20px; /* Adjust position for full screen */
-  z-index: 1001;
+  right: 30px; /* Further adjust position */
+  z-index: 1001; /* Ensure it's above modal-content */
   padding: 0;
   line-height: 1;
-  opacity: 0.7;
+  opacity: 0.8; /* Slightly more visible initially */
   transition: opacity 0.2s ease-in-out;
 }
 
@@ -3336,7 +3336,7 @@ input:checked + .slider:before {
 
   .articles-container {
     padding: 10px;
-    gap: 20px; /* Adjust gap for smaller screens if needed */
+    gap: 30px; /* Adjust gap for smaller screens */
   }
 
   .article-card {
@@ -3356,9 +3356,9 @@ input:checked + .slider:before {
   }
 
   .close-button {
-    font-size: 2.2rem;
+    font-size: 2.5rem; /* Keep size consistent */
     top: 15px;
-    right: 15px;
+    right: 20px;
   }
 }
 
@@ -3370,7 +3370,7 @@ input:checked + .slider:before {
 
   .articles-container {
     grid-template-columns: 1fr; /* Stack articles on smaller screens */
-    gap: 30px; /* Adjust gap for smaller screens if needed */
+    gap: 40px; /* Adjust gap for smaller screens */
   }
 
   .modal-content {
@@ -3386,8 +3386,8 @@ input:checked + .slider:before {
   }
 
   .close-button {
-    font-size: 2rem;
+    font-size: 2.2rem; /* Adjust size for very small screens */
     top: 10px;
-    right: 10px;
+    right: 15px;
   }
 }
