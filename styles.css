@@ -38,7 +38,7 @@
   --dropdown-focus-border-light: #007bff;
   --dropdown-focus-border-dark: #ff5722;
 
-  /* Fallback theme variables if no mode class is applied (default to dark mode) */
+  /* Fallback theme variables if no e class is applied (default to dark e) */
   --bg-color: var(--dark-bg);
   --content-bg: var(--dark-content-bg);
   --text-color: var(--dark-text);
@@ -51,8 +51,8 @@
   --icon-color: var(--dark-icon);
 }
 
-/* Light Mode Override */
-body.light-mode {
+/* Light e Override */
+body.light-e {
   --bg-color: var(--light-bg);
   --content-bg: var(--light-content-bg);
   --text-color: var(--light-text);
@@ -1447,7 +1447,7 @@ body {
 .version-number::before { content: "🔢 Version:"; }
 .build-number::before { content: "🏗️ Build:"; }
 .os-info::before { content: "💻 Operating System:"; }
-.device-info::before { content: "📱 Device Model:"; }
+.device-info::before { content: "📱 Device el:"; }
 .update-time::before { content: "🕒 Current Date & Time:"; }
 
 /* Label Styling */
@@ -1781,7 +1781,7 @@ footer {
 }
 
 :root {
-    --accent-color: #2563eb; /* Modern blue */
+    --accent-color: #2563eb; /* ern blue */
     --accent-color-rgb: 37, 99, 235;
     --bg-color: #ffffff;
     --content-bg: #f8fafc;
@@ -1791,7 +1791,7 @@ footer {
     --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark mode variables */
+/* Dark e variables */
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-color: #0f172a;
@@ -2234,7 +2234,7 @@ body.focus-outline-disabled :focus {
     outline: none; /* No outline when focus outline is disabled */
 }
 
-/* Modern Business Info Section 2025 */
+/* ern Business Info Section 2025 */
 .business-info {
     --shadow-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
     background: linear-gradient(
@@ -2415,7 +2415,7 @@ body.focus-outline-disabled :focus {
     display: none;
 }
 
-/* Modern Responsive Design */
+/* ern Responsive Design */
 @media (max-width: 768px) {
     .business-info {
         padding: 15px;
@@ -3127,13 +3127,13 @@ input:checked + .slider:before {
   background: var(--hover-color);
 }
 
-.light-mode #time-filter {
+.light-e #time-filter {
   background: var(--dropdown-background-light);
   color: var(--dropdown-text-light);
   border: 1px solid var(--dropdown-border-light);
 }
 
-.light-mode #time-filter:hover {
+.light-e #time-filter:hover {
   background: var(--hover-color);
 }
 
@@ -3186,7 +3186,7 @@ input:checked + .slider:before {
 /* ======================== */
 /* Modal Styling           */
 /* ======================== */
-.modal {
+.al {
   display: none;
   position: fixed;
   top: 0;
@@ -3196,79 +3196,126 @@ input:checked + .slider:before {
   background: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 0 20px; /* Added padding to avoid touching the edges */
+  z-index: 9999; /* Ensure it's above other elements */
 }
 
-.modal-content {
+.al-content {
   background: var(--content-bg);
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 700px;
-  width: 90%;
-  box-shadow: 0px 4px 6px var(--shadow-color);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;  /* Allow scrolling if content is too long */
+  position: relative;
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 24px;
-  cursor: pointer;
+  font-size: 30px;
   color: var(--text-color);
-  float: right;
-  margin-top: -15px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  transition: 0.3s;
 }
 
-.modal-header {
-  margin-bottom: 15px;
+.close-button:hover {
+  color: var(--accent-color);
+}
+
+.al-header {
+  margin-bottom: 20px;
 }
 
 #category-name {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   color: var(--accent-color);
 }
 
 #article-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   margin: 10px 0;
+  color: var(--text-color);
 }
 
 #article-content {
   font-size: 16px;
   color: var(--text-color);
+  line-height: 1.6;
 }
 
-.modal-body p {
+.al-body p {
   font-size: 14px;
   color: var(--secondary-text);
+  margin-bottom: 15px;
 }
 
-.modal-body img {
+.al-body img {
   width: 100%;
   height: auto;
   border-radius: 8px;
   margin-top: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ======================== */
 /* Responsive Fixes         */
 /* ======================== */
 @media (max-width: 768px) {
+  /* Navigation Tabs */
   .nav-tabs {
     flex-direction: column;
     align-items: center;
+    padding: 10px 0; /* Ensure some padding around the navigation on mobile */
   }
 
+  .nav-tabs a {
+    padding: 10px 15px; /* Slightly reduced padding for smaller screens */
+    font-size: 14px; /* Adjust font size for better readability */
+  }
+
+  /* Articles Grid */
   .articles-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column on small screens */
+    gap: 30px; /* A bit of gap between the cards */
+    padding: 0 15px; /* Ensure space on the sides */
   }
 
+  /* Modal Content */
   .modal-content {
-    width: 95%;
+    width: 90%; /* Make modal width slightly smaller for mobile */
+    padding: 20px; /* Ensure the modal has some padding */
   }
 
+  /* Modal Text */
   .modal-body p {
-    font-size: 16px;
+    font-size: 16px; /* Slight increase in font size for readability */
+  }
+
+  /* Article Card Image */
+  .article-card img {
+    width: 100%; /* Ensure images are responsive */
+  }
+
+  /* Article Card Title */
+  .article-title {
+    font-size: 20px; /* Adjust title size for smaller screens */
+    margin: 15px 0; /* More margin for breathing room */
+  }
+
+  /* Adjust other small elements for mobile */
+  .short-description {
+    font-size: 14px; /* Slightly smaller font for descriptions */
+  }
+
+  .article-category {
+    font-size: 12px; /* Smaller category name */
   }
 }
+
