@@ -3127,13 +3127,13 @@ input:checked + .slider:before {
   background: var(--hover-color);
 }
 
-.light-e #time-filter {
+.light-mode #time-filter {
   background: var(--dropdown-background-light);
   color: var(--dropdown-text-light);
   border: 1px solid var(--dropdown-border-light);
 }
 
-.light-e #time-filter:hover {
+.light-mode #time-filter:hover {
   background: var(--hover-color);
 }
 
@@ -3186,7 +3186,7 @@ input:checked + .slider:before {
 /* ======================== */
 /* Modal Styling           */
 /* ======================== */
-.al {
+.modal {
   display: none;
   position: fixed;
   top: 0;
@@ -3196,126 +3196,91 @@ input:checked + .slider:before {
   background: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-  padding: 0 20px; /* Added padding to avoid touching the edges */
-  z-index: 9999; /* Ensure it's above other elements */
+  padding: 10px;
 }
 
-.al-content {
+.modal-content {
   background: var(--content-bg);
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 800px;
-  width: 100%;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;  /* Allow scrolling if content is too long */
-  position: relative;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0px 4px 6px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Ensures content is centered */
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 30px;
-  color: var(--text-color);
+  font-size: 24px;
   cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  transition: 0.3s;
+  color: var(--text-color);
+  float: right;
+  margin-top: -15px;
 }
 
-.close-button:hover {
-  color: var(--accent-color);
-}
-
-.al-header {
-  margin-bottom: 20px;
+.modal-header {
+  margin-bottom: 15px;
 }
 
 #category-name {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   color: var(--accent-color);
 }
 
 #article-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
   margin: 10px 0;
-  color: var(--text-color);
 }
 
 #article-content {
   font-size: 16px;
   color: var(--text-color);
-  line-height: 1.6;
 }
 
-.al-body p {
+.modal-body p {
   font-size: 14px;
   color: var(--secondary-text);
-  margin-bottom: 15px;
 }
 
-.al-body img {
+.modal-body img {
   width: 100%;
   height: auto;
   border-radius: 8px;
   margin-top: 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ======================== */
 /* Responsive Fixes         */
 /* ======================== */
 @media (max-width: 768px) {
-  /* Navigation Tabs */
   .nav-tabs {
     flex-direction: column;
     align-items: center;
-    padding: 10px 0; /* Ensure some padding around the navigation on mobile */
   }
 
-  .nav-tabs a {
-    padding: 10px 15px; /* Slightly reduced padding for smaller screens */
-    font-size: 14px; /* Adjust font size for better readability */
-  }
-
-  /* Articles Grid */
   .articles-container {
-    grid-template-columns: 1fr; /* Single column on small screens */
-    gap: 30px; /* A bit of gap between the cards */
-    padding: 0 15px; /* Ensure space on the sides */
+    grid-template-columns: 1fr;
   }
 
-  /* Modal Content */
   .modal-content {
-    width: 90%; /* Make modal width slightly smaller for mobile */
-    padding: 20px; /* Ensure the modal has some padding */
+    width: 95%;
   }
 
-  /* Modal Text */
   .modal-body p {
-    font-size: 16px; /* Slight increase in font size for readability */
+    font-size: 16px;
   }
 
-  /* Article Card Image */
-  .article-card img {
-    width: 100%; /* Ensure images are responsive */
-  }
-
-  /* Article Card Title */
   .article-title {
-    font-size: 20px; /* Adjust title size for smaller screens */
-    margin: 15px 0; /* More margin for breathing room */
+    font-size: 18px; /* Adjust title for mobile */
   }
 
-  /* Adjust other small elements for mobile */
-  .short-description {
-    font-size: 14px; /* Slightly smaller font for descriptions */
-  }
-
-  .article-category {
-    font-size: 12px; /* Smaller category name */
+  .article-card {
+    padding: 10px; /* Adjust padding for smaller screens */
   }
 }
-
