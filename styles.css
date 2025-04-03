@@ -3151,12 +3151,12 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/* Articles Grid            */
+/* Articles Grid          */
 /* ======================== */
 .articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 50px; /* Increased gap significantly */
+  gap: 60px; /* Increased gap to 60px */
   padding: 20px;
 }
 
