@@ -70,30 +70,24 @@ function smoothReload() {
     }, 500); // Delay the reload to allow fade-out
 }
 
-// Call the functions on page load
-window.onload = function() {
+window.onload = function () {
     updateTime();
-    updateCountdown();
+    updateNewYearCountdown();
 
-    // Synchronize both time and countdown updates every second
     setInterval(() => {
         updateTime();
-        updateCountdown();
-    }, 1000);  // Update both every second
+        updateNewYearCountdown();
+    }, 1000);
 };
 
-    function updateNewYearCountdown() {
+function updateNewYearCountdown() {
     const now = new Date();
-
-    // Get user's local timezone offset in milliseconds
     const localTimezoneOffset = now.getTimezoneOffset() * 60 * 1000;
-
-    // Set the target date (Summer Solstice 2025) in UTC
-    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // Correct solstice time
-
-    // Adjust the Summer Solstice date to the user's local timezone
+    
+    // Summer Solstice 2025 (June 20, 22:42 UTC)
+    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z');
     const summerSolstice = new Date(summerSolsticeUTC.getTime() + localTimezoneOffset);
-
+    
     const diff = summerSolstice - now;
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -106,19 +100,17 @@ window.onload = function() {
             <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
         `;
     } else {
-        // Breakdown remaining time into units
+        // Calculate time differences
         const totalSeconds = Math.floor(diff / 1000);
-        const totalMinutes = Math.floor(totalSeconds / 60);
-        const totalHours = Math.floor(totalMinutes / 60);
-        const totalDays = Math.floor(totalHours / 24);
-        const totalMonths = Math.floor(totalDays / 30.44); // Approximate months
-
-        const years = Math.floor(totalDays / 365.25);
-        const months = totalMonths % 12;
-        const days = totalDays % 30.44;
-        const hours = totalHours % 24;
-        const minutes = totalMinutes % 60;
         const seconds = totalSeconds % 60;
+        const totalMinutes = Math.floor(totalSeconds / 60);
+        const minutes = totalMinutes % 60;
+        const totalHours = Math.floor(totalMinutes / 60);
+        const hours = totalHours % 24;
+        const totalDays = Math.floor(totalHours / 24);
+        const days = totalDays % 30; // Approximate
+        const months = Math.floor(totalDays / 30); // Approximate
+        const years = Math.floor(totalDays / 365);
 
         // Update flip clocks
         updateFlipClock('countdown-years', years);
@@ -130,37 +122,32 @@ window.onload = function() {
     }
 }
 
-// Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return; // Prevent errors if element is missing
+    if (!clock) return;
 
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
+    const flipInner = clock.querySelector('.flip-clock-inner');
+
     const valueStr = value.toString().padStart(2, '0');
 
     if (front.textContent !== valueStr) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
-        // Trigger the flip animation
-        const flipInner = clock.querySelector('.flip-clock-inner');
         flipInner.classList.add('flip');
-
         setTimeout(() => {
             flipInner.classList.remove('flip');
-        }, 600); // Match animation duration
+        }, 600);
     }
 }
 
-// Initialize everything
+// Initialize on page load
 updateTime();
-tiktokShoutouts.init();
 updateNewYearCountdown();
-
 setInterval(updateTime, 1000);
 setInterval(updateNewYearCountdown, 1000);
-});
 
 if (window.location.protocol !== 'https:') {
     window.location.href = "https://" + window.location.host + window.location.pathname;
