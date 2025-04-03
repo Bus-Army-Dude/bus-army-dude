@@ -3109,6 +3109,7 @@ input:checked + .slider:before {
   align-items: center;
   padding: 10px;
   background: var(--content-bg);
+  margin-bottom: 30px;  /* Space between the filter and the articles */
 }
 
 #time-filter {
@@ -3142,9 +3143,8 @@ input:checked + .slider:before {
 .articles-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  margin-top: 20px;  /* Space between the filter and articles */
+  gap: 30px;  /* More space between the cards */
+  padding: 0 20px; /* Added padding to ensure space on the left and right */
 }
 
 .article-card {
@@ -3271,3 +3271,4 @@ input:checked + .slider:before {
     font-size: 16px;
   }
 }
+
