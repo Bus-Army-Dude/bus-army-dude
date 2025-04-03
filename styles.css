@@ -117,8 +117,8 @@ body {
 /* Profile Status Container */
 .profile-status-container {
     position: absolute;
-    bottom: 0px; /* Adjusted for half in/out */
-    right: 0px; /* Adjusted for half in/out */
+    bottom: -10px; /* Adjusted for halfway in */
+    right: -10px; /* Adjusted for halfway in */
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -139,8 +139,8 @@ body {
 .username-checkmark {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 10px 0; /* Reduced vertical margin */
+    justify-content: center; /* Center the username and checkmark */
+    margin: 15px 0;
 }
 
 .username-checkmark h1 {
@@ -151,12 +151,14 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    display: flex; /* To align items inline */
+    align-items: center; /* Vertically align username and checkmark */
 }
 
 .verified {
     width: 20px;
     height: 20px;
-    margin-left: 2px; /* Reduced left margin */
+    margin-left: 0; /* Removed space */
 }
 
 /* Settings Button */
@@ -249,7 +251,7 @@ body {
 
 /* Styles for the bio spacing */
 .profile-section p {
-    margin-bottom: 4px; /* Reduced margin-bottom */
+    margin-bottom: 8px; /* Reverted to original for now, adjust if needed */
 }
 
 /* Media Queries */
