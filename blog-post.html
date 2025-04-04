@@ -5,51 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Bus Army Dude's Profile</title>
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Meta tag to refresh the page every 300 seconds -->
     <meta http-equiv="refresh" content="300">
-</head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+
       gtag('config', 'G-E0RSQS1MS7');
     </script>
-
-    <!-- Favicons and Icons -->
-<link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
-
-<!-- Web App Manifest -->
-<link rel="manifest" href="/manifest.json" />
-
-<!-- Microsoft-specific configuration -->
-<meta name="msapplication-TileColor" content="#ffffff" />
-<meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-<meta name="theme-color" content="#ffffff"/>
-
-<!-- Apple Touch Icons -->
-<!-- Light mode icon -->
-<link rel="apple-touch-icon" media="(prefers-color-scheme: light)" href="/assets/light-icon/180.png">
-
-<!-- Dark mode icon -->
-<link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="/assets/dark-icon/180.png">
-
-<!-- Default (fallback) icon -->
-<link rel="apple-touch-icon" href="/assets/light-icon/180.png">
-
-<!-- Additional sizes for better compatibility -->
-<link rel="apple-touch-icon" sizes="120x120" href="/assets/light-icon/120.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/assets/light-icon/152.png">
-<link rel="apple-touch-icon" sizes="512x512" href="/assets/light-icon/512.png">
-
-<!-- Microsoft-specific configuration -->
-<meta name="browserconfig" content="/browserconfig.xml">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#ffffff"/>
+    <link rel="apple-touch-icon" media="(prefers-color-scheme: light)" href="/assets/light-icon/180.png">
+    <link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="/assets/dark-icon/180.png">
+    <link rel="apple-touch-icon" href="/assets/light-icon/180.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/light-icon/120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/light-icon/152.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/assets/light-icon/512.png">
+    <meta name="browserconfig" content="/browserconfig.xml">
 <body>
     <header>
         <nav>
@@ -84,10 +63,53 @@
         </div>
     </header>
 
-    <main>
-        <div id="news-container" class="news-container">
+    <main class="container">
+        <section class="featured-articles">
+            <h2>Featured</h2>
+            <div class="featured-articles-slider">
+                </div>
+        </section>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="blog-categories">
+                    <h3>Blog Category</h3>
+                    <ul>
+                        <li><a href="#">View All</a></li>
+                        <li><a href="#">Data Structures & Algorithms (DSA)</a></li>
+                        <li><a href="#">Programming Tools</a></li>
+                        <li><a href="#">Programming Languages</a></li>
+                        <li><a href="#">Frameworks</a></li>
+                    </ul>
+                </div>
+                <div class="new-course">
+                    <h3>New Course on Design Pattern</h3>
+                    <p>Enroll now and save 25%</p>
+                    <button>Enroll Now</button>
+                </div>
+            </aside>
+
+            <div class="content-area">
+                <section class="popular-today">
+                    <h2>Popular Today</h2>
+                    <div class="articles-container popular-grid">
+                        </div>
+                </section>
+
+                <section class="latest-articles">
+                    <h2>The Blog</h2>
+                    <div id="news-container" class="articles-container latest-grid">
+                        </div>
+                </section>
             </div>
+        </div>
     </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Your Blog. All rights reserved.</p>
+        </div>
+    </footer>
 
     <div id="modal" class="modal">
         <div class="modal-content">
@@ -101,7 +123,7 @@
                 <p id="posted-by-date" class="posted-by-date">Posted by: <span id="author"></span> - <span id="date"></span></p>
                 <img id="article-image" class="article-image" src="" alt="Article Image">
                 <div id="article-content" class="article-content">
-                    </div>
+                </div>
             </div>
         </div>
     </div>
