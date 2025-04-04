@@ -80,21 +80,7 @@ function createArticleCard(article) {
     // Posted by section
     const postedBy = document.createElement('div');
     postedBy.classList.add('posted-by');
-
-    const postedOnSpan = document.createElement('span');
-    postedOnSpan.classList.add('posted-on');
-    postedOnSpan.textContent = timeAgo(article.postedOn);
-    postedBy.appendChild(postedOnSpan);
-
-    const byTextSpan = document.createElement('span');
-    byTextSpan.textContent = ' by ';
-    postedBy.appendChild(byTextSpan);
-
-    const authorSpan = document.createElement('span');
-    authorSpan.classList.add('author');
-    authorSpan.textContent = article.author;
-    postedBy.appendChild(authorSpan);
-
+    postedBy.textContent = `${timeAgo(article.postedOn)} by ${article.author}`;
     articleCard.appendChild(postedBy);
 
     // Add a click event to open the article in the modal
