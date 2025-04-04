@@ -168,20 +168,6 @@ function handleNavTabClick(event) {
     event.target.classList.add('active');
 }
 
-// Function to handle sidebar category clicks
-function handleSidebarCategoryClick(event) {
-    event.preventDefault(); // Prevent the default link behavior
-    const category = event.target.dataset.category;
-    const timeFilterValue = document.getElementById('time-filter').value;
-    filterArticles(timeFilterValue, category);
-
-    // Update the active class on the navigation tabs (if needed)
-    document.querySelectorAll('.nav-tabs a').forEach(link => {
-        link.classList.remove('active');
-    });
-    // You might want to visually indicate which category in the sidebar is active, but that's optional
-}
-
 // Wait for DOM content to be loaded before initializing
 document.addEventListener('DOMContentLoaded', () => {
     loadArticles(); // Load all articles initially
@@ -192,17 +178,19 @@ document.addEventListener('DOMContentLoaded', () => {
         tab.addEventListener('click', handleNavTabClick);
     });
 
-    // Add event listeners to the sidebar categories
-    const sidebarCategories = document.querySelectorAll('.blog-categories ul li a');
-    sidebarCategories.forEach(categoryLink => {
-        categoryLink.addEventListener('click', handleSidebarCategoryClick);
+    // Add event listener to the category dropdown
+    const categorySelect = document.getElementById('category-select');
+    categorySelect.addEventListener('change', (event) => {
+        const selectedCategory = event.target.value;
+        const timeFilterValue = document.getElementById('time-filter').value;
+        filterArticles(timeFilterValue, selectedCategory);
     });
 
     // Add event listener to the time filter dropdown
     const timeFilter = document.getElementById('time-filter');
     timeFilter.addEventListener('change', (event) => {
         const activeCategory = document.querySelector('.nav-tabs a.active');
-        const categoryValue = activeCategory ? activeCategory.dataset.category : 'home';
+        const categoryValue = activeCategory ? activeCategory.dataset.category : document.getElementById('category-select').value; // Get category from dropdown if no active nav tab
         filterArticles(event.target.value, categoryValue);
     });
 
