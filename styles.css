@@ -2538,14 +2538,23 @@ body.focus-outline-disabled :focus {
 .articles-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 70px; /* Increased gap for more spacing to prevent touching */
+    gap: 80px; /* Increased gap even further */
     padding: 30px;
 }
 
 /* Desktop view: Two columns */
-@media (min-width: 992px) { /* Using a more standard desktop breakpoint */
+@media (min-width: 768px) { /* Let's try a slightly lower breakpoint */
     .articles-container {
-        grid-template-columns: repeat(2, minmax(450px, 1fr)); /* Two columns on desktop, wider min-width */
+        grid-template-columns: repeat(2, minmax(350px, 1fr)); /* Adjust min-width slightly */
+    }
+}
+
+/* Smaller devices: Stack */
+@media (max-width: 767px) {
+    .articles-container {
+        grid-template-columns: 1fr;
+        gap: 40px; /* Adjust gap for smaller screens */
+        padding: 20px;
     }
 }
 
