@@ -24,7 +24,7 @@ const articles = [
         id: 3,
         title: "Donald Trump floats China tariff relief in exchange for TikTok sale approval",
         shortDescription: "US president suggests he is open to horse-trading a day after imposing severe import levies on Chinese goods",
-        content: "President Donald Trump has suggested he could cut tariffs on Chinese goods if Beijing allows ByteDance, the Chinese owner of TikTok, to divest the hugely popular video sharing app to avoid a ban in the US. We have a situation with TikTok where China will probably say we’ll approve a deal, but will you do something on the tariffs, Trump said aboard Air Force One. The tariffs give us great power to negotiate. The comments came one day after Trump imposed reciprocal tariffs on dozens of nations, including a 34%  levy on imports from China that followed the 20% tariff he imposed earlier this year. Trump also said his administration was very close to reaching a deal with multiple investors that would allow TikTok to continue to operate in the US. Congress last year passed legislation requiring ByteDance to divest the app or face a nationwide ban. Trump extended the deadline for divestment until Saturday. Lawmakers passed the legislation to address security concerns about possible Chinese government influence over TikTok’s algorithm. Security officials are also concerned that ByteDance’s ownership of TikTok would enable Beijing to obtain the personal data of millions of Americans. We’re very close to a deal with a very good group of people, Trump said. Earlier on Thursday, vice-president JD Vance told Fox News the deal would come out before the deadline. The White House this week held talks to thrash out the contours of a deal that would be palatable to Republicans, as well as ByteDance and the Chinese government, which would need to give its blessing. The administration has been weighing a proposal to spin off TikTok from its Chinese parent. It would create a new US entity and include fresh American investment to dilute the ownership stakes of Chinese investors, according to multiple people familiar with the matter. Under the proposal, new outside investors, including Andreessen Horowitz, Blackstone, Silver Lake and other big private capital firms, would own about half of TikTok’s US business, the people said.  Large existing investors in TikTok, including General Atlantic, Susquehanna, KKR and Coatue, would hold 30% of the US entity, while ByteDance would keep a stake at just below 20%. This would adhere to requirements in the US law that no more than a fifth of the company be controlled by a foreign adversary. Oracle, meanwhile, would provide data security to the company.  But one big flashpoint is who would control TikTok’s highly sought-after algorithm. One option under discussion was that ByteDance would continue to develop and operate the algorithm — which has been a central demand of the Chinese government — while the new US group could access it through a licensing agreement, the people said.  However, China hawks and legal academics have argued that the algorithm needs to be fully operated by the US entity to meet the requirements of the legislation. Several members of the Trump administration, including secretary of state Marco Rubio and national security adviser Mike Waltz, were vocal opponents of allowing China to retain control of the app when they served in Congress. The Chinese embassy in Washington did not respond to a request for comment. A ByteDance representative did not immediately respond to a request for comment.",
+        content: "President Donald Trump has suggested he could cut tariffs on Chinese goods if Beijing allows ByteDance, the Chinese owner of TikTok, to divest the hugely popular video sharing app to avoid a ban in the US. We have a situation with TikTok where China will probably say we’ll approve a deal, but will you do something on the tariffs, Trump said aboard Air Force One. The tariffs give us great power to negotiate. The comments came one day after Trump imposed reciprocal tariffs on dozens of nations, including a 34%  levy on imports from China that followed the 20% tariff he imposed earlier this year. Trump also said his administration was very close to reaching a deal with multiple investors that would allow TikTok to continue to operate in the US. Congress last year passed legislation requiring ByteDance to divest the app or face a nationwide ban. Trump extended the deadline for divestment until Saturday. Lawmakers passed the legislation to address security concerns about possible Chinese government influence over TikTok’s algorithm. Security officials are also concerned that ByteDance’s ownership of TikTok would enable Beijing to obtain the personal data of millions of Americans. We’re very close to a deal with a very good group of people, Trump said. Earlier on Thursday, vice-president JD Vance told Fox News the deal would come out before the deadline. The White House this week held talks to thrash out the contours of a deal that would be palatable to Republicans, as well as ByteDance and the Chinese government, which would need to give its blessing. The administration has been weighing a proposal to spin off TikTok from its Chinese parent. It would create a new US entity and include fresh American investment to dilute the ownership stakes of Chinese investors, according to multiple people familiar with the matter. Under the proposal, new outside investors, including Andreessen Horowitz, Blackstone, Silver Lake and other big private capital firms, would own about half of TikTok’s US business, the people said.  Large existing investors in TikTok, including General Atlantic, Susquehanna, KKR and Coatue, would hold 30% of the US entity, while ByteDance would keep a stake at just below 20%. This would adhere to requirements in the US law that no more than a fifth of the company be controlled by a foreign adversary. Oracle, meanwhile, would provide data security to the company.  But one big flashpoint is who would control TikTok’s highly sought-after algorithm. One option under discussion was that ByteDance would continue to develop and operate the algorithm — which has been a central demand of the Chinese government — while the new US group could access it through a licensing agreement, the people said.  However, China hawks and legal academics have argued that the algorithm needs to be fully operated by the US entity to meet the requirements of the legislation. Several members of the Trump administration, including secretary of state Marco Rubio and national security adviser Mike Waltz, were vocal opponents of allowing China to retain control of the app when they served in Congress. The Chinese embassy in Washington did not respond to a request for comment. A ByteDance representative did not immediately respond to a request for comment.",
         imageUrl: "https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A2f217351-365a-4f93-b22a-0deba9dcdf4b?source=next-article&fit=scale-down&quality=highest&width=700&dpr=2",
         postedOn: "2025-04-03T19:02:00Z", // ISO date format
         author: "Demetri Sevastopulo & Hannah Murphy",
@@ -51,6 +51,7 @@ function timeAgo(date) {
 function createArticleCard(article) {
     const articleCard = document.createElement('div');
     articleCard.classList.add('article-card');
+    articleCard.dataset.articleId = article.id; // Add a data attribute to identify the article
 
     // Article image
     const image = document.createElement('img');
@@ -135,12 +136,8 @@ function filterArticles(range, category) {
     }
 
     // Then, filter by category
-    if (category !== 'home') { // 'home' will show all categories
-        console.log("Filtering for category:", category); // Debugging line
-        filteredArticles = filteredArticles.filter(article => {
-            console.log("Article category:", article.category, " (lowercase:", article.category.toLowerCase(), ")"); // Debugging line
-            return article.category.toLowerCase() === category.toLowerCase();
-        });
+    if (category !== 'home' && category !== 'all') {
+        filteredArticles = filteredArticles.filter(article => article.category.toLowerCase() === category.toLowerCase());
     }
 
     // Clear the existing articles and load filtered ones
@@ -171,6 +168,20 @@ function handleNavTabClick(event) {
     event.target.classList.add('active');
 }
 
+// Function to handle sidebar category clicks
+function handleSidebarCategoryClick(event) {
+    event.preventDefault(); // Prevent the default link behavior
+    const category = event.target.dataset.category;
+    const timeFilterValue = document.getElementById('time-filter').value;
+    filterArticles(timeFilterValue, category);
+
+    // Update the active class on the navigation tabs (if needed)
+    document.querySelectorAll('.nav-tabs a').forEach(link => {
+        link.classList.remove('active');
+    });
+    // You might want to visually indicate which category in the sidebar is active, but that's optional
+}
+
 // Wait for DOM content to be loaded before initializing
 document.addEventListener('DOMContentLoaded', () => {
     loadArticles(); // Load all articles initially
@@ -179,6 +190,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const navTabs = document.querySelectorAll('.nav-tabs a');
     navTabs.forEach(tab => {
         tab.addEventListener('click', handleNavTabClick);
+    });
+
+    // Add event listeners to the sidebar categories
+    const sidebarCategories = document.querySelectorAll('.blog-categories ul li a');
+    sidebarCategories.forEach(categoryLink => {
+        categoryLink.addEventListener('click', handleSidebarCategoryClick);
     });
 
     // Add event listener to the time filter dropdown
