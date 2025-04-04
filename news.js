@@ -136,8 +136,15 @@ function filterArticles(range, category) {
     }
 
     // Then, filter by category
+    console.log("Selected category:", category); // Log the selected category
+
     if (category !== 'home' && category !== 'all') {
-        filteredArticles = filteredArticles.filter(article => article.category.toLowerCase() === category.toLowerCase());
+        filteredArticles = filteredArticles.filter(article => {
+            console.log("Article category:", article.category); // Log each article's category
+            const matches = article.category.toLowerCase() === category.toLowerCase();
+            console.log("Match:", matches); // Log if there's a match
+            return matches;
+        });
     }
 
     // Clear the existing articles and load filtered ones
