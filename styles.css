@@ -2752,6 +2752,7 @@ body.focus-outline-disabled :focus {
         flex-direction: column;
         gap: 40px;
         padding: 20px 15px; /* Added horizontal padding */
+        padding-right: 15px; /* Add right padding to the container */
         align-items: center; /* Center items horizontally on smaller screens */
     }
 }
