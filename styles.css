@@ -2556,7 +2556,7 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transition for hover */
-    margin: 0;
+    margin: 0 0 30px 0; /* Added margin-bottom to create space between cards */
     display: flex; /* Added flex to help structure */
     flex-direction: column; /* Stack content vertically */
 }
