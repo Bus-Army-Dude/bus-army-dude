@@ -2384,7 +2384,7 @@ body.focus-outline-disabled :focus {
     border: 1px solid color-mix(in srgb, rgb(255, 59, 48) 20%, transparent);
 }
 
-#open-status.temporarily-unavailable {
+#open-status.temporarily-uailable {
     background: color-mix(in srgb, rgb(255, 165, 0) 10%, transparent);
     color: rgb(255, 140, 0);
     border: 1px solid color-mix(in srgb, rgb(255, 165, 0) 20%, transparent);
@@ -3205,113 +3205,114 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/* Modal Styling            */
+/* Modal Styling           */
 /* ======================== */
 .modal {
-  display: none; /* Keep it hidden by default */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8); /* Slightly darker background */
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  z-index: 1000; /* Ensure it's on top of everything */
+    display: none; /* Keep it hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Slightly darker background */
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    z-index: 1000; /* Ensure it's on top of everything */
+    overflow: auto; /* Add overflow to the modal itself in case content is very long */
 }
 
 .modal-content {
-  background: var(--content-bg);
-  padding: 30px; /* Adjusted padding */
-  border-radius: 0; /* Remove border-radius for full screen */
-  width: 100%; /* Take up full width */
-  height: 100%; /* Take up full height */
-  max-width: none; /* Ensure it overrides any max width */
-  max-height: none; /* Ensure it overrides any max height */
-  box-shadow: none; /* Remove shadow for full screen */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  position: relative;
-  overflow-y: auto;
+    background: var(--content-bg);
+    padding: 30px; /* Adjusted padding */
+    border-radius: 0; /* Remove border-radius for full screen */
+    width: 100%; /* Take up full width */
+    height: auto; /* Change height to auto to allow content to expand */
+    max-width: none; /* Ensure it overrides any max width */
+    max-height: 100vh; /* Set a maximum height relative to the viewport height */
+    box-shadow: none; /* Remove shadow for full screen */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    overflow-y: auto; /* Keep this for scrolling within the content */
 }
 
 .close-button {
-  background: transparent; /* Ensure no background */
-  border: none;
-  font-size: 3.5rem; /* Keep it large */
-  cursor: pointer;
-  color: red; /* Temporarily set to a very obvious color */
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  z-index: 1002; /* High z-index */
-  padding: 0;
-  line-height: 1;
-  opacity: 1; /* Ensure it's fully opaque */
-  text-shadow: none; /* Remove text shadow for now */
+    background: transparent; /* Ensure no background */
+    border: none;
+    font-size: 3.5rem; /* Keep it large */
+    cursor: pointer;
+    color: red; /* Temporarily set to a very obvious color */
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 1002; /* High z-index */
+    padding: 0;
+    line-height: 1;
+    opacity: 1; /* Ensure it's fully opaque */
+    text-shadow: none; /* Remove text shadow for now */
 }
 
 .close-button:hover {
-  opacity: 1;
+    opacity: 1;
 }
 
 .modal-header {
-  margin-bottom: 25px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    margin-bottom: 25px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 #category-name {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--accent-color);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 #article-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin: 10px 0 15px;
-  color: var(--text-color);
-  line-height: 1.3;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 10px 0 15px;
+    color: var(--text-color);
+    line-height: 1.3;
 }
 
 #article-content {
-  font-size: 1rem;
-  color: var(--text-color);
-  line-height: 1.7;
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.7;
 }
 
 .modal-body p {
-  font-size: 0.9rem;
-  color: var(--secondary-text);
-  margin-top: 15px;
-  line-height: 1.6;
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+    margin-top: 15px;
+    line-height: 1.6;
 }
 
 .modal-body img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-top: 25px;
-  margin-bottom: 25px;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .modal-footer {
-  margin-top: 30px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: 0.85rem;
-  color: var(--secondary-text);
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--secondary-text);
 }
 
 /* ======================== */
