@@ -116,7 +116,7 @@ function filterArticles(range, category) {
 
     // Then, filter by category
     if (category !== 'home') { // 'home' will show all categories
-        filteredArticles = filteredArticles.filter(article => article.category.toLowerCase() === category);
+        filteredArticles = filteredArticles.filter(article => article.category.toLowerCase() === category.toLowerCase()); // Convert both to lowercase for comparison
     }
 
     // Clear the existing articles and load filtered ones
