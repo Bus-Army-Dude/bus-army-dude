@@ -3368,31 +3368,6 @@ input:checked + .slider:before {
     }
 }
 
-.home-button-container {
-    text-align: center;
-    padding: 15px 20px;
-    background: var(--content-bg);
-    border-bottom: 1px solid var(--border-color);
-    margin-top: 20px; /* Add some space above the button */
-    margin-bottom: 30px; /* Add some space below the button */
-}
-
-.home-button-container button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--button-bg, #eee);
-    color: var(--button-text, #333);
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-}
-
-.home-button-container button:hover {
-    background-color: var(--hover-bg);
-    color: var(--accent-color);
-}
-
 @media (max-width: 576px) {
     .nav-tabs a {
         font-size: 0.85rem;
@@ -3421,4 +3396,47 @@ input:checked + .slider:before {
         top: 10px;
         right: 10px;
     }
+}
+
+/* Extra small devices (phones) */
+@media (max-width: 480px) {
+    .modal {
+        padding-left: 10px; /* Reduce left padding */
+        padding-right: 10px; /* Reduce right padding */
+    }
+
+    .modal-content {
+        width: 98%; /* Further reduce the width */
+        padding-left: 20px; /* Adjust inner padding */
+        padding-right: 20px; /* Adjust inner padding */
+    }
+
+    .close-button {
+        right: 10px; /* Adjust close button position if needed */
+    }
+}
+
+.home-button-container {
+    text-align: center;
+    padding: 15px 20px;
+    background: var(--content-bg);
+    border-bottom: 1px solid var(--border-color);
+    margin-top: 20px; /* Add some space above the button */
+    margin-bottom: 30px; /* Add some space below the button */
+}
+
+.home-button-container button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--button-bg, #eee);
+    color: var(--button-text, #333);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.home-button-container button:hover {
+    background-color: var(--hover-bg);
+    color: var(--accent-color);
 }
