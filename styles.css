@@ -2538,14 +2538,14 @@ body.focus-outline-disabled :focus {
 .articles-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 60px; /* Increased gap for more spacing to prevent touching */
+    gap: 70px; /* Increased gap for more spacing to prevent touching */
     padding: 30px;
 }
 
 /* Desktop view: Two columns */
-@media (min-width: 769px) {
+@media (min-width: 992px) { /* Using a more standard desktop breakpoint */
     .articles-container {
-        grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Two columns on desktop */
+        grid-template-columns: repeat(2, minmax(450px, 1fr)); /* Two columns on desktop, wider min-width */
     }
 }
 
@@ -2731,104 +2731,18 @@ body.focus-outline-disabled :focus {
 }
 */
 
-@media (max-width: 768px) {
-    .nav-tabs {
-        padding: 10px 15px; /* Adjust padding */
-    }
-
-    .nav-tabs a {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-    }
-
-    .filter-section {
-        padding: 10px 15px; /* Adjust padding */
-    }
-
-    #time-filter {
-        padding: 8px 12px;
-        font-size: 0.8rem;
-    }
-
+@media (max-width: 991px) { /* Adjusting the breakpoint to be just below desktop */
     .articles-container {
         grid-template-columns: 1fr; /* Stack articles on smaller devices */
         gap: 40px; /* Adjust gap for smaller screens if needed */
         padding: 20px;
     }
-
-    .modal {
-        padding: 15px; /* Reduce padding around modal content */
-    }
-
-    .modal-content {
-        padding: 20px; /* Reduce inner padding */
-        max-height: calc(100vh - 30px); /* Adjust max height */
-    }
-
-    #article-title {
-        font-size: 1.5rem;
-    }
-
-    .modal-body p, .modal-body #article-content {
-        font-size: 1.0rem; /* Adjust font size for smaller screens */
-        line-height: 1.7;
-    }
-
-    .close-button {
-        font-size: 2.8rem;
-        top: 10px;
-        right: 10px;
-    }
-    .modal-header {
-        padding-right: 35px; /* Ensure space for close button */
-    }
 }
 
 @media (max-width: 576px) {
-    .nav-tabs {
-        padding: 10px; /* Further adjust padding */
-    }
-    .nav-tabs a {
-        font-size: 0.85rem;
-        padding: 6px 10px;
-    }
-
-    .filter-section {
-        padding: 10px; /* Further adjust padding */
-    }
-
     .articles-container {
-        grid-template-columns: 1fr; /* Stack articles on smaller devices */
         gap: 30px; /* Further adjust gap for smaller screens */
         padding: 15px;
-    }
-
-    .modal {
-        padding: 10px; /* Further reduce padding around modal content */
-    }
-
-    .modal-content {
-        padding: 15px; /* Further reduce inner padding */
-        max-height: calc(100vh - 20px); /* Adjust max height */
-        border-radius: 4px; /* Less radius on small screens */
-    }
-
-    #article-title {
-        font-size: 1.3rem;
-    }
-
-    .modal-body p, .modal-body #article-content {
-        font-size: 0.95rem; /* Adjust text size */
-        line-height: 1.6;
-    }
-
-    .close-button {
-        font-size: 2.5rem;
-        top: 8px;
-        right: 8px;
-    }
-    .modal-header {
-        padding-right: 30px; /* Ensure space for close button */
     }
 }
 
