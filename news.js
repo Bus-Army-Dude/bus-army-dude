@@ -29,6 +29,32 @@ const articles = [
         postedOn: "2025-04-03T19:02:00Z", // ISO date format
         author: "Demetri Sevastopulo & Hannah Murphy",
         category: "business"
+    },
+    {
+        id: 4,
+        title: "Perrysburg teacher accused of following student home has other incidents in personnel file",
+        shortDescription: "William Hilt's more than 200-page personnel file includes several incidents of alleged educator misconduct.",
+        content: `TOLEDO, Ohio — A Perrysburg Schools teacher who was criminally charged after allegedly following a student home to see if they had completed their homework has additional recorded incidents in his personnel file, including having students give him back rubs in exchange for candy and perpetuating a racial stereotype.
+    WTOL 11 obtained the personnel file for William "Bill" Hilt, who is employed as a teacher at Hull Prairie Intermediate School.
+    The personnel file dates back to 1993 and includes letters of recommendation from Bluffton College, which he attended. Hilt applied for a sixth grade teaching position in May 1993; an attached criminal history check in August of the same year describes his record check as "acceptable."
+    In July 1994, Hilt received a letter from Perrysburg's then-superintendent congratulating him on his hiring. He worked at Perrysburg Junior High School before being transferred to Hull Prairie in 2017, which is when the latter school opened.
+    Throughout his time at Perrysburg Schools, Hilt has been the subject of several incidents that are detailed in his file. WTOL 11 is continuing to review Hilt's full personnel file, and will update this story with additional information as it becomes available.
+    June 2014: A parent claimed Hilt violated a student's 504 plan (a formal document that provides classroom accommodations for students with disabilities) and claimed that Hilt engaged in "repeated intimidation." The investigation found that, at times, Hilt would be inappropriate in his actions when addressing students in his classroom. There were corrective actions, according to the file.
+    September 2014: Hilt was reported for allegedly using a racial stereotype in a lesson. The document claims he made disparaging comments about Black people owning dogs.
+    October 2014: Students made complaints about Hilt bullying and harassing them. A "pre-disciplinary hearing" for this incident was scheduled, according to the file.
+    November 2014: A letter from Perrysburg Superintendent Tom Hosler states Hilt was recently suspended for disciplinary reasons.
+    April 2023: An email states there were claims Hilt was yelling in class. There were also claims of him receiving neck and shoulder massages from male students. In the email, Hilt claims it was a lapse of judgement and he was going through personal difficulties. The email also says students claimed the massages happened on more than one day.
+    December 2024: An heavily-redacted document appears to show that a meeting regarding a student became confrontational. In an email, the principal outlines a meeting about this incident with Hilt, saying Hilt assured him he will maintain a professional and supportive learning environment.
+    January 2025: A public records request claims there was an incident on Dec. 19, 2024, involving Hilt. The request says other parents have complained about his behavior this year and prior years.
+    February 2025 : An email from parent claims Hilt was having students give him back rubs in exchange for candy. The principal states he did not find evidence to substantiate the claim, however students he spoke with expressed anxiety about attending Hilt's classes. The principal also received a separate email claiming Hilt's interactions with a student were inappropriate and bullying. Students were removed from his 'team.'
+    Hilt was put on paid leave on March 19 after reportedly following a student's bus home, and was criminally charged with trespassing on April 1.
+    He is scheduled to have a general investigatory conference on Friday to discuss the claim he followed a student home.
+    A police report says the parent told the principal they were unaware the teacher was planning on coming to their residence and "found it to be really weird and concerning."
+    According to the police report, the teacher stated he sometimes does this for students and asked the student if he could follow their bus home.`,
+        imageUrl: "https://media.wtol.com/assets/WTOL/images/d56874a4-23f0-41c3-a822-5883f5e6af74/20250401T150220/d56874a4-23f0-41c3-a822-5883f5e6af74_1920x1080.jpg", // Placeholder image URL, you might want to find a relevant image from the article
+        postedOn: "2025-04-04T11:17:00Z",
+        author: "Karmann Ludwig & Heather Schramm",
+        category: "world"
     }
     // Add more articles as needed
 ];
