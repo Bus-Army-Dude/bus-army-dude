@@ -8,7 +8,7 @@ const articles = [
         imageUrl: "https://www.usatoday.com/gcdn/authoring/authoring-images/2025/04/03/USAT/82795406007-20250403-t-150930-z-1525855833-rc-2-xpdaft-9-cm-rtrmadp-3-usatrumptariffstariffsformula.JPG?width=1320&height=880&fit=crop&format=pjpg&auto=webp",
         postedOn: "2025-04-03T15:33:00Z", // ISO date format
         author: "Swapna Venugopal Ramaswamy",
-        category: "u.s."
+        category: "us"
     }
     // Add more articles as needed
 ];
