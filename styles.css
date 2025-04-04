@@ -3150,7 +3150,7 @@ input:checked + .slider:before {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 40px;
-    padding: 30px; /* Default padding */
+    padding: 30px;
 }
 
 .article-card {
@@ -3159,34 +3159,19 @@ input:checked + .slider:before {
     padding: 20px;
     box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    /* Removed margin from card, handle spacing with container gap/padding */
     margin: 0;
-}
-
-.article-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.15);
+    display: flex; /* Added flex to help structure */
+    flex-direction: column; /* Stack content vertically */
 }
 
 .article-card img {
     width: 100%;
-    height: auto;
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Optional: Constrain image height */
+    object-fit: cover; /* Ensure image covers area nicely */
     border-radius: 10px;
-    margin-bottom: 12px;
-    display: block; /* Prevents bottom space */
-}
-
-.article-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 8px 0;
-    color: var(--text-color);
-}
-
-.short-description {
-    font-size: 0.9rem;
-    color: var(--secondary-text);
-    line-height: 1.6;
+    margin-bottom: 15px; /* Increased spacing */
+    display: block;
 }
 
 .article-category {
@@ -3195,10 +3180,26 @@ input:checked + .slider:before {
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 500; /* Slightly bolder */
+}
+
+.article-title {
+    font-size: 1.2rem; /* Slightly larger title */
+    font-weight: 600;
+    margin: 0 0 10px 0; /* Adjusted margin */
+    color: var(--text-color);
+    line-height: 1.4; /* Control title line height */
+}
+
+.short-description {
+    font-size: 0.95rem; /* Slightly larger description */
+    color: var(--secondary-text); /* Ensure sufficient contrast via --secondary-text */
+    line-height: 1.6; /* Increased line height */
+    flex-grow: 1; /* Allow description to fill space if needed */
 }
 
 /* ======================== */
-/* Modal Styling           */
+/* Modal Styling          */
 /* ======================== */
 .modal {
     display: none;
@@ -3279,19 +3280,19 @@ input:checked + .slider:before {
     line-height: 1.3;
 }
 
-/* Changed selector to be more specific */
+/* Changed selector to be more specific and improved readability */
 .modal-body #article-content {
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly increase font size */
     color: var(--text-color);
-    line-height: 1.7;
+    line-height: 1.8; /* Increase line height for better spacing */
 }
 
 .modal-body p { /* Style paragraphs within the content area */
-    font-size: 1rem; /* Match article-content */
+    font-size: 1.1rem; /* Match article-content */
     color: var(--text-color); /* Match article-content */
-    margin-top: 1em; /* Use em for relative spacing */
-    margin-bottom: 1em;
-    line-height: 1.7; /* Match article-content */
+    margin-top: 1.5em; /* Add space above "virtual" paragraphs */
+    margin-bottom: 1.5em; /* Add space below "virtual" paragraphs */
+    line-height: 1.8; /* Increase line height */
 }
 
 .modal-body img {
@@ -3316,7 +3317,7 @@ input:checked + .slider:before {
 }
 
 /* ======================== */
-/* Responsive Fixes        */
+/* Responsive Fixes          */
 /* ======================== */
 
 /* General rule for body on small screens might be useful */
@@ -3373,8 +3374,8 @@ input:checked + .slider:before {
     }
 
     .modal-body p, .modal-body #article-content {
-        font-size: 0.95rem; /* Slightly smaller text */
-        line-height: 1.6;
+        font-size: 1.0rem; /* Adjust font size for smaller screens */
+        line-height: 1.7;
     }
 
     .close-button {
@@ -3382,7 +3383,7 @@ input:checked + .slider:before {
         top: 10px;
         right: 10px;
     }
-     .modal-header {
+    .modal-header {
         padding-right: 35px; /* Ensure space for close button */
     }
 }
@@ -3407,14 +3408,14 @@ input:checked + .slider:before {
     }
 
     /* Modal adjustments for small mobile */
-     .modal {
+    .modal {
         padding: 10px; /* Further reduce padding around modal content */
     }
 
     .modal-content {
         padding: 15px; /* Further reduce inner padding */
-         max-height: calc(100vh - 20px); /* Adjust max height */
-         border-radius: 4px; /* Less radius on small screens */
+        max-height: calc(100vh - 20px); /* Adjust max height */
+        border-radius: 4px; /* Less radius on small screens */
     }
 
     #article-title {
@@ -3422,7 +3423,7 @@ input:checked + .slider:before {
     }
 
     .modal-body p, .modal-body #article-content {
-        font-size: 0.9rem; /* Adjust text size */
+        font-size: 0.95rem; /* Adjust text size */
         line-height: 1.6;
     }
 
@@ -3431,7 +3432,7 @@ input:checked + .slider:before {
         top: 8px;
         right: 8px;
     }
-     .modal-header {
+    .modal-header {
         padding-right: 30px; /* Ensure space for close button */
     }
 }
@@ -3441,7 +3442,7 @@ input:checked + .slider:before {
 
 
 /* ======================== */
-/* Home Button Container    */
+/* Home Button Container      */
 /* ======================== */
 .home-button-container {
     text-align: center;
