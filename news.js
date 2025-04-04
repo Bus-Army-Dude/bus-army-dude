@@ -62,7 +62,7 @@ function createArticleCard(article) {
     // Article category
     const category = document.createElement('div');
     category.classList.add('article-category');
-    category.textContent = article.category; // Display category on the card
+    category.textContent = article.category;
     articleCard.appendChild(category);
 
     // Article title
@@ -77,11 +77,28 @@ function createArticleCard(article) {
     description.textContent = article.shortDescription;
     articleCard.appendChild(description);
 
-    // Posted by & time ago (e.g., "4 hours ago")
+    // Posted by section
     const postedBy = document.createElement('div');
     postedBy.classList.add('posted-by');
-    postedBy.innerHTML = `<span class="posted-on">${timeAgo(article.postedOn)}</span> <span class="author">${article.author}</span>`;
+
+    const postedOnSpan = document.createElement('span');
+    postedOnSpan.classList.add('posted-on');
+    postedOnSpan.textContent = timeAgo(article.postedOn);
+    postedBy.appendChild(postedOnSpan);
+
+    const byTextSpan = document.createElement('span');
+    byTextSpan.textContent = ' by ';
+    postedBy.appendChild(byTextSpan);
+
+    const authorSpan = document.createElement('span');
+    authorSpan.classList.add('author');
+    authorSpan.textContent = article.author;
+    postedBy.appendChild(authorSpan);
+
     articleCard.appendChild(postedBy);
+
+    // Add a click event to open the article in the modal
+    articleCard.addEventListener('click', () => openArticleModal(article));
 
     // Append the article card to the news container
     document.getElementById('news-container').appendChild(articleCard);
