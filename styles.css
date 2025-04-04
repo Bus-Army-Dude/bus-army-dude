@@ -2536,17 +2536,21 @@ body.focus-outline-disabled :focus {
 /* Articles Grid            */
 /* ======================== */
 .articles-container {
-    display: grid;
-    grid-template-columns: 1fr; /* Default to single column for smaller devices */
-    gap: 40px; /* Spacing between stacked items */
+    display: flex; /* Use flexbox for horizontal layout */
+    flex-direction: column; /* Stack items by default for smaller screens */
+    gap: 30px; /* Spacing between stacked items */
     padding: 30px;
 }
 
-/* Desktop view: Two columns */
+/* Desktop view: Horizontal layout */
 @media (min-width: 768px) {
     .articles-container {
-        grid-template-columns: repeat(2, 1fr); /* Exactly two columns on desktop */
-        gap: 60px; /* Spacing between items in the two-column layout */
+        display: flex; /* Enable flexbox */
+        flex-direction: row; /* Lay out items horizontally */
+        justify-content: flex-start; /* Align items to the start (left) */
+        gap: 20px; /* Spacing between the horizontal cards */
+        overflow-x: auto; /* Enable horizontal scrolling if there are too many cards */
+        padding: 20px; /* Adjust padding for desktop */
     }
 }
 
@@ -2556,9 +2560,10 @@ body.focus-outline-disabled :focus {
     padding: 20px;
     box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transition for hover */
-    margin: 0 0 30px 0; /* Added margin-bottom to create space between cards */
+    margin: 0 15px 30px 0; /* Add right and bottom margin for spacing */
     display: flex; /* Added flex to help structure */
-    flex-direction: column; /* Stack content vertically */
+    flex-direction: column; /* Stack content vertically within the card */
+    min-width: 350px; /* Set a minimum width for each card */
 }
 
 .article-card:hover {
@@ -2735,24 +2740,28 @@ body.focus-outline-disabled :focus {
 /* This breakpoint now only applies to stacking */
 @media (max-width: 767px) {
     .articles-container {
-        grid-template-columns: 1fr; /* Stack articles */
-        gap: 40px; /* Spacing for stacked articles */
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
         padding: 20px;
     }
 }
 
-/* This breakpoint now applies to desktop two-column layout */
+/* This breakpoint now applies to desktop horizontal layout */
 @media (min-width: 768px) {
     .articles-container {
-        grid-template-columns: repeat(2, 1fr); /* Two columns on desktop */
-        gap: 60px; /* Spacing for desktop layout */
-        padding: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+        overflow-x: auto;
+        padding: 20px;
     }
 }
 
 @media (max-width: 576px) {
     .articles-container {
-        gap: 30px; /* Adjust gap for smaller stacked screens */
+        gap: 30px;
         padding: 15px;
     }
 }
