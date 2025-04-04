@@ -2540,6 +2540,7 @@ body.focus-outline-disabled :focus {
     flex-direction: column; /* Stack items by default for smaller screens */
     gap: 30px; /* Spacing between stacked items */
     padding: 30px;
+    align-items: center; /* Center items horizontally on smaller screens */
 }
 
 /* Desktop view: Horizontal layout */
@@ -2547,7 +2548,7 @@ body.focus-outline-disabled :focus {
     .articles-container {
         display: flex; /* Enable flexbox */
         flex-direction: row; /* Lay out items horizontally */
-        justify-content: flex-start; /* Align items to the start (left) */
+        justify-content: center; /* Center items horizontally on desktop */
         gap: 20px; /* Spacing between the horizontal cards */
         overflow-x: auto; /* Enable horizontal scrolling if there are too many cards */
         padding: 20px; /* Adjust padding for desktop */
@@ -2564,6 +2565,13 @@ body.focus-outline-disabled :focus {
     display: flex; /* Added flex to help structure */
     flex-direction: column; /* Stack content vertically within the card */
     min-width: 350px; /* Set a minimum width for each card */
+}
+
+/* Add right margin for spacing on smaller devices */
+@media (max-width: 767px) {
+    .article-card {
+        margin-right: 15px;
+    }
 }
 
 .article-card:hover {
@@ -2744,6 +2752,7 @@ body.focus-outline-disabled :focus {
         flex-direction: column;
         gap: 40px;
         padding: 20px 15px; /* Added horizontal padding */
+        align-items: center; /* Center items horizontally on smaller screens */
     }
 }
 
@@ -2752,7 +2761,7 @@ body.focus-outline-disabled :focus {
     .articles-container {
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
+        justify-content: center; /* Center items horizontally on desktop */
         gap: 20px;
         overflow-x: auto;
         padding: 20px;
