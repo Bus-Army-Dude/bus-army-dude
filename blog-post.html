@@ -8,11 +8,11 @@
     <meta http-equiv="refresh" content="300">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-      gtag('config', 'G-E0RSQS1MS7');
+        gtag('config', 'G-E0RSQS1MS7');
     </script>
     <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
@@ -34,7 +34,7 @@
         <nav>
             <ul class="nav-tabs">
                 <li><a href="#" data-category="home">Home</a></li>
-                </ul>
+            </ul>
         </nav>
 
         <div class="filter-section">
@@ -60,25 +60,28 @@
             <aside class="sidebar">
                 <div class="blog-categories">
                     <h3>Blog Category</h3>
-                    <ul>
-                        <li><a href="#" data-category="home">Home</a></li>
-                        <li><a href="#" data-category="us">U.S.</a></li>
-                        <li><a href="#" data-category="world">World</a></li>
-                        <li><a href="#" data-category="business">Business</a></li>
-                        <li><a href="#" data-category="technology">Technology</a></li>
-                        <li><a href="#" data-category="entertainment">Entertainment</a></li>
-                        <li><a href="#" data-category="sports">Sports</a></li>
-                        <li><a href="#" data-category="science">Science</a></li>
-                        <li><a href="#" data-category="health">Health</a></li>
-                    </ul>
+                    <div class="dropdown">
+                        <label for="category-select" class="sr-only">Select Category</label>
+                        <select id="category-select">
+                            <option value="home">Home</option>
+                            <option value="us">U.S.</option>
+                            <option value="world">World</option>
+                            <option value="business">Business</option>
+                            <option value="technology">Technology</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="sports">Sports</option>
+                            <option value="science">Science</option>
+                            <option value="health">Health</option>
+                        </select>
+                    </div>
                 </div>
-                </aside>
+            </aside>
 
             <div class="content-area">
                 <section class="latest-articles">
                     <h2>The Blog</h2>
                     <div id="news-container" class="articles-container latest-grid">
-                        </div>
+                    </div>
                 </section>
             </div>
         </div>
