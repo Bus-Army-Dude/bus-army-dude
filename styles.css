@@ -2537,24 +2537,16 @@ body.focus-outline-disabled :focus {
 /* ======================== */
 .articles-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 80px; /* Increased gap even further */
+    grid-template-columns: 1fr; /* Default to single column for smaller devices */
+    gap: 40px; /* Spacing between stacked items */
     padding: 30px;
 }
 
 /* Desktop view: Two columns */
-@media (min-width: 768px) { /* Let's try a slightly lower breakpoint */
+@media (min-width: 768px) {
     .articles-container {
-        grid-template-columns: repeat(2, minmax(350px, 1fr)); /* Adjust min-width slightly */
-    }
-}
-
-/* Smaller devices: Stack */
-@media (max-width: 767px) {
-    .articles-container {
-        grid-template-columns: 1fr;
-        gap: 40px; /* Adjust gap for smaller screens */
-        padding: 20px;
+        grid-template-columns: repeat(2, 1fr); /* Exactly two columns on desktop */
+        gap: 60px; /* Spacing between items in the two-column layout */
     }
 }
 
@@ -2740,17 +2732,27 @@ body.focus-outline-disabled :focus {
 }
 */
 
-@media (max-width: 991px) { /* Adjusting the breakpoint to be just below desktop */
+/* This breakpoint now only applies to stacking */
+@media (max-width: 767px) {
     .articles-container {
-        grid-template-columns: 1fr; /* Stack articles on smaller devices */
-        gap: 40px; /* Adjust gap for smaller screens if needed */
+        grid-template-columns: 1fr; /* Stack articles */
+        gap: 40px; /* Spacing for stacked articles */
         padding: 20px;
+    }
+}
+
+/* This breakpoint now applies to desktop two-column layout */
+@media (min-width: 768px) {
+    .articles-container {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on desktop */
+        gap: 60px; /* Spacing for desktop layout */
+        padding: 30px;
     }
 }
 
 @media (max-width: 576px) {
     .articles-container {
-        gap: 30px; /* Further adjust gap for smaller screens */
+        gap: 30px; /* Adjust gap for smaller stacked screens */
         padding: 15px;
     }
 }
