@@ -51,7 +51,7 @@ function timeAgo(date) {
 function createArticleCard(article) {
     const articleCard = document.createElement('div');
     articleCard.classList.add('article-card');
-    articleCard.dataset.articleId = article.id; // Add a data attribute to identify the article
+    articleCard.dataset.articleId = article.id;
 
     // Article image
     const image = document.createElement('img');
@@ -80,11 +80,8 @@ function createArticleCard(article) {
     // Posted by & time ago (e.g., "4 hours ago")
     const postedBy = document.createElement('div');
     postedBy.classList.add('posted-by');
-    postedBy.innerHTML = `<span class="posted-on">${timeAgo(article.postedOn)}</span> <span class="author">by ${article.author}</span>`;
+    postedBy.innerHTML = `<span class="posted-on">${timeAgo(article.postedOn)}</span> <span class="author">${article.author}</span>`;
     articleCard.appendChild(postedBy);
-
-    // Add a click event to open the article in the modal
-    articleCard.addEventListener('click', () => openArticleModal(article));
 
     // Append the article card to the news container
     document.getElementById('news-container').appendChild(articleCard);
