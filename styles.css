@@ -2384,17 +2384,12 @@ body.focus-outline-disabled :focus {
     border: 1px solid color-mix(in srgb, rgb(255, 59, 48) 20%, transparent);
 }
 
+/* Updated Temporarily Unavailable Status */
 #open-status.temporarily-uailable {
-    background: color-mix(in srgb, rgb(255, 165, 0) 10%, transparent);
-    color: rgb(255, 140, 0);
-    border: 1px solid color-mix(in srgb, rgb(255, 165, 0) 20%, transparent);
-    padding: 0.75rem 1.25rem;  /* Slightly increased padding for better spacing */
-    border-radius: 8px;         /* Rounded corners */
-    font-weight: bold;          /* Bold text for emphasis */
-    text-transform: uppercase;  /* Make text uppercase for consistency */
-    letter-spacing: 1px;        /* Added spacing between letters */
-    box-shadow: 0 2px 4px rgba(255, 140, 0, 0.3);  /* Subtle shadow for depth */
-    transition: all 0.3s ease;  /* Smooth transition for hover effects */
+    background: color-mix(in srgb, rgb(255, 165, 0) 10%, transparent); /* Light orange background */
+    color: rgb(255, 140, 0); /* Darker orange text */
+    border: 1px solid color-mix(in srgb, rgb(255, 165, 0) 20%, transparent); /* Slightly darker orange border */
+    /* Removed extra styles like padding override, bold weight, uppercase, letter-spacing, box-shadow to match open/closed */
 }
 
 /* Holiday Alert */
