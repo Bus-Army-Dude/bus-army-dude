@@ -2538,8 +2538,15 @@ body.focus-outline-disabled :focus {
 .articles-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 50px; /* Increased gap for more spacing */
+    gap: 60px; /* Increased gap for more spacing to prevent touching */
     padding: 30px;
+}
+
+/* Desktop view: Two columns */
+@media (min-width: 769px) {
+    .articles-container {
+        grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Two columns on desktop */
+    }
 }
 
 .article-card {
@@ -2744,16 +2751,11 @@ body.focus-outline-disabled :focus {
     }
 
     .articles-container {
-        padding: 20px; /* Adjust padding */
-        gap: 30px;
+        grid-template-columns: 1fr; /* Stack articles on smaller devices */
+        gap: 40px; /* Adjust gap for smaller screens if needed */
+        padding: 20px;
     }
 
-    .article-card {
-        padding: 15px;
-        /* Margin is handled by container gap/padding */
-    }
-
-    /* Modal adjustments for tablet */
     .modal {
         padding: 15px; /* Reduce padding around modal content */
     }
@@ -2796,12 +2798,11 @@ body.focus-outline-disabled :focus {
     }
 
     .articles-container {
-        grid-template-columns: 1fr; /* Stack articles */
-        gap: 25px;
-        padding: 15px; /* Adjust padding */
+        grid-template-columns: 1fr; /* Stack articles on smaller devices */
+        gap: 30px; /* Further adjust gap for smaller screens */
+        padding: 15px;
     }
 
-    /* Modal adjustments for small mobile */
     .modal {
         padding: 10px; /* Further reduce padding around modal content */
     }
