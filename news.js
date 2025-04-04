@@ -116,7 +116,11 @@ function filterArticles(range, category) {
 
     // Then, filter by category
     if (category !== 'home') { // 'home' will show all categories
-        filteredArticles = filteredArticles.filter(article => article.category.toLowerCase() === category.toLowerCase()); // Convert both to lowercase for comparison
+        console.log("Filtering for category:", category); // Debugging line
+        filteredArticles = filteredArticles.filter(article => {
+            console.log("Article category:", article.category, " (lowercase:", article.category.toLowerCase(), ")"); // Debugging line
+            return article.category.toLowerCase() === category.toLowerCase();
+        });
     }
 
     // Clear the existing articles and load filtered ones
