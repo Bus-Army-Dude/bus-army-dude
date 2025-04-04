@@ -1,0 +1,387 @@
+/* Basic Reset and Variables (You likely have these already) */
+:root {
+    --primary-color: #007bff; /* Example */
+    --secondary-color: #6c757d; /* Example */
+    --text-color: #333; /* Example */
+    --secondary-text: #555; /* Example */
+    --background-color: #f8f9fa; /* Example */
+    --content-bg: #fff; /* Example */
+    --accent-color: #0056b3; /* Example */
+    --border-color: #ddd; /* Example */
+    --hover-bg: #f0f0f0; /* Example */
+    --shadow-color-rgb: 0,0,0; /* Example */
+    --spacing-small: 10px;
+    --spacing-medium: 20px;
+    --spacing-large: 30px;
+    --font-family-base: sans-serif;
+    --font-family-heading: sans-serif;
+}
+
+body {
+    font-family: var(--font-family-base);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-medium);
+}
+
+/* Header Styling (Keeping your existing styles) */
+header {
+    background: var(--content-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-medium) 0;
+}
+
+header nav ul.nav-tabs {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-small) var(--spacing-medium);
+    flex-wrap: wrap;
+    gap: var(--spacing-small);
+}
+
+header nav ul.nav-tabs li {
+    margin: 0;
+}
+
+header nav ul.nav-tabs a {
+    display: block;
+    padding: 8px 12px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+header nav ul.nav-tabs a:hover {
+    background-color: var(--hover-bg);
+    color: var(--accent-color);
+}
+
+header nav ul.nav-tabs a.active {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    background-color: transparent;
+}
+
+header .filter-section {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacing-medium);
+    background: var(--content-bg);
+    margin-bottom: var(--spacing-medium);
+}
+
+header .filter-section label {
+    margin-right: var(--spacing-small);
+}
+
+header .filter-section select#time-filter {
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+header .home-button-container {
+    text-align: center;
+    padding: var(--spacing-medium);
+    background: var(--content-bg);
+    border-bottom: 1px solid var(--border-color);
+    margin-top: var(--spacing-medium);
+    margin-bottom: var(--spacing-medium);
+}
+
+header .home-button-container button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background: var(--button-bg, #eee);
+    color: var(--button-text, #333);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+header .home-button-container button:hover {
+    background-color: var(--hover-bg);
+    color: var(--accent-color);
+}
+
+/* Featured Articles Section (Horizontal Slider) */
+.featured-articles {
+    padding: var(--spacing-large) 0;
+    background: var(--content-bg);
+    margin-bottom: var(--spacing-large);
+}
+
+.featured-articles h2 {
+    margin-bottom: var(--spacing-medium);
+    padding: 0 var(--spacing-medium);
+}
+
+.featured-articles-slider {
+    display: flex;
+    gap: var(--spacing-medium);
+    overflow-x: auto;
+    padding: 0 var(--spacing-medium) var(--spacing-small) var(--spacing-medium);
+    margin-bottom: var(--spacing-small);
+}
+
+.featured-articles-slider .article-card {
+    background-color: #f8f9fa; /* Example card background */
+    border-radius: 8px;
+    padding: var(--spacing-medium);
+    min-width: 300px; /* Adjust as needed */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Content Area */
+main .container {
+    display: flex;
+    gap: var(--spacing-large);
+}
+
+.sidebar {
+    width: 250px; /* Adjust sidebar width */
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-small);
+}
+
+.blog-categories {
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: var(--spacing-medium);
+    margin-bottom: var(--spacing-large);
+}
+
+.blog-categories ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.blog-categories li a {
+    display: block;
+    padding: 8px 0;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.new-course {
+    background-color: #e9ecef; /* Example background */
+    padding: var(--spacing-medium);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.new-course h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-small);
+}
+
+.new-course button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--accent-color); /* Or your accent color */
+    color: white;
+    cursor: pointer;
+    margin-top: var(--spacing-small);
+}
+
+.content-area {
+    flex-grow: 1;
+}
+
+/* Popular Today Section */
+.popular-today {
+    background: var(--content-bg);
+    padding: var(--spacing-large);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-large);
+}
+
+.popular-today h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium);
+}
+
+.popular-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust minmax as needed */
+    gap: var(--spacing-medium);
+}
+
+.popular-grid .article-card {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: var(--spacing-medium);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-width: auto; /* Override the general article-card min-width */
+    margin: 0; /* Override general margins */
+}
+
+.popular-grid .article-card img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: var(--spacing-small);
+}
+
+.popular-grid .article-card h3 {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: var(--spacing-small);
+}
+
+.popular-grid .article-card p {
+    font-size: 0.85rem;
+    color: var(--secondary-text);
+    margin-bottom: 0;
+}
+
+/* Latest Articles Section */
+.latest-articles {
+    background: var(--content-bg);
+    padding: var(--spacing-large);
+    border-radius: 8px;
+}
+
+.latest-articles h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium);
+}
+
+#news-container.articles-container.latest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust minmax as needed */
+    gap: var(--spacing-large);
+    padding: 0; /* Remove padding from the container itself, as it's on the section */
+}
+
+#news-container.articles-container.latest-grid .article-card {
+    background: var(--content-bg);
+    border-radius: 12px;
+    padding: var(--spacing-medium);
+    box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    margin: 0; /* Override default margins */
+    display: flex;
+    flex-direction: column;
+    min-width: auto; /* Override the general article-card min-width */
+}
+
+#news-container.articles-container.latest-grid .article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.15);
+}
+
+#news-container.articles-container.latest-grid .article-card img {
+    width: 100%;
+    height: auto;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: var(--spacing-small);
+    display: block;
+}
+
+#news-container.articles-container.latest-grid .article-category {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-small);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+#news-container.articles-container.latest-grid .article-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-small) 0;
+    color: var(--text-color);
+    line-height: 1.4;
+}
+
+#news-container.articles-container.latest-grid .short-description {
+    font-size: 0.95rem;
+    color: var(--secondary-text);
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: var(--spacing-large) 0;
+    margin-top: var(--spacing-large);
+}
+
+footer .container {
+    padding: 0 var(--spacing-medium);
+}
+
+/* Modal Styling (Keep your existing styles) */
+.modal { /* ... your modal styles ... */ }
+.modal-content { /* ... your modal content styles ... */ }
+.close-button { /* ... your close button styles ... */ }
+.modal-header { /* ... your modal header styles ... */ }
+#category-name { /* ... your category name styles ... */ }
+#article-title { /* ... your article title styles ... */ }
+.modal-body #article-content { /* ... your article content styles ... */ }
+.modal-body p { /* ... your modal body paragraph styles ... */ }
+.modal-body img { /* ... your modal body image styles ... */ }
+.modal-footer { /* ... your modal footer styles ... */ }
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    main .container {
+        flex-direction: column; /* Stack sidebar and content on smaller screens */
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: var(--spacing-large);
+    }
+
+    .latest-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    header nav ul.nav-tabs {
+        justify-content: flex-start; /* Align tabs to the left on smaller screens */
+    }
+
+    .popular-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    #news-container.articles-container.latest-grid {
+        grid-template-columns: 1fr; /* Stack articles on smaller screens */
+    }
+}
