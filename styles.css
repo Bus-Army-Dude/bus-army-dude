@@ -2384,12 +2384,11 @@ body.focus-outline-disabled :focus {
     border: 1px solid color-mix(in srgb, rgb(255, 59, 48) 20%, transparent);
 }
 
-/* Updated Temporarily Unavailable Status */
-#open-status.temporarily-uailable {
+/* Corrected Temporarily Unavailable Status */
+#open-status.temporarily-unavailable { /* Fixed typo here */
     background: color-mix(in srgb, rgb(255, 165, 0) 10%, transparent); /* Light orange background */
     color: rgb(255, 140, 0); /* Darker orange text */
     border: 1px solid color-mix(in srgb, rgb(255, 165, 0) 20%, transparent); /* Slightly darker orange border */
-    /* Removed extra styles like padding override, bold weight, uppercase, letter-spacing, box-shadow to match open/closed */
 }
 
 /* Holiday Alert */
