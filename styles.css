@@ -2454,7 +2454,7 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/* Navigation Tabs         */
+/* Navigation Tabs          */
 /* ======================== */
 .nav-tabs {
     display: flex;
@@ -2497,7 +2497,7 @@ body.focus-outline-disabled :focus {
 }
 
 /* ======================== */
-/* Dropdown Filter         */
+/* Dropdown Filter          */
 /* ======================== */
 .filter-section {
     display: flex;
@@ -2538,7 +2538,7 @@ body.focus-outline-disabled :focus {
 .articles-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 40px;
+    gap: 50px; /* Increased gap for more spacing */
     padding: 30px;
 }
 
@@ -2547,17 +2547,22 @@ body.focus-outline-disabled :focus {
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 6px 12px rgba(var(--shadow-color-rgb), 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transition for hover */
     margin: 0;
     display: flex; /* Added flex to help structure */
     flex-direction: column; /* Stack content vertically */
 }
 
+.article-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 8px 16px rgba(var(--shadow-color-rgb), 0.15); /* Slightly stronger shadow on hover */
+}
+
 .article-card img {
     width: 100%;
     height: auto; /* Maintain aspect ratio */
-    /* max-height: 200px; Removed max-height */
-    object-fit: contain; /* Ensure entire image is visible */
+    max-height: 220px; /* Reintroduced max-height to control image size */
+    object-fit: contain; /* Ensure entire image is visible within max-height */
     border-radius: 10px;
     margin-bottom: 15px; /* Increased spacing */
     display: block;
