@@ -11,30 +11,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/weather-style.css">
-    <link rel="stylesheet" href="assets/css/settings-style.css">
+    <link rel="stylesheet" href="assest/css/weather-style.css">
+    <link rel="stylesheet" href="assest/css/settings-style.css">
 
-    <script type="module" src="assets/js/app.js"></script>
-    <script type="module" src="assets/js/route.js"></script>
-    <script type="module" src="assets/js/module.js"></script>
-    <script type="module" src="assets/js/settings.js"></script>
+    <script type="module" src="assest/js/app.js"></script>
+    <script type="module" src="assest/js/route.js"></script>
+    <script type="module" src="assest/js/module.js"></script>
+    <script type="module" src="assest/js/settings.js"></script>
 </head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-E0RSQS1MS7');
-</script>
-
+     <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-E0RSQS1MS7');
+    </script>
+    
 <body>
     <header class="header">
         <div class="container">
             <a href="" class="logo">
-                <img src="assets/images/logo.png" alt="logo">
+                <img src="assest/images/logo.png" alt="logo">
             </a>
             <div class="search-view" data-search-view>
                 <div class="search-wrapper">
@@ -77,129 +77,95 @@
     <main>
         <article class="container" data-container>
             <div class="content-left">
-                <section class="section current-weather" aria-label="current weather" data-current-weather>
-                    <!-- Current weather details go here -->
-                </section>
-                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast>
-                    <!-- 5-day forecast details go here -->
-                </section>
+                <section class="section current-weather" aria-label="current weather" data-current-weather></section>
+                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
             </div>
             <div class="content-right">
-                <section class="section highlights" aria-labelledby="highlights-label" data-highlights>
-                    <h3 id="highlights-label">Today's Highlights</h3>
-                    <div class="highlight-item">
-                        <h4>High/Low Temperature</h4>
-                        <p class="highlight-value">
-                            <span class="high-temp" data-high-temp></span> / <span class="low-temp" data-low-temp></span>
-                        </p>
-                    </div>
-                    <div class="highlight-item">
-                        <h4>Wind Speed</h4>
-                        <p class="highlight-value">
-                            <span class="wind-speed" data-wind-speed></span>
-                        </p>
-                    </div>
-                    <div class="highlight-item">
-                        <h4>Humidity</h4>
-                        <p class="highlight-value">
-                            <span class="humidity" data-humidity></span>%
-                        </p>
-                    </div>
-                    <div class="highlight-item">
-                        <h4>UV Index</h4>
-                        <p class="highlight-value">
-                            <span class="uv-index" data-uv-index></span>
-                        </p>
-                    </div>
-                </section>
-
-                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast>
-                    <!-- Hourly forecast details go here -->
-                </section>
+                <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
+                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
             </div>
             <div class="loading" data-loading></div>
         </article>
-    </main>
-
+    <main>
     <div class="settings-modal" data-settings-modal>
-        <div class="settings-content">
-            <h2 class="title-2">Settings</h2>
-            <form data-settings-form>
-                <div class="settings-section">
-                    <h3 class="settings-section-title">Units</h3>
-                    <div class="setting-item">
-                        <label class="setting-label" for="temperature">Temperature:</label>
-                        <select name="temperature" class="settings-select" data-settings-temp>
-                            <option value="celsius">Celsius (°C)</option>
-                            <option value="fahrenheit">Fahrenheit (°F)</option>
-                            <option value="kelvin">Kelvin (K)</option>
-                        </select>
-                        <p class="settings-description">Choose the unit for temperature displays.</p>
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label" for="windSpeed">Wind Speed:</label>
-                        <select name="windSpeed" class="settings-select" data-settings-speed>
-                            <option value="ms">m/s</option>
-                            <option value="kph">km/h</option>
-                            <option value="mph">mph</option>
-                            <option value="knots">knots</option>
-                            <option value="beaufort">Beaufort</option>
-                        </select>
-                        <p class="settings-description">Choose the unit for wind speed displays.</p>
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label" for="pressure">Pressure:</label>
-                        <select name="pressure" class="settings-select" data-settings-pressure>
-                            <option value="hpa">hPa</option>
-                            <option value="inhg">inHg</option>
-                            <option value="mmhg">mmHg</option>
-                            <option value="kpa">kPa</option>
-                            <option value="mbar">mbar</option>
-                        </select>
-                        <p class="settings-description">Choose the unit for atmospheric pressure displays.</p>
-                    </div>
+    <div class="settings-content">
+        <h2 class="title-2">Settings</h2>
+        <form data-settings-form>
+            <div class="settings-section">
+                <h3 class="settings-section-title">Units</h3>
+                <div class="setting-item">
+                    <label class="setting-label" for="temperature">Temperature:</label>
+                    <select name="temperature" class="settings-select" data-settings-temp>
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                    <p class="settings-description">Choose the unit for temperature displays.</p>
                 </div>
-                <div class="settings-section">
-                    <h3 class="settings-section-title">Time & Location</h3>
-                    <div class="setting-item">
-                        <label class="setting-label" for="timeFormat">24-Hour Time:</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="timeFormat" data-settings-time>
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <p class="settings-description">
-                            Toggle between 12-hour and 24-hour time formats.<br>
-                            <b>You must refresh the page after you hit save changes.</b>
-                        </p>
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label" for="location">Location Services:</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="location" data-settings-location>
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <p class="settings-description">Enable or disable location services for automatic location detection.</p>
-                    </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="windSpeed">Wind Speed:</label>
+                    <select name="windSpeed" class="settings-select" data-settings-speed>
+                        <option value="ms">m/s</option>
+                        <option value="kph">km/h</option>
+                        <option value="mph">mph</option>
+                        <option value="knots">knots</option>
+                        <option value="beaufort">Beaufort</option>
+                    </select>
+                    <p class="settings-description">Choose the unit for wind speed displays.</p>
                 </div>
-                <div class="settings-section">
-                    <h3 class="settings-section-title">Appearance</h3>
-                    <div class="setting-item">
-                        <label class="setting-label" for="darkMode">Dark Mode:</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" name="darkMode" data-dark-mode-toggle data-settings-theme>
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <p class="settings-description">Toggle between light and dark color themes.</p>
-                    </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="pressure">Pressure:</label>
+                    <select name="pressure" class="settings-select" data-settings-pressure>
+                        <option value="hpa">hPa</option>
+                        <option value="inhg">inHg</option>
+                        <option value="mmhg">mmHg</option>
+                        <option value="kpa">kPa</option>
+                        <option value="mbar">mbar</option>
+                    </select>
+                    <p class="settings-description">Choose the unit for atmospheric pressure displays.</p>
                 </div>
-                <div class="settings-actions">
-                    <button type="submit" class="settings-save" data-settings-save>Save</button>
-                    <button type="button" class="settings-close" data-settings-close>Close</button>
+            </div>
+            <div class="settings-section">
+                <h3 class="settings-section-title">Time & Location</h3>
+                <div class="setting-item">
+                    <label class="setting-label" for="timeFormat">24-Hour Time:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="timeFormat" data-settings-time>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <p class="settings-description">
+                        Toggle between 12-hour and 24-hour time formats.<br>
+                        <b>You must refresh the page after you hit save changes.</b>
+                    </p>
                 </div>
-            </form>
-        </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="location">Location Services:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="location" data-settings-location>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <p class="settings-description">Enable or disable location services for automatic location detection.</p>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h3 class="settings-section-title">Appearance</h3>
+                 <div class="setting-item">
+                    <label class="setting-label" for="darkMode">Dark Mode:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="darkMode" data-dark-mode-toggle data-settings-theme>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <p class="settings-description">Toggle between light and dark color themes.</p>
+                </div>
+            </div>
+            <div class="settings-actions">
+                <button type="submit" class="settings-save" data-settings-save>Save</button>
+                <button type="button" class="settings-close" data-settings-close>Close</button>
+            </div>
+        </form>
     </div>
-
+</div>
+    
     <section class="error-content" data-error-content>
         <h2 class="heading">404</h2>
         <p class="body-1">Page not found!</p>
@@ -207,12 +173,11 @@
             <span class="span">Go Home</span>
         </a>
     </section>
-
+</body>
     <script src="common.js"></script>
     <script src="globalSettings.js"></script>
     <script src="script.js"></script>
     <script src="ai-features.js"></script>
     <script src="settings.js"></script>
     <script src="copyright.js"></script>
-</body>
 </html>
