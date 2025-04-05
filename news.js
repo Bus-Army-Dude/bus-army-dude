@@ -103,7 +103,7 @@ In addition to AI, iOS 18 includes new customization options for the home screen
 iOS 18 is now available in developer beta, with a public beta launching in July and the full rollout expected in September alongside the iPhone 17 lineup.
 
 Developers and users are already buzzing about the features, calling it one of the most significant iOS upgrades in years.`,
-    imageUrl: "https://cdn.vox-cdn.com/thumbor/lzGlrw0Z8JXAjQnF53BiY6CnsRY=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/12345678/apple-wwdc.jpg",
+    imageUrl: "https://miro.medium.com/v2/resize:fit:1400/0*Cxz2H2XOkDClSh7R",
     postedOn: "2025-04-04T14:30:00Z",
     author: "Mark Gurman",
     category: "technology"
