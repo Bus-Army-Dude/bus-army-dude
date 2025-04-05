@@ -1,8 +1,8 @@
-// Sample API Key (replace with your own API key)
+// Sample API Key & Endpoint (replace with your own API key and URL)
 const apiKey = 'd02d6826e3dd4dba9bea9e86d7d4563b'; // Replace with your NewsAPI key
+const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`; // Removed category parameter
 
 let articles = [];
-let currentCategory = 'general'; // Default category
 
 // Function to format the date into "X hours ago" or "X minutes ago"
 function timeAgo(date) {
@@ -19,10 +19,7 @@ function timeAgo(date) {
 }
 
 // Function to fetch articles from the API
-async function fetchArticles(category = 'general') {
-    currentCategory = category;
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${apiKey}`;
-
+async function fetchArticles() {
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -35,6 +32,7 @@ async function fetchArticles(category = 'general') {
         if (data.articles && data.articles.length > 0) {
             articles = data.articles;
             loadArticles(); // Load the fetched articles to the page
+            populateCategories(); // Populate the categories
         } else {
             console.warn("No articles found in the API response.");
             document.getElementById('articles-container').innerHTML = "<p>No articles found.</p>";
@@ -162,12 +160,11 @@ function handleNavTabClick(event) {
         link.classList.remove('active');
     });
     event.target.classList.add('active');
-    fetchArticles(category); // Fetch articles for the selected category
 }
 
 // Function to populate categories in the sidebar and navigation
 function populateCategories() {
-    const categories = ['general', 'technology', 'science', 'business', 'health', 'entertainment']; // Add more categories as needed
+    const categories = ['All']; // Add more categories as needed
     const navCategories = document.getElementById('categories-nav');
     const listCategories = document.getElementById('categories-list');
 
@@ -190,7 +187,6 @@ function populateCategories() {
         listLink.dataset.category = category;
         listLink.addEventListener('click', (event) => {
             event.preventDefault(); // Prevent the default link behavior
-            fetchArticles(category);
             filterArticles(document.getElementById('time-filter').value, category);
         });
         listItem.appendChild(listLink);
@@ -200,7 +196,7 @@ function populateCategories() {
 
 // Wait for DOM content to be loaded before initializing
 document.addEventListener('DOMContentLoaded', () => {
-    fetchArticles(); // Fetch the articles initially (default category)
+    fetchArticles(); // Fetch the articles initially
 
     // Add event listeners to the navigation tabs
     const navTabs = document.querySelectorAll('.nav-tabs a');
@@ -211,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add event listener to the time filter dropdown
     const timeFilter = document.getElementById('time-filter');
     timeFilter.addEventListener('change', (event) => {
-        filterArticles(event.target.value, currentCategory);
+        filterArticles(event.target.value, 'all');
     });
 
     // Add event listener for the close button
@@ -227,8 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initially set the 'Home' tab as active
-    const homeTab = document.querySelector('.nav-tabs a[data-category="general"]');
+    // Initially set the 'All' tab as active
+    const homeTab = document.querySelector('.nav-tabs a[data-category="All"]');
     if (homeTab) {
         homeTab.classList.add('active');
     }
