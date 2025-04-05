@@ -707,104 +707,34 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 .badge.aqi-4 { background-color: var(--bg-aqi-4); color: var(--on-bg-aqi-4); }
 .badge.aqi-5 { background-color: var(--bg-aqi-5); color: var(--on-bg-aqi-5); }
 
+/* --- High and Low Temperature Styling in Highlights --- */
+.highlights .highlight-item.one {
+  /* This might already be covered by your existing grid styles for .highlight-list */
+  /* Ensure it takes up one grid cell */
+}
 
-/* --- Start Sunrise/Sunset Fix --- */
-
-/* Ensure the container (.card-list) uses flexbox */
-.highlight-card.two .card-list {
+.highlights .highlight-item.one .card-item {
   display: flex;
-  justify-content: space-between; /* Key change: Push items apart */
-  align-items: center;           /* Align items vertically */
-  width: 100%;                   /* Use full width */
-  gap: 16px;                     /* Optional gap between items */
-  flex-wrap: nowrap;             /* Prevent wrapping */
-  flex-grow: 1;                  /* Ensure it takes available space */
-  row-gap: 0;                    /* Override base row-gap */
+  justify-content: space-between; /* Distribute High and Low */
+  align-items: center; /* Vertically align */
+  gap: 20px; /* Space between High and Low blocks */
+  width: 100%; /* Take full width of the highlight item */
 }
 
-/* Style the individual Sunrise/Sunset blocks (.card-item) */
-.highlight-card.two .card-item {
-  display: flex;                 /* Internal layout: icon beside text block */
-  align-items: center;           /* Vertically center icon and text block */
-  gap: 8px;                      /* Space between icon and text block */
-  flex-basis: auto;              /* Allow width based on content */
-  /* Reset properties that might cause stacking or incorrect width */
-  width: auto;
-  flex-wrap: nowrap;
-  justify-content: flex-start; /* Align internal content left */
-  flex-grow: 0;                 /* Prevent items from growing unevenly */
-  flex-shrink: 0;
+.highlights .highlight-item.one .card-item > div {
+  text-align: center; /* Center content within each block */
 }
 
-/* Style the text block (div containing label and time) */
-.highlight-card.two .card-item > div {
-  display: flex;
-  flex-direction: column;       /* Stack label and time vertically */
-  align-items: flex-start;      /* Align text to the left */
-}
-
-/* Style the paragraphs (label and time) */
-.highlight-card.two .card-item p {
-  margin: 0;                    /* Remove default paragraph margins */
-  line-height: 1.3;             /* Adjust line height for clarity */
-}
-
-/* Style the label ("Sunrise", "Sunset") */
-.highlight-card.two .card-item .label-1 {
-   white-space: nowrap;          /* Prevent wrapping */
-   color: var(--on-surface-variant); /* Ensure correct color */
-   font-size: var(--label-1);    /* Ensure correct font size */
-   font-weight: var(--weight-regular); /* Use regular weight for label */
-}
-
-/* Style the time */
-.highlight-card.two .card-item .body-3 {
-   font-weight: var(--weight-semiBold); /* Make time stand out */
-   font-size: var(--body-2);      /* Use slightly larger font size for time */
-   white-space: nowrap;          /* Prevent time wrapping */
-}
-
-/* High and Low Temperature Highlight Card */
-.highlight-card.high-low {
-  background-color: var(--black-alpha-10); /* Semi-transparent background for the highlight card */
-  padding: 16px; /* Padding for the highlight card */
-  border-radius: var(--radius-16); /* Rounded corners for the card */
-  box-shadow: var(--shadow-2); /* Soft shadow to lift the card */
-}
-
-.highlight-card.high-low .wrapper {
-  justify-content: space-between; /* Space between label and value */
-  gap: 16px;
-}
-
-.highlight-card.high-low .card-list {
-  display: flex;
-  justify-content: space-between; /* Space between the high and low temperature values */
-  gap: 20px;
-}
-
-.highlight-card.high-low .card-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.highlight-card.high-low .label-1 {
-  color: var(--on-surface-variant); /* Light grey color for the labels */
-  font-weight: var(--weight-semiBold);
-}
-
-.highlight-card.high-low .high-temp-value,
-.highlight-card.high-low .low-temp-value {
-  font-size: var(--body-2); /* Use appropriate body text size for temperature values */
-  font-weight: var(--weight-regular);
-  color: var(--primary); /* Primary color for the high/low temperatures */
-}
-
-.highlight-card.high-low .high-temp-label,
-.highlight-card.high-low .low-temp-label {
+.highlights .highlight-item.one .card-item .title {
   font-size: var(--label-1);
   color: var(--on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.highlights .highlight-item.one .card-item .value {
+  font-size: var(--body-2);
+  font-weight: var(--weight-semiBold);
+  color: var(--primary);
 }
 
 /* --- End Sunrise/Sunset Fix --- */
@@ -1055,6 +985,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   .hourly-forecast .card-sm { padding: 16px; } /* Adjust padding if needed */
 }
+.highlights .highlight-item.one .card-item {
+    gap: 10px; /* Adjust spacing on tablet */
+  }
 
 /* Desktop Styles */
 @media (min-width: 1200px) {
@@ -1157,6 +1090,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .highlight-card .m-icon { font-size: 4rem; }
   .slider-list { gap: 16px; }
 }
+.highlights .highlight-item.one .card-item {
+    gap: 20px; /* Adjust spacing on desktop */
+  }
 
 /* Wider Desktop Styles */
 @media (min-width: 1400px) {
