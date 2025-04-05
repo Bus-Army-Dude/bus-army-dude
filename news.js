@@ -88,24 +88,18 @@ The White House has not immediately responded to requests for comment.`,
 },
 {
     id: 6,
-    title: "Apple announces iOS 18 with AI-powered features at WWDC 2025",
-    shortDescription: "iOS 18 is getting smarter with on-device AI for messages, photos, and productivity.",
-    content: `Apple officially unveiled iOS 18 at its annual WWDC 2025 keynote, and this year’s update is all about artificial intelligence. The tech giant introduced a suite of AI-powered features branded as "Apple Intelligence," aimed at making the iPhone more personal, predictive, and useful.
+    title: "Apple announces WWDC 2025 dates and keynote details",
+    shortDescription: "WWDC 2025 will run June 9–13, with a keynote on June 9 at 10 a.m. PT.",
+    content: `Apple's annual Worldwide Developers Conference (WWDC) is set to take place from June 9 to June 13, 2025. The event will kick off with a keynote on June 9 at 10:00 a.m. Pacific Time.
 
-Some of the headline features include an AI writing assistant that works system-wide — offering smart suggestions, rewriting tools, and grammar corrections across Notes, Mail, and Safari. Photos are also getting a big upgrade with AI object removal and enhanced search powered by machine learning models running directly on the device.
+WWDC 2025 will feature online sessions and labs, allowing developers worldwide to learn about new software features and how to incorporate them into their apps.
 
-Apple said its AI system is designed with privacy at the core, running primarily on-device with occasional secure server-based processing through what the company is calling "Private Compute Cloud."
+Both the keynote and the online sessions will be available on the Apple Developer app, Apple website, and YouTube.
 
-Craig Federighi, Apple’s senior VP of Software Engineering, emphasized that "this is AI done the Apple way — powerful, private, and personal."
-
-In addition to AI, iOS 18 includes new customization options for the home screen, control center, and lock screen, plus updates to Messages with scheduled sends and satellite messaging in more regions.
-
-iOS 18 is now available in developer beta, with a public beta launching in July and the full rollout expected in September alongside the iPhone 17 lineup.
-
-Developers and users are already buzzing about the features, calling it one of the most significant iOS upgrades in years.`,
-    imageUrl: "https://miro.medium.com/v2/resize:fit:1400/0*Cxz2H2XOkDClSh7R",
-    postedOn: "2025-04-04T14:30:00Z",
-    author: "Mark Gurman",
+While primarily an online event, Apple is planning a special in-person component for select developers and students at the Apple Park campus in Cupertino, California.`,
+    imageUrl: "https://images.macrumors.com/t/EfTPR8p4nVYTZjY8y3KTaA3osdQ=/800x0/smart/article-new/2025/03/Apple-WWDC25-event-branding_big.jpg.large_2x.jpg?lossy",
+    postedOn: "2025-04-04T18:45:00Z",
+    author: "MacRumors Staff",
     category: "technology"
 },
 {
