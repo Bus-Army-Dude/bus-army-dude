@@ -312,7 +312,7 @@ If approved, Nurodex would be the first monthly injectable migraine treatment th
         shortDescription: "NASA’s Perseverance rover has captured incredible new images of Mars.",
         content: "NASA's Perseverance rover has sent back high-resolution images of the Martian landscape, offering a glimpse of the planet’s surface like never before. Scientists are excited about the data these images will provide for future exploration.",
         imageUrl: "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01458/ids/edr/browse/zcam/ZL0_1458_0796371342_900EBY_N0710056ZCAM09519_1100LMJ01_1200.jpg",
-        postedOn: "2025-04-05T20:30:00Z",
+        postedOn: "2025-04-04T20:30:00Z",
         author: "NASA",
         category: "science"
     },
@@ -322,7 +322,7 @@ If approved, Nurodex would be the first monthly injectable migraine treatment th
         shortDescription: "A team of scientists has made a significant breakthrough in the field of quantum computing.",
         content: "Quantum computing has taken a giant leap forward with a breakthrough that could lead to faster, more powerful computers. The discovery was made by a team of researchers at MIT and could have wide-ranging implications for industries around the world.",
         imageUrl: "https://scitechdaily.com/images/Quantum-Computing-Physics-Concept-Art.jpg",
-        postedOn: "2025-04-05T21:00:00Z",
+        postedOn: "2025-04-04T21:00:00Z",
         author: "Scientific American",
         category: "science"
     },
