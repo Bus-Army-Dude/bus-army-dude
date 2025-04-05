@@ -77,8 +77,12 @@
     <main>
         <article class="container" data-container>
             <div class="content-left">
-                <section class="section current-weather" aria-label="current weather" data-current-weather></section>
-                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
+                <section class="section current-weather" aria-label="current weather" data-current-weather>
+                    <!-- Current weather details go here -->
+                </section>
+                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast>
+                    <!-- 5-day forecast details go here -->
+                </section>
             </div>
             <div class="content-right">
                 <section class="section highlights" aria-labelledby="highlights-label" data-highlights>
@@ -89,9 +93,29 @@
                             <span class="high-temp" data-high-temp></span> / <span class="low-temp" data-low-temp></span>
                         </p>
                     </div>
-                    <!-- Add other highlights like wind speed, humidity, etc. -->
+                    <div class="highlight-item">
+                        <h4>Wind Speed</h4>
+                        <p class="highlight-value">
+                            <span class="wind-speed" data-wind-speed></span>
+                        </p>
+                    </div>
+                    <div class="highlight-item">
+                        <h4>Humidity</h4>
+                        <p class="highlight-value">
+                            <span class="humidity" data-humidity></span>%
+                        </p>
+                    </div>
+                    <div class="highlight-item">
+                        <h4>UV Index</h4>
+                        <p class="highlight-value">
+                            <span class="uv-index" data-uv-index></span>
+                        </p>
+                    </div>
                 </section>
-                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
+
+                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast>
+                    <!-- Hourly forecast details go here -->
+                </section>
             </div>
             <div class="loading" data-loading></div>
         </article>
