@@ -85,6 +85,100 @@ The White House has not immediately responded to requests for comment.`,
     postedOn: "2025-04-04T16:46:00Z",
     author: "Selina Wang",
     category: "us"
+},
+{
+    id: 6,
+    title: "Apple announces iOS 18 with AI-powered features at WWDC 2025",
+    shortDescription: "iOS 18 is getting smarter with on-device AI for messages, photos, and productivity.",
+    content: `Apple officially unveiled iOS 18 at its annual WWDC 2025 keynote, and this year’s update is all about artificial intelligence. The tech giant introduced a suite of AI-powered features branded as "Apple Intelligence," aimed at making the iPhone more personal, predictive, and useful.
+
+Some of the headline features include an AI writing assistant that works system-wide — offering smart suggestions, rewriting tools, and grammar corrections across Notes, Mail, and Safari. Photos are also getting a big upgrade with AI object removal and enhanced search powered by machine learning models running directly on the device.
+
+Apple said its AI system is designed with privacy at the core, running primarily on-device with occasional secure server-based processing through what the company is calling "Private Compute Cloud."
+
+Craig Federighi, Apple’s senior VP of Software Engineering, emphasized that "this is AI done the Apple way — powerful, private, and personal."
+
+In addition to AI, iOS 18 includes new customization options for the home screen, control center, and lock screen, plus updates to Messages with scheduled sends and satellite messaging in more regions.
+
+iOS 18 is now available in developer beta, with a public beta launching in July and the full rollout expected in September alongside the iPhone 17 lineup.
+
+Developers and users are already buzzing about the features, calling it one of the most significant iOS upgrades in years.`,
+    imageUrl: "https://cdn.vox-cdn.com/thumbor/lzGlrw0Z8JXAjQnF53BiY6CnsRY=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/12345678/apple-wwdc.jpg",
+    postedOn: "2025-04-04T14:30:00Z",
+    author: "Mark Gurman",
+    category: "technology"
+},
+{
+    id: 7,
+    title: "Zendaya confirms ‘Euphoria’ Season 3 will begin filming late 2025",
+    shortDescription: "After multiple delays, the hit HBO show is finally moving forward.",
+    content: `Zendaya has confirmed that Season 3 of HBO’s *Euphoria* will begin production in late 2025, after months of speculation and delays caused by the writers' and actors' strikes in 2023. 
+
+In an exclusive interview with Variety, the Emmy-winning actress shared, “The story will pick up a few years later, and we’re diving into how these characters evolve into adulthood.”
+
+Fans have been anxiously waiting for updates, especially following the tragic passing of co-star Angus Cloud in 2023. Series creator Sam Levinson reportedly rewrote parts of the season to reflect the changes in the cast and the real-life events that shaped the show’s delay.
+
+While no official release date has been set, HBO is aiming for a premiere window in mid-to-late 2026.
+
+The show's return is expected to be more grounded, focusing on the emotional and mental growth of its characters as they navigate the transition from teen chaos to adult consequences.`,
+    imageUrl: "https://cdn.hbo.com/euphoria/images/season3-zendaya.jpg",
+    postedOn: "2025-04-04T12:00:00Z",
+    author: "Rachel Yang",
+    category: "entertainment"
+},
+{
+    id: 8,
+    title: "Caitlin Clark declares for WNBA Draft after record-breaking season",
+    shortDescription: "Iowa's star guard is headed to the pros after rewriting the NCAA record books.",
+    content: `Caitlin Clark, the standout guard for the University of Iowa, announced today that she will be declaring for the 2025 WNBA Draft.
+
+Clark made the announcement via Instagram, thanking her fans and teammates for an "unforgettable journey." She finishes her college career as the NCAA's all-time leading scorer — men’s or women’s — and has become a cultural icon for her deep threes and electric court presence.
+
+“I’m ready to take the next step in my basketball journey,” she wrote. “This has been the ride of a lifetime.”
+
+Clark is widely expected to be the #1 overall pick in the draft, likely going to the Indiana Fever, who hold the top selection.
+
+Her entry into the WNBA is already shaking up ticket sales and viewership projections. Sports insiders are calling it the most anticipated WNBA rookie debut since Diana Taurasi.`,
+    imageUrl: "https://cdn.espn.com/photo/2025/0404/caitlinclark.jpg",
+    postedOn: "2025-04-04T15:15:00Z",
+    author: "Holly Rowe",
+    category: "sports"
+},
+{
+    id: 9,
+    title: "NASA confirms successful test of nuclear-powered spacecraft engine",
+    shortDescription: "The tech could cut Mars travel time in half.",
+    content: `NASA and DARPA have successfully tested a nuclear thermal propulsion engine in space for the first time, marking a breakthrough in spacecraft propulsion that could revolutionize deep space travel.
+
+The test, conducted aboard a classified orbital platform, demonstrated stable and safe operation of the engine for over 90 minutes.
+
+“Nuclear propulsion offers higher efficiency and more thrust than traditional chemical rockets,” said Dr. Monica Calderon, the project's lead engineer. “We could cut travel time to Mars by nearly 50%.”
+
+The next step is to integrate the system into a future Mars-bound mission, possibly by 2030, though funding and political will are key factors in determining the timeline.
+
+NASA has been developing this technology since the early 2020s, citing the need for faster, safer missions to the outer solar system — and eventually, human exploration of Mars.`,
+    imageUrl: "https://www.nasa.gov/sites/default/files/thumbnails/image/nuclear-engine.jpg",
+    postedOn: "2025-04-04T10:45:00Z",
+    author: "Laura Cheng",
+    category: "science"
+},
+{
+    id: 10,
+    title: "New migraine drug shows promise in fast-track clinical trials",
+    shortDescription: "The once-a-month treatment could change how chronic migraines are managed.",
+    content: `A new migraine medication developed by NeuroLife Pharmaceuticals has shown significant success in Phase 2 clinical trials, reducing the frequency and severity of chronic migraines in more than 75% of participants.
+
+The drug, called Nurodex, is a once-a-month injectable designed to block specific neural pain pathways without the harsh side effects of older treatments.
+
+Patients in the trial reported a reduction in migraine days from an average of 14 per month to just 3 after two months of use. “This could be a game-changer for those with chronic migraines,” said Dr. Elena Ruiz, a neurologist and lead investigator of the study.
+
+The FDA has granted the drug fast-track status due to its promising results and minimal side effects. Final approval could come as early as late 2025.
+
+If approved, Nurodex would be the first monthly injectable migraine treatment that doesn’t require daily pills or rescue medications.`,
+    imageUrl: "https://cdn.healthnews.com/migraine-medical-breakthrough.jpg",
+    postedOn: "2025-04-04T09:20:00Z",
+    author: "Dr. Marcus Hall",
+    category: "health"
 }
     // Add more articles as needed
 ];
