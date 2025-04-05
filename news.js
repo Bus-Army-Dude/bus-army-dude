@@ -169,7 +169,7 @@ Patients in the trial reported a reduction in migraine days from an average of 1
 The FDA has granted the drug fast-track status due to its promising results and minimal side effects. Final approval could come as early as late 2025.
 
 If approved, Nurodex would be the first monthly injectable migraine treatment that doesn’t require daily pills or rescue medications.`,
-    imageUrl: "https://www.pharmacytimes.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2F0vv8moc6%2Fpharmacytimes%2F072ee94051fd5f093dd4d6d1e81fa3a779094ed3-5964x3978.jpg%3Ffit%3Dcrop%26auto%3Dformat&w=3840&q=75",
+    imageUrl: "https://s.wsj.net/public/resources/images/BN-WJ259_2WJsB_OR_20171129172431.jpg",
     postedOn: "2025-04-04T04:20:00Z",
     author: "Dr. Marcus Hall",
     category: "health"
