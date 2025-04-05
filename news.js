@@ -55,7 +55,37 @@ const articles = [
         postedOn: "2025-04-04T11:17:00Z",
         author: "Karmann Ludwig & Heather Schramm",
         category: "world"
-    }
+    },
+    {
+    id: 5,
+    title: "Trump eyeing plan to avoid TikTok ban as deadline looms: Source",
+    shortDescription: "The deadline for the app to be sold is April 5.",
+    content: `The algorithm is the secret sauce that makes TikTok so addictive and popular, and it's the source of national security concerns over Chinese ownership of the app.
+
+Because of that, the source said buyers are demanding liability protection. They are only willing to spend billions on TikTok if there are guarantees that they won't be sued by the next administration, according to the source.
+
+In flux right now is how they will be given that guarantee. Potential buyers are looking for an indemnification or an adjustment to the law, which would need congressional action.
+
+Among those potential buyers: Amazon. The company sent a letter to the Trump administration to join the bidding war for TikTok, sources told ABC News.
+
+The mobile tech company AppLovin and a group including tech giant Oracle have also made bids to buy the app.
+
+President Donald Trump while speaking aboard Air Force One on Thursday hinted that his recently announced tariffs on China could be a negotiating tactic to achieve a deal on a TikTok sale, noting, "If somebody said that we're going to give you something that's so phenomenal, as long as they're giving us something, that's good."
+
+"We have a situation with TikTok where China will probably say, we'll approve a deal, but will you do something on the tariff?" he said. "The tariffs give us great power to negotiate."
+
+Even if Trump approves a deal, China will still need to sign off on it, and Beijing isn't too happy right now with the country about to be hit with a whopping 54% tariff.
+
+On Wednesday, Trump and senior administration officials considered multiple proposals. It's unclear if a decision has been made on how to move forward.
+
+Trump has said publicly that if an agreement isn't reached by the deadline, he will just extend it.
+
+The White House has not immediately responded to requests for comment.`,
+    imageUrl: "https://i.abcnewsfe.com/a/ed5217b2-de73-442d-bf59-ce43602d8b5f/tiktok-app-ap-jef-250402_1743609128576_hpMain.jpg?w=1500",
+    postedOn: "2025-04-04T16:46:00Z",
+    author: "Selina Wang",
+    category: "us"
+}
     // Add more articles as needed
 ];
 
