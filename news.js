@@ -121,7 +121,7 @@ Fans have been anxiously waiting for updates, especially following the tragic pa
 While no official release date has been set, HBO is aiming for a premiere window in mid-to-late 2026.
 
 The show's return is expected to be more grounded, focusing on the emotional and mental growth of its characters as they navigate the transition from teen chaos to adult consequences.`,
-    imageUrl: "https://cdn.hbo.com/euphoria/images/season3-zendaya.jpg",
+    imageUrl: "https://media.glamour.com/photos/61fd6145e1b6e10e97c8ad1c/master/w_1920,c_limit/zendaya-hunter-schafer.jpg",
     postedOn: "2025-04-04T12:00:00Z",
     author: "Rachel Yang",
     category: "entertainment"
@@ -139,7 +139,7 @@ Clark made the announcement via Instagram, thanking her fans and teammates for a
 Clark is widely expected to be the #1 overall pick in the draft, likely going to the Indiana Fever, who hold the top selection.
 
 Her entry into the WNBA is already shaking up ticket sales and viewership projections. Sports insiders are calling it the most anticipated WNBA rookie debut since Diana Taurasi.`,
-    imageUrl: "https://cdn.espn.com/photo/2025/0404/caitlinclark.jpg",
+    imageUrl: "https://sportshub.cbsistatic.com/i/r/2024/02/29/0f7e940d-a621-4133-8a6a-241a19722797/thumbnail/770x433/e14ddf0ed6bce28b5a1a6f22ec5ed592/gettyimages-2019869207-1-1.jpg",
     postedOn: "2025-04-04T15:15:00Z",
     author: "Holly Rowe",
     category: "sports"
@@ -157,7 +157,7 @@ The test, conducted aboard a classified orbital platform, demonstrated stable an
 The next step is to integrate the system into a future Mars-bound mission, possibly by 2030, though funding and political will are key factors in determining the timeline.
 
 NASA has been developing this technology since the early 2020s, citing the need for faster, safer missions to the outer solar system — and eventually, human exploration of Mars.`,
-    imageUrl: "https://www.nasa.gov/sites/default/files/thumbnails/image/nuclear-engine.jpg",
+    imageUrl: "https://www.ga.com/images/BlogFeaturedImages/ga-successfully-tests-nuclear-thermal-propulsion-reactor.jpg",
     postedOn: "2025-04-04T10:45:00Z",
     author: "Laura Cheng",
     category: "science"
@@ -175,7 +175,7 @@ Patients in the trial reported a reduction in migraine days from an average of 1
 The FDA has granted the drug fast-track status due to its promising results and minimal side effects. Final approval could come as early as late 2025.
 
 If approved, Nurodex would be the first monthly injectable migraine treatment that doesn’t require daily pills or rescue medications.`,
-    imageUrl: "https://cdn.healthnews.com/migraine-medical-breakthrough.jpg",
+    imageUrl: "https://www.pharmacytimes.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2F0vv8moc6%2Fpharmacytimes%2F072ee94051fd5f093dd4d6d1e81fa3a779094ed3-5964x3978.jpg%3Ffit%3Dcrop%26auto%3Dformat&w=3840&q=75",
     postedOn: "2025-04-04T09:20:00Z",
     author: "Dr. Marcus Hall",
     category: "health"
