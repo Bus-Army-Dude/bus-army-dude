@@ -515,3 +515,11 @@ document.addEventListener('DOMContentLoaded', () => {
         homeTab.classList.add('active');
     }
 });
+
+// Update the footer year every year.
+document.addEventListener("DOMContentLoaded", () => {
+  const yearSpan = document.getElementById("year");
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+});
