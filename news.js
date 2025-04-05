@@ -300,7 +300,7 @@ If approved, Nurodex would be the first monthly injectable migraine treatment th
         shortDescription: "Cristiano Ronaldo has broken yet another record in his illustrious soccer career.",
         content: "Cristiano Ronaldo has surpassed another major milestone in his career, setting a new record for most career goals scored in international competitions. The legendary forward continues to redefine the limits of his sport.",
         imageUrl: "https://s.yimg.com/ny/api/res/1.2/1mG.5ZrfaZNp6pjy5_VzmQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/en/cnn_articles_875/b4d96de2092ec7e2c67629dc6b15b7c7",
-        postedOn: "2025-04-05T20:00:00Z",
+        postedOn: "2025-04-05T17:24:00Z",
         author: "Goal",
         category: "sports"
     },
