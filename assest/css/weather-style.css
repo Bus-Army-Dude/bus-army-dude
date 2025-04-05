@@ -733,37 +733,43 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 /* --- High and Low Temperature Styling in Highlights --- */
-.highlights .highlight-item.one {
-  /* Ensure it takes up one grid cell */
+.highlights .highlight-item.high-low {
+  /* New container for High and Low temperature */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--black-alpha-10); /* Semi-transparent background */
+  padding: 16px; /* Padding for the container */
+  border-radius: var(--radius-16);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+.highlights .highlight-item.high-low .card-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px; /* Space between High and Low blocks */
+  width: 100%; /* Full width of the highlight item */
+  padding: 8px 0; /* Padding for spacing */
 }
 
-.highlights .highlight-item.one .card-item {
-  display: flex;
-  justify-content: space-between; /* Distribute High and Low */
-  align-items: center; /* Vertically align */
-  width: 100%; /* Take full width of the highlight item */
-  padding: 8px 0; /* Added padding for better spacing */
-}
-
-.highlights .highlight-item.one .card-item > div {
+.highlights .highlight-item.high-low .card-item > div {
   text-align: center; /* Center content within each block */
 }
 
-.highlights .highlight-item.one .card-item .title {
+.highlights .highlight-item.high-low .card-item .title {
   font-size: var(--label-1);
   color: var(--on-surface-variant);
   margin-bottom: 4px;
 }
 
-.highlights .highlight-item.one .card-item .value {
+.highlights .highlight-item.high-low .card-item .value {
   font-size: var(--body-2);
   font-weight: var(--weight-semiBold);
   color: var(--primary);
 }
+
 
 /* --- End Sunrise/Sunset Fix --- */
 
