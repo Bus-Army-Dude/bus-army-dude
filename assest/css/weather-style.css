@@ -263,8 +263,12 @@ body {
 }
 
 @keyframes ripple {
-  0% { clip-path: circle(0% at 50% 50%); }
-  100% { clip-path: circle(100% at 50% 50%); }
+  0% {
+    clip-path: circle(0% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(100% at 50% 50%);
+  }
 }
 
 .btn-primary {
@@ -467,7 +471,7 @@ body {
 .search-wrapper .icon-btn { /* Style for the back button */
   background-color: transparent;
   box-shadow: none;
-    /* Ensure it's clickable */
+   /* Ensure it's clickable */
   position: absolute;
   top: 50%;
   left: 0; /* Position it left */
@@ -521,7 +525,7 @@ article.container {
 
 /* Style scrollbar specifically for main for better control */
 main::-webkit-scrollbar {
-    width: 8px;
+   width: 8px;
 }
 
 main::-webkit-scrollbar-thumb {
@@ -539,7 +543,7 @@ article.container::-webkit-scrollbar-thumb {
 }
 
 article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
-    /* This rule might not be needed if main handles the primary scroll */
+   /* This rule might not be needed if main handles the primary scroll */
   background-color: var(--white-alpha-8);
 }
 
@@ -611,8 +615,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 
 /* HIGHLIGHTS */
-.forecast-card .title-2 { 
-  /* Assuming this is for 5-day forecast, not highlights */
+.forecast-card .title-2 { /* Assuming this is for 5-day forecast, not highlights */
   margin-block-end: 0;
 }
 
@@ -639,9 +642,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   text-align: right;
 }
 
-/* Highlights section */
-.highlights .m-icon { 
-  /* Icon size within highlight cards */
+.highlights .m-icon { /* Icon size within highlight cards */
   font-size: 3.2rem;
 }
 
@@ -650,53 +651,46 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   gap: 20px;
 }
 
-.highlight-list .title-3 { 
-  /* "Today's Highlights" title */
+.highlight-list .title-3 { /* "Today's Highlights" title */
   color: var(--on-surface-variant);
   margin-block-end: 20px;
 }
 
-.highlights .card-sm { 
-  /* Style for individual highlight cards */
+.highlights .card-sm { /* Style for individual highlight cards */
   background-color: var(--black-alpha-10); /* Semi-transparent black */
   position: relative; /* Needed for absolute positioning of badge */
   padding: 16px; /* Overrides base card-sm padding if needed */
   border-radius: var(--radius-16); /* Ensure radius */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added subtle shadow for depth */
 }
 
 .highlight-card :is(.wrapper, .card-list, .card-item) {
+  /* Base styles - might be overridden by .one or .two modifiers */
   display: flex;
   align-items: center;
 }
 
-.highlight-card .wrapper { 
-  /* Wraps icon and value list */
+.highlight-card .wrapper { /* Wraps icon and value list */
   justify-content: space-between;
   gap: 16px;
 }
 
-.highlight-card .card-list { 
-  /* List of values (e.g., PM2.5, SO2 OR Sunrise/Sunset) */
+.highlight-card .card-list { /* List of values (e.g., PM2.5, SO2 OR Sunrise/Sunset) */
   flex-wrap: wrap;
   flex-grow: 1;
   row-gap: 8px;
 }
 
-.highlight-card .card-item { 
-  /* Individual value item */
+.highlight-card .card-item { /* Individual value item */
   width: 50%; /* Default for AQI-style cards */
   justify-content: flex-end;
   gap: 4px;
 }
 
-.highlight-card .label-1 { 
-  /* Text like "PM2.5" */
+.highlight-card .label-1 { /* Text like "PM2.5" */
   color: var(--on-surface-variant);
 }
 
-.badge { 
-  /* AQI Badge */
+.badge { /* AQI Badge */
   position: absolute;
   top: 16px;
   right: 16px;
@@ -707,69 +701,68 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   cursor: help;
 }
 
-.badge.aqi-1 { 
-  background-color: var(--bg-aqi-1); 
-  color: var(--on-bg-aqi-1); 
-}
+.badge.aqi-1 { background-color: var(--bg-aqi-1); color: var(--on-bg-aqi-1); }
+.badge.aqi-2 { background-color: var(--bg-aqi-2); color: var(--on-bg-aqi-2); }
+.badge.aqi-3 { background-color: var(--bg-aqi-3); color: var(--on-bg-aqi-3); }
+.badge.aqi-4 { background-color: var(--bg-aqi-4); color: var(--on-bg-aqi-4); }
+.badge.aqi-5 { background-color: var(--bg-aqi-5); color: var(--on-bg-aqi-5); }
 
-.badge.aqi-2 { 
-  background-color: var(--bg-aqi-2); 
-  color: var(--on-bg-aqi-2); 
-}
 
-.badge.aqi-3 { 
-  background-color: var(--bg-aqi-3); 
-  color: var(--on-bg-aqi-3); 
-}
+/* --- Start Sunrise/Sunset Fix --- */
 
-.badge.aqi-4 { 
-  background-color: var(--bg-aqi-4); 
-  color: var(--on-bg-aqi-4); 
-}
-
-.badge.aqi-5 { 
-  background-color: var(--bg-aqi-5); 
-  color: var(--on-bg-aqi-5); 
-}
-
-/* --- High and Low Temperature Styling in Highlights --- */
-.highlights .highlight-item.high-low {
-  /* New container for High and Low temperature */
+/* Ensure the container (.card-list) uses flexbox */
+.highlight-card.two .card-list {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  background-color: var(--black-alpha-10); /* Semi-transparent background */
-  padding: 16px; /* Padding for the container */
-  border-radius: var(--radius-16);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  justify-content: space-between; /* Key change: Push items apart */
+  align-items: center;           /* Align items vertically */
+  width: 100%;                   /* Use full width */
+  gap: 16px;                     /* Optional gap between items */
+  flex-wrap: nowrap;             /* Prevent wrapping */
+  flex-grow: 1;                  /* Ensure it takes available space */
+  row-gap: 0;                    /* Override base row-gap */
 }
 
-.highlights .highlight-item.high-low .card-item {
+/* Style the individual Sunrise/Sunset blocks (.card-item) */
+.highlight-card.two .card-item {
+  display: flex;                 /* Internal layout: icon beside text block */
+  align-items: center;           /* Vertically center icon and text block */
+  gap: 8px;                      /* Space between icon and text block */
+  flex-basis: auto;              /* Allow width based on content */
+  /* Reset properties that might cause stacking or incorrect width */
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: flex-start; /* Align internal content left */
+  flex-grow: 0;                 /* Prevent items from growing unevenly */
+  flex-shrink: 0;
+}
+
+/* Style the text block (div containing label and time) */
+.highlight-card.two .card-item > div {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px; /* Space between High and Low blocks */
-  width: 100%; /* Full width of the highlight item */
-  padding: 8px 0; /* Padding for spacing */
+  flex-direction: column;       /* Stack label and time vertically */
+  align-items: flex-start;      /* Align text to the left */
 }
 
-.highlights .highlight-item.high-low .card-item > div {
-  text-align: center; /* Center content within each block */
+/* Style the paragraphs (label and time) */
+.highlight-card.two .card-item p {
+  margin: 0;                    /* Remove default paragraph margins */
+  line-height: 1.3;             /* Adjust line height for clarity */
 }
 
-.highlights .highlight-item.high-low .card-item .title {
-  font-size: var(--label-1);
-  color: var(--on-surface-variant);
-  margin-bottom: 4px;
+/* Style the label ("Sunrise", "Sunset") */
+.highlight-card.two .card-item .label-1 {
+   white-space: nowrap;          /* Prevent wrapping */
+   color: var(--on-surface-variant); /* Ensure correct color */
+   font-size: var(--label-1);    /* Ensure correct font size */
+   font-weight: var(--weight-regular); /* Use regular weight for label */
 }
 
-.highlights .highlight-item.high-low .card-item .value {
-  font-size: var(--body-2);
-  font-weight: var(--weight-semiBold);
-  color: var(--primary);
+/* Style the time */
+.highlight-card.two .card-item .body-3 {
+   font-weight: var(--weight-semiBold); /* Make time stand out */
+   font-size: var(--body-2);      /* Use slightly larger font size for time */
+   white-space: nowrap;          /* Prevent time wrapping */
 }
-
 
 /* --- End Sunrise/Sunset Fix --- */
 
@@ -969,23 +962,23 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
 
   main {
-      height: calc(100vh - 96px); /* Adjust height for potentially taller header */
-      height: calc(100svh - 96px);
-      /* padding-top: 96px; */ /* If header is fixed/sticky */
+     height: calc(100vh - 96px); /* Adjust height for potentially taller header */
+     height: calc(100svh - 96px);
+     /* padding-top: 96px; */ /* If header is fixed/sticky */
    }
   article.container {
     padding-block-start: 0;
     grid-template-columns: 280px minmax(0, 1fr); /* Two-column layout */
     align-items: flex-start;
     gap: 24px;
-    }
-  .content-left { /* Left column (current weather, forecast) */
-      position: sticky;
-      top: 24px; /* Add space from top */
-      /* Adjust max-height based on header and top offset */
-      /* max-height: calc(100svh - 96px - 24px); */
-      /* overflow-y: auto; */ /* Allow left column to scroll if needed */
    }
+  .content-left { /* Left column (current weather, forecast) */
+     position: sticky;
+     top: 24px; /* Add space from top */
+     /* Adjust max-height based on header and top offset */
+     /* max-height: calc(100svh - 96px - 24px); */
+     /* overflow-y: auto; */ /* Allow left column to scroll if needed */
+  }
   .section:not(:last-child) { margin-block: 20px; } /* Adjust vertical spacing */
   .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
 
@@ -1001,11 +994,11 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   /* AQI card items layout (unchanged) */
   .highlight-card.one .card-item {
-      width: 25%;
-      flex-direction: column-reverse;
-      gap: 8px;
-    }
-    /* Sunrise/Sunset layout already fixed globally */
+     width: 25%;
+     flex-direction: column-reverse;
+     gap: 8px;
+   }
+   /* Sunrise/Sunset layout already fixed globally */
 
   .slider-container { /* Make slider fit within right column */
       margin-inline: 0; /* Remove negative margin */
@@ -1013,15 +1006,12 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       border-radius: var(--radius-16); /* Add radius */
       /* background-color: var(--surface); */ /* Optional: background for slider area */
   }
-    .slider-list {
+   .slider-list {
       padding-inline: 16px; /* Add padding back inside list */
-    }
+   }
 
   .hourly-forecast .card-sm { padding: 16px; } /* Adjust padding if needed */
 }
-.highlights .highlight-item.one .card-item {
-    gap: 10px; /* Adjust spacing on tablet */
-  }
 
 /* Desktop Styles */
 @media (min-width: 1200px) {
@@ -1040,9 +1030,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   /* .highlight-card.two .card-item { column-gap: 24px; } /* Remove if causing issues */
 
   .header {
-      position: relative; /* Can be relative if not sticky */
-      height: 120px; /* Taller header */
-      z-index: 4;
+     position: relative; /* Can be relative if not sticky */
+     height: 120px; /* Taller header */
+     z-index: 4;
    }
   .header .icon-btn { display: none; } /* Hide mobile search icon */
   .logo img { width: 200px; }
@@ -1058,60 +1048,60 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   }
   .search-wrapper { border-block-end: none; }
   .search-wrapper > .m-icon { display: block; } /* Show search icon inside field */
-    .search-wrapper .leading-icon { /* Adjust leading icon position */
+   .search-wrapper .leading-icon { /* Adjust leading icon position */
     left: 16px;
   }
-    .search-wrapper .icon-btn { display: none; } /* Hide back button */
+   .search-wrapper .icon-btn { display: none; } /* Hide back button */
 
   .search-field, .search-view .view-list {
-      background-color: var(--surface); /* Explicit background */
-    }
+     background-color: var(--surface); /* Explicit background */
+   }
   .search-field {
-      height: 56px;
-      line-height: 56px;
-      border-radius: var(--radius-28);
-      padding-inline: 56px 16px; /* Keep padding for icon */
-    }
-    /* Search Results Dropdown */
+     height: 56px;
+     line-height: 56px;
+     border-radius: var(--radius-28);
+     padding-inline: 56px 16px; /* Keep padding for icon */
+   }
+   /* Search Results Dropdown */
   .search-result, .search-view:not(:focus-within) .search-result {
-      display: none; /* Hide results by default */
-    }
+     display: none; /* Hide results by default */
+   }
   .search-view:focus-within .search-result.active {
-      display: block; /* Show results when input is focused and results exist */
-    }
+     display: block; /* Show results when input is focused and results exist */
+   }
   .search-view:has(.search-result.active):focus-within .search-field {
-      border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
-      border-bottom-right-radius: 0;
-    }
+     border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
+     border-bottom-right-radius: 0;
+   }
   .search-view .view-list {
-      position: absolute;
-      top: 100%; /* Position below search field */
-      left: 0;
-      width: 100%;
-      max-height: 360px;
-      border-radius: 0 0 var(--radius-28) var(--radius-28);
-      border: 1px solid var(--outline); /* Add border */
-      border-block-start: none; /* Remove top border */
-      overflow-y: auto; /* Keep overlay for webkit */
-      z-index: 5; /* Above other content */
-      box-shadow: var(--shadow-2); /* Add shadow */
-    }
-    .search-view .view-list:empty {
-      /* Optional: style for empty results */
-      /* min-height: 120px; */
-      /* display: none; */ /* Or hide it completely */
-    }
+     position: absolute;
+     top: 100%; /* Position below search field */
+     left: 0;
+     width: 100%;
+     max-height: 360px;
+     border-radius: 0 0 var(--radius-28) var(--radius-28);
+     border: 1px solid var(--outline); /* Add border */
+     border-block-start: none; /* Remove top border */
+     overflow-y: auto; /* Keep overlay for webkit */
+     z-index: 5; /* Above other content */
+     box-shadow: var(--shadow-2); /* Add shadow */
+  }
+   .search-view .view-list:empty {
+     /* Optional: style for empty results */
+     /* min-height: 120px; */
+     /* display: none; */ /* Or hide it completely */
+   }
 
   main {
-      height: calc(100vh - 120px); /* Adjust height for taller header */
-      height: calc(100svh - 120px);
-       /* padding-top: 120px; */ /* If header is fixed/sticky */
-    }
+     height: calc(100vh - 120px); /* Adjust height for taller header */
+     height: calc(100svh - 120px);
+      /* padding-top: 120px; */ /* If header is fixed/sticky */
+   }
   article.container {
-      grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
-      gap: 40px;
-    }
-     .content-left {
+     grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
+     gap: 40px;
+   }
+    .content-left {
       top: 40px; /* Adjust sticky top offset */
       /* max-height: calc(100svh - 120px - 40px); */ /* Adjust max height */
     }
@@ -1124,23 +1114,20 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .highlight-card .m-icon { font-size: 4rem; }
   .slider-list { gap: 16px; }
 }
-.highlights .highlight-item.one .card-item {
-    gap: 20px; /* Adjust spacing on desktop */
-  }
 
 /* Wider Desktop Styles */
 @media (min-width: 1400px) {
   .highlight-list {
-      grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
-    }
-    .highlight-card:nth-child(-n + 2) {
-      grid-column: span 2; /* AQI/Sunrise still span 2 */
-      height: 200px;
-    }
-    .highlight-card:nth-child(n + 3) {
-      grid-column: span 1; /* Others take 1 column */
-      height: 150px;
-    }
+     grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
+   }
+   .highlight-card:nth-child(-n + 2) {
+     grid-column: span 2; /* AQI/Sunrise still span 2 */
+     height: 200px;
+   }
+   .highlight-card:nth-child(n + 3) {
+     grid-column: span 1; /* Others take 1 column */
+     height: 150px;
+   }
 }
 
 /* --- Light Mode Specific Overrides --- */
@@ -1191,9 +1178,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 [data-theme="light"] .search-view .view-list { /* Search results dropdown light */
-    background-color: var(--white);
-    border-color: var(--outline);
-    box-shadow: var(--shadow-2);
+   background-color: var(--white);
+   border-color: var(--outline);
+   box-shadow: var(--shadow-2);
 }
 
 /* Ensure base search field styles are set for dark mode too */
