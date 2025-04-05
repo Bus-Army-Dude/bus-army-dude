@@ -764,6 +764,49 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
    white-space: nowrap;          /* Prevent time wrapping */
 }
 
+/* High and Low Temperature Highlight Card */
+.highlight-card.high-low {
+  background-color: var(--black-alpha-10); /* Semi-transparent background for the highlight card */
+  padding: 16px; /* Padding for the highlight card */
+  border-radius: var(--radius-16); /* Rounded corners for the card */
+  box-shadow: var(--shadow-2); /* Soft shadow to lift the card */
+}
+
+.highlight-card.high-low .wrapper {
+  justify-content: space-between; /* Space between label and value */
+  gap: 16px;
+}
+
+.highlight-card.high-low .card-list {
+  display: flex;
+  justify-content: space-between; /* Space between the high and low temperature values */
+  gap: 20px;
+}
+
+.highlight-card.high-low .card-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.highlight-card.high-low .label-1 {
+  color: var(--on-surface-variant); /* Light grey color for the labels */
+  font-weight: var(--weight-semiBold);
+}
+
+.highlight-card.high-low .high-temp-value,
+.highlight-card.high-low .low-temp-value {
+  font-size: var(--body-2); /* Use appropriate body text size for temperature values */
+  font-weight: var(--weight-regular);
+  color: var(--primary); /* Primary color for the high/low temperatures */
+}
+
+.highlight-card.high-low .high-temp-label,
+.highlight-card.high-low .low-temp-label {
+  font-size: var(--label-1);
+  color: var(--on-surface-variant);
+}
+
 /* --- End Sunrise/Sunset Fix --- */
 
 
