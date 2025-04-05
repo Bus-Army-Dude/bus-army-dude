@@ -1,6 +1,6 @@
 // Sample API Key & Endpoint (replace with your own API key and URL)
 const apiKey = 'd02d6826e3dd4dba9bea9e86d7d4563b'; // Replace with your NewsAPI key
-const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`; // Removed category parameter
+const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=d02d6826e3dd4dba9bea9e86d7d4563b`; // Removed category parameter
 
 let articles = [];
 
