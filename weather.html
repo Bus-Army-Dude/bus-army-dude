@@ -7,43 +7,43 @@
     <meta name="title" content="weatherio">
     <meta name="description" content="Explore accurate and real-time weather information">
 
-    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/weather-style.css">
-    <link rel="stylesheet" href="assets/css/settings-style.css">
+    <link rel="stylesheet" href="assest/css/weather-style.css">
+    <link rel="stylesheet" href="assest/css/settings-style.css">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-E0RSQS1MS7');
-    </script>
-
-    <script type="module" src="assets/js/app.js"></script>
-    <script type="module" src="assets/js/route.js"></script>
-    <script type="module" src="assets/js/module.js"></script>
-    <script type="module" src="assets/js/settings.js"></script>
+    <script type="module" src="assest/js/app.js"></script>
+    <script type="module" src="assest/js/route.js"></script>
+    <script type="module" src="assest/js/module.js"></script>
+    <script type="module" src="assest/js/settings.js"></script>
 </head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-E0RSQS1MS7');
+</script>
 
 <body>
     <header class="header">
         <div class="container">
-            <a href="#" class="logo">
-                <img src="assets/images/logo.png" alt="logo">
+            <a href="" class="logo">
+                <img src="assest/images/logo.png" alt="logo">
             </a>
             <div class="search-view" data-search-view>
                 <div class="search-wrapper">
                     <input type="search"
-                           name="search"
-                           class="search-field"
-                           placeholder="Search city..."
-                           autocomplete="off"
-                           data-search-field>
+                               name="search"
+                               class="search-field"
+                               placeholder="Search city..."
+                               autocomplete="off"
+                               data-search-field>
                     <span class="m-icon">search</span>
                     <button class="icon-btn leading-icon has-state" aria-label="close search" data-search-toggler>
                         <span class="m-icon">arrow_back</span>
@@ -77,17 +77,20 @@
     <main>
         <article class="container" data-container>
             <div class="content-left">
-                <section class="section current-weather" aria-label="current weather" data-current-weather>
-                    <div class="current-temp">
-                        <h2 class="title-1">Current Temperature: <span data-current-temp></span></h2>
-                        <p class="label-1">High: <span data-high-temp></span></p>
-                        <p class="label-1">Low: <span data-low-temp></span></p>
-                    </div>
-                </section>
+                <section class="section current-weather" aria-label="current weather" data-current-weather></section>
                 <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
             </div>
             <div class="content-right">
-                <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
+                <section class="section highlights" aria-labelledby="highlights-label" data-highlights>
+                    <h3 id="highlights-label">Today's Highlights</h3>
+                    <div class="highlight-item">
+                        <h4>High/Low Temperature</h4>
+                        <p class="highlight-value">
+                            <span class="high-temp" data-high-temp></span> / <span class="low-temp" data-low-temp></span>
+                        </p>
+                    </div>
+                    <!-- Add other highlights like wind speed, humidity, etc. -->
+                </section>
                 <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
             </div>
             <div class="loading" data-loading></div>
@@ -156,7 +159,7 @@
                 </div>
                 <div class="settings-section">
                     <h3 class="settings-section-title">Appearance</h3>
-                    <div class="setting-item">
+                     <div class="setting-item">
                         <label class="setting-label" for="darkMode">Dark Mode:</label>
                         <label class="toggle-switch">
                             <input type="checkbox" name="darkMode" data-dark-mode-toggle data-settings-theme>
