@@ -332,7 +332,7 @@ If approved, Nurodex would be the first monthly injectable migraine treatment th
         shortDescription: "The Trump administration's new tariffs are generating widespread reactions across the political spectrum.",
         content: "The latest news on Trump’s tariffs continues to unfold as the president's policies spark both praise and criticism. While some argue that the tariffs will strengthen the economy, others believe they will harm global trade relations and raise costs for American consumers. The ongoing political debate over the tariffs is expected to have significant impacts on U.S. businesses and international relations.",
         imageUrl: "https://media.cnn.com/api/v1/images/stellar/prod/tariff-callout-card-image-1.png?c=original&q=w_1280,c_fill",
-        postedOn: "2025-04-05T12:20:00Z",
+        postedOn: "2025-04-05T10:32:00Z",
         author: "Adrienne Vogt and Tori B. Powell, CNN",
         category: "us"
     }
