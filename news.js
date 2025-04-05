@@ -3,6 +3,7 @@ const apiKey = 'd02d6826e3dd4dba9bea9e86d7d4563b';  // Replace with your NewsAPI
 const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${apiKey}`;
 
 let articles = [];
+let selectedCategory = 'Technology';  // Hard-code category or set dynamically
 
 // Function to format the date into "X hours ago" or "X minutes ago"
 function timeAgo(date) {
@@ -47,10 +48,10 @@ function createArticleCard(article) {
     image.alt = article.title;
     articleCard.appendChild(image);
 
-    // Article category
+    // Article category (using selectedCategory for consistency)
     const category = document.createElement('div');
     category.classList.add('article-category');
-    category.textContent = article.category || 'No Category';
+    category.textContent = selectedCategory || 'No Category';  // Display category dynamically
     articleCard.appendChild(category);
 
     // Article title
@@ -88,7 +89,7 @@ function loadArticles() {
 
 // Function to open the article modal and display its content
 function openArticleModal(article) {
-    document.getElementById('category-name').textContent = article.category || 'No Category';
+    document.getElementById('category-name').textContent = selectedCategory || 'No Category';
     document.getElementById('article-title').textContent = article.title;
     document.getElementById('short-description').textContent = article.description || 'No description available';
     document.getElementById('author').textContent = article.author || 'Unknown';
