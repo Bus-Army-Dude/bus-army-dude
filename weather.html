@@ -82,21 +82,44 @@
         </div>
         <div class="content-right">
             <section class="section highlights" aria-labelledby="highlights-label" data-highlights>
-                <div class="highlight-item">
-                    <div class="highlight-title">Pressure</div>
-                    <div class="highlight-value" data-pressure-value></div>
-                </div>
-
-                <div class="highlight-item one">
-                    <div class="highlight-title">Temperature</div>
-                    <div class="card-item">
-                        <div>
-                            <div class="title">High</div>
-                            <div class="value" data-high-temperature></div>
+                <h2 class="title-3" id="highlights-label">Today's Highlights</h2>
+            
+                <div class="highlight-list">
+                    <div class="highlight-item">
+                        <div class="highlight-title">Pressure</div>
+                        <div class="highlight-value" data-pressure>
+                            <span class="body-2" data-pressure-value></span>
+                            <span class="label-1" data-pressure-unit></span>
                         </div>
-                        <div>
-                            <div class="title">Low</div>
-                            <div class="value" data-low-temperature></div>
+                    </div>
+            
+                    <div class="highlight-item one">
+                        <div class="highlight-title">Temperature</div>
+                        <div class="highlight-value card-item">
+                            <div>
+                                <div class="title">High</div>
+                                <div class="value" data-high-temperature></div>
+                            </div>
+                            <div>
+                                <div class="title">Low</div>
+                                <div class="value" data-low-temperature></div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="highlight-item">
+                        <div class="highlight-title">Humidity</div>
+                        <div class="highlight-value">
+                            <span class="body-2" data-humidity></span>
+                            <span class="label-1">%</span>
+                        </div>
+                    </div>
+            
+                    <div class="highlight-item">
+                        <div class="highlight-title">Feels Like</div>
+                        <div class="highlight-value">
+                            <span class="body-2" data-feels-like></span>
+                            <span class="label-1">°F</span>
                         </div>
                     </div>
                 </div>
