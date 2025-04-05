@@ -611,7 +611,8 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 
 /* HIGHLIGHTS */
-.forecast-card .title-2 { /* Assuming this is for 5-day forecast, not highlights */
+.forecast-card .title-2 { 
+  /* Assuming this is for 5-day forecast, not highlights */
   margin-block-end: 0;
 }
 
@@ -638,7 +639,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   text-align: right;
 }
 
-.highlights .m-icon { /* Icon size within highlight cards */
+/* Highlights section */
+.highlights .m-icon { 
+  /* Icon size within highlight cards */
   font-size: 3.2rem;
 }
 
@@ -647,12 +650,14 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   gap: 20px;
 }
 
-.highlight-list .title-3 { /* "Today's Highlights" title */
+.highlight-list .title-3 { 
+  /* "Today's Highlights" title */
   color: var(--on-surface-variant);
   margin-block-end: 20px;
 }
 
-.highlights .card-sm { /* Style for individual highlight cards */
+.highlights .card-sm { 
+  /* Style for individual highlight cards */
   background-color: var(--black-alpha-10); /* Semi-transparent black */
   position: relative; /* Needed for absolute positioning of badge */
   padding: 16px; /* Overrides base card-sm padding if needed */
@@ -661,33 +666,37 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 .highlight-card :is(.wrapper, .card-list, .card-item) {
-  /* Base styles - might be overridden by .one or .two modifiers */
   display: flex;
   align-items: center;
 }
 
-.highlight-card .wrapper { /* Wraps icon and value list */
+.highlight-card .wrapper { 
+  /* Wraps icon and value list */
   justify-content: space-between;
   gap: 16px;
 }
 
-.highlight-card .card-list { /* List of values (e.g., PM2.5, SO2 OR Sunrise/Sunset) */
+.highlight-card .card-list { 
+  /* List of values (e.g., PM2.5, SO2 OR Sunrise/Sunset) */
   flex-wrap: wrap;
   flex-grow: 1;
   row-gap: 8px;
 }
 
-.highlight-card .card-item { /* Individual value item */
+.highlight-card .card-item { 
+  /* Individual value item */
   width: 50%; /* Default for AQI-style cards */
   justify-content: flex-end;
   gap: 4px;
 }
 
-.highlight-card .label-1 { /* Text like "PM2.5" */
+.highlight-card .label-1 { 
+  /* Text like "PM2.5" */
   color: var(--on-surface-variant);
 }
 
-.badge { /* AQI Badge */
+.badge { 
+  /* AQI Badge */
   position: absolute;
   top: 16px;
   right: 16px;
@@ -698,23 +707,44 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   cursor: help;
 }
 
-.badge.aqi-1 { background-color: var(--bg-aqi-1); color: var(--on-bg-aqi-1); }
-.badge.aqi-2 { background-color: var(--bg-aqi-2); color: var(--on-bg-aqi-2); }
-.badge.aqi-3 { background-color: var(--bg-aqi-3); color: var(--on-bg-aqi-3); }
-.badge.aqi-4 { background-color: var(--bg-aqi-4); color: var(--on-bg-aqi-4); }
-.badge.aqi-5 { background-color: var(--bg-aqi-5); color: var(--on-bg-aqi-5); }
+.badge.aqi-1 { 
+  background-color: var(--bg-aqi-1); 
+  color: var(--on-bg-aqi-1); 
+}
+
+.badge.aqi-2 { 
+  background-color: var(--bg-aqi-2); 
+  color: var(--on-bg-aqi-2); 
+}
+
+.badge.aqi-3 { 
+  background-color: var(--bg-aqi-3); 
+  color: var(--on-bg-aqi-3); 
+}
+
+.badge.aqi-4 { 
+  background-color: var(--bg-aqi-4); 
+  color: var(--on-bg-aqi-4); 
+}
+
+.badge.aqi-5 { 
+  background-color: var(--bg-aqi-5); 
+  color: var(--on-bg-aqi-5); 
+}
 
 /* --- High and Low Temperature Styling in Highlights --- */
 .highlights .highlight-item.one {
-  /* This might already be covered by your existing grid styles for .highlight-list */
   /* Ensure it takes up one grid cell */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px; /* Space between High and Low blocks */
 }
 
 .highlights .highlight-item.one .card-item {
   display: flex;
   justify-content: space-between; /* Distribute High and Low */
   align-items: center; /* Vertically align */
-  gap: 20px; /* Space between High and Low blocks */
   width: 100%; /* Take full width of the highlight item */
   padding: 8px 0; /* Added padding for better spacing */
 }
@@ -734,7 +764,6 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   font-weight: var(--weight-semiBold);
   color: var(--primary);
 }
-
 
 /* --- End Sunrise/Sunset Fix --- */
 
