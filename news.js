@@ -330,9 +330,9 @@ If approved, Nurodex would be the first monthly injectable migraine treatment th
         id: 25,
         title: "Trump Tariffs: Latest Updates and Reactions",
         shortDescription: "The Trump administration's new tariffs are generating widespread reactions across the political spectrum.",
-        content: "The latest news on Trump’s tariffs continues to unfold as the president's policies spark both praise and criticism. While some argue that the tariffs will strengthen the economy, others believe they will harm global trade relations and raise costs for American consumers. The ongoing political debate over the tariffs is expected to have significant impacts on U.S. businesses and international relations.",
-        imageUrl: "https://media.cnn.com/api/v1/images/stellar/prod/tariff-callout-card-image-1.png?c=original&q=w_1280,c_fill",
-        postedOn: "2025-04-05T10:32:00Z",
+        content: "• Trump’s tariffs: President Donald Trump’s blanket 10% tax on imports took effect overnight, with much steeper tariffs for many countries still to come next week. The president’s tariff plans sent markets plunging and deepened a global trade war this week.\n\n• Recession fears: Trump has vowed to continue his economic policies despite the shock to global markets. The Dow posted its worst back-to-back losses since the onset of the pandemic Thursday and Friday, with tariff angst and fears of a global recession driving market sentiment.\n\n• Budget blueprint: Senate GOP leaders took a key step toward advancing Trump’s multi-trillion-dollar agenda in Congress overnight, adopting a budget blueprint that will allow top Republicans to begin drafting the president’s first big legislative package. A messy spending fight still looms in the House, with some conservatives already signaling opposition to the plan.",
+        imageUrl: "https://i.abcnewsfe.com/a/a48c1b91-bcb4-4427-8441-8c0c62442fd0/trump-signing-gty-jt-250402_1743628328909_hpMain_16x9.jpg?w=992",
+        postedOn: "2025-04-05T12:20:00Z",
         author: "Adrienne Vogt and Tori B. Powell, CNN",
         category: "us"
     }
