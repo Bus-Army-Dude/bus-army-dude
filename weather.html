@@ -39,11 +39,11 @@
             <div class="search-view" data-search-view>
                 <div class="search-wrapper">
                     <input type="search"
-                               name="search"
-                               class="search-field"
-                               placeholder="Search city..."
-                               autocomplete="off"
-                               data-search-field>
+                           name="search"
+                           class="search-field"
+                           placeholder="Search city..."
+                           autocomplete="off"
+                           data-search-field>
                     <span class="m-icon">search</span>
                     <button class="icon-btn leading-icon has-state" aria-label="close search" data-search-toggler>
                         <span class="m-icon">arrow_back</span>
@@ -75,60 +75,24 @@
     </header>
 
     <main>
-    <article class="container" data-container>
-        <div class="content-left">
-            <section class="section current-weather" aria-label="current weather" data-current-weather></section>
-            <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
-        </div>
-        <div class="content-right">
-            <section class="section highlights" aria-labelledby="highlights-label" data-highlights>
-                <h2 class="title-3" id="highlights-label">Today's Highlights</h2>
-            
-                <div class="highlight-list">
-                    <div class="highlight-item">
-                        <div class="highlight-title">Pressure</div>
-                        <div class="highlight-value" data-pressure>
-                            <span class="body-2" data-pressure-value></span>
-                            <span class="label-1" data-pressure-unit></span>
-                        </div>
+        <article class="container" data-container>
+            <div class="content-left">
+                <section class="section current-weather" aria-label="current weather" data-current-weather>
+                    <div class="current-temp">
+                        <h2 class="title-1">Current Temperature: <span data-current-temp></span></h2>
+                        <p class="label-1">High: <span data-high-temp></span></p>
+                        <p class="label-1">Low: <span data-low-temp></span></p>
                     </div>
-            
-                    <div class="highlight-item one">
-                        <div class="highlight-title">Temperature</div>
-                        <div class="highlight-value card-item">
-                            <div>
-                                <div class="title">High</div>
-                                <div class="value" data-high-temperature></div>
-                            </div>
-                            <div>
-                                <div class="title">Low</div>
-                                <div class="value" data-low-temperature></div>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="highlight-item">
-                        <div class="highlight-title">Humidity</div>
-                        <div class="highlight-value">
-                            <span class="body-2" data-humidity></span>
-                            <span class="label-1">%</span>
-                        </div>
-                    </div>
-            
-                    <div class="highlight-item">
-                        <div class="highlight-title">Feels Like</div>
-                        <div class="highlight-value">
-                            <span class="body-2" data-feels-like></span>
-                            <span class="label-1">°F</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
-        </div>
-        <div class="loading" data-loading></div>
-    </article>
-</main>
+                </section>
+                <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
+            </div>
+            <div class="content-right">
+                <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
+                <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
+            </div>
+            <div class="loading" data-loading></div>
+        </article>
+    </main>
 
     <div class="settings-modal" data-settings-modal>
         <div class="settings-content">
