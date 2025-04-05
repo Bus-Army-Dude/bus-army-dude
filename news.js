@@ -2,6 +2,8 @@
 const apiKey = 'd02d6826e3dd4dba9bea9e86d7d4563b';  // Replace with your NewsAPI key
 const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${apiKey}`;
 
+let articles = [];
+
 // Function to format the date into "X hours ago" or "X minutes ago"
 function timeAgo(date) {
     const now = new Date();
@@ -21,6 +23,8 @@ async function fetchArticles() {
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
+        
+        console.log(data);  // Check the API response
 
         if (data.articles) {
             articles = data.articles;
