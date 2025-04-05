@@ -657,6 +657,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   position: relative; /* Needed for absolute positioning of badge */
   padding: 16px; /* Overrides base card-sm padding if needed */
   border-radius: var(--radius-16); /* Ensure radius */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added subtle shadow for depth */
 }
 
 .highlight-card :is(.wrapper, .card-list, .card-item) {
@@ -715,6 +716,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   align-items: center; /* Vertically align */
   gap: 20px; /* Space between High and Low blocks */
   width: 100%; /* Take full width of the highlight item */
+  padding: 8px 0; /* Added padding for better spacing */
 }
 
 .highlights .highlight-item.one .card-item > div {
@@ -732,6 +734,7 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   font-weight: var(--weight-semiBold);
   color: var(--primary);
 }
+
 
 /* --- End Sunrise/Sunset Fix --- */
 
