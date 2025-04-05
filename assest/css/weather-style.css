@@ -263,12 +263,8 @@ body {
 }
 
 @keyframes ripple {
-  0% {
-    clip-path: circle(0% at 50% 50%);
-  }
-  100% {
-    clip-path: circle(100% at 50% 50%);
-  }
+  0% { clip-path: circle(0% at 50% 50%); }
+  100% { clip-path: circle(100% at 50% 50%); }
 }
 
 .btn-primary {
@@ -471,7 +467,7 @@ body {
 .search-wrapper .icon-btn { /* Style for the back button */
   background-color: transparent;
   box-shadow: none;
-   /* Ensure it's clickable */
+    /* Ensure it's clickable */
   position: absolute;
   top: 50%;
   left: 0; /* Position it left */
@@ -525,7 +521,7 @@ article.container {
 
 /* Style scrollbar specifically for main for better control */
 main::-webkit-scrollbar {
-   width: 8px;
+    width: 8px;
 }
 
 main::-webkit-scrollbar-thumb {
@@ -543,7 +539,7 @@ article.container::-webkit-scrollbar-thumb {
 }
 
 article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
-   /* This rule might not be needed if main handles the primary scroll */
+    /* This rule might not be needed if main handles the primary scroll */
   background-color: var(--white-alpha-8);
 }
 
@@ -935,23 +931,23 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
 
   main {
-     height: calc(100vh - 96px); /* Adjust height for potentially taller header */
-     height: calc(100svh - 96px);
-     /* padding-top: 96px; */ /* If header is fixed/sticky */
+      height: calc(100vh - 96px); /* Adjust height for potentially taller header */
+      height: calc(100svh - 96px);
+      /* padding-top: 96px; */ /* If header is fixed/sticky */
    }
   article.container {
     padding-block-start: 0;
     grid-template-columns: 280px minmax(0, 1fr); /* Two-column layout */
     align-items: flex-start;
     gap: 24px;
-   }
+    }
   .content-left { /* Left column (current weather, forecast) */
-     position: sticky;
-     top: 24px; /* Add space from top */
-     /* Adjust max-height based on header and top offset */
-     /* max-height: calc(100svh - 96px - 24px); */
-     /* overflow-y: auto; */ /* Allow left column to scroll if needed */
-  }
+      position: sticky;
+      top: 24px; /* Add space from top */
+      /* Adjust max-height based on header and top offset */
+      /* max-height: calc(100svh - 96px - 24px); */
+      /* overflow-y: auto; */ /* Allow left column to scroll if needed */
+   }
   .section:not(:last-child) { margin-block: 20px; } /* Adjust vertical spacing */
   .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
 
@@ -967,11 +963,11 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
   /* AQI card items layout (unchanged) */
   .highlight-card.one .card-item {
-     width: 25%;
-     flex-direction: column-reverse;
-     gap: 8px;
-   }
-   /* Sunrise/Sunset layout already fixed globally */
+      width: 25%;
+      flex-direction: column-reverse;
+      gap: 8px;
+    }
+    /* Sunrise/Sunset layout already fixed globally */
 
   .slider-container { /* Make slider fit within right column */
       margin-inline: 0; /* Remove negative margin */
@@ -979,9 +975,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
       border-radius: var(--radius-16); /* Add radius */
       /* background-color: var(--surface); */ /* Optional: background for slider area */
   }
-   .slider-list {
+    .slider-list {
       padding-inline: 16px; /* Add padding back inside list */
-   }
+    }
 
   .hourly-forecast .card-sm { padding: 16px; } /* Adjust padding if needed */
 }
@@ -1006,9 +1002,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   /* .highlight-card.two .card-item { column-gap: 24px; } /* Remove if causing issues */
 
   .header {
-     position: relative; /* Can be relative if not sticky */
-     height: 120px; /* Taller header */
-     z-index: 4;
+      position: relative; /* Can be relative if not sticky */
+      height: 120px; /* Taller header */
+      z-index: 4;
    }
   .header .icon-btn { display: none; } /* Hide mobile search icon */
   .logo img { width: 200px; }
@@ -1024,60 +1020,60 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
   }
   .search-wrapper { border-block-end: none; }
   .search-wrapper > .m-icon { display: block; } /* Show search icon inside field */
-   .search-wrapper .leading-icon { /* Adjust leading icon position */
+    .search-wrapper .leading-icon { /* Adjust leading icon position */
     left: 16px;
   }
-   .search-wrapper .icon-btn { display: none; } /* Hide back button */
+    .search-wrapper .icon-btn { display: none; } /* Hide back button */
 
   .search-field, .search-view .view-list {
-     background-color: var(--surface); /* Explicit background */
-   }
+      background-color: var(--surface); /* Explicit background */
+    }
   .search-field {
-     height: 56px;
-     line-height: 56px;
-     border-radius: var(--radius-28);
-     padding-inline: 56px 16px; /* Keep padding for icon */
-   }
-   /* Search Results Dropdown */
+      height: 56px;
+      line-height: 56px;
+      border-radius: var(--radius-28);
+      padding-inline: 56px 16px; /* Keep padding for icon */
+    }
+    /* Search Results Dropdown */
   .search-result, .search-view:not(:focus-within) .search-result {
-     display: none; /* Hide results by default */
-   }
+      display: none; /* Hide results by default */
+    }
   .search-view:focus-within .search-result.active {
-     display: block; /* Show results when input is focused and results exist */
-   }
+      display: block; /* Show results when input is focused and results exist */
+    }
   .search-view:has(.search-result.active):focus-within .search-field {
-     border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
-     border-bottom-right-radius: 0;
-   }
+      border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
+      border-bottom-right-radius: 0;
+    }
   .search-view .view-list {
-     position: absolute;
-     top: 100%; /* Position below search field */
-     left: 0;
-     width: 100%;
-     max-height: 360px;
-     border-radius: 0 0 var(--radius-28) var(--radius-28);
-     border: 1px solid var(--outline); /* Add border */
-     border-block-start: none; /* Remove top border */
-     overflow-y: auto; /* Keep overlay for webkit */
-     z-index: 5; /* Above other content */
-     box-shadow: var(--shadow-2); /* Add shadow */
-  }
-   .search-view .view-list:empty {
-     /* Optional: style for empty results */
-     /* min-height: 120px; */
-     /* display: none; */ /* Or hide it completely */
-   }
+      position: absolute;
+      top: 100%; /* Position below search field */
+      left: 0;
+      width: 100%;
+      max-height: 360px;
+      border-radius: 0 0 var(--radius-28) var(--radius-28);
+      border: 1px solid var(--outline); /* Add border */
+      border-block-start: none; /* Remove top border */
+      overflow-y: auto; /* Keep overlay for webkit */
+      z-index: 5; /* Above other content */
+      box-shadow: var(--shadow-2); /* Add shadow */
+    }
+    .search-view .view-list:empty {
+      /* Optional: style for empty results */
+      /* min-height: 120px; */
+      /* display: none; */ /* Or hide it completely */
+    }
 
   main {
-     height: calc(100vh - 120px); /* Adjust height for taller header */
-     height: calc(100svh - 120px);
-      /* padding-top: 120px; */ /* If header is fixed/sticky */
-   }
+      height: calc(100vh - 120px); /* Adjust height for taller header */
+      height: calc(100svh - 120px);
+       /* padding-top: 120px; */ /* If header is fixed/sticky */
+    }
   article.container {
-     grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
-     gap: 40px;
-   }
-    .content-left {
+      grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
+      gap: 40px;
+    }
+     .content-left {
       top: 40px; /* Adjust sticky top offset */
       /* max-height: calc(100svh - 120px - 40px); */ /* Adjust max height */
     }
@@ -1097,16 +1093,16 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 /* Wider Desktop Styles */
 @media (min-width: 1400px) {
   .highlight-list {
-     grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
-   }
-   .highlight-card:nth-child(-n + 2) {
-     grid-column: span 2; /* AQI/Sunrise still span 2 */
-     height: 200px;
-   }
-   .highlight-card:nth-child(n + 3) {
-     grid-column: span 1; /* Others take 1 column */
-     height: 150px;
-   }
+      grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
+    }
+    .highlight-card:nth-child(-n + 2) {
+      grid-column: span 2; /* AQI/Sunrise still span 2 */
+      height: 200px;
+    }
+    .highlight-card:nth-child(n + 3) {
+      grid-column: span 1; /* Others take 1 column */
+      height: 150px;
+    }
 }
 
 /* --- Light Mode Specific Overrides --- */
@@ -1157,9 +1153,9 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 }
 
 [data-theme="light"] .search-view .view-list { /* Search results dropdown light */
-   background-color: var(--white);
-   border-color: var(--outline);
-   box-shadow: var(--shadow-2);
+    background-color: var(--white);
+    border-color: var(--outline);
+    box-shadow: var(--shadow-2);
 }
 
 /* Ensure base search field styles are set for dark mode too */
