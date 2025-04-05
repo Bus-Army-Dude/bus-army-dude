@@ -1,9 +1,8 @@
 // Sample API Key & Endpoint (replace with your own API key and URL)
-const apiKey = 'd02d6826e3dd4dba9bea9e86d7d4563b';  // Replace with your NewsAPI key
+const apiKey = 'd02d6826e3dd4dba9bea9e86d7d4563b'; // Replace with your NewsAPI key
 const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${apiKey}`;
 
 let articles = [];
-let selectedCategory = 'Technology';  // Hard-code category or set dynamically
 
 // Function to format the date into "X hours ago" or "X minutes ago"
 function timeAgo(date) {
@@ -23,16 +22,23 @@ function timeAgo(date) {
 async function fetchArticles() {
     try {
         const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        
-        console.log(data);  // Check the API response
 
-        if (data.articles) {
+        console.log("API Response:", data); // Log the API response for debugging
+
+        if (data.articles && data.articles.length > 0) {
             articles = data.articles;
             loadArticles(); // Load the fetched articles to the page
+        } else {
+            console.warn("No articles found in the API response.");
+            document.getElementById('news-container').innerHTML = "<p>No articles found.</p>"
         }
     } catch (error) {
         console.error('Error fetching the articles:', error);
+        document.getElementById('news-container').innerHTML = "<p>Error loading articles.</p>"
     }
 }
 
@@ -48,10 +54,10 @@ function createArticleCard(article) {
     image.alt = article.title;
     articleCard.appendChild(image);
 
-    // Article category (using selectedCategory for consistency)
+    // Article category
     const category = document.createElement('div');
     category.classList.add('article-category');
-    category.textContent = selectedCategory || 'No Category';  // Display category dynamically
+    category.textContent = article.category || 'No Category';
     articleCard.appendChild(category);
 
     // Article title
@@ -89,7 +95,7 @@ function loadArticles() {
 
 // Function to open the article modal and display its content
 function openArticleModal(article) {
-    document.getElementById('category-name').textContent = selectedCategory || 'No Category';
+    document.getElementById('category-name').textContent = article.category || 'No Category';
     document.getElementById('article-title').textContent = article.title;
     document.getElementById('short-description').textContent = article.description || 'No description available';
     document.getElementById('author').textContent = article.author || 'Unknown';
@@ -205,8 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Update the footer year every year.
 document.addEventListener("DOMContentLoaded", () => {
-  const yearSpan = document.getElementById("year");
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
+    const yearSpan = document.getElementById("year");
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
 });
