@@ -173,9 +173,160 @@ If approved, Nurodex would be the first monthly injectable migraine treatment th
     postedOn: "2025-04-04T09:20:00Z",
     author: "Dr. Marcus Hall",
     category: "health"
-}
-    // Add more articles as needed
-];
+},
+{
+        id: 11,
+        title: "White House Announces New Stimulus Plan",
+        shortDescription: "The U.S. government has introduced a new stimulus plan aimed at providing financial relief to businesses and individuals affected by the pandemic.",
+        content: "The White House has revealed a new stimulus plan intended to address the economic fallout caused by the COVID-19 pandemic. The plan includes direct payments to individuals, business support, and healthcare investments.",
+        imageUrl: "https://www.pbs.org/newshour/wp-content/uploads/2025/04/whitehouse_stimulus.jpg",
+        postedOn: "2025-04-04T19:15:00Z",
+        author: "PBS NewsHour",
+        category: "us"
+    },
+    {
+        id: 12,
+        title: "COVID-19 Vaccination Rollout Faces New Challenges",
+        shortDescription: "The U.S. vaccination rollout faces delays and logistical issues as the nation aims to vaccinate more people quickly.",
+        content: "Despite early progress, the U.S. vaccination campaign has encountered several hurdles. Distribution delays and concerns about vaccine hesitancy are affecting the speed of the nationwide rollout.",
+        imageUrl: "https://www.cnbc.com/wp-content/uploads/2025/04/covid_vaccine_rollout.jpg",
+        postedOn: "2025-04-04T20:00:00Z",
+        author: "CNBC News",
+        category: "us"
+    },
+
+    // World News
+    {
+        id: 13,
+        title: "France Expands COVID-19 Restrictions Amid Rising Cases",
+        shortDescription: "France is tightening COVID-19 restrictions as new cases of the virus continue to rise.",
+        content: "In response to a surge in COVID-19 cases, France has announced stricter measures, including nationwide lockdowns and expanded curfews. The government hopes this will stem the tide of new infections.",
+        imageUrl: "https://www.thelocal.fr/wp-content/uploads/2025/04/france-lockdown.jpg",
+        postedOn: "2025-04-04T19:30:00Z",
+        author: "The Local France",
+        category: "world"
+    },
+    {
+        id: 14,
+        title: "China Expands Efforts to Curb Air Pollution",
+        shortDescription: "China has launched new initiatives to combat rising levels of air pollution in its major cities.",
+        content: "China has rolled out additional measures to tackle air pollution, including stricter industrial regulations and investments in renewable energy. These actions are in response to growing concerns over public health and environmental sustainability.",
+        imageUrl: "https://cdn.cnn.com/cnnnext/dam/assets/2025/04/china_air_pollution.jpg",
+        postedOn: "2025-04-04T20:30:00Z",
+        author: "CNN",
+        category: "world"
+    },
+
+    // Business News
+    {
+        id: 15,
+        title: "Tech Giants Show Interest in Acquiring TikTok",
+        shortDescription: "Big tech companies, including Microsoft and Amazon, are reportedly eyeing TikTok as part of a bidding war.",
+        content: "Following the U.S. government’s threat to ban TikTok, major tech companies such as Microsoft, Amazon, and Oracle have expressed interest in acquiring the popular social media app. However, the deal remains complicated by ongoing negotiations with China.",
+        imageUrl: "https://www.bbc.com/news/technology-54321648.jpg",
+        postedOn: "2025-04-04T21:00:00Z",
+        author: "BBC News",
+        category: "business"
+    },
+    {
+        id: 16,
+        title: "Tesla’s Market Value Soars After Record Quarter",
+        shortDescription: "Tesla's stock has skyrocketed following the announcement of its most successful quarter yet.",
+        content: "Tesla has announced its most profitable quarter ever, thanks to strong sales of its electric vehicles. The company’s market value has surged, making it one of the most valuable companies in the world.",
+        imageUrl: "https://image.cnbc.com/2025/04/tesla_stock_growth.jpg",
+        postedOn: "2025-04-04T21:30:00Z",
+        author: "CNBC",
+        category: "business"
+    },
+
+    // Technology News
+    {
+        id: 17,
+        title: "Apple Announces Major iOS Update with New Features",
+        shortDescription: "Apple has revealed a major iOS update packed with new features and performance improvements.",
+        content: "Apple’s latest iOS update introduces a variety of new features, including enhanced privacy settings, redesigned notifications, and new Siri capabilities. The update is expected to roll out in the coming weeks.",
+        imageUrl: "https://www.macrumors.com/wp-content/uploads/2025/04/ios-update.jpg",
+        postedOn: "2025-04-04T22:00:00Z",
+        author: "MacRumors",
+        category: "technology"
+    },
+    {
+        id: 18,
+        title: "Google Unveils New AI-Powered Search Tools",
+        shortDescription: "Google has unveiled new AI-driven search tools that aim to revolutionize the way users interact with search results.",
+        content: "Google’s latest AI innovations promise to make search results more relevant and personalized. The new tools use machine learning to better understand user intent and provide more precise answers.",
+        imageUrl: "https://www.theverge.com/2025/04/google-ai-search-tools.jpg",
+        postedOn: "2025-04-04T22:30:00Z",
+        author: "The Verge",
+        category: "technology"
+    },
+
+    // Entertainment News
+    {
+        id: 19,
+        title: "New Marvel Movie Breaks Box Office Records",
+        shortDescription: "The latest Marvel movie has shattered box office records, bringing in over $1 billion in its opening weekend.",
+        content: "Marvel's newest blockbuster has made history by breaking box office records. With its thrilling action sequences and star-studded cast, the film has become a cultural phenomenon.",
+        imageUrl: "https://cdn.thewrap.com/marvel_movie_box_office.jpg",
+        postedOn: "2025-04-04T23:00:00Z",
+        author: "The Wrap",
+        category: "entertainment"
+    },
+    {
+        id: 20,
+        title: "Beyoncé Announces New Album Release Date",
+        shortDescription: "Beyoncé has announced the release date for her much-anticipated new album.",
+        content: "Beyoncé fans are rejoicing as the superstar revealed the official release date for her upcoming album. The album promises to feature new songs that showcase her evolving sound and musical direction.",
+        imageUrl: "https://static.stereogum.com/beyonce_album_cover.jpg",
+        postedOn: "2025-04-04T23:30:00Z",
+        author: "Stereogum",
+        category: "entertainment"
+    },
+
+    // Sports News
+    {
+        id: 21,
+        title: "NBA Finals: Lakers vs. Celtics Preview",
+        shortDescription: "The NBA Finals are set to feature a classic matchup between the Los Angeles Lakers and the Boston Celtics.",
+        content: "Basketball fans are eagerly awaiting the NBA Finals, where the Lakers and Celtics will battle for the championship. Both teams have had incredible seasons and are looking to add another title to their legacies.",
+        imageUrl: "https://cdn.sportingnews.com/nba-finals-lakers-celtics-preview.jpg",
+        postedOn: "2025-04-04T23:45:00Z",
+        author: "Sporting News",
+        category: "sports"
+    },
+    {
+        id: 22,
+        title: "Cristiano Ronaldo Breaks Another Record",
+        shortDescription: "Cristiano Ronaldo has broken yet another record in his illustrious soccer career.",
+        content: "Cristiano Ronaldo has surpassed another major milestone in his career, setting a new record for most career goals scored in international competitions. The legendary forward continues to redefine the limits of his sport.",
+        imageUrl: "https://www.goal.com/football/cristiano-ronaldo-record.jpg",
+        postedOn: "2025-04-05T00:00:00Z",
+        author: "Goal",
+        category: "sports"
+    },
+
+    // Science News
+    {
+        id: 23,
+        title: "NASA's Mars Rover Sends Back Stunning New Images",
+        shortDescription: "NASA’s Perseverance rover has captured incredible new images of Mars.",
+        content: "NASA's Perseverance rover has sent back high-resolution images of the Martian landscape, offering a glimpse of the planet’s surface like never before. Scientists are excited about the data these images will provide for future exploration.",
+        imageUrl: "https://mars.nasa.gov/perseverance/images.jpg",
+        postedOn: "2025-04-05T00:30:00Z",
+        author: "NASA",
+        category: "science"
+    },
+    {
+        id: 24,
+        title: "Breakthrough in Quantum Computing Achieved by Scientists",
+        shortDescription: "A team of scientists has made a significant breakthrough in the field of quantum computing.",
+        content: "Quantum computing has taken a giant leap forward with a breakthrough that could lead to faster, more powerful computers. The discovery was made by a team of researchers at MIT and could have wide-ranging implications for industries around the world.",
+        imageUrl: "https://www.scientificamerican.com/quantum-computing.jpg",
+        postedOn: "2025-04-05T01:00:00Z",
+        author: "Scientific American",
+        category: "science"
+    }
+];    
 
 // Function to format the date into "X hours ago" or "X minutes ago"
 function timeAgo(date) {
