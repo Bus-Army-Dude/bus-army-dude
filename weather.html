@@ -87,7 +87,44 @@
                 <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast></section>
             </div>
             <div class="content-right">
-                <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
+                <section class="section highlights" aria-labelledby="highlights-label">
+                    <h2 id="highlights-label" class="title-3">Today's Highlights</h2>
+                    <div class="highlight-list">
+                        <!-- High and Low Temperatures -->
+                        <div class="highlight-item one">
+                            <div class="card-sm">
+                                <h3 class="title-2">High & Low</h3>
+                                <div class="card-item">
+                                    <div>
+                                        <p class="title">High</p>
+                                        <p class="value" data-high-temp></p>
+                                    </div>
+                                    <div>
+                                        <p class="title">Low</p>
+                                        <p class="value" data-low-temp></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sunrise and Sunset -->
+                        <div class="highlight-item two">
+                            <div class="card-sm">
+                                <h3 class="title-2">Sunrise & Sunset</h3>
+                                <div class="card-item">
+                                    <div>
+                                        <p class="title">Sunrise</p>
+                                        <p class="value" data-sunrise-time></p>
+                                    </div>
+                                    <div>
+                                        <p class="title">Sunset</p>
+                                        <p class="value" data-sunset-time></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
             </div>
             <div class="loading" data-loading></div>
