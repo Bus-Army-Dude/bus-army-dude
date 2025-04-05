@@ -515,3 +515,12 @@ document.addEventListener('DOMContentLoaded', () => {
         homeTab.classList.add('active');
     }
 });
+
+// Dynamically update footer year
+    updateFooterYear() {
+        const footerYear = document.getElementById('year');
+        if (footerYear) {
+            footerYear.textContent = new Date().getFullYear();
+        }
+    }
+}
