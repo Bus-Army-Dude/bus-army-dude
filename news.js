@@ -32,13 +32,14 @@ async function fetchArticles() {
         if (data.articles && data.articles.length > 0) {
             articles = data.articles;
             loadArticles(); // Load the fetched articles to the page
+            populateCategories(); // Populate the categories
         } else {
             console.warn("No articles found in the API response.");
-            document.getElementById('news-container').innerHTML = "<p>No articles found.</p>"
+            document.getElementById('articles-container').innerHTML = "<p>No articles found.</p>"
         }
     } catch (error) {
         console.error('Error fetching the articles:', error);
-        document.getElementById('news-container').innerHTML = "<p>Error loading articles.</p>"
+        document.getElementById('articles-container').innerHTML = "<p>Error loading articles.</p>"
     }
 }
 
@@ -82,12 +83,12 @@ function createArticleCard(article) {
     articleCard.addEventListener('click', () => openArticleModal(article));
 
     // Append the article card to the news container
-    document.getElementById('news-container').appendChild(articleCard);
+    document.getElementById('articles-container').appendChild(articleCard);
 }
 
 // Function to load all articles initially
 function loadArticles() {
-    document.getElementById('news-container').innerHTML = ''; // Clear existing articles
+    document.getElementById('articles-container').innerHTML = ''; // Clear existing articles
     articles.forEach(article => {
         createArticleCard(article);
     });
@@ -95,22 +96,20 @@ function loadArticles() {
 
 // Function to open the article modal and display its content
 function openArticleModal(article) {
-    document.getElementById('category-name').textContent = article.category || 'No Category';
-    document.getElementById('article-title').textContent = article.title;
-    document.getElementById('short-description').textContent = article.description || 'No description available';
-    document.getElementById('author').textContent = article.author || 'Unknown';
-    document.getElementById('date').textContent = timeAgo(article.publishedAt);
-    document.getElementById('article-image').src = article.urlToImage || 'default-image.jpg';
-    document.getElementById('article-image').alt = article.title;
-    document.getElementById('article-content').textContent = article.content || 'No content available';
+    document.getElementById('modal-title').textContent = article.title;
+    document.getElementById('modal-description').textContent = article.description || 'No description available';
+    document.getElementById('modal-posted-by').textContent = article.author || 'Unknown';
+    document.getElementById('modal-posted-date').textContent = timeAgo(article.publishedAt);
+    document.getElementById('modal-image').src = article.urlToImage || 'default-image.jpg';
+    document.getElementById('modal-image').alt = article.title;
 
     // Show the modal
-    document.getElementById('modal').style.display = 'block';
+    document.getElementById('article-modal').style.display = 'block';
 }
 
 // Function to close the modal
 function closeModal() {
-    document.getElementById('modal').style.display = 'none';
+    document.getElementById('article-modal').style.display = 'none';
 }
 
 // Function to filter articles by time range and category
@@ -143,7 +142,7 @@ function filterArticles(range, category) {
     }
 
     // Clear the existing articles and load filtered ones
-    document.getElementById('news-container').innerHTML = '';
+    document.getElementById('articles-container').innerHTML = '';
     filteredArticles.forEach(article => {
         createArticleCard(article);
     });
@@ -163,6 +162,38 @@ function handleNavTabClick(event) {
     event.target.classList.add('active');
 }
 
+// Function to populate categories in the sidebar and navigation
+function populateCategories() {
+    const categories = ['home', 'technology', 'science', 'business', 'health', 'entertainment']; // Add more categories as needed
+    const navCategories = document.getElementById('categories-nav');
+    const listCategories = document.getElementById('categories-list');
+
+    categories.forEach(category => {
+        // Navigation categories
+        const navItem = document.createElement('li');
+        const navLink = document.createElement('a');
+        navLink.href = '#';
+        navLink.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        navLink.dataset.category = category;
+        navLink.addEventListener('click', handleNavTabClick);
+        navItem.appendChild(navLink);
+        navCategories.appendChild(navItem);
+
+        // Sidebar categories
+        const listItem = document.createElement('li');
+        const listLink = document.createElement('a');
+        listLink.href = '#';
+        listLink.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        listLink.dataset.category = category;
+        listLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent the default link behavior
+            filterArticles(document.getElementById('time-filter').value, category);
+        });
+        listItem.appendChild(listLink);
+        listCategories.appendChild(listItem);
+    });
+}
+
 // Wait for DOM content to be loaded before initializing
 document.addEventListener('DOMContentLoaded', () => {
     fetchArticles(); // Fetch the articles initially
@@ -173,19 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tab.addEventListener('click', handleNavTabClick);
     });
 
-    // Add event listener to the category dropdown
-    const categorySelect = document.getElementById('category-select');
-    categorySelect.addEventListener('change', (event) => {
-        const selectedCategory = event.target.value;
-        const timeFilterValue = document.getElementById('time-filter').value;
-        filterArticles(timeFilterValue, selectedCategory);
-    });
-
     // Add event listener to the time filter dropdown
     const timeFilter = document.getElementById('time-filter');
     timeFilter.addEventListener('change', (event) => {
         const activeCategory = document.querySelector('.nav-tabs a.active');
-        const categoryValue = activeCategory ? activeCategory.dataset.category : document.getElementById('category-select').value;
+        const categoryValue = activeCategory ? activeCategory.dataset.category : 'home'; // Default to 'home' if no active category
         filterArticles(event.target.value, categoryValue);
     });
 
