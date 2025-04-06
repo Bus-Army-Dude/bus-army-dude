@@ -1,73 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Portal</title>
-  <link rel="stylesheet" href="admin-portal.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal</title>
+    <link rel="stylesheet" href="admin-portal.css">
 </head>
+<body class="admin-body">
 
-<body>
-  <div class="admin-portal">
-    <header>
-      <h1>Admin Portal</h1>
-      <nav>
-        <ul>
-          <li data-tab="home">Home</li>
-          <li data-tab="shoutouts">Shoutouts</li>
-          <li data-tab="blog">Blog</li>
-          <li data-tab="merch">Merch Store</li>
-          <li data-tab="settings">Settings</li>
-        </ul>
-      </nav>
-    </header>
+    <div class="admin-container">
+        <!-- Admin Portal Nav -->
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="javascript:void(0);" onclick="switchTab('home')">Home</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('shoutouts')">Shoutouts</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('blog')">Blog</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('merch')">Merch Store</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('settings')">Settings</a></li>
+            </ul>
+        </nav>
 
-    <main>
-      <!-- Home Tab -->
-      <section id="home" class="tab active">
-        <div class="module" id="profile-section"></div>
-        <div class="module" id="connect-section"></div>
-        <div class="module" id="president-section"></div>
-        <div class="module" id="useful-links-section"></div>
-        <div class="module" id="countdown-section"></div>
-        <div class="module" id="events-section"></div>
-        <div class="module" id="business-section"></div>
-        <div class="module" id="faq-section"></div>
-        <div class="module" id="tech-section"></div>
-        <div class="module" id="disabilities-section"></div>
-        <div class="module" id="version-section"></div>
-        <div class="module" id="notice-section"></div>
-      </section>
+        <!-- Sections -->
+        <div class="admin-content">
 
-      <!-- Shoutouts Tab -->
-      <section id="shoutouts" class="tab">
-        <div class="module" id="shoutout-section"></div>
-      </section>
+            <!-- Home Tab -->
+            <div id="home" class="admin-tab-content">
+                <h2>Profile Section</h2>
+                <p>Modify your username, bio, profile image, and links to other pages.</p>
 
-      <!-- Blog Tab -->
-      <section id="blog" class="tab">
-        <div class="module" id="category-section"></div>
-        <div class="module" id="blog-section"></div>
-      </section>
+                <h3>Profile Information</h3>
+                <!-- Add Profile Form Here -->
 
-      <!-- Merch Tab -->
-      <section id="merch" class="tab">
-        <div class="module" id="merch-categories-section"></div>
-        <div class="module" id="merch-products-section"></div>
-      </section>
+                <h3>Connect with Me</h3>
+                <!-- Add Connect Links Form Here -->
 
-      <!-- Settings Tab -->
-      <section id="settings" class="tab">
-        <div class="module" id="appearance-section"></div>
-        <div class="module" id="accessibility-section"></div>
-        <div class="module" id="owner-settings-section"></div>
-      </section>
-    </main>
-  </div>
+                <h3>Current President</h3>
+                <!-- Add Current President Info Form Here -->
 
-  <script src="admin-portal.js"></script>
+                <h3>Countdown</h3>
+                <!-- Add Countdown Form Here -->
+
+                <h3>Upcoming Events</h3>
+                <!-- Add Events Form Here -->
+
+                <h3>Business Information</h3>
+                <!-- Add Business Info Form Here -->
+            </div>
+
+            <!-- Shoutouts Tab -->
+            <div id="shoutouts" class="admin-tab-content">
+                <h2>TikTok, Instagram, YouTube Creator Shoutouts</h2>
+                <p>Manage your shoutouts list for creators you follow or collaborate with.</p>
+                <!-- Add Shoutouts Form Here -->
+            </div>
+
+            <!-- Blog Tab -->
+            <div id="blog" class="admin-tab-content">
+                <h2>Blog Page</h2>
+                <p>Manage blog categories, posts, and display them in cards with their titles, descriptions, and images.</p>
+                <!-- Add Blog Posts Form Here -->
+            </div>
+
+            <!-- Merch Store Tab -->
+            <div id="merch" class="admin-tab-content">
+                <h2>Merch Store</h2>
+                <p>Manage product categories, product details, stock, and pricing.</p>
+                <!-- Add Merch Store Form Here -->
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="admin-tab-content">
+                <h2>Settings</h2>
+                <p>Manage the settings for dark mode, accessibility, and other owner-only configurations.</p>
+                <!-- Add Settings Form Here -->
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="admin-portal.js"></script>
 </body>
-
 </html>
