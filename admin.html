@@ -145,8 +145,66 @@ POLITICAL PARTY: Republican</textarea>
             </div>
 
             <div id="shoutouts" class="admin-tab-content">
-                <h2>TikTok, Instagram, YouTube Creator Shoutouts</h2>
-                <p>Manage your shoutouts list for creators you follow or collaborate with.</p>
+                <h2>TikTok Shoutouts</h2>
+                <button onclick="openAddShoutoutModal('tiktok')">Add New TikTok Shoutout</button>
+                <div id="tiktok-shoutouts-list" class="shoutout-list">
+                    </div>
+
+                <hr>
+
+                <h2>Instagram Shoutouts</h2>
+                <button onclick="openAddShoutoutModal('instagram')">Add New Instagram Shoutout</button>
+                <div id="instagram-shoutouts-list" class="shoutout-list">
+                    </div>
+
+                <hr>
+
+                <h2>YouTube Shoutouts</h2>
+                <button onclick="openAddShoutoutModal('youtube')">Add New YouTube Shoutout</button>
+                <div id="youtube-shoutouts-list" class="shoutout-list">
+                    </div>
+
+                <div id="shoutout-modal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close-button" onclick="closeAddShoutoutModal()">&times;</span>
+                        <h3 id="modal-title">Add New Shoutout</h3>
+                        <form id="shoutout-form">
+                            <input type="hidden" id="shoutout-platform" name="platform">
+                            <input type="hidden" id="shoutout-id" name="id">
+
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nickname">Nickname:</label>
+                                <input type="text" id="nickname" name="nickname">
+                            </div>
+                            <div class="form-group">
+                                <label for="bio">Bio:</label>
+                                <textarea id="bio" name="bio" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="profilePic">Profile Picture URL:</label>
+                                <input type="url" id="profilePic" name="profilePic">
+                            </div>
+                            <div class="form-group" id="followers-subscribers-group">
+                                <label for="followers">Followers/Subscribers:</label>
+                                <input type="text" id="followers" name="followers">
+                            </div>
+                            <div class="form-group">
+                                <label for="isVerified">Verified:</label>
+                                <input type="checkbox" id="isVerified" name="isVerified">
+                            </div>
+                            <div class="form-group" id="coverPhoto-group" style="display: none;">
+                                <label for="coverPhoto">Cover Photo URL:</label>
+                                <input type="url" id="coverPhoto" name="coverPhoto">
+                            </div>
+
+                            <button type="button" onclick="saveShoutout()">Save Shoutout</button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <div id="blog" class="admin-tab-content">
