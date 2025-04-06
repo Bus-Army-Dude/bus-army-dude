@@ -415,50 +415,44 @@ body {
 }
 
 .social-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 24px;
-    background: linear-gradient(145deg,
-        var(--accent-color),
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff)
-    );
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  background: linear-gradient(145deg, blue, lightblue); /* Test background */
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow:
+    0 4px 15px color-mix(in srgb, blue 30%, transparent),
+    0 0 0 1px color-mix(in srgb, blue 30%, transparent);
+  position: relative;
+  overflow: hidden;
 }
 
 .social-button:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff),
-        var(--accent-color)
-    );
-    box-shadow: 
-        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
-        0 0 0 1px var(--accent-color);
+  transform: translateY(-2px);
+  background: linear-gradient(145deg, lightblue, blue); /* Test hover background */
+  box-shadow:
+    0 8px 20px color-mix(in srgb, blue 40%, transparent),
+    0 0 0 1px blue;
 }
 
 .social-button .social-icon {
-    font-size: 20px;
-    margin-right: 15px;
-    color: var(--icon-color); /* Use theme icon color */
-    flex-shrink: 0;
+  font-size: 20px;
+  margin-right: 15px;
+  color: white; /* Test icon color */
+  flex-shrink: 0;
 }
 
 .social-button span {
-    flex-grow: 1;
-    text-align: center;
-    color: var(--icon-color); /* Use theme icon color */
+  flex-grow: 1;
+  text-align: center;
+  color: white; /* Test text color */
 }
 
 /* Responsive Design */
