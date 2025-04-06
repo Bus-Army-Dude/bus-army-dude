@@ -514,11 +514,11 @@ function loadPresidentDataIndex() {
 
                 if (indexPresidentPhoto) indexPresidentPhoto.src = photoUrl;
                 if (indexPresidentName) indexPresidentName.textContent = presidentData.name || 'President Name';
-                if (indexPresidentBirthDate) indexPresidentBirthDate.textContent = `<strong>Born:</strong> ${presidentData.birthDate || 'June 14, 1946'}`;
-                if (indexPresidentHeight) indexPresidentHeight.textContent = `<strong>Height:</strong> ${presidentData.height || "6'3\" (190.5 cm)"}`;
-                if (indexPresidentParty) indexPresidentParty.textContent = `<strong>Party:</strong> ${presidentData.party || 'Republican Party'}`;
-                if (indexPresidentTerm) indexPresidentTerm.textContent = `<strong>Presidential Term:</strong> ${presidentData.termStart || '1/20/25 at 12:00 PM'} - ${presidentData.termEnd || '1/20/29 at 12:00 PM'}`;
-                if (indexVicePresidentName) indexVicePresidentName.textContent = `<strong>Vice President:</strong> ${presidentData.vicePresident || 'James David Vance'}`;
+                if (indexPresidentBirthDate) indexPresidentBirthDate.innerHTML = `<strong>Born:</strong> ${presidentData.birthDate || 'June 14, 1946'}`;
+                if (indexPresidentHeight) indexPresidentHeight.innerHTML = `<strong>Height:</strong> ${presidentData.height || "6'3\" (190.5 cm)"}`;
+                if (indexPresidentParty) indexPresidentParty.innerHTML = `<strong>Party:</strong> ${presidentData.party || 'Republican Party'}`;
+                if (indexPresidentTerm) indexPresidentTerm.innerHTML = `<strong>Presidential Term:</strong> ${presidentData.termStart || '1/20/25 at 12:00 PM'} - ${presidentData.termEnd || '1/20/29 at 12:00 PM'}`;
+                if (indexVicePresidentName) indexVicePresidentName.innerHTML = `<strong>Vice President:</strong> ${presidentData.vicePresident || 'James David Vance'}`;
             } else {
                 console.log("No user document found, or no president data for index page.");
                 // If no data, the index.html will show the hardcoded values
