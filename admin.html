@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal</title>
+  <link rel="stylesheet" href="admin-portal.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="admin-portal">
+    <header>
+      <h1>Admin Portal</h1>
+      <nav>
+        <ul>
+          <li data-tab="home">Home</li>
+          <li data-tab="shoutouts">Shoutouts</li>
+          <li data-tab="blog">Blog</li>
+          <li data-tab="merch">Merch Store</li>
+          <li data-tab="settings">Settings</li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Home Tab -->
+      <section id="home" class="tab active">
+        <div class="module" id="profile-section"></div>
+        <div class="module" id="connect-section"></div>
+        <div class="module" id="president-section"></div>
+        <div class="module" id="useful-links-section"></div>
+        <div class="module" id="countdown-section"></div>
+        <div class="module" id="events-section"></div>
+        <div class="module" id="business-section"></div>
+        <div class="module" id="faq-section"></div>
+        <div class="module" id="tech-section"></div>
+        <div class="module" id="disabilities-section"></div>
+        <div class="module" id="version-section"></div>
+        <div class="module" id="notice-section"></div>
+      </section>
+
+      <!-- Shoutouts Tab -->
+      <section id="shoutouts" class="tab">
+        <div class="module" id="shoutout-section"></div>
+      </section>
+
+      <!-- Blog Tab -->
+      <section id="blog" class="tab">
+        <div class="module" id="category-section"></div>
+        <div class="module" id="blog-section"></div>
+      </section>
+
+      <!-- Merch Tab -->
+      <section id="merch" class="tab">
+        <div class="module" id="merch-categories-section"></div>
+        <div class="module" id="merch-products-section"></div>
+      </section>
+
+      <!-- Settings Tab -->
+      <section id="settings" class="tab">
+        <div class="module" id="appearance-section"></div>
+        <div class="module" id="accessibility-section"></div>
+        <div class="module" id="owner-settings-section"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="admin-portal.js"></script>
+</body>
+
+</html>
