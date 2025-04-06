@@ -2,59 +2,59 @@
 /* Theme Variables           */
 /* ======================== */
 :root {
-    /* Light Mode Colors */
-    --light-bg: #ffffff;
-    --light-content-bg: #f5f5f5;
-    --light-text: #212529;
-    --light-secondary-text: #495057;
-    --light-border: #ced4da; /* Slightly darker border */
-    --light-accent: #007bff; /* Using a blue accent for buttons */
-    --light-hover: #0056b3;
-    --light-link: #007bff;
-    --light-shadow: rgba(0, 0, 0, 0.1);
-    --light-icon: #ffffff;
+  /* Light Mode Colors */
+  --light-bg: #ffffff;
+  --light-content-bg: #f5f5f5;
+  --light-text: #212529;
+  --light-secondary-text: #495057;
+  --light-border: #ced4da; /* Slightly darker border */
+  --light-accent: #007bff; /* Using a blue accent for buttons */
+  --light-hover: #0056b3;
+  --light-link: #007bff;
+  --light-shadow: rgba(0, 0, 0, 0.1);
+  --light-icon: #ffffff;
 
-    /* Dark Mode Colors */
-    --dark-bg: #121212;
-    --dark-content-bg: #2d2d2d;
-    --dark-text: #E0E0E0;
-    --dark-secondary-text: #a0a0a0;
-    --dark-border: #333333;
-    --dark-accent: #007bff;
-    --dark-hover: #0056b3;
-    --dark-link: #BB86FC;
-    --dark-shadow: rgba(0, 0, 0, 0.2);
-    --dark-icon: #000000;
+  /* Dark Mode Colors */
+  --dark-bg: #121212;
+  --dark-content-bg: #2d2d2d;
+  --dark-text: #E0E0E0;
+  --dark-secondary-text: #a0a0a0;
+  --dark-border: #333333;
+  --dark-accent: #007bff;
+  --dark-hover: #0056b3;
+  --dark-link: #BB86FC;
+  --dark-shadow: rgba(0, 0, 0, 0.2);
+  --dark-icon: #000000;
 
-    /* Button Styles */
-    --btn-bg: #007bff; /* Using the accent color */
-    --btn-bg-hover: #0056b3;
-    --btn-text: #ffffff;
+  /* Button Styles */
+  --btn-bg: #007bff; /* Using the accent color */
+  --btn-bg-hover: #0056b3;
+  --btn-text: #ffffff;
 
-    /* Input and Dropdowns */
-    --input-bg: #ffffff;
-    --dropdown-background-dark: #222222;
-    --dropdown-text-dark: #ffffff;
-    --dropdown-border-dark: #555555;
-    --dropdown-focus-border: #007bff;
-    --dropdown-background-light: #ffffff;
-    --dropdown-text-light: #333333;
-    --dropdown-border-light: #ced4da; /* Slightly darker border */
-    --dropdown-focus-border-light: #007bff;
+  /* Input and Dropdowns */
+  --input-bg: #ffffff;
+  --dropdown-background-dark: #222222;
+  --dropdown-text-dark: #ffffff;
+  --dropdown-border-dark: #555555;
+  --dropdown-focus-border: #007bff;
+  --dropdown-background-light: #ffffff;
+  --dropdown-text-light: #333333;
+  --dropdown-border-light: #ced4da; /* Slightly darker border */
+  --dropdown-focus-border-light: #007bff;
 }
 
 /* Light e Override */
 body.light-e {
-    --bg-color: var(--light-bg);
-    --content-bg: var(--light-content-bg);
-    --text-color: var(--light-text);
-    --secondary-text: var(--light-secondary-text);
-    --border-color: var(--light-border);
-    --accent-color: var(--light-accent);
-    --hover-color: var(--light-hover);
-    --link-color: var(--light-link);
-    --shadow-color: var(--light-shadow);
-    --icon-color: var(--light-icon);
+  --bg-color: var(--light-bg);
+  --content-bg: var(--light-content-bg);
+  --text-color: var(--light-text);
+  --secondary-text: var(--light-secondary-text);
+  --border-color: var(--light-border);
+  --accent-color: var(--light-accent);
+  --hover-color: var(--light-hover);
+  --link-color: var(--light-link);
+  --shadow-color: var(--light-shadow);
+  --icon-color: var(--light-icon);
 }
 
 /* ======================== */
@@ -63,188 +63,188 @@ body.light-e {
 
 /* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    background-color: var(--bg-color);
-    overflow-x: hidden;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color: var(--bg-color);
+  overflow-x: hidden;
 }
 
 /* Admin Container */
 .admin-container {
-    display: flex;
-    flex: 1;
-    min-height: 100vh;
-    position: relative;
-    transition: margin-left 0.3s ease; /* Smooth content shift */
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+  position: relative;
+  transition: margin-left 0.3s ease; /* Smooth content shift */
 }
 
 /* Sidebar */
 .admin-sidebar {
-    width: 250px;
-    background-color: var(--content-bg);
-    padding: 30px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 1000;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
-    transition: transform 0.3s ease;
+  width: 250px;
+  background-color: var(--content-bg);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  transition: transform 0.3s ease;
 }
 
 /* Sidebar Profile (no changes here) */
 .profile-info {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .profile-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    transition: transform 0.3s ease;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
 }
 
 .profile-img:hover {
-    transform: scale(1.1); /* Slightly zoom effect on hover */
+  transform: scale(1.1); /* Slightly zoom effect on hover */
 }
 
 .username {
-    color: var(--text-color);
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 /* Sidebar Navigation (no changes here) */
 .admin-nav {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .admin-nav li {
-    width: 100%;
-    margin: 15px 0;
+  width: 100%;
+  margin: 15px 0;
 }
 
 .admin-nav li a {
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    color: var(--text-color);
-    text-align: center;
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--text-color);
+  text-align: center;
+  background-color: var(--content-bg);
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .admin-nav li a:hover {
-    background-color: var(--accent-color);
-    transform: scale(1.05); /* Subtle scaling effect */
+  background-color: var(--accent-color);
+  transform: scale(1.05); /* Subtle scaling effect */
 }
 
 /* Logout Button (no changes here) */
 .logout-btn {
-    margin-top: auto;
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
-    border: none;
-    padding: 15px;
-    width: 100%;
-    text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s ease;
+  margin-top: auto;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease;
 }
 
 .logout-btn:hover {
-    background-color: var(--btn-bg-hover);
-    transform: scale(1.05); /* Slight hover effect */
+  background-color: var(--btn-bg-hover);
+  transform: scale(1.05); /* Slight hover effect */
 }
 
 /* Main Content */
 .admin-content {
-    margin-left: 250px; /* Ensures the content doesn’t overlap the sidebar */
-    padding: 30px;
-    padding-left: 60px; /* Increased left padding */
-    flex: 1;
-    background-color: var(--content-bg);
-    min-height: 100vh;
-    transition: margin-left 0.3s ease; /* transition for sidebar collapse */
+  margin-left: 250px; /* Ensures the content doesn’t overlap the sidebar */
+  padding: 30px;
+  padding-left: 60px; /* Increased left padding */
+  flex: 1;
+  background-color: var(--content-bg);
+  min-height: 100vh;
+  transition: margin-left 0.3s ease; /* transition for sidebar collapse */
 }
 
 /* Tab Content (no changes here) */
 .admin-tab-content {
-    display: none;
+  display: none;
 }
 
 .admin-tab-content.active {
-    display: block;
+  display: block;
 }
 
 /* Form Styles */
 .profile-section {
-    background-color: var(--light-bg); /* White background for the form area */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px var(--light-shadow); /* Subtle shadow to lift the form */
-    margin-bottom: 20px; /* Add some margin below the form */
+  background-color: var(--light-bg); /* White background for the form area */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px var(--light-shadow); /* Subtle shadow to lift the form */
+  margin-bottom: 20px; /* Add some margin below the form */
 }
 
 .form-group {
-    margin-bottom: 25px; /* Increased margin for better spacing */
+  margin-bottom: 25px; /* Increased margin for better spacing */
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px; /* Increased margin */
-    color: var(--light-text);
-    font-weight: bold;
+  display: block;
+  margin-bottom: 8px; /* Increased margin */
+  color: var(--light-text);
+  font-weight: bold;
 }
 
 .form-group input[type="file"],
 .form-group input[type="text"],
 .form-group textarea {
-    width: calc(100% - 20px); /* Keep the width adjustment */
-    padding: 12px; /* Increased padding */
-    border: 1px solid var(--light-border);
-    border-radius: 6px; /* Slightly more rounded */
-    background-color: var(--input-bg);
-    color: var(--light-text);
-    box-sizing: border-box; /* Ensure padding doesn't affect width */
-    font-size: 16px; /* Slightly larger font size */
+  width: calc(100% - 20px); /* Keep the width adjustment */
+  padding: 12px; /* Increased padding */
+  border: 1px solid var(--light-border);
+  border-radius: 6px; /* Slightly more rounded */
+  background-color: var(--input-bg);
+  color: var(--light-text);
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  font-size: 16px; /* Slightly larger font size */
 }
 
 .form-group textarea {
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 100px; /* Give the textarea a minimum height */
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 100px; /* Give the textarea a minimum height */
 }
 
 .save-profile-button {
-    background-color: var(--light-accent); /* Using the blue accent color */
-    color: var(--btn-text);
-    border: none;
-    padding: 14px 24px; /* Increased padding */
-    border-radius: 6px; /* Slightly more rounded */
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: var(--light-accent); /* Using the blue accent color */
+  color: var(--btn-text);
+  border: none;
+  padding: 14px 24px; /* Increased padding */
+  border-radius: 6px; /* Slightly more rounded */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .save-profile-button:hover {
-    background-color: var(--light-hover);
-    transform: scale(1.02);
+  background-color: var(--light-hover);
+  transform: scale(1.02);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -252,662 +252,220 @@ body {
 /* -------------------------------------------------------------------------- */
 
 #social-links-admin {
-    background-color: var(--light-bg);
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px var(--light-shadow);
-    margin-top: 20px;
+  background-color: var(--light-bg);
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--light-shadow);
+  margin-top: 20px;
 }
 
 #social-links-admin h3 {
-    color: var(--light-text);
-    border-bottom: 2px solid var(--light-border);
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+  color: var(--light-text);
+  border-bottom: 2px solid var(--light-border);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 #social-links-admin > .social-links-section { /* Style the container for the displayed links */
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid var(--light-border);
-    border-radius: 6px;
-    background-color: var(--light-content-bg);
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  background-color: var(--light-content-bg);
 }
 
 #social-links-admin > .social-links-section h2 {
-    color: var(--light-text);
-    border-bottom: 1px solid var(--light-border);
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    font-size: 1.2em;
+  color: var(--light-text);
+  border-bottom: 1px solid var(--light-border);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  font-size: 1.2em;
 }
 
 #current-social-links {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 15px;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 15px;
 }
 
 #current-social-links li {
-    background-color: var(--light-bg);
-    border: 1px solid var(--light-border);
-    border-radius: 6px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  background-color: var(--light-bg);
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #current-social-links li .link-info {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 #current-social-links li i {
-    margin-right: 10px;
-    font-size: 1.3em;
-    color: var(--light-secondary-text);
-    width: 25px;
-    text-align: center;
+  margin-right: 10px;
+  font-size: 1.3em;
+  color: var(--light-secondary-text);
+  width: 25px;
+  text-align: center;
 }
 
 #current-social-links li span {
-    font-weight: bold;
-    color: var(--light-text);
-    margin-right: 5px;
+  font-weight: bold;
+  color: var(--light-text);
+  margin-right: 5px;
 }
 
 #current-social-links li a {
-    color: var(--light-link);
-    text-decoration: none;
-    word-break: break-all;
+  color: var(--light-link);
+  text-decoration: none;
+  word-break: break-all;
 }
 
 #current-social-links li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #current-social-links li .actions {
-    display: flex;
-    gap: 8px; /* Increased gap between buttons */
-    margin-top: 10px;
+  display: flex;
+  gap: 8px; /* Increased gap between buttons */
+  margin-top: 10px;
 }
 
 #current-social-links li button {
-    background-color: #f44336; /* Red for remove */
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
+  background-color: #f44336; /* Red for remove */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
 }
 
 #current-social-links li button.edit-btn {
-    background-color: #007bff; /* Blue for edit */
+  background-color: #007bff; /* Blue for edit */
 }
 
 #current-social-links li button:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 #add-social-link-form {
-    background-color: var(--light-content-bg);
-    padding: 20px;
-    border: 1px solid var(--light-border);
-    border-radius: 6px;
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: auto 1fr auto; /* Platform | URL | Button */
-    gap: 15px;
-    align-items: center;
+  background-color: var(--light-content-bg);
+  padding: 20px;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* Platform | URL | Button */
+  gap: 15px;
+  align-items: center;
 }
 
 #add-social-link-form .form-group {
-    grid-column: 1 / 3;
-    display: flex;
-    flex-direction: column;
+  grid-column: 1 / 3;
+  display: flex;
+  flex-direction: column;
 }
 
 #add-social-link-form .form-group label {
-    font-weight: bold;
-    color: var(--light-text);
-    margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--light-text);
+  margin-bottom: 5px;
 }
 
 #add-social-link-form input[type="text"],
 #add-social-link-form input[type="url"] {
-    padding: 10px;
-    border: 1px solid var(--light-border);
-    border-radius: 4px;
-    font-size: 1em;
+  padding: 10px;
+  border: 1px solid var(--light-border);
+  border-radius: 4px;
+  font-size: 1em;
 }
 
 #add-social-link-form button {
-    background-color: var(--light-accent);
-    color: var(--btn-text);
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+  background-color: var(--light-accent);
+  color: var(--btn-text);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
 #add-social-link-form button:hover {
-    background-color: var(--light-hover);
+  background-color: var(--light-hover);
 }
 
 #add-social-link-form .form-group:nth-child(3) { /* Target URL input to span full width */
-    grid-column: 1 / 4;
+  grid-column: 1 / 4;
 }
 
 #add-social-link-form button {
-    grid-column: 3 / 4;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Current President Section Styling */
-/* -------------------------------------------------------------------------- */
-
-.president-editor {
-    background-color: var(--light-bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px var(--light-shadow);
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.president-editor h3 {
-    color: var(--light-text);
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--light-border);
-    padding-bottom: 10px;
-}
-
-.president-editor .form-group {
-    margin-bottom: 20px;
-}
-
-.president-editor .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--light-text);
-    font-weight: bold;
-}
-
-.president-editor .form-group input[type="text"],
-.president-editor .form-group input[type="file"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid var(--light-border);
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1em;
-}
-
-.president-editor .form-group img {
-    margin-top: 10px;
-    border: 1px solid var(--light-border);
-    border-radius: 4px;
-}
-
-.save-president-button {
-    background-color: var(--light-accent);
-    color: var(--btn-text);
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.save-president-button:hover {
-    background-color: var(--light-hover);
-    transform: scale(1.02);
-}
-
-.president-section {
-    background-color: var(--light-bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px var(--light-shadow);
-    margin-bottom: 20px;
-    position: relative; /* To allow absolute positioning of the edit button */
-}
-
-.president-section .section-title {
-    color: var(--light-text);
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--light-border);
-    padding-bottom: 10px;
-    display: flex; /* Use flex to align title and button */
-    justify-content: space-between; /* Push button to the right */
-    align-items: center; /* Vertically align items */
-}
-
-.president-section .section-title button#editPresidentButton {
-    background-color: var(--light-accent);
-    color: var(--btn-text);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    /* Adjust position if needed */
-    /* position: absolute;
-    top: 15px;
-    right: 15px; */
-}
-
-.president-section .section-title button#editPresidentButton:hover {
-    background-color: var(--light-hover);
-    transform: scale(1.05);
-}
-
-.president-info {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.president-photo {
-    max-width: 150px;
-    height: auto;
-    border-radius: 8px;
-    border: 1px solid var(--light-border);
-    object-fit: cover;
-}
-
-.president-details {
-    flex-grow: 1;
-}
-
-.president-details h3 {
-    color: var(--light-text);
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.president-details p {
-    color: var(--light-secondary-text);
-    margin-bottom: 5px;
-}
-
-.presidential-term {
-    font-weight: bold;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Shoutouts Section Styling */
-/* -------------------------------------------------------------------------- */
-
-#shoutouts h2 {
-    color: var(--light-text);
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--light-border);
-    padding-bottom: 10px;
-}
-
-#shoutouts button {
-    background-color: var(--light-accent);
-    color: var(--btn-text);
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#shoutouts button:hover {
-    background-color: var(--light-hover);
-    transform: scale(1.02);
-}
-
-.shoutout-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.shoutout-item {
-    background-color: var(--light-bg);
-    border: 1px solid var(--light-border);
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 5px var(--light-shadow);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.shoutout-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    object-fit: cover;
-}
-
-.shoutout-details h4 {
-    color: var(--light-text);
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-size: 1.1em;
-}
-
-.shoutout-details .creator-username {
-    color: var(--light-secondary-text);
-    font-size: 0.9em;
-    margin-bottom: 8px;
-}
-
-.shoutout-details .creator-bio {
-    color: var(--light-text);
-    font-size: 0.95em;
-    margin-bottom: 10px;
-    line-height: 1.4;
-}
-
-.shoutout-details .follower-count,
-.shoutout-details .subscriber-count {
-    color: var(--light-accent);
-    font-weight: bold;
-    font-size: 0.9em;
-    margin-bottom: 5px;
-}
-
-.shoutout-actions {
-    margin-top: 15px;
-    text-align: center;
-}
-
-.shoutout-actions button {
-    background-color: #6c757d; /* Gray button */
-    color: var(--btn-text);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin: 0 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.shoutout-actions button:hover {
-    background-color: #5a6268;
-    transform: scale(1.05);
-}
-
-.shoutout-actions button:first-child {
-    background-color: var(--light-accent); /* Blue for edit */
-}
-
-.shoutout-actions button:first-child:hover {
-    background-color: var(--light-hover);
-}
-
-.shoutout-actions button:last-child {
-    background-color: #dc3545; /* Red for delete */
-}
-
-.shoutout-actions button:last-child:hover {
-    background-color: #c82333;
-}
-
-/* Modal Styles */
-.modal {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background-color: var(--light-bg);
-    padding: 30px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 600px;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.modal-content h3 {
-    color: var(--light-text);
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--light-border);
-    padding-bottom: 10px;
-}
-
-.close-button {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    color: var(--light-secondary-text);
-    background: none;
-    border: none;
-    padding: 0;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: var(--light-text);
-    text-decoration: none;
-}
-
-#shoutout-form .form-group {
-    margin-bottom: 20px;
-}
-
-#shoutout-form label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 8px;
-    color: var(--light-text);
-}
-
-#shoutout-form input[type="text"],
-#shoutout-form input[type="url"],
-#shoutout-form textarea {
-    width: calc(100% - 20px);
-    padding: 12px;
-    border: 1px solid var(--light-border);
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 1em;
-    color: var(--light-text);
-    background-color: var(--input-bg);
-}
-
-#shoutout-form textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-#shoutout-form input[type="checkbox"] {
-    margin-right: 5px;
-}
-
-#shoutout-form button[type="button"] {
-    background-color: var(--light-accent);
-    color: var(--btn-text);
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 15px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#shoutout-form button[type="button"]:hover {
-    background-color: var(--light-hover);
-    transform: scale(1.02);
-}
-
-#followers-subscribers-group label {
-    display: flex;
-    align-items: center;
-}
-
-#followers-subscribers-group label input[type="checkbox"] {
-    margin-left: 10px;
+  grid-column: 3 / 4;
 }
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
-    #current-social-links {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-    #add-social-link-form {
-        grid-template-columns: auto 1fr;
-    }
-    #add-social-link-form .form-group {
-        grid-column: 1 / 3;
-    }
-    #add-social-link-form button {
-        grid-column: 1 / 3;
-    }
-    .president-info {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .president-photo {
-        max-width: 100%;
-    }
-    .shoutout-list {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
+  #current-social-links {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  #add-social-link-form {
+    grid-template-columns: auto 1fr;
+  }
+  #add-social-link-form .form-group {
+    grid-column: 1 / 3;
+  }
+  #add-social-link-form button {
+    grid-column: 1 / 3;
+  }
 }
 
 @media (max-width: 768px) {
-    .admin-container {
-        flex-direction: column;
-    }
+  .admin-container {
+    flex-direction: column;
+  }
 
-    .admin-sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        transform: translateX(0);
-        box-shadow: none;
-    }
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    transform: translateX(0);
+    box-shadow: none;
+  }
 
-    .admin-content {
-        margin-left: 0;
-        padding: 15px;
-    }
+  .admin-content {
+    margin-left: 0;
+    padding: 15px;
+  }
 
-    #current-social-links {
-        grid-template-columns: 1fr;
-    }
-    #current-social-links li {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    #current-social-links li .actions {
-        margin-top: 15px;
-    }
-    #current-social-links li a {
-        margin-left: 0;
-    }
-    .shoutout-list {
-        grid-template-columns: 1fr;
-    }
+  #current-social-links {
+    grid-template-columns: 1fr;
+  }
+  #current-social-links li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #current-social-links li .actions {
+    margin-top: 15px;
+  }
+  #current-social-links li a {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 576px) {
-    #add-social-link-form {
-        grid-template-columns: 1fr;
-    }
-    #add-social-link-form .form-group {
-        grid-column: 1 / 2;
-    }
-    #add-social-link-form button {
-        grid-column: 1 / 2;
-    }
-}
-
-/* Specific adjustments for admin shoutout buttons */
-.admin-controls {
-    display: flex;
-    flex-direction: column; /* Stack the buttons vertically */
-    gap: 8px; /* Add some space between the buttons */
-    margin-top: 10px; /* Add some space above the buttons */
-}
-
-.admin-controls button {
-    width: 100%; /* Make the buttons take the full width of the container */
-    box-sizing: border-box; /* Ensure padding doesn't affect the width */
-    padding: 8px 12px; /* Add some padding to the buttons themselves */
-    text-align: center; /* Center the text within the buttons */
-}
-
-/* Adjustments for the shoutout item to potentially improve overall layout */
-.shoutout-item {
-    display: grid;
-    grid-template-columns: auto 1fr; /* Profile image and details */
-    gap: 15px;
-    padding: 15px;
-}
-
-.shoutout-item img {
-    width: 80px; /* Fixed width for profile image */
-    height: 80px; /* Fixed height for profile image */
-    border-radius: 50%; /* Make it circular */
-    object-fit: cover;
-    margin-bottom: 0; /* Remove default margin */
-}
-
-.shoutout-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Vertically center the details */
-}
-
-.shoutout-details h4 {
-    margin-bottom: 2px;
-}
-
-.shoutout-details .creator-username {
-    margin-bottom: 5px;
-}
-
-.shoutout-details .creator-bio {
-    margin-bottom: 8px;
-}
-
-.shoutout-actions {
-    grid-column: 1 / -1; /* Make actions span across both columns */
-    text-align: left; /* Align buttons to the left */
-    margin-top: 10px;
-}
-
-.shoutout-actions button {
-    margin-right: 5px;
-    margin-left: 0;
-    padding: 8px 10px;
-    font-size: 0.85em;
+  #add-social-link-form {
+    grid-template-columns: 1fr;
+  }
+  #add-social-link-form .form-group {
+    grid-column: 1 / 2;
+  }
+  #add-social-link-form button {
+    grid-column: 1 / 2;
+  }
 }
