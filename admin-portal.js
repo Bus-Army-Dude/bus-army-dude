@@ -49,6 +49,31 @@ const vicePresidentDisplayNameAdmin = document.getElementById('vicePresidentDisp
 const presidentDisplayPhotoAdmin = document.getElementById('presidentDisplayPhoto');
 const cancelPresidentButton = document.querySelector('.cancel-president-button');
 
+// DOM elements for Shoutouts Section
+const shoutoutModal = document.getElementById('shoutout-modal');
+const shoutoutForm = document.getElementById('shoutout-form');
+const modalTitle = document.getElementById('modal-title');
+const closeButton = document.querySelector('.close-button');
+const shoutoutPlatformInput = document.getElementById('shoutout-platform');
+const shoutoutIdInput = document.getElementById('shoutout-id');
+const usernameInputShoutout = document.getElementById('username');
+const nicknameInputShoutout = document.getElementById('nickname');
+const bioInputShoutout = document.getElementById('bio');
+const profilePicInputShoutout = document.getElementById('profilePic');
+const followersInputShoutout = document.getElementById('followers');
+const isVerifiedInputShoutout = document.getElementById('isVerified');
+const coverPhotoInputShoutout = document.getElementById('coverPhoto');
+const followersSubscribersGroup = document.getElementById('followers-subscribers-group');
+const coverPhotoGroup = document.getElementById('coverPhoto-group');
+const tiktokShoutoutsList = document.getElementById('tiktok-shoutouts-list');
+const instagramShoutoutsList = document.getElementById('instagram-shoutouts-list');
+const youtubeShoutoutsList = document.getElementById('youtube-shoutouts-list');
+const saveShoutoutButton = document.getElementById('save-shoutout-button');
+const addTiktokShoutoutButton = document.getElementById('add-tiktok-shoutout');
+const addInstagramShoutoutButton = document.getElementById('add-instagram-shoutout');
+const addYoutubeShoutoutButton = document.getElementById('add-youtube-shoutout');
+
+
 // DOM elements (for index.html)
 const indexPresidentPhoto = document.querySelector('#current-president .president-photo');
 const indexPresidentName = document.querySelector('#current-president .president-name');
@@ -77,6 +102,13 @@ function switchTab(tabId) {
         section.style.display = "none";  // Hide all sections
     });
     document.getElementById(tabId).style.display = "block";  // Show the selected section
+
+    // Load shoutouts when the shoutouts tab is opened
+    if (tabId === 'shoutouts') {
+        loadShoutoutsAdmin('tiktok');
+        loadShoutoutsAdmin('instagram');
+        loadShoutoutsAdmin('youtube');
+    }
 }
 
 // Set default tab on page load
@@ -181,6 +213,7 @@ function saveSocialLinksToFirebase(socialLinks) {
     })
     .then(() => {
         console.log("Social links updated in Firebase!");
+        loadSocialLinksIndex(); // Update social links on index page after saving
     })
     .catch((error) => {
         console.error("Error updating social links in Firebase: ", error);
@@ -250,7 +283,6 @@ function addSocialLink() {
                 platformInput.value = ''; // Clear the input fields
                 urlInput.value = '';
                 loadSocialLinksAdmin(); // Reload the displayed list from Firebase
-                loadSocialLinksIndex(); // Reload social links on index page
             })
             .catch((error) => {
                 console.error("Error getting user document for adding social link: ", error);
@@ -296,7 +328,6 @@ function removeSocialLink(index) {
                     socialLinks.splice(index, 1); // Remove the link at the given index
                     saveSocialLinksToFirebase(socialLinks); // Save the updated array to Firebase
                     loadSocialLinksAdmin(); // Reload the displayed list from Firebase
-                    loadSocialLinksIndex(); // Reload social links on index page
                 } else {
                     console.log("Invalid index for removing social link:", index);
                 }
@@ -529,6 +560,286 @@ function loadPresidentDataIndex() {
         });
 }
 
+// --------------------------------------------------------------------------
+// Shoutouts Section Functionality (for admin.html)
+// --------------------------------------------------------------------------
+
+let currentShoutoutPlatform = '';
+let editingShoutoutId = null;
+
+function openAddShoutoutModal(platform) {
+    currentShoutoutPlatform = platform;
+    shoutoutPlatformInput.value = platform;
+    editingShoutoutId = null; // Reset for adding new shoutout
+    shoutoutForm.reset();
+
+    modalTitle.textContent = `Add New ${platform.charAt(0).toUpperCase() + platform.slice(1)} Shoutout`;
+
+    // Show/hide platform-specific fields
+    if (platform === 'youtube') {
+        followersSubscribersGroup.querySelector('label').textContent = 'Subscribers:';
+        coverPhotoGroup.style.display = 'block';
+    } else {
+        followersSubscribersGroup.querySelector('label').textContent = 'Followers:';
+        coverPhotoGroup.style.display = 'none';
+    }
+
+    shoutoutModal.style.display = 'block';
+}
+
+function closeAddShoutoutModal() {
+    shoutoutModal.style.display = 'none';
+    currentShoutoutPlatform = '';
+    editingShoutoutId = null;
+    shoutoutForm.reset();
+}
+
+if (closeButton) {
+    closeButton.addEventListener('click', closeAddShoutoutModal);
+}
+
+if (window) {
+    window.addEventListener('click', function(event) {
+        if (event.target === shoutoutModal) {
+            closeAddShoutoutModal();
+        }
+    });
+}
+
+if (saveShoutoutButton) {
+    saveShoutoutButton.addEventListener('click', saveShoutout);
+}
+
+if (addTiktokShoutoutButton) {
+    addTiktokShoutoutButton.addEventListener('click', () => openAddShoutoutModal('tiktok'));
+}
+
+if (addInstagramShoutoutButton) {
+    addInstagramShoutoutButton.addEventListener('click', () => openAddShoutoutModal('instagram'));
+}
+
+if (addYoutubeShoutoutButton) {
+    addYoutubeShoutoutButton.addEventListener('click', () => openAddShoutoutModal('youtube'));
+}
+
+function saveShoutout() {
+    if (!currentShoutoutPlatform) {
+        alert('No platform selected for the shoutout.');
+        return;
+    }
+
+    const username = usernameInputShoutout.value;
+    const nickname = nicknameInputShoutout.value;
+    const bio = bioInputShoutout.value;
+    const followers = followersInputShoutout.value ? parseInt(followersInputShoutout.value) : 0;
+    const isVerified = isVerifiedInputShoutout.checked;
+    const platform = shoutoutPlatformInput.value;
+    let profilePicUrl = null;
+    let coverPhotoUrl = null;
+
+    const saveShoutoutDataToFirebase = (profilePicUrl, coverPhotoUrl) => {
+        const shoutoutData = {
+            username: username,
+            nickname: nickname,
+            bio: bio,
+            followers: followers,
+            isVerified: isVerified,
+            profilePicUrl: profilePicUrl,
+            ...(platform === 'youtube' && coverPhotoUrl ? { coverPhotoUrl: coverPhotoUrl } : {}),
+            platform: platform
+        };
+
+        const userRef = db.collection('users').doc('main-user');
+        const shoutoutsRef = userRef.collection('shoutouts').doc(platform);
+
+        if (editingShoutoutId) {
+            shoutoutsRef.collection('list').doc(editingShoutoutId).update(shoutoutData)
+                .then(() => {
+                    alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated!`);
+                    loadShoutoutsAdmin(platform);
+                    closeAddShoutoutModal();
+                })
+                .catch((error) => {
+                    console.error(`Error updating ${platform} shoutout: `, error);
+                    alert(`Error updating ${platform} shoutout.`);
+                });
+        } else {
+            shoutoutsRef.collection('list').add(shoutoutData)
+                .then(() => {
+                    alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added!`);
+                    loadShoutoutsAdmin(platform);
+                    closeAddShoutoutModal();
+                })
+                .catch((error) => {
+                    console.error(`Error adding ${platform} shoutout: `, error);
+                    alert(`Error adding ${platform} shoutout.`);
+                });
+        }
+    };
+
+    const uploadProfilePic = () => {
+        return new Promise((resolve) => {
+            if (profilePicInputShoutout.files && profilePicInputShoutout.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    resolve(e.target.result);
+                };
+                reader.readAsDataURL(profilePicInputShoutout.files[0]);
+            } else {
+                resolve(null); // Or handle existing URL if needed
+            }
+        });
+    };
+
+    const uploadCoverPhoto = () => {
+        return new Promise((resolve) => {
+            if (platform === 'youtube' && coverPhotoInputShoutout.files && coverPhotoInputShoutout.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    resolve(e.target.result);
+                };
+                reader.readAsDataURL(coverPhotoInputShoutout.files[0]);
+            } else {
+                resolve(null);
+            }
+        });
+    };
+
+    Promise.all([uploadProfilePic(), uploadCoverPhoto()])
+        .then(([profilePicUrlResult, coverPhotoUrlResult]) => {
+            saveShoutoutDataToFirebase(profilePicUrlResult, coverPhotoUrlResult);
+        });
+}
+
+function loadShoutoutsAdmin(platform) {
+    const shoutoutsListElement = document.getElementById(`${platform}-shoutouts-list`);
+    if (!shoutoutsListElement) return;
+    shoutoutsListElement.innerHTML = ''; // Clear the list
+
+    const userRef = db.collection('users').doc('main-user');
+    const shoutoutsRef = userRef.collection('shoutouts').doc(platform).collection('list').orderBy('followers', 'desc');
+
+    shoutoutsRef.get()
+        .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach((doc) => {
+                    const shoutout = doc.data();
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <img src="${shoutout.profilePicUrl || 'placeholder.png'}" alt="${shoutout.username}" width="50">
+                        <strong>${shoutout.nickname || shoutout.username}</strong> (${shoutout.username}) - Followers: ${shoutout.followers} ${shoutout.isVerified ? '<i class="fas fa-check-circle"></i>' : ''}
+                        <button onclick="editShoutoutAdmin('${platform}', '${doc.id}')">Edit</button>
+                        <button onclick="deleteShoutout('${platform}', '${doc.id}')">Delete</button>
+                    `;
+                    shoutoutsListElement.appendChild(listItem);
+                });
+            } else {
+                shoutoutsListElement.innerHTML = '<p>No shoutouts added yet.</p>';
+            }
+        })
+        .catch((error) => {
+            console.error(`Error loading ${platform} shoutouts: `, error);
+            shoutoutsListElement.innerHTML = '<p>Error loading shoutouts.</p>';
+        });
+}
+
+function editShoutoutAdmin(platform, shoutoutId) {
+    editingShoutoutId = shoutoutId;
+    currentShoutoutPlatform = platform;
+    shoutoutPlatformInput.value = platform;
+
+    modalTitle.textContent = `Edit ${platform.charAt(0).toUpperCase() + platform.slice(1)} Shoutout`;
+
+    const userRef = db.collection('users').doc('main-user');
+    const shoutoutDocRef = userRef.collection('shoutouts').doc(platform).collection('list').doc(shoutoutId);
+
+    shoutoutDocRef.get()
+        .then((doc) => {
+            if (doc.exists) {
+                const shoutoutData = doc.data();
+                usernameInputShoutout.value = shoutoutData.username || '';
+                nicknameInputShoutout.value = shoutoutData.nickname || '';
+                bioInputShoutout.value = shoutoutData.bio || '';
+                followersInputShoutout.value = shoutoutData.followers || '';
+                isVerifiedInputShoutout.checked = shoutoutData.isVerified || false;
+                // Profile pic will be loaded, no need to set input value directly
+
+                if (platform === 'youtube') {
+                    followersSubscribersGroup.querySelector('label').textContent = 'Subscribers:';
+                    coverPhotoGroup.style.display = 'block';
+                    // Optionally load cover photo if needed
+                } else {
+                    followersSubscribersGroup.querySelector('label').textContent = 'Followers:';
+                    coverPhotoGroup.style.display = 'none';
+                }
+
+                shoutoutModal.style.display = 'block';
+            } else {
+                console.log(`Shoutout not found for ID: ${shoutoutId}`);
+            }
+        })
+        .catch((error) => {
+            console.error(`Error fetching ${platform} shoutout for edit: `, error);
+            alert('Error fetching shoutout data.');
+        });
+}
+
+function deleteShoutout(platform, shoutoutId) {
+    if (confirm(`Are you sure you want to delete this ${platform} shoutout?`)) {
+        const userRef = db.collection('users').doc('main-user');
+        const shoutoutDocRef = userRef.collection('shoutouts').doc(platform).collection('list').doc(shoutoutId);
+
+        shoutoutDocRef.delete()
+            .then(() => {
+                alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted!`);
+                loadShoutoutsAdmin(platform);
+            })
+            .catch((error) => {
+                console.error(`Error deleting ${platform} shoutout: `, error);
+                alert(`Error deleting ${platform} shoutout.`);
+            });
+    }
+}
+
+function loadShoutoutsIndex(platform) {
+    // This function will load shoutouts for the index.html page.
+    // You will need to create the corresponding HTML elements in your index.html
+    // to display these shoutouts.
+
+    const shoutoutsContainer = document.getElementById(`${platform}-shoutouts`); // Example container ID
+    if (!shoutoutsContainer) return;
+    shoutoutsContainer.innerHTML = '';
+
+    const userRef = db.collection('users').doc('main-user');
+    const shoutoutsRef = userRef.collection('shoutouts').doc(platform).collection('list').orderBy('followers', 'desc');
+
+    shoutoutsRef.get()
+        .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach((doc) => {
+                    const shoutout = doc.data();
+                    const shoutoutDiv = document.createElement('div');
+                    shoutoutDiv.classList.add('shoutout-item'); // Example class
+                    shoutoutDiv.innerHTML = `
+                        <img src="${shoutout.profilePicUrl || 'placeholder.png'}" alt="${shoutout.username}" width="50">
+                        <h3>${shoutout.nickname || shoutout.username}</h3>
+                        <p>@${shoutout.username} ${shoutout.isVerified ? '<i class="fas fa-check-circle"></i>' : ''}</p>
+                        <p>Followers: ${shoutout.followers}</p>
+                        <p>${shoutout.bio || ''}</p>
+                        ${platform === 'youtube' && shoutout.coverPhotoUrl ? `<img src="${shoutout.coverPhotoUrl}" alt="Cover" style="width:100%;">` : ''}
+                    `;
+                    shoutoutsContainer.appendChild(shoutoutDiv);
+                });
+            } else {
+                shoutoutsContainer.innerHTML = '<p>No shoutouts available.</p>';
+            }
+        })
+        .catch((error) => {
+            console.error(`Error loading ${platform} shoutouts for index: `, error);
+            shoutoutsContainer.innerHTML = '<p>Error loading shoutouts.</p>';
+        });
+}
+
 // Call initializePresidentSection when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Existing DOMContentLoaded logic for other sections
@@ -561,4 +872,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load president data and social links for index page
     loadPresidentDataIndex();
     loadSocialLinksIndex();
+
+    // Load shoutouts for index page (you might want to trigger this based on user interaction or page)
+    loadShoutoutsIndex('tiktok');
+    loadShoutoutsIndex('instagram');
+    loadShoutoutsIndex('youtube');
 });
