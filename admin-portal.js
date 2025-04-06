@@ -319,23 +319,33 @@ function loadSocialLinksIndex() {
 
     socialLinksContainer.innerHTML = ''; // Clear existing links
 
-    const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
-    if (storedLinks) {
-        const socialLinks = JSON.parse(storedLinks);
-        socialLinks.forEach(link => {
-            const linkElement = document.createElement('a');
-            linkElement.href = link.url;
-            linkElement.classList.add('social-button');
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const socialLinks = data.socialLinks || []; // Get social links from Firebase
 
-            const iconElement = document.createElement('i');
-            iconElement.className = `${getSocialIconClass(link.platform)} social-icon`;
+                socialLinks.forEach(link => {
+                    const linkElement = document.createElement('a');
+                    linkElement.href = link.url;
+                    linkElement.classList.add('social-button');
 
-            const spanElement = document.createElement('span');
-            spanElement.textContent = link.platform.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Format platform name
+                    const iconElement = document.createElement('i');
+                    iconElement.className = `${getSocialIconClass(link.platform)} social-icon`;
 
-            linkElement.appendChild(iconElement);
-            linkElement.appendChild(spanElement);
-            socialLinksContainer.appendChild(linkElement);
+                    const spanElement = document.createElement('span');
+                    spanElement.textContent = link.platform.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Format platform name
+
+                    linkElement.appendChild(iconElement);
+                    linkElement.appendChild(spanElement);
+                    socialLinksContainer.appendChild(linkElement);
+                });
+            } else {
+                console.log("No user document found, or no social links for index.html.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading social links from Firebase for index.html: ", error);
         });
     }
 }
