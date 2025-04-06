@@ -11,10 +11,9 @@ const firebaseConfig = {
   measurementId: "G-FVWWFFBCP2"
 };
 
-// Initialize Firebase (Compatibility syntax)
+// Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-// const analytics = getAnalytics(app); // Remove this line for now
 // If you plan to use Firebase Storage
 // const storage = firebase.storage();
 
@@ -89,17 +88,31 @@ function saveProfileData(username, bio, profilePictureUrl) {
 
 // Load saved data when admin.html loads (Profile Section)
 document.addEventListener('DOMContentLoaded', function() {
-    const savedUsername = localStorage.getItem('username'); // We will update this to Firebase
-    if (savedUsername && usernameInputAdmin) {
-        usernameInputAdmin.value = savedUsername;
-    }
-
-    const savedBio = localStorage.getItem('bio'); // We will update this to Firebase
-    if (savedBio && bioTextareaAdmin) {
-        bioTextareaAdmin.value = savedBio;
-    }
-
-    loadSocialLinksAdmin(); // Load social links when admin page loads
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (usernameInputAdmin) {
+                    usernameInputAdmin.value = data.username || '';
+                }
+                if (bioTextareaAdmin) {
+                    bioTextareaAdmin.value = data.bio || '';
+                }
+                // You might want to load the profile picture here as well,
+                // if you are displaying it in the admin portal.
+                const profilePicSrc = data.profilePictureUrl || '';
+                const currentProfilePic = document.getElementById('currentProfilePic');
+                if (currentProfilePic) {
+                    currentProfilePic.src = profilePicSrc;
+                }
+            } else {
+                console.log("No such document!");
+            }
+            loadSocialLinksAdmin(); // Load social links when admin page loads
+        })
+        .catch((error) => {
+            console.error("Error getting document:", error);
+        });
 });
 
 // --------------------------------------------------------------------------
