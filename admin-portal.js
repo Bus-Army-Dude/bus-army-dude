@@ -386,9 +386,12 @@ function loadSocialLinksAdminPreview() {
 }
 
 // --------------------------------------------------------------------------
-// Current President Section Editing Functionality (for admin.html)
+// Current President Section Editing Functionality (for admin.html) - UPDATED
 // --------------------------------------------------------------------------
 
+const presidentInfoDisplay = document.getElementById('presidentInfoDisplay');
+const presidentEditForm = document.getElementById('presidentEditForm');
+const editPresidentButton = document.getElementById('editPresidentButton');
 const presidentNameInput = document.getElementById('presidentName');
 const presidentBirthDateInput = document.getElementById('presidentBirthDate');
 const presidentHeightInput = document.getElementById('presidentHeight');
@@ -398,8 +401,6 @@ const presidentTermEndInput = document.getElementById('presidentTermEnd');
 const vicePresidentNameInput = document.getElementById('vicePresidentName');
 const presidentPhotoUpload = document.getElementById('presidentPhoto');
 const currentPresidentPhotoDisplay = document.getElementById('currentPresidentPhoto');
-const savePresidentButton = document.querySelector('.save-president-button');
-
 const presidentDisplayName = document.getElementById('presidentDisplayName');
 const presidentDisplayBirthDate = document.getElementById('presidentDisplayBirthDate');
 const presidentDisplayHeight = document.getElementById('presidentDisplayHeight');
@@ -407,32 +408,45 @@ const presidentDisplayParty = document.getElementById('presidentDisplayParty');
 const presidentDisplayTerm = document.getElementById('presidentDisplayTerm');
 const vicePresidentDisplayName = document.getElementById('vicePresidentDisplayName');
 const presidentDisplayPhoto = document.getElementById('presidentDisplayPhoto');
+const cancelPresidentButton = document.querySelector('.cancel-president-button');
 
-if (savePresidentButton) {
-    savePresidentButton.addEventListener('click', function() {
-        const name = presidentNameInput.value;
-        const birthDate = presidentBirthDateInput.value;
-        const height = presidentHeightInput.value;
-        const party = presidentPartyInput.value;
-        const termStart = presidentTermStartInput.value;
-        const termEnd = presidentTermEndInput.value;
-        const vicePresident = vicePresidentNameInput.value;
-        let photoUrl = currentPresidentPhotoDisplay.src !== window.location.href ? currentPresidentPhotoDisplay.src : null; // Check if a new image was loaded
-
-        if (presidentPhotoUpload.files && presidentPhotoUpload.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                photoUrl = e.target.result;
-                savePresidentData(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl);
-            };
-            reader.readAsDataURL(presidentPhotoUpload.files[0]);
-        } else {
-            savePresidentData(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl);
-        }
+if (editPresidentButton) {
+    editPresidentButton.addEventListener('click', function() {
+        presidentInfoDisplay.style.display = 'none';
+        presidentEditForm.style.display = 'block';
     });
 }
 
-function savePresidentData(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl) {
+if (cancelPresidentButton) {
+    cancelPresidentButton.addEventListener('click', function() {
+        presidentInfoDisplay.style.display = 'block';
+        presidentEditForm.style.display = 'none';
+    });
+}
+
+function savePresidentData() {
+    const name = presidentNameInput.value;
+    const birthDate = presidentBirthDateInput.value;
+    const height = presidentHeightInput.value;
+    const party = presidentPartyInput.value;
+    const termStart = presidentTermStartInput.value;
+    const termEnd = presidentTermEndInput.value;
+    const vicePresident = vicePresidentNameInput.value;
+    let photoUrl = currentPresidentPhotoDisplay.src !== window.location.href ? currentPresidentPhotoDisplay.src : null; // Check if a new image was loaded
+
+    if (presidentPhotoUpload.files && presidentPhotoUpload.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            photoUrl = e.target.result;
+            savePresidentDataToFirebase(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl);
+        };
+        reader.readAsDataURL(presidentPhotoUpload.files[0]);
+    } else {
+        savePresidentDataToFirebase(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl);
+    }
+}
+
+function savePresidentDataToFirebase(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl) {
     db.collection('president').doc('current').update({
         name: name,
         birthDate: birthDate,
@@ -474,9 +488,14 @@ function loadPresidentData() {
                 presidentDisplayParty.textContent = data.party || 'Party';
                 presidentDisplayTerm.textContent = `${data.termStart || 'Start Date'} - ${data.termEnd || 'End Date'}`;
                 vicePresidentDisplayName.textContent = data.vicePresident || 'Vice President Name';
+
+                presidentInfoDisplay.style.display = 'block';
+                presidentEditForm.style.display = 'none';
             } else {
                 console.log("No president data found.");
-                // Optionally set default values or display a message
+                presidentInfoDisplay.style.display = 'none';
+                presidentEditForm.style.display = 'block'; // Show edit form if no data exists
+                // Optionally set default values in the form
             }
         })
         .catch((error) => {
