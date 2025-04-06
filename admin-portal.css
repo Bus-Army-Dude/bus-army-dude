@@ -7,9 +7,9 @@
   --light-content-bg: #f5f5f5;
   --light-text: #212529;
   --light-secondary-text: #495057;
-  --light-border: #dee2e6;
-  --light-accent: #4CAF50;
-  --light-hover: #45a049;
+  --light-border: #ced4da; /* Slightly darker border */
+  --light-accent: #007bff; /* Using a blue accent for buttons */
+  --light-hover: #0056b3;
   --light-link: #007bff;
   --light-shadow: rgba(0, 0, 0, 0.1);
   --light-icon: #ffffff;
@@ -20,15 +20,15 @@
   --dark-text: #E0E0E0;
   --dark-secondary-text: #a0a0a0;
   --dark-border: #333333;
-  --dark-accent: #4CAF50;
-  --dark-hover: #45a049;
+  --dark-accent: #007bff;
+  --dark-hover: #0056b3;
   --dark-link: #BB86FC;
   --dark-shadow: rgba(0, 0, 0, 0.2);
   --dark-icon: #000000;
 
   /* Button Styles */
-  --btn-bg: #4CAF50;
-  --btn-bg-hover: #45a049;
+  --btn-bg: #007bff; /* Using the accent color */
+  --btn-bg-hover: #0056b3;
   --btn-text: #ffffff;
 
   /* Input and Dropdowns */
@@ -39,7 +39,7 @@
   --dropdown-focus-border: #007bff;
   --dropdown-background-light: #ffffff;
   --dropdown-text-light: #333333;
-  --dropdown-border-light: #cccccc;
+  --dropdown-border-light: #ced4da; /* Slightly darker border */
   --dropdown-focus-border-light: #007bff;
 }
 
@@ -97,7 +97,7 @@ body {
   transition: transform 0.3s ease;
 }
 
-/* Sidebar Profile */
+/* Sidebar Profile (no changes here) */
 .profile-info {
   text-align: center;
   margin-bottom: 20px;
@@ -123,7 +123,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* Sidebar Navigation */
+/* Sidebar Navigation (no changes here) */
 .admin-nav {
   list-style-type: none;
   padding: 0;
@@ -154,7 +154,7 @@ body {
   transform: scale(1.05); /* Subtle scaling effect */
 }
 
-/* Logout Button */
+/* Logout Button (no changes here) */
 .logout-btn {
   margin-top: auto;
   background-color: var(--btn-bg);
@@ -184,7 +184,7 @@ body {
   transition: margin-left 0.3s ease; /* transition for sidebar collapse */
 }
 
-/* Tab Content */
+/* Tab Content (no changes here) */
 .admin-tab-content {
   display: none;
 }
@@ -194,46 +194,56 @@ body {
 }
 
 /* Form Styles */
+.profile-section {
+  background-color: var(--light-bg); /* White background for the form area */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px var(--light-shadow); /* Subtle shadow to lift the form */
+  margin-bottom: 20px; /* Add some margin below the form */
+}
+
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* Increased margin for better spacing */
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  color: var(--text-color);
+  margin-bottom: 8px; /* Increased margin */
+  color: var(--light-text);
   font-weight: bold;
 }
 
 .form-group input[type="file"],
 .form-group input[type="text"],
 .form-group textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
+  width: calc(100% - 20px); /* Keep the width adjustment */
+  padding: 12px; /* Increased padding */
+  border: 1px solid var(--light-border);
+  border-radius: 6px; /* Slightly more rounded */
   background-color: var(--input-bg);
-  color: var(--text-color);
+  color: var(--light-text);
   box-sizing: border-box; /* Ensure padding doesn't affect width */
+  font-size: 16px; /* Slightly larger font size */
 }
 
 .form-group textarea {
   resize: vertical; /* Allow vertical resizing */
+  min-height: 100px; /* Give the textarea a minimum height */
 }
 
 .save-profile-button {
-  background-color: var(--btn-bg);
+  background-color: var(--light-accent); /* Using the blue accent color */
   color: var(--btn-text);
   border: none;
-  padding: 12px 20px;
-  border-radius: 5px;
+  padding: 14px 24px; /* Increased padding */
+  border-radius: 6px; /* Slightly more rounded */
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .save-profile-button:hover {
-  background-color: var(--btn-bg-hover);
+  background-color: var(--light-hover);
   transform: scale(1.02);
 }
 
@@ -260,6 +270,6 @@ body {
   .form-group input[type="file"],
   .form-group input[type="text"],
   .form-group textarea {
-    width: calc(100% - 20px); /* Adjust width for padding in smaller screens */
+    width: calc(100% - 30px); /* Adjust width for padding in smaller screens */
   }
 }
