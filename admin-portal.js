@@ -650,10 +650,10 @@ function saveShoutout() {
         };
 
         const userRef = db.collection('users').doc('main-user');
-        const shoutoutsRef = userRef.collection('shoutouts').doc(platform);
+        const shoutoutsRef = userRef.collection('shoutouts').doc(platform).collection('list');
 
         if (editingShoutoutId) {
-            shoutoutsRef.collection('list').doc(editingShoutoutId).update(shoutoutData)
+            shoutoutsRef.doc(editingShoutoutId).update(shoutoutData)
                 .then(() => {
                     alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated!`);
                     loadShoutoutsAdmin(platform);
@@ -664,7 +664,7 @@ function saveShoutout() {
                     alert(`Error updating ${platform} shoutout.`);
                 });
         } else {
-            shoutoutsRef.collection('list').add(shoutoutData)
+            shoutoutsRef.add(shoutoutData)
                 .then(() => {
                     alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added!`);
                     loadShoutoutsAdmin(platform);
@@ -767,7 +767,9 @@ function editShoutoutAdmin(platform, shoutoutId) {
                 if (platform === 'youtube') {
                     followersSubscribersGroup.querySelector('label').textContent = 'Subscribers:';
                     coverPhotoGroup.style.display = 'block';
-                    // Optionally load cover photo if needed
+                    if (shoutoutData.coverPhotoUrl) {
+                        coverPhotoInputShoutout.value = shoutoutData.coverPhotoUrl;
+                    }
                 } else {
                     followersSubscribersGroup.querySelector('label').textContent = 'Followers:';
                     coverPhotoGroup.style.display = 'none';
