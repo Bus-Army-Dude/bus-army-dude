@@ -550,8 +550,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 console.log("No such document!");
             }
-            loadSocialLinksAdmin();
-            loadSocialLinksAdminPreview();
+            // Removed loadSocialLinksAdmin(); and loadSocialLinksAdminPreview(); here
             initializePresidentSection(); // Initialize the president section for admin page
         })
         .catch((error) => {
