@@ -82,6 +82,7 @@ body {
 .admin-container {
     display: flex;
     flex: 1;
+    width: 100%;
 }
 
 /* Sidebar */
@@ -93,9 +94,13 @@ body {
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    position: fixed;
+    position: fixed; /* Keeps the sidebar fixed */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure sidebar is above content */
 }
 
+/* Profile Information */
 .profile-info {
     text-align: center;
     margin-bottom: 30px;
@@ -143,29 +148,13 @@ body {
     background-color: var(--accent-color);
 }
 
-/* Logout Button */
-.logout-btn {
-    margin-top: auto;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.logout-btn:hover {
-    background-color: var(--hover-color);
-}
-
-/* Main Content */
+/* Main Content Area */
 .admin-content {
-    margin-left: 250px;
+    margin-left: 250px; /* Same width as sidebar to avoid overlap */
     padding: 20px;
     flex: 1;
+    background-color: var(--content-bg);
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 /* Tab Content */
@@ -177,20 +166,21 @@ body {
     display: block;
 }
 
-/* Ensure content adjusts on smaller screens */
+/* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
+    /* Stack sidebar and content vertically on small screens */
     .admin-container {
         flex-direction: column;
     }
 
     .admin-sidebar {
         width: 100%;
+        position: relative; /* No longer fixed on small screens */
         height: auto;
-        position: relative;
+        padding: 15px;
     }
 
     .admin-content {
         margin-left: 0;
     }
 }
-
