@@ -116,40 +116,8 @@ function saveProfileData(username, bio, profilePictureUrl) {
     })
     .then(() => {
         alert('Profile information updated!');
-        // Manually trigger the load for index.html after saving
-        db.collection('users').doc('main-user').get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    const indexProfilePic = document.getElementById('indexProfilePic');
-                    const indexUsername = document.getElementById('indexUsername');
-                    const indexBioLine1 = document.getElementById('indexBioLine1');
-                    const indexBioLine2 = document.getElementById('indexBioLine2');
-
-                    if (indexProfilePic && data.profilePictureUrl) {
-                        indexProfilePic.src = data.profilePictureUrl;
-                    }
-                    if (indexUsername) {
-                        indexUsername.textContent = data.username || '';
-                    }
-                    if (data.bio) {
-                        const bioLines = data.bio.split('\n');
-                        if (indexBioLine1) {
-                            indexBioLine1.textContent = bioLines[0] || '';
-                        }
-                        if (indexBioLine2) {
-                            indexBioLine2.textContent = bioLines[1] || '';
-                        }
-                    }
-                    // We don't need to call loadSocialLinksIndex and loadCurrentPresidentDataIndex here
-                    // as those are likely handled independently or on the index page load.
-                } else {
-                    console.log("No profile document found in Firebase for index.html");
-                }
-            })
-            .catch((error) => {
-                console.error("Error getting profile data for index.html:", error);
-            });
+        // We no longer directly update index.html DOM here.
+        // The index.html's own script will handle fetching the updated data.
     })
     .catch((error) => {
         console.error("Error updating document: ", error);
@@ -185,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Error getting document:", error);
         });
 
-    // Load president data for index.html
+    // Load president data and social links for index page
     loadPresidentDataIndex();
     loadSocialLinksIndex();
 });
@@ -285,7 +253,7 @@ function addSocialLink() {
                 platformInput.value = ''; // Clear the input fields
                 urlInput.value = '';
                 loadSocialLinksAdmin(); // Reload the displayed list from Firebase
-                loadSocialLinksIndex(); // Reload social links on index page
+                // Removed loadSocialLinksIndex(); here
             })
             .catch((error) => {
                 console.error("Error getting user document for adding social link: ", error);
@@ -331,7 +299,7 @@ function removeSocialLink(index) {
                     socialLinks.splice(index, 1); // Remove the link at the given index
                     saveSocialLinksToFirebase(socialLinks); // Save the updated array to Firebase
                     loadSocialLinksAdmin(); // Reload the displayed list from Firebase
-                    loadSocialLinksIndex(); // Reload social links on index page
+                    // Removed loadSocialLinksIndex(); here
                 } else {
                     console.log("Invalid index for removing social link:", index);
                 }
@@ -566,7 +534,7 @@ function loadPresidentDataIndex() {
 
 // Call initializePresidentSection when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Existing DOMContentLoaded logic for other sections
+    // Existing DOMContentLoaded logic for admin page
     db.collection('users').doc('main-user').get()
         .then((doc) => {
             if (doc.exists) {
@@ -585,8 +553,9 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 console.log("No such document!");
             }
-            // Removed loadSocialLinksAdmin(); and loadSocialLinksAdminPreview(); here
-            initializePresidentSection(); // Initialize the president section for admin page
+            loadSocialLinksAdmin();
+            loadSocialLinksAdminPreview();
+            initializePresidentSection();
         })
         .catch((error) => {
             console.error("Error getting document:", error);
@@ -595,4 +564,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load president data and social links for index page
     loadPresidentDataIndex();
     loadSocialLinksIndex();
+
+    // Load profile data for index page
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const indexProfilePic = document.getElementById('indexProfilePic');
+                const indexUsername = document.getElementById('indexUsername');
+                const indexBioLine1 = document.getElementById('indexBioLine1');
+                const indexBioLine2 = document.getElementById('indexBioLine2');
+
+                if (indexProfilePic && data.profilePictureUrl) {
+                    indexProfilePic.src = data.profilePictureUrl;
+                }
+                if (indexUsername) {
+                    indexUsername.textContent = data.username || '';
+                }
+                if (data.bio) {
+                    const bioLines = data.bio.split('\n');
+                    if (indexBioLine1) {
+                        indexBioLine1.textContent = bioLines[0] || '';
+                    }
+                    if (indexBioLine2) {
+                        indexBioLine2.textContent = bioLines[1] || '';
+                    }
+                }
+            } else {
+                console.log("No profile document found in Firebase for index.html");
+            }
+        })
+        .catch((error) => {
+            console.error("Error getting profile data for index.html:", error);
+        });
 });
