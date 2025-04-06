@@ -390,7 +390,7 @@ function loadSocialLinksAdminPreview() {
 }
 
 // --------------------------------------------------------------------------
-// Current President Section Editing Functionality (for admin.html)
+// Current President Section Editing Functionality (for admin.html) - UPDATED to store in users/main-user
 // --------------------------------------------------------------------------
 
 function initializePresidentSection() {
@@ -436,19 +436,21 @@ function savePresidentData() {
 }
 
 function savePresidentDataToFirebase(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl) {
-    db.collection('president').doc('current').set({ // Changed from update to set with merge
-        name: name,
-        birthDate: birthDate,
-        height: height,
-        party: party,
-        termStart: termStart,
-        termEnd: termEnd,
-        vicePresident: vicePresident,
-        photoUrl: photoUrl
-    }, { merge: true })
+    db.collection('users').doc('main-user').update({ // Update the main-user document
+        currentPresident: { // Add a new field called currentPresident
+            name: name,
+            birthDate: birthDate,
+            height: height,
+            party: party,
+            termStart: termStart,
+            termEnd: termEnd,
+            vicePresident: vicePresident,
+            photoUrl: photoUrl
+        }
+    })
     .then(() => {
         alert('President information updated!');
-        loadPresidentData(); // Reload the data for admin page
+        loadPresidentData(); // Reload the data to update the display on admin page
         loadPresidentDataIndex(); // Reload the data for index page
     })
     .catch((error) => {
@@ -462,31 +464,33 @@ function loadPresidentData() {
     if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
     if (presidentEditForm) presidentEditForm.style.display = 'none';
 
-    db.collection('president').doc('current').get()
+    db.collection('users').doc('main-user').get()
         .then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
-                if (presidentNameInput) presidentNameInput.value = data.name || '';
-                if (presidentBirthDateInput) presidentBirthDateInput.value = data.birthDate || '';
-                if (presidentHeightInput) presidentHeightInput.value = data.height || '';
-                if (presidentPartyInput) presidentPartyInput.value = data.party || '';
-                if (presidentTermStartInput) presidentTermStartInput.value = data.termStart || '';
-                if (presidentTermEndInput) presidentTermEndInput.value = data.termEnd || '';
-                if (vicePresidentNameInput) vicePresidentNameInput.value = data.vicePresident || '';
-                const photoUrl = data.photoUrl || 'donaldtrump.jpg'; // Default image if no URL
+                const presidentData = data.currentPresident || {}; // Get president data from the field
+
+                if (presidentNameInput) presidentNameInput.value = presidentData.name || '';
+                if (presidentBirthDateInput) presidentBirthDateInput.value = presidentData.birthDate || '';
+                if (presidentHeightInput) presidentHeightInput.value = presidentData.height || '';
+                if (presidentPartyInput) presidentPartyInput.value = presidentData.party || '';
+                if (presidentTermStartInput) presidentTermStartInput.value = presidentData.termStart || '';
+                if (presidentTermEndInput) presidentTermEndInput.value = presidentData.termEnd || '';
+                if (vicePresidentNameInput) vicePresidentNameInput.value = presidentData.vicePresident || '';
+                const photoUrl = presidentData.photoUrl || 'donaldtrump.jpg'; // Default image if no URL
                 if (currentPresidentPhotoDisplay) currentPresidentPhotoDisplay.src = photoUrl;
                 if (presidentDisplayPhotoAdmin) presidentDisplayPhotoAdmin.src = photoUrl;
-                if (presidentDisplayNameAdmin) presidentDisplayNameAdmin.textContent = data.name || 'President Name';
-                if (presidentDisplayBirthDateAdmin) presidentDisplayBirthDateAdmin.textContent = data.birthDate || 'Birth Date';
-                if (presidentDisplayHeightAdmin) presidentDisplayHeightAdmin.textContent = data.height || 'Height';
-                if (presidentDisplayPartyAdmin) presidentDisplayPartyAdmin.textContent = data.party || 'Party';
-                if (presidentDisplayTermAdmin) presidentDisplayTermAdmin.textContent = `${data.termStart || 'Start Date'} - ${data.termEnd || 'End Date'}`;
-                if (vicePresidentDisplayNameAdmin) vicePresidentDisplayNameAdmin.textContent = data.vicePresident || 'Vice President Name';
+                if (presidentDisplayNameAdmin) presidentDisplayNameAdmin.textContent = presidentData.name || 'President Name';
+                if (presidentDisplayBirthDateAdmin) presidentDisplayBirthDateAdmin.textContent = presidentData.birthDate || 'Birth Date';
+                if (presidentDisplayHeightAdmin) presidentDisplayHeightAdmin.textContent = presidentData.height || 'Height';
+                if (presidentDisplayPartyAdmin) presidentDisplayPartyAdmin.textContent = presidentData.party || 'Party';
+                if (presidentDisplayTermAdmin) presidentDisplayTermAdmin.textContent = `${presidentData.termStart || 'Start Date'} - ${presidentData.termEnd || 'End Date'}`;
+                if (vicePresidentDisplayNameAdmin) vicePresidentDisplayNameAdmin.textContent = presidentData.vicePresident || 'Vice President Name';
 
                 if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
                 if (presidentEditForm) presidentEditForm.style.display = 'none';
             } else {
-                console.log("No president data found.");
+                console.log("No user document found.");
                 if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'none';
                 if (presidentEditForm) presidentEditForm.style.display = 'none'; // Keep it hidden if no data
                 // Optionally set default values in the form if you want it to be immediately editable
@@ -501,21 +505,22 @@ function loadPresidentData() {
 }
 
 function loadPresidentDataIndex() {
-    db.collection('president').doc('current').get()
+    db.collection('users').doc('main-user').get()
         .then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
-                const photoUrl = data.photoUrl || 'donaldtrump.jpg'; // Default image if no URL
+                const presidentData = data.currentPresident || {}; // Get president data from the field
+                const photoUrl = presidentData.photoUrl || 'donaldtrump.jpg'; // Default image if no URL
 
                 if (indexPresidentPhoto) indexPresidentPhoto.src = photoUrl;
-                if (indexPresidentName) indexPresidentName.textContent = data.name || 'President Name';
-                if (indexPresidentBirthDate) indexPresidentBirthDate.textContent = `<strong>Born:</strong> ${data.birthDate || 'June 14, 1946'}`;
-                if (indexPresidentHeight) indexPresidentHeight.textContent = `<strong>Height:</strong> ${data.height || "6'3\" (190.5 cm)"}`;
-                if (indexPresidentParty) indexPresidentParty.textContent = `<strong>Party:</strong> ${data.party || 'Republican Party'}`;
-                if (indexPresidentTerm) indexPresidentTerm.textContent = `<strong>Presidential Term:</strong> ${data.termStart || '1/20/25 at 12:00 PM'} - ${data.termEnd || '1/20/29 at 12:00 PM'}`;
-                if (indexVicePresidentName) indexVicePresidentName.textContent = `<strong>Vice President:</strong> ${data.vicePresident || 'James David Vance'}`;
+                if (indexPresidentName) indexPresidentName.textContent = presidentData.name || 'President Name';
+                if (indexPresidentBirthDate) indexPresidentBirthDate.textContent = `<strong>Born:</strong> ${presidentData.birthDate || 'June 14, 1946'}`;
+                if (indexPresidentHeight) indexPresidentHeight.textContent = `<strong>Height:</strong> ${presidentData.height || "6'3\" (190.5 cm)"}`;
+                if (indexPresidentParty) indexPresidentParty.textContent = `<strong>Party:</strong> ${presidentData.party || 'Republican Party'}`;
+                if (indexPresidentTerm) indexPresidentTerm.textContent = `<strong>Presidential Term:</strong> ${presidentData.termStart || '1/20/25 at 12:00 PM'} - ${presidentData.termEnd || '1/20/29 at 12:00 PM'}`;
+                if (indexVicePresidentName) indexVicePresidentName.textContent = `<strong>Vice President:</strong> ${presidentData.vicePresident || 'James David Vance'}`;
             } else {
-                console.log("No president data found for index page, using defaults from HTML.");
+                console.log("No user document found, or no president data for index page.");
                 // If no data, the index.html will show the hardcoded values
             }
         })
