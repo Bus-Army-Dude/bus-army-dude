@@ -200,15 +200,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load Username for index.html
     const storedUsername = localStorage.getItem('username');
-    const indexUsername = document.querySelector('.username'); // Corrected selector
+    const indexUsername = document.getElementById('indexUsername'); // Corrected selector to use ID
     if (storedUsername && indexUsername) {
         indexUsername.textContent = storedUsername;
     }
 
     // Load Bio for index.html
     const storedBio = localStorage.getItem('bio');
-    const indexBioLine1 = document.querySelector('.bio-line-1'); // Assuming you will add this class to your first bio line
-    const indexBioLine2 = document.querySelector('.bio-line-2'); // Assuming you will add this class to your second bio line
+    const indexBioLine1 = document.getElementById('indexBioLine1'); // Corrected selector to use ID
+    const indexBioLine2 = document.getElementById('indexBioLine2'); // Corrected selector to use ID
     if (storedBio) {
         const bioLines = storedBio.split('\n');
         if (indexBioLine1) {
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadSocialLinksIndex() {
-    const socialLinksContainer = document.querySelector('.social-links-container'); // Corrected selector
+    const socialLinksContainer = document.querySelector('.social-links-container'); // Corrected selector (class is correct)
     if (!socialLinksContainer) return; // Exit if the container doesn't exist
 
     socialLinksContainer.innerHTML = ''; // Clear existing links
