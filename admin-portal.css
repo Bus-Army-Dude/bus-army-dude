@@ -850,7 +850,7 @@ body {
     }
 }
 
-/* Specific adjustment for admin shoutout buttons */
+/* Specific adjustments for admin shoutout buttons */
 .admin-controls {
     display: flex;
     flex-direction: column; /* Stack the buttons vertically */
@@ -861,4 +861,53 @@ body {
 .admin-controls button {
     width: 100%; /* Make the buttons take the full width of the container */
     box-sizing: border-box; /* Ensure padding doesn't affect the width */
+    padding: 8px 12px; /* Add some padding to the buttons themselves */
+    text-align: center; /* Center the text within the buttons */
+}
+
+/* Adjustments for the shoutout item to potentially improve overall layout */
+.shoutout-item {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Profile image and details */
+    gap: 15px;
+    padding: 15px;
+}
+
+.shoutout-item img {
+    width: 80px; /* Fixed width for profile image */
+    height: 80px; /* Fixed height for profile image */
+    border-radius: 50%; /* Make it circular */
+    object-fit: cover;
+    margin-bottom: 0; /* Remove default margin */
+}
+
+.shoutout-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center the details */
+}
+
+.shoutout-details h4 {
+    margin-bottom: 2px;
+}
+
+.shoutout-details .creator-username {
+    margin-bottom: 5px;
+}
+
+.shoutout-details .creator-bio {
+    margin-bottom: 8px;
+}
+
+.shoutout-actions {
+    grid-column: 1 / -1; /* Make actions span across both columns */
+    text-align: left; /* Align buttons to the left */
+    margin-top: 10px;
+}
+
+.shoutout-actions button {
+    margin-right: 5px;
+    margin-left: 0;
+    padding: 8px 10px;
+    font-size: 0.85em;
 }
