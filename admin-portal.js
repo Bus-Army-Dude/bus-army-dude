@@ -100,40 +100,43 @@ function getSocialIconClass(platform) {
 }
 
 function loadSocialLinksAdmin() {
-    currentSocialLinksUl.innerHTML = ''; // Clear the current list
-    const storedLinks = localStorage.getItem('socialLinks');
-    if (storedLinks) {
-        const socialLinks = JSON.parse(storedLinks);
-        socialLinks.forEach((link, index) => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <i class="${getSocialIconClass(link.platform)}"></i>
-                <span>${link.platform}:</span>
-                <a href="${link.url}" target="_blank">${link.url}</a>
-                <button onclick="startEditSocialLink(${index})">Edit</button>
-                <button onclick="removeSocialLink(${index})">Remove</button>
-            `;
-            currentSocialLinksUl.appendChild(listItem);
-        });
-    } else {
-        // Load initial links from your index.html structure
-        const initialLinks = [
-            { platform: 'TikTok', url: 'https://www.tiktok.com/@bus.army.dude' },
-            { platform: 'Snapchat', url: 'https://www.snapchat.com/add/calebkritzar' },
-            { platform: 'X (Twitter)', url: 'https://x.com/KritzarRiver' },
-            { platform: 'Threads', url: 'https://www.threads.net/@busarmydude' },
-            { platform: 'Twitch', url: 'https://m.twitch.tv/BusArmyDude' },
-            { platform: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61569972389004' },
-            { platform: 'Steam', url: 'https://steamcommunity.com/profiles/76561199283946668' },
-            { platform: 'Discord', url: 'https://discord.gg/NjMtuZYc52' },
-            { platform: 'Instagram', url: 'https://www.instagram.com/busarmydude/' },
-            { platform: 'Amazon Music', url: 'https://music.amazon.com/profiles/@riverkritzar40820895?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_itT4WHDz0nPzPfGGi9YYP0iqI' }
-        ];
-        localStorage.setItem('socialLinks', JSON.stringify(initialLinks));
-        loadSocialLinksAdmin(); // Reload to display them
+    const currentSocialLinksUl = document.getElementById('current-social-links');
+    if (currentSocialLinksUl) { // ADDED THIS CHECK
+        currentSocialLinksUl.innerHTML = ''; // Clear the current list
+        const storedLinks = localStorage.getItem('socialLinks');
+        if (storedLinks) {
+            const socialLinks = JSON.parse(storedLinks);
+            socialLinks.forEach((link, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <i class="${getSocialIconClass(link.platform)}"></i>
+                    <span>${link.platform}:</span>
+                    <a href="${link.url}" target="_blank">${link.url}</a>
+                    <button onclick="startEditSocialLink(${index})">Edit</button>
+                    <button onclick="removeSocialLink(${index})">Remove</button>
+                `;
+                currentSocialLinksUl.appendChild(listItem);
+            });
+        } else {
+            // Load initial links from your index.html structure
+            const initialLinks = [
+                { platform: 'TikTok', url: 'https://www.tiktok.com/@bus.army.dude' },
+                { platform: 'Snapchat', url: 'https://www.snapchat.com/add/calebkritzar' },
+                { platform: 'X (Twitter)', url: 'https://x.com/KritzarRiver' },
+                { platform: 'Threads', url: 'https://www.threads.net/@busarmydude' },
+                { platform: 'Twitch', url: 'https://m.twitch.tv/BusArmyDude' },
+                { platform: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61569972389004' },
+                { platform: 'Steam', url: 'https://steamcommunity.com/profiles/76561199283946668' },
+                { platform: 'Discord', url: 'https://discord.gg/NjMtuZYc52' },
+                { platform: 'Instagram', url: 'https://www.instagram.com/busarmydude/' },
+                { platform: 'Amazon Music', url: 'https://music.amazon.com/profiles/@riverkritzar40820895?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_itT4WHDz0nPzPfGGi9YYP0iqI' }
+            ];
+            localStorage.setItem('socialLinks', JSON.stringify(initialLinks));
+            loadSocialLinksAdmin(); // Reload to display them
+        }
+        editingIndex = -1; // Reset editing index after loading
+        addLinkButton.textContent = 'Add Link'; // Reset button text
     }
-    editingIndex = -1; // Reset editing index after loading
-    addLinkButton.textContent = 'Add Link'; // Reset button text
 }
 
 function addSocialLink() {
