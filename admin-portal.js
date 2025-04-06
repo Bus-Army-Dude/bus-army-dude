@@ -253,20 +253,33 @@ function addSocialLink() {
         const newLink = { platform: platform, url: url };
 
         if (editingIndex > -1) {
-            // Save the edit
+            // Save the edit (we'll handle UI update in load function)
             currentSocialLinks[editingIndex] = newLink;
-            editingIndex = -1; // Reset editing index
+            editingIndex = -1;
             addLinkButton.textContent = 'Add Link';
         } else {
-            // Add a new link
+            // Add to the local array
             currentSocialLinks.push(newLink);
+            // Directly add to the UI in admin portal
+            if (currentSocialLinksUl) {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <i class="${getSocialIconClass(newLink.platform)}"></i>
+                    <span>${newLink.platform}:</span>
+                    <a href="${newLink.url}" target="_blank">${newLink.url}</a>
+                    <button onclick="startEditSocialLink(${currentSocialLinks.length - 1})">Edit</button>
+                    <button onclick="removeSocialLink(${currentSocialLinks.length - 1})">Remove</button>
+                `;
+                currentSocialLinksUl.appendChild(listItem);
+            }
         }
+
         console.log("addSocialLink: Calling saveSocialLinksToFirebase with:", currentSocialLinks);
         saveSocialLinksToFirebase(currentSocialLinks); // Save updated links to Firebase
-        platformInput.value = ''; // Clear the input fields
+        platformInput.value = '';
         urlInput.value = '';
-        loadSocialLinksAdmin(); // Reload the displayed list from the local array
-        loadSocialLinksIndex(); // Reload for index page
+        // loadSocialLinksAdmin(); // Let's rely on the direct DOM update and the reload on page load
+        loadSocialLinksIndex(); // Keep this for index.html update
     } else {
         alert('Please enter both the platform and the URL.');
     }
