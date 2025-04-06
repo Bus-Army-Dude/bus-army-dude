@@ -2,13 +2,13 @@
 
 // Paste your Firebase configuration here
 const firebaseConfig = {
-  apiKey: "AIzaSyA9s6Sx82K6XlYpp_OKqrS-weMpoKP7uco",
-  authDomain: "bus-army-dude-s-admin-portal.firebaseapp.com",
-  projectId: "bus-army-dude-s-admin-portal",
-  storageBucket: "bus-army-dude-s-admin-portal.firebasestorage.app",
-  messagingSenderId: "974325477528",
-  appId: "1:974325477528:web:b143e75657384a82f5e0ed",
-  measurementId: "G-FVWWFFBCP2"
+    apiKey: "AIzaSyA9s6Sx82K6XlYpp_OKqrS-weMpoKP7uco",
+    authDomain: "bus-army-dude-s-admin-portal.firebaseapp.com",
+    projectId: "bus-army-dude-s-admin-portal",
+    storageBucket: "bus-army-dude-s-admin-portal.firebasestorage.app",
+    messagingSenderId: "974325477528",
+    appId: "1:974325477528:web:b143e75657384a82f5e0ed",
+    measurementId: "G-FVWWFFBCP2"
 };
 
 // Initialize Firebase
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         indexBioLine2.textContent = bioLines[1] || '';
                     }
                 }
-                loadSocialLinksIndex(); // Load social links for index.html
+                loadSocialLinksIndex(data.socialLinks); // Load social links for index.html, passing the data
             } else {
                 console.log("No profile document found in Firebase for index.html");
             }
@@ -310,29 +310,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
-function loadSocialLinksIndex() {
+function loadSocialLinksIndex(socialLinksData) {
     const socialLinksContainer = document.querySelector('.social-links-container'); // Corrected selector (class is correct)
     if (!socialLinksContainer) return; // Exit if the container doesn't exist
 
     socialLinksContainer.innerHTML = ''; // Clear existing links
 
-    const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
-    if (storedLinks) {
-        const socialLinks = JSON.parse(storedLinks);
-        socialLinks.forEach(link => {
-            const linkElement = document.createElement('a');
-            linkElement.href = link.url;
-            linkElement.classList.add('social-button');
+    // Use the socialLinksData passed from the Firebase document
+    const socialLinks = socialLinksData || [];
+    socialLinks.forEach(link => {
+        const linkElement = document.createElement('a');
+        linkElement.href = link.url;
+        linkElement.classList.add('social-button');
 
-            const iconElement = document.createElement('i');
-            iconElement.className = `${getSocialIconClass(link.platform)} social-icon`;
+        const iconElement = document.createElement('i');
+        iconElement.className = `${getSocialIconClass(link.platform)} social-icon`;
 
-            const spanElement = document.createElement('span');
-            spanElement.textContent = link.platform.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Format platform name
+        const spanElement = document.createElement('span');
+        spanElement.textContent = link.platform.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Format platform name
 
-            linkElement.appendChild(iconElement);
-            linkElement.appendChild(spanElement);
-            socialLinksContainer.appendChild(linkElement);
-        });
-    }
+        linkElement.appendChild(iconElement);
+        linkElement.appendChild(spanElement);
+        socialLinksContainer.appendChild(linkElement);
+    });
 }
