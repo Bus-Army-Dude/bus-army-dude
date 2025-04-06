@@ -116,6 +116,40 @@ function saveProfileData(username, bio, profilePictureUrl) {
     })
     .then(() => {
         alert('Profile information updated!');
+        // Manually trigger the load for index.html after saving
+        db.collection('users').doc('main-user').get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const indexProfilePic = document.getElementById('indexProfilePic');
+                    const indexUsername = document.getElementById('indexUsername');
+                    const indexBioLine1 = document.getElementById('indexBioLine1');
+                    const indexBioLine2 = document.getElementById('indexBioLine2');
+
+                    if (indexProfilePic && data.profilePictureUrl) {
+                        indexProfilePic.src = data.profilePictureUrl;
+                    }
+                    if (indexUsername) {
+                        indexUsername.textContent = data.username || '';
+                    }
+                    if (data.bio) {
+                        const bioLines = data.bio.split('\n');
+                        if (indexBioLine1) {
+                            indexBioLine1.textContent = bioLines[0] || '';
+                        }
+                        if (indexBioLine2) {
+                            indexBioLine2.textContent = bioLines[1] || '';
+                        }
+                    }
+                    // We don't need to call loadSocialLinksIndex and loadCurrentPresidentDataIndex here
+                    // as those are likely handled independently or on the index page load.
+                } else {
+                    console.log("No profile document found in Firebase for index.html");
+                }
+            })
+            .catch((error) => {
+                console.error("Error getting profile data for index.html:", error);
+            });
     })
     .catch((error) => {
         console.error("Error updating document: ", error);
@@ -153,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load president data for index.html
     loadPresidentDataIndex();
+    loadSocialLinksIndex();
 });
 
 // --------------------------------------------------------------------------
