@@ -32,36 +32,47 @@ const usernameInput = document.getElementById('usernameInput');
 const bioTextarea = document.getElementById('bioTextarea');
 const saveProfileButton = document.querySelector('.save-profile-button');
 
-const currentProfilePic = document.getElementById('currentProfilePic');
-const currentUsername = document.getElementById('currentUsername');
-const currentBio = document.getElementById('currentBio');
-const currentBioExtra = document.getElementById('currentBioExtra');
-
 if (saveProfileButton) {
     saveProfileButton.addEventListener('click', function() {
-        // Update Profile Picture (if a new file is selected)
+        // Save Profile Picture (as a data URL in Local Storage)
         if (profileImageUpload.files && profileImageUpload.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                currentProfilePic.src = e.target.result;
+                localStorage.setItem('profilePicture', e.target.result);
+                alert('Profile information updated!'); // Provide a simple confirmation
             }
             reader.readAsDataURL(profileImageUpload.files[0]);
-        }
-
-        // Update Username
-        currentUsername.textContent = usernameInput.value;
-
-        // Update Bio
-        const bioLines = bioTextarea.value.split('\n');
-        if (bioLines.length > 0) {
-            currentBio.textContent = bioLines[0];
-        }
-        if (bioLines.length > 1) {
-            currentBioExtra.textContent = bioLines[1];
         } else {
-            currentBioExtra.textContent = ''; // Clear if only one line
+            // If no new image, we can also save a placeholder or handle as needed
+            // For now, we'll just save the existing URL if there is one
+            const currentPicSrc = document.getElementById('currentProfilePic')?.src;
+            if (currentPicSrc) {
+                localStorage.setItem('profilePicture', currentPicSrc);
+            }
+            alert('Profile information updated!'); // Still show confirmation
         }
 
-        alert('Profile information updated!'); // Provide a simple confirmation
+        // Save Username to Local Storage
+        localStorage.setItem('username', usernameInput.value);
+
+        // Save Bio to Local Storage
+        localStorage.setItem('bio', bioTextarea.value);
     });
 }
+
+// Load saved data when admin.html loads
+document.addEventListener('DOMContentLoaded', function() {
+    const savedUsername = localStorage.getItem('username');
+    if (savedUsername) {
+        usernameInput.value = savedUsername;
+    }
+
+    const savedBio = localStorage.getItem('bio');
+    if (savedBio) {
+        bioTextarea.value = savedBio;
+    }
+
+    // We can't directly load the image to the file input for security reasons.
+    // The user will need to re-select the image if they want to change it again.
+    // However, we could potentially display the currently stored image URL somewhere in the form.
+});
