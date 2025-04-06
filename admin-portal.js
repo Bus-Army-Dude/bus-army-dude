@@ -1,5 +1,22 @@
 // admin-portal.js
 
+// Paste your Firebase configuration here
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID" // Optional
+};
+
+// Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+// If you plan to use Firebase Storage
+// const storage = firebase.storage();
+
 // DOM elements
 const tabs = document.querySelectorAll(".admin-nav li a");
 const contentSections = document.querySelectorAll(".admin-tab-content");
@@ -34,38 +51,49 @@ const saveProfileButton = document.querySelector('.save-profile-button');
 
 if (saveProfileButton) {
     saveProfileButton.addEventListener('click', function() {
-        // Save Profile Picture (as a data URL in Local Storage)
+        const username = usernameInputAdmin.value;
+        const bio = bioTextareaAdmin.value;
+        let profilePictureUrl = null;
+
+        // Handle Profile Picture (saving data URL to Firestore for now)
         if (profileImageUploadAdmin.files && profileImageUploadAdmin.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                localStorage.setItem('profilePicture', e.target.result);
-                alert('Profile information updated!'); // Provide a simple confirmation
-            }
+                profilePictureUrl = e.target.result;
+                saveProfileData(username, bio, profilePictureUrl);
+            };
             reader.readAsDataURL(profileImageUploadAdmin.files[0]);
         } else {
             const currentPicSrc = document.getElementById('currentProfilePic')?.src;
-            if (currentPicSrc) {
-                localStorage.setItem('profilePicture', currentPicSrc);
-            }
-            alert('Profile information updated!'); // Still show confirmation
+            profilePictureUrl = currentPicSrc || null;
+            saveProfileData(username, bio, profilePictureUrl);
         }
+    });
+}
 
-        // Save Username to Local Storage
-        localStorage.setItem('username', usernameInputAdmin.value);
-
-        // Save Bio to Local Storage
-        localStorage.setItem('bio', bioTextareaAdmin.value);
+function saveProfileData(username, bio, profilePictureUrl) {
+    db.collection('users').doc('main-user').set({
+        username: username,
+        bio: bio,
+        profilePictureUrl: profilePictureUrl
+    })
+    .then(() => {
+        alert('Profile information updated!');
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+        alert('Error updating profile information.');
     });
 }
 
 // Load saved data when admin.html loads (Profile Section)
 document.addEventListener('DOMContentLoaded', function() {
-    const savedUsername = localStorage.getItem('username');
+    const savedUsername = localStorage.getItem('username'); // We will update this to Firebase
     if (savedUsername && usernameInputAdmin) {
         usernameInputAdmin.value = savedUsername;
     }
 
-    const savedBio = localStorage.getItem('bio');
+    const savedBio = localStorage.getItem('bio'); // We will update this to Firebase
     if (savedBio && bioTextareaAdmin) {
         bioTextareaAdmin.value = savedBio;
     }
@@ -103,7 +131,7 @@ function loadSocialLinksAdmin() {
     const currentSocialLinksUl = document.getElementById('current-social-links');
     if (currentSocialLinksUl) { // ADDED THIS CHECK
         currentSocialLinksUl.innerHTML = ''; // Clear the current list
-        const storedLinks = localStorage.getItem('socialLinks');
+        const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
         if (storedLinks) {
             const socialLinks = JSON.parse(storedLinks);
             socialLinks.forEach((link, index) => {
@@ -145,7 +173,7 @@ function addSocialLink() {
 
     if (platform && url) {
         const newLink = { platform: platform, url: url };
-        const storedLinks = localStorage.getItem('socialLinks');
+        const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
         let socialLinks = storedLinks ? JSON.parse(storedLinks) : [];
 
         if (editingIndex > -1) {
@@ -158,7 +186,7 @@ function addSocialLink() {
             socialLinks.push(newLink);
         }
 
-        localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+        localStorage.setItem('socialLinks', JSON.stringify(socialLinks)); // We will update this to Firebase
         platformInput.value = ''; // Clear the input fields
         urlInput.value = '';
         loadSocialLinksAdmin(); // Reload the displayed list
@@ -168,7 +196,7 @@ function addSocialLink() {
 }
 
 function startEditSocialLink(index) {
-    const storedLinks = localStorage.getItem('socialLinks');
+    const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
     if (storedLinks) {
         const socialLinks = JSON.parse(storedLinks);
         const linkToEdit = socialLinks[index];
@@ -180,11 +208,11 @@ function startEditSocialLink(index) {
 }
 
 function removeSocialLink(index) {
-    const storedLinks = localStorage.getItem('socialLinks');
+    const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
     if (storedLinks) {
         let socialLinks = JSON.parse(storedLinks);
         socialLinks.splice(index, 1); // Remove the link at the given index
-        localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+        localStorage.setItem('socialLinks', JSON.stringify(socialLinks)); // We will update this to Firebase
         loadSocialLinksAdmin(); // Reload the displayed list
     }
 }
@@ -197,14 +225,14 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded on index.html is running on mobile'); // ADDED
 
     // Load Profile Picture for index.html
-    const storedProfilePicture = localStorage.getItem('profilePicture');
+    const storedProfilePicture = localStorage.getItem('profilePicture'); // We will update this to Firebase
     const indexProfilePic = document.getElementById('indexProfilePic');
     if (storedProfilePicture && indexProfilePic) {
         indexProfilePic.src = storedProfilePicture;
     }
 
     // Load Username for index.html
-    const storedUsername = localStorage.getItem('username');
+    const storedUsername = localStorage.getItem('username'); // We will update this to Firebase
     const indexUsername = document.getElementById('indexUsername'); // Corrected selector to use ID
     console.log('Stored Username:', storedUsername); // ADDED
     console.log('Username Element:', indexUsername); // ADDED
@@ -213,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load Bio for index.html
-    const storedBio = localStorage.getItem('bio');
+    const storedBio = localStorage.getItem('bio'); // We will update this to Firebase
     const indexBioLine1 = document.getElementById('indexBioLine1'); // Corrected selector to use ID
     const indexBioLine2 = document.getElementById('indexBioLine2'); // Corrected selector to use ID
     console.log('Stored Bio:', storedBio); // ADDED
@@ -229,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    const storedSocialLinks = localStorage.getItem('socialLinks');
+    const storedSocialLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
     console.log('Stored Social Links:', storedSocialLinks); // ADDED
 
     loadSocialLinksIndex(); // Load social links for index.html
@@ -241,7 +269,7 @@ function loadSocialLinksIndex() {
 
     socialLinksContainer.innerHTML = ''; // Clear existing links
 
-    const storedLinks = localStorage.getItem('socialLinks');
+    const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
     if (storedLinks) {
         const socialLinks = JSON.parse(storedLinks);
         socialLinks.forEach(link => {
