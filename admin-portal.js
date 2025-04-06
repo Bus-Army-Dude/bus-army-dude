@@ -61,6 +61,9 @@ const indexProfilePic = document.getElementById('indexProfilePic');
 const indexUsername = document.getElementById('indexUsername');
 const indexBioLine1 = document.getElementById('indexBioLine1');
 const indexBioLine2 = document.getElementById('indexBioLine2');
+const tiktokShoutoutsContainerIndex = document.getElementById('tiktok-shoutouts');
+const instagramShoutoutsContainerIndex = document.getElementById('instagram-shoutouts');
+const youtubeShoutoutsContainerIndex = document.getElementById('youtube-shoutouts');
 
 // Modal elements for shoutouts (Add)
 const shoutoutModal = document.getElementById('shoutout-modal');
@@ -187,6 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load president data for index.html
     loadPresidentDataIndex();
     loadSocialLinksIndex();
+    loadShoutoutsIndex(); // Load shoutouts for index page
 });
 
 // --------------------------------------------------------------------------
@@ -771,6 +775,7 @@ function saveEditedShoutout() {
                     alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully!`);
                     closeEditShoutoutModal();
                     loadShoutoutsAdminPanel(); // Reload the shoutouts
+                    loadShoutoutsIndex(); // Reload shoutouts on index page
                 })
                 .catch((error) => {
                     console.error("Error updating shoutout: ", error);
@@ -795,6 +800,7 @@ function deleteShoutout(platform, index) {
                         console.log(`${platform} shoutout at index ${index} deleted.`);
                         alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted.`);
                         loadShoutoutsAdminPanel();
+                        loadShoutoutsIndex(); // Reload shoutouts on index page
                     })
                     .catch((error) => {
                         console.error("Error deleting shoutout: ", error);
@@ -803,6 +809,81 @@ function deleteShoutout(platform, index) {
                 }
             });
     }
+}
+
+function loadShoutoutsIndex() {
+    const tiktokContainer = document.getElementById('tiktok-shoutouts');
+    const instagramContainer = document.getElementById('instagram-shoutouts');
+    const youtubeContainer = document.getElementById('youtube-shoutouts');
+
+    if (tiktokContainer) tiktokContainer.innerHTML = '';
+    if (instagramContainer) instagramContainer.innerHTML = '';
+    if (youtubeContainer) youtubeContainer.innerHTML = '';
+
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists && doc.data().shoutouts) {
+                const shoutouts = doc.data().shoutouts;
+
+                const tiktokShoutouts = shoutouts.filter(shoutout => shoutout.platform === 'tiktok');
+                const instagramShoutouts = shoutouts.filter(shoutout => shoutout.platform === 'instagram');
+                const youtubeShoutouts = shoutouts.filter(shoutout => shoutout.platform === 'youtube');
+
+                displayShoutoutsIndex(tiktokShoutouts, 'tiktok', tiktokContainer);
+                displayShoutoutsIndex(instagramShoutouts, 'instagram', instagramContainer);
+                displayShoutoutsIndex(youtubeShoutouts, 'youtube', youtubeContainer);
+
+            } else {
+                console.log("No shoutout data found for index page.");
+                if (tiktokContainer) tiktokContainer.innerHTML = '<p>No TikTok creators available yet.</p>';
+                if (instagramContainer) instagramContainer.innerHTML = '<p>No Instagram creators available yet.</p>';
+                if (youtubeContainer) youtubeContainer.innerHTML = '<p>No YouTube creators available yet.</p>';
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading shoutout data for index page: ", error);
+            if (tiktokContainer) tiktokContainer.innerHTML = '<p>Error loading TikTok shoutouts.</p>';
+            if (instagramContainer) instagramContainer.innerHTML = '<p>Error loading Instagram shoutouts.</p>';
+            if (youtubeContainer) youtubeContainer.innerHTML = '<p>Error loading YouTube shoutouts.</p>';
+        });
+}
+
+function displayShoutoutsIndex(shoutouts, platform, container) {
+    if (container) {
+        container.innerHTML = '';
+        if (shoutouts && shoutouts.length > 0) {
+            shoutouts.forEach(shoutout => {
+                const creatorCard = document.createElement('div');
+                creatorCard.classList.add('creator-card');
+                creatorCard.innerHTML = `
+                    <img src="${shoutout.profilePic}" alt="${shoutout.nickname || shoutout.username}" class="profile-pic">
+                    <h3>${shoutout.nickname || shoutout.username} ${shoutout.isVerified ? '<i class="fas fa-check-circle verified"></i>' : ''}</h3>
+                    <p class="username">@${shoutout.username}</p>
+                    <p class="bio">${shoutout.bio || ''}</p>
+                    <p>${platform === 'youtube' ? 'Subscribers' : 'Followers'}: ${shoutout[platform === 'youtube' ? 'subscribers' : 'followers'] || 'N/A'}</p>
+                    ${platform === 'youtube' && shoutout.coverPhoto ? `<img src="${shoutout.coverPhoto}" alt="Cover Photo" class="cover-photo">` : ''}
+                    <div class="profile-link">
+                        <a href="${getProfileUrl(platform, shoutout.username)}" target="_blank">Visit ${platform === 'youtube' ? 'Channel' : 'Profile'}</a>
+                    </div>
+                `;
+                container.appendChild(creatorCard);
+            });
+        } else {
+            container.innerHTML = `<p>No ${platform.charAt(0).toUpperCase() + platform.slice(1)} creators added yet.</p>`;
+        }
+    }
+}
+
+function getProfileUrl(platform, username) {
+    platform = platform.toLowerCase();
+    if (platform === 'tiktok') {
+        return `https://www.tiktok.com/@${username}`;
+    } else if (platform === 'instagram') {
+        return `https://www.instagram.com/${username}`;
+    } else if (platform === 'youtube') {
+        return `https://www.youtube.com/@${username}`; // Using @handle for YouTube
+    }
+    return '#'; // Default if platform is not recognized
 }
 
 // Call initializePresidentSection when the DOM is fully loaded
@@ -838,4 +919,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load president data and social links for index page
     loadPresidentDataIndex();
     loadSocialLinksIndex();
+    loadShoutoutsIndex(); // Load shoutouts for index page
 });
