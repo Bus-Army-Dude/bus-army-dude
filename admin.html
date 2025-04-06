@@ -86,51 +86,9 @@ POLITICAL PARTY: Republican</textarea>
 
                 <hr>
 
-                <div class="president-editor">
-                    <h3>Edit Current U.S. President</h3>
-                    <form id="president-form">
-                        <div class="form-group">
-                            <label for="presidentName">Name:</label>
-                            <input type="text" id="presidentName" name="presidentName">
-                        </div>
-                        <div class="form-group">
-                            <label for="presidentBirthDate">Born:</label>
-                            <input type="text" id="presidentBirthDate" name="presidentBirthDate">
-                        </div>
-                        <div class="form-group">
-                            <label for="presidentHeight">Height:</label>
-                            <input type="text" id="presidentHeight" name="presidentHeight">
-                        </div>
-                        <div class="form-group">
-                            <label for="presidentParty">Party:</label>
-                            <input type="text" id="presidentParty" name="presidentParty">
-                        </div>
-                        <div class="form-group">
-                            <label for="presidentTermStart">Term Start (YYYY-MM-DD HH:MM AM/PM):</label>
-                            <input type="text" id="presidentTermStart" name="presidentTermStart">
-                        </div>
-                        <div class="form-group">
-                            <label for="presidentTermEnd">Term End (YYYY-MM-DD HH:MM AM/PM):</label>
-                            <input type="text" id="presidentTermEnd" name="presidentTermEnd">
-                        </div>
-                        <div class="form-group">
-                            <label for="vicePresidentName">Vice President:</label>
-                            <input type="text" id="vicePresidentName" name="vicePresidentName">
-                        </div>
-                        <div class="form-group">
-                            <label for="presidentPhoto">Photo:</label>
-                            <input type="file" id="presidentPhoto" name="presidentPhoto" accept="image/*">
-                            <img id="currentPresidentPhoto" src="" alt="Current President Photo" style="max-width: 100px; max-height: 100px; display: block; margin-top: 10px;">
-                        </div>
-                        <button type="button" class="save-president-button">Save President Info</button>
-                    </form>
-                </div>
-
-                <hr>
-
                 <section id="current-president" class="president-section">
-                    <h2 class="section-title">Current U.S. President</h2>
-                    <div class="president-info">
+                    <h2 class="section-title">Current U.S. President <button id="editPresidentButton">Edit</button></h2>
+                    <div class="president-info" id="presidentInfoDisplay">
                         <img src="donaldtrump.jpg" alt="President Donald J. Trump" class="president-photo" id="presidentDisplayPhoto">
                         <div class="president-details">
                             <h3 class="president-name" id="presidentDisplayName">Donald J. Trump</h3>
@@ -140,6 +98,47 @@ POLITICAL PARTY: Republican</textarea>
                             <p class="presidential-term"><strong>Presidential Term:</strong> <span id="presidentDisplayTerm">1/20/25 at 12:00 PM - 1/20/29 at 12:00 PM</span></p>
                             <p><strong>Vice President:</strong> <span id="vicePresidentDisplayName">James David Vance</span></p>
                         </div>
+                    </div>
+
+                    <div class="president-editor" id="presidentEditForm" style="display: none;">
+                        <h3>Edit Current U.S. President</h3>
+                        <form id="president-form">
+                            <div class="form-group">
+                                <label for="presidentName">Name:</label>
+                                <input type="text" id="presidentName" name="presidentName">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentBirthDate">Born:</label>
+                                <input type="text" id="presidentBirthDate" name="presidentBirthDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentHeight">Height:</label>
+                                <input type="text" id="presidentHeight" name="presidentHeight">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentParty">Party:</label>
+                                <input type="text" id="presidentParty" name="presidentParty">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentTermStart">Term Start (YYYY-MM-DD HH:MM AM/PM):</label>
+                                <input type="text" id="presidentTermStart" name="presidentTermStart">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentTermEnd">Term End (YYYY-MM-DD HH:MM AM/PM):</label>
+                                <input type="text" id="presidentTermEnd" name="presidentTermEnd">
+                            </div>
+                            <div class="form-group">
+                                <label for="vicePresidentName">Vice President:</label>
+                                <input type="text" id="vicePresidentName" name="vicePresidentName">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentPhoto">Photo:</label>
+                                <input type="file" id="presidentPhoto" name="presidentPhoto" accept="image/*">
+                                <img id="currentPresidentPhoto" src="" alt="Current President Photo" style="max-width: 100px; max-height: 100px; display: block; margin-top: 10px;">
+                            </div>
+                            <button type="button" class="save-president-button" onclick="savePresidentData()">Save President Info</button>
+                            <button type="button" class="cancel-president-button" onclick="cancelEditPresident()">Cancel</button>
+                        </form>
                     </div>
                 </section>
 
