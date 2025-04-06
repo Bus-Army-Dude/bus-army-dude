@@ -17,9 +17,51 @@ const db = firebase.firestore();
 // If you plan to use Firebase Storage
 // const storage = firebase.storage();
 
-// DOM elements
+// DOM elements (for admin.html)
 const tabs = document.querySelectorAll(".admin-nav li a");
 const contentSections = document.querySelectorAll(".admin-tab-content");
+const profileImageUploadAdmin = document.getElementById('profileImageUpload');
+const usernameInputAdmin = document.getElementById('usernameInput');
+const bioTextareaAdmin = document.getElementById('bioTextarea');
+const saveProfileButton = document.querySelector('.save-profile-button');
+const currentSocialLinksUl = document.getElementById('current-social-links');
+const platformInput = document.getElementById('platform');
+const urlInput = document.getElementById('url');
+const addLinkButton = document.querySelector('#add-social-link-form button[type="button"]');
+const presidentInfoDisplay = document.getElementById('presidentInfoDisplay');
+const presidentEditForm = document.getElementById('presidentEditForm');
+const editPresidentButton = document.getElementById('editPresidentButton');
+const presidentNameInput = document.getElementById('presidentName');
+const presidentBirthDateInput = document.getElementById('presidentBirthDate');
+const presidentHeightInput = document.getElementById('presidentHeight');
+const presidentPartyInput = document.getElementById('presidentParty');
+const presidentTermStartInput = document.getElementById('presidentTermStart');
+const presidentTermEndInput = document.getElementById('presidentTermEnd');
+const vicePresidentNameInput = document.getElementById('vicePresidentName');
+const presidentPhotoUpload = document.getElementById('presidentPhoto');
+const currentPresidentPhotoDisplay = document.getElementById('currentPresidentPhoto');
+const presidentDisplayNameAdmin = document.getElementById('presidentDisplayName');
+const presidentDisplayBirthDateAdmin = document.getElementById('presidentDisplayBirthDate');
+const presidentDisplayHeightAdmin = document.getElementById('presidentDisplayHeight');
+const presidentDisplayPartyAdmin = document.getElementById('presidentDisplayParty');
+const presidentDisplayTermAdmin = document.getElementById('presidentDisplayTerm');
+const vicePresidentDisplayNameAdmin = document.getElementById('vicePresidentDisplayName');
+const presidentDisplayPhotoAdmin = document.getElementById('presidentDisplayPhoto');
+const cancelPresidentButton = document.querySelector('.cancel-president-button');
+
+// DOM elements (for index.html)
+const indexPresidentPhoto = document.querySelector('#current-president .president-photo');
+const indexPresidentName = document.querySelector('#current-president .president-name');
+const indexPresidentBirthDate = document.querySelector('#current-president .president-details p:nth-child(2)');
+const indexPresidentHeight = document.querySelector('#current-president .president-details p:nth-child(3)');
+const indexPresidentParty = document.querySelector('#current-president .president-details p:nth-child(4)');
+const indexPresidentTerm = document.querySelector('#current-president .president-details p:nth-child(5)');
+const indexVicePresidentName = document.querySelector('#current-president .president-details p:nth-child(6)');
+const indexProfilePic = document.getElementById('indexProfilePic');
+const indexUsername = document.getElementById('indexUsername');
+const indexBioLine1 = document.getElementById('indexBioLine1');
+const indexBioLine2 = document.getElementById('indexBioLine2');
+
 
 // Default: Hide all content sections except Home
 function setDefaultTab() {
@@ -43,11 +85,6 @@ window.onload = setDefaultTab;
 // --------------------------------------------------------------------------
 // Profile Section Editing Functionality (for admin.html)
 // --------------------------------------------------------------------------
-
-const profileImageUploadAdmin = document.getElementById('profileImageUpload');
-const usernameInputAdmin = document.getElementById('usernameInput');
-const bioTextareaAdmin = document.getElementById('bioTextarea');
-const saveProfileButton = document.querySelector('.save-profile-button');
 
 if (saveProfileButton) {
     saveProfileButton.addEventListener('click', function() {
@@ -108,22 +145,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             loadSocialLinksAdmin(); // Load social links for the management section
             loadSocialLinksAdminPreview(); // Load social links for the preview section
-            loadPresidentData(); // Load president data
+            loadPresidentData(); // Load president data for admin page
         })
         .catch((error) => {
             console.error("Error getting document:", error);
         });
+
+    // Load president data for index.html
+    loadPresidentDataIndex();
 });
 
 // --------------------------------------------------------------------------
 // Manage Social Links Functionality (for admin.html)
 // --------------------------------------------------------------------------
-
-const currentSocialLinksUl = document.getElementById('current-social-links');
-const platformInput = document.getElementById('platform');
-const urlInput = document.getElementById('url');
-const addLinkButton = document.querySelector('#add-social-link-form button[type="button"]');
-let editingIndex = -1; // To keep track of the index being edited
 
 function getSocialIconClass(platform) {
     platform = platform.toLowerCase();
@@ -155,7 +189,6 @@ function saveSocialLinksToFirebase(socialLinks) {
 }
 
 function loadSocialLinksAdmin() {
-    const currentSocialLinksUl = document.getElementById('current-social-links');
     if (currentSocialLinksUl) {
         currentSocialLinksUl.innerHTML = ''; // Clear the current list
 
@@ -189,6 +222,8 @@ function loadSocialLinksAdmin() {
     }
 }
 
+let editingIndex = -1; // To keep track of the index being edited (moved here for scope)
+
 function addSocialLink() {
     const platform = platformInput.value.trim();
     const url = urlInput.value.trim();
@@ -215,6 +250,7 @@ function addSocialLink() {
                 platformInput.value = ''; // Clear the input fields
                 urlInput.value = '';
                 loadSocialLinksAdmin(); // Reload the displayed list from Firebase
+                loadSocialLinksIndex(); // Reload social links on index page
             })
             .catch((error) => {
                 console.error("Error getting user document for adding social link: ", error);
@@ -260,6 +296,7 @@ function removeSocialLink(index) {
                     socialLinks.splice(index, 1); // Remove the link at the given index
                     saveSocialLinksToFirebase(socialLinks); // Save the updated array to Firebase
                     loadSocialLinksAdmin(); // Reload the displayed list from Firebase
+                    loadSocialLinksIndex(); // Reload social links on index page
                 } else {
                     console.log("Invalid index for removing social link:", index);
                 }
@@ -275,43 +312,6 @@ function removeSocialLink(index) {
 // --------------------------------------------------------------------------
 // Load Profile Data and Social Links for index.html
 // --------------------------------------------------------------------------
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded on index.html is running on mobile');
-
-    db.collection('users').doc('main-user').get()
-        .then((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
-                const indexProfilePic = document.getElementById('indexProfilePic');
-                const indexUsername = document.getElementById('indexUsername');
-                const indexBioLine1 = document.getElementById('indexBioLine1');
-                const indexBioLine2 = document.getElementById('indexBioLine2');
-
-                if (indexProfilePic && data.profilePictureUrl) {
-                    indexProfilePic.src = data.profilePictureUrl;
-                }
-                if (indexUsername) {
-                    indexUsername.textContent = data.username || '';
-                }
-                if (data.bio) {
-                    const bioLines = data.bio.split('\n');
-                    if (indexBioLine1) {
-                        indexBioLine1.textContent = bioLines[0] || '';
-                    }
-                    if (indexBioLine2) {
-                        indexBioLine2.textContent = bioLines[1] || '';
-                    }
-                }
-                loadSocialLinksIndex(); // Load social links for index.html
-            } else {
-                console.log("No profile document found in Firebase for index.html");
-            }
-        })
-        .catch((error) => {
-            console.error("Error getting profile data for index.html:", error);
-        });
-});
 
 function loadSocialLinksIndex() {
     const socialLinksContainer = document.querySelector('.social-links-container'); // Corrected selector (class is correct)
@@ -348,6 +348,10 @@ function loadSocialLinksIndex() {
             console.error("Error loading social links from Firebase for index.html: ", error);
         });
 }
+
+// --------------------------------------------------------------------------
+// Load Social Links for Admin Preview
+// --------------------------------------------------------------------------
 
 function loadSocialLinksAdminPreview() {
     const socialLinksContainer = document.getElementById('current-social-links-display');
@@ -386,31 +390,9 @@ function loadSocialLinksAdminPreview() {
 }
 
 // --------------------------------------------------------------------------
-// Current President Section Editing Functionality (for admin.html) - UPDATED
+// Current President Section Editing Functionality (for admin.html)
 // --------------------------------------------------------------------------
 
-const presidentInfoDisplay = document.getElementById('presidentInfoDisplay');
-const presidentEditForm = document.getElementById('presidentEditForm');
-const editPresidentButton = document.getElementById('editPresidentButton');
-const presidentNameInput = document.getElementById('presidentName');
-const presidentBirthDateInput = document.getElementById('presidentBirthDate');
-const presidentHeightInput = document.getElementById('presidentHeight');
-const presidentPartyInput = document.getElementById('presidentParty');
-const presidentTermStartInput = document.getElementById('presidentTermStart');
-const presidentTermEndInput = document.getElementById('presidentTermEnd');
-const vicePresidentNameInput = document.getElementById('vicePresidentName');
-const presidentPhotoUpload = document.getElementById('presidentPhoto');
-const currentPresidentPhotoDisplay = document.getElementById('currentPresidentPhoto');
-const presidentDisplayName = document.getElementById('presidentDisplayName');
-const presidentDisplayBirthDate = document.getElementById('presidentDisplayBirthDate');
-const presidentDisplayHeight = document.getElementById('presidentDisplayHeight');
-const presidentDisplayParty = document.getElementById('presidentDisplayParty');
-const presidentDisplayTerm = document.getElementById('presidentDisplayTerm');
-const vicePresidentDisplayName = document.getElementById('vicePresidentDisplayName');
-const presidentDisplayPhoto = document.getElementById('presidentDisplayPhoto');
-const cancelPresidentButton = document.querySelector('.cancel-president-button');
-
-// Function to initialize the president section on page load
 function initializePresidentSection() {
     if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
     if (presidentEditForm) presidentEditForm.style.display = 'none';
@@ -466,7 +448,8 @@ function savePresidentDataToFirebase(name, birthDate, height, party, termStart, 
     }, { merge: true })
     .then(() => {
         alert('President information updated!');
-        loadPresidentData(); // Reload the data to update the display
+        loadPresidentData(); // Reload the data for admin page
+        loadPresidentDataIndex(); // Reload the data for index page
     })
     .catch((error) => {
         console.error("Error updating president data: ", error);
@@ -490,15 +473,15 @@ function loadPresidentData() {
                 if (presidentTermStartInput) presidentTermStartInput.value = data.termStart || '';
                 if (presidentTermEndInput) presidentTermEndInput.value = data.termEnd || '';
                 if (vicePresidentNameInput) vicePresidentNameInput.value = data.vicePresident || '';
-                const photoUrl = data.photoUrl || '';
+                const photoUrl = data.photoUrl || 'donaldtrump.jpg'; // Default image if no URL
                 if (currentPresidentPhotoDisplay) currentPresidentPhotoDisplay.src = photoUrl;
-                if (presidentDisplayPhoto) presidentDisplayPhoto.src = photoUrl;
-                if (presidentDisplayName) presidentDisplayName.textContent = data.name || 'President Name';
-                if (presidentDisplayBirthDate) presidentDisplayBirthDate.textContent = data.birthDate || 'Birth Date';
-                if (presidentDisplayHeight) presidentDisplayHeight.textContent = data.height || 'Height';
-                if (presidentDisplayParty) presidentDisplayParty.textContent = data.party || 'Party';
-                if (presidentDisplayTerm) presidentDisplayTerm.textContent = `${data.termStart || 'Start Date'} - ${data.termEnd || 'End Date'}`;
-                if (vicePresidentDisplayName) vicePresidentDisplayName.textContent = data.vicePresident || 'Vice President Name';
+                if (presidentDisplayPhotoAdmin) presidentDisplayPhotoAdmin.src = photoUrl;
+                if (presidentDisplayNameAdmin) presidentDisplayNameAdmin.textContent = data.name || 'President Name';
+                if (presidentDisplayBirthDateAdmin) presidentDisplayBirthDateAdmin.textContent = data.birthDate || 'Birth Date';
+                if (presidentDisplayHeightAdmin) presidentDisplayHeightAdmin.textContent = data.height || 'Height';
+                if (presidentDisplayPartyAdmin) presidentDisplayPartyAdmin.textContent = data.party || 'Party';
+                if (presidentDisplayTermAdmin) presidentDisplayTermAdmin.textContent = `${data.termStart || 'Start Date'} - ${data.termEnd || 'End Date'}`;
+                if (vicePresidentDisplayNameAdmin) vicePresidentDisplayNameAdmin.textContent = data.vicePresident || 'Vice President Name';
 
                 if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
                 if (presidentEditForm) presidentEditForm.style.display = 'none';
@@ -514,6 +497,30 @@ function loadPresidentData() {
             alert('Error loading president information.'); // Alert for load errors too
             if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'none';
             if (presidentEditForm) presidentEditForm.style.display = 'none'; // Ensure hidden on error
+        });
+}
+
+function loadPresidentDataIndex() {
+    db.collection('president').doc('current').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const photoUrl = data.photoUrl || 'donaldtrump.jpg'; // Default image if no URL
+
+                if (indexPresidentPhoto) indexPresidentPhoto.src = photoUrl;
+                if (indexPresidentName) indexPresidentName.textContent = data.name || 'President Name';
+                if (indexPresidentBirthDate) indexPresidentBirthDate.textContent = `<strong>Born:</strong> ${data.birthDate || 'June 14, 1946'}`;
+                if (indexPresidentHeight) indexPresidentHeight.textContent = `<strong>Height:</strong> ${data.height || "6'3\" (190.5 cm)"}`;
+                if (indexPresidentParty) indexPresidentParty.textContent = `<strong>Party:</strong> ${data.party || 'Republican Party'}`;
+                if (indexPresidentTerm) indexPresidentTerm.textContent = `<strong>Presidential Term:</strong> ${data.termStart || '1/20/25 at 12:00 PM'} - ${data.termEnd || '1/20/29 at 12:00 PM'}`;
+                if (indexVicePresidentName) indexVicePresidentName.textContent = `<strong>Vice President:</strong> ${data.vicePresident || 'James David Vance'}`;
+            } else {
+                console.log("No president data found for index page, using defaults from HTML.");
+                // If no data, the index.html will show the hardcoded values
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading president data for index page: ", error);
         });
 }
 
@@ -540,9 +547,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             loadSocialLinksAdmin();
             loadSocialLinksAdminPreview();
-            initializePresidentSection(); // Initialize the president section
+            initializePresidentSection(); // Initialize the president section for admin page
         })
         .catch((error) => {
             console.error("Error getting document:", error);
         });
+
+    // Load president data and social links for index page
+    loadPresidentDataIndex();
+    loadSocialLinksIndex();
 });
