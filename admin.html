@@ -1,106 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal</title>
-    <link rel="stylesheet" href="admin-portal.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://kit.fontawesome.com/ffa5e5607e.js" crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal</title>
+    <link rel="stylesheet" href="admin-portal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/ffa5e5607e.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="admin-body">
 
-    <div class="admin-container">
+    <div class="admin-container">
 
-        <div class="admin-sidebar">
-            <div class="profile-info">
-                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-img">
-                <p class="username">Bus Army Dude</p>
-            </div>
+        <div class="admin-sidebar">
+            <div class="profile-info">
+                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-img">
+                <p class="username">Bus Army Dude</p>
+            </div>
 
-            <ul class="admin-nav">
-                <li><a href="javascript:void(0);" onclick="switchTab('home')">Home</a></li>
-                <li><a href="javascript:void(0);" onclick="switchTab('shoutouts')">Shoutouts</a></li>
-                <li><a href="javascript:void(0);" onclick="switchTab('blog')">Blog</a></li>
-                <li><a href="javascript:void(0);" onclick="switchTab('merch')">Merch Store</a></li>
-                <li><a href="javascript:void(0);" onclick="switchTab('settings')">Settings</a></li>
-            </ul>
-        </div>
+            <ul class="admin-nav">
+                <li><a href="javascript:void(0);" onclick="switchTab('home')">Home</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('shoutouts')">Shoutouts</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('blog')">Blog</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('merch')">Merch Store</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('settings')">Settings</a></li>
+            </ul>
+        </div>
 
-        <div class="admin-content">
+        <div class="admin-content">
 
-            <div id="home" class="admin-tab-content active">
-                <h2>Profile Section</h2>
-                <p>Modify your username, bio, and profile image.</p>
-                <div class="profile-section">
-                    <div class="form-group">
-                        <label for="profileImageUpload">Change Profile Picture:</label>
-                        <input type="file" id="profileImageUpload" accept="image/*">
-                    </div>
+            <div id="home" class="admin-tab-content active">
+                <h2>Profile Section</h2>
+                <p>Modify your username, bio, and profile image.</p>
+                <div class="profile-section">
+                    <div class="form-group">
+                        <label for="profileImageUpload">Change Profile Picture:</label>
+                        <input type="file" id="profileImageUpload" accept="image/*">
+                    </div>
 
-                    <div class="form-group">
-                        <label for="usernameInput">Edit Username:</label>
-                        <input type="text" id="usernameInput" value="Bus Army Dude">
-                    </div>
+                    <div class="form-group">
+                        <label for="usernameInput">Edit Username:</label>
+                        <input type="text" id="usernameInput" value="Bus Army Dude">
+                    </div>
 
-                    <div class="form-group">
-                        <label for="bioTextarea">Edit Bio:</label>
-                        <textarea id="bioTextarea" rows="4">CURRENT PRESIDENT: Trump (2025-2029)
+                    <div class="form-group">
+                        <label for="bioTextarea">Edit Bio:</label>
+                        <textarea id="bioTextarea" rows="4">CURRENT PRESIDENT: Trump (2025-2029)
 POLITICAL PARTY: Republican</textarea>
-                    </div>
+                    </div>
 
-                    <button class="save-profile-button">Save Changes</button>
-                </div>
+                    <button class="save-profile-button">Save Changes</button>
+                </div>
 
-                <hr> <h2>Manage Social Links</h2>
-                <p>Add, modify, or remove links to your social media profiles.</p>
+                <hr> <h2>Manage Social Links</h2>
+                <p>Add, modify, or remove links to your social media profiles.</p>
 
-                <div id="social-links-admin">
-                    <ul id="current-social-links">
-                        </ul>
+                <div id="social-links-admin">
+                    <ul id="current-social-links">
+                        </ul>
 
-                    <h3>Add New Social Link</h3>
-                    <form id="add-social-link-form">
-                        <div class="form-group">
-                            <label for="platform">Platform:</label>
-                            <input type="text" id="platform" placeholder="e.g., TikTok, Snapchat, X (Twitter)">
-                        </div>
-                        <div class="form-group">
-                            <label for="url">URL:</label>
-                            <input type="url" id="url" placeholder="Enter the full URL">
-                        </div>
-                        <button type="button" onclick="addSocialLink()">Add Link</button>
-                    </form>
-                </div>
+                    <h3>Add New Social Link</h3>
+                    <form id="add-social-link-form">
+                        <div class="form-group">
+                            <label for="platform">Platform:</label>
+                            <input type="text" id="platform" placeholder="e.g., TikTok, Snapchat, X (Twitter)">
+                        </div>
+                        <div class="form-group">
+                            <label for="url">URL:</label>
+                            <input type="url" id="url" placeholder="Enter the full URL">
+                        </div>
+                        <button type="button" onclick="addSocialLink()">Add Link</button>
+                    </form>
+                </div>
 
-            </div>
+                <hr> <div class="social-links-section">
+                    <h2>Current Social Links (as they appear on your site)</h2>
+                    <div class="social-links-container" id="current-social-links-display">
+                        </div>
+                </div>
 
-            <div id="shoutouts" class="admin-tab-content">
-                <h2>TikTok, Instagram, YouTube Creator Shoutouts</h2>
-                <p>Manage your shoutouts list for creators you follow or collaborate with.</p>
-                </div>
+            </div>
 
-            <div id="blog" class="admin-tab-content">
-                <h2>Blog Page</h2>
-                <p>Manage blog categories, posts, and display them in cards with their titles, descriptions, and images.</p>
-                </div>
+            <div id="shoutouts" class="admin-tab-content">
+                <h2>TikTok, Instagram, YouTube Creator Shoutouts</h2>
+                <p>Manage your shoutouts list for creators you follow or collaborate with.</p>
+                </div>
 
-            <div id="merch" class="admin-tab-content">
-                <h2>Merch Store</h2>
-                <p>Manage product categories, product details, stock, and pricing.</p>
-                </div>
+            <div id="blog" class="admin-tab-content">
+                <h2>Blog Page</h2>
+                <p>Manage blog categories, posts, and display them in cards with their titles, descriptions, and images.</p>
+                </div>
 
-            <div id="settings" class="admin-tab-content">
-                <h2>Settings</h2>
-                <p>Manage the settings for dark mode, accessibility, and other owner-only configurations.</p>
-                </div>
+            <div id="merch" class="admin-tab-content">
+                <h2>Merch Store</h2>
+                <p>Manage product categories, product details, stock, and pricing.</p>
+                </div>
 
-        </div>
+            <div id="settings" class="admin-tab-content">
+                <h2>Settings</h2>
+                <p>Manage the settings for dark mode, accessibility, and other owner-only configurations.</p>
+                </div>
 
-    </div>
+        </div>
 
-    <script src="admin-portal.js"></script>
+    </div>
+
+    <script src="admin-portal.js"></script>
 </body>
 </html>
