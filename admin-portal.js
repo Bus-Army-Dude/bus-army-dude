@@ -62,7 +62,7 @@ const indexUsername = document.getElementById('indexUsername');
 const indexBioLine1 = document.getElementById('indexBioLine1');
 const indexBioLine2 = document.getElementById('indexBioLine2');
 
-// Modal elements for shoutouts
+// Modal elements for shoutouts (Add)
 const shoutoutModal = document.getElementById('shoutout-modal');
 const modalTitle = document.getElementById('modal-title');
 const shoutoutForm = document.getElementById('shoutout-form');
@@ -75,6 +75,22 @@ const youtubeShoutoutsList = document.getElementById('youtube-shoutouts-list');
 const tiktokLastUpdatedTimestamp = document.getElementById('tiktok-last-updated-timestamp');
 const instagramLastUpdatedTimestamp = document.getElementById('lastUpdatedInstagram');
 const youtubeLastUpdatedTimestamp = document.getElementById('lastUpdatedYouTube');
+
+// Modal elements for shoutouts (Edit)
+const editShoutoutModal = document.getElementById('edit-shoutout-modal');
+const editModalTitle = document.getElementById('edit-modal-title');
+const editShoutoutForm = document.getElementById('edit-shoutout-form');
+const editShoutoutIndexInput = document.getElementById('edit-shoutout-index');
+const editShoutoutPlatformInput = document.getElementById('edit-shoutout-platform');
+const editUsernameInput = document.getElementById('edit-username');
+const editNicknameInput = document.getElementById('edit-nickname');
+const editBioTextarea = document.getElementById('edit-bio');
+const editProfilePicInput = document.getElementById('edit-profilePic');
+const editFollowersSubscribersGroup = document.getElementById('edit-followers-subscribers-group');
+const editFollowersInput = document.getElementById('edit-followers');
+const editCoverPhotoGroup = document.getElementById('edit-coverPhoto-group');
+const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
+const editIsVerifiedCheckbox = document.getElementById('edit-isVerified');
 
 // Default: Hide all content sections except Home
 function setDefaultTab() {
@@ -653,7 +669,7 @@ function displayShoutoutsAdmin(shoutouts, platform, container, timestampElement)
                 <p>${platform === 'youtube' ? 'Subscribers' : 'Followers'}: ${shoutout[platform === 'youtube' ? 'subscribers' : 'followers'] || 'N/A'}</p>
                 ${platform === 'youtube' && shoutout.coverPhoto ? `<img src="${shoutout.coverPhoto}" alt="Cover Photo" class="cover-photo">` : ''}
                 <div class="admin-controls">
-                    <button onclick="editShoutout('${platform}', ${index})">Edit</button>
+                    <button onclick="populateEditShoutoutModal('${platform}', ${index})">Edit</button>
                     <button onclick="deleteShoutout('${platform}', ${index})">Delete</button>
                 </div>
             `;
@@ -672,25 +688,120 @@ function updateLastUpdatedTimestamp(element) {
     }
 }
 
-function editShoutout(platform, index) {
-    // Implement edit functionality (e.g., populate modal with data)
-    console.log(`Edit ${platform} shoutout at index: ${index}`);
-    // You'll need to fetch the data, populate the modal, and implement a save edit function
+function openEditShoutoutModal() {
+    editShoutoutModal.style.display = 'block';
+}
+
+function closeEditShoutoutModal() {
+    editShoutoutModal.style.display = 'none';
+}
+
+function populateEditShoutoutModal(platform, index) {
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists && doc.data().shoutouts) {
+                const shoutouts = doc.data().shoutouts;
+                const shoutoutToEdit = shoutouts.find(shoutout => shoutout.platform === platform && shoutouts.indexOf(shoutout) === index); // Basic find, might need more robust ID
+
+                if (shoutoutToEdit) {
+                    editShoutoutIndexInput.value = index;
+                    editShoutoutPlatformInput.value = platform;
+                    editModalTitle.textContent = `Edit ${platform.charAt(0).toUpperCase() + platform.slice(1)} Shoutout`;
+                    editUsernameInput.value = shoutoutToEdit.username || '';
+                    editNicknameInput.value = shoutoutToEdit.nickname || '';
+                    editBioTextarea.value = shoutoutToEdit.bio || '';
+                    editProfilePicInput.value = shoutoutToEdit.profilePic || '';
+                    editFollowersInput.value = shoutoutToEdit[platform === 'youtube' ? 'subscribers' : 'followers'] || '';
+                    editIsVerifiedCheckbox.checked = shoutoutToEdit.isVerified || false;
+                    if (platform === 'youtube') {
+                        editFollowersSubscribersGroup.querySelector('label').textContent = 'Subscribers:';
+                        editCoverPhotoGroup.style.display = 'block';
+                        editCoverPhotoInput.value = shoutoutToEdit.coverPhoto || '';
+                    } else {
+                        editFollowersSubscribersGroup.querySelector('label').textContent = 'Followers:';
+                        editCoverPhotoGroup.style.display = 'none';
+                        editCoverPhotoInput.value = ''; // Clear if not YouTube
+                    }
+                    openEditShoutoutModal();
+                } else {
+                    console.log("Shoutout not found for editing.");
+                }
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading shoutout data for editing: ", error);
+        });
+}
+
+function saveEditedShoutout() {
+    const index = parseInt(editShoutoutIndexInput.value);
+    const platform = editShoutoutPlatformInput.value;
+    const username = editUsernameInput.value;
+    const nickname = editNicknameInput.value;
+    const bio = editBioTextarea.value;
+    const profilePic = editProfilePicInput.value;
+    const followers = parseInt(editFollowersInput.value);
+    const isVerified = editIsVerifiedCheckbox.checked;
+    const coverPhoto = editCoverPhotoInput.value;
+
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists && doc.data().shoutouts) {
+                const shoutouts = [...doc.data().shoutouts]; // Create a copy to modify
+
+                const updatedShoutout = {
+                    platform: platform,
+                    username: username,
+                    nickname: nickname,
+                    bio: bio,
+                    profilePic: profilePic,
+                    [platform === 'youtube' ? 'subscribers' : 'followers']: followers,
+                    isVerified: isVerified,
+                    coverPhoto: coverPhoto
+                };
+
+                // Replace the item at the specified index
+                shoutouts[index] = updatedShoutout;
+
+                db.collection('users').doc('main-user').update({
+                    shoutouts: shoutouts
+                })
+                .then(() => {
+                    console.log(`${platform} shoutout at index ${index} updated.`);
+                    alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully!`);
+                    closeEditShoutoutModal();
+                    loadShoutoutsAdminPanel(); // Reload the shoutouts
+                })
+                .catch((error) => {
+                    console.error("Error updating shoutout: ", error);
+                    alert(`Error updating ${platform} shoutout.`);
+                });
+            }
+        });
 }
 
 function deleteShoutout(platform, index) {
     if (confirm(`Are you sure you want to delete the ${platform} shoutout at index: ${index}?`)) {
-        db.collection('users').doc('main-user').update({
-            shoutouts: firebase.firestore.FieldValue.arrayRemove({ platform: platform, /* Add other identifying fields to match */ })
-        }).then(() => {
-            console.log(`${platform} shoutout at index ${index} deleted.`);
-            loadShoutoutsAdminPanel();
-        }).catch((error) => {
-            console.error("Error deleting shoutout: ", error);
-            alert(`Error deleting ${platform} shoutout.`);
-        });
-        // The above delete is a basic example and might need more specific matching criteria
-        // based on the data you are storing. Consider using a unique ID if you implement editing.
+        db.collection('users').doc('main-user').get()
+            .then((doc) => {
+                if (doc.exists && doc.data().shoutouts) {
+                    const shoutouts = [...doc.data().shoutouts];
+                    shoutouts.splice(index, 1); // Remove the item at the specified index
+
+                    db.collection('users').doc('main-user').update({
+                        shoutouts: shoutouts
+                    })
+                    .then(() => {
+                        console.log(`${platform} shoutout at index ${index} deleted.`);
+                        alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted.`);
+                        loadShoutoutsAdminPanel();
+                    })
+                    .catch((error) => {
+                        console.error("Error deleting shoutout: ", error);
+                        alert(`Error deleting ${platform} shoutout.`);
+                    });
+                }
+            });
     }
 }
 
