@@ -141,43 +141,51 @@ function getSocialIconClass(platform) {
     return 'fa fa-link'; // Default link icon
 }
 
+function saveSocialLinksToFirebase(socialLinks) {
+    db.collection('users').doc('main-user').update({
+        socialLinks: socialLinks
+    })
+    .then(() => {
+        console.log("Social links updated in Firebase!");
+    })
+    .catch((error) => {
+        console.error("Error updating social links in Firebase: ", error);
+        alert('Error saving social links.');
+    });
+}
+
 function loadSocialLinksAdmin() {
     const currentSocialLinksUl = document.getElementById('current-social-links');
-    if (currentSocialLinksUl) { // ADDED THIS CHECK
+    if (currentSocialLinksUl) {
         currentSocialLinksUl.innerHTML = ''; // Clear the current list
-        const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
-        if (storedLinks) {
-            const socialLinks = JSON.parse(storedLinks);
-            socialLinks.forEach((link, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                    <i class="${getSocialIconClass(link.platform)}"></i>
-                    <span>${link.platform}:</span>
-                    <a href="${link.url}" target="_blank">${link.url}</a>
-                    <button onclick="startEditSocialLink(${index})">Edit</button>
-                    <button onclick="removeSocialLink(${index})">Remove</button>
-                `;
-                currentSocialLinksUl.appendChild(listItem);
+
+        db.collection('users').doc('main-user').get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const socialLinks = data.socialLinks || []; // Get social links from Firebase
+
+                    socialLinks.forEach((link, index) => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <i class="${getSocialIconClass(link.platform)}"></i>
+                            <span>${link.platform}:</span>
+                            <a href="${link.url}" target="_blank">${link.url}</a>
+                            <button onclick="startEditSocialLink(${index})">Edit</button>
+                            <button onclick="removeSocialLink(${index})">Remove</button>
+                        `;
+                        currentSocialLinksUl.appendChild(listItem);
+                    });
+                } else {
+                    console.log("No user document found, or no social links.");
+                    // Optionally handle the case where the document doesn't exist
+                }
+                editingIndex = -1; // Reset editing index after loading
+                addLinkButton.textContent = 'Add Link'; // Reset button text
+            })
+            .catch((error) => {
+                console.error("Error loading social links from Firebase: ", error);
             });
-        } else {
-            // Load initial links from your index.html structure
-            const initialLinks = [
-                { platform: 'TikTok', url: 'https://www.tiktok.com/@bus.army.dude' },
-                { platform: 'Snapchat', url: 'https://www.snapchat.com/add/calebkritzar' },
-                { platform: 'X (Twitter)', url: 'https://x.com/KritzarRiver' },
-                { platform: 'Threads', url: 'https://www.threads.net/@busarmydude' },
-                { platform: 'Twitch', url: 'https://m.twitch.tv/BusArmyDude' },
-                { platform: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61569972389004' },
-                { platform: 'Steam', url: 'https://steamcommunity.com/profiles/76561199283946668' },
-                { platform: 'Discord', url: 'https://discord.gg/NjMtuZYc52' },
-                { platform: 'Instagram', url: 'https://www.instagram.com/busarmydude/' },
-                { platform: 'Amazon Music', url: 'https://music.amazon.com/profiles/@riverkritzar40820895?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_itT4WHDz0nPzPfGGi9YYP0iqI' }
-            ];
-            localStorage.setItem('socialLinks', JSON.stringify(initialLinks));
-            loadSocialLinksAdmin(); // Reload to display them
-        }
-        editingIndex = -1; // Reset editing index after loading
-        addLinkButton.textContent = 'Add Link'; // Reset button text
     }
 }
 
@@ -187,48 +195,78 @@ function addSocialLink() {
 
     if (platform && url) {
         const newLink = { platform: platform, url: url };
-        const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
-        let socialLinks = storedLinks ? JSON.parse(storedLinks) : [];
 
-        if (editingIndex > -1) {
-            // Save the edit
-            socialLinks[editingIndex] = newLink;
-            editingIndex = -1; // Reset editing index
-            addLinkButton.textContent = 'Add Link';
-        } else {
-            // Add a new link
-            socialLinks.push(newLink);
-        }
+        db.collection('users').doc('main-user').get()
+            .then((doc) => {
+                const data = doc.data();
+                let socialLinks = data.socialLinks || [];
 
-        localStorage.setItem('socialLinks', JSON.stringify(socialLinks)); // We will update this to Firebase
-        platformInput.value = ''; // Clear the input fields
-        urlInput.value = '';
-        loadSocialLinksAdmin(); // Reload the displayed list
+                if (editingIndex > -1) {
+                    // Save the edit
+                    socialLinks[editingIndex] = newLink;
+                    editingIndex = -1; // Reset editing index
+                    addLinkButton.textContent = 'Add Link';
+                } else {
+                    // Add a new link
+                    socialLinks.push(newLink);
+                }
+                saveSocialLinksToFirebase(socialLinks); // Save updated links to Firebase
+                platformInput.value = ''; // Clear the input fields
+                urlInput.value = '';
+                loadSocialLinksAdmin(); // Reload the displayed list from Firebase
+            })
+            .catch((error) => {
+                console.error("Error getting user document for adding social link: ", error);
+            });
     } else {
         alert('Please enter both the platform and the URL.');
     }
 }
 
 function startEditSocialLink(index) {
-    const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
-    if (storedLinks) {
-        const socialLinks = JSON.parse(storedLinks);
-        const linkToEdit = socialLinks[index];
-        platformInput.value = linkToEdit.platform;
-        urlInput.value = linkToEdit.url;
-        editingIndex = index;
-        addLinkButton.textContent = 'Save Edit';
-    }
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const socialLinks = data.socialLinks || [];
+                if (socialLinks[index]) {
+                    const linkToEdit = socialLinks[index];
+                    platformInput.value = linkToEdit.platform;
+                    urlInput.value = linkToEdit.url;
+                    editingIndex = index;
+                    addLinkButton.textContent = 'Save Edit';
+                } else {
+                    console.log("Social link not found at index:", index);
+                }
+            } else {
+                console.log("No user document found.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error getting user document for editing social link: ", error);
+        });
 }
 
 function removeSocialLink(index) {
-    const storedLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
-    if (storedLinks) {
-        let socialLinks = JSON.parse(storedLinks);
-        socialLinks.splice(index, 1); // Remove the link at the given index
-        localStorage.setItem('socialLinks', JSON.stringify(socialLinks)); // We will update this to Firebase
-        loadSocialLinksAdmin(); // Reload the displayed list
-    }
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                let socialLinks = data.socialLinks || [];
+                if (index >= 0 && index < socialLinks.length) {
+                    socialLinks.splice(index, 1); // Remove the link at the given index
+                    saveSocialLinksToFirebase(socialLinks); // Save the updated array to Firebase
+                    loadSocialLinksAdmin(); // Reload the displayed list from Firebase
+                } else {
+                    console.log("Invalid index for removing social link:", index);
+                }
+            } else {
+                console.log("No user document found.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error getting user document for removing social link: ", error);
+        });
 }
 
 // --------------------------------------------------------------------------
@@ -262,10 +300,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         indexBioLine2.textContent = bioLines[1] || '';
                     }
                 }
+                loadSocialLinksIndex(); // Load social links for index.html
             } else {
                 console.log("No profile document found in Firebase for index.html");
             }
-            loadSocialLinksIndex(); // We'll update this to Firebase later
         })
         .catch((error) => {
             console.error("Error getting profile data for index.html:", error);
