@@ -454,7 +454,7 @@ function savePresidentData() {
 }
 
 function savePresidentDataToFirebase(name, birthDate, height, party, termStart, termEnd, vicePresident, photoUrl) {
-    db.collection('president').doc('current').update({
+    db.collection('president').doc('current').set({ // Changed from update to set with merge
         name: name,
         birthDate: birthDate,
         height: height,
@@ -463,7 +463,7 @@ function savePresidentDataToFirebase(name, birthDate, height, party, termStart, 
         termEnd: termEnd,
         vicePresident: vicePresident,
         photoUrl: photoUrl
-    })
+    }, { merge: true })
     .then(() => {
         alert('President information updated!');
         loadPresidentData(); // Reload the data to update the display
