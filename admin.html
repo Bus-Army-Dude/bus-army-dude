@@ -32,6 +32,49 @@
         <div class="admin-content">
 
             <div id="home" class="admin-tab-content active">
+
+                <div class="president-editor">
+                    <h3>Edit Current U.S. President</h3>
+                    <form id="president-form">
+                        <div class="form-group">
+                            <label for="presidentName">Name:</label>
+                            <input type="text" id="presidentName" name="presidentName">
+                        </div>
+                        <div class="form-group">
+                            <label for="presidentBirthDate">Born:</label>
+                            <input type="text" id="presidentBirthDate" name="presidentBirthDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="presidentHeight">Height:</label>
+                            <input type="text" id="presidentHeight" name="presidentHeight">
+                        </div>
+                        <div class="form-group">
+                            <label for="presidentParty">Party:</label>
+                            <input type="text" id="presidentParty" name="presidentParty">
+                        </div>
+                        <div class="form-group">
+                            <label for="presidentTermStart">Term Start (YYYY-MM-DD HH:MM AM/PM):</label>
+                            <input type="text" id="presidentTermStart" name="presidentTermStart">
+                        </div>
+                        <div class="form-group">
+                            <label for="presidentTermEnd">Term End (YYYY-MM-DD HH:MM AM/PM):</label>
+                            <input type="text" id="presidentTermEnd" name="presidentTermEnd">
+                        </div>
+                        <div class="form-group">
+                            <label for="vicePresidentName">Vice President:</label>
+                            <input type="text" id="vicePresidentName" name="vicePresidentName">
+                        </div>
+                        <div class="form-group">
+                            <label for="presidentPhoto">Photo:</label>
+                            <input type="file" id="presidentPhoto" name="presidentPhoto" accept="image/*">
+                            <img id="currentPresidentPhoto" src="" alt="Current President Photo" style="max-width: 100px; max-height: 100px; display: block; margin-top: 10px;">
+                        </div>
+                        <button type="button" class="save-president-button">Save President Info</button>
+                    </form>
+                </div>
+
+                <hr>
+
                 <h2>Profile Section</h2>
                 <p>Modify your username, bio, and profile image.</p>
                 <div class="profile-section">
@@ -54,7 +97,26 @@ POLITICAL PARTY: Republican</textarea>
                     <button class="save-profile-button">Save Changes</button>
                 </div>
 
-                <hr> <h2>Manage Social Links</h2>
+                <hr>
+
+                <section id="current-president" class="president-section">
+                    <h2 class="section-title">Current U.S. President</h2>
+                    <div class="president-info">
+                        <img src="donaldtrump.jpg" alt="President Donald J. Trump" class="president-photo" id="presidentDisplayPhoto">
+                        <div class="president-details">
+                            <h3 class="president-name" id="presidentDisplayName">Donald J. Trump</h3>
+                            <p><strong>Born:</strong> <span id="presidentDisplayBirthDate">June 14, 1946</span></p>
+                            <p><strong>Height:</strong> <span id="presidentDisplayHeight">6'3" (190.5 cm)</span></p>
+                            <p><strong>Party:</strong> <span id="presidentDisplayParty">Republican Party</span></p>
+                            <p class="presidential-term"><strong>Presidential Term:</strong> <span id="presidentDisplayTerm">1/20/25 at 12:00 PM - 1/20/29 at 12:00 PM</span></p>
+                            <p><strong>Vice President:</strong> <span id="vicePresidentDisplayName">James David Vance</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <h2>Manage Social Links</h2>
                 <p>Add, modify, or remove links to your social media profiles.</p>
 
                 <div id="social-links-admin">
@@ -86,22 +148,22 @@ POLITICAL PARTY: Republican</textarea>
             <div id="shoutouts" class="admin-tab-content">
                 <h2>TikTok, Instagram, YouTube Creator Shoutouts</h2>
                 <p>Manage your shoutouts list for creators you follow or collaborate with.</p>
-                </div>
+            </div>
 
             <div id="blog" class="admin-tab-content">
                 <h2>Blog Page</h2>
                 <p>Manage blog categories, posts, and display them in cards with their titles, descriptions, and images.</p>
-                </div>
+            </div>
 
             <div id="merch" class="admin-tab-content">
                 <h2>Merch Store</h2>
                 <p>Manage product categories, product details, stock, and pricing.</p>
-                </div>
+            </div>
 
             <div id="settings" class="admin-tab-content">
                 <h2>Settings</h2>
                 <p>Manage the settings for dark mode, accessibility, and other owner-only configurations.</p>
-                </div>
+            </div>
 
         </div>
 
