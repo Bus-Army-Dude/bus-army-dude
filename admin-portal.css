@@ -849,3 +849,16 @@ body {
         grid-column: 1 / 2;
     }
 }
+
+/* Specific adjustment for admin shoutout buttons */
+.admin-controls {
+    display: flex;
+    flex-direction: column; /* Stack the buttons vertically */
+    gap: 8px; /* Add some space between the buttons */
+    margin-top: 10px; /* Add some space above the buttons */
+}
+
+.admin-controls button {
+    width: 100%; /* Make the buttons take the full width of the container */
+    box-sizing: border-box; /* Ensure padding doesn't affect the width */
+}
