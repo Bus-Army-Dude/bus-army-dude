@@ -193,6 +193,50 @@ body {
   display: block;
 }
 
+/* Form Styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.form-group input[type="file"],
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.form-group textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+.save-profile-button {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.save-profile-button:hover {
+  background-color: var(--btn-bg-hover);
+  transform: scale(1.02);
+}
+
 /* Ensure content adjusts on smaller screens */
 @media (max-width: 768px) {
   .admin-container {
@@ -210,6 +254,12 @@ body {
   .admin-content {
     margin-left: 0;
     padding: 15px;
-    padding-left: 25px; /* Adjusted padding for smaller screens */
+    padding-left: 15px; /* Adjust padding for smaller screens */
+  }
+
+  .form-group input[type="file"],
+  .form-group input[type="text"],
+  .form-group textarea {
+    width: calc(100% - 20px); /* Adjust width for padding in smaller screens */
   }
 }
