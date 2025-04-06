@@ -347,5 +347,4 @@ function loadSocialLinksIndex() {
         .catch((error) => {
             console.error("Error loading social links from Firebase for index.html: ", error);
         });
-    }
 }
