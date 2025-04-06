@@ -2,59 +2,59 @@
 /* Theme Variables           */
 /* ======================== */
 :root {
-  /* Light Mode Colors */
-  --light-bg: #ffffff;
-  --light-content-bg: #f5f5f5;
-  --light-text: #212529;
-  --light-secondary-text: #495057;
-  --light-border: #ced4da; /* Slightly darker border */
-  --light-accent: #007bff; /* Using a blue accent for buttons */
-  --light-hover: #0056b3;
-  --light-link: #007bff;
-  --light-shadow: rgba(0, 0, 0, 0.1);
-  --light-icon: #ffffff;
+  /* Light Mode Colors */
+  --light-bg: #ffffff;
+  --light-content-bg: #f5f5f5;
+  --light-text: #212529;
+  --light-secondary-text: #495057;
+  --light-border: #ced4da; /* Slightly darker border */
+  --light-accent: #007bff; /* Using a blue accent for buttons */
+  --light-hover: #0056b3;
+  --light-link: #007bff;
+  --light-shadow: rgba(0, 0, 0, 0.1);
+  --light-icon: #ffffff;
 
-  /* Dark Mode Colors */
-  --dark-bg: #121212;
-  --dark-content-bg: #2d2d2d;
-  --dark-text: #E0E0E0;
-  --dark-secondary-text: #a0a0a0;
-  --dark-border: #333333;
-  --dark-accent: #007bff;
-  --dark-hover: #0056b3;
-  --dark-link: #BB86FC;
-  --dark-shadow: rgba(0, 0, 0, 0.2);
-  --dark-icon: #000000;
+  /* Dark Mode Colors (You can expand on these if you implement dark mode) */
+  --dark-bg: #121212;
+  --dark-content-bg: #2d2d2d;
+  --dark-text: #E0E0E0;
+  --dark-secondary-text: #a0a0a0;
+  --dark-border: #333333;
+  --dark-accent: #007bff;
+  --dark-hover: #0056b3;
+  --dark-link: #BB86FC;
+  --dark-shadow: rgba(0, 0, 0, 0.2);
+  --dark-icon: #000000;
 
-  /* Button Styles */
-  --btn-bg: #007bff; /* Using the accent color */
-  --btn-bg-hover: #0056b3;
-  --btn-text: #ffffff;
+  /* Button Styles */
+  --btn-bg: #007bff; /* Using the accent color */
+  --btn-bg-hover: #0056b3;
+  --btn-text: #ffffff;
 
-  /* Input and Dropdowns */
-  --input-bg: #ffffff;
-  --dropdown-background-dark: #222222;
-  --dropdown-text-dark: #ffffff;
-  --dropdown-border-dark: #555555;
-  --dropdown-focus-border: #007bff;
-  --dropdown-background-light: #ffffff;
-  --dropdown-text-light: #333333;
-  --dropdown-border-light: #ced4da; /* Slightly darker border */
-  --dropdown-focus-border-light: #007bff;
+  /* Input and Dropdowns */
+  --input-bg: #ffffff;
+  --dropdown-background-dark: #222222;
+  --dropdown-text-dark: #ffffff;
+  --dropdown-border-dark: #555555;
+  --dropdown-focus-border: #007bff;
+  --dropdown-background-light: #ffffff;
+  --dropdown-text-light: #333333;
+  --dropdown-border-light: #ced4da; /* Slightly darker border */
+  --dropdown-focus-border-light: #007bff;
 }
 
-/* Light e Override */
-body.light-e {
-  --bg-color: var(--light-bg);
-  --content-bg: var(--light-content-bg);
-  --text-color: var(--light-text);
-  --secondary-text: var(--light-secondary-text);
-  --border-color: var(--light-border);
-  --accent-color: var(--light-accent);
-  --hover-color: var(--light-hover);
-  --link-color: var(--light-link);
-  --shadow-color: var(--light-shadow);
-  --icon-color: var(--light-icon);
+/* Light Theme Override (Applying light mode by default based on your body class) */
+body.admin-body {
+  --bg-color: var(--light-bg);
+  --content-bg: var(--light-content-bg);
+  --text-color: var(--light-text);
+  --secondary-text: var(--light-secondary-text);
+  --border-color: var(--light-border);
+  --accent-color: var(--light-accent);
+  --hover-color: var(--light-hover);
+  --link-color: var(--light-link);
+  --shadow-color: var(--light-shadow);
+  --icon-color: var(--light-icon);
 }
 
 /* ======================== */
@@ -62,189 +62,190 @@ body.light-e {
 /* ======================== */
 
 /* General Styles */
-body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  background-color: var(--bg-color);
-  overflow-x: hidden;
+body.admin-body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color: var(--bg-color);
+  color: var(--text-color); /* Set default text color for the body */
+  overflow-x: hidden; /* Prevent horizontal scrollbar */
 }
 
 /* Admin Container */
 .admin-container {
-  display: flex;
-  flex: 1;
-  min-height: 100vh;
-  position: relative;
-  transition: margin-left 0.3s ease; /* Smooth content shift */
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+  position: relative;
+  transition: margin-left 0.3s ease; /* Smooth content shift for potential sidebar toggle */
 }
 
 /* Sidebar */
 .admin-sidebar {
-  width: 250px;
-  background-color: var(--content-bg);
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 1000;
-  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
-  transition: transform 0.3s ease;
+  width: 250px;
+  background-color: var(--content-bg);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  transition: transform 0.3s ease; /* For potential mobile sidebar toggle */
 }
 
-/* Sidebar Profile (no changes here) */
+/* Sidebar Profile */
 .profile-info {
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .profile-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-  transition: transform 0.3s ease;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
 }
 
 .profile-img:hover {
-  transform: scale(1.1); /* Slightly zoom effect on hover */
+  transform: scale(1.1); /* Slightly zoom effect on hover */
 }
 
 .username {
-  color: var(--text-color);
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-/* Sidebar Navigation (no changes here) */
+/* Sidebar Navigation */
 .admin-nav {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .admin-nav li {
-  width: 100%;
-  margin: 15px 0;
+  width: 100%;
+  margin: 15px 0;
 }
 
 .admin-nav li a {
-  display: block;
-  padding: 12px;
-  text-decoration: none;
-  color: var(--text-color);
-  text-align: center;
-  background-color: var(--content-bg);
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--text-color);
+  text-align: center;
+  background-color: var(--content-bg);
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .admin-nav li a:hover {
-  background-color: var(--accent-color);
-  transform: scale(1.05); /* Subtle scaling effect */
+  background-color: var(--accent-color);
+  transform: scale(1.05); /* Subtle scaling effect */
 }
 
-/* Logout Button (no changes here) */
+/* Logout Button (If you add one in the sidebar) */
 .logout-btn {
-  margin-top: auto;
-  background-color: var(--btn-bg);
-  color: var(--btn-text);
-  border: none;
-  padding: 15px;
-  width: 100%;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s ease;
+  margin-top: auto;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease;
 }
 
 .logout-btn:hover {
-  background-color: var(--btn-bg-hover);
-  transform: scale(1.05); /* Slight hover effect */
+  background-color: var(--btn-bg-hover);
+  transform: scale(1.05); /* Slight hover effect */
 }
 
 /* Main Content */
 .admin-content {
-  margin-left: 250px; /* Ensures the content doesn’t overlap the sidebar */
-  padding: 30px;
-  padding-left: 60px; /* Increased left padding */
-  flex: 1;
-  background-color: var(--content-bg);
-  min-height: 100vh;
-  transition: margin-left 0.3s ease; /* transition for sidebar collapse */
+  margin-left: 250px; /* Ensures the content doesn’t overlap the sidebar */
+  padding: 30px;
+  flex: 1;
+  background-color: var(--content-bg);
+  min-height: 100vh;
+  transition: margin-left 0.3s ease; /* transition for sidebar collapse */
 }
 
-/* Tab Content (no changes here) */
+/* Tab Content */
 .admin-tab-content {
-  display: none;
+  display: none;
 }
 
 .admin-tab-content.active {
-  display: block;
+  display: block;
 }
 
 /* Form Styles */
 .profile-section {
-  background-color: var(--light-bg); /* White background for the form area */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px var(--light-shadow); /* Subtle shadow to lift the form */
-  margin-bottom: 20px; /* Add some margin below the form */
+  background-color: var(--light-bg); /* White background for the form area */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px var(--light-shadow); /* Subtle shadow to lift the form */
+  margin-bottom: 20px; /* Add some margin below the form */
 }
 
 .form-group {
-  margin-bottom: 25px; /* Increased margin for better spacing */
+  margin-bottom: 25px; /* Increased margin for better spacing */
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 8px; /* Increased margin */
-  color: var(--light-text);
-  font-weight: bold;
+  display: block;
+  margin-bottom: 8px; /* Increased margin */
+  color: var(--light-text);
+  font-weight: bold;
 }
 
 .form-group input[type="file"],
 .form-group input[type="text"],
-.form-group textarea {
-  width: calc(100% - 20px); /* Keep the width adjustment */
-  padding: 12px; /* Increased padding */
-  border: 1px solid var(--light-border);
-  border-radius: 6px; /* Slightly more rounded */
-  background-color: var(--input-bg);
-  color: var(--light-text);
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
-  font-size: 16px; /* Slightly larger font size */
+.form-group textarea,
+.form-group input[type="url"] {
+  width: calc(100% - 20px); /* Keep the width adjustment */
+  padding: 12px; /* Increased padding */
+  border: 1px solid var(--light-border);
+  border-radius: 6px; /* Slightly more rounded */
+  background-color: var(--input-bg);
+  color: var(--light-text);
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  font-size: 16px; /* Slightly larger font size */
 }
 
 .form-group textarea {
-  resize: vertical; /* Allow vertical resizing */
-  min-height: 100px; /* Give the textarea a minimum height */
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 100px; /* Give the textarea a minimum height */
 }
 
 .save-profile-button {
-  background-color: var(--light-accent); /* Using the blue accent color */
-  color: var(--btn-text);
-  border: none;
-  padding: 14px 24px; /* Increased padding */
-  border-radius: 6px; /* Slightly more rounded */
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: var(--light-accent); /* Using the blue accent color */
+  color: var(--btn-text);
+  border: none;
+  padding: 14px 24px; /* Increased padding */
+  border-radius: 6px; /* Slightly more rounded */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .save-profile-button:hover {
-  background-color: var(--light-hover);
-  transform: scale(1.02);
+  background-color: var(--light-hover);
+  transform: scale(1.02);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -252,220 +253,305 @@ body {
 /* -------------------------------------------------------------------------- */
 
 #social-links-admin {
-  background-color: var(--light-bg);
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px var(--light-shadow);
-  margin-top: 20px;
+  background-color: var(--light-bg);
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--light-shadow);
+  margin-top: 20px;
+}
+
+#social-links-admin h2 {
+  color: var(--light-text);
+  border-bottom: 2px solid var(--light-border);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 #social-links-admin h3 {
-  color: var(--light-text);
-  border-bottom: 2px solid var(--light-border);
-  padding-bottom: 10px;
-  margin-bottom: 15px;
+  color: var(--light-text);
+  margin-top: 20px;
+  border-bottom: 1px solid var(--light-border);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 #social-links-admin > .social-links-section { /* Style the container for the displayed links */
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid var(--light-border);
-  border-radius: 6px;
-  background-color: var(--light-content-bg);
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  background-color: var(--light-content-bg);
 }
 
 #social-links-admin > .social-links-section h2 {
-  color: var(--light-text);
-  border-bottom: 1px solid var(--light-border);
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  font-size: 1.2em;
+  color: var(--light-text);
+  border-bottom: 1px solid var(--light-border);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  font-size: 1.2em;
 }
 
 #current-social-links {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-  gap: 15px;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 15px;
 }
 
 #current-social-links li {
-  background-color: var(--light-bg);
-  border: 1px solid var(--light-border);
-  border-radius: 6px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  background-color: var(--light-bg);
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #current-social-links li .link-info {
-  display: flex;
-  align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 #current-social-links li i {
-  margin-right: 10px;
-  font-size: 1.3em;
-  color: var(--light-secondary-text);
-  width: 25px;
-  text-align: center;
+  margin-right: 10px;
+  font-size: 1.3em;
+  color: var(--light-secondary-text);
+  width: 25px;
+  text-align: center;
 }
 
 #current-social-links li span {
-  font-weight: bold;
-  color: var(--light-text);
-  margin-right: 5px;
+  font-weight: bold;
+  color: var(--light-text);
+  margin-right: 5px;
 }
 
 #current-social-links li a {
-  color: var(--light-link);
-  text-decoration: none;
-  word-break: break-all;
+  color: var(--light-link);
+  text-decoration: none;
+  word-break: break-all;
 }
 
 #current-social-links li a:hover {
-  text-decoration: underline;
+  text-decoration: underline;
 }
 
 #current-social-links li .actions {
-  display: flex;
-  gap: 8px; /* Increased gap between buttons */
-  margin-top: 10px;
+  display: flex;
+  gap: 8px; /* Increased gap between buttons */
+  margin-top: 10px;
 }
 
 #current-social-links li button {
-  background-color: #f44336; /* Red for remove */
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9em;
-  transition: background-color 0.3s ease;
+  background-color: #f44336; /* Red for remove */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
 }
 
 #current-social-links li button.edit-btn {
-  background-color: #007bff; /* Blue for edit */
+  background-color: #007bff; /* Blue for edit */
 }
 
 #current-social-links li button:hover {
-  opacity: 0.9;
+  opacity: 0.9;
 }
 
 #add-social-link-form {
-  background-color: var(--light-content-bg);
-  padding: 20px;
-  border: 1px solid var(--light-border);
-  border-radius: 6px;
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: auto 1fr auto; /* Platform | URL | Button */
-  gap: 15px;
-  align-items: center;
+  background-color: var(--light-content-bg);
+  padding: 20px;
+  border: 1px solid var(--light-border);
+  border-radius: 6px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* Platform | URL | Button */
+  gap: 15px;
+  align-items: center;
 }
 
 #add-social-link-form .form-group {
-  grid-column: 1 / 3;
-  display: flex;
-  flex-direction: column;
+  grid-column: 1 / 3;
+  display: flex;
+  flex-direction: column;
 }
 
 #add-social-link-form .form-group label {
-  font-weight: bold;
-  color: var(--light-text);
-  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--light-text);
+  margin-bottom: 5px;
 }
 
 #add-social-link-form input[type="text"],
 #add-social-link-form input[type="url"] {
-  padding: 10px;
-  border: 1px solid var(--light-border);
-  border-radius: 4px;
-  font-size: 1em;
+  padding: 10px;
+  border: 1px solid var(--light-border);
+  border-radius: 4px;
+  font-size: 1em;
 }
 
 #add-social-link-form button {
-  background-color: var(--light-accent);
-  color: var(--btn-text);
-  border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
+  background-color: var(--light-accent);
+  color: var(--btn-text);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
 #add-social-link-form button:hover {
-  background-color: var(--light-hover);
+  background-color: var(--light-hover);
 }
 
 #add-social-link-form .form-group:nth-child(3) { /* Target URL input to span full width */
-  grid-column: 1 / 4;
+  grid-column: 1 / 4;
 }
 
 #add-social-link-form button {
-  grid-column: 3 / 4;
+  grid-column: 3 / 4;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Styling for other sections (Shoutouts, Blog, Merch, Settings) */
+/* You can customize these further based on your content */
+/* -------------------------------------------------------------------------- */
+
+#shoutouts,
+#blog,
+#merch,
+#settings {
+  padding: 20px;
+  background-color: var(--light-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--light-shadow);
+  margin-top: 20px;
+}
+
+#shoutouts h2,
+#blog h2,
+#merch h2,
+#settings h2 {
+  color: var(--light-text);
+  border-bottom: 2px solid var(--light-border);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Responsive adjustments */
+/* -------------------------------------------------------------------------- */
+
 @media (max-width: 992px) {
-  #current-social-links {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-  #add-social-link-form {
-    grid-template-columns: auto 1fr;
-  }
-  #add-social-link-form .form-group {
-    grid-column: 1 / 3;
-  }
-  #add-social-link-form button {
-    grid-column: 1 / 3;
-  }
+  .admin-content {
+    margin-left: 0; /* Adjust content margin for smaller screens */
+    padding: 15px;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    box-shadow: none;
+    padding: 15px;
+    flex-direction: row; /* Display sidebar items horizontally */
+    align-items: stretch;
+    justify-content: space-between; /* Space out profile and nav */
+  }
+
+  .profile-info {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+
+  .admin-nav {
+    display: flex;
+    width: auto;
+  }
+
+  .admin-nav li {
+    margin: 0 10px;
+  }
+
+  .admin-nav li a {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  #current-social-links {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  #add-social-link-form {
+    grid-template-columns: 1fr;
+  }
+  #add-social-link-form .form-group {
+    grid-column: 1 / 2;
+  }
+  #add-social-link-form button {
+    grid-column: 1 / 2;
+  }
 }
 
 @media (max-width: 768px) {
-  .admin-container {
-    flex-direction: column;
-  }
+  .admin-sidebar {
+    flex-direction: column; /* Revert to vertical on smaller screens */
+    align-items: center;
+  }
 
-  .admin-sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    transform: translateX(0);
-    box-shadow: none;
-  }
+  .profile-info {
+    margin-bottom: 20px;
+    flex-direction: column;
+  }
 
-  .admin-content {
-    margin-left: 0;
-    padding: 15px;
-  }
+  .profile-img {
+    margin-right: 0;
+  }
 
-  #current-social-links {
-    grid-template-columns: 1fr;
-  }
-  #current-social-links li {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  #current-social-links li .actions {
-    margin-top: 15px;
-  }
-  #current-social-links li a {
-    margin-left: 0;
-  }
+  .admin-nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .admin-nav li {
+    margin: 10px 0;
+  }
+
+  #current-social-links {
+    grid-template-columns: 1fr;
+  }
+  #current-social-links li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #current-social-links li .actions {
+    margin-top: 15px;
+  }
+  #current-social-links li a {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 576px) {
-  #add-social-link-form {
-    grid-template-columns: 1fr;
-  }
-  #add-social-link-form .form-group {
-    grid-column: 1 / 2;
-  }
-  #add-social-link-form button {
-    grid-column: 1 / 2;
-  }
+  #add-social-link-form {
+    grid-template-columns: 1fr;
+  }
+  #add-social-link-form .form-group {
+    grid-column: 1 / 2;
+  }
+  #add-social-link-form button {
+    grid-column: 1 / 2;
+  }
 }
