@@ -10,16 +10,12 @@
 
     <div class="admin-container">
 
-        <!-- Sidebar -->
         <div class="admin-sidebar">
             <div class="profile-info">
-                <!-- Profile Picture -->
                 <img src="profile-picture.jpg" alt="Profile Picture" class="profile-img">
-                <!-- Username -->
                 <p class="username">Bus Army Dude</p>
             </div>
 
-            <!-- Navigation Tabs -->
             <ul class="admin-nav">
                 <li><a href="javascript:void(0);" onclick="switchTab('home')">Home</a></li>
                 <li><a href="javascript:void(0);" onclick="switchTab('shoutouts')">Shoutouts</a></li>
@@ -29,43 +25,75 @@
             </ul>
         </div>
 
-        <!-- Main Content Area -->
         <div class="admin-content">
 
-            <!-- Home Tab -->
-            <div id="home" class="admin-tab-content">
+            <div id="home" class="admin-tab-content active">
                 <h2>Profile Section</h2>
                 <p>Modify your username, bio, profile image, and links to other pages.</p>
-                <!-- Add Profile Form Here -->
+                <div class="profile-section">
+                    <div class="form-group">
+                        <label for="profileImageUpload">Change Profile Picture:</label>
+                        <input type="file" id="profileImageUpload" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usernameInput">Edit Username:</label>
+                        <input type="text" id="usernameInput" value="Bus Army Dude">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bioTextarea">Edit Bio:</label>
+                        <textarea id="bioTextarea" rows="4">CURRENT PRESIDENT: Trump (2025-2029)
+POLITICAL PARTY: Republican</textarea>
+                    </div>
+
+                    <button class="save-profile-button">Save Changes</button>
+
+                    <hr> <h3>Current Profile Information:</h3>
+                    <div class="current-profile-display">
+                        <button class="merch-button" aria-label="Merch" onclick="window.location.href='https://bus-army-dude.github.io/bus-army-dude/merchandise.html'"></button>
+
+                        <button class="settings-button" aria-label="Settings" onclick="window.location.href='settings.html'"></button>
+
+                        <div class="profile-pic-wrapper">
+                            <img src="profile.jpg" alt="Profile Picture" class="profile-pic" id="currentProfilePic">
+
+                            <div class="profile-status-container">
+                                <span class="profile-status">🟢</span>
+                            </div>
+                        </div>
+
+                        <div class="username-checkmark">
+                            <h1 id="currentUsername">Bus Army Dude</h1>
+                            <img src="check.png" alt="Verified" class="verified">
+                        </div>
+                        <p id="currentBio">CURRENT PRESIDENT: Trump (2025-2029)</p>
+                        <p id="currentBioExtra">POLITICAL PARTY: Republican</p>
+
+                        <button class="weather-button" aria-label="Weather" onclick="window.location.href='weather.html'"></button>
+                    </div>
+                </div>
             </div>
 
-            <!-- Shoutouts Tab -->
             <div id="shoutouts" class="admin-tab-content">
                 <h2>TikTok, Instagram, YouTube Creator Shoutouts</h2>
                 <p>Manage your shoutouts list for creators you follow or collaborate with.</p>
-                <!-- Add Shoutouts Form Here -->
-            </div>
+                </div>
 
-            <!-- Blog Tab -->
             <div id="blog" class="admin-tab-content">
                 <h2>Blog Page</h2>
                 <p>Manage blog categories, posts, and display them in cards with their titles, descriptions, and images.</p>
-                <!-- Add Blog Posts Form Here -->
-            </div>
+                </div>
 
-            <!-- Merch Store Tab -->
             <div id="merch" class="admin-tab-content">
                 <h2>Merch Store</h2>
                 <p>Manage product categories, product details, stock, and pricing.</p>
-                <!-- Add Merch Store Form Here -->
-            </div>
+                </div>
 
-            <!-- Settings Tab -->
             <div id="settings" class="admin-tab-content">
                 <h2>Settings</h2>
                 <p>Manage the settings for dark mode, accessibility, and other owner-only configurations.</p>
-                <!-- Add Settings Form Here -->
-            </div>
+                </div>
 
         </div>
 
