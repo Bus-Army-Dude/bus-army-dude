@@ -3,7 +3,7 @@ let portalData = {};
 
 // GitHub JSON URL (replace with your actual URL)
 const GITHUB_JSON_URL = 'https://raw.githubusercontent.com/BusArmyDude/bus-army-dude/main/admin-data.json';
-const CLIENT_ID = 'Iv23liJ1Id81cwQNO3sX'; // Replace with your actual GitHub client ID
+const CLIENT_ID = 'Ov23liiJwpCt2MVb19WH'; // Replace with your actual GitHub client ID
 const REDIRECT_URI = 'https://bus-army-dude.github.io/callback'; // Replace with your actual callback URL
 const GITHUB_OAUTH_URL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user`;
 
