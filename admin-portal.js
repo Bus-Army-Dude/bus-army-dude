@@ -414,6 +414,7 @@ if (editPresidentButton) {
     editPresidentButton.addEventListener('click', function() {
         presidentInfoDisplay.style.display = 'none';
         presidentEditForm.style.display = 'block';
+        // No need to populate here, loadPresidentData will handle it
     });
 }
 
