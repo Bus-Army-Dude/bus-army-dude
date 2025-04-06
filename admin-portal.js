@@ -210,6 +210,7 @@ function addSocialLink() {
                     // Add a new link
                     socialLinks.push(newLink);
                 }
+                console.log("addSocialLink: Calling saveSocialLinksToFirebase with:", socialLinks); // ADD THIS LINE
                 saveSocialLinksToFirebase(socialLinks); // Save updated links to Firebase
                 platformInput.value = ''; // Clear the input fields
                 urlInput.value = '';
@@ -234,6 +235,7 @@ function startEditSocialLink(index) {
                     platformInput.value = linkToEdit.platform;
                     urlInput.value = linkToEdit.url;
                     editingIndex = index;
+                    console.log("startEditSocialLink: Editing index:", editingIndex); // ADD THIS LINE
                     addLinkButton.textContent = 'Save Edit';
                 } else {
                     console.log("Social link not found at index:", index);
@@ -254,6 +256,7 @@ function removeSocialLink(index) {
                 const data = doc.data();
                 let socialLinks = data.socialLinks || [];
                 if (index >= 0 && index < socialLinks.length) {
+                    console.log("removeSocialLink: Calling saveSocialLinksToFirebase with:", socialLinks); // ADD THIS LINE
                     socialLinks.splice(index, 1); // Remove the link at the given index
                     saveSocialLinksToFirebase(socialLinks); // Save the updated array to Firebase
                     loadSocialLinksAdmin(); // Reload the displayed list from Firebase
