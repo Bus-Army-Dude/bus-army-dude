@@ -68,6 +68,7 @@ body {
     padding: 0;
     display: flex;
     background-color: var(--bg-color);
+    overflow-x: hidden;
 }
 
 /* Admin Container */
@@ -75,6 +76,8 @@ body {
     display: flex;
     flex: 1;
     min-height: 100vh;
+    position: relative;
+    transition: margin-left 0.3s ease; /* Smooth content shift */
 }
 
 /* Sidebar */
@@ -90,15 +93,94 @@ body {
     left: 0;
     height: 100vh;
     z-index: 1000;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    transition: transform 0.3s ease;
+}
+
+/* Sidebar Profile */
+.profile-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.1); /* Slightly zoom effect on hover */
+}
+
+.username {
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Sidebar Navigation */
+.admin-nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.admin-nav li {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.admin-nav li a {
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    color: var(--text-color);
+    text-align: center;
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.admin-nav li a:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.05); /* Subtle scaling effect */
+}
+
+/* Logout Button */
+.logout-btn {
+    margin-top: auto;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+    background-color: var(--btn-bg-hover);
+    transform: scale(1.05); /* Slight hover effect */
 }
 
 /* Main Content */
 .admin-content {
-    margin-left: 250px; /* This ensures the content doesn't overlap with the sidebar */
-    padding: 20px;
+    margin-left: 250px; /* Ensures the content doesn’t overlap the sidebar */
+    padding: 30px;
     flex: 1;
-    transition: margin-left 0.3s ease;
+    background-color: var(--content-bg);
+    min-height: 100vh;
+    transition: padding-left 0.3s ease;
 }
 
 /* Tab Content */
@@ -110,12 +192,7 @@ body {
     display: block;
 }
 
-/* Ensure content doesn't overlap sidebar */
-.admin-tab-content {
-    padding-left: 20px; /* Prevent overlap with sidebar */
-}
-
-/* Responsive Layout (Mobile) */
+/* Ensure content adjusts on smaller screens */
 @media (max-width: 768px) {
     .admin-container {
         flex-direction: column;
@@ -125,9 +202,11 @@ body {
         width: 100%;
         height: auto;
         position: relative;
+        transform: translateX(0); /* No need to fix the sidebar for smaller screens */
     }
 
     .admin-content {
-        margin-left: 0;
+        margin-left: 0; /* Remove margin when in mobile mode */
+        padding: 15px;
     }
 }
