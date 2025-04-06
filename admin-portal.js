@@ -2,18 +2,18 @@
 
 // Paste your Firebase configuration here
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID" // Optional
+  apiKey: "AIzaSyA9s6Sx82K6XlYpp_OKqrS-weMpoKP7uco",
+  authDomain: "bus-army-dude-s-admin-portal.firebaseapp.com",
+  projectId: "bus-army-dude-s-admin-portal",
+  storageBucket: "bus-army-dude-s-admin-portal.firebasestorage.app",
+  messagingSenderId: "974325477528",
+  appId: "1:974325477528:web:b143e75657384a82f5e0ed",
+  measurementId: "G-FVWWFFBCP2"
 };
 
 // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // If you plan to use Firebase Storage
 // const storage = firebase.storage();
 
