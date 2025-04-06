@@ -177,7 +177,7 @@ body {
 .admin-content {
   margin-left: 250px; /* Ensures the content doesn’t overlap the sidebar */
   padding: 30px;
-  padding-left: 40px; /* Added some left padding to push content further */
+  padding-left: 60px; /* Increased left padding */
   flex: 1;
   background-color: var(--content-bg);
   min-height: 100vh;
@@ -210,6 +210,6 @@ body {
   .admin-content {
     margin-left: 0;
     padding: 15px;
-    padding-left: 15px; /* Adjust padding for smaller screens */
+    padding-left: 25px; /* Adjusted padding for smaller screens */
   }
 }
