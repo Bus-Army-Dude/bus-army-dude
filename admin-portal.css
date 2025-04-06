@@ -69,119 +69,128 @@ body.light-e {
 /*       Admin Portal CSS    */
 /* ======================== */
 
+/* General Styles */
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  margin: 0;
-  padding: 0;
-  line-height: 1.5;
-  transition: background 0.3s, color 0.3s;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: var(--bg-color);
 }
 
-.admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--content-bg);
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 6px var(--shadow-color);
-  border-bottom: 1px solid var(--border-color);
+/* Admin Container */
+.admin-container {
+    display: flex;
+    flex: 1;
 }
 
-.admin-header h1 {
-  font-size: 1.5rem;
-  color: var(--accent-color);
-  margin: 0;
-}
-
-.admin-tabs {
-  display: flex;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  background-color: var(--bg-color);
-  border-bottom: 1px solid var(--border-color);
-  flex-wrap: wrap;
-}
-
-.admin-tab {
-  background-color: var(--content-bg);
-  color: var(--text-color);
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.admin-tab:hover,
-.admin-tab.active {
-  background-color: var(--hover-color);
-  color: #fff;
-  border-color: var(--accent-color);
-}
-
-.admin-content {
-  padding: 2rem;
-  background-color: var(--content-bg);
-  box-shadow: 0 0 10px var(--shadow-color);
-  margin: 2rem;
-  border-radius: 1rem;
-}
-
-.section-title {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  border-left: 4px solid var(--accent-color);
-  padding-left: 1rem;
-}
-
-.section {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: var(--bg-color);
-  border-radius: 0.75rem;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-button, .button {
-  padding: 0.5rem 1.25rem;
-  background-color: var(--accent-color);
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-button:hover, .button:hover {
-  background-color: var(--hover-color);
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border-color);
-  background: var(--input-bg);
-  color: var(--text-color);
-  transition: border 0.2s;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--accent-color);
-  outline: none;
-}
-
-@media (max-width: 768px) {
-  .admin-tabs {
+/* Sidebar */
+.admin-sidebar {
+    width: 250px;
+    background-color: var(--content-bg);
+    padding: 20px;
+    display: flex;
     flex-direction: column;
-  }
-
-  .admin-content {
-    margin: 1rem;
-    padding: 1rem;
-  }
+    align-items: center;
+    height: 100vh;
+    position: fixed;
 }
+
+.profile-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.username {
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Sidebar Navigation */
+.admin-nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.admin-nav li {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.admin-nav li a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: var(--text-color);
+    text-align: center;
+    background-color: var(--content-bg);
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.admin-nav li a:hover {
+    background-color: var(--accent-color);
+}
+
+/* Logout Button */
+.logout-btn {
+    margin-top: auto;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: var(--hover-color);
+}
+
+/* Main Content */
+.admin-content {
+    margin-left: 250px;
+    padding: 20px;
+    flex: 1;
+}
+
+/* Tab Content */
+.admin-tab-content {
+    display: none;
+}
+
+.admin-tab-content.active {
+    display: block;
+}
+
+/* Ensure content adjusts on smaller screens */
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .admin-content {
+        margin-left: 0;
+    }
+}
+
