@@ -410,18 +410,24 @@ const vicePresidentDisplayName = document.getElementById('vicePresidentDisplayNa
 const presidentDisplayPhoto = document.getElementById('presidentDisplayPhoto');
 const cancelPresidentButton = document.querySelector('.cancel-president-button');
 
+// Function to initialize the president section on page load
+function initializePresidentSection() {
+    if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
+    if (presidentEditForm) presidentEditForm.style.display = 'none';
+    loadPresidentData();
+}
+
 if (editPresidentButton) {
     editPresidentButton.addEventListener('click', function() {
-        presidentInfoDisplay.style.display = 'none';
-        presidentEditForm.style.display = 'block';
-        // No need to populate here, loadPresidentData will handle it
+        if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'none';
+        if (presidentEditForm) presidentEditForm.style.display = 'block';
     });
 }
 
 if (cancelPresidentButton) {
     cancelPresidentButton.addEventListener('click', function() {
-        presidentInfoDisplay.style.display = 'block';
-        presidentEditForm.style.display = 'none';
+        if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
+        if (presidentEditForm) presidentEditForm.style.display = 'none';
     });
 }
 
@@ -469,37 +475,74 @@ function savePresidentDataToFirebase(name, birthDate, height, party, termStart, 
 }
 
 function loadPresidentData() {
+    // Set initial state on load
+    if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
+    if (presidentEditForm) presidentEditForm.style.display = 'none';
+
     db.collection('president').doc('current').get()
         .then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
-                presidentNameInput.value = data.name || '';
-                presidentBirthDateInput.value = data.birthDate || '';
-                presidentHeightInput.value = data.height || '';
-                presidentPartyInput.value = data.party || '';
-                presidentTermStartInput.value = data.termStart || '';
-                presidentTermEndInput.value = data.termEnd || '';
-                vicePresidentNameInput.value = data.vicePresident || '';
+                if (presidentNameInput) presidentNameInput.value = data.name || '';
+                if (presidentBirthDateInput) presidentBirthDateInput.value = data.birthDate || '';
+                if (presidentHeightInput) presidentHeightInput.value = data.height || '';
+                if (presidentPartyInput) presidentPartyInput.value = data.party || '';
+                if (presidentTermStartInput) presidentTermStartInput.value = data.termStart || '';
+                if (presidentTermEndInput) presidentTermEndInput.value = data.termEnd || '';
+                if (vicePresidentNameInput) vicePresidentNameInput.value = data.vicePresident || '';
                 const photoUrl = data.photoUrl || '';
-                currentPresidentPhotoDisplay.src = photoUrl;
-                presidentDisplayPhoto.src = photoUrl;
-                presidentDisplayName.textContent = data.name || 'President Name';
-                presidentDisplayBirthDate.textContent = data.birthDate || 'Birth Date';
-                presidentDisplayHeight.textContent = data.height || 'Height';
-                presidentDisplayParty.textContent = data.party || 'Party';
-                presidentDisplayTerm.textContent = `${data.termStart || 'Start Date'} - ${data.termEnd || 'End Date'}`;
-                vicePresidentDisplayName.textContent = data.vicePresident || 'Vice President Name';
+                if (currentPresidentPhotoDisplay) currentPresidentPhotoDisplay.src = photoUrl;
+                if (presidentDisplayPhoto) presidentDisplayPhoto.src = photoUrl;
+                if (presidentDisplayName) presidentDisplayName.textContent = data.name || 'President Name';
+                if (presidentDisplayBirthDate) presidentDisplayBirthDate.textContent = data.birthDate || 'Birth Date';
+                if (presidentDisplayHeight) presidentDisplayHeight.textContent = data.height || 'Height';
+                if (presidentDisplayParty) presidentDisplayParty.textContent = data.party || 'Party';
+                if (presidentDisplayTerm) presidentDisplayTerm.textContent = `${data.termStart || 'Start Date'} - ${data.termEnd || 'End Date'}`;
+                if (vicePresidentDisplayName) vicePresidentDisplayName.textContent = data.vicePresident || 'Vice President Name';
 
-                presidentInfoDisplay.style.display = 'block';
-                presidentEditForm.style.display = 'none';
+                if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'block';
+                if (presidentEditForm) presidentEditForm.style.display = 'none';
             } else {
                 console.log("No president data found.");
-                presidentInfoDisplay.style.display = 'none';
-                presidentEditForm.style.display = 'block'; // Show edit form if no data exists
-                // Optionally set default values in the form
+                if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'none';
+                if (presidentEditForm) presidentEditForm.style.display = 'none'; // Keep it hidden if no data
+                // Optionally set default values in the form if you want it to be immediately editable
             }
         })
         .catch((error) => {
             console.error("Error loading president data: ", error);
+            alert('Error loading president information.'); // Alert for load errors too
+            if (presidentInfoDisplay) presidentInfoDisplay.style.display = 'none';
+            if (presidentEditForm) presidentEditForm.style.display = 'none'; // Ensure hidden on error
         });
 }
+
+// Call initializePresidentSection when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Existing DOMContentLoaded logic for other sections
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (usernameInputAdmin) {
+                    usernameInputAdmin.value = data.username || '';
+                }
+                if (bioTextareaAdmin) {
+                    bioTextareaAdmin.value = data.bio || '';
+                }
+                const profilePicSrc = data.profilePictureUrl || '';
+                const currentProfilePic = document.getElementById('currentProfilePic');
+                if (currentProfilePic) {
+                    currentProfilePic.src = profilePicSrc;
+                }
+            } else {
+                console.log("No such document!");
+            }
+            loadSocialLinksAdmin();
+            loadSocialLinksAdminPreview();
+            initializePresidentSection(); // Initialize the president section
+        })
+        .catch((error) => {
+            console.error("Error getting document:", error);
+        });
+});
