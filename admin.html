@@ -33,6 +33,59 @@
 
             <div id="home" class="admin-tab-content active">
 
+                <h2>Profile Section</h2>
+                <p>Modify your username, bio, and profile image.</p>
+                <div class="profile-section">
+                    <div class="form-group">
+                        <label for="profileImageUpload">Change Profile Picture:</label>
+                        <input type="file" id="profileImageUpload" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usernameInput">Edit Username:</label>
+                        <input type="text" id="usernameInput" value="Bus Army Dude">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bioTextarea">Edit Bio:</label>
+                        <textarea id="bioTextarea" rows="4">CURRENT PRESIDENT: Trump (2025-2029)
+POLITICAL PARTY: Republican</textarea>
+                    </div>
+
+                    <button class="save-profile-button">Save Changes</button>
+                </div>
+
+                <hr>
+
+                <h2>Manage Social Links</h2>
+                <p>Add, modify, or remove links to your social media profiles.</p>
+
+                <div id="social-links-admin">
+                    <ul id="current-social-links">
+                        </ul>
+
+                    <h3>Add New Social Link</h3>
+                    <form id="add-social-link-form">
+                        <div class="form-group">
+                            <label for="platform">Platform:</label>
+                            <input type="text" id="platform" placeholder="e.g., TikTok, Snapchat, X (Twitter)">
+                        </div>
+                        <div class="form-group">
+                            <label for="url">URL:</label>
+                            <input type="url" id="url" placeholder="Enter the full URL">
+                        </div>
+                        <button type="button" onclick="addSocialLink()">Add Link</button>
+                    </form>
+                </div>
+
+                <hr> <div class="social-links-section">
+                    <h2>Current Social Links (as they appear on your site)</h2>
+                    <div class="social-links-container" id="current-social-links-display">
+                        </div>
+                </div>
+
+                <hr>
+
                 <div class="president-editor">
                     <h3>Edit Current U.S. President</h3>
                     <form id="president-form">
@@ -75,30 +128,6 @@
 
                 <hr>
 
-                <h2>Profile Section</h2>
-                <p>Modify your username, bio, and profile image.</p>
-                <div class="profile-section">
-                    <div class="form-group">
-                        <label for="profileImageUpload">Change Profile Picture:</label>
-                        <input type="file" id="profileImageUpload" accept="image/*">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="usernameInput">Edit Username:</label>
-                        <input type="text" id="usernameInput" value="Bus Army Dude">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="bioTextarea">Edit Bio:</label>
-                        <textarea id="bioTextarea" rows="4">CURRENT PRESIDENT: Trump (2025-2029)
-POLITICAL PARTY: Republican</textarea>
-                    </div>
-
-                    <button class="save-profile-button">Save Changes</button>
-                </div>
-
-                <hr>
-
                 <section id="current-president" class="president-section">
                     <h2 class="section-title">Current U.S. President</h2>
                     <div class="president-info">
@@ -113,35 +142,6 @@ POLITICAL PARTY: Republican</textarea>
                         </div>
                     </div>
                 </section>
-
-                <hr>
-
-                <h2>Manage Social Links</h2>
-                <p>Add, modify, or remove links to your social media profiles.</p>
-
-                <div id="social-links-admin">
-                    <ul id="current-social-links">
-                        </ul>
-
-                    <h3>Add New Social Link</h3>
-                    <form id="add-social-link-form">
-                        <div class="form-group">
-                            <label for="platform">Platform:</label>
-                            <input type="text" id="platform" placeholder="e.g., TikTok, Snapchat, X (Twitter)">
-                        </div>
-                        <div class="form-group">
-                            <label for="url">URL:</label>
-                            <input type="url" id="url" placeholder="Enter the full URL">
-                        </div>
-                        <button type="button" onclick="addSocialLink()">Add Link</button>
-                    </form>
-                </div>
-
-                <hr> <div class="social-links-section">
-                    <h2>Current Social Links (as they appear on your site)</h2>
-                    <div class="social-links-container" id="current-social-links-display">
-                        </div>
-                </div>
 
             </div>
 
