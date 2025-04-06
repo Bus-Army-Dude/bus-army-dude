@@ -65,89 +65,123 @@ body.light-e {
   --icon-color: var(--light-icon);
 }
 
-/* Base Styles */
+/* ======================== */
+/*       Admin Portal CSS    */
+/* ======================== */
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Segoe UI', Roboto, sans-serif;
   margin: 0;
-  padding: 20px;
-  line-height: 1.6;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 0;
+  line-height: 1.5;
+  transition: background 0.3s, color 0.3s;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* Admin Portal Layout */
-#admin-tabs {
+.admin-header {
   display: flex;
-  gap: 10px;
-  border-bottom: 2px solid var(--border-color);
-  margin-bottom: 20px;
-  overflow-x: auto;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--content-bg);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px var(--shadow-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-header h1 {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
 }
 
 .admin-tab {
-  background: none;
-  border: none;
-  padding: 10px 16px;
-  font-size: 16px;
+  background-color: var(--content-bg);
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
   cursor: pointer;
-  color: var(--secondary-text);
-  transition: color 0.3s, border-bottom 0.3s;
-  border-bottom: 3px solid transparent;
+  transition: background 0.2s;
 }
 
+.admin-tab:hover,
 .admin-tab.active {
-  color: var(--accent-color);
-  border-bottom: 3px solid var(--accent-color);
+  background-color: var(--hover-color);
+  color: #fff;
+  border-color: var(--accent-color);
 }
 
 .admin-content {
+  padding: 2rem;
   background-color: var(--content-bg);
+  box-shadow: 0 0 10px var(--shadow-color);
+  margin: 2rem;
+  border-radius: 1rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent-color);
+  padding-left: 1rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--bg-color);
+  border-radius: 0.75rem;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 12px var(--shadow-color);
-  margin-top: 20px;
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-.admin-module {
-  background: var(--content-bg);
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px var(--shadow-color);
-  border: 1px solid var(--border-color);
-  margin-bottom: 20px;
-}
-
-.admin-module h3 {
-  margin-top: 0;
-  color: var(--accent-color);
-}
-
-.admin-module p {
-  margin-bottom: 0;
-  color: var(--secondary-text);
-}
-
-/* Responsive Tabs */
-@media (max-width: 768px) {
-  .admin-tab {
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-}
-
-/* Scrollbar Styling */
-#admin-tabs::-webkit-scrollbar {
-  height: 6px;
-}
-#admin-tabs::-webkit-scrollbar-thumb {
+button, .button {
+  padding: 0.5rem 1.25rem;
   background-color: var(--accent-color);
-  border-radius: 6px;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover, .button:hover {
+  background-color: var(--hover-color);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+  transition: border 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .admin-tabs {
+    flex-direction: column;
+  }
+
+  .admin-content {
+    margin: 1rem;
+    padding: 1rem;
+  }
 }
