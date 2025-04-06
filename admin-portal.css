@@ -2,67 +2,59 @@
 /*       Theme Variables    */
 /* ======================== */
 :root {
-  /* Light Mode Colors */
-  --light-bg: #ffffff;
-  --light-content-bg: #f5f5f5;
-  --light-text: #212529;
-  --light-secondary-text: #495057;
-  --light-border: #dee2e6;
-  --light-accent: #4CAF50;
-  --light-hover: #45a049;
-  --light-link: #007bff;
-  --light-shadow: rgba(0, 0, 0, 0.1);
-  --light-icon: #ffffff;
+    /* Light Mode Colors */
+    --light-bg: #ffffff;
+    --light-content-bg: #f5f5f5;
+    --light-text: #212529;
+    --light-secondary-text: #495057;
+    --light-border: #dee2e6;
+    --light-accent: #4CAF50;
+    --light-hover: #45a049;
+    --light-link: #007bff;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-icon: #ffffff;
 
-  /* Dark Mode Colors */
-  --dark-bg: #121212;
-  --dark-content-bg: #2d2d2d;
-  --dark-text: #E0E0E0;
-  --dark-secondary-text: #a0a0a0;
-  --dark-border: #333333;
-  --dark-accent: #4CAF50;
-  --dark-hover: #45a049;
-  --dark-link: #BB86FC;
-  --dark-shadow: rgba(0, 0, 0, 0.2);
-  --dark-icon: #000000;
+    /* Dark Mode Colors */
+    --dark-bg: #121212;
+    --dark-content-bg: #2d2d2d;
+    --dark-text: #E0E0E0;
+    --dark-secondary-text: #a0a0a0;
+    --dark-border: #333333;
+    --dark-accent: #4CAF50;
+    --dark-hover: #45a049;
+    --dark-link: #BB86FC;
+    --dark-shadow: rgba(0, 0, 0, 0.2);
+    --dark-icon: #000000;
+    
+    /* Button Styles */
+    --btn-bg: #4CAF50;
+    --btn-bg-hover: #45a049;
+    --btn-text: #ffffff;
 
-  /* Input and Dropdowns */
-  --input-bg: #ffffff;
-  --dropdown-background-dark: #222222;
-  --dropdown-text-dark: #ffffff;
-  --dropdown-border-dark: #555555;
-  --dropdown-focus-border: #007bff;
-  --dropdown-background-light: #ffffff;
-  --dropdown-text-light: #333333;
-  --dropdown-border-light: #cccccc;
-  --dropdown-focus-border-light: #007bff;
-  --dropdown-focus-border-dark: #ff5722;
-
-  /* Fallback theme variables if no e class is applied (default to dark e) */
-  --bg-color: var(--dark-bg);
-  --content-bg: var(--dark-content-bg);
-  --text-color: var(--dark-text);
-  --secondary-text: var(--dark-secondary-text);
-  --border-color: var(--dark-border);
-  --accent-color: var(--dark-accent);
-  --hover-color: var(--dark-hover);
-  --link-color: var(--dark-link);
-  --shadow-color: var(--dark-shadow);
-  --icon-color: var(--dark-icon);
+    /* Input and Dropdowns */
+    --input-bg: #ffffff;
+    --dropdown-background-dark: #222222;
+    --dropdown-text-dark: #ffffff;
+    --dropdown-border-dark: #555555;
+    --dropdown-focus-border: #007bff;
+    --dropdown-background-light: #ffffff;
+    --dropdown-text-light: #333333;
+    --dropdown-border-light: #cccccc;
+    --dropdown-focus-border-light: #007bff;
 }
 
 /* Light e Override */
 body.light-e {
-  --bg-color: var(--light-bg);
-  --content-bg: var(--light-content-bg);
-  --text-color: var(--light-text);
-  --secondary-text: var(--light-secondary-text);
-  --border-color: var(--light-border);
-  --accent-color: var(--light-accent);
-  --hover-color: var(--light-hover);
-  --link-color: var(--light-link);
-  --shadow-color: var(--light-shadow);
-  --icon-color: var(--light-icon);
+    --bg-color: var(--light-bg);
+    --content-bg: var(--light-content-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary-text);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --hover-color: var(--light-hover);
+    --link-color: var(--light-link);
+    --shadow-color: var(--light-shadow);
+    --icon-color: var(--light-icon);
 }
 
 /* ======================== */
@@ -71,53 +63,64 @@ body.light-e {
 
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
     background-color: var(--bg-color);
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
 }
 
 /* Admin Container */
 .admin-container {
     display: flex;
     flex: 1;
-    min-height: 100vh; /* Ensures full height */
+    min-height: 100vh;
+    position: relative;
+    transition: margin-left 0.3s ease; /* Smooth content shift */
 }
 
 /* Sidebar */
 .admin-sidebar {
     width: 250px;
     background-color: var(--content-bg);
-    padding: 20px;
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: fixed;
-    height: 100vh;
     top: 0;
     left: 0;
-    z-index: 1000; /* Ensures sidebar is always above the content */
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    transition: transform 0.3s ease;
 }
 
+/* Sidebar Profile */
 .profile-info {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .profile-img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.1); /* Slightly zoom effect on hover */
 }
 
 .username {
     color: var(--text-color);
     font-size: 18px;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Sidebar Navigation */
@@ -130,49 +133,54 @@ body {
 
 .admin-nav li {
     width: 100%;
-    margin: 10px 0;
+    margin: 15px 0;
 }
 
 .admin-nav li a {
     display: block;
-    padding: 10px;
+    padding: 12px;
     text-decoration: none;
     color: var(--text-color);
     text-align: center;
     background-color: var(--content-bg);
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .admin-nav li a:hover {
     background-color: var(--accent-color);
+    transform: scale(1.05); /* Subtle scaling effect */
 }
 
 /* Logout Button */
 .logout-btn {
     margin-top: auto;
-    background-color: var(--accent-color);
-    color: white;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
     border: none;
-    padding: 10px;
+    padding: 15px;
     width: 100%;
     text-align: center;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s ease;
 }
 
 .logout-btn:hover {
-    background-color: var(--hover-color);
+    background-color: var(--btn-bg-hover);
+    transform: scale(1.05); /* Slight hover effect */
 }
 
 /* Main Content */
 .admin-content {
-    margin-left: 250px; /* Make space for the sidebar */
-    padding: 20px;
+    margin-left: 250px;
+    padding: 30px;
     flex: 1;
-    transition: margin-left 0.3s ease; /* Smooth transition when resizing or toggling sidebar */
     background-color: var(--content-bg);
+    min-height: 100vh;
+    transition: padding-left 0.3s ease;
 }
 
 /* Tab Content */
@@ -194,10 +202,10 @@ body {
         width: 100%;
         height: auto;
         position: relative;
+        transform: translateX(0); /* No need to fix the sidebar for smaller screens */
     }
 
     .admin-content {
         margin-left: 0;
     }
 }
-
