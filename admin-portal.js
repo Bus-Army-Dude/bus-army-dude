@@ -98,8 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (bioTextareaAdmin) {
                     bioTextareaAdmin.value = data.bio || '';
                 }
-                // You might want to load the profile picture here as well,
-                // if you are displaying it in the admin portal.
                 const profilePicSrc = data.profilePictureUrl || '';
                 const currentProfilePic = document.getElementById('currentProfilePic');
                 if (currentProfilePic) {
@@ -108,7 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 console.log("No such document!");
             }
-            loadSocialLinksAdmin(); // Load social links when admin page loads
+            loadSocialLinksAdmin(); // Load social links for the management section
+            loadSocialLinksAdminPreview(); // Load social links for the preview section
         })
         .catch((error) => {
             console.error("Error getting document:", error);
@@ -347,4 +346,40 @@ function loadSocialLinksIndex() {
         .catch((error) => {
             console.error("Error loading social links from Firebase for index.html: ", error);
         });
+}
+
+function loadSocialLinksAdminPreview() {
+    const socialLinksContainer = document.getElementById('current-social-links-display');
+    if (!socialLinksContainer) return; // Exit if the container doesn't exist
+
+    socialLinksContainer.innerHTML = ''; // Clear existing links
+
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const socialLinks = data.socialLinks || []; // Get social links from Firebase
+
+                socialLinks.forEach(link => {
+                    const linkElement = document.createElement('a');
+                    linkElement.href = link.url;
+                    linkElement.classList.add('social-button'); // You might need to add CSS for this class in admin-portal.css to style it
+
+                    const iconElement = document.createElement('i');
+                    iconElement.className = `${getSocialIconClass(link.platform)} social-icon`; // You might need CSS for this class too
+
+                    const spanElement = document.createElement('span');
+                    spanElement.textContent = link.platform.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Format platform name
+
+                    linkElement.appendChild(iconElement);
+                    linkElement.appendChild(spanElement);
+                    socialLinksContainer.appendChild(linkElement);
+                });
+            } else {
+                console.log("No user document found, or no social links for admin preview.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading social links from Firebase for admin preview: ", error);
+        });
 }
