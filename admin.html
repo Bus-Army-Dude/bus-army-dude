@@ -9,42 +9,37 @@
 <body class="admin-body">
 
     <div class="admin-container">
-        <!-- Admin Portal Nav -->
-        <nav class="admin-nav">
-            <ul>
+
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="profile-info">
+                <!-- Profile Picture -->
+                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-img">
+                <!-- Username -->
+                <p class="username">Your Username</p>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <ul class="admin-nav">
                 <li><a href="javascript:void(0);" onclick="switchTab('home')">Home</a></li>
                 <li><a href="javascript:void(0);" onclick="switchTab('shoutouts')">Shoutouts</a></li>
                 <li><a href="javascript:void(0);" onclick="switchTab('blog')">Blog</a></li>
                 <li><a href="javascript:void(0);" onclick="switchTab('merch')">Merch Store</a></li>
                 <li><a href="javascript:void(0);" onclick="switchTab('settings')">Settings</a></li>
             </ul>
-        </nav>
 
-        <!-- Sections -->
+            <!-- Logout Button -->
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Main Content Area -->
         <div class="admin-content">
 
             <!-- Home Tab -->
             <div id="home" class="admin-tab-content">
                 <h2>Profile Section</h2>
                 <p>Modify your username, bio, profile image, and links to other pages.</p>
-
-                <h3>Profile Information</h3>
                 <!-- Add Profile Form Here -->
-
-                <h3>Connect with Me</h3>
-                <!-- Add Connect Links Form Here -->
-
-                <h3>Current President</h3>
-                <!-- Add Current President Info Form Here -->
-
-                <h3>Countdown</h3>
-                <!-- Add Countdown Form Here -->
-
-                <h3>Upcoming Events</h3>
-                <!-- Add Events Form Here -->
-
-                <h3>Business Information</h3>
-                <!-- Add Business Info Form Here -->
             </div>
 
             <!-- Shoutouts Tab -->
