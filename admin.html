@@ -144,24 +144,29 @@ POLITICAL PARTY: Republican</textarea>
             </div>
 
             <div id="shoutouts" class="admin-tab-content">
-                <h2>TikTok Shoutouts</h2>
-                <button onclick="openAddShoutoutModal('tiktok')">Add New TikTok Shoutout</button>
-                <div id="tiktok-shoutouts-list" class="shoutout-list">
-                    </div>
+                <div class="shoutouts-section">
+                    <h2 id="tiktok-header">TikTok Shoutouts</h2>
+                    <div id="tiktok-last-updated-timestamp"></div>
+                    <button onclick="openAddShoutoutModal('tiktok')">Add New TikTok Shoutout</button>
+                    <div id="tiktok-shoutouts-list" class="creator-grid">
+                        </div>
+                </div>
 
-                <hr>
+                <div class="shoutouts-section">
+                    <h2 id="instagram-header">Instagram Shoutouts</h2>
+                    <div id="lastUpdatedInstagram"></div>
+                    <button onclick="openAddShoutoutModal('instagram')">Add New Instagram Shoutout</button>
+                    <div id="instagram-shoutouts-list" class="instagram-creator-grid">
+                        </div>
+                </div>
 
-                <h2>Instagram Shoutouts</h2>
-                <button onclick="openAddShoutoutModal('instagram')">Add New Instagram Shoutout</button>
-                <div id="instagram-shoutouts-list" class="shoutout-list">
-                    </div>
-
-                <hr>
-
-                <h2>YouTube Shoutouts</h2>
-                <button onclick="openAddShoutoutModal('youtube')">Add New YouTube Shoutout</button>
-                <div id="youtube-shoutouts-list" class="shoutout-list">
-                    </div>
+                <div class="shoutouts-section">
+                    <h2 id="youtube-header">YouTube Shoutouts</h2>
+                    <div id="lastUpdatedYouTube"></div>
+                    <button onclick="openAddShoutoutModal('youtube')">Add New YouTube Shoutout</button>
+                    <div id="youtube-shoutouts-list" class="youtube-creator-grid">
+                        </div>
+                </div>
 
                 <div id="shoutout-modal" class="modal" style="display: none;">
                     <div class="modal-content">
@@ -225,6 +230,6 @@ POLITICAL PARTY: Republican</textarea>
 
     </div>
 
-    <script src="admin-portal.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
