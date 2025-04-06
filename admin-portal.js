@@ -236,45 +236,40 @@ function removeSocialLink(index) {
 // --------------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded on index.html is running on mobile'); // ADDED
+    console.log('DOMContentLoaded on index.html is running on mobile');
 
-    // Load Profile Picture for index.html
-    const storedProfilePicture = localStorage.getItem('profilePicture'); // We will update this to Firebase
-    const indexProfilePic = document.getElementById('indexProfilePic');
-    if (storedProfilePicture && indexProfilePic) {
-        indexProfilePic.src = storedProfilePicture;
-    }
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const indexProfilePic = document.getElementById('indexProfilePic');
+                const indexUsername = document.getElementById('indexUsername');
+                const indexBioLine1 = document.getElementById('indexBioLine1');
+                const indexBioLine2 = document.getElementById('indexBioLine2');
 
-    // Load Username for index.html
-    const storedUsername = localStorage.getItem('username'); // We will update this to Firebase
-    const indexUsername = document.getElementById('indexUsername'); // Corrected selector to use ID
-    console.log('Stored Username:', storedUsername); // ADDED
-    console.log('Username Element:', indexUsername); // ADDED
-    if (storedUsername && indexUsername) {
-        indexUsername.textContent = storedUsername;
-    }
-
-    // Load Bio for index.html
-    const storedBio = localStorage.getItem('bio'); // We will update this to Firebase
-    const indexBioLine1 = document.getElementById('indexBioLine1'); // Corrected selector to use ID
-    const indexBioLine2 = document.getElementById('indexBioLine2'); // Corrected selector to use ID
-    console.log('Stored Bio:', storedBio); // ADDED
-    console.log('Bio Element Line 1:', indexBioLine1); // ADDED
-    console.log('Bio Element Line 2:', indexBioLine2); // ADDED
-    if (storedBio) {
-        const bioLines = storedBio.split('\n');
-        if (indexBioLine1) {
-            indexBioLine1.textContent = bioLines[0] || '';
-        }
-        if (indexBioLine2) {
-            indexBioLine2.textContent = bioLines[1] || '';
-        }
-    }
-
-    const storedSocialLinks = localStorage.getItem('socialLinks'); // We will update this to Firebase
-    console.log('Stored Social Links:', storedSocialLinks); // ADDED
-
-    loadSocialLinksIndex(); // Load social links for index.html
+                if (indexProfilePic && data.profilePictureUrl) {
+                    indexProfilePic.src = data.profilePictureUrl;
+                }
+                if (indexUsername) {
+                    indexUsername.textContent = data.username || '';
+                }
+                if (data.bio) {
+                    const bioLines = data.bio.split('\n');
+                    if (indexBioLine1) {
+                        indexBioLine1.textContent = bioLines[0] || '';
+                    }
+                    if (indexBioLine2) {
+                        indexBioLine2.textContent = bioLines[1] || '';
+                    }
+                }
+            } else {
+                console.log("No profile document found in Firebase for index.html");
+            }
+            loadSocialLinksIndex(); // We'll update this to Firebase later
+        })
+        .catch((error) => {
+            console.error("Error getting profile data for index.html:", error);
+        });
 });
 
 function loadSocialLinksIndex() {
