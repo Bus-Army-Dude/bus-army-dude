@@ -175,7 +175,7 @@ body {
 
 /* Main Content */
 .admin-content {
-    margin-left: 250px;
+    margin-left: 250px; /* Ensures the content doesn’t overlap the sidebar */
     padding: 30px;
     flex: 1;
     background-color: var(--content-bg);
@@ -206,6 +206,8 @@ body {
     }
 
     .admin-content {
-        margin-left: 0;
+        margin-left: 0; /* Remove margin when in mobile mode */
+        padding: 15px;
     }
 }
+
