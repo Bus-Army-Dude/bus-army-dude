@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal</title>
     <link rel="stylesheet" href="admin-portal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/ffa5e5607e.js" crossorigin="anonymous"></script>
 </head>
 <body class="admin-body">
 
@@ -29,7 +31,7 @@
 
             <div id="home" class="admin-tab-content active">
                 <h2>Profile Section</h2>
-                <p>Modify your username, bio, profile image, and links to other pages.</p>
+                <p>Modify your username, bio, and profile image.</p>
                 <div class="profile-section">
                     <div class="form-group">
                         <label for="profileImageUpload">Change Profile Picture:</label>
@@ -49,6 +51,46 @@ POLITICAL PARTY: Republican</textarea>
 
                     <button class="save-profile-button">Save Changes</button>
                 </div>
+
+                <hr> <h2>Manage Social Links</h2>
+                <p>Add, modify, or remove links to your social media profiles.</p>
+
+                <div id="social-links-admin">
+                    <ul id="current-social-links">
+                        </ul>
+
+                    <h3>Add New Social Link</h3>
+                    <form id="add-social-link-form">
+                        <div class="form-group">
+                            <label for="platform">Platform:</label>
+                            <select id="platform">
+                                <option value="">Select Platform</option>
+                                <option value="tiktok">TikTok</option>
+                                <option value="snapchat">Snapchat</option>
+                                <option value="x-twitter">X (Twitter)</option>
+                                <option value="threads">Threads</option>
+                                <option value="twitch">Twitch</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="steam">Steam</option>
+                                <option value="discord">Discord</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="amazon-music">Amazon Music</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="url">URL:</label>
+                            <input type="url" id="url" placeholder="Enter the full URL">
+                        </div>
+                        <button type="button" onclick="addSocialLink()">Add Link</button>
+                    </form>
+                </div>
+
+                <hr> <div class="social-links-section">
+                    <h2>Current Social Links (as they appear on your site)</h2>
+                    <div class="social-links-container" id="current-social-links-display">
+                        </div>
+                </div>
+
             </div>
 
             <div id="shoutouts" class="admin-tab-content">
