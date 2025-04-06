@@ -76,13 +76,14 @@ body {
     padding: 0;
     display: flex;
     background-color: var(--bg-color);
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Admin Container */
 .admin-container {
     display: flex;
     flex: 1;
-    width: 100%;
+    min-height: 100vh; /* Ensures full height */
 }
 
 /* Sidebar */
@@ -93,14 +94,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: fixed;
     height: 100vh;
-    position: fixed; /* Keeps the sidebar fixed */
     top: 0;
     left: 0;
-    z-index: 1000; /* Ensure sidebar is above content */
+    z-index: 1000; /* Ensures sidebar is always above the content */
 }
 
-/* Profile Information */
 .profile-info {
     text-align: center;
     margin-bottom: 30px;
@@ -148,13 +148,31 @@ body {
     background-color: var(--accent-color);
 }
 
-/* Main Content Area */
+/* Logout Button */
+.logout-btn {
+    margin-top: auto;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: var(--hover-color);
+}
+
+/* Main Content */
 .admin-content {
-    margin-left: 250px; /* Same width as sidebar to avoid overlap */
+    margin-left: 250px; /* Make space for the sidebar */
     padding: 20px;
     flex: 1;
+    transition: margin-left 0.3s ease; /* Smooth transition when resizing or toggling sidebar */
     background-color: var(--content-bg);
-    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 /* Tab Content */
@@ -166,21 +184,20 @@ body {
     display: block;
 }
 
-/* Responsive Design for Smaller Screens */
+/* Ensure content adjusts on smaller screens */
 @media (max-width: 768px) {
-    /* Stack sidebar and content vertically on small screens */
     .admin-container {
         flex-direction: column;
     }
 
     .admin-sidebar {
         width: 100%;
-        position: relative; /* No longer fixed on small screens */
         height: auto;
-        padding: 15px;
+        position: relative;
     }
 
     .admin-content {
         margin-left: 0;
     }
 }
+
