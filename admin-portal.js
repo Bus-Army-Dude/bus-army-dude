@@ -194,6 +194,8 @@ function removeSocialLink(index) {
 // --------------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded on index.html is running on mobile'); // ADDED
+
     // Load Profile Picture for index.html
     const storedProfilePicture = localStorage.getItem('profilePicture');
     const indexProfilePic = document.getElementById('indexProfilePic');
@@ -204,6 +206,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load Username for index.html
     const storedUsername = localStorage.getItem('username');
     const indexUsername = document.getElementById('indexUsername'); // Corrected selector to use ID
+    console.log('Stored Username:', storedUsername); // ADDED
+    console.log('Username Element:', indexUsername); // ADDED
     if (storedUsername && indexUsername) {
         indexUsername.textContent = storedUsername;
     }
@@ -212,6 +216,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const storedBio = localStorage.getItem('bio');
     const indexBioLine1 = document.getElementById('indexBioLine1'); // Corrected selector to use ID
     const indexBioLine2 = document.getElementById('indexBioLine2'); // Corrected selector to use ID
+    console.log('Stored Bio:', storedBio); // ADDED
+    console.log('Bio Element Line 1:', indexBioLine1); // ADDED
+    console.log('Bio Element Line 2:', indexBioLine2); // ADDED
     if (storedBio) {
         const bioLines = storedBio.split('\n');
         if (indexBioLine1) {
@@ -221,6 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
             indexBioLine2.textContent = bioLines[1] || '';
         }
     }
+
+    const storedSocialLinks = localStorage.getItem('socialLinks');
+    console.log('Stored Social Links:', storedSocialLinks); // ADDED
 
     loadSocialLinksIndex(); // Load social links for index.html
 });
