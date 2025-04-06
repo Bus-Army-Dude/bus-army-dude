@@ -349,37 +349,37 @@ function loadSocialLinksIndex() {
 }
 
 function loadSocialLinksAdminPreview() {
-    const socialLinksContainer = document.getElementById('current-social-links-display');
-    if (!socialLinksContainer) return;
+    const socialLinksContainer = document.getElementById('current-social-links-display');
+    if (!socialLinksContainer) return;
 
-    socialLinksContainer.innerHTML = ''; // Ensure the container is empty
+    socialLinksContainer.innerHTML = ''; // Clear existing links
 
-    db.collection('users').doc('main-user').get()
-        .then((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
-                const socialLinks = data.socialLinks || [];
+    db.collection('users').doc('main-user').get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const socialLinks = data.socialLinks || [];
 
-                socialLinks.forEach(link => {
-                    const linkElement = document.createElement('a');
-                    linkElement.href = link.url;
-                    linkElement.classList.add('social-button'); // You might need to add CSS for this class in admin-portal.css to style it
+                socialLinks.forEach(link => {
+                    const linkElement = document.createElement('a');
+                    linkElement.href = link.url;
+                    linkElement.classList.add('social-button');
 
-                    const iconElement = document.createElement('i');
-                    iconElement.className = `${getSocialIconClass(link.platform)} social-icon`; // You might need CSS for this class too
+                    const iconElement = document.createElement('i');
+                    iconElement.className = `${getSocialIconClass(link.platform)} social-icon`;
 
-                    const spanElement = document.createElement('span');
-                    spanElement.textContent = link.platform.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Format platform name
+                    const spanElement = document.createElement('span');
+                    spanElement.textContent = link.platform.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); // Format platform name
 
-                    linkElement.appendChild(iconElement);
-                    linkElement.appendChild(spanElement);
-                    socialLinksContainer.appendChild(linkElement);
-                });
-            } else {
-                console.log("No user document found, or no social links for admin preview.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error loading social links from Firebase for admin preview: ", error);
-        });
+                    linkElement.appendChild(iconElement);
+                    linkElement.appendChild(spanElement);
+                    socialLinksContainer.appendChild(linkElement);
+                });
+            } else {
+                console.log("No user document found, or no social links for admin preview.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading social links from Firebase for admin preview: ", error);
+        });
 }
