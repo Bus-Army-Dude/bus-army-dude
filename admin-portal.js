@@ -350,15 +350,15 @@ function loadSocialLinksIndex() {
 
 function loadSocialLinksAdminPreview() {
     const socialLinksContainer = document.getElementById('current-social-links-display');
-    if (!socialLinksContainer) return; // Exit if the container doesn't exist
+    if (!socialLinksContainer) return;
 
-    socialLinksContainer.innerHTML = ''; // Clear existing links
+    socialLinksContainer.innerHTML = ''; // Ensure the container is empty
 
     db.collection('users').doc('main-user').get()
         .then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
-                const socialLinks = data.socialLinks || []; // Get social links from Firebase
+                const socialLinks = data.socialLinks || [];
 
                 socialLinks.forEach(link => {
                     const linkElement = document.createElement('a');
