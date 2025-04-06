@@ -11,9 +11,10 @@ const firebaseConfig = {
   measurementId: "G-FVWWFFBCP2"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// Initialize Firebase (Compatibility syntax)
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+// const analytics = getAnalytics(app); // Remove this line for now
 // If you plan to use Firebase Storage
 // const storage = firebase.storage();
 
