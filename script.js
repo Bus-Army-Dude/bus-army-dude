@@ -82,24 +82,46 @@ window.onload = function() {
     }, 1000);  // Update both every second
 };
 
+// Call the functions on page load
+window.onload = function() {
+    updateTime(); // Assuming this function exists elsewhere in your code
+    updateCountdown(); // Assuming this function exists elsewhere in your code
+    updateEarthDayCountdown();
+
+    // Synchronize both time and countdown updates every second
+    setInterval(() => {
+        updateTime();
+        updateCountdown();
+        updateEarthDayCountdown();
+    }, 1000);  // Update both every second
+};
+
 // Earth Day countdown with timezone adjustment
 function updateEarthDayCountdown() {
     const now = new Date();
+    console.log('Current time (local):', now);
 
     // Get the user's local time offset in milliseconds
     const localOffset = now.getTimezoneOffset() * 60000; // convert to milliseconds
+    console.log('Local offset (milliseconds):', localOffset);
 
     // Set the target date for Earth Day 2025 (April 22, 2025, at midnight UTC)
     const earthDayUTC = new Date('2025-04-22T00:00:00Z'); // 'Z' denotes UTC time
+    console.log('Earth Day 2025 (UTC):', earthDayUTC);
 
     // Adjust the Earth Day target to match the user's local timezone
     const earthDayLocal = new Date(earthDayUTC.getTime() - localOffset); // Convert UTC to local time
+    console.log('Earth Day 2025 (local):', earthDayLocal);
 
     // Get time difference in milliseconds
     const diff = earthDayLocal - now;
+    console.log('Time difference (milliseconds):', diff);
 
     const countdownSection = document.querySelector('.countdown-section');
-    if (!countdownSection) return;
+    if (!countdownSection) {
+        console.error('Countdown section element not found.');
+        return;
+    }
 
     if (diff <= 0) {
         countdownSection.innerHTML = `
@@ -108,6 +130,7 @@ function updateEarthDayCountdown() {
             </h2>
             <div style="font-size: 1.5em; color: var(--text-color);">Let's take action for our planet! 💚</div>
         `;
+        console.log('Earth Day has arrived!');
     } else {
         const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // More accurate year calculation
         const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44)); // More accurate month calculation
@@ -115,6 +138,13 @@ function updateEarthDayCountdown() {
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        console.log('Years:', years);
+        console.log('Months:', months);
+        console.log('Days:', days);
+        console.log('Hours:', hours);
+        console.log('Minutes:', minutes);
+        console.log('Seconds:', seconds);
 
         // Update flip clock for years
         updateFlipClock('countdown-years', years);
@@ -139,28 +169,40 @@ function updateEarthDayCountdown() {
 // Function to update flip clock value
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return; // Prevent errors if element is missing
+    if (!clock) {
+        console.warn(`Flip clock element with ID "${id}" not found.`);
+        return; // Prevent errors if element is missing
+    }
 
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
     const valueStr = value.toString().padStart(2, '0');
+
+    if (!front || !back) {
+        console.error(`Front or back elements not found within flip clock element with ID "${id}".`);
+        return;
+    }
 
     if (front.textContent !== valueStr) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
         // Trigger the flip animation
-        clock.querySelector('.flip-clock-inner').classList.add('flip');
-
-        setTimeout(() => {
-            clock.querySelector('.flip-clock-inner').classList.remove('flip');
-        }, 600); // match the animation duration
+        const inner = clock.querySelector('.flip-clock-inner');
+        if (inner) {
+            inner.classList.add('flip');
+            setTimeout(() => {
+                inner.classList.remove('flip');
+            }, 600); // match the animation duration
+        } else {
+            console.warn(`Flip clock inner element not found within element with ID "${id}".`);
+        }
     }
 }
 
 // Initialize everything
-updateTime();
-tiktokShoutouts.init();
+updateTime(); // Assuming this function exists elsewhere in your code
+tiktokShoutouts.init(); // Assuming this object and method exist elsewhere if needed
 updateEarthDayCountdown();
 
 setInterval(updateTime, 1000);
