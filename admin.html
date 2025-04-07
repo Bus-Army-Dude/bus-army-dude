@@ -1,167 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal</title>
-    <link rel="stylesheet" href="admin-portal.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://kit.fontawesome.com/ffa5e5607e.js" crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal</title>
+    <link rel="stylesheet" href="admin-portal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/ffa5e5607e.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="admin-body">
 
-    <div class="admin-container">
+    <div class="admin-container">
 
-        <div class="admin-sidebar">
-            <div class="profile-info">
-                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-img">
-                <p class="username">Bus Army Dude</p>
-            </div>
+        <div class="admin-sidebar">
+            <div class="profile-info">
+                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-img">
+                <p class="username">Bus Army Dude</p>
+            </div>
 
-            <ul class="admin-nav">
-                <li><a href="javascript:void(0);" onclick="switchTab('home')">Home</a></li>
-                <li><a href="javascript:void(0);" onclick="switchTab('blog')">Blog</a></li>
-                <li><a href="javascript:void(0);" onclick="switchTab('merch')">Merch Store</a></li>
-                <li><a href="javascript:void(0);" onclick="switchTab('settings')">Settings</a></li>
-            </ul>
-        </div>
+            <ul class="admin-nav">
+                <li><a href="javascript:void(0);" onclick="switchTab('home')">Home</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('blog')">Blog</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('merch')">Merch Store</a></li>
+                <li><a href="javascript:void(0);" onclick="switchTab('settings')">Settings</a></li>
+            </ul>
+        </div>
 
-        <div class="admin-content">
+        <div class="admin-content">
 
-            <div id="home" class="admin-tab-content active">
+            <div id="home" class="admin-tab-content active">
 
-                <h2>Profile Section</h2>
-                <p>Modify your username, bio, and profile image.</p>
-                <div class="profile-section">
-                    <div class="form-group">
-                        <label for="profileImageUpload">Change Profile Picture:</label>
-                        <input type="file" id="profileImageUpload" accept="image/*">
-                    </div>
+                <h2>Profile Section</h2>
+                <p>Modify your username, bio, and profile image.</p>
+                <div class="profile-section">
+                    <div class="form-group">
+                        <label for="profileImageUpload">Change Profile Picture:</label>
+                        <input type="file" id="profileImageUpload" accept="image/*">
+                    </div>
 
-                    <div class="form-group">
-                        <label for="usernameInput">Edit Username:</label>
-                        <input type="text" id="usernameInput" value="Bus Army Dude">
-                    </div>
+                    <div class="form-group">
+                        <label for="usernameInput">Edit Username:</label>
+                        <input type="text" id="usernameInput" value="Bus Army Dude">
+                    </div>
 
-                    <div class="form-group">
-                        <label for="bioTextarea">Edit Bio:</label>
-                        <textarea id="bioTextarea" rows="4">CURRENT PRESIDENT: Trump (2025-2029)
+                    <div class="form-group">
+                        <label for="bioTextarea">Edit Bio:</label>
+                        <textarea id="bioTextarea" rows="4">CURRENT PRESIDENT: Trump (2025-2029)
 POLITICAL PARTY: Republican</textarea>
-                    </div>
+                    </div>
 
-                    <button class="save-profile-button">Save Changes</button>
-                </div>
+                    <button class="save-profile-button">Save Changes</button>
+                </div>
 
-                <hr>
+                <hr>
 
-                <h2>Manage Social Links</h2>
-                <p>Add, modify, or remove links to your social media profiles.</p>
+                <h2>Manage Social Links</h2>
+                <p>Add, modify, or remove links to your social media profiles.</p>
 
-                <div id="social-links-admin">
-                    <ul id="current-social-links">
-                        </ul>
+                <div id="social-links-admin">
+                    <ul id="current-social-links">
+                        </ul>
 
-                    <h3>Add New Social Link</h3>
-                    <form id="add-social-link-form">
-                        <div class="form-group">
-                            <label for="platform">Platform:</label>
-                            <input type="text" id="platform" placeholder="e.g., TikTok, Snapchat, X (Twitter)">
-                        </div>
-                        <div class="form-group">
-                            <label for="url">URL:</label>
-                            <input type="url" id="url" placeholder="Enter the full URL">
-                        </div>
-                        <button type="button" onclick="addSocialLink()">Add Link</button>
-                    </form>
-                </div>
+                    <h3>Add New Social Link</h3>
+                    <form id="add-social-link-form">
+                        <div class="form-group">
+                            <label for="platform">Platform:</label>
+                            <input type="text" id="platform" placeholder="e.g., TikTok, Snapchat, X (Twitter)">
+                        </div>
+                        <div class="form-group">
+                            <label for="url">URL:</label>
+                            <input type="url" id="url" placeholder="Enter the full URL">
+                        </div>
+                        <button type="button" onclick="addSocialLink()">Add Link</button>
+                    </form>
+                </div>
 
-                <hr> <div class="social-links-section">
-                    <h2>Current Social Links (as they appear on your site)</h2>
-                    <div class="social-links-container" id="current-social-links-display">
-                        </div>
-                </div>
+                <hr> <div class="social-links-section">
+                    <h2>Current Social Links (as they appear on your site)</h2>
+                    <div class="social-links-container" id="current-social-links-display">
+                        </div>
+                </div>
 
-                <hr>
+                <hr>
 
-                <section id="current-president" class="president-section">
-                    <h2 class="section-title">Current U.S. President <button id="editPresidentButton">Edit</button></h2>
-                    <div class="president-info" id="presidentInfoDisplay">
-                        <img src="donaldtrump.jpg" alt="President Donald J. Trump" class="president-photo" id="presidentDisplayPhoto">
-                        <div class="president-details">
-                            <h3 class="president-name" id="presidentDisplayName">Donald J. Trump</h3>
-                            <p><strong>Born:</strong> <span id="presidentDisplayBirthDate">June 14, 1946</span></p>
-                            <p><strong>Height:</strong> <span id="presidentDisplayHeight">6'3" (190.5 cm)</span></p>
-                            <p><strong>Party:</strong> <span id="presidentDisplayParty">Republican Party</span></p>
-                            <p class="presidential-term"><strong>Presidential Term:</strong> <span id="presidentDisplayTerm">1/20/25 at 12:00 PM - 1/20/29 at 12:00 PM</span></p>
-                            <p><strong>Vice President:</strong> <span id="vicePresidentDisplayName">James David Vance</span></p>
-                        </div>
-                    </div>
+                <h2>Manage Useful Links</h2>
+                <p>Add, modify, or remove links to useful resources.</p>
 
-                    <div class="president-editor" id="presidentEditForm" style="display: none;">
-                        <h3>Edit Current U.S. President</h3>
-                        <form id="president-form">
-                            <div class="form-group">
-                                <label for="presidentName">Name:</label>
-                                <input type="text" id="presidentName" name="presidentName">
-                            </div>
-                            <div class="form-group">
-                                <label for="presidentBirthDate">Born:</label>
-                                <input type="text" id="presidentBirthDate" name="presidentBirthDate">
-                            </div>
-                            <div class="form-group">
-                                <label for="presidentHeight">Height:</label>
-                                <input type="text" id="presidentHeight" name="presidentHeight">
-                            </div>
-                            <div class="form-group">
-                                <label for="presidentParty">Party:</label>
-                                <input type="text" id="presidentParty" name="presidentParty">
-                            </div>
-                            <div class="form-group">
-                                <label for="presidentTermStart">Term Start (YYYY-MM-DD HH:MM AM/PM):</label>
-                                <input type="text" id="presidentTermStart" name="presidentTermStart">
-                            </div>
-                            <div class="form-group">
-                                <label for="presidentTermEnd">Term End (YYYY-MM-DD HH:MM AM/PM):</label>
-                                <input type="text" id="presidentTermEnd" name="presidentTermEnd">
-                            </div>
-                            <div class="form-group">
-                                <label for="vicePresidentName">Vice President:</label>
-                                <input type="text" id="vicePresidentName" name="vicePresidentName">
-                            </div>
-                            <div class="form-group">
-                                <label for="presidentPhoto">Photo:</label>
-                                <input type="file" id="presidentPhoto" name="presidentPhoto" accept="image/*">
-                                <img id="currentPresidentPhoto" src="" alt="Current President Photo" style="max-width: 100px; max-height: 100px; display: block; margin-top: 10px;">
-                            </div>
-                            <button type="button" class="save-president-button" onclick="savePresidentData()">Save President Info</button>
-                            <button type="button" class="cancel-president-button" onclick="cancelEditPresident()">Cancel</button>
-                        </form>
-                    </div>
-                </section>
+                <div id="useful-links-admin">
+                    <ul id="current-useful-links">
+                        </ul>
 
-            </div>
+                    <h3>Add New Useful Link</h3>
+                    <form id="add-useful-link-form">
+                        <div class="form-group">
+                            <label for="usefulPlatform">Platform/Name:</label>
+                            <input type="text" id="usefulPlatform" placeholder="e.g., Official Website, Donate Here">
+                        </div>
+                        <div class="form-group">
+                            <label for="usefulUrl">URL:</label>
+                            <input type="url" id="usefulUrl" placeholder="Enter the full URL">
+                        </div>
+                        <button type="button" onclick="addUsefulLink()">Add Link</button>
+                    </form>
+                </div>
 
-            <div id="blog" class="admin-tab-content">
-                <h2>Blog Page</h2>
-                <p>Manage blog categories, posts, and display them in cards with their titles, descriptions, and images.</p>
-            </div>
+                <hr> <div class="useful-links-section">
+                    <h2>Current Useful Links (as they appear on your site)</h2>
+                    <div class="links-container" id="current-useful-links-display">
+                        </div>
+                </div>
 
-            <div id="merch" class="admin-tab-content">
-                <h2>Merch Store</h2>
-                <p>Manage product categories, product details, stock, and pricing.</p>
-            </div>
+                <hr>
 
-            <div id="settings" class="admin-tab-content">
-                <h2>Settings</h2>
-                <p>Manage the settings for dark mode, accessibility, and other owner-only configurations.</p>
-            </div>
+                <section id="current-president" class="president-section">
+                    <h2 class="section-title">Current U.S. President <button id="editPresidentButton">Edit</button></h2>
+                    <div class="president-info" id="presidentInfoDisplay">
+                        <img src="donaldtrump.jpg" alt="President Donald J. Trump" class="president-photo" id="presidentDisplayPhoto">
+                        <div class="president-details">
+                            <h3 class="president-name" id="presidentDisplayName">Donald J. Trump</h3>
+                            <p><strong>Born:</strong> <span id="presidentDisplayBirthDate">June 14, 1946</span></p>
+                            <p><strong>Height:</strong> <span id="presidentDisplayHeight">6'3" (190.5 cm)</span></p>
+                            <p><strong>Party:</strong> <span id="presidentDisplayParty">Republican Party</span></p>
+                            <p class="presidential-term"><strong>Presidential Term:</strong> <span id="presidentDisplayTerm">1/20/25 at 12:00 PM - 1/20/29 at 12:00 PM</span></p>
+                            <p><strong>Vice President:</strong> <span id="vicePresidentDisplayName">James David Vance</span></p>
+                        </div>
+                    </div>
 
-        </div>
+                    <div class="president-editor" id="presidentEditForm" style="display: none;">
+                        <h3>Edit Current U.S. President</h3>
+                        <form id="president-form">
+                            <div class="form-group">
+                                <label for="presidentName">Name:</label>
+                                <input type="text" id="presidentName" name="presidentName">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentBirthDate">Born:</label>
+                                <input type="text" id="presidentBirthDate" name="presidentBirthDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentHeight">Height:</label>
+                                <input type="text" id="presidentHeight" name="presidentHeight">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentParty">Party:</label>
+                                <input type="text" id="presidentParty" name="presidentParty">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentTermStart">Term Start (YYYY-MM-DD HH:MM AM/PM):</label>
+                                <input type="text" id="presidentTermStart" name="presidentTermStart">
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentTermEnd">Term End (YYYY-MM-DD HH:MM AM/PM):</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="vicePresidentName">Vice President:</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="presidentPhoto">Photo:</label>
+                            </div>
+                            <button type="button" class="save-president-button" onclick="savePresidentData()">Save President Info</button>
+                            <button type="button" class="cancel-president-button" onclick="cancelEditPresident()">Cancel</button>
+                        </form>
+                    </div>
+                </section>
 
-    </div>
+            </div>
 
-    <script src="admin-portal.js"></script>
+            <div id="blog" class="admin-tab-content">
+                <h2>Blog Page</h2>
+                <p>Manage blog categories, posts, and display them in cards with their titles, descriptions, and images.</p>
+            </div>
+
+            <div id="merch" class="admin-tab-content">
+                <h2>Merch Store</h2>
+                <p>Manage product categories, product details, stock, and pricing.</p>
+            </div>
+
+            <div id="settings" class="admin-tab-content">
+                <h2>Settings</h2>
+                <p>Manage the settings for dark mode, accessibility, and other owner-only configurations.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="admin-portal.js"></script>
 </body>
 </html>
