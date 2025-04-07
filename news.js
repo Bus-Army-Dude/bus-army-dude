@@ -341,7 +341,7 @@ If approved, Nurodex would be the first monthly injectable migraine treatment th
     "title": "Trump Tariff Strategy: Uncertainty and Reactions",
     "shortDescription": "The Trump administration's shifting tariff strategy continues to generate uncertainty and reactions across various sectors.",
     "content": "President Donald Trump’s shifting approach to tariffs is creating confusion and uncertainty in both domestic and international markets. As the president continues to push for higher tariffs on Chinese imports and other foreign goods, critics argue that his strategy could backfire by raising costs for American consumers and businesses. Meanwhile, Trump maintains that the tariffs are necessary to secure better trade deals and reduce the U.S. trade deficit.\n\nThe uncertainty surrounding Trump’s tariff policies has created volatility in global markets, with stock prices fluctuating in response to every new development. Some experts predict that the long-term effects of the tariffs could lead to significant disruptions in global supply chains and a slowdown in the global economy. In Washington, lawmakers from both parties have expressed concerns over the economic consequences, but Trump’s base remains largely supportive of his tough stance on trade.",
-    "imageUrl": "https://cdn.cnn.com/cnnnext/dam/assets/200707155104-trump-china-tariffs-super-tease.jpg",
+    "imageUrl": "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2208491595.jpg?q=w_1160,c_fill/f_webp",
     "postedOn": "2025-04-07T06:06:00-04:00",
     "author": "Stephen Collinson, CNN",
     "category": "world"
