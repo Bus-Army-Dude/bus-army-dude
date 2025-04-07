@@ -82,16 +82,20 @@ window.onload = function() {
     }, 1000);  // Update both every second
 };
 
-// Summer Solstice countdown with timezone adjustment
-function updateNewYearCountdown() {
+// Earth Day countdown with timezone adjustment
+function updateEarthDayCountdown() {
     const now = new Date();
 
-    // Set the target date (Summer Solstice 2025) in UTC
-    // June 20, 2025, at 22:42 UTC is the precise moment of the Summer Solstice
-    const summerSolsticeUTC = new Date('2025-06-20T22:42:00Z'); // 'Z' denotes UTC time
+    // Set the target date (Earth Day 2025) in UTC
+    // April 22, 2025, at 00:00 UTC (midnight) is the target moment for Earth Day
+    const earthDayUTC = new Date('2025-04-22T00:00:00Z'); // 'Z' denotes UTC time
+
+    // Adjust to local time by getting the user's timezone offset in minutes
+    const timezoneOffset = now.getTimezoneOffset(); // Offset in minutes from UTC
+    earthDayUTC.setMinutes(earthDayUTC.getMinutes() - timezoneOffset);
 
     // Get time difference in milliseconds
-    const diff = summerSolsticeUTC - now;
+    const diff = earthDayUTC - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -99,9 +103,9 @@ function updateNewYearCountdown() {
     if (diff <= 0) {
         countdownSection.innerHTML = `
             <h2 style="color: var(--accent-color); font-size: 2.5em; margin-bottom: 20px;">
-                Summer 2025 is here!!!
+                Earth Day 2025 is here!!!
             </h2>
-            <div style="font-size: 1.5em; color: var(--text-color);">🌞 🏖️ 🌺 ⛱️</div>
+            <div style="font-size: 1.5em; color: var(--text-color);">🌍 🌱 🌿 🌎</div>
         `;
     } else {
         const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // More accurate year calculation
@@ -156,11 +160,11 @@ function updateFlipClock(id, value) {
 // Initialize everything
 updateTime();
 tiktokShoutouts.init();
-updateNewYearCountdown();
+updateEarthDayCountdown();
 
 setInterval(updateTime, 1000);
 setInterval(updateCountdown, 1000);
-setInterval(updateNewYearCountdown, 1000);
+setInterval(updateEarthDayCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
