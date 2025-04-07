@@ -82,14 +82,15 @@ window.onload = function() {
     }, 1000);  // Update both every second
 };
 
-// Earth Day countdown with timezone auto-detect from device
+// Earth Day countdown
 function updateEarthDayCountdown() {
     const now = new Date();
 
-    // Earth Day 2025 is April 22, 2025 at 00:00 *local* time
-    const earthDayLocal = new Date(2025, 3, 22, 0, 0, 0); // Months are 0-based: 3 = April
+    // Earth Day 2025 at midnight UTC
+    const earthDayUTC = new Date('2025-04-22T00:00:00Z');
 
-    const diff = earthDayLocal - now;
+    // Get time difference in milliseconds
+    const diff = earthDayUTC - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -118,7 +119,7 @@ function updateEarthDayCountdown() {
     }
 }
 
-// Flip clock updater
+// Update flip clock UI
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
     if (!clock) return;
@@ -133,36 +134,19 @@ function updateFlipClock(id, value) {
 
         const inner = clock.querySelector('.flip-clock-inner');
         inner.classList.add('flip');
-
-        setTimeout(() => {
-            inner.classList.remove('flip');
-        }, 600);
+        setTimeout(() => inner.classList.remove('flip'), 600);
     }
-}
-
-// General time updater (assumed to be defined elsewhere)
-function updateTime() {
-    // Placeholder function — you can define this with your preferred time display logic
-    const timeElement = document.querySelector('.time-display');
-    if (timeElement) {
-        const now = new Date();
-        timeElement.textContent = now.toLocaleTimeString();
-    }
-}
-
-// Dummy shoutouts init function to prevent error if undefined
-if (typeof tiktokShoutouts === 'undefined') {
-    window.tiktokShoutouts = { init: () => {} };
 }
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    updateTime();
-    tiktokShoutouts.init();
-    updateEarthDayCountdown();
+updateTime();
+tiktokShoutouts.init();
+updateEarthDayCountdown();
 
-    setInterval(updateTime, 1000);
-    setInterval(updateEarthDayCountdown, 1000);
+// Set intervals
+setInterval(updateTime, 1000);
+setInterval(updateCountdown, 1000);
+setInterval(updateEarthDayCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
