@@ -86,11 +86,11 @@ window.onload = function() {
 function updateEarthDayCountdown() {
     const now = new Date();
 
-    // Earth Day 2025 at midnight UTC
-    const earthDayUTC = new Date('2025-04-22T00:00:00Z');
+    // Earth Day 2025 at midnight (local time)
+    const earthDayLocal = new Date('2025-04-22T00:00:00'); // Local time (no 'Z' at the end for UTC)
 
-    // Get time difference in milliseconds
-    const diff = earthDayUTC - now;
+    // Get the time difference in milliseconds
+    const diff = earthDayLocal - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
