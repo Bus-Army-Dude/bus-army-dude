@@ -82,20 +82,14 @@ window.onload = function() {
     }, 1000);  // Update both every second
 };
 
-// Earth Day countdown with timezone adjustment
+// Earth Day countdown with timezone auto-detect from device
 function updateEarthDayCountdown() {
     const now = new Date();
 
-    // Set the target date (Earth Day 2025) in UTC
-    // April 22, 2025, at 00:00 UTC (midnight) is the target moment for Earth Day
-    const earthDayUTC = new Date('2025-04-22T00:00:00Z'); // 'Z' denotes UTC time
+    // Earth Day 2025 is April 22, 2025 at 00:00 *local* time
+    const earthDayLocal = new Date(2025, 3, 22, 0, 0, 0); // Months are 0-based: 3 = April
 
-    // Adjust to local time by getting the user's timezone offset in minutes
-    const timezoneOffset = now.getTimezoneOffset(); // Offset in minutes from UTC
-    earthDayUTC.setMinutes(earthDayUTC.getMinutes() - timezoneOffset);
-
-    // Get time difference in milliseconds
-    const diff = earthDayUTC - now;
+    const diff = earthDayLocal - now;
 
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) return;
@@ -108,37 +102,26 @@ function updateEarthDayCountdown() {
             <div style="font-size: 1.5em; color: var(--text-color);">🌍 🌱 🌿 🌎</div>
         `;
     } else {
-        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)); // More accurate year calculation
-        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44)); // More accurate month calculation
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
         const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Update flip clock for years
         updateFlipClock('countdown-years', years);
-
-        // Update flip clock for months
         updateFlipClock('countdown-months', months);
-
-        // Update flip clock for days
         updateFlipClock('countdown-days', days);
-
-        // Update flip clock for hours
         updateFlipClock('countdown-hours', hours);
-
-        // Update flip clock for minutes
         updateFlipClock('countdown-minutes', minutes);
-
-        // Update flip clock for seconds
         updateFlipClock('countdown-seconds', seconds);
     }
 }
 
-// Function to update flip clock value
+// Flip clock updater
 function updateFlipClock(id, value) {
     const clock = document.getElementById(id);
-    if (!clock) return; // Prevent errors if element is missing
+    if (!clock) return;
 
     const front = clock.querySelector('.flip-clock-front');
     const back = clock.querySelector('.flip-clock-back');
@@ -148,23 +131,38 @@ function updateFlipClock(id, value) {
         front.textContent = valueStr;
         back.textContent = valueStr;
 
-        // Trigger the flip animation
-        clock.querySelector('.flip-clock-inner').classList.add('flip');
+        const inner = clock.querySelector('.flip-clock-inner');
+        inner.classList.add('flip');
 
         setTimeout(() => {
-            clock.querySelector('.flip-clock-inner').classList.remove('flip');
-        }, 600); // match the animation duration
+            inner.classList.remove('flip');
+        }, 600);
     }
 }
 
-// Initialize everything
-updateTime();
-tiktokShoutouts.init();
-updateEarthDayCountdown();
+// General time updater (assumed to be defined elsewhere)
+function updateTime() {
+    // Placeholder function — you can define this with your preferred time display logic
+    const timeElement = document.querySelector('.time-display');
+    if (timeElement) {
+        const now = new Date();
+        timeElement.textContent = now.toLocaleTimeString();
+    }
+}
 
-setInterval(updateTime, 1000);
-setInterval(updateCountdown, 1000);
-setInterval(updateEarthDayCountdown, 1000);
+// Dummy shoutouts init function to prevent error if undefined
+if (typeof tiktokShoutouts === 'undefined') {
+    window.tiktokShoutouts = { init: () => {} };
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    updateTime();
+    tiktokShoutouts.init();
+    updateEarthDayCountdown();
+
+    setInterval(updateTime, 1000);
+    setInterval(updateEarthDayCountdown, 1000);
 });
 
 if (window.location.protocol !== 'https:') {
