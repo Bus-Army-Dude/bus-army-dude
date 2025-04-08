@@ -705,7 +705,13 @@ s0.parentNode.insertBefore(s1,s0);
 
     
    <!-- The back to top button should be placed just before the notice-container div -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+  <svg class="progress-ring" width="60" height="60">
+    <circle class="progress-bg" cx="30" cy="30" r="26" />
+    <circle class="progress-indicator" cx="30" cy="30" r="26" />
+  </svg>
+  <span class="arrow">↑</span>
+</button>
     
  <div class="notice-container">
     <div class="copy-protection-message">
