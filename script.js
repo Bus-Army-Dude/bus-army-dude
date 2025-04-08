@@ -154,23 +154,28 @@ if (window.location.protocol !== 'https:') {
 }
 
 // Back to top button functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const backToTopButton = document.getElementById('backToTop');
+const scrollBtn = document.getElementById('scrollToTop');
+const indicator = document.querySelector('.progress-indicator');
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopButton.classList.add('visible');
-        } else {
-            backToTopButton.classList.remove('visible');
-        }
-    });
+function updateScrollIndicator() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollTop / docHeight;
+  const offset = 163.36 * (1 - progress);
+  indicator.style.strokeDashoffset = offset;
 
-    backToTopButton.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+  // Show/hide button
+  if (scrollTop > 100) {
+    scrollBtn.classList.add('visible');
+  } else {
+    scrollBtn.classList.remove('visible');
+  }
+}
+
+window.addEventListener('scroll', updateScrollIndicator);
+
+scrollBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
