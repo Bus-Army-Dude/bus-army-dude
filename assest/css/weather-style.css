@@ -386,6 +386,7 @@ body {
   padding-inline: 12px;
 }
 
+/* Search View */
 .search-view {
   position: fixed;
   top: 0;
@@ -408,35 +409,43 @@ body {
   transition: clip-path 500ms ease, visibility 0ms 0ms, opacity 500ms ease; /* Improved transition */
 }
 
-.search-wrapper {
-  position: relative;
-  border-block-end: 1px solid var(--outline);
+/* Back button styling */
+.search-wrapper .icon-btn { /* Style for the back button */
+  background-color: transparent;
+  box-shadow: none;
+  position: absolute;
+  top: 50%;
+  left: 16px; /* Adjust to move the back button to the left */
+  transform: translateY(-50%);
+  z-index: 5; /* Make sure it's above other elements */
+  display: block; /* Ensure it's not hidden */
 }
 
+.search-wrapper .icon-btn span.m-icon {
+  color: var(--on-surface); /* Ensure the icon color is visible */
+}
+
+/* Spinner animation for loading */
 .search-wrapper::before {
   content: "";
   position: absolute;
   top: 50%;
   right: 16px;
-  transform: translateY(-50%); /* Center vertically */
+  transform: translateY(-50%);
   width: 24px;
   height: 24px;
   border: 3px solid var(--on-surface);
   border-block-start-color: transparent;
   border-radius: var(--radius-circle);
   animation: loading 500ms linear infinite;
-  display: none; /* Controlled by :has(.searching) */
-}
-
-@keyframes loading {
-  0% { transform: translateY(-50%) rotate(0); }
-  100% { transform: translateY(-50%) rotate(1turn); }
+  display: none; /* Controlled by .searching class */
 }
 
 .search-wrapper:has(.searching)::before {
   display: block;
 }
 
+/* Input field styles */
 .search-field {
   height: 80px;
   line-height: 80px;
@@ -461,28 +470,16 @@ body {
   left: 16px;
   transform: translateY(-50%);
   pointer-events: none; /* Prevent icon from intercepting clicks */
-  color: var(--on-surface-variant); /* Ensure icon color */
+  color: var(--on-surface-variant);
 }
 
 .search-wrapper > .m-icon { /* This seems intended for larger screens only */
   display: none;
 }
 
-.search-wrapper .icon-btn { /* Style for the back button */
-  background-color: transparent;
-  box-shadow: none;
-   /* Ensure it's clickable */
-  position: absolute;
-  top: 50%;
-  left: 0; /* Position it left */
-  transform: translateY(-50%);
-  z-index: 2; /* Above input field */
-}
-
-
+/* Search result and list layout */
 .search-view .view-list {
   padding-block: 8px 16px;
-  /* Add scrolling if list is long */
   max-height: calc(100% - 80px); /* Adjust based on search field height */
   overflow-y: auto;
 }
