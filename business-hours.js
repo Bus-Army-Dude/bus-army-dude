@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
         "2025-04-08": [ 
             { from: "10:30 AM", to: "11:00 AM", reason: "In a meeting" }
+        ],
+        "2025-04-09": [ 
+            { from: "3:30 PM", to: "4:45 PM", reason: "BUSY" }
         ]
     };
 
