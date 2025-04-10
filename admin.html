@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Bus Army Dude</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Portal</h1>
+
+        <div id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" id="login-button">Login</button>
+            </form>
+            <div id="auth-status" class="status-message"></div>
+        </div>
+
+        <div id="admin-content" style="display: none;"> <div class="admin-header">
+                 <h2>Manage Content</h2>
+                 <span id="admin-greeting"></span>
+                 <button id="logout-button">Logout</button>
+            </div>
+            <div id="admin-status" class="status-message"></div> <div class="admin-section">
+                <h3>Global Site Settings</h3>
+                <form id="global-settings-form">
+                    <div>
+                        <label for="maintenance-mode">Maintenance Mode:</label>
+                        <input type="checkbox" id="maintenance-mode"> Enabled
+                    </div>
+                    <div>
+                        <label for="profile-status">Profile Status:</label>
+                        <select id="profile-status">
+                            <option value="online">Online 🟢</option>
+                            <option value="idle">Idle 🟡</option>
+                            <option value="offline">Offline ⚪</option>
+                        </select>
+                    </div>
+                     <button type="submit">Save Global Settings</button>
+                </form>
+            </div>
+
+             <div class="admin-section">
+                <h3>Profile Information</h3>
+                <form id="profile-info-form">
+                    <div>
+                        <label for="profile-username">Username:</label>
+                        <input type="text" id="profile-username">
+                    </div>
+                     <div>
+                        <label for="profile-president">Current President Text:</label>
+                        <input type="text" id="profile-president">
+                    </div>
+                     <div>
+                        <label for="profile-party">Political Party Text:</label>
+                        <input type="text" id="profile-party">
+                    </div>
+                    <button type="submit">Save Profile Info</button>
+                </form>
+            </div>
+
+
+            <div class="admin-section">
+                <h3>Business Hours (Times in EST - e.g., 9:00 AM, 5:00 PM, or null for closed)</h3>
+                <form id="business-hours-form">
+                    <div>
+                        <label>Monday:</label>
+                        Open: <input type="text" id="hours-monday-open" placeholder="10:00 AM">
+                        Close: <input type="text" id="hours-monday-close" placeholder="11:00 PM">
+                    </div>
+                    <div>
+                        <label>Tuesday:</label>
+                        Open: <input type="text" id="hours-tuesday-open" placeholder="10:00 AM">
+                        Close: <input type="text" id="hours-tuesday-close" placeholder="11:00 PM">
+                    </div>
+                     <div>
+                        <label>Wednesday:</label>
+                        Open: <input type="text" id="hours-wednesday-open" placeholder="10:00 AM">
+                        Close: <input type="text" id="hours-wednesday-close" placeholder="11:00 PM">
+                    </div>
+                     <div>
+                        <label>Thursday:</label>
+                        Open: <input type="text" id="hours-thursday-open" placeholder="10:00 AM">
+                        Close: <input type="text" id="hours-thursday-close" placeholder="11:00 PM">
+                    </div>
+                     <div>
+                        <label>Friday:</label>
+                        Open: <input type="text" id="hours-friday-open" placeholder="10:00 AM">
+                        Close: <input type="text" id="hours-friday-close" placeholder="11:00 PM">
+                    </div>
+                     <div>
+                        <label>Saturday:</label>
+                        Open: <input type="text" id="hours-saturday-open" placeholder="10:00 AM">
+                        Close: <input type="text" id="hours-saturday-close" placeholder="11:00 PM">
+                    </div>
+                     <div>
+                        <label>Sunday:</label>
+                        Open: <input type="text" id="hours-sunday-open" placeholder="null">
+                        Close: <input type="text" id="hours-sunday-close" placeholder="null">
+                    </div>
+                    <button type="submit">Save Regular Hours</button>
+                </form>
+
+                <h4>Holidays / Special Hours</h4>
+                <div id="holidays-list-admin">
+                    </div>
+                <form id="add-holiday-form">
+                     <label>Add/Update Holiday (YYYY-MM-DD):</label>
+                     <input type="text" id="holiday-date" placeholder="2025-12-25" required>
+                     <input type="text" id="holiday-name" placeholder="Christmas Day" required>
+                     <input type="text" id="holiday-hours" placeholder="Closed or 10:00 AM - 2:00 PM" required>
+                     <button type="submit">Add/Update Holiday</button>
+                     <button type="button" id="delete-holiday-button">Delete Holiday (by Date)</button>
+                </form>
+
+                <h4>Temporary Unavailability</h4>
+                 <div id="temp-unavailability-list-admin">
+                    </div>
+                 <form id="add-temp-unavailability-form">
+                     <label>Add Temporary Slot (Date: YYYY-MM-DD):</label>
+                     <input type="text" id="temp-date" placeholder="2025-04-10" required>
+                     <input type="text" id="temp-from" placeholder="1:00 PM" required>
+                     <input type="text" id="temp-to" placeholder="2:30 PM" required>
+                     <input type="text" id="temp-reason" placeholder="Meeting" required>
+                     <button type="submit">Add Temporary Slot</button>
+                     <p><small>Note: Deleting temporary slots requires editing the list directly below (delete buttons will appear).</small></p>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h3>Upcoming Events</h3>
+                <div id="events-list-admin">
+                     </div>
+                <form id="add-event-form">
+                    <h4>Add New Event</h4>
+                    <label for="event-title">Title:</label>
+                    <input type="text" id="event-title" required>
+                    <label for="event-start-datetime">Start (YYYY-MM-DDTHH:mm):</label>
+                    <input type="datetime-local" id="event-start-datetime" required>
+                    <label for="event-end-datetime">End (YYYY-MM-DDTHH:mm):</label>
+                    <input type="datetime-local" id="event-end-datetime" required>
+                    <label for="event-type">Type (e.g., stream, update):</label>
+                    <input type="text" id="event-type" placeholder="stream">
+                     <label for="event-location">Location:</label>
+                    <input type="text" id="event-location" placeholder="TikTok Live">
+                    <label for="event-description">Description:</label>
+                    <textarea id="event-description"></textarea>
+                    <label for="event-link">Link (optional):</label>
+                    <input type="url" id="event-link" placeholder="https://...">
+                    <button type="submit">Add Event</button>
+                </form>
+            </div>
+
+             <div class="admin-section">
+                <h3>Creator Shoutouts</h3>
+                <p><small>Last Updated timestamps for shoutouts are currently managed automatically when you save changes below.</small></p>
+
+                <h4>TikTok</h4>
+                <div id="shoutouts-tiktok-list-admin"></div>
+                <form id="add-shoutout-tiktok-form">
+                    <h5>Add TikTok Shoutout</h5>
+                     <input type="text" id="tiktok-username" placeholder="Username" required>
+                     <input type="text" id="tiktok-nickname" placeholder="Nickname" required>
+                     <input type="text" id="tiktok-followers" placeholder="Followers (e.g., 1.2M)" required>
+                     <textarea id="tiktok-bio" placeholder="Bio"></textarea>
+                     <input type="text" id="tiktok-profilePic" placeholder="Image Path (e.g., images/name.jpg)" required>
+                     <label><input type="checkbox" id="tiktok-isVerified"> Verified?</label>
+                     <input type="number" id="tiktok-order" placeholder="Display Order (e.g., 1)" required>
+                    <button type="submit">Add TikTok Shoutout</button>
+                </form>
+
+                 <h4>Instagram</h4>
+                <div id="shoutouts-instagram-list-admin"></div>
+                <form id="add-shoutout-instagram-form">
+                     <h5>Add Instagram Shoutout</h5>
+                     <input type="text" id="instagram-username" placeholder="Username" required>
+                     <input type="text" id="instagram-nickname" placeholder="Nickname" required>
+                     <input type="text" id="instagram-followers" placeholder="Followers (e.g., 500K)" required>
+                     <textarea id="instagram-bio" placeholder="Bio"></textarea>
+                     <input type="text" id="instagram-profilePic" placeholder="Image Path (e.g., instagram_photos/name.jpg)" required>
+                     <label><input type="checkbox" id="instagram-isVerified"> Verified?</label>
+                     <input type="number" id="instagram-order" placeholder="Display Order (e.g., 1)" required>
+                    <button type="submit">Add Instagram Shoutout</button>
+                </form>
+
+                 <h4>YouTube</h4>
+                <div id="shoutouts-youtube-list-admin"></div>
+                <form id="add-shoutout-youtube-form">
+                     <h5>Add YouTube Shoutout</h5>
+                     <input type="text" id="youtube-username" placeholder="@handle" required>
+                     <input type="text" id="youtube-nickname" placeholder="Channel Name" required>
+                     <input type="text" id="youtube-subscribers" placeholder="Subscribers (e.g., 100K)" required>
+                     <textarea id="youtube-bio" placeholder="Bio"></textarea>
+                     <input type="text" id="youtube-profilePic" placeholder="Profile Pic Path" required>
+                     <input type="text" id="youtube-coverPhoto" placeholder="Cover Photo Path (optional)">
+                     <label><input type="checkbox" id="youtube-isVerified"> Verified?</label>
+                     <input type="number" id="youtube-order" placeholder="Display Order (e.g., 1)" required>
+                    <button type="submit">Add YouTube Shoutout</button>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h3>Frequently Asked Questions</h3>
+                 <div id="faq-list-admin"></div>
+                <form id="add-faq-form">
+                     <h4>Add New FAQ</h4>
+                     <label for="faq-question">Question:</label>
+                     <input type="text" id="faq-question" required>
+                      <label for="faq-answer">Answer (HTML allowed):</label>
+                     <textarea id="faq-answer" required></textarea>
+                     <label for="faq-order">Display Order:</label>
+                     <input type="number" id="faq-order" required>
+                    <button type="submit">Add FAQ</button>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h3>Tech Specs</h3>
+                 <form id="tech-specs-form">
+                     <h4>iPhone 16 Pro</h4>
+                     <input type="text" id="tech-iphone-model" placeholder="Model">
+                     <input type="text" id="tech-iphone-osVersion" placeholder="OS Version">
+                     <input type="number" id="tech-iphone-batteryHealth" placeholder="Battery Health (%)">
+                     <h4>Apple Watch Ultra 2</h4>
+                      <input type="text" id="tech-watch-model" placeholder="Model">
+                       <input type="text" id="tech-watch-osVersion" placeholder="OS Version">
+                       <input type="number" id="tech-watch-batteryHealth" placeholder="Battery Health (%)">
+                       <h4>Mac Mini M2</h4>
+                      <input type="text" id="tech-mac-model" placeholder="Model">
+                        <input type="text" id="tech-mac-osVersion" placeholder="OS Version">
+                       <button type="submit">Save Tech Specs</button>
+                 </form>
+            </div>
+
+
+            </div> </div> <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <script src="admin.js"></script>
+</body>
+</html>
