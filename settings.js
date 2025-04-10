@@ -18,7 +18,7 @@ class SettingsManager {
 
     // Check if the user is the owner
     checkIfOwner() {
-        return localStorage.getItem('isOwner') === 'true';  // Checking 'isOwner' in localStorage
+        return localStorage.getItem('isOwner') === 'false';  // Checking 'isOwner' in localStorage
     }
 
     initializeControls() {
