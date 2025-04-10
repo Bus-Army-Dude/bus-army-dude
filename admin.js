@@ -1,11 +1,11 @@
 // admin.js
 
-// !!! YOUR FIREBASE CONFIGURATION !!!
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY", // Replace with your actual API Key
-  authDomain: "YOUR_AUTH_DOMAIN", // Replace with your actual Auth Domain
-  projectId: "YOUR_PROJECT_ID", // Replace with your actual Project ID
-  storageBucket: "YOUR_STORAGE_BUCKET", // Replace with your actual Storage Bucket
+  apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0",
+  authDomain: "busarmydudewebsite.firebaseapp.com",
+  projectId: "busarmydudewebsite",
+  storageBucket: "busarmydudewebsite.firebasestorage.app",
   messagingSenderId: "42980404680",
   appId: "1:42980404680:web:f4f1e54789902a4295e4fd",
   measurementId: "G-DQPH8YL789"
@@ -16,9 +16,20 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/fireba
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+let app, db, auth;
+
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  auth = getAuth(app);
+  console.log("Firebase initialized successfully.");
+} catch (error) {
+  console.error("Firebase initialization failed:", error);
+  alert("FATAL ERROR: Cannot connect to Firebase. Admin Portal functionality disabled.");
+  document.getElementById('admin-content').style.display = 'none';
+  document.getElementById('login-section').innerHTML = '<h2 style="color: red;">Firebase Initialization Failed. Cannot load Admin Portal.</h2>';
+  throw error; // Stop further execution
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
@@ -171,13 +182,22 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
         return;
       }
+
+      let hasResults = false; // Flag to check if any results were found for this platform
+
       querySnapshot.forEach(doc => {
         const account = doc.data();
-        if (account.platform === platform) { // Filter by platform
+        if (account.platform === platform) {
+          hasResults = true;
           const content = `<strong>${account.nickname || 'No Nickname'}</strong> (@${account.username}) - Order: ${account.order}`;
           renderAdminListItem(listContainer, doc.id, content, (docId, itemEl) => handleDeleteShoutout(docId, platform, itemEl));
         }
       });
+
+      if (!hasResults) {
+        listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
+      }
+
     } catch (error) {
       console.error(`Error loading ${platform} shoutouts:`, error);
       listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
