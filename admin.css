@@ -1,1 +1,325 @@
+/* admin.css */
 
+/* ======================== */
+/* Theme Variables      */
+/* ======================== */
+:root {
+    /* Light Mode Colors */
+    --light-bg: #ffffff;
+    --light-content-bg: #f8f9fa; /* Slightly off-white for content areas */
+    --light-text: #212529;
+    --light-secondary-text: #495057;
+    --light-border: #dee2e6;
+    --light-accent: #007bff; /* Using blue as primary accent */
+    --light-hover: #0056b3;
+    --light-link: #007bff;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-icon: #ffffff;
+    --light-input-bg: #ffffff;
+    --light-input-border: #ced4da;
+    --light-success-bg: #d4edda;
+    --light-success-text: #155724;
+    --light-error-bg: #f8d7da;
+    --light-error-text: #721c24;
+
+
+    /* Dark Mode Colors */
+    --dark-bg: #1a1a1a; /* Slightly lighter dark */
+    --dark-content-bg: #2c2c2c; /* Content background */
+    --dark-text: #e0e0e0;
+    --dark-secondary-text: #a0a0a0;
+    --dark-border: #444444; /* Darker border */
+    --dark-accent: #0d6efd; /* Slightly different blue for dark mode */
+    --dark-hover: #0b5ed7;
+    --dark-link: #6ea8fe; /* Lighter blue link for dark */
+    --dark-shadow: rgba(0, 0, 0, 0.3);
+    --dark-icon: #000000;
+    --dark-input-bg: #3a3a3a; /* Dark input */
+    --dark-input-border: #555555;
+    --dark-success-bg: #1a3a1f;
+    --dark-success-text: #a3e0b1;
+    --dark-error-bg: #4d1f24;
+    --dark-error-text: #f5c6cb;
+
+    /* Fallback theme variables (default to dark mode) */
+    --bg-color: var(--dark-bg);
+    --content-bg: var(--dark-content-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --hover-color: var(--dark-hover);
+    --link-color: var(--dark-link);
+    --shadow-color: var(--dark-shadow);
+    --icon-color: var(--dark-icon);
+    --input-bg-color: var(--dark-input-bg);
+    --input-border-color: var(--dark-input-border);
+    --success-bg-color: var(--dark-success-bg);
+    --success-text-color: var(--dark-success-text);
+    --error-bg-color: var(--dark-error-bg);
+    --error-text-color: var(--dark-error-text);
+}
+
+/* Light Mode Override */
+body.light-mode { /* Assuming light mode class is 'light-mode' */
+    --bg-color: var(--light-bg);
+    --content-bg: var(--light-content-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary-text);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --hover-color: var(--light-hover);
+    --link-color: var(--light-link);
+    --shadow-color: var(--light-shadow);
+    --icon-color: var(--light-icon);
+    --input-bg-color: var(--light-input-bg);
+    --input-border-color: var(--light-input-border);
+    --success-bg-color: var(--light-success-bg);
+    --success-text-color: var(--light-success-text);
+    --error-bg-color: var(--light-error-bg);
+    --error-text-color: var(--light-error-text);
+}
+
+/* ======================== */
+/* Base Styles         */
+/* ======================== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin: 0;
+    padding: 25px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 960px;
+    margin: 20px auto;
+    background: var(--content-bg);
+    padding: 25px 35px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+h1, h2, h3, h4, h5 {
+    color: var(--text-color);
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+h1 { text-align: center; margin-bottom: 30px; margin-top: 0; color: var(--text-color); }
+h2 { color: var(--text-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+h3 { color: var(--accent-color); margin-top: 1.5em; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
+h4 { color: var(--text-color); opacity: 0.9; margin-top: 25px; margin-bottom: 15px; }
+h5 { color: var(--secondary-text); margin-top: 20px; margin-bottom: 10px; }
+
+/* ======================== */
+/* Login Section       */
+/* ======================== */
+#login-section {
+    margin-top: 25px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--bg-color); /* Slightly different bg */
+}
+#login-section h2 { text-align: center; border-bottom: none; margin-bottom: 25px; }
+
+/* ======================== */
+/* Admin Content Area    */
+/* ======================== */
+#admin-content {
+    /* display: none; /* Controlled by JS */
+    margin-top: 25px;
+    padding-top: 15px;
+}
+
+.admin-header {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+    gap: 15px; /* Add gap between items */
+}
+.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; }
+#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 15px; white-space: nowrap; }
+#logout-button { flex-shrink: 0; } /* Prevent logout button shrinking */
+
+.admin-section {
+    margin-bottom: 40px;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--bg-color);
+}
+.admin-section:last-of-type { margin-bottom: 10px; }
+
+
+/* ======================== */
+/* Form Element Styles   */
+/* ======================== */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--secondary-text);
+    font-size: 0.95em;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="datetime-local"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    transition: border-color 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb, 0, 123, 255), 0.25); /* Add focus ring */
+}
+/* Define accent color RGB for focus ring */
+:root { --accent-color-rgb: 0, 123, 255; }
+body.dark-mode { --accent-color-rgb: 13, 110, 253; }
+
+
+textarea { min-height: 100px; resize: vertical; }
+select { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 16px 12px; padding-right: 2.5rem; }
+body.dark-mode select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23cccccc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); }
+
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Style placeholder text */
+::placeholder { color: var(--secondary-text); opacity: 0.7; }
+
+/* ======================== */
+/* Button Styles       */
+/* ======================== */
+button {
+    background-color: var(--accent-color);
+    color: #ffffff; /* White text generally works on colored buttons */
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    margin-right: 10px; /* Spacing between adjacent buttons */
+    margin-top: 5px; /* Space above buttons */
+    vertical-align: middle;
+}
+button:hover { background-color: var(--hover-color); }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+#login-button { background-color: #28a745; } /* Green */
+#login-button:hover { background-color: #218838; }
+
+#logout-button { background-color: #dc3545; /* Red */ }
+#logout-button:hover { background-color: #c82333; }
+
+/* Buttons for delete actions */
+button.delete-button { background-color: #dc3545; }
+button.delete-button:hover { background-color: #c82333; }
+
+/* Buttons for secondary actions or within lists */
+button.secondary-button, .list-item-admin button { background-color: #6c757d; } /* Grey */
+button.secondary-button:hover, .list-item-admin button:hover { background-color: #5a6268; }
+
+
+/* ======================== */
+/* Status Message Styles  */
+/* ======================== */
+.status-message {
+    margin-top: 20px;
+    padding: 12px 15px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    display: none; /* Hidden by default */
+}
+.status-message:not(:empty) { display: block; } /* Show only if it has content */
+
+.status-message.success {
+    color: var(--success-text-color);
+    background-color: var(--success-bg-color);
+    border-color: var(--success-text-color);
+}
+
+.status-message.error {
+    color: var(--error-text-color);
+    background-color: var(--error-bg-color);
+    border-color: var(--error-text-color);
+}
+
+/* ======================== */
+/* Dynamic List Styles    */
+/* ======================== */
+/* Container for lists like Events, Shoutouts, FAQs */
+.list-container-admin {
+    margin-top: 15px;
+    max-height: 400px; /* Limit height and allow scrolling */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px;
+    background-color: var(--bg-color); /* Slightly different bg for list */
+}
+
+.list-item-admin {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for content */
+    align-items: flex-start; /* Align items top */
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    gap: 15px; /* Gap between content and buttons */
+}
+.list-item-admin:last-child { border-bottom: none; }
+
+.list-item-admin .item-content {
+    flex-grow: 1; /* Allow content to take available space */
+    word-break: break-word; /* Prevent long text overflow */
+}
+.list-item-admin .item-content strong { color: var(--text-color); }
+.list-item-admin .item-content span { color: var(--secondary-text); font-size: 0.9em; margin-left: 5px;}
+.list-item-admin .item-content p { margin: 5px 0; } /* Space out content lines */
+.list-item-admin .item-content small { color: var(--secondary-text); font-size: 0.8em; }
+
+
+.list-item-admin .item-actions {
+    flex-shrink: 0; /* Prevent buttons shrinking */
+    display: flex;
+    gap: 8px; /* Space between buttons */
+    align-items: center; /* Align buttons vertically */
+}
+.list-item-admin .item-actions button { margin: 0; padding: 5px 10px; font-size: 0.9em; }
+
+
+/* Specific list item content styling (example) */
+.list-item-admin.event-item .item-content strong {
+    display: block; /* Event title on its own line */
+    margin-bottom: 5px;
+}
