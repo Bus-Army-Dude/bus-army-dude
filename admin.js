@@ -16,8 +16,43 @@ import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, s
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+const analytics = getAnalytics(app);
+
+// Initialize Firebase immediately when admin.js loads
+let db, auth;
+
+try {
+  if (typeof firebase === 'undefined') {
+    throw new Error("Firebase SDK not loaded before admin.js. Check script order in admin.html.");
+  }
+
+  if (!firebase.apps.length) {
+    // firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized by admin.js.");
+  } else {
+    firebase.app();
+    console.log("Firebase already initialized.");
+  }
+
+  db = getFirestore(app);
+  auth = getAuth(app);
+
+  // db = firebase.firestore();
+  // auth = firebase.auth();
+
+  if (!db || !auth) {
+    throw new Error("Failed to get Firestore or Auth instance after initialization.");
+  }
+
+} catch (error) {
+  console.error("CRITICAL FIREBASE INITIALIZATION ERROR:", error);
+  alert("FATAL ERROR: Cannot connect to Firebase. Admin Portal functionality disabled.\n\n" + error.message);
+  const adminContentElement = document.getElementById('admin-content');
+  const loginSectionElement = document.getElementById('login-section');
+  if (adminContentElement) adminContentElement.style.display = 'none';
+  if (loginSectionElement) loginSectionElement.innerHTML = '<h2 style="color: red;">Firebase Initialization Failed. Cannot load Admin Portal.</h2>';
+  throw error;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
@@ -177,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const account = doc.data();
         if (account.platform === platform) {
           hasResults = true;
-          const content = `<strong>${account.nickname || 'No Nickname'}</strong> (@${account.username}) - Order: ${account.order}`;
+          const content = `<strong><span class="math-inline">\{account\.nickname \|\| 'No Nickname'\}</strong\> \(@</span>{account.username}) - Order: ${account.order}`;
           renderAdminListItem(listContainer, doc.id, content, (docId, itemEl) => handleDeleteShoutout(docId, platform, itemEl));
         }
       });
