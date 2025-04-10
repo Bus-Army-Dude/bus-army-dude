@@ -11,25 +11,13 @@ const firebaseConfig = {
   measurementId: "G-DQPH8YL789"
 };
 
-// Initialize Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-let app, db, auth;
-
-try {
-  app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-  auth = getAuth(app);
-  console.log("Firebase initialized successfully.");
-} catch (error) {
-  console.error("Firebase initialization failed:", error);
-  alert("FATAL ERROR: Cannot connect to Firebase. Admin Portal functionality disabled.");
-  document.getElementById('admin-content').style.display = 'none';
-  document.getElementById('login-section').innerHTML = '<h2 style="color: red;">Firebase Initialization Failed. Cannot load Admin Portal.</h2>';
-  throw error; // Stop further execution
-}
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
