@@ -5,7 +5,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyCrQNseQTsWjQhsQBGm8nk9Y_mysuaTsrc", // This key is likely intended to be public
     authDomain: "bus-army-dude-website.firebaseapp.com",
     projectId: "bus-army-dude-website",
-    storageBucket: "bus-army-dude-website.appspot.com", // Ensure this matches your console (.appspot.com is usual)
+    storageBucket: "bus-army-dude-website.appspot.com", // Ensure this matches your console
     messagingSenderId: "464457126263",
     appId: "1:464457126263:web:7e8d63b9bb59a360b39172"
 };
@@ -49,6 +49,7 @@ try {
      throw error;
 }
 
+
 // --- Wait for the DOM to be fully loaded for UI interactions ---
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminGreeting = document.getElementById('admin-greeting');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
-    const adminStatus = document.getElementById('admin-status');
+    const adminStatus = document.getElementById('admin-status'); // For general save messages
 
     // Forms & Sections (Ensure these IDs match your admin.html)
     const globalSettingsForm = document.getElementById('global-settings-form');
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Helper Functions ---
     function showAdminStatus(message, isError = false) {
-        if (!adminStatus) return;
+        if (!adminStatus) { console.warn("Admin status element not found"); return; }
         adminStatus.textContent = message;
         adminStatus.className = `status-message ${isError ? 'error' : 'success'}`;
         setTimeout(() => {
@@ -101,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderAdminListItem(container, docId, contentHtml, deleteHandler) {
-        if (!container) return;
+        if (!container) { console.warn("List container not found for rendering item"); return; }
         const itemDiv = document.createElement('div');
         itemDiv.className = 'list-item-admin';
         itemDiv.setAttribute('data-id', docId);
@@ -138,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // --- Load Data into Forms ---
+            // Check if forms/containers exist before trying to load data
             if (globalSettingsForm) loadGlobalSettingsAdmin();
             if (profileInfoForm) loadProfileInfoAdmin();
             if (businessHoursForm) loadBusinessHoursAdmin();
@@ -177,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error("Login failed:", error);
                     let errorMessage = 'Invalid email or password.'; // Default user-friendly message
                     if (error.code === 'auth/invalid-email') { errorMessage = 'Invalid email format.'; }
+                    else if (error.code === 'auth/user-disabled') { errorMessage = 'This user account has been disabled.'; }
                     // Add more specific error codes if needed
                      if(authStatus) { authStatus.textContent = `Login Failed: ${errorMessage}`; authStatus.className = 'status-message error'; }
                 });
@@ -237,20 +240,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Profile Info ---
-    // Firestore: profile/main -> { username: string, currentPresidentText: string, politicalPartyText: string }
+    // Firestore: profile/main -> { username: string, bio: string, profilePicUrl: string, isVerified: boolean }
     async function loadProfileInfoAdmin() {
        if (!profileInfoForm) return;
+       console.log("Loading profile info for admin...");
        try {
            const docRef = db.collection('profile').doc('main');
            const docSnap = await docRef.get();
+
+           const usernameInput = profileInfoForm.querySelector('#profile-username');
+           const bioTextarea = profileInfoForm.querySelector('#profile-bio');
+           const picUrlInput = profileInfoForm.querySelector('#profile-pic-url');
+           const verifiedCheckbox = profileInfoForm.querySelector('#profile-is-verified');
+
            if (docSnap.exists) {
                const data = docSnap.data();
-               profileInfoForm.querySelector('#profile-username').value = data.username || '';
-               profileInfoForm.querySelector('#profile-president').value = data.currentPresidentText || '';
-               profileInfoForm.querySelector('#profile-party').value = data.politicalPartyText || '';
+               console.log("Fetched profile data:", data);
+               if (usernameInput) usernameInput.value = data.username || '';
+               if (bioTextarea) bioTextarea.value = data.bio || '';
+               if (picUrlInput) picUrlInput.value = data.profilePicUrl || '';
+               if (verifiedCheckbox) verifiedCheckbox.checked = data.isVerified || false;
            } else {
-               console.warn("Profile info document not found.");
-               profileInfoForm.reset();
+               console.warn("Profile info document 'main' not found. Clearing form.");
+               if(profileInfoForm) profileInfoForm.reset();
            }
        } catch (error) {
            console.error("Error loading profile info:", error);
@@ -260,21 +272,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (profileInfoForm) {
        profileInfoForm.addEventListener('submit', async (e) => {
            e.preventDefault();
+           console.log("Saving profile info...");
+
            const profileData = {
-               username: profileInfoForm.querySelector('#profile-username')?.value || null,
-               currentPresidentText: profileInfoForm.querySelector('#profile-president')?.value || null,
-               politicalPartyText: profileInfoForm.querySelector('#profile-party')?.value || null,
+               username: profileInfoForm.querySelector('#profile-username')?.value.trim() || null,
+               bio: profileInfoForm.querySelector('#profile-bio')?.value.trim() || null,
+               profilePicUrl: profileInfoForm.querySelector('#profile-pic-url')?.value.trim() || null,
+               isVerified: profileInfoForm.querySelector('#profile-is-verified')?.checked || false,
+               lastUpdated: Timestamp.now()
            };
+
+           if (!profileData.username) { showAdminStatus("Username cannot be empty.", true); return; }
+
            try {
                await db.collection('profile').doc('main').set(profileData, { merge: true });
                showAdminStatus("Profile info saved successfully.");
+               console.log("Profile info saved:", profileData);
            } catch (error) {
                console.error("Error saving profile info:", error);
                showAdminStatus(`Error saving profile info: ${error.message}`, true);
            }
        });
    }
-
 
    // --- Business Hours (Regular) ---
    // Firestore: siteConfig/businessHours -> { regularHours: Map }
@@ -288,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (const day of ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']) {
                     const openInput = businessHoursForm.querySelector(`#hours-${day}-open`);
                     const closeInput = businessHoursForm.querySelector(`#hours-${day}-close`);
-                    if(openInput) openInput.value = hours[day]?.open || '';
+                    if(openInput) openInput.value = hours[day]?.open || ''; // Use value from DB or empty string
                     if(closeInput) closeInput.value = hours[day]?.close || '';
                 }
             } else {
@@ -305,29 +324,30 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const regularHoursData = {};
             let isValid = true;
+            const timeRegex = /^(1[0-2]|0?[1-9]):[0-5][0-9]\s*(AM|PM)$/i; // Regex for HH:MM AM/PM
+
             for (const day of ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']) {
                  const openInput = businessHoursForm.querySelector(`#hours-${day}-open`);
                  const closeInput = businessHoursForm.querySelector(`#hours-${day}-close`);
                  const openVal = openInput ? openInput.value.trim() : '';
                  const closeVal = closeInput ? closeInput.value.trim() : '';
 
-                 // Basic validation for time format (allow empty/null or specific format)
-                 const timeRegex = /^(1[0-2]|0?[1-9]):[0-5][0-9]\s*(AM|PM)$/i;
+                 // Validate: Allow empty string (for null/closed) or valid time format
                  if ((openVal !== '' && !timeRegex.test(openVal)) || (closeVal !== '' && !timeRegex.test(closeVal))) {
                      showAdminStatus(`Invalid time format for ${day}. Use HH:MM AM/PM or leave blank for closed.`, true);
                      isValid = false;
-                     break; // Stop processing on first error
+                     break;
                  }
-
                  regularHoursData[day] = {
                      open: openVal === '' ? null : openVal,
                      close: closeVal === '' ? null : closeVal
                  };
             }
 
-            if (!isValid) return; // Don't save if validation failed
+            if (!isValid) return;
 
             try {
+                // Using set with merge: true will create the doc if it doesn't exist, or update the regularHours field if it does.
                 await db.collection('siteConfig').doc('businessHours').set({ regularHours: regularHoursData }, { merge: true });
                 showAdminStatus("Regular business hours saved.");
             } catch (error) {
@@ -341,11 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
    // Firestore: siteConfig/holidays -> Map { "YYYY-MM-DD": { name: string, hours: string } }
     async function loadHolidaysAdmin() {
         if (!holidaysListAdmin) return;
-        holidaysListAdmin.innerHTML = 'Loading holidays...';
+        holidaysListAdmin.innerHTML = '<p>Loading holidays...</p>'; // Use <p> for consistency
         try {
             const docRef = db.collection('siteConfig').doc('holidays');
             const docSnap = await docRef.get();
-            holidaysListAdmin.innerHTML = ''; // Clear
+            holidaysListAdmin.innerHTML = '';
             if (docSnap.exists) {
                 const holidays = docSnap.data() || {};
                 const sortedDates = Object.keys(holidays).sort();
@@ -367,8 +387,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     async function handleDeleteHoliday(dateKey, listItemElement) {
         if (!confirm(`Are you sure you want to delete the holiday for ${dateKey}?`)) return;
-        const holidayToDelete = { [dateKey]: firebase.firestore.FieldValue.delete() };
+        // Use dot notation for map field deletion
+        const holidayToDelete = { [`${dateKey}`]: firebase.firestore.FieldValue.delete() };
         try {
+             // Use update to remove the specific field (dateKey) from the document
             await db.collection('siteConfig').doc('holidays').update(holidayToDelete);
             showAdminStatus(`Holiday for ${dateKey} deleted.`);
             if (listItemElement) listItemElement.remove();
@@ -383,7 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const dateInput = addHolidayForm.querySelector('#holiday-date');
             const nameInput = addHolidayForm.querySelector('#holiday-name');
             const hoursInput = addHolidayForm.querySelector('#holiday-hours');
-
             const dateKey = dateInput.value;
             const name = nameInput.value.trim();
             const hours = hoursInput.value.trim();
@@ -391,9 +412,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!dateKey.match(/^\d{4}-\d{2}-\d{2}$/)) { showAdminStatus("Invalid date format. Use YYYY-MM-DD.", true); return; }
             if (!name || !hours) { showAdminStatus("Holiday Name and Hours cannot be empty.", true); return; }
 
-            const holidayData = { [dateKey]: { name, hours } };
+            // Use dot notation to set/update a specific field within the map
+            const holidayData = { [`${dateKey}.name`]: name, [`${dateKey}.hours`]: hours };
             try {
-                await db.collection('siteConfig').doc('holidays').set(holidayData, { merge: true }); // set with merge adds or updates the key
+                // Using update ensures the document exists, set with merge creates if needed. Let's use set/merge for simplicity.
+                 await db.collection('siteConfig').doc('holidays').set({ [dateKey]: { name, hours } }, { merge: true });
                 showAdminStatus(`Holiday for ${dateKey} added/updated.`);
                 addHolidayForm.reset();
                 loadHolidaysAdmin();
@@ -406,12 +429,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deleteHolidayButton) {
          deleteHolidayButton.addEventListener('click', async () => {
              const dateInput = addHolidayForm.querySelector('#holiday-date');
-             const dateToDelete = dateInput ? dateInput.value : null; // Check if input exists
+             const dateToDelete = dateInput ? dateInput.value : null;
              if (!dateToDelete || !dateToDelete.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                showAdminStatus("Enter a valid date (YYYY-MM-DD) in the 'Add/Update' form first to specify which holiday to delete.", true);
+                showAdminStatus("Enter a valid date (YYYY-MM-DD) in the form above to specify which holiday to delete.", true);
                 return;
              }
              const listItemElement = holidaysListAdmin ? holidaysListAdmin.querySelector(`[data-id="${dateToDelete}"]`) : null;
+             // Check if holiday actually exists before trying to delete
+             const docRef = db.collection('siteConfig').doc('holidays');
+             const docSnap = await docRef.get();
+             if (!docSnap.exists() || !docSnap.data()?.[dateToDelete]) {
+                  showAdminStatus(`Holiday for ${dateToDelete} not found. Cannot delete.`, true);
+                  return;
+             }
              await handleDeleteHoliday(dateToDelete, listItemElement);
          });
     }
@@ -420,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
    // Firestore: siteConfig/temporaryUnavailability -> Map { "YYYY-MM-DD": Array[{from: string, to: string, reason: string}] }
     async function loadTempUnavailabilityAdmin() {
         if (!tempUnavailabilityListAdmin) return;
-        tempUnavailabilityListAdmin.innerHTML = 'Loading temporary slots...';
+        tempUnavailabilityListAdmin.innerHTML = '<p>Loading temporary slots...</p>';
          try {
             const docRef = db.collection('siteConfig').doc('temporaryUnavailability');
             const docSnap = await docRef.get();
@@ -434,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
                      const slots = tempMap[dateKey];
                      if (Array.isArray(slots)) {
                          slots.forEach((slot, index) => {
-                            if (slot?.from && slot?.to && slot.reason) {
+                            if (slot?.from && slot?.to && slot.reason !== undefined) { // Check reason exists
                                  hasItems = true;
                                  const slotId = `${dateKey}_${index}`;
                                  const content = `<strong>${dateKey}:</strong> ${slot.from} - ${slot.to} <i>(${slot.reason})</i>`;
@@ -463,13 +493,12 @@ document.addEventListener('DOMContentLoaded', () => {
             await db.runTransaction(async (transaction) => {
                 const docSnap = await transaction.get(docRef);
                 let currentData = docSnap.data();
-                if (currentData?.[dateKey]?.[index]) { // Check if slot exists at index
+                if (currentData?.[dateKey]?.[index]) {
                     currentData[dateKey].splice(index, 1); // Remove item
                     if (currentData[dateKey].length === 0) {
-                         // If array is now empty, remove the date key entirely
-                         transaction.update(docRef, { [dateKey]: firebase.firestore.FieldValue.delete() });
+                         transaction.update(docRef, { [dateKey]: firebase.firestore.FieldValue.delete() }); // Remove date key if array empty
                     } else {
-                        transaction.update(docRef, { [dateKey]: currentData[dateKey] });
+                        transaction.update(docRef, { [dateKey]: currentData[dateKey] }); // Update array
                     }
                 } else { throw new Error("Slot or date key not found."); }
             });
@@ -483,33 +512,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addTempUnavailabilityForm) {
         addTempUnavailabilityForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const dateKey = addTempUnavailabilityForm.querySelector('#temp-date').value;
-            const from = addTempUnavailabilityForm.querySelector('#temp-from').value.trim();
-            const to = addTempUnavailabilityForm.querySelector('#temp-to').value.trim();
-            const reason = addTempUnavailabilityForm.querySelector('#temp-reason').value.trim();
+            const dateKey = addTempUnavailabilityForm.querySelector('#temp-date')?.value;
+            const from = addTempUnavailabilityForm.querySelector('#temp-from')?.value.trim();
+            const to = addTempUnavailabilityForm.querySelector('#temp-to')?.value.trim();
+            const reason = addTempUnavailabilityForm.querySelector('#temp-reason')?.value.trim();
             const timeRegex = /^(1[0-2]|0?[1-9]):[0-5][0-9]\s*(AM|PM)$/i;
 
-            if (!dateKey.match(/^\d{4}-\d{2}-\d{2}$/)) { showAdminStatus("Invalid date format. Use YYYY-MM-DD.", true); return; }
+            if (!dateKey?.match(/^\d{4}-\d{2}-\d{2}$/)) { showAdminStatus("Invalid date format. Use YYYY-MM-DD.", true); return; }
             if (!from || !to || !reason) { showAdminStatus("Please fill in From, To, and Reason fields.", true); return; }
             if (!timeRegex.test(from) || !timeRegex.test(to)) { showAdminStatus("Invalid time format. Use HH:MM AM/PM.", true); return; }
-
 
             const newSlot = { from, to, reason };
             const docRef = db.collection('siteConfig').doc('temporaryUnavailability');
             try {
-                // Use FieldValue.arrayUnion for cleaner addition
-                await docRef.update({
-                    [dateKey]: firebase.firestore.FieldValue.arrayUnion(newSlot)
-                }).catch(async (updateError) => {
-                    // If the document or field doesn't exist, update fails. Use set with merge instead.
-                     if (updateError.code === 'not-found') {
-                        console.log(`Document or field ${dateKey} not found, creating with set/merge.`);
-                         await docRef.set({ [dateKey]: [newSlot] }, { merge: true });
-                     } else {
-                        throw updateError; // Re-throw other errors
-                     }
-                });
-
+                // Use FieldValue.arrayUnion to add the new slot to the array for that date, creating if needed
+                await docRef.set({ [dateKey]: firebase.firestore.FieldValue.arrayUnion(newSlot) }, { merge: true });
                 showAdminStatus(`Temporary slot for ${dateKey} added.`);
                 addTempUnavailabilityForm.reset();
                 loadTempUnavailabilityAdmin(); // Refresh list
@@ -524,17 +541,18 @@ document.addEventListener('DOMContentLoaded', () => {
    // Firestore: events collection -> Docs { title, startDate(Timestamp), endDate(Timestamp), type, location, description, link }
     async function loadEventsAdmin() {
         if (!eventsListAdmin) return;
-        eventsListAdmin.innerHTML = 'Loading events...';
+        eventsListAdmin.innerHTML = '<p>Loading events...</p>';
         try {
             const querySnapshot = await db.collection('events')
                                           .orderBy('startDate', 'desc') // Show newest first in admin
+                                          .limit(50) // Limit results for performance
                                           .get();
             eventsListAdmin.innerHTML = '';
             if (querySnapshot.empty) { eventsListAdmin.innerHTML = '<p>No events found.</p>'; return; }
             querySnapshot.forEach(doc => {
                 const event = doc.data();
-                const startDateStr = event.startDate?.toDate ? event.startDate.toDate().toLocaleString() : 'N/A';
-                const endDateStr = event.endDate?.toDate ? event.endDate.toDate().toLocaleString() : 'N/A';
+                const startDateStr = event.startDate?.toDate ? event.startDate.toDate().toLocaleString() : 'Invalid Date';
+                const endDateStr = event.endDate?.toDate ? event.endDate.toDate().toLocaleString() : 'Invalid Date';
                 const content = `<strong>${event.title || 'No Title'}</strong><br>
                                  <small>Start: ${startDateStr}</small><br>
                                  <small>End: ${endDateStr}</small> |
@@ -578,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
                      return;
                  }
             } catch (dateError) {
-                 showAdminStatus("Invalid date/time format.", true);
+                 showAdminStatus("Invalid date/time format. Use your browser's picker.", true);
                  console.error("Date parsing error:", dateError);
                  return;
             }
@@ -612,7 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadShoutoutsAdmin(platform) {
         const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
         if (!listContainer) { console.warn(`List container for ${platform} not found.`); return; }
-        listContainer.innerHTML = `Loading ${platform} shoutouts...`;
+        listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`; // Use <p>
         try {
             const collectionName = `shoutouts_${platform}`;
             const querySnapshot = await db.collection(collectionName).orderBy('order', 'asc').get();
@@ -636,15 +654,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim();
         const order = parseInt(orderStr);
 
-        if (!username || !nickname || !orderStr || isNaN(order)) {
-            showAdminStatus(`Please provide Username, Nickname, and a valid numeric Order for ${platform}.`, true);
+        if (!username || !nickname || !orderStr || isNaN(order) || order < 1) {
+            showAdminStatus(`Please provide Username, Nickname, and a valid positive Order number for ${platform}.`, true);
             return;
         }
 
         const accountData = {
-            username: username,
-            nickname: nickname,
-            order: order,
+            username: username, nickname: nickname, order: order,
             isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
             bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
             profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
@@ -657,7 +673,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await db.collection(collectionName).add(accountData);
             const metaRef = db.collection('siteConfig').doc('shoutoutsMetadata');
-            await metaRef.set({ [`lastUpdatedTime_${platform}`]: Timestamp.now() }, { merge: true });
+            // Use server timestamp for reliability
+            await metaRef.set({ [`lastUpdatedTime_${platform}`]: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
             showAdminStatus(`${platform} shoutout added.`);
             formElement.reset();
             loadShoutoutsAdmin(platform);
@@ -672,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
            await db.collection(collectionName).doc(docId).delete();
            const metaRef = db.collection('siteConfig').doc('shoutoutsMetadata');
-           await metaRef.set({ [`lastUpdatedTime_${platform}`]: Timestamp.now() }, { merge: true });
+           await metaRef.set({ [`lastUpdatedTime_${platform}`]: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
            showAdminStatus(`${platform} shoutout deleted.`);
            if(listItemElement) listItemElement.remove();
         } catch (error) {
@@ -687,10 +704,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
    // --- FAQs Load/Add/Delete ---
-   // Firestore: faqs collection -> Docs { question: string, answer: string (can be HTML), order: number }
+   // Firestore: faqs collection -> Docs { question: string, answer: string (HTML allowed), order: number }
     async function loadFaqsAdmin() {
         if (!faqListAdmin) return;
-        faqListAdmin.innerHTML = 'Loading FAQs...';
+        faqListAdmin.innerHTML = '<p>Loading FAQs...</p>'; // Use <p>
          try {
             const querySnapshot = await db.collection('faqs').orderBy('order', 'asc').get();
             faqListAdmin.innerHTML = '';
@@ -720,12 +737,12 @@ document.addEventListener('DOMContentLoaded', () => {
         addFaqForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const question = addFaqForm.querySelector('#faq-question')?.value.trim();
-            const answer = addFaqForm.querySelector('#faq-answer')?.value.trim(); // Note: might want a richer editor for HTML
+            const answer = addFaqForm.querySelector('#faq-answer')?.value.trim();
             const orderStr = addFaqForm.querySelector('#faq-order')?.value.trim();
             const order = parseInt(orderStr);
 
-            if (!question || !answer || !orderStr || isNaN(order)) {
-                 showAdminStatus("Please fill in Question, Answer, and a valid numeric Order.", true);
+            if (!question || !answer || !orderStr || isNaN(order) || order < 1) {
+                 showAdminStatus("Please fill in Question, Answer, and a valid positive Order number.", true);
                  return;
              }
             const faqData = { question, answer, order };
@@ -751,37 +768,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 db.collection('techSpecs').doc('watch').get(),
                 db.collection('techSpecs').doc('mac').get()
             ]);
-            const iphoneForm = techSpecsForm.querySelector('#tech-iphone-model')?.closest('div.admin-section') || techSpecsForm; // Or specific container
-            const watchForm = techSpecsForm.querySelector('#tech-watch-model')?.closest('div.admin-section') || techSpecsForm;
-            const macForm = techSpecsForm.querySelector('#tech-mac-model')?.closest('div.admin-section') || techSpecsForm;
-
-            if (iphoneSnap.exists) {
-                const data = iphoneSnap.data();
-                // Use helper to populate to avoid repetition
-                populateForm(iphoneForm, data, 'tech-iphone-');
-            } else { iphoneForm.reset(); }
-
-            if (watchSnap.exists) {
-                const data = watchSnap.data();
-                 populateForm(watchForm, data, 'tech-watch-');
-            } else { watchForm.reset(); }
-
-            if (macSnap.exists) {
-                const data = macSnap.data();
-                 populateForm(macForm, data, 'tech-mac-');
-            } else { macForm.reset(); }
+            // Use helper to populate based on prefix
+            populateFormFields(techSpecsForm, iphoneSnap.data(), 'tech-iphone-');
+            populateFormFields(techSpecsForm, watchSnap.data(), 'tech-watch-');
+            populateFormFields(techSpecsForm, macSnap.data(), 'tech-mac-');
 
         } catch (error) {
             console.error("Error loading tech specs:", error);
             showAdminStatus("Error loading tech specs.", true);
         }
     }
-    // Helper to populate form fields based on prefix
-    function populateForm(form, data, prefix) {
+    // Helper to populate form fields based on prefix and data object
+    function populateFormFields(form, data, prefix) {
+        if (!data) { // If doc didn't exist or had no data
+             // Find all inputs with this prefix and clear them
+             form.querySelectorAll(`[id^="${prefix}"]`).forEach(input => input.value = '');
+             return;
+         }
         for (const key in data) {
-             const input = form.querySelector(`#${prefix}${key}`);
+             const input = form.querySelector(`#${prefix}${key}`); // Case sensitive ID match
              if (input) {
-                 input.value = data[key] || '';
+                 input.value = data[key] !== null && data[key] !== undefined ? data[key] : ''; // Handle null/undefined from DB
              }
          }
     }
@@ -790,9 +797,14 @@ document.addEventListener('DOMContentLoaded', () => {
          const data = {};
          const inputs = form.querySelectorAll(`[id^="${prefix}"]`);
          inputs.forEach(input => {
-             const key = input.id.substring(prefix.length); // Get key name from ID
+             const key = input.id.substring(prefix.length);
              if (key) {
-                  data[key] = input.value.trim() || null; // Store null if empty
+                // Basic type handling (can be expanded)
+                if (input.type === 'number') {
+                     data[key] = input.value === '' ? null : Number(input.value); // Store number or null
+                 } else {
+                     data[key] = input.value.trim() === '' ? null : input.value.trim(); // Store string or null
+                 }
              }
          });
          return data;
@@ -801,18 +813,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (techSpecsForm) {
         techSpecsForm.addEventListener('submit', async (e) => {
              e.preventDefault();
-             const iphoneFormPart = techSpecsForm.querySelector('#tech-iphone-model')?.closest('div.admin-section') || techSpecsForm;
-             const watchFormPart = techSpecsForm.querySelector('#tech-watch-model')?.closest('div.admin-section') || techSpecsForm;
-             const macFormPart = techSpecsForm.querySelector('#tech-mac-model')?.closest('div.admin-section') || techSpecsForm;
-
-             const iphoneData = getFormData(iphoneFormPart, 'tech-iphone-');
-             const watchData = getFormData(watchFormPart, 'tech-watch-');
-             const macData = getFormData(macFormPart, 'tech-mac-');
-
-             // Add specific type conversions if needed (e.g., for battery health number)
-             if (iphoneData.batteryHealth) iphoneData.batteryHealth = parseInt(iphoneData.batteryHealth) || null;
-             if (watchData.batteryHealth) watchData.batteryHealth = parseInt(watchData.batteryHealth) || null;
-             // ... other numeric conversions
+             const iphoneData = getFormData(techSpecsForm, 'tech-iphone-');
+             const watchData = getFormData(techSpecsForm, 'tech-watch-');
+             const macData = getFormData(techSpecsForm, 'tech-mac-');
 
              try {
                  await Promise.all([
@@ -827,6 +830,5 @@ document.addEventListener('DOMContentLoaded', () => {
              }
          });
     }
-
 
 }); // End DOMContentLoaded
