@@ -26,247 +26,75 @@
             <div id="auth-status" class="status-message"></div>
         </div>
 
-        <div id="admin-content" style="display: none;"> <div class="admin-header">
-                 <h2>Manage Content</h2>
-                 <span id="admin-greeting"></span>
-                 <button id="logout-button">Logout</button>
+        <div id="admin-content" style="display: none;">
+            <div class="admin-header">
+                <h2>Manage Content</h2>
+                <span id="admin-greeting"></span>
+                <button id="logout-button">Logout</button>
             </div>
-            <div id="admin-status" class="status-message"></div> <div class="admin-section">
-                <h3>Global Site Settings</h3>
-                <form id="global-settings-form">
-                    <div>
-                        <label for="maintenance-mode">Maintenance Mode:</label>
-                        <input type="checkbox" id="maintenance-mode"> Enabled
-                        <small>(Shows maintenance banner on public site)</small>
-                    </div>
-                    <div>
-                        <label for="profile-status">Profile Status:</label>
-                        <select id="profile-status">
-                            <option value="online">Online 🟢</option>
-                            <option value="idle">Idle 🟡</option>
-                            <option value="offline">Offline ⚪</option>
-                        </select>
-                         <small>(Sets the status icon on public site)</small>
-                    </div>
-                     <button type="submit">Save Global Settings</button>
-                </form>
-            </div>
-
-             <div class="admin-section">
-                <h3>Profile Information</h3>
-                <form id="profile-info-form">
-                    <div>
-                        <label for="profile-username">Username:</label>
-                        <input type="text" id="profile-username" placeholder="Your Display Name">
-                    </div>
-                     <div>
-                        <label for="profile-bio">Bio:</label>
-                        <textarea id="profile-bio" placeholder="Tell us about yourself..."></textarea>
-                    </div>
-                    <div>
-                        <label for="profile-pic-url">Profile Picture URL:</label>
-                        <input type="url" id="profile-pic-url" placeholder="https://... or images/your-pic.jpg">
-                        <small>Enter the full URL or the relative path to the image (e.g., images/profile.jpg).</small>
-                    </div>
-                     <div>
-                        <label for="profile-is-verified">
-                            <input type="checkbox" id="profile-is-verified"> Verified Checkmark Visible?
-                        </label>
-                    </div>
-                    <button type="submit">Save Profile Info</button>
-                </form>
-            </div>
-
+            <div id="admin-status" class="status-message"></div>
 
             <div class="admin-section">
-                <h3>Business Hours (Times in EST - e.g., 10:00 AM, 11:00 PM, or leave blank for Closed)</h3>
-                <form id="business-hours-form">
-                    <div class="hours-day-row">
-                        <label>Monday:</label>
-                        Open: <input type="text" id="hours-monday-open" placeholder="10:00 AM">
-                        Close: <input type="text" id="hours-monday-close" placeholder="11:00 PM">
-                    </div>
-                    <div class="hours-day-row">
-                        <label>Tuesday:</label>
-                        Open: <input type="text" id="hours-tuesday-open" placeholder="10:00 AM">
-                        Close: <input type="text" id="hours-tuesday-close" placeholder="11:00 PM">
-                    </div>
-                     <div class="hours-day-row">
-                        <label>Wednesday:</label>
-                        Open: <input type="text" id="hours-wednesday-open" placeholder="10:00 AM">
-                        Close: <input type="text" id="hours-wednesday-close" placeholder="11:00 PM">
-                    </div>
-                     <div class="hours-day-row">
-                        <label>Thursday:</label>
-                        Open: <input type="text" id="hours-thursday-open" placeholder="10:00 AM">
-                        Close: <input type="text" id="hours-thursday-close" placeholder="11:00 PM">
-                    </div>
-                     <div class="hours-day-row">
-                        <label>Friday:</label>
-                        Open: <input type="text" id="hours-friday-open" placeholder="10:00 AM">
-                        Close: <input type="text" id="hours-friday-close" placeholder="11:00 PM">
-                    </div>
-                     <div class="hours-day-row">
-                        <label>Saturday:</label>
-                        Open: <input type="text" id="hours-saturday-open" placeholder="10:00 AM">
-                        Close: <input type="text" id="hours-saturday-close" placeholder="11:00 PM">
-                    </div>
-                     <div class="hours-day-row">
-                        <label>Sunday:</label>
-                        Open: <input type="text" id="hours-sunday-open" placeholder="">
-                        Close: <input type="text" id="hours-sunday-close" placeholder="">
-                    </div>
-                    <button type="submit">Save Regular Hours</button>
-                </form>
-
-                <h4>Holidays / Special Hours</h4>
-                 <div class="list-container-admin" id="holidays-list-admin">
-                    <p>Loading holidays...</p>
-                </div>
-                <form id="add-holiday-form" class="add-form">
-                     <label>Add/Update Holiday (Date format YYYY-MM-DD):</label>
-                     <input type="text" id="holiday-date" placeholder="2025-12-25" required pattern="\d{4}-\d{2}-\d{2}">
-                     <input type="text" id="holiday-name" placeholder="Holiday Name" required>
-                     <input type="text" id="holiday-hours" placeholder="Closed or 10:00 AM - 2:00 PM" required>
-                     <button type="submit">Add/Update Holiday</button>
-                     <button type="button" id="delete-holiday-button" class="secondary-button">Delete Holiday By Date Above</button>
-                </form>
-
-                <h4>Temporary Unavailability</h4>
-                 <div class="list-container-admin" id="temp-unavailability-list-admin">
-                    <p>Loading temporary slots...</p>
-                </div>
-                 <form id="add-temp-unavailability-form" class="add-form">
-                     <label>Add Temporary Slot (Date: YYYY-MM-DD):</label>
-                     <input type="text" id="temp-date" placeholder="2025-04-10" required pattern="\d{4}-\d{2}-\d{2}">
-                     <input type="text" id="temp-from" placeholder="1:00 PM" required title="Use format HH:MM AM/PM">
-                     <input type="text" id="temp-to" placeholder="2:30 PM" required title="Use format HH:MM AM/PM">
-                     <input type="text" id="temp-reason" placeholder="Reason (e.g., Meeting)" required>
-                     <button type="submit">Add Temporary Slot</button>
-                     <p><small>Delete individual slots using the buttons in the list above.</small></p>
-                </form>
-            </div>
-
-            <div class="admin-section">
-                <h3>Upcoming Events</h3>
-                <div class="list-container-admin" id="events-list-admin">
-                     <p>Loading events...</p>
-                </div>
-                <form id="add-event-form" class="add-form">
-                    <h4>Add New Event</h4>
-                    <label for="event-title">Title:</label>
-                    <input type="text" id="event-title" required>
-                    <label for="event-start-datetime">Start Date & Time:</label>
-                    <input type="datetime-local" id="event-start-datetime" required>
-                    <label for="event-end-datetime">End Date & Time:</label>
-                    <input type="datetime-local" id="event-end-datetime" required>
-                    <label for="event-type">Type (e.g., stream, update):</label>
-                    <input type="text" id="event-type" placeholder="stream">
-                     <label for="event-location">Location:</label>
-                    <input type="text" id="event-location" placeholder="TikTok Live">
-                    <label for="event-description">Description:</label>
-                    <textarea id="event-description"></textarea>
-                    <label for="event-link">Link (optional):</label>
-                    <input type="url" id="event-link" placeholder="https://...">
-                    <button type="submit">Add Event</button>
-                </form>
-            </div>
-
-             <div class="admin-section">
                 <h3>Creator Shoutouts</h3>
                 <p><small>Last Updated timestamps are managed automatically when adding/deleting shoutouts.</small></p>
 
                 <h4>TikTok</h4>
                 <div class="list-container-admin" id="shoutouts-tiktok-list-admin"><p>Loading TikTok shoutouts...</p></div>
                 <form id="add-shoutout-tiktok-form" class="add-form">
-                    <h5>Add TikTok Shoutout</h5>
-                     <input type="text" id="tiktok-username" placeholder="Username" required>
-                     <input type="text" id="tiktok-nickname" placeholder="Nickname" required>
-                     <input type="text" id="tiktok-followers" placeholder="Followers (e.g., 1.2M)" required>
-                     <textarea id="tiktok-bio" placeholder="Bio"></textarea>
-                     <input type="text" id="tiktok-profilePic" placeholder="Image Path (e.g., images/name.jpg)" required>
-                     <label><input type="checkbox" id="tiktok-isVerified"> Verified?</label>
-                     <label for="tiktok-order">Display Order:</label>
-                     <input type="number" id="tiktok-order" placeholder="1" required min="1">
-                    <button type="submit">Add TikTok Shoutout</button>
+                    <h5>Add/Update TikTok Shoutout</h5>
+                    <input type="hidden" id="tiktok-id">
+                    <input type="text" id="tiktok-username" placeholder="Username" required>
+                    <input type="text" id="tiktok-nickname" placeholder="Nickname" required>
+                    <input type="text" id="tiktok-followers" placeholder="Followers (e.g., 1.2M)" required>
+                    <textarea id="tiktok-bio" placeholder="Bio"></textarea>
+                    <input type="text" id="tiktok-profilePic" placeholder="Image Path (e.g., images/name.jpg)" required>
+                    <label><input type="checkbox" id="tiktok-isVerified"> Verified?</label>
+                    <label for="tiktok-order">Display Order:</label>
+                    <input type="number" id="tiktok-order" placeholder="1" required min="1">
+                    <button type="submit">Add/Update TikTok Shoutout</button>
+                    <button type="button" id="delete-tiktok-button" class="secondary-button">Delete TikTok Shoutout</button>
                 </form>
 
-                 <h4>Instagram</h4>
+                <h4>Instagram</h4>
                 <div class="list-container-admin" id="shoutouts-instagram-list-admin"><p>Loading Instagram shoutouts...</p></div>
                 <form id="add-shoutout-instagram-form" class="add-form">
-                     <h5>Add Instagram Shoutout</h5>
-                     <input type="text" id="instagram-username" placeholder="Username" required>
-                     <input type="text" id="instagram-nickname" placeholder="Nickname" required>
-                     <input type="text" id="instagram-followers" placeholder="Followers (e.g., 500K)" required>
-                     <textarea id="instagram-bio" placeholder="Bio"></textarea>
-                     <input type="text" id="instagram-profilePic" placeholder="Image Path (e.g., instagram_photos/name.jpg)" required>
-                     <label><input type="checkbox" id="instagram-isVerified"> Verified?</label>
-                      <label for="instagram-order">Display Order:</label>
-                     <input type="number" id="instagram-order" placeholder="1" required min="1">
-                    <button type="submit">Add Instagram Shoutout</button>
+                    <h5>Add/Update Instagram Shoutout</h5>
+                    <input type="hidden" id="instagram-id">
+                    <input type="text" id="instagram-username" placeholder="Username" required>
+                    <input type="text" id="instagram-nickname" placeholder="Nickname" required>
+                    <input type="text" id="instagram-followers" placeholder="Followers (e.g., 500K)" required>
+                    <textarea id="instagram-bio" placeholder="Bio"></textarea>
+                    <input type="text" id="instagram-profilePic" placeholder="Image Path (e.g., instagram_photos/name.jpg)" required>
+                    <label><input type="checkbox" id="instagram-isVerified"> Verified?</label>
+                    <label for="instagram-order">Display Order:</label>
+                    <input type="number" id="instagram-order" placeholder="1" required min="1">
+                    <button type="submit">Add/Update Instagram Shoutout</button>
+                    <button type="button" id="delete-instagram-button" class="secondary-button">Delete Instagram Shoutout</button>
                 </form>
 
-                 <h4>YouTube</h4>
+                <h4>YouTube</h4>
                 <div class="list-container-admin" id="shoutouts-youtube-list-admin"><p>Loading YouTube shoutouts...</p></div>
                 <form id="add-shoutout-youtube-form" class="add-form">
-                     <h5>Add YouTube Shoutout</h5>
-                     <input type="text" id="youtube-username" placeholder="@handle or Channel ID" required>
-                     <input type="text" id="youtube-nickname" placeholder="Channel Name" required>
-                     <input type="text" id="youtube-subscribers" placeholder="Subscribers (e.g., 100K)" required>
-                     <textarea id="youtube-bio" placeholder="Bio"></textarea>
-                     <input type="text" id="youtube-profilePic" placeholder="Profile Pic Path" required>
-                     <input type="text" id="youtube-coverPhoto" placeholder="Cover Photo Path (optional)">
-                     <label><input type="checkbox" id="youtube-isVerified"> Verified?</label>
-                      <label for="youtube-order">Display Order:</label>
-                     <input type="number" id="youtube-order" placeholder="1" required min="1">
-                    <button type="submit">Add YouTube Shoutout</button>
+                    <h5>Add/Update YouTube Shoutout</h5>
+                    <input type="hidden" id="youtube-id">
+                    <input type="text" id="youtube-username" placeholder="@handle or Channel ID" required>
+                    <input type="text" id="youtube-nickname" placeholder="Channel Name" required>
+                    <input type="text" id="youtube-subscribers" placeholder="Subscribers (e.g., 100K)" required>
+                    <textarea id="youtube-bio" placeholder="Bio"></textarea>
+                    <input type="text" id="youtube-profilePic" placeholder="Profile Pic Path" required>
+                    <input type="text" id="youtube-coverPhoto" placeholder="Cover Photo Path (optional)">
+                    <label><input type="checkbox" id="youtube-isVerified"> Verified?</label>
+                    <label for="youtube-order">Display Order:</label>
+                    <input type="number" id="youtube-order" placeholder="1" required min="1">
+                    <button type="submit">Add/Update YouTube Shoutout</button>
+                    <button type="button" id="delete-youtube-button" class="secondary-button">Delete YouTube Shoutout</button>
                 </form>
             </div>
-
-            <div class="admin-section">
-                <h3>Frequently Asked Questions</h3>
-                 <div class="list-container-admin" id="faq-list-admin"><p>Loading FAQs...</p></div>
-                <form id="add-faq-form" class="add-form">
-                     <h4>Add New FAQ</h4>
-                     <label for="faq-question">Question:</label>
-                     <input type="text" id="faq-question" required>
-                      <label for="faq-answer">Answer (HTML allowed):</label>
-                     <textarea id="faq-answer" required rows="5"></textarea>
-                     <label for="faq-order">Display Order:</label>
-                     <input type="number" id="faq-order" required min="1">
-                    <button type="submit">Add FAQ</button>
-                </form>
-            </div>
-
-            <div class="admin-section">
-                <h3>Tech Specs</h3>
-                 <form id="tech-specs-form">
-                     <h4>iPhone 16 Pro</h4>
-                     <label for="tech-iphone-model">Model:</label><input type="text" id="tech-iphone-model" placeholder="iPhone 16 Pro">
-                     <label for="tech-iphone-osVersion">OS Version:</label><input type="text" id="tech-iphone-osVersion" placeholder="iOS 18.x">
-                     <label for="tech-iphone-batteryHealth">Battery Health (%):</label><input type="number" id="tech-iphone-batteryHealth" placeholder="99" min="0" max="100">
-                     <label for="tech-iphone-storage">Storage:</label><input type="text" id="tech-iphone-storage" placeholder="128GB">
-                     <label for="tech-iphone-color">Color:</label><input type="text" id="tech-iphone-color" placeholder="Natural Titanium">
-                     <h4>Apple Watch Ultra 2</h4>
-                      <label for="tech-watch-model">Model:</label><input type="text" id="tech-watch-model" placeholder="Apple Watch Ultra 2">
-                      <label for="tech-watch-osVersion">OS Version:</label><input type="text" id="tech-watch-osVersion" placeholder="WatchOS 11.x">
-                      <label for="tech-watch-batteryHealth">Battery Health (%):</label><input type="number" id="tech-watch-batteryHealth" placeholder="97" min="0" max="100">
-                      <label for="tech-watch-storage">Storage:</label><input type="text" id="tech-watch-storage" placeholder="64GB">
-                       <label for="tech-watch-color">Color:</label><input type="text" id="tech-watch-color" placeholder="Natural Titanium">
-                       <h4>Mac Mini M2 (2023)</h4>
-                       <label for="tech-mac-model">Model:</label><input type="text" id="tech-mac-model" placeholder="2023 Mac Mini M2">
-                       <label for="tech-mac-osVersion">OS Version:</label><input type="text" id="tech-mac-osVersion" placeholder="macOS Sequoia 15.x">
-                       <label for="tech-mac-storage">Storage:</label><input type="text" id="tech-mac-storage" placeholder="256GB SSD">
-                        <label for="tech-mac-color">Color:</label><input type="text" id="tech-mac-color" placeholder="Grey">
-                        <button type="submit">Save Tech Specs</button>
-                 </form>
-            </div>
-
-
-            </div> </div> <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-
     <script src="admin.js"></script>
 </body>
 </html>
