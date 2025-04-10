@@ -97,25 +97,20 @@ s0.parentNode.insertBefore(s1,s0);
 
    <div class="profile-section">
     <button class="merch-button" aria-label="Merch" onclick="window.location.href='https://bus-army-dude.github.io/bus-army-dude/merchandise.html'"></button>
-
     <button class="settings-button" aria-label="Settings" onclick="window.location.href='settings.html'"></button>
 
     <div class="profile-pic-wrapper">
-        <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
-
+        <img src="images/default-profile.jpg" alt="Profile Picture" class="profile-pic" id="profile-pic-main">
         <div class="profile-status-container">
-            <span class="profile-status">🟢</span>
+             <span class="profile-status">⚪</span>
         </div>
     </div>
 
     <div class="username-checkmark">
-        <h1>Bus Army Dude</h1>
-        <img src="check.png" alt="Verified" class="verified">
+        <h1 id="profile-username-main">Loading...</h1>
+        <img src="check.png" alt="Verified" class="verified" id="profile-verified-check" style="display: none;">
     </div>
-    <p>CURRENT PRESIDENT: Trump (2025-2029)</p>
-    <p>POLITICAL PARTY: Republican</p>
-
-    <button class="weather-button" aria-label="Weather" onclick="window.location.href='weather.html'"></button>
+    <p id="profile-bio-main" class="profile-bio">Loading bio...</p> <button class="weather-button" aria-label="Weather" onclick="window.location.href='weather.html'"></button>
 </div>
         
        <!-- Social Links Section -->
