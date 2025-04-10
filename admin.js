@@ -1,60 +1,24 @@
 // admin.js
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// !!! YOUR FIREBASE CONFIGURATION !!!
 const firebaseConfig = {
-  apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0",
-  authDomain: "busarmydudewebsite.firebaseapp.com",
-  projectId: "busarmydudewebsite",
-  storageBucket: "busarmydudewebsite.firebasestorage.app",
+  apiKey: "YOUR_API_KEY", // Replace with your actual API Key
+  authDomain: "YOUR_AUTH_DOMAIN", // Replace with your actual Auth Domain
+  projectId: "YOUR_PROJECT_ID", // Replace with your actual Project ID
+  storageBucket: "YOUR_STORAGE_BUCKET", // Replace with your actual Storage Bucket
   messagingSenderId: "42980404680",
   appId: "1:42980404680:web:f4f1e54789902a4295e4fd",
   measurementId: "G-DQPH8YL789"
 };
 
 // Initialize Firebase
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-// Initialize Firebase immediately when admin.js loads
-let db, auth;
-
-try {
-  if (typeof firebase === 'undefined') {
-    throw new Error("Firebase SDK not loaded before admin.js. Check script order in admin.html.");
-  }
-
-  if (!firebase.apps.length) {
-    // firebase.initializeApp(firebaseConfig);
-    console.log("Firebase initialized by admin.js.");
-  } else {
-    firebase.app();
-    console.log("Firebase already initialized.");
-  }
-
-  db = getFirestore(app);
-  auth = getAuth(app);
-
-  // db = firebase.firestore();
-  // auth = firebase.auth();
-
-  if (!db || !auth) {
-    throw new Error("Failed to get Firestore or Auth instance after initialization.");
-  }
-
-} catch (error) {
-  console.error("CRITICAL FIREBASE INITIALIZATION ERROR:", error);
-  alert("FATAL ERROR: Cannot connect to Firebase. Admin Portal functionality disabled.\n\n" + error.message);
-  const adminContentElement = document.getElementById('admin-content');
-  const loginSectionElement = document.getElementById('login-section');
-  if (adminContentElement) adminContentElement.style.display = 'none';
-  if (loginSectionElement) loginSectionElement.innerHTML = '<h2 style="color: red;">Firebase Initialization Failed. Cannot load Admin Portal.</h2>';
-  throw error;
-}
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
@@ -68,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const adminGreeting = document.getElementById('admin-greeting');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
-  const adminStatus = document.getElementById('admin-status');
+  const adminStatusElement = document.getElementById('admin-status');
 
   // Shoutout Forms & Lists
   const addShoutoutTiktokForm = document.getElementById('add-shoutout-tiktok-form');
@@ -80,15 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Helper Functions ---
   function showAdminStatus(message, isError = false) {
-    if (!adminStatus) {
+    if (!adminStatusElement) {
       console.warn("Admin status element not found");
       return;
     }
-    adminStatus.textContent = message;
-    adminStatus.className = `status-message ${isError ? 'error' : 'success'}`;
+    adminStatusElement.textContent = message;
+    adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`;
     setTimeout(() => {
-      if (adminStatus) adminStatus.textContent = '';
-      if (adminStatus) adminStatus.className = 'status-message';
+      if (adminStatusElement) adminStatusElement.textContent = '';
+      if (adminStatusElement) adminStatusElement.className = 'status-message';
     }, 5000);
   }
 
@@ -116,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Authentication Logic ---
-  auth.onAuthStateChanged(user => {
+  onAuthStateChanged(auth, user => {
     if (user) {
       // User is signed in
       if (loginSection) loginSection.style.display = 'none';
@@ -127,9 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
         authStatus.textContent = '';
         authStatus.className = 'status-message';
       }
-      if (adminStatus) {
-        adminStatus.textContent = '';
-        adminStatus.className = 'status-message';
+      if (adminStatusElement) {
+        adminStatusElement.textContent = '';
+        adminStatusElement.className = 'status-message';
       }
 
       // --- Load Shoutout Data ---
@@ -164,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         authStatus.className = 'status-message';
       }
 
-      auth.signInWithEmailAndPassword(email, password)
+      signInWithEmailAndPassword(auth, email, password)
         .then(() => { /* onAuthStateChanged handles UI */ })
         .catch((error) => {
           console.error("Login failed:", error);
@@ -185,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Logout Button
   if (logoutButton) {
     logoutButton.addEventListener('click', () => {
-      auth.signOut().catch((error) => {
+      signOut(auth).catch((error) => {
         console.error("Logout failed:", error);
         showAdminStatus(`Logout Failed: ${error.message}`, true);
       });
@@ -201,10 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`;
     try {
-      const querySnapshot = await db.collection('shoutouts')
-        .where('platform', '==', platform)
-        .orderBy('order', 'asc')
-        .get();
+      const querySnapshot = await getDocs(collection(db, 'shoutouts'));
       listContainer.innerHTML = '';
       if (querySnapshot.empty) {
         listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
@@ -212,8 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       querySnapshot.forEach(doc => {
         const account = doc.data();
-        const content = `<strong>${account.nickname || 'No Nickname'}</strong> (@${account.username}) - Order: ${account.order}`;
-        renderAdminListItem(listContainer, doc.id, content, (docId, itemEl) => handleDeleteShoutout(docId, platform, itemEl));
+        if (account.platform === platform) { // Filter by platform
+          const content = `<strong>${account.nickname || 'No Nickname'}</strong> (@${account.username}) - Order: ${account.order}`;
+          renderAdminListItem(listContainer, doc.id, content, (docId, itemEl) => handleDeleteShoutout(docId, platform, itemEl));
+        }
       });
     } catch (error) {
       console.error(`Error loading ${platform} shoutouts:`, error);
@@ -254,10 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      await addDoc(collection(db, 'shoutouts'), accountData); // Changed to addDoc
-      const metaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // Changed to doc
-      await setDoc(metaRef, { // Changed to setDoc
-        [`lastUpdatedTime_${platform}`]: serverTimestamp() // Changed to serverTimestamp()
+      await addDoc(collection(db, 'shoutouts'), accountData);
+      const metaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+      await setDoc(metaRef, {
+        [`lastUpdatedTime_${platform}`]: serverTimestamp()
       }, { merge: true });
       showAdminStatus(`${platform} shoutout added.`);
       formElement.reset();
@@ -272,10 +235,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!confirm(`Are you sure you want to delete this ${platform} shoutout?`)) return;
 
     try {
-      await deleteDoc(doc(db, 'shoutouts', docId)); // Changed to deleteDoc and doc
-      const metaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // Changed to doc
-      await setDoc(metaRef, { // Changed to setDoc
-        [`lastUpdatedTime_${platform}`]: serverTimestamp() // Changed to serverTimestamp()
+      await deleteDoc(doc(db, 'shoutouts', docId));
+      const metaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+      await setDoc(metaRef, {
+        [`lastUpdatedTime_${platform}`]: serverTimestamp()
       }, {
         merge: true
       });
