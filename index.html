@@ -182,39 +182,33 @@ s0.parentNode.insertBefore(s1,s0);
             </div>
         </section>
         
-     <!-- TikTok Shoutouts Section -->
-  <div class="shoutouts-section section">
-      <div id="tiktok-shoutouts">
-          <h2>TikTok Creator Shoutouts</h2>
-          <p id="tiktok-last-updated-timestamp"></p>
-      </div>
-      <div class="creator-grid">
-          <!-- TikTok creator cards will be dynamically generated here -->
-      </div>
-      <div class="unavailable-message" style="display: none;"></div>
-  </div>
-        
-        <!-- Instagram Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="instagram-shoutouts">
-                <h2>Instagram Creator Shoutouts</h2>
-                <p id="lastUpdatedInstagram"></p>
-            </div>
-            <div class="instagram-creator-grid">
-                <!-- Instagram creator cards will be dynamically generated here -->
-            </div>
+     <div class="shoutouts-section section">
+        <div id="tiktok-shoutouts">
+            <h2>TikTok Creator Shoutouts</h2>
+            <p id="tiktok-last-updated-timestamp">Last Updated: Loading...</p>
         </div>
+        <div class="creator-grid">
+            </div>
+        <div class="unavailable-message" style="display: none;"></div>
+    </div>
 
-        <!-- YouTube Shoutouts Section -->
-        <div class="shoutouts-section section">
-            <div id="youtube-shoutouts">
-                <h2>YouTube Creator Shoutouts</h2>
-                <p id="lastUpdatedYouTube"></p>
-            </div>
-            <div class="youtube-creator-grid">
-                <!-- YouTube creator cards will be dynamically generated here -->
-            </div>
+    <div class="shoutouts-section section">
+        <div id="instagram-shoutouts">
+            <h2>Instagram Creator Shoutouts</h2>
+            <p id="lastUpdatedInstagram">Last Updated: Loading...</p>
         </div>
+        <div class="instagram-creator-grid">
+            </div>
+    </div>
+
+    <div class="shoutouts-section section">
+        <div id="youtube-shoutouts">
+            <h2>YouTube Creator Shoutouts</h2>
+            <p id="lastUpdatedYouTube">Last Updated: Loading...</p>
+        </div>
+        <div class="youtube-creator-grid">
+            </div>
+    </div
         
         <div class="useful-links-section section">
         <h2 class="section-title">Useful Links</h2>
@@ -746,5 +740,6 @@ s0.parentNode.insertBefore(s1,s0);
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="admin.js"></script>
+    <script type="module" src="displayShoutouts.js"></script>
 </body>
 </html>                
