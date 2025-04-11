@@ -1,44 +1,25 @@
-// admin.js
+// admin.js (Corrected to import from firebase-init.js)
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0", // Use your actual API key
-    authDomain: "busarmydudewebsite.firebaseapp.com",
-    projectId: "busarmydudewebsite",
-    storageBucket: "busarmydudewebsite.firebasestorage.app", // Ensure this matches your project
-    messagingSenderId: "42980404680",
-    appId: "1:42980404680:web:f4f1e54789902a4295e4fd",
-    measurementId: "G-DQPH8YL789" // Optional
-};
+// *** Import Firebase services from your corrected init file ***
+import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
-// Import Firebase modules
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-// *** UPDATED: Added 'serverTimestamp' for profile saving ***
+// Import Firebase functions
+// *** NOTE: initializeApp is NO LONGER needed here ***
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-// Uncomment if you need Analytics:
-// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
+// NOTE: db and auth are now imported, not created here.
 
-let db, auth;
-
-try {
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    // Uncomment if you need Analytics:
-    // const analytics = getAnalytics(app);
-    console.log("Firebase initialized successfully by admin.js.");
-
-} catch (error) {
-    console.error("CRITICAL FIREBASE INITIALIZATION ERROR:", error);
-    alert("FATAL ERROR: Cannot connect to Firebase. Admin Portal functionality disabled.\n\n" + error.message);
-    const loginSectionElement = document.getElementById('login-section');
-    if (loginSectionElement) loginSectionElement.innerHTML = '<h2 style="color: red;">Firebase Initialization Failed. Cannot load Admin Portal. Check Console.</h2>';
-    throw error; // Stop script execution
-}
+// *** REMOVED the duplicate Firebase initialization block that was here ***
 
 document.addEventListener('DOMContentLoaded', () => {
+    // First, check if db and auth were successfully imported/initialized
+    if (!db || !auth) {
+         console.error("Firestore (db) or Auth not initialized correctly. Check firebase-init.js and imports.");
+         alert("FATAL ERROR: Firebase services failed to load. Admin panel disabled.");
+         // Optionally disable UI elements further
+         return; // Stop executing if Firebase isn't ready
+    }
+
     console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
 
     // --- DOM Element References ---
@@ -75,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
     const editPlatformSpecificDiv = document.getElementById('edit-platform-specific');
 
-    // *** ADDED: Profile Management Elements ***
+    // Profile Management Elements
     const profileForm = document.getElementById('profile-form');
     const profileUsernameInput = document.getElementById('profile-username');
     const profilePicUrlInput = document.getElementById('profile-pic-url');
@@ -83,107 +64,98 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileStatusInput = document.getElementById('profile-status');
     const profileStatusMessage = document.getElementById('profile-status-message');
     const adminPfpPreview = document.getElementById('admin-pfp-preview');
-    // *** END ADDED ***
 
-    // --- Firestore Reference for Profile ---
-    // *** ADDED: Profile Doc Ref ***
+    // Firestore Reference for Profile
     const profileDocRef = doc(db, "site_config", "mainProfile");
-    // *** END ADDED ***
 
 
     // --- Helper Functions ---
     function showAdminStatus(message, isError = false) {
-        // ... (your existing function is fine) ...
-        if (!adminStatusElement) {
-             console.warn("Admin status element not found");
-             return;
-         }
-         adminStatusElement.textContent = message;
-         adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`;
-         setTimeout(() => {
-             if (adminStatusElement) {
-                 adminStatusElement.textContent = '';
-                 adminStatusElement.className = 'status-message';
-             }
-         }, 5000);
-    }
-
-    // --- Function to display profile-specific status messages ---
-    // *** ADDED: Profile Status Display ***
-     function showProfileStatus(message, isError = false) {
-        if (!profileStatusMessage) {
-            console.warn("Profile status element not found");
-             // Fallback to general admin status if profile one doesn't exist
-            showAdminStatus(message, isError);
+       if (!adminStatusElement) {
+            console.warn("Admin status element not found");
             return;
         }
-        profileStatusMessage.textContent = message;
-        profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+        adminStatusElement.textContent = message;
+        adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`;
         setTimeout(() => {
-            if (profileStatusMessage) {
-                profileStatusMessage.textContent = '';
-                profileStatusMessage.className = 'status-message';
+            if (adminStatusElement) {
+                adminStatusElement.textContent = '';
+                adminStatusElement.className = 'status-message';
             }
         }, 5000);
     }
-     // *** END ADDED ***
+
+    // Function to display profile-specific status messages
+     function showProfileStatus(message, isError = false) {
+       if (!profileStatusMessage) {
+           console.warn("Profile status element not found");
+            showAdminStatus(message, isError); // Fallback
+           return;
+       }
+       profileStatusMessage.textContent = message;
+       profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+       setTimeout(() => {
+           if (profileStatusMessage) {
+               profileStatusMessage.textContent = '';
+               profileStatusMessage.className = 'status-message';
+           }
+       }, 5000);
+   }
 
 
     // --- Edit Modal Logic ---
     function openEditModal(docId, platform) {
-        // ... (your existing function is fine) ...
-         if (!editModal || !editForm) {
-             console.error("Edit modal or form not found in the DOM.");
-             showAdminStatus("UI Error: Cannot open edit form.", true);
-             return;
-         }
-         editForm.setAttribute('data-doc-id', docId);
-         editForm.setAttribute('data-platform', platform);
-         const docRef = doc(db, 'shoutouts', docId);
-         getDoc(docRef).then(docSnap => {
-             if (docSnap.exists()) {
-                 const data = docSnap.data();
-                 if (editUsernameInput) editUsernameInput.value = data.username || '';
-                 if (editNicknameInput) editNicknameInput.value = data.nickname || '';
-                 if (editOrderInput) editOrderInput.value = data.order ?? ''; // Use ?? for order 0
-                 if (editIsVerifiedInput) editIsVerifiedInput.checked = data.isVerified || false;
-                 if (editBioInput) editBioInput.value = data.bio || '';
-                 if (editProfilePicInput) editProfilePicInput.value = data.profilePic || '';
+       if (!editModal || !editForm) {
+            console.error("Edit modal or form not found in the DOM.");
+            showAdminStatus("UI Error: Cannot open edit form.", true);
+            return;
+        }
+        editForm.setAttribute('data-doc-id', docId);
+        editForm.setAttribute('data-platform', platform);
+        const docRef = doc(db, 'shoutouts', docId); // Assumes shoutouts collection
+        getDoc(docRef).then(docSnap => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (editUsernameInput) editUsernameInput.value = data.username || '';
+                if (editNicknameInput) editNicknameInput.value = data.nickname || '';
+                if (editOrderInput) editOrderInput.value = data.order ?? '';
+                if (editIsVerifiedInput) editIsVerifiedInput.checked = data.isVerified || false;
+                if (editBioInput) editBioInput.value = data.bio || '';
+                if (editProfilePicInput) editProfilePicInput.value = data.profilePic || '';
 
-                 const followersDiv = editPlatformSpecificDiv?.querySelector('.edit-followers-group');
-                 const subscribersDiv = editPlatformSpecificDiv?.querySelector('.edit-subscribers-group');
-                 const coverPhotoDiv = editPlatformSpecificDiv?.querySelector('.edit-coverphoto-group');
+                const followersDiv = editPlatformSpecificDiv?.querySelector('.edit-followers-group');
+                const subscribersDiv = editPlatformSpecificDiv?.querySelector('.edit-subscribers-group');
+                const coverPhotoDiv = editPlatformSpecificDiv?.querySelector('.edit-coverphoto-group');
 
-                 if (followersDiv) followersDiv.style.display = 'none';
-                 if (subscribersDiv) subscribersDiv.style.display = 'none';
-                 if (coverPhotoDiv) coverPhotoDiv.style.display = 'none';
+                if (followersDiv) followersDiv.style.display = 'none';
+                if (subscribersDiv) subscribersDiv.style.display = 'none';
+                if (coverPhotoDiv) coverPhotoDiv.style.display = 'none';
 
-                 if (platform === 'youtube') {
-                     if (editSubscribersInput) editSubscribersInput.value = data.subscribers || 'N/A';
-                     if (editCoverPhotoInput) editCoverPhotoInput.value = data.coverPhoto || '';
-                     if (subscribersDiv) subscribersDiv.style.display = 'block';
-                     if (coverPhotoDiv) coverPhotoDiv.style.display = 'block';
-                 } else { // TikTok or Instagram
-                     if (editFollowersInput) editFollowersInput.value = data.followers || 'N/A';
-                     if (followersDiv) followersDiv.style.display = 'block';
-                 }
-                 editModal.style.display = 'block';
-             } else {
-                 console.error("Document not found for editing:", docId);
-                 showAdminStatus("Error: Could not load data for editing.", true);
-             }
-         }).catch(error => {
-             console.error("Error fetching document for edit:", error);
-             showAdminStatus(`Error loading data: ${error.message}`, true);
-         });
+                if (platform === 'youtube') {
+                    if (editSubscribersInput) editSubscribersInput.value = data.subscribers || 'N/A';
+                    if (editCoverPhotoInput) editCoverPhotoInput.value = data.coverPhoto || '';
+                    if (subscribersDiv) subscribersDiv.style.display = 'block';
+                    if (coverPhotoDiv) coverPhotoDiv.style.display = 'block';
+                } else { // TikTok or Instagram
+                    if (editFollowersInput) editFollowersInput.value = data.followers || 'N/A';
+                    if (followersDiv) followersDiv.style.display = 'block';
+                }
+                editModal.style.display = 'block';
+            } else {
+                console.error("Document not found for editing:", docId);
+                showAdminStatus("Error: Could not load data for editing.", true);
+            }
+        }).catch(error => {
+            console.error("Error fetching document for edit:", error);
+            showAdminStatus(`Error loading data: ${error.message}`, true);
+        });
     }
 
     function closeEditModal() {
-        // ... (your existing function is fine) ...
-         if (editModal) editModal.style.display = 'none';
-         if (editForm) editForm.reset();
-         editForm?.removeAttribute('data-doc-id');
-         editForm?.removeAttribute('data-platform');
+       if (editModal) editModal.style.display = 'none';
+       if (editForm) editForm.reset();
+       editForm?.removeAttribute('data-doc-id');
+       editForm?.removeAttribute('data-platform');
     }
 
     if (cancelEditButton) {
@@ -197,47 +169,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render list item with Edit and Delete buttons
     function renderAdminListItem(container, docId, platform, contentHtml, deleteHandler, editHandler) {
-        // ... (your existing function is fine) ...
-         if (!container) {
-            console.warn("List container not found for rendering item");
-            return;
-        }
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'list-item-admin';
-        itemDiv.setAttribute('data-id', docId);
-        itemDiv.innerHTML = `
-            <div class="item-content">${contentHtml}</div>
-            <div class="item-actions">
-                <button type="button" class="edit-button small-button">Edit</button>
-                <button type="button" class="delete-button small-button">Delete</button>
-            </div>
-        `;
-        const editButton = itemDiv.querySelector('.edit-button');
-        if (editButton) {
-            editButton.addEventListener('click', () => editHandler(docId, platform));
-        } else {
-            console.warn("Could not find edit button in rendered list item for ID:", docId);
-        }
-        const deleteButton = itemDiv.querySelector('.delete-button');
-        if (deleteButton) {
-            deleteButton.addEventListener('click', () => deleteHandler(docId, platform, itemDiv));
-        } else {
-            console.warn("Could not find delete button in rendered list item for ID:", docId);
-        }
-        container.appendChild(itemDiv);
+       if (!container) {
+           console.warn("List container not found for rendering item");
+           return;
+       }
+       const itemDiv = document.createElement('div');
+       itemDiv.className = 'list-item-admin';
+       itemDiv.setAttribute('data-id', docId);
+       itemDiv.innerHTML = `
+           <div class="item-content">${contentHtml}</div>
+           <div class="item-actions">
+               <button type="button" class="edit-button small-button">Edit</button>
+               <button type="button" class="delete-button small-button">Delete</button>
+           </div>
+       `;
+       const editButton = itemDiv.querySelector('.edit-button');
+       if (editButton) {
+           editButton.addEventListener('click', () => editHandler(docId, platform));
+       } else {
+           console.warn("Could not find edit button in rendered list item for ID:", docId);
+       }
+       const deleteButton = itemDiv.querySelector('.delete-button');
+       if (deleteButton) {
+           deleteButton.addEventListener('click', () => deleteHandler(docId, platform, itemDiv));
+       } else {
+           console.warn("Could not find delete button in rendered list item for ID:", docId);
+       }
+       container.appendChild(itemDiv);
     }
 
 
     // --- Function to Load Profile Data into Admin Form ---
-    // *** ADDED: Load Profile Data Function ***
     async function loadProfileData() {
-        if (!auth.currentUser) {
-            console.warn("User not logged in, cannot load profile data.");
+        // Check auth first within the function using the imported 'auth'
+        if (!auth || !auth.currentUser) { // Check if auth is initialized and user exists
+            console.warn("Auth not ready or user not logged in, cannot load profile data.");
             return;
         }
-         if (!profileForm) {
-             console.log("Profile management section not found in DOM.");
-             return;
+        if (!profileForm) {
+            console.log("Profile management section not found in DOM.");
+            return;
         }
         console.log("Attempting to load profile data...");
 
@@ -262,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } else {
                 console.log("Profile document ('site_config/mainProfile') does not exist yet.");
-                // Clear form fields or set defaults if desired
                  if(profileUsernameInput) profileUsernameInput.value = '';
                  if(profilePicUrlInput) profilePicUrlInput.value = '';
                  if(profileBioInput) profileBioInput.value = '';
@@ -271,17 +241,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error("Error loading profile data:", error);
-            showProfileStatus("Error loading profile data.", true); // Use profile status message
+            showProfileStatus("Error loading profile data.", true);
         }
     }
-    // *** END ADDED ***
 
 
     // --- Function to Save Profile Data ---
-    // *** ADDED: Save Profile Data Function ***
     async function saveProfileData(event) {
         event.preventDefault();
-        if (!auth.currentUser) {
+        if (!auth || !auth.currentUser) { // Check if auth is initialized and user exists
             showProfileStatus("Error: Not logged in.", true);
             return;
         }
@@ -295,22 +263,22 @@ document.addEventListener('DOMContentLoaded', () => {
             lastUpdated: serverTimestamp()
         };
 
-        showProfileStatus("Saving profile..."); // Use profile status message
+        showProfileStatus("Saving profile...");
 
         try {
+            // Use the imported 'db' instance
             await setDoc(profileDocRef, newData, { merge: true });
             console.log("Profile data saved successfully.");
-            showProfileStatus("Profile updated successfully!", false); // Indicate success
+            showProfileStatus("Profile updated successfully!", false);
         } catch (error) {
             console.error("Error saving profile data:", error);
             showProfileStatus(`Error saving profile: ${error.message}`, true);
         }
-        // No need for finally/timeout here, showProfileStatus handles it
     }
-    // *** END ADDED ***
 
 
     // --- Authentication Logic ---
+    // Use the imported 'auth' instance
     onAuthStateChanged(auth, user => {
         if (user) {
             // User is signed in
@@ -318,20 +286,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (adminContent) adminContent.style.display = 'block';
             if (logoutButton) logoutButton.style.display = 'inline-block';
             if (adminGreeting) adminGreeting.textContent = `Logged in as: ${user.email}`;
-            if (authStatus) {
-                authStatus.textContent = '';
-                authStatus.className = 'status-message';
-            }
-            if (adminStatusElement) {
-                adminStatusElement.textContent = '';
-                adminStatusElement.className = 'status-message';
-            }
+            if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; }
+            if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
 
             // --- Load ALL data AFTER login ---
-            loadProfileData(); // <<< *** ADDED THIS CALL ***
-            if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
-            if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram');
-            if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
+            loadProfileData(); // Load profile data
+            // Load shoutout data (ensure these functions exist and work)
+            if (typeof loadShoutoutsAdmin === 'function') {
+                 if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
+                 if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram');
+                 if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
+            } else {
+                console.error("loadShoutoutsAdmin function is not defined!");
+            }
 
         } else {
             // User is signed out
@@ -339,13 +306,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (adminContent) adminContent.style.display = 'none';
             if (logoutButton) logoutButton.style.display = 'none';
             if (adminGreeting) adminGreeting.textContent = '';
-            closeEditModal(); // Ensure edit modal is closed on logout
+            if (typeof closeEditModal === 'function') closeEditModal();
         }
     });
 
     // Login Form Submission
     if (loginForm) {
-        // ... (your existing login logic is fine) ...
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = emailInput.value;
@@ -361,17 +327,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 authStatus.textContent = 'Logging in...';
                 authStatus.className = 'status-message';
             }
+            // Use the imported 'auth' instance
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     console.log("Login successful for:", userCredential.user.email);
-                     if (authStatus) {
-                        authStatus.textContent = '';
-                        authStatus.className = 'status-message';
-                    }
+                     if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; }
                 })
                 .catch((error) => {
                     console.error("Login failed:", error.code, error.message);
                     let errorMessage = 'Invalid email or password.';
+                    // ... (your existing error message mapping) ...
                     if (error.code === 'auth/invalid-email') errorMessage = 'Invalid email format.';
                     else if (error.code === 'auth/user-disabled') errorMessage = 'This user account has been disabled.';
                     else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') errorMessage = 'Invalid email or password.';
@@ -388,8 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Logout Button
     if (logoutButton) {
-        // ... (your existing logout logic is fine) ...
         logoutButton.addEventListener('click', () => {
+            // Use the imported 'auth' instance
             signOut(auth).then(() => {
                 console.log("User signed out successfully.");
             }).catch((error) => {
@@ -400,21 +365,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Shoutouts Load/Add/Delete/Update ---
+    // These functions seem mostly okay, just ensure 'db' is the imported one
 
-    // Helper to get metadata ref
     function getMetadataRef() {
-        // *** NOTE: Using 'site_config' consistent with profile ***
          return doc(db, 'site_config', 'shoutoutsMetadata');
     }
 
-    // Helper to update metadata timestamp
     async function updateMetadataTimestamp(platform) {
-        // ... (your existing function is fine, uses getMetadataRef) ...
          const metaRef = getMetadataRef();
          try {
-             await setDoc(metaRef, {
-                 [`lastUpdatedTime_${platform}`]: serverTimestamp()
-             }, { merge: true });
+             await setDoc(metaRef, { [`lastUpdatedTime_${platform}`]: serverTimestamp() }, { merge: true });
              console.log(`Metadata timestamp updated for ${platform}.`);
          } catch (error) {
              console.error(`Error updating metadata timestamp for ${platform}:`, error);
@@ -423,18 +383,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadShoutoutsAdmin(platform) {
-        // ... (your existing function is fine) ...
         const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
-        if (!listContainer) {
-            console.warn(`List container for ${platform} not found.`);
-            return;
-        }
+        if (!listContainer) return;
         listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`;
         try {
-            const querySnapshot = await getDocs(collection(db, 'shoutouts'));
+            const querySnapshot = await getDocs(collection(db, 'shoutouts')); // Use imported 'db'
             listContainer.innerHTML = '';
             let hasResults = false;
-            querySnapshot.forEach(docSnapshot => {
+            querySnapshot.forEach(docSnapshot => { // Ensure 'doc' function isn't shadowed
                 const account = docSnapshot.data();
                 if (account.platform === platform) {
                     hasResults = true;
@@ -442,73 +398,64 @@ document.addEventListener('DOMContentLoaded', () => {
                     const username = account.username || 'No Username';
                     const order = account.order ?? 'N/A';
                     const content = `<strong>${nickname}</strong> (@${username}) - Order: ${order}`;
-                    renderAdminListItem(
-                        listContainer,
-                        docSnapshot.id,
-                        platform,
-                        content,
-                        handleDeleteShoutout,
-                        openEditModal
-                    );
+                    if (typeof renderAdminListItem === 'function') {
+                        renderAdminListItem( listContainer, docSnapshot.id, platform, content, handleDeleteShoutout, openEditModal );
+                    }
                 }
             });
             if (!hasResults) {
-                listContainer.innerHTML = `<p>No ${platform} shoutouts found. Use the form above to add one.</p>`;
+                listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
             }
         } catch (error) {
             console.error(`Error loading ${platform} shoutouts:`, error);
-            listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts. Check console for details.</p>`;
+            listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
             showAdminStatus(`Failed to load ${platform} data: ${error.message}`, true);
         }
     }
 
-    // --- Add Shoutout ---
     async function handleAddShoutout(platform, formElement) {
-        // ... (your existing function is fine) ...
-        if (!formElement) return;
+       if (!formElement) return;
         const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
         const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim();
         const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim();
         const order = parseInt(orderStr);
 
-         if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
-            showAdminStatus(`Please provide Username, Nickname, and a valid non-negative Order number for ${platform}.`, true);
-            return;
-        }
-        const accountData = {
+        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
+           showAdminStatus(`Please provide Username, Nickname, and a valid non-negative Order number for ${platform}.`, true);
+           return;
+       }
+       const accountData = { /* ... construct data ... */
             platform: platform, username: username, nickname: nickname, order: order,
             isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
             bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
             profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
             createdAt: serverTimestamp()
-        };
-        if (platform === 'youtube') {
-            accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
-            accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null;
-        } else {
-            accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A';
-        }
-        try {
-            const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
-            console.log("Document written with ID: ", docRef.id);
-            await updateMetadataTimestamp(platform);
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`);
-            formElement.reset();
-            loadShoutoutsAdmin(platform);
-        } catch (error) {
-            console.error(`Error adding ${platform} shoutout:`, error);
-            showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
-        }
+       };
+       if (platform === 'youtube') {
+           accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
+           accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null;
+       } else {
+           accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A';
+       }
+       try {
+           const docRef = await addDoc(collection(db, 'shoutouts'), accountData); // Use imported 'db'
+           console.log("Shoutout added with ID: ", docRef.id);
+           await updateMetadataTimestamp(platform);
+           showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added.`, false);
+           formElement.reset();
+           if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
+       } catch (error) {
+           console.error(`Error adding ${platform} shoutout:`, error);
+           showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
+       }
     }
 
-    // --- Update Shoutout (Handles Edit Form Submission) ---
     async function handleUpdateShoutout(event) {
-        // ... (your existing function is fine) ...
-         event.preventDefault();
-         if (!editForm) return;
-         const docId = editForm.getAttribute('data-doc-id');
-         const platform = editForm.getAttribute('data-platform');
-         if (!docId || !platform) {
+        event.preventDefault();
+        if (!editForm) return;
+        const docId = editForm.getAttribute('data-doc-id');
+        const platform = editForm.getAttribute('data-platform');
+        if (!docId || !platform) { /* ... error handling ... */
             showAdminStatus("Error: Missing document ID or platform for update.", true);
             return;
         }
@@ -516,58 +463,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const nickname = editNicknameInput?.value.trim();
         const orderStr = editOrderInput?.value.trim();
         const order = parseInt(orderStr);
-         if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
-            showAdminStatus(`Update Error: Please provide Username, Nickname, and a valid non-negative Order number.`, true);
-            return;
+        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) { /* ... error handling ... */
+             showAdminStatus(`Update Error: Please provide Username, Nickname, and a valid non-negative Order number.`, true);
+             return;
         }
-        const updatedData = {
+        const updatedData = { /* ... construct data ... */
             username: username, nickname: nickname, order: order,
             isVerified: editIsVerifiedInput?.checked || false,
             bio: editBioInput?.value.trim() || null,
             profilePic: editProfilePicInput?.value.trim() || null,
         };
-        if (platform === 'youtube') {
+         if (platform === 'youtube') {
             updatedData.subscribers = editSubscribersInput?.value.trim() || 'N/A';
             updatedData.coverPhoto = editCoverPhotoInput?.value.trim() || null;
         } else {
             updatedData.followers = editFollowersInput?.value.trim() || 'N/A';
         }
         try {
-            const docRef = doc(db, 'shoutouts', docId);
+            const docRef = doc(db, 'shoutouts', docId); // Use imported 'db'
             await updateDoc(docRef, updatedData);
             await updateMetadataTimestamp(platform);
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`);
-            closeEditModal();
-            loadShoutoutsAdmin(platform);
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated.`, false);
+            if (typeof closeEditModal === 'function') closeEditModal();
+            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
         } catch (error) {
             console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error);
             showAdminStatus(`Error updating ${platform} shoutout: ${error.message}`, true);
         }
     }
 
-    // Attach listener to the edit form
     if (editForm) {
         editForm.addEventListener('submit', handleUpdateShoutout);
     }
 
-    // --- Delete Shoutout ---
     async function handleDeleteShoutout(docId, platform, listItemElement) {
-        // ... (your existing function is fine) ...
-         if (!confirm(`Are you sure you want to delete this ${platform} shoutout? This action cannot be undone.`)) {
-            return;
-        }
+        if (!confirm(`Are you sure you want to delete this ${platform} shoutout?`)) return;
         try {
-            await deleteDoc(doc(db, 'shoutouts', docId));
+            await deleteDoc(doc(db, 'shoutouts', docId)); // Use imported 'db'
             await updateMetadataTimestamp(platform);
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted successfully.`);
-            if (listItemElement) {
-                listItemElement.remove();
-            } else {
-                loadShoutoutsAdmin(platform);
-            }
+            showAdminStatus(`${platform} shoutout deleted.`, false);
+            if (listItemElement) listItemElement.remove(); else if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
+            // Check if list empty
             const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
-            if (listContainer && listContainer.children.length === 0) { // Check if empty after removal
-                listContainer.innerHTML = `<p>No ${platform} shoutouts found. Use the form above to add one.</p>`;
+            if (listContainer && listContainer.children.length === 0) {
+                 listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
             }
         } catch (error) {
             console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error);
@@ -576,27 +515,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Attach Event Listeners for Add Forms ---
-    if (addShoutoutTiktokForm) addShoutoutTiktokForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        handleAddShoutout('tiktok', addShoutoutTiktokForm);
-    });
-    if (addShoutoutInstagramForm) addShoutoutInstagramForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        handleAddShoutout('instagram', addShoutoutInstagramForm);
-    });
-    if (addShoutoutYoutubeForm) addShoutoutYoutubeForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        handleAddShoutout('youtube', addShoutoutYoutubeForm);
-    });
+    if (addShoutoutTiktokForm) addShoutoutTiktokForm.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('tiktok', addShoutoutTiktokForm); });
+    if (addShoutoutInstagramForm) addShoutoutInstagramForm.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('instagram', addShoutoutInstagramForm); });
+    if (addShoutoutYoutubeForm) addShoutoutYoutubeForm.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('youtube', addShoutoutYoutubeForm); });
 
-     // --- Attach Event Listener for Profile Form (Add this) ---
-    // *** ADDED: Profile Form Listener ***
+    // --- Attach Event Listener for Profile Form ---
     if (profileForm) {
         profileForm.addEventListener('submit', saveProfileData);
         console.log("Profile save listener attached.");
     } else {
          console.warn("Profile form not found, save listener not attached.");
     }
-    // *** END ADDED ***
 
 }); // End DOMContentLoaded
