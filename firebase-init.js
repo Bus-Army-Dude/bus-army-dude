@@ -1,13 +1,15 @@
 // firebase-init.js
 
-// !!! IMPORTANT: PASTE YOUR COPIED FIREBASE CONFIGURATION HERE !!!
+// Edit this block in your firebase-init.js file:
 const firebaseConfig = {
-  apiKey: "AIzaSyCrQNseQTsWjQhsQBGm8nk9Y_mysuaTsrc", // Use your actual key
-  authDomain: "bus-army-dude-website.firebaseapp.com",
-  projectId: "bus-army-dude-website",
-  storageBucket: "bus-army-dude-website.appspot.com",
-  messagingSenderId: "464457126263",
-  appId: "1:464457126263:web:7e8d63b9bb59a360b39172"
+    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0", // Make sure this is correct
+    authDomain: "busarmydudewebsite.firebaseapp.com",
+    projectId: "busarmydudewebsite",
+    storageBucket: "busarmydudewebsite.firebasestorage.app",
+    messagingSenderId: "42980404680", // Make sure this is correct
+    appId: "1:42980404680:web:f4f1e54789902a4295e4fd", // Make sure this is correct
+    // measurementId can optionally be added if needed:
+    // measurementId: "G-DQPH8YL789"
 };
 
 // Initialize Firebase ONLY if it hasn't been initialized yet
