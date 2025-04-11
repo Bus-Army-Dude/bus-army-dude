@@ -22,8 +22,7 @@
                 </div>
                  <button type="submit" id="login-button" class="button-primary">Login</button>
             </form>
-             <div id="auth-status" class="status-message"></div>
-        </section>
+             <div id="auth-status" class="status-message"></div> </section>
 
         <section id="admin-content" style="display: none;">
             <header class="admin-header">
@@ -114,7 +113,7 @@
 
                     <h5>Existing Instagram Shoutouts</h5>
                     <div id="shoutouts-instagram-list-admin" class="list-container-admin">
-                         </div>
+                        </div>
                 </div>
 
                 <div class="shoutouts-platform-container">
@@ -160,70 +159,59 @@
                     <div id="shoutouts-youtube-list-admin" class="list-container-admin">
                         </div>
                 </div>
-            </section> <section class="admin-section" id="region-management">
-                <h3>Region Availability</h3>
-                <p>Select the countries where the Creator Shoutouts feature should be available.</p>
 
-                <div id="region-list-container" class="list-container-admin">
-                    <p>Loading regions...</p> </div>
+            </section> </section> <div id="edit-shoutout-modal" class="modal" style="display: none;"> <div class="modal-content">
+            <span class="close-button" id="cancel-edit-button">&times;</span>
+            <h2>Edit Shoutout</h2>
+
+            <form id="edit-shoutout-form" data-doc-id="" data-platform="">
+                <div class="form-group">
+                    <label for="edit-username">Username / Handle:</label>
+                    <input type="text" id="edit-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-nickname">Nickname:</label>
+                    <input type="text" id="edit-nickname" required>
+                </div>
+                 <div class="form-group">
+                    <label for="edit-order">Order:</label>
+                    <input type="number" id="edit-order" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-bio">Bio:</label>
+                    <textarea id="edit-bio"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-profilePic">Profile Pic URL:</label>
+                    <input type="url" id="edit-profilePic">
+                </div>
+                 <div class="form-group checkbox-group">
+                    <input type="checkbox" id="edit-isVerified">
+                    <label for="edit-isVerified">Is Verified?</label>
+                </div>
+
+                <div id="edit-platform-specific">
+                    <div class="form-group edit-followers-group" style="display: none;">
+                        <label for="edit-followers">Followers:</label>
+                        <input type="text" id="edit-followers">
+                    </div>
+                    <div class="form-group edit-subscribers-group" style="display: none;">
+                         <label for="edit-subscribers">Subscribers:</label>
+                         <input type="text" id="edit-subscribers">
+                    </div>
+                    <div class="form-group edit-coverphoto-group" style="display: none;">
+                         <label for="edit-coverPhoto">Cover Photo URL:</label>
+                         <input type="url" id="edit-coverPhoto">
+                    </div>
+                </div>
 
                 <div class="form-actions">
-                    <button id="save-region-changes" class="button-primary">Save Region Changes</button>
-                </div>
-                <div id="region-status" class="status-message"></div>
-            </section>
-            </section> <div id="edit-shoutout-modal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close-button" id="cancel-edit-button">&times;</span>
-                <h2>Edit Shoutout</h2>
-
-                <form id="edit-shoutout-form" data-doc-id="" data-platform="">
-                    <div class="form-group">
-                        <label for="edit-username">Username / Handle:</label>
-                        <input type="text" id="edit-username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-nickname">Nickname:</label>
-                        <input type="text" id="edit-nickname" required>
-                    </div>
-                     <div class="form-group">
-                        <label for="edit-order">Order:</label>
-                        <input type="number" id="edit-order" min="0" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-bio">Bio:</label>
-                        <textarea id="edit-bio"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-profilePic">Profile Pic URL:</label>
-                        <input type="url" id="edit-profilePic">
-                    </div>
-                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="edit-isVerified">
-                        <label for="edit-isVerified">Is Verified?</label>
-                    </div>
-
-                    <div id="edit-platform-specific">
-                        <div class="form-group edit-followers-group" style="display: none;">
-                            <label for="edit-followers">Followers:</label>
-                            <input type="text" id="edit-followers">
-                        </div>
-                        <div class="form-group edit-subscribers-group" style="display: none;">
-                             <label for="edit-subscribers">Subscribers:</label>
-                             <input type="text" id="edit-subscribers">
-                        </div>
-                        <div class="form-group edit-coverphoto-group" style="display: none;">
-                             <label for="edit-coverPhoto">Cover Photo URL:</label>
-                             <input type="url" id="edit-coverPhoto">
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                         <button type="submit" class="button-primary">Save Changes</button>
-                     </div>
-                </form>
-            </div>
-        </div> </div> <script type="module" src="admin.js"></script>
+                  <button type="submit" class="button-primary">Save Changes</button>
+                  </div>
+            </form>
+          </div>
+        </div>
+        </div> <script type="module" src="admin.js"></script>
 
 </body>
 </html>
