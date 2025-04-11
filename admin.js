@@ -403,10 +403,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper to get metadata ref
     function getMetadataRef() {
-        // *** NOTE: You had 'siteConfig' here, using 'site_config' consistent with profile ***
-        // *** Choose ONE and use it consistently ***
-        // return doc(db, 'siteConfig', 'shoutoutsMetadata');
-         return doc(db, 'site_config', 'shoutoutsMetadata'); // Using site_config
+        // *** NOTE: Using 'site_config' consistent with profile ***
+         return doc(db, 'site_config', 'shoutoutsMetadata');
     }
 
     // Helper to update metadata timestamp
