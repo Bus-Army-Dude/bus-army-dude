@@ -12,7 +12,6 @@ const firebaseConfig = {
 
 // Import necessary Firebase functions (v9+ modular SDK)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-// Added collection, orderBy, query for dynamic social links ordering
 import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 // --- Initialize Firebase ---
@@ -77,7 +76,7 @@ function renderInstagramCard(account) {
 }
 function renderYouTubeCard(account) {
     // Consider fixing this URL based on actual YouTube handles/channel IDs
-    const channelUrl = `https://www.youtube.com/@${account.username}`;
+    const channelUrl = `https://www.youtube.com/@${account.username}`; // Standard handle URL
      return `
        <div class="youtube-creator-card">
            ${account.coverPhoto ? `<img src="${account.coverPhoto}" alt="${account.nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
@@ -99,12 +98,14 @@ const profileUsernameElement = document.getElementById('profile-username-main');
 const profilePicElement = document.getElementById('profile-pic-main');
 const profileBioElement = document.getElementById('profile-bio-main');
 const profileStatusElement = document.getElementById('profile-status-main');
-const defaultUsername = "Username"; const defaultBio = ""; const defaultProfilePic = "images/default-profile.jpg"; /* <<< UPDATE PATH! */ const defaultStatusEmoji = '❓'; const statusEmojis = { online: '🟢', away: '🟡', offline: '🔴' };
+const defaultUsername = "Username"; const defaultBio = ""; const defaultProfilePic = "images/default-profile.jpg"; // <<< --- UPDATE THIS PATH!!
+const defaultStatusEmoji = '❓'; const statusEmojis = { online: '🟢', away: '🟡', offline: '🔴' }; // Corrected offline emoji mapping if needed
 let profileDocRef;
 
 async function displayProfileData() {
     if (!firebaseAppInitialized || !db) { console.error("Profile Fetch Error: Firebase not ready."); return; }
-    if (!profileUsernameElement && !profilePicElement && !profileBioElement && !profileStatusElement) { console.warn("Profile elements not found."); return; } // Exit if no profile elements found
+    // Check if at least one essential profile element exists before query
+    if (!profileUsernameElement && !profilePicElement && !profileBioElement && !profileStatusElement) { console.warn("No profile elements found to update."); return; }
     if (!profileDocRef) profileDocRef = doc(db, "site_config", "mainProfile");
 
     console.log("Fetching profile data from:", profileDocRef.path);
@@ -134,70 +135,57 @@ async function displayProfileData() {
 const socialLinksContainer = document.getElementById('social-links-container-main');
 
 // --- Map Platform Names (lowercase) to Font Awesome Classes ---
-// Add more platforms and their corresponding FA classes as needed
 const platformIconMap = {
-    'tiktok': 'fab fa-tiktok',
-    'snapchat': 'fab fa-snapchat-ghost',
-    'twitter': 'fab fa-x-twitter',
-    'x (twitter)': 'fab fa-x-twitter',
-    'x': 'fab fa-x-twitter',
-    'threads': 'fab fa-threads',
-    'twitch': 'fab fa-twitch',
-    'facebook': 'fab fa-facebook',
-    'steam': 'fab fa-steam',
-    'discord': 'fab fa-discord',
-    'instagram': 'fab fa-instagram',
-    'amazon music': 'fab fa-amazon',
-    'amazon': 'fab fa-amazon',
-    'youtube': 'fab fa-youtube',
-    'website': 'fas fa-globe', // Example for general website
-    'link': 'fas fa-link',     // Generic fallback
-    // Add other platforms you might use...
-    'linkedin': 'fab fa-linkedin',
-    'github': 'fab fa-github',
-    'spotify': 'fab fa-spotify',
-    'patreon': 'fab fa-patreon'
+    'tiktok': 'fab fa-tiktok', 'snapchat': 'fab fa-snapchat-ghost', 'twitter': 'fab fa-x-twitter',
+    'x (twitter)': 'fab fa-x-twitter', 'x': 'fab fa-x-twitter', 'threads': 'fab fa-threads',
+    'twitch': 'fab fa-twitch', 'facebook': 'fab fa-facebook', 'steam': 'fab fa-steam',
+    'discord': 'fab fa-discord', 'instagram': 'fab fa-instagram', 'amazon music': 'fab fa-amazon',
+    'amazon': 'fab fa-amazon', 'youtube': 'fab fa-youtube', 'website': 'fas fa-globe',
+    'link': 'fas fa-link', 'linkedin': 'fab fa-linkedin', 'github': 'fab fa-github',
+    'spotify': 'fab fa-spotify', 'patreon': 'fab fa-patreon'
+    // Add more mappings here as needed
 };
-const defaultIconClass = 'fas fa-link'; // Fallback icon if name not in map
+const defaultIconClass = 'fas fa-link'; // Fallback icon
 
 async function displaySocialLinks() {
     if (!firebaseAppInitialized || !db) { console.error("Social Links Fetch Error: Firebase not ready."); return; }
     if (!socialLinksContainer) { console.error("Social Links container '#social-links-container-main' not found."); return; }
 
     console.log("Fetching dynamic social links...");
-    socialLinksContainer.innerHTML = '<p>Loading social links...</p>'; // Loading message
+    socialLinksContainer.innerHTML = '<p>Loading social links...</p>';
 
     try {
-        // Reference the subcollection
         const linksColRef = collection(db, "site_config", "mainProfile", "socialLinks");
-        // Query to order by the 'order' field you save in admin.js
-        const linksQuery = query(linksColRef, orderBy("order", "asc"));
-        const querySnapshot = await getDocs(linksQuery);
+        // ** Fetching WITHOUT Firestore orderBy, using local sort **
+        // const linksQuery = query(linksColRef, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(linksColRef); // Fetch unsorted
+        console.log(`Found ${querySnapshot.size} social link documents to sort locally.`);
 
         socialLinksContainer.innerHTML = ''; // Clear loading message
         let count = 0;
-        querySnapshot.forEach((doc) => {
+
+        // Convert to array and sort locally by 'order' field
+        const links = [];
+        querySnapshot.forEach(doc => { if (doc.exists()) links.push(doc.data()); }); // Make sure doc exists
+        links.sort((a,b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+
+        links.forEach((linkData) => { // Loop through sorted array
             count++;
-            const linkData = doc.data();
             const platformName = linkData.platformName;
             const url = linkData.url;
 
-            // Only proceed if essential data exists
             if (url && platformName) {
-                // Determine icon class from map, using lowercase name for matching
                 const lowerPlatformName = platformName.toLowerCase();
                 const iconClass = platformIconMap[lowerPlatformName] || defaultIconClass;
 
-                // Create the link element dynamically
                 const linkElement = document.createElement('a');
                 linkElement.href = url;
-                linkElement.className = 'social-button'; // Use your styling class from index.html
-                linkElement.target = '_blank'; // Open in new tab
+                linkElement.className = 'social-button';
+                linkElement.target = '_blank';
                 linkElement.rel = 'noopener noreferrer';
-                linkElement.setAttribute('aria-label', platformName); // Accessibility
+                linkElement.setAttribute('aria-label', platformName);
 
                 const iconElement = document.createElement('i');
-                // Apply the mapped classes + your base class
                 iconElement.className = `${iconClass} social-icon`;
 
                 const spanElement = document.createElement('span');
@@ -206,16 +194,10 @@ async function displaySocialLinks() {
                 linkElement.appendChild(iconElement);
                 linkElement.appendChild(spanElement);
                 socialLinksContainer.appendChild(linkElement);
-            } else {
-                console.warn(`Social link document ${doc.id} is missing url or platformName.`);
-            }
+            } else { console.warn(`Social link data invalid or missing fields:`, linkData); }
         });
 
-        if (count === 0) {
-            socialLinksContainer.innerHTML = ''; // Keep it empty if no links
-            // Optionally add a message:
-            // socialLinksContainer.innerHTML = '<p>No social links available.</p>';
-        }
+        if (count === 0) { socialLinksContainer.innerHTML = ''; /* Keep empty if no links */ }
         console.log(`Displayed ${count} social links.`);
 
     } catch (error) {
@@ -228,9 +210,9 @@ async function displaySocialLinks() {
 // ======================================================
 
 
-// --- Function to Load and Display Shoutouts ---
+// --- Function to Load and Display Shoutouts (Using Local Sort) ---
 async function loadAndDisplayShoutouts() {
-    if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); /*...*/ return; }
+    if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); /* ... */ return; }
 
     const tiktokGrid = document.querySelector('.creator-grid'); const instagramGrid = document.querySelector('.instagram-creator-grid'); const youtubeGrid = document.querySelector('.youtube-creator-grid');
     const tiktokTimestampEl = document.getElementById('tiktok-last-updated-timestamp'); const instagramTimestampEl = document.getElementById('lastUpdatedInstagram'); const youtubeTimestampEl = document.getElementById('lastUpdatedYouTube');
@@ -253,35 +235,23 @@ async function loadAndDisplayShoutouts() {
         }
         console.log("Sorted shoutouts locally.");
 
-        // 2. Fetch Metadata (Using 'siteConfig' based on your working version)
-        const metaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // VERIFY THIS PATH!
+        // 2. Fetch Metadata (Using 'siteConfig' path - VERIFY THIS PATH!)
+        const metaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // <<< VERIFY 'siteConfig' vs 'site_config'
         console.log("Attempting to fetch metadata from:", metaRef.path);
         const metaSnap = await getDoc(metaRef);
         const metadata = metaSnap.exists() ? metaSnap.data() : {};
         console.log("Metadata fetched:", metadata);
 
-        // 3. Render TikTok
-        if (tiktokGrid) { if (shoutouts.tiktok.length > 0) { tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join(''); } else { tiktokGrid.innerHTML = '<p>No TikTok creators featured.</p>'; } }
-        if (tiktokTimestampEl) tiktokTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_tiktok)}`;
-
-        // 4. Render Instagram
-        if (instagramGrid) { if (shoutouts.instagram.length > 0) { instagramGrid.innerHTML = shoutouts.instagram.map(renderInstagramCard).join(''); } else { instagramGrid.innerHTML = '<p>No Instagram creators featured.</p>'; } }
-        if (instagramTimestampEl) instagramTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_instagram)}`;
-
-        // 5. Render YouTube
-        if (youtubeGrid) { if (shoutouts.youtube.length > 0) { youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join(''); } else { youtubeGrid.innerHTML = '<p>No YouTube creators featured.</p>'; } }
-        if (youtubeTimestampEl) youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`;
+        // 3. Render Sections (Keep your working render functions)
+         if (tiktokGrid) { if (shoutouts.tiktok.length > 0) { tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join(''); } else { tiktokGrid.innerHTML = '<p>No TikTok creators featured.</p>'; } } if (tiktokTimestampEl) tiktokTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_tiktok)}`;
+         if (instagramGrid) { if (shoutouts.instagram.length > 0) { instagramGrid.innerHTML = shoutouts.instagram.map(renderInstagramCard).join(''); } else { instagramGrid.innerHTML = '<p>No Instagram creators featured.</p>'; } } if (instagramTimestampEl) instagramTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_instagram)}`;
+         if (youtubeGrid) { if (shoutouts.youtube.length > 0) { youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join(''); } else { youtubeGrid.innerHTML = '<p>No YouTube creators featured.</p>'; } } if (youtubeTimestampEl) youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`;
 
          console.log("Shoutout sections updated.");
 
     } catch (error) {
         console.error("Error loading shoutout data:", error); // <<< CHECK THIS ERROR IN CONSOLE
-        if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok creators.</p>';
-        if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram creators.</p>';
-        if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube creators.</p>';
-        if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Error';
-        if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Error';
-        if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Error';
+        if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok creators.</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram creators.</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube creators.</p>'; if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Error'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Error'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Error';
     }
 }
 
@@ -290,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (firebaseAppInitialized) { // Check flag
         console.log("DOM loaded, Firebase ready, calling display functions.");
         displayProfileData();       // Load profile data
-        displaySocialLinks();     // <<< Load dynamic social links
-        loadAndDisplayShoutouts(); // Load shoutouts
+        displaySocialLinks();     // Load dynamic social links
+        loadAndDisplayShoutouts(); // Load shoutouts (uses local sort)
     } else {
         console.error("DOM loaded, but Firebase initialization failed earlier. Cannot load data.");
     }
