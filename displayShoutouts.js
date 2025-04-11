@@ -1,8 +1,7 @@
-// displayShoutouts.js (Includes Profile Logic - Verify Paths Below)
+// displayShoutouts.js (Includes Profile Logic - Uses 'site_config' paths)
 
-// Use the same Firebase config as in admin.js (or import if using firebase-init.js)
 const firebaseConfig = {
-    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0", // Use your actual API key
+    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0", // Your API key
     authDomain: "busarmydudewebsite.firebaseapp.com",
     projectId: "busarmydudewebsite",
     storageBucket: "busarmydudewebsite.firebasestorage.app",
@@ -17,12 +16,12 @@ import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, que
 
 // --- Initialize Firebase ---
 let db;
-let firebaseAppInitialized = false; // Flag to track initialization
+let firebaseAppInitialized = false;
 
 try {
     const app = initializeApp(firebaseConfig);
     db = getFirestore(app);
-    firebaseAppInitialized = true; // Set flag on success
+    firebaseAppInitialized = true;
     console.log("Firebase initialized for display.");
 } catch (error) {
     console.error("Firebase initialization failed on index.html:", error);
@@ -69,8 +68,8 @@ function renderInstagramCard(account) {
      </div>`;
 }
 function renderYouTubeCard(account) {
-    // Consider fixing this URL based on actual YouTube handles/channel IDs
-    const channelUrl = `youtube.com/@handle${account.username}`;
+    // You should still verify if this URL structure works best for your links
+    const channelUrl = `https://youtube.com/@${account.username}`; // Standard handle URL
      return `
        <div class="youtube-creator-card">
            ${account.coverPhoto ? `<img src="${account.coverPhoto}" alt="${account.nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
@@ -85,7 +84,6 @@ function renderYouTubeCard(account) {
        </div>`;
 }
 
-
 // ======================================================
 // === Profile Section Display Logic ===
 // ======================================================
@@ -93,13 +91,13 @@ const profileUsernameElement = document.getElementById('profile-username-main');
 const profilePicElement = document.getElementById('profile-pic-main');
 const profileBioElement = document.getElementById('profile-bio-main');
 const profileStatusElement = document.getElementById('profile-status-main');
-const defaultUsername = "Username"; const defaultBio = ""; const defaultProfilePic = "path/to/default-profile.jpg"; /* <<< UPDATE PATH! */ const defaultStatusEmoji = '❓'; const statusEmojis = { online: '🟢', away: '🟡', offline: '🔴' };
-let profileDocRef; // Define outside so it's accessible
+const defaultUsername = "Username"; const defaultBio = ""; const defaultProfilePic = "images/default-profile.jpg"; /* <<< UPDATE IF DIFFERENT */ const defaultStatusEmoji = '❓'; const statusEmojis = { online: '🟢', away: '🟡', offline: '🔴' };
+let profileDocRef;
 
 async function displayProfileData() {
     if (!firebaseAppInitialized || !db) { console.error("Profile Fetch Error: Firebase not ready."); return; }
     if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) { console.error("Profile display error: HTML elements missing."); return; }
-    if (!profileDocRef) profileDocRef = doc(db, "site_config", "mainProfile"); // Define ref using 'site_config' path
+    if (!profileDocRef) profileDocRef = doc(db, "site_config", "mainProfile"); // Define ref using 'site_config'
 
     console.log("Fetching profile data from:", profileDocRef.path);
     try {
@@ -120,7 +118,6 @@ async function displayProfileData() {
 // === End Profile Section Display Logic ===
 // ======================================================
 
-
 // --- Function to Load and Display Shoutouts ---
 async function loadAndDisplayShoutouts() {
     if (!firebaseAppInitialized || !db) {
@@ -136,22 +133,24 @@ async function loadAndDisplayShoutouts() {
     if (tiktokGrid) tiktokGrid.innerHTML = '<p>Loading TikTok...</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p>Loading Instagram...</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p>Loading YouTube...</p>';
 
     try {
-        // 1. Fetch Shoutout Data
+        // 1. Fetch Shoutout Data (Collection name confirmed as 'shoutouts')
         const shoutoutsCol = collection(db, 'shoutouts');
-        const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc")); // Requires index!
+        // Query with ordering - MAY REQUIRE AN INDEX IN FIRESTORE
+        const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc"));
+        console.log("Fetching shoutouts with query...");
         const querySnapshot = await getDocs(shoutoutQuery);
+        console.log(`Found ${querySnapshot.size} shoutout documents.`);
 
         const shoutouts = { tiktok: [], instagram: [], youtube: [] };
         querySnapshot.forEach((doc) => { const data = doc.data(); if (data.platform && shoutouts.hasOwnProperty(data.platform)) { shoutouts[data.platform].push({ id: doc.id, ...data }); } else { console.warn(`Doc ${doc.id} missing/unknown platform: ${data.platform}`); } });
 
         // 2. Fetch Metadata
-        // *** CRITICAL: VERIFY THIS PATH in your Firestore Console ***
-        // *** Changed to 'site_config' for consistency. Change back to 'siteConfig' if that is correct ***
+        // *** Using 'site_config' based on profile path consistency. VERIFY this is correct in your Firestore ***
         const metaRef = doc(db, 'site_config', 'shoutoutsMetadata');
         console.log("Attempting to fetch metadata from:", metaRef.path);
         const metaSnap = await getDoc(metaRef);
         const metadata = metaSnap.exists() ? metaSnap.data() : {};
-        console.log("Metadata fetched:", metadata);
+        console.log("Metadata fetched:", metadata); // Log fetched metadata
 
         // 3. Render TikTok
         if (tiktokGrid) { if (shoutouts.tiktok.length > 0) { tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join(''); } else { tiktokGrid.innerHTML = '<p>No TikTok creators featured.</p>'; } }
@@ -165,9 +164,11 @@ async function loadAndDisplayShoutouts() {
         if (youtubeGrid) { if (shoutouts.youtube.length > 0) { youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join(''); } else { youtubeGrid.innerHTML = '<p>No YouTube creators featured.</p>'; } }
         if (youtubeTimestampEl) youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`;
 
+         console.log("Shoutout sections updated.");
+
     } catch (error) {
-        // Log the specific error to the console *before* setting the generic message
-        console.error("Error loading shoutout data:", error); // <<< --- CHECK THIS ERROR IN CONSOLE
+        // *** THIS IS THE CRUCIAL ERROR TO CHECK ***
+        console.error("Error loading shoutout data:", error); // Check console for details!
         if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok creators.</p>';
         if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram creators.</p>';
         if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube creators.</p>';
@@ -179,22 +180,12 @@ async function loadAndDisplayShoutouts() {
 
 // --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', () => {
-    if (firebaseAppInitialized) { // Check the flag set during initialization
+    if (firebaseAppInitialized) {
         console.log("DOM loaded, Firebase ready, calling display functions.");
-        loadAndDisplayShoutouts(); // Load shoutouts
-        displayProfileData();    // Load profile data
+        loadAndDisplayShoutouts(); // Load shoutouts FIRST
+        displayProfileData();    // Load profile data SECOND
     } else {
-        // Attempt to wait a tiny bit longer in case init is slightly delayed
-        // This isn't a perfect solution for race conditions.
-        setTimeout(() => {
-             if (firebaseAppInitialized) {
-                 console.log("DOM loaded, Firebase ready (after delay), calling display functions.");
-                 loadAndDisplayShoutouts();
-                 displayProfileData();
-             } else {
-                 console.error("DOM loaded, but Firebase initialization failed earlier. Cannot load data.");
-             }
-        }, 200); // Wait 200ms
-
+        // If initialization failed, the error is already shown.
+        console.error("DOM loaded, but Firebase initialization failed earlier.");
     }
 });
