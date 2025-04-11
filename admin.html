@@ -67,7 +67,7 @@
             <select id="profile-status" name="status">
                 <option value="online">Online (🟢)</option>
                 <option value="away">Away (🟡)</option>
-                <option value="offline">Offline (🔴)</option>
+                <option value="offline">Offline (⚪️)</option>
                 </select>
         </div>
 
@@ -77,6 +77,63 @@
     </form>
      <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
 </section>
+
+            <section class="admin-section" id="social-links-crud" aria-labelledby="social-links-heading">
+    <h3 id="social-links-heading">Manage Social Links</h3>
+
+    <form id="add-social-link-form" aria-labelledby="add-social-link-subheading">
+        <h5 id="add-social-link-subheading">Add New Social Link</h5>
+        <div class="form-group">
+            <label for="add-social-platformName">Platform Name:</label>
+            <input type="text" id="add-social-platformName" required placeholder="e.g., TikTok, X (Twitter)">
+        </div>
+        <div class="form-group">
+            <label for="add-social-url">Full URL:</label>
+            <input type="url" id="add-social-url" required placeholder="https://...">
+        </div>
+         <div class="form-group">
+            <label for="add-social-order">Display Order:</label>
+            <input type="number" id="add-social-order" min="0" step="1" required placeholder="e.g., 1 (lower numbers appear first)">
+        </div>
+        <div class="form-actions" style="border-top: none; padding-top: 0;"> <button type="submit" class="button-primary">Add Social Link</button>
+        </div>
+    </form>
+     <div id="add-social-link-status" class="status-message" role="status" aria-live="polite"></div>
+
+    <hr style="margin: 30px 0; border-color: var(--border-color);">
+
+    <h5>Existing Social Links</h5>
+    <div id="social-links-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-social-links-heading">
+        <p>Loading social links...</p>
+        </div>
+</section>
+<div id="edit-social-link-modal" class="modal" style="display: none;"
+     role="dialog" aria-modal="true" aria-labelledby="edit-social-link-heading">
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-social-link-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-social-link-heading">Edit Social Link</h2>
+
+        <form id="edit-social-link-form" data-doc-id="">
+            <div class="form-group">
+                <label for="edit-social-platformName">Platform Name:</label>
+                <input type="text" id="edit-social-platformName" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-social-url">Full URL:</label>
+                <input type="url" id="edit-social-url" required>
+            </div>
+             <div class="form-group">
+                <label for="edit-social-order">Order:</label>
+                <input type="number" id="edit-social-order" min="0" step="1" required>
+            </div>
+             <div class="form-actions">
+              <button type="submit" class="button-primary">Save Social Link Changes</button>
+            </div>
+        </form>
+         <div id="edit-social-link-status" class="status-message" role="status" aria-live="polite"></div>
+    </div>
+ </div>
+
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
