@@ -140,7 +140,6 @@ function updateFlipClock(id, value) {
 
 // Initialize
 updateTime();
-tiktokShoutouts.init();
 updateEarthDayCountdown();
 
 // Set intervals
