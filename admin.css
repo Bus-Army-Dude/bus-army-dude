@@ -80,7 +80,7 @@ body.light-mode { /* Assuming light mode class is 'light-mode' */
 }
 
 /* ======================== */
-/* Base Styles          */
+/* Base Styles         */
 /* ======================== */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -114,7 +114,7 @@ h4 { color: var(--text-color); opacity: 0.9; margin-top: 25px; margin-bottom: 15
 h5 { color: var(--secondary-text); margin-top: 20px; margin-bottom: 10px; }
 
 /* ======================== */
-/* Login Section          */
+/* Login Section        */
 /* ======================== */
 #login-section {
     margin-top: 25px;
@@ -126,7 +126,7 @@ h5 { color: var(--secondary-text); margin-top: 20px; margin-bottom: 10px; }
 #login-section h2 { text-align: center; border-bottom: none; margin-bottom: 25px; }
 
 /* ======================== */
-/* Admin Content Area     */
+/* Admin Content Area    */
 /* ======================== */
 #admin-content {
     /* display: none; /* Controlled by JS */
@@ -159,8 +159,22 @@ h5 { color: var(--secondary-text); margin-top: 20px; margin-bottom: 10px; }
 
 
 /* ======================== */
-/* Form Element Styles    */
+/* Form Element Styles  */
 /* ======================== */
+.form-group { /* Added class for better structure */
+    margin-bottom: 18px;
+}
+.checkbox-group label { /* Style label next to checkbox */
+     display: inline-block;
+     margin-bottom: 0;
+     margin-left: 5px;
+     font-weight: normal;
+     vertical-align: middle;
+}
+.checkbox-group input[type="checkbox"] {
+     margin-bottom: 0; /* Align checkbox better */
+}
+
 label {
     display: block;
     margin-bottom: 8px;
@@ -179,7 +193,7 @@ select,
 textarea {
     width: 100%;
     padding: 10px 12px;
-    margin-bottom: 18px;
+    /* margin-bottom: 18px; remove individual margin, use form-group */
     border: 1px solid var(--input-border-color);
     border-radius: 4px;
     font-size: 1rem;
@@ -215,7 +229,7 @@ input[type="checkbox"] {
 /* ======================== */
 /* Button Styles        */
 /* ======================== */
-button {
+button, .button-primary { /* Added class for consistency */
     background-color: var(--accent-color);
     color: #ffffff; /* White text generally works on colored buttons */
     padding: 10px 18px;
@@ -228,9 +242,11 @@ button {
     margin-right: 10px; /* Spacing between adjacent buttons */
     margin-top: 5px; /* Space above buttons */
     vertical-align: middle;
+    text-decoration: none; /* For link-like buttons */
+    display: inline-block; /* Ensure proper spacing */
 }
-button:hover { background-color: var(--hover-color); }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
+button:hover, .button-primary:hover { background-color: var(--hover-color); }
+button:disabled, .button-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
 #login-button { background-color: #28a745; } /* Green */
 #login-button:hover { background-color: #218838; }
@@ -243,21 +259,32 @@ button.delete-button { background-color: #dc3545; }
 button.delete-button:hover { background-color: #c82333; }
 
 /* Buttons for secondary actions or within lists */
-button.secondary-button, .list-item-admin button { background-color: #6c757d; } /* Grey */
-button.secondary-button:hover, .list-item-admin button:hover { background-color: #5a6268; }
+button.secondary-button, .list-item-admin button, button.edit-button { background-color: #6c757d; } /* Grey */
+button.secondary-button:hover, .list-item-admin button:hover, button.edit-button:hover { background-color: #5a6268; }
 
+.form-actions { /* Container for form buttons */
+    margin-top: 20px;
+    text-align: right;
+}
+
+.small-button { /* Modifier for smaller buttons in lists */
+    padding: 5px 10px !important;
+    font-size: 0.9em !important;
+}
 
 /* ======================== */
 /* Status Message Styles  */
 /* ======================== */
 .status-message {
     margin-top: 20px;
+    margin-bottom: 15px; /* Add bottom margin too */
     padding: 12px 15px;
     font-weight: 500;
     text-align: center;
     border-radius: 4px;
     border: 1px solid transparent;
     display: none; /* Hidden by default */
+    clear: both; /* Ensure it clears floats if any */
 }
 .status-message:not(:empty) { display: block; } /* Show only if it has content */
 
@@ -314,7 +341,7 @@ button.secondary-button:hover, .list-item-admin button:hover { background-color:
     gap: 8px; /* Space between buttons */
     align-items: center; /* Align buttons vertically */
 }
-.list-item-admin button { margin: 0; padding: 5px 10px; font-size: 0.9em; }
+/* Removed button style override here, using .small-button now */
 
 
 /* Specific list item content styling (example) */
@@ -336,7 +363,10 @@ button.secondary-button:hover, .list-item-admin button:hover { background-color:
     padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color); /* Use base bg for inner sections */
+}
+.shoutouts-platform-container:last-of-type {
+    margin-bottom: 0; /* No bottom margin on the last platform */
 }
 
 .shoutouts-platform-container h4 { /* Style platform headings */
@@ -347,111 +377,68 @@ button.secondary-button:hover, .list-item-admin button:hover { background-color:
 }
 
 /* ======================== */
-/* Image Styles for Shoutouts */
+/* Image Styles (Not used in Admin) */
 /* ======================== */
+/* Removed styles for .creator-grid, .creator-card, etc. as they are for index.html */
 
-.creator-grid, .instagram-creator-grid, .youtube-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+
+/* ======================== */
+/* Edit Modal Styles       */
+/* ======================== */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+  /* Use theme variables for background */
+  /* background-color: rgba(var(--dark-bg-rgb, 26, 26, 26), 0.7); */ /* Need to define --dark-bg-rgb */
+}
+/* body.light-mode .modal { background-color: rgba(var(--light-bg-rgb, 255, 255, 255), 0.7); } */
+
+.modal-content {
+  background-color: var(--content-bg); /* Use theme variable */
+  margin: 10% auto; /* 10% from the top and centered */
+  padding: 30px; /* More padding */
+  border: 1px solid var(--border-color); /* Use theme variable */
+  width: 90%; /* More responsive */
+  max-width: 650px; /* Max width */
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px var(--shadow-color); /* Use theme variable */
 }
 
-.creator-card, .instagram-creator-card, .youtube-creator-card {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: var(--bg-color);
-    box-shadow: 0 2px 5px var(--shadow-color);
-    display: flex;
-    flex-direction: column;
+.close-button {
+  color: var(--secondary-text); /* Use theme variable */
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1; /* Ensure proper alignment */
 }
 
-.creator-pic, .instagram-creator-pic {
-    width: 100%;
-    height: auto;
-    border-bottom: 1px solid var(--border-color);
-    object-fit: cover; /* Maintain aspect ratio and cover container */
+.close-button:hover,
+.close-button:focus {
+  color: var(--text-color); /* Use theme variable */
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.youtube-creator-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 10px auto;
-    border: 2px solid var(--border-color);
+/* Ensure modal form inherits theme styles */
+#edit-shoutout-form .form-group { margin-bottom: 15px; }
+#edit-shoutout-form label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--secondary-text);}
+#edit-shoutout-form input[type="text"],
+#edit-shoutout-form input[type="number"],
+#edit-shoutout-form input[type="url"],
+#edit-shoutout-form textarea {
+  /* Inherit from base styles */
+  width: 100%; /* Ensure full width */
 }
-
-.youtube-cover-photo {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.creator-info, .instagram-creator-info, .youtube-creator-info {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
-}
-
-.creator-header, .instagram-creator-header, .youtube-creator-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
-.creator-header h3, .instagram-creator-header h3, .youtube-creator-header h3 {
-    margin: 0;
-    font-size: 1.2em;
-    color: var(--text-color);
-}
-
-.verified-badge, .instagram-verified-badge, .youtube-verified-badge {
-    height: 1em;
-    margin-left: 5px;
-}
-
-.creator-username, .instagram-creator-username, .youtube-creator-username {
-    font-size: 0.9em;
-    color: var(--secondary-text);
-    margin-bottom: 5px;
-}
-
-.youtube-creator-username {
-    text-align: center;
-}
-
-.creator-bio, .instagram-creator-bio, .youtube-creator-bio {
-    font-size: 0.95em;
-    color: var(--text-color);
-    margin-bottom: 10px;
-}
-
-.follower-count, .instagram-follower-count, .youtube-subscriber-count {
-    font-size: 0.85em;
-    color: var(--secondary-text);
-    margin-bottom: 5px;
-}
-
-.visit-profile, .instagram-visit-profile, .youtube-visit-profile {
-    display: inline-block;
-    padding: 8px 12px;
-    background-color: var(--accent-color);
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 0.9em;
-    transition: background-color 0.2s ease;
-    text-align: center;
-}
-
-.visit-profile:hover, .instagram-visit-profile:hover, .youtube-visit-profile:hover {
-    background-color: var(--hover-color);
-}
-
-.username-container {
-    text-align: center;
+#edit-shoutout-form .checkbox-group label {
+    font-weight: normal; /* Normal weight for checkbox labels */
 }
