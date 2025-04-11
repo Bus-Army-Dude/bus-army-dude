@@ -487,8 +487,8 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 
 /* === UPDATED Rule for Admin Profile Picture Preview === */
 .pfp-preview-img {
-    width: 70px;  /* Increased size - Adjust if needed */
-    height: 70px; /* Increased size - Keep equal to width */
+    width: 150px;  /* Increased size - Adjust if needed */
+    height: 150px; /* Increased size - Keep equal to width */
     border-radius: 50%; /* Makes it circular */
     object-fit: cover; /* Ensures image covers the area well */
     border: 1px solid var(--border-color);
