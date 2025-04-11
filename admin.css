@@ -1,186 +1,244 @@
-/* admin.css */
+/* admin.css - Futuristic Theme */
 
 /* ======================== */
-/* Theme Variables      */
+/* Theme Variables          */
 /* ======================== */
 :root {
-    /* Light Mode Colors */
-    --light-bg: #ffffff;
-    --light-content-bg: #f8f9fa; /* Slightly off-white for content areas */
-    --light-text: #212529;
-    --light-secondary-text: #495057;
-    --light-border: #dee2e6;
-    --light-accent: #007bff; /* Using blue as primary accent */
-    --light-hover: #0056b3;
-    --light-link: #007bff;
-    --light-shadow: rgba(0, 0, 0, 0.1);
-    --light-icon: #ffffff;
+    /* --- Base & Font --- */
+    --system-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --base-font-size: 16px;
+    --line-height: 1.6;
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --transition-speed: 0.25s;
+    --transition-timing: ease-in-out;
+
+    /* --- Light Mode Colors --- */
+    --light-bg: #f5f7fa;          /* Very light grey background */
+    --light-content-bg: #ffffff;   /* White content area */
+    --light-text: #1a1c20;         /* Dark text */
+    --light-secondary-text: #5a6472; /* Muted secondary text */
+    --light-border: #d1d9e6;       /* Light border */
     --light-input-bg: #ffffff;
     --light-input-border: #ced4da;
-    --light-success-bg: #d4edda;
-    --light-success-text: #155724;
-    --light-error-bg: #f8d7da;
-    --light-error-text: #721c24;
+    --light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
+    --light-accent: #007bff;        /* Primary accent (Blue) */
+    --light-accent-glow: rgba(0, 123, 255, 0.3);
+    --light-accent-hover: #0056b3;
+    --light-link: #007bff;
+    --light-success-bg: #e0f8e9;    /* Lighter success */
+    --light-success-text: #0a5c28;
+    --light-error-bg: #fde2e4;      /* Lighter error */
+    --light-error-text: #8f1a29;
+    --light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    --light-modal-backdrop: rgba(245, 247, 250, 0.7); /* Light backdrop with blur */
 
-    /* Dark Mode Colors */
-    --dark-bg: #1a1a1a; /* Slightly lighter dark */
-    --dark-content-bg: #2c2c2c; /* Content background */
-    --dark-text: #e0e0e0;
-    --dark-secondary-text: #a0a0a0;
-    --dark-border: #444444; /* Darker border */
-    --dark-accent: #0d6efd; /* Slightly different blue for dark mode */
-    --dark-hover: #0b5ed7;
-    --dark-link: #6ea8fe; /* Lighter blue link for dark */
-    --dark-shadow: rgba(0, 0, 0, 0.3);
-    --dark-icon: #000000;
-    --dark-input-bg: #3a3a3a; /* Dark input */
-    --dark-input-border: #555555;
-    --dark-success-bg: #1a3a1f;
-    --dark-success-text: #a3e0b1;
-    --dark-error-bg: #4d1f24;
-    --dark-error-text: #f5c6cb;
+    /* --- Dark Mode Colors (Futuristic) --- */
+    --dark-bg: #0D0F12;            /* Very dark, slightly blue background */
+    --dark-content-bg: #1A1C20;     /* Darker content area */
+    --dark-text: #E0E5EC;           /* Off-white text */
+    --dark-secondary-text: #8a94a6;  /* Greyish-blue secondary text */
+    --dark-border: #2f3542;         /* Dark subtle border */
+    --dark-input-bg: #16181c;        /* Slightly different dark input bg */
+    --dark-input-border: #3a4150;
+    --dark-shadow: rgba(0, 0, 0, 0.2); /* Darker shadow */
+    --dark-accent: #00FFFF;         /* Cyan accent */
+    --dark-accent-glow: rgba(0, 255, 255, 0.3);
+    --dark-accent-hover: #00cccc;
+    --dark-link: #33ffff;           /* Lighter cyan for links */
+    --dark-success-bg: #103d31;     /* Dark green success */
+    --dark-success-text: #82e0c2;
+    --dark-error-bg: #4d1f24;       /* Dark red error */
+    --dark-error-text: #f5a7af;
+    --dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23E0E5EC' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    --dark-modal-backdrop: rgba(13, 15, 18, 0.7); /* Dark backdrop with blur */
 
-    /* Fallback theme variables (default to dark mode) */
+    /* --- Alert/Action Colors (Consistent) --- */
+    --color-danger: #e53935;        /* Vibrant Red */
+    --color-danger-hover: #c62828;
+    --color-danger-glow: rgba(229, 57, 53, 0.3);
+    --color-success-action: #28a745; /* Vibrant Green */
+    --color-success-action-hover: #218838;
+    --color-success-action-glow: rgba(40, 167, 69, 0.3);
+    --color-secondary-action: #6c757d; /* Grey */
+    --color-secondary-action-hover: #5a6268;
+    --color-secondary-action-glow: rgba(108, 117, 125, 0.3);
+
+    /* --- Fallback theme variables (default to dark mode) --- */
     --bg-color: var(--dark-bg);
     --content-bg: var(--dark-content-bg);
     --text-color: var(--dark-text);
     --secondary-text: var(--dark-secondary-text);
     --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --hover-color: var(--dark-hover);
-    --link-color: var(--dark-link);
-    --shadow-color: var(--dark-shadow);
-    --icon-color: var(--dark-icon);
     --input-bg-color: var(--dark-input-bg);
     --input-border-color: var(--dark-input-border);
+    --shadow-color: var(--dark-shadow);
+    --accent-color: var(--dark-accent);
+    --accent-glow-color: var(--dark-accent-glow);
+    --hover-color: var(--dark-accent-hover);
+    --link-color: var(--dark-link);
     --success-bg-color: var(--dark-success-bg);
     --success-text-color: var(--dark-success-text);
     --error-bg-color: var(--dark-error-bg);
     --error-text-color: var(--dark-error-text);
+    --select-arrow: var(--dark-select-arrow);
+    --modal-backdrop-color: var(--dark-modal-backdrop);
 }
 
-/* Light Mode Override */
-body.light-mode { /* Assuming light mode class is 'light-mode' */
+/* --- Light Mode Override --- */
+body.light-mode {
     --bg-color: var(--light-bg);
     --content-bg: var(--light-content-bg);
     --text-color: var(--light-text);
     --secondary-text: var(--light-secondary-text);
     --border-color: var(--light-border);
-    --accent-color: var(--light-accent);
-    --hover-color: var(--light-hover);
-    --link-color: var(--light-link);
-    --shadow-color: var(--light-shadow);
-    --icon-color: var(--light-icon);
     --input-bg-color: var(--light-input-bg);
     --input-border-color: var(--light-input-border);
+    --shadow-color: var(--light-shadow);
+    --accent-color: var(--light-accent);
+    --accent-glow-color: var(--light-accent-glow);
+    --hover-color: var(--light-accent-hover);
+    --link-color: var(--light-link);
     --success-bg-color: var(--light-success-bg);
     --success-text-color: var(--light-success-text);
     --error-bg-color: var(--light-error-bg);
     --error-text-color: var(--light-error-text);
+    --select-arrow: var(--light-select-arrow);
+    --modal-backdrop-color: var(--light-modal-backdrop);
 }
 
 /* ======================== */
-/* Base Styles         */
+/* Base Styles              */
 /* ======================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: var(--system-font-stack);
+    font-size: var(--base-font-size);
     margin: 0;
-    padding: 25px;
+    padding: 30px; /* More padding around */
     background-color: var(--bg-color);
     color: var(--text-color);
-    line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: var(--line-height);
+    transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-    max-width: 960px;
-    margin: 20px auto;
+    max-width: 1000px; /* Slightly wider */
+    margin: 30px auto;
     background: var(--content-bg);
-    padding: 25px 35px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 35px 45px; /* More internal padding */
+    border-radius: var(--border-radius-lg); /* More rounded */
+    box-shadow: 0 8px 30px -10px var(--shadow-color);
     border: 1px solid var(--border-color);
+    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
 }
 
 h1, h2, h3, h4, h5 {
     color: var(--text-color);
-    margin-top: 1.5em;
-    margin-bottom: 0.8em;
+    margin-top: 1.8em;
+    margin-bottom: 1em;
+    font-weight: 600; /* Slightly bolder */
+    letter-spacing: 0.5px; /* Subtle spacing */
 }
-h1 { text-align: center; margin-bottom: 30px; margin-top: 0; color: var(--text-color); }
-h2 { color: var(--text-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-h3 { color: var(--accent-color); margin-top: 1.5em; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
-h4 { color: var(--text-color); opacity: 0.9; margin-top: 25px; margin-bottom: 15px; }
-h5 { color: var(--secondary-text); margin-top: 20px; margin-bottom: 10px; }
+h1 { text-align: center; margin-bottom: 40px; margin-top: 0; font-size: 2.2rem; }
+h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; }
+h3 { color: var(--accent-color); font-size: 1.5rem; margin-top: 1.8em; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; opacity: 0.9; }
+h4 { font-size: 1.2rem; color: var(--text-color); opacity: 0.95; margin-top: 30px; margin-bottom: 15px; }
+h5 { font-size: 1rem; color: var(--secondary-text); margin-top: 25px; margin-bottom: 10px; font-weight: 500; }
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color var(--transition-speed) var(--transition-timing);
+}
+a:hover {
+    color: var(--hover-color);
+    text-decoration: underline;
+}
 
 /* ======================== */
-/* Login Section        */
+/* Login Section            */
 /* ======================== */
 #login-section {
-    margin-top: 25px;
-    padding: 30px;
+    margin-top: 30px;
+    padding: 40px;
     border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--bg-color); /* Slightly different bg */
+    border-radius: var(--border-radius-md);
+    background-color: var(--content-bg); /* Use content bg */
+    box-shadow: 0 5px 15px -5px var(--shadow-color);
 }
-#login-section h2 { text-align: center; border-bottom: none; margin-bottom: 25px; }
+#login-section h2 { text-align: center; border-bottom: none; margin-bottom: 30px; font-size: 1.6rem;}
 
 /* ======================== */
-/* Admin Content Area    */
+/* Admin Content Area       */
 /* ======================== */
 #admin-content {
-    /* display: none; /* Controlled by JS */
-    margin-top: 25px;
-    padding-top: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
 }
 
 .admin-header {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid var(--border-color);
-    gap: 15px; /* Add gap between items */
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color); /* Accent border */
+    gap: 20px;
 }
-.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; }
-#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 15px; white-space: nowrap; }
-#logout-button { flex-shrink: 0; } /* Prevent logout button shrinking */
+.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 2rem; }
+#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 20px; white-space: nowrap; font-size: 0.95em; }
+#logout-button { flex-shrink: 0; }
 
 .admin-section {
-    margin-bottom: 40px;
-    padding: 25px;
+    margin-bottom: 45px;
+    padding: 30px;
     border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--bg-color);
+    border-radius: var(--border-radius-md);
+    background-color: var(--bg-color); /* Use main bg for contrast */
 }
-.admin-section:last-of-type { margin-bottom: 10px; }
+.admin-section:last-of-type { margin-bottom: 15px; }
 
 
 /* ======================== */
-/* Form Element Styles  */
+/* Form Element Styles      */
 /* ======================== */
-.form-group { /* Added class for better structure */
-    margin-bottom: 18px;
+.form-group {
+    margin-bottom: 20px;
 }
-.checkbox-group label { /* Style label next to checkbox */
-     display: inline-block;
-     margin-bottom: 0;
-     margin-left: 5px;
-     font-weight: normal;
-     vertical-align: middle;
+.checkbox-group label {
+    display: inline-flex; /* Align label and checkbox */
+    align-items: center;
+    margin-bottom: 0;
+    margin-left: 8px;
+    font-weight: normal;
+    color: var(--text-color); /* Normal text color for checkbox label */
+    cursor: pointer;
 }
 .checkbox-group input[type="checkbox"] {
-     margin-bottom: 0; /* Align checkbox better */
+    margin-bottom: 0;
+    margin-right: 0; /* Remove default margin */
+    width: 1.1em; /* Slightly larger checkbox */
+    height: 1.1em;
+    accent-color: var(--accent-color); /* Modern way to color checkboxes */
+    cursor: pointer;
 }
 
 label {
     display: block;
     margin-bottom: 8px;
-    font-weight: 600;
+    font-weight: 500; /* Slightly lighter label */
     color: var(--secondary-text);
-    font-size: 0.95em;
+    font-size: 0.9em;
+    text-transform: uppercase; /* Uppercase labels */
+    letter-spacing: 0.5px;
 }
 
 input[type="email"],
@@ -192,253 +250,333 @@ input[type="datetime-local"],
 select,
 textarea {
     width: 100%;
-    padding: 10px 12px;
-    /* margin-bottom: 18px; remove individual margin, use form-group */
+    padding: 12px 15px; /* Increased padding */
     border: 1px solid var(--input-border-color);
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     font-size: 1rem;
-    box-sizing: border-box;
+    font-family: inherit; /* Ensure consistent font */
     background-color: var(--input-bg-color);
     color: var(--text-color);
-    transition: border-color 0.2s ease;
+    transition: border-color var(--transition-speed) var(--transition-timing),
+                box-shadow var(--transition-speed) var(--transition-timing),
+                background-color var(--transition-speed) var(--transition-timing);
 }
 
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb, 0, 123, 255), 0.25); /* Add focus ring */
+    box-shadow: 0 0 0 3px var(--accent-glow-color); /* Glow effect */
 }
-/* Define accent color RGB for focus ring */
-:root { --accent-color-rgb: 0, 123, 255; }
-body.dark-mode { --accent-color-rgb: 13, 110, 253; }
 
-
-textarea { min-height: 100px; resize: vertical; }
-select { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 16px 12px; padding-right: 2.5rem; }
-body.dark-mode select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23cccccc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); }
-
-input[type="checkbox"] {
-    width: auto;
-    margin-right: 8px;
-    vertical-align: middle;
+textarea { min-height: 120px; resize: vertical; }
+select {
+    appearance: none;
+    background-image: var(--select-arrow);
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+    padding-right: 3rem;
 }
 
 /* Style placeholder text */
-::placeholder { color: var(--secondary-text); opacity: 0.7; }
+::placeholder { color: var(--secondary-text); opacity: 0.6; }
+
 
 /* ======================== */
-/* Button Styles        */
+/* Button Styles            */
 /* ======================== */
-button, .button-primary { /* Added class for consistency */
-    background-color: var(--accent-color);
-    color: #ffffff; /* White text generally works on colored buttons */
-    padding: 10px 18px;
+button, .button-primary {
+    background: linear-gradient(145deg, var(--accent-color), var(--hover-color)); /* Subtle gradient */
+    color: #ffffff; /* Ensure contrast, might need adjustment based on accent */
+    padding: 12px 22px; /* Larger buttons */
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
     font-size: 1rem;
-    font-weight: 500;
-    transition: background-color 0.2s ease, opacity 0.2s ease;
-    margin-right: 10px; /* Spacing between adjacent buttons */
-    margin-top: 5px; /* Space above buttons */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform var(--transition-speed) var(--transition-timing),
+                box-shadow var(--transition-speed) var(--transition-timing),
+                background var(--transition-speed) var(--transition-timing);
+    margin-right: 12px;
+    margin-top: 8px;
     vertical-align: middle;
-    text-decoration: none; /* For link-like buttons */
-    display: inline-block; /* Ensure proper spacing */
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
 }
-button:hover, .button-primary:hover { background-color: var(--hover-color); }
-button:disabled, .button-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+button:hover, .button-primary:hover {
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 4px 12px -2px var(--accent-glow-color); /* Accent glow on hover */
+    background: linear-gradient(145deg, var(--hover-color), var(--accent-color)); /* Slightly shift gradient */
+}
+button:active, .button-primary:active {
+    transform: translateY(0px); /* Push down */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+button:disabled, .button-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    background: var(--secondary-text); /* Muted background when disabled */
+}
 
-#login-button { background-color: #28a745; } /* Green */
-#login-button:hover { background-color: #218838; }
+/* Specific Button Colors using action color variables */
+#login-button { background: linear-gradient(145deg, var(--color-success-action), var(--color-success-action-hover)); }
+#login-button:hover { box-shadow: 0 4px 12px -2px var(--color-success-action-glow); background: linear-gradient(145deg, var(--color-success-action-hover), var(--color-success-action));}
 
-#logout-button { background-color: #dc3545; /* Red */ }
-#logout-button:hover { background-color: #c82333; }
+#logout-button, button.delete-button { background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover)); }
+#logout-button:hover, button.delete-button:hover { box-shadow: 0 4px 12px -2px var(--color-danger-glow); background: linear-gradient(145deg, var(--color-danger-hover), var(--color-danger)); }
 
-/* Buttons for delete actions */
-button.delete-button { background-color: #dc3545; }
-button.delete-button:hover { background-color: #c82333; }
+button.secondary-button, .list-item-admin button, button.edit-button { background: linear-gradient(145deg, var(--color-secondary-action), var(--color-secondary-action-hover)); }
+button.secondary-button:hover, .list-item-admin button:hover, button.edit-button:hover { box-shadow: 0 4px 12px -2px var(--color-secondary-action-glow); background: linear-gradient(145deg, var(--color-secondary-action-hover), var(--color-secondary-action)); }
 
-/* Buttons for secondary actions or within lists */
-button.secondary-button, .list-item-admin button, button.edit-button { background-color: #6c757d; } /* Grey */
-button.secondary-button:hover, .list-item-admin button:hover, button.edit-button:hover { background-color: #5a6268; }
-
-.form-actions { /* Container for form buttons */
-    margin-top: 20px;
+.form-actions {
+    margin-top: 25px;
     text-align: right;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color); /* Separator */
 }
 
-.small-button { /* Modifier for smaller buttons in lists */
-    padding: 5px 10px !important;
-    font-size: 0.9em !important;
+.small-button {
+    padding: 6px 12px !important;
+    font-size: 0.85em !important;
+    letter-spacing: 0.3px;
 }
 
 /* ======================== */
-/* Status Message Styles  */
+/* Status Message Styles    */
 /* ======================== */
 .status-message {
-    margin-top: 20px;
-    margin-bottom: 15px; /* Add bottom margin too */
-    padding: 12px 15px;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    padding: 15px 20px;
     font-weight: 500;
     text-align: center;
-    border-radius: 4px;
+    border-radius: var(--border-radius-md);
     border: 1px solid transparent;
-    display: none; /* Hidden by default */
-    clear: both; /* Ensure it clears floats if any */
+    display: none;
+    clear: both;
+    font-size: 0.95em;
+    transition: background-color var(--transition-speed) var(--transition-timing),
+                color var(--transition-speed) var(--transition-timing),
+                border-color var(--transition-speed) var(--transition-timing);
 }
-.status-message:not(:empty) { display: block; } /* Show only if it has content */
+.status-message:not(:empty) { display: block; }
 
 .status-message.success {
     color: var(--success-text-color);
     background-color: var(--success-bg-color);
-    border-color: var(--success-text-color);
+    border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3); /* Use HSL for border color */
 }
 
 .status-message.error {
     color: var(--error-text-color);
     background-color: var(--error-bg-color);
-    border-color: var(--error-text-color);
+    border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3); /* Use HSL for border color */
 }
+/* Define HSL hues for easier border calculation */
+:root { --success-hue: 145; --error-hue: 354; }
+
 
 /* ======================== */
-/* Dynamic List Styles    */
+/* Dynamic List Styles      */
 /* ======================== */
-/* Container for lists like Events, Shoutouts, FAQs */
 .list-container-admin {
-    margin-top: 15px;
-    max-height: 400px; /* Limit height and allow scrolling */
+    margin-top: 20px;
+    max-height: 450px;
     overflow-y: auto;
     border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 10px;
-    background-color: var(--bg-color); /* Slightly different bg for list */
+    border-radius: var(--border-radius-md);
+    padding: 5px; /* Reduce padding here */
+    background-color: var(--bg-color); /* Match main bg */
+    scrollbar-width: thin; /* Firefox scrollbar */
+    scrollbar-color: var(--secondary-text) var(--bg-color); /* Firefox scrollbar */
 }
+/* Webkit scrollbar */
+.list-container-admin::-webkit-scrollbar { width: 8px; }
+.list-container-admin::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 4px; }
+.list-container-admin::-webkit-scrollbar-thumb { background-color: var(--secondary-text); border-radius: 4px; border: 2px solid var(--bg-color); }
 
 .list-item-admin {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping for content */
-    align-items: flex-start; /* Align items top */
+    flex-wrap: wrap;
+    align-items: center; /* Center items vertically */
     justify-content: space-between;
-    padding: 15px;
+    padding: 18px 20px; /* More vertical padding */
     border-bottom: 1px solid var(--border-color);
-    gap: 15px; /* Gap between content and buttons */
+    gap: 20px;
+    transition: background-color var(--transition-speed) var(--transition-timing);
 }
 .list-item-admin:last-child { border-bottom: none; }
+.list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); /* Subtle hover */ }
+/* Define RGB for hover effect */
+:root { --accent-rgb: 0, 255, 255; } /* Default (dark) */
+body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
+
 
 .list-item-admin .item-content {
-    flex-grow: 1; /* Allow content to take available space */
-    word-break: break-word; /* Prevent long text overflow */
+    flex-grow: 1;
+    word-break: break-word;
 }
-.list-item-admin strong { color: var(--text-color); }
-.list-item-admin span { color: var(--secondary-text); font-size: 0.9em; margin-left: 5px;}
-.list-item-admin p { margin: 5px 0; } /* Space out content lines */
-.list-item-admin small { color: var(--secondary-text); font-size: 0.8em; }
+.list-item-admin strong { color: var(--text-color); font-weight: 600; }
+.list-item-admin span { color: var(--secondary-text); font-size: 0.85em; margin-left: 8px;}
+.list-item-admin p { margin: 6px 0; font-size: 0.95em; line-height: 1.5; }
+.list-item-admin small { color: var(--secondary-text); font-size: 0.75em; display: block; margin-top: 4px; }
 
 
 .list-item-admin .item-actions {
-    flex-shrink: 0; /* Prevent buttons shrinking */
+    flex-shrink: 0;
     display: flex;
-    gap: 8px; /* Space between buttons */
-    align-items: center; /* Align buttons vertically */
+    gap: 10px;
+    align-items: center;
 }
-/* Removed button style override here, using .small-button now */
+/* Buttons are now small-button class */
 
 
 /* Specific list item content styling (example) */
 .list-item-admin.event-item .item-content strong {
-    display: block; /* Event title on its own line */
-    margin-bottom: 5px;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.05em;
+    color: var(--accent-color); /* Highlight event title */
 }
 
 /* ======================== */
 /* Creator Shoutouts Section */
 /* ======================== */
 
-.admin-section#creator-shoutouts { /* Specific ID for the whole section */
-    /* You can add any overall styling for the whole shoutouts section here */
+.admin-section#creator-shoutouts {
+    /* No specific section styles needed beyond .admin-section */
 }
 
-.shoutouts-platform-container { /* New container for each platform */
-    margin-bottom: 30px; /* Space between platform sections */
-    padding: 20px;
+.shoutouts-platform-container {
+    margin-bottom: 35px;
+    padding: 25px;
     border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--bg-color); /* Use base bg for inner sections */
+    border-radius: var(--border-radius-md);
+    background-color: var(--content-bg); /* Use content bg */
 }
 .shoutouts-platform-container:last-of-type {
-    margin-bottom: 0; /* No bottom margin on the last platform */
+    margin-bottom: 0;
 }
 
-.shoutouts-platform-container h4 { /* Style platform headings */
-    color: var(--accent-color);
-    margin-top: 0; /* Reset top margin */
-    border-bottom: 1px dashed var(--border-color);
-    padding-bottom: 8px;
+.shoutouts-platform-container h4 {
+    color: var(--accent-color); /* Accent for platform name */
+    margin-top: 0;
+    border-bottom: 1px dashed var(--accent-color);
+    padding-bottom: 10px;
+    font-size: 1.3rem;
+    opacity: 0.9;
 }
 
-/* ======================== */
-/* Image Styles (Not used in Admin) */
-/* ======================== */
-/* Removed styles for .creator-grid, .creator-card, etc. as they are for index.html */
-
 
 /* ======================== */
-/* Edit Modal Styles       */
+/* Edit Modal Styles        */
 /* ======================== */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1000;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-  /* Use theme variables for background */
-  /* background-color: rgba(var(--dark-bg-rgb, 26, 26, 26), 0.7); */ /* Need to define --dark-bg-rgb */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--modal-backdrop-color); /* Themed backdrop */
+  backdrop-filter: blur(5px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(5px); /* Safari support */
+  animation: fadeIn 0.3s ease-out; /* Fade in animation */
 }
-/* body.light-mode .modal { background-color: rgba(var(--light-bg-rgb, 255, 255, 255), 0.7); } */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 .modal-content {
-  background-color: var(--content-bg); /* Use theme variable */
-  margin: 10% auto; /* 10% from the top and centered */
-  padding: 30px; /* More padding */
-  border: 1px solid var(--border-color); /* Use theme variable */
-  width: 90%; /* More responsive */
-  max-width: 650px; /* Max width */
+  background-color: var(--content-bg);
+  margin: 8% auto; /* Adjust vertical margin */
+  padding: 35px 45px; /* More padding */
+  border: 1px solid var(--border-color);
+  width: 90%;
+  max-width: 700px; /* Slightly wider max */
   position: relative;
-  border-radius: 8px;
-  box-shadow: 0 5px 20px var(--shadow-color); /* Use theme variable */
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); /* Stronger shadow for modal */
+  animation: slideIn 0.4s ease-out; /* Slide in animation */
 }
 
+@keyframes slideIn {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
 .close-button {
-  color: var(--secondary-text); /* Use theme variable */
+  color: var(--secondary-text);
   position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 28px;
+  top: 15px; /* Position adjustment */
+  right: 25px;
+  font-size: 32px;
   font-weight: bold;
-  line-height: 1; /* Ensure proper alignment */
+  line-height: 1;
+  transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
 }
 
 .close-button:hover,
 .close-button:focus {
-  color: var(--text-color); /* Use theme variable */
+  color: var(--text-color);
   text-decoration: none;
   cursor: pointer;
+  transform: scale(1.1); /* Slightly enlarge on hover */
 }
 
 /* Ensure modal form inherits theme styles */
-#edit-shoutout-form .form-group { margin-bottom: 15px; }
-#edit-shoutout-form label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--secondary-text);}
+#edit-shoutout-form .form-group { margin-bottom: 20px; } /* Consistent spacing */
+#edit-shoutout-form label { /* Already styled globally */ }
 #edit-shoutout-form input[type="text"],
 #edit-shoutout-form input[type="number"],
 #edit-shoutout-form input[type="url"],
 #edit-shoutout-form textarea {
-  /* Inherit from base styles */
-  width: 100%; /* Ensure full width */
+  /* Inherit from base styles, ensure full width */
+  width: 100%;
 }
 #edit-shoutout-form .checkbox-group label {
-    font-weight: normal; /* Normal weight for checkbox labels */
+    font-weight: normal; /* Override uppercase */
+    text-transform: none;
+    font-size: 1rem; /* Normal size */
+    letter-spacing: 0;
+}
+#edit-shoutout-form .form-actions {
+    margin-top: 30px; /* More space before modal actions */
+}
+
+/* ======================== */
+/* Responsive Adjustments   */
+/* ======================== */
+@media (max-width: 768px) {
+    body { padding: 15px; }
+    .container { padding: 25px 20px; margin: 15px auto; }
+    h1 { font-size: 1.8rem; margin-bottom: 30px;}
+    h2 { font-size: 1.5rem; }
+    .admin-header { flex-direction: column; align-items: flex-start; }
+    .admin-header h2 { margin-bottom: 10px; }
+    #admin-greeting { margin: 10px 0; }
+    .admin-section { padding: 20px; }
+    .form-actions { text-align: center; }
+    .form-actions button { display: block; width: 100%; margin: 10px 0 0 0; } /* Stack buttons */
+    .list-item-admin { flex-direction: column; align-items: flex-start; }
+    .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-end; }
+    .modal-content { margin: 15% auto; padding: 25px 20px; }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.3rem; }
+    h3 { font-size: 1.2rem; }
+    button, .button-primary { padding: 10px 18px; font-size: 0.95rem; }
+    input, select, textarea { padding: 10px 12px; font-size: 0.95rem; }
+    .container { padding: 20px 15px; }
 }
