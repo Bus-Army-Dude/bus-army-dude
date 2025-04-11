@@ -1,49 +1,41 @@
-// firebase-init.js
+// firebase-init.js (Corrected with v9+ Modular Syntax)
 
-// Edit this block in your firebase-init.js file:
+// Import the functions you need from the SDKs
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"; // Match version in admin.js
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js"; // Uncomment if needed
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0", // Make sure this is correct
+    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0", // Use your actual API key
     authDomain: "busarmydudewebsite.firebaseapp.com",
     projectId: "busarmydudewebsite",
     storageBucket: "busarmydudewebsite.firebasestorage.app",
-    messagingSenderId: "42980404680", // Make sure this is correct
-    appId: "1:42980404680:web:f4f1e54789902a4295e4fd", // Make sure this is correct
-    // measurementId can optionally be added if needed:
-    // measurementId: "G-DQPH8YL789"
+    messagingSenderId: "42980404680",
+    appId: "1:42980404680:web:f4f1e54789902a4295e4fd",
+    measurementId: "G-DQPH8YL789" // Optional
 };
 
-// Initialize Firebase ONLY if it hasn't been initialized yet
-let db, auth; // Make db and auth globally accessible if needed by other scripts
+// Initialize Firebase and services
+let app;
+let auth;
+let db;
+// let analytics; // Uncomment if needed
+
 try {
-  if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-      console.log("Firebase initialized successfully by firebase-init.js.");
-
-      // Get Firestore instance - needed by public scripts
-      if (typeof firebase.firestore === 'function') {
-         db = firebase.firestore();
-         console.log("Firestore instance created.");
-      } else {
-          console.warn("Firestore SDK not loaded before firebase-init.js");
-      }
-      // Get Auth instance - might be needed by settings.js? If not, can remove.
-      if (typeof firebase.auth === 'function') {
-          auth = firebase.auth();
-          console.log("Auth instance created.");
-      } else {
-           console.warn("Auth SDK not loaded before firebase-init.js");
-      }
-
-  } else if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-      console.log("Firebase already initialized.");
-      // Get instances if already initialized
-       if (typeof firebase.firestore === 'function') db = firebase.firestore();
-       if (typeof firebase.auth === 'function') auth = firebase.auth();
-  } else {
-      throw new Error("Firebase SDK not loaded before firebase-init.js");
-  }
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    // analytics = getAnalytics(app); // Uncomment if needed
+    console.log("Firebase initialized successfully by firebase-init.js (v9+).");
 } catch (error) {
-     console.error("Error initializing Firebase:", error);
-     // Maybe display a less intrusive error on the public page
-     // document.body.innerHTML = '<div>Error loading site configuration. Please try again later.</div>';
+    console.error("CRITICAL FIREBASE INITIALIZATION ERROR in firebase-init.js:", error);
+    alert('FATAL ERROR: Cannot initialize Firebase. Site may not work correctly. Check console.');
+    // Optionally try to display error on page, though body might not exist yet
+    // document.body.innerHTML = '<div style="color: red; padding: 20px;">FATAL ERROR: Cannot initialize Firebase. Check console.</div>';
+    throw error; // Stop further script execution
 }
+
+// Export the initialized services for other modules to use
+export { app, auth, db /*, analytics */ }; // Add analytics here if you uncomment it
