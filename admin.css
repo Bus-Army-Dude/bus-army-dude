@@ -442,3 +442,32 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 #edit-shoutout-form .checkbox-group label {
     font-weight: normal; /* Normal weight for checkbox labels */
 }
+
+#region-list-container {
+    /* Inherits from .list-container-admin, but add grid layout */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Create auto-fitting columns */
+    gap: 8px 15px; /* Row gap and Column gap */
+    /* Adjust padding if needed, inherited from .list-container-admin */
+    padding: 15px;
+}
+
+/* Style for each checkbox/label pair within the grid */
+.region-item {
+    display: flex;
+    align-items: center; /* Vertically align checkbox and label */
+}
+
+.region-item input[type="checkbox"] {
+    margin-right: 8px; /* Space between checkbox and label */
+    /* Inherits base checkbox styles */
+    cursor: pointer;
+}
+
+.region-item label {
+    /* Inherits base label styles */
+    font-weight: normal; /* Make region labels normal weight */
+    margin-bottom: 0; /* Override default label block margin */
+    font-size: 0.9em;
+    cursor: pointer;
+}
