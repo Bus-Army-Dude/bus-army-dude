@@ -1,15 +1,11 @@
-// admin.js (Corrected to import from firebase-init.js)
+// admin.js (Corrected to use 'siteConfig' path for metadata)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
 // Import Firebase functions
-// *** NOTE: initializeApp is NO LONGER needed here ***
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-// NOTE: db and auth are now imported, not created here.
-
-// *** REMOVED the duplicate Firebase initialization block that was here ***
 
 document.addEventListener('DOMContentLoaded', () => {
     // First, check if db and auth were successfully imported/initialized
@@ -66,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminPfpPreview = document.getElementById('admin-pfp-preview');
 
     // Firestore Reference for Profile
+    // Assuming profile data is under 'site_config' as per displayShoutouts.js
+    // If profile is ALSO under 'siteConfig', change this path too!
     const profileDocRef = doc(db, "site_config", "mainProfile");
 
 
@@ -177,11 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
        itemDiv.className = 'list-item-admin';
        itemDiv.setAttribute('data-id', docId);
        itemDiv.innerHTML = `
-           <div class="item-content">${contentHtml}</div>
-           <div class="item-actions">
-               <button type="button" class="edit-button small-button">Edit</button>
-               <button type="button" class="delete-button small-button">Delete</button>
-           </div>
+            <div class="item-content">${contentHtml}</div>
+            <div class="item-actions">
+                <button type="button" class="edit-button small-button">Edit</button>
+                <button type="button" class="delete-button small-button">Delete</button>
+            </div>
        `;
        const editButton = itemDiv.querySelector('.edit-button');
        if (editButton) {
@@ -213,6 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Attempting to load profile data...");
 
         try {
+            // Using profileDocRef defined earlier (which uses 'site_config')
+            // ** If your ACTUAL profile data is under 'siteConfig', change profileDocRef definition **
             const docSnap = await getDoc(profileDocRef);
 
             if (docSnap.exists()) {
@@ -260,13 +260,13 @@ document.addEventListener('DOMContentLoaded', () => {
             profilePicUrl: profilePicUrlInput?.value.trim() || "",
             bio: profileBioInput?.value.trim() || "",
             status: profileStatusInput?.value || "offline",
-            lastUpdated: serverTimestamp()
+            lastUpdated: serverTimestamp() // Timestamp for profile itself
         };
 
         showProfileStatus("Saving profile...");
 
         try {
-            // Use the imported 'db' instance
+            // Use the imported 'db' instance and profileDocRef
             await setDoc(profileDocRef, newData, { merge: true });
             console.log("Profile data saved successfully.");
             showProfileStatus("Profile updated successfully!", false);
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram');
                  if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
             } else {
-                console.error("loadShoutoutsAdmin function is not defined!");
+                 console.error("loadShoutoutsAdmin function is not defined!");
             }
 
         } else {
@@ -344,9 +344,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     else errorMessage = `An unexpected error occurred (${error.code}).`;
 
                      if (authStatus) {
-                        authStatus.textContent = `Login Failed: ${errorMessage}`;
-                        authStatus.className = 'status-message error';
-                    }
+                         authStatus.textContent = `Login Failed: ${errorMessage}`;
+                         authStatus.className = 'status-message error';
+                     }
                 });
         });
     }
@@ -365,14 +365,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Shoutouts Load/Add/Delete/Update ---
-    // These functions seem mostly okay, just ensure 'db' is the imported one
 
+    // CORRECTED function to get reference to the metadata document
     function getMetadataRef() {
-         return doc(db, 'site_config', 'shoutoutsMetadata');
+        // Use 'siteConfig' to match database structure and displayShoutouts.js
+        return doc(db, 'siteConfig', 'shoutoutsMetadata');
     }
 
+    // Function to update the timestamp in the metadata document
     async function updateMetadataTimestamp(platform) {
-         const metaRef = getMetadataRef();
+         const metaRef = getMetadataRef(); // Uses the corrected path now
          try {
              await setDoc(metaRef, { [`lastUpdatedTime_${platform}`]: serverTimestamp() }, { merge: true });
              console.log(`Metadata timestamp updated for ${platform}.`);
@@ -382,6 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
          }
     }
 
+    // Load shoutouts for the admin list view
     async function loadShoutoutsAdmin(platform) {
         const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
         if (!listContainer) return;
@@ -413,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Handle adding a new shoutout
     async function handleAddShoutout(platform, formElement) {
        if (!formElement) return;
         const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
@@ -424,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
            showAdminStatus(`Please provide Username, Nickname, and a valid non-negative Order number for ${platform}.`, true);
            return;
        }
-       const accountData = { /* ... construct data ... */
+       const accountData = {
             platform: platform, username: username, nickname: nickname, order: order,
             isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
             bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
@@ -440,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
        try {
            const docRef = await addDoc(collection(db, 'shoutouts'), accountData); // Use imported 'db'
            console.log("Shoutout added with ID: ", docRef.id);
-           await updateMetadataTimestamp(platform);
+           await updateMetadataTimestamp(platform); // Use corrected path via getMetadataRef
            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added.`, false);
            formElement.reset();
            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
@@ -450,12 +454,13 @@ document.addEventListener('DOMContentLoaded', () => {
        }
     }
 
+    // Handle updating an existing shoutout (from edit modal)
     async function handleUpdateShoutout(event) {
         event.preventDefault();
         if (!editForm) return;
         const docId = editForm.getAttribute('data-doc-id');
         const platform = editForm.getAttribute('data-platform');
-        if (!docId || !platform) { /* ... error handling ... */
+        if (!docId || !platform) {
             showAdminStatus("Error: Missing document ID or platform for update.", true);
             return;
         }
@@ -463,15 +468,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const nickname = editNicknameInput?.value.trim();
         const orderStr = editOrderInput?.value.trim();
         const order = parseInt(orderStr);
-        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) { /* ... error handling ... */
+        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
              showAdminStatus(`Update Error: Please provide Username, Nickname, and a valid non-negative Order number.`, true);
              return;
         }
-        const updatedData = { /* ... construct data ... */
+        const updatedData = {
             username: username, nickname: nickname, order: order,
             isVerified: editIsVerifiedInput?.checked || false,
             bio: editBioInput?.value.trim() || null,
             profilePic: editProfilePicInput?.value.trim() || null,
+            // Note: createdAt is not updated here, which is usually correct.
         };
          if (platform === 'youtube') {
             updatedData.subscribers = editSubscribersInput?.value.trim() || 'N/A';
@@ -482,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const docRef = doc(db, 'shoutouts', docId); // Use imported 'db'
             await updateDoc(docRef, updatedData);
-            await updateMetadataTimestamp(platform);
+            await updateMetadataTimestamp(platform); // Use corrected path via getMetadataRef
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated.`, false);
             if (typeof closeEditModal === 'function') closeEditModal();
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
@@ -496,11 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.addEventListener('submit', handleUpdateShoutout);
     }
 
+    // Handle deleting a shoutout
     async function handleDeleteShoutout(docId, platform, listItemElement) {
         if (!confirm(`Are you sure you want to delete this ${platform} shoutout?`)) return;
         try {
             await deleteDoc(doc(db, 'shoutouts', docId)); // Use imported 'db'
-            await updateMetadataTimestamp(platform);
+            await updateMetadataTimestamp(platform); // Use corrected path via getMetadataRef
             showAdminStatus(`${platform} shoutout deleted.`, false);
             if (listItemElement) listItemElement.remove(); else if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
             // Check if list empty
