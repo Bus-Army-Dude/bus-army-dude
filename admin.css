@@ -487,15 +487,15 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 
 /* === UPDATED Rule for Admin Profile Picture Preview === */
 .pfp-preview-img {
-    width: 40px;  /* Reduced size - Adjust if you want different */
-    height: 40px; /* Reduced size - Keep equal to width for circle */
+    width: 70px;  /* Increased size - Adjust if needed */
+    height: 70px; /* Increased size - Keep equal to width */
     border-radius: 50%; /* Makes it circular */
     object-fit: cover; /* Ensures image covers the area well */
     border: 1px solid var(--border-color);
     background-color: var(--input-bg-color); /* BG for when no image is loaded */
-    vertical-align: middle; /* Helps alignment if not using flex */
+    vertical-align: middle; /* Helps alignment */
     flex-shrink: 0; /* Prevents shrinking inside the flex container */
-    transition: opacity 0.3s ease; /* Keep transition if you like */
+    transition: opacity 0.3s ease;
 }
 
 /* Style for when the input causes an image load error (optional) */
