@@ -6,7 +6,8 @@
     <title>Admin Panel - Creator Shoutouts</title>
     <link rel="stylesheet" href="admin.css">
     </head>
-<body class="dark-mode"> <div class="container">
+<body class="dark-mode">
+    <div class="container">
         <h1>Admin Panel</h1>
 
         <section id="login-section" aria-labelledby="login-heading">
@@ -20,18 +21,58 @@
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required autocomplete="current-password">
                 </div>
-                <div class="form-actions"> <button type="submit" id="login-button" class="button-primary">Login</button>
+                <div class="form-actions">
+                    <button type="submit" id="login-button" class="button-primary">Login</button>
                 </div>
             </form>
             <div id="auth-status" class="status-message" role="alert" aria-live="polite"></div>
         </section>
 
-        <main id="admin-content" style="display: none;" tabindex="-1"> <header class="admin-header">
+        <main id="admin-content" style="display: none;" tabindex="-1">
+            <header class="admin-header">
                 <h2>Manage Content</h2>
-                <span id="admin-greeting" aria-live="polite"></span> <button type="button" id="logout-button">Logout</button> </header>
+                <span id="admin-greeting" aria-live="polite"></span>
+                <button type="button" id="logout-button">Logout</button>
+            </header>
 
             <div id="admin-status" class="status-message" role="status" aria-live="polite"></div>
 
+            <section class="admin-section" id="profile-management" aria-labelledby="profile-heading">
+                <h3 id="profile-heading">Manage Homepage Profile</h3>
+
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-pic-url">Profile Picture URL:</label>
+                        <div class="input-with-preview"> <input type="url" id="profile-pic-url" name="profilePicUrl" placeholder="https://..." inputmode="url">
+                            <img src="path/to/placeholder-image.png"
+                                 alt="Profile picture preview"
+                                 class="pfp-preview-img"
+                                 id="admin-pfp-preview"
+                                 onerror="this.onerror=null; this.src='path/to/error-placeholder.png';"
+                                 style="display: none;" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profile-bio">Bio:</label>
+                        <textarea id="profile-bio" name="bio" rows="4" placeholder="Enter profile bio text..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profile-status">Status:</label>
+                        <select id="profile-status" name="status">
+                            <option value="online">Online (🟢)</option>
+                            <option value="away">Away (🟡)</option>
+                            <option value="offline">Offline (🔴)</option>
+                            </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="save-profile-button" class="button-primary">Save Profile Changes</button>
+                    </div>
+                </form>
+                 <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
+            </section>
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
@@ -71,17 +112,17 @@
                            <button type="submit" class="button-primary">Add TikTok Shoutout</button>
                         </div>
                     </form>
-
                     <h5 id="existing-tiktok-heading">Existing TikTok Shoutouts</h5>
                     <div id="shoutouts-tiktok-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tiktok-heading">
-                        <p>Loading TikTok shoutouts...</p> </div>
+                        <p>Loading TikTok shoutouts...</p>
+                    </div>
                 </div>
 
                 <div class="shoutouts-platform-container" aria-labelledby="instagram-heading">
                     <h4 id="instagram-heading">Instagram</h4>
-                     <form id="add-shoutout-instagram-form" aria-labelledby="add-instagram-heading">
+                    <form id="add-shoutout-instagram-form" aria-labelledby="add-instagram-heading">
                         <h5 id="add-instagram-heading">Add New Instagram Shoutout</h5>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label for="instagram-username">Username:</label>
                             <input type="text" id="instagram-username" name="username" required placeholder="e.g., mrbeast">
                         </div>
@@ -113,17 +154,17 @@
                            <button type="submit" class="button-primary">Add Instagram Shoutout</button>
                         </div>
                     </form>
-
                     <h5 id="existing-instagram-heading">Existing Instagram Shoutouts</h5>
-                     <div id="shoutouts-instagram-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-instagram-heading">
-                        <p>Loading Instagram shoutouts...</p> </div>
+                    <div id="shoutouts-instagram-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-instagram-heading">
+                        <p>Loading Instagram shoutouts...</p>
+                    </div>
                 </div>
 
                 <div class="shoutouts-platform-container" aria-labelledby="youtube-heading">
                     <h4 id="youtube-heading">YouTube</h4>
                     <form id="add-shoutout-youtube-form" aria-labelledby="add-youtube-heading">
-                         <h5 id="add-youtube-heading">Add New YouTube Shoutout</h5>
-                         <div class="form-group">
+                        <h5 id="add-youtube-heading">Add New YouTube Shoutout</h5>
+                        <div class="form-group">
                             <label for="youtube-username">Handle (@handle):</label>
                             <input type="text" id="youtube-username" name="username" required placeholder="e.g., MrBeast">
                         </div>
@@ -135,7 +176,7 @@
                             <label for="youtube-order">Display Order:</label>
                             <input type="number" id="youtube-order" name="order" min="0" step="1" required placeholder="e.g., 1">
                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label for="youtube-subscribers">Subscribers (e.g., 10M, 500K):</label>
                             <input type="text" id="youtube-subscribers" name="subscribers" placeholder="e.g., 383M" inputmode="text">
                         </div>
@@ -143,11 +184,11 @@
                             <label for="youtube-bio">Description / Bio:</label>
                             <textarea id="youtube-bio" name="bio" placeholder="Creator's channel description" rows="3"></textarea>
                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label for="youtube-profilePic">Profile Pic URL:</label>
                             <input type="url" id="youtube-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label for="youtube-coverPhoto">Cover Photo URL:</label>
                             <input type="url" id="youtube-coverPhoto" name="coverPhoto" placeholder="https://..." inputmode="url">
                         </div>
@@ -159,10 +200,10 @@
                            <button type="submit" class="button-primary">Add YouTube Shoutout</button>
                         </div>
                     </form>
-
                     <h5 id="existing-youtube-heading">Existing YouTube Shoutouts</h5>
                     <div id="shoutouts-youtube-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-youtube-heading">
-                        <p>Loading YouTube shoutouts...</p> </div>
+                        <p>Loading YouTube shoutouts...</p>
+                    </div>
                 </div>
 
             </section> </main> <div id="edit-shoutout-modal" class="modal" style="display: none;"
@@ -215,7 +256,7 @@
 
                     <div class="form-actions">
                       <button type="submit" class="button-primary">Save Changes</button>
-                       </div>
+                    </div>
                 </form>
             </div> </div> </div> <script type="module" src="admin.js"></script>
 
