@@ -38,41 +38,45 @@
             <div id="admin-status" class="status-message" role="status" aria-live="polite"></div>
 
             <section class="admin-section" id="profile-management" aria-labelledby="profile-heading">
-                <h3 id="profile-heading">Manage Homepage Profile</h3>
+    <h3 id="profile-heading">Manage Homepage Profile</h3>
 
-                <form id="profile-form">
-                    <div class="form-group">
-                        <label for="profile-pic-url">Profile Picture URL:</label>
-                        <div class="input-with-preview"> <input type="url" id="profile-pic-url" name="profilePicUrl" placeholder="https://..." inputmode="url">
-                            <img src="path/to/placeholder-image.png"
-                                 alt="Profile picture preview"
-                                 class="pfp-preview-img"
-                                 id="admin-pfp-preview"
-                                 onerror="this.onerror=null; this.src='path/to/error-placeholder.png';"
-                                 style="display: none;" >
-                        </div>
-                    </div>
+    <form id="profile-form">
+        <div class="form-group">
+            <label for="profile-username">Username:</label>
+            <input type="text" id="profile-username" name="username" placeholder="Enter homepage username">
+        </div>
+        <div class="form-group">
+            <label for="profile-pic-url">Profile Picture URL:</label>
+            <div class="input-with-preview"> <input type="url" id="profile-pic-url" name="profilePicUrl" placeholder="https://..." inputmode="url">
+                <img src="path/to/placeholder-image.png"
+                     alt="Profile picture preview"
+                     class="pfp-preview-img"
+                     id="admin-pfp-preview"
+                     onerror="this.onerror=null; this.src='path/to/error-placeholder.png';"
+                     style="display: none;" >
+            </div>
+        </div>
 
-                    <div class="form-group">
-                        <label for="profile-bio">Bio:</label>
-                        <textarea id="profile-bio" name="bio" rows="4" placeholder="Enter profile bio text..."></textarea>
-                    </div>
+        <div class="form-group">
+            <label for="profile-bio">Bio:</label>
+            <textarea id="profile-bio" name="bio" rows="4" placeholder="Enter profile bio text..."></textarea>
+        </div>
 
-                    <div class="form-group">
-                        <label for="profile-status">Status:</label>
-                        <select id="profile-status" name="status">
-                            <option value="online">Online (🟢)</option>
-                            <option value="away">Away (🟡)</option>
-                            <option value="offline">Offline (🔴)</option>
-                            </select>
-                    </div>
+        <div class="form-group">
+            <label for="profile-status">Status:</label>
+            <select id="profile-status" name="status">
+                <option value="online">Online (🟢)</option>
+                <option value="away">Away (🟡)</option>
+                <option value="offline">Offline (🔴)</option>
+                </select>
+        </div>
 
-                    <div class="form-actions">
-                        <button type="submit" id="save-profile-button" class="button-primary">Save Profile Changes</button>
-                    </div>
-                </form>
-                 <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
-            </section>
+        <div class="form-actions">
+            <button type="submit" id="save-profile-button" class="button-primary">Save Profile Changes</button>
+        </div>
+    </form>
+     <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
+</section>
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
