@@ -5,213 +5,219 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Creator Shoutouts</title>
     <link rel="stylesheet" href="admin.css">
-</head>
+    </head>
 <body class="dark-mode"> <div class="container">
         <h1>Admin Panel</h1>
 
-        <section id="login-section">
-            <h2>Admin Login</h2>
+        <section id="login-section" aria-labelledby="login-heading">
+            <h2 id="login-heading">Admin Login</h2>
             <form id="login-form">
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" required>
+                    <input type="email" id="email" name="email" required autocomplete="username">
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" required>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
                 </div>
-                 <button type="submit" id="login-button" class="button-primary">Login</button>
+                <div class="form-actions"> <button type="submit" id="login-button" class="button-primary">Login</button>
+                </div>
             </form>
-             <div id="auth-status" class="status-message"></div> </section>
+            <div id="auth-status" class="status-message" role="alert" aria-live="polite"></div>
+        </section>
 
-        <section id="admin-content" style="display: none;">
-            <header class="admin-header">
+        <main id="admin-content" style="display: none;" tabindex="-1"> <header class="admin-header">
                 <h2>Manage Content</h2>
-                <span id="admin-greeting"></span>
-                <button id="logout-button">Logout</button>
-            </header>
+                <span id="admin-greeting" aria-live="polite"></span> <button type="button" id="logout-button">Logout</button> </header>
 
-            <div id="admin-status" class="status-message"></div>
+            <div id="admin-status" class="status-message" role="status" aria-live="polite"></div>
 
-            <section class="admin-section" id="creator-shoutouts">
-                <h3>Creator Shoutouts</h3>
+            <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
+                <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
-                <div class="shoutouts-platform-container">
-                    <h4>TikTok</h4>
-                    <form id="add-shoutout-tiktok-form">
-                        <h5>Add New TikTok Shoutout</h5>
-                         <div class="form-group">
-                            <label for="tiktok-username">Username (@handle):</label>
-                            <input type="text" id="tiktok-username" required placeholder="e.g., mrbeast">
+                <div class="shoutouts-platform-container" aria-labelledby="tiktok-heading">
+                    <h4 id="tiktok-heading">TikTok</h4>
+                    <form id="add-shoutout-tiktok-form" aria-labelledby="add-tiktok-heading">
+                        <h5 id="add-tiktok-heading">Add New TikTok Shoutout</h5>
+                        <div class="form-group">
+                            <label for="tiktok-username">Username (without @):</label>
+                            <input type="text" id="tiktok-username" name="username" required placeholder="e.g., mrbeast">
                         </div>
                         <div class="form-group">
                             <label for="tiktok-nickname">Nickname:</label>
-                            <input type="text" id="tiktok-nickname" required placeholder="e.g., MrBeast">
+                            <input type="text" id="tiktok-nickname" name="nickname" required placeholder="e.g., MrBeast">
                         </div>
                         <div class="form-group">
                             <label for="tiktok-order">Display Order:</label>
-                            <input type="number" id="tiktok-order" min="0" required placeholder="e.g., 1">
+                            <input type="number" id="tiktok-order" name="order" min="0" step="1" required placeholder="e.g., 1">
                         </div>
                         <div class="form-group">
-                            <label for="tiktok-followers">Followers:</label>
-                            <input type="text" id="tiktok-followers" placeholder="e.g., 115.2M">
+                            <label for="tiktok-followers">Followers (e.g., 10M, 500K):</label>
+                            <input type="text" id="tiktok-followers" name="followers" placeholder="e.g., 115.2M" inputmode="text">
                         </div>
                         <div class="form-group">
                             <label for="tiktok-bio">Bio:</label>
-                            <textarea id="tiktok-bio" placeholder="Creator's bio text"></textarea>
+                            <textarea id="tiktok-bio" name="bio" placeholder="Creator's bio text" rows="3"></textarea>
                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label for="tiktok-profilePic">Profile Pic URL:</label>
-                            <input type="url" id="tiktok-profilePic" placeholder="https://...">
+                            <input type="url" id="tiktok-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
                         </div>
                         <div class="form-group checkbox-group">
-                           <input type="checkbox" id="tiktok-isVerified">
+                           <input type="checkbox" id="tiktok-isVerified" name="isVerified" value="true">
                            <label for="tiktok-isVerified">Is Verified?</label>
                         </div>
-                        <button type="submit" class="button-primary">Add TikTok Shoutout</button>
+                        <div class="form-actions">
+                           <button type="submit" class="button-primary">Add TikTok Shoutout</button>
+                        </div>
                     </form>
 
-                    <h5>Existing TikTok Shoutouts</h5>
-                    <div id="shoutouts-tiktok-list-admin" class="list-container-admin">
-                        </div>
+                    <h5 id="existing-tiktok-heading">Existing TikTok Shoutouts</h5>
+                    <div id="shoutouts-tiktok-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tiktok-heading">
+                        <p>Loading TikTok shoutouts...</p> </div>
                 </div>
 
-                <div class="shoutouts-platform-container">
-                    <h4>Instagram</h4>
-                     <form id="add-shoutout-instagram-form">
-                        <h5>Add New Instagram Shoutout</h5>
+                <div class="shoutouts-platform-container" aria-labelledby="instagram-heading">
+                    <h4 id="instagram-heading">Instagram</h4>
+                     <form id="add-shoutout-instagram-form" aria-labelledby="add-instagram-heading">
+                        <h5 id="add-instagram-heading">Add New Instagram Shoutout</h5>
                          <div class="form-group">
                             <label for="instagram-username">Username:</label>
-                            <input type="text" id="instagram-username" required placeholder="e.g., mrbeast">
+                            <input type="text" id="instagram-username" name="username" required placeholder="e.g., mrbeast">
                         </div>
                         <div class="form-group">
                             <label for="instagram-nickname">Nickname:</label>
-                            <input type="text" id="instagram-nickname" required placeholder="e.g., MrBeast">
+                            <input type="text" id="instagram-nickname" name="nickname" required placeholder="e.g., MrBeast">
                         </div>
                         <div class="form-group">
                             <label for="instagram-order">Display Order:</label>
-                            <input type="number" id="instagram-order" min="0" required placeholder="e.g., 1">
+                            <input type="number" id="instagram-order" name="order" min="0" step="1" required placeholder="e.g., 1">
                         </div>
                         <div class="form-group">
-                            <label for="instagram-followers">Followers:</label>
-                            <input type="text" id="instagram-followers" placeholder="e.g., 67.2M">
+                            <label for="instagram-followers">Followers (e.g., 10M, 500K):</label>
+                            <input type="text" id="instagram-followers" name="followers" placeholder="e.g., 67.2M" inputmode="text">
                         </div>
                         <div class="form-group">
                             <label for="instagram-bio">Bio:</label>
-                            <textarea id="instagram-bio" placeholder="Creator's bio text"></textarea>
-                        </div>
-                         <div class="form-group">
-                            <label for="instagram-profilePic">Profile Pic URL:</label>
-                            <input type="url" id="instagram-profilePic" placeholder="https://...">
-                        </div>
-                        <div class="form-group checkbox-group">
-                           <input type="checkbox" id="instagram-isVerified">
-                           <label for="instagram-isVerified">Is Verified?</label>
-                        </div>
-                        <button type="submit" class="button-primary">Add Instagram Shoutout</button>
-                    </form>
-
-                    <h5>Existing Instagram Shoutouts</h5>
-                    <div id="shoutouts-instagram-list-admin" class="list-container-admin">
-                        </div>
-                </div>
-
-                <div class="shoutouts-platform-container">
-                    <h4>YouTube</h4>
-                     <form id="add-shoutout-youtube-form">
-                        <h5>Add New YouTube Shoutout</h5>
-                         <div class="form-group">
-                            <label for="youtube-username">Username / Handle (@handle):</label>
-                            <input type="text" id="youtube-username" required placeholder="e.g., MrBeast">
+                            <textarea id="instagram-bio" name="bio" placeholder="Creator's bio text" rows="3"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="youtube-nickname">Nickname:</label>
-                            <input type="text" id="youtube-nickname" required placeholder="e.g., MrBeast">
+                            <label for="instagram-profilePic">Profile Pic URL:</label>
+                            <input type="url" id="instagram-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
+                        </div>
+                        <div class="form-group checkbox-group">
+                           <input type="checkbox" id="instagram-isVerified" name="isVerified" value="true">
+                           <label for="instagram-isVerified">Is Verified?</label>
+                        </div>
+                        <div class="form-actions">
+                           <button type="submit" class="button-primary">Add Instagram Shoutout</button>
+                        </div>
+                    </form>
+
+                    <h5 id="existing-instagram-heading">Existing Instagram Shoutouts</h5>
+                     <div id="shoutouts-instagram-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-instagram-heading">
+                        <p>Loading Instagram shoutouts...</p> </div>
+                </div>
+
+                <div class="shoutouts-platform-container" aria-labelledby="youtube-heading">
+                    <h4 id="youtube-heading">YouTube</h4>
+                    <form id="add-shoutout-youtube-form" aria-labelledby="add-youtube-heading">
+                         <h5 id="add-youtube-heading">Add New YouTube Shoutout</h5>
+                         <div class="form-group">
+                            <label for="youtube-username">Handle (@handle):</label>
+                            <input type="text" id="youtube-username" name="username" required placeholder="e.g., MrBeast">
+                        </div>
+                        <div class="form-group">
+                            <label for="youtube-nickname">Channel Name / Nickname:</label>
+                            <input type="text" id="youtube-nickname" name="nickname" required placeholder="e.g., MrBeast">
                         </div>
                         <div class="form-group">
                             <label for="youtube-order">Display Order:</label>
-                            <input type="number" id="youtube-order" min="0" required placeholder="e.g., 1">
+                            <input type="number" id="youtube-order" name="order" min="0" step="1" required placeholder="e.g., 1">
                         </div>
                          <div class="form-group">
-                            <label for="youtube-subscribers">Subscribers:</label>
-                            <input type="text" id="youtube-subscribers" placeholder="e.g., 383M">
+                            <label for="youtube-subscribers">Subscribers (e.g., 10M, 500K):</label>
+                            <input type="text" id="youtube-subscribers" name="subscribers" placeholder="e.g., 383M" inputmode="text">
                         </div>
                         <div class="form-group">
-                            <label for="youtube-bio">Bio:</label>
-                            <textarea id="youtube-bio" placeholder="Creator's channel description"></textarea>
+                            <label for="youtube-bio">Description / Bio:</label>
+                            <textarea id="youtube-bio" name="bio" placeholder="Creator's channel description" rows="3"></textarea>
                         </div>
                          <div class="form-group">
                             <label for="youtube-profilePic">Profile Pic URL:</label>
-                            <input type="url" id="youtube-profilePic" placeholder="https://...">
+                            <input type="url" id="youtube-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
                         </div>
                          <div class="form-group">
                             <label for="youtube-coverPhoto">Cover Photo URL:</label>
-                            <input type="url" id="youtube-coverPhoto" placeholder="https://...">
+                            <input type="url" id="youtube-coverPhoto" name="coverPhoto" placeholder="https://..." inputmode="url">
                         </div>
                         <div class="form-group checkbox-group">
-                           <input type="checkbox" id="youtube-isVerified">
+                           <input type="checkbox" id="youtube-isVerified" name="isVerified" value="true">
                            <label for="youtube-isVerified">Is Verified?</label>
                         </div>
-                        <button type="submit" class="button-primary">Add YouTube Shoutout</button>
+                        <div class="form-actions">
+                           <button type="submit" class="button-primary">Add YouTube Shoutout</button>
+                        </div>
                     </form>
 
-                    <h5>Existing YouTube Shoutouts</h5>
-                    <div id="shoutouts-youtube-list-admin" class="list-container-admin">
+                    <h5 id="existing-youtube-heading">Existing YouTube Shoutouts</h5>
+                    <div id="shoutouts-youtube-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-youtube-heading">
+                        <p>Loading YouTube shoutouts...</p> </div>
+                </div>
+
+            </section> </main> <div id="edit-shoutout-modal" class="modal" style="display: none;"
+             role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading">
+
+            <div class="modal-content">
+                <button type="button" class="close-button" id="cancel-edit-button" aria-label="Close dialog">&times;</button>
+                <h2 id="edit-modal-heading">Edit Shoutout</h2>
+
+                <form id="edit-shoutout-form" data-doc-id="" data-platform="">
+                    <div class="form-group">
+                        <label for="edit-username">Username / Handle:</label>
+                        <input type="text" id="edit-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-nickname">Nickname:</label>
+                        <input type="text" id="edit-nickname" name="nickname" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="edit-order">Order:</label>
+                        <input type="number" id="edit-order" name="order" min="0" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-bio">Bio:</label>
+                        <textarea id="edit-bio" name="bio" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profilePic">Profile Pic URL:</label>
+                        <input type="url" id="edit-profilePic" name="profilePic" inputmode="url">
+                    </div>
+                     <div class="form-group checkbox-group">
+                        <input type="checkbox" id="edit-isVerified" name="isVerified" value="true">
+                        <label for="edit-isVerified">Is Verified?</label>
+                    </div>
+
+                    <div id="edit-platform-specific">
+                        <div class="form-group edit-followers-group" style="display: none;">
+                            <label for="edit-followers">Followers:</label>
+                            <input type="text" id="edit-followers" name="followers" inputmode="text">
                         </div>
-                </div>
-
-            </section> </section> <div id="edit-shoutout-modal" class="modal" style="display: none;"> <div class="modal-content">
-            <span class="close-button" id="cancel-edit-button">&times;</span>
-            <h2>Edit Shoutout</h2>
-
-            <form id="edit-shoutout-form" data-doc-id="" data-platform="">
-                <div class="form-group">
-                    <label for="edit-username">Username / Handle:</label>
-                    <input type="text" id="edit-username" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-nickname">Nickname:</label>
-                    <input type="text" id="edit-nickname" required>
-                </div>
-                 <div class="form-group">
-                    <label for="edit-order">Order:</label>
-                    <input type="number" id="edit-order" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-bio">Bio:</label>
-                    <textarea id="edit-bio"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="edit-profilePic">Profile Pic URL:</label>
-                    <input type="url" id="edit-profilePic">
-                </div>
-                 <div class="form-group checkbox-group">
-                    <input type="checkbox" id="edit-isVerified">
-                    <label for="edit-isVerified">Is Verified?</label>
-                </div>
-
-                <div id="edit-platform-specific">
-                    <div class="form-group edit-followers-group" style="display: none;">
-                        <label for="edit-followers">Followers:</label>
-                        <input type="text" id="edit-followers">
+                        <div class="form-group edit-subscribers-group" style="display: none;">
+                              <label for="edit-subscribers">Subscribers:</label>
+                              <input type="text" id="edit-subscribers" name="subscribers" inputmode="text">
+                        </div>
+                        <div class="form-group edit-coverphoto-group" style="display: none;">
+                              <label for="edit-coverPhoto">Cover Photo URL:</label>
+                              <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
+                        </div>
                     </div>
-                    <div class="form-group edit-subscribers-group" style="display: none;">
-                         <label for="edit-subscribers">Subscribers:</label>
-                         <input type="text" id="edit-subscribers">
-                    </div>
-                    <div class="form-group edit-coverphoto-group" style="display: none;">
-                         <label for="edit-coverPhoto">Cover Photo URL:</label>
-                         <input type="url" id="edit-coverPhoto">
-                    </div>
-                </div>
 
-                <div class="form-actions">
-                  <button type="submit" class="button-primary">Save Changes</button>
-                  </div>
-            </form>
-          </div>
-        </div>
-        </div> <script type="module" src="admin.js"></script>
+                    <div class="form-actions">
+                      <button type="submit" class="button-primary">Save Changes</button>
+                       </div>
+                </form>
+            </div> </div> </div> <script type="module" src="admin.js"></script>
 
 </body>
 </html>
