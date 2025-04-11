@@ -471,6 +471,41 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     opacity: 0.9;
 }
 
+/* ======================== */
+/* Input with Preview Styles*/ /* ADDED FOR PROFILE PREVIEW */
+/* ======================== */
+
+.input-with-preview {
+    display: flex;
+    align-items: center; /* Vertically center input and preview */
+    gap: 10px; /* Space between input and preview */
+}
+
+.input-with-preview input { /* Target general input within */
+    flex-grow: 1; /* Allow input to take available space */
+}
+
+/* === UPDATED Rule for Admin Profile Picture Preview === */
+.pfp-preview-img {
+    width: 40px;  /* Reduced size - Adjust if you want different */
+    height: 40px; /* Reduced size - Keep equal to width for circle */
+    border-radius: 50%; /* Makes it circular */
+    object-fit: cover; /* Ensures image covers the area well */
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg-color); /* BG for when no image is loaded */
+    vertical-align: middle; /* Helps alignment if not using flex */
+    flex-shrink: 0; /* Prevents shrinking inside the flex container */
+    transition: opacity 0.3s ease; /* Keep transition if you like */
+}
+
+/* Style for when the input causes an image load error (optional) */
+.input-with-preview input.input-error {
+    border-color: var(--color-danger); /* Use your error color */
+    box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); /* Error glow */
+}
+/* Define --color-danger-rgb if you haven't already */
+:root { --color-danger-rgb: 229, 57, 53; }
+
 
 /* ======================== */
 /* Edit Modal Styles        */
