@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme */
+/* admin.css - Futuristic Theme with Apple-Inspired Responsive Login */
 
 /* ======================== */
 /* Theme Variables          */
@@ -15,53 +15,53 @@
     --transition-timing: ease-in-out;
 
     /* --- Light Mode Colors --- */
-    --light-bg: #f5f7fa;          /* Very light grey background */
-    --light-content-bg: #ffffff;   /* White content area */
-    --light-text: #1a1c20;         /* Dark text */
-    --light-secondary-text: #5a6472; /* Muted secondary text */
-    --light-border: #d1d9e6;       /* Light border */
+    --light-bg: #f5f7fa;
+    --light-content-bg: #ffffff;
+    --light-text: #1a1c20;
+    --light-secondary-text: #5a6472;
+    --light-border: #d1d9e6;
     --light-input-bg: #ffffff;
     --light-input-border: #ced4da;
-    --light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --light-accent: #007bff;        /* Primary accent (Blue) */
+    --light-shadow: rgba(0, 0, 0, 0.08);
+    --light-accent: #007bff;
     --light-accent-glow: rgba(0, 123, 255, 0.3);
     --light-accent-hover: #0056b3;
     --light-link: #007bff;
-    --light-success-bg: #e0f8e9;    /* Lighter success */
+    --light-success-bg: #e0f8e9;
     --light-success-text: #0a5c28;
-    --light-error-bg: #fde2e4;      /* Lighter error */
+    --light-error-bg: #fde2e4;
     --light-error-text: #8f1a29;
     --light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    --light-modal-backdrop: rgba(245, 247, 250, 0.7); /* Light backdrop with blur */
+    --light-modal-backdrop: rgba(245, 247, 250, 0.7);
 
     /* --- Dark Mode Colors (Futuristic) --- */
-    --dark-bg: #0D0F12;            /* Very dark, slightly blue background */
-    --dark-content-bg: #1A1C20;     /* Darker content area */
-    --dark-text: #E0E5EC;           /* Off-white text */
-    --dark-secondary-text: #8a94a6;  /* Greyish-blue secondary text */
-    --dark-border: #2f3542;         /* Dark subtle border */
-    --dark-input-bg: #16181c;        /* Slightly different dark input bg */
+    --dark-bg: #0D0F12;
+    --dark-content-bg: #1A1C20;
+    --dark-text: #E0E5EC;
+    --dark-secondary-text: #8a94a6;
+    --dark-border: #2f3542;
+    --dark-input-bg: #16181c;
     --dark-input-border: #3a4150;
-    --dark-shadow: rgba(0, 0, 0, 0.2); /* Darker shadow */
-    --dark-accent: #00FFFF;         /* Cyan accent */
+    --dark-shadow: rgba(0, 0, 0, 0.2);
+    --dark-accent: #00FFFF;
     --dark-accent-glow: rgba(0, 255, 255, 0.3);
     --dark-accent-hover: #00cccc;
-    --dark-link: #33ffff;           /* Lighter cyan for links */
-    --dark-success-bg: #103d31;     /* Dark green success */
+    --dark-link: #33ffff;
+    --dark-success-bg: #103d31;
     --dark-success-text: #82e0c2;
-    --dark-error-bg: #4d1f24;       /* Dark red error */
+    --dark-error-bg: #4d1f24;
     --dark-error-text: #f5a7af;
     --dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23E0E5EC' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    --dark-modal-backdrop: rgba(13, 15, 18, 0.7); /* Dark backdrop with blur */
+    --dark-modal-backdrop: rgba(13, 15, 18, 0.7);
 
     /* --- Alert/Action Colors (Consistent) --- */
-    --color-danger: #e53935;        /* Vibrant Red */
+    --color-danger: #e53935;
     --color-danger-hover: #c62828;
     --color-danger-glow: rgba(229, 57, 53, 0.3);
-    --color-success-action: #28a745; /* Vibrant Green */
+    --color-success-action: #28a745;
     --color-success-action-hover: #218838;
     --color-success-action-glow: rgba(40, 167, 69, 0.3);
-    --color-secondary-action: #6c757d; /* Grey */
+    --color-secondary-action: #6c757d;
     --color-secondary-action-hover: #5a6268;
     --color-secondary-action-glow: rgba(108, 117, 125, 0.3);
 
@@ -120,54 +120,61 @@ body {
     font-family: var(--system-font-stack);
     font-size: var(--base-font-size);
     margin: 0;
-    padding: 30px; /* Keep padding for overall layout */
+    padding: 20px; /* Consistent padding for all sizes */
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: var(--line-height);
     transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Add display flex to help center the login section if needed */
     display: flex;
-    justify-content: center; /* Centers flex items horizontally */
-    align-items: center; /* Centers flex items vertically */
-    min-height: 100vh; /* Ensure body takes full height */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Adjust alignment for smaller screens inside media queries if needed */
 }
 
-/* Container for login */
+/* Container for login/admin content */
 .container {
     width: 100%; /* Allow container to take width */
-    max-width: 400px; /* Typical width for a login box */
-    margin: auto; /* Centers container */
+    max-width: 400px; /* Default narrow width for login */
+    margin: auto;
     background: var(--content-bg);
-    padding: 40px 30px; /* Adjust padding */
-    border-radius: var(--border-radius-md); /* Use existing border radius */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Softer shadow */
-    border: 1px solid var(--border-color); /* Keep border */
-    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
+    padding: 40px 30px;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing), max-width var(--transition-speed) var(--transition-timing);
 }
 
-h1 {
-    /* Keep H1 styling for the main Admin Panel title if used elsewhere */
-    text-align: center;
-    margin-bottom: 40px;
-    margin-top: 0;
-    font-size: 2.2rem;
+/* Make container wider when admin content is shown */
+#admin-content:not([style*="display: none"]) ~ .container, /* If admin-content is visible */
+body:not(:has(#login-section[style*="display: block"])) .container { /* If login section is hidden */
+    max-width: 1000px; /* Wider for admin panel */
 }
-/* General H2-H5 styles */
-h2, h3, h4, h5 {
+
+
+/* General Heading Styles */
+h1, h2, h3, h4, h5 {
     color: var(--text-color);
-    margin-top: 1.8em;
+    margin-top: 1.5em; /* Adjusted margin */
     margin-bottom: 1em;
-    font-weight: 600; /* Slightly bolder */
-    letter-spacing: 0.5px; /* Subtle spacing */
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
-/* Specific H2-H5 styles for content */
-h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; }
-h3 { color: var(--accent-color); font-size: 1.5rem; margin-top: 1.8em; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; opacity: 0.9; }
-h4 { font-size: 1.2rem; color: var(--text-color); opacity: 0.95; margin-top: 30px; margin-bottom: 15px; }
-h5 { font-size: 1rem; color: var(--secondary-text); margin-top: 25px; margin-bottom: 10px; font-weight: 500; }
 
+h1 { /* Style for main Admin Panel title if used */
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 0;
+    font-size: 2rem; /* Adjusted size */
+}
+
+/* Headings within admin content */
+#admin-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; margin-top: 0;} /* Reset top margin for section titles */
+#admin-content h3 { color: var(--accent-color); font-size: 1.5rem; margin-top: 1.8em; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; opacity: 0.9; }
+#admin-content h4 { font-size: 1.2rem; color: var(--text-color); opacity: 0.95; margin-top: 30px; margin-bottom: 15px; }
+#admin-content h5 { font-size: 1rem; color: var(--secondary-text); margin-top: 25px; margin-bottom: 10px; font-weight: 500; }
 
 a {
     color: var(--link-color);
@@ -182,47 +189,46 @@ a:hover {
 /* ======================== */
 /* Login Section (Apple-Inspired) */
 /* ======================== */
-
 #login-section {
-    margin-top: 0; /* Remove top margin */
-    padding: 0; /* Remove padding as container handles it */
-    border: none; /* Remove border */
-    box-shadow: none; /* Remove shadow */
-    background-color: transparent; /* Make section transparent */
-    width: 100%; /* Take full width of the container */
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    width: 100%;
 }
 
 #login-section h2 {
     text-align: center;
     border-bottom: none;
-    margin-bottom: 35px;
-    font-size: 1.9rem; /* Slightly larger title */
-    font-weight: 600; /* Apple uses bolder headings */
-    color: var(--text-color); /* Use theme text color */
-    margin-top: 0; /* Remove potential inherited margin */
+    margin-bottom: 30px;
+    font-size: 1.8rem; /* Adjusted size */
+    font-weight: 600;
+    color: var(--text-color);
+    margin-top: 0; /* Reset margin */
 }
 
 #login-section .form-group {
-    margin-bottom: 25px; /* Increase spacing */
-    position: relative; /* Needed for potential floating labels */
+    margin-bottom: 20px; /* Adjusted spacing */
+    position: relative;
 }
 
 #login-section label {
     display: block;
-    margin-bottom: 6px;
-    font-weight: 500; /* Standard weight */
-    color: var(--secondary-text); /* Use secondary text color */
-    font-size: 0.85em; /* Slightly smaller label */
-    text-transform: none; /* Apple often uses sentence case labels */
-    letter-spacing: 0; /* Remove letter spacing */
+    margin-bottom: 5px; /* Adjusted spacing */
+    font-weight: 500;
+    color: var(--secondary-text);
+    font-size: 0.8rem; /* Adjusted size */
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 #login-section input[type="email"],
 #login-section input[type="password"] {
     width: 100%;
-    padding: 14px 16px; /* Apple-like padding */
+    padding: 12px 14px; /* Adjusted padding */
     border: 1px solid var(--input-border-color);
-    border-radius: var(--border-radius-md); /* More rounded corners */
+    border-radius: var(--border-radius-md);
     font-size: 1rem;
     font-family: inherit;
     background-color: var(--input-bg-color);
@@ -233,78 +239,51 @@ a:hover {
 
 #login-section input:focus {
     outline: none;
-    border-color: #007AFF; /* Use Apple's standard blue for focus universally */
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3); /* Use light mode glow */
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
 }
 
-/* Style placeholder text */
 #login-section ::placeholder {
     color: var(--secondary-text);
     opacity: 0.8;
 }
 
-/* Login Button Style */
 #login-section .form-actions {
-    margin-top: 30px;
-    text-align: center; /* Center button */
+    margin-top: 25px; /* Adjusted spacing */
+    text-align: center;
     padding-top: 0;
     border-top: none;
 }
 
 #login-button {
-    /* Use Apple's standard blue */
     background: #007AFF;
     color: #ffffff;
-    padding: 14px 25px; /* Adjust padding */
+    padding: 12px 25px; /* Adjusted padding */
     border: none;
-    border-radius: var(--border-radius-md); /* More rounded */
+    border-radius: var(--border-radius-md);
     cursor: pointer;
     font-size: 1rem;
-    font-weight: 500; /* Medium weight */
+    font-weight: 500;
     letter-spacing: 0;
     transition: background-color var(--transition-speed) var(--transition-timing);
-    width: 100%; /* Make button full width */
-    box-shadow: none; /* Remove gradient/shadow */
-    margin: 0; /* Remove margins */
-    /* Override any general button styles */
+    width: 100%;
+    box-shadow: none;
+    margin: 0;
     transform: none;
 }
+#login-button:hover { background: #0056b3; transform: none; box-shadow: none; }
+#login-button:active { background: #004085; transform: none; }
+#login-button:disabled { background-color: #aeb5bc; opacity: 0.7; cursor: not-allowed; }
 
-#login-button:hover {
-    background: #0056b3; /* Darker blue on hover */
-    transform: none; /* Remove transform */
-    box-shadow: none; /* Remove glow */
-}
-
-#login-button:active {
-     background: #004085; /* Even darker blue */
-     transform: none;
-}
-
-#login-button:disabled {
-    background-color: #aeb5bc; /* Grey out when disabled */
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-/* Auth Status for Login */
-#auth-status {
-     margin-top: 20px; /* Add space above status */
-     /* Inherits .status-message styles, ensure visibility */
-}
-
+#auth-status { margin-top: 15px; /* Adjusted spacing */ }
 
 /* ======================== */
 /* Admin Content Area       */
 /* ======================== */
-/* Adjust admin content container if needed, or remove if only login is shown */
-/* If admin content shares the same .container, you might need specific classes */
 #admin-content {
-    /* If #admin-content is inside the same centered .container, no extra centering needed */
-    margin-top: 30px;
-    padding-top: 20px;
-    /* Ensure it's hidden by default if login shows first */
-    /* display: none; */ /* Control via JS */
+    margin-top: 0; /* Remove margin if container provides spacing */
+    padding-top: 10px; /* Add small padding */
+    /* display: none; */ /* Controlled by JS */
 }
 
 .admin-header {
@@ -312,70 +291,71 @@ a:hover {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--accent-color); /* Accent border */
-    gap: 20px;
+    margin-bottom: 25px; /* Adjusted spacing */
+    padding-bottom: 15px; /* Adjusted spacing */
+    border-bottom: 2px solid var(--accent-color);
+    gap: 15px; /* Adjusted gap */
 }
-.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 2rem; }
-#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 20px; white-space: nowrap; font-size: 0.95em; }
+.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 1.8rem; } /* Adjusted size */
+#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 15px; white-space: nowrap; font-size: 0.9em; } /* Adjusted size */
 #logout-button { flex-shrink: 0; }
 
 .admin-section {
-    margin-bottom: 45px;
-    padding: 30px;
+    margin-bottom: 35px; /* Adjusted spacing */
+    padding: 25px; /* Adjusted padding */
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Use main bg for contrast */
+    background-color: var(--bg-color);
 }
-.admin-section:last-of-type { margin-bottom: 15px; }
-
+.admin-section:last-of-type { margin-bottom: 10px; }
 
 /* ======================== */
-/* Form Element Styles (General - for admin content) */
+/* Form Element Styles (Admin) */
 /* ======================== */
-.form-group {
-    margin-bottom: 20px;
-}
-.checkbox-group label {
-    display: inline-flex; /* Align label and checkbox */
+#admin-content .form-group { margin-bottom: 18px; } /* Adjusted spacing */
+
+#admin-content .checkbox-group label {
+    display: inline-flex;
     align-items: center;
     margin-bottom: 0;
     margin-left: 8px;
     font-weight: normal;
-    color: var(--text-color); /* Normal text color for checkbox label */
+    color: var(--text-color);
     cursor: pointer;
 }
-.checkbox-group input[type="checkbox"] {
+#admin-content .checkbox-group input[type="checkbox"] {
     margin-bottom: 0;
-    margin-right: 0; /* Remove default margin */
-    width: 1.1em; /* Slightly larger checkbox */
+    margin-right: 0;
+    width: 1.1em;
     height: 1.1em;
-    accent-color: var(--accent-color); /* Modern way to color checkboxes */
+    accent-color: var(--accent-color);
     cursor: pointer;
 }
 
-/* General label style (excluding login) */
-label:not(#login-section label) {
+#admin-content label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 500; /* Slightly lighter label */
+    margin-bottom: 6px; /* Adjusted spacing */
+    font-weight: 500;
     color: var(--secondary-text);
-    font-size: 0.9em;
-    text-transform: uppercase; /* Uppercase labels */
+    font-size: 0.85em; /* Adjusted size */
+    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* General input/select/textarea style (excluding login) */
-input:not(#login-section input),
-select,
-textarea {
+#admin-content input[type="email"],
+#admin-content input[type="password"],
+#admin-content input[type="text"],
+#admin-content input[type="number"],
+#admin-content input[type="url"],
+#admin-content input[type="datetime-local"],
+#admin-content select,
+#admin-content textarea {
     width: 100%;
-    padding: 12px 15px; /* Increased padding */
+    padding: 10px 12px; /* Adjusted padding */
     border: 1px solid var(--input-border-color);
     border-radius: var(--border-radius-sm);
-    font-size: 1rem;
-    font-family: inherit; /* Ensure consistent font */
+    font-size: 0.95rem; /* Adjusted size */
+    font-family: inherit;
     background-color: var(--input-bg-color);
     color: var(--text-color);
     transition: border-color var(--transition-speed) var(--transition-timing),
@@ -383,100 +363,103 @@ textarea {
                 background-color var(--transition-speed) var(--transition-timing);
 }
 
-input:not(#login-section input):focus, select:focus, textarea:focus {
+#admin-content input:focus,
+#admin-content select:focus,
+#admin-content textarea:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px var(--accent-glow-color); /* Glow effect */
+    box-shadow: 0 0 0 3px var(--accent-glow-color);
 }
 
-textarea { min-height: 120px; resize: vertical; }
-select {
+#admin-content textarea { min-height: 100px; resize: vertical; } /* Adjusted height */
+#admin-content select {
     appearance: none;
     background-image: var(--select-arrow);
     background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 16px 12px;
-    padding-right: 3rem;
+    background-position: right 0.8rem center; /* Adjusted position */
+    background-size: 14px 10px; /* Adjusted size */
+    padding-right: 2.5rem; /* Adjusted padding */
 }
 
-/* Style placeholder text (general) */
-::placeholder { color: var(--secondary-text); opacity: 0.6; }
-
+#admin-content ::placeholder { color: var(--secondary-text); opacity: 0.6; }
 
 /* ======================== */
-/* Button Styles (General - Excluding Login Button) */
+/* Button Styles (Admin)    */
 /* ======================== */
-button:not(#login-button), .button-primary:not(#login-button) {
-    background: linear-gradient(145deg, var(--accent-color), var(--hover-color)); /* Subtle gradient */
-    /* Use black text for cyan background for contrast */
-    color: #000000; /* Changed from #ffffff */
-    padding: 12px 22px; /* Larger buttons */
+#admin-content button:not(#login-button),
+#admin-content .button-primary:not(#login-button) {
+    background: linear-gradient(145deg, var(--accent-color), var(--hover-color));
+    color: #000000; /* Black text for cyan */
+    padding: 10px 20px; /* Adjusted padding */
     border: none;
     border-radius: var(--border-radius-sm);
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.95rem; /* Adjusted size */
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: transform var(--transition-speed) var(--transition-timing),
                 box-shadow var(--transition-speed) var(--transition-timing),
                 background var(--transition-speed) var(--transition-timing);
-    margin-right: 12px;
+    margin-right: 10px; /* Adjusted margin */
     margin-top: 8px;
     vertical-align: middle;
     text-decoration: none;
     display: inline-block;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-button:not(#login-button):hover, .button-primary:not(#login-button):hover {
-    transform: translateY(-2px); /* Slight lift */
-    box-shadow: 0 4px 12px -2px var(--accent-glow-color); /* Accent glow on hover */
-    background: linear-gradient(145deg, var(--hover-color), var(--accent-color)); /* Slightly shift gradient */
+#admin-content button:not(#login-button):hover,
+#admin-content .button-primary:not(#login-button):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px -2px var(--accent-glow-color);
+    background: linear-gradient(145deg, var(--hover-color), var(--accent-color));
 }
-button:not(#login-button):active, .button-primary:not(#login-button):active {
-    transform: translateY(0px); /* Push down */
+#admin-content button:not(#login-button):active,
+#admin-content .button-primary:not(#login-button):active {
+    transform: translateY(0px);
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-button:not(#login-button):disabled, .button-primary:not(#login-button):disabled {
+#admin-content button:not(#login-button):disabled,
+#admin-content .button-primary:not(#login-button):disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-    background: var(--secondary-text); /* Muted background when disabled */
+    background: var(--secondary-text);
 }
 
-
-/* Specific Button Colors using action color variables (Excluding login) */
-/* #login-button styling moved to login section */
-
-#logout-button, button.delete-button {
+/* Specific Admin Button Colors */
+#logout-button, #admin-content button.delete-button {
     background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
-    color: #ffffff; /* Ensure white text for red buttons */
+    color: #ffffff;
 }
-#logout-button:hover, button.delete-button:hover {
+#logout-button:hover, #admin-content button.delete-button:hover {
     box-shadow: 0 4px 12px -2px var(--color-danger-glow);
     background: linear-gradient(145deg, var(--color-danger-hover), var(--color-danger));
 }
 
-button.secondary-button, .list-item-admin button, button.edit-button {
+#admin-content button.secondary-button,
+#admin-content .list-item-admin button,
+#admin-content button.edit-button {
     background: linear-gradient(145deg, var(--color-secondary-action), var(--color-secondary-action-hover));
-    color: #ffffff; /* Ensure white text for grey buttons */
+    color: #ffffff;
  }
-button.secondary-button:hover, .list-item-admin button:hover, button.edit-button:hover {
+#admin-content button.secondary-button:hover,
+#admin-content .list-item-admin button:hover,
+#admin-content button.edit-button:hover {
     box-shadow: 0 4px 12px -2px var(--color-secondary-action-glow);
     background: linear-gradient(145deg, var(--color-secondary-action-hover), var(--color-secondary-action));
 }
 
-/* General form actions (excluding login) */
-.form-actions:not(#login-section .form-actions) {
-    margin-top: 25px;
+#admin-content .form-actions {
+    margin-top: 20px; /* Adjusted spacing */
     text-align: right;
-    padding-top: 15px;
-    border-top: 1px solid var(--border-color); /* Separator */
+    padding-top: 10px; /* Adjusted padding */
+    border-top: 1px solid var(--border-color);
 }
 
-.small-button {
-    padding: 6px 12px !important;
-    font-size: 0.85em !important;
+#admin-content .small-button {
+    padding: 5px 10px !important; /* Adjusted padding */
+    font-size: 0.8em !important; /* Adjusted size */
     letter-spacing: 0.3px;
 }
 
@@ -484,56 +467,48 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 /* Status Message Styles    */
 /* ======================== */
 .status-message {
-    margin-top: 25px;
-    margin-bottom: 20px;
-    padding: 15px 20px;
+    margin-top: 20px; /* Adjusted spacing */
+    margin-bottom: 15px; /* Adjusted spacing */
+    padding: 12px 18px; /* Adjusted padding */
     font-weight: 500;
     text-align: center;
     border-radius: var(--border-radius-md);
     border: 1px solid transparent;
-    display: none; /* Hidden by default */
+    display: none;
     clear: both;
-    font-size: 0.95em;
+    font-size: 0.9em; /* Adjusted size */
     transition: background-color var(--transition-speed) var(--transition-timing),
                 color var(--transition-speed) var(--transition-timing),
                 border-color var(--transition-speed) var(--transition-timing);
 }
-/* Show only when it has content */
-.status-message:not(:empty):not(#auth-status) { display: block; }
-/* Login status needs specific handling in JS */
-#auth-status:not(:empty) { display: block; }
-
+.status-message:not(:empty) { display: block; }
 
 .status-message.success {
     color: var(--success-text-color);
     background-color: var(--success-bg-color);
-    border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3); /* Use HSL for border color */
+    border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3);
 }
-
 .status-message.error {
     color: var(--error-text-color);
     background-color: var(--error-bg-color);
-    border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3); /* Use HSL for border color */
+    border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3);
 }
-/* Define HSL hues for easier border calculation */
 :root { --success-hue: 145; --error-hue: 354; }
-
 
 /* ======================== */
 /* Dynamic List Styles      */
 /* ======================== */
 .list-container-admin {
-    margin-top: 20px;
-    max-height: 450px;
+    margin-top: 15px; /* Adjusted spacing */
+    max-height: 400px; /* Adjusted height */
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    padding: 5px; /* Reduce padding here */
-    background-color: var(--bg-color); /* Match main bg */
-    scrollbar-width: thin; /* Firefox scrollbar */
-    scrollbar-color: var(--secondary-text) var(--bg-color); /* Firefox scrollbar */
+    padding: 5px;
+    background-color: var(--bg-color);
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-text) var(--bg-color);
 }
-/* Webkit scrollbar */
 .list-container-admin::-webkit-scrollbar { width: 8px; }
 .list-container-admin::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 4px; }
 .list-container-admin::-webkit-scrollbar-thumb { background-color: var(--secondary-text); border-radius: 4px; border: 2px solid var(--bg-color); }
@@ -541,254 +516,209 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 .list-item-admin {
     display: flex;
     flex-wrap: wrap;
-    align-items: center; /* Center items vertically */
+    align-items: center;
     justify-content: space-between;
-    padding: 18px 20px; /* More vertical padding */
+    padding: 15px 18px; /* Adjusted padding */
     border-bottom: 1px solid var(--border-color);
-    gap: 20px;
+    gap: 15px; /* Adjusted gap */
     transition: background-color var(--transition-speed) var(--transition-timing);
 }
 .list-item-admin:last-child { border-bottom: none; }
-.list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); /* Subtle hover */ }
-/* Define RGB for hover effect */
-:root { --accent-rgb: 0, 255, 255; } /* Default (dark) */
-body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
+.list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); }
+:root { --accent-rgb: 0, 255, 255; }
+body.light-mode { --accent-rgb: 0, 123, 255; }
 
-
-.list-item-admin .item-content {
-    flex-grow: 1;
-    word-break: break-word;
-}
+.list-item-admin .item-content { flex-grow: 1; word-break: break-word; }
 .list-item-admin strong { color: var(--text-color); font-weight: 600; }
-.list-item-admin span { color: var(--secondary-text); font-size: 0.85em; margin-left: 8px;}
-.list-item-admin p { margin: 6px 0; font-size: 0.95em; line-height: 1.5; }
-.list-item-admin small { color: var(--secondary-text); font-size: 0.75em; display: block; margin-top: 4px; }
+.list-item-admin span { color: var(--secondary-text); font-size: 0.8em; margin-left: 6px;} /* Adjusted size/margin */
+.list-item-admin p { margin: 4px 0; font-size: 0.9em; line-height: 1.4;} /* Adjusted size/margin */
+.list-item-admin small { color: var(--secondary-text); font-size: 0.7em; display: block; margin-top: 3px; } /* Adjusted size/margin */
 
+.list-item-admin .item-actions { flex-shrink: 0; display: flex; gap: 8px; align-items: center; } /* Adjusted gap */
 
-.list-item-admin .item-actions {
-    flex-shrink: 0;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-/* Buttons use .small-button class */
-
-
-/* Specific list item content styling (example) */
-.list-item-admin.event-item .item-content strong {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 1.05em;
-    color: var(--accent-color); /* Highlight event title */
-}
+.list-item-admin.event-item .item-content strong { display: block; margin-bottom: 4px; font-size: 1em; color: var(--accent-color); } /* Adjusted size/margin */
 
 /* ======================== */
 /* Creator Shoutouts Section */
 /* ======================== */
-
-.admin-section#creator-shoutouts {
-    /* No specific section styles needed beyond .admin-section */
-}
-
 .shoutouts-platform-container {
-    margin-bottom: 35px;
-    padding: 25px;
+    margin-bottom: 30px; /* Adjusted margin */
+    padding: 20px; /* Adjusted padding */
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--content-bg); /* Use content bg */
+    background-color: var(--content-bg);
 }
-.shoutouts-platform-container:last-of-type {
-    margin-bottom: 0;
-}
+.shoutouts-platform-container:last-of-type { margin-bottom: 0; }
 
 .shoutouts-platform-container h4 {
-    color: var(--accent-color); /* Accent for platform name */
+    color: var(--accent-color);
     margin-top: 0;
     border-bottom: 1px dashed var(--accent-color);
-    padding-bottom: 10px;
-    font-size: 1.3rem;
+    padding-bottom: 8px; /* Adjusted padding */
+    font-size: 1.2rem; /* Adjusted size */
     opacity: 0.9;
 }
 
 /* ======================== */
-/* Input with Preview Styles*/ /* ADDED FOR PROFILE PREVIEW */
+/* Input with Preview Styles*/
 /* ======================== */
+.input-with-preview { display: flex; align-items: center; gap: 10px; }
+.input-with-preview input { flex-grow: 1; }
 
-.input-with-preview {
-    display: flex;
-    align-items: center; /* Vertically center input and preview */
-    gap: 10px; /* Space between input and preview */
-}
-
-.input-with-preview input { /* Target general input within */
-    flex-grow: 1; /* Allow input to take available space */
-}
-
-/* === UPDATED Rule for Admin Profile Picture Preview === */
 .pfp-preview-img {
-    width: 150px;  /* Increased size - Adjust if needed */
-    height: 150px; /* Increased size - Keep equal to width */
-    border-radius: 50%; /* Makes it circular */
-    object-fit: cover; /* Ensures image covers the area well */
+    width: 120px; /* Adjusted size */
+    height: 120px; /* Adjusted size */
+    border-radius: 50%;
+    object-fit: cover;
     border: 1px solid var(--border-color);
-    background-color: var(--input-bg-color); /* BG for when no image is loaded */
-    vertical-align: middle; /* Helps alignment */
-    flex-shrink: 0; /* Prevents shrinking inside the flex container */
+    background-color: var(--input-bg-color);
+    vertical-align: middle;
+    flex-shrink: 0;
     transition: opacity 0.3s ease;
 }
 
-/* Style for when the input causes an image load error (optional) */
 .input-with-preview input.input-error {
-    border-color: var(--color-danger); /* Use your error color */
-    box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); /* Error glow */
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2);
 }
-/* Define --color-danger-rgb if you haven't already */
 :root { --color-danger-rgb: 229, 57, 53; }
-
 
 /* ======================== */
 /* Edit Modal Styles        */
 /* ======================== */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: var(--modal-backdrop-color); /* Themed backdrop */
-  backdrop-filter: blur(5px); /* Frosted glass effect */
-  -webkit-backdrop-filter: blur(5px); /* Safari support */
-  animation: fadeIn 0.3s ease-out; /* Fade in animation */
+  display: none; position: fixed; z-index: 1000;
+  left: 0; top: 0; width: 100%; height: 100%;
+  overflow: auto; background-color: var(--modal-backdrop-color);
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease-out;
 }
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .modal-content {
   background-color: var(--content-bg);
-  margin: 8% auto; /* Adjust vertical margin */
-  padding: 35px 45px; /* More padding */
+  margin: 10vh auto; /* Use vh for vertical margin */
+  padding: 30px 35px; /* Adjusted padding */
   border: 1px solid var(--border-color);
   width: 90%;
-  max-width: 700px; /* Slightly wider max */
+  max-width: 650px; /* Adjusted max-width */
   position: relative;
   border-radius: var(--border-radius-lg);
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); /* Stronger shadow for modal */
-  animation: slideIn 0.4s ease-out; /* Slide in animation */
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
+  animation: slideIn 0.4s ease-out;
 }
-
-@keyframes slideIn {
-  from { transform: translateY(-30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
+@keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 .close-button {
-  color: var(--secondary-text);
-  position: absolute;
-  top: 15px; /* Position adjustment */
-  right: 25px;
-  font-size: 32px;
-  font-weight: bold;
-  line-height: 1;
+  color: var(--secondary-text); position: absolute;
+  top: 12px; /* Adjusted position */
+  right: 20px; /* Adjusted position */
+  font-size: 28px; /* Adjusted size */
+  font-weight: bold; line-height: 1;
   transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
 }
-
-.close-button:hover,
-.close-button:focus {
-  color: var(--text-color);
-  text-decoration: none;
-  cursor: pointer;
-  transform: scale(1.1); /* Slightly enlarge on hover */
+.close-button:hover, .close-button:focus {
+  color: var(--text-color); text-decoration: none; cursor: pointer; transform: scale(1.1);
 }
 
-/* Ensure modal form inherits theme styles */
-#edit-shoutout-form .form-group { margin-bottom: 20px; } /* Consistent spacing */
-/* #edit-shoutout-form label { Already styled globally } */
+#edit-shoutout-form .form-group { margin-bottom: 18px; } /* Adjusted spacing */
 #edit-shoutout-form input[type="text"],
 #edit-shoutout-form input[type="number"],
 #edit-shoutout-form input[type="url"],
-#edit-shoutout-form textarea {
-  /* Inherit from base styles, ensure full width */
-  width: 100%;
-}
-#edit-shoutout-form .checkbox-group label {
-    font-weight: normal; /* Override uppercase */
-    text-transform: none;
-    font-size: 1rem; /* Normal size */
-    letter-spacing: 0;
-}
-#edit-shoutout-form .form-actions {
-    margin-top: 30px; /* More space before modal actions */
-}
+#edit-shoutout-form textarea { width: 100%; }
+
+#edit-shoutout-form .checkbox-group label { font-weight: normal; text-transform: none; font-size: 1rem; letter-spacing: 0; }
+#edit-shoutout-form .form-actions { margin-top: 25px; } /* Adjusted spacing */
 
 /* ======================== */
 /* Responsive Adjustments   */
 /* ======================== */
+
+/* Medium screens (Tablets, smaller laptops) */
+@media (max-width: 1024px) {
+    /* Adjust container width for admin content if needed */
+    #admin-content:not([style*="display: none"]) ~ .container,
+    body:not(:has(#login-section[style*="display: block"])) .container {
+        max-width: 90%; /* Allow more width */
+    }
+}
+
+/* Small screens (Tablets in portrait, large phones) */
 @media (max-width: 768px) {
     body {
         padding: 15px;
-        /* Adjust alignment if needed for smaller screens */
-        align-items: flex-start; /* Align to top on smaller screens */
-        padding-top: 5vh; /* Add some top padding */
+        align-items: flex-start; /* Align content to top */
+        padding-top: 5vh;
     }
     .container {
         padding: 25px 20px;
-        margin: 15px auto;
-        max-width: 90%; /* Allow container to be wider */
+        margin: 0 auto; /* Keep centered horizontally */
+        max-width: 90%; /* Ensure it doesn't touch edges */
     }
-    h1 { font-size: 1.8rem; margin-bottom: 30px;}
-    h2 { font-size: 1.5rem; }
-    #login-section h2 { font-size: 1.7rem; }
+
+    /* Adjust all heading sizes */
+    h1 { font-size: 1.8rem; margin-bottom: 25px;}
+    #admin-content h2, #login-section h2 { font-size: 1.5rem; margin-bottom: 20px; }
+    #admin-content h3 { font-size: 1.3rem; }
+    #admin-content h4 { font-size: 1.1rem; }
+    #admin-content h5 { font-size: 0.95rem; }
 
     /* Admin Content Responsive */
-    .admin-header { flex-direction: column; align-items: flex-start; }
-    .admin-header h2 { margin-bottom: 10px; }
-    #admin-greeting { margin: 10px 0; }
-    .admin-section { padding: 20px; }
+    .admin-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .admin-header h2 { margin-bottom: 8px; font-size: 1.6rem; }
+    #admin-greeting { margin: 8px 0; }
+    .admin-section { padding: 15px; margin-bottom: 25px; }
+    #admin-content .form-actions { text-align: center; }
+    #admin-content .form-actions button { display: block; width: 100%; margin: 10px 0 0 0; } /* Stack buttons */
 
-    /* General form actions responsive */
-    .form-actions:not(#login-section .form-actions) { text-align: center; }
-    .form-actions:not(#login-section .form-actions) button { display: block; width: 100%; margin: 10px 0 0 0; } /* Stack buttons */
+    .list-item-admin { flex-direction: column; align-items: flex-start; padding: 12px 15px; }
+    .list-item-admin .item-actions { margin-top: 10px; width: 100%; justify-content: flex-end; }
 
-    .list-item-admin { flex-direction: column; align-items: flex-start; }
-    .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-end; }
-    .modal-content { margin: 15% auto; padding: 25px 20px; }
+    .modal-content { margin: 10vh auto; padding: 20px 25px; max-width: 90%; }
+    .pfp-preview-img { width: 100px; height: 100px; } /* Smaller preview */
 }
 
+/* Extra small screens (Most phones) */
 @media (max-width: 480px) {
-    h1 { font-size: 1.6rem; }
-    h2 { font-size: 1.3rem; }
-    h3 { font-size: 1.2rem; }
-    #login-section h2 { font-size: 1.5rem; }
-
-    button, .button-primary { padding: 10px 18px; font-size: 0.95rem; }
-    #login-button { padding: 12px 20px; } /* Adjust login button padding */
-
-    input, select, textarea { padding: 10px 12px; font-size: 0.95rem; }
-    #login-section input { padding: 12px 14px; } /* Adjust login input padding */
-
+    body { padding: 10px; padding-top: 3vh;}
     .container { padding: 20px 15px; }
+
+    h1 { font-size: 1.6rem; margin-bottom: 20px;}
+    #admin-content h2, #login-section h2 { font-size: 1.4rem; margin-bottom: 18px;}
+    #admin-content h3 { font-size: 1.2rem; }
+    #admin-content h4 { font-size: 1rem; }
+    #admin-content h5 { font-size: 0.9rem; }
+
+    #login-section label { font-size: 0.75rem; }
+    #login-section input { padding: 10px 12px; font-size: 0.95rem;}
+    #login-button { padding: 10px 18px; font-size: 0.95rem; }
+
+    /* Further reduce padding/font-size for admin inputs/buttons */
+    #admin-content button:not(#login-button),
+    #admin-content .button-primary:not(#login-button) { padding: 8px 15px; font-size: 0.9rem; }
+    #admin-content input:not(#login-section input),
+    #admin-content select,
+    #admin-content textarea { padding: 8px 10px; font-size: 0.9rem; }
+
+    .list-item-admin { padding: 10px 12px; }
+    .modal-content { padding: 15px 20px; }
+    .close-button { font-size: 24px; top: 8px; right: 15px; }
+    .pfp-preview-img { width: 80px; height: 80px; }
 }
 
 /* List Count and Timer Display (Keep original) */
 .list-count {
   font-weight: normal;
   font-size: 0.9em;
-  color: var(--secondary-text); /* Use secondary text color variable */
+  color: var(--secondary-text);
   margin-left: 8px;
 }
 
 .timer-display {
   font-size: 0.9em;
   margin-left: 15px;
-  color: var(--secondary-text); /* Use secondary text color variable */
-  min-width: 50px; /* Prevent layout shifts */
-  display: inline-block; /* Allow width */
+  color: var(--secondary-text);
+  min-width: 50px;
+  display: inline-block;
   text-align: right;
 }
