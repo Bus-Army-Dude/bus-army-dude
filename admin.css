@@ -615,3 +615,10 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     input, select, textarea { padding: 10px 12px; font-size: 0.95rem; }
     .container { padding: 20px 15px; }
 }
+
+.list-count {
+  font-weight: normal;
+  font-size: 0.9em;
+  color: var(--text-color-secondary); /* Adjust color if needed */
+  margin-left: 8px;
+}
