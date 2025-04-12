@@ -1,7 +1,7 @@
 /* admin.css - Futuristic Theme */
 
 /* ======================== */
-/* Theme Variables         */
+/* Theme Variables          */
 /* ======================== */
 :root {
     /* --- Base & Font --- */
@@ -15,53 +15,53 @@
     --transition-timing: ease-in-out;
 
     /* --- Light Mode Colors --- */
-    --light-bg: #f5f7fa;          /* Very light grey background */
+    --light-bg: #f5f7fa;         /* Very light grey background */
     --light-content-bg: #ffffff;     /* White content area */
-    --light-text: #1a1c20;          /* Dark text */
+    --light-text: #1a1c20;         /* Dark text */
     --light-secondary-text: #5a6472; /* Muted secondary text */
-    --light-border: #d1d9e6;          /* Light border */
+    --light-border: #d1d9e6;         /* Light border */
     --light-input-bg: #ffffff;
     --light-input-border: #ced4da;
     --light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --light-accent: #007bff;          /* Primary accent (Blue) */
+    --light-accent: #007bff;         /* Primary accent (Blue) */
     --light-accent-glow: rgba(0, 123, 255, 0.3);
     --light-accent-hover: #0056b3;
     --light-link: #007bff;
-    --light-success-bg: #e0f8e9;      /* Lighter success */
+    --light-success-bg: #e0f8e9;     /* Lighter success */
     --light-success-text: #0a5c28;
-    --light-error-bg: #fde2e4;        /* Lighter error */
+    --light-error-bg: #fde2e4;       /* Lighter error */
     --light-error-text: #8f1a29;
     --light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --light-modal-backdrop: rgba(245, 247, 250, 0.7); /* Light backdrop with blur */
 
     /* --- Dark Mode Colors (Futuristic) --- */
-    --dark-bg: #0D0F12;              /* Very dark, slightly blue background */
-    --dark-content-bg: #1A1C20;          /* Darker content area */
-    --dark-text: #E0E5EC;              /* Off-white text */
-    --dark-secondary-text: #8a94a6;    /* Greyish-blue secondary text */
-    --dark-border: #2f3542;              /* Dark subtle border */
-    --dark-input-bg: #16181c;            /* Slightly different dark input bg */
+    --dark-bg: #0D0F12;             /* Very dark, slightly blue background */
+    --dark-content-bg: #1A1C20;         /* Darker content area */
+    --dark-text: #E0E5EC;             /* Off-white text */
+    --dark-secondary-text: #8a94a6;   /* Greyish-blue secondary text */
+    --dark-border: #2f3542;           /* Dark subtle border */
+    --dark-input-bg: #16181c;           /* Slightly different dark input bg */
     --dark-input-border: #3a4150;
     --dark-shadow: rgba(0, 0, 0, 0.2); /* Darker shadow */
-    --dark-accent: #00FFFF;              /* Cyan accent */
+    --dark-accent: #00FFFF;             /* Cyan accent */
     --dark-accent-glow: rgba(0, 255, 255, 0.3);
     --dark-accent-hover: #00cccc;
-    --dark-link: #33ffff;                /* Lighter cyan for links */
-    --dark-success-bg: #103d31;          /* Dark green success */
+    --dark-link: #33ffff;             /* Lighter cyan for links */
+    --dark-success-bg: #103d31;         /* Dark green success */
     --dark-success-text: #82e0c2;
-    --dark-error-bg: #4d1f24;            /* Dark red error */
+    --dark-error-bg: #4d1f24;           /* Dark red error */
     --dark-error-text: #f5a7af;
     --dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23E0E5EC' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --dark-modal-backdrop: rgba(13, 15, 18, 0.7); /* Dark backdrop with blur */
 
     /* --- Alert/Action Colors (Consistent) --- */
-    --color-danger: #e53935;          /* Vibrant Red */
+    --color-danger: #e53935;         /* Vibrant Red */
     --color-danger-hover: #c62828;
     --color-danger-glow: rgba(229, 57, 53, 0.3);
-    --color-success-action: #28a745;    /* Vibrant Green */
+    --color-success-action: #28a745;   /* Vibrant Green */
     --color-success-action-hover: #218838;
     --color-success-action-glow: rgba(40, 167, 69, 0.3);
-    --color-secondary-action: #6c757d;    /* Grey */
+    --color-secondary-action: #6c757d;   /* Grey */
     --color-secondary-action-hover: #5a6268;
     --color-secondary-action-glow: rgba(108, 117, 125, 0.3);
 
@@ -85,11 +85,24 @@
     --select-arrow: var(--dark-select-arrow);
     --modal-backdrop-color: var(--dark-modal-backdrop);
 
-    /* --- Toggle Switch Colors --- */
-    --toggle-bg: #ccc;
-    --toggle-active-bg: var(--accent-color);
-    --toggle-handle-bg: #fff;
-    --toggle-handle-shadow: rgba(0, 0, 0, 0.2);
+    /* --- Toggle Switch Colors (Original - Kept for reference or potential other uses) --- */
+    /* --toggle-bg: #ccc; */
+    /* --toggle-active-bg: var(--accent-color); */
+    /* --toggle-handle-bg: #fff; */
+    /* --toggle-handle-shadow: rgba(0, 0, 0, 0.2); */
+
+    /* --- NEW: Toggle Switch Colors (Based on Image) --- */
+    --img-toggle-off-bg: #E9E9E9; /* Light grey from image */
+    --img-toggle-on-bg: #4CD964;  /* Bright green from image */
+    --img-toggle-handle-color: #FFFFFF; /* White handle */
+    --img-toggle-handle-shadow-color: rgba(0, 0, 0, 0.2); /* Subtle shadow */
+
+    /* Define HSL hues for status message border calculation */
+    --success-hue: 145;
+    --error-hue: 354;
+    /* Define RGB for hover effects */
+    --accent-rgb: 0, 255, 255; /* Default (dark) */
+    --color-danger-rgb: 229, 57, 53;
 }
 
 /* --- Light Mode Override --- */
@@ -112,16 +125,21 @@ body.light-mode {
     --error-text-color: var(--light-error-text);
     --select-arrow: var(--light-select-arrow);
     --modal-backdrop-color: var(--light-modal-backdrop);
+    --accent-rgb: 0, 123, 255; /* Light mode accent RGB */
 
-    /* --- Light Mode Toggle Switch Colors --- */
-    --toggle-bg: #e9e9e9;
-    --toggle-active-bg: var(--light-accent);
-    --toggle-handle-bg: #fff;
-    --toggle-handle-shadow: rgba(0, 0, 0, 0.1);
+    /* --- Light Mode Toggle Switch Colors (Original - Kept for reference) --- */
+    /* --toggle-bg: #e9e9e9; */
+    /* --toggle-active-bg: var(--light-accent); */
+    /* --toggle-handle-bg: #fff; */
+    /* --toggle-handle-shadow: rgba(0, 0, 0, 0.1); */
+
+    /* NOTE: Image-based toggle colors defined in :root will apply here too, */
+    /* unless specifically overridden again for light mode. */
+    /* Currently, the toggle will look the same (grey/green) in both modes. */
 }
 
 /* ======================== */
-/* Base Styles             */
+/* Base Styles              */
 /* ======================== */
 *, *::before, *::after {
     box-sizing: border-box;
@@ -175,7 +193,7 @@ a:hover {
 }
 
 /* ======================== */
-/* Login Section           */
+/* Login Section            */
 /* ======================== */
 #login-section {
     margin-top: 30px;
@@ -188,7 +206,7 @@ a:hover {
 #login-section h2 { text-align: center; border-bottom: none; margin-bottom: 30px; font-size: 1.6rem;}
 
 /* ======================== */
-/* Admin Content Area      */
+/* Admin Content Area       */
 /* ======================== */
 #admin-content {
     margin-top: 30px;
@@ -220,7 +238,7 @@ a:hover {
 
 
 /* ======================== */
-/* Form Element Styles     */
+/* Form Element Styles      */
 /* ======================== */
 .form-group {
     margin-bottom: 20px;
@@ -295,7 +313,7 @@ select {
 
 
 /* ======================== */
-/* Button Styles           */
+/* Button Styles            */
 /* ======================== */
 button, .button-primary {
     background: linear-gradient(145deg, var(--accent-color), var(--hover-color)); /* Subtle gradient */
@@ -358,7 +376,7 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 }
 
 /* ======================== */
-/* Status Message Styles   */
+/* Status Message Styles    */
 /* ======================== */
 .status-message {
     margin-top: 25px;
@@ -388,12 +406,10 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     background-color: var(--error-bg-color);
     border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3); /* Use HSL for border color */
 }
-/* Define HSL hues for easier border calculation */
-:root { --success-hue: 145; --error-hue: 354; }
 
 
 /* ======================== */
-/* Dynamic List Styles     */
+/* Dynamic List Styles      */
 /* ======================== */
 .list-container-admin {
     margin-top: 20px;
@@ -423,9 +439,6 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 }
 .list-item-admin:last-child { border-bottom: none; }
 .list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); /* Subtle hover */ }
-/* Define RGB for hover effect */
-:root { --accent-rgb: 0, 255, 255; } /* Default (dark) */
-body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 
 
 .list-item-admin .item-content {
@@ -444,7 +457,7 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     gap: 10px;
     align-items: center;
 }
-/* Buttons are now small-button class */
+/* Buttons use .small-button class */
 
 
 /* Specific list item content styling (example) */
@@ -515,12 +528,10 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     border-color: var(--color-danger); /* Use your error color */
     box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); /* Error glow */
 }
-/* Define --color-danger-rgb if you haven't already */
-:root { --color-danger-rgb: 229, 57, 53; }
 
 
 /* ======================== */
-/* Edit Modal Styles       */
+/* Edit Modal Styles        */
 /* ======================== */
 .modal {
     display: none;
@@ -601,7 +612,7 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 }
 
 /* ======================== */
-/* Responsive Adjustments  */
+/* Responsive Adjustments   */
 /* ======================== */
 @media (max-width: 768px) {
     body { padding: 15px; }
@@ -631,22 +642,25 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 .list-count {
     font-weight: normal;
     font-size: 0.9em;
-    color: var(--text-color-secondary); /* Adjust color if needed */
+    color: var(--secondary-text); /* Adjusted variable name */
     margin-left: 8px;
 }
 
 .timer-display {
     font-size: 0.9em;
     margin-left: 15px;
-    color: var(--text-color-secondary); /* Or your preferred color */
+    color: var(--secondary-text); /* Adjusted variable name */
     min-width: 50px; /* Prevent layout shifts */
     display: inline-block; /* Allow width */
     text-align: right;
 }
 
-/* ======================== */
-/* Toggle Switch Styles     */
-/* ======================== */
+
+/* ================================= */
+/* START: MODIFIED TOGGLE SWITCH STYLES */
+/* Styles adjusted to match image    */
+/* ================================= */
+
 .toggle-group {
     display: flex;
     align-items: center;
@@ -655,7 +669,7 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 
 .toggle-label-text {
     font-weight: 500;
-    color: var(--secondary-text);
+    color: var(--secondary-text); /* Still use theme color for label */
     font-size: 0.9em;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -664,14 +678,17 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 30px;
+    /* Dimensions based on original CSS & typical iOS toggle proportions */
+    width: 51px;  /* Standard iOS toggle width */
+    height: 31px; /* Standard iOS toggle height */
+    flex-shrink: 0; /* Prevent shrinking in flex layouts */
 }
 
 .toggle-switch input[type="checkbox"] {
     opacity: 0;
     width: 0;
     height: 0;
+    position: absolute;
 }
 
 .toggle-switch-label {
@@ -681,32 +698,46 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--toggle-bg);
-    transition: .4s;
-    border-radius: 30px;
+    background-color: var(--img-toggle-off-bg); /* Use specific OFF color */
+    transition: background-color 0.4s ease; /* Smooth color transition */
+    border-radius: 31px; /* Fully rounded ends */
+    border: 1px solid rgba(0,0,0,0.04); /* Subtle border like iOS */
 }
 
 .toggle-switch-label:before {
     position: absolute;
     content: "";
-    height: 22px;
-    width: 22px;
-    left: 4px;
-    bottom: 4px;
-    background-color: var(--toggle-handle-bg);
-    transition: .4s;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px var(--toggle-handle-shadow);
+    /* iOS-like handle size relative to track height */
+    height: 27px;
+    width: 27px;
+    left: 2px; /* Start position */
+    bottom: 1px; /* Center vertically (adjust with border) */
+    background-color: var(--img-toggle-handle-color); /* Use specific handle color */
+    transition: transform 0.4s ease; /* Smooth slide transition */
+    border-radius: 50%; /* Circle */
+    box-shadow: 0 1px 3px var(--img-toggle-handle-shadow-color); /* Use specific shadow */
 }
 
 .toggle-switch input:checked + .toggle-switch-label {
-    background-color: var(--toggle-active-bg);
+    background-color: var(--img-toggle-on-bg); /* Use specific ON color */
 }
 
-.toggle-switch input:focus + .toggle-switch-label {
-    box-shadow: 0 0 1px var(--toggle-active-bg);
-}
+/* Optional: Slightly change border on active state if needed */
+/* .toggle-switch input:checked + .toggle-switch-label {
+    border-color: transparent;
+} */
+
+/* Remove focus style if not desired, or adjust */
+/* .toggle-switch input:focus + .toggle-switch-label {
+    box-shadow: 0 0 2px var(--img-toggle-on-bg);
+} */
 
 .toggle-switch input:checked + .toggle-switch-label:before {
+    /* Calculate translation: track_width - handle_width - left_padding - right_padding */
+    /* 51px - 27px - 2px - 2px = 20px */
     transform: translateX(20px);
 }
+
+/* ================================= */
+/* END: MODIFIED TOGGLE SWITCH STYLES */
+/* ================================= */
