@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme with Apple-Inspired Responsive Two-Step Login */
+/* admin.css - Futuristic Theme with Apple-Inspired Responsive Two-Step Login & Themed Modal */
 
 /* ======================== */
 /* Theme Variables          */
@@ -115,12 +115,11 @@ body.light-mode {
     box-sizing: border-box;
 }
 
-/* Body adjustments for centering login */
 body {
     font-family: var(--system-font-stack);
     font-size: var(--base-font-size);
     margin: 0;
-    padding: 20px; /* Consistent padding for all sizes */
+    padding: 20px;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: var(--line-height);
@@ -133,10 +132,9 @@ body {
     min-height: 100vh;
 }
 
-/* Container for login/admin content */
 .container {
-    width: 100%; /* Allow container to take width */
-    max-width: 400px; /* Default narrow width for login */
+    width: 100%;
+    max-width: 400px; /* Default for login */
     margin: auto;
     background: var(--content-bg);
     padding: 40px 30px;
@@ -152,7 +150,6 @@ body:not(:has(#login-section[style*="display: block"])) .container {
     max-width: 1000px; /* Wider for admin panel */
 }
 
-
 /* General Heading Styles */
 h1, h2, h3, h4, h5 {
     color: var(--text-color);
@@ -161,209 +158,55 @@ h1, h2, h3, h4, h5 {
     font-weight: 600;
     letter-spacing: 0.5px;
 }
+h1 { text-align: center; margin-bottom: 30px; margin-top: 0; font-size: 2rem; }
 
-h1 { /* Style for main Admin Panel title if used */
-    text-align: center;
-    margin-bottom: 30px;
-    margin-top: 0;
-    font-size: 2rem;
-}
-
-/* Headings within admin content */
-#admin-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; margin-top: 0;}
+/* Headings within admin content OR modal */
+#admin-content h2, .modal-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; margin-top: 0;}
 #admin-content h3 { color: var(--accent-color); font-size: 1.5rem; margin-top: 1.8em; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; opacity: 0.9; }
 #admin-content h4 { font-size: 1.2rem; color: var(--text-color); opacity: 0.95; margin-top: 30px; margin-bottom: 15px; }
 #admin-content h5 { font-size: 1rem; color: var(--secondary-text); margin-top: 25px; margin-bottom: 10px; font-weight: 500; }
 
-a {
-    color: var(--link-color);
-    text-decoration: none;
-    transition: color var(--transition-speed) var(--transition-timing);
-}
-a:hover {
-    color: var(--hover-color);
-    text-decoration: underline;
-}
+a { color: var(--link-color); text-decoration: none; transition: color var(--transition-speed) var(--transition-timing); }
+a:hover { color: var(--hover-color); text-decoration: underline; }
 
 /* ======================== */
-/* Login Section (Apple-Inspired) */
+/* Login Section Specific Styles */
 /* ======================== */
-#login-section {
-    margin: 0;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-    background-color: transparent;
-    width: 100%;
-}
-
-#login-section h2 {
-    text-align: center;
-    border-bottom: none;
-    margin-bottom: 30px;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-top: 0;
-}
-
-#login-section .form-group {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-#login-section label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: var(--secondary-text);
-    font-size: 0.8rem;
-    text-transform: none;
-    letter-spacing: 0;
-}
-
-#login-section input[type="email"],
-#login-section input[type="password"] {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid var(--input-border-color);
-    border-radius: var(--border-radius-md);
-    font-size: 1rem;
-    font-family: inherit;
-    background-color: var(--input-bg-color);
-    color: var(--text-color);
-    transition: border-color var(--transition-speed) var(--transition-timing),
-                box-shadow var(--transition-speed) var(--transition-timing);
-}
-
-#login-section input:focus {
-    outline: none;
-    border-color: #007AFF;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
-}
-
-#login-section ::placeholder {
-    color: var(--secondary-text);
-    opacity: 0.8;
-}
-
-#login-section .form-actions {
-    margin-top: 25px;
-    text-align: center;
-    padding-top: 0;
-    border-top: none;
-}
-
-/* Combined rule for next and login buttons */
-#login-button,
-#next-button {
-    background: #007AFF;
-    color: #ffffff;
-    padding: 12px 25px;
-    border: none;
-    border-radius: var(--border-radius-md);
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0;
-    transition: background-color var(--transition-speed) var(--transition-timing);
-    width: 100%;
-    box-shadow: none;
-    margin: 0;
-    transform: none;
-}
-
-/* Apply initial display styles separately */
-#login-button {
-    display: none; /* Login button starts hidden */
-}
-#next-button {
-    display: inline-block; /* Next button starts visible (use block for full width if needed) */
-}
-
-
-/* Combined hover rule */
-#login-button:hover,
-#next-button:hover {
-    background: #0056b3;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Combined active rule */
-#login-button:active,
-#next-button:active {
-     background: #004085;
-     transform: none;
-}
-
-/* Combined disabled rule */
-#login-button:disabled,
-#next-button:disabled {
-    background-color: #aeb5bc;
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-
+#login-section { margin: 0; padding: 0; border: none; box-shadow: none; background-color: transparent; width: 100%; }
+#login-section h2 { text-align: center; border-bottom: none; margin-bottom: 30px; font-size: 1.8rem; font-weight: 600; color: var(--text-color); margin-top: 0; }
+#login-section .form-group { margin-bottom: 20px; position: relative; }
+#login-section label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--secondary-text); font-size: 0.8rem; text-transform: none; letter-spacing: 0; }
+#login-section input[type="email"], #login-section input[type="password"] { width: 100%; padding: 12px 14px; border: 1px solid var(--input-border-color); border-radius: var(--border-radius-md); font-size: 1rem; font-family: inherit; background-color: var(--input-bg-color); color: var(--text-color); transition: border-color var(--transition-speed) var(--transition-timing), box-shadow var(--transition-speed) var(--transition-timing); }
+#login-section input:focus { outline: none; border-color: #007AFF; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3); }
+#login-section ::placeholder { color: var(--secondary-text); opacity: 0.8; }
+#login-section .form-actions { margin-top: 25px; text-align: center; padding-top: 0; border-top: none; }
+#login-button, #next-button { background: #007AFF; color: #ffffff; padding: 12px 25px; border: none; border-radius: var(--border-radius-md); cursor: pointer; font-size: 1rem; font-weight: 500; letter-spacing: 0; transition: background-color var(--transition-speed) var(--transition-timing); width: 100%; box-shadow: none; margin: 0; transform: none; }
+#login-button { display: none; }
+#next-button { display: inline-block; }
+#login-button:hover, #next-button:hover { background: #0056b3; transform: none; box-shadow: none; }
+#login-button:active, #next-button:active { background: #004085; transform: none; }
+#login-button:disabled, #next-button:disabled { background-color: #aeb5bc; opacity: 0.7; cursor: not-allowed; }
 #auth-status { margin-top: 15px; }
 
 /* ======================== */
 /* Admin Content Area       */
 /* ======================== */
-#admin-content {
-    margin-top: 0;
-    padding-top: 10px;
-    /* display: none; */ /* Controlled by JS */
-}
-
-.admin-header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid var(--accent-color);
-    gap: 15px;
-}
+#admin-content { margin-top: 0; padding-top: 10px; /* display: none; */ }
+.admin-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-color); gap: 15px; }
 .admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 1.8rem; }
 #admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 15px; white-space: nowrap; font-size: 0.9em; }
 #logout-button { flex-shrink: 0; }
-
-.admin-section {
-    margin-bottom: 35px;
-    padding: 25px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    background-color: var(--bg-color);
-}
+.admin-section { margin-bottom: 35px; padding: 25px; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); background-color: var(--bg-color); }
 .admin-section:last-of-type { margin-bottom: 10px; }
 
 /* ======================== */
-/* Form Element Styles (Admin) */
+/* General Form Element Styles (Admin + Modal) */
+/* REMOVED #admin-content prefix */
 /* ======================== */
-#admin-content .form-group { margin-bottom: 18px; }
+.form-group { margin-bottom: 18px; }
 
-#admin-content .checkbox-group label {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 0;
-    margin-left: 8px;
-    font-weight: normal;
-    color: var(--text-color);
-    cursor: pointer;
-}
-#admin-content .checkbox-group input[type="checkbox"] {
-    margin-bottom: 0;
-    margin-right: 0;
-    width: 1.1em;
-    height: 1.1em;
-    accent-color: var(--accent-color);
-    cursor: pointer;
-}
-
-#admin-content label {
+/* Use .form-group to scope labels/inputs to forms */
+.form-group label:not(#login-section label) { /* Exclude login labels */
     display: block;
     margin-bottom: 6px;
     font-weight: 500;
@@ -372,15 +215,28 @@ a:hover {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+/* Style checkbox labels specifically if needed */
+.checkbox-group label {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0;
+    margin-left: 8px;
+    font-weight: normal;
+    color: var(--text-color);
+    cursor: pointer;
+    text-transform: none; /* Override uppercase */
+    font-size: 1rem; /* Normal size */
+    letter-spacing: 0;
+}
 
-#admin-content input[type="email"],
-#admin-content input[type="password"],
-#admin-content input[type="text"],
-#admin-content input[type="number"],
-#admin-content input[type="url"],
-#admin-content input[type="datetime-local"],
-#admin-content select,
-#admin-content textarea {
+.form-group input[type="email"]:not(#login-section input),
+.form-group input[type="password"]:not(#login-section input),
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="url"],
+.form-group input[type="datetime-local"],
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--input-border-color);
@@ -393,17 +249,17 @@ a:hover {
                 box-shadow var(--transition-speed) var(--transition-timing),
                 background-color var(--transition-speed) var(--transition-timing);
 }
-
-#admin-content input:focus,
-#admin-content select:focus,
-#admin-content textarea:focus {
+/* Focus styles for general inputs */
+.form-group input:not(#login-section input):focus,
+.form-group select:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--accent-color);
     box-shadow: 0 0 0 3px var(--accent-glow-color);
 }
 
-#admin-content textarea { min-height: 100px; resize: vertical; }
-#admin-content select {
+.form-group textarea { min-height: 100px; resize: vertical; }
+.form-group select {
     appearance: none;
     background-image: var(--select-arrow);
     background-repeat: no-repeat;
@@ -412,13 +268,23 @@ a:hover {
     padding-right: 2.5rem;
 }
 
-#admin-content ::placeholder { color: var(--secondary-text); opacity: 0.6; }
+.checkbox-group input[type="checkbox"] {
+    margin-bottom: 0;
+    margin-right: 0;
+    width: 1.1em;
+    height: 1.1em;
+    accent-color: var(--accent-color);
+    cursor: pointer;
+    vertical-align: middle; /* Align checkbox better */
+}
+
+::placeholder { color: var(--secondary-text); opacity: 0.6; } /* General placeholder */
 
 /* ======================== */
-/* Button Styles (Admin)    */
+/* General Button Styles (Admin + Modal - Excluding Login/Next) */
 /* ======================== */
-#admin-content button:not(#login-button):not(#next-button), /* Exclude login/next */
-#admin-content .button-primary:not(#login-button):not(#next-button) {
+button:not(#login-button):not(#next-button),
+.button-primary:not(#login-button):not(#next-button) {
     background: linear-gradient(145deg, var(--accent-color), var(--hover-color));
     color: #000000; /* Black text for cyan */
     padding: 10px 20px;
@@ -438,19 +304,19 @@ a:hover {
     display: inline-block;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-#admin-content button:not(#login-button):not(#next-button):hover,
-#admin-content .button-primary:not(#login-button):not(#next-button):hover {
+button:not(#login-button):not(#next-button):hover,
+.button-primary:not(#login-button):not(#next-button):hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px -2px var(--accent-glow-color);
     background: linear-gradient(145deg, var(--hover-color), var(--accent-color));
 }
-#admin-content button:not(#login-button):not(#next-button):active,
-#admin-content .button-primary:not(#login-button):not(#next-button):active {
+button:not(#login-button):not(#next-button):active,
+.button-primary:not(#login-button):not(#next-button):active {
     transform: translateY(0px);
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-#admin-content button:not(#login-button):not(#next-button):disabled,
-#admin-content .button-primary:not(#login-button):not(#next-button):disabled {
+button:not(#login-button):not(#next-button):disabled,
+.button-primary:not(#login-button):not(#next-button):disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
@@ -458,37 +324,41 @@ a:hover {
     background: var(--secondary-text);
 }
 
-/* Specific Admin Button Colors */
-#logout-button, #admin-content button.delete-button {
+/* Specific Button Colors (Logout, Delete, Secondary, Edit) */
+#logout-button, button.delete-button {
     background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
     color: #ffffff;
 }
-#logout-button:hover, #admin-content button.delete-button:hover {
+#logout-button:hover, button.delete-button:hover {
     box-shadow: 0 4px 12px -2px var(--color-danger-glow);
     background: linear-gradient(145deg, var(--color-danger-hover), var(--color-danger));
 }
 
-#admin-content button.secondary-button,
-#admin-content .list-item-admin button,
-#admin-content button.edit-button {
+button.secondary-button,
+.list-item-admin button, /* Includes edit/delete in list */
+#edit-shoutout-form button[type="submit"], /* Modal save button */
+button.edit-button /* Explicit edit button class */
+ {
     background: linear-gradient(145deg, var(--color-secondary-action), var(--color-secondary-action-hover));
     color: #ffffff;
  }
-#admin-content button.secondary-button:hover,
-#admin-content .list-item-admin button:hover,
-#admin-content button.edit-button:hover {
+button.secondary-button:hover,
+.list-item-admin button:hover,
+#edit-shoutout-form button[type="submit"]:hover,
+button.edit-button:hover {
     box-shadow: 0 4px 12px -2px var(--color-secondary-action-glow);
     background: linear-gradient(145deg, var(--color-secondary-action-hover), var(--color-secondary-action));
 }
 
-#admin-content .form-actions {
+/* General Form Actions (Admin + Modal) */
+.form-actions:not(#login-section .form-actions) {
     margin-top: 20px;
     text-align: right;
     padding-top: 10px;
     border-top: 1px solid var(--border-color);
 }
 
-#admin-content .small-button {
+.small-button { /* Applied to list item buttons */
     padding: 5px 10px !important;
     font-size: 0.8em !important;
     letter-spacing: 0.3px;
@@ -497,253 +367,98 @@ a:hover {
 /* ======================== */
 /* Status Message Styles    */
 /* ======================== */
-.status-message {
-    margin-top: 20px;
-    margin-bottom: 15px;
-    padding: 12px 18px;
-    font-weight: 500;
-    text-align: center;
-    border-radius: var(--border-radius-md);
-    border: 1px solid transparent;
-    display: none;
-    clear: both;
-    font-size: 0.9em;
-    transition: background-color var(--transition-speed) var(--transition-timing),
-                color var(--transition-speed) var(--transition-timing),
-                border-color var(--transition-speed) var(--transition-timing);
-}
+.status-message { margin-top: 20px; margin-bottom: 15px; padding: 12px 18px; font-weight: 500; text-align: center; border-radius: var(--border-radius-md); border: 1px solid transparent; display: none; clear: both; font-size: 0.9em; transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing); }
 .status-message:not(:empty) { display: block; }
-
-.status-message.success {
-    color: var(--success-text-color);
-    background-color: var(--success-bg-color);
-    border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3);
-}
-.status-message.error {
-    color: var(--error-text-color);
-    background-color: var(--error-bg-color);
-    border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3);
-}
+.status-message.success { color: var(--success-text-color); background-color: var(--success-bg-color); border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3); }
+.status-message.error { color: var(--error-text-color); background-color: var(--error-bg-color); border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3); }
 :root { --success-hue: 145; --error-hue: 354; }
 
 /* ======================== */
 /* Dynamic List Styles      */
 /* ======================== */
-.list-container-admin {
-    margin-top: 15px;
-    max-height: 400px;
-    overflow-y: auto;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    padding: 5px;
-    background-color: var(--bg-color);
-    scrollbar-width: thin;
-    scrollbar-color: var(--secondary-text) var(--bg-color);
-}
+.list-container-admin { margin-top: 15px; max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 5px; background-color: var(--bg-color); scrollbar-width: thin; scrollbar-color: var(--secondary-text) var(--bg-color); }
 .list-container-admin::-webkit-scrollbar { width: 8px; }
 .list-container-admin::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 4px; }
 .list-container-admin::-webkit-scrollbar-thumb { background-color: var(--secondary-text); border-radius: 4px; border: 2px solid var(--bg-color); }
-
-.list-item-admin {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 18px;
-    border-bottom: 1px solid var(--border-color);
-    gap: 15px;
-    transition: background-color var(--transition-speed) var(--transition-timing);
-}
+.list-item-admin { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 15px 18px; border-bottom: 1px solid var(--border-color); gap: 15px; transition: background-color var(--transition-speed) var(--transition-timing); }
 .list-item-admin:last-child { border-bottom: none; }
 .list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); }
-:root { --accent-rgb: 0, 255, 255; }
-body.light-mode { --accent-rgb: 0, 123, 255; }
-
+:root { --accent-rgb: 0, 255, 255; } body.light-mode { --accent-rgb: 0, 123, 255; }
 .list-item-admin .item-content { flex-grow: 1; word-break: break-word; }
 .list-item-admin strong { color: var(--text-color); font-weight: 600; }
 .list-item-admin span { color: var(--secondary-text); font-size: 0.8em; margin-left: 6px;}
 .list-item-admin p { margin: 4px 0; font-size: 0.9em; line-height: 1.4;}
 .list-item-admin small { color: var(--secondary-text); font-size: 0.7em; display: block; margin-top: 3px; }
-
 .list-item-admin .item-actions { flex-shrink: 0; display: flex; gap: 8px; align-items: center; }
-
-.list-item-admin.event-item .item-content strong { display: block; margin-bottom: 4px; font-size: 1em; color: var(--accent-color); }
 
 /* ======================== */
 /* Creator Shoutouts Section */
 /* ======================== */
-.shoutouts-platform-container {
-    margin-bottom: 30px;
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    background-color: var(--content-bg);
-}
+.shoutouts-platform-container { margin-bottom: 30px; padding: 20px; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); background-color: var(--content-bg); }
 .shoutouts-platform-container:last-of-type { margin-bottom: 0; }
-
-.shoutouts-platform-container h4 {
-    color: var(--accent-color);
-    margin-top: 0;
-    border-bottom: 1px dashed var(--accent-color);
-    padding-bottom: 8px;
-    font-size: 1.2rem;
-    opacity: 0.9;
-}
+.shoutouts-platform-container h4 { color: var(--accent-color); margin-top: 0; border-bottom: 1px dashed var(--accent-color); padding-bottom: 8px; font-size: 1.2rem; opacity: 0.9; }
 
 /* ======================== */
 /* Input with Preview Styles*/
 /* ======================== */
 .input-with-preview { display: flex; align-items: center; gap: 10px; }
-.input-with-preview input { flex-grow: 1; }
-
-.pfp-preview-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--border-color);
-    background-color: var(--input-bg-color);
-    vertical-align: middle;
-    flex-shrink: 0;
-    transition: opacity 0.3s ease;
-}
-
-.input-with-preview input.input-error {
-    border-color: var(--color-danger);
-    box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2);
-}
+.input-with-preview input { flex-grow: 1; } /* Target the specific input within the preview container */
+.pfp-preview-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color); background-color: var(--input-bg-color); vertical-align: middle; flex-shrink: 0; transition: opacity 0.3s ease; }
+.input-with-preview input.input-error { border-color: var(--color-danger); box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); }
 :root { --color-danger-rgb: 229, 57, 53; }
 
 /* ======================== */
 /* Edit Modal Styles        */
 /* ======================== */
-.modal {
-  display: none; position: fixed; z-index: 1000;
-  left: 0; top: 0; width: 100%; height: 100%;
-  overflow: auto; background-color: var(--modal-backdrop-color);
-  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-  animation: fadeIn 0.3s ease-out;
-}
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: var(--modal-backdrop-color); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); animation: fadeIn 0.3s ease-out; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.modal-content {
-  background-color: var(--content-bg);
-  margin: 10vh auto;
-  padding: 30px 35px;
-  border: 1px solid var(--border-color);
-  width: 90%;
-  max-width: 650px;
-  position: relative;
-  border-radius: var(--border-radius-lg);
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
-  animation: slideIn 0.4s ease-out;
-}
+.modal-content { background-color: var(--content-bg); margin: 10vh auto; padding: 30px 35px; border: 1px solid var(--border-color); width: 90%; max-width: 650px; position: relative; border-radius: var(--border-radius-lg); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); animation: slideIn 0.4s ease-out; }
 @keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-.close-button {
-  color: var(--secondary-text); position: absolute;
-  top: 12px; right: 20px;
-  font-size: 28px; font-weight: bold; line-height: 1;
-  transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
-}
-.close-button:hover, .close-button:focus {
-  color: var(--text-color); text-decoration: none; cursor: pointer; transform: scale(1.1);
-}
-
-#edit-shoutout-form .form-group { margin-bottom: 18px; }
-#edit-shoutout-form input[type="text"],
-#edit-shoutout-form input[type="number"],
-#edit-shoutout-form input[type="url"],
-#edit-shoutout-form textarea { width: 100%; }
-
-#edit-shoutout-form .checkbox-group label { font-weight: normal; text-transform: none; font-size: 1rem; letter-spacing: 0; }
+.close-button { color: var(--secondary-text); position: absolute; top: 12px; right: 20px; font-size: 28px; font-weight: bold; line-height: 1; transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease; border: none; background: none; padding: 0; cursor: pointer; } /* Made close button an actual button */
+.close-button:hover, .close-button:focus { color: var(--text-color); text-decoration: none; transform: scale(1.1); }
+/* Ensure form inside modal uses general styles now */
 #edit-shoutout-form .form-actions { margin-top: 25px; }
 
 /* ======================== */
 /* Responsive Adjustments   */
 /* ======================== */
-
-/* Medium screens (Tablets, smaller laptops) */
 @media (max-width: 1024px) {
     #admin-content:not([style*="display: none"]) ~ .container,
-    body:not(:has(#login-section[style*="display: block"])) .container {
-        max-width: 90%;
-    }
+    body:not(:has(#login-section[style*="display: block"])) .container { max-width: 90%; }
 }
-
-/* Small screens (Tablets in portrait, large phones) */
 @media (max-width: 768px) {
-    body {
-        padding: 15px;
-        align-items: flex-start;
-        padding-top: 5vh;
-    }
-    .container {
-        padding: 25px 20px;
-        margin: 0 auto;
-        max-width: 90%;
-    }
-
+    body { padding: 15px; align-items: flex-start; padding-top: 5vh; }
+    .container { padding: 25px 20px; margin: 0 auto; max-width: 90%; }
     h1 { font-size: 1.8rem; margin-bottom: 25px;}
-    #admin-content h2, #login-section h2 { font-size: 1.5rem; margin-bottom: 20px; }
-    #admin-content h3 { font-size: 1.3rem; }
-    #admin-content h4 { font-size: 1.1rem; }
-    #admin-content h5 { font-size: 0.95rem; }
-
+    #admin-content h2, .modal-content h2, #login-section h2 { font-size: 1.5rem; margin-bottom: 20px; }
+    #admin-content h3 { font-size: 1.3rem; } #admin-content h4 { font-size: 1.1rem; } #admin-content h5 { font-size: 0.95rem; }
     .admin-header { flex-direction: column; align-items: flex-start; gap: 10px; }
     .admin-header h2 { margin-bottom: 8px; font-size: 1.6rem; }
     #admin-greeting { margin: 8px 0; }
     .admin-section { padding: 15px; margin-bottom: 25px; }
-    #admin-content .form-actions { text-align: center; }
-    #admin-content .form-actions button:not(#login-button):not(#next-button) { display: block; width: 100%; margin: 10px 0 0 0; } /* Stack buttons */
-
+    .form-actions:not(#login-section .form-actions) { text-align: center; }
+    .form-actions:not(#login-section .form-actions) button:not(#login-button):not(#next-button) { display: block; width: 100%; margin: 10px 0 0 0; }
     .list-item-admin { flex-direction: column; align-items: flex-start; padding: 12px 15px; }
     .list-item-admin .item-actions { margin-top: 10px; width: 100%; justify-content: flex-end; }
-
     .modal-content { margin: 10vh auto; padding: 20px 25px; max-width: 90%; }
     .pfp-preview-img { width: 100px; height: 100px; }
 }
-
-/* Extra small screens (Most phones) */
 @media (max-width: 480px) {
     body { padding: 10px; padding-top: 3vh;}
     .container { padding: 20px 15px; }
-
     h1 { font-size: 1.6rem; margin-bottom: 20px;}
-    #admin-content h2, #login-section h2 { font-size: 1.4rem; margin-bottom: 18px;}
-    #admin-content h3 { font-size: 1.2rem; }
-    #admin-content h4 { font-size: 1rem; }
-    #admin-content h5 { font-size: 0.9rem; }
-
-    #login-section label { font-size: 0.75rem; }
-    #login-section input { padding: 10px 12px; font-size: 0.95rem;}
+    #admin-content h2, .modal-content h2, #login-section h2 { font-size: 1.4rem; margin-bottom: 18px;}
+    #admin-content h3 { font-size: 1.2rem; } #admin-content h4 { font-size: 1rem; } #admin-content h5 { font-size: 0.9rem; }
+    #login-section label { font-size: 0.75rem; } #login-section input { padding: 10px 12px; font-size: 0.95rem;}
     #login-button, #next-button { padding: 10px 18px; font-size: 0.95rem; }
-
-    #admin-content button:not(#login-button):not(#next-button),
-    #admin-content .button-primary:not(#login-button):not(#next-button) { padding: 8px 15px; font-size: 0.9rem; }
-    #admin-content input:not(#login-section input),
-    #admin-content select,
-    #admin-content textarea { padding: 8px 10px; font-size: 0.9rem; }
-
+    button:not(#login-button):not(#next-button), .button-primary:not(#login-button):not(#next-button) { padding: 8px 15px; font-size: 0.9rem; }
+    .form-group input:not(#login-section input), .form-group select, .form-group textarea { padding: 8px 10px; font-size: 0.9rem; }
     .list-item-admin { padding: 10px 12px; }
     .modal-content { padding: 15px 20px; }
     .close-button { font-size: 24px; top: 8px; right: 15px; }
     .pfp-preview-img { width: 80px; height: 80px; }
 }
 
-/* List Count and Timer Display (Keep original) */
-.list-count {
-  font-weight: normal;
-  font-size: 0.9em;
-  color: var(--secondary-text);
-  margin-left: 8px;
-}
-
-.timer-display {
-  font-size: 0.9em;
-  margin-left: 15px;
-  color: var(--secondary-text);
-  min-width: 50px;
-  display: inline-block;
-  text-align: right;
-}
+/* List Count and Timer Display */
+.list-count { font-weight: normal; font-size: 0.9em; color: var(--secondary-text); margin-left: 8px; }
+.timer-display { font-size: 0.9em; margin-left: 15px; color: var(--secondary-text); min-width: 50px; display: inline-block; text-align: right; }
