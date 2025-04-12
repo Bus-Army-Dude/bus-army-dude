@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let inactivityTimer; // Holds the setTimeout ID for logout
     let expirationTime; // Stores the timestamp when logout should occur
     let displayIntervalId; // Holds the setInterval ID for updating the display
-    const INACTIVITY_TIMEOUT_MS = 2 * 60 * 1000; // 15 minutes (Adjust 15 if needed)
+    const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000; // 15 minutes (Adjust 15 if needed)
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
 
 
