@@ -65,10 +65,10 @@
     --color-secondary-action-hover: #5a6268;
     --color-secondary-action-glow: rgba(108, 117, 125, 0.3);
 
-     /* --- iOS Toggle Specific Colors --- */
-    --ios-toggle-off-bg: #E9E9EA; /* Light grey for off state */
-    --ios-toggle-on-bg: #34C759;  /* Green for on state */
-    --ios-toggle-handle-bg: #FFFFFF; /* White handle */
+    /* --- Toggle Colors from Settings Example --- */
+    /* Using iOS grey/green as base, change if needed */
+    --toggle-off: #E9E9EA; /* Base grey for off state */
+    --toggle-on: #34C759;  /* Base green for on state */
 
     /* --- Fallback theme variables (default to dark mode) --- */
     --bg-color: var(--dark-bg);
@@ -300,41 +300,41 @@ select {
 ::placeholder { color: var(--secondary-text); opacity: 0.6; }
 
 /* ======================== */
-/* Toggle Switch Styles (iOS Style) */ /* <<<< Using the 'Contained Handle' Version */
+/* Toggle Switch Styles (Adapted from Settings) */ /* <<<< REPLACED BLOCK */
 /* ======================== */
 
 .toggle-group {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Positions label left, switch right */
-    margin-bottom: 20px; /* Consistent form group spacing */
+    justify-content: space-between;
+    margin-bottom: 20px;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
 .toggle-label-text {
-    /* Style closer to standard form labels, but not uppercase */
     display: block;
     margin-bottom: 0;
-    font-weight: 400; /* Regular font weight */
-    color: var(--text-color); /* Use standard text color for readability */
-    font-size: 1rem; /* Match standard input text size */
-    text-transform: none; /* iOS labels are not uppercase */
-    letter-spacing: normal; /* Standard letter spacing */
-    margin-right: 15px; /* Space between label text and switch */
-    flex-shrink: 0; /* Prevent label text from shrinking */
+    font-weight: 400;
+    color: var(--text-color);
+    font-size: 1rem;
+    text-transform: none;
+    letter-spacing: normal;
+    margin-right: 15px;
+    flex-shrink: 0;
     cursor: default;
 }
 
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 51px; /* Standard iOS toggle width */
-    height: 31px; /* Standard iOS toggle height */
-    flex-shrink: 0; /* Prevent switch itself from shrinking */
+    /* Dimensions from settings.css example */
+    width: 52px;
+    height: 30px;
+    flex-shrink: 0;
 }
 
-/* Hide the actual checkbox visually but keep it accessible */
+/* Hide the actual checkbox */
 .toggle-checkbox {
     opacity: 0;
     width: 0;
@@ -342,7 +342,7 @@ select {
     position: absolute;
 }
 
-/* The visual track of the switch */
+/* The visual track (adapting .toggle-slider styles) */
 .toggle-switch-label {
     position: absolute;
     cursor: pointer;
@@ -350,49 +350,68 @@ select {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--ios-toggle-off-bg); /* iOS Off Grey */
-    border-radius: 16px; /* Fully rounded (height / ~2) */
-    transition: background-color var(--transition-speed) var(--transition-timing);
-    /* No border needed */
+    /* Gradient from settings.css */
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--toggle-off) 90%, black),
+        var(--toggle-off)
+    );
+    /* Use cubic-bezier transition from example */
+    transition: background 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    /* Use border-radius from example (50px likely means fully rounded) */
+    border-radius: 15px; /* 30px height / 2 */
+    /* Inset shadow from settings.css */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* The sliding handle (knob) */
+/* The sliding handle (adapting .toggle-slider:before styles) */
 .toggle-switch-handle {
     position: absolute;
     content: '';
-    height: 27px; /* iOS standard handle size */
-    width: 27px;  /* iOS standard handle size */
-    /* Using 3px padding for 'contained' look */
-    left: 3px;    /* Initial position padding */
-    top: 2px;     /* Vertical alignment padding (31 - 27) / 2 = 2 */
-    background-color: var(--ios-toggle-handle-bg); /* iOS Handle White */
-    border-radius: 50%; /* Circular handle */
-    transition: transform var(--transition-speed) var(--transition-timing);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.08); /* Softer iOS-like shadow */
+    /* Dimensions from settings.css example */
+    height: 24px;
+    width: 24px;
+    /* Positioning based on 52x30 track and 24x24 handle */
+    /* (30 - 24) / 2 = 3px vertical padding */
+    /* Use 3px horizontal padding to match example's left: 3px */
+    left: 3px;
+    top: 3px; /* Matches bottom: 3px effectively */
+    /* Gradient from settings.css */
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    /* Use cubic-bezier transition from example */
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* Add transition for shadow */
+    border-radius: 50%;
+    /* Shadow from settings.css */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* --- Checked State --- */
 
-/* Change track background to green when checked */
+/* Change track background when checked */
 .toggle-checkbox:checked + .toggle-switch-label {
-    background-color: var(--ios-toggle-on-bg); /* iOS On Green */
+    /* Gradient from settings.css */
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--toggle-on) 90%, white), /* Note: 90% green mixed with white */
+        var(--toggle-on)
+    );
 }
 
-/* Slide the handle to the right when checked */
+/* Slide the handle and change its shadow when checked */
 .toggle-checkbox:checked + .toggle-switch-label .toggle-switch-handle {
-    /* Using 18px travel for 'contained' look with 3px padding */
-    /* Calculation: 51 - 27 - 3 - 3 = 18px */
-    transform: translateX(18px);
+    /* Transform from settings.css (52 - 24 - 2*3 = 22px, matches example) */
+    transform: translateX(22px);
+    /* Updated shadow from settings.css */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* --- Focus State (Accessibility) --- */
 
-/* Use theme-based glow for focus visibility */
+/* Keep using theme-based glow for focus visibility */
 .toggle-checkbox:focus + .toggle-switch-label {
-     box-shadow: 0 0 0 3px var(--accent-glow-color);
-     outline: none; /* Remove default outline if browser adds one */
+     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), /* Keep inset shadow */
+                 0 0 0 3px var(--accent-glow-color); /* Add outer glow */
+     outline: none;
 }
-
 
 /* ======================== */
 /* Button Styles            */
