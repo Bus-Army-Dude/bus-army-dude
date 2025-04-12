@@ -15,7 +15,7 @@
     --transition-timing: ease-in-out;
 
     /* --- Light Mode Colors --- */
-    --light-bg: #f5f7fa;          /* Very light grey background */
+    --light-bg: #f5f7fa;         /* Very light grey background */
     --light-content-bg: #ffffff;   /* White content area */
     --light-text: #1a1c20;         /* Dark text */
     --light-secondary-text: #5a6472; /* Muted secondary text */
@@ -23,13 +23,13 @@
     --light-input-bg: #ffffff;
     --light-input-border: #ced4da;
     --light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --light-accent: #007bff;        /* Primary accent (Blue) */
+    --light-accent: #007bff;       /* Primary accent (Blue) */
     --light-accent-glow: rgba(0, 123, 255, 0.3);
     --light-accent-hover: #0056b3;
     --light-link: #007bff;
-    --light-success-bg: #e0f8e9;    /* Lighter success */
+    --light-success-bg: #e0f8e9;   /* Lighter success */
     --light-success-text: #0a5c28;
-    --light-error-bg: #fde2e4;      /* Lighter error */
+    --light-error-bg: #fde2e4;     /* Lighter error */
     --light-error-text: #8f1a29;
     --light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --light-modal-backdrop: rgba(245, 247, 250, 0.7); /* Light backdrop with blur */
@@ -37,19 +37,19 @@
     /* --- Dark Mode Colors (Futuristic) --- */
     --dark-bg: #0D0F12;            /* Very dark, slightly blue background */
     --dark-content-bg: #1A1C20;     /* Darker content area */
-    --dark-text: #E0E5EC;           /* Off-white text */
+    --dark-text: #E0E5EC;            /* Off-white text */
     --dark-secondary-text: #8a94a6;  /* Greyish-blue secondary text */
-    --dark-border: #2f3542;         /* Dark subtle border */
+    --dark-border: #2f3542;          /* Dark subtle border */
     --dark-input-bg: #16181c;        /* Slightly different dark input bg */
     --dark-input-border: #3a4150;
     --dark-shadow: rgba(0, 0, 0, 0.2); /* Darker shadow */
-    --dark-accent: #00FFFF;         /* Cyan accent */
+    --dark-accent: #00FFFF;           /* Cyan accent */
     --dark-accent-glow: rgba(0, 255, 255, 0.3);
     --dark-accent-hover: #00cccc;
-    --dark-link: #33ffff;           /* Lighter cyan for links */
-    --dark-success-bg: #103d31;     /* Dark green success */
+    --dark-link: #33ffff;            /* Lighter cyan for links */
+    --dark-success-bg: #103d31;       /* Dark green success */
     --dark-success-text: #82e0c2;
-    --dark-error-bg: #4d1f24;       /* Dark red error */
+    --dark-error-bg: #4d1f24;         /* Dark red error */
     --dark-error-text: #f5a7af;
     --dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23E0E5EC' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --dark-modal-backdrop: rgba(13, 15, 18, 0.7); /* Dark backdrop with blur */
@@ -84,6 +84,14 @@
     --error-text-color: var(--dark-error-text);
     --select-arrow: var(--dark-select-arrow);
     --modal-backdrop-color: var(--dark-modal-backdrop);
+
+    /* Define HSL hues for easier border calculation */
+    --success-hue: 145;
+    --error-hue: 354;
+    /* Define RGB for hover effect */
+    --accent-rgb: 0, 255, 255; /* Default (dark) */
+    /* Define --color-danger-rgb if you haven't already */
+    --color-danger-rgb: 229, 57, 53;
 }
 
 /* --- Light Mode Override --- */
@@ -106,6 +114,7 @@ body.light-mode {
     --error-text-color: var(--light-error-text);
     --select-arrow: var(--light-select-arrow);
     --modal-backdrop-color: var(--light-modal-backdrop);
+    --accent-rgb: 0, 123, 255; /* Light */
 }
 
 /* ======================== */
@@ -213,23 +222,27 @@ a:hover {
 .form-group {
     margin-bottom: 20px;
 }
+
+/* Commented out old checkbox styles as they might conflict or be unused */
+/*
 .checkbox-group label {
-    display: inline-flex; /* Align label and checkbox */
+    display: inline-flex;
     align-items: center;
     margin-bottom: 0;
     margin-left: 8px;
     font-weight: normal;
-    color: var(--text-color); /* Normal text color for checkbox label */
+    color: var(--text-color);
     cursor: pointer;
 }
 .checkbox-group input[type="checkbox"] {
     margin-bottom: 0;
-    margin-right: 0; /* Remove default margin */
-    width: 1.1em; /* Slightly larger checkbox */
+    margin-right: 0;
+    width: 1.1em;
     height: 1.1em;
-    accent-color: var(--accent-color); /* Modern way to color checkboxes */
+    accent-color: var(--accent-color);
     cursor: pointer;
 }
+*/
 
 label {
     display: block;
@@ -281,6 +294,110 @@ select {
 /* Style placeholder text */
 ::placeholder { color: var(--secondary-text); opacity: 0.6; }
 
+/* ======================== */
+/* Toggle Switch Styles     */ /* <<<< NEW STYLES ADDED HERE */
+/* ======================== */
+
+.toggle-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Positions label left, switch right */
+    margin-bottom: 20px; /* Consistent form group spacing */
+    padding-top: 5px; /* Add a little top padding if needed */
+    padding-bottom: 5px; /* Add a little bottom padding if needed */
+}
+
+.toggle-label-text {
+    /* Style like other form labels */
+    display: block;
+    margin-bottom: 0; /* Reset margin as flex handles alignment */
+    font-weight: 500;
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 15px; /* Space between label text and switch */
+    flex-shrink: 0; /* Prevent label text from shrinking */
+    cursor: default; /* Indicate it's not clickable directly */
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px; /* Width of the toggle */
+    height: 30px; /* Height of the toggle */
+    flex-shrink: 0; /* Prevent switch itself from shrinking */
+}
+
+/* Hide the actual checkbox visually but keep it accessible */
+.toggle-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+/* The visual track of the switch */
+.toggle-switch-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--input-border-color); /* Off state bg */
+    border-radius: 15px; /* Fully rounded (height / 2) */
+    transition: background-color var(--transition-speed) var(--transition-timing);
+    border: 1px solid var(--border-color); /* Subtle border */
+}
+
+/* The sliding handle (knob) */
+.toggle-switch-handle {
+    position: absolute;
+    content: '';
+    height: 24px; /* Size of the handle */
+    width: 24px;  /* Size of the handle */
+    left: 3px;    /* Initial position padding */
+    bottom: 2px;  /* Vertical alignment padding */
+    background-color: var(--content-bg); /* Use content bg for handle */
+    border-radius: 50%; /* Circular handle */
+    transition: transform var(--transition-speed) var(--transition-timing);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* --- Checked State --- */
+
+/* Change track background when checked */
+.toggle-checkbox:checked + .toggle-switch-label {
+    background-color: var(--accent-color); /* Use accent color for 'on' */
+    border-color: var(--accent-color);
+}
+
+/* Slide the handle to the right when checked */
+.toggle-checkbox:checked + .toggle-switch-label .toggle-switch-handle {
+    /* Calculation: track_width - handle_width - (2 * left_padding) */
+    /* 52 - 24 - (2 * 3) = 22px */
+    transform: translateX(22px);
+}
+
+/* --- Focus State (Accessibility) --- */
+
+/* Add focus ring similar to inputs */
+.toggle-checkbox:focus + .toggle-switch-label {
+     box-shadow: 0 0 0 3px var(--accent-glow-color);
+     outline: none; /* Remove default outline if browser adds one */
+}
+
+/* --- Modal Specific Override (if needed) --- */
+
+/* Optional: If you want the 'Is Verified?' label in the modal *not* to be uppercase */
+#edit-shoutout-form .toggle-group .toggle-label-text#edit-verified-label {
+    text-transform: none; /* Override uppercase */
+    font-size: 1rem; /* Match standard input font size */
+    letter-spacing: normal; /* Reset letter spacing */
+    font-weight: normal; /* Match standard input label weight? Or keep 500? */
+    color: var(--text-color); /* Match standard label color */
+}
 
 /* ======================== */
 /* Button Styles            */
@@ -305,6 +422,12 @@ button, .button-primary {
     display: inline-block;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
 }
+/* Dark Mode text color correction for cyan button */
+body.dark-mode button, body.dark-mode .button-primary {
+    color: #0D0F12; /* Dark text for better contrast on cyan */
+}
+/* Light Mode text color is fine with #ffffff */
+
 button:hover, .button-primary:hover {
     transform: translateY(-2px); /* Slight lift */
     box-shadow: 0 4px 12px -2px var(--accent-glow-color); /* Accent glow on hover */
@@ -320,17 +443,40 @@ button:disabled, .button-primary:disabled {
     transform: none;
     box-shadow: none;
     background: var(--secondary-text); /* Muted background when disabled */
+    color: rgba(255, 255, 255, 0.7); /* Ensure disabled text is visible */
+}
+body.dark-mode button:disabled, body.dark-mode .button-primary:disabled {
+     color: rgba(255, 255, 255, 0.5); /* Adjust for dark mode if needed */
 }
 
+
 /* Specific Button Colors using action color variables */
-#login-button { background: linear-gradient(145deg, var(--color-success-action), var(--color-success-action-hover)); }
-#login-button:hover { box-shadow: 0 4px 12px -2px var(--color-success-action-glow); background: linear-gradient(145deg, var(--color-success-action-hover), var(--color-success-action));}
+#login-button {
+    background: linear-gradient(145deg, var(--color-success-action), var(--color-success-action-hover));
+    color: #ffffff !important; /* Override base button color for green */
+}
+#login-button:hover {
+    box-shadow: 0 4px 12px -2px var(--color-success-action-glow);
+    background: linear-gradient(145deg, var(--color-success-action-hover), var(--color-success-action));
+}
 
-#logout-button, button.delete-button { background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover)); }
-#logout-button:hover, button.delete-button:hover { box-shadow: 0 4px 12px -2px var(--color-danger-glow); background: linear-gradient(145deg, var(--color-danger-hover), var(--color-danger)); }
+#logout-button, button.delete-button {
+    background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
+    color: #ffffff !important; /* Override base button color for red */
+}
+#logout-button:hover, button.delete-button:hover {
+    box-shadow: 0 4px 12px -2px var(--color-danger-glow);
+    background: linear-gradient(145deg, var(--color-danger-hover), var(--color-danger));
+}
 
-button.secondary-button, .list-item-admin button, button.edit-button { background: linear-gradient(145deg, var(--color-secondary-action), var(--color-secondary-action-hover)); }
-button.secondary-button:hover, .list-item-admin button:hover, button.edit-button:hover { box-shadow: 0 4px 12px -2px var(--color-secondary-action-glow); background: linear-gradient(145deg, var(--color-secondary-action-hover), var(--color-secondary-action)); }
+button.secondary-button, .list-item-admin button, button.edit-button {
+    background: linear-gradient(145deg, var(--color-secondary-action), var(--color-secondary-action-hover));
+    color: #ffffff !important; /* Override base button color for grey */
+}
+button.secondary-button:hover, .list-item-admin button:hover, button.edit-button:hover {
+    box-shadow: 0 4px 12px -2px var(--color-secondary-action-glow);
+    background: linear-gradient(145deg, var(--color-secondary-action-hover), var(--color-secondary-action));
+}
 
 .form-actions {
     margin-top: 25px;
@@ -376,9 +522,6 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     background-color: var(--error-bg-color);
     border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3); /* Use HSL for border color */
 }
-/* Define HSL hues for easier border calculation */
-:root { --success-hue: 145; --error-hue: 354; }
-
 
 /* ======================== */
 /* Dynamic List Styles      */
@@ -411,9 +554,6 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 }
 .list-item-admin:last-child { border-bottom: none; }
 .list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); /* Subtle hover */ }
-/* Define RGB for hover effect */
-:root { --accent-rgb: 0, 255, 255; } /* Default (dark) */
-body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 
 
 .list-item-admin .item-content {
@@ -432,7 +572,7 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     gap: 10px;
     align-items: center;
 }
-/* Buttons are now small-button class */
+/* Buttons use small-button class now */
 
 
 /* Specific list item content styling (example) */
@@ -503,9 +643,6 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     border-color: var(--color-danger); /* Use your error color */
     box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); /* Error glow */
 }
-/* Define --color-danger-rgb if you haven't already */
-:root { --color-danger-rgb: 229, 57, 53; }
-
 
 /* ======================== */
 /* Edit Modal Styles        */
@@ -578,12 +715,16 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
   /* Inherit from base styles, ensure full width */
   width: 100%;
 }
+
+/* Commented out modal checkbox override as it's replaced by toggle */
+/*
 #edit-shoutout-form .checkbox-group label {
-    font-weight: normal; /* Override uppercase */
+    font-weight: normal;
     text-transform: none;
-    font-size: 1rem; /* Normal size */
+    font-size: 1rem;
     letter-spacing: 0;
 }
+*/
 #edit-shoutout-form .form-actions {
     margin-top: 30px; /* More space before modal actions */
 }
@@ -605,6 +746,8 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     .list-item-admin { flex-direction: column; align-items: flex-start; }
     .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-end; }
     .modal-content { margin: 15% auto; padding: 25px 20px; }
+    .toggle-group { flex-direction: column; align-items: flex-start; gap: 8px; } /* Stack toggle label and switch on small screens */
+    .toggle-label-text { margin-right: 0; }
 }
 
 @media (max-width: 480px) {
@@ -614,19 +757,22 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     button, .button-primary { padding: 10px 18px; font-size: 0.95rem; }
     input, select, textarea { padding: 10px 12px; font-size: 0.95rem; }
     .container { padding: 20px 15px; }
+    .modal-content { padding: 20px 15px; }
+    .shoutouts-platform-container { padding: 15px; }
+
 }
 
 .list-count {
   font-weight: normal;
   font-size: 0.9em;
-  color: var(--text-color-secondary); /* Adjust color if needed */
+  color: var(--secondary-text); /* Use secondary text color */
   margin-left: 8px;
 }
 
 .timer-display {
   font-size: 0.9em;
   margin-left: 15px;
-  color: var(--text-color-secondary); /* Or your preferred color */
+  color: var(--secondary-text); /* Use secondary text color */
   min-width: 50px; /* Prevent layout shifts */
   display: inline-block; /* Allow width */
   text-align: right;
