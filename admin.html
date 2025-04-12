@@ -7,46 +7,36 @@
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+
       gtag('config', 'G-E0RSQS1MS7');
     </script>
-    
-   <!-- Favicons and Icons -->
-<link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
+
+   <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
 
-<!-- Web App Manifest -->
 <link rel="manifest" href="/manifest.json" />
 
-<!-- Microsoft-specific configuration -->
 <meta name="msapplication-TileColor" content="#ffffff" />
 <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
 <meta name="theme-color" content="#ffffff"/>
 
-<!-- Apple Touch Icons -->
-<!-- Light mode icon -->
 <link rel="apple-touch-icon" media="(prefers-color-scheme: light)" href="/assets/light-icon/180.png">
 
-<!-- Dark mode icon -->
 <link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="/assets/dark-icon/180.png">
 
-<!-- Default (fallback) icon -->
 <link rel="apple-touch-icon" href="/assets/light-icon/180.png">
 
-<!-- Additional sizes for better compatibility -->
 <link rel="apple-touch-icon" sizes="120x120" href="/assets/light-icon/120.png">
 <link rel="apple-touch-icon" sizes="152x152" href="/assets/light-icon/152.png">
 <link rel="apple-touch-icon" sizes="512x512" href="/assets/light-icon/512.png">
 
-<!-- Microsoft-specific configuration -->
 <meta name="browserconfig" content="/browserconfig.xml">
     </head>
 <body class="dark-mode">
@@ -119,7 +109,7 @@
             <button type="submit" id="save-profile-button" class="button-primary">Save Profile Changes</button>
         </div>
     </form>
-     <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
+   <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
 </section>
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
@@ -152,9 +142,14 @@
                             <label for="tiktok-profilePic">Profile Pic URL:</label>
                             <input type="url" id="tiktok-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
                         </div>
-                        <div class="form-group checkbox-group">
-                           <input type="checkbox" id="tiktok-isVerified" name="isVerified" value="true">
-                           <label for="tiktok-isVerified">Is Verified?</label>
+                        <div class="form-group toggle-group">
+                            <label class="toggle-label-text">Is Verified?</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="tiktok-isVerified" name="isVerified" class="toggle-checkbox" value="true">
+                                <label class="toggle-switch-label" for="tiktok-isVerified">
+                                    <span class="toggle-switch-handle"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="form-actions">
                            <button type="submit" class="button-primary">Add TikTok Shoutout</button>
@@ -196,9 +191,14 @@
                             <label for="instagram-profilePic">Profile Pic URL:</label>
                             <input type="url" id="instagram-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
                         </div>
-                        <div class="form-group checkbox-group">
-                           <input type="checkbox" id="instagram-isVerified" name="isVerified" value="true">
-                           <label for="instagram-isVerified">Is Verified?</label>
+                        <div class="form-group toggle-group">
+                            <label class="toggle-label-text">Is Verified?</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="instagram-isVerified" name="isVerified" class="toggle-checkbox" value="true">
+                                <label class="toggle-switch-label" for="instagram-isVerified">
+                                    <span class="toggle-switch-handle"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="form-actions">
                            <button type="submit" class="button-primary">Add Instagram Shoutout</button>
@@ -244,9 +244,14 @@
                             <label for="youtube-coverPhoto">Cover Photo URL:</label>
                             <input type="url" id="youtube-coverPhoto" name="coverPhoto" placeholder="https://..." inputmode="url">
                         </div>
-                        <div class="form-group checkbox-group">
-                           <input type="checkbox" id="youtube-isVerified" name="isVerified" value="true">
-                           <label for="youtube-isVerified">Is Verified?</label>
+                        <div class="form-group toggle-group">
+                            <label class="toggle-label-text">Is Verified?</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="youtube-isVerified" name="isVerified" class="toggle-checkbox" value="true">
+                                <label class="toggle-switch-label" for="youtube-isVerified">
+                                    <span class="toggle-switch-handle"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="form-actions">
                            <button type="submit" class="button-primary">Add YouTube Shoutout</button>
@@ -260,7 +265,10 @@
                     </div>
                 </div>
 
-            </section> </main> <div id="edit-shoutout-modal" class="modal" style="display: none;"
+            </section>
+        </main>
+
+        <div id="edit-shoutout-modal" class="modal" style="display: none;"
              role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading">
 
             <div class="modal-content">
@@ -288,23 +296,26 @@
                         <label for="edit-profilePic">Profile Pic URL:</label>
                         <input type="url" id="edit-profilePic" name="profilePic" inputmode="url">
                     </div>
-                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="edit-isVerified" name="isVerified" value="true">
-                        <label for="edit-isVerified">Is Verified?</label>
+                    <div class="form-group toggle-group">
+                        <label class="toggle-label-text" id="edit-verified-label">Is Verified?</label> <div class="toggle-switch">
+                            <input type="checkbox" id="edit-isVerified" name="isVerified" class="toggle-checkbox" value="true">
+                            <label class="toggle-switch-label" for="edit-isVerified">
+                                <span class="toggle-switch-handle"></span>
+                            </label>
+                        </div>
                     </div>
-
                     <div id="edit-platform-specific">
                         <div class="form-group edit-followers-group" style="display: none;">
                             <label for="edit-followers">Followers:</label>
                             <input type="text" id="edit-followers" name="followers" inputmode="text">
                         </div>
                         <div class="form-group edit-subscribers-group" style="display: none;">
-                              <label for="edit-subscribers">Subscribers:</label>
-                              <input type="text" id="edit-subscribers" name="subscribers" inputmode="text">
+                             <label for="edit-subscribers">Subscribers:</label>
+                             <input type="text" id="edit-subscribers" name="subscribers" inputmode="text">
                         </div>
                         <div class="form-group edit-coverphoto-group" style="display: none;">
-                              <label for="edit-coverPhoto">Cover Photo URL:</label>
-                              <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
+                             <label for="edit-coverPhoto">Cover Photo URL:</label>
+                             <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
                         </div>
                     </div>
 
@@ -312,7 +323,10 @@
                       <button type="submit" class="button-primary">Save Changes</button>
                     </div>
                 </form>
-            </div> </div> </div> <script type="module" src="admin.js"></script>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="admin.js"></script>
 
 </body>
 </html>
