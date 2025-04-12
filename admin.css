@@ -685,7 +685,7 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-end; }
     .modal-content { margin: 15% auto; padding: 25px 20px; }
     .toggle-group { flex-direction: column; align-items: flex-start; gap: 8px; } /* Stack toggle label and switch on small screens */
-    .toggle-label-text { margin-right: 0; }
+    .toggle-label-text { margin-right: 0; **display: block !important;** } /* Ensure label is visible */
 }
 
 @media (max-width: 480px) {
