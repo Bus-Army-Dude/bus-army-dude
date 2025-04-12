@@ -669,7 +669,7 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 
 .toggle-label-text {
     font-weight: 500;
-    color: var(--secondary-text); /* Still use theme color for label */
+    color: var(--secondary-text);
     font-size: 0.9em;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -678,10 +678,10 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 .toggle-switch {
     position: relative;
     display: inline-block;
-    /* Dimensions based on original CSS & typical iOS toggle proportions */
-    width: 51px;  /* Standard iOS toggle width */
-    height: 31px; /* Standard iOS toggle height */
-    flex-shrink: 0; /* Prevent shrinking in flex layouts */
+    /* Keeping standard iOS-like dimensions */
+    width: 51px;
+    height: 31px;
+    flex-shrink: 0;
 }
 
 .toggle-switch input[type="checkbox"] {
@@ -698,44 +698,41 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--img-toggle-off-bg); /* Use specific OFF color */
-    transition: background-color 0.4s ease; /* Smooth color transition */
-    border-radius: 31px; /* Fully rounded ends */
-    border: 1px solid rgba(0,0,0,0.04); /* Subtle border like iOS */
+    background-color: var(--img-toggle-off-bg);
+    transition: background-color 0.4s ease;
+    border-radius: 31px; /* Fully rounded */
+    border: 1px solid rgba(0,0,0,0.04); /* Keep subtle border */
 }
 
-.toggle-switch-label:before {
+.toggle-switch-label:before { /* The handle */
     position: absolute;
     content: "";
-    /* iOS-like handle size relative to track height */
-    height: 27px;
-    width: 27px;
-    left: 2px; /* Start position */
-    bottom: 1px; /* Center vertically (adjust with border) */
-    background-color: var(--img-toggle-handle-color); /* Use specific handle color */
-    transition: transform 0.4s ease; /* Smooth slide transition */
+    /* --- Slightly larger handle relative to track --- */
+    height: 28px;  /* Increased from 27px */
+    width: 28px;   /* Increased from 27px */
+    left: 2px;     /* Keep 2px left padding */
+    /* Adjust bottom for vertical centering: (TrackH - HandleH - Border*2)/2 + BorderBottom */
+    /* (31 - 28 - 0) / 2 = 1.5px. (Ignoring border effect here for simplicity) */
+    bottom: 1.5px; /* Adjusted for new handle size */
+    /* --- --- */
+    background-color: var(--img-toggle-handle-color);
+    transition: transform 0.4s ease;
     border-radius: 50%; /* Circle */
-    box-shadow: 0 1px 3px var(--img-toggle-handle-shadow-color); /* Use specific shadow */
+    /* --- Slightly tighter shadow --- */
+    box-shadow: 0 1px 2px var(--img-toggle-handle-shadow-color); /* Reduced spread */
+    /* --- --- */
 }
 
 .toggle-switch input:checked + .toggle-switch-label {
-    background-color: var(--img-toggle-on-bg); /* Use specific ON color */
+    background-color: var(--img-toggle-on-bg);
 }
 
-/* Optional: Slightly change border on active state if needed */
-/* .toggle-switch input:checked + .toggle-switch-label {
-    border-color: transparent;
-} */
-
-/* Remove focus style if not desired, or adjust */
-/* .toggle-switch input:focus + .toggle-switch-label {
-    box-shadow: 0 0 2px var(--img-toggle-on-bg);
-} */
-
 .toggle-switch input:checked + .toggle-switch-label:before {
-    /* Calculate translation: track_width - handle_width - left_padding - right_padding */
-    /* 51px - 27px - 2px - 2px = 20px */
-    transform: translateX(20px);
+    /* --- Recalculated movement distance --- */
+    /* Calculation: track_width - handle_width - left_padding*2 */
+    /* 51px - 28px - (2px * 2) = 19px */
+    transform: translateX(19px); /* Updated value */
+    /* --- --- */
 }
 
 /* ================================= */
