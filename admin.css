@@ -622,3 +622,12 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
   color: var(--text-color-secondary); /* Adjust color if needed */
   margin-left: 8px;
 }
+
+.timer-display {
+  font-size: 0.9em;
+  margin-left: 15px;
+  color: var(--text-color-secondary); /* Or your preferred color */
+  min-width: 50px; /* Prevent layout shifts */
+  display: inline-block; /* Allow width */
+  text-align: right;
+}
