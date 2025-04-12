@@ -300,7 +300,7 @@ select {
 ::placeholder { color: var(--secondary-text); opacity: 0.6; }
 
 /* ======================== */
-/* Toggle Switch Styles (iOS Style) */ /* <<<< UPDATED SECTION */
+/* Toggle Switch Styles (Contained Handle) */ /* <<<< NAME UPDATED & RULES ADJUSTED */
 /* ======================== */
 
 .toggle-group {
@@ -353,7 +353,7 @@ select {
     background-color: var(--ios-toggle-off-bg); /* iOS Off Grey */
     border-radius: 16px; /* Fully rounded (height / ~2) */
     transition: background-color var(--transition-speed) var(--transition-timing);
-    /* No border needed for iOS look */
+    /* No border needed */
 }
 
 /* The sliding handle (knob) */
@@ -362,7 +362,8 @@ select {
     content: '';
     height: 27px; /* iOS standard handle size */
     width: 27px;  /* iOS standard handle size */
-    left: 2px;    /* Initial position padding */
+    /* ADJUSTMENT: Increased left padding */
+    left: 3px;    /* Initial position padding (increased from 2px) */
     top: 2px;     /* Vertical alignment padding (31 - 27) / 2 = 2 */
     background-color: var(--ios-toggle-handle-bg); /* iOS Handle White */
     border-radius: 50%; /* Circular handle */
@@ -379,9 +380,10 @@ select {
 
 /* Slide the handle to the right when checked */
 .toggle-checkbox:checked + .toggle-switch-label .toggle-switch-handle {
-    /* Calculation: track_width - handle_width - (2 * left_padding) */
-    /* 51 - 27 - (2 * 2) = 20px */
-    transform: translateX(20px);
+    /* ADJUSTMENT: Reduced travel distance for contained look */
+    /* Calculation: track_width - handle_width - left_padding - right_padding */
+    /* 51 - 27 - 3 - 3 = 18px */
+    transform: translateX(18px); /* Reduced from 20px */
 }
 
 /* --- Focus State (Accessibility) --- */
