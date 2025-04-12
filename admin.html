@@ -17,28 +17,25 @@
     </script>
 
    <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+   <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
+   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
 
-<link rel="manifest" href="/manifest.json" />
+   <link rel="manifest" href="/manifest.json" />
 
-<meta name="msapplication-TileColor" content="#ffffff" />
-<meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-<meta name="theme-color" content="#ffffff"/>
+   <meta name="msapplication-TileColor" content="#ffffff" />
+   <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
+   <meta name="theme-color" content="#ffffff"/>
 
-<link rel="apple-touch-icon" media="(prefers-color-scheme: light)" href="/assets/light-icon/180.png">
+   <link rel="apple-touch-icon" media="(prefers-color-scheme: light)" href="/assets/light-icon/180.png">
+   <link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="/assets/dark-icon/180.png">
+   <link rel="apple-touch-icon" href="/assets/light-icon/180.png">
+   <link rel="apple-touch-icon" sizes="120x120" href="/assets/light-icon/120.png">
+   <link rel="apple-touch-icon" sizes="152x152" href="/assets/light-icon/152.png">
+   <link rel="apple-touch-icon" sizes="512x512" href="/assets/light-icon/512.png">
 
-<link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="/assets/dark-icon/180.png">
-
-<link rel="apple-touch-icon" href="/assets/light-icon/180.png">
-
-<link rel="apple-touch-icon" sizes="120x120" href="/assets/light-icon/120.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/assets/light-icon/152.png">
-<link rel="apple-touch-icon" sizes="512x512" href="/assets/light-icon/512.png">
-
-<meta name="browserconfig" content="/browserconfig.xml">
-    </head>
+   <meta name="browserconfig" content="/browserconfig.xml">
+</head>
 <body class="dark-mode">
     <div class="container">
         <h1>Admin Panel</h1>
@@ -72,45 +69,47 @@
             <div id="admin-status" class="status-message" role="status" aria-live="polite"></div>
 
             <section class="admin-section" id="profile-management" aria-labelledby="profile-heading">
-    <h3 id="profile-heading">Manage Homepage Profile</h3>
+                <h3 id="profile-heading">Manage Homepage Profile</h3>
 
-    <form id="profile-form">
-        <div class="form-group">
-            <label for="profile-username">Username:</label>
-            <input type="text" id="profile-username" name="username" placeholder="Enter homepage username">
-        </div>
-        <div class="form-group">
-            <label for="profile-pic-url">Profile Picture URL:</label>
-            <div class="input-with-preview"> <input type="url" id="profile-pic-url" name="profilePicUrl" placeholder="https://..." inputmode="url">
-                <img src="path/to/placeholder-image.png"
-                     alt="Profile picture preview"
-                     class="pfp-preview-img"
-                     id="admin-pfp-preview"
-                     onerror="this.onerror=null; this.src='path/to/error-placeholder.png';"
-                     style="display: none;" >
-            </div>
-        </div>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-username">Username:</label>
+                        <input type="text" id="profile-username" name="username" placeholder="Enter homepage username">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-pic-url">Profile Picture URL:</label>
+                        <div class="input-with-preview">
+                            <input type="url" id="profile-pic-url" name="profilePicUrl" placeholder="https://..." inputmode="url">
+                            <img src="path/to/placeholder-image.png"
+                                alt="Profile picture preview"
+                                class="pfp-preview-img"
+                                id="admin-pfp-preview"
+                                onerror="this.onerror=null; this.src='path/to/error-placeholder.png';"
+                                style="display: none;">
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <label for="profile-bio">Bio:</label>
-            <textarea id="profile-bio" name="bio" rows="4" placeholder="Enter profile bio text..."></textarea>
-        </div>
+                    <div class="form-group">
+                        <label for="profile-bio">Bio:</label>
+                        <textarea id="profile-bio" name="bio" rows="4" placeholder="Enter profile bio text..."></textarea>
+                    </div>
 
-        <div class="form-group">
-            <label for="profile-status">Status:</label>
-            <select id="profile-status" name="status">
-                <option value="online">Online (🟢)</option>
-                <option value="away">Away (🟡)</option>
-                <option value="offline">Offline (🔴)</option>
-                </select>
-        </div>
+                    <div class="form-group">
+                        <label for="profile-status">Status:</label>
+                        <select id="profile-status" name="status">
+                            <option value="online">Online (🟢)</option>
+                            <option value="away">Away (🟡)</option>
+                            <option value="offline">Offline (🔴)</option>
+                        </select>
+                    </div>
 
-        <div class="form-actions">
-            <button type="submit" id="save-profile-button" class="button-primary">Save Profile Changes</button>
-        </div>
-    </form>
-   <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
-</section>
+                    <div class="form-actions">
+                        <button type="submit" id="save-profile-button" class="button-primary">Save Profile Changes</button>
+                    </div>
+                </form>
+                <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
+            </section>
+
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
@@ -264,13 +263,11 @@
                         <p>Loading YouTube shoutouts...</p>
                     </div>
                 </div>
-
             </section>
         </main>
 
         <div id="edit-shoutout-modal" class="modal" style="display: none;"
              role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading">
-
             <div class="modal-content">
                 <button type="button" class="close-button" id="cancel-edit-button" aria-label="Close dialog">&times;</button>
                 <h2 id="edit-modal-heading">Edit Shoutout</h2>
@@ -284,7 +281,7 @@
                         <label for="edit-nickname">Nickname:</label>
                         <input type="text" id="edit-nickname" name="nickname" required>
                     </div>
-                     <div class="form-group">
+                    <div class="form-group">
                         <label for="edit-order">Order:</label>
                         <input type="number" id="edit-order" name="order" min="0" step="1" required>
                     </div>
@@ -297,7 +294,8 @@
                         <input type="url" id="edit-profilePic" name="profilePic" inputmode="url">
                     </div>
                     <div class="form-group toggle-group">
-                        <label class="toggle-label-text" id="edit-verified-label">Is Verified?</label> <div class="toggle-switch">
+                        <label class="toggle-label-text" id="edit-verified-label">Is Verified?</label>
+                        <div class="toggle-switch">
                             <input type="checkbox" id="edit-isVerified" name="isVerified" class="toggle-checkbox" value="true">
                             <label class="toggle-switch-label" for="edit-isVerified">
                                 <span class="toggle-switch-handle"></span>
@@ -310,23 +308,22 @@
                             <input type="text" id="edit-followers" name="followers" inputmode="text">
                         </div>
                         <div class="form-group edit-subscribers-group" style="display: none;">
-                             <label for="edit-subscribers">Subscribers:</label>
-                             <input type="text" id="edit-subscribers" name="subscribers" inputmode="text">
+                            <label for="edit-subscribers">Subscribers:</label>
+                            <input type="text" id="edit-subscribers" name="subscribers" inputmode="text">
                         </div>
                         <div class="form-group edit-coverphoto-group" style="display: none;">
-                             <label for="edit-coverPhoto">Cover Photo URL:</label>
-                             <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
+                            <label for="edit-coverPhoto">Cover Photo URL:</label>
+                            <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
                         </div>
                     </div>
 
                     <div class="form-actions">
-                      <button type="submit" class="button-primary">Save Changes</button>
+                        <button type="submit" class="button-primary">Save Changes</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script type="module" src="admin.js"></script>
-
 </body>
 </html>
