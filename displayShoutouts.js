@@ -1,4 +1,4 @@
-// displayShoutouts.js (Merged Version - Includes Profile Display)
+// displayShoutouts.js (Checks Maintenance Mode, Merged Version)
 
 // Use the same Firebase config as in admin.js
 const firebaseConfig = {
@@ -17,29 +17,72 @@ import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, que
 
 // --- Initialize Firebase ---
 let db;
-let firebaseAppInitialized = false; // Flag to track initialization status
-let profileDocRef; // Define here for broader scope
+let firebaseAppInitialized = false;
+let profileDocRef;
+// Reference for Metadata Document (used for timestamps AND maintenance flag)
+let metaDocRef;
 
 try {
     const app = initializeApp(firebaseConfig);
     db = getFirestore(app);
-    profileDocRef = doc(db, "site_config", "mainProfile"); // Define ref after db init
-    firebaseAppInitialized = true; // Set flag on successful initialization
+    // Define refs after db init
+    profileDocRef = doc(db, "site_config", "mainProfile"); // Path for profile
+    metaDocRef = doc(db, "siteConfig", "shoutoutsMetadata"); // Path for metadata & maintenance flag
+    firebaseAppInitialized = true;
     console.log("Firebase initialized for display.");
 } catch (error) {
     console.error("Firebase initialization failed on index.html:", error);
-    // Display error messages for both sections if init fails
-    const grids = document.querySelectorAll('.creator-grid, .instagram-creator-grid, .youtube-creator-grid');
-    grids.forEach(grid => { if(grid) grid.innerHTML = '<p class="error">DB Connection Error.</p>'; });
-    const profileBio = document.getElementById('profile-bio-main');
-    if (profileBio) profileBio.textContent = 'Error loading site data.';
-    // Set other profile defaults on error
-    const profileUsernameElement = document.getElementById('profile-username-main');
-    const profilePicElement = document.getElementById('profile-pic-main');
-    const profileStatusElement = document.getElementById('profile-status-main');
-    if (profileUsernameElement) profileUsernameElement.textContent = "Username";
-    if (profilePicElement) profilePicElement.src = "images/default-profile.jpg"; // Use default path
-    if (profileStatusElement) profileStatusElement.textContent = '❓';
+    // Attempt to display a basic error even if init fails
+    showInitializationError();
+}
+
+// --- Function to display init error ---
+function showInitializationError() {
+     const bodyElement = document.body;
+     if (bodyElement) {
+         // Avoid replacing entire body if possible, target a main container if exists
+         const mainContainer = document.querySelector('.container') || document.body;
+         mainContainer.innerHTML = `
+            <div style="padding: 40px; text-align: center; color: #dc3545; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; margin: 30px;">
+                <h2>Site Error</h2>
+                <p>Could not connect to the database. Please try again later.</p>
+                <p><small>Error details logged to console.</small></p>
+            </div>`;
+     }
+}
+
+// --- Function to display maintenance message ---
+function showMaintenanceMessage() {
+    // Select main content containers (adjust selectors if your HTML is different)
+    // Use querySelector for flexibility in case IDs change or aren't present
+    const profileSection = document.querySelector('#profile-section-main, .profile-section'); // Example selectors
+    const shoutoutsSection = document.querySelector('#shoutouts-section, .shoutouts-wrapper'); // Example selectors
+    const mainContentArea = document.querySelector('main') || document.querySelector('.main-content') || document.body; // Target main area
+
+    // Hide normal content sections if they exist
+    if (profileSection) profileSection.style.display = 'none';
+    if (shoutoutsSection) shoutoutsSection.style.display = 'none';
+    // Add other sections like headers/footers if they should also be hidden:
+    // const header = document.querySelector('header'); if (header) header.style.display = 'none';
+    // const footer = document.querySelector('footer'); if (footer) footer.style.display = 'none';
+
+
+    // Create and display maintenance message container
+    const maintenanceDiv = document.createElement('div');
+    maintenanceDiv.id = 'maintenance-message';
+    maintenanceDiv.className = 'maintenance-container'; // For styling (ensure CSS exists)
+    maintenanceDiv.innerHTML = `
+        <h2>We're Performing Some Upgrades!</h2>
+        <p>Our website is currently undergoing scheduled maintenance to improve your experience. We’re making some big updates, so things will be smoother, faster, and even better when we're done.</p>
+        <p>During this time, certain features may be temporarily unavailable, and you might not be able to access all parts of the site. But don’t worry, we’re working hard to get everything back up and running as quickly as possible.</p>
+        <p>Please check back soon, or follow our social media pages for updates on when we’ll be live again. We appreciate your patience and can’t wait to show you what’s new!</p>
+        <p>Thank you for your understanding!</p>
+    `;
+
+    // Prepend to body or main container to ensure it's visible
+    mainContentArea.prepend(maintenanceDiv);
+
+    console.log("Site is in maintenance mode.");
 }
 
 // --- Helper Function to Format Timestamps ---
@@ -50,21 +93,12 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
     try {
         const date = firestoreTimestamp.toDate();
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        return date.toLocaleString('en-US', { // Use appropriate locale
-            timeZone: userTimeZone,
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true
+        return date.toLocaleString('en-US', {
+            timeZone: userTimeZone, weekday: 'long', year: 'numeric',
+            month: 'long', day: 'numeric', hour: 'numeric',
+            minute: 'numeric', second: 'numeric', hour12: true
         });
-    } catch (error) {
-        console.error("Error formatting timestamp:", error);
-        return 'Invalid Date';
-    }
+    } catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
 }
 
 // --- Functions to Render Shoutout Cards ---
@@ -97,8 +131,7 @@ function renderInstagramCard(account) {
 }
 
 function renderYouTubeCard(account) {
-    // Use standard YouTube URL format (handle might be preferred over username)
-    const channelUrl = account.username ? `https://www.youtube.com/@${account.username}` : '#'; // Link to # if no username
+    const channelUrl = account.username ? `https://www.youtube.com/@${account.username}` : '#'; // Correct YouTube URL format
     return `
         <div class="youtube-creator-card">
             ${account.coverPhoto ? `<img src="${account.coverPhoto}" alt="${account.nickname || ''} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
@@ -114,84 +147,41 @@ function renderYouTubeCard(account) {
 }
 
 
-// ======================================================
-// === Profile Section Display Logic (Reads data) ===
-// ======================================================
+// --- Profile Section Display Logic (Reads data) ---
 const profileUsernameElement = document.getElementById('profile-username-main');
 const profilePicElement = document.getElementById('profile-pic-main');
 const profileBioElement = document.getElementById('profile-bio-main');
 const profileStatusElement = document.getElementById('profile-status-main');
-
 const defaultUsername = "Username";
 const defaultBio = "";
-const defaultProfilePic = "images/default-profile.jpg"; // Make sure this path is correct
+const defaultProfilePic = "images/default-profile.jpg";
 const defaultStatusEmoji = '❓';
 const statusEmojis = { online: '🟢', away: '🟡', offline: '🔴' };
 
 async function displayProfileData() {
-    if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) {
-        console.warn("Profile display warning: One or more HTML elements missing. Check IDs in index.html.");
-    }
-    // Check flag, db instance, and that profileDocRef was defined
-    if (!firebaseAppInitialized || !db || !profileDocRef) {
-        console.error("Profile Fetch Error: Firebase not ready or profileDocRef not defined.");
-        if(profileBioElement) profileBioElement.textContent = "Error loading profile (DB Init).";
-        // Set defaults if firebase isn't ready
-        if (profileUsernameElement) profileUsernameElement.textContent = defaultUsername;
-        if (profilePicElement) profilePicElement.src = defaultProfilePic;
-        if (profileBioElement && profileBioElement.textContent === "Error loading profile (DB Init).") { /* Keep error message */ } else if (profileBioElement) { profileBioElement.textContent = defaultBio; }
-        if (profileStatusElement) profileStatusElement.textContent = statusEmojis['offline'];
-        return;
-    }
-
+    if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) { console.warn("Profile display element(s) missing."); }
+    if (!firebaseAppInitialized || !db || !profileDocRef) { console.error("Profile Fetch Error: Firebase not ready."); /* Set defaults... */ return; }
     console.log("Fetching profile data for homepage from:", profileDocRef.path);
     try {
         const docSnap = await getDoc(profileDocRef);
-
         if (docSnap.exists()) {
-            const data = docSnap.data();
-            console.log("Profile data found:", data);
-
-            if (profileUsernameElement) profileUsernameElement.textContent = data.username || defaultUsername;
-            if (profilePicElement) profilePicElement.src = data.profilePicUrl || defaultProfilePic;
-            if (profileBioElement) profileBioElement.textContent = data.bio || defaultBio;
-            if (profileStatusElement) {
-                const statusKey = data.status || 'offline';
-                profileStatusElement.textContent = statusEmojis[statusKey] || defaultStatusEmoji;
-            }
-            console.log("Profile section updated.");
-
-        } else {
-            console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`);
-            if (profileUsernameElement) profileUsernameElement.textContent = defaultUsername;
-            if (profilePicElement) profilePicElement.src = defaultProfilePic;
-            if (profileBioElement) profileBioElement.textContent = defaultBio;
-            if (profileStatusElement) profileStatusElement.textContent = statusEmojis['offline'];
-        }
-    } catch (error) {
-          console.error("Error fetching/displaying profile data:", error);
-         if (profileUsernameElement) profileUsernameElement.textContent = defaultUsername;
-         if (profilePicElement) profilePicElement.src = defaultProfilePic;
-         if (profileBioElement) profileBioElement.textContent = "Error loading bio.";
-         if (profileStatusElement) profileStatusElement.textContent = '❓';
-    }
+             const data = docSnap.data();
+             if (profileUsernameElement) profileUsernameElement.textContent = data.username || defaultUsername;
+             if (profilePicElement) profilePicElement.src = data.profilePicUrl || defaultProfilePic;
+             if (profileBioElement) profileBioElement.textContent = data.bio || defaultBio;
+             if (profileStatusElement) {
+                 const statusKey = data.status || 'offline';
+                 profileStatusElement.textContent = statusEmojis[statusKey] || defaultStatusEmoji;
+             }
+             console.log("Profile section updated.");
+        } else { console.warn(`Profile document ('${profileDocRef.path}') not found.`); /* Set defaults... */ }
+    } catch (error) { console.error("Error fetching/displaying profile data:", error); /* Set defaults... */ }
 }
-// ======================================================
-// === END: Profile Section Display Logic ===
-// ======================================================
-
 
 // --- Function to Load and Display Shoutouts (Reads data) ---
 async function loadAndDisplayShoutouts() {
-    // Check flag and db instance
-    if (!firebaseAppInitialized || !db) {
-        console.error("Shoutout load error: Firebase not ready.");
-        const tGrid=document.querySelector('.creator-grid'), iGrid=document.querySelector('.instagram-creator-grid'), yGrid=document.querySelector('.youtube-creator-grid');
-        if(tGrid)tGrid.innerHTML = '<p class="error">Error: DB connection failed.</p>'; if(iGrid)iGrid.innerHTML = '<p class="error">Error: DB connection failed.</p>'; if(yGrid)yGrid.innerHTML = '<p class="error">Error: DB connection failed.</p>';
-        return;
-    }
+    if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); /* Show error in grids */ return; }
 
-    // Get references to containers and timestamp elements
     const tiktokGrid = document.querySelector('.creator-grid');
     const instagramGrid = document.querySelector('.instagram-creator-grid');
     const youtubeGrid = document.querySelector('.youtube-creator-grid');
@@ -199,7 +189,7 @@ async function loadAndDisplayShoutouts() {
     const instagramTimestampEl = document.getElementById('lastUpdatedInstagram');
     const youtubeTimestampEl = document.getElementById('lastUpdatedYouTube');
 
-    // Show loading state
+    // Show loading state...
     if (tiktokGrid) tiktokGrid.innerHTML = '<p>Loading TikTok Creators...</p>';
     if (instagramGrid) instagramGrid.innerHTML = '<p>Loading Instagram Creators...</p>';
     if (youtubeGrid) youtubeGrid.innerHTML = '<p>Loading YouTube Creators...</p>';
@@ -207,111 +197,104 @@ async function loadAndDisplayShoutouts() {
     if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Loading...';
     if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Loading...';
 
+
     try {
-        // 1. Fetch Shoutout Data (ordered by the 'order' field)
+        // Fetch Metadata again here specifically for the timestamps
+        const metaSnap = await getDoc(metaDocRef);
+        const metadata = metaSnap.exists() ? metaSnap.data() : {};
+        console.log("Timestamps metadata fetched for display:", metadata);
+
+        // Fetch Shoutout Data
         const shoutoutsCol = collection(db, 'shoutouts');
-        const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc")); // Assumes 'order' field exists
-        console.log("Fetching shoutouts with query...");
+        const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc"));
+        console.log("Fetching shoutouts...");
         const querySnapshot = await getDocs(shoutoutQuery);
         console.log(`Found ${querySnapshot.size} shoutout documents.`);
 
         const shoutouts = { tiktok: [], instagram: [], youtube: [] };
-
-        querySnapshot.forEach((docSnapshot) => { // Use different variable name from outer scope 'doc'
+        querySnapshot.forEach((docSnapshot) => {
             const data = docSnapshot.data();
             if (data.platform && shoutouts.hasOwnProperty(data.platform)) {
-                 // Create a structured object with null/default checks
                  const accountData = {
-                    id: docSnapshot.id,
-                    username: data.username || null,
-                    nickname: data.nickname || null,
-                    profilePic: data.profilePic || null,
-                    bio: data.bio || '',
-                    followers: data.followers || 'N/A',
-                    subscribers: data.subscribers || 'N/A', // For YouTube
-                    isVerified: data.isVerified || false,
-                    coverPhoto: data.coverPhoto || null, // For YouTube
-                    platform: data.platform,
-                    order: data.order !== undefined ? data.order : Infinity // Default order if missing (Infinity puts them last)
+                    id: docSnapshot.id, username: data.username || null,
+                    nickname: data.nickname || null, profilePic: data.profilePic || null,
+                    bio: data.bio || '', followers: data.followers || 'N/A',
+                    subscribers: data.subscribers || 'N/A', isVerified: data.isVerified || false,
+                    coverPhoto: data.coverPhoto || null, platform: data.platform,
+                    order: data.order !== undefined ? data.order : Infinity
                  };
                 shoutouts[data.platform].push(accountData);
-            } else {
-                console.warn(`Doc ${docSnapshot.id} missing/unknown platform: ${data.platform}`);
-            }
+            } else { console.warn(`Doc ${docSnapshot.id} missing/unknown platform: ${data.platform}`); }
         });
 
-        // 2. Fetch Metadata (Last Updated Times)
-        const metaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
-        console.log("Attempting to fetch metadata from:", metaRef.path);
-        const metaSnap = await getDoc(metaRef);
-        const metadata = metaSnap.exists() ? metaSnap.data() : {};
-        console.log("Metadata fetched:", metadata);
-
-        // 3. Render TikTok
+        // Render sections and update timestamps
         if (tiktokGrid) {
-            if (shoutouts.tiktok.length > 0) {
-                tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join('');
-            } else {
-                tiktokGrid.innerHTML = '<p>No TikTok creators featured currently.</p>';
-            }
+            if (shoutouts.tiktok.length > 0) tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join('');
+            else tiktokGrid.innerHTML = '<p>No TikTok creators featured currently.</p>';
         }
-        if (tiktokTimestampEl) {
-            tiktokTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_tiktok)}`;
-        }
+        if (tiktokTimestampEl) tiktokTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_tiktok)}`;
 
-        // 4. Render Instagram
         if (instagramGrid) {
-            if (shoutouts.instagram.length > 0) {
-                instagramGrid.innerHTML = shoutouts.instagram.map(renderInstagramCard).join('');
-            } else {
-                instagramGrid.innerHTML = '<p>No Instagram creators featured currently.</p>';
-            }
+            if (shoutouts.instagram.length > 0) instagramGrid.innerHTML = shoutouts.instagram.map(renderInstagramCard).join('');
+            else instagramGrid.innerHTML = '<p>No Instagram creators featured currently.</p>';
         }
-        if (instagramTimestampEl) {
-            instagramTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_instagram)}`;
-        }
+        if (instagramTimestampEl) instagramTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_instagram)}`;
 
-        // 5. Render YouTube
         if (youtubeGrid) {
-            if (shoutouts.youtube.length > 0) {
-                youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join('');
-            } else {
-                youtubeGrid.innerHTML = '<p>No YouTube creators featured currently.</p>';
-            }
+            if (shoutouts.youtube.length > 0) youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join('');
+            else youtubeGrid.innerHTML = '<p>No YouTube creators featured currently.</p>';
         }
-        if (youtubeTimestampEl) {
-            youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`;
-        }
+        if (youtubeTimestampEl) youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`;
 
-         console.log("Shoutout sections updated.");
+        console.log("Shoutout sections updated.");
 
     } catch (error) {
         console.error("Error loading shoutout data:", error);
         if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok creators.</p>';
         if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram creators.</p>';
         if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube creators.</p>';
-        // Update timestamps to show error
         if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Error';
         if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Error';
         if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Error';
     }
 }
 
+// --- Main function to check mode and load ---
+async function checkMaintenanceModeAndLoad() {
+    if (!firebaseAppInitialized || !db || !metaDocRef) {
+        console.error("Cannot check maintenance mode: Firebase not ready.");
+        showInitializationError(); // Show init error if check cannot proceed
+        return;
+    }
+
+    console.log("Checking maintenance mode...");
+    try {
+        const metaSnap = await getDoc(metaDocRef);
+        const maintenanceEnabled = metaSnap.exists() && metaSnap.data().maintenanceEnabled === true;
+
+        if (maintenanceEnabled) {
+            showMaintenanceMessage(); // Show maintenance message and stop
+            return;
+        } else {
+            // Maintenance mode OFF, load normally
+            console.log("Maintenance mode OFF. Loading site content.");
+            // Use await here if you want profile to fully load before shoutouts start loading
+            await displayProfileData();
+            await loadAndDisplayShoutouts();
+        }
+    } catch (error) {
+        console.error("Error checking maintenance mode:", error);
+        // Proceed with normal load on error, assuming site is NOT in maintenance
+        console.warn("Could not verify maintenance status, proceeding with normal load.");
+        await displayProfileData();
+        await loadAndDisplayShoutouts();
+    }
+}
+
+
 // --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM loaded. Checking Firebase status...");
-
-    // We need to ensure Firebase is initialized before calling functions that use 'db'
-    if (firebaseAppInitialized) {
-        console.log("Firebase ready, calling display functions.");
-        displayProfileData();      // Load profile data FIRST
-        loadAndDisplayShoutouts(); // Load shoutouts SECOND
-    } else {
-        // This case should ideally be handled by the init catch block and the checks
-        // at the start of the display/load functions, but log redundancy is okay.
-        console.error("DOM loaded, but Firebase initialization may have failed earlier. Cannot load data.");
-        // Attempt to display defaults again just in case init finished after DOM load but failed.
-         displayProfileData(); // Will likely show errors/defaults due to firebaseAppInitialized being false
-         loadAndDisplayShoutouts(); // Will also show errors/defaults
-    }
+    console.log("DOM loaded. Initializing site load sequence...");
+    // Call the main function that handles the maintenance check first
+    checkMaintenanceModeAndLoad();
 });
