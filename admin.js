@@ -1,4 +1,4 @@
-// admin.js (Includes Inactivity Logout + Timer Display, Corrected Paths, Counts)
+// admin.js (Includes Two-Step Login, Inactivity Logout + Timer Display, Corrected Paths, Counts)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
@@ -25,6 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminGreeting = document.getElementById('admin-greeting');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
+
+    // --- References for two-step login ---
+    const emailGroup = document.getElementById('email-group'); // Optional, if you want to hide label too
+    const passwordGroup = document.getElementById('password-group');
+    const nextButton = document.getElementById('next-button');
+    const loginButton = document.getElementById('login-button'); // Reference existing login button
+    // --- END References for two-step login ---
+
     const adminStatusElement = document.getElementById('admin-status');
     const addShoutoutTiktokForm = document.getElementById('add-shoutout-tiktok-form');
     const shoutoutsTiktokListAdmin = document.getElementById('shoutouts-tiktok-list-admin');
@@ -52,22 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileStatusInput = document.getElementById('profile-status');
     const profileStatusMessage = document.getElementById('profile-status-message');
     const adminPfpPreview = document.getElementById('admin-pfp-preview');
-    // --- ADDED: Reference for timer display ---
     const timerDisplayElement = document.getElementById('inactivity-timer-display');
 
-
     // Firestore Reference for Profile
-    // Assuming profile data is under 'site_config'. Verify if needed.
     const profileDocRef = doc(db, "site_config", "mainProfile");
 
-
     // --- Inactivity Logout Variables ---
-    let inactivityTimer; // Holds the setTimeout ID for logout
-    let expirationTime; // Stores the timestamp when logout should occur
-    let displayIntervalId; // Holds the setInterval ID for updating the display
-    const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000; // 15 minutes (Adjust 15 if needed)
+    let inactivityTimer;
+    let expirationTime;
+    let displayIntervalId;
+    const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
-
 
     // --- Helper Functions ---
     function showAdminStatus(message, isError = false) {
@@ -84,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { if (profileStatusMessage) { profileStatusMessage.textContent = ''; profileStatusMessage.className = 'status-message'; } }, 5000);
     }
 
-
     // --- Edit Modal Logic ---
     function openEditModal(docId, platform) {
         if (!editModal || !editForm) { console.error("Edit modal/form not found."); showAdminStatus("UI Error: Cannot open edit form.", true); return; }
@@ -94,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
         getDoc(docRef).then(docSnap => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                // Populate general fields
                 if (editUsernameInput) editUsernameInput.value = data.username || '';
                 if (editNicknameInput) editNicknameInput.value = data.nickname || '';
                 if (editOrderInput) editOrderInput.value = data.order ?? '';
@@ -102,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (editBioInput) editBioInput.value = data.bio || '';
                 if (editProfilePicInput) editProfilePicInput.value = data.profilePic || '';
 
-                // Handle platform-specific fields visibility and values
                 const followersDiv = editPlatformSpecificDiv?.querySelector('.edit-followers-group');
                 const subscribersDiv = editPlatformSpecificDiv?.querySelector('.edit-subscribers-group');
                 const coverPhotoDiv = editPlatformSpecificDiv?.querySelector('.edit-coverphoto-group');
@@ -115,13 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (editCoverPhotoInput) editCoverPhotoInput.value = data.coverPhoto || '';
                     if (subscribersDiv) subscribersDiv.style.display = 'block';
                     if (coverPhotoDiv) coverPhotoDiv.style.display = 'block';
-                } else { // TikTok or Instagram
+                } else {
                     if (editFollowersInput) editFollowersInput.value = data.followers || 'N/A';
                     if (followersDiv) followersDiv.style.display = 'block';
                 }
-                editModal.style.display = 'block'; // Show modal
-            } else { /* Document not found */ showAdminStatus("Error: Could not load data for editing.", true); }
-        }).catch(error => { /* Handle fetch error */ showAdminStatus(`Error loading data: ${error.message}`, true); });
+                editModal.style.display = 'block';
+            } else { showAdminStatus("Error: Could not load data for editing.", true); }
+        }).catch(error => { showAdminStatus(`Error loading data: ${error.message}`, true); });
     }
 
     function closeEditModal() {
@@ -152,14 +152,13 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(itemDiv);
     }
 
-
     // --- Function to Load Profile Data into Admin Form ---
     async function loadProfileData() {
         if (!auth || !auth.currentUser) { console.warn("Auth not ready/user not logged in"); return; }
         if (!profileForm) { console.log("Profile form not found"); return; }
         console.log("Attempting to load profile data...");
         try {
-            const docSnap = await getDoc(profileDocRef); // Uses 'site_config' path
+            const docSnap = await getDoc(profileDocRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 console.log("Loaded profile data:", data);
@@ -169,10 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(profileStatusInput) profileStatusInput.value = data.status || 'offline';
                 if (adminPfpPreview && data.profilePicUrl) { adminPfpPreview.src = data.profilePicUrl; adminPfpPreview.style.display = 'inline-block'; }
                 else if (adminPfpPreview) { adminPfpPreview.style.display = 'none'; }
-            } else { /* Profile doc doesn't exist */ console.log("Profile document does not exist yet."); /* Set defaults */ }
+            } else { console.log("Profile document does not exist yet."); }
         } catch (error) { console.error("Error loading profile data:", error); showProfileStatus("Error loading profile data.", true); }
     }
-
 
     // --- Function to Save Profile Data ---
     async function saveProfileData(event) {
@@ -188,14 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         showProfileStatus("Saving profile...");
         try {
-            await setDoc(profileDocRef, newData, { merge: true }); // Uses 'site_config' path
+            await setDoc(profileDocRef, newData, { merge: true });
             console.log("Profile data saved."); showProfileStatus("Profile updated successfully!", false);
         } catch (error) { console.error("Error saving profile data:", error); showProfileStatus(`Error saving profile: ${error.message}`, true); }
     }
 
-
     // --- Inactivity Logout & Timer Display Functions ---
-
     function updateTimerDisplay() {
         if (!timerDisplayElement) return;
         const now = Date.now();
@@ -216,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(inactivityTimer);
         clearInterval(displayIntervalId);
         if (timerDisplayElement) timerDisplayElement.textContent = '';
-        removeActivityListeners(); // Also removes listeners
+        removeActivityListeners();
         signOut(auth).catch((error) => { console.error("Error during inactivity logout:", error); });
     }
 
@@ -226,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         expirationTime = Date.now() + INACTIVITY_TIMEOUT_MS;
         inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT_MS);
         if (timerDisplayElement) {
-             updateTimerDisplay(); // Update display right away
+             updateTimerDisplay();
              displayIntervalId = setInterval(updateTimerDisplay, 1000);
         }
     }
@@ -244,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
         activityEvents.forEach(eventName => { document.removeEventListener(eventName, resetInactivityTimer, true); });
     }
 
-
     // --- Authentication Logic ---
     onAuthStateChanged(auth, user => {
         if (user) {
@@ -256,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; }
             if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
 
-            // Load data
             loadProfileData();
             if (typeof loadShoutoutsAdmin === 'function') {
                  if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
@@ -264,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
                  if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
             } else { console.error("loadShoutoutsAdmin function is not defined!"); }
 
-            // Start inactivity timer & listeners
             resetInactivityTimer();
             addActivityListeners();
 
@@ -276,36 +269,120 @@ document.addEventListener('DOMContentLoaded', () => {
             if (adminGreeting) adminGreeting.textContent = '';
             if (typeof closeEditModal === 'function') closeEditModal();
 
-            // Stop inactivity timer & listeners
+            // --- RESET LOGIN FORM STATE ---
+            if (passwordGroup) passwordGroup.style.display = 'none'; // Hide password
+            if (loginButton) loginButton.style.display = 'none'; // Hide login button
+            if (nextButton) nextButton.style.display = 'inline-block'; // Show next button
+            if (emailInput) {
+                 emailInput.disabled = false; // Re-enable email
+                 emailInput.value = ''; // Clear email
+            }
+            if (passwordInput) passwordInput.value = ''; // Clear password
+            if (emailGroup) emailGroup.style.opacity = '1'; // Reset opacity if changed
+            if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; } // Clear status
+             // --- END RESET ---
+
             removeActivityListeners();
         }
     });
 
-    // Login Form Submission
-    if (loginForm) {
+    // --- Event Listener for the "Next" Button ---
+    if (nextButton && emailInput && passwordGroup && loginButton && emailGroup && authStatus) {
+        nextButton.addEventListener('click', () => {
+            const email = emailInput.value.trim();
+            authStatus.textContent = ''; // Clear previous status
+
+            if (!email) {
+                authStatus.textContent = 'Please enter your email address.';
+                authStatus.className = 'status-message error';
+                emailInput.focus();
+                return;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                 authStatus.textContent = 'Please enter a valid email format.';
+                 authStatus.className = 'status-message error';
+                 emailInput.focus();
+                 return;
+            }
+
+            console.log("Email entered, showing password field.");
+            emailInput.disabled = true;
+            // emailGroup.style.opacity = '0.7'; // Optional: dim email field
+
+            passwordGroup.style.display = 'block';
+            loginButton.style.display = 'inline-block'; // Or 'block'
+            nextButton.style.display = 'none';
+            passwordInput.focus();
+        });
+    }
+    // --- End Event Listener for "Next" Button ---
+
+
+    // --- Login Form Submission (Handles final step) ---
+    if (loginForm && loginButton) { // Ensure loginButton exists as it's now type="submit"
         loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = emailInput.value;
+            e.preventDefault(); // Prevent default form submission
+
+            // Email should already be in emailInput and disabled
+            // Password should be in passwordInput
+            const email = emailInput.value; // Read the disabled email value
             const password = passwordInput.value;
-            if (!email || !password) { if (authStatus) { authStatus.textContent = 'Please enter email and password.'; authStatus.className = 'status-message error'; } return; }
+
+            // Check if password field is visible and has value (basic check)
+            if (!password || passwordGroup.style.display === 'none') {
+                 if (authStatus) {
+                     authStatus.textContent = 'Please enter your password.';
+                     authStatus.className = 'status-message error';
+                 }
+                 if (passwordInput) passwordInput.focus();
+                 return;
+             }
+
+            // Proceed with login attempt
             if (authStatus) { authStatus.textContent = 'Logging in...'; authStatus.className = 'status-message'; }
+
             signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => { console.log("Login successful"); if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; } })
+                .then((userCredential) => {
+                    console.log("Login successful");
+                    // Clear status on success
+                    if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; }
+                    // No need to reset form here, onAuthStateChanged will handle UI change
+                })
                 .catch((error) => {
                     console.error("Login failed:", error.code, error.message);
                     let errorMessage = 'Invalid email or password.'; // Default
-                    // Map specific errors (keep your existing mapping)
-                    if (error.code === 'auth/invalid-email') errorMessage = 'Invalid email format.';
+                    if (error.code === 'auth/invalid-email') errorMessage = 'Invalid email format.'; // Should not happen if email is disabled
                     else if (error.code === 'auth/user-disabled') errorMessage = 'Account disabled.';
-                    else if (error.code === 'auth/invalid-credential') errorMessage = 'Invalid email or password.';
+                    else if (error.code === 'auth/invalid-credential') errorMessage = 'Invalid email or password.'; // Most common error here
                     else if (error.code === 'auth/too-many-requests') errorMessage = 'Too many attempts. Try again later.';
                     else errorMessage = `Error (${error.code}).`;
-                    if (authStatus) { authStatus.textContent = `Login Failed: ${errorMessage}`; authStatus.className = 'status-message error'; }
+
+                    if (authStatus) {
+                        authStatus.textContent = `Login Failed: ${errorMessage}`;
+                        authStatus.className = 'status-message error';
+                    }
+
+                    // Optional: Clear password on failure to force re-entry
+                    if(passwordInput) {
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                    }
+                    // Optional: Reset to email stage (less Apple-like)
+                    /*
+                    if (emailInput) emailInput.disabled = false;
+                    if (passwordGroup) passwordGroup.style.display = 'none';
+                    if (loginButton) loginButton.style.display = 'none';
+                    if (nextButton) nextButton.style.display = 'inline-block';
+                    if (emailGroup) emailGroup.style.opacity = '1';
+                    if (emailInput) emailInput.focus();
+                    */
                 });
         });
     }
 
-    // Logout Button
+    // --- Logout Button ---
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             removeActivityListeners(); // Stop timer before manual logout
@@ -315,9 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Shoutouts Load/Add/Delete/Update ---
-
     function getMetadataRef() {
-        // Use 'siteConfig' - Make sure this matches actual DB & Rules
         return doc(db, 'siteConfig', 'shoutoutsMetadata');
     }
 
@@ -336,22 +411,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (countElement) countElement.textContent = '';
         listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`;
         try {
-            const querySnapshot = await getDocs(collection(db, 'shoutouts'));
+            // IMPORTANT: Querying the entire 'shoutouts' collection. Add '.where("platform", "==", platform)'
+            // and potentially '.orderBy("order")' for better performance and ordering if needed.
+            // Example: const q = query(collection(db, 'shoutouts'), where("platform", "==", platform), orderBy("order"));
+            // const querySnapshot = await getDocs(q);
+            const querySnapshot = await getDocs(collection(db, 'shoutouts')); // Original less efficient way
             listContainer.innerHTML = '';
             let count = 0;
-            querySnapshot.forEach(docSnapshot => {
-                const account = docSnapshot.data();
-                if (account.platform === platform) {
-                    count++;
-                    const nickname = account.nickname || 'N/A';
-                    const username = account.username || 'N/A';
-                    const order = account.order ?? 'N/A';
-                    const content = `<strong>${nickname}</strong> (@${username}) - Order: ${order}`;
-                    if (typeof renderAdminListItem === 'function') {
-                        renderAdminListItem( listContainer, docSnapshot.id, platform, content, handleDeleteShoutout, openEditModal );
-                    }
+            const platformDocs = []; // Collect docs for sorting client-side if not ordering in query
+             querySnapshot.forEach(docSnapshot => {
+                if(docSnapshot.data().platform === platform) {
+                    platformDocs.push({id: docSnapshot.id, ...docSnapshot.data()});
                 }
             });
+
+            // Sort by order client-side (better to do in Firestore query)
+            platformDocs.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+
+            platformDocs.forEach(account => {
+                 count++;
+                 const nickname = account.nickname || 'N/A';
+                 const username = account.username || 'N/A';
+                 const order = account.order ?? 'N/A';
+                 const content = `<strong>${nickname}</strong> (@${username}) - Order: ${order}`;
+                 if (typeof renderAdminListItem === 'function') {
+                     renderAdminListItem( listContainer, account.id, platform, content, handleDeleteShoutout, openEditModal );
+                 }
+             });
+
+
             if (countElement) { countElement.textContent = `(${count})`; }
             if (count === 0) { listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`; }
         } catch (error) {
@@ -433,9 +521,11 @@ document.addEventListener('DOMContentLoaded', () => {
             showAdminStatus(`${platform} shoutout deleted.`, false);
             if (listItemElement) {
                  listItemElement.remove();
-                 if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload to update count
+                 // Reload to update count ONLY if element was removed successfully
+                 if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
             } else if (typeof loadShoutoutsAdmin === 'function') {
-                 loadShoutoutsAdmin(platform); // Reload list if element wasn't passed
+                 // Reload list if element wasn't passed (e.g., direct call)
+                 loadShoutoutsAdmin(platform);
             }
         } catch (error) { console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error); showAdminStatus(`Error deleting ${platform} shoutout: ${error.message}`, true); }
     }
