@@ -492,8 +492,8 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     flex-grow: 1;
 }
 .pfp-preview-img {
-    width: 40px; /* Keep preview small */
-    height: 40px;
+    width: 150px; /* Keep preview small */
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border-color);
