@@ -67,8 +67,8 @@
 
     /* --- Toggle Colors from Settings Example --- */
     /* Using iOS grey/green as base, change if needed */
-    --toggle-off: #D1D1D6; /* Base grey for off state */
-    --toggle-on: #4CD964;  /* Base green for on state */
+    --toggle-off: #E9E9EA; /* Base grey for off state */
+    --toggle-on: #34C759;  /* Base green for on state */
 
     /* --- Fallback theme variables (default to dark mode) --- */
     --bg-color: var(--dark-bg);
@@ -119,8 +119,8 @@ body.light-mode {
     --error-text-color: var(--light-error-text);
     --select-arrow: var(--light-select-arrow);
     --modal-backdrop-color: var(--light-modal-backdrop);
-    --toggle-off: #E9E9EA; /* Light grey for off state in light mode */
-    --toggle-on: #34C759;  /* Green for on state in light mode */
+    --toggle-off: #D1D1D6; /* Light grey for off state in light mode */
+    --toggle-on: #4CD964;  /* Green for on state in light mode */
     --accent-rgb: 0, 123, 255; /* Light */
 }
 
@@ -302,40 +302,56 @@ select {
 ::placeholder { color: var(--secondary-text); opacity: 0.6; }
 
 /* ======================== */
-/* Toggle Switch Styles (Adapted from Settings) */ /* <<<< REPLACED BLOCK */
+/* Toggle Switch Styles      */
 /* ======================== */
-
-.toggle-group {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.toggle-label-text {
-    display: block;
-    margin-bottom: 0;
-    font-weight: 400;
-    color: var(--text-color);
-    font-size: 1rem;
-    text-transform: none;
-    letter-spacing: normal;
-    margin-right: 15px;
-    flex-shrink: 0;
-    cursor: default;
-}
-
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 50px; /* Adjusted width */
-    height: 30px; /* Adjusted height */
-    flex-shrink: 0;
+    width: 52px;
+    height: 30px;
 }
 
-/* Hide the actual checkbox */
+.toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--toggle-off) 90%, black),
+        var(--toggle-off)
+    );
+    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-radius: 50px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 3px;
+    bottom: 3px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-checkbox:checked + .toggle-slider {
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--toggle-on) 90%, white),
+        var(--toggle-on)
+    );
+}
+
+.toggle-checkbox:checked + .toggle-slider:before {
+    transform: translateX(22px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Hide the checkbox visually but keep it accessible */
 .toggle-checkbox {
     opacity: 0;
     width: 0;
@@ -343,45 +359,8 @@ select {
     position: absolute;
 }
 
-/* The visual track */
-.toggle-switch-label {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--toggle-off); /* Default off color */
-    transition: background-color 0.4s ease-in-out; /* Smooth transition */
-    border-radius: 15px; /* Half of the height for rounded ends */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
-}
-
-/* The sliding handle */
-.toggle-switch-handle {
-    position: absolute;
-    content: '';
-    width: 24px; /* Adjust handle size */
-    height: 24px; /* Adjust handle size */
-    border-radius: 50%;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1); /* More natural movement */
-    top: 3px;
-    left: 3px;
-}
-
-/* Checked state */
-.toggle-checkbox:checked + .toggle-switch-label {
-    background-color: var(--toggle-on); /* Green when on */
-}
-
-.toggle-checkbox:checked + .toggle-switch-label .toggle-switch-handle {
-    transform: translateX(20px); /* Adjust based on width and handle size */
-}
-
 /* Focus state (Accessibility) */
-.toggle-checkbox:focus + .toggle-switch-label {
+.toggle-checkbox:focus + .toggle-slider {
     outline: none;
     box-shadow: 0 0 0 2px var(--accent-glow-color); /* Keep glow for focus */
 }
