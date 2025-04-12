@@ -1,7 +1,7 @@
 /* admin.css - Futuristic Theme */
 
 /* ======================== */
-/* Theme Variables         */
+/* Theme Variables          */
 /* ======================== */
 :root {
     /* --- Base & Font --- */
@@ -16,46 +16,46 @@
 
     /* --- Light Mode Colors --- */
     --light-bg: #f5f7fa;          /* Very light grey background */
-    --light-content-bg: #ffffff;      /* White content area */
-    --light-text: #1a1c20;          /* Dark text */
+    --light-content-bg: #ffffff;   /* White content area */
+    --light-text: #1a1c20;         /* Dark text */
     --light-secondary-text: #5a6472; /* Muted secondary text */
-    --light-border: #d1d9e6;          /* Light border */
+    --light-border: #d1d9e6;       /* Light border */
     --light-input-bg: #ffffff;
     --light-input-border: #ced4da;
     --light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --light-accent: #007bff;          /* Primary accent (Blue) */
+    --light-accent: #007bff;        /* Primary accent (Blue) */
     --light-accent-glow: rgba(0, 123, 255, 0.3);
     --light-accent-hover: #0056b3;
     --light-link: #007bff;
-    --light-success-bg: #e0f8e9;      /* Lighter success */
+    --light-success-bg: #e0f8e9;    /* Lighter success */
     --light-success-text: #0a5c28;
-    --light-error-bg: #fde2e4;        /* Lighter error */
+    --light-error-bg: #fde2e4;      /* Lighter error */
     --light-error-text: #8f1a29;
     --light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --light-modal-backdrop: rgba(245, 247, 250, 0.7); /* Light backdrop with blur */
 
     /* --- Dark Mode Colors (Futuristic) --- */
-    --dark-bg: #0D0F12;              /* Very dark, slightly blue background */
-    --dark-content-bg: #1A1C20;          /* Darker content area */
-    --dark-text: #E0E5EC;              /* Off-white text */
+    --dark-bg: #0D0F12;            /* Very dark, slightly blue background */
+    --dark-content-bg: #1A1C20;     /* Darker content area */
+    --dark-text: #E0E5EC;           /* Off-white text */
     --dark-secondary-text: #8a94a6;  /* Greyish-blue secondary text */
-    --dark-border: #2f3542;              /* Dark subtle border */
-    --dark-input-bg: #16181c;          /* Slightly different dark input bg */
+    --dark-border: #2f3542;         /* Dark subtle border */
+    --dark-input-bg: #16181c;        /* Slightly different dark input bg */
     --dark-input-border: #3a4150;
     --dark-shadow: rgba(0, 0, 0, 0.2); /* Darker shadow */
-    --dark-accent: #00FFFF;              /* Cyan accent */
+    --dark-accent: #00FFFF;         /* Cyan accent */
     --dark-accent-glow: rgba(0, 255, 255, 0.3);
     --dark-accent-hover: #00cccc;
-    --dark-link: #33ffff;              /* Lighter cyan for links */
-    --dark-success-bg: #103d31;          /* Dark green success */
+    --dark-link: #33ffff;           /* Lighter cyan for links */
+    --dark-success-bg: #103d31;     /* Dark green success */
     --dark-success-text: #82e0c2;
-    --dark-error-bg: #4d1f24;            /* Dark red error */
+    --dark-error-bg: #4d1f24;       /* Dark red error */
     --dark-error-text: #f5a7af;
     --dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23E0E5EC' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --dark-modal-backdrop: rgba(13, 15, 18, 0.7); /* Dark backdrop with blur */
 
     /* --- Alert/Action Colors (Consistent) --- */
-    --color-danger: #e53935;          /* Vibrant Red */
+    --color-danger: #e53935;        /* Vibrant Red */
     --color-danger-hover: #c62828;
     --color-danger-glow: rgba(229, 57, 53, 0.3);
     --color-success-action: #28a745; /* Vibrant Green */
@@ -109,7 +109,7 @@ body.light-mode {
 }
 
 /* ======================== */
-/* Base Styles             */
+/* Base Styles              */
 /* ======================== */
 *, *::before, *::after {
     box-sizing: border-box;
