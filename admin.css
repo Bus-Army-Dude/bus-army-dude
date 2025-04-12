@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme with Apple-Inspired Responsive Login */
+/* admin.css - Futuristic Theme with Apple-Inspired Responsive Two-Step Login */
 
 /* ======================== */
 /* Theme Variables          */
@@ -131,7 +131,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Adjust alignment for smaller screens inside media queries if needed */
 }
 
 /* Container for login/admin content */
@@ -148,8 +147,8 @@ body {
 }
 
 /* Make container wider when admin content is shown */
-#admin-content:not([style*="display: none"]) ~ .container, /* If admin-content is visible */
-body:not(:has(#login-section[style*="display: block"])) .container { /* If login section is hidden */
+#admin-content:not([style*="display: none"]) ~ .container,
+body:not(:has(#login-section[style*="display: block"])) .container {
     max-width: 1000px; /* Wider for admin panel */
 }
 
@@ -157,7 +156,7 @@ body:not(:has(#login-section[style*="display: block"])) .container { /* If login
 /* General Heading Styles */
 h1, h2, h3, h4, h5 {
     color: var(--text-color);
-    margin-top: 1.5em; /* Adjusted margin */
+    margin-top: 1.5em;
     margin-bottom: 1em;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -167,11 +166,11 @@ h1 { /* Style for main Admin Panel title if used */
     text-align: center;
     margin-bottom: 30px;
     margin-top: 0;
-    font-size: 2rem; /* Adjusted size */
+    font-size: 2rem;
 }
 
 /* Headings within admin content */
-#admin-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; margin-top: 0;} /* Reset top margin for section titles */
+#admin-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; margin-top: 0;}
 #admin-content h3 { color: var(--accent-color); font-size: 1.5rem; margin-top: 1.8em; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; opacity: 0.9; }
 #admin-content h4 { font-size: 1.2rem; color: var(--text-color); opacity: 0.95; margin-top: 30px; margin-bottom: 15px; }
 #admin-content h5 { font-size: 1rem; color: var(--secondary-text); margin-top: 25px; margin-bottom: 10px; font-weight: 500; }
@@ -202,23 +201,23 @@ a:hover {
     text-align: center;
     border-bottom: none;
     margin-bottom: 30px;
-    font-size: 1.8rem; /* Adjusted size */
+    font-size: 1.8rem;
     font-weight: 600;
     color: var(--text-color);
-    margin-top: 0; /* Reset margin */
+    margin-top: 0;
 }
 
 #login-section .form-group {
-    margin-bottom: 20px; /* Adjusted spacing */
+    margin-bottom: 20px;
     position: relative;
 }
 
 #login-section label {
     display: block;
-    margin-bottom: 5px; /* Adjusted spacing */
+    margin-bottom: 5px;
     font-weight: 500;
     color: var(--secondary-text);
-    font-size: 0.8rem; /* Adjusted size */
+    font-size: 0.8rem;
     text-transform: none;
     letter-spacing: 0;
 }
@@ -226,7 +225,7 @@ a:hover {
 #login-section input[type="email"],
 #login-section input[type="password"] {
     width: 100%;
-    padding: 12px 14px; /* Adjusted padding */
+    padding: 12px 14px;
     border: 1px solid var(--input-border-color);
     border-radius: var(--border-radius-md);
     font-size: 1rem;
@@ -249,16 +248,18 @@ a:hover {
 }
 
 #login-section .form-actions {
-    margin-top: 25px; /* Adjusted spacing */
+    margin-top: 25px;
     text-align: center;
     padding-top: 0;
     border-top: none;
 }
 
-#login-button {
+/* Combined rule for next and login buttons */
+#login-button,
+#next-button {
     background: #007AFF;
     color: #ffffff;
-    padding: 12px 25px; /* Adjusted padding */
+    padding: 12px 25px;
     border: none;
     border-radius: var(--border-radius-md);
     cursor: pointer;
@@ -271,18 +272,48 @@ a:hover {
     margin: 0;
     transform: none;
 }
-#login-button:hover { background: #0056b3; transform: none; box-shadow: none; }
-#login-button:active { background: #004085; transform: none; }
-#login-button:disabled { background-color: #aeb5bc; opacity: 0.7; cursor: not-allowed; }
 
-#auth-status { margin-top: 15px; /* Adjusted spacing */ }
+/* Apply initial display styles separately */
+#login-button {
+    display: none; /* Login button starts hidden */
+}
+#next-button {
+    display: inline-block; /* Next button starts visible (use block for full width if needed) */
+}
+
+
+/* Combined hover rule */
+#login-button:hover,
+#next-button:hover {
+    background: #0056b3;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Combined active rule */
+#login-button:active,
+#next-button:active {
+     background: #004085;
+     transform: none;
+}
+
+/* Combined disabled rule */
+#login-button:disabled,
+#next-button:disabled {
+    background-color: #aeb5bc;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+
+#auth-status { margin-top: 15px; }
 
 /* ======================== */
 /* Admin Content Area       */
 /* ======================== */
 #admin-content {
-    margin-top: 0; /* Remove margin if container provides spacing */
-    padding-top: 10px; /* Add small padding */
+    margin-top: 0;
+    padding-top: 10px;
     /* display: none; */ /* Controlled by JS */
 }
 
@@ -291,18 +322,18 @@ a:hover {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px; /* Adjusted spacing */
-    padding-bottom: 15px; /* Adjusted spacing */
+    margin-bottom: 25px;
+    padding-bottom: 15px;
     border-bottom: 2px solid var(--accent-color);
-    gap: 15px; /* Adjusted gap */
+    gap: 15px;
 }
-.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 1.8rem; } /* Adjusted size */
-#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 15px; white-space: nowrap; font-size: 0.9em; } /* Adjusted size */
+.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 1.8rem; }
+#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 15px; white-space: nowrap; font-size: 0.9em; }
 #logout-button { flex-shrink: 0; }
 
 .admin-section {
-    margin-bottom: 35px; /* Adjusted spacing */
-    padding: 25px; /* Adjusted padding */
+    margin-bottom: 35px;
+    padding: 25px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
     background-color: var(--bg-color);
@@ -312,7 +343,7 @@ a:hover {
 /* ======================== */
 /* Form Element Styles (Admin) */
 /* ======================== */
-#admin-content .form-group { margin-bottom: 18px; } /* Adjusted spacing */
+#admin-content .form-group { margin-bottom: 18px; }
 
 #admin-content .checkbox-group label {
     display: inline-flex;
@@ -334,10 +365,10 @@ a:hover {
 
 #admin-content label {
     display: block;
-    margin-bottom: 6px; /* Adjusted spacing */
+    margin-bottom: 6px;
     font-weight: 500;
     color: var(--secondary-text);
-    font-size: 0.85em; /* Adjusted size */
+    font-size: 0.85em;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -351,10 +382,10 @@ a:hover {
 #admin-content select,
 #admin-content textarea {
     width: 100%;
-    padding: 10px 12px; /* Adjusted padding */
+    padding: 10px 12px;
     border: 1px solid var(--input-border-color);
     border-radius: var(--border-radius-sm);
-    font-size: 0.95rem; /* Adjusted size */
+    font-size: 0.95rem;
     font-family: inherit;
     background-color: var(--input-bg-color);
     color: var(--text-color);
@@ -371,14 +402,14 @@ a:hover {
     box-shadow: 0 0 0 3px var(--accent-glow-color);
 }
 
-#admin-content textarea { min-height: 100px; resize: vertical; } /* Adjusted height */
+#admin-content textarea { min-height: 100px; resize: vertical; }
 #admin-content select {
     appearance: none;
     background-image: var(--select-arrow);
     background-repeat: no-repeat;
-    background-position: right 0.8rem center; /* Adjusted position */
-    background-size: 14px 10px; /* Adjusted size */
-    padding-right: 2.5rem; /* Adjusted padding */
+    background-position: right 0.8rem center;
+    background-size: 14px 10px;
+    padding-right: 2.5rem;
 }
 
 #admin-content ::placeholder { color: var(--secondary-text); opacity: 0.6; }
@@ -386,40 +417,40 @@ a:hover {
 /* ======================== */
 /* Button Styles (Admin)    */
 /* ======================== */
-#admin-content button:not(#login-button),
-#admin-content .button-primary:not(#login-button) {
+#admin-content button:not(#login-button):not(#next-button), /* Exclude login/next */
+#admin-content .button-primary:not(#login-button):not(#next-button) {
     background: linear-gradient(145deg, var(--accent-color), var(--hover-color));
     color: #000000; /* Black text for cyan */
-    padding: 10px 20px; /* Adjusted padding */
+    padding: 10px 20px;
     border: none;
     border-radius: var(--border-radius-sm);
     cursor: pointer;
-    font-size: 0.95rem; /* Adjusted size */
+    font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: transform var(--transition-speed) var(--transition-timing),
                 box-shadow var(--transition-speed) var(--transition-timing),
                 background var(--transition-speed) var(--transition-timing);
-    margin-right: 10px; /* Adjusted margin */
+    margin-right: 10px;
     margin-top: 8px;
     vertical-align: middle;
     text-decoration: none;
     display: inline-block;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-#admin-content button:not(#login-button):hover,
-#admin-content .button-primary:not(#login-button):hover {
+#admin-content button:not(#login-button):not(#next-button):hover,
+#admin-content .button-primary:not(#login-button):not(#next-button):hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px -2px var(--accent-glow-color);
     background: linear-gradient(145deg, var(--hover-color), var(--accent-color));
 }
-#admin-content button:not(#login-button):active,
-#admin-content .button-primary:not(#login-button):active {
+#admin-content button:not(#login-button):not(#next-button):active,
+#admin-content .button-primary:not(#login-button):not(#next-button):active {
     transform: translateY(0px);
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-#admin-content button:not(#login-button):disabled,
-#admin-content .button-primary:not(#login-button):disabled {
+#admin-content button:not(#login-button):not(#next-button):disabled,
+#admin-content .button-primary:not(#login-button):not(#next-button):disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
@@ -451,15 +482,15 @@ a:hover {
 }
 
 #admin-content .form-actions {
-    margin-top: 20px; /* Adjusted spacing */
+    margin-top: 20px;
     text-align: right;
-    padding-top: 10px; /* Adjusted padding */
+    padding-top: 10px;
     border-top: 1px solid var(--border-color);
 }
 
 #admin-content .small-button {
-    padding: 5px 10px !important; /* Adjusted padding */
-    font-size: 0.8em !important; /* Adjusted size */
+    padding: 5px 10px !important;
+    font-size: 0.8em !important;
     letter-spacing: 0.3px;
 }
 
@@ -467,16 +498,16 @@ a:hover {
 /* Status Message Styles    */
 /* ======================== */
 .status-message {
-    margin-top: 20px; /* Adjusted spacing */
-    margin-bottom: 15px; /* Adjusted spacing */
-    padding: 12px 18px; /* Adjusted padding */
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding: 12px 18px;
     font-weight: 500;
     text-align: center;
     border-radius: var(--border-radius-md);
     border: 1px solid transparent;
     display: none;
     clear: both;
-    font-size: 0.9em; /* Adjusted size */
+    font-size: 0.9em;
     transition: background-color var(--transition-speed) var(--transition-timing),
                 color var(--transition-speed) var(--transition-timing),
                 border-color var(--transition-speed) var(--transition-timing);
@@ -499,8 +530,8 @@ a:hover {
 /* Dynamic List Styles      */
 /* ======================== */
 .list-container-admin {
-    margin-top: 15px; /* Adjusted spacing */
-    max-height: 400px; /* Adjusted height */
+    margin-top: 15px;
+    max-height: 400px;
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
@@ -518,9 +549,9 @@ a:hover {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 18px; /* Adjusted padding */
+    padding: 15px 18px;
     border-bottom: 1px solid var(--border-color);
-    gap: 15px; /* Adjusted gap */
+    gap: 15px;
     transition: background-color var(--transition-speed) var(--transition-timing);
 }
 .list-item-admin:last-child { border-bottom: none; }
@@ -530,20 +561,20 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
 
 .list-item-admin .item-content { flex-grow: 1; word-break: break-word; }
 .list-item-admin strong { color: var(--text-color); font-weight: 600; }
-.list-item-admin span { color: var(--secondary-text); font-size: 0.8em; margin-left: 6px;} /* Adjusted size/margin */
-.list-item-admin p { margin: 4px 0; font-size: 0.9em; line-height: 1.4;} /* Adjusted size/margin */
-.list-item-admin small { color: var(--secondary-text); font-size: 0.7em; display: block; margin-top: 3px; } /* Adjusted size/margin */
+.list-item-admin span { color: var(--secondary-text); font-size: 0.8em; margin-left: 6px;}
+.list-item-admin p { margin: 4px 0; font-size: 0.9em; line-height: 1.4;}
+.list-item-admin small { color: var(--secondary-text); font-size: 0.7em; display: block; margin-top: 3px; }
 
-.list-item-admin .item-actions { flex-shrink: 0; display: flex; gap: 8px; align-items: center; } /* Adjusted gap */
+.list-item-admin .item-actions { flex-shrink: 0; display: flex; gap: 8px; align-items: center; }
 
-.list-item-admin.event-item .item-content strong { display: block; margin-bottom: 4px; font-size: 1em; color: var(--accent-color); } /* Adjusted size/margin */
+.list-item-admin.event-item .item-content strong { display: block; margin-bottom: 4px; font-size: 1em; color: var(--accent-color); }
 
 /* ======================== */
 /* Creator Shoutouts Section */
 /* ======================== */
 .shoutouts-platform-container {
-    margin-bottom: 30px; /* Adjusted margin */
-    padding: 20px; /* Adjusted padding */
+    margin-bottom: 30px;
+    padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
     background-color: var(--content-bg);
@@ -554,8 +585,8 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
     color: var(--accent-color);
     margin-top: 0;
     border-bottom: 1px dashed var(--accent-color);
-    padding-bottom: 8px; /* Adjusted padding */
-    font-size: 1.2rem; /* Adjusted size */
+    padding-bottom: 8px;
+    font-size: 1.2rem;
     opacity: 0.9;
 }
 
@@ -566,8 +597,8 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
 .input-with-preview input { flex-grow: 1; }
 
 .pfp-preview-img {
-    width: 120px; /* Adjusted size */
-    height: 120px; /* Adjusted size */
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border-color);
@@ -597,11 +628,11 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
 
 .modal-content {
   background-color: var(--content-bg);
-  margin: 10vh auto; /* Use vh for vertical margin */
-  padding: 30px 35px; /* Adjusted padding */
+  margin: 10vh auto;
+  padding: 30px 35px;
   border: 1px solid var(--border-color);
   width: 90%;
-  max-width: 650px; /* Adjusted max-width */
+  max-width: 650px;
   position: relative;
   border-radius: var(--border-radius-lg);
   box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
@@ -611,24 +642,22 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
 
 .close-button {
   color: var(--secondary-text); position: absolute;
-  top: 12px; /* Adjusted position */
-  right: 20px; /* Adjusted position */
-  font-size: 28px; /* Adjusted size */
-  font-weight: bold; line-height: 1;
+  top: 12px; right: 20px;
+  font-size: 28px; font-weight: bold; line-height: 1;
   transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
 }
 .close-button:hover, .close-button:focus {
   color: var(--text-color); text-decoration: none; cursor: pointer; transform: scale(1.1);
 }
 
-#edit-shoutout-form .form-group { margin-bottom: 18px; } /* Adjusted spacing */
+#edit-shoutout-form .form-group { margin-bottom: 18px; }
 #edit-shoutout-form input[type="text"],
 #edit-shoutout-form input[type="number"],
 #edit-shoutout-form input[type="url"],
 #edit-shoutout-form textarea { width: 100%; }
 
 #edit-shoutout-form .checkbox-group label { font-weight: normal; text-transform: none; font-size: 1rem; letter-spacing: 0; }
-#edit-shoutout-form .form-actions { margin-top: 25px; } /* Adjusted spacing */
+#edit-shoutout-form .form-actions { margin-top: 25px; }
 
 /* ======================== */
 /* Responsive Adjustments   */
@@ -636,10 +665,9 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
 
 /* Medium screens (Tablets, smaller laptops) */
 @media (max-width: 1024px) {
-    /* Adjust container width for admin content if needed */
     #admin-content:not([style*="display: none"]) ~ .container,
     body:not(:has(#login-section[style*="display: block"])) .container {
-        max-width: 90%; /* Allow more width */
+        max-width: 90%;
     }
 }
 
@@ -647,35 +675,33 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
 @media (max-width: 768px) {
     body {
         padding: 15px;
-        align-items: flex-start; /* Align content to top */
+        align-items: flex-start;
         padding-top: 5vh;
     }
     .container {
         padding: 25px 20px;
-        margin: 0 auto; /* Keep centered horizontally */
-        max-width: 90%; /* Ensure it doesn't touch edges */
+        margin: 0 auto;
+        max-width: 90%;
     }
 
-    /* Adjust all heading sizes */
     h1 { font-size: 1.8rem; margin-bottom: 25px;}
     #admin-content h2, #login-section h2 { font-size: 1.5rem; margin-bottom: 20px; }
     #admin-content h3 { font-size: 1.3rem; }
     #admin-content h4 { font-size: 1.1rem; }
     #admin-content h5 { font-size: 0.95rem; }
 
-    /* Admin Content Responsive */
     .admin-header { flex-direction: column; align-items: flex-start; gap: 10px; }
     .admin-header h2 { margin-bottom: 8px; font-size: 1.6rem; }
     #admin-greeting { margin: 8px 0; }
     .admin-section { padding: 15px; margin-bottom: 25px; }
     #admin-content .form-actions { text-align: center; }
-    #admin-content .form-actions button { display: block; width: 100%; margin: 10px 0 0 0; } /* Stack buttons */
+    #admin-content .form-actions button:not(#login-button):not(#next-button) { display: block; width: 100%; margin: 10px 0 0 0; } /* Stack buttons */
 
     .list-item-admin { flex-direction: column; align-items: flex-start; padding: 12px 15px; }
     .list-item-admin .item-actions { margin-top: 10px; width: 100%; justify-content: flex-end; }
 
     .modal-content { margin: 10vh auto; padding: 20px 25px; max-width: 90%; }
-    .pfp-preview-img { width: 100px; height: 100px; } /* Smaller preview */
+    .pfp-preview-img { width: 100px; height: 100px; }
 }
 
 /* Extra small screens (Most phones) */
@@ -691,11 +717,10 @@ body.light-mode { --accent-rgb: 0, 123, 255; }
 
     #login-section label { font-size: 0.75rem; }
     #login-section input { padding: 10px 12px; font-size: 0.95rem;}
-    #login-button { padding: 10px 18px; font-size: 0.95rem; }
+    #login-button, #next-button { padding: 10px 18px; font-size: 0.95rem; }
 
-    /* Further reduce padding/font-size for admin inputs/buttons */
-    #admin-content button:not(#login-button),
-    #admin-content .button-primary:not(#login-button) { padding: 8px 15px; font-size: 0.9rem; }
+    #admin-content button:not(#login-button):not(#next-button),
+    #admin-content .button-primary:not(#login-button):not(#next-button) { padding: 8px 15px; font-size: 0.9rem; }
     #admin-content input:not(#login-section input),
     #admin-content select,
     #admin-content textarea { padding: 8px 10px; font-size: 0.9rem; }
