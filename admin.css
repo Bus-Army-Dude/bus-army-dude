@@ -15,53 +15,53 @@
     --transition-timing: ease-in-out;
 
     /* --- Light Mode Colors --- */
-    --light-bg: #f5f7fa;         /* Very light grey background */
-    --light-content-bg: #ffffff;     /* White content area */
+    --light-bg: #f5f7fa;          /* Very light grey background */
+    --light-content-bg: #ffffff;   /* White content area */
     --light-text: #1a1c20;         /* Dark text */
     --light-secondary-text: #5a6472; /* Muted secondary text */
-    --light-border: #d1d9e6;         /* Light border */
+    --light-border: #d1d9e6;       /* Light border */
     --light-input-bg: #ffffff;
     --light-input-border: #ced4da;
     --light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --light-accent: #007bff;         /* Primary accent (Blue) */
+    --light-accent: #007bff;        /* Primary accent (Blue) */
     --light-accent-glow: rgba(0, 123, 255, 0.3);
     --light-accent-hover: #0056b3;
     --light-link: #007bff;
-    --light-success-bg: #e0f8e9;     /* Lighter success */
+    --light-success-bg: #e0f8e9;    /* Lighter success */
     --light-success-text: #0a5c28;
-    --light-error-bg: #fde2e4;       /* Lighter error */
+    --light-error-bg: #fde2e4;      /* Lighter error */
     --light-error-text: #8f1a29;
     --light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --light-modal-backdrop: rgba(245, 247, 250, 0.7); /* Light backdrop with blur */
 
     /* --- Dark Mode Colors (Futuristic) --- */
-    --dark-bg: #0D0F12;             /* Very dark, slightly blue background */
-    --dark-content-bg: #1A1C20;         /* Darker content area */
-    --dark-text: #E0E5EC;             /* Off-white text */
-    --dark-secondary-text: #8a94a6;   /* Greyish-blue secondary text */
-    --dark-border: #2f3542;           /* Dark subtle border */
-    --dark-input-bg: #16181c;           /* Slightly different dark input bg */
+    --dark-bg: #0D0F12;            /* Very dark, slightly blue background */
+    --dark-content-bg: #1A1C20;     /* Darker content area */
+    --dark-text: #E0E5EC;           /* Off-white text */
+    --dark-secondary-text: #8a94a6;  /* Greyish-blue secondary text */
+    --dark-border: #2f3542;         /* Dark subtle border */
+    --dark-input-bg: #16181c;        /* Slightly different dark input bg */
     --dark-input-border: #3a4150;
     --dark-shadow: rgba(0, 0, 0, 0.2); /* Darker shadow */
-    --dark-accent: #00FFFF;             /* Cyan accent */
+    --dark-accent: #00FFFF;         /* Cyan accent */
     --dark-accent-glow: rgba(0, 255, 255, 0.3);
     --dark-accent-hover: #00cccc;
-    --dark-link: #33ffff;             /* Lighter cyan for links */
-    --dark-success-bg: #103d31;         /* Dark green success */
+    --dark-link: #33ffff;           /* Lighter cyan for links */
+    --dark-success-bg: #103d31;     /* Dark green success */
     --dark-success-text: #82e0c2;
-    --dark-error-bg: #4d1f24;           /* Dark red error */
+    --dark-error-bg: #4d1f24;       /* Dark red error */
     --dark-error-text: #f5a7af;
     --dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23E0E5EC' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --dark-modal-backdrop: rgba(13, 15, 18, 0.7); /* Dark backdrop with blur */
 
     /* --- Alert/Action Colors (Consistent) --- */
-    --color-danger: #e53935;         /* Vibrant Red */
+    --color-danger: #e53935;        /* Vibrant Red */
     --color-danger-hover: #c62828;
     --color-danger-glow: rgba(229, 57, 53, 0.3);
-    --color-success-action: #28a745;   /* Vibrant Green */
+    --color-success-action: #28a745; /* Vibrant Green */
     --color-success-action-hover: #218838;
     --color-success-action-glow: rgba(40, 167, 69, 0.3);
-    --color-secondary-action: #6c757d;   /* Grey */
+    --color-secondary-action: #6c757d; /* Grey */
     --color-secondary-action-hover: #5a6268;
     --color-secondary-action-glow: rgba(108, 117, 125, 0.3);
 
@@ -84,25 +84,6 @@
     --error-text-color: var(--dark-error-text);
     --select-arrow: var(--dark-select-arrow);
     --modal-backdrop-color: var(--dark-modal-backdrop);
-
-    /* --- Toggle Switch Colors (Original - Kept for reference or potential other uses) --- */
-    /* --toggle-bg: #ccc; */
-    /* --toggle-active-bg: var(--accent-color); */
-    /* --toggle-handle-bg: #fff; */
-    /* --toggle-handle-shadow: rgba(0, 0, 0, 0.2); */
-
-    /* --- NEW: Toggle Switch Colors (Based on Image) --- */
-    --img-toggle-off-bg: #E9E9E9; /* Light grey from image */
-    --img-toggle-on-bg: #4CD964;  /* Bright green from image */
-    --img-toggle-handle-color: #FFFFFF; /* White handle */
-    --img-toggle-handle-shadow-color: rgba(0, 0, 0, 0.2); /* Subtle shadow */
-
-    /* Define HSL hues for status message border calculation */
-    --success-hue: 145;
-    --error-hue: 354;
-    /* Define RGB for hover effects */
-    --accent-rgb: 0, 255, 255; /* Default (dark) */
-    --color-danger-rgb: 229, 57, 53;
 }
 
 /* --- Light Mode Override --- */
@@ -125,17 +106,6 @@ body.light-mode {
     --error-text-color: var(--light-error-text);
     --select-arrow: var(--light-select-arrow);
     --modal-backdrop-color: var(--light-modal-backdrop);
-    --accent-rgb: 0, 123, 255; /* Light mode accent RGB */
-
-    /* --- Light Mode Toggle Switch Colors (Original - Kept for reference) --- */
-    /* --toggle-bg: #e9e9e9; */
-    /* --toggle-active-bg: var(--light-accent); */
-    /* --toggle-handle-bg: #fff; */
-    /* --toggle-handle-shadow: rgba(0, 0, 0, 0.1); */
-
-    /* NOTE: Image-based toggle colors defined in :root will apply here too, */
-    /* unless specifically overridden again for light mode. */
-    /* Currently, the toggle will look the same (grey/green) in both modes. */
 }
 
 /* ======================== */
@@ -406,6 +376,8 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     background-color: var(--error-bg-color);
     border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3); /* Use HSL for border color */
 }
+/* Define HSL hues for easier border calculation */
+:root { --success-hue: 145; --error-hue: 354; }
 
 
 /* ======================== */
@@ -439,6 +411,9 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 }
 .list-item-admin:last-child { border-bottom: none; }
 .list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); /* Subtle hover */ }
+/* Define RGB for hover effect */
+:root { --accent-rgb: 0, 255, 255; } /* Default (dark) */
+body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 
 
 .list-item-admin .item-content {
@@ -457,7 +432,7 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     gap: 10px;
     align-items: center;
 }
-/* Buttons use .small-button class */
+/* Buttons are now small-button class */
 
 
 /* Specific list item content styling (example) */
@@ -528,67 +503,69 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
     border-color: var(--color-danger); /* Use your error color */
     box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); /* Error glow */
 }
+/* Define --color-danger-rgb if you haven't already */
+:root { --color-danger-rgb: 229, 57, 53; }
 
 
 /* ======================== */
 /* Edit Modal Styles        */
 /* ======================== */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: var(--modal-backdrop-color); /* Themed backdrop */
-    backdrop-filter: blur(5px); /* Frosted glass effect */
-    -webkit-backdrop-filter: blur(5px); /* Safari support */
-    animation: fadeIn 0.3s ease-out; /* Fade in animation */
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--modal-backdrop-color); /* Themed backdrop */
+  backdrop-filter: blur(5px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(5px); /* Safari support */
+  animation: fadeIn 0.3s ease-out; /* Fade in animation */
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
-    background-color: var(--content-bg);
-    margin: 8% auto; /* Adjust vertical margin */
-    padding: 35px 45px; /* More padding */
-    border: 1px solid var(--border-color);
-    width: 90%;
-    max-width: 700px; /* Slightly wider max */
-    position: relative;
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); /* Stronger shadow for modal */
-    animation: slideIn 0.4s ease-out; /* Slide in animation */
+  background-color: var(--content-bg);
+  margin: 8% auto; /* Adjust vertical margin */
+  padding: 35px 45px; /* More padding */
+  border: 1px solid var(--border-color);
+  width: 90%;
+  max-width: 700px; /* Slightly wider max */
+  position: relative;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); /* Stronger shadow for modal */
+  animation: slideIn 0.4s ease-out; /* Slide in animation */
 }
 
 @keyframes slideIn {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 
 .close-button {
-    color: var(--secondary-text);
-    position: absolute;
-    top: 15px; /* Position adjustment */
-    right: 25px;
-    font-size: 32px;
-    font-weight: bold;
-    line-height: 1;
-    transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
+  color: var(--secondary-text);
+  position: absolute;
+  top: 15px; /* Position adjustment */
+  right: 25px;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1;
+  transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: var(--text-color);
-    text-decoration: none;
-    cursor: pointer;
-    transform: scale(1.1); /* Slightly enlarge on hover */
+  color: var(--text-color);
+  text-decoration: none;
+  cursor: pointer;
+  transform: scale(1.1); /* Slightly enlarge on hover */
 }
 
 /* Ensure modal form inherits theme styles */
@@ -598,8 +575,8 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 #edit-shoutout-form input[type="number"],
 #edit-shoutout-form input[type="url"],
 #edit-shoutout-form textarea {
-    /* Inherit from base styles, ensure full width */
-    width: 100%;
+  /* Inherit from base styles, ensure full width */
+  width: 100%;
 }
 #edit-shoutout-form .checkbox-group label {
     font-weight: normal; /* Override uppercase */
@@ -640,101 +617,17 @@ button.secondary-button:hover, .list-item-admin button:hover, button.edit-button
 }
 
 .list-count {
-    font-weight: normal;
-    font-size: 0.9em;
-    color: var(--secondary-text); /* Adjusted variable name */
-    margin-left: 8px;
+  font-weight: normal;
+  font-size: 0.9em;
+  color: var(--text-color-secondary); /* Adjust color if needed */
+  margin-left: 8px;
 }
 
 .timer-display {
-    font-size: 0.9em;
-    margin-left: 15px;
-    color: var(--secondary-text); /* Adjusted variable name */
-    min-width: 50px; /* Prevent layout shifts */
-    display: inline-block; /* Allow width */
-    text-align: right;
+  font-size: 0.9em;
+  margin-left: 15px;
+  color: var(--text-color-secondary); /* Or your preferred color */
+  min-width: 50px; /* Prevent layout shifts */
+  display: inline-block; /* Allow width */
+  text-align: right;
 }
-
-
-/* ================================= */
-/* START: MODIFIED TOGGLE SWITCH STYLES */
-/* Styles adjusted to match image    */
-/* ================================= */
-
-.toggle-group {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.toggle-label-text {
-    font-weight: 500;
-    color: var(--secondary-text);
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    /* Keeping standard iOS-like dimensions */
-    width: 51px;
-    height: 31px;
-    flex-shrink: 0;
-}
-
-.toggle-switch input[type="checkbox"] {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
-}
-
-.toggle-switch-label {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--img-toggle-off-bg);
-    transition: background-color 0.4s ease;
-    border-radius: 31px; /* Fully rounded */
-    border: 1px solid rgba(0,0,0,0.04); /* Keep subtle border */
-}
-
-.toggle-switch-label:before { /* The handle */
-    position: absolute;
-    content: "";
-    /* --- Slightly larger handle relative to track --- */
-    height: 28px;  /* Increased from 27px */
-    width: 28px;   /* Increased from 27px */
-    left: 2px;     /* Keep 2px left padding */
-    /* Adjust bottom for vertical centering: (TrackH - HandleH - Border*2)/2 + BorderBottom */
-    /* (31 - 28 - 0) / 2 = 1.5px. (Ignoring border effect here for simplicity) */
-    bottom: 1.5px; /* Adjusted for new handle size */
-    /* --- --- */
-    background-color: var(--img-toggle-handle-color);
-    transition: transform 0.4s ease;
-    border-radius: 50%; /* Circle */
-    /* --- Slightly tighter shadow --- */
-    box-shadow: 0 1px 2px var(--img-toggle-handle-shadow-color); /* Reduced spread */
-    /* --- --- */
-}
-
-.toggle-switch input:checked + .toggle-switch-label {
-    background-color: var(--img-toggle-on-bg);
-}
-
-.toggle-switch input:checked + .toggle-switch-label:before {
-    /* --- Recalculated movement distance --- */
-    /* Calculation: track_width - handle_width - left_padding*2 */
-    /* 51px - 28px - (2px * 2) = 19px */
-    transform: translateX(19px); /* Updated value */
-    /* --- --- */
-}
-
-/* ================================= */
-/* END: MODIFIED TOGGLE SWITCH STYLES */
-/* ================================= */
