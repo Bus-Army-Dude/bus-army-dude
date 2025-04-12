@@ -387,16 +387,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load shoutouts for the admin list view
     async function loadShoutoutsAdmin(platform) {
         const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
+        // --- ADDED: Get reference to the count span ---
+        const countElement = document.getElementById(`${platform}-count`);
+
         if (!listContainer) return;
+
+        // --- ADDED: Clear previous count ---
+        if (countElement) countElement.textContent = '';
+
         listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`;
+
         try {
             const querySnapshot = await getDocs(collection(db, 'shoutouts')); // Use imported 'db'
-            listContainer.innerHTML = '';
-            let hasResults = false;
-            querySnapshot.forEach(docSnapshot => { // Ensure 'doc' function isn't shadowed
+            listContainer.innerHTML = ''; // Clear loading message
+
+            // --- MODIFIED: Use a counter instead of just hasResults ---
+            let count = 0; // Initialize count for this platform
+
+            querySnapshot.forEach(docSnapshot => {
                 const account = docSnapshot.data();
                 if (account.platform === platform) {
-                    hasResults = true;
+                    count++; // Increment count if platform matches
                     const nickname = account.nickname || 'No Nickname';
                     const username = account.username || 'No Username';
                     const order = account.order ?? 'N/A';
@@ -406,16 +417,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             });
-            if (!hasResults) {
+
+            // --- ADDED: Update the count display ---
+            if (countElement) {
+                countElement.textContent = `(${count})`; // Display the count
+            }
+
+            // --- MODIFIED: Use the calculated count to check if empty ---
+            if (count === 0) {
                 listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
             }
+
         } catch (error) {
             console.error(`Error loading ${platform} shoutouts:`, error);
             listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
             showAdminStatus(`Failed to load ${platform} data: ${error.message}`, true);
+             // --- ADDED: Clear count on error too ---
+             if (countElement) countElement.textContent = '(Error)';
         }
     }
-
+    
     // Handle adding a new shoutout
     async function handleAddShoutout(platform, formElement) {
        if (!formElement) return;
