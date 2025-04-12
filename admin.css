@@ -230,27 +230,6 @@ a:hover {
     margin-bottom: 20px;
 }
 
-/* Commented out old checkbox styles as they might conflict or be unused */
-/*
-.checkbox-group label {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 0;
-    margin-left: 8px;
-    font-weight: normal;
-    color: var(--text-color);
-    cursor: pointer;
-}
-.checkbox-group input[type="checkbox"] {
-    margin-bottom: 0;
-    margin-right: 0;
-    width: 1.1em;
-    height: 1.1em;
-    accent-color: var(--accent-color);
-    cursor: pointer;
-}
-*/
-
 label {
     display: block;
     margin-bottom: 8px;
@@ -326,7 +305,7 @@ select {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.toggle-slider:before {
+.toggle-slider::before {
     position: absolute;
     content: "";
     height: 24px;
@@ -346,7 +325,7 @@ select {
     );
 }
 
-.toggle-checkbox:checked + .toggle-slider:before {
+.toggle-checkbox:checked + .toggle-slider::before {
     transform: translateX(22px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
