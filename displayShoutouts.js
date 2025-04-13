@@ -126,7 +126,7 @@ const defaultUsername = "Username";
 const defaultBio = "";
 const defaultProfilePic = "images/default-profile.jpg"; // Make sure this path is correct
 const defaultStatusEmoji = '❓';
-const statusEmojis = { online: '🟢', away: '🟡', offline: '🔴' };
+const statusEmojis = { online: '🟢', idle: '🟡', offline: '⚪️', dnd: '🔴' };
 
 async function displayProfileData() {
     if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) {
