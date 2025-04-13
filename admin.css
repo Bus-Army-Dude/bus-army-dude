@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme */
+/* admin.css - Futuristic Theme (Version History Styles REMOVED) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -119,7 +119,7 @@ body {
     font-family: var(--system-font-stack);
     font-size: var(--base-font-size);
     margin: 0;
-    padding: 30px; /* More padding around */
+    padding: 30px;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: var(--line-height);
@@ -129,11 +129,11 @@ body {
 }
 
 .container {
-    max-width: 1000px; /* Slightly wider */
+    max-width: 1000px;
     margin: 30px auto;
     background: var(--content-bg);
-    padding: 35px 45px; /* More internal padding */
-    border-radius: var(--border-radius-lg); /* More rounded */
+    padding: 35px 45px;
+    border-radius: var(--border-radius-lg);
     box-shadow: 0 8px 30px -10px var(--shadow-color);
     border: 1px solid var(--border-color);
     transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
@@ -143,8 +143,8 @@ h1, h2, h3, h4, h5 {
     color: var(--text-color);
     margin-top: 1.8em;
     margin-bottom: 1em;
-    font-weight: 600; /* Slightly bolder */
-    letter-spacing: 0.5px; /* Subtle spacing */
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 h1 { text-align: center; margin-bottom: 40px; margin-top: 0; font-size: 2.2rem; }
 h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; }
@@ -170,9 +170,9 @@ a:hover {
     padding: 40px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--content-bg); /* Use content bg */
+    background-color: var(--content-bg);
     box-shadow: 0 5px 15px -5px var(--shadow-color);
-    max-width: 450px; /* Limit login width */
+    max-width: 450px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -184,7 +184,6 @@ a:hover {
 #admin-content {
     margin-top: 30px;
     padding-top: 20px;
-    /* display: none; */ /* JS handles this */
 }
 
 .admin-header {
@@ -194,7 +193,7 @@ a:hover {
     align-items: center;
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 2px solid var(--accent-color); /* Accent border */
+    border-bottom: 2px solid var(--accent-color);
     gap: 20px;
 }
 .admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 2rem; }
@@ -206,7 +205,7 @@ a:hover {
     padding: 30px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Use main bg for contrast */
+    background-color: var(--bg-color);
 }
 .admin-section:last-of-type { margin-bottom: 15px; }
 
@@ -217,36 +216,39 @@ a:hover {
 .form-group {
     margin-bottom: 20px;
 }
+/* Specific style for section toggles if needed */
+.section-toggle label {
+    /* Add specific styles? e.g., slightly bolder? */
+}
 .checkbox-group label {
-    display: inline-flex; /* Align label and checkbox */
+    display: inline-flex;
     align-items: center;
     margin-bottom: 0;
     margin-left: 8px;
     font-weight: normal;
-    color: var(--text-color); /* Normal text color for checkbox label */
+    color: var(--text-color);
     cursor: pointer;
-    /* Reset label styles from general rule if needed */
     text-transform: none;
     font-size: 1rem;
     letter-spacing: normal;
 }
 .checkbox-group input[type="checkbox"] {
     margin-bottom: 0;
-    margin-right: 0; /* Remove default margin */
-    width: 1.1em; /* Slightly larger checkbox */
+    margin-right: 0;
+    width: 1.1em;
     height: 1.1em;
-    accent-color: var(--accent-color); /* Modern way to color checkboxes */
+    accent-color: var(--accent-color);
     cursor: pointer;
-    vertical-align: middle; /* Better alignment */
+    vertical-align: middle;
 }
 
 label {
     display: block;
     margin-bottom: 8px;
-    font-weight: 500; /* Slightly lighter label */
+    font-weight: 500;
     color: var(--secondary-text);
     font-size: 0.9em;
-    text-transform: uppercase; /* Uppercase labels */
+    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
@@ -255,31 +257,27 @@ input[type="password"],
 input[type="text"],
 input[type="number"],
 input[type="url"],
-input[type="search"], /* Added search */
+input[type="search"],
 input[type="datetime-local"],
 select,
 textarea {
     width: 100%;
-    padding: 12px 15px; /* Increased padding */
+    padding: 12px 15px;
     border: 1px solid var(--input-border-color);
     border-radius: var(--border-radius-sm);
     font-size: 1rem;
-    font-family: inherit; /* Ensure consistent font */
+    font-family: inherit;
     background-color: var(--input-bg-color);
     color: var(--text-color);
     transition: border-color var(--transition-speed) var(--transition-timing),
                 box-shadow var(--transition-speed) var(--transition-timing),
                 background-color var(--transition-speed) var(--transition-timing);
 }
-/* Specific styling for search inputs if desired */
-input[type="search"] {
-    /* Add specific styles, e.g., maybe a background icon */
-}
 
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px var(--accent-glow-color); /* Glow effect */
+    box-shadow: 0 0 0 3px var(--accent-glow-color);
 }
 
 textarea { min-height: 120px; resize: vertical; }
@@ -292,7 +290,6 @@ select {
     padding-right: 3rem;
 }
 
-/* Style placeholder text */
 ::placeholder { color: var(--secondary-text); opacity: 0.6; }
 
 
@@ -300,10 +297,9 @@ select {
 /* Button Styles            */
 /* ======================== */
 button, .button-primary {
-    background: linear-gradient(145deg, var(--accent-color), var(--hover-color)); /* Subtle gradient */
-    color: #000; /* Black text for Cyan accent */
-    /* color: #ffffff; */ /* Use this if accent is dark */
-    padding: 12px 22px; /* Larger buttons */
+    background: linear-gradient(145deg, var(--accent-color), var(--hover-color));
+    color: #000; /* Black text for Cyan */
+    padding: 12px 22px;
     border: none;
     border-radius: var(--border-radius-sm);
     cursor: pointer;
@@ -318,19 +314,19 @@ button, .button-primary {
     vertical-align: middle;
     text-decoration: none;
     display: inline-block;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 body.light-mode button, body.light-mode .button-primary {
-    color: #ffffff; /* White text for blue accent in light mode */
+    color: #ffffff; /* White text for blue */
 }
 
 button:hover, .button-primary:hover {
-    transform: translateY(-2px); /* Slight lift */
-    box-shadow: 0 4px 12px -2px var(--accent-glow-color); /* Accent glow on hover */
-    background: linear-gradient(145deg, var(--hover-color), var(--accent-color)); /* Slightly shift gradient */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px -2px var(--accent-glow-color);
+    background: linear-gradient(145deg, var(--hover-color), var(--accent-color));
 }
 button:active, .button-primary:active {
-    transform: translateY(0px); /* Push down */
+    transform: translateY(0px);
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 button:disabled, .button-primary:disabled {
@@ -338,19 +334,18 @@ button:disabled, .button-primary:disabled {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-    background: var(--secondary-text); /* Muted background when disabled */
+    background: var(--secondary-text);
 }
 
-/* Specific Button Colors using action color variables */
 #login-button { background: linear-gradient(145deg, var(--color-success-action), var(--color-success-action-hover)); color: #fff; }
 #login-button:hover { box-shadow: 0 4px 12px -2px var(--color-success-action-glow); background: linear-gradient(145deg, var(--color-success-action-hover), var(--color-success-action));}
 
 #logout-button,
 button.delete-button,
-button.bulk-delete-button /* Style for new bulk delete buttons */
+button.bulk-delete-button
 {
     background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
-    color: #fff; /* Ensure text is white */
+    color: #fff;
 }
 #logout-button:hover,
 button.delete-button:hover,
@@ -361,17 +356,17 @@ button.bulk-delete-button:hover
 }
 
 button.secondary-button,
-.list-item-admin button, /* Applies to edit/delete/restore */
-button.edit-button,
-button.restore-version-button /* New restore button */
+.list-item-admin button,
+button.edit-button
+/* Removed restore button style */
 {
     background: linear-gradient(145deg, var(--color-secondary-action), var(--color-secondary-action-hover));
-    color: #fff; /* Ensure text is white */
+    color: #fff;
 }
 button.secondary-button:hover,
 .list-item-admin button:hover,
-button.edit-button:hover,
-button.restore-version-button:hover
+button.edit-button:hover
+/* Removed restore button style */
 {
     box-shadow: 0 4px 12px -2px var(--color-secondary-action-glow);
     background: linear-gradient(145deg, var(--color-secondary-action-hover), var(--color-secondary-action));
@@ -381,9 +376,8 @@ button.restore-version-button:hover
     margin-top: 25px;
     text-align: right;
     padding-top: 15px;
-    border-top: 1px solid var(--border-color); /* Separator */
+    border-top: 1px solid var(--border-color);
 }
-/* Center login actions */
 #login-section .form-actions {
     text-align: center;
     border-top: none;
@@ -418,15 +412,13 @@ button.restore-version-button:hover
 .status-message.success {
     color: var(--success-text-color);
     background-color: var(--success-bg-color);
-    border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3); /* Use HSL for border color */
+    border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3);
 }
-
 .status-message.error {
     color: var(--error-text-color);
     background-color: var(--error-bg-color);
-    border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3); /* Use HSL for border color */
+    border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3);
 }
-/* Define HSL hues for easier border calculation */
 :root { --success-hue: 145; --error-hue: 354; }
 
 
@@ -439,12 +431,11 @@ button.restore-version-button:hover
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    padding: 5px; /* Reduce padding here */
-    background-color: var(--bg-color); /* Match main bg */
-    scrollbar-width: thin; /* Firefox scrollbar */
-    scrollbar-color: var(--secondary-text) var(--bg-color); /* Firefox scrollbar */
+    padding: 5px;
+    background-color: var(--bg-color);
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-text) var(--bg-color);
 }
-/* Webkit scrollbar */
 .list-container-admin::-webkit-scrollbar { width: 8px; }
 .list-container-admin::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 4px; }
 .list-container-admin::-webkit-scrollbar-thumb { background-color: var(--secondary-text); border-radius: 4px; border: 2px solid var(--bg-color); }
@@ -452,36 +443,32 @@ button.restore-version-button:hover
 .list-item-admin {
     display: flex;
     flex-wrap: wrap;
-    align-items: center; /* Center items vertically */
+    align-items: center;
     justify-content: space-between;
-    padding: 18px 20px; /* More vertical padding */
+    padding: 18px 20px;
     border-bottom: 1px solid var(--border-color);
-    gap: 15px; /* Reduced gap slightly */
+    gap: 15px;
     transition: background-color var(--transition-speed) var(--transition-timing);
 }
 .list-item-admin:last-child { border-bottom: none; }
-.list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); /* Subtle hover */ }
-/* Define RGB for hover effect */
-:root { --accent-rgb: 0, 255, 255; } /* Default (dark) */
-body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
-
+.list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); }
+:root { --accent-rgb: 0, 255, 255; } body.light-mode { --accent-rgb: 0, 123, 255; }
 
 .list-item-admin .item-content {
     flex-grow: 1;
     word-break: break-word;
-    display: flex; /* Use flex for content alignment */
+    display: flex;
     align-items: center;
     gap: 10px;
 }
-/* Style for checkbox within list item */
 .list-item-admin .item-content input[type="checkbox"] {
-    flex-shrink: 0; /* Prevent checkbox from shrinking */
-    margin-right: 5px; /* Space after checkbox */
-    height: 1.2em; /* Adjust size if needed */
+    flex-shrink: 0;
+    margin-right: 5px;
+    height: 1.2em;
     width: 1.2em;
     accent-color: var(--accent-color);
 }
-.list-item-admin .item-details { /* Wrapper for text content */
+.list-item-admin .item-details {
     flex-grow: 1;
 }
 
@@ -490,17 +477,15 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 .list-item-admin p { margin: 6px 0; font-size: 0.95em; line-height: 1.5; }
 .list-item-admin small { color: var(--secondary-text); font-size: 0.75em; display: block; margin-top: 4px; }
 
-
 .list-item-admin .item-actions {
     flex-shrink: 0;
     display: flex;
-    gap: 8px; /* Reduced gap */
+    gap: 8px;
     align-items: center;
 }
-/* Style for direct link icon/button */
 .item-actions a.direct-link {
     color: var(--secondary-text);
-    font-size: 1.1em; /* Adjust icon size */
+    font-size: 1.1em;
     text-decoration: none;
     padding: 4px;
     line-height: 1;
@@ -511,11 +496,10 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     color: var(--link-color);
     background-color: rgba(var(--accent-rgb), 0.1);
 }
-.item-actions a.direct-link i { /* If using Font Awesome */
+.item-actions a.direct-link i {
     display: block;
 }
 
-/* Style for disabled items (add class via JS) */
 .list-item-admin.disabled-item {
     opacity: 0.6;
     background-color: rgba(128, 128, 128, 0.05);
@@ -533,7 +517,7 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     padding: 25px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--content-bg); /* Use content bg */
+    background-color: var(--content-bg);
 }
 .shoutouts-platform-container:last-of-type { margin-bottom: 0; }
 .shoutouts-platform-container h4 { color: var(--accent-color); margin-top: 0; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; font-size: 1.3rem; opacity: 0.9; }
@@ -546,15 +530,15 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     margin-bottom: 15px;
     margin-top: 10px;
     gap: 15px;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
+    flex-wrap: wrap;
 }
 .list-controls input[type="search"] {
-    flex-grow: 1; /* Search takes available space */
-    min-width: 200px; /* Prevent search from becoming too small */
+    flex-grow: 1;
+    min-width: 200px;
     max-width: 400px;
 }
-.list-controls button { /* Bulk delete button */
-    margin: 0; /* Reset default button margin */
+.list-controls button {
+    margin: 0;
     flex-shrink: 0;
 }
 
@@ -566,43 +550,47 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     padding: 20px;
     margin-top: 15px;
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Match list bg */
-    min-height: 150px; /* Ensure it has some size */
+    background-color: var(--bg-color);
+    min-height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
-.shoutout-preview-area > p { /* Style placeholder text */
+.shoutout-preview-area > p {
     color: var(--secondary-text);
     font-style: italic;
     font-size: 0.9em;
     text-align: center;
 }
-/* Ensure preview card inside takes up appropriate space */
 .shoutout-preview-area > div[class*="-creator-card"] {
-    transform: scale(0.9); /* Slightly scale down preview if needed */
+    transform: scale(0.85);
+    transform-origin: center center; /* Changed origin */
     margin: 0;
     box-shadow: none;
+     /* Ensure width behaves correctly within scaled container */
+     max-width: 100%;
+     box-sizing: border-box;
 }
 
 /* ======================== */
-/* Input with Preview Styles*/
+/* Input with Preview Styles*/ /* Profile Pic Preview */
 /* ======================== */
 .input-with-preview {
     display: flex;
-    align-items: center; /* Vertically center input and preview */
-    gap: 15px; /* Space between input and preview */
+    align-items: center;
+    gap: 15px;
 }
 .input-with-preview input { flex-grow: 1; }
 .pfp-preview-img {
     width: 150px;
     height: 150px;
-    border-radius: 50%; /* Makes it circular */
-    object-fit: cover; /* Ensures image covers the area well */
+    border-radius: 50%;
+    object-fit: cover;
     border: 1px solid var(--border-color);
-    background-color: var(--input-bg-color); /* BG for when no image */
+    background-color: var(--input-bg-color);
     vertical-align: middle;
-    flex-shrink: 0; /* Prevents shrinking */
+    flex-shrink: 0;
     transition: opacity 0.3s ease;
 }
 .input-with-preview input.input-error { border-color: var(--color-danger); box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); }
@@ -620,37 +608,37 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: var(--modal-backdrop-color); /* Themed backdrop */
-  backdrop-filter: blur(5px); /* Frosted glass effect */
-  -webkit-backdrop-filter: blur(5px); /* Safari support */
-  animation: fadeIn 0.3s ease-out; /* Fade in animation */
+  background-color: var(--modal-backdrop-color);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease-out;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .modal-content {
   background-color: var(--content-bg);
-  margin: 8vh auto; /* Use vh for vertical centering */
-  padding: 35px 45px; /* More padding */
+  margin: 8vh auto;
+  padding: 35px 45px;
   border: 1px solid var(--border-color);
   width: 90%;
-  max-width: 700px; /* Slightly wider max */
+  max-width: 700px;
   position: relative;
   border-radius: var(--border-radius-lg);
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); /* Stronger shadow */
-  animation: slideIn 0.4s ease-out; /* Slide in animation */
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
+  animation: slideIn 0.4s ease-out;
 }
 @keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 .close-button {
   color: var(--secondary-text);
   position: absolute;
-  top: 15px; /* Position adjustment */
+  top: 15px;
   right: 25px;
   font-size: 32px;
   font-weight: bold;
   line-height: 1;
   transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
-  border: none; /* Make it look like text */
+  border: none;
   background: none;
   padding: 0;
   cursor: pointer;
@@ -658,10 +646,10 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 .close-button:hover, .close-button:focus { color: var(--text-color); text-decoration: none; transform: scale(1.1); }
 
 #edit-shoutout-form .form-actions button,
-#profile-form .form-actions button,
-#version-history-modal button /* Include history buttons */
+#profile-form .form-actions button
+/* Removed Version History Modal Button reference */
 {
-    margin-right: 8px; /* Ensure spacing between modal buttons */
+    margin-right: 8px;
 }
 #edit-shoutout-form .form-actions button:last-child,
 #profile-form .form-actions button:last-child
@@ -681,11 +669,11 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     border-radius: var(--border-radius-sm);
     background-color: var(--content-bg);
 }
-#site-settings label { /* General label for settings */
+#site-settings label {
     text-transform: none;
     font-size: 1rem;
 }
-#site-settings small { /* Description text */
+#site-settings small {
     display: block;
     margin-top: 5px;
     color: var(--secondary-text);
@@ -701,20 +689,20 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
     /* Inherits .admin-section styles */
 }
 #activity-log-list {
+    max-height: 500px; /* Allow more height */
     /* Inherits .list-container-admin styles */
-    max-height: 500px; /* Allow more height for logs */
 }
-/* Style for individual log entries */
 #activity-log-list .list-item-admin {
-    /* Can add specific styles if needed, e.g., different padding */
     padding: 12px 15px;
+    align-items: flex-start;
 }
 #activity-log-list .log-timestamp {
     font-size: 0.8em;
     color: var(--secondary-text);
     margin-right: 15px;
     flex-shrink: 0;
-    min-width: 150px; /* Align timestamps */
+    min-width: 150px;
+    white-space: nowrap;
 }
 #activity-log-list .log-user {
     font-weight: 500;
@@ -723,44 +711,13 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
 }
 #activity-log-list .log-action {
     flex-grow: 1;
-}
-
-
-/* ======================== */
-/* Version History Modal    */
-/* ======================== */
-#version-history-modal .modal-content {
-    max-width: 800px; /* Allow wider modal for history */
-}
-#version-history-heading span { /* Item name */
-    font-style: italic;
-    color: var(--accent-color);
-}
-#version-history-list {
-    /* Inherits .list-container-admin */
-    max-height: 50vh; /* Limit height relative to viewport */
-}
-#version-history-list .list-item-admin { /* Style each version item */
-    align-items: flex-start; /* Align top */
-}
-#version-history-list .item-content {
-    display: block; /* Override flex used elsewhere */
-}
-#version-history-list .version-timestamp,
-#version-history-list .version-user {
-    font-size: 0.8em;
-    color: var(--secondary-text);
-    margin-bottom: 5px;
-}
-#version-history-list .version-changes {
-    font-size: 0.9em;
-    margin-top: 5px;
-    white-space: pre-wrap; /* Preserve formatting if needed */
     word-break: break-word;
 }
-#version-history-list .item-actions button { /* Restore button */
-    margin-top: 0; /* Align with content */
-}
+
+
+/* ======================== */
+/* Version History Styles REMOVED */
+/* ======================== */
 
 
 /* ======================== */
@@ -779,18 +736,18 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
         text-align: center;
         padding-top: 15px;
     }
-    /* Stack buttons in form actions on small screens */
     .form-actions:not(#login-section .form-actions) button {
         display: block;
         width: 100%;
-        margin: 10px auto 0 auto !important; /* Stack with auto horizontal margin */
+        margin: 10px auto 0 auto !important;
     }
     .list-item-admin { flex-direction: column; align-items: flex-start; }
     .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-end; }
-    .modal-content { margin: 10vh auto; padding: 25px 20px; } /* Use vh */
+    .modal-content { margin: 10vh auto; padding: 25px 20px; }
     .list-controls { flex-direction: column; align-items: stretch; }
     .list-controls input[type="search"] { max-width: none; }
     .list-controls button { width: 100%; }
+    .pfp-preview-img { width: 120px; height: 120px; }
 }
 
 @media (max-width: 480px) {
@@ -822,7 +779,212 @@ body.light-mode { --accent-rgb: 0, 123, 255; } /* Light */
   font-size: 0.9em;
   margin-left: 15px;
   color: var(--secondary-text);
-  min-width: 50px; /* Prevent layout shifts */
-  display: inline-block; /* Allow width */
+  min-width: 50px;
+  display: inline-block;
   text-align: right;
 }
+
+
+/* ============================================= */
+/* === ADMIN SHOUTOUT PREVIEW STYLES === */
+/* ============================================= */
+
+/* Scope all homepage card styles within the preview area */
+.shoutout-preview-area .creator-card,
+.shoutout-preview-area .instagram-creator-card,
+.shoutout-preview-area .youtube-creator-card {
+    background-color: var(--bg-color); /* Use admin bg */
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: none; /* Disable transitions in preview */
+    box-shadow: 0 2px 4px var(--shadow-color); /* Use admin shadow */
+    width: 100%; /* Fit preview area */
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden; /* Change back to hidden for preview */
+    height: auto;
+}
+.shoutout-preview-area .creator-card:hover,
+.shoutout-preview-area .instagram-creator-card:hover,
+.shoutout-preview-area .youtube-creator-card:hover {
+    transform: none; /* Disable hover effect in preview */
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+
+/* YouTube Cover Photo (Scoped) */
+.shoutout-preview-area .youtube-cover-photo {
+    width: calc(100% + 30px); /* Adjust based on padding */
+    height: 100px; /* Reduced height for preview */
+    object-fit: cover; /* Changed to cover for better fit */
+    display: block;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: -15px -15px 10px -15px; /* Adjust margins for padding */
+    vertical-align: top;
+}
+
+/* YouTube Creator Info Container (Scoped) */
+.shoutout-preview-area .youtube-creator-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+}
+
+/* Common Profile Picture Styles (Scoped) */
+.shoutout-preview-area .creator-pic,
+.shoutout-preview-area .instagram-creator-pic,
+.shoutout-preview-area .youtube-creator-pic {
+    width: 50px; /* Slightly smaller for preview */
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-color); /* Thinner border */
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    margin-top: 0; /* Reset margin top */
+    margin-left: 0; /* Reset margin left */
+}
+/* Adjust YouTube pic margin only if cover exists */
+.shoutout-preview-area .youtube-creator-card:has(.youtube-cover-photo) .youtube-creator-pic {
+     margin-top: -25px; /* Overlap slightly if cover exists */
+     margin-left: 10px; /* Indent slightly */
+}
+
+/* Common Header Styles (Scoped) */
+.shoutout-preview-area .creator-header,
+.shoutout-preview-area .instagram-creator-header,
+.shoutout-preview-area .youtube-creator-header {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Slightly reduced gap */
+    margin-bottom: 3px;
+    margin-top: 5px; /* Add space above header */
+}
+
+/* Adjust spacing specific to YouTube header when cover is present */
+.shoutout-preview-area .youtube-creator-card:has(.youtube-cover-photo) .youtube-creator-header {
+     margin-top: 0; /* No extra top margin needed */
+}
+
+
+/* Username Container (Scoped) */
+.shoutout-preview-area .username-container { /* Applies only within YouTube card based on rendering function */
+    display: flex;
+    align-items: center; /* Center vertically */
+    gap: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+/* Common Username Styles (Scoped) */
+.shoutout-preview-area .creator-username,
+.shoutout-preview-area .instagram-creator-username,
+.shoutout-preview-area .youtube-creator-username {
+    color: var(--secondary-text);
+    font-size: 0.85em; /* Smaller username */
+    margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    line-height: 1.3;
+}
+
+/* Verification Badge Styles (Scoped) */
+.shoutout-preview-area .verified-badge,
+.shoutout-preview-area .instagram-verified-badge,
+.shoutout-preview-area .youtube-verified-badge {
+    width: 14px; /* Smaller badge */
+    height: 14px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Common Bio Styles (Scoped) */
+.shoutout-preview-area .creator-bio,
+.shoutout-preview-area .instagram-creator-bio,
+.shoutout-preview-area .youtube-creator-bio {
+    color: var(--secondary-text);
+    margin: 8px 0;
+    font-size: 0.85em; /* Smaller bio text */
+    line-height: 1.4;
+    word-break: break-word;
+    /* Limit bio lines shown in preview (optional) */
+    max-height: calc(1.4em * 3); /* Example: Show max 3 lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+     /* Use display: -webkit-box for multi-line ellipsis (requires more prefixes) */
+    /* display: -webkit-box;
+     -webkit-line-clamp: 3;
+     -webkit-box-orient: vertical; */
+}
+
+/* Common Follower/Subscriber Count Styles (Scoped) */
+.shoutout-preview-area .follower-count,
+.shoutout-preview-area .instagram-follower-count,
+.shoutout-preview-area .youtube-subscriber-count {
+    color: var(--accent-color);
+    font-weight: bold;
+    margin: 8px 0;
+    font-size: 0.9em;
+}
+
+/* Common Visit Profile Button Styles (Scoped) */
+.shoutout-preview-area .visit-profile,
+.shoutout-preview-area .instagram-visit-profile,
+.shoutout-preview-area .youtube-visit-profile {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: #000; /* Use admin theme button text color */
+    text-decoration: none;
+    padding: 6px 15px; /* Smaller padding */
+    border-radius: 20px; /* Adjust roundness */
+    margin-top: 8px;
+    transition: none; /* Disable transitions */
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.85em; /* Smaller text */
+    border: 1px solid var(--accent-color); /* Adjusted border */
+    width: fit-content;
+}
+/* Adjust text color in preview for light mode if needed */
+body.light-mode .shoutout-preview-area .visit-profile,
+body.light-mode .shoutout-preview-area .instagram-visit-profile,
+body.light-mode .shoutout-preview-area .youtube-visit-profile {
+     color: #fff;
+}
+
+.shoutout-preview-area .visit-profile:hover,
+.shoutout-preview-area .instagram-visit-profile:hover,
+.shoutout-preview-area .youtube-visit-profile:hover {
+    /* Keep non-hover state styles */
+    background-color: var(--accent-color);
+    color: #000; /* Or #fff for light mode */
+    transform: none;
+    box-shadow: none;
+}
+body.light-mode .shoutout-preview-area .visit-profile:hover,
+body.light-mode .shoutout-preview-area .instagram-visit-profile:hover,
+body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
+     color: #fff;
+}
+
+
+/* Creator Name Styles (Scoped) */
+.shoutout-preview-area .creator-header h3,
+.shoutout-preview-area .instagram-creator-header h3,
+.shoutout-preview-area .youtube-creator-header h3 {
+    margin: 0;
+    font-size: 1.05em; /* Slightly smaller heading */
+    color: var(--text-color);
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* --- END PREVIEW STYLES --- */
