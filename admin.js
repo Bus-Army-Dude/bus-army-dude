@@ -1,5 +1,3 @@
-// admin.js (Corrected Version - Includes All Features Discussed)
-
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
@@ -41,8 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editIsVerifiedInput = document.getElementById('edit-isVerified');
     const editBioInput = document.getElementById('edit-bio');
     const editProfilePicInput = document.getElementById('edit-profilePic');
-    // Added reference for edit modal's enable/disable toggle
-    const editIsEnabledInput = document.getElementById('edit-isEnabled');
+    const editIsEnabledInput = document.getElementById('edit-isEnabled'); // Reference needed if implementing per-item enable/disable
     const editFollowersInput = document.getElementById('edit-followers');
     const editSubscribersInput = document.getElementById('edit-subscribers');
     const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
@@ -59,9 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailGroup = document.getElementById('email-group');
     const passwordGroup = document.getElementById('password-group');
     const loginButton = document.getElementById('login-button');
+    // *** NEW References for Maintenance Mode ***
+    const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle');
+    const settingsStatusMessage = document.getElementById('settings-status-message');
 
-    // Firestore Reference for Profile
+
+    // Firestore Reference for Profile / Site Config (assuming maintenance flag stored here)
     const profileDocRef = doc(db, "site_config", "mainProfile");
+    // Reference for Shoutout Metadata (used for timestamps)
+    const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // Use a consistent ref
 
     // --- Inactivity Logout Variables ---
     let inactivityTimer;
@@ -70,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
 
-
 // --- Helper Functions ---
+    // Displays status messages in the main admin status area
     function showAdminStatus(message, isError = false) {
         if (!adminStatusElement) { console.warn("Admin status element not found"); return; }
         adminStatusElement.textContent = message;
@@ -80,34 +83,46 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000);
     }
 
+    // Displays status messages in the profile section's status area
     function showProfileStatus(message, isError = false) {
-        if (!profileStatusMessage) { console.warn("Profile status element not found"); showAdminStatus(message, isError); return; } // Fallback to admin status
+        if (!profileStatusMessage) { console.warn("Profile status message element not found"); showAdminStatus(message, isError); return; } // Fallback to admin status
         profileStatusMessage.textContent = message;
         profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
          // Clear message after 5 seconds
         setTimeout(() => { if (profileStatusMessage) { profileStatusMessage.textContent = ''; profileStatusMessage.className = 'status-message'; } }, 5000);
     }
 
+    // Displays status messages in the site settings section's status area
+    function showSettingsStatus(message, isError = false) {
+        if (!settingsStatusMessage) { console.warn("Settings status message element not found"); showAdminStatus(message, isError); return; } // Fallback to admin status
+        settingsStatusMessage.textContent = message;
+        settingsStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+         // Clear message after a few seconds
+        setTimeout(() => { if (settingsStatusMessage) { settingsStatusMessage.textContent = ''; settingsStatusMessage.style.display = 'none'; } }, 3000);
+        if (!isError) settingsStatusMessage.style.display = 'block'; // Ensure success message is visible briefly
+    }
+
 
     // --- Edit Modal Logic ---
+    // Opens the modal and populates it with data for the selected shoutout
     function openEditModal(docId, platform) {
         if (!editModal || !editForm) { console.error("Edit modal/form not found."); showAdminStatus("UI Error: Cannot open edit form.", true); return; }
-        editForm.setAttribute('data-doc-id', docId);
+        editForm.setAttribute('data-doc-id', docId); // Store ID and platform on the form
         editForm.setAttribute('data-platform', platform);
-        const docRef = doc(db, 'shoutouts', docId);
+        const docRef = doc(db, 'shoutouts', docId); // Reference to the specific shoutout doc
 
-        getDoc(docRef).then(docSnap => {
+        getDoc(docRef).then(docSnap => { // Fetch the document
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 // Populate general fields
                 if (editUsernameInput) editUsernameInput.value = data.username || '';
                 if (editNicknameInput) editNicknameInput.value = data.nickname || '';
-                if (editOrderInput) editOrderInput.value = data.order ?? ''; // Use nullish coalescing
+                if (editOrderInput) editOrderInput.value = data.order ?? '';
                 if (editIsVerifiedInput) editIsVerifiedInput.checked = data.isVerified || false;
                 if (editBioInput) editBioInput.value = data.bio || '';
                 if (editProfilePicInput) editProfilePicInput.value = data.profilePic || '';
-                 // Populate isEnabled toggle (Add this when implementing Disable/Enable feature)
-                // if (editIsEnabledInput) editIsEnabledInput.checked = data.isEnabled ?? true; // Assuming default is true if field missing
+                // Populate enable/disable toggle (will be used when implementing that feature)
+                // if (editIsEnabledInput) editIsEnabledInput.checked = data.isEnabled ?? true;
 
                 // Handle platform-specific fields visibility and values
                 const followersDiv = editPlatformSpecificDiv?.querySelector('.edit-followers-group');
@@ -129,13 +144,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (editFollowersInput) editFollowersInput.value = data.followers || 'N/A';
                     if (followersDiv) followersDiv.style.display = 'block';
                 }
-                 // Reset and hide preview area initially (JS for preview will handle showing it)
+                // Reset and hide preview area initially (JS for preview will handle showing it)
                 const previewArea = document.getElementById('edit-shoutout-preview');
                  if(previewArea) {
                      previewArea.innerHTML = '<p><small>Preview will appear here.</small></p>';
                  }
 
-                editModal.style.display = 'block'; // Show modal
+                editModal.style.display = 'block'; // Show the modal
             } else {
                  showAdminStatus("Error: Could not load data for editing. Document not found.", true);
             }
@@ -145,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
          });
     }
 
+    // Closes the edit modal and resets the form
     function closeEditModal() {
         if (editModal) editModal.style.display = 'none';
         if (editForm) editForm.reset(); // Reset form fields
@@ -152,26 +168,26 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm?.removeAttribute('data-platform');
     }
 
-    // Event listeners for closing the modal
+    // Event listeners for closing the modal (X button and clicking outside)
     if (cancelEditButton) cancelEditButton.addEventListener('click', closeEditModal);
-    // Close modal if user clicks outside the modal content
     window.addEventListener('click', (event) => {
         if (event.target === editModal) {
             closeEditModal();
         }
     });
 
- // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
+    // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) {
+        // The 'isEnabled' status will be passed here later when implementing that feature
         if (!container) { console.warn("List container not found for platform:", platform); return; }
 
         const itemDiv = document.createElement('div');
         itemDiv.className = 'list-item-admin'; // Base class
         itemDiv.setAttribute('data-id', docId);
 
-        // Add 'disabled-item' class later based on the 'isEnabled' field when that feature is implemented
-        // Example: if (!account.isEnabled) itemDiv.classList.add('disabled-item');
+        // Placeholder comment: Add 'disabled-item' class later based on the 'isEnabled' field
+        // Example: if (isEnabled === false) itemDiv.classList.add('disabled-item');
 
         // Construct direct link URL based on platform
         let directLinkUrl = '#'; // Default placeholder
@@ -185,17 +201,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // Construct YouTube URL (ensure 'username' is the handle like '@MrBeast')
             // Note: If username doesn't start with '@', you might need to adjust this logic
             let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`;
-            directLinkUrl = `https://youtube.com/$${encodeURIComponent(youtubeHandle)}`;
+            directLinkUrl = `https://youtube.com/${encodeURIComponent(youtubeHandle)}`; // Check if this URL structure is correct for handles
         }
 
         // Build inner HTML - Structure includes item details and action buttons
-        // NOTE: A checkbox for bulk actions will be added here later if needed
+        // NOTE: A checkbox for bulk actions will be added here later
+        // NOTE: An indicator for enabled/disabled status will be added later
         itemDiv.innerHTML = `
             <div class="item-content">
-                 <div class="item-details"> 
+                 {/* Checkbox placeholder for Bulk Actions */}
+                 <div class="item-details"> {/* Wrapper for text */}
                     <strong>${nickname || 'N/A'}</strong>
                     <span>(@${username || 'N/A'})</span>
                     <small>Order: ${order ?? 'N/A'}</small>
+                    {/* Status indicator placeholder for Enable/Disable */}
                  </div>
             </div>
             <div class="item-actions">
@@ -204,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
                 <button type="button" class="edit-button small-button">Edit</button>
                 <button type="button" class="delete-button small-button">Delete</button>
+                {/* Enable/Disable toggle placeholder */}
             </div>`;
 
         // Add event listeners for Edit and Delete buttons
@@ -218,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // --- END MODIFIED: renderAdminListItem Function ---
 
-// --- Function to Load Profile Data into Admin Form ---
+// --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode) ---
     async function loadProfileData() {
         // Ensure user is logged in before attempting to load
         if (!auth || !auth.currentUser) {
@@ -229,17 +249,30 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Profile form element not found.");
             return;
         }
+        // Also check if maintenance toggle exists before trying to use it
+        if (!maintenanceModeToggle) {
+             console.warn("Maintenance mode toggle element not found.");
+        }
+
         console.log("Attempting to load profile data from:", profileDocRef.path);
         try {
             const docSnap = await getDoc(profileDocRef); // Fetch the profile document
+
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 console.log("Loaded profile data:", data);
+
                 // Populate form fields with fetched data or defaults
                 if(profileUsernameInput) profileUsernameInput.value = data.username || '';
                 if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || '';
                 if(profileBioInput) profileBioInput.value = data.bio || '';
                 if(profileStatusInput) profileStatusInput.value = data.status || 'offline'; // Default to 'offline' if not set
+
+                // *** ADDED: Set maintenance toggle state ***
+                if(maintenanceModeToggle) {
+                     maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; // Set toggle based on Firestore data (default false if missing)
+                     maintenanceModeToggle.disabled = false; // Ensure it's enabled if data loaded
+                }
 
                 // Update profile picture preview
                 if (adminPfpPreview && data.profilePicUrl) {
@@ -251,14 +284,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                  // Handle case where the profile document doesn't exist yet
-                 console.log("Profile document does not exist yet. Form will show placeholders/defaults.");
-                 // Optionally reset form fields explicitly here if needed
-                 // profileForm.reset(); // Uncomment to reset form if doc doesn't exist
+                 console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`);
+                 if (profileForm) profileForm.reset(); // Reset main profile form fields
+                 if (profileStatusInput) profileStatusInput.value = 'offline'; // Explicitly set default status
+
+                 // *** ADDED: Default maintenance toggle state ***
+                 if(maintenanceModeToggle) {
+                     maintenanceModeToggle.checked = false; // Default to false if doc missing
+                     maintenanceModeToggle.disabled = false; // Ensure enabled
+                 }
                  if(adminPfpPreview) adminPfpPreview.style.display = 'none'; // Hide preview
             }
         } catch (error) {
              console.error("Error loading profile data:", error);
              showProfileStatus("Error loading profile data.", true);
+             // Set defaults and disable toggle on error
+             if (profileForm) profileForm.reset();
+             if (profileStatusInput) profileStatusInput.value = 'offline';
+             if(maintenanceModeToggle) {
+                 maintenanceModeToggle.checked = false;
+                 maintenanceModeToggle.disabled = true; // Disable toggle on error
+             }
+             if(adminPfpPreview) adminPfpPreview.style.display = 'none';
         }
     }
 
@@ -280,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bio: profileBioInput?.value.trim() || "",
             status: profileStatusInput?.value || "offline", // Ensure a default value
             lastUpdated: serverTimestamp() // Add a timestamp for the update
+            // Note: Maintenance mode is saved by its own function/listener
         };
 
         showProfileStatus("Saving profile..."); // Provide user feedback
@@ -321,8 +369,63 @@ document.addEventListener('DOMContentLoaded', () => {
             // Optionally show a placeholder or hide the preview on error
             // adminPfpPreview.src = 'path/to/error-placeholder.png';
              adminPfpPreview.style.display = 'none';
+             profilePicUrlInput.classList.add('input-error'); // Add error class to input
         };
+         // Remove error class when input changes
+         profilePicUrlInput.addEventListener('focus', () => {
+            profilePicUrlInput.classList.remove('input-error');
+         });
     }
+
+// *** NEW FUNCTION: Saves Maintenance Mode Status ***
+    async function saveMaintenanceModeStatus(isEnabled) {
+        // Ensure user is logged in
+        if (!auth || !auth.currentUser) {
+            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
+            // Revert checkbox state if save fails due to auth issue
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
+            return;
+        }
+
+        // Use the specific status message area for settings
+        const statusElement = settingsStatusMessage || adminStatusElement; // Fallback to main status
+
+        // Show saving message
+        if (statusElement) {
+            statusElement.textContent = "Saving setting...";
+            statusElement.className = "status-message"; // Reset style
+            statusElement.style.display = 'block';
+        }
+
+        try {
+            // Use profileDocRef (site_config/mainProfile) to store the flag
+            // Use setDoc with merge: true to update only this field without overwriting others
+            await setDoc(profileDocRef, {
+                isMaintenanceModeEnabled: isEnabled // Save the boolean value
+            }, { merge: true });
+
+            console.log("Maintenance mode status saved:", isEnabled);
+
+            // Show success message
+            if (statusElement) {
+                statusElement.textContent = `Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`;
+                statusElement.className = "status-message success";
+                 // Clear after a short delay
+                setTimeout(() => { if(statusElement) { statusElement.textContent = ''; statusElement.style.display = 'none'; } }, 3000);
+            }
+
+        } catch (error) {
+            console.error("Error saving maintenance mode status:", error);
+             if (statusElement) {
+                statusElement.textContent = `Error saving setting: ${error.message}`;
+                statusElement.className = "status-message error";
+                // Don't auto-clear error message immediately
+            }
+            // Revert checkbox state visually on error
+             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
+        }
+    }
+    // *** END OF NEW FUNCTION ***
 
 // --- Inactivity Logout & Timer Display Functions ---
 
@@ -440,7 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
          console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button).");
     }
 
- // --- Authentication Logic ---
+// --- Authentication Logic ---
     // Listener for changes in authentication state (login/logout)
     onAuthStateChanged(auth, user => {
         if (user) {
@@ -456,7 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
 
             // Load initial data for the admin panel
-            loadProfileData(); // Load site profile data
+            loadProfileData(); // Load site profile data (includes maintenance mode state now)
             // Load shoutout lists for each platform
             if (typeof loadShoutoutsAdmin === 'function') {
                  if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
@@ -567,18 +670,22 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Shoutouts Load/Add/Delete/Update ---
 
     // Helper function to get the reference to the metadata document
-    function getMetadataRef() {
+    // Used for storing last updated timestamps (and potentially section enable/disable flags later)
+    function getShoutoutsMetadataRef() {
         // Ensure 'siteConfig' collection name is correct in your Firestore
+        // Consider if 'shoutoutsMetadata' is the best document ID, or use 'mainProfile' if preferred
+        // Using a separate doc allows storing config without mixing with user profile data directly.
         return doc(db, 'siteConfig', 'shoutoutsMetadata');
     }
 
     // Updates the 'lastUpdatedTime' field in the metadata document for a specific platform
+    // Called after adding, updating, or deleting a shoutout
     async function updateMetadataTimestamp(platform) {
-         const metaRef = getMetadataRef();
+         const metaRef = getShoutoutsMetadataRef(); // Use the dedicated helper
          try {
              // Use setDoc with merge: true to create/update the timestamp field
              await setDoc(metaRef, {
-                 [`lastUpdatedTime_${platform}`]: serverTimestamp() // Dynamically set field name
+                 [`lastUpdatedTime_${platform}`]: serverTimestamp() // Dynamically set field name like 'lastUpdatedTime_tiktok'
              }, { merge: true });
              console.log(`Metadata timestamp updated for ${platform}.`);
          } catch (error) {
@@ -604,7 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Query shoutouts collection, filtering by platform and ordering by 'order'
             const shoutoutsCol = collection(db, 'shoutouts');
-            // This query requires the composite index (platform, order) created in Firebase console
+            // This query requires the composite index (platform ASC/DESC, order ASC) created in Firebase console
              const shoutoutQuery = query(
                 shoutoutsCol,
                 where("platform", "==", platform), // Filter by the platform string (e.g., 'tiktok')
@@ -624,6 +731,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const nickname = account.nickname || 'N/A';
                 const username = account.username || 'N/A'; // Username needed for direct link
                 const order = account.order ?? 'N/A'; // Use nullish coalescing for order
+                // Add 'isEnabled' later when implementing that feature
+                // const isEnabled = account.isEnabled ?? true;
 
                 // Call function to render the individual list item HTML
                 // Passes necessary data including username for the direct link
@@ -635,6 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         username, // Pass username
                         nickname, // Pass nickname
                         order,    // Pass order
+                        // isEnabled, // Pass status later
                         handleDeleteShoutout, // Pass delete handler function
                         openEditModal         // Pass edit handler function
                     );
@@ -708,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- End Duplicate Check ---
 
 
-            // --- Existing Add Logic (Now runs only if no duplicate found) ---
+            // --- Add Logic (Runs only if no duplicate found) ---
             // Construct the data object to be saved
             const accountData = {
                 platform: platform,
@@ -718,8 +828,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
                 bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null, // Use null if empty
                 profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null, // Use null if empty
-                createdAt: serverTimestamp()
-                // NOTE: isEnabled field (for Disable/Enable feature) will be added later
+                createdAt: serverTimestamp(),
+                isEnabled: true // *** Default new shoutouts to enabled *** (for Disable/Enable feature)
             };
 
             // Add platform-specific fields
@@ -786,7 +896,8 @@ document.addEventListener('DOMContentLoaded', () => {
             isVerified: editIsVerifiedInput?.checked || false,
             bio: editBioInput?.value.trim() || null,
             profilePic: editProfilePicInput?.value.trim() || null,
-            // Add isEnabled field later: isEnabled: editIsEnabledInput?.checked ?? true,
+            // Add isEnabled field later when implementing toggle in modal:
+            // isEnabled: editIsEnabledInput?.checked ?? true,
             lastModified: serverTimestamp() // Add a timestamp for the modification
         };
 
@@ -875,6 +986,14 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.addEventListener('submit', handleUpdateShoutout); // Call handler on submit
     }
 
-    // Add listeners for other new features here later (e.g., search inputs, bulk delete buttons, etc.)
+    // *** NEW: Maintenance Mode Toggle Listener ***
+    if (maintenanceModeToggle) {
+        maintenanceModeToggle.addEventListener('change', (e) => {
+            const isEnabled = e.target.checked; // Get the new checked state (true if enabled)
+            saveMaintenanceModeStatus(isEnabled); // Call the save function
+        });
+    }
 
-}); // End DOMContentLoaded Event Listener                          
+    // Add listeners for other new features here later (e.g., search inputs, bulk delete buttons, history buttons etc.)
+
+}); // End DOMContentLoaded Event Listener
