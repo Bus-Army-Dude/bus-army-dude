@@ -441,34 +441,65 @@ document.addEventListener('DOMContentLoaded', () => { //
     // --- END MODIFIED: loadShoutoutsAdmin Function ---
 
 
-    async function handleAddShoutout(platform, formElement) { //
-        if (!formElement) return; //
-        const username = formElement.querySelector(`#${platform}-username`)?.value.trim(); //
-        const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim(); //
-        const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim(); //
-        const order = parseInt(orderStr); //
+    async function handleAddShoutout(platform, formElement) {
+        if (!formElement) return;
+        const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
+        const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim();
+        const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim();
+        const order = parseInt(orderStr);
         if (!username || !nickname || !orderStr || isNaN(order) || order < 0) { showAdminStatus(`Invalid input for ${platform}. Check fields.`, true); return; } //
-        const accountData = { //
-            platform: platform, username: username, nickname: nickname, order: order, //
-            isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false, //
-            bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null, //
-            profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null, //
-            createdAt: serverTimestamp() //
-        };
-        if (platform === 'youtube') { //
-            accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A'; //
-            accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null; //
-        } else {
-            accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A'; //
-        }
+
+           // *** NEW: Duplicate Check Logic ***
         try {
-            const docRef = await addDoc(collection(db, 'shoutouts'), accountData); //
-            console.log("Shoutout added:", docRef.id); //
-            await updateMetadataTimestamp(platform); //
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added.`, false); //
-            formElement.reset(); //
-            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); //
-        } catch (error) { console.error(`Error adding ${platform} shoutout:`, error); showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true); } //
+            // Construct a query to check for existing shoutout with the same username and platform
+            const shoutoutsCol = collection(db, 'shoutouts');
+            const duplicateCheckQuery = query(
+                shoutoutsCol,
+                where("platform", "==", platform),
+                where("username", "==", username),
+                limit(1) // Only need to know if at least one exists
+            );
+
+            const querySnapshot = await getDocs(duplicateCheckQuery);
+
+            // If the snapshot is not empty, a duplicate was found
+            if (!querySnapshot.empty) {
+                showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true);
+                return; // Stop execution, do not add duplicate
+            }
+        
+        // *** Existing Add Logic (Now runs only if no duplicate found) ***
+            const accountData = {
+                platform: platform,
+                username: username,
+                nickname: nickname,
+                order: order,
+                isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
+                bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
+                profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
+                createdAt: serverTimestamp()
+                // NOTE: isEnabled field (for Disable/Enable feature) will be added later if needed
+            };
+        // Add platform-specific fields
+            if (platform === 'youtube') {
+                accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
+                accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null;
+            } else { // TikTok or Instagram
+                accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A';
+            }
+        try {
+           const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
+            console.log("Shoutout added:", docRef.id);
+            await updateMetadataTimestamp(platform); // Update last updated time
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`, false);
+            formElement.reset(); // Reset the form
+            if (typeof loadShoutoutsAdmin === 'function') {
+                loadShoutoutsAdmin(platform); // Reload the list to show the new item
+        } catch (error) {
+            // Handle potential errors during duplicate check query or adding the document
+            console.error(`Error adding ${platform} shoutout:`, error);
+            showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
+        }
     }
 
     async function handleUpdateShoutout(event) { //
