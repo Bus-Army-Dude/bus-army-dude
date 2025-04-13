@@ -192,11 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // NOTE: A checkbox for bulk actions will be added here later if needed
         itemDiv.innerHTML = `
             <div class="item-content">
-                 <div class="item-details"> {/* Wrapper for text */}
+                 <div class="item-details"> 
                     <strong>${nickname || 'N/A'}</strong>
                     <span>(@${username || 'N/A'})</span>
                     <small>Order: ${order ?? 'N/A'}</small>
-                    {/* Add status indicator later for Disable/Enable feature */}
                  </div>
             </div>
             <div class="item-actions">
