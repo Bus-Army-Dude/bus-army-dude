@@ -1,9 +1,14 @@
+// admin.js (Corrected Version - Includes Search Bar Logic)
+
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
-// Import Firebase functions (Corrected: includes 'where', 'query', 'orderBy', 'limit')
+// Import Firebase functions (Includes 'where', 'query', 'orderBy', 'limit')
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+
+// *** Global Variable for Client-Side Filtering ***
+let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
 
 document.addEventListener('DOMContentLoaded', () => {
     // First, check if db and auth were successfully imported/initialized
@@ -39,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editIsVerifiedInput = document.getElementById('edit-isVerified');
     const editBioInput = document.getElementById('edit-bio');
     const editProfilePicInput = document.getElementById('edit-profilePic');
-    const editIsEnabledInput = document.getElementById('edit-isEnabled'); // Reference needed if implementing per-item enable/disable
+    const editIsEnabledInput = document.getElementById('edit-isEnabled');
     const editFollowersInput = document.getElementById('edit-followers');
     const editSubscribersInput = document.getElementById('edit-subscribers');
     const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
@@ -56,15 +61,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailGroup = document.getElementById('email-group');
     const passwordGroup = document.getElementById('password-group');
     const loginButton = document.getElementById('login-button');
-    // *** NEW References for Maintenance Mode ***
     const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle');
     const settingsStatusMessage = document.getElementById('settings-status-message');
+    // *** NEW References for Search Inputs ***
+    const searchInputTiktok = document.getElementById('search-tiktok');
+    const searchInputInstagram = document.getElementById('search-instagram');
+    const searchInputYoutube = document.getElementById('search-youtube');
 
 
-    // Firestore Reference for Profile / Site Config (assuming maintenance flag stored here)
+    // Firestore Reference for Profile / Site Config
     const profileDocRef = doc(db, "site_config", "mainProfile");
     // Reference for Shoutout Metadata (used for timestamps)
-    const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // Use a consistent ref
+    const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
 
     // --- Inactivity Logout Variables ---
     let inactivityTimer;
@@ -72,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let displayIntervalId;
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
-
-    let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
 
 // --- Helper Functions ---
     // Displays status messages in the main admin status area
@@ -101,11 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
         settingsStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
          // Clear message after a few seconds
         setTimeout(() => { if (settingsStatusMessage) { settingsStatusMessage.textContent = ''; settingsStatusMessage.style.display = 'none'; } }, 3000);
-        if (!isError) settingsStatusMessage.style.display = 'block'; // Ensure success message is visible briefly
+        // Ensure success/error message is visible briefly
+        settingsStatusMessage.style.display = 'block';
     }
 
-
-    // --- Edit Modal Logic ---
+// --- Edit Modal Logic ---
     // Opens the modal and populates it with data for the selected shoutout
     function openEditModal(docId, platform) {
         if (!editModal || !editForm) { console.error("Edit modal/form not found."); showAdminStatus("UI Error: Cannot open edit form.", true); return; }
@@ -123,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (editIsVerifiedInput) editIsVerifiedInput.checked = data.isVerified || false;
                 if (editBioInput) editBioInput.value = data.bio || '';
                 if (editProfilePicInput) editProfilePicInput.value = data.profilePic || '';
-                // Populate enable/disable toggle (will be used when implementing that feature)
+                // Populate enable/disable toggle (for future feature)
                 // if (editIsEnabledInput) editIsEnabledInput.checked = data.isEnabled ?? true;
 
                 // Handle platform-specific fields visibility and values
@@ -173,12 +179,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listeners for closing the modal (X button and clicking outside)
     if (cancelEditButton) cancelEditButton.addEventListener('click', closeEditModal);
     window.addEventListener('click', (event) => {
+        // Close modal only if the direct click target is the modal backdrop itself
         if (event.target === editModal) {
             closeEditModal();
         }
     });
 
-    // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
+// --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) {
         // The 'isEnabled' status will be passed here later when implementing that feature
@@ -201,9 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
             directLinkUrl = `https://instagram.com/${encodeURIComponent(safeUsername)}`;
         } else if (platform === 'youtube' && safeUsername) {
             // Construct YouTube URL (ensure 'username' is the handle like '@MrBeast')
-            // Note: If username doesn't start with '@', you might need to adjust this logic
             let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`;
-            directLinkUrl = `https://youtube.com/${encodeURIComponent(youtubeHandle)}`; // Check if this URL structure is correct for handles
+            directLinkUrl = `https://youtube.com/$${encodeURIComponent(youtubeHandle)}`; // Check if this URL structure is correct for handles
         }
 
         // Build inner HTML - Structure includes item details and action buttons
@@ -211,12 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // NOTE: An indicator for enabled/disabled status will be added later
         itemDiv.innerHTML = `
             <div class="item-content">
-                 {/* Checkbox placeholder for Bulk Actions */}
-                 <div class="item-details"> {/* Wrapper for text */}
+                 <div class="item-details">
                     <strong>${nickname || 'N/A'}</strong>
                     <span>(@${username || 'N/A'})</span>
                     <small>Order: ${order ?? 'N/A'}</small>
-                    {/* Status indicator placeholder for Enable/Disable */}
                  </div>
             </div>
             <div class="item-actions">
@@ -225,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
                 <button type="button" class="edit-button small-button">Edit</button>
                 <button type="button" class="delete-button small-button">Delete</button>
-                {/* Enable/Disable toggle placeholder */}
             </div>`;
 
         // Add event listeners for Edit and Delete buttons
@@ -239,6 +242,75 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(itemDiv);
     }
     // --- END MODIFIED: renderAdminListItem Function ---
+
+// *** NEW FUNCTION: Displays Filtered Shoutouts ***
+    // This function takes the platform name, filters the globally stored list,
+    // and renders only the matching items.
+    function displayFilteredShoutouts(platform) {
+        // Get the correct list container, count element, and search input for the given platform
+        const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
+        const countElement = document.getElementById(`${platform}-count`);
+        const searchInput = document.getElementById(`search-${platform}`); // Get the specific search input
+
+        // Safety checks for required elements and data
+        if (!listContainer || !searchInput || !allShoutouts || !allShoutouts[platform]) {
+            console.error(`Missing elements or data for filtering platform: ${platform}.`);
+            if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list (elements/data missing).</p>`;
+            return;
+        }
+
+        const searchTerm = searchInput.value.trim().toLowerCase(); // Get current search term, lowercase
+        const fullList = allShoutouts[platform]; // Get the full list stored earlier for this platform
+
+        // Filter the full list based on the search term
+        const filteredList = fullList.filter(account => {
+            // If search term is empty, include all items
+            if (!searchTerm) {
+                return true;
+            }
+            // Otherwise, check if nickname or username contains the search term (case-insensitive)
+            const nickname = (account.nickname || '').toLowerCase();
+            const username = (account.username || '').toLowerCase();
+            return nickname.includes(searchTerm) || username.includes(searchTerm);
+        });
+
+        // Clear the current list display before rendering filtered items
+        listContainer.innerHTML = '';
+
+        // Render the filtered items by calling renderAdminListItem for each
+        if (filteredList.length > 0) {
+            filteredList.forEach(account => {
+                // Ensure renderAdminListItem exists before calling
+                if (typeof renderAdminListItem === 'function') {
+                    renderAdminListItem(
+                        listContainer,
+                        account.id, // Pass the document ID
+                        platform,
+                        account.username, // Pass username
+                        account.nickname, // Pass nickname
+                        account.order,    // Pass order
+                        handleDeleteShoutout, // Pass delete handler
+                        openEditModal         // Pass edit handler
+                    );
+                } else {
+                     console.error("renderAdminListItem function is not defined during filtering!");
+                }
+            });
+        } else {
+            // Display appropriate 'not found' message
+            if (searchTerm) { // If search term exists but no results
+                listContainer.innerHTML = `<p>No shoutouts found matching "${searchInput.value}".</p>`;
+            } else { // If no search term and list was initially empty
+                listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
+            }
+        }
+
+        // Update the count display based on the filtered list length
+        if (countElement) {
+            countElement.textContent = `(${filteredList.length})`;
+        }
+    }
+    // *** END NEW FUNCTION ***
 
 // --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode) ---
     async function loadProfileData() {
@@ -270,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(profileBioInput) profileBioInput.value = data.bio || '';
                 if(profileStatusInput) profileStatusInput.value = data.status || 'offline'; // Default to 'offline' if not set
 
-                // *** ADDED: Set maintenance toggle state ***
+                // Set maintenance toggle state
                 if(maintenanceModeToggle) {
                      maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; // Set toggle based on Firestore data (default false if missing)
                      maintenanceModeToggle.disabled = false; // Ensure it's enabled if data loaded
@@ -290,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  if (profileForm) profileForm.reset(); // Reset main profile form fields
                  if (profileStatusInput) profileStatusInput.value = 'offline'; // Explicitly set default status
 
-                 // *** ADDED: Default maintenance toggle state ***
+                 // Default maintenance toggle state
                  if(maintenanceModeToggle) {
                      maintenanceModeToggle.checked = false; // Default to false if doc missing
                      maintenanceModeToggle.disabled = false; // Ensure enabled
@@ -379,18 +451,157 @@ document.addEventListener('DOMContentLoaded', () => {
          });
     }
 
-// *** NEW FUNCTION: Saves Maintenance Mode Status ***
+// --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode) ---
+    async function loadProfileData() {
+        // Ensure user is logged in before attempting to load
+        if (!auth || !auth.currentUser) {
+            console.warn("Auth not ready or user not logged in when trying to load profile.");
+            return;
+        }
+        if (!profileForm) { // Check if the profile form exists in the DOM
+            console.log("Profile form element not found.");
+            return;
+        }
+        // Also check if maintenance toggle exists before trying to use it
+        if (!maintenanceModeToggle) {
+             console.warn("Maintenance mode toggle element not found.");
+        }
+
+        console.log("Attempting to load profile data from:", profileDocRef.path);
+        try {
+            const docSnap = await getDoc(profileDocRef); // Fetch the profile document
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                console.log("Loaded profile data:", data);
+
+                // Populate form fields with fetched data or defaults
+                if(profileUsernameInput) profileUsernameInput.value = data.username || '';
+                if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || '';
+                if(profileBioInput) profileBioInput.value = data.bio || '';
+                if(profileStatusInput) profileStatusInput.value = data.status || 'offline'; // Default to 'offline' if not set
+
+                // Set maintenance toggle state
+                if(maintenanceModeToggle) {
+                     maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; // Set toggle based on Firestore data (default false if missing)
+                     maintenanceModeToggle.disabled = false; // Ensure it's enabled if data loaded
+                }
+
+                // Update profile picture preview
+                if (adminPfpPreview && data.profilePicUrl) {
+                     adminPfpPreview.src = data.profilePicUrl;
+                     adminPfpPreview.style.display = 'inline-block'; // Show preview
+                } else if (adminPfpPreview) {
+                     adminPfpPreview.src = ''; // Clear src if no URL
+                     adminPfpPreview.style.display = 'none'; // Hide preview
+                }
+            } else {
+                 // Handle case where the profile document doesn't exist yet
+                 console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`);
+                 if (profileForm) profileForm.reset(); // Reset main profile form fields
+                 if (profileStatusInput) profileStatusInput.value = 'offline'; // Explicitly set default status
+
+                 // Default maintenance toggle state
+                 if(maintenanceModeToggle) {
+                     maintenanceModeToggle.checked = false; // Default to false if doc missing
+                     maintenanceModeToggle.disabled = false; // Ensure enabled
+                 }
+                 if(adminPfpPreview) adminPfpPreview.style.display = 'none'; // Hide preview
+            }
+        } catch (error) {
+             console.error("Error loading profile data:", error);
+             showProfileStatus("Error loading profile data.", true);
+             // Set defaults and disable toggle on error
+             if (profileForm) profileForm.reset();
+             if (profileStatusInput) profileStatusInput.value = 'offline';
+             if(maintenanceModeToggle) {
+                 maintenanceModeToggle.checked = false;
+                 maintenanceModeToggle.disabled = true; // Disable toggle on error
+             }
+             if(adminPfpPreview) adminPfpPreview.style.display = 'none';
+        }
+    }
+
+
+    // --- Function to Save Profile Data ---
+    async function saveProfileData(event) {
+        event.preventDefault(); // Prevent default form submission
+        // Ensure user is logged in
+        if (!auth || !auth.currentUser) {
+            showProfileStatus("Error: Not logged in.", true);
+            return;
+        }
+        if (!profileForm) return; // Should not happen if loaded, but safety check
+
+        // Gather data from form fields
+        const newData = {
+            username: profileUsernameInput?.value.trim() || "",
+            profilePicUrl: profilePicUrlInput?.value.trim() || "",
+            bio: profileBioInput?.value.trim() || "",
+            status: profileStatusInput?.value || "offline", // Ensure a default value
+            lastUpdated: serverTimestamp() // Add a timestamp for the update
+            // Note: Maintenance mode is saved by its own function/listener
+        };
+
+        showProfileStatus("Saving profile..."); // Provide user feedback
+        try {
+            // Use setDoc with merge: true to create or update the document
+            await setDoc(profileDocRef, newData, { merge: true });
+            console.log("Profile data saved to:", profileDocRef.path);
+            showProfileStatus("Profile updated successfully!", false);
+
+            // Optionally update the preview image immediately after saving a new URL
+            if (adminPfpPreview && newData.profilePicUrl) {
+                adminPfpPreview.src = newData.profilePicUrl;
+                adminPfpPreview.style.display = 'inline-block';
+            } else if (adminPfpPreview) {
+                 adminPfpPreview.src = '';
+                 adminPfpPreview.style.display = 'none';
+            }
+
+        } catch (error) {
+             console.error("Error saving profile data:", error);
+             showProfileStatus(`Error saving profile: ${error.message}`, true);
+        }
+    }
+
+    // Event listener for profile picture URL input to update preview (optional but helpful)
+    if (profilePicUrlInput && adminPfpPreview) {
+        profilePicUrlInput.addEventListener('input', () => {
+            const url = profilePicUrlInput.value.trim();
+            if (url) {
+                adminPfpPreview.src = url;
+                adminPfpPreview.style.display = 'inline-block';
+            } else {
+                adminPfpPreview.style.display = 'none';
+            }
+        });
+        // Handle image loading errors for the preview
+        adminPfpPreview.onerror = () => {
+            console.warn("Preview image failed to load from URL:", adminPfpPreview.src);
+            // Optionally show a placeholder or hide the preview on error
+            // adminPfpPreview.src = 'path/to/error-placeholder.png';
+             adminPfpPreview.style.display = 'none';
+             profilePicUrlInput.classList.add('input-error'); // Add error class to input
+        };
+         // Remove error class when input changes
+         profilePicUrlInput.addEventListener('focus', () => {
+            profilePicUrlInput.classList.remove('input-error');
+         });
+    }
+
+// *** FUNCTION TO SAVE Maintenance Mode Status ***
     async function saveMaintenanceModeStatus(isEnabled) {
         // Ensure user is logged in
         if (!auth || !auth.currentUser) {
             showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
-            // Revert checkbox state if save fails due to auth issue
+            // Revert checkbox state visually if save fails due to auth issue
             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
             return;
         }
 
-        // Use the specific status message area for settings
-        const statusElement = settingsStatusMessage || adminStatusElement; // Fallback to main status
+        // Use the specific status message area for settings, fallback to main admin status
+        const statusElement = settingsStatusMessage || adminStatusElement;
 
         // Show saving message
         if (statusElement) {
@@ -403,31 +614,31 @@ document.addEventListener('DOMContentLoaded', () => {
             // Use profileDocRef (site_config/mainProfile) to store the flag
             // Use setDoc with merge: true to update only this field without overwriting others
             await setDoc(profileDocRef, {
-                isMaintenanceModeEnabled: isEnabled // Save the boolean value
+                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
             }, { merge: true });
 
             console.log("Maintenance mode status saved:", isEnabled);
 
-            // Show success message
-            if (statusElement) {
-                statusElement.textContent = `Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`;
-                statusElement.className = "status-message success";
-                 // Clear after a short delay
-                setTimeout(() => { if(statusElement) { statusElement.textContent = ''; statusElement.style.display = 'none'; } }, 3000);
-            }
+            // Show success message using the dedicated settings status element or fallback
+             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
+                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
+             } else { // Fallback if specific element wasn't found initially
+                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false);
+             }
 
         } catch (error) {
             console.error("Error saving maintenance mode status:", error);
-             if (statusElement) {
-                statusElement.textContent = `Error saving setting: ${error.message}`;
-                statusElement.className = "status-message error";
-                // Don't auto-clear error message immediately
+            // Show error message in the specific status area or fallback
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) {
+                 showSettingsStatus(`Error saving setting: ${error.message}`, true);
+            } else {
+                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true);
             }
             // Revert checkbox state visually on error
              if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
         }
     }
-    // *** END OF NEW FUNCTION ***
+    // *** END FUNCTION ***
 
 // --- Inactivity Logout & Timer Display Functions ---
 
@@ -669,6 +880,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+// --- 'Next' Button Logic ---
+    // Handles the first step of the two-step login
+    if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) {
+        nextButton.addEventListener('click', () => {
+            const userEmail = emailInput.value.trim(); // Get entered email
+
+            // Check if email field is empty
+            if (!userEmail) {
+                 authStatus.textContent = 'Please enter your email address.';
+                 authStatus.className = 'status-message error'; // Show error style
+                 authStatus.style.display = 'block'; // Make sure message is visible
+                 return; // Stop processing if email is empty
+            }
+
+            // If email is entered:
+            // Display welcome message (optional, or clear previous errors)
+            authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
+            // Or simply clear status: authStatus.textContent = '';
+            authStatus.className = 'status-message'; // Reset style
+            authStatus.style.display = 'block'; // Ensure it's visible or use 'none' to hide
+
+            // Hide email field and Next button
+            emailGroup.style.display = 'none';
+            nextButton.style.display = 'none';
+
+            // Show password field and the actual Login button
+            passwordGroup.style.display = 'block';
+            loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
+
+            // Focus the password input for better UX
+            if(passwordInput) {
+                 passwordInput.focus();
+            }
+        });
+    } else {
+         // Log warning if any elements for the two-step login are missing
+         console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button).");
+    }
+
 // --- Shoutouts Load/Add/Delete/Update ---
 
     // Helper function to get the reference to the metadata document
@@ -676,7 +926,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function getShoutoutsMetadataRef() {
         // Ensure 'siteConfig' collection name is correct in your Firestore
         // Consider if 'shoutoutsMetadata' is the best document ID, or use 'mainProfile' if preferred
-        // Using a separate doc allows storing config without mixing with user profile data directly.
         return doc(db, 'siteConfig', 'shoutoutsMetadata');
     }
 
@@ -714,33 +963,36 @@ document.addEventListener('DOMContentLoaded', () => {
              allShoutouts[platform] = [];
         } else {
             console.error(`allShoutouts variable or platform key '${platform}' is missing.`);
-            allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Ensure it exists
+            // Initialize if missing - this shouldn't happen if global variable is set correctly
+            allShoutouts = { tiktok: [], instagram: [], youtube: [] };
         }
 
 
         try {
             // Query shoutouts collection, filtering by platform and ordering by 'order'
             const shoutoutsCol = collection(db, 'shoutouts');
-            const shoutoutQuery = query(
+            // This query requires the composite index (platform ASC/DESC, order ASC) created in Firebase console
+             const shoutoutQuery = query(
                 shoutoutsCol,
-                where("platform", "==", platform),
-                orderBy("order", "asc")
+                where("platform", "==", platform), // Filter by the platform string (e.g., 'tiktok')
+                orderBy("order", "asc")           // Order by the 'order' field ascending
             );
 
-            const querySnapshot = await getDocs(shoutoutQuery);
+            const querySnapshot = await getDocs(shoutoutQuery); // Execute the query
             console.log(`Workspaceed ${querySnapshot.size} ${platform} documents.`);
 
-            // Store fetched data in the global variable
+            // Store fetched data in the global variable 'allShoutouts'
             querySnapshot.forEach((docSnapshot) => {
+                // Store the full data object along with the Firestore document ID
                 allShoutouts[platform].push({ id: docSnapshot.id, ...docSnapshot.data() });
             });
 
-            // *** Call the filtering/display function to render the list ***
-            // This function will handle applying any search term and rendering
+            // *** Call the filtering/display function to initially render the list ***
+            // This function will handle applying any current search term and rendering
             if (typeof displayFilteredShoutouts === 'function') {
                 displayFilteredShoutouts(platform);
             } else {
-                 // This should not happen once we add the function, but good fallback
+                 // Fallback if the function isn't defined yet (should not happen if chunks added correctly)
                  console.error(`displayFilteredShoutouts function is not yet defined when loading ${platform}`);
                  listContainer.innerHTML = `<p class="error">Error initializing display function.</p>`;
                  if (countElement) countElement.textContent = '(Error)';
@@ -753,15 +1005,16 @@ document.addEventListener('DOMContentLoaded', () => {
                  listContainer.innerHTML = `<p class="error">Error: Missing Firestore index for this query. Please create it using the link in the developer console (F12).</p>`;
                  showAdminStatus(`Error loading ${platform}: Missing database index. Check console.`, true);
             } else {
+                 // Generic error message
                  listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
                  showAdminStatus(`Failed to load ${platform} data: ${error.message}`, true);
             }
             if (countElement) countElement.textContent = '(Error)';
         }
     }
-}
-    
- // --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check) ---
+    // --- END UPDATED: loadShoutoutsAdmin Function ---
+
+// --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check) ---
     async function handleAddShoutout(platform, formElement) {
         if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; }
 
@@ -777,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-       // Duplicate Check Logic
+        // Duplicate Check Logic
         try {
             // Construct a query to check for existing shoutout with the same username and platform
             const shoutoutsCol = collection(db, 'shoutouts');
@@ -798,6 +1051,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return; // Stop execution, do not add duplicate
             }
             console.log("No duplicate found. Proceeding to add.");
+            // --- End Duplicate Check ---
 
 
             // --- Add Logic (Runs only if no duplicate found) ---
@@ -832,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const previewArea = formElement.querySelector(`#add-${platform}-preview`);
             if (previewArea) previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>';
 
-            // Reload the list to show the new item
+            // Reload the list to show the new item (will also update allShoutouts)
             if (typeof loadShoutoutsAdmin === 'function') {
                 loadShoutoutsAdmin(platform);
             }
@@ -843,6 +1097,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
         }
     }
+
 
     // --- Function to Handle Updates from Edit Modal ---
     async function handleUpdateShoutout(event) {
@@ -877,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isVerified: editIsVerifiedInput?.checked || false,
             bio: editBioInput?.value.trim() || null,
             profilePic: editProfilePicInput?.value.trim() || null,
-            // Get isEnabled status (for future feature)
+            // Add isEnabled field later when implementing toggle in modal:
             // isEnabled: editIsEnabledInput?.checked ?? true,
             lastModified: serverTimestamp() // Add a timestamp for the modification
         };
@@ -898,7 +1153,8 @@ document.addEventListener('DOMContentLoaded', () => {
             await updateMetadataTimestamp(platform); // Update site timestamp
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false);
             if (typeof closeEditModal === 'function') closeEditModal(); // Close the modal
-            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload the list
+            // Reload the list which will update allShoutouts and apply filters
+            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
         } catch (error) {
             console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error);
             showAdminStatus(`Error updating ${platform} shoutout: ${error.message}`, true);
@@ -920,22 +1176,21 @@ document.addEventListener('DOMContentLoaded', () => {
             await updateMetadataTimestamp(platform); // Update site timestamp
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted successfully.`, false);
 
-            // Remove the item directly from the list in the UI for immediate feedback
-            if (listItemElement) {
-                 listItemElement.remove();
-                 // Reload is still good practice to ensure count is updated accurately
-                 if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
-            } else if (typeof loadShoutoutsAdmin === 'function') {
-                 // Fallback reload if element wasn't passed
-                 loadShoutoutsAdmin(platform);
+            // Reload the list - this is the simplest way to update the UI
+            // and ensure the 'allShoutouts' array is also updated for filtering.
+            if (typeof loadShoutoutsAdmin === 'function') {
+                loadShoutoutsAdmin(platform);
             }
+            // Note: Removing listItemElement directly might cause inconsistencies
+            // if filtering is active, so reloading is safer.
+
         } catch (error) {
             console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error);
             showAdminStatus(`Error deleting ${platform} shoutout: ${error.message}`, true);
         }
     }
 
- // --- Attach Event Listeners for Forms ---
+// --- Attach Event Listeners for Forms ---
 
     // Add Shoutout Forms
     if (addShoutoutTiktokForm) {
@@ -967,14 +1222,40 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.addEventListener('submit', handleUpdateShoutout); // Call handler on submit
     }
 
-    // *** NEW: Maintenance Mode Toggle Listener ***
+    // Maintenance Mode Toggle Listener
     if (maintenanceModeToggle) {
         maintenanceModeToggle.addEventListener('change', (e) => {
-            const isEnabled = e.target.checked; // Get the new checked state (true if enabled)
+            const isEnabled = e.target.checked; // Get the new checked state
             saveMaintenanceModeStatus(isEnabled); // Call the save function
         });
     }
 
-    // Add listeners for other new features here later (e.g., search inputs, bulk delete buttons, history buttons etc.)
+    // *** NEW: Search Input Event Listeners ***
+    if (searchInputTiktok) {
+        searchInputTiktok.addEventListener('input', () => {
+            if (typeof displayFilteredShoutouts === 'function') {
+                displayFilteredShoutouts('tiktok'); // Filter TikTok list as user types
+            }
+        });
+    }
+     if (searchInputInstagram) {
+        searchInputInstagram.addEventListener('input', () => {
+            if (typeof displayFilteredShoutouts === 'function') {
+                displayFilteredShoutouts('instagram'); // Filter Instagram list as user types
+            }
+        });
+    }
+    if (searchInputYoutube) {
+        searchInputYoutube.addEventListener('input', () => {
+            if (typeof displayFilteredShoutouts === 'function') {
+                displayFilteredShoutouts('youtube'); // Filter YouTube list as user types
+            }
+        });
+    }
+    // *** END NEW Search Listeners ***
+
+
+    // Add listeners for other features (Bulk Delete, History) here later
+
 
 }); // End DOMContentLoaded Event Listener
