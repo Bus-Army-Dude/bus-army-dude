@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme (Version History Styles REMOVED) */
+/* admin.css - Futuristic Theme (Unified Preview Styles) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -216,9 +216,8 @@ a:hover {
 .form-group {
     margin-bottom: 20px;
 }
-/* Specific style for section toggles if needed */
-.section-toggle label {
-    /* Add specific styles? e.g., slightly bolder? */
+.section-toggle label { /* Style for section toggles */
+    font-weight: 500; /* Make section toggle label slightly bolder */
 }
 .checkbox-group label {
     display: inline-flex;
@@ -342,7 +341,7 @@ button:disabled, .button-primary:disabled {
 
 #logout-button,
 button.delete-button,
-button.bulk-delete-button
+button.bulk-delete-button /* Includes bulk delete button */
 {
     background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
     color: #fff;
@@ -356,7 +355,7 @@ button.bulk-delete-button:hover
 }
 
 button.secondary-button,
-.list-item-admin button,
+.list-item-admin button, /* Applies to edit/delete */
 button.edit-button
 /* Removed restore button style */
 {
@@ -459,14 +458,16 @@ button.edit-button:hover
     word-break: break-word;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 10px; /* Gap between checkbox and details */
 }
-.list-item-admin .item-content input[type="checkbox"] {
+/* Style for checkbox within list item */
+.list-item-admin .item-content input[type="checkbox"].shoutout-checkbox { /* Target specific checkbox */
     flex-shrink: 0;
-    margin-right: 5px;
-    height: 1.2em;
-    width: 1.2em;
+    margin: 0; /* Reset margin */
+    height: 1.1em;
+    width: 1.1em;
     accent-color: var(--accent-color);
+    cursor: pointer;
 }
 .list-item-admin .item-details {
     flex-grow: 1;
@@ -498,7 +499,14 @@ button.edit-button:hover
 }
 .item-actions a.direct-link i {
     display: block;
+    margin-right: 4px; /* Space between icon and text */
 }
+/* Align text within the link button */
+.item-actions a.direct-link {
+    display: inline-flex;
+    align-items: center;
+}
+
 
 .list-item-admin.disabled-item {
     opacity: 0.6;
@@ -556,6 +564,7 @@ button.edit-button:hover
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    position: relative; /* Needed for scaling origin */
 }
 .shoutout-preview-area > p {
     color: var(--secondary-text);
@@ -563,14 +572,23 @@ button.edit-button:hover
     font-size: 0.9em;
     text-align: center;
 }
-.shoutout-preview-area > div[class*="-creator-card"] {
-    transform: scale(0.85);
-    transform-origin: center center; /* Changed origin */
+/* Apply scaling to the container, adjust origin */
+.shoutout-preview-area {
+    /* Apply scaling if needed, but often better to adjust styles directly */
+    /* transform: scale(0.85); */
+    /* transform-origin: center center; */
+}
+/* Style the card *within* the preview area */
+.shoutout-preview-area .creator-card,
+.shoutout-preview-area .instagram-creator-card,
+.shoutout-preview-area .youtube-creator-card {
+    transform: scale(0.9); /* Scale down the card slightly */
+    transform-origin: center top; /* Scale from top center */
     margin: 0;
     box-shadow: none;
-     /* Ensure width behaves correctly within scaled container */
-     max-width: 100%;
-     box-sizing: border-box;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color); /* Add border for clarity */
 }
 
 /* ======================== */
@@ -647,7 +665,6 @@ button.edit-button:hover
 
 #edit-shoutout-form .form-actions button,
 #profile-form .form-actions button
-/* Removed Version History Modal Button reference */
 {
     margin-right: 8px;
 }
@@ -660,9 +677,8 @@ button.edit-button:hover
 /* ======================== */
 /* Site Settings Section    */
 /* ======================== */
-#site-settings {
-    /* Inherits .admin-section styles */
-}
+#site-settings { } /* Inherits .admin-section styles */
+
 #site-settings .form-group {
     padding: 15px;
     border: 1px solid var(--border-color);
@@ -685,11 +701,10 @@ button.edit-button:hover
 /* ======================== */
 /* Activity Log             */
 /* ======================== */
-#activity-log-section {
-    /* Inherits .admin-section styles */
-}
+#activity-log-section { } /* Inherits .admin-section styles */
+
 #activity-log-list {
-    max-height: 500px; /* Allow more height */
+    max-height: 500px;
     /* Inherits .list-container-admin styles */
 }
 #activity-log-list .list-item-admin {
@@ -713,12 +728,6 @@ button.edit-button:hover
     flex-grow: 1;
     word-break: break-word;
 }
-
-
-/* ======================== */
-/* Version History Styles REMOVED */
-/* ======================== */
-
 
 /* ======================== */
 /* Responsive Adjustments   */
@@ -786,47 +795,57 @@ button.edit-button:hover
 
 
 /* ============================================= */
-/* === ADMIN SHOUTOUT PREVIEW STYLES === */
+/* === ADMIN SHOUTOUT PREVIEW STYLES (Unified) === */
 /* ============================================= */
 
-/* Scope all homepage card styles within the preview area */
+/* Base card style for all previews */
 .shoutout-preview-area .creator-card,
 .shoutout-preview-area .instagram-creator-card,
 .shoutout-preview-area .youtube-creator-card {
-    background-color: var(--bg-color); /* Use admin bg */
+    background-color: var(--bg-color);
     border-radius: 10px;
     padding: 15px;
     display: flex;
     flex-direction: column;
-    transition: none; /* Disable transitions in preview */
-    box-shadow: 0 2px 4px var(--shadow-color); /* Use admin shadow */
-    width: 100%; /* Fit preview area */
+    transition: none;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    width: 100%;
     box-sizing: border-box;
     position: relative;
-    overflow: hidden; /* Change back to hidden for preview */
+    overflow: hidden;
     height: auto;
 }
 .shoutout-preview-area .creator-card:hover,
 .shoutout-preview-area .instagram-creator-card:hover,
 .shoutout-preview-area .youtube-creator-card:hover {
-    transform: none; /* Disable hover effect in preview */
+    transform: none;
     box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-
-/* YouTube Cover Photo (Scoped) */
+/* Hide YouTube cover photo specifically in preview */
 .shoutout-preview-area .youtube-cover-photo {
-    width: calc(100% + 30px); /* Adjust based on padding */
-    height: 100px; /* Reduced height for preview */
-    object-fit: cover; /* Changed to cover for better fit */
-    display: block;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    margin: -15px -15px 10px -15px; /* Adjust margins for padding */
-    vertical-align: top;
+    display: none;
 }
 
-/* YouTube Creator Info Container (Scoped) */
+/* Unified Profile Picture Style */
+.shoutout-preview-area .creator-pic,
+.shoutout-preview-area .instagram-creator-pic,
+.shoutout-preview-area .youtube-creator-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-color);
+    margin-bottom: 10px;
+    position: relative; /* Keep relative for z-index if needed */
+    z-index: 1;
+    margin-top: 0; /* Ensure no negative margin */
+    margin-left: 0; /* Ensure no indent */
+}
+
+/* Unified Info Container */
+.shoutout-preview-area .creator-info,
+.shoutout-preview-area .instagram-creator-info,
 .shoutout-preview-area .youtube-creator-info {
     display: flex;
     flex-direction: column;
@@ -834,97 +853,75 @@ button.edit-button:hover
     padding: 0;
 }
 
-/* Common Profile Picture Styles (Scoped) */
-.shoutout-preview-area .creator-pic,
-.shoutout-preview-area .instagram-creator-pic,
-.shoutout-preview-area .youtube-creator-pic {
-    width: 50px; /* Slightly smaller for preview */
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent-color); /* Thinner border */
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 1;
-    margin-top: 0; /* Reset margin top */
-    margin-left: 0; /* Reset margin left */
-}
-/* Adjust YouTube pic margin only if cover exists */
-.shoutout-preview-area .youtube-creator-card:has(.youtube-cover-photo) .youtube-creator-pic {
-     margin-top: -25px; /* Overlap slightly if cover exists */
-     margin-left: 10px; /* Indent slightly */
-}
-
-/* Common Header Styles (Scoped) */
+/* Unified Header Style */
 .shoutout-preview-area .creator-header,
 .shoutout-preview-area .instagram-creator-header,
 .shoutout-preview-area .youtube-creator-header {
     display: flex;
     align-items: center;
-    gap: 6px; /* Slightly reduced gap */
+    gap: 6px;
     margin-bottom: 3px;
-    margin-top: 5px; /* Add space above header */
+    margin-top: 0; /* Removed extra top margin */
 }
 
-/* Adjust spacing specific to YouTube header when cover is present */
-.shoutout-preview-area .youtube-creator-card:has(.youtube-cover-photo) .youtube-creator-header {
-     margin-top: 0; /* No extra top margin needed */
-}
-
-
-/* Username Container (Scoped) */
-.shoutout-preview-area .username-container { /* Applies only within YouTube card based on rendering function */
-    display: flex;
-    align-items: center; /* Center vertically */
-    gap: 4px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-
-/* Common Username Styles (Scoped) */
-.shoutout-preview-area .creator-username,
-.shoutout-preview-area .instagram-creator-username,
-.shoutout-preview-area .youtube-creator-username {
-    color: var(--secondary-text);
-    font-size: 0.85em; /* Smaller username */
+/* Unified Heading (Nickname) Style */
+.shoutout-preview-area .creator-header h3,
+.shoutout-preview-area .instagram-creator-header h3,
+.shoutout-preview-area .youtube-creator-header h3 {
     margin: 0;
+    font-size: 1.05em;
+    color: var(--text-color);
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Unified Verification Badge Style */
+.shoutout-preview-area .verified-badge,
+.shoutout-preview-area .instagram-verified-badge,
+.shoutout-preview-area .youtube-verified-badge {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: middle;
+    /* Consider using a single badge image/class in rendering JS for true consistency */
+}
+
+/* Unified Username Style */
+/* Target direct children <p> of .creator-info, .instagram-creator-info etc. */
+.shoutout-preview-area .creator-info > .creator-username,
+.shoutout-preview-area .instagram-creator-info > .instagram-creator-username,
+.shoutout-preview-area .youtube-creator-info .youtube-creator-username { /* YouTube has extra container */
+    color: var(--secondary-text);
+    font-size: 0.85em;
+    margin: 0 0 8px 0; /* Consistent margin */
     overflow-wrap: break-word;
     word-break: break-all;
     line-height: 1.3;
 }
-
-/* Verification Badge Styles (Scoped) */
-.shoutout-preview-area .verified-badge,
-.shoutout-preview-area .instagram-verified-badge,
-.shoutout-preview-area .youtube-verified-badge {
-    width: 14px; /* Smaller badge */
-    height: 14px;
-    display: inline-block;
-    vertical-align: middle;
+/* Remove extra margin from YouTube's username container */
+.shoutout-preview-area .youtube-creator-info .username-container {
+    margin-bottom: 8px;
+    gap: 4px;
 }
 
-/* Common Bio Styles (Scoped) */
+
+/* Unified Bio Style */
 .shoutout-preview-area .creator-bio,
 .shoutout-preview-area .instagram-creator-bio,
 .shoutout-preview-area .youtube-creator-bio {
     color: var(--secondary-text);
     margin: 8px 0;
-    font-size: 0.85em; /* Smaller bio text */
+    font-size: 0.85em;
     line-height: 1.4;
     word-break: break-word;
-    /* Limit bio lines shown in preview (optional) */
-    max-height: calc(1.4em * 3); /* Example: Show max 3 lines */
+    max-height: calc(1.4em * 3); /* Limit to 3 lines */
     overflow: hidden;
     text-overflow: ellipsis;
-     /* Use display: -webkit-box for multi-line ellipsis (requires more prefixes) */
-    /* display: -webkit-box;
-     -webkit-line-clamp: 3;
-     -webkit-box-orient: vertical; */
 }
 
-/* Common Follower/Subscriber Count Styles (Scoped) */
+/* Unified Follower/Subscriber Count Style */
+/* Use a common class if possible, otherwise target all */
 .shoutout-preview-area .follower-count,
 .shoutout-preview-area .instagram-follower-count,
 .shoutout-preview-area .youtube-subscriber-count {
@@ -934,7 +931,7 @@ button.edit-button:hover
     font-size: 0.9em;
 }
 
-/* Common Visit Profile Button Styles (Scoped) */
+/* Unified Visit Button Style */
 .shoutout-preview-area .visit-profile,
 .shoutout-preview-area .instagram-visit-profile,
 .shoutout-preview-area .youtube-visit-profile {
@@ -942,17 +939,16 @@ button.edit-button:hover
     background-color: var(--accent-color);
     color: #000; /* Use admin theme button text color */
     text-decoration: none;
-    padding: 6px 15px; /* Smaller padding */
-    border-radius: 20px; /* Adjust roundness */
+    padding: 6px 15px;
+    border-radius: 20px;
     margin-top: 8px;
-    transition: none; /* Disable transitions */
+    transition: none;
     text-align: center;
     font-weight: 500;
-    font-size: 0.85em; /* Smaller text */
-    border: 1px solid var(--accent-color); /* Adjusted border */
+    font-size: 0.85em;
+    border: 1px solid var(--accent-color);
     width: fit-content;
 }
-/* Adjust text color in preview for light mode if needed */
 body.light-mode .shoutout-preview-area .visit-profile,
 body.light-mode .shoutout-preview-area .instagram-visit-profile,
 body.light-mode .shoutout-preview-area .youtube-visit-profile {
@@ -962,9 +958,8 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile {
 .shoutout-preview-area .visit-profile:hover,
 .shoutout-preview-area .instagram-visit-profile:hover,
 .shoutout-preview-area .youtube-visit-profile:hover {
-    /* Keep non-hover state styles */
     background-color: var(--accent-color);
-    color: #000; /* Or #fff for light mode */
+    color: #000;
     transform: none;
     box-shadow: none;
 }
@@ -973,18 +968,3 @@ body.light-mode .shoutout-preview-area .instagram-visit-profile:hover,
 body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
      color: #fff;
 }
-
-
-/* Creator Name Styles (Scoped) */
-.shoutout-preview-area .creator-header h3,
-.shoutout-preview-area .instagram-creator-header h3,
-.shoutout-preview-area .youtube-creator-header h3 {
-    margin: 0;
-    font-size: 1.05em; /* Slightly smaller heading */
-    color: var(--text-color);
-    line-height: 1.3;
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-
-/* --- END PREVIEW STYLES --- */
