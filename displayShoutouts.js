@@ -209,9 +209,9 @@ async function loadAndDisplayShoutouts() {
     }
 
     // Get references to containers and timestamp elements using their IDs
-    const tiktokGrid = document.getElementById('tiktok-grid'); // Assumes id="tiktok-grid" in main HTML
-    const instagramGrid = document.getElementById('instagram-grid'); // Assumes id="instagram-grid"
-    const youtubeGrid = document.getElementById('youtube-grid'); // Assumes id="youtube-grid"
+    const tiktokGrid = document.querySelector('.creator-grid'); // Use class selector
+    const instagramGrid = document.querySelector('.instagram-creator-grid'); // Use class selector
+    const youtubeGrid = document.querySelector('.youtube-creator-grid'); // Use class selector
     const tiktokTimestampEl = document.getElementById('tiktok-last-updated-timestamp'); // Assumes id="tiktok-last-updated-timestamp"
     const instagramTimestampEl = document.getElementById('instagram-last-updated-timestamp'); // Changed ID for consistency
     const youtubeTimestampEl = document.getElementById('youtube-last-updated-timestamp'); // Changed ID for consistency
