@@ -4,7 +4,7 @@
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
 // Import Firebase functions
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"; // Added query, orderBy
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"; // Added query, orderBy, AND where
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"; //
 
 document.addEventListener('DOMContentLoaded', () => {
