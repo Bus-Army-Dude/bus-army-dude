@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
 
+    let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
+
 // --- Helper Functions ---
     // Displays status messages in the main admin status area
     function showAdminStatus(message, isError = false) {
@@ -695,8 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
          }
     }
 
-    // --- MODIFIED: loadShoutoutsAdmin Function (Uses indexed query) ---
-    // Loads and displays the list of shoutouts for a given platform in the admin panel
+    // --- MODIFIED: loadShoutoutsAdmin Function (Stores data, calls filter function) ---
     async function loadShoutoutsAdmin(platform) {
         const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
         const countElement = document.getElementById(`${platform}-count`);
@@ -705,85 +706,50 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(`List container not found for platform: ${platform}`);
             return;
         }
-        if (countElement) countElement.textContent = ''; // Clear count initially
-        listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`; // Show loading message
+        if (countElement) countElement.textContent = '';
+        listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`;
+
+        // Clear the stored list for this platform before fetching
+        allShoutouts[platform] = [];
 
         try {
-            // Query shoutouts collection, filtering by platform and ordering by 'order'
             const shoutoutsCol = collection(db, 'shoutouts');
-            // This query requires the composite index (platform ASC/DESC, order ASC) created in Firebase console
-             const shoutoutQuery = query(
+            const shoutoutQuery = query(
                 shoutoutsCol,
-                where("platform", "==", platform), // Filter by the platform string (e.g., 'tiktok')
-                orderBy("order", "asc")           // Order by the 'order' field ascending
+                where("platform", "==", platform),
+                orderBy("order", "asc")
             );
 
-            const querySnapshot = await getDocs(shoutoutQuery); // Execute the query
-            listContainer.innerHTML = ''; // Clear loading message
-            let count = 0; // Initialize count for this platform
+            const querySnapshot = await getDocs(shoutoutQuery);
+            console.log(`Workspaceed ${querySnapshot.size} ${platform} documents.`);
 
-            // Loop through the fetched documents
-            querySnapshot.forEach(docSnapshot => {
-                const account = docSnapshot.data(); // Get document data
-                count++; // Increment count
-
-                // Extract necessary fields for rendering the list item
-                const nickname = account.nickname || 'N/A';
-                const username = account.username || 'N/A'; // Username needed for direct link
-                const order = account.order ?? 'N/A'; // Use nullish coalescing for order
-                // Add 'isEnabled' later when implementing that feature
-                // const isEnabled = account.isEnabled ?? true;
-
-                // Call function to render the individual list item HTML
-                // Passes necessary data including username for the direct link
-                if (typeof renderAdminListItem === 'function') {
-                    renderAdminListItem(
-                        listContainer,
-                        docSnapshot.id, // Document ID
-                        platform,
-                        username, // Pass username
-                        nickname, // Pass nickname
-                        order,    // Pass order
-                        // isEnabled, // Pass status later
-                        handleDeleteShoutout, // Pass delete handler function
-                        openEditModal         // Pass edit handler function
-                    );
-                } else {
-                    console.error("renderAdminListItem function is not defined!");
-                }
+            querySnapshot.forEach((docSnapshot) => {
+                const account = docSnapshot.data();
+                 // Store the full data object along with the ID
+                allShoutouts[platform].push({ id: docSnapshot.id, ...account });
             });
 
-            // Update the count display (e.g., "(5)")
-            if (countElement) {
-                countElement.textContent = `(${count})`;
-            }
-            // Show message if no shoutouts were found for this platform
-            if (count === 0) {
-                listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
-            }
+            // *** NEW: Call the filtering/display function ***
+            displayFilteredShoutouts(platform); // Display based on current filter (initially empty)
+
 
         } catch (error) {
             console.error(`Error loading ${platform} shoutouts:`, error);
-            // Specific check for the 'failed-precondition' error (missing index)
             if (error.code === 'failed-precondition') {
                  listContainer.innerHTML = `<p class="error">Error: Missing Firestore index for this query. Please create it using the link in the developer console (F12).</p>`;
                  showAdminStatus(`Error loading ${platform}: Missing database index. Check console.`, true);
             } else {
-                 // Generic error message
                  listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
                  showAdminStatus(`Failed to load ${platform} data: ${error.message}`, true);
             }
-            // Update count display to show error state
-            if (countElement) {
-                countElement.textContent = '(Error)';
-            }
+            if (countElement) countElement.textContent = '(Error)';
         }
     }
     // --- END MODIFIED: loadShoutoutsAdmin Function ---
-
-// --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check) ---
+    
+ // --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check) ---
     async function handleAddShoutout(platform, formElement) {
-        if (!formElement) return; // Exit if form element is missing
+        if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; }
 
         // Get form values
         const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
@@ -797,7 +763,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Duplicate Check Logic
+       // Duplicate Check Logic
         try {
             // Construct a query to check for existing shoutout with the same username and platform
             const shoutoutsCol = collection(db, 'shoutouts');
@@ -808,14 +774,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 limit(1) // Only need to know if at least one exists
             );
 
+            console.log(`Checking for duplicate: platform=${platform}, username=${username}`);
             const querySnapshot = await getDocs(duplicateCheckQuery);
 
             // If the snapshot is not empty, a duplicate was found
             if (!querySnapshot.empty) {
+                console.warn("Duplicate found for", platform, username);
                 showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true);
                 return; // Stop execution, do not add duplicate
             }
-            // --- End Duplicate Check ---
+            console.log("No duplicate found. Proceeding to add.");
 
 
             // --- Add Logic (Runs only if no duplicate found) ---
@@ -829,7 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null, // Use null if empty
                 profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null, // Use null if empty
                 createdAt: serverTimestamp(),
-                isEnabled: true // *** Default new shoutouts to enabled *** (for Disable/Enable feature)
+                isEnabled: true // Default new shoutouts to enabled (Needed for future Disable/Enable feature)
             };
 
             // Add platform-specific fields
@@ -846,9 +814,9 @@ document.addEventListener('DOMContentLoaded', () => {
             await updateMetadataTimestamp(platform); // Update last updated time for the site
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`, false);
             formElement.reset(); // Reset the form fields
-            // Reset preview area if implemented later
-            // const previewArea = formElement.querySelector(`#add-${platform}-preview`);
-            // if (previewArea) previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>';
+            // Reset preview area (if implemented)
+            const previewArea = formElement.querySelector(`#add-${platform}-preview`);
+            if (previewArea) previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>';
 
             // Reload the list to show the new item
             if (typeof loadShoutoutsAdmin === 'function') {
@@ -857,11 +825,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             // Handle potential errors during duplicate check query or adding the document
-            console.error(`Error adding ${platform} shoutout:`, error);
+            console.error(`Error in handleAddShoutout for ${platform}:`, error);
             showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
         }
     }
-
 
     // --- Function to Handle Updates from Edit Modal ---
     async function handleUpdateShoutout(event) {
@@ -896,7 +863,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isVerified: editIsVerifiedInput?.checked || false,
             bio: editBioInput?.value.trim() || null,
             profilePic: editProfilePicInput?.value.trim() || null,
-            // Add isEnabled field later when implementing toggle in modal:
+            // Get isEnabled status (for future feature)
             // isEnabled: editIsEnabledInput?.checked ?? true,
             lastModified: serverTimestamp() // Add a timestamp for the modification
         };
@@ -954,7 +921,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-// --- Attach Event Listeners for Forms ---
+ // --- Attach Event Listeners for Forms ---
 
     // Add Shoutout Forms
     if (addShoutoutTiktokForm) {
