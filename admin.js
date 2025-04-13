@@ -697,55 +697,99 @@ document.addEventListener('DOMContentLoaded', () => {
          }
     }
 
-    // --- MODIFIED: loadShoutoutsAdmin Function (Stores data, calls filter function) ---
-    async function loadShoutoutsAdmin(platform) {
-        const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
-        const countElement = document.getElementById(`${platform}-count`);
+    // --- CORRECTED: loadShoutoutsAdmin Function (Reverted to direct rendering) ---
+async function loadShoutoutsAdmin(platform) {
+    const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
+    const countElement = document.getElementById(`${platform}-count`);
 
-        if (!listContainer) {
-            console.error(`List container not found for platform: ${platform}`);
-            return;
-        }
-        if (countElement) countElement.textContent = '';
-        listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`;
+    if (!listContainer) {
+        console.error(`List container not found for platform: ${platform}`);
+        return;
+    }
+    if (countElement) countElement.textContent = ''; // Clear count initially
+    listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`; // Show loading message
 
-        // Clear the stored list for this platform before fetching
-        allShoutouts[platform] = [];
+    // Clear the stored list if you are keeping the allShoutouts variable for future use
+    // if (allShoutouts && allShoutouts[platform]) {
+    //     allShoutouts[platform] = [];
+    // }
 
-        try {
-            const shoutoutsCol = collection(db, 'shoutouts');
-            const shoutoutQuery = query(
-                shoutoutsCol,
-                where("platform", "==", platform),
-                orderBy("order", "asc")
-            );
+    try {
+        // Query shoutouts collection, filtering by platform and ordering by 'order'
+        const shoutoutsCol = collection(db, 'shoutouts');
+        // This query requires the composite index (platform, order) created in Firebase console
+         const shoutoutQuery = query(
+            shoutoutsCol,
+            where("platform", "==", platform),
+            orderBy("order", "asc")
+        );
 
-            const querySnapshot = await getDocs(shoutoutQuery);
-            console.log(`Workspaceed ${querySnapshot.size} ${platform} documents.`);
+        const querySnapshot = await getDocs(shoutoutQuery); // Execute the query
+        listContainer.innerHTML = ''; // Clear loading message
+        let count = 0; // Initialize count for this platform
 
-            querySnapshot.forEach((docSnapshot) => {
-                const account = docSnapshot.data();
-                 // Store the full data object along with the ID
-                allShoutouts[platform].push({ id: docSnapshot.id, ...account });
-            });
+        // Loop through the fetched documents
+        querySnapshot.forEach(docSnapshot => {
+            const account = docSnapshot.data(); // Get document data
+            count++; // Increment count
 
-            // *** NEW: Call the filtering/display function ***
-            displayFilteredShoutouts(platform); // Display based on current filter (initially empty)
+            // Extract necessary fields for rendering the list item
+            const nickname = account.nickname || 'N/A';
+            const username = account.username || 'N/A'; // Username needed for direct link
+            const order = account.order ?? 'N/A'; // Use nullish coalescing for order
+            // const isEnabled = account.isEnabled ?? true; // Will be needed for Disable/Enable feature
 
-
-        } catch (error) {
-            console.error(`Error loading ${platform} shoutouts:`, error);
-            if (error.code === 'failed-precondition') {
-                 listContainer.innerHTML = `<p class="error">Error: Missing Firestore index for this query. Please create it using the link in the developer console (F12).</p>`;
-                 showAdminStatus(`Error loading ${platform}: Missing database index. Check console.`, true);
+             // *** Directly call renderAdminListItem here ***
+             if (typeof renderAdminListItem === 'function') {
+                renderAdminListItem(
+                    listContainer,
+                    docSnapshot.id, // Document ID
+                    platform,
+                    username, // Pass username
+                    nickname, // Pass nickname
+                    order,    // Pass order
+                    // isEnabled, // Pass status later
+                    handleDeleteShoutout, // Pass delete handler function
+                    openEditModal         // Pass edit handler function
+                );
             } else {
-                 listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
-                 showAdminStatus(`Failed to load ${platform} data: ${error.message}`, true);
+                console.error("renderAdminListItem function is not defined!");
             }
-            if (countElement) countElement.textContent = '(Error)';
+
+            // Store the full data object if you plan to use client-side filtering later
+            // if (allShoutouts && allShoutouts[platform]) {
+            //      allShoutouts[platform].push({ id: docSnapshot.id, ...account });
+            // }
+
+        });
+
+        // Update the count display (e.g., "(5)")
+        if (countElement) {
+            countElement.textContent = `(${count})`;
+        }
+        // Show message if no shoutouts were found for this platform
+        if (count === 0) {
+            listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
+        }
+
+    } catch (error) {
+        console.error(`Error loading ${platform} shoutouts:`, error);
+        // Specific check for the 'failed-precondition' error (missing index)
+        if (error.code === 'failed-precondition') {
+             listContainer.innerHTML = `<p class="error">Error: Missing Firestore index for this query. Please create it using the link in the developer console (F12).</p>`;
+             showAdminStatus(`Error loading ${platform}: Missing database index. Check console.`, true);
+        } else {
+             // Generic error message
+             listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
+             showAdminStatus(`Failed to load ${platform} data: ${error.message}`, true);
+        }
+        // Update count display to show error state
+        if (countElement) {
+            countElement.textContent = '(Error)';
         }
     }
-    // --- END MODIFIED: loadShoutoutsAdmin Function ---
+}
+// --- END CORRECTED: loadShoutoutsAdmin Function ---
     
  // --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check) ---
     async function handleAddShoutout(platform, formElement) {
