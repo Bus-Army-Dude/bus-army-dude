@@ -1,4 +1,4 @@
-// admin.js (Corrected Version - Includes Search Bar Logic)
+// admin.js (Version includes Search Bar + Preview Prep)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
@@ -63,10 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginButton = document.getElementById('login-button');
     const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle');
     const settingsStatusMessage = document.getElementById('settings-status-message');
-    // *** NEW References for Search Inputs ***
     const searchInputTiktok = document.getElementById('search-tiktok');
     const searchInputInstagram = document.getElementById('search-instagram');
     const searchInputYoutube = document.getElementById('search-youtube');
+    // *** NEW References for Preview Areas ***
+    const addTiktokPreview = document.getElementById('add-tiktok-preview');
+    const addInstagramPreview = document.getElementById('add-instagram-preview');
+    const addYoutubePreview = document.getElementById('add-youtube-preview');
+    const editShoutoutPreview = document.getElementById('edit-shoutout-preview');
 
 
     // Firestore Reference for Profile / Site Config
@@ -152,10 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (editFollowersInput) editFollowersInput.value = data.followers || 'N/A';
                     if (followersDiv) followersDiv.style.display = 'block';
                 }
+
                 // Reset and hide preview area initially (JS for preview will handle showing it)
                 const previewArea = document.getElementById('edit-shoutout-preview');
                  if(previewArea) {
                      previewArea.innerHTML = '<p><small>Preview will appear here.</small></p>';
+                     // Trigger initial preview update after populating fields
+                     if (typeof updateShoutoutPreview === 'function') {
+                         updateShoutoutPreview('edit', platform);
+                     }
                  }
 
                 editModal.style.display = 'block'; // Show the modal
@@ -174,6 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (editForm) editForm.reset(); // Reset form fields
         editForm?.removeAttribute('data-doc-id'); // Clear stored data
         editForm?.removeAttribute('data-platform');
+         // Also clear the edit preview area
+         if(editShoutoutPreview) {
+             editShoutoutPreview.innerHTML = '<p><small>Preview will appear here.</small></p>';
+         }
     }
 
     // Event listeners for closing the modal (X button and clicking outside)
@@ -209,7 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (platform === 'youtube' && safeUsername) {
             // Construct YouTube URL (ensure 'username' is the handle like '@MrBeast')
             let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`;
-            directLinkUrl = `https://youtube.com/$${encodeURIComponent(youtubeHandle)}`; // Check if this URL structure is correct for handles
+            // Use the correct googleusercontent.com URL structure if needed, or standard youtube.com
+            // Assuming standard youtube.com/@handle format is desired:
+            directLinkUrl = `https://youtube.com/${encodeURIComponent(youtubeHandle)}`;
         }
 
         // Build inner HTML - Structure includes item details and action buttons
@@ -217,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // NOTE: An indicator for enabled/disabled status will be added later
         itemDiv.innerHTML = `
             <div class="item-content">
-                 <div class="item-details">
+                 <div class="item-details"> 
                     <strong>${nickname || 'N/A'}</strong>
                     <span>(@${username || 'N/A'})</span>
                     <small>Order: ${order ?? 'N/A'}</small>
@@ -264,11 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Filter the full list based on the search term
         const filteredList = fullList.filter(account => {
-            // If search term is empty, include all items
+            // Check if search term is empty (show all) or if it matches nickname or username
             if (!searchTerm) {
-                return true;
+                return true; // Show all if search is empty
             }
-            // Otherwise, check if nickname or username contains the search term (case-insensitive)
+            // Ensure properties exist before calling toLowerCase
             const nickname = (account.nickname || '').toLowerCase();
             const username = (account.username || '').toLowerCase();
             return nickname.includes(searchTerm) || username.includes(searchTerm);
@@ -289,11 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         account.username, // Pass username
                         account.nickname, // Pass nickname
                         account.order,    // Pass order
+                        // account.isEnabled, // Pass status later if needed for styling disabled items
                         handleDeleteShoutout, // Pass delete handler
                         openEditModal         // Pass edit handler
                     );
                 } else {
                      console.error("renderAdminListItem function is not defined during filtering!");
+                     // Avoid infinite loop if render fails
+                     listContainer.innerHTML = `<p class="error">Critical Error: Rendering function missing.</p>`;
+                     return; // Stop rendering this list
                 }
             });
         } else {
@@ -311,145 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     // *** END NEW FUNCTION ***
-
-// --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode) ---
-    async function loadProfileData() {
-        // Ensure user is logged in before attempting to load
-        if (!auth || !auth.currentUser) {
-            console.warn("Auth not ready or user not logged in when trying to load profile.");
-            return;
-        }
-        if (!profileForm) { // Check if the profile form exists in the DOM
-            console.log("Profile form element not found.");
-            return;
-        }
-        // Also check if maintenance toggle exists before trying to use it
-        if (!maintenanceModeToggle) {
-             console.warn("Maintenance mode toggle element not found.");
-        }
-
-        console.log("Attempting to load profile data from:", profileDocRef.path);
-        try {
-            const docSnap = await getDoc(profileDocRef); // Fetch the profile document
-
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                console.log("Loaded profile data:", data);
-
-                // Populate form fields with fetched data or defaults
-                if(profileUsernameInput) profileUsernameInput.value = data.username || '';
-                if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || '';
-                if(profileBioInput) profileBioInput.value = data.bio || '';
-                if(profileStatusInput) profileStatusInput.value = data.status || 'offline'; // Default to 'offline' if not set
-
-                // Set maintenance toggle state
-                if(maintenanceModeToggle) {
-                     maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; // Set toggle based on Firestore data (default false if missing)
-                     maintenanceModeToggle.disabled = false; // Ensure it's enabled if data loaded
-                }
-
-                // Update profile picture preview
-                if (adminPfpPreview && data.profilePicUrl) {
-                     adminPfpPreview.src = data.profilePicUrl;
-                     adminPfpPreview.style.display = 'inline-block'; // Show preview
-                } else if (adminPfpPreview) {
-                     adminPfpPreview.src = ''; // Clear src if no URL
-                     adminPfpPreview.style.display = 'none'; // Hide preview
-                }
-            } else {
-                 // Handle case where the profile document doesn't exist yet
-                 console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`);
-                 if (profileForm) profileForm.reset(); // Reset main profile form fields
-                 if (profileStatusInput) profileStatusInput.value = 'offline'; // Explicitly set default status
-
-                 // Default maintenance toggle state
-                 if(maintenanceModeToggle) {
-                     maintenanceModeToggle.checked = false; // Default to false if doc missing
-                     maintenanceModeToggle.disabled = false; // Ensure enabled
-                 }
-                 if(adminPfpPreview) adminPfpPreview.style.display = 'none'; // Hide preview
-            }
-        } catch (error) {
-             console.error("Error loading profile data:", error);
-             showProfileStatus("Error loading profile data.", true);
-             // Set defaults and disable toggle on error
-             if (profileForm) profileForm.reset();
-             if (profileStatusInput) profileStatusInput.value = 'offline';
-             if(maintenanceModeToggle) {
-                 maintenanceModeToggle.checked = false;
-                 maintenanceModeToggle.disabled = true; // Disable toggle on error
-             }
-             if(adminPfpPreview) adminPfpPreview.style.display = 'none';
-        }
-    }
-
-
-    // --- Function to Save Profile Data ---
-    async function saveProfileData(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Ensure user is logged in
-        if (!auth || !auth.currentUser) {
-            showProfileStatus("Error: Not logged in.", true);
-            return;
-        }
-        if (!profileForm) return; // Should not happen if loaded, but safety check
-
-        // Gather data from form fields
-        const newData = {
-            username: profileUsernameInput?.value.trim() || "",
-            profilePicUrl: profilePicUrlInput?.value.trim() || "",
-            bio: profileBioInput?.value.trim() || "",
-            status: profileStatusInput?.value || "offline", // Ensure a default value
-            lastUpdated: serverTimestamp() // Add a timestamp for the update
-            // Note: Maintenance mode is saved by its own function/listener
-        };
-
-        showProfileStatus("Saving profile..."); // Provide user feedback
-        try {
-            // Use setDoc with merge: true to create or update the document
-            await setDoc(profileDocRef, newData, { merge: true });
-            console.log("Profile data saved to:", profileDocRef.path);
-            showProfileStatus("Profile updated successfully!", false);
-
-            // Optionally update the preview image immediately after saving a new URL
-            if (adminPfpPreview && newData.profilePicUrl) {
-                adminPfpPreview.src = newData.profilePicUrl;
-                adminPfpPreview.style.display = 'inline-block';
-            } else if (adminPfpPreview) {
-                 adminPfpPreview.src = '';
-                 adminPfpPreview.style.display = 'none';
-            }
-
-        } catch (error) {
-             console.error("Error saving profile data:", error);
-             showProfileStatus(`Error saving profile: ${error.message}`, true);
-        }
-    }
-
-    // Event listener for profile picture URL input to update preview (optional but helpful)
-    if (profilePicUrlInput && adminPfpPreview) {
-        profilePicUrlInput.addEventListener('input', () => {
-            const url = profilePicUrlInput.value.trim();
-            if (url) {
-                adminPfpPreview.src = url;
-                adminPfpPreview.style.display = 'inline-block';
-            } else {
-                adminPfpPreview.style.display = 'none';
-            }
-        });
-        // Handle image loading errors for the preview
-        adminPfpPreview.onerror = () => {
-            console.warn("Preview image failed to load from URL:", adminPfpPreview.src);
-            // Optionally show a placeholder or hide the preview on error
-            // adminPfpPreview.src = 'path/to/error-placeholder.png';
-             adminPfpPreview.style.display = 'none';
-             profilePicUrlInput.classList.add('input-error'); // Add error class to input
-        };
-         // Remove error class when input changes
-         profilePicUrlInput.addEventListener('focus', () => {
-            profilePicUrlInput.classList.remove('input-error');
-         });
-    }
 
 // --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode) ---
     async function loadProfileData() {
@@ -880,52 +760,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-// --- 'Next' Button Logic ---
-    // Handles the first step of the two-step login
-    if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) {
-        nextButton.addEventListener('click', () => {
-            const userEmail = emailInput.value.trim(); // Get entered email
-
-            // Check if email field is empty
-            if (!userEmail) {
-                 authStatus.textContent = 'Please enter your email address.';
-                 authStatus.className = 'status-message error'; // Show error style
-                 authStatus.style.display = 'block'; // Make sure message is visible
-                 return; // Stop processing if email is empty
-            }
-
-            // If email is entered:
-            // Display welcome message (optional, or clear previous errors)
-            authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
-            // Or simply clear status: authStatus.textContent = '';
-            authStatus.className = 'status-message'; // Reset style
-            authStatus.style.display = 'block'; // Ensure it's visible or use 'none' to hide
-
-            // Hide email field and Next button
-            emailGroup.style.display = 'none';
-            nextButton.style.display = 'none';
-
-            // Show password field and the actual Login button
-            passwordGroup.style.display = 'block';
-            loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
-
-            // Focus the password input for better UX
-            if(passwordInput) {
-                 passwordInput.focus();
-            }
-        });
-    } else {
-         // Log warning if any elements for the two-step login are missing
-         console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button).");
-    }
-
 // --- Shoutouts Load/Add/Delete/Update ---
 
     // Helper function to get the reference to the metadata document
     // Used for storing last updated timestamps (and potentially section enable/disable flags later)
     function getShoutoutsMetadataRef() {
         // Ensure 'siteConfig' collection name is correct in your Firestore
-        // Consider if 'shoutoutsMetadata' is the best document ID, or use 'mainProfile' if preferred
+        // Using a separate doc allows storing config without mixing with user profile data directly.
         return doc(db, 'siteConfig', 'shoutoutsMetadata');
     }
 
@@ -959,12 +800,17 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`; // Show loading message
 
         // Ensure the global storage for this platform is clear before fetching
-        if (allShoutouts && allShoutouts[platform]) {
+        // Check if allShoutouts itself is defined before accessing platform key
+        if (typeof allShoutouts !== 'undefined' && allShoutouts && allShoutouts.hasOwnProperty(platform)) {
              allShoutouts[platform] = [];
         } else {
-            console.error(`allShoutouts variable or platform key '${platform}' is missing.`);
-            // Initialize if missing - this shouldn't happen if global variable is set correctly
-            allShoutouts = { tiktok: [], instagram: [], youtube: [] };
+            console.error(`allShoutouts variable or platform key '${platform}' is missing or not initialized.`);
+             // Attempt to initialize if missing - ensure allShoutouts is declared globally (let allShoutouts = {...};)
+             if (typeof allShoutouts === 'undefined' || !allShoutouts) {
+                 allShoutouts = { tiktok: [], instagram: [], youtube: [] };
+             } else if (!allShoutouts.hasOwnProperty(platform)) {
+                 allShoutouts[platform] = [];
+             }
         }
 
 
@@ -1230,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // *** NEW: Search Input Event Listeners ***
+    // *** Search Input Event Listeners ***
     if (searchInputTiktok) {
         searchInputTiktok.addEventListener('input', () => {
             if (typeof displayFilteredShoutouts === 'function') {
@@ -1252,7 +1098,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    // *** END NEW Search Listeners ***
+    // *** END Search Listeners ***
 
 
     // Add listeners for other features (Bulk Delete, History) here later
