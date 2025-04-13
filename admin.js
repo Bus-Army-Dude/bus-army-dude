@@ -204,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
                 <button type="button" class="edit-button small-button">Edit</button>
                 <button type="button" class="delete-button small-button">Delete</button>
-                {/* Add Enable/Disable toggle button later if needed */}
             </div>`;
 
         // Add event listeners for Edit and Delete buttons
