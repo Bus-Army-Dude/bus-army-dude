@@ -1,10 +1,10 @@
-// admin.js (Version includes Preview Prep + Previous Features)
+// admin.js (Version includes Activity Log Prep + Previous Features)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
-// Import Firebase functions (Includes 'where', 'query', 'orderBy', 'limit')
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+// Import Firebase functions (Adding 'Timestamp' for logging)
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit, Timestamp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 // *** Global Variable for Client-Side Filtering ***
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editIsVerifiedInput = document.getElementById('edit-isVerified');
     const editBioInput = document.getElementById('edit-bio');
     const editProfilePicInput = document.getElementById('edit-profilePic');
-    const editIsEnabledInput = document.getElementById('edit-isEnabled'); // Reference for per-shoutout enable/disable (if added later)
+    const editIsEnabledInput = document.getElementById('edit-isEnabled');
     const editFollowersInput = document.getElementById('edit-followers');
     const editSubscribersInput = document.getElementById('edit-subscribers');
     const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
@@ -66,17 +66,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInputTiktok = document.getElementById('search-tiktok');
     const searchInputInstagram = document.getElementById('search-instagram');
     const searchInputYoutube = document.getElementById('search-youtube');
-    // *** References for Preview Areas ***
     const addTiktokPreview = document.getElementById('add-tiktok-preview');
     const addInstagramPreview = document.getElementById('add-instagram-preview');
     const addYoutubePreview = document.getElementById('add-youtube-preview');
     const editShoutoutPreview = document.getElementById('edit-shoutout-preview');
+    // *** NEW Reference for Activity Log display area ***
+    const activityLogList = document.getElementById('activity-log-list');
 
 
     // Firestore Reference for Profile / Site Config
     const profileDocRef = doc(db, "site_config", "mainProfile");
     // Reference for Shoutout Metadata (used for timestamps)
     const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+    // *** NEW Reference for Activity Log Collection ***
+    const activityLogColRef = collection(db, "adminActivityLog");
+
 
     // --- Inactivity Logout Variables ---
     let inactivityTimer;
@@ -91,31 +95,64 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!adminStatusElement) { console.warn("Admin status element not found"); return; }
         adminStatusElement.textContent = message;
         adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`;
-        // Clear message after 5 seconds
         setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000);
     }
 
     // Displays status messages in the profile section's status area
     function showProfileStatus(message, isError = false) {
-        if (!profileStatusMessage) { console.warn("Profile status message element not found"); showAdminStatus(message, isError); return; } // Fallback to admin status
+        if (!profileStatusMessage) { console.warn("Profile status message element not found"); showAdminStatus(message, isError); return; } // Fallback
         profileStatusMessage.textContent = message;
         profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
-         // Clear message after 5 seconds
         setTimeout(() => { if (profileStatusMessage) { profileStatusMessage.textContent = ''; profileStatusMessage.className = 'status-message'; } }, 5000);
     }
 
     // Displays status messages in the site settings section's status area
     function showSettingsStatus(message, isError = false) {
-        if (!settingsStatusMessage) { console.warn("Settings status message element not found"); showAdminStatus(message, isError); return; } // Fallback to admin status
+        if (!settingsStatusMessage) { console.warn("Settings status message element not found"); showAdminStatus(message, isError); return; } // Fallback
         settingsStatusMessage.textContent = message;
         settingsStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
-         // Clear message after a few seconds
         setTimeout(() => { if (settingsStatusMessage) { settingsStatusMessage.textContent = ''; settingsStatusMessage.style.display = 'none'; } }, 3000);
-        // Ensure success/error message is visible briefly
         settingsStatusMessage.style.display = 'block';
     }
 
- // --- Edit Modal Logic (UPDATED for Preview) ---
+    // *** NEW FUNCTION: Logs Admin Activity to Firestore ***
+    async function logAdminActivity(action, details = null) {
+        // Ensure user is logged in to get their email
+        const user = auth.currentUser;
+        if (!user) {
+            console.warn("Cannot log activity: User not logged in.");
+            // Optionally log an anonymous action if needed, but usually we want the user context
+            return;
+        }
+
+        const userEmail = user.email; // Get the logged-in user's email
+
+        // Prepare log data
+        const logData = {
+            timestamp: serverTimestamp(), // Use Firestore server timestamp
+            userEmail: userEmail,
+            action: action, // e.g., "Updated Profile", "Added TikTok Shoutout"
+        };
+
+        // Add optional details if provided
+        if (details) {
+            logData.details = details; // e.g., { shoutoutId: '...', username: '...' } or "Maintenance Mode Enabled"
+        }
+
+        // Write log entry to Firestore
+        try {
+            // Use the globally defined activityLogColRef
+            await addDoc(activityLogColRef, logData);
+            console.log(`Activity logged: ${action}`, details || '');
+        } catch (error) {
+            console.error("Error writing activity log:", error);
+            // Optional: Show an admin status message about logging failure?
+            // showAdminStatus("Warning: Failed to record activity log entry.", true);
+        }
+    }
+    // *** END logAdminActivity FUNCTION ***
+
+// --- Edit Modal Logic ---
     // Opens the modal and populates it with data for the selected shoutout
     function openEditModal(docId, platform) {
         if (!editModal || !editForm) { console.error("Edit modal/form not found."); showAdminStatus("UI Error: Cannot open edit form.", true); return; }
@@ -157,15 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (followersDiv) followersDiv.style.display = 'block';
                 }
 
-                // Reset preview area and trigger initial update
+                // Reset and hide preview area initially
                 const previewArea = document.getElementById('edit-shoutout-preview');
                  if(previewArea) {
-                     previewArea.innerHTML = '<p><small>Generating preview...</small></p>'; // Placeholder
-                     // *** ADDED: Trigger initial preview update ***
+                     previewArea.innerHTML = '<p><small>Preview will appear here.</small></p>';
+                     // Trigger initial preview update now that form is populated
                      if (typeof updateShoutoutPreview === 'function') {
-                        updateShoutoutPreview('edit', platform); // Call the preview function
+                        updateShoutoutPreview('edit', platform);
                      }
-                     // *** END ADDED CODE ***
                  }
 
                 editModal.style.display = 'block'; // Show the modal
@@ -198,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             closeEditModal();
         }
     });
-    
+
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) {
@@ -223,8 +259,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (platform === 'youtube' && safeUsername) {
             // Construct YouTube URL (ensure 'username' is the handle like '@MrBeast')
             let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`;
-             // Assuming standard youtube.com/@handle format is desired for handles:
-             directLinkUrl = `https://youtube.com/${encodeURIComponent(youtubeHandle)}`;
+            // Use the correct googleusercontent.com URL structure if needed, or standard youtube.com
+            // Assuming standard youtube.com/@handle format is desired:
+            directLinkUrl = `https://youtube.com/$${encodeURIComponent(youtubeHandle)}`;
         }
 
         // Build inner HTML - Structure includes item details and action buttons
@@ -232,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // NOTE: An indicator for enabled/disabled status will be added later
         itemDiv.innerHTML = `
             <div class="item-content">
-                 <div class="item-details">
+                 <div class="item-details"> 
                     <strong>${nickname || 'N/A'}</strong>
                     <span>(@${username || 'N/A'})</span>
                     <small>Order: ${order ?? 'N/A'}</small>
@@ -273,8 +310,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Construct profile URL safely
         const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#';
         // Correct path for admin context might be needed for check.png
+        // Consider using a relative path like './check.png' if the image is in the same folder as admin.html
+        // or an absolute path like '/images/check.png' if it's relative to the site root.
         const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : '';
 
+        // This HTML structure uses classes defined in your styles.css (or potentially admin.css if copied)
         return `
              <div class="creator-card"> 
                  <img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
@@ -302,7 +342,7 @@ function renderInstagramCard(account) {
          const verifiedBadge = isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''; // Uses specific class from display CSS
 
          return `
-             <div class="instagram-creator-card"> 
+             <div class="instagram-creator-card"> {/* Note: Uses classes from display CSS */}
                  <img src="${profilePic}" alt="${nickname}" class="instagram-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
                  <div class="instagram-creator-info">
                      <div class="instagram-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
@@ -328,12 +368,14 @@ function renderYouTubeCard(account) {
         if (username !== 'N/A' && !username.startsWith('@')) {
             safeUsername = `@${username}`; // Prepend @ if missing for handle URL
         }
+        // Updated YouTube URL structure
         const channelUrl = username !== 'N/A' ? `https://youtube.com/$${encodeURIComponent(safeUsername)}` : '#';
         // Correct path for admin context might be needed for youtubecheck.png
         const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; // Uses specific class from display CSS
 
+        // This HTML structure uses classes defined in your styles.css (or potentially admin.css if copied)
         return `
-            <div class="youtube-creator-card"> 
+            <div class="youtube-creator-card"> {/* Note: Uses classes from display CSS */}
                 ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
                 <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
                 <div class="youtube-creator-info">
@@ -347,93 +389,6 @@ function renderYouTubeCard(account) {
     }
     // --- END Copied Rendering Functions ---
 
-// *** NEW FUNCTION: Updates Shoutout Preview Area ***
-    function updateShoutoutPreview(formType, platform) {
-        let formElement;
-        let previewElement;
-        let accountData = {}; // Object to hold current form values
-
-        // 1. Determine which form and preview area to use
-        if (formType === 'add') {
-            formElement = document.getElementById(`add-shoutout-${platform}-form`);
-            previewElement = document.getElementById(`add-${platform}-preview`);
-        } else if (formType === 'edit') {
-            formElement = editForm; // Use the existing reference to the edit modal form
-            previewElement = editShoutoutPreview; // Use the existing reference
-             // Ensure the platform matches the modal's current platform (safety check)
-             if (editForm.getAttribute('data-platform') !== platform) {
-                 // console.warn(`Preview update skipped: Platform mismatch (form=${editForm.getAttribute('data-platform')}, requested=${platform})`);
-                 // Clear preview if platform mismatches (e.g., modal still open from previous edit)
-                 if(previewElement) previewElement.innerHTML = '<p><small>Preview unavailable.</small></p>';
-                 return;
-             }
-        } else {
-            console.error("Invalid formType provided to updateShoutoutPreview:", formType);
-            return;
-        }
-
-        if (!formElement || !previewElement) {
-            console.error(`Preview Error: Could not find form or preview element for ${formType} ${platform}`);
-            return;
-        }
-
-        // 2. Read current values from the determined form's inputs
-        try {
-            accountData.username = formElement.querySelector(`[name="username"]`)?.value.trim() || '';
-            accountData.nickname = formElement.querySelector(`[name="nickname"]`)?.value.trim() || '';
-            accountData.bio = formElement.querySelector(`[name="bio"]`)?.value.trim() || '';
-            accountData.profilePic = formElement.querySelector(`[name="profilePic"]`)?.value.trim() || '';
-            accountData.isVerified = formElement.querySelector(`[name="isVerified"]`)?.checked || false;
-             accountData.order = parseInt(formElement.querySelector(`[name="order"]`)?.value.trim() || 0); // Needed for potential rendering logic, default 0
-
-            // Platform-specific fields
-            if (platform === 'youtube') {
-                accountData.subscribers = formElement.querySelector(`[name="subscribers"]`)?.value.trim() || 'N/A';
-                accountData.coverPhoto = formElement.querySelector(`[name="coverPhoto"]`)?.value.trim() || null;
-            } else { // TikTok or Instagram
-                accountData.followers = formElement.querySelector(`[name="followers"]`)?.value.trim() || 'N/A';
-            }
-        } catch(e) {
-             console.error("Error reading form values for preview:", e);
-             previewElement.innerHTML = '<p class="error"><small>Error reading form values.</small></p>';
-             return;
-        }
-
-
-        // 3. Select the correct rendering function
-        let renderFunction;
-        switch (platform) {
-            case 'tiktok':
-                renderFunction = renderTikTokCard;
-                break;
-            case 'instagram':
-                renderFunction = renderInstagramCard;
-                break;
-            case 'youtube':
-                renderFunction = renderYouTubeCard;
-                break;
-            default:
-                console.error("Invalid platform for preview:", platform);
-                previewElement.innerHTML = '<p class="error"><small>Invalid platform.</small></p>';
-                return;
-        }
-
-        // 4. Call the rendering function and update the preview area
-        if (typeof renderFunction === 'function') {
-            try {
-                const cardHTML = renderFunction(accountData); // Generate the card HTML
-                previewElement.innerHTML = cardHTML; // Update the preview div
-            } catch (e) {
-                 console.error(`Error rendering preview card for ${platform}:`, e);
-                 previewElement.innerHTML = '<p class="error"><small>Error rendering preview.</small></p>';
-            }
-        } else {
-             console.error(`Rendering function for ${platform} not found!`);
-             previewElement.innerHTML = '<p class="error"><small>Preview engine error.</small></p>';
-        }
-    }
-    // *** END updateShoutoutPreview FUNCTION ***
-    
 // *** FUNCTION: Displays Filtered Shoutouts (for Search Bar) ***
     // This function takes the platform name, filters the globally stored list,
     // and renders only the matching items based on search input.
@@ -838,10 +793,17 @@ function renderYouTubeCard(account) {
                  console.error("loadShoutoutsAdmin function is not defined!");
                  showAdminStatus("Error: Cannot load shoutout data.", true);
             }
+             // Call function to load and display activity log (will be added later)
+             // if (typeof loadAndDisplayActivityLog === 'function') loadAndDisplayActivityLog();
 
             // Start the inactivity timer now that the user is logged in
             resetInactivityTimer();
             addActivityListeners();
+
+            // Log the login event
+            if(typeof logAdminActivity === 'function') {
+                 logAdminActivity("Logged In");
+            }
 
         } else {
             // User is signed out
@@ -895,7 +857,7 @@ function renderYouTubeCard(account) {
             // Attempt Firebase sign-in
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Login successful - onAuthStateChanged will handle the UI updates
+                    // Login successful - onAuthStateChanged will handle the UI updates and logging
                     console.log("Login successful via form submission.");
                     // No need to clear authStatus here, onAuthStateChanged does it.
                  })
@@ -916,6 +878,10 @@ function renderYouTubeCard(account) {
                         authStatus.className = 'status-message error';
                         authStatus.style.display = 'block';
                     }
+                    // Log failed login attempt
+                    if(typeof logAdminActivity === 'function') {
+                         logAdminActivity("Login Failed", { error: error.code, emailAttempted: email });
+                    }
                 });
         });
     }
@@ -924,6 +890,10 @@ function renderYouTubeCard(account) {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             console.log("Logout button clicked.");
+            // Log the action *before* signing out, while user info is available
+             if(typeof logAdminActivity === 'function') {
+                logAdminActivity("Logged Out Manually");
+             }
             removeActivityListeners(); // Stop inactivity timer first
             signOut(auth).then(() => {
                  // Sign-out successful - onAuthStateChanged handles UI updates
@@ -939,7 +909,7 @@ function renderYouTubeCard(account) {
 // --- Shoutouts Load/Add/Delete/Update ---
 
     // Helper function to get the reference to the metadata document
-    // Used for storing last updated timestamps
+    // Used for storing last updated timestamps (and potentially section enable/disable flags later)
     function getShoutoutsMetadataRef() {
         // Using 'siteConfig' collection and 'shoutoutsMetadata' document ID
         // Ensure this document exists or is created if needed
@@ -947,14 +917,17 @@ function renderYouTubeCard(account) {
     }
 
     // Updates the 'lastUpdatedTime' field in the metadata document for a specific platform
+    // Called after adding, updating, or deleting a shoutout
     async function updateMetadataTimestamp(platform) {
-         const metaRef = getShoutoutsMetadataRef();
+         const metaRef = getShoutoutsMetadataRef(); // Use the dedicated helper
          try {
+             // Use setDoc with merge: true to create/update the timestamp field
              await setDoc(metaRef, {
-                 [`lastUpdatedTime_${platform}`]: serverTimestamp()
+                 [`lastUpdatedTime_${platform}`]: serverTimestamp() // Dynamically set field name like 'lastUpdatedTime_tiktok'
              }, { merge: true });
              console.log(`Metadata timestamp updated for ${platform}.`);
          } catch (error) {
+             // Log error but don't necessarily block user with admin status message
              console.error(`Error updating timestamp for ${platform}:`, error);
              showAdminStatus(`Warning: Could not update site timestamp for ${platform}.`, true);
          }
@@ -969,14 +942,16 @@ function renderYouTubeCard(account) {
             console.error(`List container not found for platform: ${platform}`);
             return;
         }
-        if (countElement) countElement.textContent = '';
-        listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`;
+        if (countElement) countElement.textContent = ''; // Clear count initially
+        listContainer.innerHTML = `<p>Loading ${platform} shoutouts...</p>`; // Show loading message
 
         // Ensure the global storage for this platform exists and is clear
+        // Check if allShoutouts itself is defined before accessing platform key
         if (typeof allShoutouts !== 'undefined' && allShoutouts && allShoutouts.hasOwnProperty(platform)) {
              allShoutouts[platform] = [];
         } else {
             console.error(`allShoutouts variable or platform key '${platform}' is missing or not initialized.`);
+             // Attempt to initialize if missing - ensure allShoutouts is declared globally (let allShoutouts = {...};)
              if (typeof allShoutouts === 'undefined' || !allShoutouts) {
                  allShoutouts = { tiktok: [], instagram: [], youtube: [] };
              } else if (!allShoutouts.hasOwnProperty(platform)) {
@@ -984,31 +959,37 @@ function renderYouTubeCard(account) {
              }
         }
 
+
         try {
+            // Query shoutouts collection, filtering by platform and ordering by 'order'
             const shoutoutsCol = collection(db, 'shoutouts');
-            // Query requires composite index (platform, order)
-            const shoutoutQuery = query(
+            // This query requires the composite index (platform ASC/DESC, order ASC) created in Firebase console
+             const shoutoutQuery = query(
                 shoutoutsCol,
-                where("platform", "==", platform),
-                orderBy("order", "asc")
+                where("platform", "==", platform), // Filter by the platform string (e.g., 'tiktok')
+                orderBy("order", "asc")           // Order by the 'order' field ascending
             );
 
-            const querySnapshot = await getDocs(shoutoutQuery);
+            const querySnapshot = await getDocs(shoutoutQuery); // Execute the query
             console.log(`Workspaceed ${querySnapshot.size} ${platform} documents.`);
 
             // Store fetched data in the global variable 'allShoutouts'
             querySnapshot.forEach((docSnapshot) => {
+                // Store the full data object along with the Firestore document ID
                 allShoutouts[platform].push({ id: docSnapshot.id, ...docSnapshot.data() });
             });
 
-            // Call the filtering/display function to initially render the list
+            // *** Call the filtering/display function to initially render the list ***
+            // This function will handle applying any current search term and rendering
             if (typeof displayFilteredShoutouts === 'function') {
                 displayFilteredShoutouts(platform);
             } else {
+                 // Fallback if the function isn't defined yet (should not happen if chunks added correctly)
                  console.error(`displayFilteredShoutouts function is not yet defined when loading ${platform}`);
                  listContainer.innerHTML = `<p class="error">Error initializing display function.</p>`;
                  if (countElement) countElement.textContent = '(Error)';
             }
+
 
         } catch (error) {
             console.error(`Error loading ${platform} shoutouts:`, error);
@@ -1016,6 +997,7 @@ function renderYouTubeCard(account) {
                  listContainer.innerHTML = `<p class="error">Error: Missing Firestore index for this query. Please create it using the link in the developer console (F12).</p>`;
                  showAdminStatus(`Error loading ${platform}: Missing database index. Check console.`, true);
             } else {
+                 // Generic error message
                  listContainer.innerHTML = `<p class="error">Error loading ${platform} shoutouts.</p>`;
                  showAdminStatus(`Failed to load ${platform} data: ${error.message}`, true);
             }
@@ -1056,13 +1038,13 @@ function renderYouTubeCard(account) {
             if (!querySnapshot.empty) {
                 console.warn("Duplicate found for", platform, username);
                 showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true);
-                return;
+                return; // Stop execution, do not add duplicate
             }
             console.log("No duplicate found. Proceeding to add.");
             // --- End Duplicate Check ---
 
 
-            // --- Add Logic ---
+            // --- Add Logic (Runs only if no duplicate found) ---
             const accountData = {
                 platform: platform,
                 username: username,
@@ -1072,9 +1054,10 @@ function renderYouTubeCard(account) {
                 bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
                 profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
                 createdAt: serverTimestamp(),
-                isEnabled: true
+                isEnabled: true // Default new shoutouts to enabled
             };
 
+            // Add platform-specific fields
             if (platform === 'youtube') {
                 accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
                 accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null;
@@ -1139,7 +1122,7 @@ function renderYouTubeCard(account) {
             isVerified: editIsVerifiedInput?.checked || false,
             bio: editBioInput?.value.trim() || null,
             profilePic: editProfilePicInput?.value.trim() || null,
-            // isEnabled: editIsEnabledInput?.checked ?? true, // Add later
+            // isEnabled: editIsEnabledInput?.checked ?? true, // Add later if implementing per-item toggle
             lastModified: serverTimestamp() // Add a timestamp for the modification
         };
 
@@ -1193,74 +1176,7 @@ function renderYouTubeCard(account) {
         }
     }
 
-    
-    
-    // --- Attach Event Listeners for Forms ---
-
-    // Add Shoutout Forms
-    if (addShoutoutTiktokForm) {
-        addShoutoutTiktokForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Prevent default submission
-            handleAddShoutout('tiktok', addShoutoutTiktokForm); // Call handler
-        });
-    }
-    if (addShoutoutInstagramForm) {
-        addShoutoutInstagramForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            handleAddShoutout('instagram', addShoutoutInstagramForm);
-        });
-    }
-    if (addShoutoutYoutubeForm) {
-        addShoutoutYoutubeForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            handleAddShoutout('youtube', addShoutoutYoutubeForm);
-        });
-    }
-
-    // Profile Save Form
-    if (profileForm) {
-        profileForm.addEventListener('submit', saveProfileData); // Call handler on submit
-    }
-
-    // Edit Shoutout Form (in the modal)
-    if (editForm) {
-        editForm.addEventListener('submit', handleUpdateShoutout); // Call handler on submit
-    }
-
-    // Maintenance Mode Toggle Listener
-    if (maintenanceModeToggle) {
-        maintenanceModeToggle.addEventListener('change', (e) => {
-            const isEnabled = e.target.checked; // Get the new checked state
-            saveMaintenanceModeStatus(isEnabled); // Call the save function
-        });
-    }
-
-    // *** Search Input Event Listeners ***
-    if (searchInputTiktok) {
-        searchInputTiktok.addEventListener('input', () => {
-            if (typeof displayFilteredShoutouts === 'function') {
-                displayFilteredShoutouts('tiktok'); // Filter TikTok list as user types
-            }
-        });
-    }
-     if (searchInputInstagram) {
-        searchInputInstagram.addEventListener('input', () => {
-            if (typeof displayFilteredShoutouts === 'function') {
-                displayFilteredShoutouts('instagram'); // Filter Instagram list as user types
-            }
-        });
-    }
-    if (searchInputYoutube) {
-        searchInputYoutube.addEventListener('input', () => {
-            if (typeof displayFilteredShoutouts === 'function') {
-                displayFilteredShoutouts('youtube'); // Filter YouTube list as user types
-            }
-        });
-    }
-    // *** END Search Listeners ***
-
-
-       // *** ADD PREVIEW LISTENER LOGIC ***
+// *** ADD PREVIEW LISTENER LOGIC ***
 
     // Helper function to attach preview listeners to a form
     function attachPreviewListeners(formElement, platform, formType) {
@@ -1271,11 +1187,13 @@ function renderYouTubeCard(account) {
             'followers', 'subscribers', 'coverPhoto' // Include all potential fields
         ];
         previewInputs.forEach(inputName => {
+            // Find the input element within the specific form
             const inputElement = formElement.querySelector(`[name="${inputName}"]`);
             if (inputElement) {
                 // Use 'input' for text fields/textareas, 'change' for checkboxes
                 const eventType = (inputElement.type === 'checkbox') ? 'change' : 'input';
                 inputElement.addEventListener(eventType, () => {
+                    // Check if update function exists before calling
                     if (typeof updateShoutoutPreview === 'function') {
                         updateShoutoutPreview(formType, platform);
                     } else {
@@ -1299,7 +1217,7 @@ function renderYouTubeCard(account) {
     // Attach listeners to the "Edit" form inputs
     // We loop through specific element references stored earlier
     if (editForm) {
-         const editPreviewInputs = [
+         const editPreviewInputs = [ // Array of the specific input elements in the edit form
             editUsernameInput, editNicknameInput, editBioInput, editProfilePicInput,
             editIsVerifiedInput, editFollowersInput, editSubscribersInput, editCoverPhotoInput
          ];
@@ -1307,6 +1225,7 @@ function renderYouTubeCard(account) {
             if (inputElement) {
                 const eventType = (inputElement.type === 'checkbox') ? 'change' : 'input';
                 inputElement.addEventListener(eventType, () => {
+                     // Get the platform from the form's data attribute when the input changes
                      const currentPlatform = editForm.getAttribute('data-platform');
                      if (currentPlatform && typeof updateShoutoutPreview === 'function') {
                         // Call update function for the 'edit' form and detected platform
@@ -1385,6 +1304,7 @@ function renderYouTubeCard(account) {
             }
         });
     }
+    // *** END Search Listeners ***
 
 
     // Add listeners for other features (Bulk Delete, History) here later
