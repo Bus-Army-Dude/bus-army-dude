@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => { //
     // --- Firestore Reference for Social Links ---
     // IMPORTANT: Assumes you have a Firestore collection named 'social_links'
     const socialLinksCollectionRef = collection(db, "social_links");
+    // Reference for President Info
+    const presidentDocRef = doc(db, "site_config", "currentPresident"); // Or choose another document name/path if you prefer
 
     // --- Inactivity Logout Variables ---
     let inactivityTimer; //
@@ -124,6 +126,18 @@ document.addEventListener('DOMContentLoaded', () => { //
     const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
     const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message'); // Status inside edit modal
 
+    // President Management Elements
+    const presidentForm = document.getElementById('president-form');
+    const presidentNameInput = document.getElementById('president-name');
+    const presidentBornInput = document.getElementById('president-born');
+    const presidentHeightInput = document.getElementById('president-height');
+    const presidentPartyInput = document.getElementById('president-party');
+    const presidentTermInput = document.getElementById('president-term');
+    const presidentVpInput = document.getElementById('president-vp');
+    const presidentImageUrlInput = document.getElementById('president-image-url');
+    const presidentStatusMessage = document.getElementById('president-status-message');
+    const presidentPreviewArea = document.getElementById('president-preview');
+    
 // --- Helper Functions ---
     // Displays status messages in the main admin status area
     function showAdminStatus(message, isError = false) { //
@@ -912,6 +926,13 @@ function renderYouTubeCard(account) { //
                  loadSocialLinksAdmin();
             }
 
+            // --- ADD THIS LINE ---
+            if (typeof loadPresidentData === 'function') {
+                loadPresidentData(); // Load president data on login
+            } else {
+                 console.error("loadPresidentData function is missing!");
+                 showAdminStatus("Error: Cannot load president data.", true);
+            }
 
             // Start the inactivity timer now that the user is logged in
             resetInactivityTimer(); //
@@ -1826,34 +1847,176 @@ async function handleUpdateUsefulLink(event) { //
     }
     // *** END Search Listeners ***
 
+// --- ADD THESE FUNCTIONS ---
+
     // Renders the HTML for the president section preview (NO INLINE STYLES)
-function renderPresidentPreview(data) {
-    // Use default values if data is missing
-    const name = data.name || 'N/A';
-    const born = data.born || 'N/A';
-    const height = data.height || 'N/A';
-    const party = data.party || 'N/A';
-    const term = data.term || 'N/A';
-    const vp = data.vp || 'N/A';
-    const imageUrl = data.imageUrl || 'images/default-president.jpg'; // Use a default image path
+    function renderPresidentPreview(data) {
+        // Use default values if data is missing
+        const name = data.name || 'N/A';
+        const born = data.born || 'N/A';
+        const height = data.height || 'N/A';
+        const party = data.party || 'N/A';
+        const term = data.term || 'N/A';
+        const vp = data.vp || 'N/A';
+        const imageUrl = data.imageUrl || 'images/default-president.jpg'; // Use a default image path
 
-    // Construct the HTML using only classes defined in admin.css (or your main css)
-    return `
-        <section class="president-section">
-            <div class="president-info">
-                <img src="${imageUrl}" alt="President ${name}" class="president-photo" onerror="this.src='images/default-president.jpg'; this.alt='Photo Missing';">
-                <div class="president-details">
-                    <h3 class="president-name">${name}</h3>
-                    <p><strong>Born:</strong> ${born}</p>
-                    <p><strong>Height:</strong> ${height}</p>
-                    <p><strong>Party:</strong> ${party}</p>
-                    <p class="presidential-term"><strong>Term:</strong> ${term}</p>
-                    <p><strong>VP:</strong> ${vp}</p>
+        // Construct the HTML using only classes defined in admin.css (or your main css)
+        return `
+            <section class="president-section">
+                <div class="president-info">
+                    <img src="${imageUrl}" alt="President ${name}" class="president-photo" onerror="this.src='images/default-president.jpg'; this.alt='Photo Missing';">
+                    <div class="president-details">
+                        <h3 class="president-name">${name}</h3>
+                        <p><strong>Born:</strong> ${born}</p>
+                        <p><strong>Height:</strong> ${height}</p>
+                        <p><strong>Party:</strong> ${party}</p>
+                        <p class="presidential-term"><strong>Term:</strong> ${term}</p>
+                        <p><strong>VP:</strong> ${vp}</p>
+                    </div>
                 </div>
-            </div>
-        </section>`;
-}
+            </section>`;
+    }
 
+    // Reads president form inputs and updates the preview area
+    function updatePresidentPreview() {
+        // Use the previously defined constants for the input elements and preview area
+        if (!presidentForm || !presidentPreviewArea) return; // Exit if elements aren't found
+
+        const presidentData = {
+            name: presidentNameInput?.value.trim() || "",
+            born: presidentBornInput?.value.trim() || "",
+            height: presidentHeightInput?.value.trim() || "",
+            party: presidentPartyInput?.value.trim() || "",
+            term: presidentTermInput?.value.trim() || "",
+            vp: presidentVpInput?.value.trim() || "",
+            imageUrl: presidentImageUrlInput?.value.trim() || ""
+        };
+
+        try {
+            // Ensure the rendering function exists before calling it
+            if (typeof renderPresidentPreview === 'function') {
+                 const previewHTML = renderPresidentPreview(presidentData);
+                 presidentPreviewArea.innerHTML = previewHTML;
+            } else {
+                 console.error("renderPresidentPreview function is not defined!");
+                 presidentPreviewArea.innerHTML = '<p class="error"><small>Preview engine error.</small></p>';
+            }
+        } catch (e) {
+            console.error("Error rendering president preview:", e);
+            presidentPreviewArea.innerHTML = '<p class="error"><small>Error generating preview.</small></p>';
+        }
+    }
+    // -------------
+
+    // --- ADD THESE FUNCTIONS ---
+
+    // Function to Load President Data into Admin Form
+    async function loadPresidentData() {
+        // Use the constants defined earlier for the form and input elements
+        if (!auth || !auth.currentUser) { console.warn("Auth not ready for loading president data."); return; }
+        if (!presidentForm) { console.log("President form element not found."); return; }
+
+        console.log("Attempting to load president data from:", presidentDocRef.path);
+        try {
+            const docSnap = await getDoc(presidentDocRef); // Use presidentDocRef
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                console.log("Loaded president data:", data);
+                // Populate the form fields
+                if(presidentNameInput) presidentNameInput.value = data.name || '';
+                if(presidentBornInput) presidentBornInput.value = data.born || '';
+                if(presidentHeightInput) presidentHeightInput.value = data.height || '';
+                if(presidentPartyInput) presidentPartyInput.value = data.party || '';
+                if(presidentTermInput) presidentTermInput.value = data.term || '';
+                if(presidentVpInput) presidentVpInput.value = data.vp || '';
+                if(presidentImageUrlInput) presidentImageUrlInput.value = data.imageUrl || '';
+            } else {
+                console.warn(`President document ('${presidentDocRef.path}') not found. Form cleared.`);
+                if (presidentForm) presidentForm.reset(); // Clear form if no data
+            }
+            // Update the preview after loading/clearing data
+            if (typeof updatePresidentPreview === 'function') {
+                updatePresidentPreview();
+            }
+        } catch (error) {
+            console.error("Error loading president data:", error);
+            showPresidentStatus("Error loading president data.", true); // Use the specific status func
+            if (presidentForm) presidentForm.reset();
+             // Update preview even on error (shows default/empty)
+            if (typeof updatePresidentPreview === 'function') {
+                updatePresidentPreview();
+            }
+        }
+    }
+
+    // Function to Save President Data
+    async function savePresidentData(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+        // Use the constants defined earlier for the form and input elements
+        if (!auth || !auth.currentUser) { showPresidentStatus("Error: Not logged in.", true); return; }
+        if (!presidentForm) return;
+
+        // Create data object from form inputs
+        const newData = {
+            name: presidentNameInput?.value.trim() || "",
+            born: presidentBornInput?.value.trim() || "",
+            height: presidentHeightInput?.value.trim() || "",
+            party: presidentPartyInput?.value.trim() || "",
+            term: presidentTermInput?.value.trim() || "",
+            vp: presidentVpInput?.value.trim() || "",
+            imageUrl: presidentImageUrlInput?.value.trim() || "",
+            lastUpdated: serverTimestamp() // Add a timestamp
+        };
+
+        showPresidentStatus("Saving president info..."); // Use specific status func
+        try {
+            // Use setDoc with merge: true to create or update the document
+            await setDoc(presidentDocRef, newData, { merge: true }); // Use presidentDocRef
+            console.log("President data saved to:", presidentDocRef.path);
+            showPresidentStatus("President info updated successfully!", false);
+        } catch (error) {
+            console.error("Error saving president data:", error);
+            showPresidentStatus(`Error saving president info: ${error.message}`, true);
+        }
+    }
+    // -------------
+
+     // Attach Event Listeners for President Form Preview and Submission
+    if (presidentForm) {
+        const presidentPreviewInputs = [
+            presidentNameInput, presidentBornInput, presidentHeightInput,
+            presidentPartyInput, presidentTermInput, presidentVpInput, presidentImageUrlInput
+        ];
+        // Add listeners to update preview on input
+        presidentPreviewInputs.forEach(inputElement => {
+            if (inputElement) {
+                inputElement.addEventListener('input', () => {
+                    if (typeof updatePresidentPreview === 'function') {
+                        updatePresidentPreview();
+                    } else {
+                        console.error("updatePresidentPreview function is not defined!");
+                    }
+                });
+            }
+        });
+
+        // Add listener for form submission (Save)
+        presidentForm.addEventListener('submit', savePresidentData);
+    }
+    // -------------
+
+    
+
+// --- ADD THIS FUNCTION ---
+    // Displays status messages in the president section's status area
+    function showPresidentStatus(message, isError = false) {
+        if (!presidentStatusMessage) { console.warn("President status message element not found"); showAdminStatus(message, isError); return; } // Fallback to main admin status
+        presidentStatusMessage.textContent = message;
+        presidentStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+        // Clear message after 5 seconds
+        setTimeout(() => { if (presidentStatusMessage) { presidentStatusMessage.textContent = ''; presidentStatusMessage.className = 'status-message'; } }, 5000);
+    }
+    
    // --- Useful Links Event Listeners ---
     if (addUsefulLinkForm) { //
         addUsefulLinkForm.addEventListener('submit', handleAddUsefulLink); //
