@@ -326,98 +326,71 @@ async function loadAndDisplayShoutouts() {
     }
 }
 
-// --- Run functions when the DOM is ready ---
-    document.addEventListener('DOMContentLoaded', async () => { // Make listener async
-        console.log("DOM loaded. Checking Firebase status and maintenance mode...");
+// *** Inside the DOMContentLoaded event listener ***
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log("DOM loaded. Checking Firebase status and maintenance mode...");
 
-        // Get references to main content containers NOW, before potential hiding
-        // Ensure these IDs match your main public HTML file structure
-        profileSectionElement = document.getElementById('profile-section'); // Example ID, adjust if needed
-        shoutoutsSectionElement = document.getElementById('shoutouts-section'); // Example ID, adjust if needed
-        maintenanceMessageElement = document.getElementById('maintenance-message'); // Assumes an empty <div id="maintenance-message"> exists in HTML
+    // Get references to main content containers NOW, before potential hiding
+    profileSectionElement = document.getElementById('profile-section'); // Example ID, adjust if needed
+    shoutoutsSectionElement = document.getElementById('shoutouts-section'); // Example ID, adjust if needed
+    maintenanceMessageElement = document.getElementById('maintenance-message'); // Assumes an empty <div id="maintenance-message"> exists in HTML
 
-        // Check Firebase initialization status first
-        if (!firebaseAppInitialized || !db || !profileDocRef) {
-            console.error("Firebase not ready. Site cannot load.");
-            // Display error message if Firebase didn't initialize
-             if (maintenanceMessageElement) {
-                 maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error.</p>';
-                 maintenanceMessageElement.style.display = 'block';
-             } else { // Fallback if maintenance element is missing
-                 document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error.</p>';
-             }
-             // Hide main content areas if they exist
-            if (profileSectionElement) profileSectionElement.style.display = 'none';
-            if (shoutoutsSectionElement) shoutoutsSectionElement.style.display = 'none';
+    // *** Get reference to the links container ***
+    // Assign the value here using the globally declared variable
+    usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container'); // Target the specific container
+
+
+    // Check Firebase initialization status first
+    if (!firebaseAppInitialized || !db || !profileDocRef) {
+        console.error("Firebase not ready. Site cannot load.");
+        // ... (error handling code) ...
+        return; // Stop execution
+    }
+
+    // *** NEW: Maintenance Mode Check ***
+    try {
+        console.log("Checking maintenance mode status...");
+        const configSnap = await getDoc(profileDocRef);
+        let maintenanceEnabled = false;
+
+        if (configSnap.exists()) {
+            maintenanceEnabled = configSnap.data()?.isMaintenanceModeEnabled || false;
+        } else {
+            console.warn("Site config document not found, assuming maintenance mode is OFF.");
+        }
+
+        console.log("Maintenance mode enabled:", maintenanceEnabled);
+
+        if (maintenanceEnabled) {
+            // --- Maintenance Mode is ON ---
+            console.log("Maintenance mode is active. Hiding main content.");
+            // ... (existing code to hide content and show maintenance message) ...
             return; // Stop execution
-        }
 
-        // *** NEW: Maintenance Mode Check ***
-        try {
-            console.log("Checking maintenance mode status...");
-            const configSnap = await getDoc(profileDocRef); // Fetch config document
-            let maintenanceEnabled = false; // Default to false
+        } else {
+            // --- Maintenance Mode is OFF ---
+            console.log("Maintenance mode is OFF. Loading site content.");
+            // ... (existing code to show main content, hide maintenance message) ...
 
-            if (configSnap.exists()) {
-                maintenanceEnabled = configSnap.data()?.isMaintenanceModeEnabled || false; // Get flag value
-            } else {
-                console.warn("Site config document not found, assuming maintenance mode is OFF.");
-            }
+            // --- Load Profile, Shoutouts, AND Useful Links ---
+            if (typeof displayProfileData === 'function') {
+                displayProfileData();
+            } else { console.error("displayProfileData function missing!"); }
 
-            console.log("Maintenance mode enabled:", maintenanceEnabled);
+            if (typeof loadAndDisplayShoutouts === 'function') {
+                loadAndDisplayShoutouts();
+            } else { console.error("loadAndDisplayShoutouts function missing!"); }
 
-            if (maintenanceEnabled) {
-                // --- Maintenance Mode is ON ---
-                console.log("Maintenance mode is active. Hiding main content.");
-                // Hide main content sections
-                if (profileSectionElement) profileSectionElement.style.display = 'none';
-                if (shoutoutsSectionElement) shoutoutsSectionElement.style.display = 'none';
+            // *** CORRECTED PLACEMENT: Call the new function to load useful links INSIDE the else block ***
+            if (typeof loadAndDisplayUsefulLinks === 'function') {
+                 loadAndDisplayUsefulLinks(); // <-- MOVED HERE
+            } else { console.error("loadAndDisplayUsefulLinks function missing!"); }
+        } // End of the 'else' block for maintenance mode OFF
 
-                // Display maintenance message
-                if (maintenanceMessageElement) {
-                    maintenanceMessageElement.innerHTML = '<p style="text-align: center; padding: 50px; font-size: 1.2em;">Site is currently undergoing maintenance. Please check back later.</p>';
-                    maintenanceMessageElement.style.display = 'block';
-                } else {
-                    // Fallback if maintenance message element doesn't exist
-                     const maintDiv = document.createElement('div');
-                     maintDiv.innerHTML = '<p style="text-align: center; padding: 50px; font-size: 1.2em;">Site is currently undergoing maintenance. Please check back later.</p>';
-                     document.body.prepend(maintDiv); // Add message at the top
-                }
-                // DO NOT proceed to load normal content
-                return;
+    } catch (error) {
+        console.error("Error checking maintenance mode or loading site content:", error);
+        // ... (error handling code) ...
+    }
+    // *** END: Maintenance Mode Check ***
 
-            } else {
-                // --- Maintenance Mode is OFF ---
-                console.log("Maintenance mode is OFF. Loading site content.");
-                // Ensure main content areas are visible (in case they were hidden previously)
-                 if (profileSectionElement) profileSectionElement.style.display = ''; // Or 'block', 'flex' etc. depending on your CSS
-                 if (shoutoutsSectionElement) shoutoutsSectionElement.style.display = '';
-                // Hide maintenance message area if it exists
-                 if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
-
-                // Proceed to load normal site data
-                if (typeof displayProfileData === 'function') {
-                    displayProfileData(); // Load profile data
-                } else { console.error("displayProfileData function missing!"); }
-
-                if (typeof loadAndDisplayShoutouts === 'function') {
-                    loadAndDisplayShoutouts(); // Load shoutouts
-                } else { console.error("loadAndDisplayShoutouts function missing!"); }
-            }
-
-        } catch (error) {
-            console.error("Error checking maintenance mode or loading site content:", error);
-            // Display a generic error message if the config check fails
-             if (maintenanceMessageElement) {
-                 maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration. Please try again later.</p>';
-                 maintenanceMessageElement.style.display = 'block';
-             } else {
-                 document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration. Please try again later.</p>';
-             }
-            // Hide main content areas
-            if (profileSectionElement) profileSectionElement.style.display = 'none';
-            if (shoutoutsSectionElement) shoutoutsSectionElement.style.display = 'none';
-        }
-        // *** END: Maintenance Mode Check ***
-
-    }); // End DOMContentLoaded listener
+}); // End DOMContentLoaded listener
