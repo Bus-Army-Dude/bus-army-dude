@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme (Unified Preview Styles) */
+/* admin.css - Futuristic Theme (Unified Preview Styles + President Preview) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -553,7 +553,7 @@ button.edit-button:hover
 /* ======================== */
 /* Preview Areas            */
 /* ======================== */
-.shoutout-preview-area {
+.shoutout-preview-area, .president-preview-area { /* Apply base styles to both */
     border: 1px dashed var(--input-border-color);
     padding: 20px;
     margin-top: 15px;
@@ -562,23 +562,18 @@ button.edit-button:hover
     min-height: 150px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Align top for president */
     overflow: hidden;
-    position: relative; /* Needed for scaling origin */
+    position: relative;
 }
-.shoutout-preview-area > p {
+.shoutout-preview-area > p, .president-preview-area > p { /* Style placeholder text */
     color: var(--secondary-text);
     font-style: italic;
     font-size: 0.9em;
     text-align: center;
+    margin: auto; /* Center vertically/horizontally */
 }
-/* Apply scaling to the container, adjust origin */
-.shoutout-preview-area {
-    /* Apply scaling if needed, but often better to adjust styles directly */
-    /* transform: scale(0.85); */
-    /* transform-origin: center center; */
-}
-/* Style the card *within* the preview area */
+/* Style the card *within* the shoutout preview area */
 .shoutout-preview-area .creator-card,
 .shoutout-preview-area .instagram-creator-card,
 .shoutout-preview-area .youtube-creator-card {
