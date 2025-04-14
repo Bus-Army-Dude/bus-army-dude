@@ -127,6 +127,51 @@
                  <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
             </section>
 
+             <section class="admin-section" id="president-management" aria-labelledby="president-heading">
+                <h3 id="president-heading">Manage Current President Info</h3>
+
+                <form id="president-form">
+                    <div class="form-group">
+                        <label for="president-name">President's Name:</label>
+                        <input type="text" id="president-name" name="name" placeholder="e.g., Donald J. Trump">
+                    </div>
+                    <div class="form-group">
+                        <label for="president-born">Born Date:</label>
+                        <input type="text" id="president-born" name="born" placeholder="e.g., June 14, 1946">
+                    </div>
+                    <div class="form-group">
+                        <label for="president-height">Height:</label>
+                        <input type="text" id="president-height" name="height" placeholder="e.g., 6'3\" (190.5 cm)">
+                    </div>
+                    <div class="form-group">
+                        <label for="president-party">Party:</label>
+                        <input type="text" id="president-party" name="party" placeholder="e.g., Republican Party">
+                    </div>
+                     <div class="form-group">
+                        <label for="president-term">Presidential Term:</label>
+                        <input type="text" id="president-term" name="term" placeholder="e.g., 1/20/25 at 12:00 PM - 1/20/29 at 12:00 PM">
+                    </div>
+                     <div class="form-group">
+                        <label for="president-vp">Vice President:</label>
+                        <input type="text" id="president-vp" name="vp" placeholder="e.g., James David Vance">
+                    </div>
+                    <div class="form-group">
+                        <label for="president-image-url">President Image URL:</label>
+                        <input type="url" id="president-image-url" name="imageUrl" placeholder="https://..." inputmode="url">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preview:</label>
+                        <div id="president-preview" class="president-preview-area"> <p><small>Preview will appear here as you type.</small></p>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="save-president-button" class="button-primary">Save President Info</button>
+                    </div>
+                </form>
+                 <div id="president-status-message" class="status-message" role="status" aria-live="polite"></div>
+            </section>
+
             <section class="admin-section" id="useful-links-management" aria-labelledby="useful-links-heading">
     <h3 id="useful-links-heading">Manage Useful Links</h3>
 
