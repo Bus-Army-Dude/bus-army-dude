@@ -71,7 +71,295 @@ document.addEventListener('DOMContentLoaded', () => {
     const addInstagramPreview = document.getElementById('add-instagram-preview');
     const addYoutubePreview = document.getElementById('add-youtube-preview');
     const editShoutoutPreview = document.getElementById('edit-shoutout-preview');
+    const addUsefulLinkForm = document.getElementById('add-useful-link-form');
+const usefulLinksListAdmin = document.getElementById('useful-links-list-admin');
+const usefulLinksCount = document.getElementById('useful-links-count'); // Span to show count
+const editUsefulLinkModal = document.getElementById('edit-useful-link-modal');
+const editUsefulLinkForm = document.getElementById('edit-useful-link-form');
+const cancelEditLinkButton = document.getElementById('cancel-edit-link-button'); // Close X button
+const cancelEditLinkButtonSecondary = document.getElementById('cancel-edit-link-button-secondary'); // Secondary Cancel Button
+const editLinkLabelInput = document.getElementById('edit-link-label');
+const editLinkUrlInput = document.getElementById('edit-link-url');
+const editLinkOrderInput = document.getElementById('edit-link-order');
+const editLinkStatusMessage = document.getElementById('edit-link-status-message'); // Status inside edit modal
 
+// *** Firestore Reference for Useful Links ***
+const usefulLinksCollectionRef = collection(db, "useful_links"); // Collection name
+
+// *** Add this near other status message functions ***
+function showEditLinkStatus(message, isError = false) {
+    if (!editLinkStatusMessage) { console.warn("Edit link status message element not found"); return; }
+    editLinkStatusMessage.textContent = message;
+    editLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+    // Clear message after 3 seconds
+    setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000);
+}
+
+// *** Function to render a single Useful Link item in the admin list ***
+function renderUsefulLinkAdminListItem(container, docId, label, url, order, deleteHandler, editHandler) {
+    if (!container) return;
+
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'list-item-admin';
+    itemDiv.setAttribute('data-id', docId);
+
+    itemDiv.innerHTML = `
+        <div class="item-content">
+             <div class="item-details">
+                <strong>${label || 'N/A'}</strong>
+                <span>(${url || 'N/A'})</span>
+                <small>Order: ${order ?? 'N/A'}</small>
+             </div>
+        </div>
+        <div class="item-actions">
+            <a href="${url || '#'}" target="_blank" rel="noopener noreferrer" class="direct-link small-button" title="Visit Link">
+                 <i class="fas fa-external-link-alt"></i> Visit
+            </a>
+            <button type="button" class="edit-button small-button">Edit</button>
+            <button type="button" class="delete-button small-button">Delete</button>
+        </div>`;
+
+    // Add event listeners
+    const editButton = itemDiv.querySelector('.edit-button');
+    if (editButton) editButton.addEventListener('click', () => editHandler(docId)); // Pass only docId
+
+    const deleteButton = itemDiv.querySelector('.delete-button');
+    if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, itemDiv)); // Pass docId and the item element
+
+    container.appendChild(itemDiv);
+}
+
+
+// *** Function to Load Useful Links into the Admin Panel ***
+async function loadUsefulLinksAdmin() {
+    if (!usefulLinksListAdmin) {
+        console.error("Useful links list container not found.");
+        return;
+    }
+    if (usefulLinksCount) usefulLinksCount.textContent = ''; // Clear count
+    usefulLinksListAdmin.innerHTML = `<p>Loading useful links...</p>`;
+
+    try {
+        // Query links ordered by the 'order' field
+        const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(linkQuery);
+
+        usefulLinksListAdmin.innerHTML = ''; // Clear loading message
+
+        if (querySnapshot.empty) {
+            usefulLinksListAdmin.innerHTML = '<p>No useful links found.</p>';
+            if (usefulLinksCount) usefulLinksCount.textContent = '(0)';
+        } else {
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                renderUsefulLinkAdminListItem(
+                    usefulLinksListAdmin,
+                    doc.id,
+                    data.label,
+                    data.url,
+                    data.order,
+                    handleDeleteUsefulLink, // Pass delete handler function
+                    openEditUsefulLinkModal // Pass edit handler function
+                );
+            });
+            if (usefulLinksCount) usefulLinksCount.textContent = `(${querySnapshot.size})`; // Update count
+        }
+        console.log(`Loaded ${querySnapshot.size} useful links.`);
+
+    } catch (error) {
+        console.error("Error loading useful links:", error);
+        usefulLinksListAdmin.innerHTML = `<p class="error">Error loading useful links.</p>`;
+        if (usefulLinksCount) usefulLinksCount.textContent = '(Error)';
+        showAdminStatus("Error loading useful links.", true);
+    }
+}
+
+// *** Function to Handle Adding a New Useful Link ***
+async function handleAddUsefulLink(event) {
+    event.preventDefault();
+    if (!addUsefulLinkForm) return;
+
+    const labelInput = addUsefulLinkForm.querySelector('#link-label');
+    const urlInput = addUsefulLinkForm.querySelector('#link-url');
+    const orderInput = addUsefulLinkForm.querySelector('#link-order');
+
+    const label = labelInput?.value.trim();
+    const url = urlInput?.value.trim();
+    const orderStr = orderInput?.value.trim();
+    const order = parseInt(orderStr);
+
+    if (!label || !url || !orderStr || isNaN(order) || order < 0) {
+        showAdminStatus("Invalid input for Useful Link. Check required fields and ensure Order is a non-negative number.", true);
+        return;
+    }
+
+    // Simple check for valid URL structure (basic)
+    try {
+        new URL(url); // This will throw an error if the URL is invalid
+    } catch (_) {
+        showAdminStatus("Invalid URL format. Please enter a valid URL starting with http:// or https://", true);
+        return;
+    }
+
+    const linkData = {
+        label: label,
+        url: url,
+        order: order,
+        createdAt: serverTimestamp()
+    };
+
+    showAdminStatus("Adding useful link...");
+    try {
+        const docRef = await addDoc(usefulLinksCollectionRef, linkData);
+        console.log("Useful link added with ID:", docRef.id);
+        // await updateMetadataTimestamp('usefulLinks'); // Optional: if tracking metadata
+        showAdminStatus("Useful link added successfully.", false);
+        addUsefulLinkForm.reset(); // Reset the form
+        loadUsefulLinksAdmin(); // Reload the list
+
+    } catch (error) {
+        console.error("Error adding useful link:", error);
+        showAdminStatus(`Error adding useful link: ${error.message}`, true);
+    }
+}
+
+// *** Function to Handle Deleting a Useful Link ***
+async function handleDeleteUsefulLink(docId, listItemElement) {
+    if (!confirm("Are you sure you want to permanently delete this useful link?")) {
+        return;
+    }
+
+    showAdminStatus("Deleting useful link...");
+    try {
+        await deleteDoc(doc(db, 'useful_links', docId));
+        // await updateMetadataTimestamp('usefulLinks'); // Optional
+        showAdminStatus("Useful link deleted successfully.", false);
+        loadUsefulLinksAdmin(); // Reload list is simplest
+
+    } catch (error) {
+        console.error(`Error deleting useful link (ID: ${docId}):`, error);
+        showAdminStatus(`Error deleting useful link: ${error.message}`, true);
+    }
+}
+
+
+// *** Function to Open and Populate the Edit Useful Link Modal ***
+function openEditUsefulLinkModal(docId) {
+    if (!editUsefulLinkModal || !editUsefulLinkForm) {
+        console.error("Edit useful link modal elements not found.");
+        showAdminStatus("UI Error: Cannot open edit form.", true);
+        return;
+    }
+
+    const docRef = doc(db, 'useful_links', docId);
+    showEditLinkStatus("Loading link data..."); // Show status inside modal
+
+    getDoc(docRef).then(docSnap => {
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            editUsefulLinkForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
+            if (editLinkLabelInput) editLinkLabelInput.value = data.label || '';
+            if (editLinkUrlInput) editLinkUrlInput.value = data.url || '';
+            if (editLinkOrderInput) editLinkOrderInput.value = data.order ?? '';
+
+            editUsefulLinkModal.style.display = 'block';
+            showEditLinkStatus(""); // Clear loading message
+        } else {
+            showAdminStatus("Error: Could not load link data for editing.", true);
+             showEditLinkStatus("Error: Link not found.", true); // Show error inside modal
+        }
+    }).catch(error => {
+        console.error("Error getting link document for edit:", error);
+        showAdminStatus(`Error loading link data: ${error.message}`, true);
+        showEditLinkStatus(`Error: ${error.message}`, true);
+    });
+}
+
+// *** Function to Close the Edit Useful Link Modal ***
+function closeEditUsefulLinkModal() {
+    if (editUsefulLinkModal) editUsefulLinkModal.style.display = 'none';
+    if (editUsefulLinkForm) editUsefulLinkForm.reset();
+    editUsefulLinkForm?.removeAttribute('data-doc-id');
+    if (editLinkStatusMessage) editLinkStatusMessage.textContent = ''; // Clear status message inside modal
+}
+
+// *** Function to Handle Updating a Useful Link from the Edit Modal ***
+async function handleUpdateUsefulLink(event) {
+    event.preventDefault();
+    if (!editUsefulLinkForm) return;
+
+    const docId = editUsefulLinkForm.getAttribute('data-doc-id');
+    if (!docId) {
+        showEditLinkStatus("Error: Missing document ID for update.", true);
+        return;
+    }
+
+    const label = editLinkLabelInput?.value.trim();
+    const url = editLinkUrlInput?.value.trim();
+    const orderStr = editLinkOrderInput?.value.trim();
+    const order = parseInt(orderStr);
+
+    if (!label || !url || !orderStr || isNaN(order) || order < 0) {
+        showEditLinkStatus("Invalid input. Check required fields and ensure Order is non-negative.", true);
+        return;
+    }
+     // Simple URL validation
+    try { new URL(url); } catch (_) {
+        showEditLinkStatus("Invalid URL format.", true);
+        return;
+    }
+
+    const updatedData = {
+        label: label,
+        url: url,
+        order: order,
+        lastModified: serverTimestamp()
+    };
+
+    showEditLinkStatus("Saving changes...");
+    try {
+        const docRef = doc(db, 'useful_links', docId);
+        await updateDoc(docRef, updatedData);
+        // await updateMetadataTimestamp('usefulLinks'); // Optional
+        showAdminStatus("Useful link updated successfully.", false); // Show main status
+        closeEditUsefulLinkModal();
+        loadUsefulLinksAdmin(); // Reload the list
+
+    } catch (error) {
+        console.error(`Error updating useful link (ID: ${docId}):`, error);
+        showEditLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
+        showAdminStatus(`Error updating useful link: ${error.message}`, true); // Also show main status
+    }
+}
+
+
+// *** Add these Event Listeners within the DOMContentLoaded listener ***
+
+// --- Useful Links Event Listeners ---
+if (addUsefulLinkForm) {
+    addUsefulLinkForm.addEventListener('submit', handleAddUsefulLink);
+}
+if (editUsefulLinkForm) {
+    editUsefulLinkForm.addEventListener('submit', handleUpdateUsefulLink);
+}
+if (cancelEditLinkButton) { // X close button
+    cancelEditLinkButton.addEventListener('click', closeEditUsefulLinkModal);
+}
+if (cancelEditLinkButtonSecondary) { // Secondary Cancel button
+    cancelEditLinkButtonSecondary.addEventListener('click', closeEditUsefulLinkModal);
+}
+// Add listener for clicking outside the useful link modal
+window.addEventListener('click', (event) => {
+    if (event.target === editUsefulLinkModal) {
+        closeEditUsefulLinkModal();
+    }
+});
+
+// *** Call loadUsefulLinksAdmin when user logs in ***
+// Inside the onAuthStateChanged listener, within the `if (user)` block, add:
+if (typeof loadUsefulLinksAdmin === 'function' && usefulLinksListAdmin) {
+    loadUsefulLinksAdmin();
+}
 
     // Firestore Reference for Profile / Site Config
     const profileDocRef = doc(db, "site_config", "mainProfile");
