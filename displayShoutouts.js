@@ -21,7 +21,7 @@ let db;
 let firebaseAppInitialized = false; // Flag to track initialization status
 let profileDocRef; // Reference to the main profile/config document
 let usefulLinksCollectionRef; // Reference for Useful Links
-let socialLinksCollectionRef; // <<< Reference for Social Links
+let socialLinksCollectionRef; // Reference for Social Links
 
 try {
     const app = initializeApp(firebaseConfig);
@@ -29,7 +29,7 @@ try {
     // Assuming maintenance flag is stored with profile data
     profileDocRef = doc(db, "site_config", "mainProfile");
     usefulLinksCollectionRef = collection(db, "useful_links"); // Define Useful Links ref
-    socialLinksCollectionRef = collection(db, "social_links"); // <<< Define Social Links ref
+    socialLinksCollectionRef = collection(db, "social_links"); // Define Social Links ref
     firebaseAppInitialized = true; // Set flag on successful initialization
     console.log("Firebase initialized for display.");
 } catch (error) {
@@ -381,7 +381,7 @@ async function loadAndDisplaySocialLinks() {
                 if (data.label && data.url) {
                     const linkElement = document.createElement('a');
                     linkElement.href = data.url;
-                    // linkElement.textContent = data.label; // We'll add text in a span later
+                    // linkElement.textContent = data.label; // Text is added in a span below
                     linkElement.target = '_blank';
                     linkElement.rel = 'noopener noreferrer';
                     linkElement.className = 'social-button'; // Use the class from your CSS
@@ -390,7 +390,7 @@ async function loadAndDisplaySocialLinks() {
                     if (data.iconClass) { // Check if iconClass exists in Firestore data
                         const iconElement = document.createElement('i');
                         iconElement.className = data.iconClass; // Use the class from Firestore
-                        // Add the 'social-icon' class from your CSS for styling:
+                        // Add the 'social-icon' class from your CSS for specific icon styling:
                         iconElement.classList.add('social-icon');
                         linkElement.appendChild(iconElement); // Add the icon first
                     }
