@@ -409,35 +409,42 @@ async function loadAndDisplaySocialLinks() {
     }
 }
 
-// Function to Load and Display President Data on Homepage
+// Function to Load and Display President Data on Homepage (Updated Check)
 async function displayPresidentData() {
-    // Find the placeholder element in index.html
     const placeholderElement = document.getElementById('president-placeholder');
     if (!placeholderElement) {
         console.warn("President placeholder element (#president-placeholder) not found on homepage.");
-        return; // Exit if placeholder doesn't exist
-    }
-
-    // Check Firebase status first
-    // Use presidentDocRef which was defined and assigned earlier
-    if (!firebaseAppInitialized || !db || !presidentDocRef) {
-        console.error("President display error: Firebase not ready or presidentDocRef not defined.");
-        placeholderElement.innerHTML = '<p class="error" style="text-align: center; color: red;">Could not load president information (DB Init Error).</p>';
         return;
     }
 
-    // Show a temporary loading message inside the placeholder
+    // Show a temporary loading message
     placeholderElement.innerHTML = '<p style="text-align: center; padding: 20px;">Loading president info...</p>';
 
+    // --- MODIFIED CHECK ---
+    // First, ensure Firebase itself initialized successfully.
+    if (!firebaseAppInitialized || !db) {
+        console.error("President display error: Firebase not ready.");
+        placeholderElement.innerHTML = '<p class="error" style="text-align: center; color: red;">Could not load president information (DB Init Error).</p>';
+        return;
+    }
+    // SECOND, specifically check if presidentDocRef was assigned.
+    if (!presidentDocRef) {
+         console.error("President display error: presidentDocRef variable is undefined or not assigned.");
+         placeholderElement.innerHTML = '<p class="error" style="text-align: center; color: red;">Could not load president information (Config Error).</p>';
+         return; // Stop if the reference variable itself is missing
+    }
+    // --- END MODIFIED CHECK ---
+
     try {
-        const docSnap = await getDoc(presidentDocRef); // Fetch data using presidentDocRef
+        // Now it should be safe to use presidentDocRef
+        console.log("Fetching president data using ref:", presidentDocRef.path); // Log the path
+        const docSnap = await getDoc(presidentDocRef);
 
         if (docSnap.exists()) {
             const data = docSnap.data();
             console.log("Fetched president data for homepage:", data);
 
             // Build the HTML using fetched data and original classes
-            // Use default values like 'N/A' if a field is missing in Firestore
             const presidentHTML = `
                 <section id="current-president" class="president-section">
                     <h2 class="section-title">Current U.S. President</h2>
@@ -453,16 +460,14 @@ async function displayPresidentData() {
                         </div>
                     </div>
                 </section>`;
-            placeholderElement.innerHTML = presidentHTML; // Inject the generated HTML
+            placeholderElement.innerHTML = presidentHTML;
         } else {
-            // Handle case where the document doesn't exist in Firestore
             console.warn(`President document ('${presidentDocRef.path}') not found.`);
             placeholderElement.innerHTML = '<p style="text-align: center; padding: 20px;">President information is currently unavailable.</p>';
         }
     } catch (error) {
-        // Handle errors during fetching or processing
         console.error("Error fetching/displaying president data:", error);
-        placeholderElement.innerHTML = '<p class="error" style="text-align: center; color: red;">Error loading president information.</p>';
+        placeholderElement.innerHTML = `<p class="error" style="text-align: center; color: red;">Error loading president information: ${error.message}</p>`; // Show error message
     }
 }
 
