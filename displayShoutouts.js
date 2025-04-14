@@ -476,7 +476,6 @@ let usefulLinksContainerElement; // Container for useful links
 let socialLinksContainerElement; // Container for social links
 
 // --- Run functions when the DOM is ready ---
-// --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', async () => { // Make listener async
     console.log("DOM loaded. Checking Firebase status and maintenance mode...");
 
@@ -485,24 +484,40 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
     maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
     mainContentWrapper = document.querySelector('.container'); // Assuming '.container' wraps main content, adjust if needed
     usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container');
-    socialLinksContainerElement = document.querySelector('.social-links-container'); // Adjusted selector based on index.html structure
+    socialLinksContainerElement = document.querySelector('.social-links-container'); // Use querySelector for robustness
 
-    // Check Firebase initialization status first
-    if (!firebaseAppInitialized || !db || !profileDocRef || !presidentDocRef) { // Added presidentDocRef check
-        console.error("Firebase not ready or essential DocRefs missing. Site cannot load.");
+    // --- Corrected Initial Check ---
+    // Check ONLY if Firebase initialization failed. If it failed, the refs won't be valid anyway.
+    if (!firebaseAppInitialized) {
+        console.error("Firebase not ready (Initialization likely failed). Site cannot load.");
+        // Display error message if Firebase didn't initialize
          if (maintenanceMessageElement) {
-             maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error or missing configuration.</p>';
+             maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error or initialization failure.</p>';
              maintenanceMessageElement.style.display = 'block';
          } else { // Fallback
-             document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error or missing configuration.</p>';
+             // Avoid replacing the entire body if possible, maybe prepend an error banner
+             const errorBanner = document.createElement('div');
+             errorBanner.innerHTML = '<p class="error" style="text-align: center; padding: 20px; background-color: red; color: white; font-weight: bold;">Site cannot load due to a connection error or initialization failure.</p>';
+             document.body.prepend(errorBanner);
+             console.error("Maintenance message element not found, prepended error banner to body.");
          }
-        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+        // Try to hide main content wrapper even if selector failed earlier
+        try {
+            if (!mainContentWrapper) mainContentWrapper = document.querySelector('.container'); // Try querySelector again
+            if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+        } catch(e) { console.error("Could not hide main content wrapper on error.")}
         return; // Stop execution
     }
+    // --- END Corrected Initial Check ---
 
-    // *** Maintenance Mode Check ***
+    // *** Maintenance Mode Check (Now we know Firebase *is* initialized) ***
     try {
         console.log("Checking maintenance mode status...");
+        // We can safely access profileDocRef now because firebaseAppInitialized is true
+        // Ensure profileDocRef was successfully assigned during initialization
+        if (!profileDocRef) {
+             throw new Error("profileDocRef is not defined even though Firebase initialized.");
+        }
         const configSnap = await getDoc(profileDocRef);
         let maintenanceEnabled = false;
 
@@ -527,7 +542,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
 
             // Display maintenance message
             if (maintenanceMessageElement) {
-                // You might want to ensure the message content is set here if not already in HTML
+                // Ensure the message content is set (it's predefined in your index.html)
                 maintenanceMessageElement.style.display = 'block'; // Show the predefined message div
             } else {
                 console.error("Critical Error: maintenanceModeMessage element not found in HTML!");
@@ -536,7 +551,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
                  maintDiv.id = 'maintenanceModeMessage';
                  maintDiv.style.cssText = 'display: block; background-color: red; color: white; text-align: center; padding: 20px;';
                  maintDiv.innerHTML = '<h2>Site is currently undergoing maintenance. Please check back later.</h2>';
-                 // Prepend to body might be better than replacing everything
                  document.body.prepend(maintDiv);
             }
             // Stop further script execution for loading content
@@ -557,7 +571,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
             if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
 
             // --- Load Profile, Shoutouts, Useful Links, Social Links, AND PRESIDENT INFO ---
-            // Only call load functions if their container exists to prevent errors
+            // Call functions to load content
             if (typeof displayProfileData === 'function') {
                 displayProfileData();
             } else { console.error("displayProfileData function missing!"); }
@@ -585,15 +599,18 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
         } // End of the 'else' block for maintenance mode OFF
 
     } catch (error) {
-        console.error("Error checking maintenance mode or loading site content:", error);
+        console.error("Error during DOMContentLoaded execution (Maintenance check or content load):", error);
          if (maintenanceMessageElement) {
-             maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration. Please try again later.</p>';
+             maintenanceMessageElement.innerHTML = `<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration or content: ${error.message}</p>`;
              maintenanceMessageElement.style.display = 'block';
          } else {
-             document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration. Please try again later.</p>';
+             // Fallback error display
+             const errorBanner = document.createElement('div');
+             errorBanner.innerHTML = `<p class="error" style="text-align: center; padding: 20px; background-color: red; color: white; font-weight: bold;">Error loading site configuration or content: ${error.message}</p>`;
+             document.body.prepend(errorBanner);
          }
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
     }
-    // *** END: Maintenance Mode Check ***
+    // *** END: Maintenance Mode Check / Content Load Block ***
 
 }); // End DOMContentLoaded listener
