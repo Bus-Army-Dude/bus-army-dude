@@ -1826,6 +1826,33 @@ async function handleUpdateUsefulLink(event) { //
     }
     // *** END Search Listeners ***
 
+    // Renders the HTML for the president section preview (NO INLINE STYLES)
+function renderPresidentPreview(data) {
+    // Use default values if data is missing
+    const name = data.name || 'N/A';
+    const born = data.born || 'N/A';
+    const height = data.height || 'N/A';
+    const party = data.party || 'N/A';
+    const term = data.term || 'N/A';
+    const vp = data.vp || 'N/A';
+    const imageUrl = data.imageUrl || 'images/default-president.jpg'; // Use a default image path
+
+    // Construct the HTML using only classes defined in admin.css (or your main css)
+    return `
+        <section class="president-section">
+            <div class="president-info">
+                <img src="${imageUrl}" alt="President ${name}" class="president-photo" onerror="this.src='images/default-president.jpg'; this.alt='Photo Missing';">
+                <div class="president-details">
+                    <h3 class="president-name">${name}</h3>
+                    <p><strong>Born:</strong> ${born}</p>
+                    <p><strong>Height:</strong> ${height}</p>
+                    <p><strong>Party:</strong> ${party}</p>
+                    <p class="presidential-term"><strong>Term:</strong> ${term}</p>
+                    <p><strong>VP:</strong> ${vp}</p>
+                </div>
+            </div>
+        </section>`;
+}
 
    // --- Useful Links Event Listeners ---
     if (addUsefulLinkForm) { //
