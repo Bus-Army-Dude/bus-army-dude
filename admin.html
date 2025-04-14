@@ -184,6 +184,63 @@
          <div id="edit-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
 </div>
 
+            <section class="admin-section" id="social-links-management" aria-labelledby="social-links-heading">
+    <h3 id="social-links-heading">Manage Social Links</h3>
+
+    <form id="add-social-link-form" aria-labelledby="add-social-link-heading">
+        <h5 id="add-social-link-heading">Add New Social Link</h5>
+        <div class="form-group">
+            <label for="social-link-label">Link Label:</label>
+            <input type="text" id="social-link-label" name="label" required placeholder="e.g., TikTok">
+        </div>
+        <div class="form-group">
+            <label for="social-link-url">Link URL:</label>
+            <input type="url" id="social-link-url" name="url" required placeholder="https://..." inputmode="url">
+        </div>
+        <div class="form-group">
+            <label for="social-link-order">Display Order:</label>
+            <input type="number" id="social-link-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
+        </div>
+        <div class="form-actions">
+           <button type="submit" class="button-primary">Add Social Link</button>
+        </div>
+    </form>
+
+    <h5 id="existing-social-links-heading">
+        Existing Social Links <span id="social-links-count" class="list-count"></span>
+    </h5>
+    <div id="social-links-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-social-links-heading">
+        <p>Loading links...</p>
+        </div>
+
+    </section>
+
+    <div id="edit-social-link-modal" class="modal" style="display: none;"
+     role="dialog" aria-modal="true" aria-labelledby="edit-social-link-modal-heading">
+
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-social-link-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-social-link-modal-heading">Edit Social Link</h2>
+
+        <form id="edit-social-link-form" data-doc-id=""> <div class="form-group">
+                <label for="edit-social-link-label">Link Label:</label>
+                <input type="text" id="edit-social-link-label" name="label" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-social-link-url">Link URL:</label>
+                <input type="url" id="edit-social-link-url" name="url" required inputmode="url">
+            </div>
+            <div class="form-group">
+                <label for="edit-social-link-order">Display Order:</label>
+                <input type="number" id="edit-social-link-order" name="order" min="0" step="1" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="button-primary">Save Changes</button>
+              <button type="button" id="cancel-edit-social-link-button-secondary" class="secondary-button">Cancel</button> </div>
+        </form>
+         <div id="edit-social-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
+</div>
+
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
