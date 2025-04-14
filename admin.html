@@ -127,6 +127,36 @@
                  <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
             </section>
 
+            <section class="admin-section" id="useful-links-management" aria-labelledby="useful-links-heading">
+    <h3 id="useful-links-heading">Manage Useful Links</h3>
+
+    <form id="add-useful-link-form" aria-labelledby="add-link-heading">
+        <h5 id="add-link-heading">Add New Useful Link</h5>
+        <div class="form-group">
+            <label for="link-label">Link Label:</label>
+            <input type="text" id="link-label" name="label" required placeholder="e.g., Merch Store">
+        </div>
+        <div class="form-group">
+            <label for="link-url">Link URL:</label>
+            <input type="url" id="link-url" name="url" required placeholder="https://..." inputmode="url">
+        </div>
+        <div class="form-group">
+            <label for="link-order">Display Order:</label>
+            <input type="number" id="link-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
+        </div>
+        <div class="form-actions">
+           <button type="submit" class="button-primary">Add Link</button>
+        </div>
+    </form>
+
+    <h5 id="existing-links-heading">
+        Existing Useful Links <span id="useful-links-count" class="list-count"></span>
+    </h5>
+    <div id="useful-links-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-links-heading">
+        <p>Loading links...</p>
+        </div>
+
+    </section>
 
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
