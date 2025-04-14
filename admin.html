@@ -158,6 +158,32 @@
 
     </section>
 
+            <div id="edit-useful-link-modal" class="modal" style="display: none;"
+     role="dialog" aria-modal="true" aria-labelledby="edit-link-modal-heading">
+
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-link-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-link-modal-heading">Edit Useful Link</h2>
+
+        <form id="edit-useful-link-form" data-doc-id=""> <div class="form-group">
+                <label for="edit-link-label">Link Label:</label>
+                <input type="text" id="edit-link-label" name="label" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-link-url">Link URL:</label>
+                <input type="url" id="edit-link-url" name="url" required inputmode="url">
+            </div>
+            <div class="form-group">
+                <label for="edit-link-order">Display Order:</label>
+                <input type="number" id="edit-link-order" name="order" min="0" step="1" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="button-primary">Save Link Changes</button>
+              <button type="button" id="cancel-edit-link-button-secondary" class="secondary-button">Cancel</button> </div>
+        </form>
+         <div id="edit-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
+</div>
+
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
