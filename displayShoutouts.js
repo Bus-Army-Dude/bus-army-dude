@@ -22,6 +22,7 @@ let firebaseAppInitialized = false; // Flag to track initialization status
 let profileDocRef; // Reference to the main profile/config document
 let usefulLinksCollectionRef; // Reference for Useful Links
 let socialLinksCollectionRef; // Reference for Social Links
+let presidentDocRef; // <<< ADD THIS DECLARATION
 
 try {
     const app = initializeApp(firebaseConfig);
@@ -30,6 +31,7 @@ try {
     profileDocRef = doc(db, "site_config", "mainProfile");
     usefulLinksCollectionRef = collection(db, "useful_links"); // Define Useful Links ref
     socialLinksCollectionRef = collection(db, "social_links"); // Define Social Links ref
+    presidentDocRef = doc(db, "site_config", "currentPresident"); // <<< ADD THIS ASSIGNMENT (Ensure path matches admin.js)
     firebaseAppInitialized = true; // Set flag on successful initialization
     console.log("Firebase initialized for display.");
 } catch (error) {
