@@ -409,6 +409,64 @@ async function loadAndDisplaySocialLinks() {
     }
 }
 
+// Function to Load and Display President Data on Homepage
+async function displayPresidentData() {
+    // Find the placeholder element in index.html
+    const placeholderElement = document.getElementById('president-placeholder');
+    if (!placeholderElement) {
+        console.warn("President placeholder element (#president-placeholder) not found on homepage.");
+        return; // Exit if placeholder doesn't exist
+    }
+
+    // Check Firebase status first
+    // Use presidentDocRef which was defined and assigned earlier
+    if (!firebaseAppInitialized || !db || !presidentDocRef) {
+        console.error("President display error: Firebase not ready or presidentDocRef not defined.");
+        placeholderElement.innerHTML = '<p class="error" style="text-align: center; color: red;">Could not load president information (DB Init Error).</p>';
+        return;
+    }
+
+    // Show a temporary loading message inside the placeholder
+    placeholderElement.innerHTML = '<p style="text-align: center; padding: 20px;">Loading president info...</p>';
+
+    try {
+        const docSnap = await getDoc(presidentDocRef); // Fetch data using presidentDocRef
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            console.log("Fetched president data for homepage:", data);
+
+            // Build the HTML using fetched data and original classes
+            // Use default values like 'N/A' if a field is missing in Firestore
+            const presidentHTML = `
+                <section id="current-president" class="president-section">
+                    <h2 class="section-title">Current U.S. President</h2>
+                    <div class="president-info">
+                        <img src="${data.imageUrl || 'images/default-president.jpg'}" alt="President ${data.name || 'N/A'}" class="president-photo" onerror="this.src='images/default-president.jpg'; this.alt='President Photo Missing';">
+                        <div class="president-details">
+                            <h3 class="president-name">${data.name || 'Name Not Available'}</h3>
+                            <p><strong>Born:</strong> ${data.born || 'N/A'}</p>
+                            <p><strong>Height:</strong> ${data.height || 'N/A'}</p>
+                            <p><strong>Party:</strong> ${data.party || 'N/A'}</p>
+                            <p class="presidential-term"><strong>Term:</strong> ${data.term || 'N/A'}</p>
+                            <p><strong>VP:</strong> ${data.vp || 'N/A'}</p>
+                        </div>
+                    </div>
+                </section>`;
+            placeholderElement.innerHTML = presidentHTML; // Inject the generated HTML
+        } else {
+            // Handle case where the document doesn't exist in Firestore
+            console.warn(`President document ('${presidentDocRef.path}') not found.`);
+            placeholderElement.innerHTML = '<p style="text-align: center; padding: 20px;">President information is currently unavailable.</p>';
+        }
+    } catch (error) {
+        // Handle errors during fetching or processing
+        console.error("Error fetching/displaying president data:", error);
+        placeholderElement.innerHTML = '<p class="error" style="text-align: center; color: red;">Error loading president information.</p>';
+    }
+}
+
+// -------------
 
 // --- Global variable declarations for DOM elements ---
 // Defined globally, assigned values inside DOMContentLoaded
@@ -418,27 +476,26 @@ let usefulLinksContainerElement; // Container for useful links
 let socialLinksContainerElement; // Container for social links
 
 // --- Run functions when the DOM is ready ---
+// --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', async () => { // Make listener async
     console.log("DOM loaded. Checking Firebase status and maintenance mode...");
 
     // *** Assign values to globally declared variables HERE ***
+    // Ensure these IDs/selectors match your index.html structure
     maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
-    mainContentWrapper = document.getElementById('main-content-wrapper'); // Get the main wrapper
-    // Assign link containers - ensure these elements exist within the HTML structure
+    mainContentWrapper = document.querySelector('.container'); // Assuming '.container' wraps main content, adjust if needed
     usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container');
-    socialLinksContainerElement = document.getElementById('social-links-container');
+    socialLinksContainerElement = document.querySelector('.social-links-container'); // Adjusted selector based on index.html structure
 
     // Check Firebase initialization status first
-    if (!firebaseAppInitialized || !db || !profileDocRef) {
-        console.error("Firebase not ready. Site cannot load.");
-        // Display error message if Firebase didn't initialize
+    if (!firebaseAppInitialized || !db || !profileDocRef || !presidentDocRef) { // Added presidentDocRef check
+        console.error("Firebase not ready or essential DocRefs missing. Site cannot load.");
          if (maintenanceMessageElement) {
-             maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error.</p>';
+             maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error or missing configuration.</p>';
              maintenanceMessageElement.style.display = 'block';
          } else { // Fallback
-             document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error.</p>';
+             document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error or missing configuration.</p>';
          }
-         // Hide the main content wrapper on Firebase error
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         return; // Stop execution
     }
@@ -452,7 +509,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
         if (configSnap.exists()) {
             maintenanceEnabled = configSnap.data()?.isMaintenanceModeEnabled || false;
         } else {
-            console.warn("Site config document not found, assuming maintenance mode is OFF.");
+            console.warn("Site config document (mainProfile) not found, assuming maintenance mode is OFF.");
         }
 
         console.log("Maintenance mode enabled:", maintenanceEnabled);
@@ -463,13 +520,14 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
 
             // Hide the main content wrapper
             if (mainContentWrapper) {
-                 mainContentWrapper.style.display = 'none';
+                mainContentWrapper.style.display = 'none';
             } else {
-                console.error("Critical Error: main-content-wrapper element not found in HTML!");
+                console.error("Critical Error: main-content-wrapper element (e.g., .container) not found in HTML!");
             }
 
             // Display maintenance message
             if (maintenanceMessageElement) {
+                // You might want to ensure the message content is set here if not already in HTML
                 maintenanceMessageElement.style.display = 'block'; // Show the predefined message div
             } else {
                 console.error("Critical Error: maintenanceModeMessage element not found in HTML!");
@@ -477,7 +535,8 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
                  const maintDiv = document.createElement('div');
                  maintDiv.id = 'maintenanceModeMessage';
                  maintDiv.style.cssText = 'display: block; background-color: red; color: white; text-align: center; padding: 20px;';
-                 maintDiv.innerHTML = '<h2>Site is currently undergoing maintenance.</h2>';
+                 maintDiv.innerHTML = '<h2>Site is currently undergoing maintenance. Please check back later.</h2>';
+                 // Prepend to body might be better than replacing everything
                  document.body.prepend(maintDiv);
             }
             // Stop further script execution for loading content
@@ -489,15 +548,15 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
 
             // Show the main content wrapper
             if (mainContentWrapper) {
-                 mainContentWrapper.style.display = ''; // Use default display (usually block or flex)
+                mainContentWrapper.style.display = ''; // Use default display
             } else {
-                 console.error("Cannot show main content: main-content-wrapper element not found!");
+                console.error("Cannot show main content: main-content-wrapper element not found!");
             }
 
             // Hide maintenance message area if it exists
-             if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
+            if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
 
-            // --- Load Profile, Shoutouts, Useful Links, AND Social Links ---
+            // --- Load Profile, Shoutouts, Useful Links, Social Links, AND PRESIDENT INFO ---
             // Only call load functions if their container exists to prevent errors
             if (typeof displayProfileData === 'function') {
                 displayProfileData();
@@ -508,33 +567,31 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
             } else { console.error("loadAndDisplayShoutouts function missing!"); }
 
             if (typeof loadAndDisplayUsefulLinks === 'function') {
-                if(usefulLinksContainerElement) { // Check if container exists before calling
-                    loadAndDisplayUsefulLinks();
-                } else {
-                    console.warn("Useful links container not found, skipping load.");
-                }
+                if(usefulLinksContainerElement) { loadAndDisplayUsefulLinks(); }
+                else { console.warn("Useful links container not found, skipping load."); }
             } else { console.error("loadAndDisplayUsefulLinks function missing!"); }
 
             if (typeof loadAndDisplaySocialLinks === 'function') {
-                if (socialLinksContainerElement) { // Check if container exists before calling
-                    loadAndDisplaySocialLinks();
-                } else {
-                     console.warn("Social links container (ID: social-links-container) not found, skipping load.");
-                }
+                if (socialLinksContainerElement) { loadAndDisplaySocialLinks(); }
+                else { console.warn("Social links container not found, skipping load."); }
             } else { console.error("loadAndDisplaySocialLinks function missing!"); }
+
+            // --- Call to display President Data ---
+            if (typeof displayPresidentData === 'function') {
+                 displayPresidentData(); // Call the function to load president data
+            } else { console.error("displayPresidentData function missing!"); }
+            // ------------------------------------
 
         } // End of the 'else' block for maintenance mode OFF
 
     } catch (error) {
         console.error("Error checking maintenance mode or loading site content:", error);
-        // Display a generic error message if the config check fails
          if (maintenanceMessageElement) {
              maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration. Please try again later.</p>';
              maintenanceMessageElement.style.display = 'block';
          } else {
              document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration. Please try again later.</p>';
          }
-        // Hide the main content wrapper on error
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
     }
     // *** END: Maintenance Mode Check ***
