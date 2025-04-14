@@ -1,4 +1,4 @@
-// displayShoutouts.js (Corrected with Useful Links + Social Links + Icons)
+// displayShoutouts.js (Corrected with Maintenance Wrapper, Useful Links, Social Links + Icons)
 
 // Use the same Firebase config as in admin.js (Ensure this is correct)
 const firebaseConfig = {
@@ -114,26 +114,25 @@ function renderYouTubeCard(account) {
 // ======================================================
 // === Profile Section Display Logic (Reads data) ===
 // ======================================================
-const profileUsernameElement = document.getElementById('profile-username-main');
-const profilePicElement = document.getElementById('profile-pic-main');
-const profileBioElement = document.getElementById('profile-bio-main');
-const profileStatusElement = document.getElementById('profile-status-main');
-
-// Define default values for profile elements
-const defaultUsername = "Username";
-const defaultBio = ""; // Default to empty bio
-const defaultProfilePic = "images/default-profile.jpg"; // Make sure this path is correct
-const defaultStatusEmoji = '❓'; // Question mark if status is unknown
-// Define mapping for status values to emojis
-const statusEmojis = {
-    online: '🟢',
-    idle: '🟡',
-    offline: '⚪️',
-    dnd: '🔴'
-};
-
-// Fetches profile data from Firestore and updates the corresponding HTML elements
 async function displayProfileData() {
+    const profileUsernameElement = document.getElementById('profile-username-main');
+    const profilePicElement = document.getElementById('profile-pic-main');
+    const profileBioElement = document.getElementById('profile-bio-main');
+    const profileStatusElement = document.getElementById('profile-status-main');
+
+    // Define default values for profile elements
+    const defaultUsername = "Username";
+    const defaultBio = ""; // Default to empty bio
+    const defaultProfilePic = "images/default-profile.jpg"; // Make sure this path is correct
+    const defaultStatusEmoji = '❓'; // Question mark if status is unknown
+    // Define mapping for status values to emojis
+    const statusEmojis = {
+        online: '🟢',
+        idle: '🟡',
+        offline: '⚪️',
+        dnd: '🔴'
+    };
+
     if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) {
         console.warn("Profile display warning: One or more HTML elements missing.");
     }
@@ -300,23 +299,20 @@ async function loadAndDisplayShoutouts() {
 
 // *** Function to Load and Display Useful Links on the Homepage ***
 async function loadAndDisplayUsefulLinks() {
-    // Check Firebase status first
+    // Reference declared globally, assigned in DOMContentLoaded
     if (!firebaseAppInitialized || !db) {
         console.error("Useful Links load error: Firebase not ready.");
         if(usefulLinksContainerElement) usefulLinksContainerElement.innerHTML = '<p class="error" style="color: red;">Error loading links.</p>';
         return;
     }
-
-    // Ensure the container element exists (it's assigned in DOMContentLoaded)
     if (!usefulLinksContainerElement) {
-        console.warn("Useful links container element not found on homepage (was null in loadAndDisplayUsefulLinks).");
+        console.warn("Useful links container element not found.");
         return;
     }
 
     usefulLinksContainerElement.innerHTML = '<p>Loading links...</p>'; // Show loading state
 
     try {
-        // Use the collection reference defined at the top
         const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc")); // Order by 'order'
         const querySnapshot = await getDocs(linkQuery);
 
@@ -351,23 +347,20 @@ async function loadAndDisplayUsefulLinks() {
 
 // --- Function to Load and Display Social Links on the Homepage ---
 async function loadAndDisplaySocialLinks() {
-    // Check Firebase status first
+    // References declared globally, assigned in DOMContentLoaded
     if (!firebaseAppInitialized || !db) {
         console.error("Social Links load error: Firebase not ready.");
         if (socialLinksContainerElement) socialLinksContainerElement.innerHTML = '<p class="error" style="color: red;">Error loading social links.</p>';
         return;
     }
-
-    // Ensure the container element exists (assigned in DOMContentLoaded)
     if (!socialLinksContainerElement) {
-        console.warn("Social links container element not found on homepage. Make sure an element with ID 'social-links-container' exists.");
+        console.warn("Social links container element not found.");
         return;
     }
 
     socialLinksContainerElement.innerHTML = '<p>Loading social links...</p>'; // Show loading state
 
     try {
-        // Use the collection reference defined at the top
         const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc")); // Order by 'order'
         const querySnapshot = await getDocs(linkQuery);
 
@@ -381,7 +374,7 @@ async function loadAndDisplaySocialLinks() {
                 if (data.label && data.url) {
                     const linkElement = document.createElement('a');
                     linkElement.href = data.url;
-                    // linkElement.textContent = data.label; // Text is added in a span below
+                    // Text content will be added in a span below
                     linkElement.target = '_blank';
                     linkElement.rel = 'noopener noreferrer';
                     linkElement.className = 'social-button'; // Use the class from your CSS
@@ -418,26 +411,22 @@ async function loadAndDisplaySocialLinks() {
 
 
 // --- Global variable declarations for DOM elements ---
-// These will be assigned values inside DOMContentLoaded
-let profileSectionElement;
-let shoutoutsSectionElement; // This might represent multiple sections now
+// Defined globally, assigned values inside DOMContentLoaded
 let maintenanceMessageElement;
-let usefulLinksContainerElement; // Declaration for the useful links container
-let socialLinksContainerElement; // Declaration for the social links container
+let mainContentWrapper; // <<< Wrapper for all main content
+let usefulLinksContainerElement; // Container for useful links
+let socialLinksContainerElement; // Container for social links
 
 // --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', async () => { // Make listener async
     console.log("DOM loaded. Checking Firebase status and maintenance mode...");
 
-    // *** Assign values to globally declared variables HERE, right after DOM is loaded ***
-    // Adjust IDs/Selectors if needed based on your index (3).html structure
-    profileSectionElement = document.querySelector('.profile-section'); // Example selector
-    // Find all shoutout sections if needed, or the main container
-    shoutoutsSectionElement = document.querySelector('.shoutouts-section'); // Example selector for the first one
-    maintenanceMessageElement = document.getElementById('maintenanceModeMessage'); // Use the correct ID from index(3).html
-    usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container'); // Select existing container
-    // >>> IMPORTANT: Assign the element for social links. Create this element in index(3).html first! <<<
-    socialLinksContainerElement = document.getElementById('social-links-container'); // <<< ASSUMED ID - Add this div to index(3).html
+    // *** Assign values to globally declared variables HERE ***
+    maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
+    mainContentWrapper = document.getElementById('main-content-wrapper'); // Get the main wrapper
+    // Assign link containers - ensure these elements exist within the HTML structure
+    usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container');
+    socialLinksContainerElement = document.getElementById('social-links-container');
 
     // Check Firebase initialization status first
     if (!firebaseAppInitialized || !db || !profileDocRef) {
@@ -449,18 +438,8 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
          } else { // Fallback
              document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Site cannot load due to a connection error.</p>';
          }
-         // Hide main content areas if they exist
-        if (profileSectionElement) profileSectionElement.style.display = 'none';
-        // Hide all shoutout sections
-        document.querySelectorAll('.shoutouts-section').forEach(el => el.style.display = 'none');
-        // Hide useful links section
-        if (usefulLinksContainerElement && usefulLinksContainerElement.closest('.useful-links-section')) {
-            usefulLinksContainerElement.closest('.useful-links-section').style.display = 'none';
-        }
-         // Hide social links section (assuming a parent structure)
-        if (socialLinksContainerElement && socialLinksContainerElement.parentElement) { // Hide parent if it exists
-             socialLinksContainerElement.parentElement.style.display = 'none';
-         }
+         // Hide the main content wrapper on Firebase error
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         return; // Stop execution
     }
 
@@ -481,48 +460,45 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
         if (maintenanceEnabled) {
             // --- Maintenance Mode is ON ---
             console.log("Maintenance mode is active. Hiding main content.");
-            // Hide main content sections
-            if (profileSectionElement) profileSectionElement.style.display = 'none';
-            document.querySelectorAll('.shoutouts-section').forEach(el => el.style.display = 'none'); // Hide shoutouts
-            if (usefulLinksContainerElement && usefulLinksContainerElement.closest('.useful-links-section')) { // Hide useful links
-                 usefulLinksContainerElement.closest('.useful-links-section').style.display = 'none';
+
+            // Hide the main content wrapper
+            if (mainContentWrapper) {
+                 mainContentWrapper.style.display = 'none';
+            } else {
+                console.error("Critical Error: main-content-wrapper element not found in HTML!");
             }
-            if (socialLinksContainerElement && socialLinksContainerElement.parentElement) { // Hide social links parent
-                  socialLinksContainerElement.parentElement.style.display = 'none';
-            }
-             // Hide other sections as needed (e.g., President, Countdown, FAQ etc.) based on their IDs/Classes
 
             // Display maintenance message
             if (maintenanceMessageElement) {
-                // The message content is already in index(3).html, just need to show it
-                maintenanceMessageElement.style.display = 'block';
-            } else { // Fallback if the element wasn't found
+                maintenanceMessageElement.style.display = 'block'; // Show the predefined message div
+            } else {
+                console.error("Critical Error: maintenanceModeMessage element not found in HTML!");
+                 // Fallback just in case
                  const maintDiv = document.createElement('div');
-                 maintDiv.id = 'maintenanceModeMessage'; // Assign the ID for consistency
-                 maintDiv.style.cssText = 'display: block; background-color: red; color: white; text-align: center; padding: 20px;'; // Basic styling
-                 maintDiv.innerHTML = '<h2>Site is currently undergoing maintenance. Please check back later.</h2>'; // Simple message
-                 document.body.prepend(maintDiv); // Add to top
+                 maintDiv.id = 'maintenanceModeMessage';
+                 maintDiv.style.cssText = 'display: block; background-color: red; color: white; text-align: center; padding: 20px;';
+                 maintDiv.innerHTML = '<h2>Site is currently undergoing maintenance.</h2>';
+                 document.body.prepend(maintDiv);
             }
-            return; // Stop execution
+            // Stop further script execution for loading content
+            return;
 
         } else {
             // --- Maintenance Mode is OFF ---
             console.log("Maintenance mode is OFF. Loading site content.");
-            // Ensure main content areas are visible (adjust selectors as needed)
-             if (profileSectionElement) profileSectionElement.style.display = ''; // Use default display
-             document.querySelectorAll('.shoutouts-section').forEach(el => el.style.display = ''); // Show shoutouts
-             if (usefulLinksContainerElement && usefulLinksContainerElement.closest('.useful-links-section')) { // Show useful links
-                 usefulLinksContainerElement.closest('.useful-links-section').style.display = '';
-             }
-             if (socialLinksContainerElement && socialLinksContainerElement.parentElement) { // Show social links parent
-                  socialLinksContainerElement.parentElement.style.display = '';
-             }
-              // Show other sections if they were hidden
+
+            // Show the main content wrapper
+            if (mainContentWrapper) {
+                 mainContentWrapper.style.display = ''; // Use default display (usually block or flex)
+            } else {
+                 console.error("Cannot show main content: main-content-wrapper element not found!");
+            }
 
             // Hide maintenance message area if it exists
              if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
 
             // --- Load Profile, Shoutouts, Useful Links, AND Social Links ---
+            // Only call load functions if their container exists to prevent errors
             if (typeof displayProfileData === 'function') {
                 displayProfileData();
             } else { console.error("displayProfileData function missing!"); }
@@ -532,12 +508,19 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
             } else { console.error("loadAndDisplayShoutouts function missing!"); }
 
             if (typeof loadAndDisplayUsefulLinks === 'function') {
-                 loadAndDisplayUsefulLinks();
+                if(usefulLinksContainerElement) { // Check if container exists before calling
+                    loadAndDisplayUsefulLinks();
+                } else {
+                    console.warn("Useful links container not found, skipping load.");
+                }
             } else { console.error("loadAndDisplayUsefulLinks function missing!"); }
 
-            // *** Call the new function to load social links ***
             if (typeof loadAndDisplaySocialLinks === 'function') {
-                 loadAndDisplaySocialLinks();
+                if (socialLinksContainerElement) { // Check if container exists before calling
+                    loadAndDisplaySocialLinks();
+                } else {
+                     console.warn("Social links container (ID: social-links-container) not found, skipping load.");
+                }
             } else { console.error("loadAndDisplaySocialLinks function missing!"); }
 
         } // End of the 'else' block for maintenance mode OFF
@@ -551,15 +534,8 @@ document.addEventListener('DOMContentLoaded', async () => { // Make listener asy
          } else {
              document.body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Error loading site configuration. Please try again later.</p>';
          }
-        // Hide main content areas on error
-        if (profileSectionElement) profileSectionElement.style.display = 'none';
-        document.querySelectorAll('.shoutouts-section').forEach(el => el.style.display = 'none'); // Hide shoutouts
-        if (usefulLinksContainerElement && usefulLinksContainerElement.closest('.useful-links-section')) { // Hide useful links
-            usefulLinksContainerElement.closest('.useful-links-section').style.display = 'none';
-        }
-        if (socialLinksContainerElement && socialLinksContainerElement.parentElement) { // Hide social links parent
-             socialLinksContainerElement.parentElement.style.display = 'none';
-         }
+        // Hide the main content wrapper on error
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
     }
     // *** END: Maintenance Mode Check ***
 
