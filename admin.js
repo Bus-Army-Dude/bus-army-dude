@@ -1,17 +1,16 @@
-// admin.js (Version includes Business Hours CRUD + Login Fixes + Logout-on-Refresh v4 + Parallel Loading)
+// admin.js (Version includes Business Hours CRUD + Login Fixes + Logout-on-Refresh)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
 // Import Firebase functions
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-// Import Auth functions (NO setPersistence)
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-
+// Import Auth functions including persistence types
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"; //
 // *** Global Variable for Client-Side Filtering ***
 let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
 
-document.addEventListener('DOMContentLoaded', () => { // No async needed here anymore
+document.addEventListener('DOMContentLoaded', async () => { // Made listener async for persistence
     // First, check if db and auth were successfully imported/initialized
     if (!db || !auth) {
         console.error("Firestore (db) or Auth not initialized correctly. Check firebase-init.js and imports.");
@@ -19,22 +18,18 @@ document.addEventListener('DOMContentLoaded', () => { // No async needed here an
         return; // Stop executing if Firebase isn't ready
     }
 
-    // *** Explicitly Sign Out on Page Load/Refresh ***
-    // This clears any persisted session before we check auth state
-    signOut(auth).then(() => {
-        console.log("Ensured clean auth state on page load (Sign Out Attempted).");
-        initializeAppAdminPanel(); // Proceed with setup ONLY after sign out attempt
-    }).catch((error) => {
-        console.error("Non-critical error during initial sign out:", error);
-        initializeAppAdminPanel(); // Still try to initialize even if sign out failed
-    });
+    // *** Set Auth Persistence to None (Logout on Refresh/Close) ***
+    try {
+        await setPersistence(auth, 'none');
+        console.log("Firebase Auth persistence set to 'none'. User will be logged out on refresh.");
+    } catch (error) {
+        console.error("Error setting auth persistence:", error);
+        alert(`Warning: Could not set auth persistence setting (${error.code}). Login might persist across refreshes.`);
+    }
+    // **************************************************************
 
-}); // End initial DOMContentLoaded setup for signout
+    console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
 
-// --- Main function to set up the admin panel after initial checks ---
-function initializeAppAdminPanel() {
-    console.log("Initializing Admin Panel UI and Functions...");
-    
     // --- Firestore References ---
     const profileDocRef = doc(db, "site_config", "mainProfile");
     const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
@@ -42,31 +37,36 @@ function initializeAppAdminPanel() {
     const socialLinksCollectionRef = collection(db, "social_links");
     const presidentDocRef = doc(db, "site_config", "currentPresident");
     const disabilitiesCollectionRef = collection(db, "disabilities");
-    const businessInfoDocRef = doc(db, "site_config", "business_info");
+    // --- References for Business Hours ---
+    const businessInfoDocRef = doc(db, "site_config", "business_info"); // For regular hours
     const holidaysCollectionRef = collection(db, "holidays");
     const tempClosuresCollectionRef = collection(db, "temporary_closures");
 
+
     // --- Inactivity Logout Variables ---
-    let inactivityTimer; let expirationTime; let displayIntervalId;
+    let inactivityTimer;
+    let expirationTime;
+    let displayIntervalId;
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
 
     // --- DOM Element References ---
-    // (Defined once here for use throughout this function scope)
-    const loginSection = document.getElementById('login-section'); //
-    const adminContent = document.getElementById('admin-content'); //
-    const loginForm = document.getElementById('login-form'); //
-    const logoutButton = document.getElementById('logout-button'); //
-    const authStatus = document.getElementById('auth-status'); //
-    const adminGreeting = document.getElementById('admin-greeting'); //
-    const emailInput = document.getElementById('email'); //
-    const passwordInput = document.getElementById('password'); //
-    const adminStatusElement = document.getElementById('admin-status'); //
-    const nextButton = document.getElementById('next-button'); //
-    const emailGroup = document.getElementById('email-group'); //
-    const passwordGroup = document.getElementById('password-group'); //
-    const loginButton = document.getElementById('login-button'); //
+    const loginSection = document.getElementById('login-section');
+    const adminContent = document.getElementById('admin-content');
+    const loginForm = document.getElementById('login-form');
+    const logoutButton = document.getElementById('logout-button');
+    const authStatus = document.getElementById('auth-status');
+    const adminGreeting = document.getElementById('admin-greeting');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const adminStatusElement = document.getElementById('admin-status');
+    const nextButton = document.getElementById('next-button');
+    const emailGroup = document.getElementById('email-group');
+    const passwordGroup = document.getElementById('password-group');
+    const loginButton = document.getElementById('login-button');
     const timerDisplayElement = document.getElementById('inactivity-timer-display');
+
+    // Profile Management Elements
     const profileForm = document.getElementById('profile-form');
     const profileUsernameInput = document.getElementById('profile-username');
     const profilePicUrlInput = document.getElementById('profile-pic-url');
@@ -74,6 +74,8 @@ function initializeAppAdminPanel() {
     const profileStatusInput = document.getElementById('profile-status');
     const profileStatusMessage = document.getElementById('profile-status-message');
     const adminPfpPreview = document.getElementById('admin-pfp-preview');
+
+    // Disabilities Management Elements
     const addDisabilityForm = document.getElementById('add-disability-form');
     const disabilitiesListAdmin = document.getElementById('disabilities-list-admin');
     const disabilitiesCount = document.getElementById('disabilities-count');
@@ -85,8 +87,12 @@ function initializeAppAdminPanel() {
     const editDisabilityUrlInput = document.getElementById('edit-disability-url');
     const editDisabilityOrderInput = document.getElementById('edit-disability-order');
     const editDisabilityStatusMessage = document.getElementById('edit-disability-status-message');
+
+    // Site Settings Elements
     const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle');
     const settingsStatusMessage = document.getElementById('settings-status-message');
+
+    // Shoutout Elements
     const addShoutoutTiktokForm = document.getElementById('add-shoutout-tiktok-form');
     const shoutoutsTiktokListAdmin = document.getElementById('shoutouts-tiktok-list-admin');
     const addShoutoutInstagramForm = document.getElementById('add-shoutout-instagram-form');
@@ -105,6 +111,7 @@ function initializeAppAdminPanel() {
     const editIsVerifiedInput = document.getElementById('edit-isVerified');
     const editBioInput = document.getElementById('edit-bio');
     const editProfilePicInput = document.getElementById('edit-profilePic');
+    const editIsEnabledInput = document.getElementById('edit-isEnabled');
     const editFollowersInput = document.getElementById('edit-followers');
     const editSubscribersInput = document.getElementById('edit-subscribers');
     const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
@@ -113,6 +120,8 @@ function initializeAppAdminPanel() {
     const addInstagramPreview = document.getElementById('add-instagram-preview');
     const addYoutubePreview = document.getElementById('add-youtube-preview');
     const editShoutoutPreview = document.getElementById('edit-shoutout-preview');
+
+    // Useful Links Elements
     const addUsefulLinkForm = document.getElementById('add-useful-link-form');
     const usefulLinksListAdmin = document.getElementById('useful-links-list-admin');
     const usefulLinksCount = document.getElementById('useful-links-count');
@@ -124,6 +133,8 @@ function initializeAppAdminPanel() {
     const editLinkUrlInput = document.getElementById('edit-link-url');
     const editLinkOrderInput = document.getElementById('edit-link-order');
     const editLinkStatusMessage = document.getElementById('edit-link-status-message');
+
+    // Social Links Elements
     const addSocialLinkForm = document.getElementById('add-social-link-form');
     const socialLinksListAdmin = document.getElementById('social-links-list-admin');
     const socialLinksCount = document.getElementById('social-links-count');
@@ -135,6 +146,8 @@ function initializeAppAdminPanel() {
     const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
     const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
     const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message');
+
+    // President Management Elements
     const presidentForm = document.getElementById('president-form');
     const presidentNameInput = document.getElementById('president-name');
     const presidentBornInput = document.getElementById('president-born');
@@ -145,15 +158,24 @@ function initializeAppAdminPanel() {
     const presidentImageUrlInput = document.getElementById('president-image-url');
     const presidentStatusMessage = document.getElementById('president-status-message');
     const presidentPreviewArea = document.getElementById('president-preview');
+
+    // --- Business Hours DOM Element References ---
     const regularHoursForm = document.getElementById('regular-hours-form');
     const regularHoursStatusMessage = document.getElementById('regular-hours-status-message');
-    const hoursSundayOpenInput = document.getElementById('hours-sunday-open'); const hoursSundayCloseInput = document.getElementById('hours-sunday-close');
-    const hoursMondayOpenInput = document.getElementById('hours-monday-open'); const hoursMondayCloseInput = document.getElementById('hours-monday-close');
-    const hoursTuesdayOpenInput = document.getElementById('hours-tuesday-open'); const hoursTuesdayCloseInput = document.getElementById('hours-tuesday-close');
-    const hoursWednesdayOpenInput = document.getElementById('hours-wednesday-open'); const hoursWednesdayCloseInput = document.getElementById('hours-wednesday-close');
-    const hoursThursdayOpenInput = document.getElementById('hours-thursday-open'); const hoursThursdayCloseInput = document.getElementById('hours-thursday-close');
-    const hoursFridayOpenInput = document.getElementById('hours-friday-open'); const hoursFridayCloseInput = document.getElementById('hours-friday-close');
-    const hoursSaturdayOpenInput = document.getElementById('hours-saturday-open'); const hoursSaturdayCloseInput = document.getElementById('hours-saturday-close');
+    const hoursSundayOpenInput = document.getElementById('hours-sunday-open');
+    const hoursSundayCloseInput = document.getElementById('hours-sunday-close');
+    const hoursMondayOpenInput = document.getElementById('hours-monday-open');
+    const hoursMondayCloseInput = document.getElementById('hours-monday-close');
+    const hoursTuesdayOpenInput = document.getElementById('hours-tuesday-open');
+    const hoursTuesdayCloseInput = document.getElementById('hours-tuesday-close');
+    const hoursWednesdayOpenInput = document.getElementById('hours-wednesday-open');
+    const hoursWednesdayCloseInput = document.getElementById('hours-wednesday-close');
+    const hoursThursdayOpenInput = document.getElementById('hours-thursday-open');
+    const hoursThursdayCloseInput = document.getElementById('hours-thursday-close');
+    const hoursFridayOpenInput = document.getElementById('hours-friday-open');
+    const hoursFridayCloseInput = document.getElementById('hours-friday-close');
+    const hoursSaturdayOpenInput = document.getElementById('hours-saturday-open');
+    const hoursSaturdayCloseInput = document.getElementById('hours-saturday-close');
     const addHolidayForm = document.getElementById('add-holiday-form');
     const holidaysListAdmin = document.getElementById('holidays-list-admin');
     const holidaysCount = document.getElementById('holidays-count');
@@ -163,19 +185,6 @@ function initializeAppAdminPanel() {
     const tempClosuresCount = document.getElementById('temp-closures-count');
     const tempClosuresStatusMessage = document.getElementById('temp-closures-status-message');
 
-
-    // --- Helper Functions ---
-    function showAdminStatus(message, isError = false) { if (!adminStatusElement) return; adminStatusElement.textContent = message; adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000); }
-    function showProfileStatus(message, isError = false) { if (!profileStatusMessage) { showAdminStatus(message, isError); return; } profileStatusMessage.textContent = message; profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (profileStatusMessage) { profileStatusMessage.textContent = ''; profileStatusMessage.className = 'status-message'; } }, 5000); }
-    function showSettingsStatus(message, isError = false) { if (!settingsStatusMessage) { showAdminStatus(message, isError); return; } settingsStatusMessage.textContent = message; settingsStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (settingsStatusMessage) { settingsStatusMessage.textContent = ''; settingsStatusMessage.style.display = 'none'; } }, 3000); settingsStatusMessage.style.display = 'block'; }
-    function showEditLinkStatus(message, isError = false) { if (!editLinkStatusMessage) return; editLinkStatusMessage.textContent = message; editLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); }
-    function showEditSocialLinkStatus(message, isError = false) { if (!editSocialLinkStatusMessage) return; editSocialLinkStatusMessage.textContent = message; editSocialLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editSocialLinkStatusMessage) { editSocialLinkStatusMessage.textContent = ''; editSocialLinkStatusMessage.className = 'status-message'; } }, 3000); }
-    function showEditDisabilityStatus(message, isError = false) { if (!editDisabilityStatusMessage) return; editDisabilityStatusMessage.textContent = message; editDisabilityStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editDisabilityStatusMessage) { editDisabilityStatusMessage.textContent = ''; editDisabilityStatusMessage.className = 'status-message'; } }, 3000); }
-    function showPresidentStatus(message, isError = false) { if (!presidentStatusMessage) { showAdminStatus(message, isError); return; } presidentStatusMessage.textContent = message; presidentStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (presidentStatusMessage) { presidentStatusMessage.textContent = ''; presidentStatusMessage.className = 'status-message'; } }, 5000); }
-    function showRegularHoursStatus(message, isError = false) { if (!regularHoursStatusMessage) return; regularHoursStatusMessage.textContent = message; regularHoursStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (regularHoursStatusMessage) { regularHoursStatusMessage.textContent = ''; regularHoursStatusMessage.className = 'status-message'; } }, 5000); }
-    function showHolidaysStatus(message, isError = false) { if (!holidaysStatusMessage) return; holidaysStatusMessage.textContent = message; holidaysStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (holidaysStatusMessage) { holidaysStatusMessage.textContent = ''; holidaysStatusMessage.className = 'status-message'; } }, 5000); }
-    function showTempClosuresStatus(message, isError = false) { if (!tempClosuresStatusMessage) return; tempClosuresStatusMessage.textContent = message; tempClosuresStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (tempClosuresStatusMessage) { tempClosuresStatusMessage.textContent = ''; tempClosuresStatusMessage.className = 'status-message'; } }, 5000); }
-    function capitalize(str) { return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''; }
 
     // --- Helper Functions ---
     function showAdminStatus(message, isError = false) {
@@ -416,7 +425,7 @@ function initializeAppAdminPanel() {
         editDisabilityForm?.removeAttribute('data-doc-id');
         if (editDisabilityStatusMessage) editDisabilityStatusMessage.textContent = '';
     }
-    // *** CORRECTED/NAMED loadDisabilitiesAdmin Definition ***
+    // *** CORRECTED Function Definition (Included from Chunk 1 for clarity) ***
     async function loadDisabilitiesAdmin() {
        if (!disabilitiesListAdmin) { console.error("Disabilities list container not found."); return; }
        if (disabilitiesCount) disabilitiesCount.textContent = '';
@@ -746,35 +755,19 @@ function initializeAppAdminPanel() {
             const duplicateCheckQuery = query(shoutoutsCol, where("platform", "==", platform), where("username", "==", username), limit(1));
             const querySnapshot = await getDocs(duplicateCheckQuery);
             if (!querySnapshot.empty) { showAdminStatus(`Error: Username '@${username}' on platform '${platform}' already exists.`, true); return; }
-
             // Add Logic
             const accountData = { platform: platform, username: username, nickname: nickname, order: order, isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false, bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null, profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null, createdAt: serverTimestamp(), isEnabled: true };
             if (platform === 'youtube') { accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A'; accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null; }
             else { accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A'; }
-
             const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
-            console.log("Shoutout added:", docRef.id);
-            await updateMetadataTimestamp(platform); // Assumes function exists
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added.`, false);
-            formElement.reset();
+            console.log("Shoutout added with ID:", docRef.id); await updateMetadataTimestamp(platform);
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added.`, false); formElement.reset();
             const previewArea = formElement.querySelector(`#add-${platform}-preview`); if (previewArea) { previewArea.innerHTML = '<p><small>Preview will appear here.</small></p>'; }
-
-            // *** ADDED: Clear search input ***
-            const searchInput = document.getElementById(`search-${platform}`);
-            if (searchInput) searchInput.value = '';
-
-            // Reload lists
-            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
-            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // <<< Refresh disabilities
-
+            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload list
         } catch (error) { console.error(`Error adding ${platform} shoutout:`, error); showAdminStatus(`Error adding ${platform}: ${error.message}`, true); }
     }
-
     async function handleUpdateShoutout(event) {
-        event.preventDefault();
-        const editForm = document.getElementById('edit-shoutout-form'); if (!editForm) return; // Re-get elements
-        const editUsernameInput = document.getElementById('edit-username'); const editNicknameInput = document.getElementById('edit-nickname'); const editOrderInput = document.getElementById('edit-order'); const editIsVerifiedInput = document.getElementById('edit-isVerified'); const editBioInput = document.getElementById('edit-bio'); const editProfilePicInput = document.getElementById('edit-profilePic'); const editSubscribersInput = document.getElementById('edit-subscribers'); const editCoverPhotoInput = document.getElementById('edit-coverPhoto'); const editFollowersInput = document.getElementById('edit-followers');
-
+        event.preventDefault(); if (!editForm) return;
         const docId = editForm.getAttribute('data-doc-id'); const platform = editForm.getAttribute('data-platform');
         if (!docId || !platform) { showAdminStatus("Error: Missing data for update.", true); return; }
         const username = editUsernameInput?.value.trim(); const nickname = editNicknameInput?.value.trim();
@@ -787,25 +780,22 @@ function initializeAppAdminPanel() {
         try {
             const docRef = doc(db, 'shoutouts', docId); await updateDoc(docRef, updatedData); await updateMetadataTimestamp(platform);
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated.`, false);
-            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // <<< Refresh disabilities
+            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // Reload disabilities
             if (typeof closeEditModal === 'function') closeEditModal();
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
         } catch (error) { console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error); showAdminStatus(`Error updating ${platform}: ${error.message}`, true); }
     }
-
     async function handleDeleteShoutout(docId, platform) { // Takes docId and platform now
         if (!confirm(`Are you sure you want to permanently delete this ${platform} shoutout?`)) { return; }
-        if (!auth || !auth.currentUser) { showAdminStatus("Error: Not logged in.", true); return; }
-        if (!docId || !platform) { showAdminStatus("Error: Missing info for deletion.", true); return; }
         showAdminStatus("Deleting shoutout...");
         try {
             await deleteDoc(doc(db, 'shoutouts', docId)); await updateMetadataTimestamp(platform);
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted.`, false);
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload list
-            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // <<< Refresh disabilities
+            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // Reload disabilities
         } catch (error) { console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error); showAdminStatus(`Error deleting ${platform}: ${error.message}`, true); }
     }
-    
+
     // --- Useful Links ---
     async function handleAddUsefulLink(event) {
          event.preventDefault(); if (!addUsefulLinkForm) return;
@@ -1067,264 +1057,397 @@ function initializeAppAdminPanel() {
         }
     } 
 
-        // --- Inactivity Logout & Timer Display Functions ---
+    // --- Helper Functions for Business Hours Preview ---
 
-// Updates the countdown timer display
-function updateTimerDisplay() {
-    if (!timerDisplayElement) return; // Exit if display element doesn't exist
-    const now = Date.now();
-    const remainingMs = expirationTime - now; // Calculate remaining time
+// Adapted time conversion (Handles Admin formats, outputs for User's TZ)
+function convertTimeToTimezoneBH_Admin(timeStr, targetTimezone) {
+    if (!timeStr || typeof timeStr !== 'string' || timeStr.trim().toUpperCase() === 'CLOSED') {
+        return "Closed";
+    }
+    let hours = -1, minutes = -1, period = null;
+    const timeStrClean = timeStr.trim().toUpperCase();
+    const timeRegex12hr = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
+    const timeRegex24hr = /^(\d{1,2}):(\d{2})$/; // Handles HH:MM from time input
 
-    if (remainingMs <= 0) { // If time is up
-        timerDisplayElement.textContent = "00:00"; // Show zero
-        clearInterval(displayIntervalId); // Stop the interval timer
+    if (timeRegex12hr.test(timeStrClean)) {
+        const match = timeStrClean.match(timeRegex12hr);
+        hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); period = match[3].toUpperCase();
+        if (period === 'PM' && hours !== 12) hours += 12; if (period === 'AM' && hours === 12) hours = 0;
+    } else if (timeRegex24hr.test(timeStrClean)) {
+        const match = timeStrClean.match(timeRegex24hr);
+        hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10);
+    } else { return "Invalid Time"; } // Return specific error for bad format
+
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return "Invalid Time";
+
+    const tempDate = new Date(); tempDate.setHours(hours, minutes, 0, 0);
+    try {
+        return tempDate.toLocaleTimeString('en-US', { timeZone: targetTimezone, hour: 'numeric', minute: '2-digit', hour12: true });
+    } catch (e) { console.error("Error converting time:", timeStr, targetTimezone, e); return "Error"; }
+}
+
+// Adapted status check logic (Uses data object from form inputs)
+function checkOpenStatus_Admin(dayOfWeek, todayDateStr, regularHoursData, holidayFormData, tempClosureFormData) {
+    const nowUser = new Date(); // Use current time for preview simulation
+    const nowEST = new Date(nowUser.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    const currentHourEST = nowEST.getHours();
+    const currentMinuteEST = nowEST.getMinutes();
+    const currentTotalMinutesEST = currentHourEST * 60 + currentMinuteEST;
+
+    let effectiveOpenStr, effectiveCloseStr;
+    let reason = "Regular Hours";
+    let hoursTodayStr = "Closed";
+    let isHoliday = false;
+    let isTempClosed = false;
+    let activeTempClosure = null;
+
+    // 1. Check Holiday from the "Add Holiday" form FOR TODAY'S DATE
+    if (holidayFormData && holidayFormData.date === todayDateStr && holidayFormData.name && holidayFormData.hours) {
+         isHoliday = true;
+         reason = `Holiday: ${holidayFormData.name}`;
+         hoursTodayStr = holidayFormData.hours;
+         if (hoursTodayStr.toLowerCase() === 'closed') return { status: "Closed", reason: reason, hoursToday: "Closed" };
+         const parts = hoursTodayStr.split(" - ");
+         if (parts.length === 2) { effectiveOpenStr = parts[0].trim(); effectiveCloseStr = parts[1].trim(); }
+         else { return { status: "Closed", reason: `${reason} (Invalid hours format)`, hoursToday: hoursTodayStr }; }
     } else {
-        // Calculate remaining minutes and seconds
-        const remainingSeconds = Math.round(remainingMs / 1000);
-        const minutes = Math.floor(remainingSeconds / 60);
-        const seconds = remainingSeconds % 60;
-        // Format as MM:SS and update display
-        timerDisplayElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        // 2. Use Regular Hours from the form
+        const dayKeyOpen = `${dayOfWeek}_open`; const dayKeyClose = `${dayOfWeek}_close`;
+        effectiveOpenStr = regularHoursData?.[dayKeyOpen]; effectiveCloseStr = regularHoursData?.[dayKeyClose];
+        hoursTodayStr = (effectiveOpenStr && effectiveOpenStr.toLowerCase() !== 'closed' && effectiveCloseStr && effectiveCloseStr.toLowerCase() !== 'closed') ? `${effectiveOpenStr} - ${effectiveCloseStr}` : "Closed";
+        if (!effectiveOpenStr || effectiveOpenStr.toLowerCase() === 'closed' || !effectiveCloseStr || effectiveCloseStr.toLowerCase() === 'closed') {
+            return { status: "Closed", reason: reason, hoursToday: "Closed" };
+        }
+    }
+
+    // Helper to parse time string (HH:MM AM/PM or HH:MM 24hr) into total minutes
+    const parseTimeToMinutesEST = (timeStr) => { /* ... same parsing logic as before ... */ if (!timeStr || typeof timeStr !== 'string') return -1; timeStr = timeStr.trim().toUpperCase(); if (timeStr === 'CLOSED') return -1; const timeRegex12hr = /^(0?[1-9]|1[0-2]):([0-5][0-9])\s?(AM|PM)$/i; const timeRegex24hr = /^(\d{1,2}):([0-5][0-9])$/; let hours = -1, minutes = -1; if (timeRegex12hr.test(timeStr)) { const match = timeStr.match(timeRegex12hr); hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); const period = match[3].toUpperCase(); if (period === 'PM' && hours !== 12) hours += 12; if (period === 'AM' && hours === 12) hours = 0; } else if (timeRegex24hr.test(timeStr)) { const match = timeStr.match(timeRegex24hr); hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); } else { return -1; } if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return -1; return hours * 60 + minutes; };
+
+    const openMinutes = parseTimeToMinutesEST(effectiveOpenStr);
+    const closeMinutes = parseTimeToMinutesEST(effectiveCloseStr);
+    if (openMinutes === -1 || closeMinutes === -1) { return { status: "Closed", reason: reason, hoursToday: hoursTodayStr }; }
+
+    // 3. Check Temporary Closure from the "Add Temp Closure" form FOR TODAY
+    if (tempClosureFormData && tempClosureFormData.date === todayDateStr && tempClosureFormData.startTime && tempClosureFormData.endTime && tempClosureFormData.reason) {
+        const fromMinutes = parseTimeToMinutesEST(tempClosureFormData.startTime); // startTime is HH:MM (24hr)
+        const toMinutes = parseTimeToMinutesEST(tempClosureFormData.endTime);
+        if(fromMinutes !== -1 && toMinutes !== -1) {
+            let isCurrentlyClosed;
+            if (toMinutes < fromMinutes) { isCurrentlyClosed = (currentTotalMinutesEST >= fromMinutes) || (currentTotalMinutesEST < toMinutes); } // Overnight closure
+            else { isCurrentlyClosed = currentTotalMinutesEST >= fromMinutes && currentTotalMinutesEST < toMinutes; } // Same day closure
+
+            if (isCurrentlyClosed) {
+                isTempClosed = true;
+                activeTempClosure = tempClosureFormData; // Use the form data
+            }
+        }
+    }
+
+    if (isTempClosed && activeTempClosure) {
+        return { status: "Temporarily Unavailable", reason: activeTempClosure.reason, hoursToday: hoursTodayStr, tempClosureDetails: activeTempClosure };
+    }
+
+    // 4. Check if within Regular/Holiday Open Hours
+    let isOpen;
+    if (closeMinutes < openMinutes) { isOpen = (currentTotalMinutesEST >= openMinutes) || (currentTotalMinutesEST < closeMinutes); }
+    else { isOpen = currentTotalMinutesEST >= openMinutes && currentTotalMinutesEST < closeMinutes; }
+
+    return isOpen ? { status: "Open", reason: reason, hoursToday: hoursTodayStr, isHoliday: isHoliday } : { status: "Closed", reason: reason, hoursToday: hoursTodayStr, isHoliday: isHoliday };
+}
+
+// --- Function to Update the Live Preview ---
+function updateBusinessInfoPreview() {
+    // Get references to preview elements
+    const previewBox = document.getElementById('business-info-preview');
+    if (!previewBox) return; // Don't run if preview box isn't there
+
+    const tzElement = previewBox.querySelector('.preview-user-timezone');
+    const hoursContainer = previewBox.querySelector('.preview-hours-container');
+    const statusElement = previewBox.querySelector('.preview-open-status');
+    const holidayAlert = previewBox.querySelector('.preview-holiday-alert');
+    const holidayName = previewBox.querySelector('.preview-holiday-name');
+    const holidayHours = previewBox.querySelector('.preview-holiday-hours');
+    const tempAlert = previewBox.querySelector('.preview-temporary-alert');
+    const tempReason = previewBox.querySelector('.preview-temporary-reason');
+    const tempHours = previewBox.querySelector('.preview-temporary-hours');
+
+    // Get current user timezone
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tzElement) tzElement.textContent = userTimezone;
+
+    // Get CURRENT values from Regular Hours form
+    const getValueOrDefault = (element) => element?.value.trim() || "Closed";
+    const currentRegularHours = {
+        sunday_open: getValueOrDefault(hoursSundayOpenInput), sunday_close: getValueOrDefault(hoursSundayCloseInput),
+        monday_open: getValueOrDefault(hoursMondayOpenInput), monday_close: getValueOrDefault(hoursMondayCloseInput),
+        tuesday_open: getValueOrDefault(hoursTuesdayOpenInput), tuesday_close: getValueOrDefault(hoursTuesdayCloseInput),
+        wednesday_open: getValueOrDefault(hoursWednesdayOpenInput), wednesday_close: getValueOrDefault(hoursWednesdayCloseInput),
+        thursday_open: getValueOrDefault(hoursThursdayOpenInput), thursday_close: getValueOrDefault(hoursThursdayCloseInput),
+        friday_open: getValueOrDefault(hoursFridayOpenInput), friday_close: getValueOrDefault(hoursFridayCloseInput),
+        saturday_open: getValueOrDefault(hoursSaturdayOpenInput), saturday_close: getValueOrDefault(hoursSaturdayCloseInput),
+    };
+
+    // Get CURRENT values from "Add Holiday" form
+    const holidayDateInput = addHolidayForm?.querySelector('#holiday-date');
+    const holidayNameInput = addHolidayForm?.querySelector('#holiday-name');
+    const holidayHoursInput = addHolidayForm?.querySelector('#holiday-specific-hours');
+    const currentHolidayData = {
+        date: holidayDateInput?.value || null,
+        name: holidayNameInput?.value.trim() || null,
+        hours: holidayHoursInput?.value.trim() || null
+    };
+
+    // Get CURRENT values from "Add Temp Closure" form
+    const tempDateInput = addTempClosureForm?.querySelector('#temp-closure-date');
+    const tempStartInput = addTempClosureForm?.querySelector('#temp-closure-start-time');
+    const tempEndInput = addTempClosureForm?.querySelector('#temp-closure-end-time');
+    const tempReasonInput = addTempClosureForm?.querySelector('#temp-closure-reason');
+    const currentTempClosureData = {
+         date: tempDateInput?.value || null,
+         startTime: tempStartInput?.value || null, // HH:MM
+         endTime: tempEndInput?.value || null,   // HH:MM
+         reason: tempReasonInput?.value.trim() || null
+    };
+
+
+    // Calculate "Today" for the preview simulation
+    const currentDate = new Date();
+    const currentDay = currentDate.toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
+    const todayDateStr = currentDate.toLocaleDateString("en-CA", { timeZone: 'America/New_York' }); // Compare dates in EST/EDT
+
+    // Check status using form data
+    const openStatusResult = checkOpenStatus_Admin(
+        currentDay,
+        todayDateStr,
+        currentRegularHours,
+        currentHolidayData,     // Use data currently being added
+        currentTempClosureData  // Use data currently being added
+    );
+
+    // Update Preview Display: Hours
+    if (hoursContainer) {
+        hoursContainer.innerHTML = ""; // Clear previous preview hours
+        const daysOrder = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+        daysOrder.forEach(day => {
+            const openKey = `${day}_open`; const closeKey = `${day}_close`;
+            const openTimeEST = currentRegularHours?.[openKey] || "Closed";
+            const closeTimeEST = currentRegularHours?.[closeKey] || "Closed";
+            const convertedOpen = convertTimeToTimezoneBH_Admin(openTimeEST, userTimezone);
+            const convertedClose = (closeTimeEST.toLowerCase() === 'closed') ? "" : convertTimeToTimezoneBH_Admin(closeTimeEST, userTimezone);
+            const dayElement = document.createElement("div");
+            dayElement.className = "preview-hours-row"; // Use preview class
+            if (day === currentDay) { dayElement.classList.add("current-day"); }
+            dayElement.innerHTML = `<strong><span class="math-inline">\{capitalize\(day\)\}\:</strong\> <span\></span>{convertedOpen}${convertedOpen !== 'Closed' && convertedClose ? ' - ' + convertedClose : ''}</span>`;
+            hoursContainer.appendChild(dayElement);
+        });
+    }
+
+    // --- Attach Event Listeners for Business Hours PREVIEW ---
+const businessHoursInputs = [
+    hoursSundayOpenInput, hoursSundayCloseInput, hoursMondayOpenInput, hoursMondayCloseInput,
+    hoursTuesdayOpenInput, hoursTuesdayCloseInput, hoursWednesdayOpenInput, hoursWednesdayCloseInput,
+    hoursThursdayOpenInput, hoursThursdayCloseInput, hoursFridayOpenInput, hoursFridayCloseInput,
+    hoursSaturdayOpenInput, hoursSaturdayCloseInput,
+    addHolidayForm?.querySelector('#holiday-date'), addHolidayForm?.querySelector('#holiday-name'), addHolidayForm?.querySelector('#holiday-specific-hours'),
+    addTempClosureForm?.querySelector('#temp-closure-date'), addTempClosureForm?.querySelector('#temp-closure-start-time'), addTempClosureForm?.querySelector('#temp-closure-end-time'), addTempClosureForm?.querySelector('#temp-closure-reason')
+];
+
+businessHoursInputs.forEach(input => {
+    if (input) {
+        input.addEventListener('input', updateBusinessInfoPreview); // Update preview on input change
+        // Also listen for 'change' for date/time inputs which might not fire 'input' consistently
+        if (input.type === 'date' || input.type === 'time') {
+            input.addEventListener('change', updateBusinessInfoPreview);
+        }
+    }
+
+    // Update Preview Display: Status
+    if (statusElement) {
+        statusElement.textContent = openStatusResult.status;
+        statusElement.className = 'preview-open-status'; // Reset classes
+        statusElement.classList.add(openStatusResult.status.toLowerCase().replace(/\s+/g, "-"));
+    }
+
+    // Initial preview population after data loads (might need slight delay)
+    setTimeout(updateBusinessInfoPreview, 500); // Call initially after a short delay
+
+    // Update Preview Display: Holiday Alert (Only show if the holiday being added is for "today")
+    if (holidayAlert && openStatusResult.isHoliday && currentHolidayData.date === todayDateStr) {
+        if (holidayName) holidayName.textContent = currentHolidayData.name;
+        if (holidayHours) holidayHours.textContent = currentHolidayData.hours; // Show EST/special hours string
+        holidayAlert.style.display = "block";
+    } else if (holidayAlert) {
+        holidayAlert.style.display = "none";
+    }
+
+    // Update Preview Display: Temporary Closure Alert (Only show if the closure being added is active now)
+    if (tempAlert && openStatusResult.status === "Temporarily Unavailable" && openStatusResult.tempClosureDetails) {
+         const tempClosure = openStatusResult.tempClosureDetails;
+         if(tempReason) tempReason.textContent = tempClosure.reason;
+         // Convert closure times for display
+         const convertedStart = convertTimeToTimezoneBH_Admin(tempClosure.startTime, userTimezone);
+         const convertedEnd = convertTimeToTimezoneBH_Admin(tempClosure.endTime, userTimezone);
+         if(tempHours) tempHours.textContent = `${convertedStart} - ${convertedEnd}`;
+         tempAlert.style.display = "block";
+    } else if (tempAlert) {
+        tempAlert.style.display = "none";
     }
 }
 
-// Function called when the inactivity timeout is reached
-function logoutDueToInactivity() {
-    console.log("Logging out due to inactivity.");
-    clearTimeout(inactivityTimer); // Clear the master timeout
-    clearInterval(displayIntervalId); // Clear the display update interval
-    if (timerDisplayElement) timerDisplayElement.textContent = ''; // Clear display
-    removeActivityListeners(); // Remove event listeners to prevent resetting timer after logout
-    // Sign the user out using Firebase Auth
-    signOut(auth).catch((error) => {
-         console.error("Error during inactivity logout:", error);
-         // Optionally show a message, though user might already be gone
-         // showAdminStatus("Logged out due to inactivity.", false);
-    });
-    // Note: The onAuthStateChanged listener will handle hiding admin content
-}
+        // ==================================================
+    // === Authentication & Event Listeners ===
+    // ==================================================
 
-// Resets the inactivity timer whenever user activity is detected
-function resetInactivityTimer() {
-    clearTimeout(inactivityTimer); // Clear existing timeout
-    clearInterval(displayIntervalId); // Clear existing display interval
-
-    // Set the new expiration time
-    expirationTime = Date.now() + INACTIVITY_TIMEOUT_MS;
-    // Set the main timeout to trigger logout
-    inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT_MS);
-
-    // Start updating the visual timer display every second
-    if (timerDisplayElement) {
-         updateTimerDisplay(); // Update display immediately
-         displayIntervalId = setInterval(updateTimerDisplay, 1000); // Update every second
+    // --- Inactivity Logout & Timer Display Functions ---
+    function updateTimerDisplay() {
+        if (!timerDisplayElement) return;
+        const now = Date.now();
+        const remainingMs = expirationTime - now;
+        if (remainingMs <= 0) { timerDisplayElement.textContent = "00:00"; clearInterval(displayIntervalId); }
+        else { const remainingSeconds = Math.round(remainingMs / 1000); const minutes = Math.floor(remainingSeconds / 60); const seconds = remainingSeconds % 60; timerDisplayElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`; }
     }
-}
-
-// Adds event listeners for various user activities
-function addActivityListeners() {
-    console.log("Adding activity listeners for inactivity timer.");
-    // Listen for any specified events on the document
-    activityEvents.forEach(eventName => {
-        document.addEventListener(eventName, resetInactivityTimer, true); // Use capture phase
-    });
-}
-
-// Removes the activity event listeners
-function removeActivityListeners() {
-    console.log("Removing activity listeners for inactivity timer.");
-    // Clear timers just in case
-    clearTimeout(inactivityTimer);
-    clearInterval(displayIntervalId);
-    if (timerDisplayElement) timerDisplayElement.textContent = ''; // Clear display
-
-    // Remove listeners for specified events
-    activityEvents.forEach(eventName => {
-        document.removeEventListener(eventName, resetInactivityTimer, true); // Use capture phase
-    });
-}
-
-// --- 'Next' Button Logic ---
-// Handles the first step of the two-step login
-if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) {
-    nextButton.addEventListener('click', () => {
-        const userEmail = emailInput.value.trim(); // Get entered email
-
-        // Check if email field is empty
-        if (!userEmail) {
-             authStatus.textContent = 'Please enter your email address.';
-             authStatus.className = 'status-message error'; // Show error style
-             authStatus.style.display = 'block'; // Make sure message is visible
-             return; // Stop processing if email is empty
-        }
-
-        // If email is entered:
-        // Display welcome message (optional, or clear previous errors)
-        authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
-        // Or simply clear status: authStatus.textContent = '';
-        authStatus.className = 'status-message'; // Reset style
-        authStatus.style.display = 'block'; // Ensure it's visible
-
-        // Hide email field and Next button
-        emailGroup.style.display = 'none';
-        nextButton.style.display = 'none';
-
-        // Show password field and the actual Login button
-        passwordGroup.style.display = 'block';
-        loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
-
-        // Focus the password input for better UX
-        if(passwordInput) {
-             passwordInput.focus();
-        }
-    });
-} else {
-     // Log warning if any elements for the two-step login are missing
-     console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button).");
-}
-
-// --- Authentication Logic ---
-// Listener for changes in authentication state (login/logout)
-onAuthStateChanged(auth, user => {
-    if (user) {
-        // User is signed in
-        console.log("User logged in:", user.email);
-        if (loginSection) loginSection.style.display = 'none'; // Hide login form
-        if (adminContent) adminContent.style.display = 'block'; // Show admin content
-        if (logoutButton) logoutButton.style.display = 'inline-block'; // Show logout button
-        if (adminGreeting) adminGreeting.textContent = `Logged in as: ${user.email}`; // Show user email
-
-        // Clear any previous login status messages
-        if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
-        if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
-
-        // Load initial data for the admin panel
-        loadProfileData(); // Load site profile data (includes maintenance mode state now)
-        // Load shoutout lists for each platform
-        if (typeof loadShoutoutsAdmin === 'function') {
-             if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
-             if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram');
-             if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
-        } else {
-             console.error("loadShoutoutsAdmin function is not defined!");
-             showAdminStatus("Error: Cannot load shoutout data.", true);
-        }
-        // *** Call loadUsefulLinksAdmin when user logs in ***
-        if (typeof loadUsefulLinksAdmin === 'function' && usefulLinksListAdmin) {
-            loadUsefulLinksAdmin();
-        }
-        // *** Call loadSocialLinksAdmin when user logs in ***
-        if (typeof loadSocialLinksAdmin === 'function' && socialLinksListAdmin) {
-             loadSocialLinksAdmin();
-        }
-
-        // --- ADD THIS LINE ---
-        if (typeof loadPresidentData === 'function') {
-            loadPresidentData(); // Load president data on login
-        } else {
-             console.error("loadPresidentData function is missing!");
-             showAdminStatus("Error: Cannot load president data.", true);
-        }
-
-        // Start the inactivity timer now that the user is logged in
-        resetInactivityTimer();
-        addActivityListeners();
-
-    } else {
-        // User is signed out
-        console.log("User logged out.");
-        if (loginSection) loginSection.style.display = 'block'; // Show login form
-        if (adminContent) adminContent.style.display = 'none'; // Hide admin content
-        if (logoutButton) logoutButton.style.display = 'none'; // Hide logout button
-        if (adminGreeting) adminGreeting.textContent = ''; // Clear greeting
-        if (typeof closeEditModal === 'function') closeEditModal(); // Close edit modal if open
-        if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal(); // Close useful link modal
-        if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal(); // Close social link modal
-
-        // Reset the login form to its initial state (email input visible)
-        if (emailGroup) emailGroup.style.display = 'block';
-        if (passwordGroup) passwordGroup.style.display = 'none';
-        if (nextButton) nextButton.style.display = 'inline-block'; // Or 'block'
-        if (loginButton) loginButton.style.display = 'none';
-        if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; } // Clear status message
-        if (loginForm) loginForm.reset(); // Clear email/password inputs
-
-        // Stop inactivity timer and remove listeners
+    function logoutDueToInactivity() {
+        console.log("Logging out due to inactivity.");
+        clearTimeout(inactivityTimer); clearInterval(displayIntervalId); if (timerDisplayElement) timerDisplayElement.textContent = '';
         removeActivityListeners();
+        signOut(auth).catch((error) => { console.error("Error during inactivity logout:", error); });
     }
-});
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimer); clearInterval(displayIntervalId);
+        expirationTime = Date.now() + INACTIVITY_TIMEOUT_MS;
+        inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT_MS);
+        if (timerDisplayElement) { updateTimerDisplay(); displayIntervalId = setInterval(updateTimerDisplay, 1000); }
+    }
+    function addActivityListeners() {
+        console.log("Adding activity listeners for inactivity timer.");
+        activityEvents.forEach(eventName => { document.addEventListener(eventName, resetInactivityTimer, true); });
+    }
+    function removeActivityListeners() {
+        console.log("Removing activity listeners for inactivity timer.");
+        clearTimeout(inactivityTimer); clearInterval(displayIntervalId); if (timerDisplayElement) timerDisplayElement.textContent = '';
+        activityEvents.forEach(eventName => { document.removeEventListener(eventName, resetInactivityTimer, true); });
+    }
 
-// Login Form Submission (Handles the final step after password entry)
-if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent default form submission
-        const email = emailInput.value;
-        const password = passwordInput.value;
+    // --- 'Next' Button Logic ---
+    if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) {
+        nextButton.addEventListener('click', () => {
+            const userEmail = emailInput.value.trim();
+            if (!userEmail) { authStatus.textContent = 'Please enter your email address.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block'; return; }
+            authStatus.textContent = `Welcome back, ${userEmail}`; authStatus.className = 'status-message'; authStatus.style.display = 'block';
+            emailGroup.style.display = 'none'; nextButton.style.display = 'none';
+            passwordGroup.style.display = 'block'; loginButton.style.display = 'inline-block';
+            if(passwordInput) { passwordInput.focus(); }
+        });
+    } else { console.warn("Missing elements for 'Next' button functionality."); }
 
-        // Re-validate inputs (especially password as email was checked by 'Next')
-        if (!email || !password) {
-             // Check which field is missing in the current state
-             if (passwordGroup && passwordGroup.style.display !== 'none' && !password) {
-                 if (authStatus) { authStatus.textContent = 'Please enter your password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';}
-             } else if (!email) { // Should ideally not happen in two-step flow, but check anyway
-                 if (authStatus) { authStatus.textContent = 'Please enter your email.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';}
-             } else { // Generic message if validation fails unexpectedly
-                 if (authStatus) { authStatus.textContent = 'Please enter email and password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';}
-             }
-             return; // Stop if validation fails
-        }
+    // --- Authentication State Listener ---
+    onAuthStateChanged(auth, user => {
+        if (user) { // User is signed in
+            console.log("User logged in:", user.email);
+            // Update UI for logged-in state
+            if (loginSection) loginSection.style.display = 'none';
+            if (adminContent) adminContent.style.display = 'block';
+            if (logoutButton) logoutButton.style.display = 'inline-block';
+            if (adminGreeting) adminGreeting.textContent = `Logged in as: ${user.email}`;
+            if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
+            if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
 
-        // Show "Logging in..." message
-        if (authStatus) {
-            authStatus.textContent = 'Logging in...';
-            authStatus.className = 'status-message'; // Reset style
-            authStatus.style.display = 'block';
-        }
+            // Load ALL initial data concurrently using Promise.allSettled
+            console.log("Loading admin data concurrently...");
+            const loadPromises = [
+                 // Create promises for each load function, checking if function exists
+                 (typeof loadProfileData === 'function' ? loadProfileData() : Promise.reject("loadProfileData missing")),
+                 (typeof loadPresidentData === 'function' ? loadPresidentData() : Promise.reject("loadPresidentData missing")),
+                 (typeof loadDisabilitiesAdmin === 'function' ? loadDisabilitiesAdmin() : Promise.reject("loadDisabilitiesAdmin missing")),
+                 (typeof loadUsefulLinksAdmin === 'function' ? loadUsefulLinksAdmin() : Promise.reject("loadUsefulLinksAdmin missing")),
+                 (typeof loadSocialLinksAdmin === 'function' ? loadSocialLinksAdmin() : Promise.reject("loadSocialLinksAdmin missing")),
+                 (typeof loadShoutoutsAdmin === 'function' ? Promise.all([loadShoutoutsAdmin('tiktok'), loadShoutoutsAdmin('instagram'), loadShoutoutsAdmin('youtube')]) : Promise.reject("loadShoutoutsAdmin missing")), // Group shoutouts
+                 (typeof loadRegularHoursAdmin === 'function' ? loadRegularHoursAdmin() : Promise.reject("loadRegularHoursAdmin missing")),
+                 (typeof loadHolidaysAdmin === 'function' ? loadHolidaysAdmin() : Promise.reject("loadHolidaysAdmin missing")),
+                 (typeof loadTempClosuresAdmin === 'function' ? loadTempClosuresAdmin() : Promise.reject("loadTempClosuresAdmin missing"))
+            ];
 
-        // Attempt Firebase sign-in
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Login successful - onAuthStateChanged will handle the UI updates
-                console.log("Login successful via form submission.");
-                // No need to clear authStatus here, onAuthStateChanged does it.
-             })
-            .catch((error) => {
-                // Handle login errors
-                console.error("Login failed:", error.code, error.message);
-                let errorMessage = 'Invalid email or password.'; // Default error
-                // Map specific Firebase Auth error codes to user-friendly messages
-                if (error.code === 'auth/invalid-email') { errorMessage = 'Invalid email format.'; }
-                else if (error.code === 'auth/user-disabled') { errorMessage = 'This account has been disabled.'; }
-                else if (error.code === 'auth/invalid-credential') { errorMessage = 'Invalid email or password.'; } // Covers wrong password, user not found
-                else if (error.code === 'auth/too-many-requests') { errorMessage = 'Access temporarily disabled due to too many failed login attempts. Please try again later.'; }
-                else { errorMessage = `An unexpected error occurred (${error.code}).`; } // Fallback
+            // Wait for all loading operations to settle (finish or fail)
+            Promise.allSettled(loadPromises).then(results => {
+                 console.log("Admin data loading settled.");
+                 results.forEach((result, index) => {
+                     if (result.status === 'rejected') {
+                         console.error(`Error loading admin section ${index}:`, result.reason);
+                         // Optionally show a generic error to the user
+                         // showAdminStatus("Error loading some admin data.", true);
+                     }
+                 });
 
-                // Display the specific error message
-                if (authStatus) {
-                    authStatus.textContent = `Login Failed: ${errorMessage}`;
-                    authStatus.className = 'status-message error';
-                    authStatus.style.display = 'block';
-                }
+                 // *** Initialize the Business Hours Preview AFTER data attempts to load ***
+                 if (typeof updateBusinessInfoPreview === 'function') {
+                     console.log("Populating initial business info preview.");
+                     updateBusinessInfoPreview();
+                 } else {
+                     console.error("updateBusinessInfoPreview function missing!");
+                 }
+
+                 // Start inactivity timer only after initial loads attempt to finish
+                 resetInactivityTimer(); // Assumes resetInactivityTimer defined
+                 addActivityListeners(); // Assumes addActivityListeners defined
             });
-    });
-}
 
-// Logout Button Event Listener
-if (logoutButton) {
-    logoutButton.addEventListener('click', () => {
-        console.log("Logout button clicked.");
-        removeActivityListeners(); // Stop inactivity timer first
-        signOut(auth).then(() => {
-             // Sign-out successful - onAuthStateChanged handles UI updates
-             console.log("User signed out via button.");
-         }).catch((error) => {
-             // Handle potential logout errors
-             console.error("Logout failed:", error);
-             showAdminStatus(`Logout Failed: ${error.message}`, true); // Show error in admin area
-         });
+        } else { // User is signed out
+            console.log("User logged out.");
+            // Update UI for logged-out state
+            if (loginSection) loginSection.style.display = 'block';
+            if (adminContent) adminContent.style.display = 'none';
+            if (logoutButton) logoutButton.style.display = 'none';
+            if (adminGreeting) adminGreeting.textContent = '';
+            // Close any open modals
+            if (typeof closeEditModal === 'function') closeEditModal();
+            if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal();
+            if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal();
+            if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal();
+            // Reset login form
+            if (emailGroup) emailGroup.style.display = 'block';
+            if (passwordGroup) passwordGroup.style.display = 'none';
+            if (nextButton) nextButton.style.display = 'inline-block';
+            if (loginButton) loginButton.style.display = 'none';
+            if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; }
+            if (loginForm) loginForm.reset();
+            // Stop inactivity timer
+            removeActivityListeners(); // Assumes removeActivityListeners defined
+        }
     });
-}
-    
+
+    // --- Login Form Submission Handler ---
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = emailInput.value; const password = passwordInput.value;
+            if (!email || !password) { /* ... validation code ... */ if (passwordGroup && passwordGroup.style.display !== 'none' && !password) { if (authStatus) { authStatus.textContent = 'Please enter your password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} } else if (!email) { if (authStatus) { authStatus.textContent = 'Please enter your email.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} } else { if (authStatus) { authStatus.textContent = 'Please enter email and password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} } return; }
+            if (authStatus) { authStatus.textContent = 'Logging in...'; authStatus.className = 'status-message'; authStatus.style.display = 'block'; }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => { console.log("Login successful via form submission."); })
+                .catch((error) => {
+                    console.error("Login failed:", error.code, error.message);
+                    let errorMessage = 'Invalid email or password.';
+                    if (error.code === 'auth/invalid-email') { errorMessage = 'Invalid email format.'; }
+                    else if (error.code === 'auth/user-disabled') { errorMessage = 'This account has been disabled.'; }
+                    else if (error.code === 'auth/invalid-credential') { errorMessage = 'Invalid email or password.'; }
+                    else if (error.code === 'auth/too-many-requests') { errorMessage = 'Access temporarily disabled due to too many failed login attempts.'; }
+                    else { errorMessage = `An unexpected error occurred (${error.code}).`; }
+                    if (authStatus) { authStatus.textContent = `Login Failed: ${errorMessage}`; authStatus.className = 'status-message error'; authStatus.style.display = 'block'; }
+                });
+        });
+    }
+
+    // --- Logout Button Handler ---
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            console.log("Logout button clicked.");
+            removeActivityListeners(); // Stop inactivity timer first
+            signOut(auth).then(() => { console.log("User signed out via button."); })
+                         .catch((error) => { console.error("Logout failed:", error); showAdminStatus(`Logout Failed: ${error.message}`, true); });
+        });
+    }
+
     // ========================================
     // === Attach ALL Event Listeners Below ===
     // ========================================
