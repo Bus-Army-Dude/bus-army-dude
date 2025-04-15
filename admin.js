@@ -749,19 +749,35 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
             const duplicateCheckQuery = query(shoutoutsCol, where("platform", "==", platform), where("username", "==", username), limit(1));
             const querySnapshot = await getDocs(duplicateCheckQuery);
             if (!querySnapshot.empty) { showAdminStatus(`Error: Username '@${username}' on platform '${platform}' already exists.`, true); return; }
+
             // Add Logic
             const accountData = { platform: platform, username: username, nickname: nickname, order: order, isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false, bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null, profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null, createdAt: serverTimestamp(), isEnabled: true };
             if (platform === 'youtube') { accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A'; accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null; }
             else { accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A'; }
+
             const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
-            console.log("Shoutout added with ID:", docRef.id); await updateMetadataTimestamp(platform);
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added.`, false); formElement.reset();
+            console.log("Shoutout added:", docRef.id);
+            await updateMetadataTimestamp(platform); // Assumes function exists
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added.`, false);
+            formElement.reset();
             const previewArea = formElement.querySelector(`#add-${platform}-preview`); if (previewArea) { previewArea.innerHTML = '<p><small>Preview will appear here.</small></p>'; }
-            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload list
+
+            // *** ADDED: Clear search input ***
+            const searchInput = document.getElementById(`search-${platform}`);
+            if (searchInput) searchInput.value = '';
+
+            // Reload lists
+            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
+            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // <<< Refresh disabilities
+
         } catch (error) { console.error(`Error adding ${platform} shoutout:`, error); showAdminStatus(`Error adding ${platform}: ${error.message}`, true); }
     }
+
     async function handleUpdateShoutout(event) {
-        event.preventDefault(); if (!editForm) return;
+        event.preventDefault();
+        const editForm = document.getElementById('edit-shoutout-form'); if (!editForm) return; // Re-get elements
+        const editUsernameInput = document.getElementById('edit-username'); const editNicknameInput = document.getElementById('edit-nickname'); const editOrderInput = document.getElementById('edit-order'); const editIsVerifiedInput = document.getElementById('edit-isVerified'); const editBioInput = document.getElementById('edit-bio'); const editProfilePicInput = document.getElementById('edit-profilePic'); const editSubscribersInput = document.getElementById('edit-subscribers'); const editCoverPhotoInput = document.getElementById('edit-coverPhoto'); const editFollowersInput = document.getElementById('edit-followers');
+
         const docId = editForm.getAttribute('data-doc-id'); const platform = editForm.getAttribute('data-platform');
         if (!docId || !platform) { showAdminStatus("Error: Missing data for update.", true); return; }
         const username = editUsernameInput?.value.trim(); const nickname = editNicknameInput?.value.trim();
@@ -774,22 +790,25 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
         try {
             const docRef = doc(db, 'shoutouts', docId); await updateDoc(docRef, updatedData); await updateMetadataTimestamp(platform);
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated.`, false);
-            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // Reload disabilities
+            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // <<< Refresh disabilities
             if (typeof closeEditModal === 'function') closeEditModal();
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
         } catch (error) { console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error); showAdminStatus(`Error updating ${platform}: ${error.message}`, true); }
     }
+
     async function handleDeleteShoutout(docId, platform) { // Takes docId and platform now
         if (!confirm(`Are you sure you want to permanently delete this ${platform} shoutout?`)) { return; }
+        if (!auth || !auth.currentUser) { showAdminStatus("Error: Not logged in.", true); return; }
+        if (!docId || !platform) { showAdminStatus("Error: Missing info for deletion.", true); return; }
         showAdminStatus("Deleting shoutout...");
         try {
             await deleteDoc(doc(db, 'shoutouts', docId)); await updateMetadataTimestamp(platform);
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted.`, false);
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload list
-            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // Reload disabilities
+            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin(); // <<< Refresh disabilities
         } catch (error) { console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error); showAdminStatus(`Error deleting ${platform}: ${error.message}`, true); }
     }
-
+    
     // --- Useful Links ---
     async function handleAddUsefulLink(event) {
          event.preventDefault(); if (!addUsefulLinkForm) return;
