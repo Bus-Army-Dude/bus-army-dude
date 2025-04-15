@@ -1131,30 +1131,29 @@ async function loadDisabilitiesAdmin() {
     }
 
     // --- 'Next' Button Logic ---
-    // **CORRECTED**: Uses variables declared in initializeAppAdminPanel scope
-    // Removed redundant internal const declarations
-    if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton && passwordInput) {
-        nextButton.addEventListener('click', () => {
-            // Use variables from the outer scope (emailInput, authStatus, etc.)
-            const userEmail = emailInput.value.trim();
-            if (!userEmail) {
-                authStatus.textContent = 'Please enter your email address.';
-                authStatus.className = 'status-message error';
-                authStatus.style.display = 'block';
-                return;
-            }
-            authStatus.textContent = `Welcome back, ${userEmail}`;
-            authStatus.className = 'status-message';
+// Uses variables declared in initializeAppAdminPanel scope
+if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton && passwordInput) {
+    nextButton.addEventListener('click', () => {
+        // Use variables from the outer scope (emailInput, authStatus, etc.)
+        const userEmail = emailInput.value.trim();
+        if (!userEmail) {
+            authStatus.textContent = 'Please enter your email address.';
+            authStatus.className = 'status-message error';
             authStatus.style.display = 'block';
-            emailGroup.style.display = 'none';
-            nextButton.style.display = 'none';
-            passwordGroup.style.display = 'block';
-            loginButton.style.display = 'inline-block';
-            passwordInput.focus();
-        });
-    } else {
-        console.warn("Missing elements for 'Next' button functionality. Check IDs: next-button, email, auth-status, email-group, password-group, login-button, password");
-    }
+            return;
+        }
+        authStatus.textContent = `Welcome back, ${userEmail}`;
+        authStatus.className = 'status-message';
+        authStatus.style.display = 'block';
+        emailGroup.style.display = 'none';
+        nextButton.style.display = 'none';
+        passwordGroup.style.display = 'block';
+        loginButton.style.display = 'inline-block';
+        passwordInput.focus();
+    });
+} else {
+    console.warn("Missing elements for 'Next' button functionality. Check IDs: next-button, email, auth-status, email-group, password-group, login-button, password");
+}
 
     // --- Authentication State Listener ---
     onAuthStateChanged(auth, user => {
