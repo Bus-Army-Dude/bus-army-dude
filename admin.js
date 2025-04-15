@@ -710,7 +710,7 @@ function renderYouTubeCard(account) { //
              adminPfpPreview.style.display = 'none'; //
         }
     
-        loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
+        (); // <--- ADD THIS LINE HERE
     
     } catch (error) { //
          console.error("Error saving profile data:", error); //
@@ -777,7 +777,7 @@ function renderYouTubeCard(account) { //
                 showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
              }
         
-             loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
+             (); // <--- ADD THIS LINE HERE
 
         } catch (error) { //
             console.error("Error saving maintenance mode status:", error); //
@@ -1274,7 +1274,7 @@ function renderYouTubeCard(account) { //
             await updateMetadataTimestamp(platform); // Update site timestamp
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false); //
         
-            loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
+            (); // <--- ADD THIS LINE HERE
         
             if (typeof closeEditModal === 'function') closeEditModal(); // Close the modal
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload the list
@@ -1539,7 +1539,7 @@ async function handleUpdateUsefulLink(event) { //
         // await updateMetadataTimestamp('usefulLinks'); // Optional
         showAdminStatus("Useful link updated successfully.", false); // Show main status
     
-        loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
+        (); // <--- ADD THIS LINE HERE
     
         closeEditUsefulLinkModal(); //
         loadUsefulLinksAdmin(); // Reload the list
@@ -1798,7 +1798,7 @@ async function handleUpdateUsefulLink(event) { //
             // Optionally: await updateMetadataTimestamp('socialLinks');
             showAdminStatus("Social link updated successfully.", false); // Show main status
         
-            loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
+            (); // <--- ADD THIS LINE HERE
         
             closeEditSocialLinkModal(); //
             loadSocialLinksAdmin(); // Reload the list
@@ -2001,7 +2001,7 @@ async function handleUpdateUsefulLink(event) { //
             console.log("President data saved to:", presidentDocRef.path); //
             showPresidentStatus("President info updated successfully!", false); //
         
-            loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
+            (); // <--- ADD THIS LINE HERE
         
         } catch (error) { //
             console.error("Error saving president data:", error); //
@@ -2135,7 +2135,7 @@ async function handleUpdateUsefulLink(event) { //
     }
 
     // Function to Load Disabilities into the Admin Panel List
-    async function loadDisabilitiesAdmin() {
+    async function () {
         // Use consts defined earlier for list container and count span
         if (!disabilitiesListAdmin) {
             console.error("Disabilities list container not found.");
@@ -2237,7 +2237,7 @@ async function handleUpdateUsefulLink(event) { //
             console.log("Disability link added with ID:", docRef.id);
             showAdminStatus("Disability link added successfully.", false);
             addDisabilityForm.reset(); // Reset the form
-            loadDisabilitiesAdmin(); // Reload the list
+            (); // Reload the list
 
         } catch (error) {
             console.error("Error adding disability link:", error);
@@ -2256,7 +2256,7 @@ async function handleUpdateUsefulLink(event) { //
              // Use the disabilitiesCollectionRef defined earlier
             await deleteDoc(doc(db, 'disabilities', docId));
             showAdminStatus("Disability link deleted successfully.", false);
-            loadDisabilitiesAdmin(); // Reload list is simplest
+            (); // Reload list is simplest
 
         } catch (error) {
             console.error(`Error deleting disability link (ID: ${docId}):`, error);
@@ -2351,7 +2351,7 @@ async function handleUpdateUsefulLink(event) { //
             await updateDoc(docRef, updatedData);
             showAdminStatus("Disability link updated successfully.", false); // Show main status
             closeEditDisabilityModal(); // Close modal on success
-            loadDisabilitiesAdmin(); // Reload the list in the admin panel
+            (); // Reload the list in the admin panel
 
         } catch (error) {
             console.error(`Error updating disability link (ID: ${docId}):`, error);
