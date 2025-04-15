@@ -343,6 +343,150 @@
          <div id="edit-social-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
 </div>
 
+            <section class="admin-section" id="business-hours-management" aria-labelledby="business-hours-heading">
+                <h3 id="business-hours-heading">Manage Business Hours & Availability</h3>
+
+                <div class="admin-inputs-container">
+                    <div class="subsection" id="regular-hours-subsection">
+                        <h4 id="regular-hours-heading">Regular Weekly Hours (EST)</h4>
+                        <form id="regular-hours-form">
+                            <div class="hours-grid">
+                                <div class="day-hours-group">
+                                    <label for="hours-sunday-open">Sunday:</label>
+                                    <input type="text" id="hours-sunday-open" name="sunday_open" placeholder="e.g., 10:00 AM or Closed">
+                                    <span>to</span>
+                                    <input type="text" id="hours-sunday-close" name="sunday_close" placeholder="e.g., 11:00 PM or Closed">
+                                </div>
+                                <div class="day-hours-group">
+                                    <label for="hours-monday-open">Monday:</label>
+                                    <input type="text" id="hours-monday-open" name="monday_open" placeholder="e.g., 10:00 AM">
+                                    <span>to</span>
+                                    <input type="text" id="hours-monday-close" name="monday_close" placeholder="e.g., 11:00 PM">
+                                </div>
+                                <div class="day-hours-group">
+                                    <label for="hours-tuesday-open">Tuesday:</label>
+                                    <input type="text" id="hours-tuesday-open" name="tuesday_open" placeholder="e.g., 10:00 AM">
+                                    <span>to</span>
+                                    <input type="text" id="hours-tuesday-close" name="tuesday_close" placeholder="e.g., 11:00 PM">
+                                </div>
+                                <div class="day-hours-group">
+                                    <label for="hours-wednesday-open">Wednesday:</label>
+                                    <input type="text" id="hours-wednesday-open" name="wednesday_open" placeholder="e.g., 10:00 AM">
+                                    <span>to</span>
+                                    <input type="text" id="hours-wednesday-close" name="wednesday_close" placeholder="e.g., 11:00 PM">
+                                </div>
+                                <div class="day-hours-group">
+                                    <label for="hours-thursday-open">Thursday:</label>
+                                    <input type="text" id="hours-thursday-open" name="thursday_open" placeholder="e.g., 10:00 AM">
+                                    <span>to</span>
+                                    <input type="text" id="hours-thursday-close" name="thursday_close" placeholder="e.g., 11:00 PM">
+                                </div>
+                                <div class="day-hours-group">
+                                    <label for="hours-friday-open">Friday:</label>
+                                    <input type="text" id="hours-friday-open" name="friday_open" placeholder="e.g., 10:00 AM">
+                                    <span>to</span>
+                                    <input type="text" id="hours-friday-close" name="friday_close" placeholder="e.g., 11:00 PM">
+                                </div>
+                                <div class="day-hours-group">
+                                    <label for="hours-saturday-open">Saturday:</label>
+                                    <input type="text" id="hours-saturday-open" name="saturday_open" placeholder="e.g., 10:00 AM">
+                                    <span>to</span>
+                                    <input type="text" id="hours-saturday-close" name="saturday_close" placeholder="e.g., 11:00 PM">
+                                </div>
+                                </div>
+                            <div class="form-actions">
+                                <button type="submit" id="save-regular-hours-button" class="button-primary">Save Regular Hours</button>
+                            </div>
+                        </form>
+                        <div id="regular-hours-status-message" class="status-message" role="status" aria-live="polite"></div>
+                    </div>
+
+                    <div class="subsection" id="holiday-hours-subsection">
+                        <h4 id="holiday-hours-heading">Manage Holiday Hours / Closures</h4>
+                        <form id="add-holiday-form">
+                            <h5>Add New Holiday</h5>
+                            <div class="form-group">
+                                <label for="holiday-date">Date:</label>
+                                <input type="date" id="holiday-date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="holiday-name">Holiday Name:</label>
+                                <input type="text" id="holiday-name" name="name" required placeholder="e.g., Christmas Day">
+                            </div>
+                            <div class="form-group">
+                                <label for="holiday-specific-hours">Specific Hours (EST) or "Closed":</label>
+                                <input type="text" id="holiday-specific-hours" name="hours" required placeholder="e.g., 10:00 AM - 3:00 PM or Closed">
+                            </div>
+                            <div class="form-actions">
+                            <button type="submit" class="button-primary">Add Holiday</button>
+                            </div>
+                        </form>
+
+                        <h5>Existing Holidays <span id="holidays-count" class="list-count"></span></h5>
+                        <div id="holidays-list-admin" class="list-container-admin" role="list">
+                            <p>Loading holidays...</p>
+                        </div>
+                        <div id="holidays-status-message" class="status-message" role="status" aria-live="polite"></div>
+                    </div>
+
+                    <div class="subsection" id="temp-closures-subsection">
+                        <h4 id="temp-closures-heading">Manage Temporary Unavailability</h4>
+                        <form id="add-temp-closure-form">
+                            <h5>Add Temporary Closure</h5>
+                            <div class="form-group">
+                                <label for="temp-closure-date">Date:</label>
+                                <input type="date" id="temp-closure-date" name="date" required>
+                            </div>
+                            <div class="form-group time-range-group">
+                                <label for="temp-closure-start-time">Start Time (EST):</label>
+                                <input type="time" id="temp-closure-start-time" name="startTime" required>
+                                <label for="temp-closure-end-time">End Time (EST):</label>
+                                <input type="time" id="temp-closure-end-time" name="endTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="temp-closure-reason">Reason:</label>
+                                <input type="text" id="temp-closure-reason" name="reason" required placeholder="e.g., In a meeting, Lunch Break">
+                            </div>
+                            <div class="form-actions">
+                            <button type="submit" class="button-primary">Add Temporary Closure</button>
+                            </div>
+                        </form>
+
+                        <h5>Upcoming/Recent Temporary Closures <span id="temp-closures-count" class="list-count"></span></h5>
+                        <div id="temp-closures-list-admin" class="list-container-admin" role="list">
+                            <p>Loading temporary closures...</p>
+                        </div>
+                        <div id="temp-closures-status-message" class="status-message" role="status" aria-live="polite"></div>
+                    </div>
+                </div>
+
+                <div class="preview-container subsection">
+                     <h4>Live Preview (How it looks to users)</h4>
+                     <div id="business-info-preview" class="business-info-preview-box">
+                        <h1>Bus Army Dude's Merch Store</h1>
+                        <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
+                        <p><strong>Your current timezone:</strong> <span class="preview-user-timezone">[Loading...]</span></p>
+
+                        <h2>Business Hours</h2>
+                        <div class="preview-hours-container">[Loading hours...]</div>
+
+                        <div class="preview-holiday-alert" style="display: none;">
+                            <p><strong>Holiday:</strong> <span class="preview-holiday-name"></span></p>
+                            <p><strong>Special hours today:</strong> <span class="preview-holiday-hours"></span></p>
+                        </div>
+
+                        <p class="status"><strong>Status:</strong> <span class="preview-open-status">[Loading...]</span></p>
+
+                        <div class="preview-temporary-alert" style="display: none;">
+                            <p><strong>Temporarily Unavailable:</strong> <span class="preview-temporary-reason"></span></p>
+                            <p><strong>Unavailable Time:</strong> <span class="preview-temporary-hours"></span></p>
+                        </div>
+                        <small><i>Preview updates as you type in the forms above. Assumes current date/time for status calculation.</i></small>
+                     </div>
+                </div>
+
+            </section>
+
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
