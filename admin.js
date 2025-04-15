@@ -700,6 +700,7 @@ function renderYouTubeCard(account) { //
             await setDoc(profileDocRef, newData, { merge: true }); //
             console.log("Profile data saved to:", profileDocRef.path); //
             showProfileStatus("Profile updated successfully!", false); //
+            loadDisabilitiesAdmin(); // <--- CORRECT LINE ADDED HERE
 
             // Optionally update the preview image immediately after saving a new URL
             if (adminPfpPreview && newData.profilePicUrl) { //
