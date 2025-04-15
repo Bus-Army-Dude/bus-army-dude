@@ -1,16 +1,17 @@
-// admin.js (Version includes Business Hours CRUD + Login Fixes + Logout-on-Refresh)
+// admin.js (Version includes Business Hours CRUD + Login Fixes + Logout-on-Refresh v3 + Parallel Loading)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
 // Import Firebase functions
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-// Import Auth functions including persistence types
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"; //
+// Import Auth functions (NO setPersistence)
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+
 // *** Global Variable for Client-Side Filtering ***
 let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
 
-document.addEventListener('DOMContentLoaded', async () => { // Made listener async for persistence
+document.addEventListener('DOMContentLoaded', () => { // No async needed here anymore
     // First, check if db and auth were successfully imported/initialized
     if (!db || !auth) {
         console.error("Firestore (db) or Auth not initialized correctly. Check firebase-init.js and imports.");
@@ -30,6 +31,10 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
 
     console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
 
+    // --- Main function to set up the admin panel after initial checks ---
+    function initializeAppAdminPanel() {
+        console.log("Initializing Admin Panel UI and Functions...");
+
     // --- Firestore References ---
     const profileDocRef = doc(db, "site_config", "mainProfile");
     const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
@@ -46,8 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
 
-    // --- DOM Element References ---
-    // (Declare all consts for elements used throughout the functions below ONE time here)
+   // --- DOM Element References ---
+    // (Defined once here for use throughout the initializeAppAdminPanel scope)
     const loginSection = document.getElementById('login-section');
     const adminContent = document.getElementById('admin-content');
     const loginForm = document.getElementById('login-form');
@@ -62,7 +67,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const passwordGroup = document.getElementById('password-group');
     const loginButton = document.getElementById('login-button');
     const timerDisplayElement = document.getElementById('inactivity-timer-display');
-    // Profile Elements
     const profileForm = document.getElementById('profile-form');
     const profileUsernameInput = document.getElementById('profile-username');
     const profilePicUrlInput = document.getElementById('profile-pic-url');
@@ -70,7 +74,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const profileStatusInput = document.getElementById('profile-status');
     const profileStatusMessage = document.getElementById('profile-status-message');
     const adminPfpPreview = document.getElementById('admin-pfp-preview');
-    // Disabilities Elements
     const addDisabilityForm = document.getElementById('add-disability-form');
     const disabilitiesListAdmin = document.getElementById('disabilities-list-admin');
     const disabilitiesCount = document.getElementById('disabilities-count');
@@ -82,10 +85,8 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const editDisabilityUrlInput = document.getElementById('edit-disability-url');
     const editDisabilityOrderInput = document.getElementById('edit-disability-order');
     const editDisabilityStatusMessage = document.getElementById('edit-disability-status-message');
-    // Site Settings Elements
     const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle');
     const settingsStatusMessage = document.getElementById('settings-status-message');
-    // Shoutout Elements
     const addShoutoutTiktokForm = document.getElementById('add-shoutout-tiktok-form');
     const shoutoutsTiktokListAdmin = document.getElementById('shoutouts-tiktok-list-admin');
     const addShoutoutInstagramForm = document.getElementById('add-shoutout-instagram-form');
@@ -112,7 +113,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const addInstagramPreview = document.getElementById('add-instagram-preview');
     const addYoutubePreview = document.getElementById('add-youtube-preview');
     const editShoutoutPreview = document.getElementById('edit-shoutout-preview');
-    // Useful Links Elements
     const addUsefulLinkForm = document.getElementById('add-useful-link-form');
     const usefulLinksListAdmin = document.getElementById('useful-links-list-admin');
     const usefulLinksCount = document.getElementById('useful-links-count');
@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const editLinkUrlInput = document.getElementById('edit-link-url');
     const editLinkOrderInput = document.getElementById('edit-link-order');
     const editLinkStatusMessage = document.getElementById('edit-link-status-message');
-    // Social Links Elements
     const addSocialLinkForm = document.getElementById('add-social-link-form');
     const socialLinksListAdmin = document.getElementById('social-links-list-admin');
     const socialLinksCount = document.getElementById('social-links-count');
@@ -136,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
     const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
     const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message');
-    // President Elements
     const presidentForm = document.getElementById('president-form');
     const presidentNameInput = document.getElementById('president-name');
     const presidentBornInput = document.getElementById('president-born');
@@ -147,7 +145,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const presidentImageUrlInput = document.getElementById('president-image-url');
     const presidentStatusMessage = document.getElementById('president-status-message');
     const presidentPreviewArea = document.getElementById('president-preview');
-    // Business Hours Elements
     const regularHoursForm = document.getElementById('regular-hours-form');
     const regularHoursStatusMessage = document.getElementById('regular-hours-status-message');
     const hoursSundayOpenInput = document.getElementById('hours-sunday-open'); const hoursSundayCloseInput = document.getElementById('hours-sunday-close');
@@ -165,7 +162,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const tempClosuresListAdmin = document.getElementById('temp-closures-list-admin');
     const tempClosuresCount = document.getElementById('temp-closures-count');
     const tempClosuresStatusMessage = document.getElementById('temp-closures-status-message');
-
 
     // --- Helper Functions ---
     function showAdminStatus(message, isError = false) { if (!adminStatusElement) return; adminStatusElement.textContent = message; adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000); }
@@ -1193,9 +1189,13 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
         logoutButton.addEventListener('click', () => {
             console.log("Logout button clicked.");
             removeActivityListeners(); // Stop inactivity timer first
-            signOut(auth).then(() => { console.log("User signed out via button."); })
-                         .catch((error) => { console.error("Logout failed:", error); showAdminStatus(`Logout Failed: ${error.message}`, true); });
-        });
+            signOut(auth).then(() => {
+                console.log("Ensured clean auth state on page load (Sign Out Attempted).");
+                initializeAppAdminPanel(); // Proceed with setup ONLY after sign out attempt
+            }).catch((error) => {
+                console.error("Non-critical error during initial sign out:", error);
+                initializeAppAdminPanel(); // Still try to initialize even if sign out failed
+            });
     }
 
     // ========================================
