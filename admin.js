@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => { //
 
     // --- Firestore Reference for Profile / Site Config ---
     const profileDocRef = doc(db, "site_config", "mainProfile"); //
+    // --- ADD THIS for Tech Items ---
+    const techItemsCollectionRef = collection(db, "tech_items");
     // Reference for Shoutout Metadata (used for timestamps)
     const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); //
     // *** Firestore Reference for Useful Links ***
@@ -937,7 +939,7 @@ function renderYouTubeCard(account) { //
 
 // --- Authentication Logic ---
     // Listener for changes in authentication state (login/logout)
-    onAuthStateChanged(auth, user => { //
+    onAuthStaanged(auth, user => { //
         if (user) { //
             // User is signed in
             console.log("User logged in:", user.email); //
