@@ -172,6 +172,63 @@
                  <div id="president-status-message" class="status-message" role="status" aria-live="polite"></div>
             </section>
 
+            <section class="admin-section" id="disabilities-management" aria-labelledby="disabilities-heading">
+                <h3 id="disabilities-heading">Manage Disabilities List</h3>
+
+                <form id="add-disability-form" aria-labelledby="add-disability-heading">
+                    <h5 id="add-disability-heading">Add New Disability Link</h5>
+                    <div class="form-group">
+                        <label for="disability-name">Disability Name (Displayed Text):</label>
+                        <input type="text" id="disability-name" name="name" required placeholder="e.g., Autism Spectrum Disorder (ASD)">
+                    </div>
+                    <div class="form-group">
+                        <label for="disability-url">Information URL:</label>
+                        <input type="url" id="disability-url" name="url" required placeholder="https://..." inputmode="url">
+                    </div>
+                    <div class="form-group">
+                        <label for="disability-order">Display Order:</label>
+                        <input type="number" id="disability-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
+                    </div>
+                    <div class="form-actions">
+                       <button type="submit" class="button-primary">Add Disability Link</button>
+                    </div>
+                </form>
+
+                <h5 id="existing-disabilities-heading">
+                    Existing Disability Links <span id="disabilities-count" class="list-count"></span>
+                </h5>
+                <div id="disabilities-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-disabilities-heading">
+                    <p>Loading disability links...</p>
+                    </div>
+            </section>
+            <div id="edit-disability-modal" class="modal" style="display: none;"
+                 role="dialog" aria-modal="true" aria-labelledby="edit-disability-modal-heading">
+                <div class="modal-content">
+                    <button type="button" class="close-button" id="cancel-edit-disability-button" aria-label="Close dialog">&times;</button>
+                    <h2 id="edit-disability-modal-heading">Edit Disability Link</h2>
+
+                    <form id="edit-disability-form" data-doc-id="">
+                        <div class="form-group">
+                            <label for="edit-disability-name">Disability Name:</label>
+                            <input type="text" id="edit-disability-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-disability-url">Information URL:</label>
+                            <input type="url" id="edit-disability-url" name="url" required inputmode="url">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-disability-order">Display Order:</label>
+                            <input type="number" id="edit-disability-order" name="order" min="0" step="1" required>
+                        </div>
+                        <div class="form-actions">
+                          <button type="submit" class="button-primary">Save Disability Changes</button>
+                          <button type="button" id="cancel-edit-disability-button-secondary" class="secondary-button">Cancel</button>
+                        </div>
+                    </form>
+                    <div id="edit-disability-status-message" class="status-message" role="status" aria-live="polite"></div>
+                </div>
+            </div>
+
             <section class="admin-section" id="useful-links-management" aria-labelledby="useful-links-heading">
     <h3 id="useful-links-heading">Manage Useful Links</h3>
 
