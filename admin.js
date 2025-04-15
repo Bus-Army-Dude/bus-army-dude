@@ -1095,25 +1095,24 @@ async function loadDisabilitiesAdmin() {
     // ========================================
 
     // --- Inactivity Logout & Timer Display Functions ---
+    // (Keep the function definitions for updateTimerDisplay, logoutDueToInactivity, resetInactivityTimer, addActivityListeners, removeActivityListeners as provided in the previous Chunk 5 response)
     function updateTimerDisplay() {
-        // Re-get element inside function
         const timerDisplayElement = document.getElementById('inactivity-timer-display');
         if (!timerDisplayElement) return;
         const now = Date.now();
-        const remainingMs = expirationTime - now; // expirationTime is defined in resetInactivityTimer
-        if (remainingMs <= 0) { timerDisplayElement.textContent = "00:00"; clearInterval(displayIntervalId); } // displayIntervalId defined in resetInactivityTimer
+        const remainingMs = expirationTime - now; // expirationTime defined in outer scope
+        if (remainingMs <= 0) { timerDisplayElement.textContent = "00:00"; clearInterval(displayIntervalId); } // displayIntervalId defined in outer scope
         else { const remainingSeconds = Math.round(remainingMs / 1000); const minutes = Math.floor(remainingSeconds / 60); const seconds = remainingSeconds % 60; timerDisplayElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`; }
     }
     function logoutDueToInactivity() {
         console.log("Logging out due to inactivity.");
-        const timerDisplayElement = document.getElementById('inactivity-timer-display'); // Re-get
+        const timerDisplayElement = document.getElementById('inactivity-timer-display');
         clearTimeout(inactivityTimer); clearInterval(displayIntervalId); if (timerDisplayElement) timerDisplayElement.textContent = '';
-        removeActivityListeners(); // Assumes function defined below
-        signOut(auth).catch((error) => { console.error("Error during inactivity logout:", error); }); // auth should be available
+        removeActivityListeners();
+        signOut(auth).catch((error) => { console.error("Error during inactivity logout:", error); });
     }
     function resetInactivityTimer() {
-        // inactivityTimer, expirationTime, displayIntervalId are let variables in outer scope
-        const timerDisplayElement = document.getElementById('inactivity-timer-display'); // Re-get
+        const timerDisplayElement = document.getElementById('inactivity-timer-display');
         clearTimeout(inactivityTimer); clearInterval(displayIntervalId);
         expirationTime = Date.now() + INACTIVITY_TIMEOUT_MS; // INACTIVITY_TIMEOUT_MS defined in outer scope
         inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT_MS);
@@ -1125,22 +1124,15 @@ async function loadDisabilitiesAdmin() {
         activityEvents.forEach(eventName => { document.addEventListener(eventName, resetInactivityTimer, true); });
     }
     function removeActivityListeners() {
-        const timerDisplayElement = document.getElementById('inactivity-timer-display'); // Re-get
+        const timerDisplayElement = document.getElementById('inactivity-timer-display');
         console.log("Removing activity listeners for inactivity timer.");
         clearTimeout(inactivityTimer); clearInterval(displayIntervalId); if (timerDisplayElement) timerDisplayElement.textContent = '';
         activityEvents.forEach(eventName => { document.removeEventListener(eventName, resetInactivityTimer, true); });
     }
 
-    // --- 'Next' Button Logic ---
-    // Re-get elements inside function scope
-    const nextButton = document.getElementById('next-button');
-    const emailInput = document.getElementById('email');
-    const authStatus = document.getElementById('auth-status');
-    const emailGroup = document.getElementById('email-group');
-    const passwordGroup = document.getElementById('password-group');
-    const loginButton = document.getElementById('login-button');
-    const passwordInput = document.getElementById('password'); // Also needed
 
+    // --- 'Next' Button Logic ---
+    // Ensure elements are accessible (defined as const earlier in initializeAppAdminPanel)
     if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton && passwordInput) {
         nextButton.addEventListener('click', () => {
             const userEmail = emailInput.value.trim();
@@ -1153,9 +1145,8 @@ async function loadDisabilitiesAdmin() {
     } else { console.warn("Missing elements for 'Next' button functionality."); }
 
     // --- Authentication State Listener ---
-    // Needs access to many DOM elements, keep them accessible or re-get them if needed
     onAuthStateChanged(auth, user => {
-        // Re-get elements that change visibility based on auth state
+        // Re-get elements that change visibility if needed, or rely on outer scope consts
         const loginSection = document.getElementById('login-section');
         const adminContent = document.getElementById('admin-content');
         const logoutButton = document.getElementById('logout-button');
@@ -1164,9 +1155,10 @@ async function loadDisabilitiesAdmin() {
         const passwordGroup = document.getElementById('password-group');
         const nextButton = document.getElementById('next-button');
         const loginButton = document.getElementById('login-button');
-        const loginForm = document.getElementById('login-form');
+        const loginForm = document.getElementById('login-form'); // Need this one here too
         const authStatus = document.getElementById('auth-status');
         const adminStatusElement = document.getElementById('admin-status');
+
 
         if (user) { // User is signed in
             console.log("User logged in:", user.email);
@@ -1189,9 +1181,7 @@ async function loadDisabilitiesAdmin() {
             if (typeof loadHolidaysAdmin === 'function') loadHolidaysAdmin(); else console.error("loadHolidaysAdmin missing");
             if (typeof loadTempClosuresAdmin === 'function') loadTempClosuresAdmin(); else console.error("loadTempClosuresAdmin missing");
 
-            // Start inactivity timer
-            resetInactivityTimer();
-            addActivityListeners();
+            resetInactivityTimer(); addActivityListeners();
 
         } else { // User is signed out
             console.log("User logged out.");
@@ -1199,45 +1189,43 @@ async function loadDisabilitiesAdmin() {
             if (adminContent) adminContent.style.display = 'none';
             if (logoutButton) logoutButton.style.display = 'none';
             if (adminGreeting) adminGreeting.textContent = '';
-            // Close modals if they exist and functions are defined
             if (typeof closeEditModal === 'function') closeEditModal();
             if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal();
             if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal();
             if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal();
-            // Reset login form state
             if (emailGroup) emailGroup.style.display = 'block';
             if (passwordGroup) passwordGroup.style.display = 'none';
             if (nextButton) nextButton.style.display = 'inline-block';
             if (loginButton) loginButton.style.display = 'none';
             if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; }
             if (loginForm) loginForm.reset();
-            // Stop inactivity timer
             removeActivityListeners();
         }
     });
 
     // --- Login Form Submission Handler ---
+    // **CORRECTED**: Uses loginForm declared earlier in initializeAppAdminPanel scope
     if (loginForm) {
-        // Re-get needed elements inside this scope if not already available
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const authStatus = document.getElementById('auth-status');
-        const passwordGroup = document.getElementById('password-group');
-
+        // Remove redundant const declarations inside here, rely on outer scope
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = emailInput.value; const password = passwordInput.value;
+            // Use emailInput and passwordInput defined in the outer scope
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
             // Validation
             if (!email || !password) {
+                // Use authStatus defined in outer scope
                 if (passwordGroup && passwordGroup.style.display !== 'none' && !password) { if (authStatus) { authStatus.textContent = 'Please enter your password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} }
                 else if (!email) { if (authStatus) { authStatus.textContent = 'Please enter your email.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} }
                 else { if (authStatus) { authStatus.textContent = 'Please enter email and password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} }
                 return;
             }
+            // Use authStatus defined in outer scope
             if (authStatus) { authStatus.textContent = 'Logging in...'; authStatus.className = 'status-message'; authStatus.style.display = 'block'; }
 
             signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => { console.log("Login successful via form submission."); /* onAuthStateChanged handles UI */ })
+                .then((userCredential) => { console.log("Login successful via form submission."); })
                 .catch((error) => {
                     console.error("Login failed:", error.code, error.message);
                     let errorMessage = 'Invalid email or password.';
@@ -1246,17 +1234,18 @@ async function loadDisabilitiesAdmin() {
                     else if (error.code === 'auth/invalid-credential') errorMessage = 'Invalid email or password.';
                     else if (error.code === 'auth/too-many-requests') errorMessage = 'Access temporarily disabled due to too many failed login attempts.';
                     else errorMessage = `An unexpected error occurred (${error.code}).`;
+                    // Use authStatus defined in outer scope
                     if (authStatus) { authStatus.textContent = `Login Failed: ${errorMessage}`; authStatus.className = 'status-message error'; authStatus.style.display = 'block'; }
                 });
         });
     } else { console.warn("Login form not found, cannot attach listener."); }
 
     // --- Logout Button Handler ---
-    const logoutButtonElem = document.getElementById('logout-button'); // Re-get specifically for listener
-    if (logoutButtonElem) {
-        logoutButtonElem.addEventListener('click', () => {
+    // Use logoutButton declared in the outer scope
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
             console.log("Logout button clicked.");
-            removeActivityListeners(); // Stop inactivity timer first
+            removeActivityListeners();
             signOut(auth).then(() => { console.log("User signed out via button."); })
                          .catch((error) => { console.error("Logout failed:", error); showAdminStatus(`Logout Failed: ${error.message}`, true); });
         });
@@ -1267,104 +1256,76 @@ async function loadDisabilitiesAdmin() {
     // === Attach ALL Other Event Listeners ===
     // ========================================
 
-    // Profile Save Form
-    const profileFormElem = document.getElementById('profile-form');
-    if (profileFormElem) { profileFormElem.addEventListener('submit', saveProfileData); }
+    // Profile Save Form (Uses profileForm from outer scope)
+    if (profileForm) { profileForm.addEventListener('submit', saveProfileData); }
 
-    // Maintenance Mode Toggle
-    const maintenanceToggleElem = document.getElementById('maintenance-mode-toggle');
-    if (maintenanceToggleElem) { maintenanceToggleElem.addEventListener('change', (e) => { saveMaintenanceModeStatus(e.target.checked); }); }
+    // Maintenance Mode Toggle (Uses maintenanceModeToggle from outer scope)
+    if (maintenanceModeToggle) { maintenanceModeToggle.addEventListener('change', (e) => { saveMaintenanceModeStatus(e.target.checked); }); }
 
-    // President Form & Preview
-    const presidentFormElem = document.getElementById('president-form');
-    if (presidentFormElem) {
-        const presidentPreviewInputs = [ document.getElementById('president-name'), document.getElementById('president-born'), document.getElementById('president-height'), document.getElementById('president-party'), document.getElementById('president-term'), document.getElementById('president-vp'), document.getElementById('president-image-url') ];
+    // President Form & Preview (Uses presidentForm from outer scope)
+    if (presidentForm) {
+        const presidentPreviewInputs = [ presidentNameInput, presidentBornInput, presidentHeightInput, presidentPartyInput, presidentTermInput, presidentVpInput, presidentImageUrlInput ];
         presidentPreviewInputs.forEach(inputElement => { if (inputElement) { inputElement.addEventListener('input', updatePresidentPreview); } });
-        presidentFormElem.addEventListener('submit', savePresidentData);
+        presidentForm.addEventListener('submit', savePresidentData);
     }
 
-    // Add Shoutout Forms
-    const addTiktokFormElem = document.getElementById('add-shoutout-tiktok-form');
-    const addInstaFormElem = document.getElementById('add-shoutout-instagram-form');
-    const addYoutubeFormElem = document.getElementById('add-shoutout-youtube-form');
-    if (addTiktokFormElem) { addTiktokFormElem.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('tiktok', addTiktokFormElem); }); }
-    if (addInstaFormElem) { addInstaFormElem.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('instagram', addInstaFormElem); }); }
-    if (addYoutubeFormElem) { addYoutubeFormElem.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('youtube', addYoutubeFormElem); }); }
+    // Add Shoutout Forms (Uses addShoutout...Form from outer scope)
+    if (addShoutoutTiktokForm) { addShoutoutTiktokForm.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('tiktok', addShoutoutTiktokForm); }); }
+    if (addShoutoutInstagramForm) { addShoutoutInstagramForm.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('instagram', addShoutoutInstagramForm); }); }
+    if (addShoutoutYoutubeForm) { addShoutoutYoutubeForm.addEventListener('submit', (e) => { e.preventDefault(); handleAddShoutout('youtube', addShoutoutYoutubeForm); }); }
 
-    // Edit Shoutout Form (in modal) & Close Button
-    const editShoutoutFormElem = document.getElementById('edit-shoutout-form');
-    const cancelEditShoutoutBtn = document.getElementById('cancel-edit-button');
-    if (editShoutoutFormElem) { editShoutoutFormElem.addEventListener('submit', handleUpdateShoutout); }
-    if (cancelEditShoutoutBtn) { cancelEditShoutoutBtn.addEventListener('click', closeEditModal); }
+    // Edit Shoutout Form (in modal) & Close Button (Uses editForm, cancelEditButton from outer scope)
+    if (editForm) { editForm.addEventListener('submit', handleUpdateShoutout); }
+    if (cancelEditButton) { cancelEditButton.addEventListener('click', closeEditModal); }
 
-    // Useful Links Forms & Modals
-    const addUsefulLinkFormElem = document.getElementById('add-useful-link-form');
-    const editUsefulLinkFormElem = document.getElementById('edit-useful-link-form');
-    const cancelEditLinkBtn = document.getElementById('cancel-edit-link-button');
-    const cancelEditLinkBtnSec = document.getElementById('cancel-edit-link-button-secondary');
-    if (addUsefulLinkFormElem) { addUsefulLinkFormElem.addEventListener('submit', handleAddUsefulLink); }
-    if (editUsefulLinkFormElem) { editUsefulLinkFormElem.addEventListener('submit', handleUpdateUsefulLink); }
-    if (cancelEditLinkBtn) { cancelEditLinkBtn.addEventListener('click', closeEditUsefulLinkModal); }
-    if (cancelEditLinkBtnSec) { cancelEditLinkBtnSec.addEventListener('click', closeEditUsefulLinkModal); }
 
-    // Social Links Forms & Modals
-    const addSocialLinkFormElem = document.getElementById('add-social-link-form');
-    const editSocialLinkFormElem = document.getElementById('edit-social-link-form');
-    const cancelEditSocialLinkBtn = document.getElementById('cancel-edit-social-link-button');
-    const cancelEditSocialLinkBtnSec = document.getElementById('cancel-edit-social-link-button-secondary');
-    if (addSocialLinkFormElem) { addSocialLinkFormElem.addEventListener('submit', handleAddSocialLink); }
-    if (editSocialLinkFormElem) { editSocialLinkFormElem.addEventListener('submit', handleUpdateSocialLink); }
-    if (cancelEditSocialLinkBtn) { cancelEditSocialLinkBtn.addEventListener('click', closeEditSocialLinkModal); }
-    if (cancelEditSocialLinkBtnSec) { cancelEditSocialLinkBtnSec.addEventListener('click', closeEditSocialLinkModal); }
+    // Useful Links Forms & Modals (Uses ...LinkForm, cancel...Button from outer scope)
+    if (addUsefulLinkForm) { addUsefulLinkForm.addEventListener('submit', handleAddUsefulLink); }
+    if (editUsefulLinkForm) { editUsefulLinkForm.addEventListener('submit', handleUpdateUsefulLink); }
+    if (cancelEditLinkButton) { cancelEditLinkButton.addEventListener('click', closeEditUsefulLinkModal); }
+    if (cancelEditLinkButtonSecondary) { cancelEditLinkButtonSecondary.addEventListener('click', closeEditUsefulLinkModal); }
 
-    // Disabilities Forms & Modals
-    const addDisabilityFormElem = document.getElementById('add-disability-form');
-    const editDisabilityFormElem = document.getElementById('edit-disability-form');
-    const cancelEditDisabilityBtn = document.getElementById('cancel-edit-disability-button');
-    const cancelEditDisabilityBtnSec = document.getElementById('cancel-edit-disability-button-secondary');
-    if (addDisabilityFormElem) { addDisabilityFormElem.addEventListener('submit', handleAddDisability); }
-    if (editDisabilityFormElem) { editDisabilityFormElem.addEventListener('submit', handleUpdateDisability); }
-    if (cancelEditDisabilityBtn) { cancelEditDisabilityBtn.addEventListener('click', closeEditDisabilityModal); }
-    if (cancelEditDisabilityBtnSec) { cancelEditDisabilityBtnSec.addEventListener('click', closeEditDisabilityModal); }
+    // Social Links Forms & Modals (Uses ...LinkForm, cancel...Button from outer scope)
+    if (addSocialLinkForm) { addSocialLinkForm.addEventListener('submit', handleAddSocialLink); }
+    if (editSocialLinkForm) { editSocialLinkForm.addEventListener('submit', handleUpdateSocialLink); }
+    if (cancelEditSocialLinkButton) { cancelEditSocialLinkButton.addEventListener('click', closeEditSocialLinkModal); } // Corrected function name
+    if (cancelEditSocialLinkButtonSecondary) { cancelEditSocialLinkButtonSecondary.addEventListener('click', closeEditSocialLinkModal); } // Corrected function name
 
-    // --- Business Hours Forms ---
-    const regularHoursFormElem = document.getElementById('regular-hours-form');
-    const addHolidayFormElem = document.getElementById('add-holiday-form');
-    const addTempClosureFormElem = document.getElementById('add-temp-closure-form');
-    if (regularHoursFormElem) { regularHoursFormElem.addEventListener('submit', saveRegularHours); }
-    if (addHolidayFormElem) { addHolidayFormElem.addEventListener('submit', handleAddHoliday); }
-    if (addTempClosureFormElem) { addTempClosureFormElem.addEventListener('submit', handleAddTempClosure); }
-    // Note: Delete buttons for holidays/closures are attached dynamically in render functions in Chunk 2
+    // Disabilities Forms & Modals (Uses ...Form, cancel...Button from outer scope)
+    if (addDisabilityForm) { addDisabilityForm.addEventListener('submit', handleAddDisability); }
+    if (editDisabilityForm) { editDisabilityForm.addEventListener('submit', handleUpdateDisability); }
+    if (cancelEditDisabilityButton) { cancelEditDisabilityButton.addEventListener('click', closeEditDisabilityModal); }
+    if (cancelEditDisabilityButtonSecondary) { cancelEditDisabilityButtonSecondary.addEventListener('click', closeEditDisabilityModal); }
 
-    // --- Search Input Listeners ---
-    const searchInputTiktokElem = document.getElementById('search-tiktok');
-    const searchInputInstaElem = document.getElementById('search-instagram');
-    const searchInputYoutubeElem = document.getElementById('search-youtube');
-    if (searchInputTiktokElem) { searchInputTiktokElem.addEventListener('input', () => { if (typeof displayFilteredShoutouts === 'function') displayFilteredShoutouts('tiktok'); }); }
-    if (searchInputInstaElem) { searchInputInstaElem.addEventListener('input', () => { if (typeof displayFilteredShoutouts === 'function') displayFilteredShoutouts('instagram'); }); }
-    if (searchInputYoutubeElem) { searchInputYoutubeElem.addEventListener('input', () => { if (typeof displayFilteredShoutouts === 'function') displayFilteredShoutouts('youtube'); }); }
+    // Business Hours Forms (Uses ...Form from outer scope)
+    if (regularHoursForm) { regularHoursForm.addEventListener('submit', saveRegularHours); }
+    if (addHolidayForm) { addHolidayForm.addEventListener('submit', handleAddHoliday); }
+    if (addTempClosureForm) { addTempClosureForm.addEventListener('submit', handleAddTempClosure); }
+    // Note: Delete buttons for holidays/closures are attached dynamically in render functions
+
+    // --- Search Input Listeners --- (Uses searchInput... from outer scope)
+    if (searchInputTiktok) { searchInputTiktok.addEventListener('input', () => { if (typeof displayFilteredShoutouts === 'function') displayFilteredShoutouts('tiktok'); }); }
+    if (searchInputInstagram) { searchInputInstagram.addEventListener('input', () => { if (typeof displayFilteredShoutouts === 'function') displayFilteredShoutouts('instagram'); }); }
+    if (searchInputYoutube) { searchInputYoutube.addEventListener('input', () => { if (typeof displayFilteredShoutouts === 'function') displayFilteredShoutouts('youtube'); }); }
 
     // --- Preview Listeners ---
     // Helper function to attach preview listeners (Shoutouts)
     function attachPreviewListeners(formElement, platform, formType) { if (!formElement) return; const previewInputs = [ 'username', 'nickname', 'bio', 'profilePic', 'isVerified', 'followers', 'subscribers', 'coverPhoto' ]; previewInputs.forEach(name => { const inputElement = formElement.querySelector(`[name="${name}"]`); if (inputElement) { const eventType = (inputElement.type === 'checkbox') ? 'change' : 'input'; inputElement.addEventListener(eventType, () => { if (typeof updateShoutoutPreview === 'function') { updateShoutoutPreview(formType, platform); } else { console.error("updateShoutoutPreview missing!"); } }); } }); }
-    // Attach shoutout preview listeners
-    if (addTiktokFormElem) attachPreviewListeners(addTiktokFormElem, 'tiktok', 'add');
-    if (addInstaFormElem) attachPreviewListeners(addInstaFormElem, 'instagram', 'add');
-    if (addYoutubeFormElem) attachPreviewListeners(addYoutubeFormElem, 'youtube', 'add');
-    if (editShoutoutFormElem) { const editPreviewInputs = [ document.getElementById('edit-username'), /* add others */ ]; editPreviewInputs.forEach(el => { if (el) { const eventType = (el.type === 'checkbox') ? 'change' : 'input'; el.addEventListener(eventType, () => { const currentPlatform = editShoutoutFormElem.getAttribute('data-platform'); if (currentPlatform && typeof updateShoutoutPreview === 'function') { updateShoutoutPreview('edit', currentPlatform); } else if (!currentPlatform) { console.warn("Edit form platform not set."); } else { console.error("updateShoutoutPreview missing!"); } }); } }); }
+    // Attach shoutout preview listeners (Uses addShoutout...Form elements)
+    if (addShoutoutTiktokForm) attachPreviewListeners(addShoutoutTiktokForm, 'tiktok', 'add');
+    if (addShoutoutInstagramForm) attachPreviewListeners(addShoutoutInstagramForm, 'instagram', 'add');
+    if (addShoutoutYoutubeForm) attachPreviewListeners(addShoutoutYoutubeForm, 'youtube', 'add');
+    // Attach edit shoutout preview listeners (Uses editForm element)
+    if (editForm) { const editPreviewInputs = [ editUsernameInput, editNicknameInput, editBioInput, editProfilePicInput, editIsVerifiedInput, editFollowersInput, editSubscribersInput, editCoverPhotoInput ]; editPreviewInputs.forEach(el => { if (el) { const eventType = (el.type === 'checkbox') ? 'change' : 'input'; el.addEventListener(eventType, () => { const currentPlatform = editForm.getAttribute('data-platform'); if (currentPlatform && typeof updateShoutoutPreview === 'function') { updateShoutoutPreview('edit', currentPlatform); } else if (!currentPlatform) { console.warn("Edit form platform not set."); } else { console.error("updateShoutoutPreview missing!"); } }); } }); }
 
-    // Profile Pic URL Preview Listener - Included in loadProfileData section's event listener attachment
-
+    // Profile Pic URL Preview Listener - Included in loadProfileData's element check section
 
     // --- Combined Window Click Listener for Closing Modals ---
     window.addEventListener('click', (event) => {
-        const editShoutoutModalElem = document.getElementById('edit-shoutout-modal'); // Re-get
-        const editUsefulLinkModalElem = document.getElementById('edit-useful-link-modal');
-        const editSocialLinkModalElem = document.getElementById('edit-social-link-modal');
-        const editDisabilityModalElem = document.getElementById('edit-disability-modal');
-        if (event.target === editShoutoutModalElem) { closeEditModal(); }
-        if (event.target === editUsefulLinkModalElem) { closeEditUsefulLinkModal(); }
-        if (event.target === editSocialLinkModalElem) { closeEditSocialLinkModal(); }
-        if (event.target === editDisabilityModalElem) { closeEditDisabilityModal(); }
-        // Add edit modals for holidays/closures here if implemented
+        // Use elements defined in outer scope
+        if (event.target === editModal) { closeEditModal(); }
+        if (event.target === editUsefulLinkModal) { closeEditUsefulLinkModal(); }
+        if (event.target === editSocialLinkModal) { closeEditSocialLinkModal(); }
+        if (event.target === editDisabilityModal) { closeEditDisabilityModal(); }
     });
+
