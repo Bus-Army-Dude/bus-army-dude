@@ -695,27 +695,27 @@ function renderYouTubeCard(account) { //
         };
 
         showProfileStatus("Saving profile..."); // Provide user feedback
-        try {
-        // Use setDoc with merge: true to create or update the document
-        await setDoc(profileDocRef, newData, { merge: true }); //
-        console.log("Profile data saved to:", profileDocRef.path); //
-        showProfileStatus("Profile updated successfully!", false); //
-    
-        // Optionally update the preview image immediately after saving a new URL
-        if (adminPfpPreview && newData.profilePicUrl) { //
-            adminPfpPreview.src = newData.profilePicUrl; //
-            adminPfpPreview.style.display = 'inline-block'; //
-        } else if (adminPfpPreview) { //
-             adminPfpPreview.src = ''; //
-             adminPfpPreview.style.display = 'none'; //
+        try { //
+            // Use setDoc with merge: true to create or update the document
+            await setDoc(profileDocRef, newData, { merge: true }); //
+            console.log("Profile data saved to:", profileDocRef.path); //
+            showProfileStatus("Profile updated successfully!", false); //
+
+            // Optionally update the preview image immediately after saving a new URL
+            if (adminPfpPreview && newData.profilePicUrl) { //
+                adminPfpPreview.src = newData.profilePicUrl; //
+                adminPfpPreview.style.display = 'inline-block'; //
+            } else if (adminPfpPreview) { //
+                 adminPfpPreview.src = ''; //
+                 adminPfpPreview.style.display = 'none'; //
+            }
+
+        } catch (error) { //
+             console.error("Error saving profile data:", error); //
+             showProfileStatus(`Error saving profile: ${error.message}`, true); //
         }
-    
-        loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
-    
-    } catch (error) { //
-         console.error("Error saving profile data:", error); //
-         showProfileStatus(`Error saving profile: ${error.message}`, true); //
     }
+
     // Event listener for profile picture URL input to update preview (optional but helpful)
     if (profilePicUrlInput && adminPfpPreview) { //
         profilePicUrlInput.addEventListener('input', () => { //
@@ -767,17 +767,15 @@ function renderYouTubeCard(account) { //
             await setDoc(profileDocRef, { //
                 isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
             }, { merge: true }); //
-        
+
             console.log("Maintenance mode status saved:", isEnabled); //
-        
+
             // Show success message using the dedicated settings status element or fallback
              if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
                  showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
              } else { // Fallback if specific element wasn't found initially
                 showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
              }
-        
-             loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
 
         } catch (error) { //
             console.error("Error saving maintenance mode status:", error); //
@@ -1268,14 +1266,11 @@ function renderYouTubeCard(account) { //
 
         // Update the document in Firestore
         showAdminStatus("Updating shoutout..."); // Feedback
-       try { //
+        try { //
             const docRef = doc(db, 'shoutouts', docId); //
             await updateDoc(docRef, updatedData); // Perform the update
             await updateMetadataTimestamp(platform); // Update site timestamp
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false); //
-        
-            loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
-        
             if (typeof closeEditModal === 'function') closeEditModal(); // Close the modal
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload the list
         } catch (error) { //
@@ -1538,12 +1533,9 @@ async function handleUpdateUsefulLink(event) { //
         await updateDoc(docRef, updatedData); //
         // await updateMetadataTimestamp('usefulLinks'); // Optional
         showAdminStatus("Useful link updated successfully.", false); // Show main status
-    
-        loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
-    
         closeEditUsefulLinkModal(); //
         loadUsefulLinksAdmin(); // Reload the list
-    
+
     } catch (error) { //
         console.error(`Error updating useful link (ID: ${docId}):`, error); //
         showEditLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
@@ -1792,22 +1784,19 @@ async function handleUpdateUsefulLink(event) { //
        };
 
        showEditSocialLinkStatus("Saving changes...");
-       try { //
-            const docRef = doc(db, 'social_links', docId); //
-            await updateDoc(docRef, updatedData); //
-            // Optionally: await updateMetadataTimestamp('socialLinks');
-            showAdminStatus("Social link updated successfully.", false); // Show main status
-        
-            loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
-        
-            closeEditSocialLinkModal(); //
-            loadSocialLinksAdmin(); // Reload the list
-        
-        } catch (error) { //
-            console.error(`Error updating social link (ID: ${docId}):`, error); //
-            showEditSocialLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
-            showAdminStatus(`Error updating social link: ${error.message}`, true); // Also show main status
-        }
+       try {
+           const docRef = doc(db, 'social_links', docId);
+           await updateDoc(docRef, updatedData);
+           // Optionally: await updateMetadataTimestamp('socialLinks');
+           showAdminStatus("Social link updated successfully.", false); // Show main status
+           closeEditSocialLinkModal();
+           loadSocialLinksAdmin(); // Reload the list
+
+       } catch (error) {
+           console.error(`Error updating social link (ID: ${docId}):`, error);
+           showEditSocialLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
+           showAdminStatus(`Error updating social link: ${error.message}`, true); // Also show main status
+       }
    }
 
 // --- Attach Event Listeners for Forms ---
@@ -1996,16 +1985,14 @@ async function handleUpdateUsefulLink(event) { //
         };
 
         showPresidentStatus("Saving president info..."); // Use specific status func
-        try { //
+        try {
+            // Use setDoc with merge: true to create or update the document
             await setDoc(presidentDocRef, newData, { merge: true }); // Use presidentDocRef
-            console.log("President data saved to:", presidentDocRef.path); //
-            showPresidentStatus("President info updated successfully!", false); //
-        
-            loadDisabilitiesAdmin(); // <--- ADD THIS LINE HERE
-        
-        } catch (error) { //
-            console.error("Error saving president data:", error); //
-            showPresidentStatus(`Error saving president info: ${error.message}`, true); //
+            console.log("President data saved to:", presidentDocRef.path);
+            showPresidentStatus("President info updated successfully!", false);
+        } catch (error) {
+            console.error("Error saving president data:", error);
+            showPresidentStatus(`Error saving president info: ${error.message}`, true);
         }
     }
     // -------------
