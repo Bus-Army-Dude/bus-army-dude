@@ -53,19 +53,19 @@ function initializeAppAdminPanel() {
 
     // --- DOM Element References ---
     // (Defined once here for use throughout this function scope)
-    const loginSection = document.getElementById('login-section');
-    const adminContent = document.getElementById('admin-content');
-    const loginForm = document.getElementById('login-form');
-    const logoutButton = document.getElementById('logout-button');
-    const authStatus = document.getElementById('auth-status');
-    const adminGreeting = document.getElementById('admin-greeting');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const adminStatusElement = document.getElementById('admin-status');
-    const nextButton = document.getElementById('next-button');
-    const emailGroup = document.getElementById('email-group');
-    const passwordGroup = document.getElementById('password-group');
-    const loginButton = document.getElementById('login-button');
+    const loginSection = document.getElementById('login-section'); //
+    const adminContent = document.getElementById('admin-content'); //
+    const loginForm = document.getElementById('login-form'); //
+    const logoutButton = document.getElementById('logout-button'); //
+    const authStatus = document.getElementById('auth-status'); //
+    const adminGreeting = document.getElementById('admin-greeting'); //
+    const emailInput = document.getElementById('email'); //
+    const passwordInput = document.getElementById('password'); //
+    const adminStatusElement = document.getElementById('admin-status'); //
+    const nextButton = document.getElementById('next-button'); //
+    const emailGroup = document.getElementById('email-group'); //
+    const passwordGroup = document.getElementById('password-group'); //
+    const loginButton = document.getElementById('login-button'); //
     const timerDisplayElement = document.getElementById('inactivity-timer-display');
     const profileForm = document.getElementById('profile-form');
     const profileUsernameInput = document.getElementById('profile-username');
@@ -1067,175 +1067,264 @@ function initializeAppAdminPanel() {
         }
     } 
 
-        // ==================================================
-    // === Authentication & Event Listeners ===
-    // ==================================================
+        // --- Inactivity Logout & Timer Display Functions ---
 
-    // --- Inactivity Logout & Timer Display Functions ---
-    function updateTimerDisplay() {
-        if (!timerDisplayElement) return;
-        const now = Date.now();
-        const remainingMs = expirationTime - now;
-        if (remainingMs <= 0) { timerDisplayElement.textContent = "00:00"; clearInterval(displayIntervalId); }
-        else { const remainingSeconds = Math.round(remainingMs / 1000); const minutes = Math.floor(remainingSeconds / 60); const seconds = remainingSeconds % 60; timerDisplayElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`; }
+// Updates the countdown timer display
+function updateTimerDisplay() {
+    if (!timerDisplayElement) return; // Exit if display element doesn't exist
+    const now = Date.now();
+    const remainingMs = expirationTime - now; // Calculate remaining time
+
+    if (remainingMs <= 0) { // If time is up
+        timerDisplayElement.textContent = "00:00"; // Show zero
+        clearInterval(displayIntervalId); // Stop the interval timer
+    } else {
+        // Calculate remaining minutes and seconds
+        const remainingSeconds = Math.round(remainingMs / 1000);
+        const minutes = Math.floor(remainingSeconds / 60);
+        const seconds = remainingSeconds % 60;
+        // Format as MM:SS and update display
+        timerDisplayElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
-    function logoutDueToInactivity() {
-        console.log("Logging out due to inactivity.");
-        clearTimeout(inactivityTimer); clearInterval(displayIntervalId); if (timerDisplayElement) timerDisplayElement.textContent = '';
-        removeActivityListeners();
-        signOut(auth).catch((error) => { console.error("Error during inactivity logout:", error); });
+}
+
+// Function called when the inactivity timeout is reached
+function logoutDueToInactivity() {
+    console.log("Logging out due to inactivity.");
+    clearTimeout(inactivityTimer); // Clear the master timeout
+    clearInterval(displayIntervalId); // Clear the display update interval
+    if (timerDisplayElement) timerDisplayElement.textContent = ''; // Clear display
+    removeActivityListeners(); // Remove event listeners to prevent resetting timer after logout
+    // Sign the user out using Firebase Auth
+    signOut(auth).catch((error) => {
+         console.error("Error during inactivity logout:", error);
+         // Optionally show a message, though user might already be gone
+         // showAdminStatus("Logged out due to inactivity.", false);
+    });
+    // Note: The onAuthStateChanged listener will handle hiding admin content
+}
+
+// Resets the inactivity timer whenever user activity is detected
+function resetInactivityTimer() {
+    clearTimeout(inactivityTimer); // Clear existing timeout
+    clearInterval(displayIntervalId); // Clear existing display interval
+
+    // Set the new expiration time
+    expirationTime = Date.now() + INACTIVITY_TIMEOUT_MS;
+    // Set the main timeout to trigger logout
+    inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT_MS);
+
+    // Start updating the visual timer display every second
+    if (timerDisplayElement) {
+         updateTimerDisplay(); // Update display immediately
+         displayIntervalId = setInterval(updateTimerDisplay, 1000); // Update every second
     }
-    function resetInactivityTimer() {
-        clearTimeout(inactivityTimer); clearInterval(displayIntervalId);
-        expirationTime = Date.now() + INACTIVITY_TIMEOUT_MS;
-        inactivityTimer = setTimeout(logoutDueToInactivity, INACTIVITY_TIMEOUT_MS);
-        if (timerDisplayElement) { updateTimerDisplay(); displayIntervalId = setInterval(updateTimerDisplay, 1000); }
-    }
-    function addActivityListeners() {
-        console.log("Adding activity listeners for inactivity timer.");
-        activityEvents.forEach(eventName => { document.addEventListener(eventName, resetInactivityTimer, true); });
-    }
-    function removeActivityListeners() {
-        console.log("Removing activity listeners for inactivity timer.");
-        clearTimeout(inactivityTimer); clearInterval(displayIntervalId); if (timerDisplayElement) timerDisplayElement.textContent = '';
-        activityEvents.forEach(eventName => { document.removeEventListener(eventName, resetInactivityTimer, true); });
-    }
+}
 
-    // --- 'Next' Button Logic ---
-    if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) {
-        nextButton.addEventListener('click', () => {
-            const userEmail = emailInput.value.trim();
-            if (!userEmail) { authStatus.textContent = 'Please enter your email address.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block'; return; }
-            authStatus.textContent = `Welcome back, ${userEmail}`; authStatus.className = 'status-message'; authStatus.style.display = 'block';
-            emailGroup.style.display = 'none'; nextButton.style.display = 'none';
-            passwordGroup.style.display = 'block'; loginButton.style.display = 'inline-block';
-            if(passwordInput) { passwordInput.focus(); }
-        });
-    } else { console.warn("Missing elements for 'Next' button functionality."); }
+// Adds event listeners for various user activities
+function addActivityListeners() {
+    console.log("Adding activity listeners for inactivity timer.");
+    // Listen for any specified events on the document
+    activityEvents.forEach(eventName => {
+        document.addEventListener(eventName, resetInactivityTimer, true); // Use capture phase
+    });
+}
 
-    // --- Authentication State Listener (Corrected for Parallel Loading & Preview) ---
-    onAuthStateChanged(auth, user => { // auth from outer scope
-        // Re-get elements that change visibility if needed inside listener scope
-        const loginSection = document.getElementById('login-section');
-        const adminContent = document.getElementById('admin-content');
-        const logoutButton = document.getElementById('logout-button');
-        const adminGreeting = document.getElementById('admin-greeting');
-        const emailGroup = document.getElementById('email-group');
-        const passwordGroup = document.getElementById('password-group');
-        const nextButton = document.getElementById('next-button');
-        const loginButton = document.getElementById('login-button');
-        const loginForm = document.getElementById('login-form');
-        const authStatus = document.getElementById('auth-status');
-        const adminStatusElement = document.getElementById('admin-status');
+// Removes the activity event listeners
+function removeActivityListeners() {
+    console.log("Removing activity listeners for inactivity timer.");
+    // Clear timers just in case
+    clearTimeout(inactivityTimer);
+    clearInterval(displayIntervalId);
+    if (timerDisplayElement) timerDisplayElement.textContent = ''; // Clear display
 
-        if (user) { // User is signed in
-            console.log("User logged in:", user.email);
-            // Update UI for logged-in state
-            if (loginSection) loginSection.style.display = 'none';
-            if (adminContent) adminContent.style.display = 'block';
-            if (logoutButton) logoutButton.style.display = 'inline-block';
-            if (adminGreeting) adminGreeting.textContent = `Logged in as: ${user.email}`;
-            if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
-            if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
+    // Remove listeners for specified events
+    activityEvents.forEach(eventName => {
+        document.removeEventListener(eventName, resetInactivityTimer, true); // Use capture phase
+    });
+}
 
-            // Load ALL initial data concurrently using Promise.allSettled
-            console.log("Loading admin data concurrently...");
-            const loadPromises = [
-                 // Create promises for each load function, checking if function exists
-                 (typeof loadProfileData === 'function' ? loadProfileData() : Promise.reject("loadProfileData missing")),
-                 (typeof loadPresidentData === 'function' ? loadPresidentData() : Promise.reject("loadPresidentData missing")),
-                 (typeof loadDisabilitiesAdmin === 'function' ? loadDisabilitiesAdmin() : Promise.reject("loadDisabilitiesAdmin missing")),
-                 (typeof loadUsefulLinksAdmin === 'function' ? loadUsefulLinksAdmin() : Promise.reject("loadUsefulLinksAdmin missing")),
-                 (typeof loadSocialLinksAdmin === 'function' ? loadSocialLinksAdmin() : Promise.reject("loadSocialLinksAdmin missing")),
-                 (typeof loadShoutoutsAdmin === 'function' ? Promise.all([loadShoutoutsAdmin('tiktok'), loadShoutoutsAdmin('instagram'), loadShoutoutsAdmin('youtube')]) : Promise.reject("loadShoutoutsAdmin missing")), // Group shoutouts
-                 (typeof loadRegularHoursAdmin === 'function' ? loadRegularHoursAdmin() : Promise.reject("loadRegularHoursAdmin missing")),
-                 (typeof loadHolidaysAdmin === 'function' ? loadHolidaysAdmin() : Promise.reject("loadHolidaysAdmin missing")),
-                 (typeof loadTempClosuresAdmin === 'function' ? loadTempClosuresAdmin() : Promise.reject("loadTempClosuresAdmin missing"))
-            ];
+// --- 'Next' Button Logic ---
+// Handles the first step of the two-step login
+if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) {
+    nextButton.addEventListener('click', () => {
+        const userEmail = emailInput.value.trim(); // Get entered email
 
-            // Wait for all loading operations to settle (finish or fail)
-            Promise.allSettled(loadPromises).then(results => {
-                 console.log("Admin data loading settled.");
-                 results.forEach((result, index) => {
-                     if (result.status === 'rejected') {
-                         console.error(`Error loading admin section ${index}:`, result.reason);
-                     }
-                 });
+        // Check if email field is empty
+        if (!userEmail) {
+             authStatus.textContent = 'Please enter your email address.';
+             authStatus.className = 'status-message error'; // Show error style
+             authStatus.style.display = 'block'; // Make sure message is visible
+             return; // Stop processing if email is empty
+        }
 
-                 // *** Initialize the Business Hours Preview AFTER data attempts to load ***
-                 if (typeof updateBusinessInfoPreview === 'function') {
-                     console.log("Populating initial business info preview.");
-                     updateBusinessInfoPreview();
-                 } else {
-                     console.error("updateBusinessInfoPreview function missing!"); // Make sure it's defined earlier
-                 }
+        // If email is entered:
+        // Display welcome message (optional, or clear previous errors)
+        authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
+        // Or simply clear status: authStatus.textContent = '';
+        authStatus.className = 'status-message'; // Reset style
+        authStatus.style.display = 'block'; // Ensure it's visible
 
-                 // Start inactivity timer only after initial loads attempt to finish
-                 resetInactivityTimer(); // Assumes resetInactivityTimer defined
-                 addActivityListeners(); // Assumes addActivityListeners defined
-            });
+        // Hide email field and Next button
+        emailGroup.style.display = 'none';
+        nextButton.style.display = 'none';
 
-        } else { // User is signed out
-            console.log("User logged out.");
-            // Update UI for logged-out state
-            if (loginSection) loginSection.style.display = 'block';
-            if (adminContent) adminContent.style.display = 'none';
-            if (logoutButton) logoutButton.style.display = 'none';
-            if (adminGreeting) adminGreeting.textContent = '';
-            // Close any open modals
-            if (typeof closeEditModal === 'function') closeEditModal();
-            if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal();
-            if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal();
-            if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal();
-            // Reset login form state
-            if (emailGroup) emailGroup.style.display = 'block';
-            if (passwordGroup) passwordGroup.style.display = 'none';
-            if (nextButton) nextButton.style.display = 'inline-block';
-            if (loginButton) loginButton.style.display = 'none';
-            if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; }
-            if (loginForm) loginForm.reset();
-            // Stop inactivity timer
-            removeActivityListeners(); // Assumes removeActivityListeners defined
+        // Show password field and the actual Login button
+        passwordGroup.style.display = 'block';
+        loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
+
+        // Focus the password input for better UX
+        if(passwordInput) {
+             passwordInput.focus();
         }
     });
+} else {
+     // Log warning if any elements for the two-step login are missing
+     console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button).");
+}
 
-    // --- Login Form Submission Handler ---
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = emailInput.value; const password = passwordInput.value;
-            if (!email || !password) { /* ... validation code ... */ if (passwordGroup && passwordGroup.style.display !== 'none' && !password) { if (authStatus) { authStatus.textContent = 'Please enter your password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} } else if (!email) { if (authStatus) { authStatus.textContent = 'Please enter your email.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} } else { if (authStatus) { authStatus.textContent = 'Please enter email and password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';} } return; }
-            if (authStatus) { authStatus.textContent = 'Logging in...'; authStatus.className = 'status-message'; authStatus.style.display = 'block'; }
+// --- Authentication Logic ---
+// Listener for changes in authentication state (login/logout)
+onAuthStateChanged(auth, user => {
+    if (user) {
+        // User is signed in
+        console.log("User logged in:", user.email);
+        if (loginSection) loginSection.style.display = 'none'; // Hide login form
+        if (adminContent) adminContent.style.display = 'block'; // Show admin content
+        if (logoutButton) logoutButton.style.display = 'inline-block'; // Show logout button
+        if (adminGreeting) adminGreeting.textContent = `Logged in as: ${user.email}`; // Show user email
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => { console.log("Login successful via form submission."); })
-                .catch((error) => {
-                    console.error("Login failed:", error.code, error.message);
-                    let errorMessage = 'Invalid email or password.';
-                    if (error.code === 'auth/invalid-email') { errorMessage = 'Invalid email format.'; }
-                    else if (error.code === 'auth/user-disabled') { errorMessage = 'This account has been disabled.'; }
-                    else if (error.code === 'auth/invalid-credential') { errorMessage = 'Invalid email or password.'; }
-                    else if (error.code === 'auth/too-many-requests') { errorMessage = 'Access temporarily disabled due to too many failed login attempts.'; }
-                    else { errorMessage = `An unexpected error occurred (${error.code}).`; }
-                    if (authStatus) { authStatus.textContent = `Login Failed: ${errorMessage}`; authStatus.className = 'status-message error'; authStatus.style.display = 'block'; }
-                });
-        });
+        // Clear any previous login status messages
+        if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
+        if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
+
+        // Load initial data for the admin panel
+        loadProfileData(); // Load site profile data (includes maintenance mode state now)
+        // Load shoutout lists for each platform
+        if (typeof loadShoutoutsAdmin === 'function') {
+             if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
+             if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram');
+             if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
+        } else {
+             console.error("loadShoutoutsAdmin function is not defined!");
+             showAdminStatus("Error: Cannot load shoutout data.", true);
+        }
+        // *** Call loadUsefulLinksAdmin when user logs in ***
+        if (typeof loadUsefulLinksAdmin === 'function' && usefulLinksListAdmin) {
+            loadUsefulLinksAdmin();
+        }
+        // *** Call loadSocialLinksAdmin when user logs in ***
+        if (typeof loadSocialLinksAdmin === 'function' && socialLinksListAdmin) {
+             loadSocialLinksAdmin();
+        }
+
+        // --- ADD THIS LINE ---
+        if (typeof loadPresidentData === 'function') {
+            loadPresidentData(); // Load president data on login
+        } else {
+             console.error("loadPresidentData function is missing!");
+             showAdminStatus("Error: Cannot load president data.", true);
+        }
+
+        // Start the inactivity timer now that the user is logged in
+        resetInactivityTimer();
+        addActivityListeners();
+
+    } else {
+        // User is signed out
+        console.log("User logged out.");
+        if (loginSection) loginSection.style.display = 'block'; // Show login form
+        if (adminContent) adminContent.style.display = 'none'; // Hide admin content
+        if (logoutButton) logoutButton.style.display = 'none'; // Hide logout button
+        if (adminGreeting) adminGreeting.textContent = ''; // Clear greeting
+        if (typeof closeEditModal === 'function') closeEditModal(); // Close edit modal if open
+        if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal(); // Close useful link modal
+        if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal(); // Close social link modal
+
+        // Reset the login form to its initial state (email input visible)
+        if (emailGroup) emailGroup.style.display = 'block';
+        if (passwordGroup) passwordGroup.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'inline-block'; // Or 'block'
+        if (loginButton) loginButton.style.display = 'none';
+        if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; } // Clear status message
+        if (loginForm) loginForm.reset(); // Clear email/password inputs
+
+        // Stop inactivity timer and remove listeners
+        removeActivityListeners();
     }
+});
 
-    // --- Logout Button Handler ---
-    if (logoutButton) {
-        logoutButton.addEventListener('click', () => {
-            console.log("Logout button clicked.");
-            removeActivityListeners(); // Stop inactivity timer first
-            signOut(auth).then(() => {
-                console.log("Ensured clean auth state on page load (Sign Out Attempted).");
-                initializeAppAdminPanel(); // Proceed with setup ONLY after sign out attempt
-            }).catch((error) => {
-                console.error("Non-critical error during initial sign out:", error);
-                initializeAppAdminPanel(); // Still try to initialize even if sign out failed
+// Login Form Submission (Handles the final step after password entry)
+if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent default form submission
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        // Re-validate inputs (especially password as email was checked by 'Next')
+        if (!email || !password) {
+             // Check which field is missing in the current state
+             if (passwordGroup && passwordGroup.style.display !== 'none' && !password) {
+                 if (authStatus) { authStatus.textContent = 'Please enter your password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';}
+             } else if (!email) { // Should ideally not happen in two-step flow, but check anyway
+                 if (authStatus) { authStatus.textContent = 'Please enter your email.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';}
+             } else { // Generic message if validation fails unexpectedly
+                 if (authStatus) { authStatus.textContent = 'Please enter email and password.'; authStatus.className = 'status-message error'; authStatus.style.display = 'block';}
+             }
+             return; // Stop if validation fails
+        }
+
+        // Show "Logging in..." message
+        if (authStatus) {
+            authStatus.textContent = 'Logging in...';
+            authStatus.className = 'status-message'; // Reset style
+            authStatus.style.display = 'block';
+        }
+
+        // Attempt Firebase sign-in
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Login successful - onAuthStateChanged will handle the UI updates
+                console.log("Login successful via form submission.");
+                // No need to clear authStatus here, onAuthStateChanged does it.
+             })
+            .catch((error) => {
+                // Handle login errors
+                console.error("Login failed:", error.code, error.message);
+                let errorMessage = 'Invalid email or password.'; // Default error
+                // Map specific Firebase Auth error codes to user-friendly messages
+                if (error.code === 'auth/invalid-email') { errorMessage = 'Invalid email format.'; }
+                else if (error.code === 'auth/user-disabled') { errorMessage = 'This account has been disabled.'; }
+                else if (error.code === 'auth/invalid-credential') { errorMessage = 'Invalid email or password.'; } // Covers wrong password, user not found
+                else if (error.code === 'auth/too-many-requests') { errorMessage = 'Access temporarily disabled due to too many failed login attempts. Please try again later.'; }
+                else { errorMessage = `An unexpected error occurred (${error.code}).`; } // Fallback
+
+                // Display the specific error message
+                if (authStatus) {
+                    authStatus.textContent = `Login Failed: ${errorMessage}`;
+                    authStatus.className = 'status-message error';
+                    authStatus.style.display = 'block';
+                }
             });
-    }
+    });
+}
 
+// Logout Button Event Listener
+if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+        console.log("Logout button clicked.");
+        removeActivityListeners(); // Stop inactivity timer first
+        signOut(auth).then(() => {
+             // Sign-out successful - onAuthStateChanged handles UI updates
+             console.log("User signed out via button.");
+         }).catch((error) => {
+             // Handle potential logout errors
+             console.error("Logout failed:", error);
+             showAdminStatus(`Logout Failed: ${error.message}`, true); // Show error in admin area
+         });
+    });
+}
+    
     // ========================================
     // === Attach ALL Event Listeners Below ===
     // ========================================
