@@ -6,8 +6,7 @@ import { db, auth } from './firebase-init.js'; // Ensure path is correct
 // Import Firebase functions
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // Import Auth functions including persistence types
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserNonePersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"; //
 // *** Global Variable for Client-Side Filtering ***
 let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
 
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
 
     // *** Set Auth Persistence to None (Logout on Refresh/Close) ***
     try {
-        await setPersistence(auth, browserNonePersistence);
+        await setPersistence(auth, 'none');
         console.log("Firebase Auth persistence set to 'none'. User will be logged out on refresh.");
     } catch (error) {
         console.error("Error setting auth persistence:", error);
