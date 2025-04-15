@@ -1368,6 +1368,3 @@ async function loadDisabilitiesAdmin() {
         if (event.target === editDisabilityModalElem) { closeEditDisabilityModal(); }
         // Add edit modals for holidays/closures here if implemented
     });
-
-
-} // --- End of initializeAppAdminPanel function ---
