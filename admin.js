@@ -1,4 +1,4 @@
-// admin.js (Version includes Business Hours CRUD + Login Fixes + Logout-on-Refresh v3 + Parallel Loading)
+// admin.js (Version includes Business Hours CRUD + Login Fixes + Logout-on-Refresh v4 + Parallel Loading)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
@@ -23,18 +23,15 @@ document.addEventListener('DOMContentLoaded', () => { // No async needed here an
     // This clears any persisted session before we check auth state
     signOut(auth).then(() => {
         console.log("Ensured clean auth state on page load (Sign Out Attempted).");
-        // Now that sign out is ensured (or confirmed no user), proceed with setup
-        initializeAppAdminPanel();
+        initializeAppAdminPanel(); // Proceed with setup ONLY after sign out attempt
     }).catch((error) => {
-        // This error is unlikely to prevent login but good to log
         console.error("Non-critical error during initial sign out:", error);
-        // Still try to initialize the panel even if sign out failed unexpectedly
-        initializeAppAdminPanel();
+        initializeAppAdminPanel(); // Still try to initialize even if sign out failed
     });
 
 }); // End initial DOMContentLoaded setup for signout
 
-// --- Separate function to contain the rest of the setup ---
+// --- Main function to set up the admin panel after initial checks ---
 function initializeAppAdminPanel() {
     console.log("Initializing Admin Panel UI and Functions...");
     
@@ -54,8 +51,8 @@ function initializeAppAdminPanel() {
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
 
-   // --- DOM Element References ---
-    // (Defined once here for use throughout the initializeAppAdminPanel scope)
+    // --- DOM Element References ---
+    // (Defined once here for use throughout this function scope)
     const loginSection = document.getElementById('login-section');
     const adminContent = document.getElementById('admin-content');
     const loginForm = document.getElementById('login-form');
@@ -165,6 +162,7 @@ function initializeAppAdminPanel() {
     const tempClosuresListAdmin = document.getElementById('temp-closures-list-admin');
     const tempClosuresCount = document.getElementById('temp-closures-count');
     const tempClosuresStatusMessage = document.getElementById('temp-closures-status-message');
+
 
     // --- Helper Functions ---
     function showAdminStatus(message, isError = false) { if (!adminStatusElement) return; adminStatusElement.textContent = message; adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000); }
@@ -418,7 +416,7 @@ function initializeAppAdminPanel() {
         editDisabilityForm?.removeAttribute('data-doc-id');
         if (editDisabilityStatusMessage) editDisabilityStatusMessage.textContent = '';
     }
-    // *** CORRECTED Function Definition (Included from Chunk 1 for clarity) ***
+    // *** CORRECTED/NAMED loadDisabilitiesAdmin Definition ***
     async function loadDisabilitiesAdmin() {
        if (!disabilitiesListAdmin) { console.error("Disabilities list container not found."); return; }
        if (disabilitiesCount) disabilitiesCount.textContent = '';
@@ -1115,10 +1113,24 @@ function initializeAppAdminPanel() {
         });
     } else { console.warn("Missing elements for 'Next' button functionality."); }
 
-    // --- Authentication State Listener ---
-    onAuthStateChanged(auth, user => {
+    // --- Authentication State Listener (Corrected for Parallel Loading & Preview) ---
+    onAuthStateChanged(auth, user => { // auth from outer scope
+        // Re-get elements that change visibility if needed inside listener scope
+        const loginSection = document.getElementById('login-section');
+        const adminContent = document.getElementById('admin-content');
+        const logoutButton = document.getElementById('logout-button');
+        const adminGreeting = document.getElementById('admin-greeting');
+        const emailGroup = document.getElementById('email-group');
+        const passwordGroup = document.getElementById('password-group');
+        const nextButton = document.getElementById('next-button');
+        const loginButton = document.getElementById('login-button');
+        const loginForm = document.getElementById('login-form');
+        const authStatus = document.getElementById('auth-status');
+        const adminStatusElement = document.getElementById('admin-status');
+
         if (user) { // User is signed in
             console.log("User logged in:", user.email);
+            // Update UI for logged-in state
             if (loginSection) loginSection.style.display = 'none';
             if (adminContent) adminContent.style.display = 'block';
             if (logoutButton) logoutButton.style.display = 'inline-block';
@@ -1126,33 +1138,56 @@ function initializeAppAdminPanel() {
             if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
             if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
 
-            // Load ALL initial data
-            if (typeof loadProfileData === 'function') loadProfileData();
-            if (typeof loadPresidentData === 'function') loadPresidentData();
-            if (typeof loadDisabilitiesAdmin === 'function') loadDisabilitiesAdmin();
-            if (typeof loadUsefulLinksAdmin === 'function') loadUsefulLinksAdmin();
-            if (typeof loadSocialLinksAdmin === 'function') loadSocialLinksAdmin();
-            if (typeof loadShoutoutsAdmin === 'function') { loadShoutoutsAdmin('tiktok'); loadShoutoutsAdmin('instagram'); loadShoutoutsAdmin('youtube'); }
-            // Load Business Hours Data
-            if (typeof loadRegularHoursAdmin === 'function') loadRegularHoursAdmin();
-            if (typeof loadHolidaysAdmin === 'function') loadHolidaysAdmin();
-            if (typeof loadTempClosuresAdmin === 'function') loadTempClosuresAdmin();
+            // Load ALL initial data concurrently using Promise.allSettled
+            console.log("Loading admin data concurrently...");
+            const loadPromises = [
+                 // Create promises for each load function, checking if function exists
+                 (typeof loadProfileData === 'function' ? loadProfileData() : Promise.reject("loadProfileData missing")),
+                 (typeof loadPresidentData === 'function' ? loadPresidentData() : Promise.reject("loadPresidentData missing")),
+                 (typeof loadDisabilitiesAdmin === 'function' ? loadDisabilitiesAdmin() : Promise.reject("loadDisabilitiesAdmin missing")),
+                 (typeof loadUsefulLinksAdmin === 'function' ? loadUsefulLinksAdmin() : Promise.reject("loadUsefulLinksAdmin missing")),
+                 (typeof loadSocialLinksAdmin === 'function' ? loadSocialLinksAdmin() : Promise.reject("loadSocialLinksAdmin missing")),
+                 (typeof loadShoutoutsAdmin === 'function' ? Promise.all([loadShoutoutsAdmin('tiktok'), loadShoutoutsAdmin('instagram'), loadShoutoutsAdmin('youtube')]) : Promise.reject("loadShoutoutsAdmin missing")), // Group shoutouts
+                 (typeof loadRegularHoursAdmin === 'function' ? loadRegularHoursAdmin() : Promise.reject("loadRegularHoursAdmin missing")),
+                 (typeof loadHolidaysAdmin === 'function' ? loadHolidaysAdmin() : Promise.reject("loadHolidaysAdmin missing")),
+                 (typeof loadTempClosuresAdmin === 'function' ? loadTempClosuresAdmin() : Promise.reject("loadTempClosuresAdmin missing"))
+            ];
 
-            // Start inactivity timer
-            resetInactivityTimer();
-            addActivityListeners();
+            // Wait for all loading operations to settle (finish or fail)
+            Promise.allSettled(loadPromises).then(results => {
+                 console.log("Admin data loading settled.");
+                 results.forEach((result, index) => {
+                     if (result.status === 'rejected') {
+                         console.error(`Error loading admin section ${index}:`, result.reason);
+                     }
+                 });
+
+                 // *** Initialize the Business Hours Preview AFTER data attempts to load ***
+                 if (typeof updateBusinessInfoPreview === 'function') {
+                     console.log("Populating initial business info preview.");
+                     updateBusinessInfoPreview();
+                 } else {
+                     console.error("updateBusinessInfoPreview function missing!"); // Make sure it's defined earlier
+                 }
+
+                 // Start inactivity timer only after initial loads attempt to finish
+                 resetInactivityTimer(); // Assumes resetInactivityTimer defined
+                 addActivityListeners(); // Assumes addActivityListeners defined
+            });
 
         } else { // User is signed out
             console.log("User logged out.");
+            // Update UI for logged-out state
             if (loginSection) loginSection.style.display = 'block';
             if (adminContent) adminContent.style.display = 'none';
             if (logoutButton) logoutButton.style.display = 'none';
             if (adminGreeting) adminGreeting.textContent = '';
+            // Close any open modals
             if (typeof closeEditModal === 'function') closeEditModal();
             if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal();
             if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal();
             if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal();
-            // Reset login form
+            // Reset login form state
             if (emailGroup) emailGroup.style.display = 'block';
             if (passwordGroup) passwordGroup.style.display = 'none';
             if (nextButton) nextButton.style.display = 'inline-block';
@@ -1160,7 +1195,7 @@ function initializeAppAdminPanel() {
             if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; }
             if (loginForm) loginForm.reset();
             // Stop inactivity timer
-            removeActivityListeners();
+            removeActivityListeners(); // Assumes removeActivityListeners defined
         }
     });
 
