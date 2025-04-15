@@ -37,20 +37,17 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const socialLinksCollectionRef = collection(db, "social_links");
     const presidentDocRef = doc(db, "site_config", "currentPresident");
     const disabilitiesCollectionRef = collection(db, "disabilities");
-    // --- References for Business Hours ---
-    const businessInfoDocRef = doc(db, "site_config", "business_info"); // For regular hours
+    const businessInfoDocRef = doc(db, "site_config", "business_info");
     const holidaysCollectionRef = collection(db, "holidays");
     const tempClosuresCollectionRef = collection(db, "temporary_closures");
 
-
     // --- Inactivity Logout Variables ---
-    let inactivityTimer;
-    let expirationTime;
-    let displayIntervalId;
+    let inactivityTimer; let expirationTime; let displayIntervalId;
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
 
     // --- DOM Element References ---
+    // (Declare all consts for elements used throughout the functions below ONE time here)
     const loginSection = document.getElementById('login-section');
     const adminContent = document.getElementById('admin-content');
     const loginForm = document.getElementById('login-form');
@@ -65,8 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const passwordGroup = document.getElementById('password-group');
     const loginButton = document.getElementById('login-button');
     const timerDisplayElement = document.getElementById('inactivity-timer-display');
-
-    // Profile Management Elements
+    // Profile Elements
     const profileForm = document.getElementById('profile-form');
     const profileUsernameInput = document.getElementById('profile-username');
     const profilePicUrlInput = document.getElementById('profile-pic-url');
@@ -74,8 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const profileStatusInput = document.getElementById('profile-status');
     const profileStatusMessage = document.getElementById('profile-status-message');
     const adminPfpPreview = document.getElementById('admin-pfp-preview');
-
-    // Disabilities Management Elements
+    // Disabilities Elements
     const addDisabilityForm = document.getElementById('add-disability-form');
     const disabilitiesListAdmin = document.getElementById('disabilities-list-admin');
     const disabilitiesCount = document.getElementById('disabilities-count');
@@ -87,11 +82,9 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const editDisabilityUrlInput = document.getElementById('edit-disability-url');
     const editDisabilityOrderInput = document.getElementById('edit-disability-order');
     const editDisabilityStatusMessage = document.getElementById('edit-disability-status-message');
-
     // Site Settings Elements
     const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle');
     const settingsStatusMessage = document.getElementById('settings-status-message');
-
     // Shoutout Elements
     const addShoutoutTiktokForm = document.getElementById('add-shoutout-tiktok-form');
     const shoutoutsTiktokListAdmin = document.getElementById('shoutouts-tiktok-list-admin');
@@ -111,7 +104,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const editIsVerifiedInput = document.getElementById('edit-isVerified');
     const editBioInput = document.getElementById('edit-bio');
     const editProfilePicInput = document.getElementById('edit-profilePic');
-    const editIsEnabledInput = document.getElementById('edit-isEnabled');
     const editFollowersInput = document.getElementById('edit-followers');
     const editSubscribersInput = document.getElementById('edit-subscribers');
     const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
@@ -120,7 +112,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const addInstagramPreview = document.getElementById('add-instagram-preview');
     const addYoutubePreview = document.getElementById('add-youtube-preview');
     const editShoutoutPreview = document.getElementById('edit-shoutout-preview');
-
     // Useful Links Elements
     const addUsefulLinkForm = document.getElementById('add-useful-link-form');
     const usefulLinksListAdmin = document.getElementById('useful-links-list-admin');
@@ -133,7 +124,6 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const editLinkUrlInput = document.getElementById('edit-link-url');
     const editLinkOrderInput = document.getElementById('edit-link-order');
     const editLinkStatusMessage = document.getElementById('edit-link-status-message');
-
     // Social Links Elements
     const addSocialLinkForm = document.getElementById('add-social-link-form');
     const socialLinksListAdmin = document.getElementById('social-links-list-admin');
@@ -146,8 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
     const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
     const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message');
-
-    // President Management Elements
+    // President Elements
     const presidentForm = document.getElementById('president-form');
     const presidentNameInput = document.getElementById('president-name');
     const presidentBornInput = document.getElementById('president-born');
@@ -158,24 +147,16 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const presidentImageUrlInput = document.getElementById('president-image-url');
     const presidentStatusMessage = document.getElementById('president-status-message');
     const presidentPreviewArea = document.getElementById('president-preview');
-
-    // --- Business Hours DOM Element References ---
+    // Business Hours Elements
     const regularHoursForm = document.getElementById('regular-hours-form');
     const regularHoursStatusMessage = document.getElementById('regular-hours-status-message');
-    const hoursSundayOpenInput = document.getElementById('hours-sunday-open');
-    const hoursSundayCloseInput = document.getElementById('hours-sunday-close');
-    const hoursMondayOpenInput = document.getElementById('hours-monday-open');
-    const hoursMondayCloseInput = document.getElementById('hours-monday-close');
-    const hoursTuesdayOpenInput = document.getElementById('hours-tuesday-open');
-    const hoursTuesdayCloseInput = document.getElementById('hours-tuesday-close');
-    const hoursWednesdayOpenInput = document.getElementById('hours-wednesday-open');
-    const hoursWednesdayCloseInput = document.getElementById('hours-wednesday-close');
-    const hoursThursdayOpenInput = document.getElementById('hours-thursday-open');
-    const hoursThursdayCloseInput = document.getElementById('hours-thursday-close');
-    const hoursFridayOpenInput = document.getElementById('hours-friday-open');
-    const hoursFridayCloseInput = document.getElementById('hours-friday-close');
-    const hoursSaturdayOpenInput = document.getElementById('hours-saturday-open');
-    const hoursSaturdayCloseInput = document.getElementById('hours-saturday-close');
+    const hoursSundayOpenInput = document.getElementById('hours-sunday-open'); const hoursSundayCloseInput = document.getElementById('hours-sunday-close');
+    const hoursMondayOpenInput = document.getElementById('hours-monday-open'); const hoursMondayCloseInput = document.getElementById('hours-monday-close');
+    const hoursTuesdayOpenInput = document.getElementById('hours-tuesday-open'); const hoursTuesdayCloseInput = document.getElementById('hours-tuesday-close');
+    const hoursWednesdayOpenInput = document.getElementById('hours-wednesday-open'); const hoursWednesdayCloseInput = document.getElementById('hours-wednesday-close');
+    const hoursThursdayOpenInput = document.getElementById('hours-thursday-open'); const hoursThursdayCloseInput = document.getElementById('hours-thursday-close');
+    const hoursFridayOpenInput = document.getElementById('hours-friday-open'); const hoursFridayCloseInput = document.getElementById('hours-friday-close');
+    const hoursSaturdayOpenInput = document.getElementById('hours-saturday-open'); const hoursSaturdayCloseInput = document.getElementById('hours-saturday-close');
     const addHolidayForm = document.getElementById('add-holiday-form');
     const holidaysListAdmin = document.getElementById('holidays-list-admin');
     const holidaysCount = document.getElementById('holidays-count');
@@ -185,6 +166,19 @@ document.addEventListener('DOMContentLoaded', async () => { // Made listener asy
     const tempClosuresCount = document.getElementById('temp-closures-count');
     const tempClosuresStatusMessage = document.getElementById('temp-closures-status-message');
 
+
+    // --- Helper Functions ---
+    function showAdminStatus(message, isError = false) { if (!adminStatusElement) return; adminStatusElement.textContent = message; adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000); }
+    function showProfileStatus(message, isError = false) { if (!profileStatusMessage) { showAdminStatus(message, isError); return; } profileStatusMessage.textContent = message; profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (profileStatusMessage) { profileStatusMessage.textContent = ''; profileStatusMessage.className = 'status-message'; } }, 5000); }
+    function showSettingsStatus(message, isError = false) { if (!settingsStatusMessage) { showAdminStatus(message, isError); return; } settingsStatusMessage.textContent = message; settingsStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (settingsStatusMessage) { settingsStatusMessage.textContent = ''; settingsStatusMessage.style.display = 'none'; } }, 3000); settingsStatusMessage.style.display = 'block'; }
+    function showEditLinkStatus(message, isError = false) { if (!editLinkStatusMessage) return; editLinkStatusMessage.textContent = message; editLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); }
+    function showEditSocialLinkStatus(message, isError = false) { if (!editSocialLinkStatusMessage) return; editSocialLinkStatusMessage.textContent = message; editSocialLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editSocialLinkStatusMessage) { editSocialLinkStatusMessage.textContent = ''; editSocialLinkStatusMessage.className = 'status-message'; } }, 3000); }
+    function showEditDisabilityStatus(message, isError = false) { if (!editDisabilityStatusMessage) return; editDisabilityStatusMessage.textContent = message; editDisabilityStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editDisabilityStatusMessage) { editDisabilityStatusMessage.textContent = ''; editDisabilityStatusMessage.className = 'status-message'; } }, 3000); }
+    function showPresidentStatus(message, isError = false) { if (!presidentStatusMessage) { showAdminStatus(message, isError); return; } presidentStatusMessage.textContent = message; presidentStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (presidentStatusMessage) { presidentStatusMessage.textContent = ''; presidentStatusMessage.className = 'status-message'; } }, 5000); }
+    function showRegularHoursStatus(message, isError = false) { if (!regularHoursStatusMessage) return; regularHoursStatusMessage.textContent = message; regularHoursStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (regularHoursStatusMessage) { regularHoursStatusMessage.textContent = ''; regularHoursStatusMessage.className = 'status-message'; } }, 5000); }
+    function showHolidaysStatus(message, isError = false) { if (!holidaysStatusMessage) return; holidaysStatusMessage.textContent = message; holidaysStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (holidaysStatusMessage) { holidaysStatusMessage.textContent = ''; holidaysStatusMessage.className = 'status-message'; } }, 5000); }
+    function showTempClosuresStatus(message, isError = false) { if (!tempClosuresStatusMessage) return; tempClosuresStatusMessage.textContent = message; tempClosuresStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (tempClosuresStatusMessage) { tempClosuresStatusMessage.textContent = ''; tempClosuresStatusMessage.className = 'status-message'; } }, 5000); }
+    function capitalize(str) { return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''; }
 
     // --- Helper Functions ---
     function showAdminStatus(message, isError = false) {
