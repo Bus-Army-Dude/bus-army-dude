@@ -710,7 +710,7 @@ function renderYouTubeCard(account) { //
              adminPfpPreview.style.display = 'none'; //
         }
     
-        (); // <--- ADD THIS LINE HERE
+        loadDisabilitiesAdmin(); // <--- CORRECTED: This is the actual function call
     
     } catch (error) { //
          console.error("Error saving profile data:", error); //
@@ -777,7 +777,7 @@ function renderYouTubeCard(account) { //
                 showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
              }
         
-             (); // <--- ADD THIS LINE HERE
+             loadDisabilitiesAdmin(); // <--- CORRECTED: This is the actual function call
 
         } catch (error) { //
             console.error("Error saving maintenance mode status:", error); //
@@ -1274,7 +1274,7 @@ function renderYouTubeCard(account) { //
             await updateMetadataTimestamp(platform); // Update site timestamp
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false); //
         
-            (); // <--- ADD THIS LINE HERE
+            loadDisabilitiesAdmin(); // <--- CORRECTED: This is the actual function call
         
             if (typeof closeEditModal === 'function') closeEditModal(); // Close the modal
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload the list
@@ -1539,7 +1539,7 @@ async function handleUpdateUsefulLink(event) { //
         // await updateMetadataTimestamp('usefulLinks'); // Optional
         showAdminStatus("Useful link updated successfully.", false); // Show main status
     
-        (); // <--- ADD THIS LINE HERE
+        loadDisabilitiesAdmin(); // <--- CORRECTED: This is the actual function call
     
         closeEditUsefulLinkModal(); //
         loadUsefulLinksAdmin(); // Reload the list
@@ -1798,7 +1798,7 @@ async function handleUpdateUsefulLink(event) { //
             // Optionally: await updateMetadataTimestamp('socialLinks');
             showAdminStatus("Social link updated successfully.", false); // Show main status
         
-            (); // <--- ADD THIS LINE HERE
+            loadDisabilitiesAdmin(); // <--- CORRECTED: This is the actual function call
         
             closeEditSocialLinkModal(); //
             loadSocialLinksAdmin(); // Reload the list
@@ -2001,7 +2001,7 @@ async function handleUpdateUsefulLink(event) { //
             console.log("President data saved to:", presidentDocRef.path); //
             showPresidentStatus("President info updated successfully!", false); //
         
-            (); // <--- ADD THIS LINE HERE
+            loadDisabilitiesAdmin(); // <--- CORRECTED: This is the actual function call
         
         } catch (error) { //
             console.error("Error saving president data:", error); //
@@ -2135,7 +2135,7 @@ async function handleUpdateUsefulLink(event) { //
     }
 
     // Function to Load Disabilities into the Admin Panel List
-    async function () {
+    async function loadDisabilitiesAdmin() {
         // Use consts defined earlier for list container and count span
         if (!disabilitiesListAdmin) {
             console.error("Disabilities list container not found.");
