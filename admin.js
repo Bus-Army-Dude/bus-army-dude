@@ -19,22 +19,25 @@ document.addEventListener('DOMContentLoaded', () => { // No async needed here an
         return; // Stop executing if Firebase isn't ready
     }
 
-    // *** Set Auth Persistence to None (Logout on Refresh/Close) ***
-    try {
-        await setPersistence(auth, 'none');
-        console.log("Firebase Auth persistence set to 'none'. User will be logged out on refresh.");
-    } catch (error) {
-        console.error("Error setting auth persistence:", error);
-        alert(`Warning: Could not set auth persistence setting (${error.code}). Login might persist across refreshes.`);
-    }
-    // **************************************************************
+    // *** Explicitly Sign Out on Page Load/Refresh ***
+    // This clears any persisted session before we check auth state
+    signOut(auth).then(() => {
+        console.log("Ensured clean auth state on page load (Sign Out Attempted).");
+        // Now that sign out is ensured (or confirmed no user), proceed with setup
+        initializeAppAdminPanel();
+    }).catch((error) => {
+        // This error is unlikely to prevent login but good to log
+        console.error("Non-critical error during initial sign out:", error);
+        // Still try to initialize the panel even if sign out failed unexpectedly
+        initializeAppAdminPanel();
+    });
 
-    console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
+}); // End initial DOMContentLoaded setup for signout
 
-    // --- Main function to set up the admin panel after initial checks ---
-    function initializeAppAdminPanel() {
-        console.log("Initializing Admin Panel UI and Functions...");
-
+// --- Separate function to contain the rest of the setup ---
+function initializeAppAdminPanel() {
+    console.log("Initializing Admin Panel UI and Functions...");
+    
     // --- Firestore References ---
     const profileDocRef = doc(db, "site_config", "mainProfile");
     const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
