@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', () => { //
 
     // --- Firestore Reference for Profile / Site Config ---
     const profileDocRef = doc(db, "site_config", "mainProfile"); //
-    // --- ADD THIS for Tech Items ---
-    const techItemsCollectionRef = collection(db, "tech_items");
     // Reference for Shoutout Metadata (used for timestamps)
     const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); //
     // *** Firestore Reference for Useful Links ***
