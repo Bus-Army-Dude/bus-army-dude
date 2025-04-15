@@ -229,6 +229,151 @@
                 </div>
             </div>
 
+            <section class="admin-section" id="tech-items-management" aria-labelledby="tech-items-heading">
+                <h3 id="tech-items-heading">Manage Tech Items</h3>
+
+                <form id="add-tech-item-form" aria-labelledby="add-tech-item-heading">
+                    <h5 id="add-tech-item-heading">Add New Tech Item</h5>
+                    <div class="form-group">
+                        <label for="tech-item-name">Device Name (e.g., iPhone 16 Pro, Mac Mini):</label>
+                        <input type="text" id="tech-item-name" name="deviceName" required placeholder="Enter device name">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-item-type">Device Type (e.g., Phone, Watch, Computer):</label>
+                        <input type="text" id="tech-item-type" name="deviceType" placeholder="e.g., Phone">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-item-model">Model:</label>
+                        <input type="text" id="tech-item-model" name="model" placeholder="e.g., iPhone 16 Pro or 2023 M2">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-material">Material:</label>
+                        <input type="text" id="tech-item-material" name="material" placeholder="e.g., Titanium, Aluminum">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-storage">Storage:</label>
+                        <input type="text" id="tech-item-storage" name="storage" placeholder="e.g., 128GB, 256GB SSD">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-capacity">Battery Capacity (mAh - optional):</label>
+                        <input type="text" id="tech-item-capacity" name="capacity" placeholder="e.g., 3582mAh">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-color">Color:</label>
+                        <input type="text" id="tech-item-color" name="color" placeholder="e.g., Natural Titanium, Grey">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-price">Price (optional):</label>
+                        <input type="text" id="tech-item-price" name="price" placeholder="e.g., $1,067.49">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-released">Date Released (optional):</label>
+                        <input type="text" id="tech-item-released" name="released" placeholder="e.g., September 20, 2024">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-bought">Date Bought (optional):</label>
+                        <input type="text" id="tech-item-bought" name="bought" placeholder="e.g., November 08, 2024">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-os">OS Version:</label>
+                        <input type="text" id="tech-item-os" name="osVersion" placeholder="e.g., iOS 18.5 (...)">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-battery-health">Battery Health (% - optional):</label>
+                        <input type="number" id="tech-item-battery-health" name="batteryHealth" min="0" max="100" step="1" placeholder="e.g., 99">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-battery-cycles">Battery Cycles (optional):</label>
+                        <input type="number" id="tech-item-battery-cycles" name="batteryCycles" min="0" step="1" placeholder="e.g., 237">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-item-order">Display Order:</label>
+                        <input type="number" id="tech-item-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
+                    </div>
+                    <div class="form-actions">
+                       <button type="submit" class="button-primary">Add Tech Item</button>
+                    </div>
+                </form>
+
+                <h5 id="existing-tech-items-heading">
+                    Existing Tech Items <span id="tech-items-count" class="list-count"></span>
+                </h5>
+                <div id="tech-items-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tech-items-heading">
+                    <p>Loading tech items...</p>
+                    </div>
+            </section>
+            <div id="edit-tech-item-modal" class="modal" style="display: none;"
+                 role="dialog" aria-modal="true" aria-labelledby="edit-tech-item-modal-heading">
+                <div class="modal-content">
+                    <button type="button" class="close-button" id="cancel-edit-tech-item-button" aria-label="Close dialog">&times;</button>
+                    <h2 id="edit-tech-item-modal-heading">Edit Tech Item</h2>
+
+                    <form id="edit-tech-item-form" data-doc-id="">
+                         <div class="form-group">
+                            <label for="edit-tech-item-name">Device Name:</label>
+                            <input type="text" id="edit-tech-item-name" name="deviceName" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="edit-tech-item-type">Device Type:</label>
+                            <input type="text" id="edit-tech-item-type" name="deviceType">
+                        </div>
+                         <div class="form-group">
+                            <label for="edit-tech-item-model">Model:</label>
+                            <input type="text" id="edit-tech-item-model" name="model">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-material">Material:</label>
+                            <input type="text" id="edit-tech-item-material" name="material">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-storage">Storage:</label>
+                            <input type="text" id="edit-tech-item-storage" name="storage">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-capacity">Battery Capacity (mAh):</label>
+                            <input type="text" id="edit-tech-item-capacity" name="capacity">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-color">Color:</label>
+                            <input type="text" id="edit-tech-item-color" name="color">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-price">Price:</label>
+                            <input type="text" id="edit-tech-item-price" name="price">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-released">Date Released:</label>
+                            <input type="text" id="edit-tech-item-released" name="released">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-bought">Date Bought:</label>
+                            <input type="text" id="edit-tech-item-bought" name="bought">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-os">OS Version:</label>
+                            <input type="text" id="edit-tech-item-os" name="osVersion">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-battery-health">Battery Health (%):</label>
+                            <input type="number" id="edit-tech-item-battery-health" name="batteryHealth" min="0" max="100" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-battery-cycles">Battery Cycles:</label>
+                            <input type="number" id="edit-tech-item-battery-cycles" name="batteryCycles" min="0" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-tech-item-order">Display Order:</label>
+                            <input type="number" id="edit-tech-item-order" name="order" min="0" step="1" required>
+                        </div>
+                        <div class="form-actions">
+                          <button type="submit" class="button-primary">Save Tech Item Changes</button>
+                          <button type="button" id="cancel-edit-tech-item-button-secondary" class="secondary-button">Cancel</button>
+                        </div>
+                    </form>
+                    <div id="edit-tech-item-status-message" class="status-message" role="status" aria-live="polite"></div>
+                </div>
+            </div>
+            
             <section class="admin-section" id="useful-links-management" aria-labelledby="useful-links-heading">
     <h3 id="useful-links-heading">Manage Useful Links</h3>
 
