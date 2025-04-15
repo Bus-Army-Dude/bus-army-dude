@@ -2676,7 +2676,7 @@ async function handleUpdateUsefulLink(event) { //
         }
     }
 
-       // --- Attach Event Listeners for Section Forms & Modals ---
+   // --- Attach Event Listeners for Section Forms & Modals ---
 
     // Profile Save Form
     if (profileForm) { profileForm.addEventListener('submit', saveProfileData); }
@@ -2729,6 +2729,12 @@ async function handleUpdateUsefulLink(event) { //
     if (cancelEditDisabilityButton) { cancelEditDisabilityButton.addEventListener('click', closeEditDisabilityModal); }
     if (cancelEditDisabilityButtonSecondary) { cancelEditDisabilityButtonSecondary.addEventListener('click', closeEditDisabilityModal); }
 
+    // Tech Items Forms & Modals (Added)
+    if (addTechItemForm) { addTechItemForm.addEventListener('submit', handleAddTechItem); }
+    if (editTechItemForm) { editTechItemForm.addEventListener('submit', handleUpdateTechItem); }
+    if (cancelEditTechItemButton) { cancelEditTechItemButton.addEventListener('click', closeEditTechItemModal); }
+    if (cancelEditTechItemButtonSecondary) { cancelEditTechItemButtonSecondary.addEventListener('click', closeEditTechItemModal); }
+
 
     // --- Attach Event Listeners for Search & Previews ---
 
@@ -2753,8 +2759,6 @@ async function handleUpdateUsefulLink(event) { //
         if (event.target === editModal) { closeEditModal(); }
         if (event.target === editUsefulLinkModal) { closeEditUsefulLinkModal(); }
         if (event.target === editSocialLinkModal) { closeEditSocialLinkModal(); }
-        if (event.target === editDisabilityModal) { closeEditDisabilityModal(); } // Handles Disability Modal
+        if (event.target === editDisabilityModal) { closeEditDisabilityModal(); }
+        if (event.target === editTechItemModal) { closeEditTechItemModal(); } // Added Tech Item Modal
     });
-
-// --- Ensure this is the closing }); for the main DOMContentLoaded listener ---
-}); // End DOMContentLoaded Event Listener
