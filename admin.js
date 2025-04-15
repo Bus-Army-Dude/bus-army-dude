@@ -2676,9 +2676,7 @@ async function handleUpdateUsefulLink(event) { //
         }
     }
 
-       // --- Attach Event Listeners for Section Forms & Modals ---
-
-    // --- Attach Event Listeners for Section Forms & Modals ---
+     // --- Attach Event Listeners for Section Forms & Modals ---
 
     // Profile Save Form
     if (profileForm) { profileForm.addEventListener('submit', saveProfileData); }
@@ -2764,6 +2762,3 @@ async function handleUpdateUsefulLink(event) { //
         if (event.target === editDisabilityModal) { closeEditDisabilityModal(); }
         if (event.target === editTechItemModal) { closeEditTechItemModal(); } // Added Tech Item Modal
     });
-
-// --- This should be the closing part of your DOMContentLoaded listener ---
-// }); // End DOMContentLoaded Event Listener -- DO NOT add this line if pasting inside your existing listener
