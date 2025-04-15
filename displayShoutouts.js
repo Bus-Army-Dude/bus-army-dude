@@ -1,4 +1,4 @@
-// displayShoutouts.js (Complete with President & Disabilities Sections)
+// displayShoutouts.js (Complete with President, Disabilities, Links & Business Hours Sections)
 
 // Use the same Firebase config as in admin.js (Ensure this is correct)
 const firebaseConfig = {
@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 // Import necessary Firebase functions (v9+ modular SDK)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"; // Added 'where'
 
 // --- Initialize Firebase ---
 let db;
@@ -23,8 +23,13 @@ let profileDocRef;
 let presidentDocRef;
 let usefulLinksCollectionRef;
 let socialLinksCollectionRef;
-let disabilitiesCollectionRef; // Added declaration
-let shoutoutsMetaRef; // For shoutout timestamps
+let disabilitiesCollectionRef;
+let shoutoutsMetaRef;
+// --- Add Business Hours References ---
+let businessInfoDocRef;
+let holidaysCollectionRef;
+let tempClosuresCollectionRef;
+
 
 try {
     const app = initializeApp(firebaseConfig);
@@ -34,8 +39,13 @@ try {
     presidentDocRef = doc(db, "site_config", "currentPresident");
     usefulLinksCollectionRef = collection(db, "useful_links");
     socialLinksCollectionRef = collection(db, "social_links");
-    disabilitiesCollectionRef = collection(db, "disabilities"); // Assign disabilities ref
-    shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // Assign shoutout meta ref
+    disabilitiesCollectionRef = collection(db, "disabilities");
+    shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+    // --- Assign Business Hours References ---
+    businessInfoDocRef = doc(db, "site_config", "business_info");
+    holidaysCollectionRef = collection(db, "holidays");
+    tempClosuresCollectionRef = collection(db, "temporary_closures");
+
     firebaseAppInitialized = true;
     console.log("Firebase initialized for display.");
 } catch (error) {
@@ -52,10 +62,16 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
     catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
 }
 
+// --- Helper Function to Capitalize Strings ---
+function capitalize(str) {
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
 // --- Functions to Render Shoutout Cards ---
 function renderTikTokCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const followers = account.followers || 'N/A'; const isVerified = account.isVerified || false; const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#'; const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''; return `<div class="creator-card"><img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="creator-info"><div class="creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <p class="creator-username">@${username}</p> <p class="creator-bio">${bio}</p> <p class="follower-count">${followers} Followers</p> <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="visit-profile"> Visit Profile </a></div></div>`;}
 function renderInstagramCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const followers = account.followers || 'N/A'; const isVerified = account.isVerified || false; const profileUrl = username !== 'N/A' ? `https://instagram.com/${encodeURIComponent(username)}` : '#'; const verifiedBadge = isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''; return `<div class="instagram-creator-card"><img src="${profilePic}" alt="${nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="instagram-creator-info"><div class="instagram-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <p class="instagram-creator-username">@${username}</p> <p class="instagram-creator-bio">${bio}</p> <p class="instagram-follower-count">${followers} Followers</p> <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="instagram-visit-profile"> Visit Profile </a></div></div>`;}
-function renderYouTubeCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const subscribers = account.subscribers || 'N/A'; const coverPhoto = account.coverPhoto || null; const isVerified = account.isVerified || false; let safeUsername = username; if (username !== 'N/A' && !username.startsWith('@')) { safeUsername = `@${username}`; } const channelUrl = username !== 'N/A' ? `https://youtube.com/$${encodeURIComponent(safeUsername)}` : '#'; const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; return `<div class="youtube-creator-card"> ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''} <img src="${profilePic}" alt="@${username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="youtube-creator-info"><div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <div class="username-container"><p class="youtube-creator-username">@${username}</p></div> <p class="youtube-creator-bio">${bio}</p> <p class="youtube-subscriber-count">${subscribers} Subscribers</p> <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a></div></div>`;}
+function renderYouTubeCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const subscribers = account.subscribers || 'N/A'; const coverPhoto = account.coverPhoto || null; const isVerified = account.isVerified || false; let safeUsername = username; if (username !== 'N/A' && !username.startsWith('@')) { safeUsername = `@${username}`; } const channelUrl = username !== 'N/A' ? `https://www.youtube.com/${encodeURIComponent(safeUsername)}` : '#'; const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; return `<div class="youtube-creator-card"> ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''} <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="youtube-creator-info"><div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <div class="username-container"><p class="youtube-creator-username">@${username}</p></div> <p class="youtube-creator-bio">${bio}</p> <p class="youtube-subscriber-count">${subscribers} Subscribers</p> <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a></div></div>`;}
+
 
 // --- Function to Load and Display Profile Data ---
 async function displayProfileData() {
@@ -76,7 +92,7 @@ async function displayProfileData() {
 
 // --- Function to Load and Display Shoutouts ---
 async function loadAndDisplayShoutouts() {
-    if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); /* ... error display ... */ return; }
+    if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); return; }
     const tiktokGrid = document.querySelector('.creator-grid'); const instagramGrid = document.querySelector('.instagram-creator-grid'); const youtubeGrid = document.querySelector('.youtube-creator-grid'); const tiktokTimestampEl = document.getElementById('tiktok-last-updated-timestamp'); const instagramTimestampEl = document.getElementById('instagram-last-updated-timestamp'); const youtubeTimestampEl = document.getElementById('youtube-last-updated-timestamp');
     if (tiktokGrid) tiktokGrid.innerHTML = '<p>Loading...</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p>Loading...</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p>Loading...</p>'; if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Loading...'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Loading...'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Loading...';
     try {
@@ -91,7 +107,10 @@ async function loadAndDisplayShoutouts() {
 
 // --- Function to Load and Display Useful Links ---
 async function loadAndDisplayUsefulLinks() {
-    if (!firebaseAppInitialized || !db) { console.error("Useful Links load error: Firebase not ready."); if(usefulLinksContainerElement) usefulLinksContainerElement.innerHTML = '<p class="error">Error loading links.</p>'; return; } if (!usefulLinksContainerElement) { console.warn("Useful links container missing."); return; } if(!usefulLinksCollectionRef) { console.error("Useful Links load error: Collection reference missing."); usefulLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
+    const usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container'); // Get element inside function
+    if (!firebaseAppInitialized || !db) { console.error("Useful Links load error: Firebase not ready."); if(usefulLinksContainerElement) usefulLinksContainerElement.innerHTML = '<p class="error">Error loading links.</p>'; return; }
+    if (!usefulLinksContainerElement) { console.warn("Useful links container missing."); return; }
+    if(!usefulLinksCollectionRef) { console.error("Useful Links load error: Collection reference missing."); usefulLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
     usefulLinksContainerElement.innerHTML = '<p>Loading links...</p>';
     try { const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc")); const querySnapshot = await getDocs(linkQuery); usefulLinksContainerElement.innerHTML = ''; if (querySnapshot.empty) { usefulLinksContainerElement.innerHTML = '<p>No useful links available.</p>'; } else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.label && data.url) { const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.textContent = data.label; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; linkElement.className = 'link-button'; usefulLinksContainerElement.appendChild(linkElement); } else { console.warn("Skipping useful link:", doc.id); } }); } console.log(`Displayed ${querySnapshot.size} useful links.`);
     } catch (error) { console.error("Error loading useful links:", error); usefulLinksContainerElement.innerHTML = '<p class="error">Could not load links.</p>'; }
@@ -99,9 +118,12 @@ async function loadAndDisplayUsefulLinks() {
 
 // --- Function to Load and Display Social Links ---
 async function loadAndDisplaySocialLinks() {
-    if (!firebaseAppInitialized || !db) { console.error("Social Links load error: Firebase not ready."); if (socialLinksContainerElement) socialLinksContainerElement.innerHTML = '<p class="error">Error loading socials.</p>'; return; } if (!socialLinksContainerElement) { console.warn("Social links container missing."); return; } if (!socialLinksCollectionRef) { console.error("Social Links load error: Collection reference missing."); socialLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
+    const socialLinksContainerElement = document.querySelector('.social-links-container'); // Get element inside function
+    if (!firebaseAppInitialized || !db) { console.error("Social Links load error: Firebase not ready."); if (socialLinksContainerElement) socialLinksContainerElement.innerHTML = '<p class="error">Error loading socials.</p>'; return; }
+    if (!socialLinksContainerElement) { console.warn("Social links container missing."); return; }
+    if (!socialLinksCollectionRef) { console.error("Social Links load error: Collection reference missing."); socialLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
     socialLinksContainerElement.innerHTML = '<p>Loading socials...</p>';
-    try { const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc")); const querySnapshot = await getDocs(linkQuery); socialLinksContainerElement.innerHTML = ''; if (querySnapshot.empty) { socialLinksContainerElement.innerHTML = '<p>No social links available.</p>'; } else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.label && data.url) { const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; linkElement.className = 'social-button'; if (data.iconClass) { const iconElement = document.createElement('i'); iconElement.className = data.iconClass + ' social-icon'; linkElement.appendChild(iconElement); } const textElement = document.createElement('span'); textElement.textContent = data.label; linkElement.appendChild(textElement); socialLinksContainerElement.appendChild(linkElement); } else { console.warn("Skipping social link:", doc.id); } }); } console.log(`Displayed ${querySnapshot.size} social links.`);
+    try { const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc")); const querySnapshot = await getDocs(linkQuery); socialLinksContainerElement.innerHTML = ''; if (querySnapshot.empty) { socialLinksContainerElement.innerHTML = '<p>No social links available.</p>'; } else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.label && data.url) { const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; linkElement.className = 'social-button'; /* Note: iconClass logic removed for simplicity, add back if needed */ const textElement = document.createElement('span'); textElement.textContent = data.label; linkElement.appendChild(textElement); socialLinksContainerElement.appendChild(linkElement); } else { console.warn("Skipping social link:", doc.id); } }); } console.log(`Displayed ${querySnapshot.size} social links.`);
     } catch (error) { console.error("Error loading social links:", error); socialLinksContainerElement.innerHTML = '<p class="error">Could not load socials.</p>'; }
 }
 
@@ -116,7 +138,7 @@ async function displayPresidentData() {
     } catch (error) { console.error("Error fetching president data:", error); placeholderElement.innerHTML = `<p class="error">Error loading president info: ${error.message}</p>`; }
 }
 
-// --- Function to Load and Display Disabilities (NEW) ---
+// --- Function to Load and Display Disabilities ---
 async function loadAndDisplayDisabilities() {
     const placeholderElement = document.getElementById('disabilities-list-placeholder'); if (!placeholderElement) { console.warn("Disabilities placeholder missing."); return; }
     placeholderElement.innerHTML = '<li>Loading...</li>'; // Loading message inside UL
@@ -127,29 +149,345 @@ async function loadAndDisplayDisabilities() {
     } catch (error) { console.error("Error loading disabilities:", error); if (error.code === 'failed-precondition') { placeholderElement.innerHTML = '<li>Error: DB config needed.</li>'; console.error("Missing Firestore index for disabilities (order)."); } else { placeholderElement.innerHTML = '<li>Could not load list.</li>'; } }
 }
 
-// --- Global variable declarations for DOM elements ---
-let maintenanceMessageElement;
-let mainContentWrapper;
-let usefulLinksContainerElement;
-let socialLinksContainerElement;
+
+// ==================================================
+// === NEW Business Hours Functions ===
+// ==================================================
+
+// --- Helper function to convert time from EST/EDT to user's timezone ---
+function convertTimeToTimezoneBH(timeStr, targetTimezone) {
+    // Handles "HH:MM AM/PM" or "HH:MM" (24hr) or "Closed"
+    if (!timeStr || typeof timeStr !== 'string' || timeStr.trim().toUpperCase() === 'CLOSED') {
+        return "Closed";
+    }
+
+    let hours, minutes;
+    let period = null;
+    const timeStrClean = timeStr.trim().toUpperCase();
+
+    const timeRegex12hr = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
+    const timeRegex24hr = /^(\d{1,2}):(\d{2})$/;
+
+    if (timeRegex12hr.test(timeStrClean)) {
+        const match = timeStrClean.match(timeRegex12hr);
+        hours = parseInt(match[1], 10);
+        minutes = parseInt(match[2], 10);
+        period = match[3].toUpperCase();
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0; // Midnight case
+    } else if (timeRegex24hr.test(timeStrClean)) {
+        const match = timeStrClean.match(timeRegex24hr);
+        hours = parseInt(match[1], 10);
+        minutes = parseInt(match[2], 10);
+        if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return "Invalid Time"; // Basic 24hr validation
+    } else {
+        console.warn("Could not parse time for conversion:", timeStr);
+        return "Invalid Time"; // Invalid format
+    }
+
+    // Use a fixed date (like today) just for constructing a Date object
+    const tempDate = new Date();
+    tempDate.setHours(hours, minutes, 0, 0);
+
+    // Format the time in the target timezone
+    try {
+        return tempDate.toLocaleTimeString('en-US', {
+            timeZone: targetTimezone,
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+    } catch (e) {
+        console.error("Error converting time to timezone:", timeStr, targetTimezone, e);
+        return "Error"; // Return error if conversion fails
+    }
+}
+
+
+// --- Function to check current open status ---
+function checkOpenStatus(dayOfWeek, todayDateStr, fetchedRegularHours, fetchedHoliday, fetchedTempClosures) {
+    const nowUser = new Date();
+    const nowEST = new Date(nowUser.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    const currentHourEST = nowEST.getHours(); // 0-23
+    const currentMinuteEST = nowEST.getMinutes();
+    const currentTotalMinutesEST = currentHourEST * 60 + currentMinuteEST;
+
+    let effectiveOpenStr, effectiveCloseStr;
+    let reason = "Regular Hours";
+    let hoursTodayStr = "Closed"; // Default
+
+    // 1. Check for Holiday
+    if (fetchedHoliday) {
+        reason = `Holiday: ${fetchedHoliday.name}`;
+        hoursTodayStr = fetchedHoliday.hours || "Closed";
+        if (hoursTodayStr.toLowerCase() === 'closed') return { status: "Closed", reason: reason, hoursToday: "Closed" };
+        try {
+            const parts = hoursTodayStr.split(" - ");
+            if (parts.length === 2) {
+                effectiveOpenStr = parts[0].trim();
+                effectiveCloseStr = parts[1].trim();
+            } else {
+                console.warn("Could not parse holiday hours range:", hoursTodayStr);
+                return { status: "Closed", reason: `${reason} (Invalid hours format)`, hoursToday: hoursTodayStr };
+            }
+        } catch (e) {
+            console.error("Error parsing holiday hours:", hoursTodayStr, e);
+            return { status: "Closed", reason: `${reason} (Error parsing hours)`, hoursToday: hoursTodayStr };
+        }
+    } else {
+        // 2. Use Regular Hours if no holiday
+        const dayKeyOpen = `${dayOfWeek}_open`;
+        const dayKeyClose = `${dayOfWeek}_close`;
+        effectiveOpenStr = fetchedRegularHours?.[dayKeyOpen];
+        effectiveCloseStr = fetchedRegularHours?.[dayKeyClose];
+        hoursTodayStr = (effectiveOpenStr && effectiveOpenStr.toLowerCase() !== 'closed' && effectiveCloseStr)
+                      ? `${effectiveOpenStr} - ${effectiveCloseStr}`
+                      : "Closed";
+
+        if (!effectiveOpenStr || effectiveOpenStr.toLowerCase() === 'closed' || !effectiveCloseStr || effectiveCloseStr.toLowerCase() === 'closed') {
+            return { status: "Closed", reason: reason, hoursToday: "Closed" };
+        }
+    }
+
+     // Helper to parse time string (HH:MM AM/PM or HH:MM 24hr) into total minutes from midnight
+     const parseTimeToMinutesEST = (timeStr) => {
+        if (!timeStr || typeof timeStr !== 'string') return -1;
+        timeStr = timeStr.trim().toUpperCase();
+        if (timeStr === 'CLOSED') return -1;
+        const timeRegex12hr = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
+        const timeRegex24hr = /^(\d{1,2}):(\d{2})$/;
+        let hours = -1, minutes = -1;
+        if (timeRegex12hr.test(timeStr)) {
+            const match = timeStr.match(timeRegex12hr);
+            hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); const period = match[3].toUpperCase();
+            if (period === 'PM' && hours !== 12) hours += 12; if (period === 'AM' && hours === 12) hours = 0;
+        } else if (timeRegex24hr.test(timeStr)) {
+            const match = timeStr.match(timeRegex24hr);
+            hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10);
+        } else { console.warn("Invalid time format for parsing:", timeStr); return -1; }
+        if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return -1; // Validate range
+        return hours * 60 + minutes;
+    };
+
+
+    const openMinutes = parseTimeToMinutesEST(effectiveOpenStr);
+    const closeMinutes = parseTimeToMinutesEST(effectiveCloseStr);
+
+    if (openMinutes === -1 || closeMinutes === -1) {
+         return { status: "Closed", reason: reason, hoursToday: hoursTodayStr }; // Should be caught earlier, but safety check
+    }
+
+    // 3. Check for Temporary Closures within open hours
+    let activeTempClosure = null;
+    if (fetchedTempClosures && fetchedTempClosures.length > 0) {
+         activeTempClosure = fetchedTempClosures.find(closure => {
+            const fromMinutes = parseTimeToMinutesEST(closure.startTime); // startTime is HH:MM (24hr)
+            const toMinutes = parseTimeToMinutesEST(closure.endTime);     // endTime is HH:MM (24hr)
+            if(fromMinutes === -1 || toMinutes === -1) return false; // Skip if times are invalid
+            // Check if current time falls within the closure period
+            return currentTotalMinutesEST >= fromMinutes && currentTotalMinutesEST < toMinutes;
+        });
+    }
+
+    if (activeTempClosure) {
+        return {
+            status: "Temporarily Unavailable",
+            reason: activeTempClosure.reason,
+            hoursToday: hoursTodayStr, // Still show regular/holiday hours
+            tempClosureDetails: activeTempClosure // Pass details for alert display
+        };
+    }
+
+    // 4. Check if within Regular/Holiday Open Hours
+    // Handle overnight case where close time is earlier than open time (e.g., 8 PM - 2 AM)
+    let isOpen;
+    if (closeMinutes < openMinutes) { // Overnight hours
+         isOpen = (currentTotalMinutesEST >= openMinutes) || (currentTotalMinutesEST < closeMinutes);
+    } else { // Same day hours
+        isOpen = currentTotalMinutesEST >= openMinutes && currentTotalMinutesEST < closeMinutes;
+    }
+
+
+    if (isOpen) {
+        return { status: "Open", reason: reason, hoursToday: hoursTodayStr };
+    } else {
+        return { status: "Closed", reason: reason, hoursToday: hoursTodayStr };
+    }
+}
+
+
+// --- Function to Load and Display Business Hours Info ---
+async function loadAndDisplayBusinessInfo() {
+    if (!firebaseAppInitialized) { console.error("Business Hours: Firebase not ready."); return; }
+
+    const userTimezoneElement = document.getElementById("user-timezone");
+    const hoursContainer = document.getElementById("hours-container");
+    const statusElement = document.getElementById("open-status");
+    const holidayAlertElement = document.getElementById("holiday-alert");
+    const holidayNameElement = document.getElementById("holiday-name");
+    const holidayHoursElement = document.getElementById("holiday-hours");
+    const tempAlertElement = document.getElementById("temporary-alert");
+    const tempReasonElement = document.getElementById("temporary-reason");
+    const tempHoursElement = document.getElementById("temporary-hours");
+
+    // Ensure all elements exist before proceeding
+    if (!userTimezoneElement || !hoursContainer || !statusElement || !holidayAlertElement || !tempAlertElement) {
+        console.warn("One or more business info display elements are missing.");
+        return;
+    }
+
+    // Display loading states
+    userTimezoneElement.textContent = 'Loading...';
+    hoursContainer.innerHTML = '<p>Loading hours...</p>';
+    statusElement.textContent = 'Loading...';
+    holidayAlertElement.style.display = 'none';
+    tempAlertElement.style.display = 'none';
+
+    // Get user's timezone and display it
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    userTimezoneElement.textContent = userTimezone;
+
+    // Get current date/time information
+    const currentDate = new Date();
+    const currentDay = currentDate.toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
+    const todayDateStr = currentDate.toLocaleDateString("en-CA", { timeZone: userTimezone }); // YYYY-MM-DD
+
+    // Fetch Data
+    let regularHours = null;
+    let todaysHoliday = null;
+    let todaysTempClosures = [];
+    try {
+        const results = await Promise.all([
+            getDoc(businessInfoDocRef),
+            getDocs(query(holidaysCollectionRef, where("date", "==", todayDateStr))),
+            getDocs(query(tempClosuresCollectionRef, where("date", "==", todayDateStr)))
+        ]);
+
+        const businessInfoSnap = results[0];
+        const holidaySnapshot = results[1];
+        const closureSnapshot = results[2];
+
+        if (businessInfoSnap.exists()) { regularHours = businessInfoSnap.data(); } else { console.warn("Business info document not found."); regularHours = {}; }
+        if (!holidaySnapshot.empty) { todaysHoliday = holidaySnapshot.docs[0].data(); } // Assuming one holiday per date
+        closureSnapshot.forEach(doc => { todaysTempClosures.push(doc.data()); });
+
+        console.log("Fetched Business Data:", { regularHours, todaysHoliday, todaysTempClosures });
+
+    } catch (error) {
+        console.error("Error fetching business data from Firestore:", error);
+        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not load hours.</p>';
+        if (statusElement) statusElement.textContent = 'Error';
+        return;
+    }
+
+    // Render Weekly Hours
+    hoursContainer.innerHTML = ""; // Clear loading
+    const daysOrder = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    daysOrder.forEach(day => {
+        const openKey = `${day}_open`;
+        const closeKey = `${day}_close`;
+        const openTimeEST = regularHours?.[openKey] || "Closed";
+        const closeTimeEST = regularHours?.[closeKey] || "Closed";
+
+        const convertedOpen = convertTimeToTimezoneBH(openTimeEST, userTimezone);
+        const convertedClose = (closeTimeEST.toLowerCase() === 'closed') ? "" : convertTimeToTimezoneBH(closeTimeEST, userTimezone);
+
+        const dayElement = document.createElement("div");
+        dayElement.classList.add("hours-row");
+        if (day === currentDay) { dayElement.classList.add("current-day"); }
+        dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen}${convertedOpen !== 'Closed' && convertedClose ? ' - ' + convertedClose : ''}</span>`;
+        hoursContainer.appendChild(dayElement);
+    });
+
+    // Check Status and Display Alerts
+    const openStatusResult = checkOpenStatus(currentDay, todayDateStr, regularHours, todaysHoliday, todaysTempClosures);
+
+    statusElement.textContent = openStatusResult.status;
+    statusElement.className = ''; // Clear previous classes
+    statusElement.classList.add(openStatusResult.status.toLowerCase().replace(/\s+/g, "-"));
+
+    if (todaysHoliday) {
+        holidayNameElement.textContent = todaysHoliday.name;
+        holidayHoursElement.textContent = todaysHoliday.hours; // Show original EST/special hours
+        holidayAlertElement.style.display = "block";
+    } else {
+        holidayAlertElement.style.display = "none";
+    }
+
+    if (openStatusResult.status === "Temporarily Unavailable" && openStatusResult.tempClosureDetails) {
+         const tempClosure = openStatusResult.tempClosureDetails;
+         tempReasonElement.textContent = tempClosure.reason;
+         const convertedStart = convertTimeToTimezoneBH(tempClosure.startTime, userTimezone); // Use BH version
+         const convertedEnd = convertTimeToTimezoneBH(tempClosure.endTime, userTimezone);     // Use BH version
+         tempHoursElement.textContent = `${convertedStart} - ${convertedEnd}`;
+         tempAlertElement.style.display = "block";
+    } else {
+        tempAlertElement.style.display = "none";
+    }
+}
+
 
 // --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOM loaded. Checking Firebase status and maintenance mode...");
-    maintenanceMessageElement = document.getElementById('maintenanceModeMessage'); mainContentWrapper = document.querySelector('.container'); usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container'); socialLinksContainerElement = document.querySelector('.social-links-container');
+    maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
+    mainContentWrapper = document.getElementById('main-content-wrapper'); // Changed selector
 
-    if (!firebaseAppInitialized) { console.error("Firebase not ready. Site cannot load."); if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>'; maintenanceMessageElement.style.display = 'block'; } else { const eb = document.createElement('div'); eb.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>'; document.body.prepend(eb); } if (mainContentWrapper) mainContentWrapper.style.display = 'none'; return; }
+    // Check Firebase initialization
+    if (!firebaseAppInitialized) {
+        console.error("Firebase not ready. Site cannot load.");
+        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 20px; color: red;">Site cannot load (Connection Error).</p>'; maintenanceMessageElement.style.display = 'block'; }
+        else { const eb = document.createElement('div'); eb.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>'; document.body.prepend(eb); }
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+        return;
+    }
 
-    try { console.log("Checking maintenance mode..."); if (!profileDocRef) { throw new Error("profileDocRef missing."); } const configSnap = await getDoc(profileDocRef); let maintenanceEnabled = configSnap.exists() ? (configSnap.data()?.isMaintenanceModeEnabled || false) : false; console.log("Maintenance mode:", maintenanceEnabled);
-        if (maintenanceEnabled) { console.log("Maintenance mode ON."); if (mainContentWrapper) { mainContentWrapper.style.display = 'none'; } if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'block'; } else { console.error("Maintenance msg element missing!"); } return; }
-        else { console.log("Maintenance mode OFF. Loading content."); if (mainContentWrapper) { mainContentWrapper.style.display = ''; } if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'none'; }
-            // Load ALL dynamic content
-            if (typeof displayProfileData === 'function') { displayProfileData(); } else { console.error("displayProfileData missing!"); }
-            if (typeof displayPresidentData === 'function') { displayPresidentData(); } else { console.error("displayPresidentData missing!"); }
-            if (typeof loadAndDisplayShoutouts === 'function') { loadAndDisplayShoutouts(); } else { console.error("loadAndDisplayShoutouts missing!"); }
-            if (typeof loadAndDisplayUsefulLinks === 'function') { if(usefulLinksContainerElement) { loadAndDisplayUsefulLinks(); } else { console.warn("Useful links container missing."); } } else { console.error("loadAndDisplayUsefulLinks missing!"); }
-            if (typeof loadAndDisplaySocialLinks === 'function') { if (socialLinksContainerElement) { loadAndDisplaySocialLinks(); } else { console.warn("Social links container missing."); } } else { console.error("loadAndDisplaySocialLinks missing!"); }
-            if (typeof loadAndDisplayDisabilities === 'function') { loadAndDisplayDisabilities(); } else { console.error("loadAndDisplayDisabilities missing!"); } // Load Disabilities
+    // Check Maintenance Mode
+    try {
+        console.log("Checking maintenance mode...");
+        if (!profileDocRef) { throw new Error("profileDocRef missing."); }
+        const configSnap = await getDoc(profileDocRef);
+        let maintenanceEnabled = configSnap.exists() ? (configSnap.data()?.isMaintenanceModeEnabled || false) : false;
+        console.log("Maintenance mode:", maintenanceEnabled);
+
+        if (maintenanceEnabled) {
+            console.log("Maintenance mode ON.");
+            if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+            if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'block';
+            else console.error("Maintenance message element missing!");
+            // Stop loading other content if in maintenance mode
+            return;
+        } else {
+            console.log("Maintenance mode OFF. Loading content.");
+            if (mainContentWrapper) mainContentWrapper.style.display = '';
+            if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
+
+            // --- Load ALL dynamic content ---
+            // Use Promise.allSettled to load everything concurrently and continue even if one part fails
+            const loadPromises = [
+                displayProfileData(),
+                displayPresidentData(),
+                loadAndDisplayShoutouts(),
+                loadAndDisplayUsefulLinks(),
+                loadAndDisplaySocialLinks(),
+                loadAndDisplayDisabilities(),
+                loadAndDisplayBusinessInfo() // <<< ADDED Call to load business info
+            ];
+
+            const results = await Promise.allSettled(loadPromises);
+
+            // Optional: Log results of loading
+            results.forEach((result, index) => {
+                if (result.status === 'rejected') {
+                    console.error(`Error loading section ${index}:`, result.reason);
+                    // You could potentially display a specific error message for the failed section
+                }
+            });
         }
-    } catch (error) { console.error("Error during DOMContentLoaded:", error); if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">Error loading site: ${error.message}</p>`; maintenanceMessageElement.style.display = 'block'; } else { const eb = document.createElement('div'); eb.innerHTML = `<p class="error">Error loading site: ${error.message}</p>`; document.body.prepend(eb); } if (mainContentWrapper) mainContentWrapper.style.display = 'none'; }
+    } catch (error) {
+        console.error("Error during DOMContentLoaded initialization:", error);
+        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error" style="text-align: center; padding: 20px; color: red;">Error loading site configuration: ${error.message}</p>`; maintenanceMessageElement.style.display = 'block'; }
+        else { const eb = document.createElement('div'); eb.innerHTML = `<p class="error">Error loading site: ${error.message}</p>`; document.body.prepend(eb); }
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+    }
 }); // End DOMContentLoaded listener
