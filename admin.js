@@ -1804,17 +1804,22 @@ async function handleUpdateUsefulLink(event) { //
    }
 
 
-   // --- Function to Load Social Links into the Admin Panel ---
+   / --- Function to Load Social Links into the Admin Panel (CORRECTED) ---
    async function loadSocialLinksAdmin() {
-       if (!socialLinksListAdmin) {
+       // Get references to DOM elements
+       const listContainer = document.getElementById('social-links-list-admin');
+       const countElement = document.getElementById('social-links-count');
+
+       if (!listContainer) {
            console.error("Social links list container not found.");
            return;
        }
-       if (socialLinksCount) socialLinksCount.textContent = ''; // Clear count
-       socialLinksListAdmin.innerHTML = `<p>Loading social links...</p>`;
+       if (countElement) countElement.textContent = ''; // Clear count
+       listContainer.innerHTML = `<p>Loading social links...</p>`; // Show loading
+
+       allSocialLinks = []; // <<<--- 1. Clear the global array
 
        try {
-           // Query links ordered by the 'order' field
            const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc"));
            const querySnapshot = await getDocs(linkQuery);
 
@@ -1833,6 +1838,7 @@ async function handleUpdateUsefulLink(event) { //
                        data.url,
                        data.order,
                        handleDeleteSocialLink, // Pass delete handler function
+                       allSocialLinks.push({ id: doc.id, ...doc.data() }); // Store data
                        openEditSocialLinkModal // Pass edit handler function
                    );
                });
@@ -1840,18 +1846,37 @@ async function handleUpdateUsefulLink(event) { //
            }
            console.log(`Loaded ${querySnapshot.size} social links.`);
 
+           // STEP 4: Call the filtering function AFTER loading to display the list
+           if (typeof displayFilteredSocialLinks === 'function') {
+               displayFilteredSocialLinks(); // This will clear loading message and render
+           } else {
+               console.error("displayFilteredSocialLinks function not defined!");
+               if (listContainer) listContainer.innerHTML = `<p class="error">Error initializing display.</p>`;
+               if (countElement) countElement.textContent = '(Error)';
+           }
+
        } catch (error) {
            console.error("Error loading social links:", error);
-           // Check for missing index error
-           if (error.code === 'failed-precondition') {
-                socialLinksListAdmin.innerHTML = `<p class="error">Error: Missing Firestore index for social links (order). Please create it using the link in the developer console (F12).</p>`;
-                showAdminStatus("Error loading social links: Missing database index. Check console.", true);
-           } else {
-                socialLinksListAdmin.innerHTML = `<p class="error">Error loading social links.</p>`;
-                showAdminStatus("Error loading social links.", true);
+           allSocialLinks = []; // Clear array on error
+
+           // Display error message in the container
+           if (listContainer) {
+               if (error.code === 'failed-precondition') {
+                   listContainer.innerHTML = `<p class="error">Error: Missing Firestore index. See console (F12).</p>`;
+                   showAdminStatus("Error loading social links: Missing database index. Check console.", true);
+               } else {
+                   listContainer.innerHTML = `<p class="error">Error loading social links.</p>`;
+                   showAdminStatus("Error loading social links.", true);
+               }
            }
-           if (socialLinksCount) socialLinksCount.textContent = '(Error)';
+           if (countElement) countElement.textContent = '(Error)';
+
+           // STEP 4 (Catch block): Call display function even on error
+           if (typeof displayFilteredSocialLinks === 'function') {
+               displayFilteredSocialLinks();
+           }
        }
+       // STEP 5: Ensure NO calls to displayFilteredSocialLinks() are here
    }
 
    // --- Function to Handle Adding a New Social Link ---
