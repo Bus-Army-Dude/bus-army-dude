@@ -564,136 +564,158 @@ function formatTimeRange(openStr, closeStr) {
         return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
     }
 
-    // --- Render List of Alerts ---
-    function renderAlertList(alertsArray, containerElement, alertType) {
-         if (!containerElement) { console.error(`Container not found for ${alertType} alerts.`); return; }
-         containerElement.innerHTML = ''; // Clear previous
+    // Replace the existing renderAlertList function with this one:
+function renderAlertList(alertsArray, containerElement, alertType) {
+    if (!containerElement) {
+        console.error(`Container not found for rendering ${alertType} alerts.`);
+        return;
+    }
+    containerElement.innerHTML = ''; // Clear previous content
 
-         if (!alertsArray || alertsArray.length === 0) {
-             containerElement.innerHTML = `<p>No active ${alertType} alerts.</p>`; return;
-         }
-
-         alertsArray.forEach(alert => {
-             if (!alert || !alert.id) { console.warn("Skipping alert render: Missing data or ID.", alert); return; }
-             const itemDiv = document.createElement('div');
-             itemDiv.className = 'list-item-admin alert-item';
-             itemDiv.setAttribute('data-id', alert.id);
-             itemDiv.setAttribute('data-type', alertType);
-
-             let alertText = '';
-             if (alertType === 'holiday') { alertText = `<strong>${alert.name || 'Unnamed'}</strong>: ${alert.hours || 'Info'}`; }
-             else { alertText = `<strong>${alert.reason || 'Notice'}</strong>: ${alert.hours || 'Info'}`; }
-             if (alert.isClosure) { alertText += ` <span class="closure-indicator">(Implies Closure)</span>`; }
-
-             itemDiv.innerHTML = `
-                 <div class="item-content"><div class="item-details">${alertText}</div></div>
-                 <div class="item-actions">
-                     <button type="button" class="delete-alert-button small-button">Delete</button>
-                 </div>`;
-
-             const deleteButton = itemDiv.querySelector('.delete-alert-button');
-             if (deleteButton) { deleteButton.addEventListener('click', () => handleDeleteAlert(alert.id, alertType)); }
-
-             containerElement.appendChild(itemDiv);
-         });
+    if (!alertsArray || alertsArray.length === 0) {
+        containerElement.innerHTML = `<p>No active ${alertType} alerts stored.</p>`;
+        return;
     }
 
-    // --- Load Both Alert Lists ---
-    async function loadAlertsAdmin() {
-         console.log("Attempting to load active alerts from:", businessInfoDocRef.path);
-         if (holidayAlertsListContainer) holidayAlertsListContainer.innerHTML = '<p>Loading holiday alerts...</p>';
-         if (temporaryAlertsListContainer) temporaryAlertsListContainer.innerHTML = '<p>Loading temporary alerts...</p>';
+    // Sort alerts by start date (most recent first) for display in admin
+    const sortedAlerts = [...alertsArray].sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''));
 
-         try {
-             const docSnap = await getDoc(businessInfoDocRef);
-             let holidays = []; let temporary = [];
-             if (docSnap.exists()) {
-                 const data = docSnap.data();
-                 holidays = data.activeHolidays || [];
-                 temporary = data.activeTemporary || [];
-             } else { console.warn(`Business info doc not found for loading alerts.`); }
 
-             renderAlertList(holidays, holidayAlertsListContainer, 'holiday');
-             renderAlertList(temporary, temporaryAlertsListContainer, 'temporary');
-         } catch (error) {
-             console.error("Error loading alerts:", error);
-             showAdminStatus("Error loading active alerts.", true);
-             if (holidayAlertsListContainer) holidayAlertsListContainer.innerHTML = '<p class="error">Error loading.</p>';
-             if (temporaryAlertsListContainer) temporaryAlertsListContainer.innerHTML = '<p class="error">Error loading.</p>';
-         }
-    }
+    sortedAlerts.forEach(alert => {
+        if (!alert || !alert.id) {
+            console.warn("Skipping alert render: Missing data or ID.", alert);
+            return;
+        }
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'list-item-admin alert-item';
+        itemDiv.setAttribute('data-id', alert.id);
+        itemDiv.setAttribute('data-type', alertType);
 
-    // --- Handle Adding a New Alert (Holiday or Temporary) ---
-    async function handleAddAlert(event, alertType) {
-        event.preventDefault();
-        const form = event.target;
-        const statusElement = (alertType === 'holiday') ? addHolidayStatusMessage : addTempStatusMessage;
-        const showStatus = (alertType === 'holiday') ? showAddHolidayStatus : showAddTempStatus;
-        if (!form || !statusElement) { console.error(`UI elements missing for adding ${alertType} alert.`); return; }
+        let alertText = '';
+        let dateText = '';
 
-        let newAlertData = { id: generateAlertId() };
-        let validationOk = true;
-
-        if (alertType === 'holiday') {
-            const nameInput = form.querySelector('#new-holiday-name');
-            const hoursInput = form.querySelector('#new-holiday-hours');
-            const isClosureInput = form.querySelector('#new-holiday-is-closure');
-            newAlertData.name = nameInput?.value.trim();
-            newAlertData.hours = hoursInput?.value.trim();
-            newAlertData.isClosure = isClosureInput?.checked ?? false;
-            if (!newAlertData.name || !newAlertData.hours) { showStatus("Holiday Name and Hours/Details are required.", true); validationOk = false; }
-        } else { // temporary
-            const reasonInput = form.querySelector('#new-temp-reason');
-            const hoursInput = form.querySelector('#new-temp-hours');
-            const isClosureInput = form.querySelector('#new-temp-is-closure');
-            newAlertData.reason = reasonInput?.value.trim();
-            newAlertData.hours = hoursInput?.value.trim();
-            newAlertData.isClosure = isClosureInput?.checked ?? false;
-            if (!newAlertData.reason) { showStatus("Temporary Reason is required.", true); validationOk = false; }
+        // Format dates nicely if they exist
+        if (alert.startDate) {
+             dateText = alert.startDate;
+             if (alert.endDate && alert.endDate !== alert.startDate) {
+                 dateText += ` to ${alert.endDate}`;
+             }
+             dateText = ` <small>(${dateText})</small>`; // Wrap date in small tags
         }
 
-        if (!validationOk) return;
-        showStatus(`Adding ${alertType} alert...`);
 
-        try {
-            await runTransaction(db, async (transaction) => {
-                const docSnap = await transaction.get(businessInfoDocRef);
-                const fieldName = (alertType === 'holiday') ? 'activeHolidays' : 'activeTemporary';
-                let currentAlerts = [];
-                if (docSnap.exists()) { currentAlerts = docSnap.data()[fieldName] || []; }
-                if (!Array.isArray(currentAlerts)) { currentAlerts = []; } // Ensure array
-                currentAlerts.push(newAlertData);
-                transaction.set(businessInfoDocRef, { [fieldName]: currentAlerts }, { merge: true });
-            });
-            console.log(`${alertType} alert added:`, newAlertData);
-            showStatus(`${alertType.charAt(0).toUpperCase() + alertType.slice(1)} alert added!`, false);
-            form.reset();
-            loadAlertsAdmin(); // Refresh
-        } catch (error) { console.error(`Error adding ${alertType} alert:`, error); showStatus(`Error: ${error.message}`, true); }
+        if (alertType === 'holiday') {
+            alertText = `<strong>${alert.name || 'Unnamed Holiday'}</strong>: ${alert.hours || 'Info'}${dateText}`;
+        } else { // temporary
+            alertText = `<strong>${alert.reason || 'Notice'}</strong>: ${alert.hours || 'Info'}${dateText}`;
+        }
+
+        if (alert.isClosure) {
+             alertText += ` <span class="closure-indicator">(Implies Closure)</span>`;
+        }
+
+        itemDiv.innerHTML = `
+            <div class="item-content">
+                <div class="item-details">${alertText}</div>
+            </div>
+            <div class="item-actions">
+                <button type="button" class="delete-alert-button small-button">Delete</button>
+            </div>`;
+
+        const deleteButton = itemDiv.querySelector('.delete-alert-button');
+        if (deleteButton) {
+             deleteButton.addEventListener('click', () => handleDeleteAlert(alert.id, alertType));
+        }
+
+        containerElement.appendChild(itemDiv);
+    });
+}
+
+// Replace the existing handleAddAlert function with this one:
+async function handleAddAlert(event, alertType) {
+    event.preventDefault();
+    const form = event.target;
+    const statusElement = (alertType === 'holiday') ? addHolidayStatusMessage : addTempStatusMessage;
+    const showStatus = (alertType === 'holiday') ? showAddHolidayStatus : showAddTempStatus;
+
+    if (!form || !statusElement) {
+         console.error(`UI elements missing for adding ${alertType} alert.`);
+         return;
     }
 
-    // --- Handle Deleting an Alert ---
-    async function handleDeleteAlert(alertIdToDelete, alertType) {
-        if (!alertIdToDelete || !alertType) { console.error("Missing ID/type for deletion."); showAdminStatus("Internal error.", true); return; }
-        if (!confirm(`Remove this ${alertType} alert?`)) { return; }
-        showAdminStatus(`Deleting ${alertType} alert...`);
+    let newAlertData = {
+        id: generateAlertId(), // Generate unique ID
+        startDate: '', // Initialize date fields
+        endDate: ''
+    };
+    let validationOk = true;
 
-        try {
-             await runTransaction(db, async (transaction) => {
-                 const docSnap = await transaction.get(businessInfoDocRef);
-                 if (!docSnap.exists()) { throw new Error("Business info document not found."); }
-                 const fieldName = (alertType === 'holiday') ? 'activeHolidays' : 'activeTemporary';
-                 const currentAlerts = docSnap.data()[fieldName] || [];
-                 if (!Array.isArray(currentAlerts)) { throw new Error("Alert data format error."); } // Stop if not array
-                 const updatedAlerts = currentAlerts.filter(alert => alert.id !== alertIdToDelete);
-                 if (updatedAlerts.length === currentAlerts.length) { console.warn(`Alert ID ${alertIdToDelete} not found.`); throw new Error("Alert not found."); }
-                 transaction.update(businessInfoDocRef, { [fieldName]: updatedAlerts });
-             });
-             console.log(`${alertType} alert ID ${alertIdToDelete} deleted.`);
-             showAdminStatus(`${alertType.charAt(0).toUpperCase() + alertType.slice(1)} alert removed.`, false);
-             loadAlertsAdmin(); // Refresh
-        } catch (error) { console.error(`Error deleting ${alertType} alert:`, error); showAdminStatus(`Error: ${error.message}`, true); }
+    // Get common fields
+    const isClosureInput = (alertType === 'holiday') ? form.querySelector('#new-holiday-is-closure') : form.querySelector('#new-temp-is-closure');
+    newAlertData.isClosure = isClosureInput?.checked ?? false;
+
+    // Get date fields (common to both forms now)
+    const startDateInput = (alertType === 'holiday') ? form.querySelector('#new-holiday-start-date') : form.querySelector('#new-temp-start-date');
+    const endDateInput = (alertType === 'holiday') ? form.querySelector('#new-holiday-end-date') : form.querySelector('#new-temp-end-date');
+    newAlertData.startDate = startDateInput?.value || null; // Get YYYY-MM-DD string or null
+    newAlertData.endDate = endDateInput?.value || null;
+
+    // Validate dates
+    if (!newAlertData.startDate || !newAlertData.endDate) {
+        showStatus("Start Date and End Date are required.", true);
+        validationOk = false;
+    } else if (newAlertData.endDate < newAlertData.startDate) {
+        showStatus("End Date cannot be before Start Date.", true);
+        validationOk = false;
     }
+
+    // Get type-specific fields and validate
+    if (alertType === 'holiday') {
+        const nameInput = form.querySelector('#new-holiday-name');
+        const hoursInput = form.querySelector('#new-holiday-hours');
+        newAlertData.name = nameInput?.value.trim();
+        newAlertData.hours = hoursInput?.value.trim();
+        if (!newAlertData.name || !newAlertData.hours) {
+            showStatus("Holiday Name and Hours/Details are required.", true);
+            validationOk = false;
+        }
+    } else { // temporary
+        const reasonInput = form.querySelector('#new-temp-reason');
+        const hoursInput = form.querySelector('#new-temp-hours');
+        newAlertData.reason = reasonInput?.value.trim();
+        newAlertData.hours = hoursInput?.value.trim(); // Optional? Or required? Assuming required for now.
+        if (!newAlertData.reason || !newAlertData.hours) { // Make hours required for temp too? Adjust if needed
+            showStatus("Temporary Reason and Hours/Details are required.", true); // Adjusted validation
+            validationOk = false;
+        }
+    }
+
+    if (!validationOk) return;
+
+    showStatus(`Adding ${alertType} alert...`);
+
+    try {
+        // Transaction to safely update the array
+        await runTransaction(db, async (transaction) => {
+            const docSnap = await transaction.get(businessInfoDocRef);
+            const fieldName = (alertType === 'holiday') ? 'activeHolidays' : 'activeTemporary';
+            let currentAlerts = [];
+            if (docSnap.exists()) { currentAlerts = docSnap.data()[fieldName] || []; }
+            if (!Array.isArray(currentAlerts)) { currentAlerts = []; }
+            currentAlerts.push(newAlertData);
+            transaction.set(businessInfoDocRef, { [fieldName]: currentAlerts }, { merge: true });
+        });
+
+        console.log(`${alertType} alert added successfully:`, newAlertData);
+        showStatus(`${alertType.charAt(0).toUpperCase() + alertType.slice(1)} alert added successfully!`, false);
+        form.reset(); // Clear the form
+        loadAlertsAdmin(); // Refresh the lists
+
+    } catch (error) {
+        console.error(`Error adding ${alertType} alert:`, error);
+        showStatus(`Error adding alert: ${error.message}`, true);
+    }
+}
 
 // --- Attach Event Listeners for Business Info Section ---
 
