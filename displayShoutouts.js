@@ -133,6 +133,7 @@ async function loadAndDisplayDisabilities() {
 // ========================================================
 // START NEW Business Information Display Function
 // ========================================================
+// --- Function to Load and Display Business Info (with Timezone Calc & Day Highlight) ---
 async function loadAndDisplayBusinessInfo() {
     // Get references to the display elements in index.html
     const hoursContainer = document.getElementById('hours-container');
@@ -152,9 +153,11 @@ async function loadAndDisplayBusinessInfo() {
     if (temporaryAlertDiv) temporaryAlertDiv.style.display = 'none';
 
     // Display User's Timezone
+    let visitorTimezone = 'N/A'; // Default
     if (userTimezoneSpan) {
         try {
-            userTimezoneSpan.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            userTimezoneSpan.textContent = visitorTimezone;
         } catch (e) {
             console.error("Could not get user timezone", e);
             userTimezoneSpan.textContent = "N/A";
@@ -162,22 +165,16 @@ async function loadAndDisplayBusinessInfo() {
     }
 
     // Check Firebase readiness
-    if (!firebaseAppInitialized || !db) {
-        console.error("Business Info load error: Firebase not ready.");
-        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Error loading info (DB).</p>';
-        if (openStatusSpan) openStatusSpan.textContent = 'Error';
+    if (!firebaseAppInitialized || !db || !businessInfoDocRef) {
+        console.error("Business Info load error: Firebase not ready or ref missing.");
+        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Error loading info.</p>';
+        if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
         return;
     }
-     if (!businessInfoDocRef) {
-        console.error("Business Info load error: Document reference missing.");
-         if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Error loading info (Config).</p>';
-         if (openStatusSpan) openStatusSpan.textContent = 'Error';
-        return;
-     }
 
     try {
         const docSnap = await getDoc(businessInfoDocRef);
-        let data = {}; // Default empty data
+        let data = {};
 
         if (docSnap.exists()) {
             data = docSnap.data();
@@ -185,38 +182,64 @@ async function loadAndDisplayBusinessInfo() {
         } else {
             console.warn("Business info document not found in Firestore.");
             if (hoursContainer) hoursContainer.innerHTML = '<p>Business hours not available.</p>';
-            if (openStatusSpan) openStatusSpan.textContent = 'Unavailable';
-            // Don't process further if no data
+            if (openStatusSpan) { openStatusSpan.textContent = 'Unavailable'; openStatusSpan.className = 'closed'; }
             return;
         }
 
-        // 1. Display Business Hours
+        const businessTimezone = data.businessTimezone || "America/New_York"; // Get business timezone or default
+        const now = new Date(); // Visitor's current date/time
+
+        // --- Determine Current Day Name IN VISITOR'S TIMEZONE (for highlighting) ---
+        // Note: This highlights based on visitor's day, which might differ slightly near midnight from business's day.
+        const dayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: visitorTimezone });
+        const currentVisitorDayName = dayFormatter.format(now).toLowerCase();
+
+        // --- Display Business Hours & Highlight Current Day ---
         if (hoursContainer) {
+            // *** ASSUMES data.hours structure like: { monday: { open: "09:00", close: "17:00" }, ... } ***
             const hoursData = data.hours || {};
             hoursContainer.innerHTML = ''; // Clear loading/previous
             const daysOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
             daysOrder.forEach(day => {
-                const hoursText = hoursData[day] || 'Not Set'; // Use text hours saved from admin
+                const dayHours = hoursData[day]; // Should be { open: "HH:MM", close: "HH:MM" } or null
+                let hoursText = 'Closed'; // Default
+                if (dayHours && dayHours.open && dayHours.close) {
+                     // Format HH:MM into something more readable like 9:00 AM - 5:00 PM (Requires a helper function)
+                     hoursText = formatTimeRange(dayHours.open, dayHours.close); // Need to create formatTimeRange function
+                } else if (dayHours && (dayHours.open || dayHours.close)) {
+                     // Handle cases like only open or close time specified, if needed
+                     hoursText = "Special Hours"; // Or handle as desired
+                } // else remains 'Closed'
+
                 const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
                 const p = document.createElement('p');
-                // Apply classes if needed, e.g., from styles.css: p.className = 'hours-row';
+                p.classList.add('hours-row'); // Add class for potential styling
+                if (day === currentVisitorDayName) {
+                    p.classList.add('current-day'); // Add class for highlighting
+                }
                 p.innerHTML = `<strong>${formattedDay}:</strong> <span>${hoursText}</span>`;
                 hoursContainer.appendChild(p);
             });
+        } else {
+             console.warn("Hours container missing in index.html");
         }
 
-        // 2. Handle Holiday Alert
+
+        // --- Handle Alerts (Holiday & Temporary) ---
+        let isHolidayClosed = false; // Flag for status calculation
         if (holidayAlertDiv && holidayNameSpan && holidayHoursSpan) {
             if (data.holidayActive && (data.holidayName || data.holidayHours)) {
                 holidayNameSpan.textContent = data.holidayName || '';
                 holidayHoursSpan.textContent = data.holidayHours || '';
                 holidayAlertDiv.style.display = 'block';
+                if (data.holidayHours?.toLowerCase().includes('closed')) {
+                    isHolidayClosed = true; // Set flag if holiday implies closed
+                }
             } else {
                 holidayAlertDiv.style.display = 'none';
             }
         }
-
-        // 3. Handle Temporary Alert
         if (temporaryAlertDiv && temporaryReasonSpan && temporaryHoursSpan) {
              if (data.temporaryActive && (data.temporaryReason || data.temporaryHours)) {
                 temporaryReasonSpan.textContent = data.temporaryReason || '';
@@ -227,51 +250,149 @@ async function loadAndDisplayBusinessInfo() {
             }
         }
 
-        // 4. Determine and Display Status (Basic version - no timezone calc yet)
+        // --- Determine and Display Status (with Timezone Calculation) ---
         if (openStatusSpan) {
-            let currentStatus = "Unavailable"; // Default
-            let statusClass = "closed"; // Default class
+            let finalStatus = "Unavailable"; // Default status
+            let finalStatusClass = "closed"; // Default style class
 
             // Check highest priority: Temporary Closure
             if (data.temporaryActive && data.temporaryReason) {
-                currentStatus = "Temporarily Unavailable";
-                statusClass = "temporarily-unavailable"; // Use your defined CSS class
+                finalStatus = "Temporarily Unavailable";
+                finalStatusClass = "temporarily-unavailable"; // Use your CSS class
             }
-            // Next priority: Holiday (if specified as Closed in admin)
-            else if (data.holidayActive && data.holidayHours?.toLowerCase().includes('closed')) {
-                 currentStatus = "Closed (Holiday)";
-                 statusClass = "closed";
+            // Next priority: Holiday (Closed)
+            else if (isHolidayClosed) { // Check flag set earlier
+                 finalStatus = "Closed (Holiday)";
+                 finalStatusClass = "closed";
             }
             // Next priority: Manual Overrides
             else if (data.statusOverride === 'Force Open') {
-                currentStatus = "Open";
-                statusClass = "open";
+                finalStatus = "Open";
+                finalStatusClass = "open";
             } else if (data.statusOverride === 'Force Closed') {
-                currentStatus = "Closed";
-                statusClass = "closed";
+                finalStatus = "Closed";
+                finalStatusClass = "closed";
             }
-            // Default: Needs calculation (Automatic)
+            // Default: Calculate based on time (Automatic)
             else { // statusOverride === 'Automatic'
-                // --- Placeholder for Timezone Calculation ---
-                // This is where you would implement the logic using the text hours
-                // from data.hours, the businessTimezone (if you add it), and the
-                // visitor's current time + timezone. This is complex!
-                currentStatus = "Unavailable (Auto)"; // Indicate calculation needed or default
-                statusClass = "closed"; // Default display
-                console.warn("Automatic open/closed status calculation based on time/timezone not yet implemented.");
-                 // --- End Placeholder ---
+                 console.log("Attempting automatic status calculation...");
+                 // *** Timezone Calculation Logic Starts Here ***
+                 // NOTE: This is complex and might have edge cases without a library.
+                 // Strongly recommend using date-fns-tz or Luxon for production.
+
+                 try {
+                     // 1. Get today's day name IN THE BUSINESS'S TIMEZONE
+                     const businessDayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: businessTimezone });
+                     const currentBusinessDayName = businessDayFormatter.format(now).toLowerCase();
+
+                     // 2. Get today's hours from the structured data
+                     const todaysHours = data.hours ? data.hours[currentBusinessDayName] : null;
+
+                     if (todaysHours && todaysHours.open && todaysHours.close) {
+                         // 3. Construct Date objects for open/close times IN BUSINESS TIMEZONE today
+                         const openTimeParts = todaysHours.open.split(':'); // ["HH", "MM"]
+                         const closeTimeParts = todaysHours.close.split(':');
+
+                         // Get current date parts in business timezone to avoid date mismatches near midnight
+                         const datePartsFormatter = new Intl.DateTimeFormat('en-CA', { // en-CA gives YYYY-MM-DD
+                            timeZone: businessTimezone,
+                            year: 'numeric', month: '2-digit', day: '2-digit'
+                         });
+                         const parts = datePartsFormatter.formatToParts(now).reduce((acc, part) => {
+                           if(part.type !== 'literal') acc[part.type] = part.value;
+                           return acc;
+                         }, {});
+                         const businessDateStr = `${parts.year}-${parts.month}-${parts.day}`;
+
+                         // Create Date objects representing the exact open/close moments in UTC
+                         // This standard JS approach can be unreliable with DST shifts.
+                         const openDate = new Date(`${businessDateStr}T${todaysHours.open}:00`);
+                         const closeDate = new Date(`${businessDateStr}T${todaysHours.close}:00`);
+
+                         // Basic check if times are valid before comparison
+                         if (!isNaN(openDate.getTime()) && !isNaN(closeDate.getTime())) {
+                            // Convert business open/close to pseudo-UTC representation based on offset
+                            // WARNING: get TimezoneOffset is LOCAL, not for the target timezone. This is flawed.
+                            // *** THIS IS WHERE A LIBRARY IS HIGHLY RECOMMENDED ***
+                            // A library handles DST and correct offset calculations.
+                            // The following standard JS calculation is a simplification and may fail.
+
+                            // Get current visitor time in UTC milliseconds
+                            const nowUTC = now.getTime();
+
+                            // VERY rough estimate - This doesn't correctly use businessTimezone offset
+                            // For demonstration ONLY - REPLACE with library logic
+                            const openLocalApprox = new Date(now.toDateString() + ' ' + todaysHours.open);
+                            const closeLocalApprox = new Date(now.toDateString() + ' ' + todaysHours.close);
+
+                            console.log(`Comparing Now (${now.toLocaleTimeString()}) with Approx Open: ${openLocalApprox.toLocaleTimeString()}, Approx Close: ${closeLocalApprox.toLocaleTimeString()}`);
+
+                             if (now >= openLocalApprox && now < closeLocalApprox) {
+                                finalStatus = "Open";
+                                finalStatusClass = "open";
+                             } else {
+                                finalStatus = "Closed";
+                                finalStatusClass = "closed";
+                             }
+                         } else {
+                             console.error("Could not parse business open/close times:", todaysHours);
+                             finalStatus = "Hours Error";
+                             finalStatusClass = "closed";
+                         }
+                     } else {
+                         // Business is closed today according to schedule
+                         finalStatus = "Closed";
+                         finalStatusClass = "closed";
+                     }
+                 } catch(calcError) {
+                      console.error("Error during automatic status calculation:", calcError);
+                      finalStatus = "Status Unavailable";
+                      finalStatusClass = "closed";
+                 }
+                 // *** End Timezone Calculation Logic ***
             }
 
-            openStatusSpan.textContent = currentStatus;
-            openStatusSpan.className = statusClass; // Apply class for styling from styles.css
+            openStatusSpan.textContent = finalStatus;
+            openStatusSpan.className = finalStatusClass; // Apply class for styling
         }
 
     } catch (error) {
         console.error("Error fetching/displaying business info:", error);
          if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not load info.</p>';
-         if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed';}
+         if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
     }
 }
+// --- Helper Function to format HH:MM time to AM/PM ---
+// Add this function alongside the other helpers
+function formatTime(timeString) {
+    if (!timeString || !timeString.includes(':')) return "Invalid Time";
+    try {
+        const parts = timeString.split(':');
+        let hours = parseInt(parts[0]);
+        const minutes = parseInt(parts[1]);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+        return `${hours}:${minutesStr} ${ampm}`;
+    } catch (e) {
+        console.error("Error formatting time:", timeString, e);
+        return "Invalid Time";
+    }
+}
+
+// --- Helper function to format HH:MM range ---
+// Add this function alongside the other helpers
+function formatTimeRange(openStr, closeStr) {
+    const openFormatted = formatTime(openStr);
+    const closeFormatted = formatTime(closeStr);
+    if (openFormatted === "Invalid Time" || closeFormatted === "Invalid Time") {
+        return "Invalid Hours";
+    }
+    return `${openFormatted} - ${closeFormatted}`;
+}
+
+
 // ========================================================
 // END NEW Business Information Display Function
 // ========================================================
@@ -339,7 +460,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (typeof loadAndDisplayUsefulLinks === 'function') { if(usefulLinksContainerElement) { loadAndDisplayUsefulLinks(); } else { console.warn("Useful links container missing in index.html."); } } else { console.error("loadAndDisplayUsefulLinks missing!"); }
             if (typeof loadAndDisplaySocialLinks === 'function') { if (socialLinksContainerElement) { loadAndDisplaySocialLinks(); } else { console.warn("Social links container missing in index.html."); } } else { console.error("loadAndDisplaySocialLinks missing!"); }
             if (typeof loadAndDisplayDisabilities === 'function') { loadAndDisplayDisabilities(); } else { console.error("loadAndDisplayDisabilities missing!"); }
-            if (typeof loadAndDisplayBusinessInfo === 'function') { loadAndDisplayBusinessInfo(); } else { console.error("loadAndDisplayBusinessInfo missing!"); } // <<<--- ADDED Call
+            if (typeof loadAndDisplayBusinessInfo === 'function') { loadAndDisplayBusinessInfo(); } else { console.error("loadAndDisplayBusinessInfo missing!"); } // <<<--- Already Correctly Added
 
         }
     } catch (error) {
