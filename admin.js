@@ -542,41 +542,19 @@ function renderYouTubeCard(account) { //
         });
     }
 
+    // *** Attach Event Listener for Social Links Search (CORRECTED) ***
     const searchInputSocial = document.getElementById('search-social');
     if (searchInputSocial) {
-        searchInputSocial.addEventListener('input', () => {
-            // STEP 4: Call the filtering function AFTER loading to display the list
-        if (typeof displayFilteredSocialLinks === 'function') {
-            displayFilteredSocialLinks(); // This will clear loading message and render
-        } else {
-            console.error("displayFilteredSocialLinks function not defined!");
-            if (listContainer) listContainer.innerHTML = `<p class="error">Error initializing display.</p>`;
-            if (countElement) countElement.textContent = '(Error)';
-        }
-
-    } catch (error) {
-        console.error("Error loading social links:", error);
-        allSocialLinks = []; // Clear array on error
-
-        // Display error message in the container
-        if (listContainer) {
-            if (error.code === 'failed-precondition') {
-                listContainer.innerHTML = `<p class="error">Error: Missing Firestore index. See console (F12).</p>`;
-                showAdminStatus("Error loading social links: Missing database index. Check console.", true);
+        searchInputSocial.addEventListener('input', () => { // Listener starts
+            // Simply call the display function when input changes
+            if (typeof displayFilteredSocialLinks === 'function') {
+                displayFilteredSocialLinks();
             } else {
-                listContainer.innerHTML = `<p class="error">Error loading social links.</p>`;
-                showAdminStatus("Error loading social links.", true);
+                console.error("displayFilteredSocialLinks function missing!");
             }
-        }
-        if (countElement) countElement.textContent = '(Error)';
-
-        // STEP 4 (Catch block): Call display function even on error
-        if (typeof displayFilteredSocialLinks === 'function') {
-            displayFilteredSocialLinks();
-        }
+        }); // Listener ends correctly
     }
-    // STEP 5: Ensure NO calls to displayFilteredSocialLinks() are here
-}
+    // *** END Listener ***
     
 // *** FUNCTION: Displays Filtered Shoutouts (for Search Bar) ***
     // This function takes the platform name, filters the globally stored list,
