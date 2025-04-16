@@ -358,37 +358,76 @@
                 <form id="business-info-form">
 
                     <h4>Regular Business Hours</h4>
-                    <p><small>Enter hours exactly as you want them displayed (e.g., "9:00 AM - 5:00 PM", "Closed", "By Appointment Only").</small></p>
-                    <div class="form-group">
-                        <label for="hours-monday">Monday:</label>
-                        <input type="text" id="hours-monday" name="hoursMonday" placeholder="e.g., 9:00 AM - 5:00 PM">
-                    </div>
-                    <div class="form-group">
-                        <label for="hours-tuesday">Tuesday:</label>
-                        <input type="text" id="hours-tuesday" name="hoursTuesday" placeholder="e.g., 9:00 AM - 5:00 PM">
-                    </div>
-                    <div class="form-group">
-                        <label for="hours-wednesday">Wednesday:</label>
-                        <input type="text" id="hours-wednesday" name="hoursWednesday" placeholder="e.g., 9:00 AM - 5:00 PM">
-                    </div>
-                    <div class="form-group">
-                        <label for="hours-thursday">Thursday:</label>
-                        <input type="text" id="hours-thursday" name="hoursThursday" placeholder="e.g., 9:00 AM - 5:00 PM">
-                    </div>
-                    <div class="form-group">
-                        <label for="hours-friday">Friday:</label>
-                        <input type="text" id="hours-friday" name="hoursFriday" placeholder="e.g., 9:00 AM - 5:00 PM">
-                    </div>
-                    <div class="form-group">
-                        <label for="hours-saturday">Saturday:</label>
-                        <input type="text" id="hours-saturday" name="hoursSaturday" placeholder="e.g., 10:00 AM - 2:00 PM">
-                    </div>
-                    <div class="form-group">
-                        <label for="hours-sunday">Sunday:</label>
-                        <input type="text" id="hours-sunday" name="hoursSunday" placeholder="e.g., Closed">
-                    </div>
+                    <p><small>Set open/close times using 24-hour format (e.g., 9:00 AM is 09:00, 5:00 PM is 17:00, 11:00 PM is 23:00). Check "Closed" if applicable.</small></p>
 
+                    <div class="hours-input-grid">
+
+                        <div class="hours-day-row">
+                            <span class="day-label">Monday:</span>
+                            <label for="hours-monday-open">Open:</label>
+                            <input type="time" id="hours-monday-open" name="hoursMondayOpen">
+                            <label for="hours-monday-close">Close:</label>
+                            <input type="time" id="hours-monday-close" name="hoursMondayClose">
+                            <input type="checkbox" id="hours-monday-closed" name="hoursMondayClosed" class="closed-checkbox">
+                            <label for="hours-monday-closed">Closed?</label>
+                        </div>
+                        <div class="hours-day-row">
+                            <span class="day-label">Tuesday:</span>
+                            <label for="hours-tuesday-open">Open:</label>
+                            <input type="time" id="hours-tuesday-open" name="hoursTuesdayOpen">
+                            <label for="hours-tuesday-close">Close:</label>
+                            <input type="time" id="hours-tuesday-close" name="hoursTuesdayClose">
+                            <input type="checkbox" id="hours-tuesday-closed" name="hoursTuesdayClosed" class="closed-checkbox">
+                            <label for="hours-tuesday-closed">Closed?</label>
+                        </div>
+                        <div class="hours-day-row">
+                             <span class="day-label">Wednesday:</span>
+                            <label for="hours-wednesday-open">Open:</label>
+                            <input type="time" id="hours-wednesday-open" name="hoursWednesdayOpen">
+                            <label for="hours-wednesday-close">Close:</label>
+                            <input type="time" id="hours-wednesday-close" name="hoursWednesdayClose">
+                            <input type="checkbox" id="hours-wednesday-closed" name="hoursWednesdayClosed" class="closed-checkbox">
+                            <label for="hours-wednesday-closed">Closed?</label>
+                        </div>
+                        <div class="hours-day-row">
+                             <span class="day-label">Thursday:</span>
+                            <label for="hours-thursday-open">Open:</label>
+                            <input type="time" id="hours-thursday-open" name="hoursThursdayOpen">
+                            <label for="hours-thursday-close">Close:</label>
+                            <input type="time" id="hours-thursday-close" name="hoursThursdayClose">
+                            <input type="checkbox" id="hours-thursday-closed" name="hoursThursdayClosed" class="closed-checkbox">
+                            <label for="hours-thursday-closed">Closed?</label>
+                        </div>
+                         <div class="hours-day-row">
+                            <span class="day-label">Friday:</span>
+                            <label for="hours-friday-open">Open:</label>
+                            <input type="time" id="hours-friday-open" name="hoursFridayOpen">
+                            <label for="hours-friday-close">Close:</label>
+                            <input type="time" id="hours-friday-close" name="hoursFridayClose">
+                            <input type="checkbox" id="hours-friday-closed" name="hoursFridayClosed" class="closed-checkbox">
+                            <label for="hours-friday-closed">Closed?</label>
+                        </div>
+                        <div class="hours-day-row">
+                            <span class="day-label">Saturday:</span>
+                            <label for="hours-saturday-open">Open:</label>
+                            <input type="time" id="hours-saturday-open" name="hoursSaturdayOpen">
+                            <label for="hours-saturday-close">Close:</label>
+                            <input type="time" id="hours-saturday-close" name="hoursSaturdayClose">
+                            <input type="checkbox" id="hours-saturday-closed" name="hoursSaturdayClosed" class="closed-checkbox">
+                            <label for="hours-saturday-closed">Closed?</label>
+                        </div>
+                        <div class="hours-day-row">
+                             <span class="day-label">Sunday:</span>
+                            <label for="hours-sunday-open">Open:</label>
+                            <input type="time" id="hours-sunday-open" name="hoursSundayOpen">
+                            <label for="hours-sunday-close">Close:</label>
+                            <input type="time" id="hours-sunday-close" name="hoursSundayClose">
+                            <input type="checkbox" id="hours-sunday-closed" name="hoursSundayClosed" class="closed-checkbox">
+                            <label for="hours-sunday-closed">Closed?</label>
+                        </div>
+                    </div>
                     <hr>
+
 
                     <h4>Holiday Alert</h4>
                      <div class="form-group checkbox-group">
@@ -430,13 +469,17 @@
                             <option value="Automatic">Automatic (Based on Hours/Time)</option>
                             <option value="Force Open">Force Open</option>
                             <option value="Force Closed">Force Closed</option>
-                            </select>
+                        </select>
                     </div>
 
-                    <hr> <h4>Live Preview</h4>
+                    <hr>
+
+                    <h4>Live Preview</h4>
                     <div id="business-info-preview" class="preview-area">
                          <p><small>Preview will appear here as you type.</small></p>
                     </div>
+
+
                     <div class="form-actions">
                         <button type="submit" id="save-business-info-button" class="button-primary">Save Business Information</button>
                     </div>
