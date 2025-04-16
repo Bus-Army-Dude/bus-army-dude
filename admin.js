@@ -532,6 +532,25 @@ function renderYouTubeCard(account) { //
     }
     // *** END updateShoutoutPreview FUNCTION ***
 
+
+    const searchInputUseful = document.getElementById('search-useful');
+    if (searchInputUseful) {
+        searchInputUseful.addEventListener('input', () => {
+            if (typeof displayFilteredUsefulLinks === 'function') {
+                displayFilteredUsefulLinks();
+            } else { console.error("displayFilteredUsefulLinks function missing!"); }
+        });
+    }
+
+    const searchInputSocial = document.getElementById('search-social');
+    if (searchInputSocial) {
+        searchInputSocial.addEventListener('input', () => {
+            if (typeof displayFilteredSocialLinks === 'function') {
+                displayFilteredSocialLinks();
+            } else { console.error("displayFilteredSocialLinks function missing!"); }
+        });
+    }
+    
 // *** FUNCTION: Displays Filtered Shoutouts (for Search Bar) ***
     // This function takes the platform name, filters the globally stored list,
     // and renders only the matching items based on search input.
