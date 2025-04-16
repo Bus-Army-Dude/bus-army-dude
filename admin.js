@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => { //
         // Show Temporary Alert Preview if active, using the ID and classes
         const temporaryDisplay = data.temporaryActive ? 'block' : 'none';
          previewHTML += `
-                <div id="temporary-alert" style="display: ${temporaryDisplay};"> {/* Use ID */}
+                <div id="temporary-alert" style="display: ${temporaryDisplay};">
                     <p><strong>Temporarily Unavailable:</strong> <span id="temporary-reason">${data.temporaryReason || ''}</span></p>
                     <p><strong>Unavailable Time:</strong> <span id="temporary-hours">${data.temporaryHours || ''}</span></p>
                 </div>`;
