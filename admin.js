@@ -1409,14 +1409,14 @@ function displayFilteredSocialLinks() {
             }
 
             // *** ADD THIS BLOCK TO LOAD BUSINESS INFO ***
-           if (typeof loadBusinessInfoAdmin === 'function' && businessInfoForm) { // Check if function & form exist
-               loadBusinessInfoAdmin();
-           } else if (!businessInfoForm) {
-              console.warn("Business info form not found, skipping load on auth change.");
-           } else {
-              console.error("loadBusinessInfoAdmin function missing!");
-              showAdminStatus("Error: Cannot load business info section.", true);
-           }
+       if (typeof loadBusinessInfoAdmin === 'function' && businessInfoForm) { // Check if function & form exist
+           loadBusinessInfoAdmin();
+       } else if (!businessInfoForm) {
+          console.warn("Business info form not found, skipping load on auth change.");
+       } else {
+          console.error("loadBusinessInfoAdmin function missing!");
+          showAdminStatus("Error: Cannot load business info section.", true);
+       }
            // *** END BLOCK TO ADD ***
 
             // Start the inactivity timer now that the user is logged in
