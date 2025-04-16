@@ -951,6 +951,16 @@ function renderYouTubeCard(account) { //
                  showAdminStatus("Error: Cannot load president data.", true);
             }
 
+            // *** ADD THIS BLOCK TO LOAD DISABILITIES ***
+            if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
+                loadDisabilitiesAdmin(); // <--- ADD THIS LINE
+            } else if (!disabilitiesListAdmin) {
+                console.warn("Disabilities list container not found, skipping load on auth change.");
+            } else {
+                console.error("loadDisabilitiesAdmin function is missing!");
+                showAdminStatus("Error: Cannot load disabilities data.", true);
+            }
+
             // Start the inactivity timer now that the user is logged in
             resetInactivityTimer(); //
             addActivityListeners(); //
