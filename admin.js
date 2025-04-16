@@ -9,6 +9,9 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from
 
 // *** Global Variable for Client-Side Filtering ***
 let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
+let allDisabilities = []; // ADDED
+let allUsefulLinks = [];  // ADDED
+let allSocialLinks = [];  // ADDED
 
 document.addEventListener('DOMContentLoaded', () => { //
     // First, check if db and auth were successfully imported/initialized
@@ -600,6 +603,169 @@ function renderYouTubeCard(account) { //
             countElement.textContent = `(${filteredList.length})`; //
         }
     }
+
+    // *** NEW FUNCTION: Displays Filtered Disability Links ***
+function displayFilteredDisabilities() {
+    const listContainer = disabilitiesListAdmin; // Use existing const
+    const countElement = disabilitiesCount;     // Use existing const
+    const searchInput = document.getElementById('search-disabilities'); // Use new ID
+
+    if (!listContainer || !searchInput || !allDisabilities) {
+        console.error("Missing elements or data for filtering disabilities.");
+        if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list.</p>`;
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const fullList = allDisabilities;
+
+    // Filter based on the 'name' field
+    const filteredList = fullList.filter(item => {
+        if (!searchTerm) return true; // Show all if search is empty
+        const name = (item.name || '').toLowerCase();
+        const url = (item.url || '').toLowerCase(); // Also search URL
+        return name.includes(searchTerm) || url.includes(searchTerm);
+    });
+
+    listContainer.innerHTML = ''; // Clear current list
+
+    if (filteredList.length > 0) {
+        filteredList.forEach(item => {
+            // Ensure renderDisabilityAdminListItem exists
+            if (typeof renderDisabilityAdminListItem === 'function') {
+                renderDisabilityAdminListItem(
+                    listContainer,
+                    item.id,      // Pass the document ID
+                    item.name,
+                    item.url,
+                    item.order,
+                    handleDeleteDisability, // Pass delete handler
+                    openEditDisabilityModal // Pass edit handler
+                );
+            } else {
+                console.error("renderDisabilityAdminListItem function not defined!");
+                listContainer.innerHTML = `<p class="error">Critical Error: Rendering function missing.</p>`;
+                return;
+            }
+        });
+    } else {
+        listContainer.innerHTML = searchTerm
+            ? `<p>No disability links found matching "${searchInput.value}".</p>`
+            : `<p>No disability links found.</p>`;
+    }
+
+    if (countElement) {
+        countElement.textContent = `(${filteredList.length})`;
+    }
+}
+
+// *** NEW FUNCTION: Displays Filtered Useful Links ***
+function displayFilteredUsefulLinks() {
+    const listContainer = usefulLinksListAdmin; // Use existing const
+    const countElement = usefulLinksCount;     // Use existing const
+    const searchInput = document.getElementById('search-useful'); // Use new ID
+
+    if (!listContainer || !searchInput || !allUsefulLinks) {
+        console.error("Missing elements or data for filtering useful links.");
+         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list.</p>`;
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const fullList = allUsefulLinks;
+
+    // Filter based on the 'label' field
+    const filteredList = fullList.filter(item => {
+        if (!searchTerm) return true;
+        const label = (item.label || '').toLowerCase();
+        const url = (item.url || '').toLowerCase(); // Also search URL
+        return label.includes(searchTerm) || url.includes(searchTerm);
+    });
+
+    listContainer.innerHTML = '';
+
+    if (filteredList.length > 0) {
+        filteredList.forEach(item => {
+            if (typeof renderUsefulLinkAdminListItem === 'function') {
+                renderUsefulLinkAdminListItem(
+                    listContainer,
+                    item.id,    // Pass the document ID
+                    item.label,
+                    item.url,
+                    item.order,
+                    handleDeleteUsefulLink,
+                    openEditUsefulLinkModal
+                );
+            } else {
+                 console.error("renderUsefulLinkAdminListItem function not defined!");
+                 listContainer.innerHTML = `<p class="error">Critical Error: Rendering function missing.</p>`;
+                 return;
+            }
+        });
+    } else {
+         listContainer.innerHTML = searchTerm
+            ? `<p>No useful links found matching "${searchInput.value}".</p>`
+            : `<p>No useful links found.</p>`;
+    }
+
+    if (countElement) {
+        countElement.textContent = `(${filteredList.length})`;
+    }
+}
+
+// *** NEW FUNCTION: Displays Filtered Social Links ***
+function displayFilteredSocialLinks() {
+    const listContainer = socialLinksListAdmin; // Use existing const
+    const countElement = socialLinksCount;     // Use existing const
+    const searchInput = document.getElementById('search-social'); // Use new ID
+
+    if (!listContainer || !searchInput || !allSocialLinks) {
+         console.error("Missing elements or data for filtering social links.");
+         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list.</p>`;
+         return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const fullList = allSocialLinks;
+
+    // Filter based on the 'label' field
+    const filteredList = fullList.filter(item => {
+        if (!searchTerm) return true;
+        const label = (item.label || '').toLowerCase();
+        const url = (item.url || '').toLowerCase(); // Also search URL
+        return label.includes(searchTerm) || url.includes(searchTerm);
+    });
+
+    listContainer.innerHTML = '';
+
+    if (filteredList.length > 0) {
+        filteredList.forEach(item => {
+            if (typeof renderSocialLinkAdminListItem === 'function') {
+                renderSocialLinkAdminListItem(
+                    listContainer,
+                    item.id,    // Pass the document ID
+                    item.label,
+                    item.url,
+                    item.order,
+                    handleDeleteSocialLink,
+                    openEditSocialLinkModal
+                );
+             } else {
+                 console.error("renderSocialLinkAdminListItem function not defined!");
+                 listContainer.innerHTML = `<p class="error">Critical Error: Rendering function missing.</p>`;
+                 return;
+             }
+        });
+    } else {
+         listContainer.innerHTML = searchTerm
+            ? `<p>No social links found matching "${searchInput.value}".</p>`
+            : `<p>No social links found.</p>`;
+    }
+
+    if (countElement) {
+        countElement.textContent = `(${filteredList.length})`;
+    }
+}
     // *** END displayFilteredShoutouts FUNCTION ***
 
 // --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode) ---
@@ -2142,31 +2308,33 @@ async function handleUpdateUsefulLink(event) { //
         if (disabilitiesCount) disabilitiesCount.textContent = ''; // Clear count
         disabilitiesListAdmin.innerHTML = `<p>Loading disability links...</p>`; // Loading message
 
+        allDisabilities = []; // <-- ADD THIS LINE to clear the global array
+        
         try {
             // Query disabilities ordered by the 'order' field
             // Ensure you have an index for 'order' in your 'disabilities' collection if you use orderBy
             const disabilityQuery = query(disabilitiesCollectionRef, orderBy("order", "asc"));
             const querySnapshot = await getDocs(disabilityQuery);
 
-            disabilitiesListAdmin.innerHTML = ''; // Clear loading message
+            // disabilitiesListAdmin.innerHTML = ''; // Clear loading message
 
             if (querySnapshot.empty) {
-                disabilitiesListAdmin.innerHTML = '<p>No disability links found.</p>';
-                if (disabilitiesCount) disabilitiesCount.textContent = '(0)';
+                // disabilitiesListAdmin.innerHTML = '<p>No disability links found.</p>';
+                // if (disabilitiesCount) disabilitiesCount.textContent = '(0)';
             } else {
                 querySnapshot.forEach((doc) => {
+                    allDisabilities.push({ id: doc.id, ...doc.data() }); // <-- ADD THIS LINE
                     const data = doc.data();
-                    // Use the rendering function created in the previous chunk
-                    if (typeof renderDisabilityAdminListItem === 'function') {
-                        renderDisabilityAdminListItem(
-                            disabilitiesListAdmin,
-                            doc.id,
-                            data.name, // Field for disability name
-                            data.url,  // Field for info URL
-                            data.order,
-                            handleDeleteDisability, // Pass delete handler
-                            openEditDisabilityModal // Pass edit handler
-                        );
+                if (typeof renderDisabilityAdminListItem === 'function') {
+                     renderDisabilityAdminListItem(
+                         disabilitiesListAdmin,
+                         doc.id,
+                         data.name,
+                         data.url,
+                         data.order,
+                         handleDeleteDisability,
+                         openEditDisabilityModal
+                     );
                     } else {
                          console.error("renderDisabilityAdminListItem function is not defined!");
                          // Prevent infinite loop or broken list
@@ -2174,7 +2342,7 @@ async function handleUpdateUsefulLink(event) { //
                          return; // Stop processing this list
                     }
                 });
-                if (disabilitiesCount) disabilitiesCount.textContent = `(${querySnapshot.size})`; // Update count
+                // if (disabilitiesCount) disabilitiesCount.textContent = `(${querySnapshot.size})`; // Update count
             }
             console.log(`Loaded ${querySnapshot.size} disability links.`);
 
@@ -2188,8 +2356,56 @@ async function handleUpdateUsefulLink(event) { //
                 disabilitiesListAdmin.innerHTML = `<p class="error">Error loading disability links.</p>`;
                 showAdminStatus("Error loading disability links.", true);
             }
+            allDisabilities = []; // Clear array on error too
+        if (typeof displayFilteredDisabilities === 'function') { // <-- ADD THIS LINE
+            displayFilteredDisabilities(); // Call display even on error to show "No links found" or error message // <-- ADD THIS LINE
+            } // <-- ADD THIS LINE
             if (disabilitiesCount) disabilitiesCount.textContent = '(Error)';
         }
+    }
+
+    // Call the filtering function to display the initial list
+        if (typeof displayFilteredDisabilities === 'function') { // <-- ADD THIS BLOCK
+            displayFilteredDisabilities();                       // <-- ADD THIS LINE
+        } else {                                                 // <-- ADD THIS LINE
+            console.error("displayFilteredDisabilities function not defined!"); // <-- ADD THIS LINE
+            disabilitiesListAdmin.innerHTML = `<p class="error">Error initializing display.</p>`; // <-- ADD THIS LINE
+            if (disabilitiesCount) disabilitiesCount.textContent = '(Error)'; // <-- ADD THIS LINE
+        }         // Call the filtering function to display the initial list
+        if (typeof displayFilteredDisabilities === 'function') { // <-- ADD THIS BLOCK
+            displayFilteredDisabilities();                       // <-- ADD THIS LINE
+        } else {                                                 // <-- ADD THIS LINE
+            console.error("displayFilteredDisabilities function not defined!"); // <-- ADD THIS LINE
+            disabilitiesListAdmin.innerHTML = `<p class="error">Error initializing display.</p>`; // <-- ADD THIS LINE
+            if (disabilitiesCount) disabilitiesCount.textContent = '(Error)'; // <-- ADD THIS LINE
+        }     
+
+    // *** ADD Search Input Event Listeners for Links ***
+    const searchInputDisabilities = document.getElementById('search-disabilities');
+    if (searchInputDisabilities) {
+        searchInputDisabilities.addEventListener('input', () => {
+            if (typeof displayFilteredDisabilities === 'function') {
+                displayFilteredDisabilities();
+            }
+        });
+    }
+
+    const searchInputUseful = document.getElementById('search-useful');
+    if (searchInputUseful) {
+        searchInputUseful.addEventListener('input', () => {
+            if (typeof displayFilteredUsefulLinks === 'function') {
+                displayFilteredUsefulLinks();
+            }
+        });
+    }
+
+    const searchInputSocial = document.getElementById('search-social');
+    if (searchInputSocial) {
+        searchInputSocial.addEventListener('input', () => {
+            if (typeof displayFilteredSocialLinks === 'function') {
+                displayFilteredSocialLinks();
+            }
+        });
     }
 
     // Function to Handle Adding a New Disability Link
