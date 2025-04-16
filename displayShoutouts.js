@@ -133,7 +133,7 @@ async function loadAndDisplayDisabilities() {
 // ========================================================
 // START NEW Business Information Display Function
 // ========================================================
-// --- Function to Load and Display Business Info (ATTEMPTS Timezone Conversion for Display) ---
+// --- Function to Load and Display Business Info (ATTEMPTS Timezone Conversion for Display - CORRECTED SYNTAX) ---
 async function loadAndDisplayBusinessInfo() {
     // Get references to the display elements in index.html
     const hoursContainer = document.getElementById('hours-container');
@@ -145,24 +145,24 @@ async function loadAndDisplayBusinessInfo() {
     const temporaryReasonSpan = document.getElementById('temporary-reason');
     const temporaryHoursSpan = document.getElementById('temporary-hours');
     const userTimezoneSpan = document.getElementById('user-timezone');
-    const hoursHeading = document.querySelector('.business-info h2'); // Find H2 for hours
+    const hoursHeading = document.querySelector('.business-info h2');
 
     // Initial states while loading
     if (hoursContainer) hoursContainer.innerHTML = '<p>Loading hours...</p>';
     if (openStatusSpan) { openStatusSpan.textContent = 'Loading...'; openStatusSpan.className = ''; }
     if (holidayAlertDiv) holidayAlertDiv.style.display = 'none';
     if (temporaryAlertDiv) temporaryAlertDiv.style.display = 'none';
-    if (hoursHeading) hoursHeading.textContent = 'Business Hours'; // Reset heading
+    if (hoursHeading) hoursHeading.textContent = 'Business Hours';
 
     // Display User's Timezone
     let visitorTimezone = 'N/A';
-    try {
+    try { // Try block for timezone
         visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (userTimezoneSpan) userTimezoneSpan.textContent = visitorTimezone;
-    } catch (e) {
+    } catch (e) { // Catch block for timezone
         console.error("Could not get user timezone", e);
         if (userTimezoneSpan) userTimezoneSpan.textContent = "N/A";
-    }
+    } // END try-catch for timezone
 
     // Check Firebase readiness
     if (!firebaseAppInitialized || !db || !businessInfoDocRef) {
@@ -172,74 +172,62 @@ async function loadAndDisplayBusinessInfo() {
         return;
     }
 
+    // Main try block for fetching and displaying data
     try {
         const docSnap = await getDoc(businessInfoDocRef);
         let data = {};
-        if (docSnap.exists()) { data = docSnap.data(); }
-        else { /* Handle missing doc */ return; }
+        if (docSnap.exists()) {
+            data = docSnap.data();
+            console.log("Loaded business info data:", data);
+        } else {
+            console.warn("Business info document not found in Firestore.");
+            if (hoursContainer) hoursContainer.innerHTML = '<p>Business hours not available.</p>';
+            if (openStatusSpan) { openStatusSpan.textContent = 'Unavailable'; openStatusSpan.className = 'closed'; }
+            return; // Stop if no data
+        }
 
         const businessTimezone = data.businessTimezone || "America/New_York";
         const now = new Date();
 
-        // --- Determine Current Day Name IN VISITOR'S TIMEZONE (for highlighting) ---
+        // Determine Current Day Name IN VISITOR'S TIMEZONE (for highlighting)
         const visitorDayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: visitorTimezone });
         const currentVisitorDayName = visitorDayFormatter.format(now).toLowerCase();
 
-        // --- Display Business Hours (Converted to Visitor Timezone) & Highlight ---
+        // Display Business Hours (Converted to Visitor Timezone) & Highlight
         if (hoursContainer) {
             const hoursData = data.hours || {};
             hoursContainer.innerHTML = ''; // Clear loading
             const daysOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
-            // --- Attempt to Convert and Display Hours in Visitor's Timezone ---
-            // WARNING: This standard JS conversion can be inaccurate, especially around DST.
-            // A library like date-fns-tz or Luxon is highly recommended for reliability.
-            console.log(`Attempting to display hours in visitor timezone: ${visitorTimezone}`);
-
-            // Define formatting options for visitor's time
-            const visitorTimeFormatOptions = {
-                timeZone: visitorTimezone, // Use visitor's timezone
-                hour: 'numeric',         // e.g., 7
-                minute: '2-digit',       // e.g., 00
-                hour12: true             // Use AM/PM
-            };
-
-            // Get today's date components (local to visitor initially)
+            const visitorTimeFormatOptions = { timeZone: visitorTimezone, hour: 'numeric', minute: '2-digit', hour12: true };
             const currentYear = now.getFullYear();
-            const currentMonth = now.getMonth(); // 0-11
+            const currentMonth = now.getMonth();
             const currentDayOfMonth = now.getDate();
 
             daysOrder.forEach(day => {
-                const dayHours = hoursData[day]; // Expects { open: "HH:MM", close: "HH:MM" } or null
+                const dayHours = hoursData[day];
                 let hoursText = 'Closed';
 
                 if (dayHours && dayHours.open && dayHours.close) {
-                    try {
-                        // Create Date objects conceptually anchored to UTC using today's date and the HH:MM times
-                        // This is an approximation to allow formatting in the target timezone.
+                    try { // Inner try for time conversion/formatting
                         const openParts = dayHours.open.split(':');
                         const closeParts = dayHours.close.split(':');
-                        // NOTE: Using Date.UTC helps, but doesn't fully solve DST issues across zones without library help.
                         const openDateUTC = new Date(Date.UTC(currentYear, currentMonth, currentDayOfMonth, parseInt(openParts[0]), parseInt(openParts[1])));
                         const closeDateUTC = new Date(Date.UTC(currentYear, currentMonth, currentDayOfMonth, parseInt(closeParts[0]), parseInt(closeParts[1])));
 
-                        // If close time is earlier than open time (e.g., 22:00 - 02:00), assume close is next day UTC
                         if (closeDateUTC <= openDateUTC) {
                             closeDateUTC.setUTCDate(closeDateUTC.getUTCDate() + 1);
                         }
 
-                        // Format these UTC-based moments into the visitor's local timezone
                         const openLocalStr = openDateUTC.toLocaleTimeString('en-US', visitorTimeFormatOptions);
                         const closeLocalStr = closeDateUTC.toLocaleTimeString('en-US', visitorTimeFormatOptions);
-
                         hoursText = `${openLocalStr} - ${closeLocalStr}`;
-                        // Optionally add clarification: hoursText += " (Your Time)";
 
-                    } catch (formatError) {
+                    } catch (formatError) { // Inner catch for time conversion/formatting
                          console.error(`Error converting time for ${day}:`, formatError);
-                         hoursText = "Error converting time"; // Show error if conversion fails
-                    }
-                } // else remains 'Closed'
+                         hoursText = "Error converting time";
+                    } // END Inner try-catch
+                }
 
                 const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
                 const p = document.createElement('p');
@@ -250,19 +238,30 @@ async function loadAndDisplayBusinessInfo() {
                 p.innerHTML = `<strong>${formattedDay}:</strong> <span>${hoursText}</span>`;
                 hoursContainer.appendChild(p);
             });
-            // Remove timezone abbreviation from heading as hours are now *supposedly* local
-             if (hoursHeading) {
-                 hoursHeading.textContent = `Business Hours`;
-             }
+
+            if (hoursHeading) { hoursHeading.textContent = `Business Hours`; }
 
         } else { console.warn("Hours container missing"); }
 
-        // --- Handle Alerts (Logic remains the same) ---
+        // Handle Alerts
         let isHolidayClosed = false;
-        if (holidayAlertDiv && holidayNameSpan && holidayHoursSpan) { /* ... as before ... */ }
-        if (temporaryAlertDiv && temporaryReasonSpan && temporaryHoursSpan) { /* ... as before ... */ }
+        if (holidayAlertDiv && holidayNameSpan && holidayHoursSpan) {
+            if (data.holidayActive && (data.holidayName || data.holidayHours)) {
+                 holidayNameSpan.textContent = data.holidayName || '';
+                 holidayHoursSpan.textContent = data.holidayHours || '';
+                 holidayAlertDiv.style.display = 'block';
+                  if (data.holidayHours?.toLowerCase().includes('closed')) isHolidayClosed = true;
+            } else { holidayAlertDiv.style.display = 'none'; }
+        }
+        if (temporaryAlertDiv && temporaryReasonSpan && temporaryHoursSpan) {
+             if (data.temporaryActive && (data.temporaryReason || data.temporaryHours)) {
+                 temporaryReasonSpan.textContent = data.temporaryReason || '';
+                 temporaryHoursSpan.textContent = data.temporaryHours || '';
+                 temporaryAlertDiv.style.display = 'block';
+            } else { temporaryAlertDiv.style.display = 'none'; }
+        }
 
-        // --- Determine and Display Status (Calculation logic remains based on *business* timezone) ---
+        // Determine and Display Status (Based on Business Timezone)
         if (openStatusSpan) {
             let finalStatus = "Unavailable";
             let finalStatusClass = "closed";
@@ -275,9 +274,9 @@ async function loadAndDisplayBusinessInfo() {
                 finalStatus = "Open"; finalStatusClass = "open";
             } else if (data.statusOverride === 'Force Closed') {
                 finalStatus = "Closed"; finalStatusClass = "closed";
-            } else { // Calculate automatically based on business time
+            } else { // Calculate automatically
                  console.log(`Attempting automatic status calculation... Now: ${now.toISOString()}, Business Zone: ${businessTimezone}`);
-                 try {
+                 try { // Inner try for status calculation
                      const formatterOptions = { timeZone: businessTimezone, weekday: 'long', hour: '2-digit', minute: '2-digit', hour12: false };
                      const formatter = new Intl.DateTimeFormat('en-CA', formatterOptions);
                      const parts = formatter.formatToParts(now).reduce((acc, part) => { if (part.type !== 'literal') acc[part.type] = part.value; return acc; }, {});
@@ -299,19 +298,23 @@ async function loadAndDisplayBusinessInfo() {
                          else { finalStatus = "Closed"; finalStatusClass = "closed"; }
                          console.log(`Calculated Status: ${finalStatus}`);
                      } else { finalStatus = "Closed"; finalStatusClass = "closed"; }
-                 } catch(calcError) { /* Error handling */ finalStatus = "Status Unavailable"; finalStatusClass = "closed"; }
+                 } catch(calcError) { // Inner catch for status calculation
+                      console.error("Error during automatic status calculation:", calcError);
+                      finalStatus = "Status Unavailable";
+                      finalStatusClass = "closed";
+                 } // END Inner try-catch for calculation
             }
             openStatusSpan.textContent = finalStatus;
             openStatusSpan.className = finalStatusClass;
-        }
-    
-}
-   } catch (error) {
+        } // END if (openStatusSpan)
+
+    // This is the CATCH block for the main TRY block starting after Firebase readiness check
+    } catch (error) {
         console.error("Error fetching/displaying business info:", error);
-         if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not load info.</p>';
-         if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
-    }
-}
+        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not load info.</p>';
+        if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
+    } // END main try-catch block
+} // END loadAndDisplayBusinessInfo function
 
 // --- Helper Function to format HH:MM time to AM/PM ---
 // Add this function alongside the other helpers
