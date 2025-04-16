@@ -337,7 +337,7 @@ async function loadAndDisplayBusinessInfo() {
             }
 
             openStatusSpan.textContent = finalStatus;
-            openStatusSpan.className = statusClass; // Apply class for styling
+            openStatusSpan.className = finalStatusClass; // Corrected variable name
         }
 
     } catch (error) {
