@@ -445,63 +445,75 @@
     </form> <hr>
 
     <h3>Manage Active Holiday Alerts</h3>
-    <p><small>These alerts appear on the homepage. Add alerts that are currently active or relevant.</small></p>
-    <div id="holiday-alerts-list-admin" class="alerts-list-admin">
-        <p>Loading holiday alerts...</p>
+<p><small>Add holiday details including the date(s) it applies to.</small></p>
+<div id="holiday-alerts-list-admin" class="alerts-list-admin">
+    <p>Loading holiday alerts...</p>
+</div>
+<form id="add-holiday-alert-form" class="sub-form">
+    <h4>Add New Holiday Alert</h4>
+    <div class="form-group">
+        <label for="new-holiday-name">Holiday Name:</label>
+        <input type="text" id="new-holiday-name" name="name" required placeholder="e.g., Christmas Day">
     </div>
-    <form id="add-holiday-alert-form" class="sub-form">
-        <h4>Add New Holiday Alert</h4>
-        <div class="form-group">
-            <label for="new-holiday-name">Holiday Name:</label>
-            <input type="text" id="new-holiday-name" name="name" required placeholder="e.g., Christmas Day">
-        </div>
-        <div class="form-group">
-            <label for="new-holiday-hours">Hours/Details:</label>
-            <input type="text" id="new-holiday-hours" name="hours" required placeholder="e.g., Closed, Open 10 AM - 2 PM">
-        </div>
-        <div class="form-group checkbox-group">
-             <input type="checkbox" id="new-holiday-is-closure" name="isClosure">
-             <label for="new-holiday-is-closure">Implies Full Closure?</label>
-        </div>
-        <div class="form-actions">
-            <button type="submit">Add Holiday Alert</button>
-        </div>
-        <p id="add-holiday-status" class="status-message" role="status" aria-live="polite"></p>
-    </form>
-
-    <hr>
-
-    <h3>Manage Active Temporary Alerts/Notices</h3>
-     <p><small>Add temporary closures, special notices, or changes.</small></p>
-    <div id="temporary-alerts-list-admin" class="alerts-list-admin">
-        <p>Loading temporary alerts...</p>
+    <div class="form-group">
+        <label for="new-holiday-hours">Hours/Details:</label>
+        <input type="text" id="new-holiday-hours" name="hours" required placeholder="e.g., Closed, Open 10 AM - 2 PM">
     </div>
-    <form id="add-temporary-alert-form" class="sub-form">
-        <h4>Add New Temporary Alert/Notice</h4>
-         <div class="form-group">
-            <label for="new-temp-reason">Reason/Notice:</label>
-            <input type="text" id="new-temp-reason" name="reason" required placeholder="e.g., Staff Training, Weather Closure">
-        </div>
-        <div class="form-group">
-            <label for="new-temp-hours">Hours/Details:</label>
-            <input type="text" id="new-temp-hours" name="hours" placeholder="e.g., Closed Until 2 PM, Limited Services">
-        </div>
-        <div class="form-group checkbox-group">
-            <input type="checkbox" id="new-temp-is-closure" name="isClosure">
-            <label for="new-temp-is-closure">Implies Full Closure?</label>
-        </div>
-        <div class="form-actions">
-             <button type="submit">Add Temporary Alert</button>
-         </div>
-         <p id="add-temp-status" class="status-message" role="status" aria-live="polite"></p>
-    </form>
-
-    <hr>
-
-    <h4>Live Preview (Hours & Status Override Only)</h4>
-    <div id="business-info-preview" class="preview-area">
-        <p><small>Preview will appear here.</small></p>
+    <div class="form-group date-group">
+         <label for="new-holiday-start-date">Start Date:</label>
+         <input type="date" id="new-holiday-start-date" name="startDate" required>
+         <label for="new-holiday-end-date">End Date:</label>
+         <input type="date" id="new-holiday-end-date" name="endDate" required>
     </div>
+    <div class="form-group checkbox-group">
+         <input type="checkbox" id="new-holiday-is-closure" name="isClosure">
+         <label for="new-holiday-is-closure">Implies Full Closure?</label>
+    </div>
+    <div class="form-actions">
+        <button type="submit">Add Holiday Alert</button>
+    </div>
+    <p id="add-holiday-status" class="status-message" role="status" aria-live="polite"></p>
+</form>
+
+<hr>
+
+<h3>Manage Active Temporary Alerts/Notices</h3>
+<p><small>Add temporary closures or notices with their effective dates.</small></p>
+<div id="temporary-alerts-list-admin" class="alerts-list-admin">
+    <p>Loading temporary alerts...</p>
+</div>
+<form id="add-temporary-alert-form" class="sub-form">
+    <h4>Add New Temporary Alert/Notice</h4>
+     <div class="form-group">
+        <label for="new-temp-reason">Reason/Notice:</label>
+        <input type="text" id="new-temp-reason" name="reason" required placeholder="e.g., Staff Training, Weather Closure">
+    </div>
+    <div class="form-group">
+        <label for="new-temp-hours">Hours/Details:</label>
+        <input type="text" id="new-temp-hours" name="hours" placeholder="e.g., Closed Until 2 PM, Limited Services">
+    </div>
+    <div class="form-group date-group">
+        <label for="new-temp-start-date">Start Date:</label>
+        <input type="date" id="new-temp-start-date" name="startDate" required>
+        <label for="new-temp-end-date">End Date:</label>
+        <input type="date" id="new-temp-end-date" name="endDate" required>
+    </div>
+    <div class="form-group checkbox-group">
+        <input type="checkbox" id="new-temp-is-closure" name="isClosure">
+        <label for="new-temp-is-closure">Implies Full Closure?</label>
+    </div>
+    <div class="form-actions">
+         <button type="submit">Add Temporary Alert</button>
+     </div>
+     <p id="add-temp-status" class="status-message" role="status" aria-live="polite"></p>
+</form>
+
+<hr>
+
+<h4>Live Preview (Hours & Status Override Only)</h4>
+<div id="business-info-preview" class="preview-area">
+    <p><small>Preview will appear here.</small></p>
+</div>
 
 </section>
             
