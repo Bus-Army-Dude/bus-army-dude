@@ -37,6 +37,27 @@ document.addEventListener('DOMContentLoaded', () => { //
     // Firestore Reference for Disabilities
     const disabilitiesCollectionRef = collection(db, "disabilities");
 
+    // --- Firestore Reference ---
+    const businessInfoDocRef = doc(db, "site_config", "businessInfo");
+
+    // --- DOM Element References ---
+    const businessInfoForm = document.getElementById('business-info-form');
+    const businessInfoStatusMessage = document.getElementById('business-info-status-message');
+    const businessInfoPreviewArea = document.getElementById('business-info-preview'); // Preview Div
+
+    // Holiday Alert Inputs
+    const holidayActiveInput = document.getElementById('holiday-active');
+    const holidayNameInput = document.getElementById('holiday-name');
+    const holidayHoursInput = document.getElementById('holiday-hours');
+    
+    // Temporary Alert Inputs
+    const temporaryActiveInput = document.getElementById('temporary-active');
+    const temporaryReasonInput = document.getElementById('temporary-reason');
+    const temporaryHoursInput = document.getElementById('temporary-hours');
+    
+    // Status Override Input
+    const statusOverrideInput = document.getElementById('status-override');
+
     // --- Inactivity Logout Variables ---
     let inactivityTimer; //
     let expirationTime; //
@@ -297,6 +318,231 @@ document.addEventListener('DOMContentLoaded', () => { //
         }
     });
 
+    // Hour Inputs (assuming IDs like 'hours-monday', 'hours-tuesday', etc.)
+    const hoursInputs = {
+        monday: document.getElementById('hours-monday'),
+        tuesday: document.getElementById('hours-tuesday'),
+        wednesday: document.getElementById('hours-wednesday'),
+        thursday: document.getElementById('hours-thursday'),
+        friday: document.getElementById('hours-friday'),
+        saturday: document.getElementById('hours-saturday'),
+        sunday: document.getElementById('hours-sunday')
+    };
+
+    // --- Helper Function to display status ---
+    function showBusinessInfoStatus(message, isError = false) {
+        if (!businessInfoStatusMessage) { console.warn("Business info status message element not found"); showAdminStatus(message, isError); return; }
+        businessInfoStatusMessage.textContent = message;
+        businessInfoStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+        // Clear message after 5 seconds
+        setTimeout(() => { if (businessInfoStatusMessage) { businessInfoStatusMessage.textContent = ''; businessInfoStatusMessage.className = 'status-message'; } }, 5000);
+    }
+
+    // --- Function to Render the Preview ---
+function renderBusinessInfoPreview(data) {
+    // Mimics the structure from index.html snippet provided by user
+    let previewHTML = `
+        <div class="business-info"> {/* Add class if needed for styling */}
+            <h1>Bus Army Dude's Merch Store</h1>
+            <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
+            <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
+
+            <h2>Business Hours</h2>
+            <div id="hours-container">
+                ${Object.entries(data.hours || {}).map(([day, hours]) => {
+                    // Capitalize day name for display
+                    const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
+                    return `<p><strong>${formattedDay}:</strong> ${hours || 'Not Set'}</p>`;
+                 }).join('')}
+            </div>`;
+
+    // Show Holiday Alert Preview if active
+    const holidayDisplay = data.holidayActive ? 'block' : 'none';
+    previewHTML += `
+            <div id="holiday-alert" style="display: ${holidayDisplay}; margin-top: 1em; border: 1px dashed orange; padding: 5px;">
+                <p><strong>Holiday:</strong> <span id="holiday-name">${data.holidayName || ''}</span></p>
+                <p><strong>Special hours today:</strong> <span id="holiday-hours">${data.holidayHours || ''}</span></p>
+            </div>`;
+
+    // Determine Status Preview Text based *only* on override for simplicity in preview
+    let statusText = "(Status calculated on homepage)"; // Default preview text
+    if (data.temporaryActive && data.temporaryReason) {
+         statusText = `Temporarily Unavailable`; // Show temporary status if active
+    } else if (data.statusOverride && data.statusOverride !== 'Automatic') {
+        statusText = data.statusOverride === 'Force Open' ? 'Open (Forced)' : 'Closed (Forced)'; // Show forced status
+    }
+    previewHTML += `<p class="status" style="margin-top: 1em;"><strong>Status:</strong> <span id="open-status">${statusText}</span></p>`;
+
+    // Show Temporary Alert Preview if active
+    const temporaryDisplay = data.temporaryActive ? 'block' : 'none';
+     previewHTML += `
+            <div id="temporary-alert" style="display: ${temporaryDisplay}; margin-top: 1em; border: 1px dashed red; padding: 5px;">
+                <p><strong>Temporarily Unavailable:</strong> <span id="temporary-reason">${data.temporaryReason || ''}</span></p>
+                <p><strong>Unavailable Time:</strong> <span id="temporary-hours">${data.temporaryHours || ''}</span></p>
+            </div>`;
+
+    previewHTML += `</div>`; // Close business-info div
+
+    return previewHTML;
+}
+
+
+// --- Function to Update the Preview Area ---
+function updateBusinessInfoPreview() {
+    if (!businessInfoForm || !businessInfoPreviewArea) {
+         console.warn("Missing form or preview area for business info update.");
+         return;
+    }
+
+    // Gather current data from the form into a simple structure matching Firestore intent
+    const currentData = {
+        hours: {}, // Initialize hours object
+        holidayActive: holidayActiveInput?.checked ?? false,
+        holidayName: holidayNameInput?.value.trim() ?? "",
+        holidayHours: holidayHoursInput?.value.trim() ?? "",
+        temporaryActive: temporaryActiveInput?.checked ?? false,
+        temporaryReason: temporaryReasonInput?.value.trim() ?? "",
+        temporaryHours: temporaryHoursInput?.value.trim() ?? "",
+        statusOverride: statusOverrideInput?.value ?? "Automatic"
+    };
+
+    // Populate hours object from inputs
+    for (const day in hoursInputs) {
+        if (hoursInputs[day]) {
+            currentData.hours[day] = hoursInputs[day].value.trim() ?? "";
+        }
+    }
+
+    // Generate and display the preview HTML
+    try {
+        const previewContent = renderBusinessInfoPreview(currentData);
+        businessInfoPreviewArea.innerHTML = previewContent;
+    } catch (error) {
+        console.error("Error generating business info preview:", error);
+        if (businessInfoPreviewArea) businessInfoPreviewArea.innerHTML = `<p class="error">Error generating preview.</p>`;
+    }
+}
+
+// --- Function to Load Business Info into Admin Form ---
+async function loadBusinessInfoAdmin() {
+    if (!businessInfoForm) { console.log("Business info form element not found for loading."); return; }
+
+    console.log("Attempting to load business info from:", businessInfoDocRef.path);
+    try {
+        const docSnap = await getDoc(businessInfoDocRef);
+        let data = {}; // Default to empty object
+
+        if (docSnap.exists()) {
+            data = docSnap.data();
+            console.log("Loaded business info:", data);
+        } else {
+            console.warn(`Business info document ('${businessInfoDocRef.path}') not found. Form will show defaults.`);
+            // No need to reset form here, just populate with defaults below
+        }
+
+        // Populate hours using ?? to provide default empty string if field missing
+        const hoursData = data.hours || {}; // Default to empty object if 'hours' field missing
+        for (const day in hoursInputs) {
+            if (hoursInputs[day]) {
+                hoursInputs[day].value = hoursData[day] ?? '';
+            }
+        }
+
+        // Populate holiday fields
+        if (holidayActiveInput) holidayActiveInput.checked = data.holidayActive ?? false;
+        if (holidayNameInput) holidayNameInput.value = data.holidayName ?? '';
+        if (holidayHoursInput) holidayHoursInput.value = data.holidayHours ?? '';
+
+        // Populate temporary fields
+        if (temporaryActiveInput) temporaryActiveInput.checked = data.temporaryActive ?? false;
+        if (temporaryReasonInput) temporaryReasonInput.value = data.temporaryReason ?? '';
+        if (temporaryHoursInput) temporaryHoursInput.value = data.temporaryHours ?? '';
+
+        // Populate status override
+        if (statusOverrideInput) statusOverrideInput.value = data.statusOverride ?? 'Automatic';
+
+
+        // Update the preview AFTER loading data into the form
+        updateBusinessInfoPreview(); // Generate initial preview
+
+    } catch (error) {
+        console.error("Error loading business info:", error);
+        showBusinessInfoStatus("Error loading business information.", true);
+        // Reset form to defaults on error
+        if(businessInfoForm) businessInfoForm.reset();
+        if (statusOverrideInput) statusOverrideInput.value = 'Automatic';
+        updateBusinessInfoPreview(); // Update preview to show empty/default state
+    }
+}
+
+// --- Function to Save Business Info ---
+async function saveBusinessInfoAdmin(event) {
+    event.preventDefault(); // Prevent default form submission
+    if (!auth || !auth.currentUser) { showBusinessInfoStatus("Error: Not logged in.", true); return; }
+    if (!businessInfoForm) { console.error("Business Info form not found on save."); return; }
+
+    // Gather data from form fields into the structure for Firestore
+    const newData = {
+        hours: {}, // Initialize hours object
+        holidayActive: holidayActiveInput?.checked ?? false,
+        holidayName: holidayNameInput?.value.trim() ?? "",
+        holidayHours: holidayHoursInput?.value.trim() ?? "",
+        temporaryActive: temporaryActiveInput?.checked ?? false,
+        temporaryReason: temporaryReasonInput?.value.trim() ?? "",
+        temporaryHours: temporaryHoursInput?.value.trim() ?? "",
+        statusOverride: statusOverrideInput?.value ?? "Automatic",
+        lastUpdated: serverTimestamp() // Add timestamp
+    };
+
+    // Populate hours object from inputs
+     for (const day in hoursInputs) {
+        if (hoursInputs[day]) {
+            newData.hours[day] = hoursInputs[day].value.trim() ?? ""; // Store as text for now
+        }
+    }
+
+    showBusinessInfoStatus("Saving business information...");
+    try {
+        // Use setDoc with merge: true to create or update the document
+        // This ensures we don't overwrite other fields if the doc exists
+        // but only updates the fields included in newData.
+        await setDoc(businessInfoDocRef, newData, { merge: true });
+        console.log("Business info saved to:", businessInfoDocRef.path);
+        showBusinessInfoStatus("Business information updated successfully!", false);
+    } catch (error) {
+        console.error("Error saving business info:", error);
+        showBusinessInfoStatus(`Error saving: ${error.message}`, true);
+    }
+}
+
+// --- Attach Event Listeners for Business Info Section ---
+
+// Save Button Listener
+if (businessInfoForm) {
+    businessInfoForm.addEventListener('submit', saveBusinessInfoAdmin);
+} else {
+     console.warn("Business info form not found for attaching save listener.");
+}
+
+// Preview Update Listeners (Listen to all relevant inputs/selects/checkboxes)
+const businessPreviewTriggerInputs = [
+    ...Object.values(hoursInputs), // All hour inputs
+    holidayActiveInput, holidayNameInput, holidayHoursInput,
+    temporaryActiveInput, temporaryReasonInput, temporaryHoursInput,
+    statusOverrideInput
+];
+
+businessPreviewTriggerInputs.forEach(input => {
+    if (input) {
+        // Use 'change' for checkboxes and select, 'input' for text fields
+        const eventType = (input.type === 'checkbox' || input.tagName === 'SELECT') ? 'change' : 'input';
+        input.addEventListener(eventType, updateBusinessInfoPreview);
+    } else {
+        // Log if any expected input element is missing, helps debugging HTML/JS mismatch
+        // console.warn("A business info input element for preview trigger was not found.");
+    }
+});
+
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) { //
@@ -532,6 +778,7 @@ function renderYouTubeCard(account) { //
     }
     // *** END updateShoutoutPreview FUNCTION ***
 
+    
 
     const searchInputUseful = document.getElementById('search-useful');
     if (searchInputUseful) {
@@ -1150,6 +1397,17 @@ function displayFilteredSocialLinks() {
                 console.error("loadDisabilitiesAdmin function is missing!");
                 showAdminStatus("Error: Cannot load disabilities data.", true);
             }
+
+            // *** ADD THIS BLOCK TO LOAD BUSINESS INFO ***
+           if (typeof loadBusinessInfoAdmin === 'function' && businessInfoForm) { // Check if function & form exist
+               loadBusinessInfoAdmin();
+           } else if (!businessInfoForm) {
+              console.warn("Business info form not found, skipping load on auth change.");
+           } else {
+              console.error("loadBusinessInfoAdmin function missing!");
+              showAdminStatus("Error: Cannot load business info section.", true);
+           }
+           // *** END BLOCK TO ADD ***
 
             // Start the inactivity timer now that the user is logged in
             resetInactivityTimer(); //
