@@ -1443,7 +1443,7 @@ function displayFilteredSocialLinks() {
                 showAdminStatus("Error: Cannot load disabilities data.", true);
             }
 
-            // *** ADD THIS BLOCK TO LOAD BUSINESS INFO ***
+           // *** ADD THIS BLOCK TO LOAD BUSINESS INFO ***
        if (typeof loadBusinessInfoAdmin === 'function' && businessInfoForm) { // Check if function & form exist
            loadBusinessInfoAdmin();
        } else if (!businessInfoForm) {
@@ -1452,7 +1452,7 @@ function displayFilteredSocialLinks() {
           console.error("loadBusinessInfoAdmin function missing!");
           showAdminStatus("Error: Cannot load business info section.", true);
        }
-           // *** END BLOCK TO ADD ***
+       // *** END BLOCK TO ADD ***
 
             // Start the inactivity timer now that the user is logged in
             resetInactivityTimer(); //
