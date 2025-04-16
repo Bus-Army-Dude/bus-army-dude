@@ -137,6 +137,32 @@ document.addEventListener('DOMContentLoaded', () => { //
     const presidentImageUrlInput = document.getElementById('president-image-url');
     const presidentStatusMessage = document.getElementById('president-status-message');
     const presidentPreviewArea = document.getElementById('president-preview');
+
+    // Disabilities Elements
+    const addDisabilityForm = document.getElementById('add-disability-form');
+    const disabilitiesListAdmin = document.getElementById('disabilities-list-admin');
+    const disabilitiesCount = document.getElementById('disabilities-count');
+    const editDisabilityModal = document.getElementById('edit-disability-modal');
+    const editDisabilityForm = document.getElementById('edit-disability-form');
+    const cancelEditDisabilityButton = document.getElementById('cancel-edit-disability-button');
+    const cancelEditDisabilityButtonSecondary = document.getElementById('cancel-edit-disability-button-secondary');
+    const editDisabilityNameInput = document.getElementById('edit-disability-name');
+    const editDisabilityUrlInput = document.getElementById('edit-disability-url');
+    const editDisabilityOrderInput = document.getElementById('edit-disability-order');
+    const editDisabilityStatusMessage = document.getElementById('edit-disability-status-message');
+
+    // --- Helper Functions ---
+    function showAdminStatus(message, isError = false) { if (!adminStatusElement) return; adminStatusElement.textContent = message; adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000); }
+    function showProfileStatus(message, isError = false) { if (!profileStatusMessage) { showAdminStatus(message, isError); return; } profileStatusMessage.textContent = message; profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (profileStatusMessage) { profileStatusMessage.textContent = ''; profileStatusMessage.className = 'status-message'; } }, 5000); }
+    function showSettingsStatus(message, isError = false) { if (!settingsStatusMessage) { showAdminStatus(message, isError); return; } settingsStatusMessage.textContent = message; settingsStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (settingsStatusMessage) { settingsStatusMessage.textContent = ''; settingsStatusMessage.style.display = 'none'; } }, 3000); settingsStatusMessage.style.display = 'block'; }
+    function showEditLinkStatus(message, isError = false) { if (!editLinkStatusMessage) return; editLinkStatusMessage.textContent = message; editLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); }
+    function showEditSocialLinkStatus(message, isError = false) { if (!editSocialLinkStatusMessage) return; editSocialLinkStatusMessage.textContent = message; editSocialLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editSocialLinkStatusMessage) { editSocialLinkStatusMessage.textContent = ''; editSocialLinkStatusMessage.className = 'status-message'; } }, 3000); }
+    function showEditDisabilityStatus(message, isError = false) { if (!editDisabilityStatusMessage) return; editDisabilityStatusMessage.textContent = message; editDisabilityStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (editDisabilityStatusMessage) { editDisabilityStatusMessage.textContent = ''; editDisabilityStatusMessage.className = 'status-message'; } }, 3000); }
+    function showPresidentStatus(message, isError = false) { if (!presidentStatusMessage) { showAdminStatus(message, isError); return; } presidentStatusMessage.textContent = message; presidentStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (presidentStatusMessage) { presidentStatusMessage.textContent = ''; presidentStatusMessage.className = 'status-message'; } }, 5000); }
+    function showRegularHoursStatus(message, isError = false) { if (!regularHoursStatusMessage) return; regularHoursStatusMessage.textContent = message; regularHoursStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (regularHoursStatusMessage) { regularHoursStatusMessage.textContent = ''; regularHoursStatusMessage.className = 'status-message'; } }, 5000); }
+    function showHolidaysStatus(message, isError = false) { if (!holidaysStatusMessage) return; holidaysStatusMessage.textContent = message; holidaysStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (holidaysStatusMessage) { holidaysStatusMessage.textContent = ''; holidaysStatusMessage.className = 'status-message'; } }, 5000); }
+    function showTempClosuresStatus(message, isError = false) { if (!tempClosuresStatusMessage) return; tempClosuresStatusMessage.textContent = message; tempClosuresStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; setTimeout(() => { if (tempClosuresStatusMessage) { tempClosuresStatusMessage.textContent = ''; tempClosuresStatusMessage.className = 'status-message'; } }, 5000); }
+    function capitalize(str) { return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''; }
     
 // --- Helper Functions ---
     // Displays status messages in the main admin status area
@@ -276,8 +302,149 @@ document.addEventListener('DOMContentLoaded', () => { //
         if (event.target === editSocialLinkModal) {
            closeEditSocialLinkModal();
         }
+        if (event.target === editDisabilityModal) { 
+            closeEditDisabilityModal(); 
+        }
     });
 
+    function showEditDisabilityStatus(message, isError = false) {
+        if (!editDisabilityStatusMessage) { console.warn("Edit disability status message element not found"); return; }
+        editDisabilityStatusMessage.textContent = message;
+        editDisabilityStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+        setTimeout(() => { if (editDisabilityStatusMessage) { editDisabilityStatusMessage.textContent = ''; editDisabilityStatusMessage.className = 'status-message'; } }, 3000);
+    }
+
+    // --- Disabilities ---
+    function renderDisabilityAdminListItem(container, docId, name, url, order, deleteHandler, editHandler) {
+        if (!container) { console.warn("Disabilities list container not found during render."); return; }
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'list-item-admin';
+        itemDiv.setAttribute('data-id', docId);
+        let displayUrl = url || 'N/A'; let visitUrl = '#';
+        try { if (url) { visitUrl = new URL(url).href; } } catch (e) { console.warn(`Invalid URL for disability link ${docId}: ${url}`); displayUrl += " (Invalid URL)"; }
+        itemDiv.innerHTML = `
+            <div class="item-content">
+                 <div class="item-details">
+                    <strong>${name || 'N/A'}</strong>
+                    <span>(${displayUrl})</span>
+                    <small>Order: ${order ?? 'N/A'}</small>
+                 </div>
+            </div>
+            <div class="item-actions">
+                <a href="${visitUrl}" target="_blank" rel="noopener noreferrer" class="direct-link small-button" title="Visit Info Link" ${visitUrl === '#' ? 'style="pointer-events: none; opacity: 0.5;"' : ''}>
+                    <i class="fas fa-external-link-alt"></i> Visit
+                </a>
+                <button type="button" class="edit-button small-button">Edit</button>
+                <button type="button" class="delete-button small-button">Delete</button>
+            </div>`;
+        const editButton = itemDiv.querySelector('.edit-button');
+        if (editButton) editButton.addEventListener('click', () => editHandler(docId));
+        const deleteButton = itemDiv.querySelector('.delete-button');
+        if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId)); // Pass only docId now
+        container.appendChild(itemDiv);
+    }
+    function openEditDisabilityModal(docId) {
+        if (!editDisabilityModal || !editDisabilityForm) { console.error("Edit disability modal elements not found."); showAdminStatus("UI Error: Cannot open edit form.", true); return; }
+        const docRef = doc(db, 'disabilities', docId);
+        showEditDisabilityStatus("Loading disability data...");
+        getDoc(docRef).then(docSnap => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                editDisabilityForm.setAttribute('data-doc-id', docId);
+                if (editDisabilityNameInput) editDisabilityNameInput.value = data.name || '';
+                if (editDisabilityUrlInput) editDisabilityUrlInput.value = data.url || '';
+                if (editDisabilityOrderInput) editDisabilityOrderInput.value = data.order ?? '';
+                editDisabilityModal.style.display = 'block';
+                showEditDisabilityStatus("");
+            } else { showAdminStatus("Error: Could not load disability data for editing.", true); showEditDisabilityStatus("Error: Link not found.", true); }
+        }).catch(error => { console.error("Error getting disability document for edit:", error); showAdminStatus(`Error loading disability data: ${error.message}`, true); showEditDisabilityStatus(`Error: ${error.message}`, true); });
+    }
+    function closeEditDisabilityModal() {
+        if (editDisabilityModal) editDisabilityModal.style.display = 'none';
+        if (editDisabilityForm) editDisabilityForm.reset();
+        editDisabilityForm?.removeAttribute('data-doc-id');
+        if (editDisabilityStatusMessage) editDisabilityStatusMessage.textContent = '';
+    }
+    // *** CORRECTED Function Definition (Included from Chunk 1 for clarity) ***
+    async function loadDisabilitiesAdmin() {
+       if (!disabilitiesListAdmin) { console.error("Disabilities list container not found."); return; }
+       if (disabilitiesCount) disabilitiesCount.textContent = '';
+       disabilitiesListAdmin.innerHTML = `<p>Loading disability links...</p>`;
+       try {
+           const disabilityQuery = query(disabilitiesCollectionRef, orderBy("order", "asc"));
+           const querySnapshot = await getDocs(disabilityQuery);
+           disabilitiesListAdmin.innerHTML = '';
+           if (querySnapshot.empty) {
+               disabilitiesListAdmin.innerHTML = '<p>No disability links found.</p>';
+               if (disabilitiesCount) disabilitiesCount.textContent = '(0)';
+           } else {
+               querySnapshot.forEach((doc) => {
+                   const data = doc.data();
+                   if (typeof renderDisabilityAdminListItem === 'function') {
+                       renderDisabilityAdminListItem( disabilitiesListAdmin, doc.id, data.name, data.url, data.order, handleDeleteDisability, openEditDisabilityModal );
+                   } else { console.error("renderDisabilityAdminListItem function is not defined!"); disabilitiesListAdmin.innerHTML = '<p class="error">Error rendering list items.</p>'; return; }
+               });
+               if (disabilitiesCount) disabilitiesCount.textContent = `(${querySnapshot.size})`;
+           }
+           console.log(`Loaded ${querySnapshot.size} disability links.`);
+       } catch (error) {
+           console.error("Error loading disability links:", error);
+            if (error.code === 'failed-precondition') {
+                disabilitiesListAdmin.innerHTML = `<p class="error">Error: Missing Firestore index for disabilities (order).</p>`;
+                showAdminStatus("Error loading disabilities: Missing database index. Check console.", true);
+           } else {
+               disabilitiesListAdmin.innerHTML = `<p class="error">Error loading disability links.</p>`;
+               showAdminStatus("Error loading disability links.", true);
+           }
+           if (disabilitiesCount) disabilitiesCount.textContent = '(Error)';
+       }
+    }
+
+    // --- Disabilities ---
+    async function handleAddDisability(event) {
+        event.preventDefault(); if (!addDisabilityForm) return;
+        const nameInput = addDisabilityForm.querySelector('#disability-name');
+        const urlInput = addDisabilityForm.querySelector('#disability-url');
+        const orderInput = addDisabilityForm.querySelector('#disability-order');
+        const name = nameInput?.value.trim(); const url = urlInput?.value.trim();
+        const orderStr = orderInput?.value.trim(); const order = parseInt(orderStr);
+        if (!name || !url || !orderStr || isNaN(order) || order < 0) { showAdminStatus("Invalid input for Disability Link...", true); return; }
+        try { new URL(url); } catch (_) { showAdminStatus("Invalid URL format.", true); return; }
+        const disabilityData = { name: name, url: url, order: order, createdAt: serverTimestamp() };
+        showAdminStatus("Adding disability link...");
+        try {
+            const docRef = await addDoc(disabilitiesCollectionRef, disabilityData);
+            console.log("Disability link added with ID:", docRef.id);
+            showAdminStatus("Disability link added successfully.", false);
+            addDisabilityForm.reset();
+            loadDisabilitiesAdmin(); // Reload this list
+        } catch (error) { console.error("Error adding disability link:", error); showAdminStatus(`Error adding disability link: ${error.message}`, true); }
+    }
+    async function handleDeleteDisability(docId) { // Takes only docId now
+        if (!confirm("Are you sure you want to permanently delete this disability link?")) { return; }
+        showAdminStatus("Deleting disability link...");
+        try {
+            await deleteDoc(doc(db, 'disabilities', docId));
+            showAdminStatus("Disability link deleted successfully.", false);
+            loadDisabilitiesAdmin(); // Reload this list
+        } catch (error) { console.error(`Error deleting disability link (ID: ${docId}):`, error); showAdminStatus(`Error deleting disability link: ${error.message}`, true); }
+    }
+    async function handleUpdateDisability(event) {
+         event.preventDefault(); if (!editDisabilityForm) return;
+         const docId = editDisabilityForm.getAttribute('data-doc-id'); if (!docId) { showEditDisabilityStatus("Error: Missing document ID.", true); return; }
+         const name = editDisabilityNameInput?.value.trim(); const url = editDisabilityUrlInput?.value.trim();
+         const orderStr = editDisabilityOrderInput?.value.trim(); const order = parseInt(orderStr);
+         if (!name || !url || !orderStr || isNaN(order) || order < 0) { showEditDisabilityStatus("Invalid input...", true); return; }
+         try { new URL(url); } catch (_) { showEditDisabilityStatus("Invalid URL format.", true); return; }
+         const updatedData = { name: name, url: url, order: order, lastModified: serverTimestamp() };
+         showEditDisabilityStatus("Saving changes...");
+         try {
+             const docRef = doc(db, 'disabilities', docId); await updateDoc(docRef, updatedData);
+             showAdminStatus("Disability link updated successfully.", false); // Show main status
+             closeEditDisabilityModal();
+             loadDisabilitiesAdmin(); // Reload this list
+         } catch (error) { console.error(`Error updating disability link (ID: ${docId}):`, error); showEditDisabilityStatus(`Error saving: ${error.message}`, true); showAdminStatus(`Error updating disability link: ${error.message}`, true); }
+     }
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) { //
@@ -946,6 +1113,7 @@ function renderYouTubeCard(account) { //
             if (logoutButton) logoutButton.style.display = 'none'; // Hide logout button
             if (adminGreeting) adminGreeting.textContent = ''; // Clear greeting
             if (typeof closeEditModal === 'function') closeEditModal(); // Close edit modal if open
+            if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal();
             if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal(); // Close useful link modal
             if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal(); // Close social link modal
 
@@ -1907,6 +2075,12 @@ async function handleUpdateUsefulLink(event) { //
         }
     }
     // -------------
+
+    // Disabilities Forms & Modals
+    if (addDisabilityForm) { addDisabilityForm.addEventListener('submit', handleAddDisability); }
+    if (editDisabilityForm) { editDisabilityForm.addEventListener('submit', handleUpdateDisability); }
+    if (cancelEditDisabilityButton) { cancelEditDisabilityButton.addEventListener('click', closeEditDisabilityModal); }
+    if (cancelEditDisabilityButtonSecondary) { cancelEditDisabilityButtonSecondary.addEventListener('click', closeEditDisabilityModal); }
 
     // --- ADD THESE FUNCTIONS ---
 
