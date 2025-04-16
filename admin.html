@@ -353,144 +353,157 @@
 </div>
 
             <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
-                <h3 id="business-info-heading">Manage Business Information & Status</h3>
+    <h3 id="business-info-heading">Manage Business Information & Status</h3>
 
-                <form id="business-info-form">
+    <form id="business-info-form">
 
-                    <h4>Regular Business Hours</h4>
-                    <p><small>Set open/close times using 24-hour format (e.g., 9:00 AM is 09:00, 5:00 PM is 17:00, 11:00 PM is 23:00). Check "Closed" if applicable.</small></p>
+        <h4>Regular Business Hours</h4>
+        <p><small>Set open/close times using 24-hour format (e.g., 9:00 AM is 09:00, 5:00 PM is 17:00). Check "Closed" if applicable.</small></p>
 
-                    <div class="hours-input-grid">
+        <div class="hours-input-grid">
+            <div class="hours-day-row">
+                <span class="day-label">Monday:</span>
+                <label for="hours-monday-open">Open:</label>
+                <input type="time" id="hours-monday-open" name="hoursMondayOpen">
+                <label for="hours-monday-close">Close:</label>
+                <input type="time" id="hours-monday-close" name="hoursMondayClose">
+                <input type="checkbox" id="hours-monday-closed" name="hoursMondayClosed" class="closed-checkbox">
+                <label for="hours-monday-closed">Closed?</label>
+            </div>
+            <div class="hours-day-row">
+                 <span class="day-label">Tuesday:</span>
+                 <label for="hours-tuesday-open">Open:</label>
+                 <input type="time" id="hours-tuesday-open" name="hoursTuesdayOpen">
+                 <label for="hours-tuesday-close">Close:</label>
+                 <input type="time" id="hours-tuesday-close" name="hoursTuesdayClose">
+                 <input type="checkbox" id="hours-tuesday-closed" name="hoursTuesdayClosed" class="closed-checkbox">
+                 <label for="hours-tuesday-closed">Closed?</label>
+            </div>
+             <div class="hours-day-row">
+                 <span class="day-label">Wednesday:</span>
+                 <label for="hours-wednesday-open">Open:</label>
+                 <input type="time" id="hours-wednesday-open" name="hoursWednesdayOpen">
+                 <label for="hours-wednesday-close">Close:</label>
+                 <input type="time" id="hours-wednesday-close" name="hoursWednesdayClose">
+                 <input type="checkbox" id="hours-wednesday-closed" name="hoursWednesdayClosed" class="closed-checkbox">
+                 <label for="hours-wednesday-closed">Closed?</label>
+            </div>
+            <div class="hours-day-row">
+                 <span class="day-label">Thursday:</span>
+                 <label for="hours-thursday-open">Open:</label>
+                 <input type="time" id="hours-thursday-open" name="hoursThursdayOpen">
+                 <label for="hours-thursday-close">Close:</label>
+                 <input type="time" id="hours-thursday-close" name="hoursThursdayClose">
+                 <input type="checkbox" id="hours-thursday-closed" name="hoursThursdayClosed" class="closed-checkbox">
+                 <label for="hours-thursday-closed">Closed?</label>
+            </div>
+             <div class="hours-day-row">
+                  <span class="day-label">Friday:</span>
+                  <label for="hours-friday-open">Open:</label>
+                  <input type="time" id="hours-friday-open" name="hoursFridayOpen">
+                  <label for="hours-friday-close">Close:</label>
+                  <input type="time" id="hours-friday-close" name="hoursFridayClose">
+                  <input type="checkbox" id="hours-friday-closed" name="hoursFridayClosed" class="closed-checkbox">
+                  <label for="hours-friday-closed">Closed?</label>
+            </div>
+            <div class="hours-day-row">
+                 <span class="day-label">Saturday:</span>
+                 <label for="hours-saturday-open">Open:</label>
+                 <input type="time" id="hours-saturday-open" name="hoursSaturdayOpen">
+                 <label for="hours-saturday-close">Close:</label>
+                 <input type="time" id="hours-saturday-close" name="hoursSaturdayClose">
+                 <input type="checkbox" id="hours-saturday-closed" name="hoursSaturdayClosed" class="closed-checkbox">
+                 <label for="hours-saturday-closed">Closed?</label>
+            </div>
+             <div class="hours-day-row">
+                  <span class="day-label">Sunday:</span>
+                  <label for="hours-sunday-open">Open:</label>
+                  <input type="time" id="hours-sunday-open" name="hoursSundayOpen">
+                  <label for="hours-sunday-close">Close:</label>
+                  <input type="time" id="hours-sunday-close" name="hoursSundayClose">
+                  <input type="checkbox" id="hours-sunday-closed" name="hoursSundayClosed" class="closed-checkbox">
+                  <label for="hours-sunday-closed">Closed?</label>
+             </div>
+        </div> <hr>
 
-                        <div class="hours-day-row">
-                            <span class="day-label">Monday:</span>
-                            <label for="hours-monday-open">Open:</label>
-                            <input type="time" id="hours-monday-open" name="hoursMondayOpen">
-                            <label for="hours-monday-close">Close:</label>
-                            <input type="time" id="hours-monday-close" name="hoursMondayClose">
-                            <input type="checkbox" id="hours-monday-closed" name="hoursMondayClosed" class="closed-checkbox">
-                            <label for="hours-monday-closed">Closed?</label>
-                        </div>
+        <h4>Status Override</h4>
+        <p><small>Manually sets the status shown on the homepage. Select "Automatic" for normal operation based on hours and active alerts.</small></p>
+        <div class="form-group">
+            <label for="status-override">Set Store Status:</label>
+            <select id="status-override" name="statusOverride">
+                <option value="Automatic">Automatic</option>
+                <option value="Force Open">Force Open</option>
+                <option value="Force Closed">Force Closed</option>
+            </select>
+        </div>
 
-                        <div class="hours-day-row">
-                            <span class="day-label">Tuesday:</span>
-                            <label for="hours-tuesday-open">Open:</label>
-                            <input type="time" id="hours-tuesday-open" name="hoursTuesdayOpen">
-                            <label for="hours-tuesday-close">Close:</label>
-                            <input type="time" id="hours-tuesday-close" name="hoursTuesdayClose">
-                            <input type="checkbox" id="hours-tuesday-closed" name="hoursTuesdayClosed" class="closed-checkbox">
-                            <label for="hours-tuesday-closed">Closed?</label>
-                        </div>
+        <div class="form-actions">
+            <button type="submit" id="save-business-info-button" class="button-primary">Save Business Hours & Override</button>
+        </div>
+         <p id="business-info-status-message" class="status-message" role="status" aria-live="polite"></p>
 
-                        <div class="hours-day-row">
-                             <span class="day-label">Wednesday:</span>
-                            <label for="hours-wednesday-open">Open:</label>
-                            <input type="time" id="hours-wednesday-open" name="hoursWednesdayOpen">
-                            <label for="hours-wednesday-close">Close:</label>
-                            <input type="time" id="hours-wednesday-close" name="hoursWednesdayClose">
-                            <input type="checkbox" id="hours-wednesday-closed" name="hoursWednesdayClosed" class="closed-checkbox">
-                            <label for="hours-wednesday-closed">Closed?</label>
-                        </div>
+    </form> <hr>
 
-                        <div class="hours-day-row">
-                             <span class="day-label">Thursday:</span>
-                            <label for="hours-thursday-open">Open:</label>
-                            <input type="time" id="hours-thursday-open" name="hoursThursdayOpen">
-                            <label for="hours-thursday-close">Close:</label>
-                            <input type="time" id="hours-thursday-close" name="hoursThursdayClose">
-                            <input type="checkbox" id="hours-thursday-closed" name="hoursThursdayClosed" class="closed-checkbox">
-                            <label for="hours-thursday-closed">Closed?</label>
-                        </div>
+    <h3>Manage Active Holiday Alerts</h3>
+    <p><small>These alerts appear on the homepage. Add alerts that are currently active or relevant.</small></p>
+    <div id="holiday-alerts-list-admin" class="alerts-list-admin">
+        <p>Loading holiday alerts...</p>
+    </div>
+    <form id="add-holiday-alert-form" class="sub-form">
+        <h4>Add New Holiday Alert</h4>
+        <div class="form-group">
+            <label for="new-holiday-name">Holiday Name:</label>
+            <input type="text" id="new-holiday-name" name="name" required placeholder="e.g., Christmas Day">
+        </div>
+        <div class="form-group">
+            <label for="new-holiday-hours">Hours/Details:</label>
+            <input type="text" id="new-holiday-hours" name="hours" required placeholder="e.g., Closed, Open 10 AM - 2 PM">
+        </div>
+        <div class="form-group checkbox-group">
+             <input type="checkbox" id="new-holiday-is-closure" name="isClosure">
+             <label for="new-holiday-is-closure">Implies Full Closure?</label>
+        </div>
+        <div class="form-actions">
+            <button type="submit">Add Holiday Alert</button>
+        </div>
+        <p id="add-holiday-status" class="status-message" role="status" aria-live="polite"></p>
+    </form>
 
-                         <div class="hours-day-row">
-                            <span class="day-label">Friday:</span>
-                            <label for="hours-friday-open">Open:</label>
-                            <input type="time" id="hours-friday-open" name="hoursFridayOpen">
-                            <label for="hours-friday-close">Close:</label>
-                            <input type="time" id="hours-friday-close" name="hoursFridayClose">
-                            <input type="checkbox" id="hours-friday-closed" name="hoursFridayClosed" class="closed-checkbox">
-                            <label for="hours-friday-closed">Closed?</label>
-                        </div>
+    <hr>
 
-                        <div class="hours-day-row">
-                            <span class="day-label">Saturday:</span>
-                            <label for="hours-saturday-open">Open:</label>
-                            <input type="time" id="hours-saturday-open" name="hoursSaturdayOpen">
-                            <label for="hours-saturday-close">Close:</label>
-                            <input type="time" id="hours-saturday-close" name="hoursSaturdayClose">
-                            <input type="checkbox" id="hours-saturday-closed" name="hoursSaturdayClosed" class="closed-checkbox">
-                            <label for="hours-saturday-closed">Closed?</label>
-                        </div>
+    <h3>Manage Active Temporary Alerts/Notices</h3>
+     <p><small>Add temporary closures, special notices, or changes.</small></p>
+    <div id="temporary-alerts-list-admin" class="alerts-list-admin">
+        <p>Loading temporary alerts...</p>
+    </div>
+    <form id="add-temporary-alert-form" class="sub-form">
+        <h4>Add New Temporary Alert/Notice</h4>
+         <div class="form-group">
+            <label for="new-temp-reason">Reason/Notice:</label>
+            <input type="text" id="new-temp-reason" name="reason" required placeholder="e.g., Staff Training, Weather Closure">
+        </div>
+        <div class="form-group">
+            <label for="new-temp-hours">Hours/Details:</label>
+            <input type="text" id="new-temp-hours" name="hours" placeholder="e.g., Closed Until 2 PM, Limited Services">
+        </div>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="new-temp-is-closure" name="isClosure">
+            <label for="new-temp-is-closure">Implies Full Closure?</label>
+        </div>
+        <div class="form-actions">
+             <button type="submit">Add Temporary Alert</button>
+         </div>
+         <p id="add-temp-status" class="status-message" role="status" aria-live="polite"></p>
+    </form>
 
-                        <div class="hours-day-row">
-                             <span class="day-label">Sunday:</span>
-                            <label for="hours-sunday-open">Open:</label>
-                            <input type="time" id="hours-sunday-open" name="hoursSundayOpen">
-                            <label for="hours-sunday-close">Close:</label>
-                            <input type="time" id="hours-sunday-close" name="hoursSundayClose">
-                            <input type="checkbox" id="hours-sunday-closed" name="hoursSundayClosed" class="closed-checkbox">
-                            <label for="hours-sunday-closed">Closed?</label>
-                        </div>
-                    </div>
-                    <hr>
+    <hr>
 
-                    <h4>Holiday Alert</h4>
-                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="holiday-active" name="holidayActive">
-                        <label for="holiday-active">Show Holiday Alert on Homepage?</label>
-                     </div>
-                    <div class="form-group">
-                        <label for="holiday-name">Holiday Name:</label>
-                        <input type="text" id="holiday-name" name="holidayName" placeholder="e.g., Independence Day">
-                    </div>
-                     <div class="form-group">
-                        <label for="holiday-hours">Special Hours/Message for Holiday:</label>
-                        <input type="text" id="holiday-hours" name="holidayHours" placeholder="e.g., Closed, Open 10 AM - 2 PM">
-                    </div>
+    <h4>Live Preview (Hours & Status Override Only)</h4>
+    <div id="business-info-preview" class="preview-area">
+        <p><small>Preview will appear here.</small></p>
+    </div>
 
-                    <hr>
-
-                     <h4>Temporary Unavailable Alert</h4>
-                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="temporary-active" name="temporaryActive">
-                        <label for="temporary-active">Show Temporary Alert on Homepage?</label>
-                     </div>
-                    <div class="form-group">
-                        <label for="temporary-reason">Reason for Unavailability:</label>
-                        <input type="text" id="temporary-reason" name="temporaryReason" placeholder="e.g., Staff Meeting, Weather Closure">
-                    </div>
-                     <div class="form-group">
-                        <label for="temporary-hours">Time/Duration Message:</label>
-                        <input type="text" id="temporary-hours" name="temporaryHours" placeholder="e.g., Until 2 PM Today, All Day">
-                    </div>
-
-                    <hr>
-
-                    <h4>Status Override</h4>
-                     <p><small>This manually sets the status shown on the homepage, overriding calculations based on hours/time. Select "Automatic" for normal operation.</small></p>
-                    <div class="form-group">
-                        <label for="status-override">Set Store Status:</label>
-                        <select id="status-override" name="statusOverride">
-                            <option value="Automatic">Automatic (Based on Hours/Time)</option>
-                            <option value="Force Open">Force Open</option>
-                            <option value="Force Closed">Force Closed</option>
-                        </select>
-                    </div>
-
-                    <hr>
-
-                    <h4>Live Preview</h4>
-                    <div id="business-info-preview" class="preview-area">
-                         <p><small>Preview will appear here as you type.</small></p>
-                    </div>
-
-
-                    <div class="form-actions">
-                        <button type="submit" id="save-business-info-button" class="button-primary">Save Business Information</button>
-                    </div>
-                </form>
-                 <div id="business-info-status-message" class="status-message" role="status" aria-live="polite"></div>
-            </section>
+</section>
             
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
