@@ -488,13 +488,13 @@ async function loadBusinessInfoAdmin() {
 // --- Function to Save Business Info (Handles Structured Time) ---
 async function saveBusinessInfoAdmin(event) {
     event.preventDefault();
-    console.log("saveBusinessInfoAdmin function called."); // <<< ADD 1
+    console.log("saveBusinessInfoAdmin function called."); // <<< ADDED LOG
 
     if (!auth || !auth.currentUser) { showBusinessInfoStatus("Error: Not logged in.", true); return; }
     if (!businessInfoForm) { console.error("Business Info form not found on save."); return; }
 
     const newData = {
-        hours: {},
+        hours: {}, // Initialize hours object
         businessTimezone: "America/New_York",
         holidayActive: holidayActiveInput?.checked ?? false,
         holidayName: holidayNameInput?.value.trim() ?? "",
@@ -507,55 +507,55 @@ async function saveBusinessInfoAdmin(event) {
     };
 
     let formIsValid = true;
-    console.log("Processing hours..."); // <<< ADD 2
+    console.log("Processing hours..."); // <<< ADDED LOG
     for (const day in hoursInputs) {
-        const dayElements = hoursInputs[day];
-        let isClosed = false; // Default to not closed
+         const dayElements = hoursInputs[day];
+        let isClosed = false;
 
-        if (dayElements?.closed) { // Check if checkbox element exists
-             isClosed = dayElements.closed.checked;
+        if (dayElements?.closed) {
+            isClosed = dayElements.closed.checked;
         } else {
-             console.warn(`Closed checkbox missing for ${day}`); // Should not happen if HTML is correct
+            console.warn(`Closed checkbox missing for ${day}`);
         }
 
-        console.log(`Day: ${day}, Is Checked Closed: ${isClosed}`); // <<< ADD 3
+        console.log(`Day: ${day}, Is Checked Closed: ${isClosed}`); // <<< ADDED LOG
 
         if (isClosed) {
             newData.hours[day] = null;
-            console.log(`  -> Marked closed, setting hours to null.`); // <<< ADD 4
+            console.log(`  -> Marked closed, setting hours to null.`); // <<< ADDED LOG
         } else if (dayElements?.open && dayElements?.close) {
             const openTime = dayElements.open.value;
             const closeTime = dayElements.close.value;
-            console.log(`  -> Times Found: Open='<span class="math-inline">\{openTime\}', Close\='</span>{closeTime}'`); // <<< ADD 5
+            console.log(`  -> Times Found: Open='<span class="math-inline">\{openTime\}', Close\='</span>{closeTime}'`); // <<< ADDED LOG
 
             if (openTime && closeTime) {
                newData.hours[day] = { open: openTime, close: closeTime };
-               console.log(`  -> Valid times found, adding to data.`); // <<< ADD 6
+               console.log(`  -> Valid times found, adding to data.`); // <<< ADDED LOG
             } else {
                formIsValid = false;
-               console.error(`  -> INVALID: Missing open ('<span class="math-inline">\{openTime\}'\) or close \('</span>{closeTime}') time for ${day} when not marked as closed.`); // <<< ADD 7
+               console.error(`  -> INVALID: Missing open ('<span class="math-inline">\{openTime\}'\) or close \('</span>{closeTime}') time for ${day} when not marked as closed.`); // <<< ADDED LOG
                showBusinessInfoStatus(`Error: Please provide both open and close times for ${day} or mark it as closed.`, true);
                break;
             }
         } else {
-            console.warn(`Input elements missing for ${day}, setting as null.`); // <<< ADD 8
-            newData.hours[day] = null; // Fallback
+            console.warn(`Input elements missing for ${day}, setting as null.`); // <<< ADDED LOG
+            newData.hours[day] = null;
         }
     }
 
-    console.log("Final validation check. Is form valid?", formIsValid); // <<< ADD 9
+    console.log("Final validation check. Is form valid?", formIsValid); // <<< ADDED LOG
     if (!formIsValid) {
         return; // Stop the save operation
     }
 
     showBusinessInfoStatus("Saving business information...");
-    console.log("Attempting to save this data to Firestore:", JSON.stringify(newData, null, 2)); // <<< ADD 10 (stringify for better readability)
+    console.log("Attempting to save this data to Firestore:", JSON.stringify(newData, null, 2)); // <<< ADDED LOG
     try {
         await setDoc(businessInfoDocRef, newData, { merge: true });
-        console.log("Business info successfully saved to Firestore."); // <<< ADD 11
+        console.log("Business info successfully saved to Firestore."); // <<< ADDED LOG
         showBusinessInfoStatus("Business information updated successfully!", false);
     } catch (error) {
-        console.error("Error during Firestore save:", error); // <<< ADD 12
+        console.error("Error during Firestore save:", error); // <<< ADDED LOG
         showBusinessInfoStatus(`Error saving: ${error.message}`, true);
     }
 }
