@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => { //
         // Show Holiday Alert Preview if active, using the ID and classes
         const holidayDisplay = data.holidayActive ? 'block' : 'none';
         previewHTML += `
-                <div id="holiday-alert" style="display: ${holidayDisplay};"> {/* Use ID */}
+                <div id="holiday-alert" style="display: ${holidayDisplay};">
                     <p><strong>Holiday:</strong> <span id="holiday-name">${data.holidayName || ''}</span></p>
                     <p><strong>Special hours today:</strong> <span id="holiday-hours">${data.holidayHours || ''}</span></p>
                 </div>`;
