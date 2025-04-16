@@ -352,6 +352,98 @@
          <div id="edit-social-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
 </div>
 
+            <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
+                <h3 id="business-info-heading">Manage Business Information & Status</h3>
+
+                <form id="business-info-form">
+
+                    <h4>Regular Business Hours</h4>
+                    <p><small>Enter hours exactly as you want them displayed (e.g., "9:00 AM - 5:00 PM", "Closed", "By Appointment Only").</small></p>
+                    <div class="form-group">
+                        <label for="hours-monday">Monday:</label>
+                        <input type="text" id="hours-monday" name="hoursMonday" placeholder="e.g., 9:00 AM - 5:00 PM">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours-tuesday">Tuesday:</label>
+                        <input type="text" id="hours-tuesday" name="hoursTuesday" placeholder="e.g., 9:00 AM - 5:00 PM">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours-wednesday">Wednesday:</label>
+                        <input type="text" id="hours-wednesday" name="hoursWednesday" placeholder="e.g., 9:00 AM - 5:00 PM">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours-thursday">Thursday:</label>
+                        <input type="text" id="hours-thursday" name="hoursThursday" placeholder="e.g., 9:00 AM - 5:00 PM">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours-friday">Friday:</label>
+                        <input type="text" id="hours-friday" name="hoursFriday" placeholder="e.g., 9:00 AM - 5:00 PM">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours-saturday">Saturday:</label>
+                        <input type="text" id="hours-saturday" name="hoursSaturday" placeholder="e.g., 10:00 AM - 2:00 PM">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours-sunday">Sunday:</label>
+                        <input type="text" id="hours-sunday" name="hoursSunday" placeholder="e.g., Closed">
+                    </div>
+
+                    <hr>
+
+                    <h4>Holiday Alert</h4>
+                     <div class="form-group checkbox-group">
+                        <input type="checkbox" id="holiday-active" name="holidayActive">
+                        <label for="holiday-active">Show Holiday Alert on Homepage?</label>
+                     </div>
+                    <div class="form-group">
+                        <label for="holiday-name">Holiday Name:</label>
+                        <input type="text" id="holiday-name" name="holidayName" placeholder="e.g., Independence Day">
+                    </div>
+                     <div class="form-group">
+                        <label for="holiday-hours">Special Hours/Message for Holiday:</label>
+                        <input type="text" id="holiday-hours" name="holidayHours" placeholder="e.g., Closed, Open 10 AM - 2 PM">
+                    </div>
+
+                    <hr>
+
+                     <h4>Temporary Unavailable Alert</h4>
+                     <div class="form-group checkbox-group">
+                        <input type="checkbox" id="temporary-active" name="temporaryActive">
+                        <label for="temporary-active">Show Temporary Alert on Homepage?</label>
+                     </div>
+                    <div class="form-group">
+                        <label for="temporary-reason">Reason for Unavailability:</label>
+                        <input type="text" id="temporary-reason" name="temporaryReason" placeholder="e.g., Staff Meeting, Weather Closure">
+                    </div>
+                     <div class="form-group">
+                        <label for="temporary-hours">Time/Duration Message:</label>
+                        <input type="text" id="temporary-hours" name="temporaryHours" placeholder="e.g., Until 2 PM Today, All Day">
+                    </div>
+
+                    <hr>
+
+                    <h4>Status Override</h4>
+                     <p><small>This manually sets the status shown on the homepage, overriding calculations based on hours/time. Select "Automatic" for normal operation.</small></p>
+                    <div class="form-group">
+                        <label for="status-override">Set Store Status:</label>
+                        <select id="status-override" name="statusOverride">
+                            <option value="Automatic">Automatic (Based on Hours/Time)</option>
+                            <option value="Force Open">Force Open</option>
+                            <option value="Force Closed">Force Closed</option>
+                            </select>
+                    </div>
+
+                    <hr> <h4>Live Preview</h4>
+                    <div id="business-info-preview" class="preview-area">
+                         <p><small>Preview will appear here as you type.</small></p>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="save-business-info-button" class="button-primary">Save Business Information</button>
+                    </div>
+                </form>
+                 <div id="business-info-status-message" class="status-message" role="status" aria-live="polite"></div>
+            </section>
+
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
                 <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
