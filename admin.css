@@ -1122,54 +1122,235 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
     margin-bottom: 20px;
     background-color: #f9f9f9; /* Light background for contrast */
 }
-.business-info-preview-content h3,
-.business-info-preview-content h4 {
-    margin-top: 10px;
-    margin-bottom: 5px;
-    color: #555; /* Slightly muted headings */
-}
-.business-info-preview-content p {
-    margin-bottom: 5px;
-    font-size: 0.9em;
-}
-.alert-preview {
-    border: 1px solid #eee;
-    padding: 8px;
-    margin-top: 10px;
-    border-radius: 4px;
-}
-.holiday-alert-preview {
-    background-color: #fffbe6; /* Light yellow */
-    border-color: #ffe58f;
-}
- .temporary-alert-preview {
-    background-color: #fff0f0; /* Light red */
-    border-color: #ffccc7;
-}
-.status-preview strong {
-     color: #333;
+/* ============================================= */
+/* === Business Info Preview Area Styles === */
+/* ============================================= */
+
+/* Style the container holding the preview */
+#business-info-preview {
+    border: 1px dashed #ccc; /* Simple border for the preview box */
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9; /* Light background for contrast */
+    border-radius: 8px;
 }
 
- /* Dark mode adjustments if needed */
-.dark-mode .preview-area {
-     background-color: #2f2f2f;
+/* Target the .business-info div *inside* the preview */
+#business-info-preview .business-info {
+    /* Replicate some core styles from styles.css */
+    background: linear-gradient( 145deg, #fdfdfd, #f7f7f7 ); /* Approximate light gradient */
+    color: #333; /* Default light mode text */
+    border: 1px solid #eee;
+    padding: 20px; /* Adjust padding as needed for preview */
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin: 0; /* Remove margin inside preview */
+    width: auto; /* Let preview container control width */
+}
+
+#business-info-preview .business-info h1 {
+    font-size: 1.8rem; /* Slightly smaller for preview */
+    font-weight: 800;
+    color: #333; /* Simpler color for preview */
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    /* Gradient text can be complex, using solid color for preview reliability */
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+}
+
+#business-info-preview .business-info h2 {
+    font-size: 1.3rem; /* Slightly smaller */
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: #444;
+}
+
+#business-info-preview .contact-info {
+    margin: 1rem 0;
+    font-size: 1rem;
+}
+
+#business-info-preview .contact-info a {
+    color: #007bff; /* Example link color */
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    background-color: rgba(0, 123, 255, 0.1); /* Light link background */
+    transition: background-color 0.2s ease;
+    display: inline-block;
+}
+
+#business-info-preview .contact-info a:hover {
+    background-color: rgba(0, 123, 255, 0.15);
+}
+
+/* Styling for the #hours-container inside the preview */
+#business-info-preview #hours-container {
+    background: #fefefe; /* Slightly different bg */
+    border-radius: 8px;
+    padding: 0.8rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-top: 0.5rem;
+}
+#business-info-preview #hours-container p {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 0;
+    margin: 0;
+    font-size: 0.9em;
+    border-bottom: 1px solid #f0f0f0;
+}
+#business-info-preview #hours-container p:last-child {
+    border-bottom: none;
+}
+
+/* Styling for the status paragraph and span */
+#business-info-preview .status {
+    margin: 1rem 0;
+    padding: 0.8rem 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex; /* Use flex like homepage */
+    justify-content: space-between;
+    align-items: center;
+}
+
+#business-info-preview #open-status {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: 1px solid transparent; /* Base border */
+}
+
+/* Status Colors (using explicit colors from your styles.css) */
+#business-info-preview #open-status.open {
+    background-color: rgba(0, 200, 83, 0.1);
+    color: rgb(0, 160, 67);
+    border-color: rgba(0, 200, 83, 0.2);
+}
+
+#business-info-preview #open-status.closed {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: rgb(220, 40, 30);
+    border-color: rgba(255, 59, 48, 0.2);
+}
+
+#business-info-preview #open-status.temporarily-unavailable {
+    background-color: rgba(255, 165, 0, 0.1);
+    color: rgb(255, 140, 0);
+    border-color: rgba(255, 165, 0, 0.2);
+}
+
+/* Holiday and Temporary Alerts */
+#business-info-preview #holiday-alert,
+#business-info-preview #temporary-alert {
+    margin: 1rem 0;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-weight: normal; /* Reset bold from default alert style if needed */
+    text-align: left; /* Reset center align if needed */
+}
+#business-info-preview #holiday-alert p,
+#business-info-preview #temporary-alert p {
+    margin: 0.3rem 0;
+    font-size: 0.9em;
+}
+
+#business-info-preview #holiday-alert {
+    background-color: #fffbe6; /* Light yellow */
+    border: 1px solid #ffe58f;
+    color: #664d03; /* Darker yellow text */
+}
+
+#business-info-preview #temporary-alert {
+    background-color: #fff0f0; /* Light red */
+    border: 1px solid #ffccc7;
+    color: #842029; /* Darker red text */
+}
+
+
+/* --- Dark Mode Adjustments for Preview --- */
+
+.dark-mode #business-info-preview {
+     background-color: #2f2f2f; /* Use preview-specific dark bg */
      border-color: #555;
 }
- .dark-mode .business-info-preview-content h3,
- .dark-mode .business-info-preview-content h4 {
-     color: #ccc;
+
+.dark-mode #business-info-preview .business-info {
+    background: linear-gradient( 145deg, #282828, #222222 ); /* Darker gradient */
+    color: #ccc; /* Light text */
+    border-color: #444;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
- .dark-mode .alert-preview {
-     border-color: #444;
+
+.dark-mode #business-info-preview .business-info h1 {
+    color: #eee; /* Lighter heading */
+    background: none;
 }
- .dark-mode .holiday-alert-preview {
-     background-color: #4d4d33;
-     border-color: #8c8c4a;
+.dark-mode #business-info-preview .business-info h2 {
+    color: #ddd;
 }
-  .dark-mode .temporary-alert-preview {
-     background-color: #4d3333;
-     border-color: #8c4a4a;
+
+.dark-mode #business-info-preview .contact-info a {
+    color: #58a6ff; /* Brighter link */
+    background-color: rgba(88, 166, 255, 0.15);
 }
- .dark-mode .status-preview strong {
-      color: #eee;
- }
+.dark-mode #business-info-preview .contact-info a:hover {
+    background-color: rgba(88, 166, 255, 0.2);
+}
+
+.dark-mode #business-info-preview #hours-container {
+    background: #2a2a2a;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.dark-mode #business-info-preview #hours-container p {
+    border-bottom-color: #3a3a3a;
+}
+
+.dark-mode #business-info-preview .status {
+    background: #343a40;
+    color: #ccc;
+}
+
+/* Dark Mode Status Colors */
+.dark-mode #business-info-preview #open-status.open {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #28a745; /* Boosted green */
+    border-color: rgba(40, 167, 69, 0.4);
+}
+
+.dark-mode #business-info-preview #open-status.closed {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545; /* Boosted red */
+    border-color: rgba(220, 53, 69, 0.4);
+}
+
+.dark-mode #business-info-preview #open-status.temporarily-unavailable {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffc107; /* Boosted yellow/orange */
+    border-color: rgba(255, 193, 7, 0.4);
+}
+
+/* Dark Mode Alerts */
+.dark-mode #business-info-preview #holiday-alert {
+    background-color: #4d4d33;
+    border-color: #8c8c4a;
+    color: #fff3cd; /* Light text for dark yellow bg */
+}
+
+.dark-mode #business-info-preview #temporary-alert {
+    background-color: #4d3333;
+    border-color: #8c4a4a;
+    color: #f8d7da; /* Light text for dark red bg */
+}
+
+/* ============================================= */
+/* === END Business Info Preview Area Styles === */
+/* ============================================= */
