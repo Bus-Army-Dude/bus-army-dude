@@ -485,15 +485,17 @@ async function loadBusinessInfoAdmin() {
     }
 }
 
-// --- Function to Save Business Info ---
+// --- Function to Save Business Info (Handles Structured Time) ---
 async function saveBusinessInfoAdmin(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
+    console.log("saveBusinessInfoAdmin function called."); // <<< ADD 1
+
     if (!auth || !auth.currentUser) { showBusinessInfoStatus("Error: Not logged in.", true); return; }
     if (!businessInfoForm) { console.error("Business Info form not found on save."); return; }
 
-    // Gather data from form fields into the structure for Firestore
     const newData = {
-        hours: {}, // Initialize hours object
+        hours: {},
+        businessTimezone: "America/New_York",
         holidayActive: holidayActiveInput?.checked ?? false,
         holidayName: holidayNameInput?.value.trim() ?? "",
         holidayHours: holidayHoursInput?.value.trim() ?? "",
@@ -501,30 +503,63 @@ async function saveBusinessInfoAdmin(event) {
         temporaryReason: temporaryReasonInput?.value.trim() ?? "",
         temporaryHours: temporaryHoursInput?.value.trim() ?? "",
         statusOverride: statusOverrideInput?.value ?? "Automatic",
-        lastUpdated: serverTimestamp() // Add timestamp
+        lastUpdated: serverTimestamp()
     };
 
-    // Populate hours object from inputs
-     for (const day in hoursInputs) {
-        if (hoursInputs[day]) {
-            newData.hours[day] = hoursInputs[day].value.trim() ?? ""; // Store as text for now
+    let formIsValid = true;
+    console.log("Processing hours..."); // <<< ADD 2
+    for (const day in hoursInputs) {
+        const dayElements = hoursInputs[day];
+        let isClosed = false; // Default to not closed
+
+        if (dayElements?.closed) { // Check if checkbox element exists
+             isClosed = dayElements.closed.checked;
+        } else {
+             console.warn(`Closed checkbox missing for ${day}`); // Should not happen if HTML is correct
+        }
+
+        console.log(`Day: ${day}, Is Checked Closed: ${isClosed}`); // <<< ADD 3
+
+        if (isClosed) {
+            newData.hours[day] = null;
+            console.log(`  -> Marked closed, setting hours to null.`); // <<< ADD 4
+        } else if (dayElements?.open && dayElements?.close) {
+            const openTime = dayElements.open.value;
+            const closeTime = dayElements.close.value;
+            console.log(`  -> Times Found: Open='<span class="math-inline">\{openTime\}', Close\='</span>{closeTime}'`); // <<< ADD 5
+
+            if (openTime && closeTime) {
+               newData.hours[day] = { open: openTime, close: closeTime };
+               console.log(`  -> Valid times found, adding to data.`); // <<< ADD 6
+            } else {
+               formIsValid = false;
+               console.error(`  -> INVALID: Missing open ('<span class="math-inline">\{openTime\}'\) or close \('</span>{closeTime}') time for ${day} when not marked as closed.`); // <<< ADD 7
+               showBusinessInfoStatus(`Error: Please provide both open and close times for ${day} or mark it as closed.`, true);
+               break;
+            }
+        } else {
+            console.warn(`Input elements missing for ${day}, setting as null.`); // <<< ADD 8
+            newData.hours[day] = null; // Fallback
         }
     }
 
+    console.log("Final validation check. Is form valid?", formIsValid); // <<< ADD 9
+    if (!formIsValid) {
+        return; // Stop the save operation
+    }
+
     showBusinessInfoStatus("Saving business information...");
+    console.log("Attempting to save this data to Firestore:", JSON.stringify(newData, null, 2)); // <<< ADD 10 (stringify for better readability)
     try {
-        // Use setDoc with merge: true to create or update the document
-        // This ensures we don't overwrite other fields if the doc exists
-        // but only updates the fields included in newData.
         await setDoc(businessInfoDocRef, newData, { merge: true });
-        console.log("Business info saved to:", businessInfoDocRef.path);
+        console.log("Business info successfully saved to Firestore."); // <<< ADD 11
         showBusinessInfoStatus("Business information updated successfully!", false);
     } catch (error) {
-        console.error("Error saving business info:", error);
+        console.error("Error during Firestore save:", error); // <<< ADD 12
         showBusinessInfoStatus(`Error saving: ${error.message}`, true);
     }
 }
-
+    
 // --- Attach Event Listeners for Business Info Section ---
 
 // Save Button Listener
