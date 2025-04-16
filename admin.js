@@ -318,95 +318,111 @@ document.addEventListener('DOMContentLoaded', () => { //
         }
     });
 
-    // Hour Inputs (assuming IDs like 'hours-monday', 'hours-tuesday', etc.)
-    const hoursInputs = {
-        monday: document.getElementById('hours-monday'),
-        tuesday: document.getElementById('hours-tuesday'),
-        wednesday: document.getElementById('hours-wednesday'),
-        thursday: document.getElementById('hours-thursday'),
-        friday: document.getElementById('hours-friday'),
-        saturday: document.getElementById('hours-saturday'),
-        sunday: document.getElementById('hours-sunday')
-    };
+    // Hour Inputs (Updated for time inputs and checkboxes)
+const hoursInputs = {
+    monday: { open: document.getElementById('hours-monday-open'), close: document.getElementById('hours-monday-close'), closed: document.getElementById('hours-monday-closed') },
+    tuesday: { open: document.getElementById('hours-tuesday-open'), close: document.getElementById('hours-tuesday-close'), closed: document.getElementById('hours-tuesday-closed') },
+    wednesday: { open: document.getElementById('hours-wednesday-open'), close: document.getElementById('hours-wednesday-close'), closed: document.getElementById('hours-wednesday-closed') },
+    thursday: { open: document.getElementById('hours-thursday-open'), close: document.getElementById('hours-thursday-close'), closed: document.getElementById('hours-thursday-closed') },
+    friday: { open: document.getElementById('hours-friday-open'), close: document.getElementById('hours-friday-close'), closed: document.getElementById('hours-friday-closed') },
+    saturday: { open: document.getElementById('hours-saturday-open'), close: document.getElementById('hours-saturday-close'), closed: document.getElementById('hours-saturday-closed') },
+    sunday: { open: document.getElementById('hours-sunday-open'), close: document.getElementById('hours-sunday-close'), closed: document.getElementById('hours-sunday-closed') }
+};
 
-    // --- Helper Function to display status ---
+   // --- Helper Function to display status ---
     function showBusinessInfoStatus(message, isError = false) {
         if (!businessInfoStatusMessage) { console.warn("Business info status message element not found"); showAdminStatus(message, isError); return; }
         businessInfoStatusMessage.textContent = message;
         businessInfoStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
-        // Clear message after 5 seconds
         setTimeout(() => { if (businessInfoStatusMessage) { businessInfoStatusMessage.textContent = ''; businessInfoStatusMessage.className = 'status-message'; } }, 5000);
     }
 
-    // --- Function to Render the Preview (Updated with Homepage Classes/IDs) ---
-    function renderBusinessInfoPreview(data) {
-        // Use the classes and IDs from your index.html snippet and styles.css
-        let previewHTML = `
-            <div class="business-info"> 
-                <h1>Bus Army Dude's Merch Store</h1>
-                <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
-                <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
+    // --- Helper Function to format HH:MM time to AM/PM ---
+function formatTime(timeString) {
+    if (!timeString || !timeString.includes(':')) return timeString; // Return original if invalid
+    try {
+        const parts = timeString.split(':');
+        let hours = parseInt(parts[0]);
+        const minutes = parseInt(parts[1]);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+        return `${hours}:${minutesStr} ${ampm}`;
+    } catch (e) {
+        console.error("Error formatting time:", timeString, e);
+        return timeString; // Return original on error
+    }
+}
+// --- Helper function to format HH:MM range to AM/PM range ---
+function formatTimeRange(openStr, closeStr) {
+    const openFormatted = formatTime(openStr);
+    const closeFormatted = formatTime(closeStr);
+    if (openFormatted === "Invalid Time" || closeFormatted === "Invalid Time") {
+        return "Invalid Hours";
+    }
+    return `${openFormatted} - ${closeFormatted}`;
+}
 
-                <h2>Business Hours</h2>
-                <div id="hours-container">
-                    ${Object.entries(data.hours || {}).map(([day, hours]) => {
-                        const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
-                        // Using simple <p> tags for preview simplicity inside #hours-container
-                        return `<p><strong>${formattedDay}:</strong> ${hours || 'Not Set'}</p>`;
-                     }).join('')}
-                </div>`;
 
-        // Show Holiday Alert Preview if active, using the ID and classes
-        const holidayDisplay = data.holidayActive ? 'block' : 'none';
-        previewHTML += `
-                <div id="holiday-alert" style="display: ${holidayDisplay};">
-                    <p><strong>Holiday:</strong> <span id="holiday-name">${data.holidayName || ''}</span></p>
-                    <p><strong>Special hours today:</strong> <span id="holiday-hours">${data.holidayHours || ''}</span></p>
-                </div>`;
+    // --- Function to Render the Preview (Using Structured Hours) ---
+function renderBusinessInfoPreview(data) {
+    let previewHTML = `
+        <div class="business-info">
+            <h1>Bus Army Dude's Merch Store</h1>
+            <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
+            <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
+            <h2>Business Hours</h2>
+            <div id="hours-container">`;
 
-        // Determine Status Preview Text and Class
-        let statusText = "(Status calculated on homepage)";
-        let statusClass = ""; // Default no class
-
-        if (data.temporaryActive && data.temporaryReason) {
-             statusText = `Temporarily Unavailable`;
-             statusClass = "temporarily-unavailable"; // Use the class from your CSS
-        } else if (data.statusOverride && data.statusOverride !== 'Automatic') {
-            if (data.statusOverride === 'Force Open') {
-                 statusText = 'Open (Forced)';
-                 statusClass = 'open';
-            } else { // Force Closed
-                statusText = 'Closed (Forced)';
-                statusClass = 'closed';
-            }
+    const daysOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    daysOrder.forEach(day => {
+        const dayHours = data.hours ? data.hours[day] : null;
+        let hoursText = 'Closed';
+        if (dayHours && dayHours.open && dayHours.close) {
+             hoursText = formatTimeRange(dayHours.open, dayHours.close);
         }
-        // Add status paragraph with class and ID
-        previewHTML += `<p class="status"><strong>Status:</strong> <span id="open-status" class="${statusClass}">${statusText}</span></p>`;
+        const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
+        previewHTML += `<p style="display: flex; justify-content: space-between; padding: 0.5em 0;"><span><strong>${formattedDay}:</strong></span><span>${hoursText}</span></p>`;
+    });
+    previewHTML += `</div>`; // Close #hours-container
 
-        // Show Temporary Alert Preview if active, using the ID and classes
-        const temporaryDisplay = data.temporaryActive ? 'block' : 'none';
-         previewHTML += `
-                <div id="temporary-alert" style="display: ${temporaryDisplay};">
-                    <p><strong>Temporarily Unavailable:</strong> <span id="temporary-reason">${data.temporaryReason || ''}</span></p>
-                    <p><strong>Unavailable Time:</strong> <span id="temporary-hours">${data.temporaryHours || ''}</span></p>
-                </div>`;
+    const holidayDisplay = data.holidayActive ? 'block' : 'none';
+    previewHTML += `
+            <div id="holiday-alert" style="display: ${holidayDisplay}; margin-top: 1em; border: 1px dashed orange; padding: 5px;">
+                <p><strong>Holiday:</strong> <span id="holiday-name">${data.holidayName || ''}</span></p>
+                <p><strong>Special hours today:</strong> <span id="holiday-hours">${data.holidayHours || ''}</span></p>
+            </div>`;
 
-        previewHTML += `</div>`; // Close business-info div
-
-        return previewHTML;
+    let statusText = "(Status calculated on homepage)";
+    let statusClass = "";
+    if (data.temporaryActive && data.temporaryReason) {
+         statusText = `Temporarily Unavailable`;
+         statusClass = "temporarily-unavailable";
+    } else if (data.statusOverride && data.statusOverride !== 'Automatic') {
+         statusText = data.statusOverride === 'Force Open' ? 'Open (Forced)' : 'Closed (Forced)';
+         statusClass = data.statusOverride === 'Force Open' ? 'open' : 'closed';
     }
+    previewHTML += `<p class="status" style="margin-top: 1em;"><strong>Status:</strong> <span id="open-status" class="${statusClass}">${statusText}</span></p>`;
+
+    const temporaryDisplay = data.temporaryActive ? 'block' : 'none';
+     previewHTML += `
+            <div id="temporary-alert" style="display: ${temporaryDisplay}; margin-top: 1em; border: 1px dashed red; padding: 5px;">
+                <p><strong>Temporarily Unavailable:</strong> <span id="temporary-reason">${data.temporaryReason || ''}</span></p>
+                <p><strong>Unavailable Time:</strong> <span id="temporary-hours">${data.temporaryHours || ''}</span></p>
+            </div>`;
+
+    previewHTML += `</div>`; // Close business-info div
+    return previewHTML;
+}
 
 
-// --- Function to Update the Preview Area ---
+// --- Function to Update the Preview Area (Reads Time Inputs) ---
 function updateBusinessInfoPreview() {
-    if (!businessInfoForm || !businessInfoPreviewArea) {
-         console.warn("Missing form or preview area for business info update.");
-         return;
-    }
+    if (!businessInfoForm || !businessInfoPreviewArea) { console.warn("Missing form or preview area for business info update."); return; }
 
-    // Gather current data from the form into a simple structure matching Firestore intent
     const currentData = {
-        hours: {}, // Initialize hours object
+        hours: {},
         holidayActive: holidayActiveInput?.checked ?? false,
         holidayName: holidayNameInput?.value.trim() ?? "",
         holidayHours: holidayHoursInput?.value.trim() ?? "",
@@ -416,86 +432,109 @@ function updateBusinessInfoPreview() {
         statusOverride: statusOverrideInput?.value ?? "Automatic"
     };
 
-    // Populate hours object from inputs
     for (const day in hoursInputs) {
-        if (hoursInputs[day]) {
-            currentData.hours[day] = hoursInputs[day].value.trim() ?? "";
+        if (hoursInputs[day]?.closed?.checked) {
+            currentData.hours[day] = null;
+        } else {
+            const openTime = hoursInputs[day]?.open?.value || null;
+            const closeTime = hoursInputs[day]?.close?.value || null;
+            if (openTime && closeTime) {
+               currentData.hours[day] = { open: openTime, close: closeTime };
+            } else {
+               currentData.hours[day] = null; // Treat incomplete as closed for preview
+            }
         }
     }
 
-    // Generate and display the preview HTML
     try {
         const previewContent = renderBusinessInfoPreview(currentData);
         businessInfoPreviewArea.innerHTML = previewContent;
     } catch (error) {
         console.error("Error generating business info preview:", error);
-        if (businessInfoPreviewArea) businessInfoPreviewArea.innerHTML = `<p class="error">Error generating preview.</p>`;
+        if(businessInfoPreviewArea) businessInfoPreviewArea.innerHTML = `<p class="error">Error generating preview.</p>`;
     }
 }
 
-// --- Function to Load Business Info into Admin Form ---
+// --- Function to Load Business Info into Admin Form (Handles Structured Time) ---
 async function loadBusinessInfoAdmin() {
     if (!businessInfoForm) { console.log("Business info form element not found for loading."); return; }
 
     console.log("Attempting to load business info from:", businessInfoDocRef.path);
     try {
         const docSnap = await getDoc(businessInfoDocRef);
-        let data = {}; // Default to empty object
+        let data = {};
 
         if (docSnap.exists()) {
             data = docSnap.data();
             console.log("Loaded business info:", data);
         } else {
-            console.warn(`Business info document ('${businessInfoDocRef.path}') not found. Form will show defaults.`);
-            // No need to reset form here, just populate with defaults below
+            console.warn(`Business info document ('${businessInfoDocRef.path}') not found. Displaying defaults.`);
         }
 
-        // Populate hours using ?? to provide default empty string if field missing
-        const hoursData = data.hours || {}; // Default to empty object if 'hours' field missing
+        const hoursData = data.hours || {};
         for (const day in hoursInputs) {
-            if (hoursInputs[day]) {
-                hoursInputs[day].value = hoursData[day] ?? '';
+            const dayElements = hoursInputs[day];
+            const daySchedule = hoursData[day];
+
+            if (dayElements) {
+                if (daySchedule && daySchedule.open && daySchedule.close) {
+                    if(dayElements.open) dayElements.open.value = daySchedule.open;
+                    if(dayElements.close) dayElements.close.value = daySchedule.close;
+                    if(dayElements.closed) dayElements.closed.checked = false;
+                    if(dayElements.open) dayElements.open.disabled = false;
+                    if(dayElements.close) dayElements.close.disabled = false;
+                } else {
+                    if(dayElements.open) dayElements.open.value = '';
+                    if(dayElements.close) dayElements.close.value = '';
+                    if(dayElements.closed) dayElements.closed.checked = true;
+                    if(dayElements.open) dayElements.open.disabled = true;
+                    if(dayElements.close) dayElements.close.disabled = true;
+                }
             }
         }
 
-        // Populate holiday fields
         if (holidayActiveInput) holidayActiveInput.checked = data.holidayActive ?? false;
         if (holidayNameInput) holidayNameInput.value = data.holidayName ?? '';
         if (holidayHoursInput) holidayHoursInput.value = data.holidayHours ?? '';
-
-        // Populate temporary fields
         if (temporaryActiveInput) temporaryActiveInput.checked = data.temporaryActive ?? false;
         if (temporaryReasonInput) temporaryReasonInput.value = data.temporaryReason ?? '';
         if (temporaryHoursInput) temporaryHoursInput.value = data.temporaryHours ?? '';
-
-        // Populate status override
         if (statusOverrideInput) statusOverrideInput.value = data.statusOverride ?? 'Automatic';
 
-
-        // Update the preview AFTER loading data into the form
-        updateBusinessInfoPreview(); // Generate initial preview
+        updateBusinessInfoPreview();
 
     } catch (error) {
         console.error("Error loading business info:", error);
         showBusinessInfoStatus("Error loading business information.", true);
-        // Reset form to defaults on error
         if(businessInfoForm) businessInfoForm.reset();
         if (statusOverrideInput) statusOverrideInput.value = 'Automatic';
-        updateBusinessInfoPreview(); // Update preview to show empty/default state
+         for (const day in hoursInputs) {
+             if(hoursInputs[day]?.closed) hoursInputs[day].closed.checked = false;
+             if(hoursInputs[day]?.open) { hoursInputs[day].open.value = ''; hoursInputs[day].open.disabled = false; }
+             if(hoursInputs[day]?.close) { hoursInputs[day].close.value = ''; hoursInputs[day].close.disabled = false; }
+         }
+        updateBusinessInfoPreview();
     }
 }
 
-// --- Function to Save Business Info (Handles Structured Time) ---
+// --- Function to Save Business Info (WITH DEBUG LOGS ADDED) ---
 async function saveBusinessInfoAdmin(event) {
     event.preventDefault();
-    console.log("saveBusinessInfoAdmin function called."); // <<< ADDED LOG
+    console.log("--- saveBusinessInfoAdmin function called. ---"); // DEBUG LOG 1
 
-    if (!auth || !auth.currentUser) { showBusinessInfoStatus("Error: Not logged in.", true); return; }
-    if (!businessInfoForm) { console.error("Business Info form not found on save."); return; }
+    if (!auth || !auth.currentUser) {
+        showBusinessInfoStatus("Error: Not logged in.", true);
+        console.log("Save stopped: Not logged in.");
+        return;
+    }
+    if (!businessInfoForm) {
+        console.error("Save stopped: Business Info form element not found.");
+        return;
+    }
 
     const newData = {
-        hours: {}, // Initialize hours object
-        businessTimezone: "America/New_York",
+        hours: {},
+        businessTimezone: "America/New_York", // Store your business timezone
         holidayActive: holidayActiveInput?.checked ?? false,
         holidayName: holidayNameInput?.value.trim() ?? "",
         holidayHours: holidayHoursInput?.value.trim() ?? "",
@@ -507,8 +546,10 @@ async function saveBusinessInfoAdmin(event) {
     };
 
     let formIsValid = true;
-    console.log("Processing hours..."); // <<< ADDED LOG
-    for (const day in hoursInputs) {
+    console.log("Processing hours data from form..."); // DEBUG LOG 2
+    const daysOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+    for (const day of daysOrder) {
          const dayElements = hoursInputs[day];
         let isClosed = false;
 
@@ -516,50 +557,52 @@ async function saveBusinessInfoAdmin(event) {
             isClosed = dayElements.closed.checked;
         } else {
             console.warn(`Closed checkbox missing for ${day}`);
+            isClosed = false; // Assume open if checkbox missing? Might need adjustment
         }
 
-        console.log(`Day: ${day}, Is Checked Closed: ${isClosed}`); // <<< ADDED LOG
+        console.log(`Processing Day: ${day}, Is Checked Closed?: ${isClosed}`); // DEBUG LOG 3
 
         if (isClosed) {
             newData.hours[day] = null;
-            console.log(`  -> Marked closed, setting hours to null.`); // <<< ADDED LOG
+            console.log(`  -> Day marked closed. Setting hours data to null.`); // DEBUG LOG 4
         } else if (dayElements?.open && dayElements?.close) {
             const openTime = dayElements.open.value;
             const closeTime = dayElements.close.value;
-            console.log(`  -> Times Found: Open='<span class="math-inline">\{openTime\}', Close\='</span>{closeTime}'`); // <<< ADDED LOG
+            console.log(`  -> Day NOT marked closed. Times found: Open='${openTime}', Close='${closeTime}'`); // DEBUG LOG 5
 
             if (openTime && closeTime) {
                newData.hours[day] = { open: openTime, close: closeTime };
-               console.log(`  -> Valid times found, adding to data.`); // <<< ADDED LOG
+               console.log(`  -> Valid times found, adding to data.`); // DEBUG LOG 6
             } else {
                formIsValid = false;
-               console.error(`  -> INVALID: Missing open ('<span class="math-inline">\{openTime\}'\) or close \('</span>{closeTime}') time for ${day} when not marked as closed.`); // <<< ADDED LOG
+               console.error(`  -> INVALID: Missing open ('${openTime}') or close ('${closeTime}') time for ${day} when not marked as closed.`); // DEBUG LOG 7
                showBusinessInfoStatus(`Error: Please provide both open and close times for ${day} or mark it as closed.`, true);
-               break;
+               break; // Stop processing loop on first error
             }
         } else {
-            console.warn(`Input elements missing for ${day}, setting as null.`); // <<< ADDED LOG
-            newData.hours[day] = null;
+            console.warn(`Input elements missing for ${day}, setting as null.`); // DEBUG LOG 8
+            newData.hours[day] = null; // Fallback
         }
     }
 
-    console.log("Final validation check. Is form valid?", formIsValid); // <<< ADDED LOG
+    console.log("Final validation check. Is form valid?", formIsValid); // DEBUG LOG 9
     if (!formIsValid) {
         return; // Stop the save operation
     }
 
     showBusinessInfoStatus("Saving business information...");
-    console.log("Attempting to save this data to Firestore:", JSON.stringify(newData, null, 2)); // <<< ADDED LOG
+    console.log("Attempting to save this data to Firestore:", JSON.stringify(newData, null, 2)); // DEBUG LOG 10 (stringify for better readability)
     try {
         await setDoc(businessInfoDocRef, newData, { merge: true });
-        console.log("Business info successfully saved to Firestore."); // <<< ADDED LOG
+        console.log("Business info successfully saved to Firestore."); // DEBUG LOG 11
         showBusinessInfoStatus("Business information updated successfully!", false);
     } catch (error) {
-        console.error("Error during Firestore save:", error); // <<< ADDED LOG
+        console.error("Error during Firestore save:", error); // DEBUG LOG 12
         showBusinessInfoStatus(`Error saving: ${error.message}`, true);
     }
 }
-    
+
+
 // --- Attach Event Listeners for Business Info Section ---
 
 // Save Button Listener
@@ -571,7 +614,7 @@ if (businessInfoForm) {
 
 // Preview Update Listeners (Listen to all relevant inputs/selects/checkboxes)
 const businessPreviewTriggerInputs = [
-    ...Object.values(hoursInputs), // All hour inputs
+    ...Object.values(hoursInputs).flatMap(day => [day.open, day.close, day.closed]), // Get all open, close, closed inputs
     holidayActiveInput, holidayNameInput, holidayHoursInput,
     temporaryActiveInput, temporaryReasonInput, temporaryHoursInput,
     statusOverrideInput
@@ -579,14 +622,34 @@ const businessPreviewTriggerInputs = [
 
 businessPreviewTriggerInputs.forEach(input => {
     if (input) {
-        // Use 'change' for checkboxes and select, 'input' for text fields
-        const eventType = (input.type === 'checkbox' || input.tagName === 'SELECT') ? 'change' : 'input';
+        // Use 'change' for checkboxes and select, 'input' for text/time fields
+        const eventType = (input.type === 'checkbox' || input.tagName === 'SELECT' || input.type === 'time') ? 'change' : 'input';
         input.addEventListener(eventType, updateBusinessInfoPreview);
     } else {
-        // Log if any expected input element is missing, helps debugging HTML/JS mismatch
-        // console.warn("A business info input element for preview trigger was not found.");
+        // console.warn("A business info input element for preview trigger was not found."); // Might log excessively if elements are missing
     }
 });
+
+// Add listeners to closed checkboxes to enable/disable time inputs and update preview
+for (const day in hoursInputs) {
+    const dayElements = hoursInputs[day];
+    if (dayElements?.closed) {
+        dayElements.closed.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            if(dayElements.open) dayElements.open.disabled = isChecked;
+            if(dayElements.close) dayElements.close.disabled = isChecked;
+            if (isChecked) { // Clear times if marking as closed
+                 if(dayElements.open) dayElements.open.value = '';
+                 if(dayElements.close) dayElements.close.value = '';
+            }
+            updateBusinessInfoPreview(); // Update preview when checkbox changes
+        });
+    }
+}
+
+// ========================================================
+//          END Business Information Management Code
+// ========================================================
 
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
