@@ -1518,49 +1518,66 @@ function renderUsefulLinkAdminListItem(container, docId, label, url, order, dele
 }
 
 
-// *** Function to Load Useful Links into the Admin Panel ***
-async function loadUsefulLinksAdmin() { //
-    if (!usefulLinksListAdmin) { //
-        console.error("Useful links list container not found."); //
-        return; //
-    }
-    if (usefulLinksCount) usefulLinksCount.textContent = ''; // Clear count
-    usefulLinksListAdmin.innerHTML = `<p>Loading useful links...</p>`; //
-
-    try { //
-        // Query links ordered by the 'order' field
-        const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc")); //
-        const querySnapshot = await getDocs(linkQuery); //
-
-        usefulLinksListAdmin.innerHTML = ''; // Clear loading message
-
-        if (querySnapshot.empty) { //
-            usefulLinksListAdmin.innerHTML = '<p>No useful links found.</p>'; //
-            if (usefulLinksCount) usefulLinksCount.textContent = '(0)'; //
-        } else { //
-            querySnapshot.forEach((doc) => { //
-                const data = doc.data(); //
-                renderUsefulLinkAdminListItem( //
-                    usefulLinksListAdmin, //
-                    doc.id, //
-                    data.label, //
-                    data.url, //
-                    data.order, //
-                    handleDeleteUsefulLink, // Pass delete handler function
-                    openEditUsefulLinkModal // Pass edit handler function
-                );
-            });
-            if (usefulLinksCount) usefulLinksCount.textContent = `(${querySnapshot.size})`; // Update count
+// *** Function to Load Useful Links into the Admin Panel (CORRECTED) ***
+    async function loadUsefulLinksAdmin() {
+        if (!usefulLinksListAdmin) {
+            console.error("Useful links list container not found.");
+            return;
         }
-        console.log(`Loaded ${querySnapshot.size} useful links.`); //
+        if (usefulLinksCount) usefulLinksCount.textContent = '';
+        usefulLinksListAdmin.innerHTML = `<p>Loading useful links...</p>`; // Show loading
 
-    } catch (error) { //
-        console.error("Error loading useful links:", error); //
-        usefulLinksListAdmin.innerHTML = `<p class="error">Error loading useful links.</p>`; //
-        if (usefulLinksCount) usefulLinksCount.textContent = '(Error)'; //
-        showAdminStatus("Error loading useful links.", true); //
+        allUsefulLinks = []; // Clear the global array
+
+        try {
+            const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc"));
+            const querySnapshot = await getDocs(linkQuery);
+
+            // STEP 1: Populate the global array ONLY
+            querySnapshot.forEach((doc) => {
+                // *** ADD THIS LINE ***
+                allUsefulLinks.push({ id: doc.id, ...doc.data() }); // Store data
+                // *** STEP 2: Ensure direct render call is REMOVED from here ***
+                /*
+                const data = doc.data();
+                renderUsefulLinkAdminListItem( ... );
+                */
+            });
+
+            console.log(`Loaded ${querySnapshot.size} useful links.`);
+
+            // STEP 3: Call the filtering function AFTER loading to display the list
+            if (typeof displayFilteredUsefulLinks === 'function') {
+                displayFilteredUsefulLinks(); // This will clear loading message and render
+            } else {
+                 console.error("displayFilteredUsefulLinks function not defined!");
+                 if(usefulLinksListAdmin) usefulLinksListAdmin.innerHTML = `<p class="error">Error initializing display.</p>`;
+                 if(usefulLinksCount) usefulLinksCount.textContent = '(Error)';
+            }
+
+        } catch (error) {
+            console.error("Error loading useful links:", error);
+            allUsefulLinks = []; // Clear array on error
+
+            // Display error message in the container
+            if (usefulLinksListAdmin) {
+                 if (error.code === 'failed-precondition') {
+                     usefulLinksListAdmin.innerHTML = `<p class="error">Error: Missing Firestore index. See console (F12).</p>`;
+                     showAdminStatus("Error loading useful links: Missing database index. Check console.", true);
+                 } else {
+                    usefulLinksListAdmin.innerHTML = `<p class="error">Error loading useful links.</p>`;
+                    showAdminStatus("Error loading useful links.", true);
+                 }
+            }
+            if (usefulLinksCount) usefulLinksCount.textContent = '(Error)';
+
+            // STEP 3 (Catch block): Call display function even on error
+            if (typeof displayFilteredUsefulLinks === 'function') {
+                displayFilteredUsefulLinks();
+            }
+        }
+        // STEP 4: Ensure NO calls to displayFilteredUsefulLinks() are here
     }
-}
 
 // *** Function to Handle Adding a New Useful Link ***
 async function handleAddUsefulLink(event) { //
@@ -2298,70 +2315,60 @@ async function handleUpdateUsefulLink(event) { //
         setTimeout(() => { if (editDisabilityStatusMessage) { editDisabilityStatusMessage.textContent = ''; editDisabilityStatusMessage.className = 'status-message'; } }, 3000);
     }
 
-    // Function to Load Disabilities into the Admin Panel List
+   // Function to Load Disabilities into the Admin Panel List (CORRECTED)
     async function loadDisabilitiesAdmin() {
-        // Use consts defined earlier for list container and count span
         if (!disabilitiesListAdmin) {
             console.error("Disabilities list container not found.");
             return;
         }
-        if (disabilitiesCount) disabilitiesCount.textContent = ''; // Clear count
-        disabilitiesListAdmin.innerHTML = `<p>Loading disability links...</p>`; // Loading message
+        if (disabilitiesCount) disabilitiesCount.textContent = '';
+        disabilitiesListAdmin.innerHTML = `<p>Loading disability links...</p>`; // Show loading message initially
 
-        allDisabilities = []; // <-- ADD THIS LINE to clear the global array
-        
+        allDisabilities = []; // Clear the global array
+
         try {
-            // Query disabilities ordered by the 'order' field
-            // Ensure you have an index for 'order' in your 'disabilities' collection if you use orderBy
             const disabilityQuery = query(disabilitiesCollectionRef, orderBy("order", "asc"));
             const querySnapshot = await getDocs(disabilityQuery);
 
-            // disabilitiesListAdmin.innerHTML = ''; // Clear loading message
+            // STEP 1: Populate the global array ONLY
+            querySnapshot.forEach((doc) => {
+                allDisabilities.push({ id: doc.id, ...doc.data() }); // Store data
+                // STEP 2: Ensure direct render call is REMOVED from here
+            });
 
-            if (querySnapshot.empty) {
-                // disabilitiesListAdmin.innerHTML = '<p>No disability links found.</p>';
-                // if (disabilitiesCount) disabilitiesCount.textContent = '(0)';
-            } else {
-                querySnapshot.forEach((doc) => {
-                    allDisabilities.push({ id: doc.id, ...doc.data() }); // <-- ADD THIS LINE
-                    const data = doc.data();
-                if (typeof renderDisabilityAdminListItem === 'function') {
-                     renderDisabilityAdminListItem(
-                         disabilitiesListAdmin,
-                         doc.id,
-                         data.name,
-                         data.url,
-                         data.order,
-                         handleDeleteDisability,
-                         openEditDisabilityModal
-                     );
-                    } else {
-                         console.error("renderDisabilityAdminListItem function is not defined!");
-                         // Prevent infinite loop or broken list
-                         disabilitiesListAdmin.innerHTML = '<p class="error">Error rendering list items.</p>';
-                         return; // Stop processing this list
-                    }
-                });
-                // if (disabilitiesCount) disabilitiesCount.textContent = `(${querySnapshot.size})`; // Update count
-            }
             console.log(`Loaded ${querySnapshot.size} disability links.`);
+
+            // STEP 3: Call the filtering function AFTER loading to display the list
+            if (typeof displayFilteredDisabilities === 'function') {
+                displayFilteredDisabilities(); // This will clear loading message and render
+            } else {
+                console.error("displayFilteredDisabilities function not defined!");
+                if (disabilitiesListAdmin) disabilitiesListAdmin.innerHTML = `<p class="error">Error initializing display.</p>`;
+                if (disabilitiesCount) disabilitiesCount.textContent = '(Error)';
+            }
 
         } catch (error) {
             console.error("Error loading disability links:", error);
-             // Check for missing index error specifically
-            if (error.code === 'failed-precondition') {
-                 disabilitiesListAdmin.innerHTML = `<p class="error">Error: Missing Firestore index for disabilities (order). Please create it using the link in the developer console (F12).</p>`;
-                 showAdminStatus("Error loading disabilities: Missing database index. Check console.", true);
-            } else {
-                disabilitiesListAdmin.innerHTML = `<p class="error">Error loading disability links.</p>`;
-                showAdminStatus("Error loading disability links.", true);
+            allDisabilities = []; // Clear array on error
+
+            // Display specific error message in the container
+            if (disabilitiesListAdmin) {
+                if (error.code === 'failed-precondition') {
+                    disabilitiesListAdmin.innerHTML = `<p class="error">Error: Missing Firestore index. See console (F12).</p>`;
+                    showAdminStatus("Error loading disabilities: Missing database index. Check console.", true);
+                } else {
+                    disabilitiesListAdmin.innerHTML = `<p class="error">Error loading disability links.</p>`;
+                    showAdminStatus("Error loading disability links.", true);
+                }
             }
-            allDisabilities = []; // Clear array on error too
-        if (typeof displayFilteredDisabilities === 'function') { // <-- ADD THIS LINE
-            displayFilteredDisabilities(); // Call display even on error to show "No links found" or error message // <-- ADD THIS LINE
-            } // <-- ADD THIS LINE
             if (disabilitiesCount) disabilitiesCount.textContent = '(Error)';
+
+            // STEP 3 (Catch block): Call display function even on error
+            if (typeof displayFilteredDisabilities === 'function') {
+                displayFilteredDisabilities();
+            }
         }
+        // STEP 4: Ensure NO calls to displayFilteredDisabilities() are here
     }
 
     // Call the filtering function to display the initial list
@@ -2389,25 +2396,7 @@ async function handleUpdateUsefulLink(event) { //
             }
         });
     }
-
-    const searchInputUseful = document.getElementById('search-useful');
-    if (searchInputUseful) {
-        searchInputUseful.addEventListener('input', () => {
-            if (typeof displayFilteredUsefulLinks === 'function') {
-                displayFilteredUsefulLinks();
-            }
-        });
-    }
-
-    const searchInputSocial = document.getElementById('search-social');
-    if (searchInputSocial) {
-        searchInputSocial.addEventListener('input', () => {
-            if (typeof displayFilteredSocialLinks === 'function') {
-                displayFilteredSocialLinks();
-            }
-        });
-    }
-
+    
     // Function to Handle Adding a New Disability Link
     async function handleAddDisability(event) {
         event.preventDefault(); // Prevent default form submission
