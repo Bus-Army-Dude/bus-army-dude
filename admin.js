@@ -348,7 +348,6 @@ document.addEventListener('DOMContentLoaded', () => { //
                 <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
 
                 <h2>Business Hours</h2>
-                {/* Use the ID for the hours container */}
                 <div id="hours-container">
                     ${Object.entries(data.hours || {}).map(([day, hours]) => {
                         const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
