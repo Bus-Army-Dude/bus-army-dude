@@ -22,6 +22,7 @@ let firebaseAppInitialized = false; // Flag to track initialization status
 let profileDocRef; // Reference to the main profile/config document
 let usefulLinksCollectionRef; // Reference for Useful Links
 let socialLinksCollectionRef; // Reference for Social Links
+let disabilitiesCollectionRef;
 let presidentDocRef; // <<< ADD THIS DECLARATION
 
 try {
@@ -32,6 +33,7 @@ try {
     usefulLinksCollectionRef = collection(db, "useful_links"); // Define Useful Links ref
     socialLinksCollectionRef = collection(db, "social_links"); // Define Social Links ref
     presidentDocRef = doc(db, "site_config", "currentPresident"); // <<< ADD THIS ASSIGNMENT (Ensure path matches admin.js)
+    disabilitiesCollectionRef = collection(db, "disabilities");
     firebaseAppInitialized = true; // Set flag on successful initialization
     console.log("Firebase initialized for display.");
 } catch (error) {
@@ -111,6 +113,22 @@ function renderYouTubeCard(account) {
                 <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
             </div>
         </div>`;
+}
+
+// --- Function to Load and Display Disabilities ---
+async function loadAndDisplayDisabilities() {
+    const placeholderElement = document.getElementById('disabilities-list-placeholder');
+    if (!placeholderElement) { console.warn("Disabilities placeholder missing."); return; }
+    placeholderElement.innerHTML = '<li>Loading...</li>';
+    if (!firebaseAppInitialized || !db || !disabilitiesCollectionRef) { console.error("Disabilities load error: Firebase or Ref missing."); placeholderElement.innerHTML = '<li>Error loading list.</li>'; return; }
+    try {
+        const disabilityQuery = query(disabilitiesCollectionRef, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(disabilityQuery);
+        placeholderElement.innerHTML = '';
+        if (querySnapshot.empty) { placeholderElement.innerHTML = '<li>No specific information available.</li>'; }
+        else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.name && data.url) { const listItem = document.createElement('li'); const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.textContent = data.name; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; listItem.appendChild(linkElement); placeholderElement.appendChild(listItem); } else { console.warn("Skipping disability item:", doc.id); } }); }
+        console.log(`Displayed ${querySnapshot.size} disability links.`);
+    } catch (error) { console.error("Error loading disabilities:", error); if (error.code === 'failed-precondition') { placeholderElement.innerHTML = '<li>Error: DB index needed.</li>'; console.error("Missing Firestore index for disabilities (order)."); } else { placeholderElement.innerHTML = '<li>Could not load list.</li>'; } }
 }
 
 // ======================================================
