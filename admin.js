@@ -4,7 +4,7 @@
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
 // Import Firebase functions (Includes 'where', 'query', 'orderBy', 'limit')
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"; //
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit, runTransaction } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"; //
 
 // *** Global Variable for Client-Side Filtering ***
