@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => { //
 function renderBusinessInfoPreview(data) {
     // Mimics the structure from index.html snippet provided by user
     let previewHTML = `
-        <div class="business-info"> {/* Add class if needed for styling */}
+        <div class="business-info">
             <h1>Bus Army Dude's Merch Store</h1>
             <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
             <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
