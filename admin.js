@@ -338,53 +338,64 @@ document.addEventListener('DOMContentLoaded', () => { //
         setTimeout(() => { if (businessInfoStatusMessage) { businessInfoStatusMessage.textContent = ''; businessInfoStatusMessage.className = 'status-message'; } }, 5000);
     }
 
-    // --- Function to Render the Preview ---
-function renderBusinessInfoPreview(data) {
-    // Mimics the structure from index.html snippet provided by user
-    let previewHTML = `
-        <div class="business-info">
-            <h1>Bus Army Dude's Merch Store</h1>
-            <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
-            <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
+    // --- Function to Render the Preview (Updated with Homepage Classes/IDs) ---
+    function renderBusinessInfoPreview(data) {
+        // Use the classes and IDs from your index.html snippet and styles.css
+        let previewHTML = `
+            <div class="business-info"> {/* Use the main container class */}
+                <h1>Bus Army Dude's Merch Store</h1> {/* Use H1 like index.html */}
+                <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
+                <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
 
-            <h2>Business Hours</h2>
-            <div id="hours-container">
-                ${Object.entries(data.hours || {}).map(([day, hours]) => {
-                    // Capitalize day name for display
-                    const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
-                    return `<p><strong>${formattedDay}:</strong> ${hours || 'Not Set'}</p>`;
-                 }).join('')}
-            </div>`;
+                <h2>Business Hours</h2>
+                {/* Use the ID for the hours container */}
+                <div id="hours-container">
+                    ${Object.entries(data.hours || {}).map(([day, hours]) => {
+                        const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
+                        // Using simple <p> tags for preview simplicity inside #hours-container
+                        return `<p><strong>${formattedDay}:</strong> ${hours || 'Not Set'}</p>`;
+                     }).join('')}
+                </div>`;
 
-    // Show Holiday Alert Preview if active
-    const holidayDisplay = data.holidayActive ? 'block' : 'none';
-    previewHTML += `
-            <div id="holiday-alert" style="display: ${holidayDisplay}; margin-top: 1em; border: 1px dashed orange; padding: 5px;">
-                <p><strong>Holiday:</strong> <span id="holiday-name">${data.holidayName || ''}</span></p>
-                <p><strong>Special hours today:</strong> <span id="holiday-hours">${data.holidayHours || ''}</span></p>
-            </div>`;
+        // Show Holiday Alert Preview if active, using the ID and classes
+        const holidayDisplay = data.holidayActive ? 'block' : 'none';
+        previewHTML += `
+                <div id="holiday-alert" style="display: ${holidayDisplay};"> {/* Use ID */}
+                    <p><strong>Holiday:</strong> <span id="holiday-name">${data.holidayName || ''}</span></p>
+                    <p><strong>Special hours today:</strong> <span id="holiday-hours">${data.holidayHours || ''}</span></p>
+                </div>`;
 
-    // Determine Status Preview Text based *only* on override for simplicity in preview
-    let statusText = "(Status calculated on homepage)"; // Default preview text
-    if (data.temporaryActive && data.temporaryReason) {
-         statusText = `Temporarily Unavailable`; // Show temporary status if active
-    } else if (data.statusOverride && data.statusOverride !== 'Automatic') {
-        statusText = data.statusOverride === 'Force Open' ? 'Open (Forced)' : 'Closed (Forced)'; // Show forced status
+        // Determine Status Preview Text and Class
+        let statusText = "(Status calculated on homepage)";
+        let statusClass = ""; // Default no class
+
+        if (data.temporaryActive && data.temporaryReason) {
+             statusText = `Temporarily Unavailable`;
+             statusClass = "temporarily-unavailable"; // Use the class from your CSS
+        } else if (data.statusOverride && data.statusOverride !== 'Automatic') {
+            if (data.statusOverride === 'Force Open') {
+                 statusText = 'Open (Forced)';
+                 statusClass = 'open';
+            } else { // Force Closed
+                statusText = 'Closed (Forced)';
+                statusClass = 'closed';
+            }
+        }
+        // Add status paragraph with class and ID
+        previewHTML += `<p class="status"><strong>Status:</strong> <span id="open-status" class="${statusClass}">${statusText}</span></p>`;
+
+        // Show Temporary Alert Preview if active, using the ID and classes
+        const temporaryDisplay = data.temporaryActive ? 'block' : 'none';
+         previewHTML += `
+                <div id="temporary-alert" style="display: ${temporaryDisplay};"> {/* Use ID */}
+                    <p><strong>Temporarily Unavailable:</strong> <span id="temporary-reason">${data.temporaryReason || ''}</span></p>
+                    <p><strong>Unavailable Time:</strong> <span id="temporary-hours">${data.temporaryHours || ''}</span></p>
+                </div>`;
+
+        previewHTML += `</div>`; // Close business-info div
+
+        return previewHTML;
     }
-    previewHTML += `<p class="status" style="margin-top: 1em;"><strong>Status:</strong> <span id="open-status">${statusText}</span></p>`;
-
-    // Show Temporary Alert Preview if active
-    const temporaryDisplay = data.temporaryActive ? 'block' : 'none';
-     previewHTML += `
-            <div id="temporary-alert" style="display: ${temporaryDisplay}; margin-top: 1em; border: 1px dashed red; padding: 5px;">
-                <p><strong>Temporarily Unavailable:</strong> <span id="temporary-reason">${data.temporaryReason || ''}</span></p>
-                <p><strong>Unavailable Time:</strong> <span id="temporary-hours">${data.temporaryHours || ''}</span></p>
-            </div>`;
-
-    previewHTML += `</div>`; // Close business-info div
-
-    return previewHTML;
-}
 
 
 // --- Function to Update the Preview Area ---
