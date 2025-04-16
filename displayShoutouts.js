@@ -1,4 +1,4 @@
-// displayShoutouts.js (Complete with President & Disabilities Sections)
+// displayShoutouts.js (Complete with President, Disabilities, & Business Info Sections)
 
 // Use the same Firebase config as in admin.js (Ensure this is correct)
 const firebaseConfig = {
@@ -23,8 +23,9 @@ let profileDocRef;
 let presidentDocRef;
 let usefulLinksCollectionRef;
 let socialLinksCollectionRef;
-let disabilitiesCollectionRef; // Added declaration
-let shoutoutsMetaRef; // For shoutout timestamps
+let disabilitiesCollectionRef;
+let shoutoutsMetaRef;
+let businessInfoDocRef; // <<<--- ADDED Reference Declaration
 
 try {
     const app = initializeApp(firebaseConfig);
@@ -34,8 +35,9 @@ try {
     presidentDocRef = doc(db, "site_config", "currentPresident");
     usefulLinksCollectionRef = collection(db, "useful_links");
     socialLinksCollectionRef = collection(db, "social_links");
-    disabilitiesCollectionRef = collection(db, "disabilities"); // Assign disabilities ref
-    shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // Assign shoutout meta ref
+    disabilitiesCollectionRef = collection(db, "disabilities");
+    shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+    businessInfoDocRef = doc(db, "site_config", "businessInfo"); // <<<--- ADDED Reference Assignment
     firebaseAppInitialized = true;
     console.log("Firebase initialized for display.");
 } catch (error) {
@@ -116,7 +118,7 @@ async function displayPresidentData() {
     } catch (error) { console.error("Error fetching president data:", error); placeholderElement.innerHTML = `<p class="error">Error loading president info: ${error.message}</p>`; }
 }
 
-// --- Function to Load and Display Disabilities (NEW) ---
+// --- Function to Load and Display Disabilities ---
 async function loadAndDisplayDisabilities() {
     const placeholderElement = document.getElementById('disabilities-list-placeholder'); if (!placeholderElement) { console.warn("Disabilities placeholder missing."); return; }
     placeholderElement.innerHTML = '<li>Loading...</li>'; // Loading message inside UL
@@ -127,29 +129,231 @@ async function loadAndDisplayDisabilities() {
     } catch (error) { console.error("Error loading disabilities:", error); if (error.code === 'failed-precondition') { placeholderElement.innerHTML = '<li>Error: DB config needed.</li>'; console.error("Missing Firestore index for disabilities (order)."); } else { placeholderElement.innerHTML = '<li>Could not load list.</li>'; } }
 }
 
-// --- Global variable declarations for DOM elements ---
+
+// ========================================================
+// START NEW Business Information Display Function
+// ========================================================
+async function loadAndDisplayBusinessInfo() {
+    // Get references to the display elements in index.html
+    const hoursContainer = document.getElementById('hours-container');
+    const holidayAlertDiv = document.getElementById('holiday-alert');
+    const holidayNameSpan = document.getElementById('holiday-name');
+    const holidayHoursSpan = document.getElementById('holiday-hours');
+    const openStatusSpan = document.getElementById('open-status');
+    const temporaryAlertDiv = document.getElementById('temporary-alert');
+    const temporaryReasonSpan = document.getElementById('temporary-reason');
+    const temporaryHoursSpan = document.getElementById('temporary-hours');
+    const userTimezoneSpan = document.getElementById('user-timezone');
+
+    // Initial states while loading
+    if (hoursContainer) hoursContainer.innerHTML = '<p>Loading hours...</p>';
+    if (openStatusSpan) openStatusSpan.textContent = 'Loading...';
+    if (holidayAlertDiv) holidayAlertDiv.style.display = 'none';
+    if (temporaryAlertDiv) temporaryAlertDiv.style.display = 'none';
+
+    // Display User's Timezone
+    if (userTimezoneSpan) {
+        try {
+            userTimezoneSpan.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        } catch (e) {
+            console.error("Could not get user timezone", e);
+            userTimezoneSpan.textContent = "N/A";
+        }
+    }
+
+    // Check Firebase readiness
+    if (!firebaseAppInitialized || !db) {
+        console.error("Business Info load error: Firebase not ready.");
+        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Error loading info (DB).</p>';
+        if (openStatusSpan) openStatusSpan.textContent = 'Error';
+        return;
+    }
+     if (!businessInfoDocRef) {
+        console.error("Business Info load error: Document reference missing.");
+         if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Error loading info (Config).</p>';
+         if (openStatusSpan) openStatusSpan.textContent = 'Error';
+        return;
+     }
+
+    try {
+        const docSnap = await getDoc(businessInfoDocRef);
+        let data = {}; // Default empty data
+
+        if (docSnap.exists()) {
+            data = docSnap.data();
+            console.log("Loaded business info data:", data);
+        } else {
+            console.warn("Business info document not found in Firestore.");
+            if (hoursContainer) hoursContainer.innerHTML = '<p>Business hours not available.</p>';
+            if (openStatusSpan) openStatusSpan.textContent = 'Unavailable';
+            // Don't process further if no data
+            return;
+        }
+
+        // 1. Display Business Hours
+        if (hoursContainer) {
+            const hoursData = data.hours || {};
+            hoursContainer.innerHTML = ''; // Clear loading/previous
+            const daysOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+            daysOrder.forEach(day => {
+                const hoursText = hoursData[day] || 'Not Set'; // Use text hours saved from admin
+                const formattedDay = day.charAt(0).toUpperCase() + day.slice(1);
+                const p = document.createElement('p');
+                // Apply classes if needed, e.g., from styles.css: p.className = 'hours-row';
+                p.innerHTML = `<strong>${formattedDay}:</strong> <span>${hoursText}</span>`;
+                hoursContainer.appendChild(p);
+            });
+        }
+
+        // 2. Handle Holiday Alert
+        if (holidayAlertDiv && holidayNameSpan && holidayHoursSpan) {
+            if (data.holidayActive && (data.holidayName || data.holidayHours)) {
+                holidayNameSpan.textContent = data.holidayName || '';
+                holidayHoursSpan.textContent = data.holidayHours || '';
+                holidayAlertDiv.style.display = 'block';
+            } else {
+                holidayAlertDiv.style.display = 'none';
+            }
+        }
+
+        // 3. Handle Temporary Alert
+        if (temporaryAlertDiv && temporaryReasonSpan && temporaryHoursSpan) {
+             if (data.temporaryActive && (data.temporaryReason || data.temporaryHours)) {
+                temporaryReasonSpan.textContent = data.temporaryReason || '';
+                temporaryHoursSpan.textContent = data.temporaryHours || '';
+                temporaryAlertDiv.style.display = 'block';
+            } else {
+                temporaryAlertDiv.style.display = 'none';
+            }
+        }
+
+        // 4. Determine and Display Status (Basic version - no timezone calc yet)
+        if (openStatusSpan) {
+            let currentStatus = "Unavailable"; // Default
+            let statusClass = "closed"; // Default class
+
+            // Check highest priority: Temporary Closure
+            if (data.temporaryActive && data.temporaryReason) {
+                currentStatus = "Temporarily Unavailable";
+                statusClass = "temporarily-unavailable"; // Use your defined CSS class
+            }
+            // Next priority: Holiday (if specified as Closed in admin)
+            else if (data.holidayActive && data.holidayHours?.toLowerCase().includes('closed')) {
+                 currentStatus = "Closed (Holiday)";
+                 statusClass = "closed";
+            }
+            // Next priority: Manual Overrides
+            else if (data.statusOverride === 'Force Open') {
+                currentStatus = "Open";
+                statusClass = "open";
+            } else if (data.statusOverride === 'Force Closed') {
+                currentStatus = "Closed";
+                statusClass = "closed";
+            }
+            // Default: Needs calculation (Automatic)
+            else { // statusOverride === 'Automatic'
+                // --- Placeholder for Timezone Calculation ---
+                // This is where you would implement the logic using the text hours
+                // from data.hours, the businessTimezone (if you add it), and the
+                // visitor's current time + timezone. This is complex!
+                currentStatus = "Unavailable (Auto)"; // Indicate calculation needed or default
+                statusClass = "closed"; // Default display
+                console.warn("Automatic open/closed status calculation based on time/timezone not yet implemented.");
+                 // --- End Placeholder ---
+            }
+
+            openStatusSpan.textContent = currentStatus;
+            openStatusSpan.className = statusClass; // Apply class for styling from styles.css
+        }
+
+    } catch (error) {
+        console.error("Error fetching/displaying business info:", error);
+         if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not load info.</p>';
+         if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed';}
+    }
+}
+// ========================================================
+// END NEW Business Information Display Function
+// ========================================================
+
+
+// --- Global variable declarations for DOM elements used in DOMContentLoaded ---
 let maintenanceMessageElement;
 let mainContentWrapper;
 let usefulLinksContainerElement;
 let socialLinksContainerElement;
+// Note: other elements like president-placeholder are accessed directly in their functions
 
 // --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOM loaded. Checking Firebase status and maintenance mode...");
-    maintenanceMessageElement = document.getElementById('maintenanceModeMessage'); mainContentWrapper = document.querySelector('.container'); usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container'); socialLinksContainerElement = document.querySelector('.social-links-container');
+    maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
+    mainContentWrapper = document.querySelector('.container'); // Assuming .container wraps main content
+    usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container'); // Make sure these selectors are correct for index.html
+    socialLinksContainerElement = document.querySelector('.social-links-container'); // Make sure this selector is correct for index.html
 
-    if (!firebaseAppInitialized) { console.error("Firebase not ready. Site cannot load."); if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>'; maintenanceMessageElement.style.display = 'block'; } else { const eb = document.createElement('div'); eb.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>'; document.body.prepend(eb); } if (mainContentWrapper) mainContentWrapper.style.display = 'none'; return; }
+    if (!firebaseAppInitialized) {
+        console.error("Firebase not ready. Site cannot load.");
+        // Display error prominently if Firebase fails
+        if (maintenanceMessageElement) {
+            maintenanceMessageElement.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>';
+            maintenanceMessageElement.style.display = 'block';
+        } else { // Fallback if specific element doesn't exist
+            const eb = document.createElement('div');
+            eb.style.cssText = "background:red; color:white; padding:20px; text-align:center; font-weight:bold;";
+            eb.innerHTML = '<p>Site cannot load (Connection Error).</p>';
+            document.body.prepend(eb);
+        }
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none'; // Hide main content
+        return; // Stop execution
+    }
 
-    try { console.log("Checking maintenance mode..."); if (!profileDocRef) { throw new Error("profileDocRef missing."); } const configSnap = await getDoc(profileDocRef); let maintenanceEnabled = configSnap.exists() ? (configSnap.data()?.isMaintenanceModeEnabled || false) : false; console.log("Maintenance mode:", maintenanceEnabled);
-        if (maintenanceEnabled) { console.log("Maintenance mode ON."); if (mainContentWrapper) { mainContentWrapper.style.display = 'none'; } if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'block'; } else { console.error("Maintenance msg element missing!"); } return; }
-        else { console.log("Maintenance mode OFF. Loading content."); if (mainContentWrapper) { mainContentWrapper.style.display = ''; } if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'none'; }
+    try {
+        console.log("Checking maintenance mode...");
+        if (!profileDocRef) { throw new Error("profileDocRef missing for maintenance check."); } // Ensure ref exists
+        const configSnap = await getDoc(profileDocRef);
+        // Default to false if document or field doesn't exist
+        let maintenanceEnabled = configSnap.exists() ? (configSnap.data()?.isMaintenanceModeEnabled || false) : false;
+        console.log("Maintenance mode:", maintenanceEnabled);
+
+        if (maintenanceEnabled) {
+            console.log("Maintenance mode ON.");
+            if (mainContentWrapper) { mainContentWrapper.style.display = 'none'; } // Hide main content
+            if (maintenanceMessageElement) {
+                maintenanceMessageElement.style.display = 'block'; // Show maintenance message
+            } else {
+                console.error("Maintenance message element missing!");
+            }
+            // Stop loading other content if in maintenance mode
+            return;
+        } else {
+            console.log("Maintenance mode OFF. Loading content.");
+            if (mainContentWrapper) { mainContentWrapper.style.display = ''; } // Ensure content visible
+            if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'none'; } // Hide maintenance message
+
             // Load ALL dynamic content
+            // Use checks to ensure functions exist before calling
             if (typeof displayProfileData === 'function') { displayProfileData(); } else { console.error("displayProfileData missing!"); }
             if (typeof displayPresidentData === 'function') { displayPresidentData(); } else { console.error("displayPresidentData missing!"); }
             if (typeof loadAndDisplayShoutouts === 'function') { loadAndDisplayShoutouts(); } else { console.error("loadAndDisplayShoutouts missing!"); }
-            if (typeof loadAndDisplayUsefulLinks === 'function') { if(usefulLinksContainerElement) { loadAndDisplayUsefulLinks(); } else { console.warn("Useful links container missing."); } } else { console.error("loadAndDisplayUsefulLinks missing!"); }
-            if (typeof loadAndDisplaySocialLinks === 'function') { if (socialLinksContainerElement) { loadAndDisplaySocialLinks(); } else { console.warn("Social links container missing."); } } else { console.error("loadAndDisplaySocialLinks missing!"); }
-            if (typeof loadAndDisplayDisabilities === 'function') { loadAndDisplayDisabilities(); } else { console.error("loadAndDisplayDisabilities missing!"); } // Load Disabilities
+            if (typeof loadAndDisplayUsefulLinks === 'function') { if(usefulLinksContainerElement) { loadAndDisplayUsefulLinks(); } else { console.warn("Useful links container missing in index.html."); } } else { console.error("loadAndDisplayUsefulLinks missing!"); }
+            if (typeof loadAndDisplaySocialLinks === 'function') { if (socialLinksContainerElement) { loadAndDisplaySocialLinks(); } else { console.warn("Social links container missing in index.html."); } } else { console.error("loadAndDisplaySocialLinks missing!"); }
+            if (typeof loadAndDisplayDisabilities === 'function') { loadAndDisplayDisabilities(); } else { console.error("loadAndDisplayDisabilities missing!"); }
+            if (typeof loadAndDisplayBusinessInfo === 'function') { loadAndDisplayBusinessInfo(); } else { console.error("loadAndDisplayBusinessInfo missing!"); } // <<<--- ADDED Call
+
         }
-    } catch (error) { console.error("Error during DOMContentLoaded:", error); if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">Error loading site: ${error.message}</p>`; maintenanceMessageElement.style.display = 'block'; } else { const eb = document.createElement('div'); eb.innerHTML = `<p class="error">Error loading site: ${error.message}</p>`; document.body.prepend(eb); } if (mainContentWrapper) mainContentWrapper.style.display = 'none'; }
+    } catch (error) {
+        console.error("Error during DOMContentLoaded initialization:", error);
+        // Display a general error message if the initial load fails
+         if (maintenanceMessageElement) {
+            maintenanceMessageElement.innerHTML = `<p class="error">Error loading site configuration: ${error.message}</p>`;
+            maintenanceMessageElement.style.display = 'block';
+        } else {
+             const eb = document.createElement('div');
+             eb.style.cssText = "background:red; color:white; padding:20px; text-align:center; font-weight:bold;";
+            eb.innerHTML = `<p class="error">Error loading site configuration: ${error.message}</p>`;
+            document.body.prepend(eb);
+        }
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none'; // Hide content on error
+    }
 }); // End DOMContentLoaded listener
