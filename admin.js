@@ -342,8 +342,8 @@ document.addEventListener('DOMContentLoaded', () => { //
     function renderBusinessInfoPreview(data) {
         // Use the classes and IDs from your index.html snippet and styles.css
         let previewHTML = `
-            <div class="business-info"> {/* Use the main container class */}
-                <h1>Bus Army Dude's Merch Store</h1> {/* Use H1 like index.html */}
+            <div class="business-info"> 
+                <h1>Bus Army Dude's Merch Store</h1>
                 <p class="contact-info"><strong>Contact:</strong> <a href="mailto:busarmydude@gmail.com">busarmydude@gmail.com</a></p>
                 <p><strong>Your current timezone:</strong> <span id="user-timezone">(Timezone shown on actual page)</span></p>
 
