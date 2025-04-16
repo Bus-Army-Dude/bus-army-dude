@@ -220,56 +220,32 @@ async function loadAndDisplayDisabilities() {
 // === NEW Business Hours Functions ===
 // ==================================================
 
-// --- Helper function to convert time from stored format to user's timezone display using Luxon ---
+// --- Helper function to convert time from stored format to user's timezone display ---
 function convertTimeToTimezoneBH(timeStr, targetTimezone) {
-    // Check for "Closed" or invalid input first
     if (!timeStr || typeof timeStr !== 'string' || timeStr.trim().toUpperCase() === 'CLOSED') {
         return "Closed";
     }
-
-    const sourceTimezone = 'America/New_York'; // Your source timezone (EST/EDT)
+    let hours, minutes;
+    let period = null;
     const timeStrClean = timeStr.trim().toUpperCase();
+    const timeRegex12hr = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
+    const timeRegex24hr = /^(\d{1,2}):(\d{2})$/;
 
-    let formatString; // Luxon format string based on input
-    let parsedTime;
+    if (timeRegex12hr.test(timeStrClean)) { // Input is HH:MM AM/PM
+        const match = timeStrClean.match(timeRegex12hr);
+        hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); period = match[3].toUpperCase();
+        if (period === 'PM' && hours !== 12) hours += 12; if (period === 'AM' && hours === 12) hours = 0;
+    } else if (timeRegex24hr.test(timeStrClean)) { // Input is HH:MM (24hr)
+        const match = timeStrClean.match(timeRegex24hr);
+        hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10);
+        if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return "Invalid Time";
+    } else { console.warn("Could not parse time for conversion:", timeStr); return "Invalid Time"; }
 
-    // Determine input format (12hr vs 24hr)
-    if (timeStrClean.includes("AM") || timeStrClean.includes("PM")) {
-        formatString = "h:mm a"; // Format like "10:00 AM"
-    } else if (/^\d{1,2}:\d{2}$/.test(timeStrClean)) {
-        formatString = "H:mm"; // Format like "14:00" (24-hour)
-    } else {
-        console.warn("Could not determine time format for conversion:", timeStr);
-        return "Invalid Time";
-    }
-
+    const tempDate = new Date(); tempDate.setHours(hours, minutes, 0, 0);
     try {
-        // Ensure Luxon is loaded (it's attached to the window object from the CDN script)
-        if (typeof luxon === 'undefined' || typeof luxon.DateTime === 'undefined') {
-             console.error("Luxon library not loaded!");
-             return "Error: Lib Missing";
-        }
-        const { DateTime } = luxon; // Destructure for easier use
-
-        // Parse the time string using the determined format and source timezone
-        // This tells Luxon "this time string represents a time in America/New_York"
-        parsedTime = DateTime.fromFormat(timeStrClean, formatString, { zone: sourceTimezone });
-
-        if (!parsedTime.isValid) {
-            console.warn(`Luxon failed to parse time "<span class="math-inline">\{timeStrClean\}" with format "</span>{formatString}"`);
-            return "Invalid Time";
-        }
-
-        // Convert the parsed time to the user's target timezone
-        const convertedTime = parsedTime.setZone(targetTimezone);
-
-        // Format the converted time for display (e.g., "10:00 AM")
-        return convertedTime.toFormat('h:mm a');
-
-    } catch (e) {
-        console.error("Error converting time using Luxon:", timeStr, targetTimezone, e);
-        return "Error";
-    }
+        // Format time in the target timezone
+        return tempDate.toLocaleTimeString('en-US', { timeZone: targetTimezone, hour: 'numeric', minute: '2-digit', hour12: true });
+    } catch (e) { console.error("Error converting time to timezone:", timeStr, targetTimezone, e); return "Error"; }
 }
 
 // --- Function to check current open status ---
