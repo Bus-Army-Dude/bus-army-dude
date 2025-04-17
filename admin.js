@@ -1152,9 +1152,6 @@ function renderYouTubeCard(account) { //
     async function handleAddShoutout(platform, formElement) { //
         if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; } //
 
-        // VV YOUR DEBUG LINE IS HERE VV
-        console.log(`DEBUG: handleAddShoutout started for ${platform} at ${new Date().toLocaleTimeString()}`); //
-
         // Get form values
         const username = formElement.querySelector(`#${platform}-username`)?.value.trim(); //
         const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim(); //
@@ -1166,11 +1163,6 @@ function renderYouTubeCard(account) { //
             showAdminStatus(`Invalid input for ${platform}. Check required fields and ensure Order is a non-negative number.`, true); //
             return; //
         }
-
-        // --- Button Disable (Add this part if you haven't already) ---
-        const submitButton = formElement.querySelector('button[type="submit"]'); //
-        if (submitButton) submitButton.disabled = true; //
-        // --- End Button Disable ---
 
         // Duplicate Check Logic
         try { //
@@ -1188,9 +1180,6 @@ function renderYouTubeCard(account) { //
             if (!querySnapshot.empty) { //
                 console.warn("Duplicate found for", platform, username); //
                 showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true); //
-                 // --- Button Re-enable on Duplicate Found Error ---
-                 if (submitButton) submitButton.disabled = false; //
-                 // --- End Button Re-enable ---
                 return; //
             }
             console.log("No duplicate found. Proceeding to add."); //
@@ -1229,32 +1218,6 @@ function renderYouTubeCard(account) { //
                 previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>'; //
             }
             // *** END ADDED CODE ***
-
-            // --- Add Debug Log Before Load ---
-             console.log(`DEBUG: About to call loadShoutoutsAdmin for ${platform} after add.`); //
-            // --- End Debug Log ---
-
-            if (typeof loadShoutoutsAdmin === 'function') { //
-                loadShoutoutsAdmin(platform); // Reload the list
-            }
-
-             // --- Add Debug Log After Load ---
-             console.log(`DEBUG: Finished loadShoutoutsAdmin call for ${platform}.`); //
-             // --- End Debug Log ---
-
-            // --- Button Re-enable on Success ---
-            if (submitButton) submitButton.disabled = false; //
-             // --- End Button Re-enable ---
-
-
-        } catch (error) { //
-            console.error(`Error in handleAddShoutout for ${platform}:`, error); //
-            showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true); //
-             // --- Button Re-enable on Catch Error ---
-             if (submitButton) submitButton.disabled = false; //
-             // --- End Button Re-enable ---
-        }
-    }
 
             if (typeof loadShoutoutsAdmin === 'function') { //
                 loadShoutoutsAdmin(platform); // Reload the list
