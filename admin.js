@@ -149,13 +149,13 @@ document.addEventListener('DOMContentLoaded', () => { //
     }
 
     // Displays status messages in the profile section's status area
-    function showProfileStatus(message, isError = false) { //
-        if (!profileStatusMessage) { console.warn("Profile status message element not found"); showAdminStatus(message, isError); return; } // Fallback to admin status
-        profileStatusMessage.textContent = message; //
-        profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; //
-         // Clear message after 5 seconds
-        setTimeout(() => { if (profileStatusMessage) { profileStatusMessage.textContent = ''; profileStatusMessage.className = 'status-message'; } }, 5000); //
-    }
+ function showProfileStatus(message, isError = false) { // Around Line 196
+     if (!profileStatusMessage) { console.warn(/*...*/); showAdminStatus(message, isError); return; }
+     profileStatusMessage.textContent = message;
+     profileStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`; // <-- Around Line 200
+      // Clear message after 5 seconds
+     setTimeout(() => { /* ... */ }, 5000);
+ } // Around Line 203
 
     // Displays status messages in the site settings section's status area
     function showSettingsStatus(message, isError = false) { //
