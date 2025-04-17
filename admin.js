@@ -951,16 +951,6 @@ function renderYouTubeCard(account) { //
                  showAdminStatus("Error: Cannot load president data.", true);
             }
 
-            // *** ADD THIS BLOCK TO LOAD DISABILITIES ***
-            if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
-                loadDisabilitiesAdmin(); // <--- ADD THIS LINE
-            } else if (!disabilitiesListAdmin) {
-                console.warn("Disabilities list container not found, skipping load on auth change.");
-            } else {
-                console.error("loadDisabilitiesAdmin function is missing!");
-                showAdminStatus("Error: Cannot load disabilities data.", true);
-            }
-
             // Start the inactivity timer now that the user is logged in
             resetInactivityTimer(); //
             addActivityListeners(); //
@@ -1151,8 +1141,6 @@ function renderYouTubeCard(account) { //
 // --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check & Preview Clear) ---
     async function handleAddShoutout(platform, formElement) { //
         if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; } //
-
-        console.log(`DEBUG: handleAddShoutout started for ${platform} at ${new Date().toLocaleTimeString()}`);
 
         // Get form values
         const username = formElement.querySelector(`#${platform}-username`)?.value.trim(); //
@@ -1812,10 +1800,6 @@ async function handleUpdateUsefulLink(event) { //
        }
    }
 
-    let tiktokListenerAttached = false;
-let instagramListenerAttached = false;
-let youtubeListenerAttached = false;
-
 // --- Attach Event Listeners for Forms ---
 
     // Add Shoutout Forms
@@ -1940,34 +1924,6 @@ let youtubeListenerAttached = false;
         }
     }
     // -------------
-
-    // Add Shoutout Forms
-if (addShoutoutTiktokForm && !tiktokListenerAttached) { // <-- Check the flag
-    tiktokListenerAttached = true; // <-- Set the flag
-    console.log("Attaching listener to TikTok add form."); // Optional debug
-    addShoutoutTiktokForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent default submission
-        handleAddShoutout('tiktok', addShoutoutTiktokForm); // Call handler
-    });
-}
-
-if (addShoutoutInstagramForm && !instagramListenerAttached) { // <-- Check the flag
-    instagramListenerAttached = true; // <-- Set the flag
-    console.log("Attaching listener to Instagram add form."); // Optional debug
-    addShoutoutInstagramForm.addEventListener('submit', (e) => {
-        e.preventDefault(); //
-        handleAddShoutout('instagram', addShoutoutInstagramForm); //
-    });
-}
-
-if (addShoutoutYoutubeForm && !youtubeListenerAttached) { // <-- Check the flag
-    youtubeListenerAttached = true; // <-- Set the flag
-    console.log("Attaching listener to YouTube add form."); // Optional debug
-    addShoutoutYoutubeForm.addEventListener('submit', (e) => {
-        e.preventDefault(); //
-        handleAddShoutout('youtube', addShoutoutYoutubeForm); //
-    });
-}
 
     // --- ADD THESE FUNCTIONS ---
 
