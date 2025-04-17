@@ -272,8 +272,95 @@ async function loadAndDisplayBusinessInfo() {
 
         // --- Display Business Hours (Converted using Luxon) ---
         // (This logic remains the same as before - uses Luxon to convert times)
-        if (hoursContainer) { /* ... Your existing Luxon hours display loop ... */ }
+        if (hoursContainer) {
+                hoursContainer.innerHTML = ''; // Clear loading message first!
 
+                // Check if Luxon is available and visitor timezone detected
+                if (typeof luxon !== 'undefined' && visitorTimezone !== 'N/A') {
+                    const daysOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                    const businessHours = data.hours || {}; // Get hours from fetched data
+
+                    daysOrder.forEach(dayKey => {
+                        const dayData = businessHours[dayKey];
+                        const displayDayName = dayKey.charAt(0).toUpperCase() + dayKey.slice(1);
+                        let displayHours = "Closed"; // Default
+
+                        if (dayData && dayData.open && dayData.close) {
+                            try {
+                                // Create Luxon DateTime objects from HH:MM in the *business* timezone
+                                const openTime = luxon.DateTime.fromFormat(dayData.open, 'HH:mm', { zone: businessTimezone });
+                                const closeTime = luxon.DateTime.fromFormat(dayData.close, 'HH:mm', { zone: businessTimezone });
+
+                                // Convert to the *visitor's* timezone
+                                const visitorOpenTime = openTime.setZone(visitorTimezone);
+                                const visitorCloseTime = closeTime.setZone(visitorTimezone);
+
+                                // Format for display (e.g., h:mm a)
+                                displayHours = `${visitorOpenTime.toFormat('h:mm a')} - ${visitorCloseTime.toFormat('h:mm a')}`;
+
+                                // Indicate if the closing time is on the next day in the visitor's timezone
+                                if (visitorCloseTime.ordinal < visitorOpenTime.ordinal || (visitorCloseTime.ordinal === visitorOpenTime.ordinal && visitorCloseTime.toMillis() <= visitorOpenTime.toMillis() && dayData.close > dayData.open)) {
+                                     displayHours += " (next day)";
+                                 }
+
+                            } catch (luxonError) {
+                                console.error(`Error converting/formatting time for ${dayKey} using Luxon:`, luxonError);
+                                // Fallback: Show original time + business timezone
+                                displayHours = `${formatTimeRange(dayData.open, dayData.close)} (${businessTimezone})`;
+                            }
+                        } else if (dayData && typeof dayData === 'string') { // Handle strings like "Closed" or "By Appointment"
+                             displayHours = dayData;
+                        }
+                        // If dayData is missing or invalid, it defaults to "Closed"
+
+                        const p = document.createElement('p');
+                        p.innerHTML = `<strong>${displayDayName}:</strong> ${displayHours}`;
+
+                        // Highlight the current day based on VISITOR's timezone (currentVisitorDayName calculated earlier)
+                        if (dayKey === currentVisitorDayName) {
+                            p.classList.add('current-day-hours');
+                        }
+                        hoursContainer.appendChild(p); // Add the line to the container
+                    });
+
+                    // Add the timezone info line *after* the loop
+                    const tzInfo = document.createElement('p');
+                    tzInfo.className = 'hours-timezone-info';
+                    tzInfo.textContent = `Hours displayed in your local timezone: ${visitorTimezone}`;
+                    hoursContainer.appendChild(tzInfo);
+
+
+                } else {
+                    // Fallback display if Luxon or visitorTimezone is not available
+                    hoursContainer.innerHTML = '<p>Could not display hours in your local time. Showing business hours:</p>';
+                     const daysOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                     const businessHours = data.hours || {};
+                     daysOrder.forEach(dayKey => {
+                         const dayData = businessHours[dayKey];
+                         const displayDayName = dayKey.charAt(0).toUpperCase() + dayKey.slice(1);
+                         let displayHours = "Closed";
+                         if (dayData && dayData.open && dayData.close) {
+                             displayHours = formatTimeRange(dayData.open, dayData.close); // Use basic AM/PM helper
+                         } else if (typeof dayData === 'string') {
+                            displayHours = dayData;
+                         }
+                         const p = document.createElement('p');
+                         p.innerHTML = `<strong>${displayDayName}:</strong> ${displayHours}`;
+                         hoursContainer.appendChild(p);
+                     });
+                     const tzInfo = document.createElement('p');
+                     tzInfo.className = 'hours-timezone-info error'; // Maybe style it differently
+                     tzInfo.textContent = `Showing hours for ${businessTimezone}. Timezone conversion library missing or your timezone couldn't be detected.`;
+                     hoursContainer.appendChild(tzInfo);
+
+                    if (typeof luxon === 'undefined') {
+                        console.warn("Luxon library missing, showing fallback hours.");
+                    }
+                    if (visitorTimezone === 'N/A') {
+                         console.warn("Visitor timezone N/A, showing fallback hours.");
+                    }
+                }
+            } // End of: if (hoursContainer)
         // --- Determine and Display Status (Uses filtered alert info) ---
         if (openStatusSpan) {
             let finalStatus = "Unavailable";
