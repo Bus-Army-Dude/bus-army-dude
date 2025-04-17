@@ -1152,6 +1152,8 @@ function renderYouTubeCard(account) { //
     async function handleAddShoutout(platform, formElement) { //
         if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; } //
 
+        console.log(`DEBUG: handleAddShoutout started for ${platform} at ${new Date().toLocaleTimeString()}`);
+
         // Get form values
         const username = formElement.querySelector(`#${platform}-username`)?.value.trim(); //
         const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim(); //
