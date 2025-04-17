@@ -572,6 +572,10 @@ button.secondary-button:focus-visible, .list-item-admin button:focus-visible, bu
     .list-controls button { width: auto; max-width: none; align-self: flex-start; }
     .input-with-preview { flex-direction: column; align-items: flex-start; gap: 12px; }
     .pfp-preview-img { width: 70px; height: 70px; }
+    .countdown-container { gap: 15px 20px; }
+    .flip-clock-digit { font-size: 2.5rem; padding: 8px 6px; min-width: 35px; }
+    .countdown-block { min-width: 65px; }
+    .countdown-label { font-size: 0.7rem; }
     .shoutout-preview-area .creator-card, #president-preview .president-section { padding: 20px; } /* Less padding on mobile */
     #president-preview .president-section { flex-direction: column; align-items: center; text-align: center; }
     #president-preview .president-details { align-items: center; }
@@ -594,6 +598,21 @@ button.secondary-button:focus-visible, .list-item-admin button:focus-visible, bu
     .shoutout-preview-area .creator-header-text { align-items: center; }
     #president-preview .president-section { padding: 15px; }
     #president-preview .president-photo { width: 65px; height: 65px; }
+    .countdown-container {
+        gap: 10px 15px;
+        justify-content: space-around; /* Better spacing on small screens */
+    }
+     .flip-clock-digit {
+        font-size: 1.8rem;
+        padding: 6px 4px;
+        min-width: 28px;
+    }
+     .countdown-block {
+        min-width: 50px; /* Adjust min-width */
+    }
+    .countdown-label {
+        font-size: 0.65rem;
+    }
 }
 
 /* ======================== */
@@ -604,3 +623,88 @@ button.secondary-button:focus-visible, .list-item-admin button:focus-visible, bu
 
 /* Class to add via JS to hide placeholder */
 .preview-placeholder { /* Base styles defined above */ }
+
+/* ======================== */
+/* Countdown Timer Styles   */
+/* (Slick Neon Theme)       */
+/* ======================== */
+
+.countdown-section {
+    margin-top: 20px; /* Space below heading */
+    padding: 20px 0; /* Padding top/bottom */
+    /* background: rgba(var(--accent-rgb), 0.05); */ /* Optional subtle background */
+    /* border-radius: var(--border-radius-soft); */
+}
+
+.countdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center blocks */
+    gap: 20px 30px; /* Row and column gap */
+    margin-top: 10px;
+}
+
+.countdown-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px; /* Minimum width for each block */
+}
+
+.flip-clock {
+    perspective: 500px; /* Needed for 3D flip (if implemented) */
+    margin-bottom: 10px;
+}
+
+.flip-clock-inner {
+    display: flex; /* Use flex to place digits side-by-side */
+    gap: 3px; /* Small gap between digits */
+}
+
+.flip-clock-digit { /* Style individual digit containers */
+    font-family: 'Orbitron', sans-serif; /* Example: Use a futuristic/digital font */
+    /* Or fallback: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; */
+    font-size: 3.5rem; /* Large digits */
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--accent-color); /* Use accent color for digits */
+    background: #000000; /* Black background for digits */
+    padding: 10px 8px;
+    border-radius: var(--border-radius-sharp);
+    min-width: 45px; /* Ensure digits have width */
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5) inset, 0 0 10px -3px var(--accent-glow-color);
+    text-shadow: 0 0 5px var(--accent-glow-color);
+}
+
+.countdown-label {
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px; /* Space between clock and label */
+}
+
+/* Add a digital font (optional, include in your main HTML <head>) */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+/* Ensure datetime-local input is styled */
+input[type="datetime-local"] {
+    /* Styles mostly inherited, but ensure background/color work */
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--input-border-color);
+    padding: 10px 14px;
+    border-radius: var(--border-radius-sharp);
+}
+
+/* Style the picker indicator for dark mode */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.7;
+    cursor: pointer;
+}
+/* Add specific styles for light mode if needed */
+body.light-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+   filter: none;
+}
