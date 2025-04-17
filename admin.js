@@ -197,100 +197,123 @@ document.addEventListener('DOMContentLoaded', () => { //
         setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); //
     }
 
-    // --- Filtering Function for Useful Links (NEW) ---
+    // --- REVISED Filtering Function for Useful Links ---
 function displayFilteredUsefulLinks() {
-    const listContainer = usefulLinksListAdmin; // Use existing const
-    const countElement = usefulLinksCount;     // Use existing const
-    const searchInput = document.getElementById('search-useful-links');
+    const listContainer = usefulLinksListAdmin;
+    const countElement = usefulLinksCount;
+    const searchInput = document.getElementById('search-useful-links'); // Ensure ID is correct
 
-    if (!listContainer || !searchInput || !allUsefulLinks) {
-        console.error("Missing elements/data for filtering Useful Links.");
+    if (!listContainer || !searchInput || typeof allUsefulLinks === 'undefined') { // Added check for allUsefulLinks existence
+        console.error("Useful Links Filter Error: Missing elements/data.");
         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
         return;
     }
 
     const searchTerm = searchInput.value.trim().toLowerCase();
-    const filteredList = allUsefulLinks.filter(link => {
-        if (!searchTerm) return true;
-        const label = (link.label || '').toLowerCase();
-        const url = (link.url || '').toLowerCase();
-        return label.includes(searchTerm) || url.includes(searchTerm);
-    });
+    console.log(`Filtering Useful Links: Term = "${searchTerm}"`); // Log the search term
 
-    listContainer.innerHTML = ''; // Clear current list
+    let listToRender = [];
 
-    if (filteredList.length > 0) {
-        filteredList.forEach(link => {
-            renderUsefulLinkAdminListItem(listContainer, link.id, link.label, link.url, link.order, handleDeleteUsefulLink, openEditUsefulLinkModal);
+    // Explicitly handle empty search term BEFORE filtering
+    if (!searchTerm) {
+        console.log("Useful Links: Search term is empty, using full list."); // Log this case
+        listToRender = allUsefulLinks; // Use the full global list
+    } else {
+        console.log("Useful Links: Search term found, filtering list..."); // Log this case
+        // Perform filtering only if searchTerm is not empty
+        listToRender = allUsefulLinks.filter(link => {
+            const label = (link.label || '').toLowerCase();
+            const url = (link.url || '').toLowerCase();
+            return label.includes(searchTerm) || url.includes(searchTerm);
+        });
+    }
+
+    console.log(`Rendering ${listToRender.length} useful links.`); // Log how many items will be rendered
+
+    listContainer.innerHTML = ''; // Clear current list display
+
+    if (listToRender.length > 0) {
+        listToRender.forEach(link => {
+            // Make sure the rendering function and handlers exist
+            if (typeof renderUsefulLinkAdminListItem === 'function' && typeof handleDeleteUsefulLink === 'function' && typeof openEditUsefulLinkModal === 'function') {
+                 renderUsefulLinkAdminListItem(listContainer, link.id, link.label, link.url, link.order, handleDeleteUsefulLink, openEditUsefulLinkModal);
+            } else {
+                 console.error("Error: renderUsefulLinkAdminListItem or its handlers are missing!");
+                 listContainer.innerHTML = '<p class="error">Rendering function error.</p>';
+                 return; // Stop this loop if render function is missing
+            }
         });
     } else {
-         listContainer.innerHTML = `<p>No useful links found matching "${searchInput.value}".</p>`;
+        // Show appropriate message based on whether there was a search term
+        if (searchTerm) {
+            listContainer.innerHTML = `<p>No useful links found matching "${searchTerm}".</p>`;
+        } else {
+            // Handles the case where the initial list itself was empty.
+            listContainer.innerHTML = `<p>No useful links found.</p>`;
+        }
     }
-    if (countElement) countElement.textContent = `(${filteredList.length})`;
+
+    // Update count display
+    if (countElement) {
+        countElement.textContent = `(${listToRender.length})`;
+    }
 }
 
-// --- Filtering Function for Social Links (NEW) ---
-function displayFilteredSocialLinks() {
-    const listContainer = socialLinksListAdmin; // Use existing const
-    const countElement = socialLinksCount;     // Use existing const
-    const searchInput = document.getElementById('search-social-links');
-
-    if (!listContainer || !searchInput || !allSocialLinks) {
-        console.error("Missing elements/data for filtering Social Links.");
-         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
-        return;
-    }
-
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    const filteredList = allSocialLinks.filter(link => {
-        if (!searchTerm) return true;
-        const label = (link.label || '').toLowerCase();
-        const url = (link.url || '').toLowerCase();
-        return label.includes(searchTerm) || url.includes(searchTerm);
-    });
-
-    listContainer.innerHTML = '';
-
-    if (filteredList.length > 0) {
-        filteredList.forEach(link => {
-            renderSocialLinkAdminListItem(listContainer, link.id, link.label, link.url, link.order, handleDeleteSocialLink, openEditSocialLinkModal);
-        });
-    } else {
-        listContainer.innerHTML = `<p>No social links found matching "${searchInput.value}".</p>`;
-    }
-    if (countElement) countElement.textContent = `(${filteredList.length})`;
-}
-
-// --- Filtering Function for Disabilities (NEW) ---
+// --- REVISED Filtering Function for Disabilities ---
 function displayFilteredDisabilities() {
-    const listContainer = disabilitiesListAdmin; // Use existing const
-    const countElement = disabilitiesCount;     // Use existing const
-    const searchInput = document.getElementById('search-disabilities');
+    const listContainer = disabilitiesListAdmin;
+    const countElement = disabilitiesCount;
+    const searchInput = document.getElementById('search-disabilities'); // Ensure ID is correct
 
-    if (!listContainer || !searchInput || !allDisabilities) {
-        console.error("Missing elements/data for filtering Disabilities.");
+    if (!listContainer || !searchInput || typeof allDisabilities === 'undefined') { // Added check for allDisabilities existence
+        console.error("Disabilities Filter Error: Missing elements/data.");
          if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
         return;
     }
 
     const searchTerm = searchInput.value.trim().toLowerCase();
-    const filteredList = allDisabilities.filter(item => {
-        if (!searchTerm) return true;
-        const name = (item.name || '').toLowerCase();
-        const url = (item.url || '').toLowerCase();
-        return name.includes(searchTerm) || url.includes(searchTerm);
-    });
+    console.log(`Filtering Disabilities: Term = "${searchTerm}"`); // Log the search term
+
+    let listToRender = [];
+
+    // Explicitly handle empty search term BEFORE filtering
+    if (!searchTerm) {
+        console.log("Disabilities: Search term is empty, using full list."); // Log this case
+        listToRender = allDisabilities; // Use the full global list
+    } else {
+        console.log("Disabilities: Search term found, filtering list..."); // Log this case
+        // Perform filtering only if searchTerm is not empty
+        listToRender = allDisabilities.filter(item => {
+            const name = (item.name || '').toLowerCase();
+            const url = (item.url || '').toLowerCase();
+            return name.includes(searchTerm) || url.includes(searchTerm);
+        });
+    }
+
+    console.log(`Rendering ${listToRender.length} disabilities.`); // Log how many items will be rendered
 
     listContainer.innerHTML = '';
 
-    if (filteredList.length > 0) {
-        filteredList.forEach(item => {
-            renderDisabilityAdminListItem(listContainer, item.id, item.name, item.url, item.order, handleDeleteDisability, openEditDisabilityModal);
+    if (listToRender.length > 0) {
+        listToRender.forEach(item => {
+             // Make sure the rendering function and handlers exist
+            if (typeof renderDisabilityAdminListItem === 'function' && typeof handleDeleteDisability === 'function' && typeof openEditDisabilityModal === 'function') {
+                renderDisabilityAdminListItem(listContainer, item.id, item.name, item.url, item.order, handleDeleteDisability, openEditDisabilityModal);
+            } else {
+                 console.error("Error: renderDisabilityAdminListItem or its handlers are missing!");
+                 listContainer.innerHTML = '<p class="error">Rendering function error.</p>';
+                 return;
+            }
         });
     } else {
-         listContainer.innerHTML = `<p>No disabilities found matching "${searchInput.value}".</p>`;
+        // Show appropriate message based on whether there was a search term
+         if (searchTerm) {
+            listContainer.innerHTML = `<p>No disabilities found matching "${searchTerm}".</p>`;
+         } else {
+            listContainer.innerHTML = `<p>No disabilities found.</p>`;
+         }
     }
-    if (countElement) countElement.textContent = `(${filteredList.length})`;
+    if (countElement) countElement.textContent = `(${listToRender.length})`;
 }
 
     // Search Listener for Useful Links (NEW)
@@ -1767,6 +1790,64 @@ async function handleUpdateUsefulLink(event) { //
            if (socialLinksCount) socialLinksCount.textContent = '(Error)';
        }
    }
+
+    // --- REVISED Filtering Function for Social Links ---
+function displayFilteredSocialLinks() {
+    const listContainer = socialLinksListAdmin;
+    const countElement = socialLinksCount;
+    const searchInput = document.getElementById('search-social-links'); // Ensure ID is correct
+
+    if (!listContainer || !searchInput || typeof allSocialLinks === 'undefined') { // Added check for allSocialLinks existence
+        console.error("Social Links Filter Error: Missing elements/data.");
+         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    console.log(`Filtering Social Links: Term = "${searchTerm}"`); // Log the search term
+
+    let listToRender = [];
+
+    // Explicitly handle empty search term BEFORE filtering
+    if (!searchTerm) {
+        console.log("Social Links: Search term is empty, using full list."); // Log this case
+        listToRender = allSocialLinks; // Use the full global list
+    } else {
+        console.log("Social Links: Search term found, filtering list..."); // Log this case
+        // Perform filtering only if searchTerm is not empty
+        listToRender = allSocialLinks.filter(link => {
+            const label = (link.label || '').toLowerCase();
+            const url = (link.url || '').toLowerCase();
+            return label.includes(searchTerm) || url.includes(searchTerm);
+        });
+    }
+
+     console.log(`Rendering ${listToRender.length} social links.`); // Log how many items will be rendered
+
+    listContainer.innerHTML = '';
+
+    if (listToRender.length > 0) {
+        listToRender.forEach(link => {
+             // Make sure the rendering function and handlers exist
+            if (typeof renderSocialLinkAdminListItem === 'function' && typeof handleDeleteSocialLink === 'function' && typeof openEditSocialLinkModal === 'function') {
+                renderSocialLinkAdminListItem(listContainer, link.id, link.label, link.url, link.order, handleDeleteSocialLink, openEditSocialLinkModal);
+            } else {
+                 console.error("Error: renderSocialLinkAdminListItem or its handlers are missing!");
+                 listContainer.innerHTML = '<p class="error">Rendering function error.</p>';
+                 return;
+            }
+        });
+    } else {
+        // Show appropriate message based on whether there was a search term
+        if (searchTerm) {
+            listContainer.innerHTML = `<p>No social links found matching "${searchTerm}".</p>`;
+        } else {
+             listContainer.innerHTML = `<p>No social links found.</p>`;
+        }
+    }
+    if (countElement) countElement.textContent = `(${listToRender.length})`;
+}
+
 
    // --- Function to Handle Adding a New Social Link ---
    async function handleAddSocialLink(event) {
