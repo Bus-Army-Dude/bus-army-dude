@@ -942,6 +942,15 @@ function renderYouTubeCard(account) { //
                  loadSocialLinksAdmin();
             }
 
+            // --- Load Disabilities (Check This Block) --- // <<< THIS IS THE KEY PART
+            if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
+                 loadDisabilitiesAdmin(); // <<< **** ENSURE THIS LINE IS PRESENT AND CORRECT ****
+            } else {
+                 // Log warnings/errors if function or element is missing
+                 if(!disabilitiesListAdmin) console.warn("Disabilities list container missing during initial load.");
+                 if(typeof loadDisabilitiesAdmin !== 'function') console.error("loadDisabilitiesAdmin function missing during initial load!");
+            }
+
             // --- ADD THIS LINE ---
             if (typeof loadPresidentData === 'function') {
                 loadPresidentData(); // Load president data on login
