@@ -10,6 +10,10 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from
 // *** Global Variable for Client-Side Filtering ***
 let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
 
+let allUsefulLinks = [];
+let allSocialLinks = [];
+let allDisabilities = [];
+
 document.addEventListener('DOMContentLoaded', () => { //
     // First, check if db and auth were successfully imported/initialized
     if (!db || !auth) { //
@@ -192,6 +196,120 @@ document.addEventListener('DOMContentLoaded', () => { //
         // Clear message after 3 seconds
         setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); //
     }
+
+    // --- Filtering Function for Useful Links (NEW) ---
+function displayFilteredUsefulLinks() {
+    const listContainer = usefulLinksListAdmin; // Use existing const
+    const countElement = usefulLinksCount;     // Use existing const
+    const searchInput = document.getElementById('search-useful-links');
+
+    if (!listContainer || !searchInput || !allUsefulLinks) {
+        console.error("Missing elements/data for filtering Useful Links.");
+        if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const filteredList = allUsefulLinks.filter(link => {
+        if (!searchTerm) return true;
+        const label = (link.label || '').toLowerCase();
+        const url = (link.url || '').toLowerCase();
+        return label.includes(searchTerm) || url.includes(searchTerm);
+    });
+
+    listContainer.innerHTML = ''; // Clear current list
+
+    if (filteredList.length > 0) {
+        filteredList.forEach(link => {
+            renderUsefulLinkAdminListItem(listContainer, link.id, link.label, link.url, link.order, handleDeleteUsefulLink, openEditUsefulLinkModal);
+        });
+    } else {
+         listContainer.innerHTML = `<p>No useful links found matching "${searchInput.value}".</p>`;
+    }
+    if (countElement) countElement.textContent = `(${filteredList.length})`;
+}
+
+// --- Filtering Function for Social Links (NEW) ---
+function displayFilteredSocialLinks() {
+    const listContainer = socialLinksListAdmin; // Use existing const
+    const countElement = socialLinksCount;     // Use existing const
+    const searchInput = document.getElementById('search-social-links');
+
+    if (!listContainer || !searchInput || !allSocialLinks) {
+        console.error("Missing elements/data for filtering Social Links.");
+         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const filteredList = allSocialLinks.filter(link => {
+        if (!searchTerm) return true;
+        const label = (link.label || '').toLowerCase();
+        const url = (link.url || '').toLowerCase();
+        return label.includes(searchTerm) || url.includes(searchTerm);
+    });
+
+    listContainer.innerHTML = '';
+
+    if (filteredList.length > 0) {
+        filteredList.forEach(link => {
+            renderSocialLinkAdminListItem(listContainer, link.id, link.label, link.url, link.order, handleDeleteSocialLink, openEditSocialLinkModal);
+        });
+    } else {
+        listContainer.innerHTML = `<p>No social links found matching "${searchInput.value}".</p>`;
+    }
+    if (countElement) countElement.textContent = `(${filteredList.length})`;
+}
+
+// --- Filtering Function for Disabilities (NEW) ---
+function displayFilteredDisabilities() {
+    const listContainer = disabilitiesListAdmin; // Use existing const
+    const countElement = disabilitiesCount;     // Use existing const
+    const searchInput = document.getElementById('search-disabilities');
+
+    if (!listContainer || !searchInput || !allDisabilities) {
+        console.error("Missing elements/data for filtering Disabilities.");
+         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const filteredList = allDisabilities.filter(item => {
+        if (!searchTerm) return true;
+        const name = (item.name || '').toLowerCase();
+        const url = (item.url || '').toLowerCase();
+        return name.includes(searchTerm) || url.includes(searchTerm);
+    });
+
+    listContainer.innerHTML = '';
+
+    if (filteredList.length > 0) {
+        filteredList.forEach(item => {
+            renderDisabilityAdminListItem(listContainer, item.id, item.name, item.url, item.order, handleDeleteDisability, openEditDisabilityModal);
+        });
+    } else {
+         listContainer.innerHTML = `<p>No disabilities found matching "${searchInput.value}".</p>`;
+    }
+    if (countElement) countElement.textContent = `(${filteredList.length})`;
+}
+
+    // Search Listener for Useful Links (NEW)
+const searchInputUsefulLinks = document.getElementById('search-useful-links');
+if (searchInputUsefulLinks) {
+    searchInputUsefulLinks.addEventListener('input', displayFilteredUsefulLinks);
+}
+
+// Search Listener for Social Links (NEW)
+const searchInputSocialLinks = document.getElementById('search-social-links');
+if (searchInputSocialLinks) {
+    searchInputSocialLinks.addEventListener('input', displayFilteredSocialLinks);
+}
+
+// Search Listener for Disabilities (NEW)
+const searchInputDisabilities = document.getElementById('search-disabilities');
+if (searchInputDisabilities) {
+    searchInputDisabilities.addEventListener('input', displayFilteredDisabilities);
+}
 
     // --- Add this near other status message functions ---
     function showEditSocialLinkStatus(message, isError = false) {
