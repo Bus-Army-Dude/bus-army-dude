@@ -1,4 +1,4 @@
-// displayShoutouts.js (Complete with President, Disabilities, & Business Info Sections)
+// displayShoutouts.js (Complete with President, Disabilities, Links & Business Hours Sections)
 
 // Use the same Firebase config as in admin.js (Ensure this is correct)
 const firebaseConfig = {
@@ -13,19 +13,21 @@ const firebaseConfig = {
 
 // Import necessary Firebase functions (v9+ modular SDK)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"; // Added 'where'
 
 // --- Initialize Firebase ---
 let db;
 let firebaseAppInitialized = false;
-// Declare references in module scope
+// Declare references in module scope (will be assigned after init)
 let profileDocRef;
 let presidentDocRef;
 let usefulLinksCollectionRef;
 let socialLinksCollectionRef;
 let disabilitiesCollectionRef;
 let shoutoutsMetaRef;
-let businessInfoDocRef; // <<<--- ADDED Reference Declaration
+let businessInfoDocRef;
+let holidaysCollectionRef;
+let tempClosuresCollectionRef;
 
 try {
     const app = initializeApp(firebaseConfig);
@@ -37,13 +39,18 @@ try {
     socialLinksCollectionRef = collection(db, "social_links");
     disabilitiesCollectionRef = collection(db, "disabilities");
     shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
-    businessInfoDocRef = doc(db, "site_config", "businessInfo"); // <<<--- ADDED Reference Assignment
+    // --- Assign Business Hours References ---
+    businessInfoDocRef = doc(db, "site_config", "business_info");
+    holidaysCollectionRef = collection(db, "holidays");
+    tempClosuresCollectionRef = collection(db, "temporary_closures");
+
     firebaseAppInitialized = true;
     console.log("Firebase initialized for display.");
 } catch (error) {
     console.error("Firebase initialization failed on index.html:", error);
+    // Display error directly on the page if Firebase fails
     const body = document.body;
-    if (body) { body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red;">Could not connect to database services. Site unavailable.</p>'; }
+    if (body) { body.innerHTML = '<p class="error" style="background-color: red; color: white; text-align: center; padding: 50px; font-size: 1.2em;">Could not connect to database services. Site unavailable.</p>'; }
     firebaseAppInitialized = false;
 }
 
@@ -54,65 +61,139 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
     catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
 }
 
+// --- Helper Function to Capitalize Strings ---
+function capitalize(str) {
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
 // --- Functions to Render Shoutout Cards ---
 function renderTikTokCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const followers = account.followers || 'N/A'; const isVerified = account.isVerified || false; const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#'; const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''; return `<div class="creator-card"><img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="creator-info"><div class="creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <p class="creator-username">@${username}</p> <p class="creator-bio">${bio}</p> <p class="follower-count">${followers} Followers</p> <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="visit-profile"> Visit Profile </a></div></div>`;}
 function renderInstagramCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const followers = account.followers || 'N/A'; const isVerified = account.isVerified || false; const profileUrl = username !== 'N/A' ? `https://instagram.com/${encodeURIComponent(username)}` : '#'; const verifiedBadge = isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''; return `<div class="instagram-creator-card"><img src="${profilePic}" alt="${nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="instagram-creator-info"><div class="instagram-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <p class="instagram-creator-username">@${username}</p> <p class="instagram-creator-bio">${bio}</p> <p class="instagram-follower-count">${followers} Followers</p> <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="instagram-visit-profile"> Visit Profile </a></div></div>`;}
-function renderYouTubeCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const subscribers = account.subscribers || 'N/A'; const coverPhoto = account.coverPhoto || null; const isVerified = account.isVerified || false; let safeUsername = username; if (username !== 'N/A' && !username.startsWith('@')) { safeUsername = `@${username}`; } const channelUrl = username !== 'N/A' ? `https://youtube.com/${encodeURIComponent(safeUsername)}` : '#'; const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; return `<div class="youtube-creator-card"> ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''} <img src="${profilePic}" alt="@${username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="youtube-creator-info"><div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <div class="username-container"><p class="youtube-creator-username">@${username}</p></div> <p class="youtube-creator-bio">${bio}</p> <p class="youtube-subscriber-count">${subscribers} Subscribers</p> <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a></div></div>`;}
+function renderYouTubeCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const subscribers = account.subscribers || 'N/A'; const coverPhoto = account.coverPhoto || null; const isVerified = account.isVerified || false; let safeUsername = username; if (username !== 'N/A' && !username.startsWith('@')) { safeUsername = `@${username}`; } const channelUrl = username !== 'N/A' ? `https://www.youtube.com/${encodeURIComponent(safeUsername)}` : '#'; const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; return `<div class="youtube-creator-card"> ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''} <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="youtube-creator-info"><div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <div class="username-container"><p class="youtube-creator-username">@${username}</p></div> <p class="youtube-creator-bio">${bio}</p> <p class="youtube-subscriber-count">${subscribers} Subscribers</p> <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a></div></div>`;}
 
 // --- Function to Load and Display Profile Data ---
 async function displayProfileData() {
+    // Get elements needed for this function
     const profileUsernameElement = document.getElementById('profile-username-main');
     const profilePicElement = document.getElementById('profile-pic-main');
     const profileBioElement = document.getElementById('profile-bio-main');
     const profileStatusElement = document.getElementById('profile-status-main');
-    const defaultUsername = "Username"; const defaultBio = ""; const defaultProfilePic = "images/default-profile.jpg"; const defaultStatusEmoji = '❓'; const statusEmojis = { online: '🟢', idle: '🟡', offline: '⚪️', dnd: '🔴' };
+    // Default values
+    const defaultUsername = "Username"; const defaultBio = "Bio loading..."; const defaultProfilePic = "images/default-profile.jpg"; const defaultStatusEmoji = '❓'; const statusEmojis = { online: '🟢', idle: '🟡', offline: '⚪️', dnd: '🔴' };
 
-    if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) { console.warn("Profile display elements missing."); }
-    if (!firebaseAppInitialized || !db || !profileDocRef) { console.error("Profile Fetch Error: Firebase not ready/ref missing."); if(profileBioElement) profileBioElement.textContent = "Error loading profile."; if (profileUsernameElement) profileUsernameElement.textContent = defaultUsername; if (profilePicElement) profilePicElement.src = defaultProfilePic; if (profileStatusElement) profileStatusElement.textContent = defaultStatusEmoji; return; }
+    // Check if elements exist before proceeding
+    if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) {
+        console.warn("Profile display elements missing in index.html.");
+        return; // Don't try to fetch if elements are missing
+    }
+    // Check if Firebase is ready
+    if (!firebaseAppInitialized || !db || !profileDocRef) {
+        console.error("Profile Fetch Error: Firebase not ready or profileDocRef missing.");
+        profileBioElement.textContent = "Error loading profile.";
+        profileUsernameElement.textContent = defaultUsername;
+        profilePicElement.src = defaultProfilePic;
+        profileStatusElement.textContent = defaultStatusEmoji;
+        return;
+    }
 
-    try { const docSnap = await getDoc(profileDocRef);
-        if (docSnap.exists()) { const data = docSnap.data(); if (profileUsernameElement) profileUsernameElement.textContent = data.username || defaultUsername; if (profilePicElement) profilePicElement.src = data.profilePicUrl || defaultProfilePic; if (profileBioElement) profileBioElement.textContent = data.bio || defaultBio; if (profileStatusElement) { const statusKey = data.status || 'offline'; profileStatusElement.textContent = statusEmojis[statusKey] || defaultStatusEmoji; } }
-        else { console.warn(`Profile document missing.`); if (profileUsernameElement) profileUsernameElement.textContent = defaultUsername; if (profilePicElement) profilePicElement.src = defaultProfilePic; if (profileBioElement) profileBioElement.textContent = defaultBio; if (profileStatusElement) profileStatusElement.textContent = statusEmojis['offline']; }
-    } catch (error) { console.error("Error fetching profile:", error); if (profileUsernameElement) profileUsernameElement.textContent = defaultUsername; if (profilePicElement) profilePicElement.src = defaultProfilePic; if (profileBioElement) profileBioElement.textContent = "Error loading bio."; if (profileStatusElement) profileStatusElement.textContent = '❓'; }
+    // Fetch and display data
+    try {
+        const docSnap = await getDoc(profileDocRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            profileUsernameElement.textContent = data.username || defaultUsername;
+            profilePicElement.src = data.profilePicUrl || defaultProfilePic;
+            profileBioElement.textContent = data.bio || defaultBio;
+            const statusKey = data.status || 'offline';
+            profileStatusElement.textContent = statusEmojis[statusKey] || defaultStatusEmoji;
+        } else {
+            console.warn(`Profile document missing.`);
+            profileUsernameElement.textContent = defaultUsername;
+            profilePicElement.src = defaultProfilePic;
+            profileBioElement.textContent = defaultBio;
+            profileStatusElement.textContent = statusEmojis['offline'];
+        }
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        profileUsernameElement.textContent = defaultUsername;
+        profilePicElement.src = defaultProfilePic;
+        profileBioElement.textContent = "Error loading bio.";
+        profileStatusElement.textContent = '❓';
+    }
 }
 
 // --- Function to Load and Display Shoutouts ---
 async function loadAndDisplayShoutouts() {
-    if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); /* ... error display ... */ return; }
-    const tiktokGrid = document.querySelector('.creator-grid'); const instagramGrid = document.querySelector('.instagram-creator-grid'); const youtubeGrid = document.querySelector('.youtube-creator-grid'); const tiktokTimestampEl = document.getElementById('tiktok-last-updated-timestamp'); const instagramTimestampEl = document.getElementById('instagram-last-updated-timestamp'); const youtubeTimestampEl = document.getElementById('youtube-last-updated-timestamp');
-    if (tiktokGrid) tiktokGrid.innerHTML = '<p>Loading...</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p>Loading...</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p>Loading...</p>'; if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Loading...'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Loading...'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Loading...';
+    if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); return; }
+    const tiktokGrid = document.querySelector('.creator-grid'); const instagramGrid = document.querySelector('.instagram-creator-grid'); const youtubeGrid = document.querySelector('.youtube-creator-grid');
+    const tiktokTimestampEl = document.getElementById('tiktok-last-updated-timestamp'); const instagramTimestampEl = document.getElementById('instagram-last-updated-timestamp'); const youtubeTimestampEl = document.getElementById('youtube-last-updated-timestamp');
+
+    // Set loading states only if elements exist
+    if (tiktokGrid) tiktokGrid.innerHTML = '<p>Loading...</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p>Loading...</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p>Loading...</p>';
+    if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Loading...'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Loading...'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Loading...';
+
     try {
-        const shoutoutsCol = collection(db, 'shoutouts'); const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc")); const querySnapshot = await getDocs(shoutoutQuery); const shoutouts = { tiktok: [], instagram: [], youtube: [] };
+        const shoutoutsCol = collection(db, 'shoutouts');
+        const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(shoutoutQuery);
+        const shoutouts = { tiktok: [], instagram: [], youtube: [] };
         querySnapshot.forEach((docSnapshot) => { const data = docSnapshot.data(); if (data.platform && shoutouts.hasOwnProperty(data.platform)) { shoutouts[data.platform].push({ id: docSnapshot.id, ...data }); } else { console.warn(`Doc ${docSnapshot.id} missing/unknown platform: ${data.platform}`); } });
-        let metadata = {}; if(shoutoutsMetaRef) { try { const metaSnap = await getDoc(shoutoutsMetaRef); if(metaSnap.exists()) metadata = metaSnap.data(); } catch(e){console.warn("Could not fetch shoutout metadata:", e)} }
+
+        let metadata = {};
+        if(shoutoutsMetaRef) { try { const metaSnap = await getDoc(shoutoutsMetaRef); if(metaSnap.exists()) metadata = metaSnap.data(); } catch(e){console.warn("Could not fetch shoutout metadata:", e)} }
+
         if (tiktokGrid) { if (shoutouts.tiktok.length > 0) { tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join(''); } else { tiktokGrid.innerHTML = '<p>No TikTok creators featured.</p>'; } if (tiktokTimestampEl) { tiktokTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_tiktok)}`; } } else { console.warn("TikTok grid missing."); }
         if (instagramGrid) { if (shoutouts.instagram.length > 0) { instagramGrid.innerHTML = shoutouts.instagram.map(renderInstagramCard).join(''); } else { instagramGrid.innerHTML = '<p>No Instagram creators featured.</p>'; } if (instagramTimestampEl) { instagramTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_instagram)}`; } } else { console.warn("Instagram grid missing."); }
         if (youtubeGrid) { if (shoutouts.youtube.length > 0) { youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join(''); } else { youtubeGrid.innerHTML = '<p>No YouTube creators featured.</p>'; } if (youtubeTimestampEl) { youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`; } } else { console.warn("YouTube grid missing."); }
-    } catch (error) { console.error("Error loading shoutout data:", error); if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok.</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram.</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube.</p>'; if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Error'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Error'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Error'; }
+    } catch (error) {
+        console.error("Error loading shoutout data:", error);
+        if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok.</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram.</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube.</p>';
+        if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Error'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Error'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Error';
+    }
 }
 
 // --- Function to Load and Display Useful Links ---
 async function loadAndDisplayUsefulLinks() {
-    if (!firebaseAppInitialized || !db) { console.error("Useful Links load error: Firebase not ready."); if(usefulLinksContainerElement) usefulLinksContainerElement.innerHTML = '<p class="error">Error loading links.</p>'; return; } if (!usefulLinksContainerElement) { console.warn("Useful links container missing."); return; } if(!usefulLinksCollectionRef) { console.error("Useful Links load error: Collection reference missing."); usefulLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
+    const usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container');
+    if (!firebaseAppInitialized || !db) { console.error("Useful Links load error: Firebase not ready."); if(usefulLinksContainerElement) usefulLinksContainerElement.innerHTML = '<p class="error">Error loading links.</p>'; return; }
+    if (!usefulLinksContainerElement) { console.warn("Useful links container missing."); return; }
+    if(!usefulLinksCollectionRef) { console.error("Useful Links load error: Collection reference missing."); usefulLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
     usefulLinksContainerElement.innerHTML = '<p>Loading links...</p>';
-    try { const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc")); const querySnapshot = await getDocs(linkQuery); usefulLinksContainerElement.innerHTML = ''; if (querySnapshot.empty) { usefulLinksContainerElement.innerHTML = '<p>No useful links available.</p>'; } else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.label && data.url) { const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.textContent = data.label; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; linkElement.className = 'link-button'; usefulLinksContainerElement.appendChild(linkElement); } else { console.warn("Skipping useful link:", doc.id); } }); } console.log(`Displayed ${querySnapshot.size} useful links.`);
+    try {
+        const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(linkQuery);
+        usefulLinksContainerElement.innerHTML = '';
+        if (querySnapshot.empty) { usefulLinksContainerElement.innerHTML = '<p>No useful links available.</p>'; }
+        else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.label && data.url) { const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.textContent = data.label; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; linkElement.className = 'link-button'; usefulLinksContainerElement.appendChild(linkElement); } else { console.warn("Skipping useful link:", doc.id); } }); }
+        console.log(`Displayed ${querySnapshot.size} useful links.`);
     } catch (error) { console.error("Error loading useful links:", error); usefulLinksContainerElement.innerHTML = '<p class="error">Could not load links.</p>'; }
 }
 
 // --- Function to Load and Display Social Links ---
 async function loadAndDisplaySocialLinks() {
-    if (!firebaseAppInitialized || !db) { console.error("Social Links load error: Firebase not ready."); if (socialLinksContainerElement) socialLinksContainerElement.innerHTML = '<p class="error">Error loading socials.</p>'; return; } if (!socialLinksContainerElement) { console.warn("Social links container missing."); return; } if (!socialLinksCollectionRef) { console.error("Social Links load error: Collection reference missing."); socialLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
+    const socialLinksContainerElement = document.querySelector('.social-links-container');
+    if (!firebaseAppInitialized || !db) { console.error("Social Links load error: Firebase not ready."); if (socialLinksContainerElement) socialLinksContainerElement.innerHTML = '<p class="error">Error loading socials.</p>'; return; }
+    if (!socialLinksContainerElement) { console.warn("Social links container missing."); return; }
+    if (!socialLinksCollectionRef) { console.error("Social Links load error: Collection reference missing."); socialLinksContainerElement.innerHTML = '<p class="error">Config error.</p>'; return;}
     socialLinksContainerElement.innerHTML = '<p>Loading socials...</p>';
-    try { const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc")); const querySnapshot = await getDocs(linkQuery); socialLinksContainerElement.innerHTML = ''; if (querySnapshot.empty) { socialLinksContainerElement.innerHTML = '<p>No social links available.</p>'; } else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.label && data.url) { const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; linkElement.className = 'social-button'; if (data.iconClass) { const iconElement = document.createElement('i'); iconElement.className = data.iconClass + ' social-icon'; linkElement.appendChild(iconElement); } const textElement = document.createElement('span'); textElement.textContent = data.label; linkElement.appendChild(textElement); socialLinksContainerElement.appendChild(linkElement); } else { console.warn("Skipping social link:", doc.id); } }); } console.log(`Displayed ${querySnapshot.size} social links.`);
+    try {
+        const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(linkQuery);
+        socialLinksContainerElement.innerHTML = '';
+        if (querySnapshot.empty) { socialLinksContainerElement.innerHTML = '<p>No social links available.</p>'; }
+        else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.label && data.url) { const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; linkElement.className = 'social-button'; /* Icon logic removed, add back if needed */ const textElement = document.createElement('span'); textElement.textContent = data.label; linkElement.appendChild(textElement); socialLinksContainerElement.appendChild(linkElement); } else { console.warn("Skipping social link:", doc.id); } }); }
+        console.log(`Displayed ${querySnapshot.size} social links.`);
     } catch (error) { console.error("Error loading social links:", error); socialLinksContainerElement.innerHTML = '<p class="error">Could not load socials.</p>'; }
 }
 
 // --- Function to Load and Display President Data ---
 async function displayPresidentData() {
-    const placeholderElement = document.getElementById('president-placeholder'); if (!placeholderElement) { console.warn("President placeholder missing."); return; }
+    const placeholderElement = document.getElementById('president-placeholder');
+    if (!placeholderElement) { console.warn("President placeholder missing."); return; }
     placeholderElement.innerHTML = '<p style="text-align: center; padding: 20px;">Loading president info...</p>';
-    if (!firebaseAppInitialized || !db) { console.error("President display error: Firebase not ready."); placeholderElement.innerHTML = '<p class="error">Could not load (DB Init Error).</p>'; return; } if (!presidentDocRef) { console.error("President display error: presidentDocRef missing."); placeholderElement.innerHTML = '<p class="error">Could not load (Config Error).</p>'; return; }
-    try { const docSnap = await getDoc(presidentDocRef);
+    if (!firebaseAppInitialized || !db || !presidentDocRef) { console.error("President display error: Firebase or Ref missing."); placeholderElement.innerHTML = '<p class="error">Could not load president info.</p>'; return; }
+    try {
+        const docSnap = await getDoc(presidentDocRef);
         if (docSnap.exists()) { const data = docSnap.data(); const presidentHTML = `<section id="current-president" class="president-section"><h2 class="section-title">Current U.S. President</h2><div class="president-info"><img src="${data.imageUrl || 'images/default-president.jpg'}" alt="President ${data.name || 'N/A'}" class="president-photo" onerror="this.src='images/default-president.jpg'; this.alt='Photo Missing';"><div class="president-details"><h3 class="president-name">${data.name || 'N/A'}</h3><p><strong>Born:</strong> ${data.born || 'N/A'}</p><p><strong>Height:</strong> ${data.height || 'N/A'}</p><p><strong>Party:</strong> ${data.party || 'N/A'}</p><p class="presidential-term"><strong>Term:</strong> ${data.term || 'N/A'}</p><p><strong>VP:</strong> ${data.vp || 'N/A'}</p></div></div></section>`; placeholderElement.innerHTML = presidentHTML; }
         else { console.warn(`President document missing.`); placeholderElement.innerHTML = '<p style="text-align: center; padding: 20px;">President info unavailable.</p>'; }
     } catch (error) { console.error("Error fetching president data:", error); placeholderElement.innerHTML = `<p class="error">Error loading president info: ${error.message}</p>`; }
@@ -120,434 +201,246 @@ async function displayPresidentData() {
 
 // --- Function to Load and Display Disabilities ---
 async function loadAndDisplayDisabilities() {
-    const placeholderElement = document.getElementById('disabilities-list-placeholder'); if (!placeholderElement) { console.warn("Disabilities placeholder missing."); return; }
-    placeholderElement.innerHTML = '<li>Loading...</li>'; // Loading message inside UL
-    if (!firebaseAppInitialized || !db) { console.error("Disabilities load error: Firebase not ready."); placeholderElement.innerHTML = '<li>Error (DB Init Error).</li>'; return; } if (!disabilitiesCollectionRef) { console.error("Disabilities load error: Collection ref missing."); placeholderElement.innerHTML = '<li>Error (Config Error).</li>'; return; }
-    try { const disabilityQuery = query(disabilitiesCollectionRef, orderBy("order", "asc")); const querySnapshot = await getDocs(disabilityQuery); placeholderElement.innerHTML = ''; // Clear loading
+    const placeholderElement = document.getElementById('disabilities-list-placeholder');
+    if (!placeholderElement) { console.warn("Disabilities placeholder missing."); return; }
+    placeholderElement.innerHTML = '<li>Loading...</li>';
+    if (!firebaseAppInitialized || !db || !disabilitiesCollectionRef) { console.error("Disabilities load error: Firebase or Ref missing."); placeholderElement.innerHTML = '<li>Error loading list.</li>'; return; }
+    try {
+        const disabilityQuery = query(disabilitiesCollectionRef, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(disabilityQuery);
+        placeholderElement.innerHTML = '';
         if (querySnapshot.empty) { placeholderElement.innerHTML = '<li>No specific information available.</li>'; }
-        else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.name && data.url) { const listItem = document.createElement('li'); const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.textContent = data.name; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; listItem.appendChild(linkElement); placeholderElement.appendChild(listItem); } else { console.warn("Skipping disability item:", doc.id); } }); } console.log(`Displayed ${querySnapshot.size} disability links.`);
-    } catch (error) { console.error("Error loading disabilities:", error); if (error.code === 'failed-precondition') { placeholderElement.innerHTML = '<li>Error: DB config needed.</li>'; console.error("Missing Firestore index for disabilities (order)."); } else { placeholderElement.innerHTML = '<li>Could not load list.</li>'; } }
+        else { querySnapshot.forEach((doc) => { const data = doc.data(); if (data.name && data.url) { const listItem = document.createElement('li'); const linkElement = document.createElement('a'); linkElement.href = data.url; linkElement.textContent = data.name; linkElement.target = '_blank'; linkElement.rel = 'noopener noreferrer'; listItem.appendChild(linkElement); placeholderElement.appendChild(listItem); } else { console.warn("Skipping disability item:", doc.id); } }); }
+        console.log(`Displayed ${querySnapshot.size} disability links.`);
+    } catch (error) { console.error("Error loading disabilities:", error); if (error.code === 'failed-precondition') { placeholderElement.innerHTML = '<li>Error: DB index needed.</li>'; console.error("Missing Firestore index for disabilities (order)."); } else { placeholderElement.innerHTML = '<li>Could not load list.</li>'; } }
 }
 
 
-// ========================================================
-// START NEW Business Information Display Function
-// ========================================================
-// --- Function to Load and Display Business Info (ATTEMPTS Timezone Conversion for Display - CORRECTED SYNTAX) ---
+// ==================================================
+// === NEW Business Hours Functions ===
+// ==================================================
+
+// --- Helper function to convert time from stored format to user's timezone display ---
+function convertTimeToTimezoneBH(timeStr, targetTimezone) {
+    if (!timeStr || typeof timeStr !== 'string' || timeStr.trim().toUpperCase() === 'CLOSED') {
+        return "Closed";
+    }
+    let hours, minutes;
+    let period = null;
+    const timeStrClean = timeStr.trim().toUpperCase();
+    const timeRegex12hr = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
+    const timeRegex24hr = /^(\d{1,2}):(\d{2})$/;
+
+    if (timeRegex12hr.test(timeStrClean)) { // Input is HH:MM AM/PM
+        const match = timeStrClean.match(timeRegex12hr);
+        hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); period = match[3].toUpperCase();
+        if (period === 'PM' && hours !== 12) hours += 12; if (period === 'AM' && hours === 12) hours = 0;
+    } else if (timeRegex24hr.test(timeStrClean)) { // Input is HH:MM (24hr)
+        const match = timeStrClean.match(timeRegex24hr);
+        hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10);
+        if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return "Invalid Time";
+    } else { console.warn("Could not parse time for conversion:", timeStr); return "Invalid Time"; }
+
+    const tempDate = new Date(); tempDate.setHours(hours, minutes, 0, 0);
+    try {
+        // Format time in the target timezone
+        return tempDate.toLocaleTimeString('en-US', { timeZone: targetTimezone, hour: 'numeric', minute: '2-digit', hour12: true });
+    } catch (e) { console.error("Error converting time to timezone:", timeStr, targetTimezone, e); return "Error"; }
+}
+
+// --- Function to check current open status ---
+function checkOpenStatus(dayOfWeek, todayDateStr, fetchedRegularHours, fetchedHoliday, fetchedTempClosures) {
+    const nowUser = new Date();
+    const nowEST = new Date(nowUser.toLocaleString('en-US', { timeZone: 'America/New_York' })); // Use standard timezone ID
+    const currentHourEST = nowEST.getHours(); // 0-23
+    const currentMinuteEST = nowEST.getMinutes();
+    const currentTotalMinutesEST = currentHourEST * 60 + currentMinuteEST;
+
+    let effectiveOpenStr, effectiveCloseStr;
+    let reason = "Regular Hours";
+    let hoursTodayStr = "Closed";
+
+    // 1. Check for Holiday
+    if (fetchedHoliday) {
+        reason = `Holiday: ${fetchedHoliday.name}`;
+        hoursTodayStr = fetchedHoliday.hours || "Closed";
+        if (hoursTodayStr.toLowerCase() === 'closed') return { status: "Closed", reason: reason, hoursToday: "Closed" };
+        const parts = hoursTodayStr.split(" - ");
+        if (parts.length === 2) { effectiveOpenStr = parts[0].trim(); effectiveCloseStr = parts[1].trim(); }
+        else { console.warn("Could not parse holiday hours range:", hoursTodayStr); return { status: "Closed", reason: `${reason} (Invalid hours format)`, hoursToday: hoursTodayStr }; }
+    } else {
+        // 2. Use Regular Hours
+        const dayKeyOpen = `${dayOfWeek}_open`; const dayKeyClose = `${dayOfWeek}_close`;
+        effectiveOpenStr = fetchedRegularHours?.[dayKeyOpen]; effectiveCloseStr = fetchedRegularHours?.[dayKeyClose];
+        hoursTodayStr = (effectiveOpenStr && effectiveOpenStr.toLowerCase() !== 'closed' && effectiveCloseStr && effectiveCloseStr.toLowerCase() !== 'closed') ? `${effectiveOpenStr} - ${effectiveCloseStr}` : "Closed";
+        if (!effectiveOpenStr || effectiveOpenStr.toLowerCase() === 'closed' || !effectiveCloseStr || effectiveCloseStr.toLowerCase() === 'closed') { return { status: "Closed", reason: reason, hoursToday: "Closed" }; }
+    }
+
+    // Helper to parse time string (HH:MM AM/PM or HH:MM 24hr) into total minutes from midnight
+    const parseTimeToMinutesEST = (timeStr) => {
+        if (!timeStr || typeof timeStr !== 'string') return -1;
+        timeStr = timeStr.trim().toUpperCase();
+        if (timeStr === 'CLOSED') return -1;
+        const timeRegex12hr = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i; const timeRegex24hr = /^(\d{1,2}):(\d{2})$/;
+        let hours = -1, minutes = -1;
+        if (timeRegex12hr.test(timeStr)) { const match = timeStr.match(timeRegex12hr); hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); const period = match[3].toUpperCase(); if (period === 'PM' && hours !== 12) hours += 12; if (period === 'AM' && hours === 12) hours = 0; }
+        else if (timeRegex24hr.test(timeStr)) { const match = timeStr.match(timeRegex24hr); hours = parseInt(match[1], 10); minutes = parseInt(match[2], 10); }
+        else { console.warn("Invalid time format for parsing:", timeStr); return -1; }
+        if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return -1;
+        return hours * 60 + minutes;
+    };
+
+    const openMinutes = parseTimeToMinutesEST(effectiveOpenStr);
+    const closeMinutes = parseTimeToMinutesEST(effectiveCloseStr);
+    if (openMinutes === -1 || closeMinutes === -1) { return { status: "Closed", reason: reason, hoursToday: hoursTodayStr }; }
+
+    // 3. Check for Temporary Closures
+    let activeTempClosure = null;
+    if (fetchedTempClosures && fetchedTempClosures.length > 0) {
+         activeTempClosure = fetchedTempClosures.find(closure => {
+            const fromMinutes = parseTimeToMinutesEST(closure.startTime); // startTime is HH:MM (24hr)
+            const toMinutes = parseTimeToMinutesEST(closure.endTime);     // endTime is HH:MM (24hr)
+            if(fromMinutes === -1 || toMinutes === -1) return false;
+            // Handle overnight closure (e.g. 10 PM - 2 AM)
+            if (toMinutes < fromMinutes) {
+                return (currentTotalMinutesEST >= fromMinutes) || (currentTotalMinutesEST < toMinutes);
+            } else { // Same day closure
+                return currentTotalMinutesEST >= fromMinutes && currentTotalMinutesEST < toMinutes;
+            }
+        });
+    }
+    if (activeTempClosure) { return { status: "Temporarily Unavailable", reason: activeTempClosure.reason, hoursToday: hoursTodayStr, tempClosureDetails: activeTempClosure }; }
+
+    // 4. Check if within Regular/Holiday Open Hours
+    let isOpen;
+    if (closeMinutes < openMinutes) { isOpen = (currentTotalMinutesEST >= openMinutes) || (currentTotalMinutesEST < closeMinutes); } // Overnight
+    else { isOpen = currentTotalMinutesEST >= openMinutes && currentTotalMinutesEST < closeMinutes; } // Same day
+
+    return isOpen ? { status: "Open", reason: reason, hoursToday: hoursTodayStr } : { status: "Closed", reason: reason, hoursToday: hoursTodayStr };
+}
+
+// --- Function to Load and Display Business Hours Info ---
 async function loadAndDisplayBusinessInfo() {
-    // Get references to the display elements in index.html
-    const hoursContainer = document.getElementById('hours-container');
-    const alertsContainer = document.getElementById('alerts-container');
-    const holidayAlertDiv = document.getElementById('holiday-alert');
-    const holidayNameSpan = document.getElementById('holiday-name');
-    const holidayHoursSpan = document.getElementById('holiday-hours');
-    const openStatusSpan = document.getElementById('open-status');
-    const temporaryAlertDiv = document.getElementById('temporary-alert');
-    const temporaryReasonSpan = document.getElementById('temporary-reason');
-    const temporaryHoursSpan = document.getElementById('temporary-hours');
-    const userTimezoneSpan = document.getElementById('user-timezone');
-    const hoursHeading = document.querySelector('.business-info h2');
+    if (!firebaseAppInitialized) { console.error("Business Hours: Firebase not ready."); return; }
 
-    // Initial states
-    if (alertsContainer) alertsContainer.innerHTML = ''; // Clear alerts
-    if (openStatusSpan) openStatusSpan.textContent = 'Loading...';
+    const userTimezoneElement = document.getElementById("user-timezone");
+    const hoursContainer = document.getElementById("hours-container");
+    const statusElement = document.getElementById("open-status");
+    const holidayAlertElement = document.getElementById("holiday-alert");
+    const holidayNameElement = document.getElementById("holiday-name");
+    const holidayHoursElement = document.getElementById("holiday-hours");
+    const tempAlertElement = document.getElementById("temporary-alert");
+    const tempReasonElement = document.getElementById("temporary-reason");
+    const tempHoursElement = document.getElementById("temporary-hours");
 
-    // Initial states while loading
-    if (hoursContainer) hoursContainer.innerHTML = '<p>Loading hours...</p>';
-    if (openStatusSpan) { openStatusSpan.textContent = 'Loading...'; openStatusSpan.className = ''; }
-    if (holidayAlertDiv) holidayAlertDiv.style.display = 'none';
-    if (temporaryAlertDiv) temporaryAlertDiv.style.display = 'none';
-    if (hoursHeading) hoursHeading.textContent = 'Business Hours';
+    if (!userTimezoneElement || !hoursContainer || !statusElement || !holidayAlertElement || !tempAlertElement) { console.warn("One or more business info display elements missing."); return; }
 
-    // --- Check for Luxon library ---
-    if (typeof luxon === 'undefined' || typeof luxon.DateTime === 'undefined') {
-        console.error("Luxon library is not loaded. Please include it (e.g., via CDN or npm install). Timezone conversions for hours display will fail.");
-        // Optionally display an error to the user or fall back to non-converted times
-        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Error loading time library.</p>';
-        if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
-        // We could return here, or try to proceed without hours conversion
-        // For now, we'll let it proceed but expect errors in the hours loop.
-    }
+    userTimezoneElement.textContent = 'Loading...'; hoursContainer.innerHTML = '<p>Loading hours...</p>'; statusElement.textContent = 'Loading...';
+    holidayAlertElement.style.display = 'none'; tempAlertElement.style.display = 'none';
 
-    // Display User's Timezone
-    let visitorTimezone = 'N/A';
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    userTimezoneElement.textContent = userTimezone;
+
+    const currentDate = new Date();
+    const currentDay = currentDate.toLocaleString("en-US", { weekday: "long", timeZone: userTimezone }).toLowerCase();
+    const todayDateStr = currentDate.toLocaleDateString("en-CA", { timeZone: 'America/New_York' }); // Get today's date in EST/EDT for querying
+
+    let regularHours = null; let todaysHoliday = null; let todaysTempClosures = [];
     try {
-        visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        if (!visitorTimezone) { // Fallback if detection fails but doesn't error
-            visitorTimezone = "UTC"; // Or a sensible default
-            console.warn("Could not detect user timezone, falling back to", visitorTimezone);
-        }
-        if (userTimezoneSpan) userTimezoneSpan.textContent = visitorTimezone;
-    } catch (e) {
-        console.error("Could not get user timezone, falling back to N/A.", e);
-        visitorTimezone = "N/A"; // Ensure it's set for later checks if needed
-        if (userTimezoneSpan) userTimezoneSpan.textContent = "N/A";
-    }
+        const results = await Promise.all([
+            getDoc(businessInfoDocRef),
+            getDocs(query(holidaysCollectionRef, where("date", "==", todayDateStr))),
+            getDocs(query(tempClosuresCollectionRef, where("date", "==", todayDateStr)))
+        ]);
+        const businessInfoSnap = results[0]; const holidaySnapshot = results[1]; const closureSnapshot = results[2];
+        if (businessInfoSnap.exists()) { regularHours = businessInfoSnap.data(); } else { console.warn("Business info document not found."); regularHours = {}; }
+        if (!holidaySnapshot.empty) { todaysHoliday = holidaySnapshot.docs[0].data(); }
+        closureSnapshot.forEach(doc => { todaysTempClosures.push(doc.data()); });
+        console.log("Fetched Business Data:", { regularHours, todaysHoliday, todaysTempClosures });
+    } catch (error) { console.error("Error fetching business data:", error); if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not load hours.</p>'; if (statusElement) statusElement.textContent = 'Error'; return; }
 
-    // Check Firebase readiness (assuming these vars are defined elsewhere)
-     if (typeof firebaseAppInitialized === 'undefined' || !firebaseAppInitialized || typeof db === 'undefined' || !db || typeof businessInfoDocRef === 'undefined' || !businessInfoDocRef) {
-        console.error("Business Info load error: Firebase not ready or ref missing.");
-        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Error loading info (DB).</p>';
-        if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
-        return;
-    }
+    // Render Weekly Hours
+    hoursContainer.innerHTML = ""; const daysOrder = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    daysOrder.forEach(day => {
+        const openKey = `${day}_open`; const closeKey = `${day}_close`;
+        const openTimeEST = regularHours?.[openKey] || "Closed"; const closeTimeEST = regularHours?.[closeKey] || "Closed";
+        const convertedOpen = convertTimeToTimezoneBH(openTimeEST, userTimezone);
+        const convertedClose = (closeTimeEST.toLowerCase() === 'closed') ? "" : convertTimeToTimezoneBH(closeTimeEST, userTimezone);
+        const dayElement = document.createElement("div"); dayElement.classList.add("hours-row"); if (day === currentDay) { dayElement.classList.add("current-day"); }
+        dayElement.innerHTML = `<strong>${capitalize(day)}:</strong> <span>${convertedOpen}${convertedOpen !== 'Closed' && convertedClose ? ' - ' + convertedClose : ''}</span>`;
+        hoursContainer.appendChild(dayElement);
+    });
 
-    // Main try block for fetching and displaying data
-    try {
-        const docSnap = await getDoc(businessInfoDocRef); // Make sure getDoc is imported/available
-        let data = {};
-        if (docSnap.exists()) {
-            data = docSnap.data();
-            console.log("Loaded business info data:", data);
-        } else {
-            console.warn("Business info document not found in Firestore.");
-            if (hoursContainer) hoursContainer.innerHTML = '<p>Business hours not available.</p>';
-            if (openStatusSpan) { openStatusSpan.textContent = 'Unavailable'; openStatusSpan.className = 'closed'; }
-            return; // Stop if no data
-        }
+    // Check Status and Display Alerts
+    const openStatusResult = checkOpenStatus(currentDay, todayDateStr, regularHours, todaysHoliday, todaysTempClosures);
 
-        const businessTimezone = data.businessTimezone || "America/New_York"; // Default if not set
-        const now = new Date(); // Use native Date for current moment timestamp
-
-        // Determine Current Day Name IN VISITOR'S TIMEZONE (for highlighting)
-        let currentVisitorDayName = 'N/A';
-        if (visitorTimezone !== 'N/A') {
-             try {
-                const visitorDayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: visitorTimezone });
-                currentVisitorDayName = visitorDayFormatter.format(now).toLowerCase();
-             } catch (dayError) {
-                 console.error("Error formatting visitor day name:", dayError);
-                 // currentVisitorDayName remains 'N/A'
-             }
-        }
-
-        // --- Calculate Current Date String in BUSINESS Timezone --- <<<<<<< ADD THIS
-        let currentBusinessDateStr = 'N/A';
-        try {
-             // Use 'en-CA' locale for YYYY-MM-DD format
-            const dateFormatter = new Intl.DateTimeFormat('en-CA', {
-                timeZone: businessTimezone,
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
-            currentBusinessDateStr = dateFormatter.format(now); // Format: YYYY-MM-DD
-            console.log(`Current date in ${businessTimezone}: ${currentBusinessDateStr}`);
-         } catch (dateError) {
-            console.error("Error formatting business date string:", dateError);
-             // Handle error appropriately - maybe stop processing
-            if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not determine business date.</p>';
-            if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
-            return; // Stop if date can't be determined
-         }
-        // --- END Calculate Current Date String ---
-        
-        // --- Filter and Display Alerts ---
-        let isForcedClosedByAlert = false;
-        let activeAlertReason = "";
-
-        if (alertsContainer) {
-            alertsContainer.innerHTML = ''; // Clear again just before adding
-
-            const allHolidays = data.activeHolidays || [];
-            const allTemporary = data.activeTemporary || [];
-
-            // Filter alerts based on current date in business timezone
-            const activeFilteredAlerts = [...allHolidays, ...allTemporary].filter(alert => {
-                if (!alert || !alert.startDate || !alert.endDate) return false; // Skip alerts without valid dates
-                // Compare YYYY-MM-DD strings
-                return currentBusinessDateStr >= alert.startDate && currentBusinessDateStr <= alert.endDate;
-            });
-
-            console.log(`Found ${activeFilteredAlerts.length} active alerts for today (${currentBusinessDateStr}).`);
-
-            if (activeFilteredAlerts.length === 0) {
-                 alertsContainer.style.display = 'none'; // Hide container if no alerts
-            } else {
-                alertsContainer.style.display = 'block'; // Show container
-                 activeFilteredAlerts.forEach(alert => {
-                     const alertEl = document.createElement('div');
-                     alertEl.classList.add('alert'); // Base alert class
-
-                     let message = '';
-                     if (alert.name) { // It's likely a holiday alert
-                         alertEl.classList.add('alert-holiday'); // Style holiday alerts
-                         message = `<strong>Holiday: ${alert.name}</strong> - ${alert.hours || 'Info'}`;
-                     } else if (alert.reason) { // Likely a temporary alert
-                         alertEl.classList.add('alert-temporary'); // Style temporary alerts
-                         message = `<strong>Notice: ${alert.reason}</strong> - ${alert.hours || 'Info'}`;
-                     } else {
-                         message = 'Important Notice'; // Fallback
-                     }
-                     alertEl.innerHTML = message;
-                     alertsContainer.appendChild(alertEl);
-
-                     // Check if this active alert forces closure
-                     if (!isForcedClosedByAlert && (alert.isClosure === true || alert.hours?.toLowerCase().trim() === 'closed')) {
-                         isForcedClosedByAlert = true;
-                         activeAlertReason = alert.name || alert.reason || 'Alert';
-                     }
-                 });
-            }
-        }
-
-        // --- Display Business Hours (Converted using Luxon) ---
-        // (This logic remains the same as before - uses Luxon to convert times)
-        if (hoursContainer) {
-                hoursContainer.innerHTML = ''; // Clear loading message first!
-
-                // Check if Luxon is available and visitor timezone detected
-                if (typeof luxon !== 'undefined' && visitorTimezone !== 'N/A') {
-                    const daysOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-                    const businessHours = data.hours || {}; // Get hours from fetched data
-
-                    daysOrder.forEach(dayKey => {
-                        const dayData = businessHours[dayKey];
-                        const displayDayName = dayKey.charAt(0).toUpperCase() + dayKey.slice(1);
-                        let displayHours = "Closed"; // Default
-
-                        if (dayData && dayData.open && dayData.close) {
-                            try {
-                                // Create Luxon DateTime objects from HH:MM in the *business* timezone
-                                const openTime = luxon.DateTime.fromFormat(dayData.open, 'HH:mm', { zone: businessTimezone });
-                                const closeTime = luxon.DateTime.fromFormat(dayData.close, 'HH:mm', { zone: businessTimezone });
-
-                                // Convert to the *visitor's* timezone
-                                const visitorOpenTime = openTime.setZone(visitorTimezone);
-                                const visitorCloseTime = closeTime.setZone(visitorTimezone);
-
-                                // Format for display (e.g., h:mm a)
-                                displayHours = `${visitorOpenTime.toFormat('h:mm a')} - ${visitorCloseTime.toFormat('h:mm a')}`;
-
-                                // Indicate if the closing time is on the next day in the visitor's timezone
-                                if (visitorCloseTime.ordinal < visitorOpenTime.ordinal || (visitorCloseTime.ordinal === visitorOpenTime.ordinal && visitorCloseTime.toMillis() <= visitorOpenTime.toMillis() && dayData.close > dayData.open)) {
-                                     displayHours += " (next day)";
-                                 }
-
-                            } catch (luxonError) {
-                                console.error(`Error converting/formatting time for ${dayKey} using Luxon:`, luxonError);
-                                // Fallback: Show original time + business timezone
-                                displayHours = `${formatTimeRange(dayData.open, dayData.close)} (${businessTimezone})`;
-                            }
-                        } else if (dayData && typeof dayData === 'string') { // Handle strings like "Closed" or "By Appointment"
-                             displayHours = dayData;
-                        }
-                        // If dayData is missing or invalid, it defaults to "Closed"
-
-                        const p = document.createElement('p');
-                        p.innerHTML = `<strong>${displayDayName}:</strong> ${displayHours}`;
-
-                        // Highlight the current day based on VISITOR's timezone (currentVisitorDayName calculated earlier)
-                        if (dayKey === currentVisitorDayName) {
-                            p.classList.add('current-day-hours');
-                        }
-                        hoursContainer.appendChild(p); // Add the line to the container
-                    });
-
-                    // Add the timezone info line *after* the loop
-                    const tzInfo = document.createElement('p');
-                    tzInfo.className = 'hours-timezone-info';
-                    tzInfo.textContent = `Hours displayed in your local timezone: ${visitorTimezone}`;
-                    hoursContainer.appendChild(tzInfo);
-
-
-                } else {
-                    // Fallback display if Luxon or visitorTimezone is not available
-                    hoursContainer.innerHTML = '<p>Could not display hours in your local time. Showing business hours:</p>';
-                     const daysOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-                     const businessHours = data.hours || {};
-                     daysOrder.forEach(dayKey => {
-                         const dayData = businessHours[dayKey];
-                         const displayDayName = dayKey.charAt(0).toUpperCase() + dayKey.slice(1);
-                         let displayHours = "Closed";
-                         if (dayData && dayData.open && dayData.close) {
-                             displayHours = formatTimeRange(dayData.open, dayData.close); // Use basic AM/PM helper
-                         } else if (typeof dayData === 'string') {
-                            displayHours = dayData;
-                         }
-                         const p = document.createElement('p');
-                         p.innerHTML = `<strong>${displayDayName}:</strong> ${displayHours}`;
-                         hoursContainer.appendChild(p);
-                     });
-                     const tzInfo = document.createElement('p');
-                     tzInfo.className = 'hours-timezone-info error'; // Maybe style it differently
-                     tzInfo.textContent = `Showing hours for ${businessTimezone}. Timezone conversion library missing or your timezone couldn't be detected.`;
-                     hoursContainer.appendChild(tzInfo);
-
-                    if (typeof luxon === 'undefined') {
-                        console.warn("Luxon library missing, showing fallback hours.");
-                    }
-                    if (visitorTimezone === 'N/A') {
-                         console.warn("Visitor timezone N/A, showing fallback hours.");
-                    }
-                }
-            } // End of: if (hoursContainer)
-        // --- Determine and Display Status (Uses filtered alert info) ---
-        if (openStatusSpan) {
-            let finalStatus = "Unavailable";
-            let finalStatusClass = "closed";
-            let statusReasonLog = "";
-
-            // 1. Check Override
-            if (data.statusOverride === 'Force Open') {
-                finalStatus = "Open"; finalStatusClass = "open"; statusReasonLog = "Manual override (Open)";
-            } else if (data.statusOverride === 'Force Closed') {
-                finalStatus = "Closed"; finalStatusClass = "closed"; statusReasonLog = "Manual override (Closed)";
-            } else {
-                // 2. Check ACTIVE Alert Closure (Using flag set during filtered alert processing)
-                if (isForcedClosedByAlert) {
-                    finalStatus = "Closed"; // Or "Temporarily Unavailable"
-                    finalStatusClass = "closed";
-                    statusReasonLog = `Alert closure (${activeAlertReason})`;
-                } else {
-                    // 3. Calculate Automatically (remains the same)
-                    statusReasonLog = "Automatic calculation";
-                     try {
-                        // ... (Your existing automatic calculation logic using Intl.DateTimeFormat with businessTimezone) ...
-                        const formatterOptions = { timeZone: businessTimezone, weekday: 'long', hour: '2-digit', minute: '2-digit', hour12: false };
-                        const formatter = new Intl.DateTimeFormat('en-CA', formatterOptions);
-                        const parts = formatter.formatToParts(new Date()).reduce((acc, part) => { if (part.type !== 'literal') acc[part.type] = part.value; return acc; }, {});
-                        const currentBusinessDayName = parts.weekday?.toLowerCase();
-                        let currentHour = parts.hour; const currentMinute = parts.minute;
-                        if (!currentBusinessDayName || currentHour == null || currentMinute == null) throw new Error("Could not get business time parts");
-                        if (currentHour === '24') currentHour = '00'; currentHour = currentHour.padStart(2, '0'); const businessNowTimeStr = `${currentHour}:${currentMinute}`;
-                        const todaysHours = data.hours ? data.hours[currentBusinessDayName] : null;
-                        if (todaysHours && todaysHours.open && todaysHours.close) {
-                            const openStr = todaysHours.open; const closeStr = todaysHours.close; let isOpen = false;
-                            if (closeStr > openStr) { isOpen = (businessNowTimeStr >= openStr && businessNowTimeStr < closeStr); }
-                            else if (closeStr < openStr) { isOpen = (businessNowTimeStr >= openStr || businessNowTimeStr < closeStr); }
-                            if (isOpen) { finalStatus = "Open"; finalStatusClass = "open"; } else { finalStatus = "Closed"; finalStatusClass = "closed"; }
-                        } else { finalStatus = "Closed"; finalStatusClass = "closed"; statusReasonLog = "Auto: No regular hours today"; }
-                    } catch(calcError) { /* ... Handle calculation error ... */ }
-                }
-            }
-            console.log(`Final Status: ${finalStatus}, Reason: ${statusReasonLog}`);
-            openStatusSpan.textContent = finalStatus;
-            openStatusSpan.className = finalStatusClass;
-        } // END if (openStatusSpan)
-
-    } catch (error) {
-        console.error("Error fetching/displaying business info:", error);
-        if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not load info.</p>';
-        if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
-    } // END main try-catch block
-} // END loadAndDisplayBusinessInfo function
-
-
-// --- Helper Function to format HH:MM time to AM/PM ---
-// (Keep this as it might be useful for fallbacks or other parts)
-function formatTime(timeString) {
-    if (!timeString || !timeString.includes(':')) return timeString;
-    try {
-        const parts = timeString.split(':');
-        let hours = parseInt(parts[0]);
-        const minutes = parseInt(parts[1]);
-        if (isNaN(hours) || isNaN(minutes)) return timeString; // Added validation
-
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
-        return `${hours}:${minutesStr} ${ampm}`;
-    } catch (e) {
-        console.error("Error formatting time:", timeString, e);
-        return timeString;
-    }
+    if (statusElement) { statusElement.textContent = openStatusResult.status; statusElement.className = ''; statusElement.classList.add(openStatusResult.status.toLowerCase().replace(/\s+/g, "-")); }
+    if (holidayAlertElement && todaysHoliday) { holidayNameElement.textContent = todaysHoliday.name; holidayHoursElement.textContent = todaysHoliday.hours; holidayAlertElement.style.display = "block"; } else if (holidayAlertElement) { holidayAlertElement.style.display = "none"; }
+    if (tempAlertElement && openStatusResult.status === "Temporarily Unavailable" && openStatusResult.tempClosureDetails) {
+         const tempClosure = openStatusResult.tempClosureDetails;
+         tempReasonElement.textContent = tempClosure.reason;
+         const convertedStart = convertTimeToTimezoneBH(tempClosure.startTime, userTimezone); const convertedEnd = convertTimeToTimezoneBH(tempClosure.endTime, userTimezone);
+         tempHoursElement.textContent = `${convertedStart} - ${convertedEnd}`;
+         tempAlertElement.style.display = "block";
+    } else if (tempAlertElement) { tempAlertElement.style.display = "none"; }
 }
 
-// --- Helper function to format HH:MM range to AM/PM range ---
-// (Keep this as it might be useful for fallbacks)
-function formatTimeRange(openStr, closeStr) {
-    const openFormatted = formatTime(openStr);
-    const closeFormatted = formatTime(closeStr);
-    // Avoid showing "Invalid Date - Invalid Date" if formatTime failed
-    if (openFormatted === openStr && closeFormatted === closeStr) {
-        return `${openStr} - ${closeStr}`; // Return original if formatting failed
-    }
-    return `${openFormatted} - ${closeFormatted}`;
-}
-
-// ========================================================
-// END Business Information Display Function
-// ========================================================
-
-// --- Global variable declarations for DOM elements used in DOMContentLoaded ---
-let maintenanceMessageElement;
-let mainContentWrapper;
-let usefulLinksContainerElement;
-let socialLinksContainerElement;
-// Note: other elements like president-placeholder are accessed directly in their functions
 
 // --- Run functions when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOM loaded. Checking Firebase status and maintenance mode...");
-    maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
-    mainContentWrapper = document.querySelector('.container'); // Assuming .container wraps main content
-    usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container'); // Make sure these selectors are correct for index.html
-    socialLinksContainerElement = document.querySelector('.social-links-container'); // Make sure this selector is correct for index.html
 
+    // --- Get common DOM elements ---
+    const maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
+    const mainContentWrapper = document.getElementById('main-content-wrapper'); // Use ID from index.html
+
+    // Check Firebase initialization status FIRST
     if (!firebaseAppInitialized) {
         console.error("Firebase not ready. Site cannot load.");
-        // Display error prominently if Firebase fails
-        if (maintenanceMessageElement) {
-            maintenanceMessageElement.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>';
-            maintenanceMessageElement.style.display = 'block';
-        } else { // Fallback if specific element doesn't exist
-            const eb = document.createElement('div');
-            eb.style.cssText = "background:red; color:white; padding:20px; text-align:center; font-weight:bold;";
-            eb.innerHTML = '<p>Site cannot load (Connection Error).</p>';
-            document.body.prepend(eb);
-        }
-        if (mainContentWrapper) mainContentWrapper.style.display = 'none'; // Hide main content
+        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error" style="text-align: center; padding: 20px; color: red;">Site cannot load (Connection Error).</p>'; maintenanceMessageElement.style.display = 'block'; }
+        else { const eb = document.createElement('div'); eb.innerHTML = '<p class="error" style="background-color: red; color: white; padding: 20px; text-align: center;">Site cannot load (Connection Error).</p>'; document.body.prepend(eb); }
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         return; // Stop execution
     }
 
+    // --- Try checking maintenance mode and loading content ---
     try {
         console.log("Checking maintenance mode...");
-        if (!profileDocRef) { throw new Error("profileDocRef missing for maintenance check."); } // Ensure ref exists
+        if (!profileDocRef) { throw new Error("Profile document reference (profileDocRef) is not initialized."); }
         const configSnap = await getDoc(profileDocRef);
-        // Default to false if document or field doesn't exist
         let maintenanceEnabled = configSnap.exists() ? (configSnap.data()?.isMaintenanceModeEnabled || false) : false;
         console.log("Maintenance mode:", maintenanceEnabled);
 
         if (maintenanceEnabled) {
+            // Maintenance Mode is ON
             console.log("Maintenance mode ON.");
-            if (mainContentWrapper) { mainContentWrapper.style.display = 'none'; } // Hide main content
-            if (maintenanceMessageElement) {
-                maintenanceMessageElement.style.display = 'block'; // Show maintenance message
-            } else {
-                console.error("Maintenance message element missing!");
-            }
-            // Stop loading other content if in maintenance mode
-            return;
+            if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+            if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'block'; }
+            else { console.error("Maintenance message element (#maintenanceModeMessage) missing!"); if (!document.querySelector('.maintenance-fallback')) { const fb = document.createElement('div'); fb.className = 'maintenance-fallback'; fb.innerHTML = '<p style="background-color: red; color: white; padding: 20px; text-align: center;">Site is currently undergoing maintenance.</p>'; document.body.prepend(fb); } }
+            return; // Stop loading other content
         } else {
+            // Maintenance Mode is OFF - Proceed to load content
             console.log("Maintenance mode OFF. Loading content.");
-            if (mainContentWrapper) { mainContentWrapper.style.display = ''; } // Ensure content visible
-            if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'none'; } // Hide maintenance message
+            if (mainContentWrapper) mainContentWrapper.style.display = '';
+            if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
 
-            // Load ALL dynamic content
-            // Use checks to ensure functions exist before calling
-            if (typeof displayProfileData === 'function') { displayProfileData(); } else { console.error("displayProfileData missing!"); }
-            if (typeof displayPresidentData === 'function') { displayPresidentData(); } else { console.error("displayPresidentData missing!"); }
-            if (typeof loadAndDisplayShoutouts === 'function') { loadAndDisplayShoutouts(); } else { console.error("loadAndDisplayShoutouts missing!"); }
-            if (typeof loadAndDisplayUsefulLinks === 'function') { if(usefulLinksContainerElement) { loadAndDisplayUsefulLinks(); } else { console.warn("Useful links container missing in index.html."); } } else { console.error("loadAndDisplayUsefulLinks missing!"); }
-            if (typeof loadAndDisplaySocialLinks === 'function') { if (socialLinksContainerElement) { loadAndDisplaySocialLinks(); } else { console.warn("Social links container missing in index.html."); } } else { console.error("loadAndDisplaySocialLinks missing!"); }
-            if (typeof loadAndDisplayDisabilities === 'function') { loadAndDisplayDisabilities(); } else { console.error("loadAndDisplayDisabilities missing!"); }
-            if (typeof loadAndDisplayBusinessInfo === 'function') { loadAndDisplayBusinessInfo(); } else { console.error("loadAndDisplayBusinessInfo missing!"); } // <<<--- Already Correctly Added
-
+            // --- Load ALL dynamic content ---
+            const loadPromises = [
+                displayProfileData(),
+                displayPresidentData(),
+                loadAndDisplayShoutouts(),
+                loadAndDisplayUsefulLinks(),
+                loadAndDisplaySocialLinks(),
+                loadAndDisplayDisabilities(),
+                loadAndDisplayBusinessInfo() // Load business info
+            ];
+            const results = await Promise.allSettled(loadPromises);
+            results.forEach((result, index) => { if (result.status === 'rejected') { console.error(`Error loading dynamic content section ${index}:`, result.reason); }});
         }
-    } catch (error) {
-        console.error("Error during DOMContentLoaded initialization:", error);
-        // Display a general error message if the initial load fails
-         if (maintenanceMessageElement) {
-            maintenanceMessageElement.innerHTML = `<p class="error">Error loading site configuration: ${error.message}</p>`;
-            maintenanceMessageElement.style.display = 'block';
-        } else {
-             const eb = document.createElement('div');
-             eb.style.cssText = "background:red; color:white; padding:20px; text-align:center; font-weight:bold;";
-            eb.innerHTML = `<p class="error">Error loading site configuration: ${error.message}</p>`;
-            document.body.prepend(eb);
-        }
-        if (mainContentWrapper) mainContentWrapper.style.display = 'none'; // Hide content on error
+    } catch (error) { // Catch errors during maintenance check or initial loading setup
+        console.error("Error during DOMContentLoaded initialization or maintenance check:", error);
+        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error" style="text-align: center; padding: 20px; color: red;">Error loading site configuration: ${error.message}</p>`; maintenanceMessageElement.style.display = 'block'; }
+        else { if (!document.querySelector('.config-error-fallback')) { const eb = document.createElement('div'); eb.className = 'config-error-fallback'; eb.innerHTML = `<p style="background-color: orange; color: black; padding: 20px; text-align: center;">Error loading site configuration: ${error.message}</p>`; document.body.prepend(eb); } }
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
     }
 }); // End DOMContentLoaded listener
