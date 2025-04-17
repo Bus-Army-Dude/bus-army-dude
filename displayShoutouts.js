@@ -72,26 +72,6 @@ function renderYouTubeCard(account) {
         handleForUrl = `@${username}`;
     }
 
-    // **FIXED URL Construction** - Use the standard YouTube channel URL
-    const channelUrl = username !== 'N/A'
-        ? `https://www.youtube.com/@username1{encodeURIComponent(handleForUrl)}`
-        : '#';
-
-    const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; // Ensure youtubecheck.png is accessible
-
-    return `<div class="youtube-creator-card">
-                ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
-                <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
-                <div class="youtube-creator-info">
-                    <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
-                    <div class="username-container"><p class="youtube-creator-username">@${username}</p></div>
-                    <p class="youtube-creator-bio">${bio}</p>
-                    <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
-                    <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
-                </div>
-            </div>`;
-}
-
     // Construct the correct YouTube channel URL
     const channelUrl = handleForUrl !== 'N/A'
 // --- Function to Load and Display Profile Data ---
