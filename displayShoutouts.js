@@ -220,6 +220,27 @@ async function loadAndDisplayBusinessInfo() {
                  // currentVisitorDayName remains 'N/A'
              }
         }
+
+        // --- Calculate Current Date String in BUSINESS Timezone --- <<<<<<< ADD THIS
+        let currentBusinessDateStr = 'N/A';
+        try {
+             // Use 'en-CA' locale for YYYY-MM-DD format
+            const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+                timeZone: businessTimezone,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+            currentBusinessDateStr = dateFormatter.format(now); // Format: YYYY-MM-DD
+            console.log(`Current date in ${businessTimezone}: ${currentBusinessDateStr}`);
+         } catch (dateError) {
+            console.error("Error formatting business date string:", dateError);
+             // Handle error appropriately - maybe stop processing
+            if (hoursContainer) hoursContainer.innerHTML = '<p class="error">Could not determine business date.</p>';
+            if (openStatusSpan) { openStatusSpan.textContent = 'Error'; openStatusSpan.className = 'closed'; }
+            return; // Stop if date can't be determined
+         }
+        // --- END Calculate Current Date String ---
         
         // --- Filter and Display Alerts ---
         let isForcedClosedByAlert = false;
