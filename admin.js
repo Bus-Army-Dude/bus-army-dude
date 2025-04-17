@@ -221,22 +221,12 @@ function displayFilteredUsefulLinks() {
     } else {
         console.log("Useful Links: Search term found, filtering list..."); // Log this case
         // Perform filtering only if searchTerm is not empty
-        listToRender = allSocialLinks.filter(link => {
-    // Get label and url, provide defaults if null/undefined
-    const label = (link.label || '').toLowerCase();
-    const url = (link.url || '').toLowerCase();
-
-    // Perform the check
-    const labelMatch = label.includes(searchTerm);
-    const urlMatch = url.includes(searchTerm);
-    const isMatch = labelMatch || urlMatch;
-
-    // --- DEBUG LOGS INSIDE FILTER ---
-    console.log(`Checking Social Link: ID=<span class="math-inline">\{link\.id\}, Label\='</span>{label}', URL='<span class="math-inline">\{url\}', Term\='</span>{searchTerm}', LabelMatch=<span class="math-inline">\{labelMatch\}, URLMatch\=</span>{urlMatch}, Result=${isMatch}`);
-    // --- END DEBUG LOGS ---
-
-    return isMatch; // Return the result of the check
-});
+        listToRender = allUsefulLinks.filter(link => {
+            const label = (link.label || '').toLowerCase();
+            const url = (link.url || '').toLowerCase();
+            return label.includes(searchTerm) || url.includes(searchTerm);
+        });
+    }
 
     console.log(`Rendering ${listToRender.length} useful links.`); // Log how many items will be rendered
 
