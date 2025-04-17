@@ -59,18 +59,38 @@ function renderTikTokCard(account) { const profilePic = account.profilePic || 'i
 function renderInstagramCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const followers = account.followers || 'N/A'; const isVerified = account.isVerified || false; const profileUrl = username !== 'N/A' ? `https://instagram.com/${encodeURIComponent(username)}` : '#'; const verifiedBadge = isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''; return `<div class="instagram-creator-card"><img src="${profilePic}" alt="${nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="instagram-creator-info"><div class="instagram-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <p class="instagram-creator-username">@${username}</p> <p class="instagram-creator-bio">${bio}</p> <p class="instagram-follower-count">${followers} Followers</p> <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="instagram-visit-profile"> Visit Profile </a></div></div>`;}
 function renderYouTubeCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
-    const username = account.username || 'N/A'; // This should be the YouTube handle (e.g., @MrBeast or MrBeast)
+    const username = account.username || 'N/A'; // This should be the YouTube Handle (e.g., @MrBeast or MrBeast)
     const nickname = account.nickname || 'N/A'; // Channel Name
     const bio = account.bio || '';
     const subscribers = account.subscribers || 'N/A';
     const coverPhoto = account.coverPhoto || null;
     const isVerified = account.isVerified || false;
 
-    // Ensure the handle starts with '@' for the URL construction
-    let handleForUrl = 'N/A';
-    if (username !== 'N/A') {
-        handleForUrl = username.startsWith('@') ? username : `@${username}`;
+    let handleForUrl = username;
+    // Ensure the handle starts with '@' for the standard URL format
+    if (username !== 'N/A' && !username.startsWith('@')) {
+        handleForUrl = `@${username}`;
     }
+
+    // **FIXED URL Construction** - Use the standard YouTube channel URL
+    const channelUrl = username !== 'N/A'
+        ? `https://www.youtube.com/@username1{encodeURIComponent(handleForUrl)}`
+        : '#';
+
+    const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; // Ensure youtubecheck.png is accessible
+
+    return `<div class="youtube-creator-card">
+                ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
+                <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
+                <div class="youtube-creator-info">
+                    <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
+                    <div class="username-container"><p class="youtube-creator-username">@${username}</p></div>
+                    <p class="youtube-creator-bio">${bio}</p>
+                    <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
+                    <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
+                </div>
+            </div>`;
+}
 
     // Construct the correct YouTube channel URL
     const channelUrl = handleForUrl !== 'N/A'
