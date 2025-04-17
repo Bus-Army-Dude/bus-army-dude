@@ -186,6 +186,156 @@ document.addEventListener('DOMContentLoaded', () => { //
        setTimeout(() => { if (editSocialLinkStatusMessage) { editSocialLinkStatusMessage.textContent = ''; editSocialLinkStatusMessage.className = 'status-message'; } }, 3000);
     }
 
+    // (Make sure this is the end of the handleAddDisability function from the previous response)
+    const disabilityData = {
+        name: name,
+        url: url,
+        order: order,
+        createdAt: serverTimestamp() // Add a timestamp
+    };
+
+    showAdminStatus("Adding disability link...");
+    try {
+        // Use the disabilitiesCollectionRef defined earlier
+        const docRef = await addDoc(disabilitiesCollectionRef, disabilityData);
+        console.log("Disability link added with ID:", docRef.id);
+        showAdminStatus("Disability link added successfully.", false);
+        addDisabilityForm.reset(); // Reset the form
+        loadDisabilitiesAdmin(); // Reload the list
+
+    } catch (error) {
+        console.error("Error adding disability link:", error);
+        showAdminStatus(`Error adding disability link: ${error.message}`, true);
+    }
+} // <-- End of handleAddDisability
+
+// Function to Handle Deleting a Disability Link
+async function handleDeleteDisability(docId, listItemElement) {
+    if (!confirm("Are you sure you want to permanently delete this disability link?")) {
+        return; // Do nothing if user cancels
+    }
+
+    showAdminStatus("Deleting disability link...");
+    try {
+         // Use the disabilitiesCollectionRef defined earlier
+        await deleteDoc(doc(db, 'disabilities', docId));
+        showAdminStatus("Disability link deleted successfully.", false);
+        loadDisabilitiesAdmin(); // Reload list is simplest
+
+    } catch (error) {
+        console.error(`Error deleting disability link (ID: ${docId}):`, error);
+        showAdminStatus(`Error deleting disability link: ${error.message}`, true);
+    }
+}
+
+ // Function to Open and Populate the Edit Disability Modal
+function openEditDisabilityModal(docId) {
+    // Use consts defined earlier for modal elements
+    if (!editDisabilityModal || !editDisabilityForm) {
+        console.error("Edit disability modal elements not found.");
+        showAdminStatus("UI Error: Cannot open edit form.", true);
+        return;
+    }
+
+    // Use the disabilitiesCollectionRef defined earlier
+    const docRef = doc(db, 'disabilities', docId);
+    if (typeof showEditDisabilityStatus === 'function') { // Check if function exists
+         showEditDisabilityStatus("Loading disability data...");
+    } else {
+         showAdminStatus("Loading disability data..."); // Fallback
+    }
+
+
+    getDoc(docRef).then(docSnap => {
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            editDisabilityForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
+            // Populate modal inputs using consts defined earlier
+            if (editDisabilityNameInput) editDisabilityNameInput.value = data.name || '';
+            if (editDisabilityUrlInput) editDisabilityUrlInput.value = data.url || '';
+            if (editDisabilityOrderInput) editDisabilityOrderInput.value = data.order ?? '';
+
+            editDisabilityModal.style.display = 'block'; // Show the modal
+            if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus(""); // Clear loading message
+
+        } else {
+            showAdminStatus("Error: Could not load disability data for editing.", true);
+             if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus("Error: Link not found.", true); // Show error inside modal
+        }
+    }).catch(error => {
+        console.error("Error getting disability document for edit:", error);
+        showAdminStatus(`Error loading disability data: ${error.message}`, true);
+         if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus(`Error: ${error.message}`, true);
+    });
+}
+
+// Function to Close the Edit Disability Modal
+function closeEditDisabilityModal() {
+    // Use consts defined earlier
+    if (editDisabilityModal) editDisabilityModal.style.display = 'none';
+    if (editDisabilityForm) editDisabilityForm.reset();
+    editDisabilityForm?.removeAttribute('data-doc-id');
+    if (editDisabilityStatusMessage) editDisabilityStatusMessage.textContent = ''; // Clear status message inside modal
+}
+
+// Function to Handle Updating a Disability Link from the Edit Modal
+async function handleUpdateDisability(event) {
+    event.preventDefault(); // Prevent default form submission
+    // Use consts defined earlier
+    if (!editDisabilityForm) return;
+
+    const docId = editDisabilityForm.getAttribute('data-doc-id');
+    if (!docId) {
+         if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus("Error: Missing document ID for update.", true);
+         else showAdminStatus("Error: Missing document ID for update.", true);
+        return;
+    }
+
+    // Get updated values from modal inputs
+    const name = editDisabilityNameInput?.value.trim();
+    const url = editDisabilityUrlInput?.value.trim();
+    const orderStr = editDisabilityOrderInput?.value.trim();
+    const order = parseInt(orderStr);
+
+    // Validation
+    if (!name || !url || !orderStr || isNaN(order) || order < 0) {
+         if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus("Invalid input. Check required fields and ensure Order is non-negative.", true);
+         else showAdminStatus("Invalid input. Check required fields and ensure Order is non-negative.", true);
+        return;
+    }
+    // Basic URL validation
+    try { new URL(url); } catch (_) {
+         if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus("Invalid URL format.", true);
+         else showAdminStatus("Invalid URL format.", true);
+        return;
+    }
+
+    const updatedData = {
+        name: name,
+        url: url,
+        order: order,
+        lastModified: serverTimestamp() // Add modification timestamp
+    };
+
+     if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus("Saving changes...");
+     else showAdminStatus("Saving changes...");
+
+    try {
+        // Use the disabilitiesCollectionRef defined earlier
+        const docRef = doc(db, 'disabilities', docId);
+        await updateDoc(docRef, updatedData);
+        showAdminStatus("Disability link updated successfully.", false); // Show main status
+        closeEditDisabilityModal(); // Close modal on success
+        loadDisabilitiesAdmin(); // Reload the list in the admin panel
+
+    } catch (error) {
+        console.error(`Error updating disability link (ID: ${docId}):`, error);
+         if (typeof showEditDisabilityStatus === 'function') showEditDisabilityStatus(`Error saving: ${error.message}`, true); // Show error in modal
+        showAdminStatus(`Error updating disability link: ${error.message}`, true); // Also show main status
+    }
+}
+// --- End Disabilities Management Functions ---
+
 // --- Edit Modal Logic (UPDATED for Preview) ---
     // Opens the modal and populates it with data for the selected shoutout
     function openEditModal(docId, platform) { //
@@ -513,6 +663,28 @@ function renderYouTubeCard(account) { //
     }
     // *** END updateShoutoutPreview FUNCTION ***
 
+window.addEventListener('click', (event) => {
+    if (event.target === editModal) { closeEditModal(); }
+    if (event.target === editUsefulLinkModal) { closeEditUsefulLinkModal(); }
+    if (event.target === editSocialLinkModal) { closeEditSocialLinkModal(); }
+    // VV ADD THIS LINE VV
+    if (event.target === editDisabilityModal) { closeEditDisabilityModal(); }
+});
+
+// Disabilities Forms & Modals (Added)
+if (addDisabilityForm) {
+    addDisabilityForm.addEventListener('submit', handleAddDisability);
+}
+if (editDisabilityForm) {
+    editDisabilityForm.addEventListener('submit', handleUpdateDisability);
+}
+if (cancelEditDisabilityButton) { // Close X button in modal
+    cancelEditDisabilityButton.addEventListener('click', closeEditDisabilityModal);
+}
+if (cancelEditDisabilityButtonSecondary) { // Secondary Cancel button in modal
+    cancelEditDisabilityButtonSecondary.addEventListener('click', closeEditDisabilityModal);
+}
+
 // *** FUNCTION: Displays Filtered Shoutouts (for Search Bar) ***
     // This function takes the platform name, filters the globally stored list,
     // and renders only the matching items based on search input.
@@ -656,7 +828,15 @@ function renderYouTubeCard(account) { //
              if(adminPfpPreview) adminPfpPreview.style.display = 'none'; //
         }
     }
-
+// *** ADD THIS BLOCK TO LOAD DISABILITIES ***
+if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
+     loadDisabilitiesAdmin(); // <--- ADD THIS LINE
+} else if (!disabilitiesListAdmin) {
+     console.warn("Disabilities list container not found, skipping load on auth change.");
+} else {
+     console.error("loadDisabilitiesAdmin function is missing!");
+     showAdminStatus("Error: Cannot load disabilities data.", true);
+}
 
     // --- Function to Save Profile Data ---
     async function saveProfileData(event) { //
