@@ -1812,6 +1812,10 @@ async function handleUpdateUsefulLink(event) { //
        }
    }
 
+    let tiktokListenerAttached = false;
+let instagramListenerAttached = false;
+let youtubeListenerAttached = false;
+
 // --- Attach Event Listeners for Forms ---
 
     // Add Shoutout Forms
@@ -1936,6 +1940,34 @@ async function handleUpdateUsefulLink(event) { //
         }
     }
     // -------------
+
+    // Add Shoutout Forms
+if (addShoutoutTiktokForm && !tiktokListenerAttached) { // <-- Check the flag
+    tiktokListenerAttached = true; // <-- Set the flag
+    console.log("Attaching listener to TikTok add form."); // Optional debug
+    addShoutoutTiktokForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent default submission
+        handleAddShoutout('tiktok', addShoutoutTiktokForm); // Call handler
+    });
+}
+
+if (addShoutoutInstagramForm && !instagramListenerAttached) { // <-- Check the flag
+    instagramListenerAttached = true; // <-- Set the flag
+    console.log("Attaching listener to Instagram add form."); // Optional debug
+    addShoutoutInstagramForm.addEventListener('submit', (e) => {
+        e.preventDefault(); //
+        handleAddShoutout('instagram', addShoutoutInstagramForm); //
+    });
+}
+
+if (addShoutoutYoutubeForm && !youtubeListenerAttached) { // <-- Check the flag
+    youtubeListenerAttached = true; // <-- Set the flag
+    console.log("Attaching listener to YouTube add form."); // Optional debug
+    addShoutoutYoutubeForm.addEventListener('submit', (e) => {
+        e.preventDefault(); //
+        handleAddShoutout('youtube', addShoutoutYoutubeForm); //
+    });
+}
 
     // --- ADD THESE FUNCTIONS ---
 
