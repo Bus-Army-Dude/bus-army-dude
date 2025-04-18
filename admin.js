@@ -582,35 +582,57 @@ async function logAdminActivity(actionType, details = {}) {
 }
 
 /**
- * Renders a single log entry into an HTML element.
+ * Renders a single log entry into an HTML element with improved structure.
  * @param {object} logData - The data object for one log entry.
  * @returns {HTMLDivElement} - The div element representing the log entry.
  */
 function renderLogEntry(logData) {
     const logEntryDiv = document.createElement('div');
-    logEntryDiv.className = 'log-entry'; // Use class for styling
+    logEntryDiv.className = 'log-entry'; // Main container class
 
     const timestampStr = logData.timestamp?.toDate?.().toLocaleString() ?? 'No timestamp';
     const adminIdentifier = logData.adminEmail || logData.adminUid || 'Unknown Admin';
     const actionType = logData.actionType || 'UNKNOWN_ACTION';
-    let detailsStr = '';
 
+    // Build HTML for details section more carefully
+    let detailsHtmlContent = '';
     if (logData.details && typeof logData.details === 'object' && Object.keys(logData.details).length > 0) {
-        try {
-            detailsStr = JSON.stringify(logData.details);
-        } catch (e) {
-            detailsStr = "{ Error formatting details }";
-            console.error("Error stringifying log details:", e, logData.details);
+        for (const key in logData.details) {
+            if (Object.hasOwnProperty.call(logData.details, key)) {
+                let value = logData.details[key];
+                let valueStr = '';
+                // Check if it's our specific 'changes' object format
+                if (typeof value === 'object' && value !== null && value.hasOwnProperty('to')) {
+                     // valueStr = `set to: ${JSON.stringify(value.to)}`;
+                     // Make it slightly more readable for simple values
+                     const toValue = value.to;
+                     if (typeof toValue === 'string' || typeof toValue === 'number' || typeof toValue === 'boolean') {
+                        valueStr = `set to: "${String(toValue)}"`;
+                     } else {
+                        valueStr = `set to: ${JSON.stringify(toValue)}`; // Fallback for complex objects/arrays
+                     }
+                } else {
+                     valueStr = JSON.stringify(value); // Fallback for other details structures
+                }
+
+                // Basic sanitization to prevent HTML injection
+                const safeKey = key.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const safeValueStr = valueStr.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+                detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
+            }
         }
-    } else if (logData.details != null) {
-         detailsStr = String(logData.details);
+    } else if (logData.details != null) { // Handle non-object details
+         detailsHtmlContent = `<div class="detail-item">${String(logData.details).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
     }
 
+    // Assemble the final entry structure
     logEntryDiv.innerHTML = `
-        <small>${timestampStr} - ${adminIdentifier}</small>
-        <strong>Action:</strong> ${actionType}
-        ${detailsStr ? `<br><small>Details: ${detailsStr}</small>` : ''}
-    `;
+        <div class="log-meta"><small>${timestampStr} - ${adminIdentifier}</small></div>
+        <div class="log-action"><strong>Action:</strong> <span>${actionType}</span></div>
+        ${detailsHtmlContent ? `<div class="log-details"><small class="details-label">Details:</small><div class="details-content">${detailsHtmlContent}</div></div>` : ''}
+    `; // Use divs for structure
+
     return logEntryDiv;
 }
 
