@@ -985,45 +985,43 @@ function renderYouTubeCard(account) { //
     }
 
 
-    // --- Function to Save Profile Data ---
-    async function saveProfileData(event) { //
-        event.preventDefault(); // Prevent default form submission
-        // Ensure user is logged in
-        if (!auth || !auth.currentUser) { //
-            showProfileStatus("Error: Not logged in.", true); //
-            return; //
-        }
-        if (!profileForm) return; // Should not happen if loaded, but safety check
+    // --- Function to Save Profile Data (with Logging) ---
+    async function saveProfileData(event) {
+        event.preventDefault();
+        if (!auth || !auth.currentUser) { showProfileStatus("Error: Not logged in.", true); return; }
+        if (!profileForm) return;
+        console.log("Attempting to save profile data..."); // Debug log
 
-        // Gather data from form fields
-        const newData = { //
-            username: profileUsernameInput?.value.trim() || "", //
-            profilePicUrl: profilePicUrlInput?.value.trim() || "", //
-            bio: profileBioInput?.value.trim() || "", //
-            status: profileStatusInput?.value || "offline", // Ensure a default value
-            lastUpdated: serverTimestamp() // Add a timestamp for the update
-            // Note: Maintenance mode is saved by its own function/listener
+        const newData = {
+            username: profileUsernameInput?.value.trim() || "",
+            profilePicUrl: profilePicUrlInput?.value.trim() || "",
+            bio: profileBioInput?.value.trim() || "",
+            status: profileStatusInput?.value || "offline",
         };
 
-        showProfileStatus("Saving profile..."); // Provide user feedback
-        try { //
-            // Use setDoc with merge: true to create or update the document
-            await setDoc(profileDocRef, newData, { merge: true }); //
-            console.log("Profile data saved to:", profileDocRef.path); //
-            showProfileStatus("Profile updated successfully!", false); //
+        showProfileStatus("Saving profile...");
+        try {
+            await setDoc(profileDocRef, { ...newData, lastUpdated: serverTimestamp() }, { merge: true });
+            console.log("Profile data save successful:", profileDocRef.path);
+            showProfileStatus("Profile updated successfully!", false);
 
-            // Optionally update the preview image immediately after saving a new URL
-            if (adminPfpPreview && newData.profilePicUrl) { //
-                adminPfpPreview.src = newData.profilePicUrl; //
-                adminPfpPreview.style.display = 'inline-block'; //
-            } else if (adminPfpPreview) { //
-                 adminPfpPreview.src = ''; //
-                 adminPfpPreview.style.display = 'none'; //
+            // *** Log Activity ***
+            if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('UPDATE_PROFILE', { fieldsUpdated: Object.keys(newData) });
+            } else { console.error("logAdminActivity function not found!");}
+
+            // Update preview image
+            if (adminPfpPreview && newData.profilePicUrl) {
+                adminPfpPreview.src = newData.profilePicUrl;
+                adminPfpPreview.style.display = 'inline-block';
+            } else if (adminPfpPreview) {
+                adminPfpPreview.src = '';
+                adminPfpPreview.style.display = 'none';
             }
 
-        } catch (error) { //
-             console.error("Error saving profile data:", error); //
-             showProfileStatus(`Error saving profile: ${error.message}`, true); //
+        } catch (error) {
+            console.error("Error saving profile data:", error);
+            showProfileStatus(`Error saving profile: ${error.message}`, true);
         }
     }
 
