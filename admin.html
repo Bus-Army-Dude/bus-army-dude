@@ -538,7 +538,6 @@
 
 </main>
 
-<!-- Edit Shoutout Modal (unchanged) -->
 <div id="edit-shoutout-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading">
     <div class="modal-content">
         <button type="button" class="close-button" id="cancel-edit-button" aria-label="Close dialog">&times;</button>
@@ -566,9 +565,10 @@
                 <input type="url" id="edit-profilePic" name="profilePic" inputmode="url">
             </div>
             <div class="form-group checkbox-group apple-toggle-group">
-                <input type="checkbox" id="edit-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox"> <label for="edit-isVerified" class="apple-toggle-label"></label> <label for="edit-isVerified">Is Verified?</label> </div>
+                <input type="checkbox" id="edit-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
+                <label for="edit-isVerified" class="apple-toggle-label"></label>
+                <label for="edit-isVerified">Is Verified?</label>
             </div>
-
             <div id="edit-platform-specific">
                 <div class="form-group edit-followers-group" style="display: none;">
                     <label for="edit-followers">Followers:</label>
@@ -582,21 +582,17 @@
                     <label for="edit-coverPhoto">Cover Photo URL:</label>
                     <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
                 </div>
-            </div>
-
-            <div class="form-group">
+            </div> <div class="form-group">
                 <label>Preview:</label>
                 <div id="edit-shoutout-preview" class="shoutout-preview-area">
                     <p><small>Preview will appear here.</small></p>
                 </div>
-            </div>
-
-            <div class="form-actions">
+            </div> <div class="form-actions">
                 <button type="submit" class="button-primary">Save Changes</button>
-            </div>
-        </form>
-    </div>
-</div>
+                 </div>
+        </form> <div id="edit-shoutout-status-message" class="status-message" role="status" aria-live="polite"></div>
+
+    </div> </div>
 
 <script type="module" src="admin.js"></script>
 </body>
