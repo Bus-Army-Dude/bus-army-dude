@@ -494,6 +494,176 @@ if (searchInputDisabilities) {
     }
     // --- END MODIFIED: renderAdminListItem Function ---
 
+    // ==================================
+// == ACTIVITY LOG IMPLEMENTATION ===
+// ==================================
+
+let allActivityLogEntries = []; // Global variable for client-side filtering
+
+/**
+ * Logs an admin activity to the 'activity_log' Firestore collection.
+ * @param {string} actionType - A code representing the action (e.g., 'UPDATE_PROFILE').
+ * @param {object} details - An object containing relevant details about the action.
+ */
+async function logAdminActivity(actionType, details = {}) {
+    // Ensure Firestore functions are imported at the top of admin.js
+    // Ensure 'auth', 'db', 'collection', 'addDoc', 'serverTimestamp' are available
+    if (!auth.currentUser) {
+        console.warn("Cannot log activity: No user logged in.");
+        return;
+    }
+
+    const logEntry = {
+        timestamp: serverTimestamp(),
+        adminEmail: auth.currentUser.email || 'Unknown Email',
+        adminUid: auth.currentUser.uid,
+        actionType: actionType,
+        details: details
+    };
+
+    try {
+        // *** Make sure 'activityLogCollectionRef' is defined globally or get it here ***
+        const activityLogCollectionRef = collection(db, "activity_log"); // Define reference here if not global
+        await addDoc(activityLogCollectionRef, logEntry);
+        console.log(`Activity logged: ${actionType}`, details);
+    } catch (error) {
+        console.error("Error writing to activity log:", error);
+        // Optionally use showAdminStatus("Warning: Could not write to activity log.", true);
+    }
+}
+
+/**
+ * Renders a single log entry into an HTML element.
+ * @param {object} logData - The data object for one log entry.
+ * @returns {HTMLDivElement} - The div element representing the log entry.
+ */
+function renderLogEntry(logData) {
+    const logEntryDiv = document.createElement('div');
+    logEntryDiv.className = 'log-entry'; // Use class for styling
+
+    const timestampStr = logData.timestamp?.toDate?.().toLocaleString() ?? 'No timestamp';
+    const adminIdentifier = logData.adminEmail || logData.adminUid || 'Unknown Admin';
+    const actionType = logData.actionType || 'UNKNOWN_ACTION';
+    let detailsStr = '';
+
+    if (logData.details && typeof logData.details === 'object' && Object.keys(logData.details).length > 0) {
+        try {
+            detailsStr = JSON.stringify(logData.details);
+        } catch (e) {
+            detailsStr = "{ Error formatting details }";
+            console.error("Error stringifying log details:", e, logData.details);
+        }
+    } else if (logData.details != null) {
+         detailsStr = String(logData.details);
+    }
+
+    logEntryDiv.innerHTML = `
+        <small>${timestampStr} - ${adminIdentifier}</small>
+        <strong>Action:</strong> ${actionType}
+        ${detailsStr ? `<br><small>Details: ${detailsStr}</small>` : ''}
+    `;
+    return logEntryDiv;
+}
+
+/**
+ * Filters the globally stored log entries and renders them to the list container.
+ */
+function displayFilteredActivityLog() {
+    // Get elements needed - ensure they exist in your DOM references or get them here
+    const logListContainer = document.getElementById('activity-log-list');
+    const searchInput = document.getElementById('search-activity-log');
+    const logCountElement = document.getElementById('activity-log-count');
+
+    // Add checks for elements existence at the beginning
+    if (!logListContainer || !searchInput || !logCountElement) {
+        console.error("Log display/search elements missing in displayFilteredActivityLog.");
+        if(logListContainer) logListContainer.innerHTML = "<p class='error'>Log display elements missing.</p>";
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    logListContainer.innerHTML = ''; // Clear previous entries
+
+    const filteredLogs = allActivityLogEntries.filter(log => {
+        if (!searchTerm) return true; // Show all if search is empty
+
+        const timestampStr = log.timestamp?.toDate?.().toLocaleString()?.toLowerCase() ?? '';
+        const email = (log.adminEmail || '').toLowerCase();
+        const action = (log.actionType || '').toLowerCase();
+        const details = JSON.stringify(log.details || {}).toLowerCase();
+
+        return email.includes(searchTerm) ||
+               action.includes(searchTerm) ||
+               details.includes(searchTerm) ||
+               timestampStr.includes(searchTerm);
+    });
+
+    if (filteredLogs.length === 0) {
+        logListContainer.innerHTML = searchTerm ? `<p>No log entries found matching "${searchTerm}".</p>` : '<p>No activity log entries found.</p>';
+    } else {
+        filteredLogs.forEach(logData => {
+             // Check if renderLogEntry exists before calling
+            if (typeof renderLogEntry === 'function') {
+                 const entryElement = renderLogEntry(logData);
+                 logListContainer.appendChild(entryElement);
+            } else {
+                 console.error("renderLogEntry function is missing!");
+                 logListContainer.innerHTML = '<p class="error">Error rendering log entries.</p>';
+                 return false; // Stop loop if renderer is missing
+             }
+        });
+    }
+    logCountElement.textContent = `(${filteredLogs.length})`;
+}
+
+/**
+ * Fetches recent activity logs from Firestore, stores them globally, and triggers display.
+ */
+async function loadActivityLog() {
+    // Get elements needed - ensure they exist in your DOM references or get them here
+    const logListContainer = document.getElementById('activity-log-list');
+    const logCountElement = document.getElementById('activity-log-count');
+    const searchInput = document.getElementById('search-activity-log');
+
+    // Add checks for elements existence at the beginning
+    if (!logListContainer || !logCountElement || !searchInput) {
+         console.error("Required elements for loadActivityLog are missing.");
+         if(logListContainer) logListContainer.innerHTML = '<p class="error">Error: Log display elements missing.</p>';
+         return;
+    }
+    searchInput.value = ''; // Reset search on load
+    logListContainer.innerHTML = '<p>Loading activity log...</p>';
+    logCountElement.textContent = '(...)';
+    allActivityLogEntries = []; // Clear global store
+
+    try {
+        // Ensure Firestore functions are imported (collection, query, orderBy, limit, getDocs)
+        const activityLogCollectionRef = collection(db, "activity_log"); // Define or ensure global reference
+        const logQuery = query(activityLogCollectionRef, orderBy("timestamp", "desc"), limit(50)); // Load recent 50
+        const querySnapshot = await getDocs(logQuery);
+
+        querySnapshot.forEach(doc => {
+            allActivityLogEntries.push({ id: doc.id, ...doc.data() });
+        });
+
+        console.log(`Loaded ${allActivityLogEntries.length} log entries.`);
+        displayFilteredActivityLog(); // Display the fetched logs
+
+    } catch (error) {
+        console.error("Error loading activity log:", error);
+        logListContainer.innerHTML = `<p class="error">Error loading activity log: ${error.message}</p>`;
+        logCountElement.textContent = '(Error)';
+        // Use showAdminStatus if available and desired
+        if (typeof showAdminStatus === 'function') {
+             showAdminStatus(`Failed to load activity log: ${error.message}`, true);
+        }
+    }
+}
+
+// ========================================
+// == END ACTIVITY LOG IMPLEMENTATION =====
+// ========================================
+
 // --- Copied Shoutout Card Rendering Functions (from displayShoutouts.js) ---
     // NOTE: Ensure image paths ('check.png', 'images/default-profile.jpg') are accessible
     //       from the admin page, or use absolute paths / different logic.
