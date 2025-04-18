@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme (Unified Preview Styles + President Preview) */
+/* admin.css - Apple-Inspired Theme (Unified Preview Styles + President Preview) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -6,121 +6,115 @@
 :root {
     /* --- Base & Font --- */
     --system-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    --base-font-size: 16px;
-    --line-height: 1.6;
+    --base-font-size: 16px; /* Apple often uses slightly smaller base fonts in UI, but 16px is good for web accessibility */
+    --line-height: 1.5; /* Slightly tighter line height common in UI */
     --border-radius-sm: 4px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 12px;
-    --transition-speed: 0.25s;
+    --border-radius-md: 8px;  /* Standard rounding */
+    --border-radius-lg: 12px; /* Larger rounding for containers */
+    --transition-speed: 0.2s; /* Faster transitions */
     --transition-timing: ease-in-out;
 
-    /* --- Light Mode Colors --- */
-    --light-bg: #f5f7fa;          /* Very light grey background */
-    --light-content-bg: #ffffff;   /* White content area */
-    --light-text: #1a1c20;         /* Dark text */
-    --light-secondary-text: #5a6472; /* Muted secondary text */
-    --light-border: #d1d9e6;       /* Light border */
-    --light-input-bg: #ffffff;
-    --light-input-border: #ced4da;
-    --light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --light-accent: #007bff;        /* Primary accent (Blue) */
-    --light-accent-glow: rgba(0, 123, 255, 0.3);
-    --light-accent-hover: #0056b3;
-    --light-link: #007bff;
-    --light-success-bg: #e0f8e9;    /* Lighter success */
-    --light-success-text: #0a5c28;
-    --light-error-bg: #fde2e4;      /* Lighter error */
-    --light-error-text: #8f1a29;
-    --light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    --light-modal-backdrop: rgba(245, 247, 250, 0.7); /* Light backdrop with blur */
+    /* --- Light Mode Colors (Apple Style) --- */
+    --apple-light-bg: #f5f5f7;             /* Off-white/very light grey background */
+    --apple-light-content-bg: #ffffff;       /* White content area */
+    --apple-light-text: #1d1d1f;             /* Near-black text */
+    --apple-light-secondary-text: #6e6e73;   /* Grey secondary text */
+    --apple-light-border: #d2d2d7;           /* Light grey border */
+    --apple-light-input-bg: #ffffff;
+    --apple-light-input-border: #d2d2d7;
+    --apple-light-input-focus-border: #007aff; /* Apple Blue */
+    --apple-light-input-focus-shadow: rgba(0, 122, 255, 0.2);
+    --apple-light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
+    --apple-light-accent: #007aff;           /* Apple Blue */
+    --apple-light-accent-hover: #005ecf;     /* Darker Blue */
+    --apple-light-link: #007aff;
+    --apple-light-success-bg: #e5f7e9;       /* Light green */
+    --apple-light-success-text: #20803a;
+    --apple-light-error-bg: #fdebee;         /* Light red */
+    --apple-light-error-text: #c62828;
+    --apple-light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236e6e73' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    --apple-light-modal-backdrop: rgba(245, 245, 247, 0.7); /* Light backdrop with blur */
 
-    /* --- Dark Mode Colors (Futuristic) --- */
-    --dark-bg: #0D0F12;            /* Very dark, slightly blue background */
-    --dark-content-bg: #1A1C20;     /* Darker content area */
-    --dark-text: #E0E5EC;           /* Off-white text */
-    --dark-secondary-text: #8a94a6;  /* Greyish-blue secondary text */
-    --dark-border: #2f3542;         /* Dark subtle border */
-    --dark-input-bg: #16181c;        /* Slightly different dark input bg */
-    --dark-input-border: #3a4150;
-    --dark-shadow: rgba(0, 0, 0, 0.2); /* Darker shadow */
-    --dark-accent: #00FFFF;         /* Cyan accent */
-    --dark-accent-glow: rgba(0, 255, 255, 0.3);
-    --dark-accent-hover: #00cccc;
-    --dark-link: #33ffff;           /* Lighter cyan for links */
-    --dark-success-bg: #103d31;     /* Dark green success */
-    --dark-success-text: #82e0c2;
-    --dark-error-bg: #4d1f24;       /* Dark red error */
-    --dark-error-text: #f5a7af;
-    --dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23E0E5EC' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    --dark-modal-backdrop: rgba(13, 15, 18, 0.7); /* Dark backdrop with blur */
+    /* --- Dark Mode Colors (Apple Style) --- */
+    --apple-dark-bg: #161617;                 /* Very dark grey background */
+    --apple-dark-content-bg: #1d1d1f;           /* Slightly lighter dark content area */
+    --apple-dark-text: #f5f5f7;                 /* Off-white text */
+    --apple-dark-secondary-text: #86868b;       /* Lighter grey secondary text */
+    --apple-dark-border: #3a3a3c;               /* Darker grey border */
+    --apple-dark-input-bg: #2c2c2e;             /* Dark input background */
+    --apple-dark-input-border: #3a3a3c;
+    --apple-dark-input-focus-border: #0a84ff;   /* Brighter Apple Blue for dark mode */
+    --apple-dark-input-focus-shadow: rgba(10, 132, 255, 0.3);
+    --apple-dark-shadow: rgba(0, 0, 0, 0.25);   /* Darker shadow */
+    --apple-dark-accent: #0a84ff;               /* Brighter Apple Blue */
+    --apple-dark-accent-hover: #3f9dff;         /* Lighter blue hover */
+    --apple-dark-link: #0a84ff;
+    --apple-dark-success-bg: #254a31;           /* Dark green */
+    --apple-dark-success-text: #79d496;
+    --apple-dark-error-bg: #5b1e23;             /* Dark red */
+    --apple-dark-error-text: #f7a3ab;
+    --apple-dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2386868b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    --apple-dark-modal-backdrop: rgba(22, 22, 23, 0.7); /* Dark backdrop with blur */
 
-    /* --- Alert/Action Colors (Consistent) --- */
-    --color-danger: #e53935;        /* Vibrant Red */
-    --color-danger-hover: #c62828;
-    --color-danger-glow: rgba(229, 57, 53, 0.3);
-    --color-success-action: #28a745; /* Vibrant Green */
-    --color-success-action-hover: #218838;
-    --color-success-action-glow: rgba(40, 167, 69, 0.3);
-    --color-secondary-action: #6c757d; /* Grey */
-    --color-secondary-action-hover: #5a6268;
-    --color-secondary-action-glow: rgba(108, 117, 125, 0.3);
+    /* --- Alert/Action Colors (Consistent - Adjusted for Apple feel) --- */
+    --color-danger: #ff3b30;                 /* Apple Red */
+    --color-danger-hover: #d1302f;
+    --color-danger-glow: rgba(255, 59, 48, 0.25);
+    --color-success-action: #34c759;           /* Apple Green */
+    --color-success-action-hover: #2ca349;
+    --color-success-action-glow: rgba(52, 199, 89, 0.25);
+    --color-secondary-action: #8e8e93;         /* Apple Grey */
+    --color-secondary-action-hover: #7a7a80;
+    --color-secondary-action-glow: rgba(142, 142, 147, 0.25);
 
-    /* --- Fallback theme variables (default to dark mode) --- */
-    --bg-color: var(--dark-bg);
-    --content-bg: var(--dark-content-bg);
-    --text-color: var(--dark-text);
-    --secondary-text: var(--dark-secondary-text);
-    --border-color: var(--dark-border);
-    --input-bg-color: var(--dark-input-bg);
-    --input-border-color: var(--dark-input-border);
-    --shadow-color: var(--dark-shadow);
-    --accent-color: var(--dark-accent);
-    --accent-glow-color: var(--dark-accent-glow);
-    --hover-color: var(--dark-accent-hover);
-    --link-color: var(--dark-link);
-    --success-bg-color: var(--dark-success-bg);
-    --success-text-color: var(--dark-success-text);
-    --error-bg-color: var(--dark-error-bg);
-    --error-text-color: var(--dark-error-text);
-    --select-arrow: var(--dark-select-arrow);
-    --modal-backdrop-color: var(--dark-modal-backdrop);
+    /* --- Fallback theme variables (default to light mode) --- */
+    --bg-color: var(--apple-light-bg);
+    --content-bg: var(--apple-light-content-bg);
+    --text-color: var(--apple-light-text);
+    --secondary-text: var(--apple-light-secondary-text);
+    --border-color: var(--apple-light-border);
+    --input-bg-color: var(--apple-light-input-bg);
+    --input-border-color: var(--apple-light-input-border);
+    --input-focus-border-color: var(--apple-light-input-focus-border);
+    --input-focus-shadow-color: var(--apple-light-input-focus-shadow);
+    --shadow-color: var(--apple-light-shadow);
+    --accent-color: var(--apple-light-accent);
+    --hover-color: var(--apple-light-accent-hover);
+    --link-color: var(--apple-light-link);
+    --success-bg-color: var(--apple-light-success-bg);
+    --success-text-color: var(--apple-light-success-text);
+    --error-bg-color: var(--apple-light-error-bg);
+    --error-text-color: var(--apple-light-error-text);
+    --select-arrow: var(--apple-light-select-arrow);
+    --modal-backdrop-color: var(--apple-light-modal-backdrop);
+    --accent-glow-color: var(--apple-light-input-focus-shadow); /* Use input shadow for general glow */
+    --accent-rgb: 0, 122, 255; /* RGB for light accent */
+    --danger-rgb: 255, 59, 48;
 }
 
-  --background-color: #1a1a1d; /* Example main background */
-  --card-background-color: #282c34; /* Slightly lighter background for entry */
-  --details-background-color: #1e1e1e; /* Background for details block */
-  --text-color: #f0f0f0;
-  --text-color-secondary: #ccc;
-  --text-muted-color: #aaa;
-  --border-color: #555;
-  --border-color-lighter: #444;
-  --accent-color: #61dafb; /* Example accent */
-  --danger-color: #e57373; /* Slightly softer red */
-  --danger-color-hover-bg: #dc3545; /* Original red for hover */
-  --danger-color-hover-border: #c82333; /* Darker red for hover border */
-  --danger-color-disabled: #7a7a7a;
-}
-
-/* --- Light Mode Override --- */
-body.light-mode {
-    --bg-color: var(--light-bg);
-    --content-bg: var(--light-content-bg);
-    --text-color: var(--light-text);
-    --secondary-text: var(--light-secondary-text);
-    --border-color: var(--light-border);
-    --input-bg-color: var(--light-input-bg);
-    --input-border-color: var(--light-input-border);
-    --shadow-color: var(--light-shadow);
-    --accent-color: var(--light-accent);
-    --accent-glow-color: var(--light-accent-glow);
-    --hover-color: var(--light-accent-hover);
-    --link-color: var(--light-link);
-    --success-bg-color: var(--light-success-bg);
-    --success-text-color: var(--light-success-text);
-    --error-bg-color: var(--light-error-bg);
-    --error-text-color: var(--light-error-text);
-    --select-arrow: var(--light-select-arrow);
-    --modal-backdrop-color: var(--light-modal-backdrop);
+/* --- Dark Mode Override --- */
+body.dark-mode {
+    --bg-color: var(--apple-dark-bg);
+    --content-bg: var(--apple-dark-content-bg);
+    --text-color: var(--apple-dark-text);
+    --secondary-text: var(--apple-dark-secondary-text);
+    --border-color: var(--apple-dark-border);
+    --input-bg-color: var(--apple-dark-input-bg);
+    --input-border-color: var(--apple-dark-input-border);
+    --input-focus-border-color: var(--apple-dark-input-focus-border);
+    --input-focus-shadow-color: var(--apple-dark-input-focus-shadow);
+    --shadow-color: var(--apple-dark-shadow);
+    --accent-color: var(--apple-dark-accent);
+    --hover-color: var(--apple-dark-accent-hover);
+    --link-color: var(--apple-dark-link);
+    --success-bg-color: var(--apple-dark-success-bg);
+    --success-text-color: var(--apple-dark-success-text);
+    --error-bg-color: var(--apple-dark-error-bg);
+    --error-text-color: var(--apple-dark-error-text);
+    --select-arrow: var(--apple-dark-select-arrow);
+    --modal-backdrop-color: var(--apple-dark-modal-backdrop);
+    --accent-glow-color: var(--apple-dark-input-focus-shadow);
+    --accent-rgb: 10, 132, 255; /* RGB for dark accent */
 }
 
 /* ======================== */
@@ -134,7 +128,7 @@ body {
     font-family: var(--system-font-stack);
     font-size: var(--base-font-size);
     margin: 0;
-    padding: 30px;
+    padding: 40px; /* More padding */
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: var(--line-height);
@@ -147,24 +141,24 @@ body {
     max-width: 1000px;
     margin: 30px auto;
     background: var(--content-bg);
-    padding: 35px 45px;
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 8px 30px -10px var(--shadow-color);
+    padding: 40px 50px; /* Generous padding */
+    border-radius: var(--border-radius-lg); /* More rounded */
+    box-shadow: 0 5px 25px -10px var(--shadow-color); /* Softer shadow */
     border: 1px solid var(--border-color);
     transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
 }
 
 h1, h2, h3, h4, h5 {
     color: var(--text-color);
-    margin-top: 1.8em;
-    margin-bottom: 1em;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    margin-top: 1.6em;
+    margin-bottom: 0.8em;
+    font-weight: 600; /* Standard bold */
+    letter-spacing: normal; /* Remove letter spacing for cleaner look */
 }
-h1 { text-align: center; margin-bottom: 40px; margin-top: 0; font-size: 2.2rem; }
-h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 1.2em; }
-h3 { color: var(--accent-color); font-size: 1.5rem; margin-top: 1.8em; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; opacity: 0.9; }
-h4 { font-size: 1.2rem; color: var(--text-color); opacity: 0.95; margin-top: 30px; margin-bottom: 15px; }
+h1 { text-align: center; margin-bottom: 40px; margin-top: 0; font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 1.5em; font-weight: 600; }
+h3 { color: var(--text-color); font-size: 1.3rem; margin-top: 1.8em; border-bottom: none; padding-bottom: 0; opacity: 1; font-weight: 600; } /* Less emphasis, no accent color */
+h4 { font-size: 1.1rem; color: var(--text-color); opacity: 1; margin-top: 30px; margin-bottom: 15px; font-weight: 600;}
 h5 { font-size: 1rem; color: var(--secondary-text); margin-top: 25px; margin-bottom: 10px; font-weight: 500; }
 
 a {
@@ -181,24 +175,24 @@ a:hover {
 /* Login Section            */
 /* ======================== */
 #login-section {
-    margin-top: 30px;
+    margin-top: 50px; /* More space */
     padding: 40px;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-lg); /* Consistent rounding */
     background-color: var(--content-bg);
     box-shadow: 0 5px 15px -5px var(--shadow-color);
-    max-width: 450px;
+    max-width: 400px; /* Slightly narrower */
     margin-left: auto;
     margin-right: auto;
 }
-#login-section h2 { text-align: center; border-bottom: none; margin-bottom: 30px; font-size: 1.6rem;}
+#login-section h2 { text-align: center; border-bottom: none; margin-bottom: 30px; font-size: 1.5rem;}
 
 /* ======================== */
 /* Admin Content Area       */
 /* ======================== */
 #admin-content {
-    margin-top: 30px;
-    padding-top: 20px;
+    margin-top: 40px; /* More space */
+    padding-top: 0;
 }
 
 .admin-header {
@@ -206,21 +200,21 @@ a:hover {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--accent-color);
+    margin-bottom: 40px; /* More space */
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color); /* Standard border, not accent */
     gap: 20px;
 }
-.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 2rem; }
-#admin-greeting { font-style: italic; color: var(--secondary-text); margin: 0 20px; white-space: nowrap; font-size: 0.95em; }
+.admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 1.8rem; }
+#admin-greeting { font-style: normal; color: var(--secondary-text); margin: 0 20px; white-space: nowrap; font-size: 0.95em; }
 #logout-button { flex-shrink: 0; }
 
 .admin-section {
-    margin-bottom: 45px;
+    margin-bottom: 40px;
     padding: 30px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color);
+    background-color: transparent; /* Don't need extra background inside container */
 }
 .admin-section:last-of-type { margin-bottom: 15px; }
 
@@ -251,7 +245,7 @@ a:hover {
     margin-right: 0;
     width: 1.1em;
     height: 1.1em;
-    accent-color: var(--accent-color);
+    accent-color: var(--accent-color); /* Uses browser/OS accent styling */
     cursor: pointer;
     vertical-align: middle;
 }
@@ -260,10 +254,10 @@ label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: var(--secondary-text);
+    color: var(--text-color); /* Labels are standard text color */
     font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    text-transform: none; /* No uppercase */
+    letter-spacing: normal;
 }
 
 input[type="email"],
@@ -276,13 +270,14 @@ input[type="datetime-local"],
 select,
 textarea {
     width: 100%;
-    padding: 12px 15px;
+    padding: 10px 12px; /* Slightly less padding */
     border: 1px solid var(--input-border-color);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md); /* Consistent rounding */
     font-size: 1rem;
     font-family: inherit;
     background-color: var(--input-bg-color);
     color: var(--text-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset; /* Subtle inset shadow */
     transition: border-color var(--transition-speed) var(--transition-timing),
                 box-shadow var(--transition-speed) var(--transition-timing),
                 background-color var(--transition-speed) var(--transition-timing);
@@ -290,8 +285,8 @@ textarea {
 
 input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px var(--accent-glow-color);
+    border-color: var(--input-focus-border-color);
+    box-shadow: 0 0 0 3px var(--input-focus-shadow-color), 0 1px 2px rgba(0,0,0,0.02) inset; /* Focus ring */
 }
 
 textarea { min-height: 120px; resize: vertical; }
@@ -299,74 +294,76 @@ select {
     appearance: none;
     background-image: var(--select-arrow);
     background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 16px 12px;
-    padding-right: 3rem;
+    background-position: right 0.9rem center;
+    background-size: 12px 10px; /* Adjusted size */
+    padding-right: 2.5rem;
 }
 
-::placeholder { color: var(--secondary-text); opacity: 0.6; }
+::placeholder { color: var(--secondary-text); opacity: 0.8; }
 
 
 /* ======================== */
 /* Button Styles            */
 /* ======================== */
 button, .button-primary {
-    background: linear-gradient(145deg, var(--accent-color), var(--hover-color));
-    color: #000; /* Black text for Cyan */
-    padding: 12px 22px;
+    background-color: var(--accent-color); /* Solid color */
+    color: #ffffff; /* White text on blue */
+    padding: 10px 20px; /* Adjusted padding */
     border: none;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md); /* Consistent rounding */
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: transform var(--transition-speed) var(--transition-timing),
-                box-shadow var(--transition-speed) var(--transition-timing),
-                background var(--transition-speed) var(--transition-timing);
-    margin-right: 12px;
+    font-size: 0.95rem; /* Slightly smaller font */
+    font-weight: 500; /* Medium weight */
+    letter-spacing: normal;
+    transition: background-color var(--transition-speed) var(--transition-timing),
+                transform var(--transition-speed) var(--transition-timing),
+                box-shadow var(--transition-speed) var(--transition-timing);
+    margin-right: 10px;
     margin-top: 8px;
     vertical-align: middle;
     text-decoration: none;
     display: inline-block;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-body.light-mode button, body.light-mode .button-primary {
-    color: #ffffff; /* White text for blue */
+body.dark-mode button, body.dark-mode .button-primary {
+     color: #ffffff; /* White text usually okay on brighter dark mode blue too */
+     /* background-color: var(--apple-dark-accent); */ /* Already handled by variable */
 }
 
 button:hover, .button-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px -2px var(--accent-glow-color);
-    background: linear-gradient(145deg, var(--hover-color), var(--accent-color));
+    background-color: var(--hover-color); /* Slightly darker/lighter */
+    transform: none; /* No lift */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 button:active, .button-primary:active {
-    transform: translateY(0px);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transform: scale(0.98); /* Slight press effect */
+    background-color: var(--hover-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 button:disabled, .button-primary:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-    background: var(--secondary-text);
+    background-color: var(--color-secondary-action); /* Use grey for disabled */
 }
 
-#login-button { background: linear-gradient(145deg, var(--color-success-action), var(--color-success-action-hover)); color: #fff; }
-#login-button:hover { box-shadow: 0 4px 12px -2px var(--color-success-action-glow); background: linear-gradient(145deg, var(--color-success-action-hover), var(--color-success-action));}
+/* Specific Button Colors (Using solid fills) */
+#login-button { background-color: var(--color-success-action); color: #fff; }
+#login-button:hover { background-color: var(--color-success-action-hover); }
 
 #logout-button,
 button.delete-button,
 button.bulk-delete-button /* Includes bulk delete button */
 {
-    background: linear-gradient(145deg, var(--color-danger), var(--color-danger-hover));
+    background-color: var(--color-danger);
     color: #fff;
 }
 #logout-button:hover,
 button.delete-button:hover,
 button.bulk-delete-button:hover
 {
-    box-shadow: 0 4px 12px -2px var(--color-danger-glow);
-    background: linear-gradient(145deg, var(--color-danger-hover), var(--color-danger));
+    background-color: var(--color-danger-hover);
 }
 
 button.secondary-button,
@@ -374,7 +371,7 @@ button.secondary-button,
 button.edit-button
 /* Removed restore button style */
 {
-    background: linear-gradient(145deg, var(--color-secondary-action), var(--color-secondary-action-hover));
+    background-color: var(--color-secondary-action);
     color: #fff;
 }
 button.secondary-button:hover,
@@ -382,25 +379,44 @@ button.secondary-button:hover,
 button.edit-button:hover
 /* Removed restore button style */
 {
-    box-shadow: 0 4px 12px -2px var(--color-secondary-action-glow);
-    background: linear-gradient(145deg, var(--color-secondary-action-hover), var(--color-secondary-action));
+    background-color: var(--color-secondary-action-hover);
 }
 
+/* Danger Outline Button (Alternative Style if preferred) */
+.danger-button-outline {
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+  padding: 9px 19px; /* Match fill button padding minus border */
+}
+.danger-button-outline:hover {
+  background-color: var(--color-danger);
+  color: #fff;
+  border-color: var(--color-danger);
+}
+.danger-button-outline:disabled {
+    background-color: transparent;
+    border-color: var(--secondary-text);
+    color: var(--secondary-text);
+    opacity: 0.6;
+}
+/* END Danger Outline Button */
+
 .form-actions {
-    margin-top: 25px;
+    margin-top: 30px; /* More space */
     text-align: right;
-    padding-top: 15px;
+    padding-top: 20px;
     border-top: 1px solid var(--border-color);
 }
 #login-section .form-actions {
     text-align: center;
     border-top: none;
+    padding-top: 10px;
 }
 
 .small-button {
-    padding: 6px 12px !important;
+    padding: 5px 12px !important; /* Smaller padding */
     font-size: 0.85em !important;
-    letter-spacing: 0.3px;
 }
 
 /* ======================== */
@@ -409,10 +425,10 @@ button.edit-button:hover
 .status-message {
     margin-top: 25px;
     margin-bottom: 20px;
-    padding: 15px 20px;
+    padding: 12px 20px; /* Slightly less padding */
     font-weight: 500;
     text-align: center;
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-md); /* Consistent rounding */
     border: 1px solid transparent;
     display: none;
     clear: both;
@@ -426,15 +442,13 @@ button.edit-button:hover
 .status-message.success {
     color: var(--success-text-color);
     background-color: var(--success-bg-color);
-    border-color: hsla(var(--success-hue, 145), 63%, 49%, 0.3);
+    border-color: rgba(52, 199, 89, 0.3); /* Use RGB of success color */
 }
 .status-message.error {
     color: var(--error-text-color);
     background-color: var(--error-bg-color);
-    border-color: hsla(var(--error-hue, 354), 70%, 54%, 0.3);
+    border-color: rgba(255, 59, 48, 0.3); /* Use RGB of danger color */
 }
-:root { --success-hue: 145; --error-hue: 354; }
-
 
 /* ======================== */
 /* Dynamic List Styles      */
@@ -445,35 +459,36 @@ button.edit-button:hover
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    padding: 5px;
-    background-color: var(--bg-color);
+    padding: 0; /* Remove padding, apply to items */
+    background-color: var(--bg-color); /* Match outer background */
     scrollbar-width: thin;
-    scrollbar-color: var(--secondary-text) var(--bg-color);
+    scrollbar-color: var(--secondary-text) transparent; /* Subtle scrollbar */
 }
 .list-container-admin::-webkit-scrollbar { width: 8px; }
-.list-container-admin::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 4px; }
-.list-container-admin::-webkit-scrollbar-thumb { background-color: var(--secondary-text); border-radius: 4px; border: 2px solid var(--bg-color); }
+.list-container-admin::-webkit-scrollbar-track { background: transparent; }
+.list-container-admin::-webkit-scrollbar-thumb { background-color: var(--secondary-text); border-radius: 4px; border: none; }
 
 .list-item-admin {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 20px;
+    padding: 15px 20px; /* Item padding */
     border-bottom: 1px solid var(--border-color);
     gap: 15px;
     transition: background-color var(--transition-speed) var(--transition-timing);
+    background-color: var(--content-bg); /* Items have content background */
 }
-.list-item-admin:last-child { border-bottom: none; }
-.list-item-admin:hover { background-color: rgba(var(--accent-rgb, 0, 255, 255), 0.05); }
-:root { --accent-rgb: 0, 255, 255; } body.light-mode { --accent-rgb: 0, 123, 255; }
+.list-item-admin:first-child { border-top-left-radius: var(--border-radius-md); border-top-right-radius: var(--border-radius-md); }
+.list-item-admin:last-child { border-bottom: none; border-bottom-left-radius: var(--border-radius-md); border-bottom-right-radius: var(--border-radius-md); }
+.list-item-admin:hover { background-color: rgba(var(--accent-rgb), 0.05); } /* Subtle accent hover */
 
 .list-item-admin .item-content {
     flex-grow: 1;
     word-break: break-word;
     display: flex;
     align-items: center;
-    gap: 10px; /* Gap between checkbox and details */
+    gap: 12px; /* Gap between checkbox and details */
 }
 /* Style for checkbox within list item */
 .list-item-admin .item-content input[type="checkbox"].shoutout-checkbox { /* Target specific checkbox */
@@ -488,10 +503,10 @@ button.edit-button:hover
     flex-grow: 1;
 }
 
-.list-item-admin strong { color: var(--text-color); font-weight: 600; }
+.list-item-admin strong { color: var(--text-color); font-weight: 500; } /* Medium weight */
 .list-item-admin span { color: var(--secondary-text); font-size: 0.85em; margin-left: 8px;}
-.list-item-admin p { margin: 6px 0; font-size: 0.95em; line-height: 1.5; }
-.list-item-admin small { color: var(--secondary-text); font-size: 0.75em; display: block; margin-top: 4px; }
+.list-item-admin p { margin: 4px 0; font-size: 0.9em; line-height: 1.4; color: var(--secondary-text); } /* Smaller, secondary color for details */
+.list-item-admin small { color: var(--secondary-text); font-size: 0.75em; display: block; margin-top: 4px; opacity: 0.8; }
 
 .list-item-admin .item-actions {
     flex-shrink: 0;
@@ -501,9 +516,9 @@ button.edit-button:hover
 }
 .item-actions a.direct-link {
     color: var(--secondary-text);
-    font-size: 1.1em;
+    font-size: 1.1em; /* Make icon slightly larger */
     text-decoration: none;
-    padding: 4px;
+    padding: 5px; /* Click target */
     line-height: 1;
     border-radius: var(--border-radius-sm);
     transition: color 0.2s, background-color 0.2s;
@@ -514,7 +529,7 @@ button.edit-button:hover
 }
 .item-actions a.direct-link i {
     display: block;
-    margin-right: 4px; /* Space between icon and text */
+    /* margin-right: 4px; Remove if icon only */
 }
 /* Align text within the link button */
 .item-actions a.direct-link {
@@ -522,13 +537,13 @@ button.edit-button:hover
     align-items: center;
 }
 
-
 .list-item-admin.disabled-item {
-    opacity: 0.6;
+    opacity: 0.5;
     background-color: rgba(128, 128, 128, 0.05);
 }
 .list-item-admin.disabled-item .item-content strong {
     text-decoration: line-through;
+    color: var(--secondary-text);
 }
 
 
@@ -540,17 +555,24 @@ button.edit-button:hover
     padding: 25px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--content-bg);
+    background-color: var(--content-bg); /* Content background */
 }
 .shoutouts-platform-container:last-of-type { margin-bottom: 0; }
-.shoutouts-platform-container h4 { color: var(--accent-color); margin-top: 0; border-bottom: 1px dashed var(--accent-color); padding-bottom: 10px; font-size: 1.3rem; opacity: 0.9; }
+.shoutouts-platform-container h4 {
+    color: var(--text-color); /* Standard heading color */
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color); /* Standard border */
+    padding-bottom: 10px;
+    font-size: 1.2rem; /* Slightly smaller */
+    opacity: 1;
+}
 
 /* List Controls (Search + Bulk Actions) */
 .list-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* More space */
     margin-top: 10px;
     gap: 15px;
     flex-wrap: wrap;
@@ -569,36 +591,43 @@ button.edit-button:hover
 /* Preview Areas            */
 /* ======================== */
 .shoutout-preview-area, .president-preview-area { /* Apply base styles to both */
-    border: 1px dashed var(--input-border-color);
+    border: 1px dashed var(--border-color); /* Dashed border */
     padding: 20px;
-    margin-top: 15px;
+    margin-top: 20px; /* More space */
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color);
+    background-color: var(--bg-color); /* Match outer background */
     min-height: 150px;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align top for president */
+    align-items: center; /* Center placeholder */
     overflow: hidden;
     position: relative;
 }
+.president-preview-area {
+    align-items: flex-start; /* Align president card top */
+}
+
 .shoutout-preview-area > p, .president-preview-area > p { /* Style placeholder text */
     color: var(--secondary-text);
     font-style: italic;
     font-size: 0.9em;
     text-align: center;
-    margin: auto; /* Center vertically/horizontally */
+    margin: auto; /* Center vertically/horizontally if needed */
 }
+
 /* Style the card *within* the shoutout preview area */
 .shoutout-preview-area .creator-card,
 .shoutout-preview-area .instagram-creator-card,
 .shoutout-preview-area .youtube-creator-card {
-    transform: scale(0.9); /* Scale down the card slightly */
-    transform-origin: center top; /* Scale from top center */
+    transform: scale(1); /* No scale down */
+    transform-origin: center center;
     margin: 0;
-    box-shadow: none;
-    max-width: 100%;
+    box-shadow: 0 2px 5px var(--shadow-color); /* Use theme shadow */
+    max-width: 350px; /* Limit width */
     box-sizing: border-box;
-    border: 1px solid var(--border-color); /* Add border for clarity */
+    border: 1px solid var(--border-color); /* Use theme border */
+    background-color: var(--content-bg); /* Use content background */
+    border-radius: var(--border-radius-md); /* Consistent rounding */
 }
 
 /* ======================== */
@@ -607,12 +636,12 @@ button.edit-button:hover
 .input-with-preview {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px; /* More gap */
 }
 .input-with-preview input { flex-grow: 1; }
 .pfp-preview-img {
-    width: 150px;
-    height: 150px;
+    width: 100px; /* Smaller preview */
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border-color);
@@ -620,9 +649,12 @@ button.edit-button:hover
     vertical-align: middle;
     flex-shrink: 0;
     transition: opacity 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
 }
-.input-with-preview input.input-error { border-color: var(--color-danger); box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb, 229, 57, 53), 0.2); }
-:root { --color-danger-rgb: 229, 57, 53; }
+.input-with-preview input.input-error {
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 3px var(--color-danger-glow), 0 1px 2px rgba(0,0,0,0.02) inset;
+}
 
 /* ======================== */
 /* Edit Modal Styles        */
@@ -637,41 +669,42 @@ button.edit-button:hover
   height: 100%;
   overflow: auto;
   background-color: var(--modal-backdrop-color);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px); /* Stronger blur */
+  -webkit-backdrop-filter: blur(8px);
   animation: fadeIn 0.3s ease-out;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .modal-content {
   background-color: var(--content-bg);
-  margin: 8vh auto;
+  margin: 10vh auto; /* Vertically center more */
   padding: 35px 45px;
-  border: 1px solid var(--border-color);
+  border: none; /* No border */
   width: 90%;
-  max-width: 700px;
+  max-width: 650px; /* Slightly narrower */
   position: relative;
-  border-radius: var(--border-radius-lg);
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
-  animation: slideIn 0.4s ease-out;
+  border-radius: var(--border-radius-lg); /* Consistent rounding */
+  box-shadow: 0 15px 40px -10px rgba(0,0,0,0.25); /* More pronounced shadow */
+  animation: slideInFromTop 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother animation */
 }
-@keyframes slideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slideInFromTop { from { transform: translateY(-40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 .close-button {
   color: var(--secondary-text);
   position: absolute;
-  top: 15px;
-  right: 25px;
-  font-size: 32px;
-  font-weight: bold;
+  top: 18px; /* Adjust position */
+  right: 20px;
+  font-size: 28px; /* Smaller */
+  font-weight: normal; /* Lighter weight */
   line-height: 1;
   transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+  opacity: 0.7;
 }
-.close-button:hover, .close-button:focus { color: var(--text-color); text-decoration: none; transform: scale(1.1); }
+.close-button:hover, .close-button:focus { color: var(--text-color); text-decoration: none; transform: scale(1.1); opacity: 1;}
 
 #edit-shoutout-form .form-actions button,
 #profile-form .form-actions button
@@ -690,18 +723,20 @@ button.edit-button:hover
 #site-settings { } /* Inherits .admin-section styles */
 
 #site-settings .form-group {
-    padding: 15px;
+    padding: 20px; /* More padding */
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
-    background-color: var(--content-bg);
+    border-radius: var(--border-radius-md);
+    background-color: var(--content-bg); /* Content bg for grouping */
+    margin-bottom: 25px; /* Space between groups */
 }
 #site-settings label {
     text-transform: none;
-    font-size: 1rem;
+    font-size: 1rem; /* Standard size */
+    font-weight: 500;
 }
 #site-settings small {
     display: block;
-    margin-top: 5px;
+    margin-top: 6px;
     color: var(--secondary-text);
     font-size: 0.85em;
 }
@@ -713,89 +748,107 @@ button.edit-button:hover
 /* ======================== */
 #activity-log-section { } /* Inherits .admin-section styles */
 
-#activity-log-list {
+#activity-log-list { /* Uses .list-container-admin */
     max-height: 500px;
     /* Inherits .list-container-admin styles */
 }
 #activity-log-list .list-item-admin {
     padding: 12px 15px;
-    align-items: flex-start;
+    align-items: flex-start; /* Align timestamp top */
 }
 #activity-log-list .log-timestamp {
     font-size: 0.8em;
     color: var(--secondary-text);
     margin-right: 15px;
     flex-shrink: 0;
-    min-width: 150px;
+    min-width: 140px; /* Slightly less width */
     white-space: nowrap;
+    padding-top: 2px; /* Align better with text */
 }
 #activity-log-list .log-user {
     font-weight: 500;
-    color: var(--accent-color);
-    margin-right: 10px;
+    color: var(--text-color); /* Standard text color */
+    margin-right: 8px;
 }
 #activity-log-list .log-action {
     flex-grow: 1;
     word-break: break-word;
+    font-size: 0.95em;
 }
 
 /* ======================== */
 /* Responsive Adjustments   */
 /* ======================== */
 @media (max-width: 768px) {
-    body { padding: 15px; }
-    .container { padding: 25px 20px; margin: 15px auto; }
+    body { padding: 20px; } /* Less reduction */
+    .container { padding: 30px 25px; margin: 15px auto; }
     h1 { font-size: 1.8rem; margin-bottom: 30px;}
     h2 { font-size: 1.5rem; }
     .admin-header { flex-direction: column; align-items: flex-start; }
-    .admin-header h2 { margin-bottom: 10px; }
+    .admin-header h2 { margin-bottom: 10px; font-size: 1.6rem; }
     #admin-greeting { margin: 10px 0; }
     .admin-section { padding: 20px; }
     .form-actions:not(#login-section .form-actions) {
-        text-align: center;
+        text-align: right; /* Keep right align */
         padding-top: 15px;
     }
     .form-actions:not(#login-section .form-actions) button {
-        display: block;
-        width: 100%;
-        margin: 10px auto 0 auto !important;
+        display: inline-block; /* Revert to inline */
+        width: auto; /* Revert to auto */
+        margin: 10px 0 0 10px !important; /* Keep margin */
     }
-    .list-item-admin { flex-direction: column; align-items: flex-start; }
-    .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-end; }
-    .modal-content { margin: 10vh auto; padding: 25px 20px; }
+    .form-actions:not(#login-section .form-actions) button:first-child {
+        margin-left: 0 !important;
+    }
+    .list-item-admin { flex-direction: row; /* Keep row layout longer */ }
+    /* Stack list items earlier if needed */
+    /* .list-item-admin { flex-direction: column; align-items: flex-start; } */
+    /* .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-start; } */
+
+    .modal-content { margin: 8vh auto; padding: 30px 25px; }
     .list-controls { flex-direction: column; align-items: stretch; }
     .list-controls input[type="search"] { max-width: none; }
-    .list-controls button { width: 100%; }
-    .pfp-preview-img { width: 120px; height: 120px; }
+    .list-controls button { width: auto; margin-top: 10px;} /* Button width auto */
+    .pfp-preview-img { width: 80px; height: 80px; }
 }
 
 @media (max-width: 480px) {
-    body { padding: 10px; }
-    .container { padding: 20px 15px; }
+    body { padding: 15px; }
+    .container { padding: 25px 15px; }
     h1 { font-size: 1.6rem; }
     h2 { font-size: 1.3rem; }
-    h3 { font-size: 1.2rem; }
-    button, .button-primary { padding: 10px 18px; font-size: 0.95rem; }
+    h3 { font-size: 1.1rem; }
+    button, .button-primary { padding: 10px 18px; font-size: 0.95rem; width: 100%; margin-left: 0; margin-right: 0;} /* Full width buttons */
+    button.small-button { width: auto !important; } /* Except small ones */
+    .form-actions button { width: 100%; margin-left: 0 !important; } /* Full width action buttons */
+
     input, select, textarea { padding: 10px 12px; font-size: 0.95rem; }
     .form-group label { font-size: 0.85em; }
     .checkbox-group label { font-size: 0.95rem; }
-    .list-item-admin { padding: 12px 15px; }
-    .modal-content { padding: 20px 15px; }
-    .close-button { font-size: 28px; top: 10px; right: 15px; }
-    .pfp-preview-img { width: 100px; height: 100px; }
+
+    /* Stack list items on smallest screens */
+    .list-item-admin { flex-direction: column; align-items: flex-start; padding: 15px; }
+    .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-start; padding-top: 10px; border-top: 1px solid var(--border-color);}
+    .list-item-admin .item-actions button { width: auto; } /* Action buttons not full width */
+    .item-actions a.direct-link { margin-left: auto; } /* Push link to right */
+
+    .modal-content { padding: 25px 15px; }
+    .close-button { font-size: 26px; top: 12px; right: 15px; }
+    .pfp-preview-img { width: 60px; height: 60px; }
     #login-section { padding: 25px; }
+    .input-with-preview { flex-direction: column; align-items: flex-start;} /* Stack pfp preview */
 }
 
 
 /* List Count and Timer Display */
 .list-count {
   font-weight: normal;
-  font-size: 0.9em;
+  font-size: 0.85em; /* Slightly smaller */
   color: var(--secondary-text);
   margin-left: 8px;
 }
 .timer-display {
-  font-size: 0.9em;
+  font-size: 0.85em;
   margin-left: 15px;
   color: var(--secondary-text);
   min-width: 50px;
@@ -807,29 +860,31 @@ button.edit-button:hover
 /* ============================================= */
 /* === ADMIN SHOUTOUT PREVIEW STYLES (Unified) === */
 /* ============================================= */
-
 /* Base card style for all previews */
 .shoutout-preview-area .creator-card,
 .shoutout-preview-area .instagram-creator-card,
 .shoutout-preview-area .youtube-creator-card {
-    background-color: var(--bg-color);
-    border-radius: 10px;
+    background-color: var(--content-bg); /* Use content bg */
+    border-radius: var(--border-radius-md); /* Consistent rounding */
     padding: 15px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Row layout */
+    gap: 12px; /* Gap between pic and info */
     transition: none;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    box-shadow: 0 1px 3px var(--shadow-color); /* Subtle shadow */
     width: 100%;
+    max-width: 380px; /* Limit width */
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
     height: auto;
+    border: 1px solid var(--border-color);
 }
 .shoutout-preview-area .creator-card:hover,
 .shoutout-preview-area .instagram-creator-card:hover,
 .shoutout-preview-area .youtube-creator-card:hover {
     transform: none;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    box-shadow: 0 2px 5px var(--shadow-color); /* Slightly more shadow on hover */
 }
 
 /* Hide YouTube cover photo specifically in preview */
@@ -845,12 +900,13 @@ button.edit-button:hover
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--accent-color);
-    margin-bottom: 10px;
-    position: relative; /* Keep relative for z-index if needed */
+    border: none; /* No extra border */
+    margin-bottom: 0; /* Reset margin */
+    position: relative;
     z-index: 1;
-    margin-top: 0; /* Ensure no negative margin */
-    margin-left: 0; /* Ensure no indent */
+    margin-top: 0;
+    margin-left: 0;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Unified Info Container */
@@ -859,8 +915,9 @@ button.edit-button:hover
 .shoutout-preview-area .youtube-creator-info {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    flex-grow: 1; /* Take remaining space */
     padding: 0;
+    overflow: hidden; /* Prevent content overflow */
 }
 
 /* Unified Header Style */
@@ -869,9 +926,9 @@ button.edit-button:hover
 .shoutout-preview-area .youtube-creator-header {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 3px;
-    margin-top: 0; /* Removed extra top margin */
+    gap: 5px; /* Smaller gap */
+    margin-bottom: 2px; /* Less space */
+    margin-top: 0;
 }
 
 /* Unified Heading (Nickname) Style */
@@ -879,11 +936,13 @@ button.edit-button:hover
 .shoutout-preview-area .instagram-creator-header h3,
 .shoutout-preview-area .youtube-creator-header h3 {
     margin: 0;
-    font-size: 1.05em;
+    font-size: 1rem; /* Slightly smaller */
+    font-weight: 600; /* Bold */
     color: var(--text-color);
     line-height: 1.3;
-    overflow-wrap: break-word;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Ellipsis for long names */
 }
 
 /* Unified Verification Badge Style */
@@ -894,24 +953,23 @@ button.edit-button:hover
     height: 14px;
     display: inline-block;
     vertical-align: middle;
-    /* Consider using a single badge image/class in rendering JS for true consistency */
+    flex-shrink: 0;
 }
 
 /* Unified Username Style */
-/* Target direct children <p> of .creator-info, .instagram-creator-info etc. */
 .shoutout-preview-area .creator-info > .creator-username,
 .shoutout-preview-area .instagram-creator-info > .instagram-creator-username,
-.shoutout-preview-area .youtube-creator-info .youtube-creator-username { /* YouTube has extra container */
+.shoutout-preview-area .youtube-creator-info .youtube-creator-username {
     color: var(--secondary-text);
     font-size: 0.85em;
-    margin: 0 0 8px 0; /* Consistent margin */
-    overflow-wrap: break-word;
-    word-break: break-all;
+    margin: 0 0 8px 0;
     line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-/* Remove extra margin from YouTube's username container */
 .shoutout-preview-area .youtube-creator-info .username-container {
-    margin-bottom: 8px;
+    margin-bottom: 0; /* Reset */
     gap: 4px;
 }
 
@@ -921,24 +979,26 @@ button.edit-button:hover
 .shoutout-preview-area .instagram-creator-bio,
 .shoutout-preview-area .youtube-creator-bio {
     color: var(--secondary-text);
-    margin: 8px 0;
+    margin: 5px 0; /* Less margin */
     font-size: 0.85em;
     line-height: 1.4;
     word-break: break-word;
-    max-height: calc(1.4em * 3); /* Limit to 3 lines */
+    max-height: calc(1.4em * 2); /* Limit to 2 lines */
     overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 /* Unified Follower/Subscriber Count Style */
-/* Use a common class if possible, otherwise target all */
 .shoutout-preview-area .follower-count,
 .shoutout-preview-area .instagram-follower-count,
 .shoutout-preview-area .youtube-subscriber-count {
-    color: var(--accent-color);
-    font-weight: bold;
-    margin: 8px 0;
-    font-size: 0.9em;
+    color: var(--secondary-text); /* Use secondary text */
+    font-weight: 500; /* Medium weight */
+    margin: 5px 0;
+    font-size: 0.85em; /* Smaller */
 }
 
 /* Unified Visit Button Style */
@@ -947,37 +1007,27 @@ button.edit-button:hover
 .shoutout-preview-area .youtube-visit-profile {
     display: inline-block;
     background-color: var(--accent-color);
-    color: #000; /* Use admin theme button text color */
+    color: #ffffff; /* White text */
     text-decoration: none;
-    padding: 6px 15px;
-    border-radius: 20px;
+    padding: 5px 12px; /* Smaller button */
+    border-radius: var(--border-radius-md); /* Match button rounding */
     margin-top: 8px;
-    transition: none;
+    transition: background-color var(--transition-speed) var(--transition-timing);
     text-align: center;
     font-weight: 500;
-    font-size: 0.85em;
-    border: 1px solid var(--accent-color);
+    font-size: 0.8em; /* Smaller text */
+    border: none;
     width: fit-content;
 }
-body.light-mode .shoutout-preview-area .visit-profile,
-body.light-mode .shoutout-preview-area .instagram-visit-profile,
-body.light-mode .shoutout-preview-area .youtube-visit-profile {
-     color: #fff;
-}
-
 .shoutout-preview-area .visit-profile:hover,
 .shoutout-preview-area .instagram-visit-profile:hover,
 .shoutout-preview-area .youtube-visit-profile:hover {
-    background-color: var(--accent-color);
-    color: #000;
+    background-color: var(--hover-color);
+    color: #ffffff;
     transform: none;
     box-shadow: none;
 }
-body.light-mode .shoutout-preview-area .visit-profile:hover,
-body.light-mode .shoutout-preview-area .instagram-visit-profile:hover,
-body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
-     color: #fff;
-}
+
 
 /* ============================================= */
 /* === ADMIN PRESIDENT PREVIEW STYLES        === */
@@ -985,28 +1035,20 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
 
 /* Style the container holding the preview content */
 .president-preview-area {
-    border: 1px dashed var(--input-border-color);
-    padding: 15px; /* Reduced padding */
-    margin-top: 15px;
-    border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Match admin background */
-    min-height: 180px; /* Adjust as needed */
-    display: flex;
-    justify-content: center; /* Center the content horizontally */
+    /* Inherits base styles */
+    padding: 20px;
+    min-height: 180px;
     align-items: flex-start; /* Align content to the top */
-    overflow: hidden;
-    position: relative;
 }
 
 /* Style the main section block inside the preview */
-/* Inspired by your styles.css but simplified */
 #president-preview .president-section {
-    background: var(--content-bg); /* Use content background for contrast */
-    padding: 15px; /* Reduced padding */
-    border-radius: var(--border-radius-md); /* Slightly smaller radius */
-    box-shadow: 0 4px 10px -4px var(--shadow-color); /* Softer shadow */
+    background: var(--content-bg); /* Use content background */
+    padding: 20px; /* Match container padding */
+    border-radius: var(--border-radius-md); /* Consistent rounding */
+    box-shadow: 0 2px 8px -2px var(--shadow-color); /* Subtle shadow */
     width: 100%;
-    max-width: 450px; /* Limit width inside preview */
+    max-width: 400px; /* Limit width inside preview */
     box-sizing: border-box;
     border: 1px solid var(--border-color);
 }
@@ -1015,19 +1057,19 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
 #president-preview .president-info {
     display: flex;
     align-items: center;
-    gap: 15px; /* Reduced gap */
-    padding: 0; /* Remove extra padding */
+    gap: 15px; /* Consistent gap */
+    padding: 0;
 }
 
 /* Style the photo */
 #president-preview .president-photo {
-    width: 75px; /* Smaller photo */
-    height: 75px;
+    width: 70px; /* Smaller photo */
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--accent-color); /* Thinner border */
-    box-shadow: none; /* Remove shadow for simplicity */
-    flex-shrink: 0; /* Prevent shrinking */
+    border: none; /* No border */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
+    flex-shrink: 0;
 }
 
 /* Style the details container */
@@ -1035,39 +1077,45 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 4px; /* Reduced gap */
-    font-size: 0.9em; /* Smaller base font size */
-    line-height: 1.4; /* Adjust line height */
-    overflow: hidden; /* Prevent text overflow issues */
+    gap: 3px; /* Tighten gap */
+    font-size: 0.9em;
+    line-height: 1.4;
+    overflow: hidden;
 }
 
 /* Style the president's name */
 #president-preview .president-name {
-    font-size: 1.15em; /* Relative to details font size */
+    font-size: 1.2em; /* Relative size */
     font-weight: 600;
     color: var(--text-color);
-    margin: 0;
-    word-break: break-word; /* Allow long names to wrap */
+    margin: 0 0 2px 0; /* Bottom margin */
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Style the paragraph text (Born, Height, Party, etc.) */
 #president-preview .president-details p {
-    margin: 0; /* Remove default margins */
+    margin: 0;
     color: var(--secondary-text);
-    white-space: nowrap; /* Prevent wrapping for short lines */
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if text is too long */
+    text-overflow: ellipsis;
+    font-size: 0.95em; /* Slightly smaller than base */
 }
 
 #president-preview .president-details p strong {
-    color: var(--text-color); /* Make labels stand out slightly */
-    opacity: 0.85;
+    color: var(--text-color); /* Make labels stand out */
+    opacity: 0.9;
+    font-weight: 500; /* Medium weight */
 }
 
 /* Style the term specifically if needed */
 #president-preview .presidential-term {
-    font-style: italic;
-    opacity: 0.8;
+    font-style: normal; /* No italic */
+    opacity: 0.85;
+    font-size: 0.9em;
 }
 
 /* Hide the main section title within the preview */
@@ -1075,107 +1123,73 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
     display: none;
 }
 
-/* Container for individual log entries (if using) */
+/* ======================== */
+/* Activity Log Card Style  */
+/* ======================== */
+/* Remove specific log-container/log-entry styles if using .list-item-admin */
+/* Keep these if #activity-log-list uses a different structure */
 .log-container {
-  /* Add any container-specific styles if needed, like max-height and overflow */
-  /* max-height: 400px; */
-  /* overflow-y: auto; */
+  /* Add container styles if needed */
 }
-
-/* Individual Log Entry Styling */
 .log-container .log-entry {
-  background-color: var(--card-background-color, #282c34); /* Use card background */
-  border: 1px solid var(--border-color-lighter, #444); /* Subtle border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 12px 15px; /* More padding */
-  margin-bottom: 10px; /* Space below each entry */
+  /* Styles for individual log entries if NOT using list-item-admin */
+  background-color: var(--content-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm); /* Smaller radius */
+  padding: 10px 15px;
+  margin-bottom: 8px;
   font-size: 0.9em;
   line-height: 1.5;
 }
-
-/* Metadata line (Timestamp, Admin) */
 .log-entry .log-meta small {
-  color: var(--text-muted-color, #aaa);
-  font-size: 0.8em; /* Smaller */
+  color: var(--secondary-text);
+  font-size: 0.85em;
   display: block;
-  margin-bottom: 6px; /* Space below meta */
+  margin-bottom: 5px;
 }
-
-/* Action line */
 .log-entry .log-action {
-  margin-bottom: 6px; /* Space below action */
+  margin-bottom: 5px;
+  color: var(--text-color);
 }
 .log-entry .log-action strong {
-   /* Action type already bold, maybe slightly more prominent */
-   color: var(--text-color, #f0f0f0); /* Ensure it's not muted */
+    font-weight: 500;
+    color: var(--accent-color); /* Accent for action type */
+    margin-right: 5px;
 }
-.log-entry .log-action span { /* The action type text itself */
-    color: var(--accent-color, #61dafb); /* Use accent color */
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-/* Details Section */
 .log-entry .log-details {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed var(--border-color-lighter, #444); /* Separator */
-}
-
-.log-entry .log-details .details-label {
-  display: block;
-  font-size: 0.75em;
-  color: var(--text-muted-color, #aaa);
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-/* Container for formatted key-value pairs */
-.log-entry .log-details .details-content {
-  font-size: 0.85em;
-  color: var(--text-color-secondary, #ccc);
+  border-top: 1px dashed var(--border-color); /* Dashed separator */
+  font-size: 0.9em;
+  color: var(--secondary-text);
   word-break: break-all;
-  background-color: var(--details-background-color, #1e1e1e); /* Code block style */
-  padding: 6px 10px;
-  border-radius: 3px;
   line-height: 1.4;
 }
+.log-entry .log-details .details-label {
+  display: block;
+  font-size: 0.8em;
+  color: var(--secondary-text);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.log-entry .log-details .details-content {
+  background-color: rgba(128,128,128, 0.05); /* Subtle background */
+  padding: 5px 8px;
+  border-radius: var(--border-radius-sm);
+}
 .log-entry .log-details .detail-item {
-    display: block; /* Each item on new line */
-    margin-bottom: 3px;
+    display: block;
+    margin-bottom: 2px;
 }
 .log-entry .log-details .detail-item strong { /* The key */
-     color: var(--text-muted-color, #aaa);
-     margin-right: 5px;
-     font-weight: normal; /* Don't double-bold */
- }
-
-
-/* --- Redesigned Danger Button (Outline Style) --- */
-.danger-button {
-  background-color: transparent;
-  color: var(--danger-color, #e57373); /* Softer red text */
-  border: 1px solid var(--danger-color, #e57373); /* Softer red border */
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9em;
-  margin-left: 10px; /* Space from other buttons */
-  transition: background-color 0.2s ease, color 0.2s ease; /* Smooth transition */
-  vertical-align: middle; /* Align better with inputs/other buttons */
+    color: var(--secondary-text);
+    margin-right: 5px;
+    font-weight: 500; /* Medium weight */
 }
 
-.danger-button:hover:not(:disabled) { /* Don't apply hover style if disabled */
-  background-color: var(--danger-color-hover-bg, #dc3545); /* Fill on hover */
-  border-color: var(--danger-color-hover-border, #c82333);
-  color: white; /* White text on hover */
-}
-
-.danger-button:disabled {
-    background-color: transparent;
-    border-color: var(--danger-color-disabled, #7a7a7a);
-    color: var(--danger-color-disabled, #7a7a7a);
-    cursor: not-allowed;
-    opacity: 0.6;
-}
+/* ======================== */
+/* Cleanup Old/Redundant    */
+/* ======================== */
+/* Removed specific --background-color, --card-background-color etc. from :root as they are handled by light/dark mode vars */
+/* Removed specific .danger-button styles if using standard button classes or the outline variant */
