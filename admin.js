@@ -1050,35 +1050,67 @@ function renderYouTubeCard(account) { //
          });
     }
 
-// --- FUNCTION TO SAVE Maintenance Mode Status (with Logging) ---
+// --- FUNCTION TO SAVE Maintenance Mode Status (Corrected Message Display) ---
     async function saveMaintenanceModeStatus(isEnabled) {
+        console.log(`DEBUG: saveMaintenanceModeStatus function START. isEnabled: ${isEnabled}`); // Debug log
+
         if (!auth || !auth.currentUser) {
             showAdminStatus("Error: Not logged in. Cannot save settings.", true);
             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
             return;
         }
-        console.log("Attempting to save maintenance mode:", isEnabled); // Debug log
+
+        // Use the specific status message area for settings, fallback to main admin status
         const statusElement = settingsStatusMessage || adminStatusElement;
-        if (statusElement) { /* ... show saving ... */ }
+
+        // Show saving message
+        if (statusElement) {
+            statusElement.textContent = "Saving setting...";
+            statusElement.className = "status-message"; // Reset style
+            statusElement.style.display = 'block';
+        } else {
+             console.warn("DEBUG: No status element found for saving message.");
+        }
 
         try {
+            // Save to Firestore
             await setDoc(profileDocRef, { isMaintenanceModeEnabled: isEnabled }, { merge: true });
-            console.log("Maintenance mode status save successful:", isEnabled);
+            console.log("DEBUG: Firestore setDoc successful for maintenance mode."); // Debug log
 
-             // *** Log Activity ***
-             if (typeof logAdminActivity === 'function') {
-                  logAdminActivity('UPDATE_SETTING_MAINTENANCE', { enabled: isEnabled });
-             } else { console.error("logAdminActivity function not found!");}
+            // Log Activity
+            if (typeof logAdminActivity === 'function') {
+                console.log("DEBUG: Calling logAdminActivity for maintenance mode."); // Debug log
+                logAdminActivity('UPDATE_SETTING_MAINTENANCE', { enabled: isEnabled });
+            } else { console.error("logAdminActivity function not found!");}
 
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { /* ... show success ... */ }
-             else { /* ... show success ... */ }
+            // *** THIS BLOCK SHOWS THE CONFIRMATION ***
+            console.log("DEBUG: Attempting to show status message. Target element:", statusElement); // Debug log
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) {
+                 console.log("DEBUG: Calling showSettingsStatus"); // Debug log
+                 // Call the specific function for the settings status area
+                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false);
+            } else if (statusElement === adminStatusElement && adminStatusElement) { // Check if using fallback
+                 console.log("DEBUG: Calling showAdminStatus (fallback for maintenance)."); // Debug log
+                 // Call the general admin status function
+                 showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false);
+            } else {
+                // If neither status element was found
+                console.error("DEBUG: Could not find a status element to display maintenance success message!");
+            }
+            // *** END OF CONFIRMATION LOGIC ***
 
         } catch (error) {
             console.error("Error saving maintenance mode status:", error);
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { /* ... show error ... */ }
-             else { /* ... show error ... */ }
+            // Show error message
+             if (statusElement === settingsStatusMessage && settingsStatusMessage) {
+                 showSettingsStatus(`Error saving setting: ${error.message}`, true);
+             } else { // Use fallback if specific element isn't available or was the target
+                 showAdminStatus(`Error saving maintenance mode: ${error.message}`, true);
+             }
+            // Revert checkbox state visually on error
             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
         }
+        console.log(`DEBUG: saveMaintenanceModeStatus function END. isEnabled: ${isEnabled}`); // Debug log
     }
     // *** END FUNCTION ***
 
@@ -2248,13 +2280,26 @@ function displayFilteredSocialLinks() {
         editForm.addEventListener('submit', handleUpdateShoutout); // Call handler on submit
     }
 
-    // Maintenance Mode Toggle Listener
-    if (maintenanceModeToggle) { //
-        maintenanceModeToggle.addEventListener('change', (e) => { //
-            const isEnabled = e.target.checked; // Get the new checked state
-            saveMaintenanceModeStatus(isEnabled); // Call the save function
-        });
-    }
+    // Maintenance Mode Toggle Listener (with defensive removal)
+if (maintenanceModeToggle) {
+    console.log("DEBUG: Preparing maintenance mode listener for:", maintenanceModeToggle);
+
+    // Define the handler function separately so we can refer to it
+    const handleMaintenanceToggle = (e) => {
+        // console.log(`DEBUG: Maintenance 'change' event fired! Checked: ${e.target.checked}`); // You can remove this debug line later
+        saveMaintenanceModeStatus(e.target.checked);
+    };
+
+    // Remove any potentially existing listener first to prevent duplicates
+    maintenanceModeToggle.removeEventListener('change', handleMaintenanceToggle);
+
+    // Add the listener using the named handler function
+    maintenanceModeToggle.addEventListener('change', handleMaintenanceToggle);
+    console.log("DEBUG: Added/Re-added maintenance mode listener."); // You can remove this debug line later
+
+} else {
+    console.log("DEBUG: Maintenance toggle element not found.");
+}
 
     // *** Search Input Event Listeners ***
     if (searchInputTiktok) { //
