@@ -1236,6 +1236,15 @@ function renderYouTubeCard(account) { //
             if (adminGreeting) {
                 adminGreeting.textContent = greetingText; // Set the text of the greeting element
             }
+
+            // ****** ADD THIS BLOCK ******
+            // Log the successful login attempt
+            if (typeof logAdminActivity === 'function') {
+                logAdminActivity('ADMIN_LOGIN', { email: user.email, uid: user.uid });
+            } else {
+                // This error indicates a problem with the core log function setup
+                console.error("logAdminActivity function not found! Cannot log login event.");
+            }
             // --- End Updated Greeting Logic ---
 
 
@@ -1262,6 +1271,8 @@ function renderYouTubeCard(account) { //
             if (typeof loadSocialLinksAdmin === 'function' && socialLinksListAdmin) {
                  loadSocialLinksAdmin();
             }
+
+            if (typeof loadActivityLog === 'function') { loadActivityLog(); }
 
             // --- Load Disabilities (Check This Block) --- // <<< THIS IS THE KEY PART
             if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
@@ -1550,63 +1561,89 @@ function renderYouTubeCard(account) { //
     }
 
 
-    // --- Function to Handle Updates from Edit Modal ---
-    async function handleUpdateShoutout(event) { //
-        event.preventDefault(); // Prevent default form submission
-        if (!editForm) return; // Exit if form element is missing
+    // --- Function to Handle Updates from Edit Modal (with DETAILED Logging) ---
+    async function handleUpdateShoutout(event) {
+        event.preventDefault();
+        if (!editForm) return;
+        const docId = editForm.getAttribute('data-doc-id');
+        const platform = editForm.getAttribute('data-platform');
+        if (!docId || !platform) { showAdminStatus("Error: Missing doc ID or platform for update.", true); return; }
+        console.log(`Attempting to update shoutout (detailed log): ${platform} - ${docId}`);
 
-        const docId = editForm.getAttribute('data-doc-id'); //
-        const platform = editForm.getAttribute('data-platform'); //
+        // 1. Get NEW data from form
+        const username = editUsernameInput?.value.trim();
+        const nickname = editNicknameInput?.value.trim();
+        const orderStr = editOrderInput?.value.trim();
+        const order = parseInt(orderStr);
 
-        if (!docId || !platform) { //
-            showAdminStatus("Error: Missing document ID or platform for update.", true); //
-            return; //
+        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
+             showAdminStatus(`Update Error: Invalid input...`, true); return;
         }
 
-        // Get updated values from the edit form
-        const username = editUsernameInput?.value.trim(); //
-        const nickname = editNicknameInput?.value.trim(); //
-        const orderStr = editOrderInput?.value.trim(); //
-        const order = parseInt(orderStr); //
-
-        // Basic validation
-        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) { //
-            showAdminStatus(`Update Error: Invalid input. Check required fields and ensure Order is non-negative.`, true); //
-            return; //
-        }
-
-        // Construct the object with updated data
-        const updatedData = { //
-            username: username, //
-            nickname: nickname, //
-            order: order, //
-            isVerified: editIsVerifiedInput?.checked || false, //
-            bio: editBioInput?.value.trim() || null, //
-            profilePic: editProfilePicInput?.value.trim() || null, //
-            // isEnabled: editIsEnabledInput?.checked ?? true, // Add later
-            lastModified: serverTimestamp() // Add a timestamp for the modification
+        const newDataFromForm = {
+            username: username,
+            nickname: nickname,
+            order: order,
+            isVerified: editIsVerifiedInput?.checked || false,
+            bio: editBioInput?.value.trim() || null,
+            profilePic: editProfilePicInput?.value.trim() || null,
         };
-
-        // Add platform-specific fields
-        if (platform === 'youtube') { //
-            updatedData.subscribers = editSubscribersInput?.value.trim() || 'N/A'; //
-            updatedData.coverPhoto = editCoverPhotoInput?.value.trim() || null; //
-        } else { // TikTok or Instagram
-            updatedData.followers = editFollowersInput?.value.trim() || 'N/A'; //
+        if (platform === 'youtube') {
+            newDataFromForm.subscribers = editSubscribersInput?.value.trim() || 'N/A';
+            newDataFromForm.coverPhoto = editCoverPhotoInput?.value.trim() || null;
+        } else {
+            newDataFromForm.followers = editFollowersInput?.value.trim() || 'N/A';
         }
 
-        // Update the document in Firestore
-        showAdminStatus("Updating shoutout..."); // Feedback
-        try { //
-            const docRef = doc(db, 'shoutouts', docId); //
-            await updateDoc(docRef, updatedData); // Perform the update
-            await updateMetadataTimestamp(platform); // Update site timestamp
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false); //
-            if (typeof closeEditModal === 'function') closeEditModal(); // Close the modal
-            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload the list
-        } catch (error) { //
-            console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error); //
-            showAdminStatus(`Error updating ${platform} shoutout: ${error.message}`, true); //
+        showAdminStatus("Updating shoutout...");
+        const docRef = doc(db, 'shoutouts', docId); // Define docRef once
+
+        try {
+            // 2. Get OLD data BEFORE saving
+            let oldData = {};
+            const oldDataSnap = await getDoc(docRef);
+            if (oldDataSnap.exists()) {
+                oldData = oldDataSnap.data();
+                 console.log("DEBUG: Fetched old shoutout data:", oldData);
+            } else {
+                console.warn("Old shoutout data not found for comparison - this shouldn't happen on an update.");
+            }
+
+            // 3. Save NEW data
+            await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
+            console.log("Shoutout update successful:", docId);
+            await updateMetadataTimestamp(platform);
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false);
+
+            // 4. Compare and find changes
+            const changes = {};
+            let hasChanges = false;
+            for (const key in newDataFromForm) {
+                // Special check for null/empty string equivalence if needed, otherwise direct compare
+                if (oldData[key] !== newDataFromForm[key]) {
+                    // Handle null/undefined vs empty string if necessary, e.g.:
+                    // if ((oldData[key] ?? "") !== (newDataFromForm[key] ?? "")) {
+                    changes[key] = { to: newDataFromForm[key] }; // Log only the new value for simplicity
+                    hasChanges = true;
+                }
+            }
+
+            // 5. Log ONLY actual changes
+            if (hasChanges) {
+                 console.log("DEBUG: Detected shoutout changes:", changes);
+                 if (typeof logAdminActivity === 'function') {
+                     logAdminActivity('SHOUTOUT_UPDATE', { id: docId, platform: platform, username: username, changes: changes });
+                 } else { console.error("logAdminActivity function not found!");}
+            } else {
+                 console.log("DEBUG: Shoutout update saved, but no values actually changed.");
+            }
+
+            if (typeof closeEditModal === 'function') closeEditModal();
+            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
+
+        } catch (error) {
+            console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error);
+            showAdminStatus(`Error updating ${platform} shoutout: ${error.message}`, true);
         }
     }
 
@@ -1809,54 +1846,68 @@ function closeEditUsefulLinkModal() { //
     if (editLinkStatusMessage) editLinkStatusMessage.textContent = ''; // Clear status message inside modal
 }
 
-// *** Function to Handle Updating a Useful Link from the Edit Modal ***
-async function handleUpdateUsefulLink(event) { //
-    event.preventDefault(); //
-    if (!editUsefulLinkForm) return; //
+// --- Function to Handle Updating a Useful Link (with DETAILED Logging) ---
+    async function handleUpdateUsefulLink(event) {
+        event.preventDefault();
+        if (!editUsefulLinkForm) return;
+        const docId = editUsefulLinkForm.getAttribute('data-doc-id');
+        if (!docId) { showEditLinkStatus("Error: Missing document ID...", true); return; }
+        console.log("Attempting to update useful link (detailed log):", docId);
 
-    const docId = editUsefulLinkForm.getAttribute('data-doc-id'); //
-    if (!docId) { //
-        showEditLinkStatus("Error: Missing document ID for update.", true); //
-        return; //
+        // 1. Get NEW data from form
+        const label = editLinkLabelInput?.value.trim();
+        const url = editLinkUrlInput?.value.trim();
+        const orderStr = editLinkOrderInput?.value.trim();
+        const order = parseInt(orderStr);
+
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditLinkStatus("Invalid input...", true); return; }
+        try { new URL(url); } catch (_) { showEditLinkStatus("Invalid URL format.", true); return; }
+
+        const newDataFromForm = { label: label, url: url, order: order };
+
+        showEditLinkStatus("Saving changes...");
+        const docRef = doc(db, 'useful_links', docId); // Define once
+
+        try {
+            // 2. Get OLD data BEFORE saving
+            let oldData = {};
+            const oldDataSnap = await getDoc(docRef);
+            if (oldDataSnap.exists()) { oldData = oldDataSnap.data(); }
+
+            // 3. Save NEW data
+            await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
+            console.log("Useful link update successful:", docId);
+
+            // 4. Compare and find changes
+            const changes = {};
+            let hasChanges = false;
+            for (const key in newDataFromForm) {
+                if (oldData[key] !== newDataFromForm[key]) {
+                    changes[key] = { to: newDataFromForm[key] };
+                    hasChanges = true;
+                }
+            }
+
+            // 5. Log ONLY actual changes
+            if (hasChanges) {
+                 console.log("DEBUG: Detected useful link changes:", changes);
+                 if (typeof logAdminActivity === 'function') {
+                    logAdminActivity('USEFUL_LINK_UPDATE', { id: docId, label: label, changes: changes });
+                 } else { console.error("logAdminActivity function not found!");}
+            } else {
+                 console.log("DEBUG: Useful link update saved, but no values changed.");
+            }
+
+            showAdminStatus("Useful link updated successfully.", false);
+            closeEditUsefulLinkModal();
+            loadUsefulLinksAdmin();
+
+        } catch (error) {
+            console.error(`Error updating useful link (ID: ${docId}):`, error);
+            showEditLinkStatus(`Error saving: ${error.message}`, true);
+            showAdminStatus(`Error updating useful link: ${error.message}`, true);
+        }
     }
-
-    const label = editLinkLabelInput?.value.trim(); //
-    const url = editLinkUrlInput?.value.trim(); //
-    const orderStr = editLinkOrderInput?.value.trim(); //
-    const order = parseInt(orderStr); //
-
-    if (!label || !url || !orderStr || isNaN(order) || order < 0) { //
-        showEditLinkStatus("Invalid input. Check required fields and ensure Order is non-negative.", true); //
-        return; //
-    }
-     // Simple URL validation
-    try { new URL(url); } catch (_) { //
-        showEditLinkStatus("Invalid URL format.", true); //
-        return; //
-    }
-
-    const updatedData = { //
-        label: label, //
-        url: url, //
-        order: order, //
-        lastModified: serverTimestamp() //
-    };
-
-    showEditLinkStatus("Saving changes..."); //
-    try { //
-        const docRef = doc(db, 'useful_links', docId); //
-        await updateDoc(docRef, updatedData); //
-        // await updateMetadataTimestamp('usefulLinks'); // Optional
-        showAdminStatus("Useful link updated successfully.", false); // Show main status
-        closeEditUsefulLinkModal(); //
-        loadUsefulLinksAdmin(); // Reload the list
-
-    } catch (error) { //
-        console.error(`Error updating useful link (ID: ${docId}):`, error); //
-        showEditLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
-        showAdminStatus(`Error updating useful link: ${error.message}`, true); // Also show main status
-    }
-}
 
 // --- Function to render a single Social Link item in the admin list ---
    function renderSocialLinkAdminListItem(container, docId, label, url, order, deleteHandler, editHandler) {
@@ -2104,54 +2155,66 @@ function displayFilteredSocialLinks() {
        if (editSocialLinkStatusMessage) editSocialLinkStatusMessage.textContent = ''; // Clear status message inside modal
    }
 
-   // --- Function to Handle Updating a Social Link from the Edit Modal ---
-   async function handleUpdateSocialLink(event) {
-       event.preventDefault();
-       if (!editSocialLinkForm) return;
+   // --- Function to Handle Updating a Social Link (with DETAILED Logging) ---
+    async function handleUpdateSocialLink(event) {
+        event.preventDefault();
+        if (!editSocialLinkForm) return;
+        const docId = editSocialLinkForm.getAttribute('data-doc-id');
+        if (!docId) { showEditSocialLinkStatus("Error: Missing document ID...", true); return; }
+        console.log("Attempting to update social link (detailed log):", docId);
 
-       const docId = editSocialLinkForm.getAttribute('data-doc-id');
-       if (!docId) {
-           showEditSocialLinkStatus("Error: Missing document ID for update.", true);
-           return;
-       }
+        // 1. Get NEW data from form
+        const label = editSocialLinkLabelInput?.value.trim();
+        const url = editSocialLinkUrlInput?.value.trim();
+        const orderStr = editSocialLinkOrderInput?.value.trim();
+        const order = parseInt(orderStr);
 
-       const label = editSocialLinkLabelInput?.value.trim();
-       const url = editSocialLinkUrlInput?.value.trim();
-       const orderStr = editSocialLinkOrderInput?.value.trim();
-       const order = parseInt(orderStr);
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditSocialLinkStatus("Invalid input...", true); return; }
+        try { new URL(url); } catch (_) { showEditSocialLinkStatus("Invalid URL format.", true); return; }
 
-       if (!label || !url || !orderStr || isNaN(order) || order < 0) {
-           showEditSocialLinkStatus("Invalid input. Check required fields and ensure Order is non-negative.", true);
-           return;
-       }
-        // Simple URL validation
-       try { new URL(url); } catch (_) {
-           showEditSocialLinkStatus("Invalid URL format.", true);
-           return;
-       }
+        const newDataFromForm = { label: label, url: url, order: order };
+        showEditSocialLinkStatus("Saving changes...");
+        const docRef = doc(db, 'social_links', docId); // Define once
 
-       const updatedData = {
-           label: label,
-           url: url,
-           order: order,
-           lastModified: serverTimestamp()
-       };
+        try {
+            // 2. Get OLD data BEFORE saving
+            let oldData = {};
+            const oldDataSnap = await getDoc(docRef);
+            if (oldDataSnap.exists()) { oldData = oldDataSnap.data(); }
 
-       showEditSocialLinkStatus("Saving changes...");
-       try {
-           const docRef = doc(db, 'social_links', docId);
-           await updateDoc(docRef, updatedData);
-           // Optionally: await updateMetadataTimestamp('socialLinks');
-           showAdminStatus("Social link updated successfully.", false); // Show main status
-           closeEditSocialLinkModal();
-           loadSocialLinksAdmin(); // Reload the list
+            // 3. Save NEW data
+            await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
+            console.log("Social link update successful:", docId);
 
-       } catch (error) {
-           console.error(`Error updating social link (ID: ${docId}):`, error);
-           showEditSocialLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
-           showAdminStatus(`Error updating social link: ${error.message}`, true); // Also show main status
-       }
-   }
+            // 4. Compare and find changes
+            const changes = {};
+            let hasChanges = false;
+            for (const key in newDataFromForm) {
+                if (oldData[key] !== newDataFromForm[key]) {
+                    changes[key] = { to: newDataFromForm[key] };
+                    hasChanges = true;
+                }
+            }
+
+            // 5. Log ONLY actual changes
+            if (hasChanges) {
+                 console.log("DEBUG: Detected social link changes:", changes);
+                 if (typeof logAdminActivity === 'function') {
+                     logAdminActivity('SOCIAL_LINK_UPDATE', { id: docId, label: label, changes: changes });
+                 } else { console.error("logAdminActivity function not found!");}
+            } else {
+                 console.log("DEBUG: Social link update saved, but no values changed.");
+            }
+
+            showAdminStatus("Social link updated successfully.", false);
+            closeEditSocialLinkModal();
+            loadSocialLinksAdmin();
+        } catch (error) {
+            console.error(`Error updating social link (ID: ${docId}):`, error);
+            showEditSocialLinkStatus(`Error saving: ${error.message}`, true);
+            showAdminStatus(`Error updating social link: ${error.message}`, true);
+        }
+    }
 
 // --- Attach Event Listeners for Forms ---
 
@@ -2319,15 +2382,15 @@ function displayFilteredSocialLinks() {
         }
     }
 
-    // Function to Save President Data
+   // --- Function to Save President Data (with DETAILED Logging) ---
     async function savePresidentData(event) {
-        event.preventDefault(); // Prevent default form submission behavior
-        // Use the constants defined earlier for the form and input elements
+        event.preventDefault();
         if (!auth || !auth.currentUser) { showPresidentStatus("Error: Not logged in.", true); return; }
         if (!presidentForm) return;
+        console.log("Attempting to save president data (detailed log version)...");
 
-        // Create data object from form inputs
-        const newData = {
+        // 1. Get NEW data from form
+        const newDataFromForm = {
             name: presidentNameInput?.value.trim() || "",
             born: presidentBornInput?.value.trim() || "",
             height: presidentHeightInput?.value.trim() || "",
@@ -2335,15 +2398,43 @@ function displayFilteredSocialLinks() {
             term: presidentTermInput?.value.trim() || "",
             vp: presidentVpInput?.value.trim() || "",
             imageUrl: presidentImageUrlInput?.value.trim() || "",
-            lastUpdated: serverTimestamp() // Add a timestamp
         };
 
-        showPresidentStatus("Saving president info..."); // Use specific status func
+        showPresidentStatus("Saving president info...");
         try {
-            // Use setDoc with merge: true to create or update the document
-            await setDoc(presidentDocRef, newData, { merge: true }); // Use presidentDocRef
-            console.log("President data saved to:", presidentDocRef.path);
+            // 2. Get OLD data BEFORE saving
+            let oldData = {};
+            const oldDataSnap = await getDoc(presidentDocRef);
+            if (oldDataSnap.exists()) {
+                oldData = oldDataSnap.data();
+                 console.log("DEBUG: Fetched old president data for comparison:", oldData);
+            }
+
+            // 3. Save NEW data
+            await setDoc(presidentDocRef, { ...newDataFromForm, lastModified: serverTimestamp() }, { merge: true });
+            console.log("President data save successful:", presidentDocRef.path);
             showPresidentStatus("President info updated successfully!", false);
+
+            // 4. Compare old and new
+            const changes = {};
+            let hasChanges = false;
+            for (const key in newDataFromForm) {
+                if (oldData[key] !== newDataFromForm[key]) {
+                    changes[key] = { to: newDataFromForm[key] };
+                    hasChanges = true;
+                }
+            }
+
+            // 5. Log ONLY actual changes
+            if (hasChanges) {
+                 console.log("DEBUG: Detected president info changes:", changes);
+                 if (typeof logAdminActivity === 'function') {
+                     logAdminActivity('UPDATE_PRESIDENT_INFO', { name: newDataFromForm.name, changes: changes });
+                 } else { console.error("logAdminActivity function not found!");}
+            } else {
+                 console.log("DEBUG: President info save submitted, but no values changed.");
+            }
+
         } catch (error) {
             console.error("Error saving president data:", error);
             showPresidentStatus(`Error saving president info: ${error.message}`, true);
@@ -2716,55 +2807,65 @@ async function loadDisabilitiesAdmin() {
         if (editDisabilityStatusMessage) editDisabilityStatusMessage.textContent = ''; // Clear status message inside modal
     }
 
-    // Function to Handle Updating a Disability Link from the Edit Modal
+    // --- Function to Handle Updating a Disability Link (with DETAILED Logging) ---
     async function handleUpdateDisability(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Use consts defined earlier
+        event.preventDefault();
         if (!editDisabilityForm) return;
-
         const docId = editDisabilityForm.getAttribute('data-doc-id');
-        if (!docId) {
-            showEditDisabilityStatus("Error: Missing document ID for update.", true);
-            return;
-        }
+        if (!docId) { showEditDisabilityStatus("Error: Missing document ID...", true); return; }
+        console.log("Attempting to update disability link (detailed log):", docId);
 
-        // Get updated values from modal inputs
+        // 1. Get NEW data from form
         const name = editDisabilityNameInput?.value.trim();
         const url = editDisabilityUrlInput?.value.trim();
         const orderStr = editDisabilityOrderInput?.value.trim();
         const order = parseInt(orderStr);
 
-        // Validation
-        if (!name || !url || !orderStr || isNaN(order) || order < 0) {
-            showEditDisabilityStatus("Invalid input. Check required fields and ensure Order is non-negative.", true);
-            return;
-        }
-        // Basic URL validation
-        try { new URL(url); } catch (_) {
-            showEditDisabilityStatus("Invalid URL format.", true);
-            return;
-        }
+        if (!name || !url || !orderStr || isNaN(order) || order < 0) { showEditDisabilityStatus("Invalid input...", true); return; }
+        try { new URL(url); } catch (_) { showEditDisabilityStatus("Invalid URL format.", true); return; }
 
-        const updatedData = {
-            name: name,
-            url: url,
-            order: order,
-            lastModified: serverTimestamp() // Add modification timestamp
-        };
-
+        const newDataFromForm = { name: name, url: url, order: order };
         showEditDisabilityStatus("Saving changes...");
+        const docRef = doc(db, 'disabilities', docId); // Define once
+
         try {
-            // Use the disabilitiesCollectionRef defined earlier
-            const docRef = doc(db, 'disabilities', docId);
-            await updateDoc(docRef, updatedData);
-            showAdminStatus("Disability link updated successfully.", false); // Show main status
-            closeEditDisabilityModal(); // Close modal on success
-            loadDisabilitiesAdmin(); // Reload the list in the admin panel
+            // 2. Get OLD data BEFORE saving
+            let oldData = {};
+            const oldDataSnap = await getDoc(docRef);
+            if (oldDataSnap.exists()) { oldData = oldDataSnap.data(); }
+
+            // 3. Save NEW data
+            await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
+            console.log("Disability link update successful:", docId);
+
+            // 4. Compare and find changes
+            const changes = {};
+            let hasChanges = false;
+            for (const key in newDataFromForm) {
+                if (oldData[key] !== newDataFromForm[key]) {
+                    changes[key] = { to: newDataFromForm[key] };
+                    hasChanges = true;
+                }
+            }
+
+             // 5. Log ONLY actual changes
+            if (hasChanges) {
+                console.log("DEBUG: Detected disability link changes:", changes);
+                 if (typeof logAdminActivity === 'function') {
+                    logAdminActivity('DISABILITY_LINK_UPDATE', { id: docId, name: name, changes: changes });
+                 } else { console.error("logAdminActivity function not found!");}
+            } else {
+                 console.log("DEBUG: Disability link update saved, but no values changed.");
+            }
+
+            showAdminStatus("Disability link updated successfully.", false);
+            closeEditDisabilityModal();
+            loadDisabilitiesAdmin();
 
         } catch (error) {
             console.error(`Error updating disability link (ID: ${docId}):`, error);
-            showEditDisabilityStatus(`Error saving: ${error.message}`, true); // Show error in modal
-            showAdminStatus(`Error updating disability link: ${error.message}`, true); // Also show main status
+            showEditDisabilityStatus(`Error saving: ${error.message}`, true);
+            showAdminStatus(`Error updating disability link: ${error.message}`, true);
         }
     }
 
