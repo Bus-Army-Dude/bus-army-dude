@@ -86,6 +86,21 @@
     --modal-backdrop-color: var(--dark-modal-backdrop);
 }
 
+  --background-color: #1a1a1d; /* Example main background */
+  --card-background-color: #282c34; /* Slightly lighter background for entry */
+  --details-background-color: #1e1e1e; /* Background for details block */
+  --text-color: #f0f0f0;
+  --text-color-secondary: #ccc;
+  --text-muted-color: #aaa;
+  --border-color: #555;
+  --border-color-lighter: #444;
+  --accent-color: #61dafb; /* Example accent */
+  --danger-color: #e57373; /* Slightly softer red */
+  --danger-color-hover-bg: #dc3545; /* Original red for hover */
+  --danger-color-hover-border: #c82333; /* Darker red for hover border */
+  --danger-color-disabled: #7a7a7a;
+}
+
 /* --- Light Mode Override --- */
 body.light-mode {
     --bg-color: var(--light-bg);
@@ -1060,37 +1075,107 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
     display: none;
 }
 
+/* Container for individual log entries (if using) */
+.log-container {
+  /* Add any container-specific styles if needed, like max-height and overflow */
+  /* max-height: 400px; */
+  /* overflow-y: auto; */
+}
+
+/* Individual Log Entry Styling */
 .log-container .log-entry {
-  border-bottom: 1px solid var(--border-color); /* Use your theme's border color */
-  padding: 8px 4px;
+  background-color: var(--card-background-color, #282c34); /* Use card background */
+  border: 1px solid var(--border-color-lighter, #444); /* Subtle border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 12px 15px; /* More padding */
+  margin-bottom: 10px; /* Space below each entry */
   font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* Metadata line (Timestamp, Admin) */
+.log-entry .log-meta small {
+  color: var(--text-muted-color, #aaa);
+  font-size: 0.8em; /* Smaller */
+  display: block;
+  margin-bottom: 6px; /* Space below meta */
+}
+
+/* Action line */
+.log-entry .log-action {
+  margin-bottom: 6px; /* Space below action */
+}
+.log-entry .log-action strong {
+   /* Action type already bold, maybe slightly more prominent */
+   color: var(--text-color, #f0f0f0); /* Ensure it's not muted */
+}
+.log-entry .log-action span { /* The action type text itself */
+    color: var(--accent-color, #61dafb); /* Use accent color */
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/* Details Section */
+.log-entry .log-details {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-color-lighter, #444); /* Separator */
+}
+
+.log-entry .log-details .details-label {
+  display: block;
+  font-size: 0.75em;
+  color: var(--text-muted-color, #aaa);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Container for formatted key-value pairs */
+.log-entry .log-details .details-content {
+  font-size: 0.85em;
+  color: var(--text-color-secondary, #ccc);
+  word-break: break-all;
+  background-color: var(--details-background-color, #1e1e1e); /* Code block style */
+  padding: 6px 10px;
+  border-radius: 3px;
   line-height: 1.4;
 }
-
-.log-container .log-entry small {
-  color: var(--text-muted-color); /* Use your theme's muted color */
-  display: block;
-  font-size: 0.85em;
+.log-entry .log-details .detail-item {
+    display: block; /* Each item on new line */
+    margin-bottom: 3px;
 }
+.log-entry .log-details .detail-item strong { /* The key */
+     color: var(--text-muted-color, #aaa);
+     margin-right: 5px;
+     font-weight: normal; /* Don't double-bold */
+ }
 
+
+/* --- Redesigned Danger Button (Outline Style) --- */
 .danger-button {
-  background-color: #dc3545; /* Bootstrap danger red */
-  color: white;
-  border: 1px solid #dc3545;
+  background-color: transparent;
+  color: var(--danger-color, #e57373); /* Softer red text */
+  border: 1px solid var(--danger-color, #e57373); /* Softer red border */
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9em;
-  margin-left: 10px; /* Add some space */
+  margin-left: 10px; /* Space from other buttons */
+  transition: background-color 0.2s ease, color 0.2s ease; /* Smooth transition */
+  vertical-align: middle; /* Align better with inputs/other buttons */
 }
 
-.danger-button:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
+.danger-button:hover:not(:disabled) { /* Don't apply hover style if disabled */
+  background-color: var(--danger-color-hover-bg, #dc3545); /* Fill on hover */
+  border-color: var(--danger-color-hover-border, #c82333);
+  color: white; /* White text on hover */
 }
 
 .danger-button:disabled {
-    background-color: #e47f89;
+    background-color: transparent;
+    border-color: var(--danger-color-disabled, #7a7a7a);
+    color: var(--danger-color-disabled, #7a7a7a);
     cursor: not-allowed;
-    opacity: 0.65;
+    opacity: 0.6;
 }
