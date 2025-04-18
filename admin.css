@@ -1059,3 +1059,16 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
 #president-preview .president-section > .section-title {
     display: none;
 }
+
+.log-container .log-entry {
+  border-bottom: 1px solid var(--border-color); /* Use your theme's border color */
+  padding: 8px 4px;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.log-container .log-entry small {
+  color: var(--text-muted-color); /* Use your theme's muted color */
+  display: block;
+  font-size: 0.85em;
+}
