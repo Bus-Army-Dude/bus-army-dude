@@ -1,4 +1,4 @@
-/* admin.css - Apple-Inspired Theme (Unified Preview Styles + President Preview) */
+/* admin.css - Apple-Inspired Theme (Unified Preview Styles + President Preview + Toggles) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -6,94 +6,69 @@
 :root {
     /* --- Base & Font --- */
     --system-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    --base-font-size: 16px; /* Apple often uses slightly smaller base fonts in UI, but 16px is good for web accessibility */
-    --line-height: 1.5; /* Slightly tighter line height common in UI */
+    --base-font-size: 16px;
+    --line-height: 1.5;
     --border-radius-sm: 4px;
-    --border-radius-md: 8px;  /* Standard rounding */
-    --border-radius-lg: 12px; /* Larger rounding for containers */
-    --transition-speed: 0.2s; /* Faster transitions */
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --transition-speed: 0.2s;
     --transition-timing: ease-in-out;
 
     /* --- Light Mode Colors (Apple Style) --- */
-    --apple-light-bg: #f5f5f7;             /* Off-white/very light grey background */
-    --apple-light-content-bg: #ffffff;       /* White content area */
-    --apple-light-text: #1d1d1f;             /* Near-black text */
-    --apple-light-secondary-text: #6e6e73;   /* Grey secondary text */
-    --apple-light-border: #d2d2d7;           /* Light grey border */
+    --apple-light-bg: #f5f5f7;
+    --apple-light-content-bg: #ffffff;
+    --apple-light-text: #1d1d1f;
+    --apple-light-secondary-text: #6e6e73;
+    --apple-light-border: #d2d2d7;
     --apple-light-input-bg: #ffffff;
     --apple-light-input-border: #d2d2d7;
-    --apple-light-input-focus-border: #007aff; /* Apple Blue */
+    --apple-light-input-focus-border: #007aff;
     --apple-light-input-focus-shadow: rgba(0, 122, 255, 0.2);
-    --apple-light-shadow: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --apple-light-accent: #007aff;           /* Apple Blue */
-    --apple-light-accent-hover: #005ecf;     /* Darker Blue */
+    --apple-light-shadow: rgba(0, 0, 0, 0.08);
+    --apple-light-accent: #007aff;
+    --apple-light-accent-hover: #005ecf;
     --apple-light-link: #007aff;
-    --apple-light-success-bg: #e5f7e9;       /* Light green */
+    --apple-light-success-bg: #e5f7e9;
     --apple-light-success-text: #20803a;
-    --apple-light-error-bg: #fdebee;         /* Light red */
+    --apple-light-error-bg: #fdebee;
     --apple-light-error-text: #c62828;
     --apple-light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236e6e73' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    --apple-light-modal-backdrop: rgba(245, 245, 247, 0.7); /* Light backdrop with blur */
+    --apple-light-modal-backdrop: rgba(245, 245, 247, 0.7);
 
     /* --- Dark Mode Colors (Apple Style) --- */
-    --apple-dark-bg: #161617;                 /* Very dark grey background */
-    --apple-dark-content-bg: #1d1d1f;           /* Slightly lighter dark content area */
-    --apple-dark-text: #f5f5f7;                 /* Off-white text */
-    --apple-dark-secondary-text: #86868b;       /* Lighter grey secondary text */
-    --apple-dark-border: #3a3a3c;               /* Darker grey border */
-    --apple-dark-input-bg: #2c2c2e;             /* Dark input background */
+    --apple-dark-bg: #161617;
+    --apple-dark-content-bg: #1d1d1f;
+    --apple-dark-text: #f5f5f7;
+    --apple-dark-secondary-text: #86868b;
+    --apple-dark-border: #3a3a3c;
+    --apple-dark-input-bg: #2c2c2e;
     --apple-dark-input-border: #3a3a3c;
-    --apple-dark-input-focus-border: #0a84ff;   /* Brighter Apple Blue for dark mode */
+    --apple-dark-input-focus-border: #0a84ff;
     --apple-dark-input-focus-shadow: rgba(10, 132, 255, 0.3);
-    --apple-dark-shadow: rgba(0, 0, 0, 0.25);   /* Darker shadow */
-    --apple-dark-accent: #0a84ff;               /* Brighter Apple Blue */
-    --apple-dark-accent-hover: #3f9dff;         /* Lighter blue hover */
+    --apple-dark-shadow: rgba(0, 0, 0, 0.25);
+    --apple-dark-accent: #0a84ff;
+    --apple-dark-accent-hover: #3f9dff;
     --apple-dark-link: #0a84ff;
-    --apple-dark-success-bg: #254a31;           /* Dark green */
+    --apple-dark-success-bg: #254a31;
     --apple-dark-success-text: #79d496;
-    --apple-dark-error-bg: #5b1e23;             /* Dark red */
+    --apple-dark-error-bg: #5b1e23;
     --apple-dark-error-text: #f7a3ab;
     --apple-dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2386868b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    --apple-dark-modal-backdrop: rgba(22, 22, 23, 0.7); /* Dark backdrop with blur */
+    --apple-dark-modal-backdrop: rgba(22, 22, 23, 0.7);
 
     /* --- Alert/Action Colors (Consistent - Adjusted for Apple feel) --- */
-    --color-danger: #ff3b30;                 /* Apple Red */
+    --color-danger: #ff3b30;
     --color-danger-hover: #d1302f;
     --color-danger-glow: rgba(255, 59, 48, 0.25);
-    --color-success-action: #34c759;           /* Apple Green */
+    --color-success-action: #34c759; /* Apple Green (often used for toggles) */
     --color-success-action-hover: #2ca349;
     --color-success-action-glow: rgba(52, 199, 89, 0.25);
-    --color-secondary-action: #8e8e93;         /* Apple Grey */
+    --color-secondary-action: #8e8e93;
     --color-secondary-action-hover: #7a7a80;
     --color-secondary-action-glow: rgba(142, 142, 147, 0.25);
+    --color-danger-disabled: #7a7a7a; /* From old danger button styles */
 
-    /* --- Fallback theme variables (default to light mode) --- */
-    --bg-color: var(--apple-light-bg);
-    --content-bg: var(--apple-light-content-bg);
-    --text-color: var(--apple-light-text);
-    --secondary-text: var(--apple-light-secondary-text);
-    --border-color: var(--apple-light-border);
-    --input-bg-color: var(--apple-light-input-bg);
-    --input-border-color: var(--apple-light-input-border);
-    --input-focus-border-color: var(--apple-light-input-focus-border);
-    --input-focus-shadow-color: var(--apple-light-input-focus-shadow);
-    --shadow-color: var(--apple-light-shadow);
-    --accent-color: var(--apple-light-accent);
-    --hover-color: var(--apple-light-accent-hover);
-    --link-color: var(--apple-light-link);
-    --success-bg-color: var(--apple-light-success-bg);
-    --success-text-color: var(--apple-light-success-text);
-    --error-bg-color: var(--apple-light-error-bg);
-    --error-text-color: var(--apple-light-error-text);
-    --select-arrow: var(--apple-light-select-arrow);
-    --modal-backdrop-color: var(--apple-light-modal-backdrop);
-    --accent-glow-color: var(--apple-light-input-focus-shadow); /* Use input shadow for general glow */
-    --accent-rgb: 0, 122, 255; /* RGB for light accent */
-    --danger-rgb: 255, 59, 48;
-}
-
-/* --- Dark Mode Override --- */
-body.dark-mode {
+    /* --- Fallback theme variables (default to dark mode as per original body class) --- */
     --bg-color: var(--apple-dark-bg);
     --content-bg: var(--apple-dark-content-bg);
     --text-color: var(--apple-dark-text);
@@ -114,7 +89,58 @@ body.dark-mode {
     --select-arrow: var(--apple-dark-select-arrow);
     --modal-backdrop-color: var(--apple-dark-modal-backdrop);
     --accent-glow-color: var(--apple-dark-input-focus-shadow);
-    --accent-rgb: 10, 132, 255; /* RGB for dark accent */
+    --accent-rgb: 10, 132, 255;
+    --danger-rgb: 255, 59, 48;
+}
+
+/* --- Light Mode Override --- */
+body:not(.dark-mode) { /* Default to light if no class or if class is not dark-mode */
+    --bg-color: var(--apple-light-bg);
+    --content-bg: var(--apple-light-content-bg);
+    --text-color: var(--apple-light-text);
+    --secondary-text: var(--apple-light-secondary-text);
+    --border-color: var(--apple-light-border);
+    --input-bg-color: var(--apple-light-input-bg);
+    --input-border-color: var(--apple-light-input-border);
+    --input-focus-border-color: var(--apple-light-input-focus-border);
+    --input-focus-shadow-color: var(--apple-light-input-focus-shadow);
+    --shadow-color: var(--apple-light-shadow);
+    --accent-color: var(--apple-light-accent);
+    --hover-color: var(--apple-light-accent-hover);
+    --link-color: var(--apple-light-link);
+    --success-bg-color: var(--apple-light-success-bg);
+    --success-text-color: var(--apple-light-success-text);
+    --error-bg-color: var(--apple-light-error-bg);
+    --error-text-color: var(--apple-light-error-text);
+    --select-arrow: var(--apple-light-select-arrow);
+    --modal-backdrop-color: var(--apple-light-modal-backdrop);
+    --accent-glow-color: var(--apple-light-input-focus-shadow);
+    --accent-rgb: 0, 122, 255;
+}
+
+/* Explicit Light Mode Class */
+body.light-mode {
+    --bg-color: var(--apple-light-bg);
+    --content-bg: var(--apple-light-content-bg);
+    --text-color: var(--apple-light-text);
+    --secondary-text: var(--apple-light-secondary-text);
+    --border-color: var(--apple-light-border);
+    --input-bg-color: var(--apple-light-input-bg);
+    --input-border-color: var(--apple-light-input-border);
+    --input-focus-border-color: var(--apple-light-input-focus-border);
+    --input-focus-shadow-color: var(--apple-light-input-focus-shadow);
+    --shadow-color: var(--apple-light-shadow);
+    --accent-color: var(--apple-light-accent);
+    --hover-color: var(--apple-light-accent-hover);
+    --link-color: var(--apple-light-link);
+    --success-bg-color: var(--apple-light-success-bg);
+    --success-text-color: var(--apple-light-success-text);
+    --error-bg-color: var(--apple-light-error-bg);
+    --error-text-color: var(--apple-light-error-text);
+    --select-arrow: var(--apple-light-select-arrow);
+    --modal-backdrop-color: var(--apple-light-modal-backdrop);
+    --accent-glow-color: var(--apple-light-input-focus-shadow);
+    --accent-rgb: 0, 122, 255;
 }
 
 /* ======================== */
@@ -128,7 +154,7 @@ body {
     font-family: var(--system-font-stack);
     font-size: var(--base-font-size);
     margin: 0;
-    padding: 40px; /* More padding */
+    padding: 40px;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: var(--line-height);
@@ -141,9 +167,9 @@ body {
     max-width: 1000px;
     margin: 30px auto;
     background: var(--content-bg);
-    padding: 40px 50px; /* Generous padding */
-    border-radius: var(--border-radius-lg); /* More rounded */
-    box-shadow: 0 5px 25px -10px var(--shadow-color); /* Softer shadow */
+    padding: 40px 50px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 5px 25px -10px var(--shadow-color);
     border: 1px solid var(--border-color);
     transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
 }
@@ -152,12 +178,12 @@ h1, h2, h3, h4, h5 {
     color: var(--text-color);
     margin-top: 1.6em;
     margin-bottom: 0.8em;
-    font-weight: 600; /* Standard bold */
-    letter-spacing: normal; /* Remove letter spacing for cleaner look */
+    font-weight: 600;
+    letter-spacing: normal;
 }
 h1 { text-align: center; margin-bottom: 40px; margin-top: 0; font-size: 2rem; font-weight: 700; }
 h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 1.5em; font-weight: 600; }
-h3 { color: var(--text-color); font-size: 1.3rem; margin-top: 1.8em; border-bottom: none; padding-bottom: 0; opacity: 1; font-weight: 600; } /* Less emphasis, no accent color */
+h3 { color: var(--text-color); font-size: 1.3rem; margin-top: 1.8em; border-bottom: none; padding-bottom: 0; opacity: 1; font-weight: 600; margin-bottom: 1.2em; } /* Added margin-bottom */
 h4 { font-size: 1.1rem; color: var(--text-color); opacity: 1; margin-top: 30px; margin-bottom: 15px; font-weight: 600;}
 h5 { font-size: 1rem; color: var(--secondary-text); margin-top: 25px; margin-bottom: 10px; font-weight: 500; }
 
@@ -175,13 +201,13 @@ a:hover {
 /* Login Section            */
 /* ======================== */
 #login-section {
-    margin-top: 50px; /* More space */
+    margin-top: 50px;
     padding: 40px;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg); /* Consistent rounding */
+    border-radius: var(--border-radius-lg);
     background-color: var(--content-bg);
     box-shadow: 0 5px 15px -5px var(--shadow-color);
-    max-width: 400px; /* Slightly narrower */
+    max-width: 400px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -191,7 +217,7 @@ a:hover {
 /* Admin Content Area       */
 /* ======================== */
 #admin-content {
-    margin-top: 40px; /* More space */
+    margin-top: 40px;
     padding-top: 0;
 }
 
@@ -200,9 +226,9 @@ a:hover {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px; /* More space */
+    margin-bottom: 40px;
     padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color); /* Standard border, not accent */
+    border-bottom: 1px solid var(--border-color);
     gap: 20px;
 }
 .admin-header h2 { margin: 0; text-align: left; border-bottom: none; flex-grow: 1; font-size: 1.8rem; }
@@ -214,7 +240,7 @@ a:hover {
     padding: 30px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: transparent; /* Don't need extra background inside container */
+    background-color: transparent;
 }
 .admin-section:last-of-type { margin-bottom: 15px; }
 
@@ -225,38 +251,14 @@ a:hover {
 .form-group {
     margin-bottom: 20px;
 }
-.section-toggle label { /* Style for section toggles */
-    font-weight: 500; /* Make section toggle label slightly bolder */
-}
-.checkbox-group label {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 0;
-    margin-left: 8px;
-    font-weight: normal;
-    color: var(--text-color);
-    cursor: pointer;
-    text-transform: none;
-    font-size: 1rem;
-    letter-spacing: normal;
-}
-.checkbox-group input[type="checkbox"] {
-    margin-bottom: 0;
-    margin-right: 0;
-    width: 1.1em;
-    height: 1.1em;
-    accent-color: var(--accent-color); /* Uses browser/OS accent styling */
-    cursor: pointer;
-    vertical-align: middle;
-}
 
 label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: var(--text-color); /* Labels are standard text color */
+    color: var(--text-color);
     font-size: 0.9em;
-    text-transform: none; /* No uppercase */
+    text-transform: none;
     letter-spacing: normal;
 }
 
@@ -270,14 +272,14 @@ input[type="datetime-local"],
 select,
 textarea {
     width: 100%;
-    padding: 10px 12px; /* Slightly less padding */
+    padding: 10px 12px;
     border: 1px solid var(--input-border-color);
-    border-radius: var(--border-radius-md); /* Consistent rounding */
+    border-radius: var(--border-radius-md);
     font-size: 1rem;
     font-family: inherit;
     background-color: var(--input-bg-color);
     color: var(--text-color);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset; /* Subtle inset shadow */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset;
     transition: border-color var(--transition-speed) var(--transition-timing),
                 box-shadow var(--transition-speed) var(--transition-timing),
                 background-color var(--transition-speed) var(--transition-timing);
@@ -286,7 +288,7 @@ textarea {
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--input-focus-border-color);
-    box-shadow: 0 0 0 3px var(--input-focus-shadow-color), 0 1px 2px rgba(0,0,0,0.02) inset; /* Focus ring */
+    box-shadow: 0 0 0 3px var(--input-focus-shadow-color), 0 1px 2px rgba(0,0,0,0.02) inset;
 }
 
 textarea { min-height: 120px; resize: vertical; }
@@ -295,25 +297,143 @@ select {
     background-image: var(--select-arrow);
     background-repeat: no-repeat;
     background-position: right 0.9rem center;
-    background-size: 12px 10px; /* Adjusted size */
+    background-size: 12px 10px;
     padding-right: 2.5rem;
 }
 
 ::placeholder { color: var(--secondary-text); opacity: 0.8; }
 
+/* ======================== */
+/* Checkbox / Toggle Styles */
+/* ======================== */
+
+/* Base styling for the group containing a checkbox/toggle */
+.checkbox-group {
+    display: flex;
+    align-items: center; /* Vertically align items */
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 10px; /* Space between elements */
+}
+
+/* --- Standard Checkbox Styles --- */
+.checkbox-group input[type="checkbox"]:not(.apple-toggle-checkbox) {
+    width: 1.1em;
+    height: 1.1em;
+    accent-color: var(--accent-color); /* Use OS/browser native accent */
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0 8px 0 0; /* Reset margin, add right margin */
+    padding: 0;
+    flex-shrink: 0;
+}
+/* Label specifically for standard checkboxes */
+.checkbox-group input[type="checkbox"]:not(.apple-toggle-checkbox) + label:not(.apple-toggle-label) {
+    display: inline-flex;
+    align-items: center;
+    font-weight: normal;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0; /* Reset */
+    padding: 0;
+    line-height: 1.2; /* Adjust line height */
+}
+
+/* --- Apple Toggle Switch Styles --- */
+.apple-toggle-checkbox {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.apple-toggle-label {
+    --_toggle-width: 51px;
+    --_toggle-height: 31px;
+    --_slider-size: 27px;
+    --_slider-margin: 2px;
+    --_slider-translate: calc(var(--_toggle-width) - var(--_slider-size) - (2 * var(--_slider-margin)));
+
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    width: var(--_toggle-width);
+    height: var(--_toggle-height);
+    background-color: var(--apple-light-secondary-text); /* Light mode off */
+    border-radius: calc(var(--_toggle-height) / 2);
+    transition: background-color var(--transition-speed) var(--transition-timing);
+    vertical-align: middle;
+    flex-shrink: 0;
+    margin: 0; /* Reset */
+}
+body.dark-mode .apple-toggle-label {
+    background-color: var(--apple-dark-secondary-text); /* Dark mode off */
+}
+
+.apple-toggle-label::after {
+    content: '';
+    position: absolute;
+    top: var(--_slider-margin);
+    left: var(--_slider-margin);
+    width: var(--_slider-size);
+    height: var(--_slider-size);
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: transform var(--transition-speed) var(--transition-timing);
+}
+
+.apple-toggle-checkbox:checked + .apple-toggle-label {
+    background-color: var(--color-success-action); /* Green for 'on' */
+}
+
+.apple-toggle-checkbox:checked + .apple-toggle-label::after {
+    transform: translateX(var(--_slider-translate));
+}
+
+.apple-toggle-checkbox:focus-visible + .apple-toggle-label {
+    outline: none; /* Remove default */
+    box-shadow: 0 0 0 2px var(--content-bg), 0 0 0 4px var(--accent-color); /* Ring effect */
+}
+
+/* Style for a text label that might follow the toggle */
+.checkbox-group .apple-toggle-label + label {
+    font-weight: normal;
+    font-size: 1rem;
+    color: var(--text-color);
+    cursor: pointer;
+    margin: 0; /* Reset */
+    line-height: var(--_toggle-height); /* Align text with toggle */
+    display: inline-block; /* Needed for line-height alignment */
+}
+
+/* --- General Checkbox Group Helper Text --- */
+.checkbox-group small {
+    flex-basis: 100%; /* Take full width */
+    margin-top: 2px;
+    color: var(--secondary-text);
+    font-size: 0.85em;
+    line-height: 1.3;
+}
 
 /* ======================== */
 /* Button Styles            */
 /* ======================== */
 button, .button-primary {
-    background-color: var(--accent-color); /* Solid color */
-    color: #ffffff; /* White text on blue */
-    padding: 10px 20px; /* Adjusted padding */
+    background-color: var(--accent-color);
+    color: #ffffff;
+    padding: 10px 20px;
     border: none;
-    border-radius: var(--border-radius-md); /* Consistent rounding */
+    border-radius: var(--border-radius-md);
     cursor: pointer;
-    font-size: 0.95rem; /* Slightly smaller font */
-    font-weight: 500; /* Medium weight */
+    font-size: 0.95rem;
+    font-weight: 500;
     letter-spacing: normal;
     transition: background-color var(--transition-speed) var(--transition-timing),
                 transform var(--transition-speed) var(--transition-timing),
@@ -325,18 +445,17 @@ button, .button-primary {
     display: inline-block;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-body.dark-mode button, body.dark-mode .button-primary {
-     color: #ffffff; /* White text usually okay on brighter dark mode blue too */
-     /* background-color: var(--apple-dark-accent); */ /* Already handled by variable */
+body:not(.dark-mode) button, body:not(.dark-mode) .button-primary {
+    color: #ffffff; /* White text on light mode blue */
 }
 
 button:hover, .button-primary:hover {
-    background-color: var(--hover-color); /* Slightly darker/lighter */
-    transform: none; /* No lift */
+    background-color: var(--hover-color);
+    transform: none;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 button:active, .button-primary:active {
-    transform: scale(0.98); /* Slight press effect */
+    transform: scale(0.98);
     background-color: var(--hover-color);
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
@@ -345,16 +464,15 @@ button:disabled, .button-primary:disabled {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-    background-color: var(--color-secondary-action); /* Use grey for disabled */
+    background-color: var(--color-secondary-action);
 }
 
-/* Specific Button Colors (Using solid fills) */
 #login-button { background-color: var(--color-success-action); color: #fff; }
 #login-button:hover { background-color: var(--color-success-action-hover); }
 
 #logout-button,
 button.delete-button,
-button.bulk-delete-button /* Includes bulk delete button */
+button.bulk-delete-button
 {
     background-color: var(--color-danger);
     color: #fff;
@@ -367,9 +485,8 @@ button.bulk-delete-button:hover
 }
 
 button.secondary-button,
-.list-item-admin button, /* Applies to edit/delete */
+.list-item-admin button,
 button.edit-button
-/* Removed restore button style */
 {
     background-color: var(--color-secondary-action);
     color: #fff;
@@ -377,33 +494,51 @@ button.edit-button
 button.secondary-button:hover,
 .list-item-admin button:hover,
 button.edit-button:hover
-/* Removed restore button style */
 {
     background-color: var(--color-secondary-action-hover);
 }
 
-/* Danger Outline Button (Alternative Style if preferred) */
-.danger-button-outline {
+/* --- Redesigned Danger Button (Outline Style from old CSS) --- */
+/* Applied to #clear-log-button in HTML */
+.danger-button {
   background-color: transparent;
   color: var(--color-danger);
   border: 1px solid var(--color-danger);
   padding: 9px 19px; /* Match fill button padding minus border */
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-right: 10px;
+  margin-top: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  vertical-align: middle;
+  display: inline-block; /* Ensure display */
+  text-decoration: none; /* If used as link */
+  box-shadow: none; /* Override base button shadow */
 }
-.danger-button-outline:hover {
+
+.danger-button:hover:not(:disabled) {
   background-color: var(--color-danger);
-  color: #fff;
   border-color: var(--color-danger);
+  color: white;
+  transform: none; /* Override base button hover */
+  box-shadow: none; /* Override base button hover */
 }
-.danger-button-outline:disabled {
+
+.danger-button:disabled {
     background-color: transparent;
-    border-color: var(--secondary-text);
-    color: var(--secondary-text);
+    border-color: var(--color-danger-disabled);
+    color: var(--color-danger-disabled);
+    cursor: not-allowed;
     opacity: 0.6;
+    transform: none; /* Override base button */
+    box-shadow: none; /* Override base button */
 }
-/* END Danger Outline Button */
+/* End Danger Button */
 
 .form-actions {
-    margin-top: 30px; /* More space */
+    margin-top: 30px;
     text-align: right;
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
@@ -415,7 +550,7 @@ button.edit-button:hover
 }
 
 .small-button {
-    padding: 5px 12px !important; /* Smaller padding */
+    padding: 5px 12px !important;
     font-size: 0.85em !important;
 }
 
@@ -425,10 +560,10 @@ button.edit-button:hover
 .status-message {
     margin-top: 25px;
     margin-bottom: 20px;
-    padding: 12px 20px; /* Slightly less padding */
+    padding: 12px 20px;
     font-weight: 500;
     text-align: center;
-    border-radius: var(--border-radius-md); /* Consistent rounding */
+    border-radius: var(--border-radius-md);
     border: 1px solid transparent;
     display: none;
     clear: both;
@@ -442,13 +577,14 @@ button.edit-button:hover
 .status-message.success {
     color: var(--success-text-color);
     background-color: var(--success-bg-color);
-    border-color: rgba(52, 199, 89, 0.3); /* Use RGB of success color */
+    border-color: rgba(var(--color-success-action-glow), 0.5); /* Use RGB of success color */
 }
 .status-message.error {
     color: var(--error-text-color);
     background-color: var(--error-bg-color);
-    border-color: rgba(255, 59, 48, 0.3); /* Use RGB of danger color */
+    border-color: rgba(var(--danger-rgb), 0.3); /* Use RGB of danger color */
 }
+
 
 /* ======================== */
 /* Dynamic List Styles      */
@@ -459,10 +595,10 @@ button.edit-button:hover
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    padding: 0; /* Remove padding, apply to items */
-    background-color: var(--bg-color); /* Match outer background */
+    padding: 0;
+    background-color: var(--bg-color);
     scrollbar-width: thin;
-    scrollbar-color: var(--secondary-text) transparent; /* Subtle scrollbar */
+    scrollbar-color: var(--secondary-text) transparent;
 }
 .list-container-admin::-webkit-scrollbar { width: 8px; }
 .list-container-admin::-webkit-scrollbar-track { background: transparent; }
@@ -473,39 +609,37 @@ button.edit-button:hover
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 20px; /* Item padding */
+    padding: 15px 20px;
     border-bottom: 1px solid var(--border-color);
     gap: 15px;
     transition: background-color var(--transition-speed) var(--transition-timing);
-    background-color: var(--content-bg); /* Items have content background */
+    background-color: var(--content-bg);
 }
 .list-item-admin:first-child { border-top-left-radius: var(--border-radius-md); border-top-right-radius: var(--border-radius-md); }
 .list-item-admin:last-child { border-bottom: none; border-bottom-left-radius: var(--border-radius-md); border-bottom-right-radius: var(--border-radius-md); }
-.list-item-admin:hover { background-color: rgba(var(--accent-rgb), 0.05); } /* Subtle accent hover */
+.list-item-admin:hover { background-color: rgba(var(--accent-rgb), 0.05); }
 
 .list-item-admin .item-content {
     flex-grow: 1;
     word-break: break-word;
     display: flex;
     align-items: center;
-    gap: 12px; /* Gap between checkbox and details */
+    gap: 12px;
 }
-/* Style for checkbox within list item */
-.list-item-admin .item-content input[type="checkbox"].shoutout-checkbox { /* Target specific checkbox */
-    flex-shrink: 0;
-    margin: 0; /* Reset margin */
-    height: 1.1em;
-    width: 1.1em;
-    accent-color: var(--accent-color);
-    cursor: pointer;
+/* Target toggle specifically in list item */
+.list-item-admin .item-content .apple-toggle-checkbox {
+    /* Hidden */
+}
+.list-item-admin .item-content .apple-toggle-label {
+    /* Uses base toggle styles */
 }
 .list-item-admin .item-details {
     flex-grow: 1;
 }
 
-.list-item-admin strong { color: var(--text-color); font-weight: 500; } /* Medium weight */
+.list-item-admin strong { color: var(--text-color); font-weight: 500; }
 .list-item-admin span { color: var(--secondary-text); font-size: 0.85em; margin-left: 8px;}
-.list-item-admin p { margin: 4px 0; font-size: 0.9em; line-height: 1.4; color: var(--secondary-text); } /* Smaller, secondary color for details */
+.list-item-admin p { margin: 4px 0; font-size: 0.9em; line-height: 1.4; color: var(--secondary-text); }
 .list-item-admin small { color: var(--secondary-text); font-size: 0.75em; display: block; margin-top: 4px; opacity: 0.8; }
 
 .list-item-admin .item-actions {
@@ -516,9 +650,9 @@ button.edit-button:hover
 }
 .item-actions a.direct-link {
     color: var(--secondary-text);
-    font-size: 1.1em; /* Make icon slightly larger */
+    font-size: 1.1em;
     text-decoration: none;
-    padding: 5px; /* Click target */
+    padding: 5px;
     line-height: 1;
     border-radius: var(--border-radius-sm);
     transition: color 0.2s, background-color 0.2s;
@@ -529,9 +663,7 @@ button.edit-button:hover
 }
 .item-actions a.direct-link i {
     display: block;
-    /* margin-right: 4px; Remove if icon only */
 }
-/* Align text within the link button */
 .item-actions a.direct-link {
     display: inline-flex;
     align-items: center;
@@ -550,21 +682,24 @@ button.edit-button:hover
 /* ======================== */
 /* Creator Shoutouts Section */
 /* ======================== */
+#creator-shoutouts h3 { margin-bottom: 1em; } /* Reduce bottom margin */
+
 .shoutouts-platform-container {
     margin-bottom: 35px;
     padding: 25px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--content-bg); /* Content background */
+    background-color: var(--content-bg);
 }
 .shoutouts-platform-container:last-of-type { margin-bottom: 0; }
 .shoutouts-platform-container h4 {
-    color: var(--text-color); /* Standard heading color */
+    color: var(--text-color);
     margin-top: 0;
-    border-bottom: 1px solid var(--border-color); /* Standard border */
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    font-size: 1.2rem; /* Slightly smaller */
+    font-size: 1.2rem;
     opacity: 1;
+    margin-bottom: 1.5em; /* More space after platform heading */
 }
 
 /* List Controls (Search + Bulk Actions) */
@@ -572,7 +707,7 @@ button.edit-button:hover
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px; /* More space */
+    margin-bottom: 20px;
     margin-top: 10px;
     gap: 15px;
     flex-wrap: wrap;
@@ -583,23 +718,23 @@ button.edit-button:hover
     max-width: 400px;
 }
 .list-controls button {
-    margin: 0;
+    margin: 0; /* Override default button margin-top */
     flex-shrink: 0;
 }
 
 /* ======================== */
 /* Preview Areas            */
 /* ======================== */
-.shoutout-preview-area, .president-preview-area { /* Apply base styles to both */
-    border: 1px dashed var(--border-color); /* Dashed border */
+.shoutout-preview-area, .president-preview-area {
+    border: 1px dashed var(--border-color);
     padding: 20px;
-    margin-top: 20px; /* More space */
+    margin-top: 20px;
     border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Match outer background */
+    background-color: var(--bg-color);
     min-height: 150px;
     display: flex;
     justify-content: center;
-    align-items: center; /* Center placeholder */
+    align-items: center; /* Center placeholder text */
     overflow: hidden;
     position: relative;
 }
@@ -607,27 +742,12 @@ button.edit-button:hover
     align-items: flex-start; /* Align president card top */
 }
 
-.shoutout-preview-area > p, .president-preview-area > p { /* Style placeholder text */
+.shoutout-preview-area > p, .president-preview-area > p {
     color: var(--secondary-text);
     font-style: italic;
     font-size: 0.9em;
     text-align: center;
-    margin: auto; /* Center vertically/horizontally if needed */
-}
-
-/* Style the card *within* the shoutout preview area */
-.shoutout-preview-area .creator-card,
-.shoutout-preview-area .instagram-creator-card,
-.shoutout-preview-area .youtube-creator-card {
-    transform: scale(1); /* No scale down */
-    transform-origin: center center;
-    margin: 0;
-    box-shadow: 0 2px 5px var(--shadow-color); /* Use theme shadow */
-    max-width: 350px; /* Limit width */
-    box-sizing: border-box;
-    border: 1px solid var(--border-color); /* Use theme border */
-    background-color: var(--content-bg); /* Use content background */
-    border-radius: var(--border-radius-md); /* Consistent rounding */
+    margin: auto;
 }
 
 /* ======================== */
@@ -636,11 +756,11 @@ button.edit-button:hover
 .input-with-preview {
     display: flex;
     align-items: center;
-    gap: 20px; /* More gap */
+    gap: 20px;
 }
 .input-with-preview input { flex-grow: 1; }
 .pfp-preview-img {
-    width: 100px; /* Smaller preview */
+    width: 100px;
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
@@ -649,7 +769,7 @@ button.edit-button:hover
     vertical-align: middle;
     flex-shrink: 0;
     transition: opacity 0.3s ease;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 .input-with-preview input.input-error {
     border-color: var(--color-danger);
@@ -669,7 +789,7 @@ button.edit-button:hover
   height: 100%;
   overflow: auto;
   background-color: var(--modal-backdrop-color);
-  backdrop-filter: blur(8px); /* Stronger blur */
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   animation: fadeIn 0.3s ease-out;
 }
@@ -677,25 +797,25 @@ button.edit-button:hover
 
 .modal-content {
   background-color: var(--content-bg);
-  margin: 10vh auto; /* Vertically center more */
+  margin: 10vh auto;
   padding: 35px 45px;
-  border: none; /* No border */
+  border: none;
   width: 90%;
-  max-width: 650px; /* Slightly narrower */
+  max-width: 650px;
   position: relative;
-  border-radius: var(--border-radius-lg); /* Consistent rounding */
-  box-shadow: 0 15px 40px -10px rgba(0,0,0,0.25); /* More pronounced shadow */
-  animation: slideInFromTop 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother animation */
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 15px 40px -10px rgba(0,0,0,0.25);
+  animation: slideInFromTop 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 @keyframes slideInFromTop { from { transform: translateY(-40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 .close-button {
   color: var(--secondary-text);
   position: absolute;
-  top: 18px; /* Adjust position */
+  top: 18px;
   right: 20px;
-  font-size: 28px; /* Smaller */
-  font-weight: normal; /* Lighter weight */
+  font-size: 28px;
+  font-weight: normal;
   line-height: 1;
   transition: color var(--transition-speed) var(--transition-timing), transform 0.2s ease;
   border: none;
@@ -707,12 +827,20 @@ button.edit-button:hover
 .close-button:hover, .close-button:focus { color: var(--text-color); text-decoration: none; transform: scale(1.1); opacity: 1;}
 
 #edit-shoutout-form .form-actions button,
-#profile-form .form-actions button
+#profile-form .form-actions button,
+#edit-disability-form .form-actions button,
+#edit-useful-link-form .form-actions button,
+#edit-social-link-form .form-actions button,
+#president-form .form-actions button
 {
     margin-right: 8px;
 }
 #edit-shoutout-form .form-actions button:last-child,
-#profile-form .form-actions button:last-child
+#profile-form .form-actions button:last-child,
+#edit-disability-form .form-actions button:last-child,
+#edit-useful-link-form .form-actions button:last-child,
+#edit-social-link-form .form-actions button:last-child,
+#president-form .form-actions button:last-child
 {
     margin-right: 0;
 }
@@ -720,25 +848,25 @@ button.edit-button:hover
 /* ======================== */
 /* Site Settings Section    */
 /* ======================== */
-#site-settings { } /* Inherits .admin-section styles */
+#site-settings { }
 
 #site-settings .form-group {
-    padding: 20px; /* More padding */
+    padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--content-bg); /* Content bg for grouping */
-    margin-bottom: 25px; /* Space between groups */
+    background-color: var(--content-bg);
+    margin-bottom: 25px;
 }
-#site-settings label {
+#site-settings label:not(.apple-toggle-label) { /* Exclude toggle visual label */
     text-transform: none;
-    font-size: 1rem; /* Standard size */
+    font-size: 1rem;
     font-weight: 500;
 }
-#site-settings small {
-    display: block;
-    margin-top: 6px;
-    color: var(--secondary-text);
-    font-size: 0.85em;
+#site-settings small { /* Handled by base .checkbox-group small */
+   /* display: block; */
+   /* margin-top: 6px; */
+   /* color: var(--secondary-text); */
+   /* font-size: 0.85em; */
 }
 #settings-status-message { margin-top: 10px; }
 
@@ -746,41 +874,83 @@ button.edit-button:hover
 /* ======================== */
 /* Activity Log             */
 /* ======================== */
-#activity-log-section { } /* Inherits .admin-section styles */
+#activity-log-section { }
 
-#activity-log-list { /* Uses .list-container-admin */
+#activity-log-list {
     max-height: 500px;
-    /* Inherits .list-container-admin styles */
 }
-#activity-log-list .list-item-admin {
-    padding: 12px 15px;
-    align-items: flex-start; /* Align timestamp top */
+/* Using separate .log-entry structure */
+.log-container .log-entry {
+  background-color: var(--content-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  line-height: 1.5;
+  display: flex; /* Use flex for better alignment */
+  flex-wrap: wrap;
+  gap: 5px 15px; /* Row gap, column gap */
 }
-#activity-log-list .log-timestamp {
-    font-size: 0.8em;
-    color: var(--secondary-text);
-    margin-right: 15px;
-    flex-shrink: 0;
-    min-width: 140px; /* Slightly less width */
-    white-space: nowrap;
-    padding-top: 2px; /* Align better with text */
+.log-entry .log-meta small {
+  color: var(--secondary-text);
+  font-size: 0.85em;
+  display: block;
+  /* margin-bottom: 5px; */
+  flex-basis: 150px; /* Give timestamp fixed basis */
+  flex-shrink: 0;
+  white-space: nowrap;
 }
-#activity-log-list .log-user {
+.log-entry .log-action {
+  /* margin-bottom: 5px; */
+  color: var(--text-color);
+  flex-grow: 1; /* Take remaining space */
+  flex-basis: calc(100% - 170px); /* Approx width minus timestamp */
+}
+.log-entry .log-action strong {
     font-weight: 500;
-    color: var(--text-color); /* Standard text color */
-    margin-right: 8px;
+    color: var(--accent-color);
+    margin-right: 5px;
 }
-#activity-log-list .log-action {
-    flex-grow: 1;
-    word-break: break-word;
-    font-size: 0.95em;
+.log-entry .log-details {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.9em;
+  color: var(--secondary-text);
+  word-break: break-all;
+  line-height: 1.4;
+  flex-basis: 100%; /* Details take full width */
 }
+.log-entry .log-details .details-label {
+  display: block;
+  font-size: 0.8em;
+  color: var(--secondary-text);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.log-entry .log-details .details-content {
+  background-color: rgba(128,128,128, 0.05);
+  padding: 5px 8px;
+  border-radius: var(--border-radius-sm);
+}
+.log-entry .log-details .detail-item {
+    display: block;
+    margin-bottom: 2px;
+}
+.log-entry .log-details .detail-item strong {
+    color: var(--secondary-text);
+    margin-right: 5px;
+    font-weight: 500;
+}
+
 
 /* ======================== */
 /* Responsive Adjustments   */
 /* ======================== */
 @media (max-width: 768px) {
-    body { padding: 20px; } /* Less reduction */
+    body { padding: 20px; }
     .container { padding: 30px 25px; margin: 15px auto; }
     h1 { font-size: 1.8rem; margin-bottom: 30px;}
     h2 { font-size: 1.5rem; }
@@ -789,26 +959,21 @@ button.edit-button:hover
     #admin-greeting { margin: 10px 0; }
     .admin-section { padding: 20px; }
     .form-actions:not(#login-section .form-actions) {
-        text-align: right; /* Keep right align */
+        text-align: right;
         padding-top: 15px;
     }
     .form-actions:not(#login-section .form-actions) button {
-        display: inline-block; /* Revert to inline */
-        width: auto; /* Revert to auto */
-        margin: 10px 0 0 10px !important; /* Keep margin */
+        display: inline-block;
+        width: auto;
+        margin: 10px 0 0 10px !important;
     }
     .form-actions:not(#login-section .form-actions) button:first-child {
         margin-left: 0 !important;
     }
-    .list-item-admin { flex-direction: row; /* Keep row layout longer */ }
-    /* Stack list items earlier if needed */
-    /* .list-item-admin { flex-direction: column; align-items: flex-start; } */
-    /* .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-start; } */
-
     .modal-content { margin: 8vh auto; padding: 30px 25px; }
     .list-controls { flex-direction: column; align-items: stretch; }
     .list-controls input[type="search"] { max-width: none; }
-    .list-controls button { width: auto; margin-top: 10px;} /* Button width auto */
+    .list-controls button { width: auto; margin-top: 10px;}
     .pfp-preview-img { width: 80px; height: 80px; }
 }
 
@@ -818,32 +983,37 @@ button.edit-button:hover
     h1 { font-size: 1.6rem; }
     h2 { font-size: 1.3rem; }
     h3 { font-size: 1.1rem; }
-    button, .button-primary { padding: 10px 18px; font-size: 0.95rem; width: 100%; margin-left: 0; margin-right: 0;} /* Full width buttons */
-    button.small-button { width: auto !important; } /* Except small ones */
-    .form-actions button { width: 100%; margin-left: 0 !important; } /* Full width action buttons */
+    button, .button-primary { padding: 10px 18px; font-size: 0.95rem; width: 100%; margin-left: 0; margin-right: 0;}
+    button.small-button { width: auto !important; }
+    button.secondary-button, button.danger-button { width: auto !important;} /* Keep secondary/danger auto */
+    .form-actions button { width: 100%; margin-left: 0 !important; }
+    .list-controls button { width: 100%; margin-left: 0 !important; margin-right: 0 !important;}
 
     input, select, textarea { padding: 10px 12px; font-size: 0.95rem; }
-    .form-group label { font-size: 0.85em; }
-    .checkbox-group label { font-size: 0.95rem; }
+    label:not(.apple-toggle-label) { font-size: 0.9rem; } /* Adjust non-toggle label size */
 
-    /* Stack list items on smallest screens */
     .list-item-admin { flex-direction: column; align-items: flex-start; padding: 15px; }
-    .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-start; padding-top: 10px; border-top: 1px solid var(--border-color);}
-    .list-item-admin .item-actions button { width: auto; } /* Action buttons not full width */
-    .item-actions a.direct-link { margin-left: auto; } /* Push link to right */
+    .list-item-admin .item-actions { margin-top: 15px; width: 100%; justify-content: flex-start; padding-top: 10px; border-top: 1px solid var(--border-color); flex-wrap: wrap;}
+    .list-item-admin .item-actions button { width: auto; margin-bottom: 5px;} /* Action buttons not full width */
+    .item-actions a.direct-link { margin-left: auto; }
 
     .modal-content { padding: 25px 15px; }
     .close-button { font-size: 26px; top: 12px; right: 15px; }
     .pfp-preview-img { width: 60px; height: 60px; }
     #login-section { padding: 25px; }
-    .input-with-preview { flex-direction: column; align-items: flex-start;} /* Stack pfp preview */
+    .input-with-preview { flex-direction: column; align-items: flex-start;}
+    .checkbox-group { gap: 5px; } /* Reduce gap */
+    .checkbox-group .apple-toggle-label + label { line-height: 1.4; } /* Adjust text label line height */
+
+    .log-entry .log-meta small { flex-basis: 100%; margin-bottom: 5px; } /* Stack timestamp */
+    .log-entry .log-action { flex-basis: 100%; } /* Action takes full width */
 }
 
 
 /* List Count and Timer Display */
 .list-count {
   font-weight: normal;
-  font-size: 0.85em; /* Slightly smaller */
+  font-size: 0.85em;
   color: var(--secondary-text);
   margin-left: 8px;
 }
@@ -860,39 +1030,37 @@ button.edit-button:hover
 /* ============================================= */
 /* === ADMIN SHOUTOUT PREVIEW STYLES (Unified) === */
 /* ============================================= */
-/* Base card style for all previews */
 .shoutout-preview-area .creator-card,
 .shoutout-preview-area .instagram-creator-card,
 .shoutout-preview-area .youtube-creator-card {
-    background-color: var(--content-bg); /* Use content bg */
-    border-radius: var(--border-radius-md); /* Consistent rounding */
+    background-color: var(--content-bg);
+    border-radius: var(--border-radius-md);
     padding: 15px;
     display: flex;
-    flex-direction: row; /* Row layout */
-    gap: 12px; /* Gap between pic and info */
+    flex-direction: row;
+    gap: 12px;
     transition: none;
-    box-shadow: 0 1px 3px var(--shadow-color); /* Subtle shadow */
+    box-shadow: 0 1px 3px var(--shadow-color);
     width: 100%;
-    max-width: 380px; /* Limit width */
+    /* max-width: 380px; */ /* REMOVED for full width */
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
     height: auto;
     border: 1px solid var(--border-color);
+    align-items: flex-start; /* Align items top */
 }
 .shoutout-preview-area .creator-card:hover,
 .shoutout-preview-area .instagram-creator-card:hover,
 .shoutout-preview-area .youtube-creator-card:hover {
     transform: none;
-    box-shadow: 0 2px 5px var(--shadow-color); /* Slightly more shadow on hover */
+    box-shadow: 0 2px 5px var(--shadow-color);
 }
 
-/* Hide YouTube cover photo specifically in preview */
 .shoutout-preview-area .youtube-cover-photo {
     display: none;
 }
 
-/* Unified Profile Picture Style */
 .shoutout-preview-area .creator-pic,
 .shoutout-preview-area .instagram-creator-pic,
 .shoutout-preview-area .youtube-creator-pic {
@@ -900,52 +1068,48 @@ button.edit-button:hover
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    border: none; /* No extra border */
-    margin-bottom: 0; /* Reset margin */
+    border: none;
+    margin-bottom: 0;
     position: relative;
     z-index: 1;
     margin-top: 0;
     margin-left: 0;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
 }
 
-/* Unified Info Container */
 .shoutout-preview-area .creator-info,
 .shoutout-preview-area .instagram-creator-info,
 .shoutout-preview-area .youtube-creator-info {
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Take remaining space */
+    flex-grow: 1;
     padding: 0;
-    overflow: hidden; /* Prevent content overflow */
+    overflow: hidden;
 }
 
-/* Unified Header Style */
 .shoutout-preview-area .creator-header,
 .shoutout-preview-area .instagram-creator-header,
 .shoutout-preview-area .youtube-creator-header {
     display: flex;
     align-items: center;
-    gap: 5px; /* Smaller gap */
-    margin-bottom: 2px; /* Less space */
+    gap: 5px;
+    margin-bottom: 2px;
     margin-top: 0;
 }
 
-/* Unified Heading (Nickname) Style */
 .shoutout-preview-area .creator-header h3,
 .shoutout-preview-area .instagram-creator-header h3,
 .shoutout-preview-area .youtube-creator-header h3 {
     margin: 0;
-    font-size: 1rem; /* Slightly smaller */
-    font-weight: 600; /* Bold */
+    font-size: 1rem;
+    font-weight: 600;
     color: var(--text-color);
     line-height: 1.3;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Ellipsis for long names */
+    text-overflow: ellipsis;
 }
 
-/* Unified Verification Badge Style */
 .shoutout-preview-area .verified-badge,
 .shoutout-preview-area .instagram-verified-badge,
 .shoutout-preview-area .youtube-verified-badge {
@@ -956,7 +1120,6 @@ button.edit-button:hover
     flex-shrink: 0;
 }
 
-/* Unified Username Style */
 .shoutout-preview-area .creator-info > .creator-username,
 .shoutout-preview-area .instagram-creator-info > .instagram-creator-username,
 .shoutout-preview-area .youtube-creator-info .youtube-creator-username {
@@ -969,61 +1132,64 @@ button.edit-button:hover
     text-overflow: ellipsis;
 }
 .shoutout-preview-area .youtube-creator-info .username-container {
-    margin-bottom: 0; /* Reset */
+    margin-bottom: 0;
     gap: 4px;
 }
 
 
-/* Unified Bio Style */
 .shoutout-preview-area .creator-bio,
 .shoutout-preview-area .instagram-creator-bio,
 .shoutout-preview-area .youtube-creator-bio {
     color: var(--secondary-text);
-    margin: 5px 0; /* Less margin */
+    margin: 5px 0;
     font-size: 0.85em;
     line-height: 1.4;
-    word-break: break-word;
-    max-height: calc(1.4em * 2); /* Limit to 2 lines */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    word-break: break-word; /* Allow wrapping */
+    /* max-height: calc(1.4em * 2); */ /* Removed height limit */
+    /* overflow: hidden; */ /* Removed overflow */
+    /* text-overflow: ellipsis; */ /* Removed ellipsis */
+    /* display: -webkit-box; */
+    /* -webkit-line-clamp: 2; */
+    /* -webkit-box-orient: vertical; */
 }
 
-/* Unified Follower/Subscriber Count Style */
 .shoutout-preview-area .follower-count,
 .shoutout-preview-area .instagram-follower-count,
 .shoutout-preview-area .youtube-subscriber-count {
-    color: var(--secondary-text); /* Use secondary text */
-    font-weight: 500; /* Medium weight */
+    color: var(--secondary-text);
+    font-weight: 500;
     margin: 5px 0;
-    font-size: 0.85em; /* Smaller */
+    font-size: 0.85em;
 }
 
-/* Unified Visit Button Style */
 .shoutout-preview-area .visit-profile,
 .shoutout-preview-area .instagram-visit-profile,
 .shoutout-preview-area .youtube-visit-profile {
     display: inline-block;
     background-color: var(--accent-color);
-    color: #ffffff; /* White text */
+    color: #ffffff;
     text-decoration: none;
-    padding: 5px 12px; /* Smaller button */
-    border-radius: var(--border-radius-md); /* Match button rounding */
+    padding: 5px 12px;
+    border-radius: var(--border-radius-md);
     margin-top: 8px;
     transition: background-color var(--transition-speed) var(--transition-timing);
     text-align: center;
     font-weight: 500;
-    font-size: 0.8em; /* Smaller text */
+    font-size: 0.8em;
     border: none;
     width: fit-content;
 }
+body:not(.dark-mode) .shoutout-preview-area .visit-profile,
+body:not(.dark-mode) .shoutout-preview-area .instagram-visit-profile,
+body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
+    color: #ffffff; /* Ensure white text in light mode too */
+}
+
 .shoutout-preview-area .visit-profile:hover,
 .shoutout-preview-area .instagram-visit-profile:hover,
 .shoutout-preview-area .youtube-visit-profile:hover {
     background-color: var(--hover-color);
-    color: #ffffff;
+    /* color: #ffffff; */ /* Already set */
     transform: none;
     box-shadow: none;
 }
@@ -1033,163 +1199,76 @@ button.edit-button:hover
 /* === ADMIN PRESIDENT PREVIEW STYLES        === */
 /* ============================================= */
 
-/* Style the container holding the preview content */
-.president-preview-area {
-    /* Inherits base styles */
-    padding: 20px;
-    min-height: 180px;
-    align-items: flex-start; /* Align content to the top */
-}
-
-/* Style the main section block inside the preview */
 #president-preview .president-section {
-    background: var(--content-bg); /* Use content background */
-    padding: 20px; /* Match container padding */
-    border-radius: var(--border-radius-md); /* Consistent rounding */
-    box-shadow: 0 2px 8px -2px var(--shadow-color); /* Subtle shadow */
+    background: var(--content-bg);
+    padding: 20px;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 2px 8px -2px var(--shadow-color);
     width: 100%;
-    max-width: 400px; /* Limit width inside preview */
+    /* max-width: 400px; */ /* REMOVED for full width */
     box-sizing: border-box;
     border: 1px solid var(--border-color);
 }
 
-/* Style the flex container for photo and details */
 #president-preview .president-info {
     display: flex;
     align-items: center;
-    gap: 15px; /* Consistent gap */
+    gap: 15px;
     padding: 0;
 }
 
-/* Style the photo */
 #president-preview .president-photo {
-    width: 70px; /* Smaller photo */
+    width: 70px;
     height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    border: none; /* No border */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     flex-shrink: 0;
 }
 
-/* Style the details container */
 #president-preview .president-details {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px; /* Tighten gap */
+    gap: 3px;
     font-size: 0.9em;
     line-height: 1.4;
     overflow: hidden;
 }
 
-/* Style the president's name */
 #president-preview .president-name {
-    font-size: 1.2em; /* Relative size */
+    font-size: 1.2em;
     font-weight: 600;
     color: var(--text-color);
-    margin: 0 0 2px 0; /* Bottom margin */
-    word-break: break-word;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin: 0 0 2px 0;
+    word-break: break-word; /* Allow wrapping */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Allow wrapping */
+    text-overflow: clip; /* No ellipsis if wrapping */
 }
 
-/* Style the paragraph text (Born, Height, Party, etc.) */
 #president-preview .president-details p {
     margin: 0;
     color: var(--secondary-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 0.95em; /* Slightly smaller than base */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Allow wrapping */
+    text-overflow: clip; /* No ellipsis */
+    font-size: 0.95em;
 }
 
 #president-preview .president-details p strong {
-    color: var(--text-color); /* Make labels stand out */
+    color: var(--text-color);
     opacity: 0.9;
-    font-weight: 500; /* Medium weight */
+    font-weight: 500;
 }
 
-/* Style the term specifically if needed */
 #president-preview .presidential-term {
-    font-style: normal; /* No italic */
+    font-style: normal;
     opacity: 0.85;
     font-size: 0.9em;
 }
 
-/* Hide the main section title within the preview */
 #president-preview .president-section > .section-title {
     display: none;
 }
-
-/* ======================== */
-/* Activity Log Card Style  */
-/* ======================== */
-/* Remove specific log-container/log-entry styles if using .list-item-admin */
-/* Keep these if #activity-log-list uses a different structure */
-.log-container {
-  /* Add container styles if needed */
-}
-.log-container .log-entry {
-  /* Styles for individual log entries if NOT using list-item-admin */
-  background-color: var(--content-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm); /* Smaller radius */
-  padding: 10px 15px;
-  margin-bottom: 8px;
-  font-size: 0.9em;
-  line-height: 1.5;
-}
-.log-entry .log-meta small {
-  color: var(--secondary-text);
-  font-size: 0.85em;
-  display: block;
-  margin-bottom: 5px;
-}
-.log-entry .log-action {
-  margin-bottom: 5px;
-  color: var(--text-color);
-}
-.log-entry .log-action strong {
-    font-weight: 500;
-    color: var(--accent-color); /* Accent for action type */
-    margin-right: 5px;
-}
-.log-entry .log-details {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed var(--border-color); /* Dashed separator */
-  font-size: 0.9em;
-  color: var(--secondary-text);
-  word-break: break-all;
-  line-height: 1.4;
-}
-.log-entry .log-details .details-label {
-  display: block;
-  font-size: 0.8em;
-  color: var(--secondary-text);
-  margin-bottom: 3px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-.log-entry .log-details .details-content {
-  background-color: rgba(128,128,128, 0.05); /* Subtle background */
-  padding: 5px 8px;
-  border-radius: var(--border-radius-sm);
-}
-.log-entry .log-details .detail-item {
-    display: block;
-    margin-bottom: 2px;
-}
-.log-entry .log-details .detail-item strong { /* The key */
-    color: var(--secondary-text);
-    margin-right: 5px;
-    font-weight: 500; /* Medium weight */
-}
-
-/* ======================== */
-/* Cleanup Old/Redundant    */
-/* ======================== */
-/* Removed specific --background-color, --card-background-color etc. from :root as they are handled by light/dark mode vars */
-/* Removed specific .danger-button styles if using standard button classes or the outline variant */
