@@ -1072,3 +1072,25 @@ body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
   display: block;
   font-size: 0.85em;
 }
+
+.danger-button {
+  background-color: #dc3545; /* Bootstrap danger red */
+  color: white;
+  border: 1px solid #dc3545;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-left: 10px; /* Add some space */
+}
+
+.danger-button:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.danger-button:disabled {
+    background-color: #e47f89;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
