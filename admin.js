@@ -447,7 +447,7 @@ if (searchInputDisabilities) {
             // Construct YouTube URL (ensure 'username' is the handle like '@MrBeast')
             let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`; //
              // Assuming standard youtube.com/@handle format is desired for handles:
-             directLinkUrl = `https://youtube.com/$${encodeURIComponent(youtubeHandle)}`; //
+             directLinkUrl = `https://youtube.com/${encodeURIComponent(youtubeHandle)}`; //
         }
 
         // Build inner HTML - Structure includes item details and action buttons
@@ -538,45 +538,36 @@ function renderInstagramCard(account) { //
        }
 
 function renderYouTubeCard(account) { //
-    // Use default values if account data is missing
-    const profilePic = account.profilePic || 'images/default-profile.jpg';
-    const username = account.username || 'N/A'; // Should be the YouTube handle
-    const nickname = account.nickname || 'N/A';
-    const bio = account.bio || '';
-    const subscribers = account.subscribers || 'N/A';
-    const coverPhoto = account.coverPhoto || null;
-    const isVerified = account.isVerified || false;
+        // Use default values if account data is missing
+        const profilePic = account.profilePic || 'images/default-profile.jpg'; // Default image path
+        const username = account.username || 'N/A'; // YouTube handle
+        const nickname = account.nickname || 'N/A'; // Channel name
+        const bio = account.bio || ''; //
+        const subscribers = account.subscribers || 'N/A'; //
+        const coverPhoto = account.coverPhoto || null; // May not exist
+        const isVerified = account.isVerified || false; //
+        // Construct channel URL safely using the handle
+        let safeUsername = username; //
+        if (username !== 'N/A' && !username.startsWith('@')) { //
+            safeUsername = `@${username}`; // Prepend @ if missing for handle URL
+        }
+        const channelUrl = username !== 'N/A' ? `https://youtube.com/$${encodeURIComponent(safeUsername)}` : '#'; //
+        // Correct path for admin context might be needed for youtubecheck.png
+        const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; // Uses specific class from display CSS
 
-    let channelUrl = '#';
-    let displayHandle = username; // Handle for display may or may not have @ initially
-
-    if (username && username !== 'N/A') {
-        // Ensure the handle includes '@' for the URL
-        let youtubeHandle = username.startsWith('@') ? username : `@${username}`;
-         // *** THIS IS THE CORRECTED LINE FOR THE URL STRUCTURE ***
-        channelUrl = `https://youtube.com/$54{encodeURIComponent(youtubeHandle)}`; // Use the handle directly
-
-        // Ensure display handle also has @ if the original didn't
-        displayHandle = youtubeHandle;
+        return `
+            <div class="youtube-creator-card">
+                ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
+                <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
+                <div class="youtube-creator-info">
+                    <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
+                    <div class="username-container"><p class="youtube-creator-username">@${username}</p></div>
+                    <p class="youtube-creator-bio">${bio}</p>
+                    <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
+                    <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
+                </div>
+            </div>`; //
     }
-
-    const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : '';
-
-    return `
-        <div class="youtube-creator-card">
-            ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
-            <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
-            <div class="youtube-creator-info">
-                <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
-                 {/* Display handle with '@' */}
-                <div class="username-container"><p class="youtube-creator-username">${displayHandle}</p></div>
-                <p class="youtube-creator-bio">${bio}</p>
-                <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
-                 {/* This link uses the corrected channelUrl */}
-                <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
-            </div>
-        </div>`;
-}
     // --- END Copied Rendering Functions ---
 
 // *** NEW FUNCTION: Updates Shoutout Preview Area ***
