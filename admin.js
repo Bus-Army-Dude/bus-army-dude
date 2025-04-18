@@ -1050,52 +1050,34 @@ function renderYouTubeCard(account) { //
          });
     }
 
-// *** FUNCTION TO SAVE Maintenance Mode Status ***
-    async function saveMaintenanceModeStatus(isEnabled) { //
-        // Ensure user is logged in
-        if (!auth || !auth.currentUser) { //
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
-            // Revert checkbox state visually if save fails due to auth issue
-            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
-            return; //
+// --- FUNCTION TO SAVE Maintenance Mode Status (with Logging) ---
+    async function saveMaintenanceModeStatus(isEnabled) {
+        if (!auth || !auth.currentUser) {
+            showAdminStatus("Error: Not logged in. Cannot save settings.", true);
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
+            return;
         }
+        console.log("Attempting to save maintenance mode:", isEnabled); // Debug log
+        const statusElement = settingsStatusMessage || adminStatusElement;
+        if (statusElement) { /* ... show saving ... */ }
 
-        // Use the specific status message area for settings, fallback to main admin status
-        const statusElement = settingsStatusMessage || adminStatusElement; //
+        try {
+            await setDoc(profileDocRef, { isMaintenanceModeEnabled: isEnabled }, { merge: true });
+            console.log("Maintenance mode status save successful:", isEnabled);
 
-        // Show saving message
-        if (statusElement) { //
-            statusElement.textContent = "Saving setting..."; //
-            statusElement.className = "status-message"; // Reset style
-            statusElement.style.display = 'block'; //
-        }
+             // *** Log Activity ***
+             if (typeof logAdminActivity === 'function') {
+                  logAdminActivity('UPDATE_SETTING_MAINTENANCE', { enabled: isEnabled });
+             } else { console.error("logAdminActivity function not found!");}
 
-        try { //
-            // Use profileDocRef (site_config/mainProfile) to store the flag
-            // Use setDoc with merge: true to update only this field without overwriting others
-            await setDoc(profileDocRef, { //
-                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
-            }, { merge: true }); //
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) { /* ... show success ... */ }
+             else { /* ... show success ... */ }
 
-            console.log("Maintenance mode status saved:", isEnabled); //
-
-            // Show success message using the dedicated settings status element or fallback
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
-                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
-             } else { // Fallback if specific element wasn't found initially
-                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
-             }
-
-        } catch (error) { //
-            console.error("Error saving maintenance mode status:", error); //
-            // Show error message in the specific status area or fallback
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
-                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
-            } else { //
-                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
-            }
-            // Revert checkbox state visually on error
-             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+        } catch (error) {
+            console.error("Error saving maintenance mode status:", error);
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) { /* ... show error ... */ }
+             else { /* ... show error ... */ }
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
         }
     }
     // *** END FUNCTION ***
