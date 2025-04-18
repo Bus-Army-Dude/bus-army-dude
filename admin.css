@@ -1,4 +1,4 @@
-/* admin.css - Futuristic Theme (Unified Preview Styles) */
+/* admin.css - Futuristic Theme (Unified Preview Styles + President Preview) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -553,7 +553,7 @@ button.edit-button:hover
 /* ======================== */
 /* Preview Areas            */
 /* ======================== */
-.shoutout-preview-area {
+.shoutout-preview-area, .president-preview-area { /* Apply base styles to both */
     border: 1px dashed var(--input-border-color);
     padding: 20px;
     margin-top: 15px;
@@ -562,23 +562,18 @@ button.edit-button:hover
     min-height: 150px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Align top for president */
     overflow: hidden;
-    position: relative; /* Needed for scaling origin */
+    position: relative;
 }
-.shoutout-preview-area > p {
+.shoutout-preview-area > p, .president-preview-area > p { /* Style placeholder text */
     color: var(--secondary-text);
     font-style: italic;
     font-size: 0.9em;
     text-align: center;
+    margin: auto; /* Center vertically/horizontally */
 }
-/* Apply scaling to the container, adjust origin */
-.shoutout-preview-area {
-    /* Apply scaling if needed, but often better to adjust styles directly */
-    /* transform: scale(0.85); */
-    /* transform-origin: center center; */
-}
-/* Style the card *within* the preview area */
+/* Style the card *within* the shoutout preview area */
 .shoutout-preview-area .creator-card,
 .shoutout-preview-area .instagram-creator-card,
 .shoutout-preview-area .youtube-creator-card {
@@ -967,4 +962,100 @@ body.light-mode .shoutout-preview-area .visit-profile:hover,
 body.light-mode .shoutout-preview-area .instagram-visit-profile:hover,
 body.light-mode .shoutout-preview-area .youtube-visit-profile:hover {
      color: #fff;
+}
+
+/* ============================================= */
+/* === ADMIN PRESIDENT PREVIEW STYLES        === */
+/* ============================================= */
+
+/* Style the container holding the preview content */
+.president-preview-area {
+    border: 1px dashed var(--input-border-color);
+    padding: 15px; /* Reduced padding */
+    margin-top: 15px;
+    border-radius: var(--border-radius-md);
+    background-color: var(--bg-color); /* Match admin background */
+    min-height: 180px; /* Adjust as needed */
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: flex-start; /* Align content to the top */
+    overflow: hidden;
+    position: relative;
+}
+
+/* Style the main section block inside the preview */
+/* Inspired by your styles.css but simplified */
+#president-preview .president-section {
+    background: var(--content-bg); /* Use content background for contrast */
+    padding: 15px; /* Reduced padding */
+    border-radius: var(--border-radius-md); /* Slightly smaller radius */
+    box-shadow: 0 4px 10px -4px var(--shadow-color); /* Softer shadow */
+    width: 100%;
+    max-width: 450px; /* Limit width inside preview */
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+}
+
+/* Style the flex container for photo and details */
+#president-preview .president-info {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Reduced gap */
+    padding: 0; /* Remove extra padding */
+}
+
+/* Style the photo */
+#president-preview .president-photo {
+    width: 75px; /* Smaller photo */
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-color); /* Thinner border */
+    box-shadow: none; /* Remove shadow for simplicity */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Style the details container */
+#president-preview .president-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Reduced gap */
+    font-size: 0.9em; /* Smaller base font size */
+    line-height: 1.4; /* Adjust line height */
+    overflow: hidden; /* Prevent text overflow issues */
+}
+
+/* Style the president's name */
+#president-preview .president-name {
+    font-size: 1.15em; /* Relative to details font size */
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    word-break: break-word; /* Allow long names to wrap */
+}
+
+/* Style the paragraph text (Born, Height, Party, etc.) */
+#president-preview .president-details p {
+    margin: 0; /* Remove default margins */
+    color: var(--secondary-text);
+    white-space: nowrap; /* Prevent wrapping for short lines */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if text is too long */
+}
+
+#president-preview .president-details p strong {
+    color: var(--text-color); /* Make labels stand out slightly */
+    opacity: 0.85;
+}
+
+/* Style the term specifically if needed */
+#president-preview .presidential-term {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Hide the main section title within the preview */
+#president-preview .president-section > .section-title {
+    display: none;
 }
