@@ -13,6 +13,7 @@ let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the ful
 let allUsefulLinks = [];
 let allSocialLinks = [];
 let allDisabilities = [];
+let allActivityLogEntries = []; // Global variable for client-side filtering
 
 document.addEventListener('DOMContentLoaded', () => { //
     // First, check if db and auth were successfully imported/initialized
@@ -44,6 +45,18 @@ document.addEventListener('DOMContentLoaded', () => { //
     let displayIntervalId; //
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll']; //
+
+    // --- Activity Log Listeners ---
+    const refreshLogBtn = document.getElementById('refresh-log-button');
+    if (refreshLogBtn) {
+        refreshLogBtn.addEventListener('click', loadActivityLog); // Refresh reloads all
+    }
+
+    const searchLogInput = document.getElementById('search-activity-log');
+    if (searchLogInput) {
+        // Use 'input' to filter as the user types
+        searchLogInput.addEventListener('input', displayFilteredActivityLog);
+    }
 
     // --- DOM Element References ---
     const loginSection = document.getElementById('login-section'); //
@@ -2212,7 +2225,100 @@ function displayFilteredSocialLinks() {
     }
     // -------------
 
-    
+    async function loadActivityLog() {
+    // Ensure necessary DOM elements are defined earlier or get them here
+    const logListContainer = document.getElementById('activity-log-list');
+    const logCountElement = document.getElementById('activity-log-count');
+    const searchInput = document.getElementById('search-activity-log');
+
+    if (!logListContainer || !logCountElement || !searchInput) {
+        console.error("Required elements for loadActivityLog are missing.");
+        return;
+    }
+
+    // Reset search input visually when refreshing
+    searchInput.value = '';
+
+    logListContainer.innerHTML = '<p>Loading activity log...</p>';
+    logCountElement.textContent = '(...)'; // Indicate loading count
+    allActivityLogEntries = []; // Clear global store before fetching
+
+    try {
+        // Ensure Firestore functions (collection, query, orderBy, limit, getDocs) are imported
+        const logCollectionRef = collection(db, "activity_log");
+        const logQuery = query(logCollectionRef, orderBy("timestamp", "desc"), limit(50)); // Load recent 50
+        const querySnapshot = await getDocs(logQuery);
+
+        querySnapshot.forEach(doc => {
+            allActivityLogEntries.push({ id: doc.id, ...doc.data() });
+        });
+
+        console.log(`Loaded ${allActivityLogEntries.length} log entries.`);
+        // Call the display function initially (which will show all since search is cleared)
+        displayFilteredActivityLog();
+
+    } catch (error) {
+        console.error("Error loading activity log:", error);
+        logListContainer.innerHTML = '<p class="error">Error loading activity log.</p>';
+        logCountElement.textContent = '(Error)';
+        // Use showAdminStatus if available and desired
+        if (typeof showAdminStatus === 'function') {
+             showAdminStatus("Failed to load activity log.", true);
+        }
+    }
+}   
+
+function displayFilteredActivityLog() {
+    // Ensure necessary DOM elements are defined earlier or get them here
+    const logListContainer = document.getElementById('activity-log-list');
+    const searchInput = document.getElementById('search-activity-log');
+    const logCountElement = document.getElementById('activity-log-count');
+
+    if (!logListContainer || !searchInput || !logCountElement) {
+        console.error("Log display/search elements missing in displayFilteredActivityLog.");
+        return;
+    }
+
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    logListContainer.innerHTML = ''; // Clear previous entries
+
+    const filteredLogs = allActivityLogEntries.filter(log => {
+        if (!searchTerm) return true; // Show all if search is empty
+
+        const timestampStr = log.timestamp?.toDate?.().toLocaleString()?.toLowerCase() ?? '';
+        const email = (log.adminEmail || '').toLowerCase();
+        const action = (log.actionType || '').toLowerCase();
+        const details = JSON.stringify(log.details || {}).toLowerCase(); // Search within stringified details
+
+        return email.includes(searchTerm) ||
+               action.includes(searchTerm) ||
+               details.includes(searchTerm) ||
+               timestampStr.includes(searchTerm);
+    });
+
+    if (filteredLogs.length === 0) {
+        if (searchTerm) {
+            logListContainer.innerHTML = `<p>No log entries found matching "${searchTerm}".</p>`;
+        } else {
+            logListContainer.innerHTML = '<p>No activity log entries found.</p>';
+        }
+    } else {
+        filteredLogs.forEach(logData => {
+            if (typeof renderLogEntry === 'function') {
+                const entryElement = renderLogEntry(logData);
+                logListContainer.appendChild(entryElement);
+            } else {
+                 console.error("renderLogEntry function is missing!");
+                 logListContainer.innerHTML = '<p class="error">Error rendering log entries.</p>';
+                 // Break the loop if rendering fails
+                 return false;
+            }
+        });
+    }
+
+    // Update count
+    logCountElement.textContent = `(${filteredLogs.length})`;
+}
 
 // --- ADD THIS FUNCTION ---
     // Displays status messages in the president section's status area
