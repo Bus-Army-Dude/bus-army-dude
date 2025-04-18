@@ -447,7 +447,7 @@ if (searchInputDisabilities) {
             // Construct YouTube URL (ensure 'username' is the handle like '@MrBeast')
             let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`; //
              // Assuming standard youtube.com/@handle format is desired for handles:
-             directLinkUrl = `https://youtube.com/${encodeURIComponent(youtubeHandle)}`; //
+             directLinkUrl = `https://youtube.com/$${encodeURIComponent(youtubeHandle)}`; //
         }
 
         // Build inner HTML - Structure includes item details and action buttons
