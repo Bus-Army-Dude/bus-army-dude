@@ -450,7 +450,6 @@ button.secondary-button:focus-visible, .list-item-admin button:focus-visible, bu
 }
 /* Hide placeholder if actual preview content exists */
 .shoutout-preview-area .creator-card ~ p.preview-placeholder,
-/* --- REMOVED platform-specific selectors --- */
 .president-preview-area .president-section ~ p.preview-placeholder {
     display: none;
 }
@@ -467,33 +466,117 @@ button.secondary-button:focus-visible, .list-item-admin button:focus-visible, bu
     padding: 25px 30px; /* Padding applied HERE */
     box-shadow: 0 3px 10px -2px var(--shadow-color-md); /* Shadow applied HERE */
     display: flex; flex-direction: column; align-items: flex-start; gap: 15px;
-    overflow: hidden; /* Clip content if absolutely necessary, but allow wrapping */
+    overflow: hidden; /* Clip content */
 }
 
 /* --- UNIFIED Shoutout Preview Content Styles --- */
-.shoutout-preview-area .creator-header { display: flex; align-items: flex-start; gap: 15px; width: 100%; margin: 0; }
-.shoutout-preview-area .creator-pic { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: none; box-shadow: 0 0 0 2px var(--border-color); margin: 0; flex-shrink: 0; }
-.shoutout-preview-area .creator-header-text { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; gap: 2px; }
-.shoutout-preview-area .creator-header-text .name-verified { display: flex; align-items: center; gap: 6px; }
-.shoutout-preview-area .creator-header h3 { margin: 0; font-size: 1.15em; color: var(--text-color); line-height: 1.3; font-weight: 500; word-break: break-word; white-space: normal; }
-.shoutout-preview-area .verified-badge { width: 15px; height: 15px; flex-shrink: 0; vertical-align: middle; /* Added for better alignment */ }
-.shoutout-preview-area .creator-username { color: var(--secondary-text); font-size: 0.9em; margin: 0; line-height: 1.3; word-break: break-all; white-space: normal; }
-.shoutout-preview-area .creator-info { width: 100%; display: flex; flex-direction: column; padding: 0; gap: 10px; margin-top: 5px; /* Space after header */ }
-.shoutout-preview-area .creator-bio { color: var(--secondary-text); margin: 0; font-size: 0.95em; line-height: 1.5; word-break: break-word; white-space: normal; max-height: none; overflow: visible; }
-.shoutout-preview-area .follower-count { color: var(--text-color); opacity: 0.9; font-weight: 500; margin: 0; font-size: 0.9em; }
-/* Ensure the visit profile link uses button styles */
-.shoutout-preview-area .visit-profile {
-    /* Inherit default button styles */
-    /* Add specific overrides if needed */
-    align-self: flex-start; /* Align button left */
-    padding: 8px 18px !important; /* Use !important if needed, or increase specificity */
-    font-size: 0.9em !important;
-    margin-top: 5px;
-    text-transform: none !important; /* Override button uppercase if needed */
-    /* Ensure button classes are applied in the JS render function too */
+.shoutout-preview-area .creator-header {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    gap: 15px;
+    width: 100%;
+    margin: 0;
 }
 
-/* --- REMOVE ALL platform-specific preview styles (Instagram/YouTube) --- */
+.shoutout-preview-area .creator-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50% !important; /* <<< FORCE roundness */
+    object-fit: cover; /* Ensure image covers the area */
+    border: none; /* Remove any direct border */
+    box-shadow: 0 0 0 2px var(--border-color); /* Use box-shadow as border */
+    margin: 0;
+    flex-shrink: 0;
+    display: block; /* Ensure block behavior */
+    overflow: hidden; /* Ensure content clipped to border-radius */
+    background-color: var(--input-bg-color); /* Fallback background */
+}
+
+.shoutout-preview-area .creator-header-text {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden; /* Prevent text spilling */
+    gap: 2px;
+}
+
+.shoutout-preview-area .creator-header-text .name-verified {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shoutout-preview-area .creator-header h3 {
+    margin: 0;
+    font-size: 1.15em;
+    color: var(--text-color);
+    line-height: 1.3;
+    font-weight: 500;
+    word-break: break-word; /* Allow wrapping */
+    white-space: normal; /* Allow wrapping */
+}
+
+.shoutout-preview-area .verified-badge {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    vertical-align: middle; /* Adjust alignment */
+}
+
+.shoutout-preview-area .creator-username {
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    margin: 0;
+    line-height: 1.3;
+    word-break: break-all; /* Allow breaking long usernames */
+    white-space: normal; /* Allow wrapping */
+}
+
+.shoutout-preview-area .creator-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 10px;
+    margin-top: 5px; /* Space after header block */
+}
+
+.shoutout-preview-area .creator-bio {
+    color: var(--secondary-text);
+    margin: 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+    word-break: break-word; /* Allow wrapping */
+    white-space: normal; /* Allow wrapping */
+    max-height: none; /* Ensure full bio is visible */
+    overflow: visible; /* Ensure full bio is visible */
+}
+
+.shoutout-preview-area .follower-count {
+    color: var(--text-color);
+    opacity: 0.9;
+    font-weight: 500;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.shoutout-preview-area .visit-profile {
+    /* Styles should be inherited from button styles if classes are applied */
+    align-self: flex-start; /* Align button left */
+    /* Re-apply critical overrides if needed */
+    padding: 8px 18px !important;
+    font-size: 0.9em !important;
+    margin-top: 5px;
+    text-transform: none !important; /* Ensure it's not uppercase like other buttons */
+}
+
+/* Force Hide YouTube Cover Photo */
+.shoutout-preview-area .youtube-cover-photo {
+    display: none !important; /* <<< FORCE hide */
+}
+
+/* --- End Unified Shoutout Preview Styles --- */
+
 
 /* President Preview Card - IS THE BOX */
 #president-preview .president-section {
