@@ -1335,126 +1335,127 @@ function renderYouTubeCard(account) { //
     }
 
 // --- Authentication Logic ---
-    // Listener for changes in authentication state (login/logout)
-    onAuthStateChanged(auth, user => { //
-        if (user) { //
-            // User is signed in
-            console.log("User logged in:", user.email, "Name:", user.displayName); // Log name too
-            if (loginSection) loginSection.style.display = 'none'; // Hide login form
-            if (adminContent) adminContent.style.display = 'block'; // Show admin content
-            if (logoutButton) logoutButton.style.display = 'inline-block'; // Show logout button
+// Listener for changes in authentication state (login/logout)
+onAuthStateChanged(auth, user => {
+    if (user) {
+        // User is signed in
+        console.log("User logged in:", user.email, "Name:", user.displayName); // Log name too
+        if (loginSection) loginSection.style.display = 'none'; // Hide login form
+        if (adminContent) adminContent.style.display = 'block'; // Show admin content
+        if (logoutButton) logoutButton.style.display = 'inline-block'; // Show logout button
 
-            // --- REMOVED/REPLACED THIS LINE: ---
-            // if (adminGreeting) adminGreeting.textContent = `Logged in as: ${user.email}`;
-
-            // --- ADDED THIS BLOCK: ---
-            // --- Updated Greeting Logic ---
-            const displayName = user.displayName; // Get the display name from the User object
-            const email = user.email;         // Get the email
-
-            let greetingText = ''; // Initialize empty greeting string
-
-            if (displayName) {
-                // If a display name exists, use it primarily
-                greetingText = `Logged in as: ${displayName}`;
-                if (email) {
-                    // Add the email in parentheses for completeness
-                    greetingText += ` (${email})`;
-                }
-            } else if (email) {
-                // If no display name, fall back to just showing the email
-                greetingText = `Logged in as: ${email}`;
-            } else {
-                // Fallback if somehow neither exists (shouldn't happen if logged in)
-                greetingText = `Logged in`;
+        // --- Updated Greeting Logic ---
+        const displayName = user.displayName; // Get the display name from the User object
+        const email = user.email;       // Get the email
+        let greetingText = ''; // Initialize empty greeting string
+        if (displayName) {
+            greetingText = `Logged in as: ${displayName}`;
+            if (email) {
+                greetingText += ` (${email})`;
             }
-
-            if (adminGreeting) {
-                adminGreeting.textContent = greetingText; // Set the text of the greeting element
-            }
-
-            // ****** ADD THIS BLOCK ******
-            // Log the successful login attempt
-            if (typeof logAdminActivity === 'function') {
-                logAdminActivity('ADMIN_LOGIN', { email: user.email, uid: user.uid });
-            } else {
-                // This error indicates a problem with the core log function setup
-                console.error("logAdminActivity function not found! Cannot log login event.");
-            }
-            // --- End Updated Greeting Logic ---
+        } else if (email) {
+            greetingText = `Logged in as: ${email}`;
+        } else {
+            greetingText = `Logged in`;
+        }
+        if (adminGreeting) {
+            adminGreeting.textContent = greetingText; // Set the text of the greeting element
+        }
+        // --- End Updated Greeting Logic ---
 
 
-            // Clear any previous login status messages
-            if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; } //
-            if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } //
+        // ****** Log the login event FIRST ******
+        // This initiates the write to Firestore
+        if (typeof logAdminActivity === 'function') {
+            logAdminActivity('ADMIN_LOGIN', { email: user.email, uid: user.uid });
+            // Note: We don't strictly NEED to await this for the fix,
+            // as loadActivityLog is called later.
+        } else {
+            // This error indicates a problem with the core log function setup
+            console.error("logAdminActivity function not found! Cannot log login event.");
+        }
+        // --- End Log Login ---
 
-            // Load initial data for the admin panel
-            loadProfileData(); // Load site profile data (includes maintenance mode state now)
-            // Load shoutout lists for each platform
-            if (typeof loadShoutoutsAdmin === 'function') { //
-                 if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok'); //
-                 if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram'); //
-                 if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube'); //
-            } else { //
-                 console.error("loadShoutoutsAdmin function is not defined!"); //
-                 showAdminStatus("Error: Cannot load shoutout data.", true); //
-            }
-            // *** Call loadUsefulLinksAdmin when user logs in ***
-            if (typeof loadUsefulLinksAdmin === 'function' && usefulLinksListAdmin) { //
-                loadUsefulLinksAdmin(); //
-            }
-            // *** Call loadSocialLinksAdmin when user logs in ***
-            if (typeof loadSocialLinksAdmin === 'function' && socialLinksListAdmin) {
-                 loadSocialLinksAdmin();
-            }
 
-            if (typeof loadActivityLog === 'function') { loadActivityLog(); }
+        // Clear any previous login status messages
+        if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
+        if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
 
-            // --- Load Disabilities (Check This Block) --- // <<< THIS IS THE KEY PART
-            if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
-                 loadDisabilitiesAdmin(); // <<< **** ENSURE THIS LINE IS PRESENT AND CORRECT ****
-            } else {
-                 // Log warnings/errors if function or element is missing
-                 if(!disabilitiesListAdmin) console.warn("Disabilities list container missing during initial load.");
-                 if(typeof loadDisabilitiesAdmin !== 'function') console.error("loadDisabilitiesAdmin function missing during initial load!");
-            }
+        // Load initial data for the admin panel SECTIONS (Profile, Shoutouts, Links, etc.)
+        loadProfileData(); // Load site profile data (includes maintenance mode state now)
+        // Load shoutout lists for each platform
+        if (typeof loadShoutoutsAdmin === 'function') {
+            if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
+            if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram');
+            if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
+        } else {
+            console.error("loadShoutoutsAdmin function is not defined!");
+            showAdminStatus("Error: Cannot load shoutout data.", true);
+        }
+        // *** Call loadUsefulLinksAdmin ***
+        if (typeof loadUsefulLinksAdmin === 'function' && usefulLinksListAdmin) {
+            loadUsefulLinksAdmin();
+        }
+        // *** Call loadSocialLinksAdmin ***
+        if (typeof loadSocialLinksAdmin === 'function' && socialLinksListAdmin) {
+             loadSocialLinksAdmin();
+        }
+        // *** Load Disabilities ***
+        if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
+            loadDisabilitiesAdmin(); // <<< **** ENSURE THIS LINE IS PRESENT AND CORRECT ****
+        } else {
+            if(!disabilitiesListAdmin) console.warn("Disabilities list container missing during initial load.");
+            if(typeof loadDisabilitiesAdmin !== 'function') console.error("loadDisabilitiesAdmin function missing during initial load!");
+        }
+        // *** Load President Data ***
+        if (typeof loadPresidentData === 'function') {
+            loadPresidentData(); // Load president data on login
+        } else {
+            console.error("loadPresidentData function is missing!");
+            showAdminStatus("Error: Cannot load president data.", true);
+        }
 
-            // --- ADD THIS LINE ---
-            if (typeof loadPresidentData === 'function') {
-                loadPresidentData(); // Load president data on login
-            } else {
-                 console.error("loadPresidentData function is missing!");
-                 showAdminStatus("Error: Cannot load president data.", true);
-            }
+        // ****** Load the Activity Log LAST ******
+        // Calling this after the other loads gives the ADMIN_LOGIN entry's
+        // serverTimestamp a better chance to be resolved by Firestore.
+        if (typeof loadActivityLog === 'function') {
+            loadActivityLog();
+        } else {
+             console.error("loadActivityLog function is missing!");
+             showAdminStatus("Error: Cannot load activity log.", true);
+        }
+        // --- End Load Activity Log ---
 
-            // Start the inactivity timer now that the user is logged in
-            resetInactivityTimer(); //
-            addActivityListeners(); //
 
-        } else { //
-            // User is signed out
-            // (Keep the rest of your logout code here)
-            console.log("User logged out."); //
-            if (loginSection) loginSection.style.display = 'block'; // Show login form
-            if (adminContent) adminContent.style.display = 'none'; // Hide admin content
-            if (logoutButton) logoutButton.style.display = 'none'; // Hide logout button
-            if (adminGreeting) adminGreeting.textContent = ''; // Clear greeting
-            if (typeof closeEditModal === 'function') closeEditModal(); // Close edit modal if open
-            if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal(); // Close useful link modal
-            if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal(); // Close social link modal
+        // Start the inactivity timer now that the user is logged in
+        resetInactivityTimer();
+        addActivityListeners();
 
-            // Reset the login form to its initial state (email input visible)
-            if (emailGroup) emailGroup.style.display = 'block'; //
-            if (passwordGroup) passwordGroup.style.display = 'none'; //
-            if (nextButton) nextButton.style.display = 'inline-block'; // Or 'block'
-            if (loginButton) loginButton.style.display = 'none'; //
-            if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; } // Clear status message
-            if (loginForm) loginForm.reset(); // Clear email/password inputs
+    } else {
+        // User is signed out
+        // (Keep the rest of your logout code here)
+        console.log("User logged out.");
+        if (loginSection) loginSection.style.display = 'block'; // Show login form
+        if (adminContent) adminContent.style.display = 'none'; // Hide admin content
+        if (logoutButton) logoutButton.style.display = 'none'; // Hide logout button
+        if (adminGreeting) adminGreeting.textContent = ''; // Clear greeting
+        if (typeof closeEditModal === 'function') closeEditModal(); // Close edit modal if open
+        if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal(); // Close useful link modal
+        if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal(); // Close social link modal
+        if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal(); // Close disability modal
 
-            // Stop inactivity timer and remove listeners
-            removeActivityListeners(); //
-        }
-    });
+        // Reset the login form to its initial state (email input visible)
+        if (emailGroup) emailGroup.style.display = 'block';
+        if (passwordGroup) passwordGroup.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'inline-block'; // Or 'block'
+        if (loginButton) loginButton.style.display = 'none';
+        if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; } // Clear status message
+        if (loginForm) loginForm.reset(); // Clear email/password inputs
+
+        // Stop inactivity timer and remove listeners
+        removeActivityListeners();
+    }
+});
     
     // Login Form Submission (Handles the final step after password entry)
     if (loginForm) { //
