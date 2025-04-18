@@ -351,173 +351,172 @@
 </div>
 
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
-                <h3 id="shoutouts-heading">Creator Shoutouts</h3>
+    <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
-                <div class="shoutouts-platform-container" aria-labelledby="tiktok-heading">
-                    <h4 id="tiktok-heading">TikTok</h4>
-                    <form id="add-shoutout-tiktok-form" aria-labelledby="add-tiktok-heading">
-                        <h5 id="add-tiktok-heading">Add New TikTok Shoutout</h5>
-                        <div class="form-group">
-                            <label for="tiktok-username">Username (without @):</label>
-                            <input type="text" id="tiktok-username" name="username" required placeholder="e.g., mrbeast">
-                        </div>
-                        <div class="form-group">
-                            <label for="tiktok-nickname">Nickname:</label>
-                            <input type="text" id="tiktok-nickname" name="nickname" required placeholder="e.g., MrBeast">
-                        </div>
-                        <div class="form-group">
-                            <label for="tiktok-order">Display Order:</label>
-                            <input type="number" id="tiktok-order" name="order" min="0" step="1" required placeholder="e.g., 1">
-                        </div>
-                        <div class="form-group">
-                            <label for="tiktok-followers">Followers (e.g., 10M, 500K):</label>
-                            <input type="text" id="tiktok-followers" name="followers" placeholder="e.g., 115.2M" inputmode="text">
-                        </div>
-                        <div class="form-group">
-                            <label for="tiktok-bio">Bio:</label>
-                            <textarea id="tiktok-bio" name="bio" placeholder="Creator's bio text" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="tiktok-profilePic">Profile Pic URL:</label>
-                            <input type="url" id="tiktok-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
-                        </div>
-                         <div class="form-group checkbox-group apple-toggle-group">
-                           <input type="checkbox" id="tiktok-isVerified" name="isVerified" value="true">
-                            <input type="checkbox" id="tiktok-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox"> <label for="tiktok-isVerified" class="apple-toggle-label"></label> <label for="tiktok-isVerified">Is Verified?</label> </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Preview:</label>
-                            <div id="add-tiktok-preview" class="shoutout-preview-area">
-                                <p><small>Preview will appear here as you type.</small></p>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                           <button type="submit" class="button-primary">Add TikTok Shoutout</button>
-                        </div>
-                    </form>
-
-                    <h5 id="existing-tiktok-heading">
-                        Existing TikTok Shoutouts <span id="tiktok-count" class="list-count"></span>
-                    </h5>
-                    <div class="list-controls">
-                        <input type="search" id="search-tiktok" placeholder="Search TikTok Shoutouts..." aria-label="Search TikTok Shoutouts">
-                    </div>
-                    <div id="shoutouts-tiktok-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tiktok-heading">
-                        <p>Loading TikTok shoutouts...</p>
-                    </div>
+    <div class="shoutouts-platform-container" aria-labelledby="tiktok-heading">
+        <h4 id="tiktok-heading">TikTok</h4>
+        <form id="add-shoutout-tiktok-form" aria-labelledby="add-tiktok-heading">
+            <h5 id="add-tiktok-heading">Add New TikTok Shoutout</h5>
+            <div class="form-group">
+                <label for="tiktok-username">Username (without @):</label>
+                <input type="text" id="tiktok-username" name="username" required placeholder="e.g., mrbeast">
+            </div>
+            <div class="form-group">
+                <label for="tiktok-nickname">Nickname:</label>
+                <input type="text" id="tiktok-nickname" name="nickname" required placeholder="e.g., MrBeast">
+            </div>
+            <div class="form-group">
+                <label for="tiktok-order">Display Order:</label>
+                <input type="number" id="tiktok-order" name="order" min="0" step="1" required placeholder="e.g., 1">
+            </div>
+            <div class="form-group">
+                <label for="tiktok-followers">Followers (e.g., 10M, 500K):</label>
+                <input type="text" id="tiktok-followers" name="followers" placeholder="e.g., 115.2M" inputmode="text">
+            </div>
+            <div class="form-group">
+                <label for="tiktok-bio">Bio:</label>
+                <textarea id="tiktok-bio" name="bio" placeholder="Creator's bio text" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="tiktok-profilePic">Profile Pic URL:</label>
+                <input type="url" id="tiktok-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
+            </div>
+            <div class="form-group checkbox-group apple-toggle-group">
+                 <input type="checkbox" id="tiktok-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
+                 <label for="tiktok-isVerified" class="apple-toggle-label"></label>
+                 <label for="tiktok-isVerified">Is Verified?</label>
+                 </div>
+            <div class="form-group">
+                <label>Preview:</label>
+                <div id="add-tiktok-preview" class="shoutout-preview-area">
+                    <p><small>Preview will appear here as you type.</small></p>
                 </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="button-primary">Add TikTok Shoutout</button>
+            </div>
+        </form>
 
-                <div class="shoutouts-platform-container" aria-labelledby="instagram-heading">
-                    <h4 id="instagram-heading">Instagram</h4>
-                    <form id="add-shoutout-instagram-form" aria-labelledby="add-instagram-heading">
-                         <h5 id="add-instagram-heading">Add New Instagram Shoutout</h5>
-                         <div class="form-group">
-                             <label for="instagram-username">Username:</label>
-                             <input type="text" id="instagram-username" name="username" required placeholder="e.g., mrbeast">
-                         </div>
-                         <div class="form-group">
-                             <label for="instagram-nickname">Nickname:</label>
-                             <input type="text" id="instagram-nickname" name="nickname" required placeholder="e.g., MrBeast">
-                         </div>
-                         <div class="form-group">
-                             <label for="instagram-order">Display Order:</label>
-                             <input type="number" id="instagram-order" name="order" min="0" step="1" required placeholder="e.g., 1">
-                         </div>
-                         <div class="form-group">
-                             <label for="instagram-followers">Followers (e.g., 10M, 500K):</label>
-                             <input type="text" id="instagram-followers" name="followers" placeholder="e.g., 67.2M" inputmode="text">
-                         </div>
-                         <div class="form-group">
-                             <label for="instagram-bio">Bio:</label>
-                             <textarea id="instagram-bio" name="bio" placeholder="Creator's bio text" rows="3"></textarea>
-                         </div>
-                         <div class="form-group">
-                             <label for="instagram-profilePic">Profile Pic URL:</label>
-                             <input type="url" id="instagram-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
-                         </div>
-                         <div class="form-group checkbox-group apple-toggle-group">
-                            <input type="checkbox" id="instagram-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox"> <label for="instagram-isVerified" class="apple-toggle-label"></label> <label for="instagram-isVerified">Is Verified?</label> </div>
-                            <label for="instagram-isVerified">Is Verified?</label>
-                         </div>
-                         <div class="form-group">
-                            <label>Preview:</label>
-                            <div id="add-instagram-preview" class="shoutout-preview-area">
-                                <p><small>Preview will appear here as you type.</small></p>
-                            </div>
-                        </div>
-                         <div class="form-actions">
-                            <button type="submit" class="button-primary">Add Instagram Shoutout</button>
-                         </div>
-                    </form>
+        <h5 id="existing-tiktok-heading">
+            Existing TikTok Shoutouts <span id="tiktok-count" class="list-count"></span>
+        </h5>
+        <div class="list-controls">
+            <input type="search" id="search-tiktok" placeholder="Search TikTok Shoutouts..." aria-label="Search TikTok Shoutouts">
+        </div>
+        <div id="shoutouts-tiktok-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tiktok-heading">
+            <p>Loading TikTok shoutouts...</p>
+        </div>
+        </div> <div class="shoutouts-platform-container" aria-labelledby="instagram-heading">
+        <h4 id="instagram-heading">Instagram</h4>
+        <form id="add-shoutout-instagram-form" aria-labelledby="add-instagram-heading">
+             <h5 id="add-instagram-heading">Add New Instagram Shoutout</h5>
+             <div class="form-group">
+                 <label for="instagram-username">Username:</label>
+                 <input type="text" id="instagram-username" name="username" required placeholder="e.g., mrbeast">
+             </div>
+             <div class="form-group">
+                 <label for="instagram-nickname">Nickname:</label>
+                 <input type="text" id="instagram-nickname" name="nickname" required placeholder="e.g., MrBeast">
+             </div>
+             <div class="form-group">
+                 <label for="instagram-order">Display Order:</label>
+                 <input type="number" id="instagram-order" name="order" min="0" step="1" required placeholder="e.g., 1">
+             </div>
+             <div class="form-group">
+                 <label for="instagram-followers">Followers (e.g., 10M, 500K):</label>
+                 <input type="text" id="instagram-followers" name="followers" placeholder="e.g., 67.2M" inputmode="text">
+             </div>
+             <div class="form-group">
+                 <label for="instagram-bio">Bio:</label>
+                 <textarea id="instagram-bio" name="bio" placeholder="Creator's bio text" rows="3"></textarea>
+             </div>
+             <div class="form-group">
+                 <label for="instagram-profilePic">Profile Pic URL:</label>
+                 <input type="url" id="instagram-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
+             </div>
+             <div class="form-group checkbox-group apple-toggle-group">
+                <input type="checkbox" id="instagram-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
+                <label for="instagram-isVerified" class="apple-toggle-label"></label>
+                <label for="instagram-isVerified">Is Verified?</label>
+                 </div>
+              <div class="form-group">
+                 <label>Preview:</label>
+                 <div id="add-instagram-preview" class="shoutout-preview-area">
+                     <p><small>Preview will appear here as you type.</small></p>
+                 </div>
+             </div>
+             <div class="form-actions">
+                 <button type="submit" class="button-primary">Add Instagram Shoutout</button>
+             </div>
+        </form>
 
-                     <h5 id="existing-instagram-heading">
-                        Existing Instagram Shoutouts <span id="instagram-count" class="list-count"></span>
-                    </h5>
-                    <div class="list-controls">
-                        <input type="search" id="search-instagram" placeholder="Search Instagram Shoutouts..." aria-label="Search Instagram Shoutouts">
-                    </div>
-                    <div id="shoutouts-instagram-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-instagram-heading">
-                         <p>Loading Instagram shoutouts...</p>
-                    </div>
+         <h5 id="existing-instagram-heading">
+            Existing Instagram Shoutouts <span id="instagram-count" class="list-count"></span>
+         </h5>
+         <div class="list-controls">
+            <input type="search" id="search-instagram" placeholder="Search Instagram Shoutouts..." aria-label="Search Instagram Shoutouts">
+         </div>
+         <div id="shoutouts-instagram-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-instagram-heading">
+             <p>Loading Instagram shoutouts...</p>
+         </div>
+         </div> <div class="shoutouts-platform-container" aria-labelledby="youtube-heading">
+        <h4 id="youtube-heading">YouTube</h4>
+        <form id="add-shoutout-youtube-form" aria-labelledby="add-youtube-heading">
+            <h5 id="add-youtube-heading">Add New YouTube Shoutout</h5>
+            <div class="form-group">
+                 <label for="youtube-username">Handle (@handle):</label>
+                 <input type="text" id="youtube-username" name="username" required placeholder="e.g., MrBeast">
+            </div>
+            <div class="form-group">
+                 <label for="youtube-nickname">Channel Name / Nickname:</label>
+                 <input type="text" id="youtube-nickname" name="nickname" required placeholder="e.g., MrBeast">
+            </div>
+            <div class="form-group">
+                 <label for="youtube-order">Display Order:</label>
+                 <input type="number" id="youtube-order" name="order" min="0" step="1" required placeholder="e.g., 1">
+            </div>
+            <div class="form-group">
+                 <label for="youtube-subscribers">Subscribers (e.g., 10M, 500K):</label>
+                 <input type="text" id="youtube-subscribers" name="subscribers" placeholder="e.g., 383M" inputmode="text">
+            </div>
+            <div class="form-group">
+                 <label for="youtube-bio">Description / Bio:</label>
+                 <textarea id="youtube-bio" name="bio" placeholder="Creator's channel description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                 <label for="youtube-profilePic">Profile Pic URL:</label>
+                 <input type="url" id="youtube-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
+            </div>
+            <div class="form-group">
+                 <label for="youtube-coverPhoto">Cover Photo URL:</label>
+                 <input type="url" id="youtube-coverPhoto" name="coverPhoto" placeholder="https://..." inputmode="url">
+            </div>
+             <div class="form-group checkbox-group apple-toggle-group">
+                <input type="checkbox" id="youtube-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
+                <label for="youtube-isVerified" class="apple-toggle-label"></label>
+                <label for="youtube-isVerified">Is Verified?</label>
+                 </div>
+             <div class="form-group">
+                <label>Preview:</label>
+                <div id="add-youtube-preview" class="shoutout-preview-area">
+                    <p><small>Preview will appear here as you type.</small></p>
                 </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="button-primary">Add YouTube Shoutout</button>
+            </div>
+        </form>
 
-                <div class="shoutouts-platform-container" aria-labelledby="youtube-heading">
-                    <h4 id="youtube-heading">YouTube</h4>
-                    <form id="add-shoutout-youtube-form" aria-labelledby="add-youtube-heading">
-                        <h5 id="add-youtube-heading">Add New YouTube Shoutout</h5>
-                        <div class="form-group">
-                             <label for="youtube-username">Handle (@handle):</label>
-                             <input type="text" id="youtube-username" name="username" required placeholder="e.g., MrBeast">
-                         </div>
-                         <div class="form-group">
-                             <label for="youtube-nickname">Channel Name / Nickname:</label>
-                             <input type="text" id="youtube-nickname" name="nickname" required placeholder="e.g., MrBeast">
-                         </div>
-                         <div class="form-group">
-                             <label for="youtube-order">Display Order:</label>
-                             <input type="number" id="youtube-order" name="order" min="0" step="1" required placeholder="e.g., 1">
-                         </div>
-                         <div class="form-group">
-                             <label for="youtube-subscribers">Subscribers (e.g., 10M, 500K):</label>
-                             <input type="text" id="youtube-subscribers" name="subscribers" placeholder="e.g., 383M" inputmode="text">
-                         </div>
-                         <div class="form-group">
-                             <label for="youtube-bio">Description / Bio:</label>
-                             <textarea id="youtube-bio" name="bio" placeholder="Creator's channel description" rows="3"></textarea>
-                         </div>
-                         <div class="form-group">
-                             <label for="youtube-profilePic">Profile Pic URL:</label>
-                             <input type="url" id="youtube-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
-                         </div>
-                         <div class="form-group">
-                             <label for="youtube-coverPhoto">Cover Photo URL:</label>
-                             <input type="url" id="youtube-coverPhoto" name="coverPhoto" placeholder="https://..." inputmode="url">
-                         </div>
-                         <div class="form-group checkbox-group apple-toggle-group">
-                            <input type="checkbox" id="youtube-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox"> <label for="youtube-isVerified" class="apple-toggle-label"></label> <label for="youtube-isVerified">Is Verified?</label> </div>
-                            <label for="youtube-isVerified">Is Verified?</label>
-                         </div>
-                         <div class="form-group">
-                            <label>Preview:</label>
-                            <div id="add-youtube-preview" class="shoutout-preview-area">
-                                <p><small>Preview will appear here as you type.</small></p>
-                            </div>
-                        </div>
-                         <div class="form-actions">
-                            <button type="submit" class="button-primary">Add YouTube Shoutout</button>
-                         </div>
-                    </form>
-
-                     <h5 id="existing-youtube-heading">
-                        Existing YouTube Shoutouts <span id="youtube-count" class="list-count"></span>
-                    </h5>
-                    <div class="list-controls">
-                        <input type="search" id="search-youtube" placeholder="Search YouTube Shoutouts..." aria-label="Search YouTube Shoutouts">
-                    </div>
-                    <div id="shoutouts-youtube-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-youtube-heading">
-                         <p>Loading YouTube shoutouts...</p>
-                    </div>
-                </div>
+        <h5 id="existing-youtube-heading">
+           Existing YouTube Shoutouts <span id="youtube-count" class="list-count"></span>
+        </h5>
+        <div class="list-controls">
+           <input type="search" id="search-youtube" placeholder="Search YouTube Shoutouts..." aria-label="Search YouTube Shoutouts">
+        </div>
+        <div id="shoutouts-youtube-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-youtube-heading">
+            <p>Loading YouTube shoutouts...</p>
+        </div>
+        </div> </section>
                 
              <!-- Activity Log Section -->
 <section class="admin-section" id="activity-log-section" aria-labelledby="activity-log-heading">
