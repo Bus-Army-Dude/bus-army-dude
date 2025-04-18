@@ -53,9 +53,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     }
 
     const searchLogInput = document.getElementById('search-activity-log');
-    if (searchLogInput) {
-        // Use 'input' to filter as the user types
-        searchLogInput.addEventListener('input', displayFilteredActivityLog);
+    if (searchActivityLogInput) { searchActivityLogInput.addEventListener('input', displayFilteredActivityLog); }
     }
 
     // --- DOM Element References ---
@@ -815,45 +813,42 @@ function renderYouTubeCard(account) { //
     }
 
 
-    // --- Function to Save Profile Data ---
-    async function saveProfileData(event) { //
-        event.preventDefault(); // Prevent default form submission
-        // Ensure user is logged in
-        if (!auth || !auth.currentUser) { //
-            showProfileStatus("Error: Not logged in.", true); //
-            return; //
-        }
-        if (!profileForm) return; // Should not happen if loaded, but safety check
+     // --- Function to Save Profile Data (with Logging) ---
+    async function saveProfileData(event) {
+        event.preventDefault();
+        if (!auth || !auth.currentUser) { showProfileStatus("Error: Not logged in.", true); return; }
+        if (!profileForm) return;
 
-        // Gather data from form fields
-        const newData = { //
-            username: profileUsernameInput?.value.trim() || "", //
-            profilePicUrl: profilePicUrlInput?.value.trim() || "", //
-            bio: profileBioInput?.value.trim() || "", //
-            status: profileStatusInput?.value || "offline", // Ensure a default value
-            lastUpdated: serverTimestamp() // Add a timestamp for the update
-            // Note: Maintenance mode is saved by its own function/listener
+        const newData = {
+            username: profileUsernameInput?.value.trim() || "",
+            profilePicUrl: profilePicUrlInput?.value.trim() || "",
+            bio: profileBioInput?.value.trim() || "",
+            status: profileStatusInput?.value || "offline",
+           // lastUpdated is added by Firestore, not needed in logged details explicitly unless desired
         };
 
-        showProfileStatus("Saving profile..."); // Provide user feedback
-        try { //
+        showProfileStatus("Saving profile...");
+        try {
             // Use setDoc with merge: true to create or update the document
-            await setDoc(profileDocRef, newData, { merge: true }); //
-            console.log("Profile data saved to:", profileDocRef.path); //
-            showProfileStatus("Profile updated successfully!", false); //
+            await setDoc(profileDocRef, { ...newData, lastUpdated: serverTimestamp() }, { merge: true }); // Add timestamp here
+            console.log("Profile data saved to:", profileDocRef.path);
+            showProfileStatus("Profile updated successfully!", false);
 
-            // Optionally update the preview image immediately after saving a new URL
-            if (adminPfpPreview && newData.profilePicUrl) { //
-                adminPfpPreview.src = newData.profilePicUrl; //
-                adminPfpPreview.style.display = 'inline-block'; //
-            } else if (adminPfpPreview) { //
-                 adminPfpPreview.src = ''; //
-                 adminPfpPreview.style.display = 'none'; //
+            // *** Log Activity ***
+            logAdminActivity('UPDATE_PROFILE', { fieldsUpdated: Object.keys(newData) });
+
+            // Update preview image
+            if (adminPfpPreview && newData.profilePicUrl) {
+                adminPfpPreview.src = newData.profilePicUrl;
+                adminPfpPreview.style.display = 'inline-block';
+            } else if (adminPfpPreview) {
+                adminPfpPreview.src = '';
+                adminPfpPreview.style.display = 'none';
             }
 
-        } catch (error) { //
-             console.error("Error saving profile data:", error); //
-             showProfileStatus(`Error saving profile: ${error.message}`, true); //
+        } catch (error) {
+            console.error("Error saving profile data:", error);
+            showProfileStatus(`Error saving profile: ${error.message}`, true);
         }
     }
 
@@ -882,52 +877,39 @@ function renderYouTubeCard(account) { //
          });
     }
 
-// *** FUNCTION TO SAVE Maintenance Mode Status ***
-    async function saveMaintenanceModeStatus(isEnabled) { //
-        // Ensure user is logged in
-        if (!auth || !auth.currentUser) { //
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
-            // Revert checkbox state visually if save fails due to auth issue
-            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
-            return; //
+ // --- FUNCTION TO SAVE Maintenance Mode Status (with Logging) ---
+    async function saveMaintenanceModeStatus(isEnabled) {
+        if (!auth || !auth.currentUser) {
+            showAdminStatus("Error: Not logged in. Cannot save settings.", true);
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
+            return;
         }
-
-        // Use the specific status message area for settings, fallback to main admin status
-        const statusElement = settingsStatusMessage || adminStatusElement; //
-
-        // Show saving message
-        if (statusElement) { //
-            statusElement.textContent = "Saving setting..."; //
-            statusElement.className = "status-message"; // Reset style
-            statusElement.style.display = 'block'; //
+        const statusElement = settingsStatusMessage || adminStatusElement;
+        if (statusElement) {
+            statusElement.textContent = "Saving setting...";
+            statusElement.className = "status-message";
+            statusElement.style.display = 'block';
         }
+        try {
+            await setDoc(profileDocRef, { isMaintenanceModeEnabled: isEnabled }, { merge: true });
+            console.log("Maintenance mode status saved:", isEnabled);
 
-        try { //
-            // Use profileDocRef (site_config/mainProfile) to store the flag
-            // Use setDoc with merge: true to update only this field without overwriting others
-            await setDoc(profileDocRef, { //
-                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
-            }, { merge: true }); //
+             // *** Log Activity ***
+            logAdminActivity('UPDATE_SETTING_MAINTENANCE', { enabled: isEnabled });
 
-            console.log("Maintenance mode status saved:", isEnabled); //
-
-            // Show success message using the dedicated settings status element or fallback
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
-                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
-             } else { // Fallback if specific element wasn't found initially
-                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
-             }
-
-        } catch (error) { //
-            console.error("Error saving maintenance mode status:", error); //
-            // Show error message in the specific status area or fallback
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
-                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
-            } else { //
-                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) {
+                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false);
+            } else {
+                 showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false);
             }
-            // Revert checkbox state visually on error
-             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+        } catch (error) {
+            console.error("Error saving maintenance mode status:", error);
+             if (statusElement === settingsStatusMessage && settingsStatusMessage) {
+                 showSettingsStatus(`Error saving setting: ${error.message}`, true);
+             } else {
+                 showAdminStatus(`Error saving maintenance mode: ${error.message}`, true);
+             }
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
         }
     }
     // *** END FUNCTION ***
@@ -1048,116 +1030,75 @@ function renderYouTubeCard(account) { //
          console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button)."); //
     }
 
-// --- Authentication Logic ---
-    // Listener for changes in authentication state (login/logout)
-    onAuthStateChanged(auth, user => { //
-        if (user) { //
-            // User is signed in
-            console.log("User logged in:", user.email, "Name:", user.displayName); // Log name too
-            if (loginSection) loginSection.style.display = 'none'; // Hide login form
-            if (adminContent) adminContent.style.display = 'block'; // Show admin content
-            if (logoutButton) logoutButton.style.display = 'inline-block'; // Show logout button
+ // --- Authentication Logic ---
+    // Listener for changes in authentication state (login/logout)
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            // User is signed in
+            console.log("User logged in:", user.email, "Name:", user.displayName);
+            if (loginSection) loginSection.style.display = 'none';
+            if (adminContent) adminContent.style.display = 'block';
+            if (logoutButton) logoutButton.style.display = 'inline-block';
 
-            // --- REMOVED/REPLACED THIS LINE: ---
-            // if (adminGreeting) adminGreeting.textContent = `Logged in as: ${user.email}`;
-
-            // --- ADDED THIS BLOCK: ---
-            // --- Updated Greeting Logic ---
-            const displayName = user.displayName; // Get the display name from the User object
-            const email = user.email;         // Get the email
-
-            let greetingText = ''; // Initialize empty greeting string
-
+            // Updated Greeting Logic
+            const displayName = user.displayName;
+            const email = user.email;
+            let greetingText = '';
             if (displayName) {
-                // If a display name exists, use it primarily
                 greetingText = `Logged in as: ${displayName}`;
-                if (email) {
-                    // Add the email in parentheses for completeness
-                    greetingText += ` (${email})`;
-                }
+                if (email) { greetingText += ` (${email})`; }
             } else if (email) {
-                // If no display name, fall back to just showing the email
                 greetingText = `Logged in as: ${email}`;
-            } else {
-                // Fallback if somehow neither exists (shouldn't happen if logged in)
-                greetingText = `Logged in`;
-            }
+            } else { greetingText = `Logged in`; }
+            if (adminGreeting) { adminGreeting.textContent = greetingText; }
 
-            if (adminGreeting) {
-                adminGreeting.textContent = greetingText; // Set the text of the greeting element
-            }
-            // --- End Updated Greeting Logic ---
+            // Clear status messages
+            if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
+            if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
 
+            // Load initial data
+            loadProfileData();
+            if (typeof loadShoutoutsAdmin === 'function') {
+                if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok');
+                if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram');
+                if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube');
+            } else { console.error("loadShoutoutsAdmin function is not defined!"); showAdminStatus("Error: Cannot load shoutout data.", true); }
+            if (typeof loadUsefulLinksAdmin === 'function' && usefulLinksListAdmin) { loadUsefulLinksAdmin(); } else {console.error("loadUsefulLinksAdmin fn or list missing");}
+            if (typeof loadSocialLinksAdmin === 'function' && socialLinksListAdmin) { loadSocialLinksAdmin(); } else {console.error("loadSocialLinksAdmin fn or list missing");}
+            if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) { loadDisabilitiesAdmin(); } else {console.error("loadDisabilitiesAdmin fn or list missing");}
+            if (typeof loadPresidentData === 'function') { loadPresidentData(); } else {console.error("loadPresidentData function is missing!");}
 
-            // Clear any previous login status messages
-            if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; } //
-            if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } //
+            // *** Load Activity Log on Login ***
+            if (typeof loadActivityLog === 'function') {
+                loadActivityLog();
+            } else { console.error("loadActivityLog function is missing!"); }
 
-            // Load initial data for the admin panel
-            loadProfileData(); // Load site profile data (includes maintenance mode state now)
-            // Load shoutout lists for each platform
-            if (typeof loadShoutoutsAdmin === 'function') { //
-                 if (shoutoutsTiktokListAdmin) loadShoutoutsAdmin('tiktok'); //
-                 if (shoutoutsInstagramListAdmin) loadShoutoutsAdmin('instagram'); //
-                 if (shoutoutsYoutubeListAdmin) loadShoutoutsAdmin('youtube'); //
-            } else { //
-                 console.error("loadShoutoutsAdmin function is not defined!"); //
-                 showAdminStatus("Error: Cannot load shoutout data.", true); //
-            }
-            // *** Call loadUsefulLinksAdmin when user logs in ***
-            if (typeof loadUsefulLinksAdmin === 'function' && usefulLinksListAdmin) { //
-                loadUsefulLinksAdmin(); //
-            }
-            // *** Call loadSocialLinksAdmin when user logs in ***
-            if (typeof loadSocialLinksAdmin === 'function' && socialLinksListAdmin) {
-                 loadSocialLinksAdmin();
-            }
+            resetInactivityTimer();
+            addActivityListeners();
 
-            // --- Load Disabilities (Check This Block) --- // <<< THIS IS THE KEY PART
-            if (typeof loadDisabilitiesAdmin === 'function' && disabilitiesListAdmin) {
-                 loadDisabilitiesAdmin(); // <<< **** ENSURE THIS LINE IS PRESENT AND CORRECT ****
-            } else {
-                 // Log warnings/errors if function or element is missing
-                 if(!disabilitiesListAdmin) console.warn("Disabilities list container missing during initial load.");
-                 if(typeof loadDisabilitiesAdmin !== 'function') console.error("loadDisabilitiesAdmin function missing during initial load!");
-            }
+        } else {
+            // User is signed out
+            console.log("User logged out.");
+            if (loginSection) loginSection.style.display = 'block';
+            if (adminContent) adminContent.style.display = 'none';
+            if (logoutButton) logoutButton.style.display = 'none';
+            if (adminGreeting) adminGreeting.textContent = '';
+            if (typeof closeEditModal === 'function') closeEditModal();
+            if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal();
+            if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal();
+            if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal();
 
-            // --- ADD THIS LINE ---
-            if (typeof loadPresidentData === 'function') {
-                loadPresidentData(); // Load president data on login
-            } else {
-                 console.error("loadPresidentData function is missing!");
-                 showAdminStatus("Error: Cannot load president data.", true);
-            }
+            // Reset login form
+            if (emailGroup) emailGroup.style.display = 'block';
+            if (passwordGroup) passwordGroup.style.display = 'none';
+            if (nextButton) nextButton.style.display = 'inline-block';
+            if (loginButton) loginButton.style.display = 'none';
+            if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; }
+            if (loginForm) loginForm.reset();
 
-            // Start the inactivity timer now that the user is logged in
-            resetInactivityTimer(); //
-            addActivityListeners(); //
-
-        } else { //
-            // User is signed out
-            // (Keep the rest of your logout code here)
-            console.log("User logged out."); //
-            if (loginSection) loginSection.style.display = 'block'; // Show login form
-            if (adminContent) adminContent.style.display = 'none'; // Hide admin content
-            if (logoutButton) logoutButton.style.display = 'none'; // Hide logout button
-            if (adminGreeting) adminGreeting.textContent = ''; // Clear greeting
-            if (typeof closeEditModal === 'function') closeEditModal(); // Close edit modal if open
-            if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal(); // Close useful link modal
-            if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal(); // Close social link modal
-
-            // Reset the login form to its initial state (email input visible)
-            if (emailGroup) emailGroup.style.display = 'block'; //
-            if (passwordGroup) passwordGroup.style.display = 'none'; //
-            if (nextButton) nextButton.style.display = 'inline-block'; // Or 'block'
-            if (loginButton) loginButton.style.display = 'none'; //
-            if (authStatus) { authStatus.textContent = ''; authStatus.style.display = 'none'; } // Clear status message
-            if (loginForm) loginForm.reset(); // Clear email/password inputs
-
-            // Stop inactivity timer and remove listeners
-            removeActivityListeners(); //
-        }
-    });
+            removeActivityListeners();
+        }
+    });
     
     // Login Form Submission (Handles the final step after password entry)
     if (loginForm) { //
@@ -1318,172 +1259,146 @@ function renderYouTubeCard(account) { //
     }
     // --- END UPDATED: loadShoutoutsAdmin Function ---
 
-// --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check & Preview Clear) ---
-    async function handleAddShoutout(platform, formElement) { //
-        if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; } //
+// --- handleAddShoutout Function (with Logging) ---
+    async function handleAddShoutout(platform, formElement) {
+        if (!formElement) { console.error("Form element not provided..."); return; }
+        const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
+        const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim();
+        const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim();
+        const order = parseInt(orderStr);
 
-        // Get form values
-        const username = formElement.querySelector(`#${platform}-username`)?.value.trim(); //
-        const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim(); //
-        const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim(); //
-        const order = parseInt(orderStr); //
-
-        // Basic input validation
-        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) { //
-            showAdminStatus(`Invalid input for ${platform}. Check required fields and ensure Order is a non-negative number.`, true); //
-            return; //
+        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
+             showAdminStatus(`Invalid input for ${platform}...`, true); return;
         }
 
-        // Duplicate Check Logic
-        try { //
-            const shoutoutsCol = collection(db, 'shoutouts'); //
-            const duplicateCheckQuery = query( //
-                shoutoutsCol, //
-                where("platform", "==", platform), //
-                where("username", "==", username), //
-                limit(1) //
-            );
-
-            console.log(`Checking for duplicate: platform=${platform}, username=${username}`); //
-            const querySnapshot = await getDocs(duplicateCheckQuery); //
-
-            if (!querySnapshot.empty) { //
-                console.warn("Duplicate found for", platform, username); //
-                showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true); //
-                return; //
+        try {
+            // Duplicate Check Logic
+            const shoutoutsCol = collection(db, 'shoutouts');
+            const duplicateCheckQuery = query(shoutoutsCol, where("platform", "==", platform), where("username", "==", username), limit(1));
+            const querySnapshot = await getDocs(duplicateCheckQuery);
+            if (!querySnapshot.empty) {
+                 showAdminStatus(`Error: Shoutout for @${username} on ${platform} already exists.`, true); return;
             }
-            console.log("No duplicate found. Proceeding to add."); //
-            // --- End Duplicate Check ---
+            console.log("No duplicate found. Proceeding to add.");
 
-
-            // --- Add Logic ---
-            const accountData = { //
-                platform: platform, //
-                username: username, //
-                nickname: nickname, //
-                order: order, //
-                isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false, //
-                bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null, //
-                profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null, //
-                createdAt: serverTimestamp(), //
-                isEnabled: true //
+            // Add Logic
+            const accountData = {
+                platform: platform,
+                username: username,
+                nickname: nickname,
+                order: order,
+                isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
+                bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
+                profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
+                createdAt: serverTimestamp(),
+                isEnabled: true // Default to enabled
             };
-
-            if (platform === 'youtube') { //
-                accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A'; //
-                accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null; //
-            } else { //
-                accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A'; //
+            if (platform === 'youtube') {
+                accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
+                accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null;
+            } else {
+                accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A';
             }
 
-            const docRef = await addDoc(collection(db, 'shoutouts'), accountData); //
-            console.log("Shoutout added with ID:", docRef.id); //
-            await updateMetadataTimestamp(platform); //
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`, false); //
-            formElement.reset(); // Reset the form fields
+            const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
+            console.log("Shoutout added with ID:", docRef.id);
+            await updateMetadataTimestamp(platform);
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`, false);
 
-            // *** ADDED: Reset preview area after adding ***
-            const previewArea = formElement.querySelector(`#add-${platform}-preview`); //
-            if (previewArea) { //
-                previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>'; //
-            }
-            // *** END ADDED CODE ***
+            // *** Log Activity ***
+            logAdminActivity('CREATE_SHOUTOUT', { platform: platform, username: username, nickname: nickname, shoutoutId: docRef.id });
 
-            if (typeof loadShoutoutsAdmin === 'function') { //
-                loadShoutoutsAdmin(platform); // Reload the list
-            }
+            formElement.reset();
+            const previewArea = formElement.querySelector(`#add-${platform}-preview`);
+            if (previewArea) { previewArea.innerHTML = '<p><small>Preview will appear here...</small></p>'; }
+            if (typeof loadShoutoutsAdmin === 'function') { loadShoutoutsAdmin(platform); }
 
-        } catch (error) { //
-            console.error(`Error in handleAddShoutout for ${platform}:`, error); //
-            showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true); //
+        } catch (error) {
+            console.error(`Error in handleAddShoutout for ${platform}:`, error);
+            showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
         }
     }
 
 
-    // --- Function to Handle Updates from Edit Modal ---
-    async function handleUpdateShoutout(event) { //
-        event.preventDefault(); // Prevent default form submission
-        if (!editForm) return; // Exit if form element is missing
+    // --- Function to Handle Updates from Edit Modal (with Logging) ---
+    async function handleUpdateShoutout(event) {
+        event.preventDefault();
+        if (!editForm) return;
+        const docId = editForm.getAttribute('data-doc-id');
+        const platform = editForm.getAttribute('data-platform');
+        if (!docId || !platform) { showAdminStatus("Error: Missing doc ID or platform for update.", true); return; }
 
-        const docId = editForm.getAttribute('data-doc-id'); //
-        const platform = editForm.getAttribute('data-platform'); //
+        const username = editUsernameInput?.value.trim();
+        const nickname = editNicknameInput?.value.trim();
+        const orderStr = editOrderInput?.value.trim();
+        const order = parseInt(orderStr);
 
-        if (!docId || !platform) { //
-            showAdminStatus("Error: Missing document ID or platform for update.", true); //
-            return; //
+        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
+             showAdminStatus(`Update Error: Invalid input...`, true); return;
         }
 
-        // Get updated values from the edit form
-        const username = editUsernameInput?.value.trim(); //
-        const nickname = editNicknameInput?.value.trim(); //
-        const orderStr = editOrderInput?.value.trim(); //
-        const order = parseInt(orderStr); //
-
-        // Basic validation
-        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) { //
-            showAdminStatus(`Update Error: Invalid input. Check required fields and ensure Order is non-negative.`, true); //
-            return; //
-        }
-
-        // Construct the object with updated data
-        const updatedData = { //
-            username: username, //
-            nickname: nickname, //
-            order: order, //
-            isVerified: editIsVerifiedInput?.checked || false, //
-            bio: editBioInput?.value.trim() || null, //
-            profilePic: editProfilePicInput?.value.trim() || null, //
-            // isEnabled: editIsEnabledInput?.checked ?? true, // Add later
-            lastModified: serverTimestamp() // Add a timestamp for the modification
+        const updatedData = {
+            username: username,
+            nickname: nickname,
+            order: order,
+            isVerified: editIsVerifiedInput?.checked || false,
+            bio: editBioInput?.value.trim() || null,
+            profilePic: editProfilePicInput?.value.trim() || null,
+           // lastModified added by Firestore
         };
-
-        // Add platform-specific fields
-        if (platform === 'youtube') { //
-            updatedData.subscribers = editSubscribersInput?.value.trim() || 'N/A'; //
-            updatedData.coverPhoto = editCoverPhotoInput?.value.trim() || null; //
-        } else { // TikTok or Instagram
-            updatedData.followers = editFollowersInput?.value.trim() || 'N/A'; //
+        if (platform === 'youtube') {
+            updatedData.subscribers = editSubscribersInput?.value.trim() || 'N/A';
+            updatedData.coverPhoto = editCoverPhotoInput?.value.trim() || null;
+        } else {
+            updatedData.followers = editFollowersInput?.value.trim() || 'N/A';
         }
 
-        // Update the document in Firestore
-        showAdminStatus("Updating shoutout..."); // Feedback
-        try { //
-            const docRef = doc(db, 'shoutouts', docId); //
-            await updateDoc(docRef, updatedData); // Perform the update
-            await updateMetadataTimestamp(platform); // Update site timestamp
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false); //
-            if (typeof closeEditModal === 'function') closeEditModal(); // Close the modal
-            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform); // Reload the list
-        } catch (error) { //
-            console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error); //
-            showAdminStatus(`Error updating ${platform} shoutout: ${error.message}`, true); //
+        showAdminStatus("Updating shoutout...");
+        try {
+            const docRef = doc(db, 'shoutouts', docId);
+            await updateDoc(docRef, { ...updatedData, lastModified: serverTimestamp() }); // Add timestamp here
+            await updateMetadataTimestamp(platform);
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout updated successfully.`, false);
+
+            // *** Log Activity ***
+            logAdminActivity('UPDATE_SHOUTOUT', { platform: platform, username: username, nickname: nickname, shoutoutId: docId });
+
+            if (typeof closeEditModal === 'function') closeEditModal();
+            if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
+        } catch (error) {
+            console.error(`Error updating ${platform} shoutout (ID: ${docId}):`, error);
+            showAdminStatus(`Error updating ${platform} shoutout: ${error.message}`, true);
         }
     }
 
-
-    // --- Function to Handle Deleting a Shoutout ---
-    async function handleDeleteShoutout(docId, platform, listItemElement) { //
-        // Confirm deletion with the user
-        if (!confirm(`Are you sure you want to permanently delete this ${platform} shoutout? This cannot be undone.`)) { //
-            return; // Do nothing if user cancels
+    // --- Function to Handle Deleting a Shoutout (with Logging) ---
+    async function handleDeleteShoutout(docId, platform, listItemElement) {
+        if (!confirm(`Are you sure you want to permanently delete this ${platform} shoutout? This cannot be undone.`)) {
+            return;
         }
 
-        showAdminStatus("Deleting shoutout..."); // Feedback
-        try { //
-            // Delete the document from Firestore
-            await deleteDoc(doc(db, 'shoutouts', docId)); //
-            await updateMetadataTimestamp(platform); // Update site timestamp
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted successfully.`, false); //
+        let deletedUsername = 'unknown';
+        const docRef = doc(db, 'shoutouts', docId); // Define once
 
-            // Reload the list - this is the simplest way to update the UI
-            // and ensure the 'allShoutouts' array is also updated for filtering.
-            if (typeof loadShoutoutsAdmin === 'function') { //
-                loadShoutoutsAdmin(platform); //
+        try {
+            // Fetch before delete for logging
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                deletedUsername = docSnap.data().username || 'unknown';
             }
 
-        } catch (error) { //
-            console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error); //
-            showAdminStatus(`Error deleting ${platform} shoutout: ${error.message}`, true); //
+            showAdminStatus("Deleting shoutout...");
+            await deleteDoc(docRef); // Delete the document
+            await updateMetadataTimestamp(platform);
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted successfully.`, false);
+
+            // *** Log Activity ***
+            logAdminActivity('DELETE_SHOUTOUT', { platform: platform, shoutoutId: docId, username: deletedUsername });
+
+            if (typeof loadShoutoutsAdmin === 'function') { loadShoutoutsAdmin(platform); }
+        } catch (error) {
+            console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error);
+            showAdminStatus(`Error deleting ${platform} shoutout: ${error.message}`, true);
         }
     }
 
@@ -1550,73 +1465,65 @@ async function loadUsefulLinksAdmin() {
     }
 }
 
-// *** Function to Handle Adding a New Useful Link ***
-async function handleAddUsefulLink(event) { //
-    event.preventDefault(); //
-    if (!addUsefulLinkForm) return; //
+// --- Function to Handle Adding a New Useful Link (with Logging) ---
+    async function handleAddUsefulLink(event) {
+        event.preventDefault();
+        if (!addUsefulLinkForm) return;
+        const labelInput = addUsefulLinkForm.querySelector('#link-label');
+        const urlInput = addUsefulLinkForm.querySelector('#link-url');
+        const orderInput = addUsefulLinkForm.querySelector('#link-order');
+        const label = labelInput?.value.trim();
+        const url = urlInput?.value.trim();
+        const orderStr = orderInput?.value.trim();
+        const order = parseInt(orderStr);
 
-    const labelInput = addUsefulLinkForm.querySelector('#link-label'); //
-    const urlInput = addUsefulLinkForm.querySelector('#link-url'); //
-    const orderInput = addUsefulLinkForm.querySelector('#link-order'); //
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showAdminStatus("Invalid input for Useful Link...", true); return; }
+        try { new URL(url); } catch (_) { showAdminStatus("Invalid URL format...", true); return; }
 
-    const label = labelInput?.value.trim(); //
-    const url = urlInput?.value.trim(); //
-    const orderStr = orderInput?.value.trim(); //
-    const order = parseInt(orderStr); //
+        const linkData = { label: label, url: url, order: order, createdAt: serverTimestamp() };
 
-    if (!label || !url || !orderStr || isNaN(order) || order < 0) { //
-        showAdminStatus("Invalid input for Useful Link. Check required fields and ensure Order is a non-negative number.", true); //
-        return; //
+        showAdminStatus("Adding useful link...");
+        try {
+            const docRef = await addDoc(usefulLinksCollectionRef, linkData);
+            console.log("Useful link added with ID:", docRef.id);
+            showAdminStatus("Useful link added successfully.", false);
+
+             // *** Log Activity ***
+            logAdminActivity('CREATE_USEFUL_LINK', { linkLabel: label, url: url, linkId: docRef.id });
+
+            addUsefulLinkForm.reset();
+            loadUsefulLinksAdmin();
+        } catch (error) {
+            console.error("Error adding useful link:", error);
+            showAdminStatus(`Error adding useful link: ${error.message}`, true);
+        }
     }
 
-    // Simple check for valid URL structure (basic)
-    try { //
-        new URL(url); // This will throw an error if the URL is invalid
-    } catch (_) { //
-        showAdminStatus("Invalid URL format. Please enter a valid URL starting with http:// or https://", true); //
-        return; //
+// --- Function to Handle Deleting a Useful Link (with Logging) ---
+    async function handleDeleteUsefulLink(docId, listItemElement) {
+        if (!confirm("Are you sure...?")) { return; }
+
+        let deletedLabel = 'unknown';
+        const docRef = doc(db, 'useful_links', docId); // Define once
+
+        try {
+            // Fetch before delete
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) { deletedLabel = docSnap.data().label || 'unknown'; }
+
+            showAdminStatus("Deleting useful link...");
+            await deleteDoc(docRef); // Delete
+            showAdminStatus("Useful link deleted successfully.", false);
+
+            // *** Log Activity ***
+            logAdminActivity('DELETE_USEFUL_LINK', { linkId: docId, label: deletedLabel });
+
+            loadUsefulLinksAdmin(); // Reload list
+        } catch (error) {
+            console.error(`Error deleting useful link (ID: ${docId}):`, error);
+            showAdminStatus(`Error deleting useful link: ${error.message}`, true);
+        }
     }
-
-    const linkData = { //
-        label: label, //
-        url: url, //
-        order: order, //
-        createdAt: serverTimestamp() //
-    };
-
-    showAdminStatus("Adding useful link..."); //
-    try { //
-        const docRef = await addDoc(usefulLinksCollectionRef, linkData); //
-        console.log("Useful link added with ID:", docRef.id); //
-        // await updateMetadataTimestamp('usefulLinks'); // Optional: if tracking metadata
-        showAdminStatus("Useful link added successfully.", false); //
-        addUsefulLinkForm.reset(); // Reset the form
-        loadUsefulLinksAdmin(); // Reload the list
-
-    } catch (error) { //
-        console.error("Error adding useful link:", error); //
-        showAdminStatus(`Error adding useful link: ${error.message}`, true); //
-    }
-}
-
-// *** Function to Handle Deleting a Useful Link ***
-async function handleDeleteUsefulLink(docId, listItemElement) { //
-    if (!confirm("Are you sure you want to permanently delete this useful link?")) { //
-        return; //
-    }
-
-    showAdminStatus("Deleting useful link..."); //
-    try { //
-        await deleteDoc(doc(db, 'useful_links', docId)); //
-        // await updateMetadataTimestamp('usefulLinks'); // Optional
-        showAdminStatus("Useful link deleted successfully.", false); //
-        loadUsefulLinksAdmin(); // Reload list is simplest
-
-    } catch (error) { //
-        console.error(`Error deleting useful link (ID: ${docId}):`, error); //
-        showAdminStatus(`Error deleting useful link: ${error.message}`, true); //
-    }
-}
 
 
 // *** Function to Open and Populate the Edit Useful Link Modal ***
@@ -1659,54 +1566,40 @@ function closeEditUsefulLinkModal() { //
     if (editLinkStatusMessage) editLinkStatusMessage.textContent = ''; // Clear status message inside modal
 }
 
-// *** Function to Handle Updating a Useful Link from the Edit Modal ***
-async function handleUpdateUsefulLink(event) { //
-    event.preventDefault(); //
-    if (!editUsefulLinkForm) return; //
+// --- Function to Handle Updating a Useful Link (with Logging) ---
+    async function handleUpdateUsefulLink(event) {
+        event.preventDefault();
+        if (!editUsefulLinkForm) return;
+        const docId = editUsefulLinkForm.getAttribute('data-doc-id');
+        if (!docId) { showEditLinkStatus("Error: Missing document ID...", true); return; }
 
-    const docId = editUsefulLinkForm.getAttribute('data-doc-id'); //
-    if (!docId) { //
-        showEditLinkStatus("Error: Missing document ID for update.", true); //
-        return; //
+        const label = editLinkLabelInput?.value.trim();
+        const url = editLinkUrlInput?.value.trim();
+        const orderStr = editLinkOrderInput?.value.trim();
+        const order = parseInt(orderStr);
+
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditLinkStatus("Invalid input...", true); return; }
+        try { new URL(url); } catch (_) { showEditLinkStatus("Invalid URL format.", true); return; }
+
+        const updatedData = { label: label, url: url, order: order /*, lastModified added by Firestore */ };
+
+        showEditLinkStatus("Saving changes...");
+        try {
+            const docRef = doc(db, 'useful_links', docId);
+            await updateDoc(docRef, { ...updatedData, lastModified: serverTimestamp() }); // Add timestamp
+
+             // *** Log Activity ***
+            logAdminActivity('UPDATE_USEFUL_LINK', { linkLabel: label, url: url, linkId: docId });
+
+            showAdminStatus("Useful link updated successfully.", false);
+            closeEditUsefulLinkModal();
+            loadUsefulLinksAdmin();
+        } catch (error) {
+            console.error(`Error updating useful link (ID: ${docId}):`, error);
+            showEditLinkStatus(`Error saving: ${error.message}`, true);
+            showAdminStatus(`Error updating useful link: ${error.message}`, true);
+        }
     }
-
-    const label = editLinkLabelInput?.value.trim(); //
-    const url = editLinkUrlInput?.value.trim(); //
-    const orderStr = editLinkOrderInput?.value.trim(); //
-    const order = parseInt(orderStr); //
-
-    if (!label || !url || !orderStr || isNaN(order) || order < 0) { //
-        showEditLinkStatus("Invalid input. Check required fields and ensure Order is non-negative.", true); //
-        return; //
-    }
-     // Simple URL validation
-    try { new URL(url); } catch (_) { //
-        showEditLinkStatus("Invalid URL format.", true); //
-        return; //
-    }
-
-    const updatedData = { //
-        label: label, //
-        url: url, //
-        order: order, //
-        lastModified: serverTimestamp() //
-    };
-
-    showEditLinkStatus("Saving changes..."); //
-    try { //
-        const docRef = doc(db, 'useful_links', docId); //
-        await updateDoc(docRef, updatedData); //
-        // await updateMetadataTimestamp('usefulLinks'); // Optional
-        showAdminStatus("Useful link updated successfully.", false); // Show main status
-        closeEditUsefulLinkModal(); //
-        loadUsefulLinksAdmin(); // Reload the list
-
-    } catch (error) { //
-        console.error(`Error updating useful link (ID: ${docId}):`, error); //
-        showEditLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
-        showAdminStatus(`Error updating useful link: ${error.message}`, true); // Also show main status
-    }
-}
 
 // --- Function to render a single Social Link item in the admin list ---
    function renderSocialLinkAdminListItem(container, docId, label, url, order, deleteHandler, editHandler) {
@@ -1845,73 +1738,62 @@ function displayFilteredSocialLinks() {
 }
 
 
-   // --- Function to Handle Adding a New Social Link ---
-   async function handleAddSocialLink(event) {
-       event.preventDefault();
-       if (!addSocialLinkForm) return;
+   // --- Function to Handle Adding a New Social Link (with Logging) ---
+    async function handleAddSocialLink(event) {
+        event.preventDefault();
+        if (!addSocialLinkForm) return;
+        // ... (get label, url, order, validation) ...
+        const label = addSocialLinkForm.querySelector('#social-link-label')?.value.trim();
+        const url = addSocialLinkForm.querySelector('#social-link-url')?.value.trim();
+        const orderStr = addSocialLinkForm.querySelector('#social-link-order')?.value.trim();
+        const order = parseInt(orderStr);
 
-       const labelInput = addSocialLinkForm.querySelector('#social-link-label');
-       const urlInput = addSocialLinkForm.querySelector('#social-link-url');
-       const orderInput = addSocialLinkForm.querySelector('#social-link-order');
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showAdminStatus("Invalid input for Social Link...", true); return; }
+        try { new URL(url); } catch (_) { showAdminStatus("Invalid URL format...", true); return; }
 
-       const label = labelInput?.value.trim();
-       const url = urlInput?.value.trim();
-       const orderStr = orderInput?.value.trim();
-       const order = parseInt(orderStr);
+        const linkData = { label: label, url: url, order: order, createdAt: serverTimestamp() };
+        showAdminStatus("Adding social link...");
+        try {
+            const docRef = await addDoc(socialLinksCollectionRef, linkData);
+            console.log("Social link added with ID:", docRef.id);
+            showAdminStatus("Social link added successfully.", false);
 
-       if (!label || !url || !orderStr || isNaN(order) || order < 0) {
-           showAdminStatus("Invalid input for Social Link. Check required fields and ensure Order is a non-negative number.", true);
-           return;
-       }
+            // *** Log Activity ***
+            logAdminActivity('CREATE_SOCIAL_LINK', { label: label, url: url, linkId: docRef.id });
 
-       // Simple check for valid URL structure
-       try {
-           new URL(url); // This will throw an error if the URL is invalid
-       } catch (_) {
-           showAdminStatus("Invalid URL format. Please enter a valid URL starting with http:// or https://", true);
-           return;
-       }
+            addSocialLinkForm.reset();
+            loadSocialLinksAdmin();
+        } catch (error) {
+            console.error("Error adding social link:", error);
+            showAdminStatus(`Error adding social link: ${error.message}`, true);
+        }
+    }
 
-       const linkData = {
-           label: label,
-           url: url,
-           order: order,
-           createdAt: serverTimestamp()
-       };
+   // --- Function to Handle Deleting a Social Link (with Logging) ---
+    async function handleDeleteSocialLink(docId, listItemElement) {
+        if (!confirm("Are you sure...?")) { return; }
 
-       showAdminStatus("Adding social link...");
-       try {
-           const docRef = await addDoc(socialLinksCollectionRef, linkData);
-           console.log("Social link added with ID:", docRef.id);
-           // Optionally: await updateMetadataTimestamp('socialLinks');
-           showAdminStatus("Social link added successfully.", false);
-           addSocialLinkForm.reset(); // Reset the form
-           loadSocialLinksAdmin(); // Reload the list
+        let deletedLabel = 'unknown';
+        const docRef = doc(db, 'social_links', docId); // Define once
 
-       } catch (error) {
-           console.error("Error adding social link:", error);
-           showAdminStatus(`Error adding social link: ${error.message}`, true);
-       }
-   }
+        try {
+             // Fetch before delete
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) { deletedLabel = docSnap.data().label || 'unknown'; }
 
-   // --- Function to Handle Deleting a Social Link ---
-   async function handleDeleteSocialLink(docId, listItemElement) {
-       if (!confirm("Are you sure you want to permanently delete this social link?")) {
-           return;
-       }
+            showAdminStatus("Deleting social link...");
+            await deleteDoc(docRef); // Delete
+            showAdminStatus("Social link deleted successfully.", false);
 
-       showAdminStatus("Deleting social link...");
-       try {
-           await deleteDoc(doc(db, 'social_links', docId));
-           // Optionally: await updateMetadataTimestamp('socialLinks');
-           showAdminStatus("Social link deleted successfully.", false);
-           loadSocialLinksAdmin(); // Reload list
+            // *** Log Activity ***
+            logAdminActivity('DELETE_SOCIAL_LINK', { linkId: docId, label: deletedLabel });
 
-       } catch (error) {
-           console.error(`Error deleting social link (ID: ${docId}):`, error);
-           showAdminStatus(`Error deleting social link: ${error.message}`, true);
-       }
-   }
+            loadSocialLinksAdmin();
+        } catch (error) {
+            console.error(`Error deleting social link (ID: ${docId}):`, error);
+            showAdminStatus(`Error deleting social link: ${error.message}`, true);
+        }
+    }
 
 
    // --- Function to Open and Populate the Edit Social Link Modal ---
@@ -1954,54 +1836,40 @@ function displayFilteredSocialLinks() {
        if (editSocialLinkStatusMessage) editSocialLinkStatusMessage.textContent = ''; // Clear status message inside modal
    }
 
-   // --- Function to Handle Updating a Social Link from the Edit Modal ---
-   async function handleUpdateSocialLink(event) {
-       event.preventDefault();
-       if (!editSocialLinkForm) return;
+   // --- Function to Handle Updating a Social Link (with Logging) ---
+    async function handleUpdateSocialLink(event) {
+        event.preventDefault();
+        if (!editSocialLinkForm) return;
+        const docId = editSocialLinkForm.getAttribute('data-doc-id');
+        if (!docId) { showEditSocialLinkStatus("Error: Missing document ID...", true); return; }
 
-       const docId = editSocialLinkForm.getAttribute('data-doc-id');
-       if (!docId) {
-           showEditSocialLinkStatus("Error: Missing document ID for update.", true);
-           return;
-       }
+        const label = editSocialLinkLabelInput?.value.trim();
+        const url = editSocialLinkUrlInput?.value.trim();
+        const orderStr = editSocialLinkOrderInput?.value.trim();
+        const order = parseInt(orderStr);
 
-       const label = editSocialLinkLabelInput?.value.trim();
-       const url = editSocialLinkUrlInput?.value.trim();
-       const orderStr = editSocialLinkOrderInput?.value.trim();
-       const order = parseInt(orderStr);
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditSocialLinkStatus("Invalid input...", true); return; }
+        try { new URL(url); } catch (_) { showEditSocialLinkStatus("Invalid URL format.", true); return; }
 
-       if (!label || !url || !orderStr || isNaN(order) || order < 0) {
-           showEditSocialLinkStatus("Invalid input. Check required fields and ensure Order is non-negative.", true);
-           return;
-       }
-        // Simple URL validation
-       try { new URL(url); } catch (_) {
-           showEditSocialLinkStatus("Invalid URL format.", true);
-           return;
-       }
+        const updatedData = { label: label, url: url, order: order /*, lastModified added by Firestore */ };
+        showEditSocialLinkStatus("Saving changes...");
+        try {
+            const docRef = doc(db, 'social_links', docId);
+            await updateDoc(docRef, { ...updatedData, lastModified: serverTimestamp() }); // Add timestamp
 
-       const updatedData = {
-           label: label,
-           url: url,
-           order: order,
-           lastModified: serverTimestamp()
-       };
+             // *** Log Activity ***
+            logAdminActivity('UPDATE_SOCIAL_LINK', { label: label, url: url, linkId: docId });
 
-       showEditSocialLinkStatus("Saving changes...");
-       try {
-           const docRef = doc(db, 'social_links', docId);
-           await updateDoc(docRef, updatedData);
-           // Optionally: await updateMetadataTimestamp('socialLinks');
-           showAdminStatus("Social link updated successfully.", false); // Show main status
-           closeEditSocialLinkModal();
-           loadSocialLinksAdmin(); // Reload the list
+            showAdminStatus("Social link updated successfully.", false);
+            closeEditSocialLinkModal();
+            loadSocialLinksAdmin();
+        } catch (error) {
+            console.error(`Error updating social link (ID: ${docId}):`, error);
+            showEditSocialLinkStatus(`Error saving: ${error.message}`, true);
+            showAdminStatus(`Error updating social link: ${error.message}`, true);
+        }
+    }
 
-       } catch (error) {
-           console.error(`Error updating social link (ID: ${docId}):`, error);
-           showEditSocialLinkStatus(`Error saving: ${error.message}`, true); // Show error in modal
-           showAdminStatus(`Error updating social link: ${error.message}`, true); // Also show main status
-       }
-   }
 
 // --- Attach Event Listeners for Forms ---
 
@@ -2169,14 +2037,12 @@ function displayFilteredSocialLinks() {
         }
     }
 
-    // Function to Save President Data
+   // --- Function to Save President Data (with Logging) ---
     async function savePresidentData(event) {
-        event.preventDefault(); // Prevent default form submission behavior
-        // Use the constants defined earlier for the form and input elements
+        event.preventDefault();
         if (!auth || !auth.currentUser) { showPresidentStatus("Error: Not logged in.", true); return; }
         if (!presidentForm) return;
 
-        // Create data object from form inputs
         const newData = {
             name: presidentNameInput?.value.trim() || "",
             born: presidentBornInput?.value.trim() || "",
@@ -2185,15 +2051,18 @@ function displayFilteredSocialLinks() {
             term: presidentTermInput?.value.trim() || "",
             vp: presidentVpInput?.value.trim() || "",
             imageUrl: presidentImageUrlInput?.value.trim() || "",
-            lastUpdated: serverTimestamp() // Add a timestamp
+            // lastUpdated added by Firestore
         };
 
-        showPresidentStatus("Saving president info..."); // Use specific status func
+        showPresidentStatus("Saving president info...");
         try {
-            // Use setDoc with merge: true to create or update the document
-            await setDoc(presidentDocRef, newData, { merge: true }); // Use presidentDocRef
+            await setDoc(presidentDocRef, { ...newData, lastUpdated: serverTimestamp() }, { merge: true });
             console.log("President data saved to:", presidentDocRef.path);
             showPresidentStatus("President info updated successfully!", false);
+
+             // *** Log Activity ***
+            logAdminActivity('UPDATE_PRESIDENT_INFO', { name: newData.name });
+
         } catch (error) {
             console.error("Error saving president data:", error);
             showPresidentStatus(`Error saving president info: ${error.message}`, true);
@@ -2452,70 +2321,60 @@ async function loadDisabilitiesAdmin() {
     }
 }
 
-    // Function to Handle Adding a New Disability Link
+    // --- Function to Handle Adding a New Disability Link (with Logging) ---
     async function handleAddDisability(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Use const defined earlier for the add form
+        event.preventDefault();
         if (!addDisabilityForm) return;
+        // ... (get name, url, order, validation) ...
+         const nameInput = addDisabilityForm.querySelector('#disability-name');
+         const urlInput = addDisabilityForm.querySelector('#disability-url');
+         const orderInput = addDisabilityForm.querySelector('#disability-order');
+         const name = nameInput?.value.trim();
+         const url = urlInput?.value.trim();
+         const orderStr = orderInput?.value.trim();
+         const order = parseInt(orderStr);
 
-        // Get values from the add disability form
-        const nameInput = addDisabilityForm.querySelector('#disability-name');
-        const urlInput = addDisabilityForm.querySelector('#disability-url');
-        const orderInput = addDisabilityForm.querySelector('#disability-order');
+        if (!name || !url || !orderStr || isNaN(order) || order < 0) { showAdminStatus("Invalid input for Disability Link...", true); return; }
+        try { new URL(url); } catch (_) { showAdminStatus("Invalid URL format...", true); return; }
 
-        const name = nameInput?.value.trim();
-        const url = urlInput?.value.trim();
-        const orderStr = orderInput?.value.trim();
-        const order = parseInt(orderStr);
-
-        // Basic validation
-        if (!name || !url || !orderStr || isNaN(order) || order < 0) {
-            showAdminStatus("Invalid input for Disability Link. Check required fields and ensure Order is non-negative.", true);
-            return;
-        }
-        // Basic URL validation
-        try {
-            new URL(url);
-        } catch (_) {
-            showAdminStatus("Invalid URL format. Please enter a valid URL.", true);
-            return;
-        }
-
-        const disabilityData = {
-            name: name,
-            url: url,
-            order: order,
-            createdAt: serverTimestamp() // Add a timestamp
-        };
-
+        const disabilityData = { name: name, url: url, order: order, createdAt: serverTimestamp() };
         showAdminStatus("Adding disability link...");
         try {
-            // Use the disabilitiesCollectionRef defined earlier
             const docRef = await addDoc(disabilitiesCollectionRef, disabilityData);
             console.log("Disability link added with ID:", docRef.id);
             showAdminStatus("Disability link added successfully.", false);
-            addDisabilityForm.reset(); // Reset the form
-            loadDisabilitiesAdmin(); // Reload the list
 
+             // *** Log Activity ***
+            logAdminActivity('CREATE_DISABILITY_LINK', { name: name, url: url, linkId: docRef.id });
+
+            addDisabilityForm.reset();
+            loadDisabilitiesAdmin();
         } catch (error) {
             console.error("Error adding disability link:", error);
             showAdminStatus(`Error adding disability link: ${error.message}`, true);
         }
     }
-
-    // Function to Handle Deleting a Disability Link
+    
+     // --- Function to Handle Deleting a Disability Link (with Logging) ---
     async function handleDeleteDisability(docId, listItemElement) {
-        if (!confirm("Are you sure you want to permanently delete this disability link?")) {
-            return; // Do nothing if user cancels
-        }
+        if (!confirm("Are you sure...?")) { return; }
 
-        showAdminStatus("Deleting disability link...");
+        let deletedName = 'unknown';
+        const docRef = doc(db, 'disabilities', docId); // Define once
+
         try {
-             // Use the disabilitiesCollectionRef defined earlier
-            await deleteDoc(doc(db, 'disabilities', docId));
-            showAdminStatus("Disability link deleted successfully.", false);
-            loadDisabilitiesAdmin(); // Reload list is simplest
+             // Fetch before delete
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) { deletedName = docSnap.data().name || 'unknown'; }
 
+            showAdminStatus("Deleting disability link...");
+            await deleteDoc(docRef); // Delete
+            showAdminStatus("Disability link deleted successfully.", false);
+
+             // *** Log Activity ***
+            logAdminActivity('DELETE_DISABILITY_LINK', { linkId: docId, name: deletedName });
+
+            loadDisabilitiesAdmin();
         } catch (error) {
             console.error(`Error deleting disability link (ID: ${docId}):`, error);
             showAdminStatus(`Error deleting disability link: ${error.message}`, true);
@@ -2566,55 +2425,37 @@ async function loadDisabilitiesAdmin() {
         if (editDisabilityStatusMessage) editDisabilityStatusMessage.textContent = ''; // Clear status message inside modal
     }
 
-    // Function to Handle Updating a Disability Link from the Edit Modal
+    // --- Function to Handle Updating a Disability Link (with Logging) ---
     async function handleUpdateDisability(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Use consts defined earlier
+        event.preventDefault();
         if (!editDisabilityForm) return;
-
         const docId = editDisabilityForm.getAttribute('data-doc-id');
-        if (!docId) {
-            showEditDisabilityStatus("Error: Missing document ID for update.", true);
-            return;
-        }
+        if (!docId) { showEditDisabilityStatus("Error: Missing document ID...", true); return; }
 
-        // Get updated values from modal inputs
         const name = editDisabilityNameInput?.value.trim();
         const url = editDisabilityUrlInput?.value.trim();
         const orderStr = editDisabilityOrderInput?.value.trim();
         const order = parseInt(orderStr);
 
-        // Validation
-        if (!name || !url || !orderStr || isNaN(order) || order < 0) {
-            showEditDisabilityStatus("Invalid input. Check required fields and ensure Order is non-negative.", true);
-            return;
-        }
-        // Basic URL validation
-        try { new URL(url); } catch (_) {
-            showEditDisabilityStatus("Invalid URL format.", true);
-            return;
-        }
+        if (!name || !url || !orderStr || isNaN(order) || order < 0) { showEditDisabilityStatus("Invalid input...", true); return; }
+        try { new URL(url); } catch (_) { showEditDisabilityStatus("Invalid URL format.", true); return; }
 
-        const updatedData = {
-            name: name,
-            url: url,
-            order: order,
-            lastModified: serverTimestamp() // Add modification timestamp
-        };
-
+        const updatedData = { name: name, url: url, order: order /*, lastModified added by Firestore */ };
         showEditDisabilityStatus("Saving changes...");
         try {
-            // Use the disabilitiesCollectionRef defined earlier
             const docRef = doc(db, 'disabilities', docId);
-            await updateDoc(docRef, updatedData);
-            showAdminStatus("Disability link updated successfully.", false); // Show main status
-            closeEditDisabilityModal(); // Close modal on success
-            loadDisabilitiesAdmin(); // Reload the list in the admin panel
+            await updateDoc(docRef, { ...updatedData, lastModified: serverTimestamp() }); // Add timestamp
 
+             // *** Log Activity ***
+            logAdminActivity('UPDATE_DISABILITY_LINK', { name: name, url: url, linkId: docId });
+
+            showAdminStatus("Disability link updated successfully.", false);
+            closeEditDisabilityModal();
+            loadDisabilitiesAdmin();
         } catch (error) {
             console.error(`Error updating disability link (ID: ${docId}):`, error);
-            showEditDisabilityStatus(`Error saving: ${error.message}`, true); // Show error in modal
-            showAdminStatus(`Error updating disability link: ${error.message}`, true); // Also show main status
+            showEditDisabilityStatus(`Error saving: ${error.message}`, true);
+            showAdminStatus(`Error updating disability link: ${error.message}`, true);
         }
     }
 
