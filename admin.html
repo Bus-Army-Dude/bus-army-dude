@@ -520,78 +520,87 @@
                          <p>Loading YouTube shoutouts...</p>
                     </div>
                 </div>
-
-                <section class="admin-section" id="activity-log-section" aria-labelledby="activity-log-heading">
-                    <h3 id="activity-log-heading">Admin Activity Log</h3>
-                    <div class="list-controls">
-                        <button type="button" id="refresh-log-button" class="secondary-button">Refresh Log</button>
-                    </div>
-                    <div id="activity-log-list" class="list-container-admin log-container">
-                        <p>Loading activity log...</p>
-                    </div>
-                </section>
                 
-             </main> <div id="edit-shoutout-modal" class="modal" style="display: none;"
-             role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading">
+             <!-- Activity Log Section -->
+<div class="activity-log-container" aria-labelledby="activity-log-heading">
+    <h4 id="activity-log-heading">Activity Log</h4>
 
-            <div class="modal-content">
-                <button type="button" class="close-button" id="cancel-edit-button" aria-label="Close dialog">&times;</button>
-                <h2 id="edit-modal-heading">Edit Shoutout</h2>
+    <h5 id="existing-log-heading">
+        Recent Activity <span id="activity-log-count" class="list-count"></span>
+    </h5>
 
-                <form id="edit-shoutout-form" data-doc-id="" data-platform="">
-                    <div class="form-group">
-                        <label for="edit-username">Username / Handle:</label>
-                        <input type="text" id="edit-username" name="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-nickname">Nickname:</label>
-                        <input type="text" id="edit-nickname" name="nickname" required>
-                    </div>
-                     <div class="form-group">
-                        <label for="edit-order">Order:</label>
-                        <input type="number" id="edit-order" name="order" min="0" step="1" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-bio">Bio:</label>
-                        <textarea id="edit-bio" name="bio" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-profilePic">Profile Pic URL:</label>
-                        <input type="url" id="edit-profilePic" name="profilePic" inputmode="url">
-                    </div>
-                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="edit-isVerified" name="isVerified" value="true">
-                        <label for="edit-isVerified">Is Verified?</label>
-                    </div>
+    <div class="list-controls">
+        <input type="search" id="search-activity-log" placeholder="Search Activity Log..." aria-label="Search Activity Log">
+    </div>
 
-                    <div id="edit-platform-specific">
-                        <div class="form-group edit-followers-group" style="display: none;">
-                            <label for="edit-followers">Followers:</label>
-                            <input type="text" id="edit-followers" name="followers" inputmode="text">
-                        </div>
-                        <div class="form-group edit-subscribers-group" style="display: none;">
-                              <label for="edit-subscribers">Subscribers:</label>
-                              <input type="text" id="edit-subscribers" name="subscribers" inputmode="text">
-                        </div>
-                        <div class="form-group edit-coverphoto-group" style="display: none;">
-                              <label for="edit-coverPhoto">Cover Photo URL:</label>
-                              <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
-                        </div>
-                    </div>
+    <div id="activity-log-list" class="list-container-admin" role="list" aria-labelledby="existing-log-heading">
+        <p>Loading activity log...</p>
+    </div>
+</div>
 
-                     <div class="form-group">
-                        <label>Preview:</label>
-                        <div id="edit-shoutout-preview" class="shoutout-preview-area">
-                            <p><small>Preview will appear here.</small></p>
-                        </div>
-                    </div>
+</main>
 
-                    <div class="form-actions">
-                      <button type="submit" class="button-primary">Save Changes</button>
-                    </div>
-                </form>
+<!-- Edit Shoutout Modal (unchanged) -->
+<div id="edit-shoutout-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading">
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-modal-heading">Edit Shoutout</h2>
+
+        <form id="edit-shoutout-form" data-doc-id="" data-platform="">
+            <div class="form-group">
+                <label for="edit-username">Username / Handle:</label>
+                <input type="text" id="edit-username" name="username" required>
             </div>
-        
-    </div> <script type="module" src="admin.js"></script>
+            <div class="form-group">
+                <label for="edit-nickname">Nickname:</label>
+                <input type="text" id="edit-nickname" name="nickname" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-order">Order:</label>
+                <input type="number" id="edit-order" name="order" min="0" step="1" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-bio">Bio:</label>
+                <textarea id="edit-bio" name="bio" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="edit-profilePic">Profile Pic URL:</label>
+                <input type="url" id="edit-profilePic" name="profilePic" inputmode="url">
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="edit-isVerified" name="isVerified" value="true">
+                <label for="edit-isVerified">Is Verified?</label>
+            </div>
+
+            <div id="edit-platform-specific">
+                <div class="form-group edit-followers-group" style="display: none;">
+                    <label for="edit-followers">Followers:</label>
+                    <input type="text" id="edit-followers" name="followers" inputmode="text">
+                </div>
+                <div class="form-group edit-subscribers-group" style="display: none;">
+                    <label for="edit-subscribers">Subscribers:</label>
+                    <input type="text" id="edit-subscribers" name="subscribers" inputmode="text">
+                </div>
+                <div class="form-group edit-coverphoto-group" style="display: none;">
+                    <label for="edit-coverPhoto">Cover Photo URL:</label>
+                    <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Preview:</label>
+                <div id="edit-shoutout-preview" class="shoutout-preview-area">
+                    <p><small>Preview will appear here.</small></p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module" src="admin.js"></script>
 </body>
 </html>
