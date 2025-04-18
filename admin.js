@@ -494,6 +494,55 @@ if (searchInputDisabilities) {
     }
     // --- END MODIFIED: renderAdminListItem Function ---
 
+    async function handleClearActivityLog() {
+    // *** STRONG CONFIRMATION ***
+    if (!confirm("ARE YOU ABSOLUTELY SURE you want to delete ALL activity log entries?\n\nThis action cannot be undone!")) {
+        return; // Stop if user cancels
+    }
+    // Second confirmation for extra safety
+    if (!confirm("SECOND CONFIRMATION: Really delete everything in the log?")) {
+        return;
+    }
+
+    const clearButton = document.getElementById('clear-log-button'); // Get button for disabling
+    if (clearButton) clearButton.disabled = true; // Disable button during operation
+    showAdminStatus("Clearing activity log... This may take a moment.", false);
+
+    try {
+        const activityLogCollectionRef = collection(db, "activity_log");
+        // Fetch all document IDs (or full docs - getDocs is simpler here for client-side loop)
+        // WARNING: Inefficient for very large collections! Consider Cloud Function instead.
+        const querySnapshot = await getDocs(activityLogCollectionRef);
+
+        if (querySnapshot.empty) {
+             showAdminStatus("Activity log is already empty.", false);
+             if (clearButton) clearButton.disabled = false;
+             loadActivityLog(); // Refresh display
+             return;
+        }
+
+        // Create an array of delete promises
+        const deletePromises = [];
+        querySnapshot.forEach((doc) => {
+            deletePromises.push(deleteDoc(doc.ref));
+        });
+
+        // Wait for all delete operations to complete
+        await Promise.all(deletePromises);
+
+        console.log(`Successfully deleted ${deletePromises.length} log entries.`);
+        showAdminStatus("Activity log cleared successfully.", false);
+        logAdminActivity('ACTIVITY_LOG_CLEARED', { count: deletePromises.length }); // Log the clear action itself
+
+    } catch (error) {
+        console.error("Error clearing activity log:", error);
+        showAdminStatus(`Error clearing activity log: ${error.message}`, true);
+    } finally {
+         if (clearButton) clearButton.disabled = false; // Re-enable button
+         loadActivityLog(); // Refresh the displayed log (should be empty)
+    }
+}
+
     // ==================================
 // == ACTIVITY LOG IMPLEMENTATION ===
 // ==================================
@@ -2981,6 +3030,13 @@ async function loadDisabilitiesAdmin() {
     if (editForm) { editForm.addEventListener('submit', handleUpdateShoutout); }
     if (cancelEditButton) { cancelEditButton.addEventListener('click', closeEditModal); }
 
+    // --- Activity Log Listeners (Add this one) ---
+    const clearLogBtn = document.getElementById('clear-log-button');
+    if (clearLogBtn) {
+        clearLogBtn.addEventListener('click', handleClearActivityLog);
+    } else {
+        console.warn("Clear log button not found.");
+    }
 
     // Useful Links Forms & Modals
     if (addUsefulLinkForm) { addUsefulLinkForm.addEventListener('submit', handleAddUsefulLink); }
