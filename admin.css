@@ -250,15 +250,14 @@ input[type="password"]:focus {
 
 #password-group {
   opacity: 0;
-  pointer-events: none;
-  height: 0;
-  overflow: hidden;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s ease 0.3s; /* Make visibility change after opacity fades */
 }
 
 #password-group.visible {
   opacity: 1;
-  height: auto;
-  pointer-events: all;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s ease 0s; /* Make visibility change immediately */
 }
 
 .status-message {
@@ -278,6 +277,7 @@ input[type="password"]:focus {
     transform: translateY(0);
   }
 }
+
 
 /* ======================== */
 /* Admin Content Area       */
