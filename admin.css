@@ -1,20 +1,21 @@
 /* admin.css - Apple-Inspired Theme (Unified Preview Styles + President Preview + Toggles) */
 
-/* ======================== */
-/* Theme Variables          */
-/* ======================== */
 :root {
-    /* --- Base & Font --- */
+    /* === Typography === */
     --system-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --base-font-size: 16px;
     --line-height: 1.5;
-    --border-radius-sm: 4px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 12px;
-    --transition-speed: 0.2s;
-    --transition-timing: ease-in-out;
 
-    /* --- Light Mode Colors (Apple Style) --- */
+    /* === Border Radius === */
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+
+    /* === Transitions === */
+    --transition-speed: 0.25s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1); /* Apple's ease-in-out */
+
+    /* === Light Mode Colors === */
     --apple-light-bg: #f5f5f7;
     --apple-light-content-bg: #ffffff;
     --apple-light-text: #1d1d1f;
@@ -23,8 +24,8 @@
     --apple-light-input-bg: #ffffff;
     --apple-light-input-border: #d2d2d7;
     --apple-light-input-focus-border: #007aff;
-    --apple-light-input-focus-shadow: rgba(0, 122, 255, 0.2);
-    --apple-light-shadow: rgba(0, 0, 0, 0.08);
+    --apple-light-input-focus-shadow: rgba(0, 122, 255, 0.3);
+    --apple-light-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     --apple-light-accent: #007aff;
     --apple-light-accent-hover: #005ecf;
     --apple-light-link: #007aff;
@@ -32,10 +33,10 @@
     --apple-light-success-text: #20803a;
     --apple-light-error-bg: #fdebee;
     --apple-light-error-text: #c62828;
-    --apple-light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236e6e73' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --apple-light-modal-backdrop: rgba(245, 245, 247, 0.7);
+    --apple-light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236e6e73' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
 
-    /* --- Dark Mode Colors (Apple Style) --- */
+    /* === Dark Mode Colors === */
     --apple-dark-bg: #161617;
     --apple-dark-content-bg: #1d1d1f;
     --apple-dark-text: #f5f5f7;
@@ -44,8 +45,8 @@
     --apple-dark-input-bg: #2c2c2e;
     --apple-dark-input-border: #3a3a3c;
     --apple-dark-input-focus-border: #0a84ff;
-    --apple-dark-input-focus-shadow: rgba(10, 132, 255, 0.3);
-    --apple-dark-shadow: rgba(0, 0, 0, 0.25);
+    --apple-dark-input-focus-shadow: rgba(10, 132, 255, 0.4);
+    --apple-dark-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
     --apple-dark-accent: #0a84ff;
     --apple-dark-accent-hover: #3f9dff;
     --apple-dark-link: #0a84ff;
@@ -53,22 +54,22 @@
     --apple-dark-success-text: #79d496;
     --apple-dark-error-bg: #5b1e23;
     --apple-dark-error-text: #f7a3ab;
-    --apple-dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2386868b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     --apple-dark-modal-backdrop: rgba(22, 22, 23, 0.7);
+    --apple-dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2386868b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
 
-    /* --- Alert/Action Colors (Consistent - Adjusted for Apple feel) --- */
+    /* === Action Colors === */
     --color-danger: #ff3b30;
     --color-danger-hover: #d1302f;
-    --color-danger-glow: rgba(255, 59, 48, 0.25);
-    --color-success-action: #34c759; /* Apple Green (often used for toggles) */
+    --color-danger-glow: rgba(255, 59, 48, 0.3);
+    --color-success-action: #34c759;
     --color-success-action-hover: #2ca349;
     --color-success-action-glow: rgba(52, 199, 89, 0.25);
     --color-secondary-action: #8e8e93;
     --color-secondary-action-hover: #7a7a80;
     --color-secondary-action-glow: rgba(142, 142, 147, 0.25);
-    --color-danger-disabled: #7a7a7a; /* From old danger button styles */
+    --color-danger-disabled: #7a7a7a;
 
-    /* --- Fallback theme variables (default to dark mode as per original body class) --- */
+    /* === Default to Dark Theme (Fallbacks) === */
     --bg-color: var(--apple-dark-bg);
     --content-bg: var(--apple-dark-content-bg);
     --text-color: var(--apple-dark-text);
@@ -93,33 +94,8 @@
     --danger-rgb: 255, 59, 48;
 }
 
-/* --- Light Mode Override --- */
-body:not(.dark-mode) { /* Default to light if no class or if class is not dark-mode */
-    --bg-color: var(--apple-light-bg);
-    --content-bg: var(--apple-light-content-bg);
-    --text-color: var(--apple-light-text);
-    --secondary-text: var(--apple-light-secondary-text);
-    --border-color: var(--apple-light-border);
-    --input-bg-color: var(--apple-light-input-bg);
-    --input-border-color: var(--apple-light-input-border);
-    --input-focus-border-color: var(--apple-light-input-focus-border);
-    --input-focus-shadow-color: var(--apple-light-input-focus-shadow);
-    --shadow-color: var(--apple-light-shadow);
-    --accent-color: var(--apple-light-accent);
-    --hover-color: var(--apple-light-accent-hover);
-    --link-color: var(--apple-light-link);
-    --success-bg-color: var(--apple-light-success-bg);
-    --success-text-color: var(--apple-light-success-text);
-    --error-bg-color: var(--apple-light-error-bg);
-    --error-text-color: var(--apple-light-error-text);
-    --select-arrow: var(--apple-light-select-arrow);
-    --modal-backdrop-color: var(--apple-light-modal-backdrop);
-    --accent-glow-color: var(--apple-light-input-focus-shadow);
-    --accent-rgb: 0, 122, 255;
-}
-
-/* Explicit Light Mode Class */
-body.light-mode {
+/* === Light Mode Override === */
+body:not(.dark-mode), body.light-mode {
     --bg-color: var(--apple-light-bg);
     --content-bg: var(--apple-light-content-bg);
     --text-color: var(--apple-light-text);
@@ -201,104 +177,86 @@ a:hover {
 /* Apple-Style Admin Login */
 /* ======================== */
 #login-section {
-    margin-top: 100px;
-    padding: 50px 40px;
-    border-radius: 20px;
-    background-color: var(--content-bg, #fff);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    max-width: 360px;
-    margin-left: auto;
-    margin-right: auto;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    transition: all 0.3s ease;
-    animation: fadeIn 0.6s ease;
+  margin: 8vh auto;
+  background: var(--card-bg);
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px var(--shadow);
+  max-width: 380px;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-#login-section h2 {
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.6rem;
-    margin-bottom: 40px;
-    color: var(--text-color, #1d1d1f);
-}
-
-.form-group {
-    margin-bottom: 25px;
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.3s ease;
-}
-
-#password-group {
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none;
-    height: 0;
-    overflow: hidden;
-}
-
-#password-group.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-    height: auto;
-}
-
-label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #6e6e73;
-    margin-bottom: 8px;
+#login-heading {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: var(--text);
 }
 
 input[type="email"],
 input[type="password"] {
-    width: 100%;
-    padding: 14px 12px;
-    font-size: 1rem;
-    border: 1px solid #d2d2d7;
-    border-radius: 12px;
-    background-color: #f9f9f9;
-    transition: border 0.2s, background-color 0.2s;
-    color: #1d1d1f;
-    outline: none;
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  background-color: var(--input-bg);
+  color: var(--text);
+  outline: none;
+  margin-bottom: 20px;
+  transition: border 0.2s ease;
 }
 
 input[type="email"]:focus,
 input[type="password"]:focus {
-    border-color: #007aff;
-    background-color: #fff;
+  border-color: var(--primary);
+  background-color: #fff;
 }
 
 .button-primary {
-    width: 100%;
-    padding: 14px 0;
-    border: none;
-    border-radius: 12px;
-    background-color: #007aff;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 14px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .button-primary:hover {
-    background-color: #005ecb;
+  background-color: #005ecb;
 }
 
-#auth-status {
-    margin-top: 15px;
-    text-align: center;
-    color: #d93025;
-    font-size: 0.9rem;
+.form-group {
+  transition: all 0.3s ease;
+}
+
+#password-group {
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+}
+
+#password-group.visible {
+  opacity: 1;
+  height: auto;
+  pointer-events: all;
+}
+
+.status-message {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #d93025;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ======================== */
