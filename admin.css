@@ -1272,3 +1272,154 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
 #president-preview .president-section > .section-title {
     display: none;
 }
+
+/* ======================== */
+/* Tech Section Admin Styles*/
+/* ======================== */
+
+/* Styles for the PREVIEW container DIVs */
+.tech-preview-area {
+  border: 1px dashed var(--border-color);
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: var(--border-radius-md);
+  background-color: var(--bg-color); /* Match main admin background */
+  min-height: 100px;
+  max-width: 100%; /* Ensure it doesn't overflow */
+  overflow: hidden; /* Hide potential overflow from preview items */
+}
+
+/* Styles for the CONTENT INSIDE the preview (Adapted from your styles.css) */
+.tech-preview-area .tech-item { /* Target .tech-item specifically within the preview area */
+    background: transparent; /* Use the preview area's background */
+    border-radius: 10px; /* Keep some rounding */
+    padding: 15px; /* Padding inside the item */
+    margin-bottom: 0; /* No margin needed within preview */
+    border: none; /* No border needed, preview area has one */
+    box-shadow: none; /* No shadow needed */
+}
+
+.tech-preview-area .tech-item h3 {
+    margin: 0 0 15px 0;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tech-preview-area .tech-item h3 i {
+    font-size: 1.4rem; /* Slightly larger icon in heading */
+    color: var(--accent-color);
+    width: 24px; /* Ensure consistent icon width */
+    text-align: center;
+}
+
+.tech-preview-area .tech-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0; /* Slightly reduced margin */
+    color: var(--text-color);
+    font-size: 0.95rem; /* Slightly smaller text for preview */
+}
+
+.tech-preview-area .tech-detail i {
+    width: 18px; /* Icon size in details */
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    font-size: 0.9rem; /* Icon font size */
+    flex-shrink: 0; /* Prevent icon shrinking */
+}
+
+.tech-preview-area .tech-detail span {
+    font-weight: 600;
+    color: var(--secondary-text);
+    margin-right: 5px; /* Reduced space */
+    flex-shrink: 0;
+}
+
+/* Battery Icon Styles (within preview) */
+.tech-preview-area .battery-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Reduced gap */
+    margin-top: 10px; /* Reduced margin */
+}
+
+.tech-preview-area .battery-icon {
+    position: relative;
+    width: 150px; /* Smaller battery for preview */
+    height: 30px; /* Smaller battery for preview */
+    border: 2px solid color-mix(in srgb, var(--text-color) 50%, transparent);
+    border-radius: 8px; /* Adjust rounding */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--content-bg); /* Match inner content bg */
+    box-shadow: inset 0 0 4px color-mix(in srgb, var(--shadow-color) 20%, transparent);
+    overflow: hidden;
+}
+
+.tech-preview-area .battery-icon::after {
+    content: '';
+    position: absolute;
+    right: -7px; /* Adjust position */
+    top: 6px;  /* Adjust position */
+    width: 5px; /* Adjust size */
+    height: 18px; /* Adjust size */
+    background-color: color-mix(in srgb, var(--text-color) 50%, transparent);
+    border-radius: 2px;
+}
+
+.tech-preview-area .battery-level {
+    height: 100%;
+    background: linear-gradient(145deg, #32CD32, color-mix(in srgb, #32CD32 80%, #ffffff));
+    transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-radius: 6px 0 0 6px; /* Round inner left corners */
+}
+
+.tech-preview-area .low-power .battery-level {
+    background: linear-gradient(145deg, #FFCC00, color-mix(in srgb, #FFCC00 80%, #ffffff));
+}
+
+.tech-preview-area .critical .battery-level {
+    background: linear-gradient(145deg, #FF3B30, color-mix(in srgb, #FF3B30 80%, #ffffff));
+}
+
+.tech-preview-area .battery-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 12px; /* Smaller percentage text */
+    z-index: 1;
+    text-shadow: 0 0 2px var(--content-bg); /* Add shadow for readability */
+}
+
+/* Keep Media Queries if you want the preview to be responsive */
+@media screen and (max-width: 768px) {
+    .tech-preview-area .battery-icon {
+        width: 120px;
+        height: 28px;
+    }
+    .tech-preview-area .tech-item h3 { font-size: 1.1rem; }
+    .tech-preview-area .tech-detail { font-size: 0.9rem; }
+}
+
+@media screen and (max-width: 480px) {
+     .tech-preview-area .battery-icon {
+        width: 100px;
+        height: 25px;
+    }
+     .tech-preview-area .battery-percentage { font-size: 10px; }
+     .tech-preview-area .tech-item h3 { font-size: 1rem; }
+     .tech-preview-area .tech-detail { font-size: 0.85rem; gap: 5px;}
+     .tech-preview-area .tech-detail i { width: 16px; height: 16px; font-size: 0.8rem;}
+}
