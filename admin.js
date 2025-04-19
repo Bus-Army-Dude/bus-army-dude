@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => { //
     const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll']; //
 
+    let isAddingShoutout = false; // Flag to prevent double submissions
+
     // --- Activity Log Listeners ---
     const refreshLogBtn = document.getElementById('refresh-log-button');
     if (refreshLogBtn) {
@@ -1658,9 +1660,22 @@ onAuthStateChanged(auth, user => {
     // --- END UPDATED: loadShoutoutsAdmin Function ---
 
 async function handleAddShoutout(platform, formElement) {
-    // *** Keep this console log ***
-    console.log(`DEBUG: handleAddShoutout START (Final Version) for ${platform} at ${new Date().toLocaleTimeString()}`);
-    if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; }
+    console.log(`DEBUG: handleAddShoutout triggered for ${platform}.`);
+
+    // *** Debounce Check ***
+    if (isAddingShoutout) {
+        console.warn(`DEBUG: handleAddShoutout already running for ${platform}, ignoring duplicate call.`);
+        return; // Exit if already processing an add
+    }
+    // *** Set Busy Flag ***
+    isAddingShoutout = true;
+    console.log(`DEBUG: Set isAddingShoutout = true for ${platform}`);
+
+    if (!formElement) {
+        console.error("Form element not provided to handleAddShoutout");
+        isAddingShoutout = false; // Reset flag on error
+        return;
+    }
 
     // Get form values
     const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
@@ -1671,6 +1686,7 @@ async function handleAddShoutout(platform, formElement) {
     // Basic validation
     if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
         showAdminStatus(`Invalid input for ${platform}. Check required fields and ensure Order is a non-negative number.`, true);
+        isAddingShoutout = false; // Reset flag on validation error
         return;
     }
 
@@ -1687,22 +1703,19 @@ async function handleAddShoutout(platform, formElement) {
 
         if (!querySnapshot.empty) {
             console.warn("Duplicate found for", platform, username);
-            showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true);
+            showAdminStatus(`Error: A shoutout for username '@<span class="math-inline">\{username\}' on platform '</span>{platform}' already exists.`, true);
+            isAddingShoutout = false; // Reset flag if duplicate found
             return; // Stop if duplicate found
         }
         console.log("No duplicate found. Proceeding to add.");
 
         // Prepare data
         const accountData = {
-            platform: platform,
-            username: username,
-            nickname: nickname,
-            order: order,
+            platform: platform, username: username, nickname: nickname, order: order,
             isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
             bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
             profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
-            createdAt: serverTimestamp(),
-            isEnabled: true
+            createdAt: serverTimestamp(), isEnabled: true
         };
         if (platform === 'youtube') {
             accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
@@ -1716,14 +1729,13 @@ async function handleAddShoutout(platform, formElement) {
         const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
         console.log(`DEBUG: addDoc SUCCESS for ${username}. New ID: ${docRef.id}`);
 
-        // *** --- RESTORED LIST RELOAD --- ***
+        // --- Call list reload ---
         if (typeof loadShoutoutsAdmin === 'function') {
              console.log(`DEBUG: Calling loadShoutoutsAdmin for ${platform} after add.`);
-             loadShoutoutsAdmin(platform); // Reload the whole list to update UI and count
+             loadShoutoutsAdmin(platform); // Reload list and update count
         } else {
              console.error("loadShoutoutsAdmin function is missing after add!");
         }
-        // *** --- END RESTORED LIST RELOAD --- ***
 
         await updateMetadataTimestamp(platform);
         showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`, false);
@@ -1739,10 +1751,15 @@ async function handleAddShoutout(platform, formElement) {
         console.error(`Error during handleAddShoutout for ${platform}:`, error);
         showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
     } finally {
-         console.log(`DEBUG: handleAddShoutout END for ${platform} at ${new Date().toLocaleTimeString()}`);
+        // *** Reset Busy Flag after a short delay ***
+        // This ensures subsequent clicks are handled, but prevents rapid-fire duplicates.
+        setTimeout(() => {
+            isAddingShoutout = false;
+            console.log(`DEBUG: Reset isAddingShoutout = false for ${platform}`);
+        }, 1500); // 1.5 second delay - adjust if needed
+        console.log(`DEBUG: handleAddShoutout processing END for ${platform} at ${new Date().toLocaleTimeString()}`);
     }
 }
-
 
     // --- Function to Handle Updates from Edit Modal (with DETAILED Logging) ---
     async function handleUpdateShoutout(event) {
