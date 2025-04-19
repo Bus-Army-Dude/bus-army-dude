@@ -14,6 +14,7 @@ let allUsefulLinks = [];
 let allSocialLinks = [];
 let allDisabilities = [];
 let allActivityLogEntries = []; // Global variable for client-side filtering
+let allTechItems = []; // <<< ADD THIS LINE
 
 document.addEventListener('DOMContentLoaded', () => { //
     // First, check if db and auth were successfully imported/initialized
@@ -35,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => { //
     const socialLinksCollectionRef = collection(db, "social_links");
     // Reference for President Info
     const presidentDocRef = doc(db, "site_config", "currentPresident"); 
+    
+    // Reference for Tech Info
+    const techItemsCollectionRef = collection(db, "tech_items"); // <<< Add or ensure this exists
 
     // Firestore Reference for Disabilities
     const disabilitiesCollectionRef = collection(db, "disabilities");
@@ -60,6 +64,27 @@ document.addEventListener('DOMContentLoaded', () => { //
         searchLogInput.addEventListener('input', displayFilteredActivityLog);
     }
 
+    // --- Tech Management Listeners <<< ADD THIS BLOCK START >>> ---
+    if (addTechItemForm) {
+        addTechItemForm.addEventListener('submit', handleAddTechItem);
+        // Attach preview listeners for the add form on initial load
+        attachTechPreviewListeners(addTechItemForm, 'add');
+    }
+    if (editTechItemForm) {
+        editTechItemForm.addEventListener('submit', handleUpdateTechItem);
+        // Note: Preview listeners for edit form are attached in openEditTechItemModal
+    }
+    if (cancelEditTechButton) { // X close button in modal
+        cancelEditTechButton.addEventListener('click', closeEditTechItemModal);
+    }
+    if (cancelEditTechButtonSecondary) { // Secondary cancel button in modal
+        cancelEditTechButtonSecondary.addEventListener('click', closeEditTechItemModal);
+    }
+    if (searchTechItemsInput) { // Search input for the tech list
+        searchTechItemsInput.addEventListener('input', displayFilteredTechItems);
+    }
+     // <<< ADD THIS BLOCK END >>> ---
+
     // --- DOM Element References ---
     const loginSection = document.getElementById('login-section'); //
     const adminContent = document.getElementById('admin-content'); //
@@ -75,6 +100,20 @@ document.addEventListener('DOMContentLoaded', () => { //
     const passwordGroup = document.getElementById('password-group'); //
     const loginButton = document.getElementById('login-button'); //
     const timerDisplayElement = document.getElementById('inactivity-timer-display'); //
+
+    // Tech Management Elements  <<< ADD/VERIFY THIS BLOCK START >>>
+    const addTechItemForm = document.getElementById('add-tech-item-form');
+    const techItemsListAdmin = document.getElementById('tech-items-list-admin');
+    const techItemsCount = document.getElementById('tech-items-count');
+    const searchTechItemsInput = document.getElementById('search-tech-items');
+    const editTechItemModal = document.getElementById('edit-tech-item-modal');
+    const editTechItemForm = document.getElementById('edit-tech-item-form');
+    const cancelEditTechButton = document.getElementById('cancel-edit-tech-button'); // Close X
+    const cancelEditTechButtonSecondary = document.getElementById('cancel-edit-tech-button-secondary'); // Cancel button
+    const editTechStatusMessage = document.getElementById('edit-tech-status-message');
+    const addTechItemPreview = document.getElementById('add-tech-item-preview'); // Preview for Add form
+    const editTechItemPreview = document.getElementById('edit-tech-item-preview'); // Preview for Edit modal
+    // <<< ADD/VERIFY THIS BLOCK END >>>
 
     // Profile Management Elements
     const profileForm = document.getElementById('profile-form'); //
@@ -583,7 +622,7 @@ if (searchInputDisabilities) {
     }
 }
 
-    // ==================================
+// ==================================
 // == ACTIVITY LOG IMPLEMENTATION ===
 // ==================================
 
@@ -774,6 +813,483 @@ async function loadActivityLog() {
 // ========================================
 // == END ACTIVITY LOG IMPLEMENTATION =====
 // ========================================
+
+    // ========================================
+    // == Tech Item Management Functions V2 ===
+    // ========================================
+
+    /** Renders a single tech item in the admin list view */
+    function renderTechItemAdminListItem(container, docId, itemData, deleteHandler, editHandler) {
+        if (!container) { console.warn("Tech list container missing for render"); return; }
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'list-item-admin'; // Use standard admin list item style
+        itemDiv.setAttribute('data-id', docId);
+
+        // Display essential info in the admin list
+        itemDiv.innerHTML = `
+            <div class="item-content">
+                <div class="item-details">
+                    <strong>${itemData.name || 'N/A'}</strong>
+                    <span>(${itemData.model || 'N/A'})</span>
+                    <small>Order: ${itemData.order ?? 'N/A'} | OS: ${itemData.osVersion || '?'}</small>
+                </div>
+            </div>
+            <div class="item-actions">
+                <button type="button" class="edit-button small-button">Edit</button>
+                <button type="button" class="delete-button small-button">Delete</button>
+            </div>`;
+
+        // Attach button listeners
+        const editButton = itemDiv.querySelector('.edit-button');
+        if (editButton) editButton.addEventListener('click', () => editHandler(docId));
+
+        const deleteButton = itemDiv.querySelector('.delete-button');
+        if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, itemDiv));
+
+        container.appendChild(itemDiv);
+    }
+
+     /** Filters and displays tech items in the admin list based on search */
+    function displayFilteredTechItems() {
+        if (!techItemsListAdmin || !searchTechItemsInput || typeof allTechItems === 'undefined') {
+            console.error("Tech Items Filter Error: Missing elements/data.");
+            if(techItemsListAdmin) techItemsListAdmin.innerHTML = `<p class="error">Error displaying tech list.</p>`;
+            return;
+        }
+        const searchTerm = searchTechItemsInput.value.trim().toLowerCase();
+        techItemsListAdmin.innerHTML = ''; // Clear current list
+
+        const filteredList = allTechItems.filter(item => {
+            if (!searchTerm) return true; // Show all if search is empty
+            const name = (item.name || '').toLowerCase();
+            const model = (item.model || '').toLowerCase();
+            // Search in name or model
+            return name.includes(searchTerm) || model.includes(searchTerm);
+        });
+
+        if (filteredList.length > 0) {
+            filteredList.forEach(item => {
+                 renderTechItemAdminListItem(techItemsListAdmin, item.id, item, handleDeleteTechItem, openEditTechItemModal);
+            });
+        } else {
+             techItemsListAdmin.innerHTML = searchTerm ? `<p>No tech items found matching "${searchTerm}".</p>` : '<p>No tech items added yet.</p>';
+        }
+        // Update count display
+        if (techItemsCount) { techItemsCount.textContent = `(${filteredList.length})`; }
+    }
+
+    /** Loads all tech items from Firestore, stores them globally, and triggers display */
+    async function loadTechItemsAdmin() {
+        if (!techItemsListAdmin) { console.error("Tech items list container element missing."); return; }
+        console.log("Loading tech items for admin...");
+        if (techItemsCount) techItemsCount.textContent = '(...)'; // Indicate loading count
+        techItemsListAdmin.innerHTML = `<p>Loading tech items...</p>`; // Loading message
+        allTechItems = []; // Clear global array before fetching
+
+        try {
+            // Query Firestore, ordering by the 'order' field
+            const techQuery = query(techItemsCollectionRef, orderBy("order", "asc"));
+            const querySnapshot = await getDocs(techQuery);
+
+            querySnapshot.forEach((doc) => {
+                allTechItems.push({ id: doc.id, ...doc.data() }); // Store ID with data
+            });
+            console.log(`Loaded ${allTechItems.length} tech items.`);
+            displayFilteredTechItems(); // Call display function to render the list
+
+        } catch (error) {
+            console.error("Error loading tech items:", error);
+             let errorMsg = "Error loading tech items.";
+             if (error.code === 'failed-precondition') {
+                 errorMsg = "Error: Missing Firestore index for tech items (order). Check console (F12) for link to create it.";
+                 showAdminStatus(errorMsg, true);
+             } else {
+                 showAdminStatus(errorMsg + `: ${error.message}`, true);
+             }
+            techItemsListAdmin.innerHTML = `<p class="error">${errorMsg}</p>`;
+            if (techItemsCount) techItemsCount.textContent = '(Error)';
+        }
+    }
+
+    /** Handles adding a new tech item via the form */
+    async function handleAddTechItem(event) {
+        event.preventDefault();
+        if (!addTechItemForm) { console.error("Add tech form not found"); return; }
+
+        const techData = {};
+        const inputs = addTechItemForm.querySelectorAll('input[name], select[name], textarea[name]');
+        let isValid = true;
+
+        // Gather form data
+        inputs.forEach(input => {
+            const name = input.name;
+            let value = input.value.trim();
+             if (input.type === 'number') {
+                 value = input.value === '' ? null : parseFloat(input.value); // Use parseFloat for price, allow null
+                 if (input.value !== '' && isNaN(value)) {
+                     value = null; // Treat invalid numbers as null
+                      if (input.name === 'order' || input.name === 'batteryHealth' || input.name === 'batteryCycles') {
+                          showAdminStatus(`Invalid number entered for ${name}.`, true); isValid = false;
+                      }
+                 } else if (value !== null && value < 0 && (input.name === 'order' || input.name === 'batteryHealth' || input.name === 'batteryCycles')) {
+                     showAdminStatus(`${name} cannot be negative.`, true); isValid = false;
+                 }
+             }
+            techData[name] = value === '' ? null : value; // Store null if empty
+        });
+
+        // Re-validate required fields after gathering all data
+        if (!techData.name || techData.order === null || techData.order < 0 || isNaN(techData.order)) {
+             showAdminStatus("Device Name and a valid non-negative Order are required.", true);
+             isValid = false;
+        }
+        if (!isValid) return;
+
+        techData.createdAt = serverTimestamp(); // Add creation timestamp
+
+        showAdminStatus("Adding tech item...");
+        try {
+            const docRef = await addDoc(techItemsCollectionRef, techData);
+            console.log("Tech item added with ID:", docRef.id);
+            // ** Activity Log **
+             if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('TECH_ITEM_ADD', { name: techData.name, id: docRef.id });
+             } else { console.warn("logAdminActivity function not found!"); }
+            // ******************
+            showAdminStatus("Tech item added successfully.", false);
+            addTechItemForm.reset(); // Reset the form fields
+            if (addTechItemPreview) { // Reset the preview area
+                addTechItemPreview.innerHTML = '<p><small>Preview will appear here as you type.</small></p>';
+            }
+            loadTechItemsAdmin(); // Reload the list
+
+        } catch (error) {
+            console.error("Error adding tech item:", error);
+            showAdminStatus(`Error adding tech item: ${error.message}`, true);
+        }
+    }
+
+     /** Handles deleting a specified tech item */
+    async function handleDeleteTechItem(docId, listItemElement) {
+        if (!confirm("Are you sure you want to permanently delete this tech item? This action cannot be undone.")) {
+            return; // Stop if user cancels
+        }
+
+        showAdminStatus("Deleting tech item...");
+        let itemNameToLog = 'Unknown Item'; // For logging purposes
+        try {
+             // Fetch item name before deleting for better logging
+             const itemSnap = await getDoc(doc(db, 'tech_items', docId));
+             if (itemSnap.exists()) {
+                 itemNameToLog = itemSnap.data().name || 'Unknown Item';
+             }
+
+            // Delete the document
+            await deleteDoc(doc(db, 'tech_items', docId));
+
+            // ** Activity Log **
+             if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('TECH_ITEM_DELETE', { name: itemNameToLog, id: docId });
+             } else { console.warn("logAdminActivity function not found!"); }
+            // ******************
+
+            showAdminStatus("Tech item deleted successfully.", false);
+            loadTechItemsAdmin(); // Reload the list to reflect deletion and update count
+
+        } catch (error) {
+            console.error(`Error deleting tech item (ID: ${docId}):`, error);
+            // ** Activity Log (Failure) **
+             if (typeof logAdminActivity === 'function') {
+                  logAdminActivity('TECH_ITEM_DELETE_FAILED', { name: itemNameToLog, id: docId, error: error.message });
+             }
+            // **************************
+            showAdminStatus(`Error deleting tech item: ${error.message}`, true);
+        }
+    }
+
+    /** Opens the Edit Tech Item modal and populates it with data */
+    async function openEditTechItemModal(docId) {
+        if (!editTechItemModal || !editTechItemForm) {
+            console.error("Edit tech item modal elements not found.");
+            showAdminStatus("UI Error: Cannot open edit form.", true);
+            return;
+        }
+        showEditTechItemStatus("Loading item data...");
+        if(editTechItemPreview) editTechItemPreview.innerHTML = '<p><small>Loading preview...</small></p>'; // Clear preview
+
+        try {
+            const docRef = doc(db, 'tech_items', docId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                editTechItemForm.setAttribute('data-doc-id', docId); // Store ID on the form
+
+                // Populate modal inputs using their 'name' attribute
+                const inputs = editTechItemForm.querySelectorAll('input[name], select[name], textarea[name]');
+                inputs.forEach(input => {
+                    const name = input.name;
+                    if (data.hasOwnProperty(name)) {
+                         input.value = data[name] ?? ''; // Use data value or empty string
+                    } else {
+                        input.value = ''; // Clear field if data doesn't have this property
+                    }
+                });
+
+                editTechItemModal.style.display = 'block'; // Show the modal
+                showEditTechItemStatus(""); // Clear loading message
+
+                // Trigger initial preview render for the loaded data
+                updateTechItemPreview('edit');
+                // Attach listeners now that the modal is open and populated
+                // Note: This attaches listeners every time; consider adding a flag if needed, but should be ok.
+                attachTechPreviewListeners(editTechItemForm, 'edit');
+
+            } else {
+                showAdminStatus("Error: Could not load tech item data for editing (not found).", true);
+                showEditTechItemStatus("Error: Item not found.", true);
+                 if(editTechItemPreview) editTechItemPreview.innerHTML = '<p class="error"><small>Item not found.</small></p>';
+            }
+        } catch (error) {
+             console.error("Error getting tech item document for edit:", error);
+             showAdminStatus(`Error loading tech item data: ${error.message}`, true);
+             showEditTechItemStatus(`Error: ${error.message}`, true);
+             if(editTechItemPreview) editTechItemPreview.innerHTML = `<p class="error"><small>Error loading preview: ${error.message}</small></p>`;
+        }
+    }
+
+     /** Closes the Edit Tech Item modal */
+    function closeEditTechItemModal() {
+        if (editTechItemModal) editTechItemModal.style.display = 'none';
+        if (editTechItemForm) editTechItemForm.reset();
+        editTechItemForm?.removeAttribute('data-doc-id');
+        if (editTechStatusMessage) editTechStatusMessage.textContent = '';
+        // Reset edit preview area
+        if (editTechItemPreview) {
+             editTechItemPreview.innerHTML = '<p><small>Preview will load when modal opens.</small></p>';
+        }
+    }
+
+    /** Shows status messages inside the tech edit modal */
+     function showEditTechItemStatus(message, isError = false) {
+         if (!editTechStatusMessage) { console.warn("Edit tech status message element not found"); return; }
+         editTechStatusMessage.textContent = message;
+         editTechStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+         // Auto-clear after 3 seconds only if it's NOT an error (errors should persist until cancel/save)
+         if (!isError) {
+             setTimeout(() => {
+                if (editTechStatusMessage && editTechStatusMessage.textContent === message) { // Check if message is still the same
+                    editTechStatusMessage.textContent = '';
+                    editTechStatusMessage.className = 'status-message';
+                }
+             }, 3000);
+         }
+     }
+
+     /** Handles updating a tech item from the edit modal */
+    async function handleUpdateTechItem(event) {
+        event.preventDefault();
+        if (!editTechItemForm) {console.error("Edit tech form not found"); return;}
+        const docId = editTechItemForm.getAttribute('data-doc-id');
+        if (!docId) { showEditTechItemStatus("Error: Missing document ID. Cannot save.", true); return; }
+
+        const updatedData = {};
+        const inputs = editTechItemForm.querySelectorAll('input[name], select[name], textarea[name]');
+        let isValid = true;
+        let techNameForLog = '';
+
+        // Gather updated data
+         inputs.forEach(input => {
+            const name = input.name;
+            let value = input.value.trim();
+             if (input.type === 'number') {
+                 value = input.value === '' ? null : parseFloat(input.value);
+                 if (input.value !== '' && isNaN(value)) {
+                      value = null;
+                      if (input.name === 'order' || input.name === 'batteryHealth' || input.name === 'batteryCycles') {
+                          showEditTechItemStatus(`Invalid number entered for ${name}.`, true); isValid = false;
+                      }
+                 } else if (value !== null && value < 0 && (input.name === 'order' || input.name === 'batteryHealth' || input.name === 'batteryCycles')) {
+                      showEditTechItemStatus(`${name} cannot be negative.`, true); isValid = false;
+                 }
+             }
+            updatedData[name] = value === '' ? null : value;
+            if (name === 'name') techNameForLog = value; // Get name for logging
+        });
+
+        // Validate required fields
+        if (!updatedData.name || updatedData.order === null || updatedData.order < 0 || isNaN(updatedData.order)) {
+             showEditTechItemStatus("Device Name and a valid non-negative Order are required.", true);
+             isValid = false;
+        }
+         if (!isValid) return;
+
+        updatedData.lastModified = serverTimestamp(); // Add modification timestamp
+
+        showEditTechItemStatus("Saving changes...");
+        try {
+             const docRef = doc(db, 'tech_items', docId);
+             // Fetch old data for detailed logging
+             let oldData = {};
+             const oldDataSnap = await getDoc(docRef);
+             if (oldDataSnap.exists()) oldData = oldDataSnap.data();
+
+             // Update the document in Firestore
+            await updateDoc(docRef, updatedData);
+
+             // Log the changes
+             const changes = {};
+             let hasChanges = false;
+             for (const key in updatedData) {
+                 if (key !== 'lastModified' && oldData[key] !== updatedData[key]) {
+                     // Simple comparison; consider deeper comparison if needed
+                     changes[key] = { from: oldData[key] ?? null, to: updatedData[key] };
+                     hasChanges = true;
+                 }
+             }
+             if (hasChanges && typeof logAdminActivity === 'function') {
+                 logAdminActivity('TECH_ITEM_UPDATE', { name: techNameForLog, id: docId, changes: changes });
+             } else if (hasChanges) {
+                 console.warn("logAdminActivity function not found!");
+             } else {
+                 console.log("Tech item updated, but no data fields changed value.");
+             }
+
+            showAdminStatus("Tech item updated successfully.", false); // Use main status area
+            closeEditTechItemModal(); // Close modal on success
+            loadTechItemsAdmin(); // Reload the list
+
+        } catch (error) {
+            console.error(`Error updating tech item (ID: ${docId}):`, error);
+            showEditTechItemStatus(`Error saving: ${error.message}`, true); // Show error *in* modal
+             if (typeof logAdminActivity === 'function') {
+                  logAdminActivity('TECH_ITEM_UPDATE_FAILED', { name: techNameForLog, id: docId, error: error.message });
+             }
+        }
+    }
+
+    // ==================================
+    // == Tech Item Preview Functions  ==
+    // ==================================
+
+    /** Generates HTML for the tech item preview based on data object */
+    function renderTechItemPreview(data) {
+        // (Use the function definition provided in the previous response - starting with const name = data.name || 'Device Name';)
+        // ... include the full function code here ...
+         const name = data.name || 'Device Name';
+         const model = data.model || '';
+         const iconClass = data.iconClass || 'fas fa-question-circle'; // Default icon
+         const material = data.material || '';
+         const storage = data.storage || '';
+         const batteryCapacity = data.batteryCapacity || '';
+         const color = data.color || '';
+         const price = data.price ? `$${data.price}` : ''; // Add $ sign
+         const dateReleased = data.dateReleased || '';
+         const dateBought = data.dateBought || '';
+         const osVersion = data.osVersion || '';
+         const batteryHealth = data.batteryHealth !== null && !isNaN(data.batteryHealth) ? parseInt(data.batteryHealth, 10) : null;
+         const batteryCycles = data.batteryCycles !== null && !isNaN(data.batteryCycles) ? data.batteryCycles : null;
+
+         let batteryHtml = '';
+         if (batteryHealth !== null) {
+              let batteryClass = '';
+              if (batteryHealth <= 20) batteryClass = 'critical';
+              else if (batteryHealth <= 50) batteryClass = 'low-power';
+
+              batteryHtml = `
+                  <div class="tech-detail"><i class="fas fa-heart"></i><span>Battery Health:</span></div>
+                  <div class="battery-container">
+                      <div class="battery-icon ${batteryClass}">
+                          <div class="battery-level" style="width: ${batteryHealth}%;"></div>
+                          <div class="battery-percentage">${batteryHealth}%</div>
+                      </div>
+                  </div>`;
+         }
+
+         let cyclesHtml = '';
+         if (batteryCycles !== null) {
+             cyclesHtml = `<div class="tech-detail"><i class="fas fa-sync"></i><span>Battery Charge Cycles:</span> ${batteryCycles}</div>`;
+         }
+
+         return `
+             <div class="tech-item">
+                 <h3><i class="${iconClass}"></i> ${name}</h3>
+                 ${model ? `<div class="tech-detail"><i class="fas fa-info-circle"></i><span>Model:</span> ${model}</div>` : ''}
+                 ${material ? `<div class="tech-detail"><i class="fas fa-layer-group"></i><span>Material:</span> ${material}</div>` : ''}
+                 ${storage ? `<div class="tech-detail"><i class="fas fa-hdd"></i><span>Storage:</span> ${storage}</div>` : ''}
+                 ${batteryCapacity ? `<div class="tech-detail"><i class="fas fa-battery-full"></i><span>Battery Capacity:</span> ${batteryCapacity}</div>` : ''}
+                 ${color ? `<div class="tech-detail"><i class="fas fa-palette"></i><span>Color:</span> ${color}</div>` : ''}
+                 ${price ? `<div class="tech-detail"><i class="fas fa-tag"></i><span>Price:</span> ${price}</div>` : ''}
+                 ${dateReleased ? `<div class="tech-detail"><i class="fas fa-calendar-plus"></i><span>Date Released:</span> ${dateReleased}</div>` : ''}
+                 ${dateBought ? `<div class="tech-detail"><i class="fas fa-shopping-cart"></i><span>Date Bought:</span> ${dateBought}</div>` : ''}
+                 ${osVersion ? `<div class="tech-detail"><i class="fab fa-apple"></i><span>OS Version:</span> ${osVersion}</div>` : ''}
+                 ${batteryHtml}
+                 ${cyclesHtml}
+             </div>`;
+    }
+
+    /** Reads form data and updates the corresponding tech preview area */
+    function updateTechItemPreview(formType) {
+        let formElement;
+        let previewElement;
+
+        if (formType === 'add') {
+            formElement = addTechItemForm;
+            previewElement = addTechItemPreview;
+        } else if (formType === 'edit') {
+            formElement = editTechItemForm;
+            previewElement = editTechItemPreview;
+        } else { return; } // Exit if invalid type
+
+        if (!formElement || !previewElement) { return; } // Exit if elements missing
+
+        const techData = {};
+        const inputs = formElement.querySelectorAll('input[name], select[name], textarea[name]');
+
+        inputs.forEach(input => {
+             const name = input.name;
+             let value = input.value.trim();
+             if (input.type === 'number') {
+                 // Use parseFloat for potentially decimal values like price
+                 value = input.value === '' ? null : parseFloat(input.value);
+                 // Treat NaN result as null for preview consistency
+                 if (isNaN(value)) value = null;
+             }
+             techData[name] = value === '' ? null : value;
+        });
+
+        try {
+             const previewHTML = renderTechItemPreview(techData);
+             previewElement.innerHTML = previewHTML;
+        } catch (e) {
+            console.error("Error rendering tech preview:", e);
+            previewElement.innerHTML = '<p class="error"><small>Error generating preview.</small></p>';
+        }
+    }
+
+    /** Attaches input/change listeners to tech form inputs to trigger preview updates */
+    function attachTechPreviewListeners(formElement, formType) {
+        if (!formElement) return;
+        const inputs = formElement.querySelectorAll('input[name], select[name], textarea[name]');
+        console.log(`Attaching preview listeners to ${inputs.length} inputs for ${formType} tech form.`);
+
+        inputs.forEach(input => {
+             const eventType = (input.type === 'checkbox' || input.type === 'select-one') ? 'change' : 'input';
+             // Check if a listener is already attached to avoid duplicates if modal reopens
+             const listenerFlag = `__techPreviewListener_${eventType}`;
+             if (!input[listenerFlag]) {
+                 input.addEventListener(eventType, () => {
+                     updateTechItemPreview(formType);
+                 });
+                 input[listenerFlag] = true; // Mark listener as attached
+             }
+        });
+    }
+
+    // ==================================
+    // == END Tech Item Functions =======
+    // ==================================
 
 // --- Copied Shoutout Card Rendering Functions (from displayShoutouts.js) ---
     // NOTE: Ensure image paths ('check.png', 'images/default-profile.jpg') are accessible
@@ -1404,7 +1920,17 @@ onAuthStateChanged(auth, user => {
         }
         // --- End Updated Greeting Logic ---
 
+        // *** Load Tech Items <<< ADD THIS CALL >>> ***
+        if (typeof loadTechItemsAdmin === 'function' && techItemsListAdmin) {
+            loadTechItemsAdmin();
+        } else {
+            console.error("Could not load Tech Items - function or list element missing.");
+            if(techItemsListAdmin) techItemsListAdmin.innerHTML = "<p class='error'>Failed to load tech item controller.</p>";
+        }
 
+        if (typeof closeEditTechItemModal === 'function') closeEditTechItemModal(); // <<< ADD THIS LINE to close modal on logout
+
+        
         // ****** Log the login event FIRST ******
         // This initiates the write to Firestore
         if (typeof logAdminActivity === 'function') {
@@ -3203,6 +3729,7 @@ async function loadDisabilitiesAdmin() {
         if (event.target === editUsefulLinkModal) { closeEditUsefulLinkModal(); }
         if (event.target === editSocialLinkModal) { closeEditSocialLinkModal(); }
         if (event.target === editDisabilityModal) { closeEditDisabilityModal(); } // Handles Disability Modal
+        if (event.target === editTechItemModal) { closeEditTechItemModal(); } // <<< ADD THIS LINE
     });
 
 // --- Ensure this is the closing }); for the main DOMContentLoaded listener ---
