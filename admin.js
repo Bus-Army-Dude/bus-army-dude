@@ -2390,9 +2390,9 @@ function displayFilteredSocialLinks() {
     }
 
     // Maintenance Mode Toggle Listener (with defensive removal)
-if (maintenanceModeToggle) {
-    console.log("DEBUG: Preparing maintenance mode listener for:", maintenanceModeToggle);
-
+// if (maintenanceModeToggle) {
+   // console.log("DEBUG: Preparing maintenance mode listener for:", maintenanceModeToggle);
+// }
     // Define the handler function separately so we can refer to it
     const handleMaintenanceToggle = (e) => {
         // console.log(`DEBUG: Maintenance 'change' event fired! Checked: ${e.target.checked}`); // You can remove this debug line later
