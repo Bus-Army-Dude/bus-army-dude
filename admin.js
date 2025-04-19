@@ -210,6 +210,12 @@ document.addEventListener('DOMContentLoaded', () => { //
         setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); //
     }
 
+    // Add Shoutout Forms using the helper
+addSubmitListenerOnce(addShoutoutTiktokForm, () => handleAddShoutout('tiktok', addShoutoutTiktokForm));
+addSubmitListenerOnce(addShoutoutInstagramForm, () => handleAddShoutout('instagram', addShoutoutInstagramForm));
+addSubmitListenerOnce(addShoutoutYoutubeForm, () => handleAddShoutout('youtube', addShoutoutYoutubeForm));
+
+
     // --- REVISED + CORRECTED Filtering Function for Useful Links ---
 function displayFilteredUsefulLinks() {
     const listContainer = usefulLinksListAdmin;
@@ -434,6 +440,25 @@ if (searchInputDisabilities) {
            closeEditSocialLinkModal();
         }
     });
+
+    // Helper to safely add submit listener only once
+function addSubmitListenerOnce(formElement, handler) {
+  if (!formElement) return;
+  // Create a unique property on the element to track if listener was added
+  const listenerAttachedFlag = `__submitListenerAttached__`;
+
+  if (!formElement[listenerAttachedFlag]) { // Check if listener is NOT already attached
+    const submitHandlerWrapper = (e) => {
+      e.preventDefault(); // Prevent default submission
+      handler();          // Call the original handler logic
+    };
+    formElement.addEventListener('submit', submitHandlerWrapper);
+    formElement[listenerAttachedFlag] = true; // Mark listener as attached
+    console.log(`DEBUG: Added submit listener to ${formElement.id}`); // Optional: log attachment
+  } else {
+     console.log(`DEBUG: Submit listener ALREADY attached to ${formElement.id}, skipping.`); // Optional: log skip
+  }
+}
 
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
