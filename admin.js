@@ -283,7 +283,7 @@ function displayFilteredUsefulLinks() {
     }
 
 
-  // login-logic.js
+  // NEXT BUTTON
 document.getElementById('next-button').addEventListener('click', function () {
   const emailInput = document.getElementById('email');
   const email = emailInput.value.trim();
@@ -293,70 +293,35 @@ document.getElementById('next-button').addEventListener('click', function () {
     return;
   }
 
-  // Swap to password input
+  // Hide email input, show password input
   document.getElementById('email-group').style.display = 'none';
   this.style.display = 'none';
 
-  const passwordGroup = document.getElementById('password-group');
-  const loginButton = document.getElementById('login-button');
-  const backButton = document.getElementById('back-button');
+  document.getElementById('password-group').style.display = 'block';
+  document.getElementById('login-button').style.display = 'inline-block';
+  document.getElementById('back-button').style.display = 'inline-block';
 
-  passwordGroup.classList.add('visible');
-  loginButton.style.display = 'block';
-  backButton.style.display = 'inline-block'; // Show the back button
-
-  // Focus password after short delay
   setTimeout(() => document.getElementById('password').focus(), 100);
 });
 
-// Show password toggle functionality
-document.getElementById('toggle-password').addEventListener('click', function () {
-  const passwordField = document.getElementById('password');
-  const type = passwordField.type === 'password' ? 'text' : 'password'; // Toggle type
-  passwordField.type = type;
-
-  // Toggle the icon between show/hide
-  this.textContent = type === 'password' ? '👁️' : '🙈'; // Change icon
-});
-
-// Back button functionality
+// BACK BUTTON
 document.getElementById('back-button').addEventListener('click', function () {
-  const emailGroup = document.getElementById('email-group');
-  const passwordGroup = document.getElementById('password-group');
-  const nextButton = document.getElementById('next-button');
-  const loginButton = document.getElementById('login-button');
-  const backButton = document.getElementById('back-button');
+  document.getElementById('email-group').style.display = 'block';
+  document.getElementById('next-button').style.display = 'inline-block';
 
-  // Show email input again
-  emailGroup.style.display = 'block';
-  passwordGroup.classList.remove('visible');
-  nextButton.style.display = 'block';
-  loginButton.style.display = 'none';
-  backButton.style.display = 'none'; // Hide back button
-});
-    
-  // Handle the form submission (Login)
-  document.getElementById('login-form').addEventListener('submit', function (event) {
-    event.preventDefault();  // Prevent actual form submission
-
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    // Check if both email and password are entered
-    if (!email || !password) {
-      document.getElementById('auth-status').textContent = "Please fill in both email and password.";
-      return;
-    }
-
-    // Simulate a successful login (you can replace this with actual logic)
-    document.getElementById('auth-status').textContent = "Login successful!";
-    
-    // Redirect to another page (optional)
-    // window.location.href = '/dashboard'; // For example
-  });
+  document.getElementById('password-group').style.display = 'none';
+  document.getElementById('login-button').style.display = 'none';
+  this.style.display = 'none';
 });
 
+// SHOW PASSWORD TOGGLE
+document.getElementById('toggle-password').addEventListener('click', function () {
+  const passwordInput = document.getElementById('password');
+  const isText = passwordInput.type === 'text';
 
+  passwordInput.type = isText ? 'password' : 'text';
+  this.textContent = isText ? '👁️' : '🙈';
+});
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
 
