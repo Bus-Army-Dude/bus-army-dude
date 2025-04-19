@@ -283,30 +283,28 @@ function displayFilteredUsefulLinks() {
     }
 
 
-    // login-animations.js
+   // login-logic.js
 document.getElementById('next-button').addEventListener('click', function () {
-    const emailInput = document.getElementById('email');
-    const email = emailInput.value.trim();
+  const emailInput = document.getElementById('email');
+  const email = emailInput.value.trim();
 
-    if (!email) {
-        document.getElementById('auth-status').textContent = "Please enter your email.";
-        return;
-    }
+  if (!email) {
+    document.getElementById('auth-status').textContent = "Please enter your email.";
+    return;
+  }
 
-    // Slide to password
-    document.getElementById('email-group').style.display = 'none';
-    document.getElementById('next-button').style.display = 'none';
+  // Swap to password input
+  document.getElementById('email-group').style.display = 'none';
+  this.style.display = 'none';
 
-    const passwordGroup = document.getElementById('password-group');
-    const loginButton = document.getElementById('login-button');
+  const passwordGroup = document.getElementById('password-group');
+  const loginButton = document.getElementById('login-button');
 
-    passwordGroup.classList.add('visible');
-    loginButton.style.display = 'block';
+  passwordGroup.classList.add('visible');
+  loginButton.style.display = 'block';
 
-    // Autofocus password
-    setTimeout(() => {
-        document.getElementById('password').focus();
-    }, 100);
+  // Focus password after short delay
+  setTimeout(() => document.getElementById('password').focus(), 100);
 });
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
