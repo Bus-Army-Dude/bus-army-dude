@@ -283,45 +283,47 @@ function displayFilteredUsefulLinks() {
     }
 
 
+ document.addEventListener('DOMContentLoaded', () => {
   // NEXT BUTTON
-document.getElementById('next-button').addEventListener('click', function () {
-  const emailInput = document.getElementById('email');
-  const email = emailInput.value.trim();
+  document.getElementById('next-button').addEventListener('click', function () {
+    const emailInput = document.getElementById('email');
+    const email = emailInput.value.trim();
 
-  if (!email) {
-    document.getElementById('auth-status').textContent = "Please enter your email.";
-    return;
-  }
+    if (!email) {
+      document.getElementById('auth-status').textContent = "Please enter your email.";
+      return;
+    }
 
-  // Hide email input, show password input
-  document.getElementById('email-group').style.display = 'none';
-  this.style.display = 'none';
+    document.getElementById('email-group').style.display = 'none';
+    this.style.display = 'none';
 
-  document.getElementById('password-group').style.display = 'block';
-  document.getElementById('login-button').style.display = 'inline-block';
-  document.getElementById('back-button').style.display = 'inline-block';
+    document.getElementById('password-group').style.display = 'block';
+    document.getElementById('login-button').style.display = 'inline-block';
+    document.getElementById('back-button').style.display = 'inline-block';
 
-  setTimeout(() => document.getElementById('password').focus(), 100);
+    setTimeout(() => document.getElementById('password').focus(), 100);
+  });
+
+  // BACK BUTTON
+  document.getElementById('back-button').addEventListener('click', function () {
+    document.getElementById('email-group').style.display = 'block';
+    document.getElementById('next-button').style.display = 'inline-block';
+
+    document.getElementById('password-group').style.display = 'none';
+    document.getElementById('login-button').style.display = 'none';
+    this.style.display = 'none';
+  });
+
+  // SHOW PASSWORD TOGGLE
+  document.getElementById('toggle-password').addEventListener('click', function () {
+    const passwordInput = document.getElementById('password');
+    const isText = passwordInput.type === 'text';
+
+    passwordInput.type = isText ? 'password' : 'text';
+    this.textContent = isText ? '👁️' : '🙈';
+  });
 });
 
-// BACK BUTTON
-document.getElementById('back-button').addEventListener('click', function () {
-  document.getElementById('email-group').style.display = 'block';
-  document.getElementById('next-button').style.display = 'inline-block';
-
-  document.getElementById('password-group').style.display = 'none';
-  document.getElementById('login-button').style.display = 'none';
-  this.style.display = 'none';
-});
-
-// SHOW PASSWORD TOGGLE
-document.getElementById('toggle-password').addEventListener('click', function () {
-  const passwordInput = document.getElementById('password');
-  const isText = passwordInput.type === 'text';
-
-  passwordInput.type = isText ? 'password' : 'text';
-  this.textContent = isText ? '👁️' : '🙈';
-});
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
 
