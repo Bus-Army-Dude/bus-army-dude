@@ -439,27 +439,53 @@ if (searchInputDisabilities) {
         if (event.target === editSocialLinkModal) {
            closeEditSocialLinkModal();
         }
+
+        if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached__'];
+        if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached__'];
+        if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached__'];
+        if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
+        if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
+        if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
     });
 
     // Helper to safely add submit listener only once
 function addSubmitListenerOnce(formElement, handler) {
-  if (!formElement) return;
-  // Create a unique property on the element to track if listener was added
-  const listenerAttachedFlag = `__submitListenerAttached__`;
+  if (!formElement) {
+    console.warn("Attempted to add listener to non-existent form:", formElement); // Added more context
+    return;
+  }
+  // Use a unique property name to avoid potential conflicts
+  const listenerAttachedFlag = '__busArmyDudeAdminSubmitListenerAttached__';
 
-  if (!formElement[listenerAttachedFlag]) { // Check if listener is NOT already attached
-    const submitHandlerWrapper = (e) => {
-      e.preventDefault(); // Prevent default submission
-      handler();          // Call the original handler logic
-    };
+  // --- IMPORTANT: Define the wrapper function *outside* the if check ---
+  // This ensures we have a consistent function reference for add/remove
+  // Get the existing handler if it was stored, otherwise create it
+  let submitHandlerWrapper = formElement[listenerAttachedFlag + '_handler'];
+
+  if (!submitHandlerWrapper) {
+      submitHandlerWrapper = (e) => {
+          e.preventDefault(); // Prevent default submission
+          console.log(`DEBUG: Submit event triggered for ${formElement.id}`); // Log the event trigger
+          handler();          // Call the original handler logic
+      };
+      // Store the handler reference on the element as well
+      formElement[listenerAttachedFlag + '_handler'] = submitHandlerWrapper;
+       console.log(`DEBUG: Created submit handler wrapper for ${formElement.id}`);
+  }
+
+  // --- Logic to add/skip ---
+  if (!formElement[listenerAttachedFlag]) { // Check if the flag is NOT set
     formElement.addEventListener('submit', submitHandlerWrapper);
-    formElement[listenerAttachedFlag] = true; // Mark listener as attached
-    console.log(`DEBUG: Added submit listener to ${formElement.id}`); // Optional: log attachment
+    formElement[listenerAttachedFlag] = true; // Mark listener as attached by setting the flag
+    console.log(`DEBUG: Added submit listener to ${formElement.id}`);
   } else {
-     console.log(`DEBUG: Submit listener ALREADY attached to ${formElement.id}, skipping.`); // Optional: log skip
+     console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
+     // Optional safety: Remove previous listener using the stored handler reference and re-add
+     // console.log(`DEBUG: Re-attaching listener just in case for ${formElement.id}`);
+     // formElement.removeEventListener('submit', submitHandlerWrapper); // Try removing
+     // formElement.addEventListener('submit', submitHandlerWrapper);    // Add again
   }
 }
-
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) { //
