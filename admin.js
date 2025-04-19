@@ -63,24 +63,26 @@ document.addEventListener('DOMContentLoaded', () => { //
         // Use 'input' to filter as the user types
         searchLogInput.addEventListener('input', displayFilteredActivityLog);
     }
-    if (editTechItemForm) {
-        editTechItemForm.addEventListener('submit', handleUpdateTechItem);
-        // Note: Preview listeners for edit form are attached in openEditTechItemModal
+
+    // --- THIS BLOCK IS STILL TOO EARLY --- (Starts around line 66 in your pasted code)
+     if (editTechItemForm) { // << ERROR HERE: editTechItemForm is not declared yet!
+         editTechItemForm.addEventListener('submit', handleUpdateTechItem);
+         // Note: Preview listeners for edit form are attached in openEditTechItemModal
+     }
+     if (cancelEditTechButton) { // << ERROR HERE: cancelEditTechButton is not declared yet!
+         cancelEditTechButton.addEventListener('click', closeEditTechItemModal);
+     }
+     if (cancelEditTechButtonSecondary) { // << ERROR HERE: cancelEditTechButtonSecondary is not declared yet!
+         cancelEditTechButtonSecondary.addEventListener('click', closeEditTechItemModal);
+     }
+     if (searchTechItemsInput) { // << ERROR HERE: searchTechItemsInput is not declared yet!
+         searchTechItemsInput.addEventListener('input', displayFilteredTechItems);
+     }
+     // --- FINALLY, Attach Event Listeners and Call Initial Load Functions --- // <-- This comment is misleading in its current location
+      if (addTechItemForm) { // << ERROR HERE: addTechItemForm is not declared yet!
+          addTechItemForm.addEventListener('submit', handleAddTechItem);
+          attachTechPreviewListeners(addTechItemForm, 'add');
     }
-    if (cancelEditTechButton) { // X close button in modal
-        cancelEditTechButton.addEventListener('click', closeEditTechItemModal);
-    }
-    if (cancelEditTechButtonSecondary) { // Secondary cancel button in modal
-        cancelEditTechButtonSecondary.addEventListener('click', closeEditTechItemModal);
-    }
-    if (searchTechItemsInput) { // Search input for the tech list
-        searchTechItemsInput.addEventListener('input', displayFilteredTechItems);
-    }
-    // --- FINALLY, Attach Event Listeners and Call Initial Load Functions ---
-     if (addTechItemForm) { // <<< USING the variable AFTER declaration
-        addTechItemForm.addEventListener('submit', handleAddTechItem);
-        attachTechPreviewListeners(addTechItemForm, 'add');
-    }    
 
     // --- DOM Element References ---
     const loginSection = document.getElementById('login-section'); //
