@@ -283,9 +283,8 @@ function displayFilteredUsefulLinks() {
     }
 
 
- document.addEventListener('DOMContentLoaded', () => {
-  // NEXT BUTTON
-  document.getElementById('next-button').addEventListener('click', function () {
+ document.addEventListener('click', function (e) {
+  if (e.target.id === 'next-button') {
     const emailInput = document.getElementById('email');
     const email = emailInput.value.trim();
 
@@ -295,34 +294,34 @@ function displayFilteredUsefulLinks() {
     }
 
     document.getElementById('email-group').style.display = 'none';
-    this.style.display = 'none';
+    e.target.style.display = 'none';
 
     document.getElementById('password-group').style.display = 'block';
     document.getElementById('login-button').style.display = 'inline-block';
     document.getElementById('back-button').style.display = 'inline-block';
 
     setTimeout(() => document.getElementById('password').focus(), 100);
-  });
+  }
 
-  // BACK BUTTON
-  document.getElementById('back-button').addEventListener('click', function () {
+  if (e.target.id === 'back-button') {
     document.getElementById('email-group').style.display = 'block';
     document.getElementById('next-button').style.display = 'inline-block';
 
     document.getElementById('password-group').style.display = 'none';
     document.getElementById('login-button').style.display = 'none';
-    this.style.display = 'none';
-  });
+    e.target.style.display = 'none';
+    document.getElementById('auth-status').textContent = '';
+  }
 
-  // SHOW PASSWORD TOGGLE
-  document.getElementById('toggle-password').addEventListener('click', function () {
+  if (e.target.id === 'toggle-password') {
     const passwordInput = document.getElementById('password');
     const isText = passwordInput.type === 'text';
 
     passwordInput.type = isText ? 'password' : 'text';
-    this.textContent = isText ? '👁️' : '🙈';
-  });
+    e.target.textContent = isText ? '👁️' : '🙈';
+  }
 });
+
 
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
