@@ -170,6 +170,85 @@
                  <div id="president-status-message" class="status-message" role="status" aria-live="polite"></div>
             </section>
 
+            <section class="admin-section" id="tech-management" aria-labelledby="tech-heading">
+                <h3 id="tech-heading"><i class="fas fa-microchip"></i> Manage Tech Information</h3>
+            
+                <form id="add-tech-item-form" aria-labelledby="add-tech-heading">
+                    <h4 id="add-tech-heading">Add New Tech Item</h4>
+                    <div class="form-group">
+                        <label for="tech-name">Device Name:</label>
+                        <input type="text" id="tech-name" name="name" required placeholder="e.g., iPhone 16 Pro">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-model">Model:</label>
+                        <input type="text" id="tech-model" name="model" placeholder="Specific model info">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-icon-class">Font Awesome Icon Class:</label>
+                        <input type="text" id="tech-icon-class" name="iconClass" placeholder="e.g., fas fa-mobile-alt">
+                         <small>Find icons at Font Awesome (e.g., 'fas fa-mobile-alt', 'fas fa-desktop')</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-material">Material:</label>
+                        <input type="text" id="tech-material" name="material" placeholder="e.g., Titanium, Aluminum">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-storage">Storage:</label>
+                        <input type="text" id="tech-storage" name="storage" placeholder="e.g., 128GB, 256GB SSD">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-battery-capacity">Battery Capacity (mAh):</label>
+                        <input type="text" id="tech-battery-capacity" name="batteryCapacity" placeholder="e.g., 3,582mAh">
+                     </div>
+                    <div class="form-group">
+                        <label for="tech-color">Color:</label>
+                        <input type="text" id="tech-color" name="color" placeholder="e.g., Natural Titanium">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-price">Price ($):</label>
+                        <input type="text" id="tech-price" name="price" placeholder="e.g., 1,067.49">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-date-released">Date Released:</label>
+                        <input type="text" id="tech-date-released" name="dateReleased" placeholder="e.g., September 20, 2024">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-date-bought">Date Bought:</label>
+                        <input type="text" id="tech-date-bought" name="dateBought" placeholder="e.g., November 08, 2024">
+                     </div>
+                    <div class="form-group">
+                        <label for="tech-os-version">OS Version:</label>
+                        <input type="text" id="tech-os-version" name="osVersion" placeholder="e.g., iOS 18.5 (22F5053f)">
+                    </div>
+                    <div class="form-group">
+                         <label for="tech-battery-health">Battery Health (%):</label>
+                         <input type="number" id="tech-battery-health" name="batteryHealth" min="0" max="100" placeholder="e.g., 99">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-battery-cycles">Battery Charge Cycles:</label>
+                        <input type="number" id="tech-battery-cycles" name="batteryCycles" min="0" placeholder="e.g., 244">
+                     </div>
+                    <div class="form-group">
+                         <label for="tech-order">Display Order:</label>
+                         <input type="number" id="tech-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
+                     </div>
+                    <div class="form-actions">
+                       <button type="submit" class="button-primary">Add Tech Item</button>
+                    </div>
+                </form>
+            
+                <h4 id="existing-tech-heading">
+                    Existing Tech Items <span id="tech-items-count" class="list-count"></span>
+                </h4>
+                 <div class="form-group">
+                    <label for="search-tech-items">Search Tech Items:</label>
+                    <input type="search" id="search-tech-items" placeholder="Search by name or model...">
+                </div>
+                <div id="tech-items-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tech-heading">
+                    <p>Loading tech items...</p>
+                </div>
+            </section>
+
             <section class="admin-section" id="disabilities-management" aria-labelledby="disabilities-heading">
                 <h3 id="disabilities-heading">Manage Disabilities List</h3>
 
@@ -581,17 +660,91 @@
                     <label for="edit-coverPhoto">Cover Photo URL:</label>
                     <input type="url" id="edit-coverPhoto" name="coverPhoto" inputmode="url">
                 </div>
-            </div> <div class="form-group">
+            </div>
+             <div class="form-group">
                 <label>Preview:</label>
                 <div id="edit-shoutout-preview" class="shoutout-preview-area">
                     <p><small>Preview will appear here.</small></p>
                 </div>
-            </div> <div class="form-actions">
+            </div>
+             <div class="form-actions">
                 <button type="submit" class="button-primary">Save Changes</button>
-                 </div>
-        </form> <div id="edit-shoutout-status-message" class="status-message" role="status" aria-live="polite"></div>
+             </div>
+        </form>
+         <div id="edit-shoutout-status-message" class="status-message" role="status" aria-live="polite"></div>
+    </div>
+</div>
 
-    </div> </div>
+<div id="edit-tech-item-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-tech-modal-heading">
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-tech-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-tech-modal-heading">Edit Tech Item</h2>
+
+        <form id="edit-tech-item-form" data-doc-id="">
+            <div class="form-group">
+                <label for="edit-tech-name">Device Name:</label>
+                <input type="text" id="edit-tech-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-tech-model">Model:</label>
+                <input type="text" id="edit-tech-model" name="model">
+            </div>
+            <div class="form-group">
+                <label for="edit-tech-icon-class">Font Awesome Icon Class:</label>
+                <input type="text" id="edit-tech-icon-class" name="iconClass">
+            </div>
+            <div class="form-group">
+                <label for="edit-tech-material">Material:</label>
+                <input type="text" id="edit-tech-material" name="material">
+            </div>
+            <div class="form-group">
+                <label for="edit-tech-storage">Storage:</label>
+                <input type="text" id="edit-tech-storage" name="storage">
+            </div>
+            <div class="form-group">
+                 <label for="edit-tech-battery-capacity">Battery Capacity (mAh):</label>
+                 <input type="text" id="edit-tech-battery-capacity" name="batteryCapacity">
+            </div>
+            <div class="form-group">
+                 <label for="edit-tech-color">Color:</label>
+                 <input type="text" id="edit-tech-color" name="color">
+            </div>
+            <div class="form-group">
+                 <label for="edit-tech-price">Price ($):</label>
+                 <input type="text" id="edit-tech-price" name="price">
+            </div>
+            <div class="form-group">
+                 <label for="edit-tech-date-released">Date Released:</label>
+                 <input type="text" id="edit-tech-date-released" name="dateReleased">
+            </div>
+            <div class="form-group">
+                 <label for="edit-tech-date-bought">Date Bought:</label>
+                 <input type="text" id="edit-tech-date-bought" name="dateBought">
+            </div>
+            <div class="form-group">
+                 <label for="edit-tech-os-version">OS Version:</label>
+                 <input type="text" id="edit-tech-os-version" name="osVersion">
+            </div>
+             <div class="form-group">
+                 <label for="edit-tech-battery-health">Battery Health (%):</label>
+                 <input type="number" id="edit-tech-battery-health" name="batteryHealth" min="0" max="100">
+             </div>
+              <div class="form-group">
+                 <label for="edit-tech-battery-cycles">Battery Charge Cycles:</label>
+                 <input type="number" id="edit-tech-battery-cycles" name="batteryCycles" min="0">
+              </div>
+            <div class="form-group">
+                 <label for="edit-tech-order">Display Order:</label>
+                 <input type="number" id="edit-tech-order" name="order" min="0" step="1" required>
+             </div>
+            <div id="edit-tech-status-message" class="status-message" role="status" aria-live="polite"></div>
+            <div class="form-actions">
+              <button type="submit" class="button-primary">Save Tech Changes</button>
+              <button type="button" class="secondary-button" id="cancel-edit-tech-button-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script type="module" src="admin.js"></script>
 </body>
