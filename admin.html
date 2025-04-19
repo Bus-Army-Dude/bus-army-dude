@@ -44,25 +44,26 @@
         <h1>Admin Panel</h1>
 
         <section id="login-section" aria-labelledby="login-heading">
-          <h2 id="login-heading">Admin Login</h2>
-          <form id="login-form">
-            <!-- Email Field -->
-            <div class="form-group" id="email-group">
-              <input type="email" id="email" name="email" placeholder="Email" required autocomplete="username">
-            </div>
-        
-            <!-- Password Field (Initially Hidden) -->
-            <div class="form-group" id="password-group" style="display: none;">
-              <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password">
-            </div>
-        
-            <!-- Action Buttons -->
-            <div class="form-actions">
-              <button type="button" id="next-button" class="button-primary">→</button>
-              <button type="submit" id="login-button" class="button-primary" style="display: none;">→</button>
-            </div>
-          </form>
-          <div id="auth-status" class="status-message" role="alert" aria-live="polite"></div>
+            <h2 id="login-heading">Admin Login</h2>
+            <form id="login-form">
+
+                <div class="form-group" id="email-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required autocomplete="username">
+                </div>
+
+                <div class="form-group" id="password-group" style="display: none;">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="next-button" class="button-primary">Next</button>
+                    <button type="submit" id="login-button" class="button-primary" style="display: none;">Login</button>
+                </div>
+
+            </form>
+            <div id="auth-status" class="status-message" role="alert" aria-live="polite"></div>
         </section>
 
         <main id="admin-content" style="display: none;" tabindex="-1">
