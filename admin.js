@@ -210,10 +210,18 @@ document.addEventListener('DOMContentLoaded', () => { //
         setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); //
     }
 
+    // Place these lines BEFORE the calls to addSubmitListenerOnce
+    if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached__'];
+    if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached__'];
+    if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached__'];
+    if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
+    if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
+    if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
+
     // Add Shoutout Forms using the helper
-addSubmitListenerOnce(addShoutoutTiktokForm, () => handleAddShoutout('tiktok', addShoutoutTiktokForm));
-addSubmitListenerOnce(addShoutoutInstagramForm, () => handleAddShoutout('instagram', addShoutoutInstagramForm));
-addSubmitListenerOnce(addShoutoutYoutubeForm, () => handleAddShoutout('youtube', addShoutoutYoutubeForm));
+    addSubmitListenerOnce(addShoutoutTiktokForm, () => handleAddShoutout('tiktok', addShoutoutTiktokForm));
+    addSubmitListenerOnce(addShoutoutInstagramForm, () => handleAddShoutout('instagram', addShoutoutInstagramForm));
+    addSubmitListenerOnce(addShoutoutYoutubeForm, () => handleAddShoutout('youtube', addShoutoutYoutubeForm));
 
 
     // --- REVISED + CORRECTED Filtering Function for Useful Links ---
@@ -439,53 +447,40 @@ if (searchInputDisabilities) {
         if (event.target === editSocialLinkModal) {
            closeEditSocialLinkModal();
         }
-
-        if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached__'];
-        if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached__'];
-        if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached__'];
-        if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
-        if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
-        if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
     });
 
     // Helper to safely add submit listener only once
-function addSubmitListenerOnce(formElement, handler) {
-  if (!formElement) {
-    console.warn("Attempted to add listener to non-existent form:", formElement); // Added more context
-    return;
-  }
-  // Use a unique property name to avoid potential conflicts
-  const listenerAttachedFlag = '__busArmyDudeAdminSubmitListenerAttached__';
+    function addSubmitListenerOnce(formElement, handler) {
+      if (!formElement) {
+        console.warn("Attempted to add listener to non-existent form:", formElement);
+        return;
+      }
+      // Use a unique property name to avoid potential conflicts
+      const listenerAttachedFlag = '__busArmyDudeAdminSubmitListenerAttached__';
 
-  // --- IMPORTANT: Define the wrapper function *outside* the if check ---
-  // This ensures we have a consistent function reference for add/remove
-  // Get the existing handler if it was stored, otherwise create it
-  let submitHandlerWrapper = formElement[listenerAttachedFlag + '_handler'];
+      // Get the existing handler reference if it was stored, otherwise create it
+      let submitHandlerWrapper = formElement[listenerAttachedFlag + '_handler'];
 
-  if (!submitHandlerWrapper) {
-      submitHandlerWrapper = (e) => {
-          e.preventDefault(); // Prevent default submission
-          console.log(`DEBUG: Submit event triggered for ${formElement.id}`); // Log the event trigger
-          handler();          // Call the original handler logic
-      };
-      // Store the handler reference on the element as well
-      formElement[listenerAttachedFlag + '_handler'] = submitHandlerWrapper;
-       console.log(`DEBUG: Created submit handler wrapper for ${formElement.id}`);
-  }
+      if (!submitHandlerWrapper) {
+          submitHandlerWrapper = (e) => {
+              e.preventDefault(); // Prevent default submission
+              console.log(`DEBUG: Submit event triggered for ${formElement.id}`);
+              handler();          // Call the original handler logic
+          };
+          // Store the handler reference on the element
+          formElement[listenerAttachedFlag + '_handler'] = submitHandlerWrapper;
+          console.log(`DEBUG: Created submit handler wrapper for ${formElement.id}`);
+      }
 
-  // --- Logic to add/skip ---
-  if (!formElement[listenerAttachedFlag]) { // Check if the flag is NOT set
-    formElement.addEventListener('submit', submitHandlerWrapper);
-    formElement[listenerAttachedFlag] = true; // Mark listener as attached by setting the flag
-    console.log(`DEBUG: Added submit listener to ${formElement.id}`);
-  } else {
-     console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
-     // Optional safety: Remove previous listener using the stored handler reference and re-add
-     // console.log(`DEBUG: Re-attaching listener just in case for ${formElement.id}`);
-     // formElement.removeEventListener('submit', submitHandlerWrapper); // Try removing
-     // formElement.addEventListener('submit', submitHandlerWrapper);    // Add again
-  }
-}
+      // --- Logic to add/skip ---
+      if (!formElement[listenerAttachedFlag]) { // Check if the flag is NOT set
+        formElement.addEventListener('submit', submitHandlerWrapper);
+        formElement[listenerAttachedFlag] = true; // Mark listener as attached by setting the flag
+        console.log(`DEBUG: Added submit listener to ${formElement.id}`);
+      } else {
+         console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
+      }
+    }
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) { //
@@ -1672,22 +1667,22 @@ onAuthStateChanged(auth, user => {
 
 async function handleAddShoutout(platform, formElement) {
     // *** Keep this console log ***
-    console.log(`DEBUG: handleAddShoutout START for ${platform} at ${new Date().toLocaleTimeString()}`);
+    console.log(`DEBUG: handleAddShoutout START (Reverted Version) for ${platform} at ${new Date().toLocaleTimeString()}`);
     if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; }
 
-    // Get form values (same as before)
+    // Get form values
     const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
     const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim();
     const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim();
     const order = parseInt(orderStr);
 
-    // Basic validation (same as before)
+    // Basic validation
     if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
         showAdminStatus(`Invalid input for ${platform}. Check required fields and ensure Order is a non-negative number.`, true);
         return;
     }
 
-    // Duplicate Check Logic (same as before)
+    // Duplicate Check Logic
     try {
         const shoutoutsCol = collection(db, 'shoutouts');
         const duplicateCheckQuery = query(
@@ -1705,7 +1700,7 @@ async function handleAddShoutout(platform, formElement) {
         }
         console.log("No duplicate found. Proceeding to add.");
 
-        // --- Prepare data to add ---
+        // Prepare data
         const accountData = {
             platform: platform,
             username: username,
@@ -1714,10 +1709,9 @@ async function handleAddShoutout(platform, formElement) {
             isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
             bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
             profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
-            createdAt: serverTimestamp(), // Use server timestamp
+            createdAt: serverTimestamp(),
             isEnabled: true
         };
-
         if (platform === 'youtube') {
             accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
             accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null;
@@ -1725,47 +1719,25 @@ async function handleAddShoutout(platform, formElement) {
             accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A';
         }
 
-        // *** Add the document to Firestore ***
+        // Add document
         console.log(`DEBUG: Attempting addDoc for ${username}...`);
         const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
-        console.log(`DEBUG: addDoc SUCCESS for ${username}. New ID: ${docRef.id}`); // Log success
+        console.log(`DEBUG: addDoc SUCCESS for ${username}. New ID: ${docRef.id}`);
 
-        // *** --- MODIFICATION START --- ***
-        // *** Instead of reloading the whole list, try appending directly ***
-
-        const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
-        if (listContainer && typeof renderAdminListItem === 'function') {
-             console.log(`DEBUG: Manually rendering new item ${docRef.id} for ${platform}`);
-             // Render the newly added item using the data we already have
-             renderAdminListItem(
-                 listContainer,
-                 docRef.id, // The new document ID
-                 platform,
-                 accountData.username,
-                 accountData.nickname,
-                 accountData.order,
-                 handleDeleteShoutout, // Pass the delete handler function reference
-                 openEditModal         // Pass the edit handler function reference
-             );
-             // NOTE: This direct append might mess up the sort order until next refresh.
-             // We also don't update the global 'allShoutouts' array here,
-             // focusing *only* on the immediate visual duplication bug.
-
+        // *** --- RESTORED LIST RELOAD --- ***
+        if (typeof loadShoutoutsAdmin === 'function') {
+             console.log(`DEBUG: Calling loadShoutoutsAdmin for ${platform} after add.`);
+             loadShoutoutsAdmin(platform); // Reload the whole list to update UI and count
         } else {
-            console.error("Couldn't find list container or renderAdminListItem function to manually add item.");
-            // If manual render fails, fall back to full reload as a safety measure
-             if (typeof loadShoutoutsAdmin === 'function') {
-                console.log("Manual render failed, falling back to full reload.");
-                loadShoutoutsAdmin(platform);
-            }
+             console.error("loadShoutoutsAdmin function is missing after add!");
         }
-        // *** --- MODIFICATION END --- ***
+        // *** --- END RESTORED LIST RELOAD --- ***
 
-        await updateMetadataTimestamp(platform); // Update timestamp
-        showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added (manual append attempt).`, false);
-        formElement.reset(); // Reset the form
+        await updateMetadataTimestamp(platform);
+        showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`, false);
+        formElement.reset();
 
-        // Reset preview area (same as before)
+        // Reset preview area
         const previewArea = formElement.querySelector(`#add-${platform}-preview`);
         if (previewArea) {
             previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>';
