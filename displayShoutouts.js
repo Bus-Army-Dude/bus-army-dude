@@ -27,6 +27,7 @@ let socialLinksCollectionRef; // For Social Links
 let disabilitiesCollectionRef; // For Disabilities
 let techItemsCollectionRef; // For Tech Items << NEW
 let shoutoutsMetaRef; // For shoutout timestamps
+let faqsCollectionRef; // Declare globally
 
 try {
     const app = initializeApp(firebaseConfig);
@@ -39,6 +40,7 @@ try {
     disabilitiesCollectionRef = collection(db, "disabilities"); // Assign Disabilities ref
     techItemsCollectionRef = collection(db, "tech_items"); // Assign Tech ref << NEW
     shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); // Assign shoutout meta ref
+    faqsCollectionRef = collection(db, "faqs"); // Assign
     firebaseAppInitialized = true;
     console.log("Firebase initialized for display.");
 } catch (error) {
@@ -86,6 +88,134 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
 function renderTikTokCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const followers = account.followers || 'N/A'; const isVerified = account.isVerified || false; const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#'; const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''; return `<div class="creator-card"><img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="creator-info"><div class="creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <p class="creator-username">@${username}</p> <p class="creator-bio">${bio}</p> <p class="follower-count">${followers} Followers</p> <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="visit-profile"> Visit Profile </a></div></div>`;}
 function renderInstagramCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const followers = account.followers || 'N/A'; const isVerified = account.isVerified || false; const profileUrl = username !== 'N/A' ? `https://instagram.com/${encodeURIComponent(username)}` : '#'; const verifiedBadge = isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''; return `<div class="instagram-creator-card"><img src="${profilePic}" alt="${nickname}" class="instagram-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="instagram-creator-info"><div class="instagram-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <p class="instagram-creator-username">@${username}</p> <p class="instagram-creator-bio">${bio}</p> <p class="instagram-follower-count">${followers} Followers</p> <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="instagram-visit-profile"> Visit Profile </a></div></div>`;}
 function renderYouTubeCard(account) { const profilePic = account.profilePic || 'images/default-profile.jpg'; const username = account.username || 'N/A'; const nickname = account.nickname || 'N/A'; const bio = account.bio || ''; const subscribers = account.subscribers || 'N/A'; const coverPhoto = account.coverPhoto || null; const isVerified = account.isVerified || false; let safeUsername = username; if (username !== 'N/A' && !username.startsWith('@')) { safeUsername = `@${username}`; } const channelUrl = username !== 'N/A' ? `https://youtube.com/${encodeURIComponent(safeUsername)}` : '#'; const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; return `<div class="youtube-creator-card"> ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''} <img src="${profilePic}" alt="@${username}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'"><div class="youtube-creator-info"><div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div> <div class="username-container"><p class="youtube-creator-username">@${username}</p></div> <p class="youtube-creator-bio">${bio}</p> <p class="youtube-subscriber-count">${subscribers} Subscribers</p> <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a></div></div>`;}
+
+/** Generates HTML for a single FAQ item for the homepage */
+function renderFaqItemHomepage(faqData) {
+    const question = faqData.question || 'No Question';
+    // IMPORTANT: Treat answer as HTML potentially, but sanitize if needed depending on source
+    // For now, assume the HTML stored in Firestore is safe/intended.
+    const answerHtml = faqData.answer || '<p>No Answer Provided.</p>';
+
+    return `
+        <div class="faq-item">
+            <button class="faq-question">
+                ${question}
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+                ${answerHtml} </div>
+        </div>`;
+}
+
+/** Fetches FAQs from Firestore and displays them on the homepage */
+async function loadAndDisplayFaqs() {
+    if (!firebaseAppInitialized || !db || !faqsCollectionRef) {
+         console.error("FAQ Load Error: Firebase not ready or collection ref missing.");
+         if (faqContainer) faqContainer.innerHTML = '<p class="error">Error loading FAQs (DB connection).</p>';
+         return;
+    }
+    if (!faqContainer) {
+         console.error("FAQ Load Error: Container element #faq-container-dynamic not found in HTML.");
+         return;
+    }
+
+    console.log("Fetching FAQs for homepage...");
+    faqContainer.innerHTML = '<p>Loading FAQs...</p>'; // Loading message
+
+    try {
+         const faqQuery = query(faqsCollectionRef, orderBy("order", "asc"));
+         const querySnapshot = await getDocs(faqQuery);
+
+         let allItemsHtml = '';
+         if (querySnapshot.empty) {
+             console.log("No FAQs found in Firestore.");
+             allItemsHtml = '<p>No frequently asked questions available yet.</p>';
+         } else {
+             console.log(`Found ${querySnapshot.size} FAQs.`);
+             querySnapshot.forEach((doc) => {
+                 allItemsHtml += renderFaqItemHomepage(doc.data()); // Build HTML string
+             });
+         }
+
+         // Set the innerHTML of the container with the generated items
+         faqContainer.innerHTML = allItemsHtml;
+
+         // *** IMPORTANT: Attach accordion listeners AFTER content is loaded ***
+         attachFaqAccordionListeners();
+
+         console.log("FAQ list updated on homepage.");
+
+    } catch (error) {
+         console.error("Error loading/displaying FAQs:", error);
+         let errorMsg = "Could not load FAQs at this time.";
+         if (error.code === 'failed-precondition') errorMsg = "Error: DB config needed for FAQs (order).";
+         faqContainer.innerHTML = `<p class="error">${errorMsg}</p>`;
+    }
+}
+
+/** Attaches accordion functionality using event delegation */
+function attachFaqAccordionListeners() {
+    const container = document.getElementById('faq-container-dynamic');
+    if (!container) {
+        console.error("FAQ Accordion Error: Container not found.");
+        return;
+    }
+    console.log("Attaching FAQ accordion listeners...");
+
+    // Use event delegation on the container
+    container.addEventListener('click', (event) => {
+        const questionButton = event.target.closest('.faq-question');
+        if (!questionButton) return; // Exit if the click wasn't on a question button
+
+        const faqItem = questionButton.closest('.faq-item');
+        if (!faqItem) return; // Exit if structure is wrong
+
+        const answer = faqItem.querySelector('.faq-answer');
+        const isActive = faqItem.classList.contains('active');
+
+        // Close all *other* active items first
+        const allItems = container.querySelectorAll('.faq-item');
+        allItems.forEach(otherItem => {
+            if (otherItem !== faqItem && otherItem.classList.contains('active')) {
+                 otherItem.classList.remove('active');
+                 const otherAnswer = otherItem.querySelector('.faq-answer');
+                 if (otherAnswer) otherAnswer.style.maxHeight = null;
+            }
+        });
+
+        // Toggle the clicked item
+        if (isActive) {
+             faqItem.classList.remove('active');
+             if (answer) answer.style.maxHeight = null;
+        } else {
+             faqItem.classList.add('active');
+             if (answer) answer.style.maxHeight = answer.scrollHeight + "px";
+              // Optional: Scroll into view smoothly if needed
+              // setTimeout(() => { // Timeout allows transition to start
+              //     const rect = faqItem.getBoundingClientRect();
+              //     const isInViewport = rect.top >= 0 && rect.bottom <= window.innerHeight;
+              //     if (!isInViewport) {
+              //         faqItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              //     }
+              // }, 310); // Delay slightly longer than CSS transition
+        }
+    });
+
+     // Optional: Close all if clicking outside (might be annoying, use with caution)
+     /*
+     document.addEventListener('click', (e) => {
+         if (!container.contains(e.target) || !e.target.closest('.faq-item')) {
+             const allItems = container.querySelectorAll('.faq-item.active');
+             allItems.forEach(item => {
+                  item.classList.remove('active');
+                  const answer = item.querySelector('.faq-answer');
+                  if (answer) answer.style.maxHeight = null;
+             });
+         }
+     });
+     */
+     console.log("FAQ accordion listeners attached.");
+}
 
 
 // --- Function to Render Tech Item Card --- <<< NEW FUNCTION >>>
@@ -274,6 +404,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     tiktokTimestampEl = document.getElementById('tiktok-last-updated-timestamp');
     instagramTimestampEl = document.getElementById('instagram-last-updated-timestamp'); // Corrected ID based on original file? Check HTML
     youtubeTimestampEl = document.getElementById('youtube-last-updated-timestamp'); // Corrected ID based on original file? Check HTML
+    faqContainer = document.getElementById('faq-container-dynamic');
 
     console.log("DEBUG: DOM Elements referenced.");
 
@@ -316,7 +447,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 loadAndDisplayUsefulLinks(usefulLinksContainerElement),
                 loadAndDisplaySocialLinks(socialLinksContainerElement),
                 loadAndDisplayDisabilities(disabilitiesListPlaceholder),
-                loadAndDisplayTechItems() // Load Tech Items
+                loadAndDisplayTechItems(), // Load Tech Items
+                loadAndDisplayFaqs() // <<< ADD THIS CALL
             ];
             const results = await Promise.allSettled(loadPromises);
 
