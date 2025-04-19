@@ -15,6 +15,13 @@
     --transition-speed: 0.25s;
     --transition-timing: cubic-bezier(0.4, 0, 0.2, 1); /* Apple's ease-in-out */
 
+    /* === macOS Sequoia Colors === */
+    --sequoia-blur-bg: rgba(255, 255, 255, 0.6); /* fallback for light mode */
+    --sequoia-dark-blur-bg: rgba(28, 28, 30, 0.6);
+    --sequoia-border: rgba(255, 255, 255, 0.15);
+    --sequoia-dark-border: rgba(255, 255, 255, 0.1);
+    --sequoia-glow: 0 0 30px rgba(10, 132, 255, 0.4); /* Sequoia-like glow */
+
     /* === Light Mode Colors === */
     --apple-light-bg: #f5f5f7;
     --apple-light-content-bg: #ffffff;
@@ -34,7 +41,6 @@
     --apple-light-error-bg: #fdebee;
     --apple-light-error-text: #c62828;
     --apple-light-modal-backdrop: rgba(245, 245, 247, 0.7);
-    --apple-light-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236e6e73' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
 
     /* === Dark Mode Colors === */
     --apple-dark-bg: #161617;
@@ -55,7 +61,6 @@
     --apple-dark-error-bg: #5b1e23;
     --apple-dark-error-text: #f7a3ab;
     --apple-dark-modal-backdrop: rgba(22, 22, 23, 0.7);
-    --apple-dark-select-arrow: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2386868b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
 
     /* === Action Colors === */
     --color-danger: #ff3b30;
@@ -87,7 +92,6 @@
     --success-text-color: var(--apple-dark-success-text);
     --error-bg-color: var(--apple-dark-error-bg);
     --error-text-color: var(--apple-dark-error-text);
-    --select-arrow: var(--apple-dark-select-arrow);
     --modal-backdrop-color: var(--apple-dark-modal-backdrop);
     --accent-glow-color: var(--apple-dark-input-focus-shadow);
     --accent-rgb: 10, 132, 255;
@@ -113,11 +117,11 @@ body:not(.dark-mode), body.light-mode {
     --success-text-color: var(--apple-light-success-text);
     --error-bg-color: var(--apple-light-error-bg);
     --error-text-color: var(--apple-light-error-text);
-    --select-arrow: var(--apple-light-select-arrow);
     --modal-backdrop-color: var(--apple-light-modal-backdrop);
     --accent-glow-color: var(--apple-light-input-focus-shadow);
     --accent-rgb: 0, 122, 255;
 }
+
 
 /* ======================== */
 /* Base Styles              */
@@ -176,21 +180,24 @@ a:hover {
 /* ======================== */
 /* Apple-Style Admin Login */
 /* ======================== */
+
 #login-section {
   margin: 8vh auto;
   background: var(--card-bg);
-  padding: 50px 40px;
+  padding: 40px 35px;
   border-radius: 20px;
   box-shadow: 0 20px 60px var(--shadow);
   max-width: 380px;
   text-align: center;
   animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* macOS Sequoia-inspired */
 }
 
 #login-heading {
   font-size: 1.75rem;
   font-weight: 600;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: var(--text);
 }
 
@@ -205,13 +212,14 @@ input[type="password"] {
   color: var(--text);
   outline: none;
   margin-bottom: 20px;
-  transition: border 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 input[type="email"]:focus,
 input[type="password"]:focus {
   border-color: var(--primary);
   background-color: #fff;
+  box-shadow: 0 0 5px 0 var(--primary); /* Subtle focus glow */
 }
 
 .button-primary {
@@ -224,11 +232,16 @@ input[type="password"]:focus {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .button-primary:hover {
   background-color: #005ecb;
+  transform: translateY(-2px); /* Adds a subtle "lift" on hover */
+}
+
+.button-primary:active {
+  transform: translateY(0); /* Reset the lift on click */
 }
 
 .form-group {
@@ -254,9 +267,16 @@ input[type="password"]:focus {
   color: #d93025;
 }
 
+/* Smooth fade-in effect for login section */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ======================== */
