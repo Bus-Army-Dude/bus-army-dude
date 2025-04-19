@@ -2,7 +2,7 @@
 
 Welcome to the repository for my **Link in Bio** website. This site serves as a centralized hub for all my important links, shoutouts, and updates, including a detailed **Weather Page** for real-time weather information. The site focuses on accessibility, security, and responsive design to ensure a seamless experience across all devices.
 
-The current version of the website is **v1.15.0**, with the addition of the new **Weather Page**.
+The current version of the website is **v1.16.0**
 
 ---
 
@@ -241,19 +241,20 @@ The website is designed with several security measures to protect content:
 
 This website is built using a combination of **JavaScript**, **CSS**, and **HTML**. Below is the breakdown of language usage:
 
-- **JavaScript**: 49.5%  
+- **JavaScript**: 59.7%  
    JavaScript powers the interactive elements of the website, such as settings management, dynamic weather updates, and user interface interactions.
 
-- **CSS**: 32.1%  
+- **CSS**: 26.2%  
    CSS controls the visual styling and ensures the website is fully responsive, including support for both light and dark themes and device-specific layouts.
 
-- **HTML**: 18.4%  
+- **HTML**: 14.1%  
    HTML provides the basic structure and content of the site, serving as the backbone of the Home Page, Weather Page, and Settings Page.
 
 ---
 
 ## Version History
 
+- **v1.16.0**: Introduced the **Admin Portal**, used to manage all the content on the website that only the owner can access
 - **v1.15.0**: Introduced the **Weather Page**, including detailed weather conditions, forecasts, and highlights.
 - **v1.14.0**: Theme Consistency and performance optimization.
 - **v1.13.0**: added the toggle button focus outline, also enhancements.
