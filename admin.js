@@ -1252,7 +1252,7 @@ function renderYouTubeCard(account) { //
              // Optionally show a message, though user might already be gone
              // showAdminStatus("Logged out due to inactivity.", false);
         });
-        // Note: The onAuthStateChanged listener will handle hiding admin content
+        // Note: The StateChanged listener will handle hiding admin content
     }
 
     // Resets the inactivity timer whenever user activity is detected
@@ -1373,14 +1373,6 @@ onAuthStateChanged(auth, user => {
         } else {
             // This error indicates a problem with the core log function setup
             console.error("logAdminActivity function not found! Cannot log login event.");
-        }
-
-        // ****** ADD THIS BLOCK ******
-        // Log the logout event
-        if (typeof logAdminActivity === 'function') {
-            logAdminActivity('ADMIN_LOGOUT');
-        } else {
-            console.error("logAdminActivity function not found! Cannot log logout event.");
         }
         // --- End Log Login ---
 
