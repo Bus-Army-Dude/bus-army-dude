@@ -198,7 +198,7 @@ a:hover {
 }
 
 /* ======================== */
-/* Login Section (Apple Style) */
+/* Apple-Style Admin Login */
 /* ======================== */
 #login-section {
     margin-top: 100px;
@@ -221,29 +221,56 @@ a:hover {
     color: var(--text-color, #1d1d1f);
 }
 
-/* Input Fields */
-#login-section input[type="text"],
-#login-section input[type="password"] {
+.form-group {
+    margin-bottom: 25px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+}
+
+#password-group {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+}
+
+#password-group.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+    height: auto;
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #6e6e73;
+    margin-bottom: 8px;
+}
+
+input[type="email"],
+input[type="password"] {
     width: 100%;
     padding: 14px 12px;
-    margin-bottom: 20px;
     font-size: 1rem;
     border: 1px solid #d2d2d7;
     border-radius: 12px;
     background-color: #f9f9f9;
     transition: border 0.2s, background-color 0.2s;
-    outline: none;
     color: #1d1d1f;
+    outline: none;
 }
 
-#login-section input[type="text"]:focus,
-#login-section input[type="password"]:focus {
+input[type="email"]:focus,
+input[type="password"]:focus {
     border-color: #007aff;
     background-color: #fff;
 }
 
-/* Login Button */
-#login-section button {
+.button-primary {
     width: 100%;
     padding: 14px 0;
     border: none;
@@ -254,10 +281,18 @@ a:hover {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    margin-bottom: 10px;
 }
 
-#login-section button:hover {
+.button-primary:hover {
     background-color: #005ecb;
+}
+
+#auth-status {
+    margin-top: 15px;
+    text-align: center;
+    color: #d93025;
+    font-size: 0.9rem;
 }
 
 /* ======================== */
