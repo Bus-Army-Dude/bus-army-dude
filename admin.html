@@ -46,21 +46,24 @@
         <section id="login-section" aria-labelledby="login-heading">
   <h2 id="login-heading">Admin Login</h2>
   <form id="login-form">
+    <!-- Email Group -->
     <div class="form-group" id="email-group">
       <input type="email" id="email" name="email" placeholder="Email" required autocomplete="username">
     </div>
-
+    
+    <!-- Password Group (Initially hidden) -->
     <div class="form-group" id="password-group" style="display: none;">
       <div class="password-wrapper">
-          <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password">
-          <button type="button" id="toggle-password" class="password-toggle">👁️</button>
+        <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password">
+        <button type="button" id="toggle-password" class="password-toggle">👁️</button>
+      </div>
     </div>
-    </div>
-
+    
+    <!-- Form Actions -->
     <div class="form-actions">
-      <button type="button" id="back-button" class="button-secondary">← Back</button>
+      <button type="button" id="back-button" class="button-secondary" style="display: none;">← Back</button>
       <button type="button" id="next-button" class="button-primary">→</button>
-      <button type="submit" id="login-button" class="button-primary" style="display: none;">→</button>
+      <button type="submit" id="login-button" class="button-primary" style="display: none;">Login</button>
     </div>
   </form>
   <div id="auth-status" class="status-message" role="alert" aria-live="polite"></div>
