@@ -283,61 +283,58 @@ function displayFilteredUsefulLinks() {
     }
 
 
-   document.addEventListener('DOMContentLoaded', function () {
-  // Handle the "Next" button click (Email -> Password)
-  document.getElementById('next-button').addEventListener('click', function () {
-    const emailInput = document.getElementById('email');
-    const email = emailInput.value.trim();
+  // login-logic.js
+document.getElementById('next-button').addEventListener('click', function () {
+  const emailInput = document.getElementById('email');
+  const email = emailInput.value.trim();
 
-    // Check if email is entered
-    if (!email) {
-      document.getElementById('auth-status').textContent = "Please enter your email.";
-      return;
-    }
+  if (!email) {
+    document.getElementById('auth-status').textContent = "Please enter your email.";
+    return;
+  }
 
-    // Hide email input and show password input
-    document.getElementById('email-group').style.display = 'none';
-    this.style.display = 'none';
+  // Swap to password input
+  document.getElementById('email-group').style.display = 'none';
+  this.style.display = 'none';
 
-    // Show password input and login button
-    const passwordGroup = document.getElementById('password-group');
-    passwordGroup.style.display = 'block';
+  const passwordGroup = document.getElementById('password-group');
+  const loginButton = document.getElementById('login-button');
+  const backButton = document.getElementById('back-button');
 
-    const backButton = document.getElementById('back-button');
-    backButton.style.display = 'block'; // Show back button
+  passwordGroup.classList.add('visible');
+  loginButton.style.display = 'block';
+  backButton.style.display = 'inline-block'; // Show the back button
 
-    const loginButton = document.getElementById('login-button');
-    loginButton.style.display = 'block'; // Show login button
+  // Focus password after short delay
+  setTimeout(() => document.getElementById('password').focus(), 100);
+});
 
-    // Focus password input after a short delay
-    setTimeout(() => document.getElementById('password').focus(), 100);
-  });
+// Show password toggle functionality
+document.getElementById('toggle-password').addEventListener('click', function () {
+  const passwordField = document.getElementById('password');
+  const type = passwordField.type === 'password' ? 'text' : 'password'; // Toggle type
+  passwordField.type = type;
 
-  // Handle the "Back" button click (Password -> Email)
-  document.getElementById('back-button').addEventListener('click', function () {
-    // Hide password input and back button, show email input and next button
-    document.getElementById('password-group').style.display = 'none';
-    document.getElementById('next-button').style.display = 'block';
-    this.style.display = 'none'; // Hide the back button
+  // Toggle the icon between show/hide
+  this.textContent = type === 'password' ? '👁️' : '🙈'; // Change icon
+});
 
-    document.getElementById('email-group').style.display = 'block';
-    document.getElementById('login-button').style.display = 'none';
-    document.getElementById('auth-status').textContent = ''; // Clear any status messages
-  });
+// Back button functionality
+document.getElementById('back-button').addEventListener('click', function () {
+  const emailGroup = document.getElementById('email-group');
+  const passwordGroup = document.getElementById('password-group');
+  const nextButton = document.getElementById('next-button');
+  const loginButton = document.getElementById('login-button');
+  const backButton = document.getElementById('back-button');
 
-  // Handle the password visibility toggle
-  document.getElementById('toggle-password').addEventListener('click', function () {
-    const passwordInput = document.getElementById('password');
-    // Toggle the type of the input between 'password' and 'text'
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      this.textContent = '🙈'; // Change icon to "hide"
-    } else {
-      passwordInput.type = 'password';
-      this.textContent = '👁️'; // Change icon to "show"
-    }
-  });
-
+  // Show email input again
+  emailGroup.style.display = 'block';
+  passwordGroup.classList.remove('visible');
+  nextButton.style.display = 'block';
+  loginButton.style.display = 'none';
+  backButton.style.display = 'none'; // Hide back button
+});
+    
   // Handle the form submission (Login)
   document.getElementById('login-form').addEventListener('submit', function (event) {
     event.preventDefault();  // Prevent actual form submission
