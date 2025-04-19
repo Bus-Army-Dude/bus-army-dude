@@ -1399,43 +1399,47 @@ function renderYouTubeCard(account) { //
     }
 
 // --- 'Next' Button Logic ---
-    // Handles the first step of the two-step login
-    if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) { //
-        nextButton.addEventListener('click', () => { //
-            const userEmail = emailInput.value.trim(); // Get entered email
+// Handles the first step of the two-step login
+const nextButton = document.getElementById('next-button');
+const emailInput = document.getElementById('email');
+const authStatus = document.getElementById('auth-status');
+const emailGroup = document.getElementById('email-group');
+const passwordGroup = document.getElementById('password-group');
+const loginButton = document.getElementById('login-button');
+const passwordInput = document.getElementById('password'); // Make sure this is defined
 
-            // Check if email field is empty
-            if (!userEmail) { //
-                 authStatus.textContent = 'Please enter your email address.'; //
-                 authStatus.className = 'status-message error'; // Show error style
-                 authStatus.style.display = 'block'; // Make sure message is visible
-                 return; // Stop processing if email is empty
-            }
+if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton && passwordInput) {
+    nextButton.addEventListener('click', () => {
+        const userEmail = emailInput.value.trim(); // Get entered email
 
-            // If email is entered:
-            // Display welcome message (optional, or clear previous errors)
-            authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
-            // Or simply clear status: authStatus.textContent = '';
-            authStatus.className = 'status-message'; // Reset style
-            authStatus.style.display = 'block'; // Ensure it's visible or use 'none' to hide
+        // Check if email field is empty
+        if (!userEmail) {
+            authStatus.textContent = 'Please enter your email address.';
+            authStatus.className = 'status-message error'; // Show error style
+            authStatus.style.display = 'block'; // Make sure message is visible
+            return; // Stop processing if email is empty
+        }
 
-            // Hide email field and Next button
-            emailGroup.style.display = 'none'; //
-            nextButton.style.display = 'none'; //
+        // If email is entered:
+        authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
+        authStatus.className = 'status-message'; // Reset style
+        authStatus.style.display = 'block'; // Ensure it's visible or use 'none' to hide
 
-            // Show password field and the actual Login button
-            passwordGroup.style.display = 'block'; //
-            loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
+        // Hide email field and Next button
+        emailGroup.style.display = 'none';
+        nextButton.style.display = 'none';
 
-            // Focus the password input for better UX
-            if(passwordInput) { //
-                 passwordInput.focus(); //
-            }
-        });
-    } else { //
-         // Log warning if any elements for the two-step login are missing
-         console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button)."); //
-    }
+        // Show password field and the actual Login button
+        passwordGroup.style.display = 'block';
+        loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
+
+        // Focus the password input for better UX
+        passwordInput.focus();
+    });
+} else {
+    console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button, Password Input).");
+}
+
 
 // --- Authentication Logic ---
 // Listener for changes in authentication state (login/logout)
