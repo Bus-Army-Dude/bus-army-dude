@@ -210,14 +210,6 @@ document.addEventListener('DOMContentLoaded', () => { //
         setTimeout(() => { if (editLinkStatusMessage) { editLinkStatusMessage.textContent = ''; editLinkStatusMessage.className = 'status-message'; } }, 3000); //
     }
 
-    // Place these lines BEFORE the calls to addSubmitListenerOnce
-    if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached__'];
-    if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached__'];
-    if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached__'];
-    if(addShoutoutTiktokForm) delete addShoutoutTiktokForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
-    if(addShoutoutInstagramForm) delete addShoutoutInstagramForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
-    if(addShoutoutYoutubeForm) delete addShoutoutYoutubeForm['__busArmyDudeAdminSubmitListenerAttached___handler'];
-
     // Add Shoutout Forms using the helper
     addSubmitListenerOnce(addShoutoutTiktokForm, () => handleAddShoutout('tiktok', addShoutoutTiktokForm));
     addSubmitListenerOnce(addShoutoutInstagramForm, () => handleAddShoutout('instagram', addShoutoutInstagramForm));
