@@ -284,73 +284,81 @@ function displayFilteredUsefulLinks() {
 
 
    document.addEventListener('DOMContentLoaded', function () {
-  // Next button functionality (Email -> Password)
+  // Handle the "Next" button click (Email -> Password)
   document.getElementById('next-button').addEventListener('click', function () {
     const emailInput = document.getElementById('email');
     const email = emailInput.value.trim();
 
+    // Check if email is entered
     if (!email) {
       document.getElementById('auth-status').textContent = "Please enter your email.";
       return;
     }
 
-    // Swap to password input
+    // Hide email input and show password input
     document.getElementById('email-group').style.display = 'none';
     this.style.display = 'none';
 
+    // Show password input and login button
     const passwordGroup = document.getElementById('password-group');
+    passwordGroup.style.display = 'block';
+
+    const backButton = document.getElementById('back-button');
+    backButton.style.display = 'block'; // Show back button
+
     const loginButton = document.getElementById('login-button');
+    loginButton.style.display = 'block'; // Show login button
 
-    passwordGroup.style.display = 'block';  // Show password input
-    loginButton.style.display = 'block';  // Show login button
-
-    // Focus on the password field after a slight delay
+    // Focus password input after a short delay
     setTimeout(() => document.getElementById('password').focus(), 100);
   });
 
-  // Back button functionality (Password -> Email)
+  // Handle the "Back" button click (Password -> Email)
   document.getElementById('back-button').addEventListener('click', function () {
-    // Show the email group and hide the password group
-    document.getElementById('email-group').style.display = 'block';
+    // Hide password input and back button, show email input and next button
     document.getElementById('password-group').style.display = 'none';
     document.getElementById('next-button').style.display = 'block';
+    this.style.display = 'none'; // Hide the back button
+
+    document.getElementById('email-group').style.display = 'block';
     document.getElementById('login-button').style.display = 'none';
-    document.getElementById('auth-status').textContent = '';  // Clear any status messages
+    document.getElementById('auth-status').textContent = ''; // Clear any status messages
   });
 
-  // Password visibility toggle
+  // Handle the password visibility toggle
   document.getElementById('toggle-password').addEventListener('click', function () {
     const passwordInput = document.getElementById('password');
     // Toggle the type of the input between 'password' and 'text'
     if (passwordInput.type === 'password') {
       passwordInput.type = 'text';
-      this.textContent = '🙈';  // Change to a different icon or text when visible
+      this.textContent = '🙈'; // Change icon to "hide"
     } else {
       passwordInput.type = 'password';
-      this.textContent = '👁️';  // Original icon for "hide"
+      this.textContent = '👁️'; // Change icon to "show"
     }
   });
 
-  // Login form submission (Email and Password)
+  // Handle the form submission (Login)
   document.getElementById('login-form').addEventListener('submit', function (event) {
     event.preventDefault();  // Prevent actual form submission
 
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
 
+    // Check if both email and password are entered
     if (!email || !password) {
       document.getElementById('auth-status').textContent = "Please fill in both email and password.";
       return;
     }
 
-    // Example of handling login attempt (you can replace this with your actual authentication logic)
-    // For now, we're just showing a success message for demonstration
+    // Simulate a successful login (you can replace this with actual logic)
     document.getElementById('auth-status').textContent = "Login successful!";
     
-    // Optionally, you can redirect after a successful login:
-    // window.location.href = '/dashboard';  // Change to your dashboard page or admin portal
+    // Redirect to another page (optional)
+    // window.location.href = '/dashboard'; // For example
   });
 });
+
 
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
