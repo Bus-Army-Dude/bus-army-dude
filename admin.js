@@ -1659,7 +1659,7 @@ onAuthStateChanged(auth, user => {
 
 async function handleAddShoutout(platform, formElement) {
     // *** Keep this console log ***
-    console.log(`DEBUG: handleAddShoutout START (Reverted Version) for ${platform} at ${new Date().toLocaleTimeString()}`);
+    console.log(`DEBUG: handleAddShoutout START (Final Version) for ${platform} at ${new Date().toLocaleTimeString()}`);
     if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; }
 
     // Get form values
