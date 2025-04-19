@@ -1432,7 +1432,24 @@ onAuthStateChanged(auth, user => {
             // This error indicates a problem with the core log function setup
             console.error("logAdminActivity function not found! Cannot log login event.");
         }
-        // --- End Log Login ---
+
+        // *** Load Tech Items (with extra logging) ***
+        console.log("DEBUG: AuthState - Checking if loadTechItemsAdmin should run..."); // <<< ADD LOG
+        if (typeof loadTechItemsAdmin === 'function' && techItemsListAdmin) {
+            console.log("DEBUG: AuthState - Calling loadTechItemsAdmin NOW."); // <<< ADD LOG
+            loadTechItemsAdmin();
+            console.log("DEBUG: AuthState - loadTechItemsAdmin call finished (or is async)."); // <<< ADD LOG
+        } else {
+            // Log specific reasons if check fails
+            if (typeof loadTechItemsAdmin !== 'function') {
+                 console.error("DEBUG: AuthState - Cannot load Tech Items: loadTechItemsAdmin function MISSING!");
+            }
+             if (!techItemsListAdmin) {
+                 console.error("DEBUG: AuthState - Cannot load Tech Items: techItemsListAdmin element MISSING!");
+            }
+             console.error("Could not load Tech Items - function or list element missing.");
+            if(techItemsListAdmin) techItemsListAdmin.innerHTML = "<p class='error'>Failed to load tech item controller.</p>";
+        }
 
 
         // Clear any previous login status messages
