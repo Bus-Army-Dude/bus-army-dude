@@ -1,69 +1,60 @@
 :root {
-    --font-size-base: 16px; /* Default base font size */
-    --bg-color: #ffffff;
-    --text-color: #000000;
-    --secondary-text: #666666;
-    --border-color: #dddddd;
-    --accent-color: #007aff; /* Apple-like blue accent color */
-    --hover-color: #005bb5;
-    --content-bg: #f5f5f5;
-    --slider-thumb-color: #007aff; /* Custom slider thumb color */
-    --slider-track-color: #ddd; /* Custom slider track color */
-    --slider-track-filled-color: #007aff; /* Custom slider track filled color */
-    --toggle-on: #34c759; /* Green for on */
-    --toggle-off: #dddddd; /* Gray for off */
-    --focus-outline-color: #005fcc; /* Default focus outline color */
+    --font-size-base: 16px;
+    --bg-color: #f5f5f7; /* Apple-like light background */
+    --text-color: #1d1d1f; /* Apple's primary text color */
+    --secondary-text: #86868b; /* Apple's secondary text color */
+    --border-color: #d2d2d7; /* Apple's subtle border color */
+    --accent-color: #0066cc; /* Updated Apple blue */
+    --hover-color: #0051a3;
+    --content-bg: #ffffff; /* Clean white for content areas */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Adding this for consistent shadows */
+    --slider-thumb-color: #0066cc;
+    --slider-track-color: #e8e8ed;
+    --slider-track-filled-color: #0066cc;
+    --toggle-on: #34c759; /* Apple's green */
+    --toggle-off: #e8e8ed; /* Apple's light gray for inactive elements */
+    --focus-outline-color: #0066cc;
 }
 
 /* Dark Mode Variables */
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-color: #1a1a1a;
-        --text-color: #ffffff;
-        --secondary-text: #a0a0a0;
-        --border-color: #333333;
-        --accent-color: #007aff;
-        --hover-color: #005bb5;
-        --content-bg: #2d2d2d;
-        --slider-thumb-color: #007aff;
-        --slider-track-color: #444;
-        --slider-track-filled-color: #007aff;
-        --toggle-on: #34c759;
-        --toggle-off: #666666;
+        --bg-color: #000000; /* Apple's dark mode black */
+        --text-color: #f5f5f7; /* Apple's dark mode text */
+        --secondary-text: #86868b; /* Same secondary text color */
+        --border-color: #424245; /* Apple's dark mode border */
+        --accent-color: #0066cc; /* Same accent color */
+        --hover-color: #0077ed;
+        --content-bg: #1d1d1f; /* Apple's dark mode content area */
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --slider-track-color: #424245;
     }
 }
 
 /* General Styles for Settings Page */
 body.settings-page {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Arial, sans-serif;
+    transition: color 0.5s ease, background-color 0.5s ease;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: var(--bg-color);
     color: var(--text-color);
     font-size: var(--font-size-base);
+    line-height: 1.47059;
+    font-weight: 400;
+    letter-spacing: -0.022em;
     min-height: 100vh;
 }
 
 /* Container Styles */
 .settings-page .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 25px;
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    border-radius: 16px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
 /* Settings Section Styles */
 .settings-page .settings-section {
-    padding: 20px;
     margin-bottom: 40px;
 }
 
@@ -73,91 +64,71 @@ body.settings-page {
     align-items: center;
     margin-bottom: 30px;
     padding-bottom: 15px;
-    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .settings-page .settings-header h1 {
     margin: 0;
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 800;
-    background: linear-gradient(120deg, 
-        var(--text-color), 
-        color-mix(in srgb, var(--text-color) 70%, var(--accent-color))
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.003em;
+    color: var(--text-color);
 }
 
 /* Settings Subsection */
 .settings-page .settings-subsection {
-    padding: 25px;
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--bg-color) 98%, white),
-        var(--bg-color)
-    );
-    border-radius: 16px;
+    padding: 25px 0;
     margin-bottom: 30px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.settings-page .settings-subsection:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 12px 40px -8px var(--shadow-color),
-        0 0 0 1px var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .settings-page .subsection-title {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0.004em;
     margin-bottom: 20px;
     color: var(--text-color);
-    background: linear-gradient(120deg, 
-        var(--text-color), 
-        color-mix(in srgb, var(--text-color) 70%, var(--accent-color))
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
 }
 
 /* Setting Card Styles */
 .settings-page .setting-card {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--bg-color) 98%, white),
-        var(--bg-color)
-    );
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    background-color: var(--content-bg);
+    padding: 16px 20px;
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    margin-bottom: 20px;
-    backdrop-filter: blur(10px);
+    margin-bottom: 12px;
+    transition: background-color 0.3s ease;
 }
 
 .settings-page .setting-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 8px 20px color-mix(in srgb, var(--shadow-color) 20%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
+    background-color: color-mix(in srgb, var(--content-bg) 97%, var(--accent-color));
+}
+
+.settings-page .setting-card .setting-title {
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+.settings-page .setting-card .setting-description {
+    font-size: 14px;
+    color: var(--secondary-text);
+    margin-top: 4px;
 }
 
 /* Toggle Switch Styles */
 .settings-page .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 52px;
-    height: 30px;
+    width: 51px;
+    height: 31px;
+}
+
+.settings-page .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .settings-page .toggle-slider {
@@ -166,61 +137,47 @@ body.settings-page {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--toggle-off) 90%, black),
-        var(--toggle-off)
-    );
-    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    border-radius: 50px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--toggle-off);
+    transition: 0.4s ease;
+    border-radius: 34px;
 }
 
 .settings-page .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 24px;
-    width: 24px;
-    left: 3px;
-    bottom: 3px;
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    height: 27px;
+    width: 27px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s ease;
     border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
 }
 
 .settings-page input:checked + .toggle-slider {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--toggle-on) 90%, white),
-        var(--toggle-on)
-    );
+    background-color: var(--toggle-on);
 }
 
 .settings-page input:checked + .toggle-slider:before {
-    transform: translateX(22px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: translateX(20px);
 }
 
 /* Reset Button Styles */
 .settings-page .reset-button {
-    background: linear-gradient(145deg, #ff3b30, #ff1744);
+    background-color: #ff3b30; /* Apple's red */
     color: white;
     border: none;
     padding: 12px 24px;
-    border-radius: 14px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 
-        0 4px 15px rgba(255, 59, 48, 0.3),
-        0 0 0 1px rgba(255, 59, 48, 0.3);
+    font-size: 17px;
+    transition: background-color 0.3s ease;
 }
 
 .settings-page .reset-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 8px 20px rgba(255, 59, 48, 0.4),
-        0 0 0 1px rgba(255, 59, 48, 1);
-    background: linear-gradient(145deg, #ff1744, #ff3b30);
+    background-color: #ff2d20;
 }
 
 /* Back Link Styles */
@@ -230,25 +187,14 @@ body.settings-page {
     gap: 8px;
     color: var(--accent-color);
     text-decoration: none;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 12px;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--bg-color) 98%, white),
-        var(--bg-color)
-    );
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    font-size: 17px;
+    font-weight: 400;
+    transition: color 0.3s ease;
 }
 
 .settings-page .back-link:hover {
-    transform: translateY(-2px);
     color: var(--hover-color);
-    box-shadow: 
-        0 8px 20px color-mix(in srgb, var(--accent-color) 15%, transparent),
-        0 0 0 1px var(--accent-color);
+    text-decoration: underline;
 }
 
 /* Cookie Consent Banner */
@@ -257,17 +203,11 @@ body.settings-page {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--bg-color) 98%, white),
-        var(--bg-color)
-    );
+    background-color: var(--content-bg);
     color: var(--text-color);
     padding: 20px;
-    border-radius: 16px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
     display: flex;
     gap: 20px;
     align-items: center;
@@ -276,29 +216,26 @@ body.settings-page {
     z-index: 1000;
 }
 
+#cookie-consent-banner p {
+    margin: 0;
+    font-size: 15px;
+}
+
 #cookie-consent-banner button {
-    background: linear-gradient(145deg,
-        var(--accent-color),
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff)
-    );
+    background-color: var(--accent-color);
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 12px;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
+    font-weight: 500;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
     white-space: nowrap;
 }
 
 #cookie-consent-banner button:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
-        0 0 0 1px var(--accent-color);
+    background-color: var(--hover-color);
 }
 
 /* Text Size Control Styles */
@@ -309,27 +246,13 @@ body.settings-page {
     width: 100%;
     max-width: 300px;
     margin-left: auto;
-    position: relative;
-    padding: 0 16px; /* Add padding to contain elements */
 }
 
 .size-value {
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
     color: var(--accent-color);
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--bg-color) 98%, white),
-        var(--bg-color)
-    );
-    padding: 8px 16px;
-    border-radius: 12px;
     text-align: center;
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--shadow-color) 10%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    position: relative;
-    width: calc(100% - 32px);
-    margin: 0 auto;
 }
 
 .slider-container {
@@ -337,19 +260,18 @@ body.settings-page {
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    padding: 10px 0;
 }
 
-/* Modern Range Slider */
+/* Modern Range Slider - Apple Style */
 #text-size-slider {
     -webkit-appearance: none;
     width: 100%;
-    height: 6px;
+    height: 4px;
     background: linear-gradient(to right,
         var(--slider-track-filled-color) var(--slider-value, 50%),
         var(--slider-track-color) var(--slider-value, 50%)
     );
-    border-radius: 3px;
+    border-radius: 2px;
     outline: none;
     margin: 10px 0;
 }
@@ -359,38 +281,32 @@ body.settings-page {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: var(--slider-thumb-color);
+    background: white;
     cursor: pointer;
-    border: 2px solid var(--bg-color);
-    box-shadow: 
-        0 2px 8px color-mix(in srgb, var(--accent-color) 30%, transparent);
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: 0.5px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
 }
 
 #text-size-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: var(--slider-thumb-color);
+    background: white;
     cursor: pointer;
-    border: 2px solid var(--bg-color);
-    box-shadow: 
-        0 2px 8px color-mix(in srgb, var(--accent-color) 30%, transparent);
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: 0.5px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
 }
 
 #text-size-slider::-webkit-slider-thumb:hover,
 #text-size-slider::-webkit-slider-thumb:active {
     transform: scale(1.1);
-    box-shadow: 
-        0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 #text-size-slider::-moz-range-thumb:hover,
 #text-size-slider::-moz-range-thumb:active {
     transform: scale(1.1);
-    box-shadow: 
-        0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 /* Size Labels */
@@ -398,41 +314,14 @@ body.settings-page {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 0 10px;
-    color: var(--text-color);
-}
-
-.size-labels span {
-    transition: all 0.3s ease;
-}
-
-.size-small { 
+    padding: 0 2px;
+    color: var(--secondary-text);
     font-size: 12px;
-    opacity: 0.7;
-}
-
-.size-medium { 
-    font-size: 16px;
-    opacity: 0.85;
-}
-
-.size-large { 
-    font-size: 24px;
-    opacity: 1;
 }
 
 /* Media Queries */
 @media (max-width: 768px) {
-    .settings-page {
-        padding: 15px;
-    }
-
     .settings-page .container {
-        padding: 20px;
-        margin: 15px auto;
-    }
-
-    .settings-page .settings-subsection {
         padding: 20px;
     }
 
@@ -445,91 +334,63 @@ body.settings-page {
     .text-size-control {
         margin-left: 0;
         max-width: 100%;
-        padding: 0; /* Remove padding on mobile */
-    }
-
-    .size-value {
-        width: calc(100% - 32px); /* Account for padding */
-        margin: 0 auto;
     }
 
     .settings-page .settings-header h1 {
-        font-size: 1.8rem;
+        font-size: 28px;
     }
 }
 
 @media (max-width: 600px) {
-    .settings-page {
-        padding: 12px;
-    }
-
     .settings-page .container {
-        padding: 18px;
-        margin: 12px auto;
-    }
-
-    .settings-page .settings-subsection {
-        padding: 18px;
+        padding: 16px;
     }
 
     #cookie-consent-banner {
         flex-direction: column;
         text-align: center;
-        bottom: 10px;
-        padding: 15px;
+        padding: 16px;
         width: 85%;
     }
 
     .settings-page .settings-header h1 {
-        font-size: 1.5rem;
+        font-size: 24px;
     }
 }
 
 @media (max-width: 480px) {
-    .settings-page {
-        padding: 10px;
-    }
-
     .settings-page .container {
-        padding: 15px;
-        margin: 10px auto;
+        padding: 12px;
     }
 
     .settings-page .settings-subsection {
-        padding: 15px;
+        padding: 16px 0;
     }
 
     .settings-page .setting-card {
-        padding: 15px;
+        padding: 12px 16px;
     }
 
     .text-size-control {
         gap: 10px;
-        padding: 0; /* Ensure padding is removed */
     }
 
     .size-value {
-        padding: 6px 12px;
-        font-size: 0.9rem;
-        width: calc(100% - 24px); /* Adjust for smaller padding */
-    }
-
-    .size-labels {
-        padding: 0 5px;
+        font-size: 14px;
     }
 
     .settings-page .settings-header h1 {
-        font-size: 1.3rem;
+        font-size: 22px;
     }
 
     #cookie-consent-banner {
         padding: 12px;
         width: 80%;
-        font-size: 0.9rem;
+        font-size: 14px;
     }
 
     #cookie-consent-banner button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        padding: 8px 16px;
+        font-size: 14px;
     }
 }
