@@ -283,7 +283,7 @@ function displayFilteredUsefulLinks() {
     }
 
 
-   document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function () {
   // Next button functionality (Email -> Password)
   document.getElementById('next-button').addEventListener('click', function () {
     const emailInput = document.getElementById('email');
@@ -301,25 +301,25 @@ function displayFilteredUsefulLinks() {
     const passwordGroup = document.getElementById('password-group');
     const loginButton = document.getElementById('login-button');
 
-    passwordGroup.style.display = 'block';
-    loginButton.style.display = 'block';
+    passwordGroup.style.display = 'block';  // Show password input
+    loginButton.style.display = 'block';  // Show login button
 
-    // Focus password after short delay
+    // Focus on the password field after a slight delay
     setTimeout(() => document.getElementById('password').focus(), 100);
   });
 
   // Back button functionality (Password -> Email)
-  document.getElementById('back-button').addEventListener('click', function() {
+  document.getElementById('back-button').addEventListener('click', function () {
     // Show the email group and hide the password group
     document.getElementById('email-group').style.display = 'block';
     document.getElementById('password-group').style.display = 'none';
     document.getElementById('next-button').style.display = 'block';
     document.getElementById('login-button').style.display = 'none';
-    document.getElementById('auth-status').textContent = ''; // Clear the auth status message
+    document.getElementById('auth-status').textContent = '';  // Clear any status messages
   });
 
   // Password visibility toggle
-  document.getElementById('toggle-password').addEventListener('click', function() {
+  document.getElementById('toggle-password').addEventListener('click', function () {
     const passwordInput = document.getElementById('password');
     // Toggle the type of the input between 'password' and 'text'
     if (passwordInput.type === 'password') {
@@ -332,7 +332,7 @@ function displayFilteredUsefulLinks() {
   });
 
   // Login form submission (Email and Password)
-  document.getElementById('login-form').addEventListener('submit', function(event) {
+  document.getElementById('login-form').addEventListener('submit', function (event) {
     event.preventDefault();  // Prevent actual form submission
 
     const email = document.getElementById('email').value.trim();
@@ -351,6 +351,7 @@ function displayFilteredUsefulLinks() {
     // window.location.href = '/dashboard';  // Change to your dashboard page or admin portal
   });
 });
+
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
 
