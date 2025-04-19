@@ -256,6 +256,39 @@
                 </div>
             </section>
 
+            <section class="admin-section" id="faq-management" aria-labelledby="faq-heading">
+    <h3 id="faq-heading"><i class="fas fa-question-circle"></i> Manage FAQs</h3>
+
+    <form id="add-faq-form" aria-labelledby="add-faq-heading">
+        <h4 id="add-faq-heading">Add New FAQ</h4>
+        <div class="form-group">
+            <label for="faq-question">Question:</label>
+            <input type="text" id="faq-question" name="question" required placeholder="Enter the question">
+        </div>
+        <div class="form-group">
+            <label for="faq-answer">Answer:</label>
+            <textarea id="faq-answer" name="answer" rows="5" required placeholder="Enter the answer text. You can use basic HTML like <p>, <ul>, <li>, <strong> etc."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="faq-order">Display Order:</label>
+            <input type="number" id="faq-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
+        </div>
+        <div class="form-actions">
+           <button type="submit" class="button-primary">Add FAQ</button>
+        </div>
+    </form>
+
+    <h4 id="existing-faq-heading">
+        Existing FAQs <span id="faq-count" class="list-count"></span>
+    </h4>
+     <div class="form-group">
+        <label for="search-faq">Search FAQs:</label>
+        <input type="search" id="search-faq" placeholder="Search by question or answer...">
+    </div>
+    <div id="faq-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-faq-heading">
+        <p>Loading FAQs...</p> </div>
+</section>
+
             <section class="admin-section" id="disabilities-management" aria-labelledby="disabilities-heading">
                 <h3 id="disabilities-heading">Manage Disabilities List</h3>
 
@@ -681,6 +714,34 @@
          <div id="edit-shoutout-status-message" class="status-message" role="status" aria-live="polite"></div>
     </div>
 </div>
+
+<div id="edit-faq-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-faq-modal-heading">
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-faq-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-faq-modal-heading">Edit FAQ</h2>
+
+        <form id="edit-faq-form" data-doc-id="">
+            <div class="form-group">
+                <label for="edit-faq-question">Question:</label>
+                <input type="text" id="edit-faq-question" name="question" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-faq-answer">Answer:</label>
+                <textarea id="edit-faq-answer" name="answer" rows="7" required></textarea>
+                 <small>Basic HTML allowed.</small>
+            </div>
+            <div class="form-group">
+                <label for="edit-faq-order">Display Order:</label>
+                <input type="number" id="edit-faq-order" name="order" min="0" step="1" required>
+            </div>
+            <div id="edit-faq-status-message" class="status-message" role="status" aria-live="polite"></div>
+            <div class="form-actions">
+              <button type="submit" class="button-primary">Save FAQ Changes</button>
+              <button type="button" class="secondary-button" id="cancel-edit-faq-button-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>        
 
 <div id="edit-tech-item-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-tech-modal-heading">
     <div class="modal-content">
