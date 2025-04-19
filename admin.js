@@ -1121,101 +1121,69 @@ function renderYouTubeCard(account) { //
          });
     }
 
-// *** FUNCTION TO SAVE Maintenance Mode Status ***
+// *** FUNCTION TO SAVE Maintenance Mode Status (with Logging) ***
+    async function saveMaintenanceModeStatus(isEnabled) {
+        // Ensure user is logged in
+        if (!auth || !auth.currentUser) {
+            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
+            // Revert checkbox state visually if save fails due to auth issue
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
+            return;
+        }
 
-    async function saveMaintenanceModeStatus(isEnabled) { //
+        // Use the specific status message area for settings, fallback to main admin status
+        const statusElement = settingsStatusMessage || adminStatusElement;
 
-        // Ensure user is logged in
+        // Show saving message
+        if (statusElement) {
+            statusElement.textContent = "Saving setting...";
+            statusElement.className = "status-message"; // Reset style
+            statusElement.style.display = 'block';
+        }
 
-        if (!auth || !auth.currentUser) { //
+        try {
+            // Use profileDocRef (site_config/mainProfile) to store the flag
+            // Use setDoc with merge: true to update only this field without overwriting others
+            await setDoc(profileDocRef, {
+                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
+            }, { merge: true });
 
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
+            console.log("Maintenance mode status saved:", isEnabled); // Log success to console
 
-            // Revert checkbox state visually if save fails due to auth issue
+            // *** ADD THIS BLOCK FOR LOGGING ***
+            const actionType = isEnabled ? 'MAINTENANCE_MODE_ENABLED' : 'MAINTENANCE_MODE_DISABLED';
+            const details = { newStatus: isEnabled };
+            if (typeof logAdminActivity === 'function') {
+                logAdminActivity(actionType, details); // Log the change
+            } else {
+                console.error("logAdminActivity function not found! Cannot log maintenance mode change.");
+            }
+            // *** END LOGGING BLOCK ***
 
-            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+            // Show success message using the dedicated settings status element or fallback
+             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
+                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
+             } else { // Fallback if specific element wasn't found initially
+                 showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false);
+             }
 
-            return; //
+        } catch (error) {
+            console.error("Error saving maintenance mode status:", error);
+            // Show error message in the specific status area or fallback
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) {
+                showSettingsStatus(`Error saving setting: ${error.message}`, true);
+            } else {
+                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true);
+            }
+            // Revert checkbox state visually on error
+             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled;
 
-        }
-
-
-
-        // Use the specific status message area for settings, fallback to main admin status
-
-        const statusElement = settingsStatusMessage || adminStatusElement; //
-
-
-
-        // Show saving message
-
-        if (statusElement) { //
-
-            statusElement.textContent = "Saving setting..."; //
-
-            statusElement.className = "status-message"; // Reset style
-
-            statusElement.style.display = 'block'; //
-
-        }
-
-
-
-        try { //
-
-            // Use profileDocRef (site_config/mainProfile) to store the flag
-
-            // Use setDoc with merge: true to update only this field without overwriting others
-
-            await setDoc(profileDocRef, { //
-
-                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
-
-            }, { merge: true }); //
-
-
-
-            console.log("Maintenance mode status saved:", isEnabled); //
-
-
-
-            // Show success message using the dedicated settings status element or fallback
-
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
-
-                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
-
-             } else { // Fallback if specific element wasn't found initially
-
-                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
-
-             }
-
-
-
-        } catch (error) { //
-
-            console.error("Error saving maintenance mode status:", error); //
-
-            // Show error message in the specific status area or fallback
-
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
-
-                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
-
-            } else { //
-
-                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
-
-            }
-
-            // Revert checkbox state visually on error
-
-             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
-
-        }
-
-    }
+             // *** Optionally log the FAILED save attempt ***
+             if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('MAINTENANCE_MODE_SAVE_FAILED', { attemptedStatus: isEnabled, error: error.message });
+             }
+        }
+    }
     // *** END FUNCTION ***
 
 // --- Inactivity Logout & Timer Display Functions ---
