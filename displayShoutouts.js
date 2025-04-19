@@ -61,6 +61,7 @@ let socialLinksContainerElement;
 let disabilitiesListPlaceholder;
 let presidentPlaceholderElement;
 let techItemsListContainer; // For Tech Items << NEW
+let faqContainer; // <<< ADD THIS LINE
 
 // Profile elements
 let profileUsernameElement;
