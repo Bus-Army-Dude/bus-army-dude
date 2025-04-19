@@ -15,6 +15,7 @@ let allSocialLinks = [];
 let allDisabilities = [];
 let allActivityLogEntries = []; // Global variable for client-side filtering
 let allTechItems = []; // For Tech section
+let allFaqs = [];
 
 document.addEventListener('DOMContentLoaded', () => { //
     // First, check if db and auth were successfully imported/initialized
@@ -36,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => { //
     const socialLinksCollectionRef = collection(db, "social_links");
     // Reference for President Info
     const presidentDocRef = doc(db, "site_config", "currentPresident"); 
+
+    // Reference for Faq Info
+    const faqsCollectionRef = collection(db, "faqs");
 
     // Firestore Reference for Disabilities
     const disabilitiesCollectionRef = collection(db, "disabilities");
@@ -79,6 +83,20 @@ document.addEventListener('DOMContentLoaded', () => { //
     const passwordGroup = document.getElementById('password-group'); //
     const loginButton = document.getElementById('login-button'); //
     const timerDisplayElement = document.getElementById('inactivity-timer-display'); //
+
+    // FAQ Management Elements
+    const addFaqForm = document.getElementById('add-faq-form');
+    const faqListAdmin = document.getElementById('faq-list-admin');
+    const faqCount = document.getElementById('faq-count');
+    const searchFaqInput = document.getElementById('search-faq');
+    const editFaqModal = document.getElementById('edit-faq-modal');
+    const editFaqForm = document.getElementById('edit-faq-form');
+    const cancelEditFaqButton = document.getElementById('cancel-edit-faq-button');
+    const cancelEditFaqButtonSecondary = document.getElementById('cancel-edit-faq-button-secondary');
+    const editFaqStatusMessage = document.getElementById('edit-faq-status-message');
+    const editFaqQuestionInput = document.getElementById('edit-faq-question'); // Specific input refs
+    const editFaqAnswerInput = document.getElementById('edit-faq-answer');
+    const editFaqOrderInput = document.getElementById('edit-faq-order');
 
     // Profile Management Elements
     const profileForm = document.getElementById('profile-form'); //
@@ -1451,6 +1469,32 @@ onAuthStateChanged(auth, user => {
             if(techItemsListAdmin) techItemsListAdmin.innerHTML = "<p class='error'>Failed to load tech item controller.</p>";
         }
 
+         // *** Load FAQs <<< ADD THIS CALL >>> ***
+        if (typeof loadFaqsAdmin === 'function' && faqListAdmin) {
+             loadFaqsAdmin();
+        } else {
+             console.error("Could not load FAQs - function or list element missing.");
+              if(faqListAdmin) faqListAdmin.innerHTML = "<p class='error'>Failed to load FAQ controller.</p>";
+         }
+
+        // --- FAQ Management Listeners --- <<< ADD THIS BLOCK START >>> ---
+        if (addFaqForm) {
+            addFaqForm.addEventListener('submit', handleAddFaq);
+        }
+        if (editFaqForm) {
+            editFaqForm.addEventListener('submit', handleUpdateFaq);
+        }
+        if (cancelEditFaqButton) { // X close button
+            cancelEditFaqButton.addEventListener('click', closeEditFaqModal);
+        }
+        if (cancelEditFaqButtonSecondary) { // Secondary cancel button
+            cancelEditFaqButtonSecondary.addEventListener('click', closeEditFaqModal);
+        }
+        if (searchFaqInput) { // Search input for FAQs
+            searchFaqInput.addEventListener('input', displayFilteredFaqs);
+        }
+        // <<< ADD THIS BLOCK END >>> ---
+
 
         // Clear any previous login status messages
         if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
@@ -1518,6 +1562,7 @@ onAuthStateChanged(auth, user => {
         if (typeof closeEditUsefulLinkModal === 'function') closeEditUsefulLinkModal(); // Close useful link modal
         if (typeof closeEditSocialLinkModal === 'function') closeEditSocialLinkModal(); // Close social link modal
         if (typeof closeEditDisabilityModal === 'function') closeEditDisabilityModal(); // Close disability modal
+        if (typeof closeEditFaqModal === 'function') closeEditFaqModal(); // <<< ADD THIS LINE
 
         // Reset the login form to its initial state (email input visible)
         if (emailGroup) emailGroup.style.display = 'block';
@@ -3048,6 +3093,185 @@ function displayFilteredActivityLog() {
     // == END Tech Item Functions =======
     // ==================================
 
+
+    // ==================================
+// ===== FAQ Management Functions =====
+// ==================================
+
+/** Shows status messages inside the FAQ edit modal */
+function showEditFaqStatus(message, isError = false) {
+    if (!editFaqStatusMessage) { console.warn("Edit FAQ status message element not found"); return; }
+    editFaqStatusMessage.textContent = message;
+    editFaqStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+    if (!isError) { setTimeout(() => { if (editFaqStatusMessage && editFaqStatusMessage.textContent === message) { editFaqStatusMessage.textContent = ''; editFaqStatusMessage.className = 'status-message'; } }, 3000); }
+}
+
+/** Renders a single FAQ item in the admin list */
+function renderFaqAdminListItem(container, docId, faqData, deleteHandler, editHandler) {
+     if (!container) { console.warn("FAQ list container missing"); return; }
+     const itemDiv = document.createElement('div');
+     itemDiv.className = 'list-item-admin';
+     itemDiv.setAttribute('data-id', docId);
+     const shortAnswer = (faqData.answer || '').substring(0, 100); // Snippet
+     itemDiv.innerHTML = `
+         <div class="item-content">
+             <div class="item-details">
+                 <strong><span class="math-inline">\{faqData\.question \|\| 'N/A'\}</strong\>
+<p style="opacity: 0.8; font-style: italic;">{shortAnswer}${ (faqData.answer || '').length > 100 ? '...' : '' }</p>
+<small>Order: ${faqData.order ?? 'N/A'}</small>
+</div>
+</div>
+<div class="item-actions">
+<button type="button" class="edit-button small-button">Edit</button>
+<button type="button" class="delete-button small-button">Delete</button>
+</div>`;
+const editButton = itemDiv.querySelector('.edit-button');
+if (editButton) editButton.addEventListener('click', () => editHandler(docId));
+const deleteButton = itemDiv.querySelector('.delete-button');
+if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, itemDiv));
+container.appendChild(itemDiv);
+}
+
+/** Filters and displays FAQs based on search */
+function displayFilteredFaqs() {
+     if (!faqListAdmin || !searchFaqInput || typeof allFaqs === 'undefined') { return; }
+     const searchTerm = searchFaqInput.value.trim().toLowerCase();
+     faqListAdmin.innerHTML = '';
+     const filteredList = allFaqs.filter(faq => {
+         if (!searchTerm) return true;
+         const question = (faq.question || '').toLowerCase();
+         const answer = (faq.answer || '').toLowerCase();
+         return question.includes(searchTerm) || answer.includes(searchTerm);
+     });
+     if (filteredList.length > 0) {
+         filteredList.forEach(faq => renderFaqAdminListItem(faqListAdmin, faq.id, faq, handleDeleteFaq, openEditFaqModal));
+     } else { faqListAdmin.innerHTML = searchTerm ? `<p>No FAQs found matching "${searchTerm}".</p>` : '<p>No FAQs added yet.</p>'; }
+     if (faqCount) { faqCount.textContent = `(${filteredList.length})`; }
+}
+
+/** Loads FAQs from Firestore */
+async function loadFaqsAdmin() {
+     if (!faqListAdmin) { console.error("FAQ list container missing."); return; }
+     console.log("Loading FAQs for admin...");
+     if (faqCount) faqCount.textContent = '(...)';
+     faqListAdmin.innerHTML = `<p>Loading FAQs...</p>`;
+     allFaqs = [];
+     try {
+         const faqQuery = query(faqsCollectionRef, orderBy("order", "asc"));
+         const querySnapshot = await getDocs(faqQuery);
+         querySnapshot.forEach((doc) => { allFaqs.push({ id: doc.id, ...doc.data() }); });
+         console.log(`Loaded ${allFaqs.length} FAQs.`);
+         displayFilteredFaqs();
+     } catch (error) {
+         console.error("Error loading FAQs:", error);
+         let errorMsg = "Error loading FAQs."; if (error.code === 'failed-precondition') errorMsg = "Error: Missing Firestore index for FAQs (order). Check console.";
+         showAdminStatus(errorMsg, true); faqListAdmin.innerHTML = `<p class="error">${errorMsg}</p>`; if (faqCount) faqCount.textContent = '(Error)';
+     }
+}
+
+/** Handles adding a new FAQ */
+async function handleAddFaq(event) {
+     event.preventDefault();
+     if (!addFaqForm) return;
+     const questionInput = addFaqForm.querySelector('#faq-question');
+     const answerInput = addFaqForm.querySelector('#faq-answer');
+     const orderInput = addFaqForm.querySelector('#faq-order');
+     const question = questionInput?.value.trim();
+     const answer = answerInput?.value.trim();
+     const orderStr = orderInput?.value.trim();
+     const order = parseInt(orderStr);
+
+     if (!question || !answer || !orderStr || isNaN(order) || order < 0) { showAdminStatus("Question, Answer, and a valid non-negative Order are required.", true); return; }
+     const faqData = { question, answer, order, createdAt: serverTimestamp() };
+     showAdminStatus("Adding FAQ...");
+     try {
+         const docRef = await addDoc(faqsCollectionRef, faqData);
+         console.log("FAQ added with ID:", docRef.id);
+         logAdminActivity('FAQ_ADD', { question: question, id: docRef.id });
+         showAdminStatus("FAQ added successfully.", false);
+         addFaqForm.reset();
+         loadFaqsAdmin();
+     } catch (error) { console.error("Error adding FAQ:", error); showAdminStatus(`Error adding FAQ: ${error.message}`, true); }
+}
+
+/** Handles deleting an FAQ */
+async function handleDeleteFaq(docId, listItemElement) {
+     if (!confirm("Are you sure you want to permanently delete this FAQ?")) return;
+     showAdminStatus("Deleting FAQ...");
+     let questionToLog = 'Unknown Question';
+     try {
+         const faqSnap = await getDoc(doc(db, 'faqs', docId));
+         if (faqSnap.exists()) questionToLog = faqSnap.data().question || 'Unknown Question';
+         await deleteDoc(doc(db, 'faqs', docId));
+         logAdminActivity('FAQ_DELETE', { question: questionToLog, id: docId });
+         showAdminStatus("FAQ deleted successfully.", false);
+         loadFaqsAdmin();
+     } catch (error) {
+         console.error(`Error deleting FAQ (ID: ${docId}):`, error);
+         logAdminActivity('FAQ_DELETE_FAILED', { question: questionToLog, id: docId, error: error.message });
+         showAdminStatus(`Error deleting FAQ: ${error.message}`, true);
+     }
+}
+
+/** Opens and populates the edit FAQ modal */
+async function openEditFaqModal(docId) {
+     if (!editFaqModal || !editFaqForm) { console.error("Edit FAQ modal elements missing."); return; }
+     showEditFaqStatus("Loading FAQ data...");
+     try {
+         const docRef = doc(db, 'faqs', docId);
+         const docSnap = await getDoc(docRef);
+         if (docSnap.exists()) {
+             const data = docSnap.data();
+             editFaqForm.setAttribute('data-doc-id', docId);
+             if(editFaqQuestionInput) editFaqQuestionInput.value = data.question || '';
+             if(editFaqAnswerInput) editFaqAnswerInput.value = data.answer || '';
+             if(editFaqOrderInput) editFaqOrderInput.value = data.order ?? '';
+             editFaqModal.style.display = 'block';
+             showEditFaqStatus("");
+         } else { showAdminStatus("Error loading FAQ data (not found).", true); showEditFaqStatus("Error: FAQ not found.", true); }
+     } catch (error) { console.error("Error getting FAQ doc for edit:", error); showAdminStatus(`Error loading FAQ: ${error.message}`, true); showEditFaqStatus(`Error: ${error.message}`, true); }
+}
+
+/** Closes the edit FAQ modal */
+function closeEditFaqModal() {
+     if (editFaqModal) editFaqModal.style.display = 'none';
+     if (editFaqForm) editFaqForm.reset();
+     editFaqForm?.removeAttribute('data-doc-id');
+     if (editFaqStatusMessage) editFaqStatusMessage.textContent = '';
+}
+
+/** Handles updating an FAQ from the edit modal */
+async function handleUpdateFaq(event) {
+     event.preventDefault();
+     if (!editFaqForm) return;
+     const docId = editFaqForm.getAttribute('data-doc-id');
+     if (!docId) { showEditFaqStatus("Error: Missing document ID.", true); return; }
+     const question = editFaqQuestionInput?.value.trim();
+     const answer = editFaqAnswerInput?.value.trim();
+     const orderStr = editFaqOrderInput?.value.trim();
+     const order = parseInt(orderStr);
+     if (!question || !answer || !orderStr || isNaN(order) || order < 0) { showEditFaqStatus("Question, Answer, and valid Order required.", true); return; }
+     const updatedData = { question, answer, order, lastModified: serverTimestamp() };
+     showEditFaqStatus("Saving changes...");
+     try {
+         const docRef = doc(db, 'faqs', docId);
+         let oldData = {}; const oldDataSnap = await getDoc(docRef); if (oldDataSnap.exists()) oldData = oldDataSnap.data(); // Get old data for log
+         await updateDoc(docRef, updatedData);
+         // Log changes
+         const changes = {}; let hasChanges = false;
+         for (const key in updatedData) { if (key !== 'lastModified' && oldData[key] !== updatedData[key]) { changes[key] = { from: oldData[key] ?? null, to: updatedData[key] }; hasChanges = true; } }
+         if (hasChanges) { logAdminActivity('FAQ_UPDATE', { id: docId, question: question, changes: changes }); }
+         else { console.log("FAQ updated but no values changed."); }
+         showAdminStatus("FAQ updated successfully.", false);
+         closeEditFaqModal();
+         loadFaqsAdmin();
+     } catch (error) { console.error(`Error updating FAQ (ID: ${docId}):`, error); showEditFaqStatus(`Error saving: ${error.message}`, true); logAdminActivity('FAQ_UPDATE_FAILED', { id: docId, question: question, error: error.message }); }
+}
+
+// ==================================
+// === END FAQ Management Functions ===
+// ==================================
+
 // --- ADD THIS FUNCTION ---
     // Displays status messages in the president section's status area
     function showPresidentStatus(message, isError = false) {
@@ -3470,6 +3694,7 @@ async function loadDisabilitiesAdmin() {
         if (event.target === editSocialLinkModal) { closeEditSocialLinkModal(); }
         if (event.target === editDisabilityModal) { closeEditDisabilityModal(); } // Handles Disability Modal
         if (event.target === editTechItemModal) { closeEditTechItemModal(); } // Tech modal close
+        if (event.target === editFaqModal) { closeEditFaqModal(); } // <<< ADD THIS LINE
     });
 
 // --- Ensure this is the closing }); for the main DOMContentLoaded listener ---
