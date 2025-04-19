@@ -283,46 +283,31 @@ function displayFilteredUsefulLinks() {
     }
 
 
- document.addEventListener('click', function (e) {
-  if (e.target.id === 'next-button') {
+    // login-animations.js
+document.getElementById('next-button').addEventListener('click', function () {
     const emailInput = document.getElementById('email');
     const email = emailInput.value.trim();
 
     if (!email) {
-      document.getElementById('auth-status').textContent = "Please enter your email.";
-      return;
+        document.getElementById('auth-status').textContent = "Please enter your email.";
+        return;
     }
 
+    // Slide to password
     document.getElementById('email-group').style.display = 'none';
-    e.target.style.display = 'none';
+    document.getElementById('next-button').style.display = 'none';
 
-    document.getElementById('password-group').style.display = 'block';
-    document.getElementById('login-button').style.display = 'inline-block';
-    document.getElementById('back-button').style.display = 'inline-block';
+    const passwordGroup = document.getElementById('password-group');
+    const loginButton = document.getElementById('login-button');
 
-    setTimeout(() => document.getElementById('password').focus(), 100);
-  }
+    passwordGroup.classList.add('visible');
+    loginButton.style.display = 'block';
 
-  if (e.target.id === 'back-button') {
-    document.getElementById('email-group').style.display = 'block';
-    document.getElementById('next-button').style.display = 'inline-block';
-
-    document.getElementById('password-group').style.display = 'none';
-    document.getElementById('login-button').style.display = 'none';
-    e.target.style.display = 'none';
-    document.getElementById('auth-status').textContent = '';
-  }
-
-  if (e.target.id === 'toggle-password') {
-    const passwordInput = document.getElementById('password');
-    const isText = passwordInput.type === 'text';
-
-    passwordInput.type = isText ? 'password' : 'text';
-    e.target.textContent = isText ? '👁️' : '🙈';
-  }
+    // Autofocus password
+    setTimeout(() => {
+        document.getElementById('password').focus();
+    }, 100);
 });
-
-
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
 
@@ -521,37 +506,37 @@ if (searchInputDisabilities) {
     });
 
     // Helper to safely add submit listener only once
-    function addSubmitListenerOnce(formElement, handler) {
-      if (!formElement) {
-        console.warn("Attempted to add listener to non-existent form:", formElement);
-        return;
-      }
-      // Use a unique property name to avoid potential conflicts
-      const listenerAttachedFlag = '__busArmyDudeAdminSubmitListenerAttached__';
+    function addSubmitListenerOnce(formElement, handler) {
+      if (!formElement) {
+        console.warn("Attempted to add listener to non-existent form:", formElement);
+        return;
+      }
+      // Use a unique property name to avoid potential conflicts
+      const listenerAttachedFlag = '__busArmyDudeAdminSubmitListenerAttached__';
 
-      // Get the existing handler reference if it was stored, otherwise create it
-      let submitHandlerWrapper = formElement[listenerAttachedFlag + '_handler'];
+      // Get the existing handler reference if it was stored, otherwise create it
+      let submitHandlerWrapper = formElement[listenerAttachedFlag + '_handler'];
 
-      if (!submitHandlerWrapper) {
-          submitHandlerWrapper = (e) => {
-              e.preventDefault(); // Prevent default submission
-              console.log(`DEBUG: Submit event triggered for ${formElement.id}`);
-              handler();          // Call the original handler logic
-          };
-          // Store the handler reference on the element
-          formElement[listenerAttachedFlag + '_handler'] = submitHandlerWrapper;
-          console.log(`DEBUG: Created submit handler wrapper for ${formElement.id}`);
-      }
+      if (!submitHandlerWrapper) {
+          submitHandlerWrapper = (e) => {
+              e.preventDefault(); // Prevent default submission
+              console.log(`DEBUG: Submit event triggered for ${formElement.id}`);
+              handler();          // Call the original handler logic
+          };
+          // Store the handler reference on the element
+          formElement[listenerAttachedFlag + '_handler'] = submitHandlerWrapper;
+          console.log(`DEBUG: Created submit handler wrapper for ${formElement.id}`);
+      }
 
-      // --- Logic to add/skip ---
-      if (!formElement[listenerAttachedFlag]) { // Check if the flag is NOT set
-        formElement.addEventListener('submit', submitHandlerWrapper);
-        formElement[listenerAttachedFlag] = true; // Mark listener as attached by setting the flag
-        console.log(`DEBUG: Added submit listener to ${formElement.id}`);
-      } else {
-         console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
-      }
-    }
+      // --- Logic to add/skip ---
+      if (!formElement[listenerAttachedFlag]) { // Check if the flag is NOT set
+        formElement.addEventListener('submit', submitHandlerWrapper);
+        formElement[listenerAttachedFlag] = true; // Mark listener as attached by setting the flag
+        console.log(`DEBUG: Added submit listener to ${formElement.id}`);
+      } else {
+         console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
+      }
+    }
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) { //
@@ -1241,99 +1226,99 @@ function renderYouTubeCard(account) { //
 
 // *** FUNCTION TO SAVE Maintenance Mode Status ***
 
-    async function saveMaintenanceModeStatus(isEnabled) { //
+    async function saveMaintenanceModeStatus(isEnabled) { //
 
-        // Ensure user is logged in
+        // Ensure user is logged in
 
-        if (!auth || !auth.currentUser) { //
+        if (!auth || !auth.currentUser) { //
 
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
+            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
 
-            // Revert checkbox state visually if save fails due to auth issue
+            // Revert checkbox state visually if save fails due to auth issue
 
-            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
 
-            return; //
+            return; //
 
-        }
-
-
-
-        // Use the specific status message area for settings, fallback to main admin status
-
-        const statusElement = settingsStatusMessage || adminStatusElement; //
+        }
 
 
 
-        // Show saving message
+        // Use the specific status message area for settings, fallback to main admin status
 
-        if (statusElement) { //
-
-            statusElement.textContent = "Saving setting..."; //
-
-            statusElement.className = "status-message"; // Reset style
-
-            statusElement.style.display = 'block'; //
-
-        }
+        const statusElement = settingsStatusMessage || adminStatusElement; //
 
 
 
-        try { //
+        // Show saving message
 
-            // Use profileDocRef (site_config/mainProfile) to store the flag
+        if (statusElement) { //
 
-            // Use setDoc with merge: true to update only this field without overwriting others
+            statusElement.textContent = "Saving setting..."; //
 
-            await setDoc(profileDocRef, { //
+            statusElement.className = "status-message"; // Reset style
 
-                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
+            statusElement.style.display = 'block'; //
 
-            }, { merge: true }); //
-
-
-
-            console.log("Maintenance mode status saved:", isEnabled); //
+        }
 
 
 
-            // Show success message using the dedicated settings status element or fallback
+        try { //
 
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
+            // Use profileDocRef (site_config/mainProfile) to store the flag
 
-                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
+            // Use setDoc with merge: true to update only this field without overwriting others
 
-             } else { // Fallback if specific element wasn't found initially
+            await setDoc(profileDocRef, { //
 
-                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
+                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
 
-             }
+            }, { merge: true }); //
 
 
 
-        } catch (error) { //
+            console.log("Maintenance mode status saved:", isEnabled); //
 
-            console.error("Error saving maintenance mode status:", error); //
 
-            // Show error message in the specific status area or fallback
 
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
+            // Show success message using the dedicated settings status element or fallback
 
-                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
+             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
 
-            } else { //
+                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
 
-                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
+             } else { // Fallback if specific element wasn't found initially
 
-            }
+                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
 
-            // Revert checkbox state visually on error
+             }
 
-             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
 
-        }
 
-    }
+        } catch (error) { //
+
+            console.error("Error saving maintenance mode status:", error); //
+
+            // Show error message in the specific status area or fallback
+
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
+
+                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
+
+            } else { //
+
+                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
+
+            }
+
+            // Revert checkbox state visually on error
+
+             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+
+        }
+
+    }
     // *** END FUNCTION ***
 
 // --- Inactivity Logout & Timer Display Functions ---
