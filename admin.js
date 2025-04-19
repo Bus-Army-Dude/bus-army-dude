@@ -1785,32 +1785,68 @@ onAuthStateChanged(auth, user => {
     }
 
 
-    // --- Function to Handle Deleting a Shoutout ---
-    async function handleDeleteShoutout(docId, platform, listItemElement) { //
+   // --- MODIFIED: Function to Handle Deleting a Shoutout (with Logging) ---
+    async function handleDeleteShoutout(docId, platform, listItemElement) {
         // Confirm deletion with the user
-        if (!confirm(`Are you sure you want to permanently delete this ${platform} shoutout? This cannot be undone.`)) { //
+        if (!confirm(`Are you sure you want to permanently delete this ${platform} shoutout? This cannot be undone.`)) {
             return; // Do nothing if user cancels
         }
 
         showAdminStatus("Deleting shoutout..."); // Feedback
-        try { //
-            // Delete the document from Firestore
-            await deleteDoc(doc(db, 'shoutouts', docId)); //
-            await updateMetadataTimestamp(platform); // Update site timestamp
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted successfully.`, false); //
+        const docRef = doc(db, 'shoutouts', docId); // Define docRef once for fetching and deleting
 
-            // Reload the list - this is the simplest way to update the UI
-            // and ensure the 'allShoutouts' array is also updated for filtering.
-            if (typeof loadShoutoutsAdmin === 'function') { //
-                loadShoutoutsAdmin(platform); //
+        try {
+            // *** Step 1: Fetch the data BEFORE deleting (for logging details) ***
+            let detailsToLog = { platform: platform, id: docId, username: 'N/A', nickname: 'N/A' }; // Default info
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    detailsToLog.username = data.username || 'N/A'; // Get username if available
+                    detailsToLog.nickname = data.nickname || 'N/A'; // Get nickname if available
+                    console.log(`Preparing to delete shoutout: ${detailsToLog.nickname} (@${detailsToLog.username})`);
+                } else {
+                    // Document might already be gone? Log what we know.
+                    console.warn(`Document ${docId} not found before deletion, logging ID and platform only.`);
+                }
+            } catch (fetchError) {
+                 console.error(`Error fetching shoutout ${docId} data before deletion:`, fetchError);
+                 // Continue with deletion attempt, log will have less detail
+            }
+            // *** End Fetch Data ***
+
+            // *** Step 2: Delete the document from Firestore ***
+            await deleteDoc(docRef);
+            await updateMetadataTimestamp(platform); // Update site timestamp
+            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted successfully.`, false);
+
+            // *** Step 3: Log the Deletion Activity AFTER successful deletion ***
+            if (typeof logAdminActivity === 'function') {
+                logAdminActivity('SHOUTOUT_DELETE', detailsToLog); // Log the details gathered before deletion
+            } else {
+                console.error("logAdminActivity function not found! Cannot log deletion.");
+            }
+            // *** End Log Activity ***
+
+
+            // Step 4: Reload the list to update UI and internal 'allShoutouts' array.
+            if (typeof loadShoutoutsAdmin === 'function') {
+                loadShoutoutsAdmin(platform);
             }
 
-        } catch (error) { //
-            console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error); //
-            showAdminStatus(`Error deleting ${platform} shoutout: ${error.message}`, true); //
+        } catch (error) {
+            console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error);
+            showAdminStatus(`Error deleting ${platform} shoutout: ${error.message}`, true);
+
+            // *** Optionally log the FAILED delete attempt ***
+             if (typeof logAdminActivity === 'function') {
+                 // Log failure with details gathered before attempting delete (if fetch worked)
+                 logAdminActivity('SHOUTOUT_DELETE_FAILED', { ...detailsToLog, error: error.message });
+             }
         }
     }
 
+    
 // *** Function to render a single Useful Link item in the admin list ***
 function renderUsefulLinkAdminListItem(container, docId, label, url, order, deleteHandler, editHandler) { //
     if (!container) return; //
