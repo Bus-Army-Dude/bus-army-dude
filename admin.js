@@ -295,7 +295,7 @@ document.getElementById('next-button').addEventListener('click', function () {
 
     // Slide to password
     document.getElementById('email-group').style.display = 'none';
-    document.getElementById('next-button').style.display = 'none';
+    document.getElementById('-button').style.display = 'none';
 
     const passwordGroup = document.getElementById('password-group');
     const loginButton = document.getElementById('login-button');
@@ -1408,6 +1408,7 @@ const passwordGroup = document.getElementById('password-group');
 const loginButton = document.getElementById('login-button');
 const passwordInput = document.getElementById('password'); // Make sure this is defined
 
+// Handle the 'Next' button to display the password field
 if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton && passwordInput) {
     nextButton.addEventListener('click', () => {
         const userEmail = emailInput.value.trim(); // Get entered email
@@ -1439,6 +1440,43 @@ if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && log
 } else {
     console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button, Password Input).");
 }
+
+// --- Login Button Logic ---
+// Handles the actual login after email and password are entered
+if (loginButton && passwordInput) {
+    loginButton.addEventListener('click', () => {
+        const userPassword = passwordInput.value.trim(); // Get entered password
+
+        // Check if password is empty
+        if (!userPassword) {
+            authStatus.textContent = 'Please enter your password.';
+            authStatus.className = 'status-message error'; // Show error style
+            authStatus.style.display = 'block'; // Make sure message is visible
+            return; // Stop processing if password is empty
+        }
+
+        // Dummy password check (replace with actual login logic)
+        const correctPassword = 'yourpassword123'; // Replace this with your password logic
+
+        if (userPassword === correctPassword) {
+            // Success: login successful
+            authStatus.textContent = 'Login successful! Redirecting...';
+            authStatus.className = 'status-message success'; // Success style
+            authStatus.style.display = 'block'; // Show success message
+
+            // Optionally redirect or do something after login success
+            // window.location.href = 'dashboard.html'; // Example of redirect
+        } else {
+            // Failed login
+            authStatus.textContent = 'Incorrect password. Please try again.';
+            authStatus.className = 'status-message error'; // Error style
+            authStatus.style.display = 'block'; // Show error message
+        }
+    });
+} else {
+    console.warn("Could not find the login button or password input.");
+}
+
 
 
 // --- Authentication Logic ---
