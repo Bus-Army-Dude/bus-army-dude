@@ -1374,6 +1374,14 @@ onAuthStateChanged(auth, user => {
             // This error indicates a problem with the core log function setup
             console.error("logAdminActivity function not found! Cannot log login event.");
         }
+
+        // ****** ADD THIS BLOCK ******
+        // Log the logout event
+        if (typeof logAdminActivity === 'function') {
+            logAdminActivity('ADMIN_LOGOUT');
+        } else {
+            console.error("logAdminActivity function not found! Cannot log logout event.");
+        }
         // --- End Log Login ---
 
 
