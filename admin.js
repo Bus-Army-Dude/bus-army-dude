@@ -1622,6 +1622,23 @@ onAuthStateChanged(auth, user => {
                  return; // Stop if validation fails
             }
 
+            togglePassword.addEventListener("click", () => {
+                const type = passwordInput.type === "password" ? "text" : "password";
+                passwordInput.type = type;
+                togglePassword.textContent = type === "password" ? "👁️" : "🙈";
+              });
+
+            backBtn.addEventListener("click", () => {
+                passwordGroup.style.display = "none";
+                loginBtn.style.display = "none";
+                backBtn.style.display = "none";
+                nextBtn.style.display = "inline-block";
+                emailInput.disabled = false;
+                emailInput.focus();
+                passwordInput.value = "";
+                authStatus.textContent = "";
+              });
+
             // Show "Logging in..." message
             if (authStatus) { //
                 authStatus.textContent = 'Logging in...'; //
