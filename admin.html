@@ -229,9 +229,16 @@
                         <input type="number" id="tech-battery-cycles" name="batteryCycles" min="0" placeholder="e.g., 244">
                      </div>
                     <div class="form-group">
-                         <label for="tech-order">Display Order:</label>
-                         <input type="number" id="tech-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
-                     </div>
+                        <label for="tech-order">Display Order:</label>
+                        <input type="number" id="tech-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Preview:</label>
+                        <div id="add-tech-item-preview" class="tech-preview-area">
+                             <p><small>Preview will appear here as you type.</small></p>
+                        </div>
+                    </div>
                     <div class="form-actions">
                        <button type="submit" class="button-primary">Add Tech Item</button>
                     </div>
@@ -734,14 +741,21 @@
                  <input type="number" id="edit-tech-battery-cycles" name="batteryCycles" min="0">
               </div>
             <div class="form-group">
-                 <label for="edit-tech-order">Display Order:</label>
-                 <input type="number" id="edit-tech-order" name="order" min="0" step="1" required>
-             </div>
-            <div id="edit-tech-status-message" class="status-message" role="status" aria-live="polite"></div>
-            <div class="form-actions">
-              <button type="submit" class="button-primary">Save Tech Changes</button>
-              <button type="button" class="secondary-button" id="cancel-edit-tech-button-secondary">Cancel</button>
-            </div>
+              <label for="edit-tech-order">Display Order:</label>
+              <input type="number" id="edit-tech-order" name="order" min="0" step="1" required>
+          </div>
+        
+          <div class="form-group">
+                <label>Preview:</label>
+                <div id="edit-tech-item-preview" class="tech-preview-area">
+                     <p><small>Preview will load when modal opens.</small></p>
+                </div>
+          </div>
+          <div id="edit-tech-status-message" class="status-message" role="status" aria-live="polite"></div>
+         <div class="form-actions">
+           <button type="submit" class="button-primary">Save Tech Changes</button>
+           <button type="button" class="secondary-button" id="cancel-edit-tech-button-secondary">Cancel</button>
+         </div>
         </form>
     </div>
 </div>
