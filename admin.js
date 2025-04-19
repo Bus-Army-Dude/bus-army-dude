@@ -63,13 +63,6 @@ document.addEventListener('DOMContentLoaded', () => { //
         // Use 'input' to filter as the user types
         searchLogInput.addEventListener('input', displayFilteredActivityLog);
     }
-
-    // --- Tech Management Listeners <<< ADD THIS BLOCK START >>> ---
-    if (addTechItemForm) {
-        addTechItemForm.addEventListener('submit', handleAddTechItem);
-        // Attach preview listeners for the add form on initial load
-        attachTechPreviewListeners(addTechItemForm, 'add');
-    }
     if (editTechItemForm) {
         editTechItemForm.addEventListener('submit', handleUpdateTechItem);
         // Note: Preview listeners for edit form are attached in openEditTechItemModal
@@ -83,7 +76,11 @@ document.addEventListener('DOMContentLoaded', () => { //
     if (searchTechItemsInput) { // Search input for the tech list
         searchTechItemsInput.addEventListener('input', displayFilteredTechItems);
     }
-     // <<< ADD THIS BLOCK END >>> ---
+    // --- FINALLY, Attach Event Listeners and Call Initial Load Functions ---
+     if (addTechItemForm) { // <<< USING the variable AFTER declaration
+        addTechItemForm.addEventListener('submit', handleAddTechItem);
+        attachTechPreviewListeners(addTechItemForm, 'add');
+    }    
 
     // --- DOM Element References ---
     const loginSection = document.getElementById('login-section'); //
@@ -937,6 +934,11 @@ async function loadActivityLog() {
                  }
              }
             techData[name] = value === '' ? null : value; // Store null if empty
+            // --- FINALLY, Attach Event Listeners and Call Initial Load Functions ---
+                 if (addTechItemForm) { // <<< USING the variable AFTER declaration
+                    addTechItemForm.addEventListener('submit', handleAddTechItem);
+                    attachTechPreviewListeners(addTechItemForm, 'add');
+                }   
         });
 
         // Re-validate required fields after gathering all data
@@ -3003,6 +3005,19 @@ function displayFilteredSocialLinks() {
     // Profile Save Form
     if (profileForm) { //
         profileForm.addEventListener('submit', saveProfileData); // Call handler on submit
+    }
+    if (editTechItemForm) {
+        editTechItemForm.addEventListener('submit', handleUpdateTechItem);
+        // Preview listeners for edit form are attached in openEditTechItemModal
+    }
+     if (cancelEditTechButton) {
+        cancelEditTechButton.addEventListener('click', closeEditTechItemModal);
+    }
+    if (cancelEditTechButtonSecondary) {
+        cancelEditTechButtonSecondary.addEventListener('click', closeEditTechItemModal);
+    }
+    if (searchTechItemsInput) {
+        searchTechItemsInput.addEventListener('input', displayFilteredTechItems);
     }
 
     // Edit Shoutout Form (in the modal)
