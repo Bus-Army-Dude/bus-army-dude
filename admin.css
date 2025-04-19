@@ -1423,3 +1423,63 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
      .tech-preview-area .tech-detail { font-size: 0.85rem; gap: 5px;}
      .tech-preview-area .tech-detail i { width: 16px; height: 16px; font-size: 0.8rem;}
 }
+
+/* ======================== */
+/* FAQ Admin List Styles    */
+/* ======================== */
+
+/* Target the container specifically if needed, otherwise styles apply to all list-item-admin */
+#faq-list-admin .list-item-admin .item-details {
+    /* Ensure details take up available width */
+    width: 100%;
+}
+
+/* Style the Question (Strong tag) */
+#faq-list-admin .list-item-admin strong {
+    display: block; /* Make it block level */
+    font-size: 1.05em; /* Slightly larger */
+    font-weight: 600; /* Medium bold */
+    color: var(--text-color); /* Use main text color */
+    margin-bottom: 6px; /* Space below question */
+    line-height: 1.4; /* Adjust line height for readability */
+}
+
+/* Style the Answer Snippet (P tag) */
+#faq-list-admin .list-item-admin p {
+    font-size: 0.9em;
+    color: var(--secondary-text); /* Use secondary text color */
+    margin: 0 0 8px 0; /* Margin below snippet */
+    font-style: normal; /* Remove italics if previously added by JS */
+    opacity: 0.9;
+    line-height: 1.5;
+    /* Prevent overly long lines if needed */
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+    /* max-width: 90%; /* Adjust as needed */
+}
+
+/* Style the Order (Small tag) */
+#faq-list-admin .list-item-admin small {
+    font-size: 0.8em;
+    color: var(--accent-color); /* Use accent color for order */
+    opacity: 0.8;
+    margin-top: 0; /* Adjust spacing if needed */
+}
+
+/* Adjust overall item padding if needed */
+#faq-list-admin .list-item-admin {
+    padding-top: 15px;    /* Adjust vertical padding */
+    padding-bottom: 15px;
+    align-items: flex-start; /* Align actions to top if question/answer wrap */
+}
+
+/* Ensure actions stay grouped */
+#faq-list-admin .list-item-admin .item-actions {
+   margin-top: 5px; /* Add slight space if items wrap */
+}
+
+/* Ensure search input has good spacing */
+#faq-management .form-group label[for="search-faq"] {
+    margin-top: 20px; /* Add space above search bar */
+}
