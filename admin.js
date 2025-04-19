@@ -1644,87 +1644,114 @@ onAuthStateChanged(auth, user => {
     }
     // --- END UPDATED: loadShoutoutsAdmin Function ---
 
-// --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check & Preview Clear) ---
-    async function handleAddShoutout(platform, formElement) { //
-        if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; } //
-        console.log(`DEBUG: handleAddShoutout called for ${platform} at ${new Date().toLocaleTimeString()}`); // <-- ADD THIS LINE
+async function handleAddShoutout(platform, formElement) {
+    // *** Keep this console log ***
+    console.log(`DEBUG: handleAddShoutout START for ${platform} at ${new Date().toLocaleTimeString()}`);
+    if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; }
 
-        // Get form values
-        const username = formElement.querySelector(`#${platform}-username`)?.value.trim(); //
-        const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim(); //
-        const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim(); //
-        const order = parseInt(orderStr); //
+    // Get form values (same as before)
+    const username = formElement.querySelector(`#${platform}-username`)?.value.trim();
+    const nickname = formElement.querySelector(`#${platform}-nickname`)?.value.trim();
+    const orderStr = formElement.querySelector(`#${platform}-order`)?.value.trim();
+    const order = parseInt(orderStr);
 
-        // Basic input validation
-        if (!username || !nickname || !orderStr || isNaN(order) || order < 0) { //
-            showAdminStatus(`Invalid input for ${platform}. Check required fields and ensure Order is a non-negative number.`, true); //
-            return; //
-        }
-
-        // Duplicate Check Logic
-        try { //
-            const shoutoutsCol = collection(db, 'shoutouts'); //
-            const duplicateCheckQuery = query( //
-                shoutoutsCol, //
-                where("platform", "==", platform), //
-                where("username", "==", username), //
-                limit(1) //
-            );
-
-            console.log(`Checking for duplicate: platform=${platform}, username=${username}`); //
-            const querySnapshot = await getDocs(duplicateCheckQuery); //
-
-            if (!querySnapshot.empty) { //
-                console.warn("Duplicate found for", platform, username); //
-                showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true); //
-                return; //
-            }
-            console.log("No duplicate found. Proceeding to add."); //
-            // --- End Duplicate Check ---
-
-
-            // --- Add Logic ---
-            const accountData = { //
-                platform: platform, //
-                username: username, //
-                nickname: nickname, //
-                order: order, //
-                isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false, //
-                bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null, //
-                profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null, //
-                createdAt: serverTimestamp(), //
-                isEnabled: true //
-            };
-
-            if (platform === 'youtube') { //
-                accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A'; //
-                accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null; //
-            } else { //
-                accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A'; //
-            }
-
-            const docRef = await addDoc(collection(db, 'shoutouts'), accountData); //
-            console.log("Shoutout added with ID:", docRef.id); //
-            await updateMetadataTimestamp(platform); //
-            showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added successfully.`, false); //
-            formElement.reset(); // Reset the form fields
-
-            // *** ADDED: Reset preview area after adding ***
-            const previewArea = formElement.querySelector(`#add-${platform}-preview`); //
-            if (previewArea) { //
-                previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>'; //
-            }
-            // *** END ADDED CODE ***
-
-            if (typeof loadShoutoutsAdmin === 'function') { //
-                loadShoutoutsAdmin(platform); // Reload the list
-            }
-
-        } catch (error) { //
-            console.error(`Error in handleAddShoutout for ${platform}:`, error); //
-            showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true); //
-        }
+    // Basic validation (same as before)
+    if (!username || !nickname || !orderStr || isNaN(order) || order < 0) {
+        showAdminStatus(`Invalid input for ${platform}. Check required fields and ensure Order is a non-negative number.`, true);
+        return;
     }
+
+    // Duplicate Check Logic (same as before)
+    try {
+        const shoutoutsCol = collection(db, 'shoutouts');
+        const duplicateCheckQuery = query(
+            shoutoutsCol,
+            where("platform", "==", platform),
+            where("username", "==", username),
+            limit(1)
+        );
+        const querySnapshot = await getDocs(duplicateCheckQuery);
+
+        if (!querySnapshot.empty) {
+            console.warn("Duplicate found for", platform, username);
+            showAdminStatus(`Error: A shoutout for username '@${username}' on platform '${platform}' already exists.`, true);
+            return; // Stop if duplicate found
+        }
+        console.log("No duplicate found. Proceeding to add.");
+
+        // --- Prepare data to add ---
+        const accountData = {
+            platform: platform,
+            username: username,
+            nickname: nickname,
+            order: order,
+            isVerified: formElement.querySelector(`#${platform}-isVerified`)?.checked || false,
+            bio: formElement.querySelector(`#${platform}-bio`)?.value.trim() || null,
+            profilePic: formElement.querySelector(`#${platform}-profilePic`)?.value.trim() || null,
+            createdAt: serverTimestamp(), // Use server timestamp
+            isEnabled: true
+        };
+
+        if (platform === 'youtube') {
+            accountData.subscribers = formElement.querySelector(`#${platform}-subscribers`)?.value.trim() || 'N/A';
+            accountData.coverPhoto = formElement.querySelector(`#${platform}-coverPhoto`)?.value.trim() || null;
+        } else {
+            accountData.followers = formElement.querySelector(`#${platform}-followers`)?.value.trim() || 'N/A';
+        }
+
+        // *** Add the document to Firestore ***
+        console.log(`DEBUG: Attempting addDoc for ${username}...`);
+        const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
+        console.log(`DEBUG: addDoc SUCCESS for ${username}. New ID: ${docRef.id}`); // Log success
+
+        // *** --- MODIFICATION START --- ***
+        // *** Instead of reloading the whole list, try appending directly ***
+
+        const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
+        if (listContainer && typeof renderAdminListItem === 'function') {
+             console.log(`DEBUG: Manually rendering new item ${docRef.id} for ${platform}`);
+             // Render the newly added item using the data we already have
+             renderAdminListItem(
+                 listContainer,
+                 docRef.id, // The new document ID
+                 platform,
+                 accountData.username,
+                 accountData.nickname,
+                 accountData.order,
+                 handleDeleteShoutout, // Pass the delete handler function reference
+                 openEditModal         // Pass the edit handler function reference
+             );
+             // NOTE: This direct append might mess up the sort order until next refresh.
+             // We also don't update the global 'allShoutouts' array here,
+             // focusing *only* on the immediate visual duplication bug.
+
+        } else {
+            console.error("Couldn't find list container or renderAdminListItem function to manually add item.");
+            // If manual render fails, fall back to full reload as a safety measure
+             if (typeof loadShoutoutsAdmin === 'function') {
+                console.log("Manual render failed, falling back to full reload.");
+                loadShoutoutsAdmin(platform);
+            }
+        }
+        // *** --- MODIFICATION END --- ***
+
+        await updateMetadataTimestamp(platform); // Update timestamp
+        showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout added (manual append attempt).`, false);
+        formElement.reset(); // Reset the form
+
+        // Reset preview area (same as before)
+        const previewArea = formElement.querySelector(`#add-${platform}-preview`);
+        if (previewArea) {
+            previewArea.innerHTML = '<p><small>Preview will appear here as you type.</small></p>';
+        }
+
+    } catch (error) {
+        console.error(`Error during handleAddShoutout for ${platform}:`, error);
+        showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
+    } finally {
+         console.log(`DEBUG: handleAddShoutout END for ${platform} at ${new Date().toLocaleTimeString()}`);
+    }
+}
 
 
     // --- Function to Handle Updates from Edit Modal (with DETAILED Logging) ---
