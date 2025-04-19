@@ -283,7 +283,7 @@ function displayFilteredUsefulLinks() {
     }
 
 
-   // login-logic.js
+   // Handle the "Next" button click
 document.getElementById('next-button').addEventListener('click', function () {
   const emailInput = document.getElementById('email');
   const email = emailInput.value.trim();
@@ -299,12 +299,64 @@ document.getElementById('next-button').addEventListener('click', function () {
 
   const passwordGroup = document.getElementById('password-group');
   const loginButton = document.getElementById('login-button');
+  const backButton = document.getElementById('back-button');
 
   passwordGroup.classList.add('visible');
   loginButton.style.display = 'block';
+  backButton.style.display = 'inline-block';
 
   // Focus password after short delay
   setTimeout(() => document.getElementById('password').focus(), 100);
+});
+
+// Handle the "Back" button click
+document.getElementById('back-button').addEventListener('click', function () {
+  // Show email input again
+  document.getElementById('email-group').style.display = 'block';
+  document.getElementById('next-button').style.display = 'inline-block';
+  this.style.display = 'none';
+
+  const passwordGroup = document.getElementById('password-group');
+  const loginButton = document.getElementById('login-button');
+
+  // Hide password input
+  passwordGroup.classList.remove('visible');
+  loginButton.style.display = 'none';
+
+  // Clear password field and focus email input
+  document.getElementById('password').value = '';
+  document.getElementById('email').focus();
+  document.getElementById('auth-status').textContent = '';
+});
+
+// Handle the "Show/Hide Password" toggle click
+document.getElementById('toggle-password').addEventListener('click', function () {
+  const passwordInput = document.getElementById('password');
+  const type = passwordInput.type === 'password' ? 'text' : 'password';
+  passwordInput.type = type;
+
+  // Change the button icon based on the password type
+  this.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+// Handle the login form submit
+document.getElementById('login-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  if (!password) {
+    document.getElementById('auth-status').textContent = "Please enter your password.";
+    return;
+  }
+
+  document.getElementById('auth-status').textContent = "Logging in...";
+
+  // Simulate login (replace with actual logic later)
+  setTimeout(() => {
+    document.getElementById('auth-status').textContent = "✅ Logged in successfully.";
+  }, 1000);
 });
 
     // console.log(`Rendering ${listToRender.length} useful links.`);
@@ -504,37 +556,37 @@ if (searchInputDisabilities) {
     });
 
     // Helper to safely add submit listener only once
-    function addSubmitListenerOnce(formElement, handler) {
-      if (!formElement) {
-        console.warn("Attempted to add listener to non-existent form:", formElement);
-        return;
-      }
-      // Use a unique property name to avoid potential conflicts
-      const listenerAttachedFlag = '__busArmyDudeAdminSubmitListenerAttached__';
+    function addSubmitListenerOnce(formElement, handler) {
+      if (!formElement) {
+        console.warn("Attempted to add listener to non-existent form:", formElement);
+        return;
+      }
+      // Use a unique property name to avoid potential conflicts
+      const listenerAttachedFlag = '__busArmyDudeAdminSubmitListenerAttached__';
 
-      // Get the existing handler reference if it was stored, otherwise create it
-      let submitHandlerWrapper = formElement[listenerAttachedFlag + '_handler'];
+      // Get the existing handler reference if it was stored, otherwise create it
+      let submitHandlerWrapper = formElement[listenerAttachedFlag + '_handler'];
 
-      if (!submitHandlerWrapper) {
-          submitHandlerWrapper = (e) => {
-              e.preventDefault(); // Prevent default submission
-              console.log(`DEBUG: Submit event triggered for ${formElement.id}`);
-              handler();          // Call the original handler logic
-          };
-          // Store the handler reference on the element
-          formElement[listenerAttachedFlag + '_handler'] = submitHandlerWrapper;
-          console.log(`DEBUG: Created submit handler wrapper for ${formElement.id}`);
-      }
+      if (!submitHandlerWrapper) {
+          submitHandlerWrapper = (e) => {
+              e.preventDefault(); // Prevent default submission
+              console.log(`DEBUG: Submit event triggered for ${formElement.id}`);
+              handler();          // Call the original handler logic
+          };
+          // Store the handler reference on the element
+          formElement[listenerAttachedFlag + '_handler'] = submitHandlerWrapper;
+          console.log(`DEBUG: Created submit handler wrapper for ${formElement.id}`);
+      }
 
-      // --- Logic to add/skip ---
-      if (!formElement[listenerAttachedFlag]) { // Check if the flag is NOT set
-        formElement.addEventListener('submit', submitHandlerWrapper);
-        formElement[listenerAttachedFlag] = true; // Mark listener as attached by setting the flag
-        console.log(`DEBUG: Added submit listener to ${formElement.id}`);
-      } else {
-         console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
-      }
-    }
+      // --- Logic to add/skip ---
+      if (!formElement[listenerAttachedFlag]) { // Check if the flag is NOT set
+        formElement.addEventListener('submit', submitHandlerWrapper);
+        formElement[listenerAttachedFlag] = true; // Mark listener as attached by setting the flag
+        console.log(`DEBUG: Added submit listener to ${formElement.id}`);
+      } else {
+         console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
+      }
+    }
 // --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
     // This function creates the HTML for a single item in the admin shoutout list
     function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) { //
@@ -1224,99 +1276,99 @@ function renderYouTubeCard(account) { //
 
 // *** FUNCTION TO SAVE Maintenance Mode Status ***
 
-    async function saveMaintenanceModeStatus(isEnabled) { //
+    async function saveMaintenanceModeStatus(isEnabled) { //
 
-        // Ensure user is logged in
+        // Ensure user is logged in
 
-        if (!auth || !auth.currentUser) { //
+        if (!auth || !auth.currentUser) { //
 
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
+            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
 
-            // Revert checkbox state visually if save fails due to auth issue
+            // Revert checkbox state visually if save fails due to auth issue
 
-            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
 
-            return; //
+            return; //
 
-        }
-
-
-
-        // Use the specific status message area for settings, fallback to main admin status
-
-        const statusElement = settingsStatusMessage || adminStatusElement; //
+        }
 
 
 
-        // Show saving message
+        // Use the specific status message area for settings, fallback to main admin status
 
-        if (statusElement) { //
-
-            statusElement.textContent = "Saving setting..."; //
-
-            statusElement.className = "status-message"; // Reset style
-
-            statusElement.style.display = 'block'; //
-
-        }
+        const statusElement = settingsStatusMessage || adminStatusElement; //
 
 
 
-        try { //
+        // Show saving message
 
-            // Use profileDocRef (site_config/mainProfile) to store the flag
+        if (statusElement) { //
 
-            // Use setDoc with merge: true to update only this field without overwriting others
+            statusElement.textContent = "Saving setting..."; //
 
-            await setDoc(profileDocRef, { //
+            statusElement.className = "status-message"; // Reset style
 
-                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
+            statusElement.style.display = 'block'; //
 
-            }, { merge: true }); //
-
-
-
-            console.log("Maintenance mode status saved:", isEnabled); //
+        }
 
 
 
-            // Show success message using the dedicated settings status element or fallback
+        try { //
 
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
+            // Use profileDocRef (site_config/mainProfile) to store the flag
 
-                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
+            // Use setDoc with merge: true to update only this field without overwriting others
 
-             } else { // Fallback if specific element wasn't found initially
+            await setDoc(profileDocRef, { //
 
-                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
+                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
 
-             }
+            }, { merge: true }); //
 
 
 
-        } catch (error) { //
+            console.log("Maintenance mode status saved:", isEnabled); //
 
-            console.error("Error saving maintenance mode status:", error); //
 
-            // Show error message in the specific status area or fallback
 
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
+            // Show success message using the dedicated settings status element or fallback
 
-                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
+             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
 
-            } else { //
+                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
 
-                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
+             } else { // Fallback if specific element wasn't found initially
 
-            }
+                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
 
-            // Revert checkbox state visually on error
+             }
 
-             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
 
-        }
 
-    }
+        } catch (error) { //
+
+            console.error("Error saving maintenance mode status:", error); //
+
+            // Show error message in the specific status area or fallback
+
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
+
+                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
+
+            } else { //
+
+                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
+
+            }
+
+            // Revert checkbox state visually on error
+
+             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+
+        }
+
+    }
     // *** END FUNCTION ***
 
 // --- Inactivity Logout & Timer Display Functions ---
@@ -1621,23 +1673,6 @@ onAuthStateChanged(auth, user => {
                  }
                  return; // Stop if validation fails
             }
-
-            togglePassword.addEventListener("click", () => {
-                const type = passwordInput.type === "password" ? "text" : "password";
-                passwordInput.type = type;
-                togglePassword.textContent = type === "password" ? "👁️" : "🙈";
-              });
-
-            backBtn.addEventListener("click", () => {
-                passwordGroup.style.display = "none";
-                loginBtn.style.display = "none";
-                backBtn.style.display = "none";
-                nextBtn.style.display = "inline-block";
-                emailInput.disabled = false;
-                emailInput.focus();
-                passwordInput.value = "";
-                authStatus.textContent = "";
-              });
 
             // Show "Logging in..." message
             if (authStatus) { //
