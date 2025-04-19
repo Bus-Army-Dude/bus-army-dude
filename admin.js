@@ -282,31 +282,6 @@ function displayFilteredUsefulLinks() {
         });
     }
 
-
-  // login-logic.js
-document.getElementById('next-button').addEventListener('click', function () {
-  const emailInput = document.getElementById('email');
-  const email = emailInput.value.trim();
-
-  if (!email) {
-    document.getElementById('auth-status').textContent = "Please enter your email.";
-    return;
-  }
-
-  // Swap to password input
-  document.getElementById('email-group').style.display = 'none';
-  this.style.display = 'none';
-
-  const passwordGroup = document.getElementById('password-group');
-  const loginButton = document.getElementById('login-button');
-
-  passwordGroup.classList.add('visible');
-  loginButton.style.display = 'block';
-
-  // Focus password after short delay
-  setTimeout(() => document.getElementById('password').focus(), 100);
-});
-
     // console.log(`Rendering ${listToRender.length} useful links.`);
 
     listContainer.innerHTML = '';
@@ -1397,85 +1372,43 @@ function renderYouTubeCard(account) { //
     }
 
 // --- 'Next' Button Logic ---
-// Handles the first step of the two-step login
-const nextButton = document.getElementById('next-button');
-const emailInput = document.getElementById('email');
-const authStatus = document.getElementById('auth-status');
-const emailGroup = document.getElementById('email-group');
-const passwordGroup = document.getElementById('password-group');
-const loginButton = document.getElementById('login-button');
-const passwordInput = document.getElementById('password'); // Make sure this is defined
+    // Handles the first step of the two-step login
+    if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) { //
+        nextButton.addEventListener('click', () => { //
+            const userEmail = emailInput.value.trim(); // Get entered email
 
-// Handle the 'Next' button to display the password field
-if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton && passwordInput) {
-    nextButton.addEventListener('click', () => {
-        const userEmail = emailInput.value.trim(); // Get entered email
+            // Check if email field is empty
+            if (!userEmail) { //
+                 authStatus.textContent = 'Please enter your email address.'; //
+                 authStatus.className = 'status-message error'; // Show error style
+                 authStatus.style.display = 'block'; // Make sure message is visible
+                 return; // Stop processing if email is empty
+            }
 
-        // Check if email field is empty
-        if (!userEmail) {
-            authStatus.textContent = 'Please enter your email address.';
-            authStatus.className = 'status-message error'; // Show error style
-            authStatus.style.display = 'block'; // Make sure message is visible
-            return; // Stop processing if email is empty
-        }
+            // If email is entered:
+            // Display welcome message (optional, or clear previous errors)
+            authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
+            // Or simply clear status: authStatus.textContent = '';
+            authStatus.className = 'status-message'; // Reset style
+            authStatus.style.display = 'block'; // Ensure it's visible or use 'none' to hide
 
-        // If email is entered:
-        authStatus.textContent = `Welcome back, ${userEmail}`; // Shows email
-        authStatus.className = 'status-message'; // Reset style
-        authStatus.style.display = 'block'; // Ensure it's visible or use 'none' to hide
+            // Hide email field and Next button
+            emailGroup.style.display = 'none'; //
+            nextButton.style.display = 'none'; //
 
-        // Hide email field and Next button
-        emailGroup.style.display = 'none';
-        nextButton.style.display = 'none';
+            // Show password field and the actual Login button
+            passwordGroup.style.display = 'block'; //
+            loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
 
-        // Show password field and the actual Login button
-        passwordGroup.style.display = 'block';
-        loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
-
-        // Focus the password input for better UX
-        passwordInput.focus();
-    });
-} else {
-    console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button, Password Input).");
-}
-
-// --- Login Button Logic ---
-// Handles the actual login after email and password are entered
-if (loginButton && passwordInput) {
-    loginButton.addEventListener('click', () => {
-        const userPassword = passwordInput.value.trim(); // Get entered password
-
-        // Check if password is empty
-        if (!userPassword) {
-            authStatus.textContent = 'Please enter your password.';
-            authStatus.className = 'status-message error'; // Show error style
-            authStatus.style.display = 'block'; // Make sure message is visible
-            return; // Stop processing if password is empty
-        }
-
-        // Dummy password check (replace with actual login logic)
-        const correctPassword = 'yourpassword123'; // Replace this with your password logic
-
-        if (userPassword === correctPassword) {
-            // Success: login successful
-            authStatus.textContent = 'Login successful! Redirecting...';
-            authStatus.className = 'status-message success'; // Success style
-            authStatus.style.display = 'block'; // Show success message
-
-            // Optionally redirect or do something after login success
-            // window.location.href = 'dashboard.html'; // Example of redirect
-        } else {
-            // Failed login
-            authStatus.textContent = 'Incorrect password. Please try again.';
-            authStatus.className = 'status-message error'; // Error style
-            authStatus.style.display = 'block'; // Show error message
-        }
-    });
-} else {
-    console.warn("Could not find the login button or password input.");
-}
-
-
+            // Focus the password input for better UX
+            if(passwordInput) { //
+                 passwordInput.focus(); //
+            }
+        });
+    } else { //
+         // Log warning if any elements for the two-step login are missing
+         console.warn("Could not find all necessary elements for the 'Next' button functionality (Next Button, Email Input, Auth Status, Email Group, Password Group, Login Button)."); //
+    }
 
 // --- Authentication Logic ---
 // Listener for changes in authentication state (login/logout)
