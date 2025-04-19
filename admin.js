@@ -923,6 +923,7 @@ function renderYouTubeCard(account) { //
         // Safety checks for required elements and data
         if (!listContainer || !searchInput || !allShoutouts || !allShoutouts[platform]) { //
             console.error(`Missing elements or data for filtering platform: ${platform}.`); //
+            console.log(`DEBUG: displayFilteredShoutouts clearing list for ${platform} at ${new Date().toLocaleTimeString()}`); // <-- ADD THIS LINE
             if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list (elements/data missing).</p>`; //
             return; //
         }
@@ -1556,6 +1557,8 @@ onAuthStateChanged(auth, user => {
     async function loadShoutoutsAdmin(platform) { //
         const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`); //
         const countElement = document.getElementById(`${platform}-count`); //
+        console.log(`DEBUG: loadShoutoutsAdmin called for ${platform} at ${new Date().toLocaleTimeString()}`); // <-- ADD THIS LINE
+
 
         if (!listContainer) { //
             console.error(`List container not found for platform: ${platform}`); //
@@ -1619,6 +1622,7 @@ onAuthStateChanged(auth, user => {
 // --- MODIFIED: handleAddShoutout Function (Includes Duplicate Check & Preview Clear) ---
     async function handleAddShoutout(platform, formElement) { //
         if (!formElement) { console.error("Form element not provided to handleAddShoutout"); return; } //
+        console.log(`DEBUG: handleAddShoutout called for ${platform} at ${new Date().toLocaleTimeString()}`); // <-- ADD THIS LINE
 
         // Get form values
         const username = formElement.querySelector(`#${platform}-username`)?.value.trim(); //
