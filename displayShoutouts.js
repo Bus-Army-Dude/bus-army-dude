@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 // Import necessary Firebase functions (v9+ modular SDK)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js"; // <<< Added 'where' here
 
 // --- Initialize Firebase ---
 let db;
