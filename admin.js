@@ -84,6 +84,10 @@ document.addEventListener('DOMContentLoaded', () => { //
     const loginButton = document.getElementById('login-button'); //
     const timerDisplayElement = document.getElementById('inactivity-timer-display'); //
 
+    // --- Add these with other DOM element references ---
+    const countdownTitleInput = document.getElementById('countdown-title-input');
+    const countdownDatetimeInput = document.getElementById('countdown-datetime-input');
+
     // FAQ Management Elements
     const addFaqForm = document.getElementById('add-faq-form');
     const faqListAdmin = document.getElementById('faq-list-admin');
@@ -619,7 +623,7 @@ if (searchInputDisabilities) {
     }
 }
 
-    // ==================================
+ // ==================================
 // == ACTIVITY LOG IMPLEMENTATION ===
 // ==================================
 
@@ -679,28 +683,58 @@ function renderLogEntry(logData) {
                 let valueStr = '';
                 // Check if it's our specific 'changes' object format
                 if (typeof value === 'object' && value !== null && value.hasOwnProperty('to')) {
-                     // valueStr = `set to: ${JSON.stringify(value.to)}`;
-                     // Make it slightly more readable for simple values
-                     const toValue = value.to;
-                     if (typeof toValue === 'string' || typeof toValue === 'number' || typeof toValue === 'boolean') {
-                        valueStr = `set to: "${String(toValue)}"`;
+                    // Make it slightly more readable for simple values
+                    const toValue = value.to;
+                     // Check if 'from' value also exists for comparison display
+                     const fromValue = value.from;
+                     let changeDescription = `set to: "${String(toValue)}"`; // Default
+                     if (value.hasOwnProperty('from')) {
+                          changeDescription = `changed from "${String(fromValue)}" to "${String(toValue)}"`;
+                     } else if (typeof toValue === 'string' || typeof toValue === 'number' || typeof toValue === 'boolean') {
+                        // Keep simple 'set to' if 'from' isn't present but 'to' is simple
+                        changeDescription = `set to: "${String(toValue)}"`;
                      } else {
-                        valueStr = `set to: ${JSON.stringify(toValue)}`; // Fallback for complex objects/arrays
+                         // Fallback for complex 'to' values without 'from'
+                         changeDescription = `set to: ${JSON.stringify(toValue)}`;
                      }
+                     valueStr = changeDescription;
+
                 } else {
-                     valueStr = JSON.stringify(value); // Fallback for other details structures
+                    // Fallback for details that don't use the { from: ..., to: ...} structure
+                    valueStr = JSON.stringify(value);
                 }
 
                 // Basic sanitization to prevent HTML injection
                 const safeKey = key.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                const safeValueStr = valueStr.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                let safeValueStr = valueStr.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-                detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
+                 // If logging 'changes', format the nested structure better
+                 if (key === 'changes' && typeof value === 'object' && value !== null) {
+                     let changesSubList = '';
+                     for (const fieldKey in value) {
+                         if (Object.hasOwnProperty.call(value, fieldKey)) {
+                             const changeDetail = value[fieldKey];
+                             const safeFieldKey = fieldKey.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                             let changeValueStr = `set to ${JSON.stringify(changeDetail.to).replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
+                              if (changeDetail.hasOwnProperty('from')) {
+                                  changeValueStr = `from ${JSON.stringify(changeDetail.from).replace(/</g, "&lt;").replace(/>/g, "&gt;")} to ${JSON.stringify(changeDetail.to).replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
+                              }
+                             changesSubList += `<div class="detail-change-item" style="margin-left: 15px;"> - <strong>${safeFieldKey}:</strong> ${changeValueStr}</div>`;
+                         }
+                     }
+                      // Override safeValueStr for the 'changes' key
+                     safeValueStr = changesSubList ? `<div class="detail-changes-list">${changesSubList}</div>` : 'No specific changes listed.';
+                       detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
+                 } else {
+                     // Default display for other keys or non-object 'changes'
+                      detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
+                 }
             }
         }
-    } else if (logData.details != null) { // Handle non-object details
-         detailsHtmlContent = `<div class="detail-item">${String(logData.details).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+    } else if (logData.details != null) { // Handle non-object details (e.g., just a string or number)
+        detailsHtmlContent = `<div class="detail-item">${String(logData.details).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
     }
+
 
     // Assemble the final entry structure
     logEntryDiv.innerHTML = `
@@ -711,6 +745,7 @@ function renderLogEntry(logData) {
 
     return logEntryDiv;
 }
+
 
 /**
  * Filters the globally stored log entries and renders them to the list container.
@@ -749,15 +784,15 @@ function displayFilteredActivityLog() {
         logListContainer.innerHTML = searchTerm ? `<p>No log entries found matching "${searchTerm}".</p>` : '<p>No activity log entries found.</p>';
     } else {
         filteredLogs.forEach(logData => {
-             // Check if renderLogEntry exists before calling
+            // Check if renderLogEntry exists before calling
             if (typeof renderLogEntry === 'function') {
-                 const entryElement = renderLogEntry(logData);
-                 logListContainer.appendChild(entryElement);
+                const entryElement = renderLogEntry(logData);
+                logListContainer.appendChild(entryElement);
             } else {
-                 console.error("renderLogEntry function is missing!");
-                 logListContainer.innerHTML = '<p class="error">Error rendering log entries.</p>';
-                 return false; // Stop loop if renderer is missing
-             }
+                console.error("renderLogEntry function is missing!");
+                logListContainer.innerHTML = '<p class="error">Error rendering log entries.</p>';
+                return false; // Stop loop if renderer is missing
+            }
         });
     }
     logCountElement.textContent = `(${filteredLogs.length})`;
@@ -774,9 +809,9 @@ async function loadActivityLog() {
 
     // Add checks for elements existence at the beginning
     if (!logListContainer || !logCountElement || !searchInput) {
-         console.error("Required elements for loadActivityLog are missing.");
-         if(logListContainer) logListContainer.innerHTML = '<p class="error">Error: Log display elements missing.</p>';
-         return;
+        console.error("Required elements for loadActivityLog are missing.");
+        if(logListContainer) logListContainer.innerHTML = '<p class="error">Error: Log display elements missing.</p>';
+        return;
     }
     searchInput.value = ''; // Reset search on load
     logListContainer.innerHTML = '<p>Loading activity log...</p>';
@@ -1081,6 +1116,14 @@ function renderYouTubeCard(account) { //
             console.warn("Hide TikTok section toggle element not found.");
         }
 
+        // <<< START: Load Countdown Settings >>>
+            if (countdownTitleInput) {
+                countdownTitleInput.value = data.countdownTitle || ''; // Load title
+            }
+            if (countdownDatetimeInput) {
+                countdownDatetimeInput.value = data.countdownTargetDateTime || ''; // Load date/time string
+            }
+
 
         console.log("Attempting to load profile data from:", profileDocRef.path); //
         try { //
@@ -1109,6 +1152,9 @@ function renderYouTubeCard(account) { //
                 }
                 // <<< END: Load Hide TikTok Toggle State >>>
 
+                if (countdownTitleInput) countdownTitleInput.value = '';
+                if (countdownDatetimeInput) countdownDatetimeInput.value = '';
+
 
                 // Update profile picture preview
                 if (adminPfpPreview && data.profilePicUrl) { //
@@ -1135,6 +1181,9 @@ function renderYouTubeCard(account) { //
                     hideTikTokSectionToggle.disabled = false; // Ensure enabled
                 }
                  // <<< END: Default Hide TikTok Toggle State >>>
+
+                if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
+                 if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
 
                 if(adminPfpPreview) adminPfpPreview.style.display = 'none'; // Hide preview
             }
@@ -1172,7 +1221,17 @@ function renderYouTubeCard(account) { //
             profilePicUrl: profilePicUrlInput?.value.trim() || "",
             bio: profileBioInput?.value.trim() || "",
             status: profileStatusInput?.value || "offline",
+            countdownTitle: countdownTitleInput?.value.trim() || "", // Save title
+            countdownTargetDateTime: countdownDatetimeInput?.value.trim() || "" // Save date/time string
         };
+
+        // Basic validation for the datetime string format (optional but recommended)
+        const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
+        if (newData.countdownTargetDateTime && !dateTimeRegex.test(newData.countdownTargetDateTime)) {
+             showProfileStatus("Invalid Countdown Date/Time format. Please use YYYY-MM-DDTHH:MM:SS", true);
+             return; // Stop saving if format is wrong
+        }
+
 
         showProfileStatus("Saving profile...");
         try {
