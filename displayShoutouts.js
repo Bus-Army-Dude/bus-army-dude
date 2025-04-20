@@ -573,7 +573,7 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
 }
 
 
-// --- UPDATED: Countdown Timer Logic - Now Configurable ---
+// --- ***** REVISED (v4): Countdown Timer Logic (Calendar Difference for Y/M/D) ***** ---
 function startEventCountdown(targetTimestamp, countdownTitle) {
     const countdownSection = document.querySelector('.countdown-section');
     const titleElement = countdownSection?.querySelector('h2');
@@ -587,16 +587,18 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
 
     // Check if core elements exist
     if (!countdownSection || !titleElement || !yearsElement || !monthsElement || !daysElement || !hoursElement || !minutesElement || !secondsElement || !countdownContainer) {
-        console.warn("Countdown elements missing (section, title, or units). Hiding countdown section.");
+        console.warn("Countdown elements missing. Hiding countdown section.");
         if (countdownSection) countdownSection.style.display = 'none';
         return;
     }
 
     // Validate Input Data
     let targetDateMillis;
+    let targetDateObj; // Store the target Date object
     if (targetTimestamp && targetTimestamp instanceof Timestamp) {
         try {
-            targetDateMillis = targetTimestamp.toMillis();
+            targetDateObj = targetTimestamp.toDate(); // Convert Timestamp to JS Date object
+            targetDateMillis = targetDateObj.getTime(); // Get milliseconds
         } catch (e) {
             console.error("Error converting Firestore Timestamp for countdown:", e);
             targetDateMillis = null;
@@ -607,11 +609,10 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
 
     const displayTitle = countdownTitle || "Countdown";
 
-    // If target date is invalid or missing from Firestore
-    if (!targetDateMillis) {
-        console.warn("Invalid or missing countdown target date from Firebase. Hiding countdown section."); // This matches your error log
+    if (!targetDateMillis || !targetDateObj) { // Check both millis and Date obj
+        console.warn("Invalid or missing countdown target date from Firebase. Hiding countdown section.");
         countdownSection.style.display = 'none';
-        return; // Stop countdown setup
+        return;
     }
 
     // Get references to inner elements
@@ -623,14 +624,14 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
     const secondsFront = secondsElement.querySelector('.flip-clock-front');
 
     if (!yearsFront || !monthsFront || !daysFront || !hoursFront || !minutesFront || !secondsFront ) {
-        console.warn("One or more countdown inner front elements (.flip-clock-front) not found. Hiding section.");
+        console.warn("One or more countdown inner front elements missing. Hiding section.");
         countdownSection.style.display = 'none';
         return;
     }
 
     // Set Title
     titleElement.textContent = displayTitle;
-    console.log(`Starting countdown timer for: "${displayTitle}"`);
+    console.log(`Starting countdown timer for: "${displayTitle}" (Calendar Diff Mode)`);
 
     // Helper to Update Display
     function updateDisplay(y, mo, d, h, m, s) {
@@ -642,50 +643,66 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
         secondsFront.textContent = String(s).padStart(2, '0');
     }
 
-    // Interval Logic
-    const intervalId = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDateMillis - now;
+     // Helper function to get days in a month (handles leap years)
+    function daysInMonth(month, year) { // month is 0-indexed (0=Jan, 1=Feb, etc.)
+        return new Date(year, month + 1, 0).getDate();
+    }
+
+    // Function containing the calculation logic
+    function calculateAndUpdate() {
+        const now = new Date(); // Current date/time
+        const target = targetDateObj; // Target date/time object
+        const distance = target.getTime() - now.getTime(); // Total milliseconds remaining
 
         if (distance < 0) {
-            clearInterval(intervalId);
+            if (intervalId) clearInterval(intervalId);
             console.log(`Countdown for "${displayTitle}" finished.`);
             updateDisplay(0, 0, 0, 0, 0, 0);
-            return;
+            return false; // Indicate timer should stop
         }
 
-        const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const totalHours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const totalMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const totalSeconds = Math.floor((distance % (1000 * 60)) / 1000);
-        const approxYears = Math.floor(totalDays / 365);
-        const daysAfterYears = totalDays % 365;
-        const approxMonths = Math.floor(daysAfterYears / 30);
-        const finalDays = daysAfterYears % 30;
+        // --- Calculate H:M:S based on total remaining time ---
+        const seconds = Math.floor((distance / 1000) % 60);
+        const minutes = Math.floor((distance / 1000 / 60) % 60);
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
 
-        updateDisplay(approxYears, approxMonths, finalDays, totalHours, totalMinutes, totalSeconds);
+        // --- Calculate Y:M:D based on calendar date difference ---
+        let years = target.getFullYear() - now.getFullYear();
+        let months = target.getMonth() - now.getMonth();
+        let days = target.getDate() - now.getDate();
 
-    }, 1000);
+        // Borrow days if necessary
+        if (days < 0) {
+            months--; // Borrow a month
+            // Add days in the *previous* month (relative to target)
+            // To get the previous month correctly, handle month 0 (Jan)
+            const prevMonth = target.getMonth() === 0 ? 11 : target.getMonth() - 1;
+            const yearOfPrevMonth = target.getMonth() === 0 ? target.getFullYear() - 1 : target.getFullYear();
+            days += daysInMonth(prevMonth, yearOfPrevMonth);
+        }
 
-    // Initial Display
-    const now = new Date().getTime();
-    const distance = targetDateMillis - now;
-    if (distance > 0) {
-        const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const totalHours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const totalMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const totalSeconds = Math.floor((distance % (1000 * 60)) / 1000);
-        const approxYears = Math.floor(totalDays / 365);
-        const daysAfterYears = totalDays % 365;
-        const approxMonths = Math.floor(daysAfterYears / 30);
-        const finalDays = daysAfterYears % 30;
-        updateDisplay(approxYears, approxMonths, finalDays, totalHours, totalMinutes, totalSeconds);
-    } else {
-         clearInterval(intervalId);
-         updateDisplay(0, 0, 0, 0, 0, 0);
+        // Borrow months if necessary
+        if (months < 0) {
+            years--; // Borrow a year
+            months += 12;
+        }
+
+        // Ensure no negative values (shouldn't happen if distance > 0, but safety)
+        years = Math.max(0, years);
+        months = Math.max(0, months);
+        days = Math.max(0, days);
+
+        updateDisplay(years, months, days, hours, minutes, seconds);
+        return true; // Indicate timer should continue
+    }
+
+    // --- Interval Setup ---
+    let intervalId = null;
+    if (calculateAndUpdate()) {
+        intervalId = setInterval(calculateAndUpdate, 1000);
     }
 }
-// --- END: Configurable Countdown Timer Logic ---
+// --- ***** END: Revised Countdown Timer Logic (v4) ***** ---
 
 
 // --- MASTER INITIALIZATION FUNCTION ---
