@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     
     // Site Settings Elements
     const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle'); //
+    const hideTikTokSectionToggle = document.getElementById('hide-tiktok-section-toggle'); //
     const settingsStatusMessage = document.getElementById('settings-status-message'); //
 
     // Shoutout Elements (Add Forms, Lists, Search)
@@ -1060,7 +1061,7 @@ function renderYouTubeCard(account) { //
     }
     // *** END displayFilteredShoutouts FUNCTION ***
 
-// --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode) ---
+// --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode AND Hide TikTok Toggle) ---
     async function loadProfileData() { //
         // Ensure user is logged in before attempting to load
         if (!auth || !auth.currentUser) { //
@@ -1071,10 +1072,15 @@ function renderYouTubeCard(account) { //
             console.log("Profile form element not found."); //
             return; //
         }
-        // Also check if maintenance toggle exists before trying to use it
+        // Also check if toggles exist before trying to use them
         if (!maintenanceModeToggle) { //
-             console.warn("Maintenance mode toggle element not found."); //
+            console.warn("Maintenance mode toggle element not found."); //
         }
+        // <<< ADD THIS CHECK >>>
+        if (!hideTikTokSectionToggle) {
+            console.warn("Hide TikTok section toggle element not found.");
+        }
+
 
         console.log("Attempting to load profile data from:", profileDocRef.path); //
         try { //
@@ -1092,42 +1098,64 @@ function renderYouTubeCard(account) { //
 
                 // Set maintenance toggle state
                 if(maintenanceModeToggle) { //
-                     maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; // Set toggle based on Firestore data (default false if missing)
-                     maintenanceModeToggle.disabled = false; // Ensure it's enabled if data loaded
+                    maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; // Set toggle based on Firestore data (default false if missing)
+                    maintenanceModeToggle.disabled = false; // Ensure it's enabled if data loaded
                 }
+
+                // <<< START: Load Hide TikTok Toggle State >>>
+                if (hideTikTokSectionToggle) {
+                    hideTikTokSectionToggle.checked = data.hideTikTokSection || false; // Default to false if missing
+                    hideTikTokSectionToggle.disabled = false; // Ensure enabled
+                }
+                // <<< END: Load Hide TikTok Toggle State >>>
+
 
                 // Update profile picture preview
                 if (adminPfpPreview && data.profilePicUrl) { //
-                     adminPfpPreview.src = data.profilePicUrl; //
-                     adminPfpPreview.style.display = 'inline-block'; // Show preview
+                    adminPfpPreview.src = data.profilePicUrl; //
+                    adminPfpPreview.style.display = 'inline-block'; // Show preview
                 } else if (adminPfpPreview) { //
-                     adminPfpPreview.src = ''; // Clear src if no URL
-                     adminPfpPreview.style.display = 'none'; // Hide preview
+                    adminPfpPreview.src = ''; // Clear src if no URL
+                    adminPfpPreview.style.display = 'none'; // Hide preview
                 }
             } else { //
-                 // Handle case where the profile document doesn't exist yet
-                 console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`); //
-                 if (profileForm) profileForm.reset(); // Reset main profile form fields
-                 if (profileStatusInput) profileStatusInput.value = 'offline'; // Explicitly set default status
+                // Handle case where the profile document doesn't exist yet
+                console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`); //
+                if (profileForm) profileForm.reset(); // Reset main profile form fields
+                if (profileStatusInput) profileStatusInput.value = 'offline'; // Explicitly set default status
 
-                 // Default maintenance toggle state
-                 if(maintenanceModeToggle) { //
-                     maintenanceModeToggle.checked = false; // Default to false if doc missing
-                     maintenanceModeToggle.disabled = false; // Ensure enabled
-                 }
-                 if(adminPfpPreview) adminPfpPreview.style.display = 'none'; // Hide preview
+                // Default maintenance toggle state
+                if(maintenanceModeToggle) { //
+                    maintenanceModeToggle.checked = false; // Default to false if doc missing
+                    maintenanceModeToggle.disabled = false; // Ensure enabled
+                }
+                 // <<< START: Default Hide TikTok Toggle State >>>
+                if (hideTikTokSectionToggle) {
+                    hideTikTokSectionToggle.checked = false; // Default to false if doc missing
+                    hideTikTokSectionToggle.disabled = false; // Ensure enabled
+                }
+                 // <<< END: Default Hide TikTok Toggle State >>>
+
+                if(adminPfpPreview) adminPfpPreview.style.display = 'none'; // Hide preview
             }
         } catch (error) { //
-             console.error("Error loading profile data:", error); //
-             showProfileStatus("Error loading profile data.", true); //
-             // Set defaults and disable toggle on error
-             if (profileForm) profileForm.reset(); //
-             if (profileStatusInput) profileStatusInput.value = 'offline'; //
-             if(maintenanceModeToggle) { //
-                 maintenanceModeToggle.checked = false; //
-                 maintenanceModeToggle.disabled = true; // Disable toggle on error
-             }
-             if(adminPfpPreview) adminPfpPreview.style.display = 'none'; //
+            console.error("Error loading profile data:", error); //
+            showProfileStatus("Error loading profile data.", true); //
+            // Set defaults and disable toggles on error
+            if (profileForm) profileForm.reset(); //
+            if (profileStatusInput) profileStatusInput.value = 'offline'; //
+            if(maintenanceModeToggle) { //
+                maintenanceModeToggle.checked = false; //
+                maintenanceModeToggle.disabled = true; // Disable toggle on error
+            }
+             // <<< START: Disable Hide TikTok Toggle on Error >>>
+            if (hideTikTokSectionToggle) {
+                hideTikTokSectionToggle.checked = false;
+                hideTikTokSectionToggle.disabled = true; // Disable toggle on error
+            }
+             // <<< END: Disable Hide TikTok Toggle on Error >>>
+
+            if(adminPfpPreview) adminPfpPreview.style.display = 'none'; //
         }
     }
 
@@ -1196,6 +1224,63 @@ function renderYouTubeCard(account) { //
             profilePicUrlInput.classList.remove('input-error'); //
          });
     }
+
+// *** NEW FUNCTION TO SAVE Hide TikTok Section Status ***
+    async function saveHideTikTokSectionStatus(isEnabled) {
+        // Ensure user is logged in
+        if (!auth || !auth.currentUser) {
+            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
+            // Revert checkbox state visually if save fails due to auth issue
+            if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled;
+            return;
+        }
+
+        // Use the specific status message area for settings, fallback to main admin status
+        const statusElement = settingsStatusMessage || adminStatusElement; //
+
+        // Show saving message
+        if (statusElement) {
+            statusElement.textContent = "Saving setting...";
+            statusElement.className = "status-message"; // Reset style
+            statusElement.style.display = 'block';
+        }
+
+        try {
+            // Use profileDocRef (site_config/mainProfile) to store the flag
+            // Use setDoc with merge: true to update only this field without overwriting others
+            await setDoc(profileDocRef, {
+                hideTikTokSection: isEnabled // Save the boolean value (true/false)
+            }, { merge: true });
+
+            console.log("Hide TikTok Section status saved:", isEnabled);
+
+            // Show success message using the dedicated settings status element or fallback
+            const message = `TikTok homepage section set to ${isEnabled ? 'hidden' : 'visible'}.`;
+             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
+                 showSettingsStatus(message, false); // Uses the settings-specific display/clear logic
+             } else { // Fallback if specific element wasn't found initially
+                 showAdminStatus(message, false);
+             }
+
+            // Log the activity
+            if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('UPDATE_SITE_SETTINGS', { setting: 'hideTikTokSection', value: isEnabled });
+             } else { console.warn("logAdminActivity function not found!"); }
+
+
+        } catch (error) {
+            console.error("Error saving Hide TikTok Section status:", error);
+            // Show error message in the specific status area or fallback
+            if (statusElement === settingsStatusMessage && settingsStatusMessage) {
+                showSettingsStatus(`Error saving setting: ${error.message}`, true);
+            } else {
+                showAdminStatus(`Error saving Hide TikTok setting: ${error.message}`, true);
+            }
+            // Revert checkbox state visually on error
+             if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled;
+        }
+    }
+    // *** END NEW FUNCTION ***
 
 // *** FUNCTION TO SAVE Maintenance Mode Status ***
 
@@ -3607,6 +3692,9 @@ async function loadDisabilitiesAdmin() {
     // Maintenance Mode Toggle
     if (maintenanceModeToggle) { maintenanceModeToggle.addEventListener('change', (e) => { saveMaintenanceModeStatus(e.target.checked); }); }
 
+    // Hide TikTok Toggle
+    if (hideTikTokSectionToggle) { hideTikTokSectionToggle.addEventListener('change', (e) => { saveHideTikTokSectionStatus(e.target.checked); }); }
+    
     // President Form & Preview (Added)
     if (presidentForm) {
         const presidentPreviewInputs = [ presidentNameInput, presidentBornInput, presidentHeightInput, presidentPartyInput, presidentTermInput, presidentVpInput, presidentImageUrlInput ];
