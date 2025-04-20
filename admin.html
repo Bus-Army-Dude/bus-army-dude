@@ -82,14 +82,28 @@
                     <input type="checkbox" id="maintenance-mode-toggle" name="maintenanceMode" class="apple-toggle-checkbox">
                     <label for="maintenance-mode-toggle" class="apple-toggle-label"></label>
                     <label for="maintenance-mode-toggle">Enable Maintenance Mode</label>
-                    <small>Puts the public site into maintenance mode, showing a notification instead of content.</small>
+                    <small>Puts the public site into maintenance mode...</small>
                  </div>
-
                  <div class="form-group checkbox-group apple-toggle-group">
                     <input type="checkbox" id="hide-tiktok-section-toggle" name="hideTikTokSection" class="apple-toggle-checkbox">
                     <label for="hide-tiktok-section-toggle" class="apple-toggle-label"></label>
                     <label for="hide-tiktok-section-toggle">Hide TikTok Section on Homepage</label>
-                    <small>If checked, the entire TikTok creator shoutout section will be hidden from the public homepage (e.g., due to regional bans).</small>
+                    <small>If checked, the entire TikTok creator shoutout section will be hidden...</small>
+                 </div>
+
+                 <hr style="border-color: var(--border-color); margin: 2rem 0;">
+                 <h4>Homepage Countdown Timer</h4>
+
+                 <div class="form-group">
+                    <label for="countdown-title-input">Countdown Title:</label>
+                    <input type="text" id="countdown-title-input" name="countdownTitle" placeholder="e.g., Countdown to New Year!">
+                    <small>The main title displayed above the countdown timer.</small>
+                 </div>
+
+                 <div class="form-group">
+                    <label for="countdown-datetime-input">Countdown Target Date & Time:</label>
+                    <input type="text" id="countdown-datetime-input" name="countdownTargetDateTime" placeholder="YYYY-MM-DDTHH:MM:SS (e.g., 2025-12-31T23:59:59)">
+                    <small>Enter the target date and time in your local timezone using the specified format.</small>
                  </div>
                  <div id="settings-status-message" class="status-message" role="status" aria-live="polite"></div>
               </section>
