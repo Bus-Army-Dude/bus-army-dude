@@ -285,19 +285,141 @@ async function displayProfileData(profileUsernameElement, profilePicElement, pro
 }
 
 // --- Function to Load and Display Shoutouts ---
-async function loadAndDisplayShoutouts(tiktokGrid, instagramGrid, youtubeGrid, tiktokTimestampEl, instagramTimestampEl, youtubeTimestampEl) {
-    // ... (Keep existing function code) ...
-     if (!firebaseAppInitialized || !db) { console.error("Shoutout load error: Firebase not ready."); return; }
-     if (tiktokGrid) tiktokGrid.innerHTML = '<p>Loading TikTok Creators...</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p>Loading Instagram Creators...</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p>Loading YouTube Creators...</p>'; if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Loading...'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Loading...'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Loading...';
-     try {
-         const shoutoutsCol = collection(db, 'shoutouts'); const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc")); const querySnapshot = await getDocs(shoutoutQuery); const shoutouts = { tiktok: [], instagram: [], youtube: [] };
-         querySnapshot.forEach((docSnapshot) => { const data = docSnapshot.data(); if (data.platform && shoutouts.hasOwnProperty(data.platform)) { const accountData = { id: docSnapshot.id, username: data.username || null, nickname: data.nickname || null, profilePic: data.profilePic || null, bio: data.bio || '', followers: data.followers || 'N/A', subscribers: data.subscribers || 'N/A', isVerified: data.isVerified || false, coverPhoto: data.coverPhoto || null, platform: data.platform, order: data.order !== undefined ? data.order : Infinity }; shoutouts[data.platform].push(accountData); } else { console.warn(`Doc ${docSnapshot.id} missing/unknown platform: ${data.platform}`); } });
-         let metadata = {}; if(shoutoutsMetaRef) { try { const metaSnap = await getDoc(shoutoutsMetaRef); if(metaSnap.exists()) metadata = metaSnap.data(); } catch(e){console.warn("Could not fetch shoutout metadata:", e)} }
-         if (tiktokGrid) { if (shoutouts.tiktok.length > 0) { tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join(''); } else { tiktokGrid.innerHTML = '<p>No TikTok creators featured currently.</p>'; } if (tiktokTimestampEl) { tiktokTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_tiktok)}`; } } else { console.warn("TikTok grid missing."); }
-         if (instagramGrid) { if (shoutouts.instagram.length > 0) { instagramGrid.innerHTML = shoutouts.instagram.map(renderInstagramCard).join(''); } else { instagramGrid.innerHTML = '<p>No Instagram creators featured currently.</p>'; } if (instagramTimestampEl) { instagramTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_instagram)}`; } } else { console.warn("Instagram grid missing."); }
-         if (youtubeGrid) { if (shoutouts.youtube.length > 0) { youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join(''); } else { youtubeGrid.innerHTML = '<p>No YouTube creators featured currently.</p>'; } if (youtubeTimestampEl) { youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`; } } else { console.warn("YouTube grid missing."); }
-          console.log("Shoutout sections updated.");
-     } catch (error) { console.error("Error loading shoutout data:", error); if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok creators.</p>'; if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram creators.</p>'; if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube creators.</p>'; if (tiktokTimestampEl) tiktokTimestampEl.textContent = 'Last Updated: Error'; if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Error'; if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Error'; }
+// <<< Add hideTikTok parameter to the function signature >>>
+async function loadAndDisplayShoutouts(tiktokGrid, instagramGrid, youtubeGrid, tiktokTimestampEl, instagramTimestampEl, youtubeTimestampEl, hideTikTok) {
+    if (!firebaseAppInitialized || !db) {
+        console.error("Shoutout load error: Firebase not ready.");
+        // Clear all grids on error
+        if (tiktokGrid) tiktokGrid.innerHTML = '<p class="error">Error loading creators (DB).</p>';
+        if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading creators (DB).</p>';
+        if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading creators (DB).</p>';
+        return;
+    }
+
+    console.log(`Loading shoutouts... Hide TikTok flag is: ${hideTikTok}`);
+
+    // Set initial loading messages (respecting the hideTikTok flag for TikTok)
+    if (tiktokGrid && !hideTikTok) tiktokGrid.innerHTML = '<p>Loading TikTok Creators...</p>';
+    if (instagramGrid) instagramGrid.innerHTML = '<p>Loading Instagram Creators...</p>';
+    if (youtubeGrid) youtubeGrid.innerHTML = '<p>Loading YouTube Creators...</p>';
+    // Only show loading timestamp if section isn't hidden
+    if (tiktokTimestampEl && !hideTikTok) tiktokTimestampEl.textContent = 'Last Updated: Loading...';
+    if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Loading...';
+    if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Loading...';
+
+    // Hide the TikTok grid and timestamp immediately if the flag is set
+    if (hideTikTok) {
+        if (tiktokGrid) {
+            console.log("Hiding TikTok grid element immediately.");
+            tiktokGrid.style.display = 'none';
+            tiktokGrid.innerHTML = ''; // Clear any previous content/loading message
+        }
+        if (tiktokTimestampEl) {
+            tiktokTimestampEl.style.display = 'none';
+            tiktokTimestampEl.textContent = ''; // Clear timestamp
+        }
+    } else {
+         // Ensure visible if NOT hiding (in case it was hidden previously)
+         if (tiktokGrid) tiktokGrid.style.display = '';
+         if (tiktokTimestampEl) tiktokTimestampEl.style.display = '';
+    }
+
+
+    try {
+        const shoutoutsCol = collection(db, 'shoutouts');
+        const shoutoutQuery = query(shoutoutsCol, orderBy("order", "asc"));
+        const querySnapshot = await getDocs(shoutoutQuery);
+        const shoutouts = { tiktok: [], instagram: [], youtube: [] };
+
+        querySnapshot.forEach((docSnapshot) => {
+            const data = docSnapshot.data();
+            if (data.platform && shoutouts.hasOwnProperty(data.platform)) {
+                 // Only add TikTok data if we are NOT hiding the section
+                 if (data.platform === 'tiktok' && hideTikTok) {
+                     return; // Skip adding this TikTok entry
+                 }
+
+                const accountData = {
+                    id: docSnapshot.id,
+                    username: data.username || null,
+                    nickname: data.nickname || null,
+                    profilePic: data.profilePic || null,
+                    bio: data.bio || '',
+                    followers: data.followers || 'N/A',
+                    subscribers: data.subscribers || 'N/A',
+                    isVerified: data.isVerified || false,
+                    coverPhoto: data.coverPhoto || null,
+                    platform: data.platform,
+                    order: data.order !== undefined ? data.order : Infinity
+                 };
+                 shoutouts[data.platform].push(accountData);
+            } else {
+                console.warn(`Doc ${docSnapshot.id} missing/unknown platform: ${data.platform}`);
+            }
+        });
+
+        // Fetch metadata for timestamps
+        let metadata = {};
+        if(shoutoutsMetaRef) {
+            try {
+                const metaSnap = await getDoc(shoutoutsMetaRef);
+                if(metaSnap.exists()) metadata = metaSnap.data();
+            } catch(e){console.warn("Could not fetch shoutout metadata:", e)}
+        }
+
+        // --- Render TikTok Section (ONLY IF NOT HIDDEN) ---
+        if (tiktokGrid && !hideTikTok) { // <<< Check flag again before rendering
+            if (shoutouts.tiktok.length > 0) {
+                tiktokGrid.innerHTML = shoutouts.tiktok.map(renderTikTokCard).join('');
+            } else {
+                tiktokGrid.innerHTML = '<p>No TikTok creators featured currently.</p>';
+            }
+            if (tiktokTimestampEl) {
+                tiktokTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_tiktok)}`;
+            }
+        }
+        // Note: We don't need an else here because we hid the element earlier if hideTikTok was true.
+
+        // --- Render Instagram Section ---
+        if (instagramGrid) {
+            if (shoutouts.instagram.length > 0) {
+                instagramGrid.innerHTML = shoutouts.instagram.map(renderInstagramCard).join('');
+            } else {
+                instagramGrid.innerHTML = '<p>No Instagram creators featured currently.</p>';
+            }
+            if (instagramTimestampEl) {
+                instagramTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_instagram)}`;
+            }
+        } else {
+            console.warn("Instagram grid missing.");
+        }
+
+        // --- Render YouTube Section ---
+        if (youtubeGrid) {
+            if (shoutouts.youtube.length > 0) {
+                youtubeGrid.innerHTML = shoutouts.youtube.map(renderYouTubeCard).join('');
+            } else {
+                youtubeGrid.innerHTML = '<p>No YouTube creators featured currently.</p>';
+            }
+            if (youtubeTimestampEl) {
+                youtubeTimestampEl.textContent = `Last Updated: ${formatFirestoreTimestamp(metadata.lastUpdatedTime_youtube)}`;
+            }
+        } else {
+            console.warn("YouTube grid missing.");
+        }
+
+        console.log("Shoutout sections updated (respecting TikTok visibility setting).");
+
+    } catch (error) {
+        console.error("Error loading shoutout data:", error);
+         // Show error messages (respecting the hideTikTok flag for TikTok)
+         if (tiktokGrid && !hideTikTok) tiktokGrid.innerHTML = '<p class="error">Error loading TikTok creators.</p>';
+         if (instagramGrid) instagramGrid.innerHTML = '<p class="error">Error loading Instagram creators.</p>';
+         if (youtubeGrid) youtubeGrid.innerHTML = '<p class="error">Error loading YouTube creators.</p>';
+         if (tiktokTimestampEl && !hideTikTok) tiktokTimestampEl.textContent = 'Last Updated: Error';
+         if (instagramTimestampEl) instagramTimestampEl.textContent = 'Last Updated: Error';
+         if (youtubeTimestampEl) youtubeTimestampEl.textContent = 'Last Updated: Error';
+    }
 }
 
 // --- Function to Load and Display Useful Links ---
@@ -388,29 +510,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOM loaded. Checking Firebase status and maintenance mode...");
 
     // --- Assign ALL DOM Element References FIRST ---
+    // (Keep all your existing element assignments here...)
     maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
     mainContentWrapper = document.querySelector('.container');
     usefulLinksContainerElement = document.querySelector('.useful-links-section .links-container');
     socialLinksContainerElement = document.querySelector('.social-links-container');
     disabilitiesListPlaceholder = document.getElementById('disabilities-list-placeholder');
     presidentPlaceholderElement = document.getElementById('president-placeholder');
-    techItemsListContainer = document.getElementById('tech-items-list-dynamic'); // Assign tech container
+    techItemsListContainer = document.getElementById('tech-items-list-dynamic');
     profileUsernameElement = document.getElementById('profile-username-main');
     profilePicElement = document.getElementById('profile-pic-main');
     profileBioElement = document.getElementById('profile-bio-main');
     profileStatusElement = document.getElementById('profile-status-main');
-    tiktokGrid = document.querySelector('.creator-grid');
+    tiktokGrid = document.querySelector('.creator-grid'); // Assuming this is TikTok's grid
     instagramGrid = document.querySelector('.instagram-creator-grid');
     youtubeGrid = document.querySelector('.youtube-creator-grid');
     tiktokTimestampEl = document.getElementById('tiktok-last-updated-timestamp');
-    instagramTimestampEl = document.getElementById('instagram-last-updated-timestamp'); // Corrected ID based on original file? Check HTML
-    youtubeTimestampEl = document.getElementById('youtube-last-updated-timestamp'); // Corrected ID based on original file? Check HTML
+    instagramTimestampEl = document.getElementById('instagram-last-updated-timestamp');
+    youtubeTimestampEl = document.getElementById('youtube-last-updated-timestamp');
     faqContainer = document.getElementById('faq-container-dynamic');
 
     console.log("DEBUG: DOM Elements referenced.");
 
-    // --- Check Firebase Initialization ---
+   // --- Check Firebase Initialization ---
     if (!firebaseAppInitialized) {
+        // (Keep your existing Firebase init error handling)
         console.error("Firebase not ready. Site cannot load.");
         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site cannot load (Connection Error).</p>'; maintenanceMessageElement.style.display = 'block'; }
         else { const errorDiv = document.createElement('div'); errorDiv.className = 'error-message-fallback'; errorDiv.innerHTML = '<p class="error" style="text-align: center; color: red; padding: 20px;">Site cannot load (Connection Error).</p>'; document.body.prepend(errorDiv); }
@@ -420,23 +544,38 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Maintenance Mode Check and Content Loading ---
     try {
-        console.log("Checking maintenance mode...");
+        console.log("Checking site settings (Maintenance Mode & TikTok Visibility)...");
         if (!profileDocRef) { throw new Error("Profile document reference is missing."); }
         const configSnap = await getDoc(profileDocRef);
-        let maintenanceEnabled = configSnap.exists() ? (configSnap.data()?.isMaintenanceModeEnabled || false) : false;
+
+        let maintenanceEnabled = false;
+        let hideTikTokSection = false; // <<< Initialize flag
+
+        if (configSnap.exists()) {
+            const settingsData = configSnap.data();
+            maintenanceEnabled = settingsData?.isMaintenanceModeEnabled || false;
+            hideTikTokSection = settingsData?.hideTikTokSection || false; // <<< Get the setting here
+        } else {
+            console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
+            // Defaults are already false
+        }
+
         console.log("Maintenance mode active:", maintenanceEnabled);
+        console.log("Hide TikTok Section setting:", hideTikTokSection); // <<< Log the setting
 
         if (maintenanceEnabled) {
             // --- Maintenance Mode ON ---
-            console.log("Maintenance mode is ON. Hiding main content.");
-            if (mainContentWrapper) { mainContentWrapper.style.display = 'none'; }
-            if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p>The site is currently undergoing maintenance. Please check back later.</p>'; maintenanceMessageElement.style.display = 'block'; }
-            else { console.error("Maintenance message element (#maintenanceModeMessage) is missing from HTML!"); const maintDiv = document.createElement('div'); maintDiv.innerHTML = '<p style="text-align:center; padding: 50px; color: orange;">Site Maintenance</p>'; document.body.prepend(maintDiv); }
-            return;
+            // (Keep your existing maintenance mode ON logic)
+             console.log("Maintenance mode is ON. Hiding main content.");
+             if (mainContentWrapper) { mainContentWrapper.style.display = 'none'; }
+             if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p>The site is currently undergoing maintenance. Please check back later.</p>'; maintenanceMessageElement.style.display = 'block'; }
+             else { console.error("Maintenance message element (#maintenanceModeMessage) is missing from HTML!"); const maintDiv = document.createElement('div'); maintDiv.innerHTML = '<p style="text-align:center; padding: 50px; color: orange;">Site Maintenance</p>'; document.body.prepend(maintDiv); }
+             return; // Stop further execution
+
         } else {
             // --- Maintenance Mode OFF ---
             console.log("Maintenance mode is OFF. Loading all page content...");
-            if (mainContentWrapper) { mainContentWrapper.style.display = ''; }
+            if (mainContentWrapper) { mainContentWrapper.style.display = ''; } // Ensure main content is visible
             if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'none'; }
 
             // --- Load ALL dynamic content Concurrently ---
@@ -444,26 +583,33 @@ document.addEventListener('DOMContentLoaded', async () => {
             const loadPromises = [
                 displayProfileData(profileUsernameElement, profilePicElement, profileBioElement, profileStatusElement),
                 displayPresidentData(presidentPlaceholderElement),
-                loadAndDisplayShoutouts(tiktokGrid, instagramGrid, youtubeGrid, tiktokTimestampEl, instagramTimestampEl, youtubeTimestampEl),
+                // *** Pass the hideTikTokSection flag to the shoutout loader ***
+                loadAndDisplayShoutouts(tiktokGrid, instagramGrid, youtubeGrid, tiktokTimestampEl, instagramTimestampEl, youtubeTimestampEl, hideTikTokSection), // <<< MODIFIED CALL
                 loadAndDisplayUsefulLinks(usefulLinksContainerElement),
                 loadAndDisplaySocialLinks(socialLinksContainerElement),
                 loadAndDisplayDisabilities(disabilitiesListPlaceholder),
-                loadAndDisplayTechItems(), // Load Tech Items
-                loadAndDisplayFaqs() // <<< ADD THIS CALL
+                loadAndDisplayTechItems(),
+                loadAndDisplayFaqs()
             ];
             const results = await Promise.allSettled(loadPromises);
 
-            results.forEach((result, index) => {
-                const functionNames = ["Profile", "President", "Shoutouts", "UsefulLinks", "SocialLinks", "Disabilities", "TechItems"];
-                if (result.status === 'rejected') {
-                    console.error(`Error loading ${functionNames[index]}:`, result.reason);
-                }
-            });
-            console.log("All dynamic content loading initiated.");
+            // (Keep your existing Promise.allSettled logging)
+             results.forEach((result, index) => {
+                 // Improved logging to understand which function failed if needed
+                 const functionNames = ["Profile", "President", "Shoutouts", "UsefulLinks", "SocialLinks", "Disabilities", "TechItems", "FAQs"]; // Ensure order matches promises
+                 if (result.status === 'rejected') {
+                     console.error(`Error loading ${functionNames[index] || 'Unknown Section'}:`, result.reason);
+                 } else {
+                     // Optional: Log success for debugging
+                     // console.log(`${functionNames[index] || 'Unknown Section'} loaded successfully.`);
+                 }
+             });
+             console.log("All dynamic content loading initiated.");
         } // End Maintenance Mode OFF block
     } catch (error) {
         // --- General Error Handling ---
-        console.error("Error during DOMContentLoaded initialization or maintenance check:", error);
+        // (Keep your existing general error handling)
+        console.error("Error during DOMContentLoaded initialization or settings check:", error);
         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">An error occurred while loading site configuration: ${error.message}. Please try again later.</p>`; maintenanceMessageElement.style.display = 'block'; }
         else { const errorDiv = document.createElement('div'); errorDiv.innerHTML = `<p class="error" style="text-align: center; color: red; padding: 20px;">An error occurred loading site configuration.</p>`; document.body.prepend(errorDiv); }
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
