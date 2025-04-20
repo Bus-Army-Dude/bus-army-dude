@@ -469,7 +469,7 @@
          <div id="edit-social-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
 </div>
 
-           <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
+            <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
     <h3 id="shoutouts-heading">Creator Shoutouts</h3>
 
     <div class="shoutouts-platform-container" aria-labelledby="tiktok-heading">
@@ -500,89 +500,7 @@
                 <label for="tiktok-profilePic">Profile Pic URL:</label>
                 <input type="url" id="tiktok-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
             </div>
-
-            <div class="form-group">
-                <label for="tiktok-region">Region Availability:</label>
-                <select id="tiktok-region" name="region" required>
-                    <option value="" disabled selected>Select Region</option>
-
-                    <optgroup label="Global/General">
-                        <option value="Global">Global / Available Worldwide</option>
-                    </optgroup>
-
-                    <optgroup label="Unavailable / Banned (Full)">
-                        <option value="USA (Unavailable)">USA (Unavailable)</option>
-                        <option value="India (Unavailable)">India (Unavailable)</option>
-                        <option value="China (Unavailable)">China (Unavailable - Uses Douyin)</option>
-                        <option value="Afghanistan (Unavailable)">Afghanistan (Unavailable)</option>
-                        <option value="Iran (Unavailable)">Iran (Unavailable)</option>
-                        <option value="Kyrgyzstan (Unavailable)">Kyrgyzstan (Unavailable)</option>
-                        <option value="Nepal (Unavailable)">Nepal (Unavailable)</option>
-                        <option value="Somalia (Unavailable)">Somalia (Unavailable)</option>
-                        <option value="Jordan (Unavailable)">Jordan (Unavailable)</option>
-                        <option value="Albania (Unavailable)">Albania (Unavailable)</option>
-                        <option value="Other (Unavailable)">Other (Unavailable)</option>
-                    </optgroup>
-
-                    <optgroup label="North America (Available)">
-                        <option value="Canada">Canada</option>
-                        <option value="Mexico">Mexico</option>
-                    </optgroup>
-
-                    <optgroup label="Europe (Available)">
-                        <option value="UK">United Kingdom</option>
-                        <option value="Germany">Germany</option>
-                        <option value="France">France</option>
-                        <option value="Spain">Spain</option>
-                        <option value="Italy">Italy</option>
-                        <option value="European Union (Other)">European Union (Other)</option>
-                        <option value="Europe (Non-EU)">Europe (Non-EU)</option>
-                        <option value="Russia (Restricted)">Russia (Partially Available/Restricted)</option>
-                    </optgroup>
-
-                    <optgroup label="Asia-Pacific (Available)">
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Philippines">Philippines</option>
-                        <option value="Thailand">Thailand</option>
-                        <option value="Japan">Japan</option>
-                        <option value="South Korea">South Korea</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Pakistan">Pakistan</option> <option value="Bangladesh">Bangladesh</option> <option value="Taiwan">Taiwan</option> <option value="Australia / New Zealand">Australia / New Zealand</option> <option value="Southeast Asia (Other)">Southeast Asia (Other)</option>
-                        <option value="Asia (Other)">Asia (Other)</option>
-                    </optgroup>
-
-                    <optgroup label="Latin America (Available)">
-                        <option value="Brazil">Brazil</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Argentina">Argentina</option>
-                        <option value="Peru">Peru</option>
-                        <option value="Chile">Chile</option>
-                        <option value="Latin America (Other)">Latin America (Other)</option>
-                    </optgroup>
-
-                    <optgroup label="Middle East & Africa (Available)">
-                        <option value="Saudi Arabia">Saudi Arabia</option>
-                        <option value="UAE">United Arab Emirates</option>
-                        <option value="Egypt">Egypt</option>
-                        <option value="Turkey">Turkey</option>
-                        <option value="Nigeria">Nigeria</option>
-                        <option value="South Africa">South Africa</option>
-                        <option value="Kenya">Kenya</option>
-                        <option value="Morocco">Morocco</option>
-                        <option value="Middle East (Other)">Middle East (Other)</option>
-                        <option value="North Africa (Other)">North Africa (Other)</option>
-                        <option value="Africa (Sub-Saharan Other)">Africa (Sub-Saharan Other)</option>
-                    </optgroup>
-
-                    <optgroup label="Other">
-                         <option value="Other (Available)">Other Region (Available)</option>
-                    </optgroup>
-
-                    </select>
-                <small>Select the primary region for this creator or TikTok's availability.</small>
-            </div>
-             <div class="form-group checkbox-group apple-toggle-group">
+            <div class="form-group checkbox-group apple-toggle-group">
                  <input type="checkbox" id="tiktok-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
                  <label for="tiktok-isVerified" class="apple-toggle-label"></label>
                  <label for="tiktok-isVerified">Is Verified?</label>
@@ -636,9 +554,9 @@
                  <input type="url" id="instagram-profilePic" name="profilePic" placeholder="https://..." inputmode="url">
              </div>
              <div class="form-group checkbox-group apple-toggle-group">
-                 <input type="checkbox" id="instagram-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
-                 <label for="instagram-isVerified" class="apple-toggle-label"></label>
-                 <label for="instagram-isVerified">Is Verified?</label>
+                <input type="checkbox" id="instagram-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
+                <label for="instagram-isVerified" class="apple-toggle-label"></label>
+                <label for="instagram-isVerified">Is Verified?</label>
                  </div>
               <div class="form-group">
                  <label>Preview:</label>
@@ -652,10 +570,10 @@
         </form>
 
          <h5 id="existing-instagram-heading">
-             Existing Instagram Shoutouts <span id="instagram-count" class="list-count"></span>
+            Existing Instagram Shoutouts <span id="instagram-count" class="list-count"></span>
          </h5>
          <div class="list-controls">
-             <input type="search" id="search-instagram" placeholder="Search Instagram Shoutouts..." aria-label="Search Instagram Shoutouts">
+            <input type="search" id="search-instagram" placeholder="Search Instagram Shoutouts..." aria-label="Search Instagram Shoutouts">
          </div>
          <div id="shoutouts-instagram-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-instagram-heading">
              <p>Loading Instagram shoutouts...</p>
@@ -693,9 +611,9 @@
                  <input type="url" id="youtube-coverPhoto" name="coverPhoto" placeholder="https://..." inputmode="url">
             </div>
              <div class="form-group checkbox-group apple-toggle-group">
-                 <input type="checkbox" id="youtube-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
-                 <label for="youtube-isVerified" class="apple-toggle-label"></label>
-                 <label for="youtube-isVerified">Is Verified?</label>
+                <input type="checkbox" id="youtube-isVerified" name="isVerified" value="true" class="apple-toggle-checkbox">
+                <label for="youtube-isVerified" class="apple-toggle-label"></label>
+                <label for="youtube-isVerified">Is Verified?</label>
                  </div>
              <div class="form-group">
                 <label>Preview:</label>
@@ -709,10 +627,10 @@
         </form>
 
         <h5 id="existing-youtube-heading">
-            Existing YouTube Shoutouts <span id="youtube-count" class="list-count"></span>
+           Existing YouTube Shoutouts <span id="youtube-count" class="list-count"></span>
         </h5>
         <div class="list-controls">
-             <input type="search" id="search-youtube" placeholder="Search YouTube Shoutouts..." aria-label="Search YouTube Shoutouts">
+           <input type="search" id="search-youtube" placeholder="Search YouTube Shoutouts..." aria-label="Search YouTube Shoutouts">
         </div>
         <div id="shoutouts-youtube-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-youtube-heading">
             <p>Loading YouTube shoutouts...</p>
