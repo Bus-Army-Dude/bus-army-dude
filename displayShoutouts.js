@@ -579,6 +579,7 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
     const countdownSection = document.querySelector('.countdown-section');
     if (!countdownSection) { console.warn("Countdown section element missing."); return; }
 
+    // Get elements needed for running/expired states
     const titleElement = countdownSection.querySelector('h2');
     const yearsElement = document.getElementById('countdown-years');
     const monthsElement = document.getElementById('countdown-months');
@@ -586,33 +587,44 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
     const hoursElement = document.getElementById('countdown-hours');
     const minutesElement = document.getElementById('countdown-minutes');
     const secondsElement = document.getElementById('countdown-seconds');
-    const countdownContainer = countdownSection.querySelector('.countdown-container');
+    const countdownContainer = countdownSection.querySelector('.countdown-container'); // Div holding number blocks
 
     // Check elements needed for running state first
     if (!titleElement || !yearsElement || !monthsElement || !daysElement || !hoursElement || !minutesElement || !secondsElement || !countdownContainer) {
         console.warn("Initial countdown display elements missing (title, units, or container).");
+        // Don't hide section yet, maybe only expired message is needed
     }
 
+    // Validate Input Data & Convert Timestamp
     let targetDateMillis;
     let targetDateObj;
+    // *** Requires Timestamp class from Firestore SDK to be available ***
     if (targetTimestamp && targetTimestamp instanceof Timestamp) {
         try {
-            targetDateObj = targetTimestamp.toDate();
-            targetDateMillis = targetDateObj.getTime();
-        } catch (e) { console.error("Error converting Timestamp:", e); targetDateMillis = null; }
+            targetDateObj = targetTimestamp.toDate(); // Convert Timestamp to JS Date object
+            targetDateMillis = targetDateObj.getTime(); // Get milliseconds
+        } catch (e) {
+            console.error("Error converting Firestore Timestamp for countdown:", e);
+            targetDateMillis = null;
+        }
     } else {
-        if (targetTimestamp) { console.warn("Received countdownTargetDate but it's not a Timestamp:", targetTimestamp); }
+        // Log if targetTimestamp exists but isn't the right type
+        if (targetTimestamp) {
+            console.warn("Received countdownTargetDate but it is not a Firestore Timestamp:", targetTimestamp);
+        }
         targetDateMillis = null;
     }
 
-    const displayTitle = countdownTitle || "Countdown";
+    const displayTitle = countdownTitle || "Countdown"; // Use fetched title for running state
 
+    // If target date is invalid/missing, hide section
     if (!targetDateMillis || !targetDateObj) {
         console.warn(`Invalid/missing countdown target date for "${displayTitle}". Hiding section.`);
         countdownSection.style.display = 'none';
         return;
     }
 
+    // Get references to inner number elements (check existence before use)
     const yearsFront = yearsElement?.querySelector('.flip-clock-front');
     const monthsFront = monthsElement?.querySelector('.flip-clock-front');
     const daysFront = daysElement?.querySelector('.flip-clock-front');
@@ -620,9 +632,11 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
     const minutesFront = minutesElement?.querySelector('.flip-clock-front');
     const secondsFront = secondsElement?.querySelector('.flip-clock-front');
 
+    // Set initial Title if element exists
     if (titleElement) titleElement.textContent = displayTitle;
     console.log(`Initializing countdown timer for: "${displayTitle}"`);
 
+    // Helper to Update Display (numbers) - Checks if elements exist
     function updateDisplay(y, mo, d, h, m, s) {
         if(yearsFront) yearsFront.textContent = String(y).padStart(2, '0');
         if(monthsFront) monthsFront.textContent = String(mo).padStart(2, '0');
@@ -632,15 +646,18 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
         if(secondsFront) secondsFront.textContent = String(s).padStart(2, '0');
     }
 
+    // Helper function to get days in a month
     function daysInMonth(month, year) { return new Date(year, month + 1, 0).getDate(); }
 
     let intervalId = null;
 
     // --- Function to display the CUSTOM or DEFAULT "Expired" state ---
     function showExpiredState() {
-        console.log(`Countdown for "${displayTitle}" finished.`);
+        console.log(`Countdown for "${displayTitle}" finished or was already expired.`);
+
+        // Define a default message using the original title
         const defaultExpiredMsg = `${displayTitle || 'The event'} has started!`;
-        // Use the custom message from Firestore if provided, otherwise use the default
+        // Use the custom message from Firestore (passed as expiredMessageOverride) if provided and not empty, otherwise use the default
         const messageText = expiredMessageOverride || defaultExpiredMsg; // <<< Uses the passed message
 
         if (countdownSection) {
@@ -648,25 +665,30 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
              countdownSection.innerHTML = `
                  <h2>${displayTitle}</h2>  <p class="countdown-expired-message" style="font-size: 1.1em; line-height: 1.6; margin: 15px 0;">
                      ${messageText.replace(/\n/g, '<br>')} </p>
-                 <div style="font-size: 1.5em; color: var(--text-color);">🎉🏁</div> `;
-             countdownSection.style.display = 'block';
+                 <div style="font-size: 1.5em; color: var(--text-color);">🎉🏁</div>
+             `;
+             countdownSection.style.display = 'block'; // Ensure section visible
         }
     }
 
+    // --- Function containing the calculation logic ---
     function calculateAndUpdate() {
+        // Check elements needed for running state are still valid
         if (!yearsFront || !monthsFront || !daysFront || !hoursFront || !minutesFront || !secondsFront ) {
              console.warn("Countdown inner display elements missing during update. Stopping timer.");
              if (intervalId) clearInterval(intervalId);
-             return false;
+             return false; // Stop
          }
+
         const now = new Date();
         const target = targetDateObj;
         const distance = target.getTime() - now.getTime();
 
-        if (distance < 0) { // Check if expired
+        // Check if expired
+        if (distance < 0) {
             if (intervalId) clearInterval(intervalId);
             showExpiredState(); // <<< CALL FUNCTION TO SHOW MESSAGE
-            return false;
+            return false; // Indicate timer should stop
         }
 
         // Calculate time components if not expired
@@ -676,21 +698,32 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
         let years = target.getFullYear() - now.getFullYear();
         let months = target.getMonth() - now.getMonth();
         let days = target.getDate() - now.getDate();
+
         // Borrowing Logic
-        if (days < 0) { months--; days += new Date(target.getFullYear(), target.getMonth(), 0).getDate(); }
+        if (days < 0) {
+            months--;
+            // Get days in the month *before* the target month
+            days += new Date(target.getFullYear(), target.getMonth(), 0).getDate();
+        }
         if (months < 0) { years--; months += 12; }
-        years = Math.max(0, years); months = Math.max(0, months); days = Math.max(0, days);
 
+        years = Math.max(0, years);
+        months = Math.max(0, months);
+        days = Math.max(0, days);
+
+        // Update number display ONLY if not expired
         updateDisplay(years, months, days, hours, minutes, seconds);
-        if(countdownContainer) countdownContainer.style.display = '';
-        return true;
-    }
+        if(countdownContainer) countdownContainer.style.display = ''; // Ensure numbers are visible
 
-    // Initial Setup & Interval
-    if (!calculateAndUpdate()) {
+        return true; // Indicate timer should continue
+    } // --- End of calculateAndUpdate ---
+
+
+    // --- Initial Setup & Interval ---
+    if (!calculateAndUpdate()) { // Run once and check if expired
         console.log("Countdown expired on initial load."); // showExpiredState was called inside
     } else {
-        intervalId = setInterval(calculateAndUpdate, 1000);
+        intervalId = setInterval(calculateAndUpdate, 1000); // Start interval if not expired
         console.log("Countdown interval started.");
     }
 }
