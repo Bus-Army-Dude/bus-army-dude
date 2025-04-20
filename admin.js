@@ -3249,6 +3249,82 @@ function displayFilteredActivityLog() {
     // ==================================
 
 
+     // --- *** NEW: Event Listener for Saving ONLY Countdown Settings *** ---
+    if (saveCountdownSettingsButton) { // Check if the specific button exists
+        saveCountdownSettingsButton.addEventListener('click', async () => {
+            if (!countdownTitleInput || !countdownDatetimeInput || !settingsStatusMessage) {
+                 console.error("Cannot save countdown - one or more countdown input elements are missing!");
+                 showSettingsStatus("Error: Page structure problem. Cannot save countdown.", true);
+                 return;
+             }
+            if (!profileDocRef) {
+                 console.error("profileDocRef not defined. Cannot save countdown settings.");
+                 showSettingsStatus("Error: Config reference missing.", true);
+                 return;
+            }
+
+            const title = countdownTitleInput.value.trim();
+            const dateTimeString = countdownDatetimeInput.value.trim();
+
+            showSettingsStatus("Saving countdown settings...", false);
+
+            const updateData = {};
+            let isValid = true;
+
+            updateData.countdownTitle = title;
+
+            let targetTimestamp = null;
+            if (dateTimeString) {
+                if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(dateTimeString)) {
+                     showSettingsStatus('Invalid Date/Time format. Use YYYY-MM-DDTHH:MM:SS', true);
+                     isValid = false;
+                } else {
+                    try {
+                        const localDate = new Date(dateTimeString);
+                        if (isNaN(localDate.getTime())) {
+                            throw new Error("Invalid date or time value.");
+                        }
+                        targetTimestamp = Timestamp.fromDate(localDate); // Convert to Timestamp
+                        updateData.countdownTargetDate = targetTimestamp;
+                        console.log("Converted input string to Timestamp:", targetTimestamp);
+                    } catch (error) {
+                        console.error("Error parsing date/time input:", error);
+                        showSettingsStatus(`Error parsing date/time: ${error.message}`, true);
+                        isValid = false;
+                    }
+                }
+            } else {
+                 updateData.countdownTargetDate = null; // Set to null if empty
+                 console.log("Countdown date/time field cleared. Setting to null.");
+            }
+
+            if (!isValid) {
+                return; // Stop if validation failed
+            }
+
+            try {
+                console.log("Updating Firestore with countdown data:", updateData);
+                await updateDoc(profileDocRef, updateData); // Update ONLY countdown fields
+                showSettingsStatus("Countdown settings saved successfully!", false);
+                console.log("Countdown settings updated in Firestore:", updateData);
+                 if (typeof logAdminActivity === 'function') {
+                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS', { title: title, targetSet: !!updateData.countdownTargetDate });
+                 } else { console.warn("logAdminActivity function not found!"); }
+            } catch (error) {
+                console.error("Error saving countdown settings:", error);
+                showSettingsStatus(`Error saving countdown settings: ${error.message}`, true);
+                 if (typeof logAdminActivity === 'function') {
+                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS_FAILED', { error: error.message });
+                 }
+            }
+        });
+    } else {
+         console.error("Save Countdown Settings button (#save-countdown-settings-button) not found!");
+         if(settingsStatusMessage) {
+             showSettingsStatus("Error: Save Countdown button missing from page.", true);
+         }
+    }
+
     // ==================================
 // ===== FAQ Management Functions =====
 // ==================================
