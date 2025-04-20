@@ -3273,52 +3273,60 @@ function displayFilteredActivityLog() {
     // ==================================
 
 
-    // --- Event Listener for Saving ONLY Countdown Settings ---
-    // Make sure this targets the correct button ID from your HTML
+    // --- *** Event Listener for Saving ONLY Countdown Settings (WITH EXTRA LOGGING) *** ---
     if (saveCountdownSettingsButton) {
         saveCountdownSettingsButton.addEventListener('click', async () => {
+            // --- LOG 1: Button Clicked ---
+            console.log(">>> SAVE COUNTDOWN BUTTON CLICKED at", new Date().toLocaleTimeString());
+
             // Check required elements exist first
             if (!countdownTitleInput || !countdownDatetimeInput || !countdownExpiredMessageInput || !settingsStatusMessage) {
-                 console.error("Cannot save countdown - required input elements are missing!");
+                 console.error(">>> ERROR: Cannot save - one or more countdown input elements are missing!");
                  showSettingsStatus("Error: Page structure problem. Cannot save countdown.", true);
                  return;
              }
             if (!profileDocRef) {
-                 console.error("profileDocRef not defined. Cannot save countdown settings.");
+                 console.error(">>> ERROR: profileDocRef not defined. Cannot save countdown settings.");
                  showSettingsStatus("Error: Config reference missing.", true);
                  return;
             }
 
-            // --- Read ALL THREE countdown values ---
+            // --- Read values ---
             const title = countdownTitleInput.value.trim();
             const dateTimeString = countdownDatetimeInput.value.trim();
-            const expiredMessage = countdownExpiredMessageInput.value.trim(); // <<< READ TEXTAREA
+            const expiredMessage = countdownExpiredMessageInput.value.trim();
+            console.log(`>>> Read Values: Title='${title}', DateTime='${dateTimeString}', ExpiredMsg='${expiredMessage}'`);
 
             showSettingsStatus("Saving countdown settings...", false);
 
-            // --- Prepare data object WITH EXPIRED MESSAGE ---
+            // Prepare data object
             const updateData = {
                 countdownTitle: title,
-                countdownExpiredMessage: expiredMessage // <<< INCLUDE MESSAGE
+                countdownExpiredMessage: expiredMessage
                 // countdownTargetDate added below conditionally
             };
             let isValid = true;
             let targetTimestamp = null;
 
-            // --- Handle Date/Time conversion (ensure Timestamp is imported at top) ---
+            // --- Handle Date/Time conversion ---
             if (dateTimeString) {
+                console.log(">>> Processing DateTime String...");
                 if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(dateTimeString)) {
+                     console.error(">>> ERROR: Invalid DateTime format.");
                      showSettingsStatus('Invalid Date/Time format. Use YYYY-MM-DDTHH:MM:SS', true);
                      isValid = false;
                 } else {
                     try {
                         const localDate = new Date(dateTimeString);
-                        if (isNaN(localDate.getTime())) { throw new Error("Invalid date/time value."); }
+                        if (isNaN(localDate.getTime())) {
+                            throw new Error("Invalid date or time value resulted in an invalid Date object.");
+                        }
+                        // *** Ensure Timestamp is imported: import { Timestamp } from '...' ***
                         targetTimestamp = Timestamp.fromDate(localDate);
-                        updateData.countdownTargetDate = targetTimestamp; // Add Timestamp
-                        console.log("Converted input string to Timestamp:", targetTimestamp);
+                        updateData.countdownTargetDate = targetTimestamp;
+                        console.log(">>> SUCCESS: Converted input string to Timestamp:", targetTimestamp);
                     } catch (error) {
-                        console.error("Error parsing date/time input:", error);
+                        console.error(">>> ERROR: Parsing date/time input:", error);
                         let errorText = `Error parsing date/time: ${error.message}`;
                          if (error instanceof ReferenceError && error.message.includes("Timestamp is not defined")) {
                             errorText += " (Import Timestamp from Firestore library at top of admin.js!)";
@@ -3329,17 +3337,27 @@ function displayFilteredActivityLog() {
                 }
             } else {
                  updateData.countdownTargetDate = null; // Set date to null if input is empty
-                 console.log("Countdown date/time field cleared. Setting to null.");
+                 console.log(">>> DateTime field empty. Setting target date to null.");
             }
 
-            if (!isValid) { return; } // Stop if validation failed
+            if (!isValid) {
+                console.log(">>> Validation failed. Aborting save.");
+                return; // Stop if validation failed
+            }
 
             // --- Update Firestore Document ---
             try {
-                console.log("Updating Firestore with countdown data:", updateData);
-                await updateDoc(profileDocRef, updateData); // <<< SAVES ALL 3 FIELDS
+                // --- LOG 2: Data being sent ---
+                console.log(">>> PRE-UPDATE CHECK <<<");
+                console.log(">>> profileDocRef Path:", profileDocRef.path);
+                console.log(">>> Data being sent:", JSON.stringify(updateData, null, 2)); // Stringify for clear view
+
+                await updateDoc(profileDocRef, updateData); // Attempt the update
+
+                // --- LOG 3: Success ---
+                console.log(">>> updateDoc SUCCEEDED <<<");
                 showSettingsStatus("Countdown settings saved successfully!", false);
-                console.log("Countdown settings updated in Firestore:", updateData);
+                console.log("Countdown settings updated in Firestore successfully.");
 
                 // Log activity
                  if (typeof logAdminActivity === 'function') {
@@ -3347,7 +3365,8 @@ function displayFilteredActivityLog() {
                  } else { console.warn("logAdminActivity function not found!"); }
 
             } catch (error) {
-                console.error("Error saving countdown settings:", error);
+                 // --- LOG 4: Failure ---
+                console.error(">>> updateDoc FAILED <<<", error);
                 showSettingsStatus(`Error saving countdown settings: ${error.message}`, true);
                  if (typeof logAdminActivity === 'function') {
                       logAdminActivity('UPDATE_COUNTDOWN_SETTINGS_FAILED', { error: error.message });
@@ -3358,7 +3377,7 @@ function displayFilteredActivityLog() {
          console.error("Save Countdown Settings button (#save-countdown-settings-button) not found!");
          if(settingsStatusMessage) { showSettingsStatus("Error: Save Countdown button missing from page.", true); }
     }
-    // --- *** END Event Listener *** ---
+    // --- *** END Event Listener with Logging *** ---
 
     // ==================================
 // ===== FAQ Management Functions =====
