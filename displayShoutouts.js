@@ -1,4 +1,4 @@
-// displayShoutouts.js (Fixed Selectors + Configurable Countdown + All Sections - Full Code)
+// displayShoutouts.js (Firebase Configurable Countdown + All Sections - Full Code)
 
 // Use the same Firebase config as in admin.js (Ensure this is correct)
 const firebaseConfig = {
@@ -113,10 +113,11 @@ function renderYouTubeCard(account) {
     const coverPhoto = account.coverPhoto || null;
     const isVerified = account.isVerified || false;
     let safeUsername = username;
+    // Ensure username starts with '@' if it's not 'N/A'
     if (username !== 'N/A' && !username.startsWith('@')) {
         safeUsername = `@${username}`;
     }
-    const channelUrl = username !== 'N/A' ? `https://www.youtube.com/${encodeURIComponent(safeUsername)}` : '#';
+    const channelUrl = username !== 'N/A' ? `https://www.youtube.com/${encodeURIComponent(safeUsername)}` : '#'; // Corrected URL
     const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : '';
     return `<div class="youtube-creator-card">
                ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
@@ -134,7 +135,7 @@ function renderYouTubeCard(account) {
 function renderTechItemHomepage(itemData) {
     const name = itemData.name || 'Unnamed Device';
     const model = itemData.model || '';
-    const iconClass = itemData.iconClass || 'fas fa-question-circle';
+    const iconClass = itemData.iconClass || 'fas fa-question-circle'; // Default icon
     const material = itemData.material || '';
     const storage = itemData.storage || '';
     const batteryCapacity = itemData.batteryCapacity || '';
@@ -151,6 +152,7 @@ function renderTechItemHomepage(itemData) {
         let batteryClass = '';
         if (batteryHealth <= 20) batteryClass = 'critical';
         else if (batteryHealth <= 50) batteryClass = 'low-power';
+        // Ensure batteryHealth doesn't exceed 100 for styling width
         const displayHealth = Math.min(batteryHealth, 100);
         batteryHtml = `<div class="tech-detail"><i class="fas fa-heart"></i><span>Battery Health:</span></div>
                        <div class="battery-container">
@@ -184,6 +186,7 @@ function renderTechItemHomepage(itemData) {
 
 function renderFaqItemHomepage(faqData) {
     const question = faqData.question || 'No Question Provided';
+    // Ensure answer is treated as HTML if it contains tags, otherwise wrap in <p>
     const answerHtml = faqData.answer ? (faqData.answer.includes('<') ? faqData.answer : `<p>${faqData.answer}</p>`) : '<p>No Answer Provided.</p>';
     return `<div class="faq-item">
               <button class="faq-question">
@@ -198,6 +201,7 @@ function renderFaqItemHomepage(faqData) {
 
 // --- Data Loading and Display Functions ---
 
+// Handles Profile Pic/Name/Bio/Status display (data is fetched in initializeHomepageContent)
 async function displayProfileData(profileData) {
     const profileUsernameElement = document.getElementById('profile-username-main');
     const profilePicElement = document.getElementById('profile-pic-main');
@@ -218,12 +222,13 @@ async function displayProfileData(profileData) {
 
     profileUsernameElement.textContent = profileData.username || defaultUsername;
     profilePicElement.src = profileData.profilePicUrl || defaultProfilePic;
-    profileBioElement.textContent = profileData.bio || defaultBio;
+    profileBioElement.textContent = profileData.bio || defaultBio; // Using textContent for safety
     const statusKey = profileData.status || 'offline';
     profileStatusElement.textContent = statusEmojis[statusKey] || defaultStatusEmoji;
     console.log("Profile section updated.");
 }
 
+// Handles President Info display
 async function displayPresidentData() {
     const placeholderElement = document.getElementById('president-placeholder');
     if (!placeholderElement) { console.warn("President placeholder missing."); return; }
@@ -263,6 +268,7 @@ async function displayPresidentData() {
     }
 }
 
+// Handles Useful Links display
 async function loadAndDisplayUsefulLinks() {
     const containerElement = document.querySelector('.useful-links-section .links-container');
     if (!containerElement) { console.warn("Useful links container missing (.useful-links-section .links-container)."); return; }
@@ -306,6 +312,7 @@ async function loadAndDisplayUsefulLinks() {
     }
 }
 
+// Handles Social Links display
 async function loadAndDisplaySocialLinks() {
     const containerElement = document.querySelector('.social-links-container');
      if (!containerElement) { console.warn("Social links container missing (.social-links-container)."); return; }
@@ -358,6 +365,7 @@ async function loadAndDisplaySocialLinks() {
     }
 }
 
+// Handles Disabilities List display
 async function loadAndDisplayDisabilities() {
     const placeholderElement = document.getElementById('disabilities-list-placeholder');
     if (!placeholderElement) { console.warn("Disabilities placeholder missing (#disabilities-list-placeholder)."); return; }
@@ -402,6 +410,7 @@ async function loadAndDisplayDisabilities() {
     }
 }
 
+// Handles Tech Items List display
 async function loadAndDisplayTechItems() {
     const techItemsListContainer = document.getElementById('tech-items-list-dynamic');
     if (!techItemsListContainer) { console.error("Tech Item Load Error: Container element #tech-items-list-dynamic not found."); return; }
@@ -439,6 +448,7 @@ async function loadAndDisplayTechItems() {
     }
 }
 
+// Handles FAQs List display
 async function loadAndDisplayFaqs() {
     const faqContainer = document.getElementById('faq-container-dynamic');
      if (!faqContainer) { console.error("FAQ Load Error: Container element #faq-container-dynamic not found."); return; }
@@ -490,13 +500,17 @@ function attachFaqAccordionListeners() {
     container.addEventListener('click', (event) => {
         const questionButton = event.target.closest('.faq-question');
         if (!questionButton) return;
+
         const faqItem = questionButton.closest('.faq-item');
         if (!faqItem) return;
+
         const answer = faqItem.querySelector('.faq-answer');
         if (!answer) return;
+
         const icon = questionButton.querySelector('.faq-icon');
         const isActive = faqItem.classList.contains('active');
 
+        // Toggle the current item
         if (isActive) {
             faqItem.classList.remove('active');
             answer.style.maxHeight = null;
@@ -513,14 +527,15 @@ function attachFaqAccordionListeners() {
 // Handles Shoutout Platforms display
 async function loadShoutoutPlatformData(platform, gridElement, timestampElement) {
     if (!firebaseAppInitialized || !db) { console.error(`Shoutout load error (${platform}): Firebase not ready.`); if(gridElement) gridElement.innerHTML = `<p class="error">Error loading ${platform} creators (DB Init).</p>`; return; }
-    // Changed check: Now just warns if gridElement is missing, doesn't try to write to it.
+    // Check specifically for the grid element existence
     if (!gridElement) {
-        console.warn(`Grid element missing for ${platform}. Cannot display shoutouts.`);
-        return; // Exit if grid element isn't found
+        console.warn(`Grid element missing for ${platform}. Cannot display shoutouts.`); // Changed from error to warning as it's an HTML issue
+        // No need to update innerHTML if gridElement is null
+        return;
     }
 
-    console.log(`Loading ${platform} shoutout data into:`, gridElement); // Log the element found
-    gridElement.innerHTML = `<p>Loading ${platform} Creators...</p>`; // Show loading IN the grid
+    console.log(`Loading ${platform} shoutout data...`);
+    gridElement.innerHTML = `<p>Loading ${platform} Creators...</p>`;
     if (timestampElement) timestampElement.textContent = 'Last Updated: Loading...';
 
     let renderFunction;
@@ -602,16 +617,18 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
             targetDateMillis = null;
         }
     } else {
+        // This case triggers the warning below if targetTimestamp isn't a valid Timestamp object
         targetDateMillis = null;
     }
 
-    const displayTitle = countdownTitle || "Countdown";
+    const displayTitle = countdownTitle || "Countdown"; // Default title
 
-    // If target date is invalid or missing from Firestore
+    // If target date is invalid or missing (from Firestore or conversion failed)
     if (!targetDateMillis) {
-        console.warn("Invalid or missing countdown target date from Firebase. Hiding countdown section."); // This matches your error log
+        // This log matches the console error you saw
+        console.warn("Invalid or missing countdown target date from Firebase. Hiding countdown section.");
         countdownSection.style.display = 'none';
-        return; // Stop countdown setup
+        return; // Stop execution for countdown if date is bad
     }
 
     // Get references to inner elements
@@ -651,17 +668,20 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
             clearInterval(intervalId);
             console.log(`Countdown for "${displayTitle}" finished.`);
             updateDisplay(0, 0, 0, 0, 0, 0);
+             // Optionally update title on expiration
+             // titleElement.textContent = "Event Started!";
             return;
         }
 
+        // Approximate Calculation Method
         const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
         const totalHours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const totalMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const totalSeconds = Math.floor((distance % (1000 * 60)) / 1000);
         const approxYears = Math.floor(totalDays / 365);
         const daysAfterYears = totalDays % 365;
-        const approxMonths = Math.floor(daysAfterYears / 30);
-        const finalDays = daysAfterYears % 30;
+        const approxMonths = Math.floor(daysAfterYears / 30); // Rough month approx.
+        const finalDays = daysAfterYears % 30; // Remainder days
 
         updateDisplay(approxYears, approxMonths, finalDays, totalHours, totalMinutes, totalSeconds);
 
@@ -683,6 +703,8 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
     } else {
          clearInterval(intervalId);
          updateDisplay(0, 0, 0, 0, 0, 0);
+         // Optionally update title on initial load if expired
+         // titleElement.textContent = "Event Started!";
     }
 }
 // --- END: Configurable Countdown Timer Logic ---
@@ -696,18 +718,12 @@ async function initializeHomepageContent() {
     const maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
     const countdownSection = document.querySelector('.countdown-section');
 
-    // --- SELECTORS UPDATED TO MATCH YOUR HTML ---
+    // References for Shoutout Sections (IDs must exist in your HTML)
     const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
-    // Selects the div with class 'creator-grid' immediately following the header
-    const tiktokGridContainer = document.querySelector('#tiktok-shoutouts + .creator-grid');
-    // Selects the div with class 'unavailable-message' immediately following the grid container
-    const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts + .creator-grid + .unavailable-message');
-    // Selects the div using its class name
-    const instagramGridContainer = document.querySelector('.instagram-creator-grid');
-    // Selects the div using its class name
-    const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
-    // --- END SELECTOR UPDATES ---
-
+    const tiktokGridContainer = document.getElementById('tiktok-creator-grid'); // Needs ID="tiktok-creator-grid" in HTML
+    const tiktokUnavailableMessage = document.getElementById('tiktok-unavailable-message');
+    const instagramGridContainer = document.getElementById('instagram-creator-grid'); // Needs ID="instagram-creator-grid" in HTML
+    const youtubeGridContainer = document.getElementById('youtube-creator-grid');     // Needs ID="youtube-creator-grid" in HTML
 
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
@@ -758,18 +774,19 @@ async function initializeHomepageContent() {
     } else {
         console.log("Maintenance mode is OFF. Proceeding with content display...");
         if (mainContentWrapper) mainContentWrapper.style.display = '';
-        if (countdownSection) countdownSection.style.display = ''; // Show section initially (function hides if data invalid)
+        if (countdownSection) countdownSection.style.display = '';
         if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
     }
 
     // Start Countdown (using fetched config)
+    // The function now handles its own visibility based on valid data
     startEventCountdown(countdownTargetDate, countdownTitle);
 
-    // Apply TikTok Visibility Logic using the corrected selectors
-    // Check if BOTH header and grid were found using the NEW selectors
+    // Apply TikTok Visibility Logic
+    // This console log matches the error you saw if elements are missing
     if (!tiktokHeaderContainer || !tiktokGridContainer) {
-         console.warn("Could not find TikTok header (#tiktok-shoutouts) and/or grid container (#tiktok-shoutouts + .creator-grid) to apply visibility logic.");
-         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none'; // Hide message if structure is wrong
+         console.warn("Could not find TikTok header (#tiktok-shoutouts) and/or grid container (#tiktok-creator-grid) to apply visibility logic.");
+         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none'; // Hide message if elements missing
     } else {
         // Elements found, proceed with logic
         if (hideTikTokSection) {
@@ -779,30 +796,30 @@ async function initializeHomepageContent() {
             if (tiktokUnavailableMessage) {
                 tiktokUnavailableMessage.innerHTML = '<p style="margin:0; padding: 15px; text-align: center;"><strong>Notice:</strong> Due to current regulations in the United States, TikTok content is unavailable at this time.</p>';
                 tiktokUnavailableMessage.style.display = 'block';
-            } else { console.warn("TikTok unavailable message element (#tiktok-shoutouts + .creator-grid + .unavailable-message) not found."); } // Updated selector check
+            } else { console.warn("TikTok unavailable message element not found."); }
         } else {
             console.log("Showing TikTok section based on settings.");
             tiktokHeaderContainer.style.display = '';
-            tiktokGridContainer.style.display = ''; // Assuming default display is suitable
+            tiktokGridContainer.style.display = '';
             if (tiktokUnavailableMessage) {
                 tiktokUnavailableMessage.style.display = 'none';
                 tiktokUnavailableMessage.innerHTML = '';
             }
             const timestampElement = tiktokHeaderContainer.querySelector('#tiktok-last-updated-timestamp');
-            loadShoutoutPlatformData('tiktok', tiktokGridContainer, timestampElement); // Pass the correctly selected grid container
+            // Load data only if section is intended to be shown
+            loadShoutoutPlatformData('tiktok', tiktokGridContainer, timestampElement);
         }
     }
 
 
-    // Load ALL OTHER Content Sections using corrected selectors where applicable
+    // Load ALL OTHER Content Sections
     console.log("Initiating loading of other content sections...");
 
     displayProfileData(siteSettings); // Call profile display with already fetched data
 
-    // Pass the correctly selected grid containers to loadShoutoutPlatformData
     const otherLoadPromises = [
         displayPresidentData(),
-        // These calls should now find the elements using the class selectors
+        // These calls will log warnings if the grid elements are missing (matching your console errors)
         loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
         loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
         loadAndDisplayUsefulLinks(),
