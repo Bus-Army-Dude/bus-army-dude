@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     // --- Add these with other DOM element references ---
     const countdownTitleInput = document.getElementById('countdown-title-input');
     const countdownDatetimeInput = document.getElementById('countdown-datetime-input');
+    const saveCountdownSettingsButton = document.getElementById('save-countdown-settings-button');
 
     // FAQ Management Elements
     const addFaqForm = document.getElementById('add-faq-form');
@@ -1096,117 +1097,112 @@ function renderYouTubeCard(account) { //
     }
     // *** END displayFilteredShoutouts FUNCTION ***
 
-// --- MODIFIED: Function to Load Profile Data into Admin Form (Includes Maintenance Mode AND Hide TikTok Toggle) ---
-    async function loadProfileData() { //
-        // Ensure user is logged in before attempting to load
-        if (!auth || !auth.currentUser) { //
-            console.warn("Auth not ready or user not logged in when trying to load profile."); //
-            return; //
-        }
-        if (!profileForm) { // Check if the profile form exists in the DOM
-            console.log("Profile form element not found."); //
-            return; //
-        }
-        // Also check if toggles exist before trying to use them
-        if (!maintenanceModeToggle) { //
-            console.warn("Maintenance mode toggle element not found."); //
-        }
-        // <<< ADD THIS CHECK >>>
-        if (!hideTikTokSectionToggle) {
-            console.warn("Hide TikTok section toggle element not found.");
-        }
+// --- CORRECTED: Function to Load Profile Data AND Countdown Settings ---
+async function loadProfileData() {
+    if (!auth || !auth.currentUser) {
+        console.warn("Auth not ready or user not logged in when trying to load profile.");
+        return;
+    }
+    // Check required form elements exist
+    if (!profileForm || !maintenanceModeToggle || !hideTikTokSectionToggle || !countdownTitleInput || !countdownDatetimeInput || !adminPfpPreview /* Added check */) {
+        console.error("One or more profile/settings form elements missing in admin.html!");
+        if (profileStatusMessage) showProfileStatus("Error: Page structure incorrect.", true);
+        else if(settingsStatusMessage) showSettingsStatus("Error: Page structure incorrect.", true);
+        return;
+    }
 
-        // <<< START: Load Countdown Settings >>>
+    console.log("Attempting to load profile & countdown data from:", profileDocRef.path);
+    try {
+        const docSnap = await getDoc(profileDocRef); // Fetch the profile/settings document
+
+        if (docSnap.exists()) {
+            const data = docSnap.data(); // <<< 'data' is defined HERE
+            console.log("Loaded profile/settings data:", data);
+
+            // --- Populate fields INSIDE this block ---
+            if(profileUsernameInput) profileUsernameInput.value = data.username || '';
+            if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || '';
+            if(profileBioInput) profileBioInput.value = data.bio || '';
+            if(profileStatusInput) profileStatusInput.value = data.status || 'offline';
+
+            // Toggles
+            maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false;
+            maintenanceModeToggle.disabled = false;
+            hideTikTokSectionToggle.checked = data.hideTikTokSection || false;
+            hideTikTokSectionToggle.disabled = false;
+
+            // *** Load Countdown Settings (NOW CORRECTLY PLACED) ***
             if (countdownTitleInput) {
-                countdownTitleInput.value = data.countdownTitle || ''; // Load title
+                countdownTitleInput.value = data.countdownTitle || '';
+                countdownTitleInput.disabled = false;
             }
             if (countdownDatetimeInput) {
-                countdownDatetimeInput.value = data.countdownTargetDateTime || ''; // Load date/time string
+                if (data.countdownTargetDate && data.countdownTargetDate instanceof Timestamp) {
+                    try {
+                        const targetDate = data.countdownTargetDate.toDate();
+                        const year = targetDate.getFullYear();
+                        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+                        const day = String(targetDate.getDate()).padStart(2, '0');
+                        const hours = String(targetDate.getHours()).padStart(2, '0');
+                        const minutes = String(targetDate.getMinutes()).padStart(2, '0');
+                        const seconds = String(targetDate.getSeconds()).padStart(2, '0');
+                        countdownDatetimeInput.value = `<span class="math-inline">\{year\}\-</span>{month}-<span class="math-inline">\{day\}T</span>{hours}:<span class="math-inline">\{minutes\}\:</span>{seconds}`;
+                        console.log("Loaded existing countdown date/time.");
+                    } catch (dateError) {
+                        console.error("Error processing countdown timestamp:", dateError);
+                        countdownDatetimeInput.value = '';
+                        if (settingsStatusMessage) showSettingsStatus("Error reading existing date.", true);
+                    }
+                } else {
+                    countdownDatetimeInput.value = '';
+                    console.log("No existing countdown date/time found.");
+                }
+                countdownDatetimeInput.disabled = false;
             }
+            // *** End Countdown Load ***
 
-
-        console.log("Attempting to load profile data from:", profileDocRef.path); //
-        try { //
-            const docSnap = await getDoc(profileDocRef); // Fetch the profile document
-
-            if (docSnap.exists()) { //
-                const data = docSnap.data(); //
-                console.log("Loaded profile data:", data); //
-
-                // Populate form fields with fetched data or defaults
-                if(profileUsernameInput) profileUsernameInput.value = data.username || ''; //
-                if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || ''; //
-                if(profileBioInput) profileBioInput.value = data.bio || ''; //
-                if(profileStatusInput) profileStatusInput.value = data.status || 'offline'; // Default to 'offline' if not set
-
-                // Set maintenance toggle state
-                if(maintenanceModeToggle) { //
-                    maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; // Set toggle based on Firestore data (default false if missing)
-                    maintenanceModeToggle.disabled = false; // Ensure it's enabled if data loaded
-                }
-
-                // <<< START: Load Hide TikTok Toggle State >>>
-                if (hideTikTokSectionToggle) {
-                    hideTikTokSectionToggle.checked = data.hideTikTokSection || false; // Default to false if missing
-                    hideTikTokSectionToggle.disabled = false; // Ensure enabled
-                }
-                // <<< END: Load Hide TikTok Toggle State >>>
-
-                if (countdownTitleInput) countdownTitleInput.value = '';
-                if (countdownDatetimeInput) countdownDatetimeInput.value = '';
-
-
-                // Update profile picture preview
-                if (adminPfpPreview && data.profilePicUrl) { //
-                    adminPfpPreview.src = data.profilePicUrl; //
-                    adminPfpPreview.style.display = 'inline-block'; // Show preview
-                } else if (adminPfpPreview) { //
-                    adminPfpPreview.src = ''; // Clear src if no URL
-                    adminPfpPreview.style.display = 'none'; // Hide preview
-                }
-            } else { //
-                // Handle case where the profile document doesn't exist yet
-                console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`); //
-                if (profileForm) profileForm.reset(); // Reset main profile form fields
-                if (profileStatusInput) profileStatusInput.value = 'offline'; // Explicitly set default status
-
-                // Default maintenance toggle state
-                if(maintenanceModeToggle) { //
-                    maintenanceModeToggle.checked = false; // Default to false if doc missing
-                    maintenanceModeToggle.disabled = false; // Ensure enabled
-                }
-                 // <<< START: Default Hide TikTok Toggle State >>>
-                if (hideTikTokSectionToggle) {
-                    hideTikTokSectionToggle.checked = false; // Default to false if doc missing
-                    hideTikTokSectionToggle.disabled = false; // Ensure enabled
-                }
-                 // <<< END: Default Hide TikTok Toggle State >>>
-
-                if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
-                 if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
-
-                if(adminPfpPreview) adminPfpPreview.style.display = 'none'; // Hide preview
+            // Profile Picture Preview
+            if (data.profilePicUrl) { // Check if URL exists in data
+                adminPfpPreview.src = data.profilePicUrl;
+                adminPfpPreview.style.display = 'inline-block';
+                 // Add error handler here dynamically if needed, or rely on the global one added later
+                 adminPfpPreview.onerror = () => {
+                    console.warn("Admin Preview: Image failed to load from URL:", adminPfpPreview.src);
+                    adminPfpPreview.style.display = 'none';
+                    if(profilePicUrlInput) profilePicUrlInput.classList.add('input-error');
+                 };
+            } else {
+                adminPfpPreview.src = '';
+                adminPfpPreview.style.display = 'none';
             }
-        } catch (error) { //
-            console.error("Error loading profile data:", error); //
-            showProfileStatus("Error loading profile data.", true); //
-            // Set defaults and disable toggles on error
-            if (profileForm) profileForm.reset(); //
-            if (profileStatusInput) profileStatusInput.value = 'offline'; //
-            if(maintenanceModeToggle) { //
-                maintenanceModeToggle.checked = false; //
-                maintenanceModeToggle.disabled = true; // Disable toggle on error
-            }
-             // <<< START: Disable Hide TikTok Toggle on Error >>>
-            if (hideTikTokSectionToggle) {
-                hideTikTokSectionToggle.checked = false;
-                hideTikTokSectionToggle.disabled = true; // Disable toggle on error
-            }
-             // <<< END: Disable Hide TikTok Toggle on Error >>>
+            // --- End populate fields ---
 
-            if(adminPfpPreview) adminPfpPreview.style.display = 'none'; //
+        } else {
+            // Handle doc not existing (keep existing logic)
+            console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`);
+            if (profileForm) profileForm.reset();
+            if (profileStatusInput) profileStatusInput.value = 'offline';
+            maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = false;
+            hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = false;
+            if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
+            if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
+            if(adminPfpPreview) adminPfpPreview.style.display = 'none';
+            if(settingsStatusMessage) showSettingsStatus("Settings document missing. Save to create.", true)
         }
+    } catch (error) {
+        // Handle errors (keep existing logic)
+        console.error("Error loading profile/settings data:", error);
+        if(profileStatusMessage) showProfileStatus("Error loading profile data.", true);
+        if(settingsStatusMessage) showSettingsStatus("Error loading site settings.", true);
+        if (profileForm) profileForm.reset();
+        if (profileStatusInput) profileStatusInput.value = 'offline';
+        maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = true;
+        hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = true;
+        if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
+        if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
+        if(adminPfpPreview) adminPfpPreview.style.display = 'none';
     }
+}
 
 
     // --- Function to Save Profile Data (with Logging) ---
