@@ -61,7 +61,7 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
     } catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
 }
 
-// --- Functions to Render Shoutout Cards ---
+// --- Functions to Render Cards (Shoutouts, Tech, FAQs) ---
 function renderTikTokCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
     const username = account.username || 'N/A';
@@ -132,8 +132,6 @@ function renderYouTubeCard(account) {
              </div>`;
 }
 
-
-// --- Function to Render Tech Item Card ---
 function renderTechItemHomepage(itemData) {
     const name = itemData.name || 'Unnamed Device';
     const model = itemData.model || '';
@@ -186,7 +184,6 @@ function renderTechItemHomepage(itemData) {
             </div>`;
 }
 
-/** Generates HTML for a single FAQ item for the homepage */
 function renderFaqItemHomepage(faqData) {
     const question = faqData.question || 'No Question Provided';
     // Ensure answer is treated as HTML if it contains tags, otherwise wrap in <p>
@@ -225,7 +222,6 @@ async function displayProfileData(profileData) {
 
     profileUsernameElement.textContent = profileData.username || defaultUsername;
     profilePicElement.src = profileData.profilePicUrl || defaultProfilePic;
-    // Render bio safely if it might contain HTML (or use a library like DOMPurify if needed)
     profileBioElement.textContent = profileData.bio || defaultBio; // Using textContent for safety
     const statusKey = profileData.status || 'offline';
     profileStatusElement.textContent = statusEmojis[statusKey] || defaultStatusEmoji;
@@ -282,24 +278,22 @@ async function loadAndDisplayUsefulLinks() {
 
     containerElement.innerHTML = '<p>Loading links...</p>';
     try {
-        // Assumes an 'order' field exists for sorting
         const linkQuery = query(usefulLinksCollectionRef, orderBy("order", "asc"));
         const querySnapshot = await getDocs(linkQuery);
-        containerElement.innerHTML = ''; // Clear loading message
+        containerElement.innerHTML = '';
 
         if (querySnapshot.empty) {
             containerElement.innerHTML = '<p>No useful links available at this time.</p>';
         } else {
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
-                // Ensure required fields exist
                 if (data.label && data.url) {
                     const linkElement = document.createElement('a');
                     linkElement.href = data.url;
                     linkElement.textContent = data.label;
-                    linkElement.target = '_blank'; // Open in new tab
-                    linkElement.rel = 'noopener noreferrer'; // Security best practice
-                    linkElement.className = 'link-button'; // Apply styling
+                    linkElement.target = '_blank';
+                    linkElement.rel = 'noopener noreferrer';
+                    linkElement.className = 'link-button';
                     containerElement.appendChild(linkElement);
                 } else {
                     console.warn("Skipping useful link item due to missing label or URL:", doc.id);
@@ -328,35 +322,31 @@ async function loadAndDisplaySocialLinks() {
 
     containerElement.innerHTML = '<p>Loading socials...</p>';
     try {
-        // Assumes an 'order' field exists for sorting
         const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc"));
         const querySnapshot = await getDocs(linkQuery);
-        containerElement.innerHTML = ''; // Clear loading message
+        containerElement.innerHTML = '';
 
         if (querySnapshot.empty) {
             containerElement.innerHTML = '<p>No social links available.</p>';
         } else {
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
-                // Ensure required fields exist
                 if (data.label && data.url) {
                     const linkElement = document.createElement('a');
                     linkElement.href = data.url;
                     linkElement.target = '_blank';
                     linkElement.rel = 'noopener noreferrer';
-                    linkElement.className = 'social-button'; // Apply styling
+                    linkElement.className = 'social-button';
 
-                    // Optional: Add icon if specified in data
                     if (data.iconClass) {
                          const iconElement = document.createElement('i');
-                         iconElement.className = data.iconClass + ' social-icon'; // Assumes Font Awesome or similar
+                         iconElement.className = data.iconClass + ' social-icon';
                          linkElement.appendChild(iconElement);
                      }
 
                     const textElement = document.createElement('span');
                     textElement.textContent = data.label;
                     linkElement.appendChild(textElement);
-
                     containerElement.appendChild(linkElement);
                 } else {
                     console.warn("Skipping social link item due to missing label or URL:", doc.id);
@@ -379,23 +369,21 @@ async function loadAndDisplaySocialLinks() {
 async function loadAndDisplayDisabilities() {
     const placeholderElement = document.getElementById('disabilities-list-placeholder');
     if (!placeholderElement) { console.warn("Disabilities placeholder missing (#disabilities-list-placeholder)."); return; }
-    placeholderElement.innerHTML = '<li>Loading...</li>'; // Use list item for loading
+    placeholderElement.innerHTML = '<li>Loading...</li>';
 
     if (!firebaseAppInitialized || !db) { console.error("Disabilities load error: Firebase not ready."); placeholderElement.innerHTML = '<li>Error (DB Init Error).</li>'; return; }
     if (!disabilitiesCollectionRef) { console.error("Disabilities load error: Collection ref missing."); placeholderElement.innerHTML = '<li>Error (Config Error).</li>'; return; }
 
     try {
-        // Assumes an 'order' field exists for sorting
         const disabilityQuery = query(disabilitiesCollectionRef, orderBy("order", "asc"));
         const querySnapshot = await getDocs(disabilityQuery);
-        placeholderElement.innerHTML = ''; // Clear loading message
+        placeholderElement.innerHTML = '';
 
         if (querySnapshot.empty) {
             placeholderElement.innerHTML = '<li>No specific information available at this time.</li>';
         } else {
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
-                // Ensure required fields exist
                 if (data.name && data.url) {
                     const listItem = document.createElement('li');
                     const linkElement = document.createElement('a');
@@ -432,7 +420,6 @@ async function loadAndDisplayTechItems() {
     console.log("Fetching tech items for homepage...");
     techItemsListContainer.innerHTML = '<p>Loading Tech Info...</p>';
     try {
-        // Assumes an 'order' field exists for sorting
         const techQuery = query(techItemsCollectionRef, orderBy("order", "asc"));
         const querySnapshot = await getDocs(techQuery);
         let allItemsHtml = '';
@@ -443,7 +430,7 @@ async function loadAndDisplayTechItems() {
         } else {
             console.log(`Found ${querySnapshot.size} tech items.`);
             querySnapshot.forEach((doc) => {
-                allItemsHtml += renderTechItemHomepage(doc.data()); // Use the render function
+                allItemsHtml += renderTechItemHomepage(doc.data());
             });
         }
         techItemsListContainer.innerHTML = allItemsHtml;
@@ -471,7 +458,6 @@ async function loadAndDisplayFaqs() {
     console.log("Fetching FAQs for homepage...");
     faqContainer.innerHTML = '<p>Loading FAQs...</p>';
     try {
-        // Assumes an 'order' field exists for sorting
         const faqQuery = query(faqsCollectionRef, orderBy("order", "asc"));
         const querySnapshot = await getDocs(faqQuery);
         let allItemsHtml = '';
@@ -482,12 +468,11 @@ async function loadAndDisplayFaqs() {
         } else {
             console.log(`Found ${querySnapshot.size} FAQs.`);
             querySnapshot.forEach((doc) => {
-                allItemsHtml += renderFaqItemHomepage(doc.data()); // Use the render function
+                allItemsHtml += renderFaqItemHomepage(doc.data());
             });
         }
         faqContainer.innerHTML = allItemsHtml;
-        // Attach listeners AFTER content is added
-        attachFaqAccordionListeners();
+        attachFaqAccordionListeners(); // Attach listeners AFTER content is added
         console.log("FAQ list updated on homepage.");
     } catch (error) {
         console.error("Error loading/displaying FAQs:", error);
@@ -506,52 +491,34 @@ function attachFaqAccordionListeners() {
     if (!container) { console.error("FAQ Accordion Error: Container #faq-container-dynamic not found for listeners."); return; }
 
     console.log("Attaching FAQ accordion listeners...");
-    // Prevent duplicate listeners if function is called multiple times accidentally
     if (container.dataset.faqListenersAttached === 'true') {
         console.log("FAQ listeners already attached, skipping.");
         return;
     }
-    container.dataset.faqListenersAttached = 'true'; // Mark as attached
+    container.dataset.faqListenersAttached = 'true';
 
     container.addEventListener('click', (event) => {
-        // Find the closest ancestor button with the class 'faq-question'
         const questionButton = event.target.closest('.faq-question');
-        if (!questionButton) return; // Exit if click wasn't on or inside a question button
+        if (!questionButton) return;
 
         const faqItem = questionButton.closest('.faq-item');
-        if (!faqItem) return; // Should always find this if button exists
+        if (!faqItem) return;
 
         const answer = faqItem.querySelector('.faq-answer');
-        if (!answer) return; // Answer element must exist
+        if (!answer) return;
 
-        const icon = questionButton.querySelector('.faq-icon'); // Get the icon span
-
+        const icon = questionButton.querySelector('.faq-icon');
         const isActive = faqItem.classList.contains('active');
-
-        // --- Optional: Close other open FAQs ---
-        /*
-        const allItems = container.querySelectorAll('.faq-item');
-        allItems.forEach(otherItem => {
-            if (otherItem !== faqItem && otherItem.classList.contains('active')) {
-                otherItem.classList.remove('active');
-                const otherAnswer = otherItem.querySelector('.faq-answer');
-                const otherIcon = otherItem.querySelector('.faq-icon');
-                if (otherAnswer) otherAnswer.style.maxHeight = null;
-                if (otherIcon) otherIcon.textContent = '+';
-            }
-        });
-        */
-        // --- End Optional: Close others ---
 
         // Toggle the current item
         if (isActive) {
             faqItem.classList.remove('active');
-            answer.style.maxHeight = null; // Collapse
-            if (icon) icon.textContent = '+'; // Change icon
+            answer.style.maxHeight = null;
+            if (icon) icon.textContent = '+';
         } else {
             faqItem.classList.add('active');
-            answer.style.maxHeight = answer.scrollHeight + "px"; // Expand
-             if (icon) icon.textContent = '-'; // Change icon
+            answer.style.maxHeight = answer.scrollHeight + "px";
+             if (icon) icon.textContent = '-';
         }
     });
     console.log("FAQ accordion listeners attached.");
@@ -560,7 +527,12 @@ function attachFaqAccordionListeners() {
 // Handles Shoutout Platforms display
 async function loadShoutoutPlatformData(platform, gridElement, timestampElement) {
     if (!firebaseAppInitialized || !db) { console.error(`Shoutout load error (${platform}): Firebase not ready.`); if(gridElement) gridElement.innerHTML = `<p class="error">Error loading ${platform} creators (DB Init).</p>`; return; }
-    if (!gridElement) { console.warn(`Grid element missing for ${platform}. Cannot display shoutouts.`); return; }
+    // Check specifically for the grid element existence
+    if (!gridElement) {
+        console.warn(`Grid element missing for ${platform}. Cannot display shoutouts.`); // Changed from error to warning as it's an HTML issue
+        // No need to update innerHTML if gridElement is null
+        return;
+    }
 
     console.log(`Loading ${platform} shoutout data...`);
     gridElement.innerHTML = `<p>Loading ${platform} Creators...</p>`;
@@ -576,23 +548,19 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
 
     try {
         const shoutoutsCol = collection(db, 'shoutouts');
-        // Ensure composite index exists in Firestore: shoutouts collection, fields: platform (ASC/DESC), order (ASC/DESC)
         const shoutoutQuery = query(shoutoutsCol, where("platform", "==", platform), orderBy("order", "asc"));
         const querySnapshot = await getDocs(shoutoutQuery);
 
         if (querySnapshot.empty) {
             gridElement.innerHTML = `<p>No ${platform} creators featured currently.</p>`;
         } else {
-            // Build HTML string for all cards
             gridElement.innerHTML = querySnapshot.docs.map(doc => renderFunction(doc.data())).join('');
         }
 
-        // Fetch and update timestamp from 'siteConfig/shoutoutsMetadata' doc
         if (timestampElement && shoutoutsMetaRef) {
             try {
                 const metaSnap = await getDoc(shoutoutsMetaRef);
                 if (metaSnap.exists()) {
-                    // Field name e.g., 'lastUpdatedTime_tiktok'
                     const tsField = `lastUpdatedTime_${platform}`;
                     timestampElement.textContent = `Last Updated: ${formatFirestoreTimestamp(metaSnap.data()?.[tsField])}`;
                 } else {
@@ -606,7 +574,6 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
              console.warn("Timestamp element provided, but shoutoutsMetaRef is not configured.");
              timestampElement.textContent = 'Last Updated: N/A';
         }
-
         console.log(`${platform} shoutouts displayed.`);
 
     } catch (error) {
@@ -650,16 +617,18 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
             targetDateMillis = null;
         }
     } else {
+        // This case triggers the warning below if targetTimestamp isn't a valid Timestamp object
         targetDateMillis = null;
     }
 
     const displayTitle = countdownTitle || "Countdown"; // Default title
 
-    // If target date is invalid or missing, hide the section
+    // If target date is invalid or missing (from Firestore or conversion failed)
     if (!targetDateMillis) {
+        // This log matches the console error you saw
         console.warn("Invalid or missing countdown target date from Firebase. Hiding countdown section.");
         countdownSection.style.display = 'none';
-        return;
+        return; // Stop execution for countdown if date is bad
     }
 
     // Get references to inner elements
@@ -749,12 +718,12 @@ async function initializeHomepageContent() {
     const maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
     const countdownSection = document.querySelector('.countdown-section');
 
-    // References for Shoutout Sections
+    // References for Shoutout Sections (IDs must exist in your HTML)
     const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
-    const tiktokGridContainer = document.getElementById('tiktok-creator-grid');
+    const tiktokGridContainer = document.getElementById('tiktok-creator-grid'); // Needs ID="tiktok-creator-grid" in HTML
     const tiktokUnavailableMessage = document.getElementById('tiktok-unavailable-message');
-    const instagramGridContainer = document.getElementById('instagram-creator-grid');
-    const youtubeGridContainer = document.getElementById('youtube-creator-grid');
+    const instagramGridContainer = document.getElementById('instagram-creator-grid'); // Needs ID="instagram-creator-grid" in HTML
+    const youtubeGridContainer = document.getElementById('youtube-creator-grid');     // Needs ID="youtube-creator-grid" in HTML
 
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
@@ -801,19 +770,25 @@ async function initializeHomepageContent() {
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p>The site is currently undergoing maintenance. Please check back later.</p>'; maintenanceMessageElement.style.display = 'block'; }
-        return; // Stop further execution
+        return;
     } else {
         console.log("Maintenance mode is OFF. Proceeding with content display...");
         if (mainContentWrapper) mainContentWrapper.style.display = '';
-        if (countdownSection) countdownSection.style.display = ''; // Show section initially (function hides if data invalid)
+        if (countdownSection) countdownSection.style.display = '';
         if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
     }
 
     // Start Countdown (using fetched config)
+    // The function now handles its own visibility based on valid data
     startEventCountdown(countdownTargetDate, countdownTitle);
 
     // Apply TikTok Visibility Logic
-    if (tiktokHeaderContainer && tiktokGridContainer) {
+    // This console log matches the error you saw if elements are missing
+    if (!tiktokHeaderContainer || !tiktokGridContainer) {
+         console.warn("Could not find TikTok header (#tiktok-shoutouts) and/or grid container (#tiktok-creator-grid) to apply visibility logic.");
+         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none'; // Hide message if elements missing
+    } else {
+        // Elements found, proceed with logic
         if (hideTikTokSection) {
             console.log("Hiding TikTok section based on settings.");
             tiktokHeaderContainer.style.display = 'none';
@@ -831,29 +806,27 @@ async function initializeHomepageContent() {
                 tiktokUnavailableMessage.innerHTML = '';
             }
             const timestampElement = tiktokHeaderContainer.querySelector('#tiktok-last-updated-timestamp');
+            // Load data only if section is intended to be shown
             loadShoutoutPlatformData('tiktok', tiktokGridContainer, timestampElement);
         }
-    } else {
-        console.warn("Could not find TikTok header/grid containers to apply visibility logic.");
-        if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
     }
+
 
     // Load ALL OTHER Content Sections
     console.log("Initiating loading of other content sections...");
 
-    // Call profile display immediately with already fetched data
-    displayProfileData(siteSettings);
+    displayProfileData(siteSettings); // Call profile display with already fetched data
 
-    // Use Promise.allSettled for remaining sections for parallelism and error isolation
     const otherLoadPromises = [
         displayPresidentData(),
+        // These calls will log warnings if the grid elements are missing (matching your console errors)
         loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
         loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
         loadAndDisplayUsefulLinks(),
         loadAndDisplaySocialLinks(),
         loadAndDisplayDisabilities(),
         loadAndDisplayTechItems(),
-        loadAndDisplayFaqs() // Includes attaching FAQ listeners
+        loadAndDisplayFaqs()
     ];
 
     const otherResults = await Promise.allSettled(otherLoadPromises);
