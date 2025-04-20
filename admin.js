@@ -3270,12 +3270,13 @@ function displayFilteredActivityLog() {
     // ==================================
 
 
-     // --- *** UPDATED Event Listener for Saving ONLY Countdown Settings *** ---
-    if (saveCountdownSettingsButton) { // Check if the specific button exists
+    // --- Event Listener for Saving ONLY Countdown Settings ---
+    // Make sure this targets the correct button ID from your HTML
+    if (saveCountdownSettingsButton) {
         saveCountdownSettingsButton.addEventListener('click', async () => {
-            // Check elements needed (include the expired message input)
-            if (!countdownTitleInput || !countdownDatetimeInput || !countdownExpiredMessageInput || !settingsStatusMessage) { // Added check for countdownExpiredMessageInput
-                 console.error("Cannot save countdown - one or more countdown input elements are missing!");
+            // Check required elements exist first
+            if (!countdownTitleInput || !countdownDatetimeInput || !countdownExpiredMessageInput || !settingsStatusMessage) {
+                 console.error("Cannot save countdown - required input elements are missing!");
                  showSettingsStatus("Error: Page structure problem. Cannot save countdown.", true);
                  return;
              }
@@ -3285,83 +3286,66 @@ function displayFilteredActivityLog() {
                  return;
             }
 
-            // --- Read values (including the new textarea) ---
+            // --- Read ALL THREE countdown values ---
             const title = countdownTitleInput.value.trim();
             const dateTimeString = countdownDatetimeInput.value.trim();
-            const expiredMessage = countdownExpiredMessageInput.value.trim(); // <<<--- READ EXPIRED MESSAGE
+            const expiredMessage = countdownExpiredMessageInput.value.trim(); // <<< READ TEXTAREA
 
             showSettingsStatus("Saving countdown settings...", false);
 
-            // Prepare data object FOR COUNTDOWN ONLY
+            // --- Prepare data object WITH EXPIRED MESSAGE ---
             const updateData = {
                 countdownTitle: title,
-                countdownExpiredMessage: expiredMessage // <<<--- INCLUDE EXPIRED MESSAGE IN DATA
-                // countdownTargetDate will be added below conditionally
+                countdownExpiredMessage: expiredMessage // <<< INCLUDE MESSAGE
+                // countdownTargetDate added below conditionally
             };
             let isValid = true;
-            let targetTimestamp = null; // Initialize here
+            let targetTimestamp = null;
 
-            // --- Handle Countdown Date/Time ---
-            if (dateTimeString) { // Only process if input is not empty
-                // Basic format validation
+            // --- Handle Date/Time conversion (ensure Timestamp is imported at top) ---
+            if (dateTimeString) {
                 if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(dateTimeString)) {
                      showSettingsStatus('Invalid Date/Time format. Use YYYY-MM-DDTHH:MM:SS', true);
-                     isValid = false; // Stop saving
+                     isValid = false;
                 } else {
                     try {
-                        // Parse string as local date/time
                         const localDate = new Date(dateTimeString);
-                        if (isNaN(localDate.getTime())) {
-                            throw new Error("Invalid date or time value resulted in an invalid Date object.");
-                        }
-                        // Ensure Timestamp is imported at the top: import { Timestamp } from '...firebase-firestore.js'
-                        targetTimestamp = Timestamp.fromDate(localDate); // Convert valid local date to Firestore Timestamp
-                        updateData.countdownTargetDate = targetTimestamp; // Add Timestamp to update object
+                        if (isNaN(localDate.getTime())) { throw new Error("Invalid date/time value."); }
+                        targetTimestamp = Timestamp.fromDate(localDate);
+                        updateData.countdownTargetDate = targetTimestamp; // Add Timestamp
                         console.log("Converted input string to Timestamp:", targetTimestamp);
                     } catch (error) {
                         console.error("Error parsing date/time input:", error);
-                        // Add more detail if Timestamp wasn't imported
-                         let errorText = `Error parsing date/time: ${error.message}`;
+                        let errorText = `Error parsing date/time: ${error.message}`;
                          if (error instanceof ReferenceError && error.message.includes("Timestamp is not defined")) {
                             errorText += " (Import Timestamp from Firestore library at top of admin.js!)";
                          }
                         showSettingsStatus(errorText, true);
-                        isValid = false; // Stop saving if parsing fails
+                        isValid = false;
                     }
                 }
             } else {
-                 // If the field is empty, explicitly set it to null in Firestore
-                 updateData.countdownTargetDate = null;
-                 // Alternatively, to completely remove the field: use deleteField() - import it first
-                 // updateData.countdownTargetDate = deleteField();
+                 updateData.countdownTargetDate = null; // Set date to null if input is empty
                  console.log("Countdown date/time field cleared. Setting to null.");
             }
 
-            // Proceed only if validation passed
-            if (!isValid) {
-                return;
-            }
+            if (!isValid) { return; } // Stop if validation failed
 
             // --- Update Firestore Document ---
             try {
                 console.log("Updating Firestore with countdown data:", updateData);
-                await updateDoc(profileDocRef, updateData); // Save title, date, AND message
+                await updateDoc(profileDocRef, updateData); // <<< SAVES ALL 3 FIELDS
                 showSettingsStatus("Countdown settings saved successfully!", false);
                 console.log("Countdown settings updated in Firestore:", updateData);
 
-                // Log activity (optional: include message change status)
+                // Log activity
                  if (typeof logAdminActivity === 'function') {
-                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS', {
-                          title: title,
-                          targetSet: !!updateData.countdownTargetDate, // true if date was set, false if null
-                          messageSet: !!expiredMessage // true if a custom message was provided
-                        });
+                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS', { title: title, targetSet: !!updateData.countdownTargetDate, messageSet: !!expiredMessage });
                  } else { console.warn("logAdminActivity function not found!"); }
 
             } catch (error) {
                 console.error("Error saving countdown settings:", error);
                 showSettingsStatus(`Error saving countdown settings: ${error.message}`, true);
-                 // Log failure
                  if (typeof logAdminActivity === 'function') {
                       logAdminActivity('UPDATE_COUNTDOWN_SETTINGS_FAILED', { error: error.message });
                  }
@@ -3369,12 +3353,9 @@ function displayFilteredActivityLog() {
         });
     } else {
          console.error("Save Countdown Settings button (#save-countdown-settings-button) not found!");
-         // Display error if the button is missing from HTML
-         if(settingsStatusMessage) {
-             showSettingsStatus("Error: Save Countdown button missing from page.", true);
-         }
+         if(settingsStatusMessage) { showSettingsStatus("Error: Save Countdown button missing from page.", true); }
     }
-    // --- *** END UPDATED Event Listener *** ---
+    // --- *** END Event Listener *** ---
 
     // ==================================
 // ===== FAQ Management Functions =====
