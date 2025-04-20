@@ -78,34 +78,49 @@
 
             <section class="admin-section" id="site-settings" aria-labelledby="settings-heading">
     <h3 id="settings-heading">Site Settings</h3>
+
     <div class="form-group checkbox-group apple-toggle-group">
         <input type="checkbox" id="maintenance-mode-toggle" name="maintenanceMode" class="apple-toggle-checkbox">
         <label for="maintenance-mode-toggle" class="apple-toggle-label"></label>
         <label for="maintenance-mode-toggle">Enable Maintenance Mode</label>
         <small>Puts the public site into maintenance mode, showing only a maintenance message.</small>
         </div>
+
     <div class="form-group checkbox-group apple-toggle-group">
         <input type="checkbox" id="hide-tiktok-section-toggle" name="hideTikTokSection" class="apple-toggle-checkbox">
         <label for="hide-tiktok-section-toggle" class="apple-toggle-label"></label>
         <label for="hide-tiktok-section-toggle">Hide TikTok Section on Homepage</label>
         <small>If checked, the entire TikTok creator shoutout section will be hidden from the public homepage.</small>
          </div>
+
     <hr style="border-color: var(--border-color); margin: 2rem 0;">
+
     <h4>Homepage Countdown Timer</h4>
+
     <div class="form-group">
         <label for="countdown-title-input">Countdown Title:</label>
         <input type="text" id="countdown-title-input" name="countdownTitle" placeholder="e.g., Countdown to Earth Day!">
         <small>The main title displayed above the countdown timer.</small>
     </div>
+
     <div class="form-group">
         <label for="countdown-datetime-input">Countdown Target Date & Time:</label>
         <input type="text" id="countdown-datetime-input" name="countdownTargetDateTime" placeholder="YYYY-MM-DDTHH:MM:SS (e.g., 2025-12-31T23:59:59)">
-        <small>Enter the target date and time in your local timezone (Bowling Green, Ohio is EDT - current time Sun, Apr 20 2025 12:58 PM EDT) using the specified format.</small>
+         <small>Enter the target date and time in your local timezone (Bowling Green, Ohio is EDT - current time Sun, Apr 20 2025 2:21 PM EDT) using the specified format.</small>
     </div>
+
+    <div class="form-group">
+        <label for="countdown-expired-message-input">Expired Message:</label>
+        <textarea id="countdown-expired-message-input" name="countdownExpiredMessage" rows="3" placeholder="Message shown when countdown ends (e.g., Happy Earth Day!)"></textarea>
+        <small>This message replaces the countdown numbers when the target time is reached. Leave blank for a default message.</small>
+    </div>
+
     <div class="form-group">
          <button id="save-countdown-settings-button" class="button">Save Countdown Settings</button>
-    </div>
+         </div>
+
     <div id="settings-status-message" class="status-message" role="status" aria-live="polite"></div>
+
 </section>
             <section class="admin-section" id="profile-management" aria-labelledby="profile-heading">
                 <h3 id="profile-heading">Manage Homepage Profile</h3>
