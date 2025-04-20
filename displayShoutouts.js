@@ -705,34 +705,29 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
 // --- ***** END: Revised Countdown Timer Logic (v4) ***** ---
 
 
-// --- MASTER INITIALIZATION FUNCTION ---
+// --- MASTER INITIALIZATION FUNCTION (v10 - Fully Expanded) ---
 async function initializeHomepageContent() {
     console.log("Initializing homepage content...");
 
+    // Get references to main layout and message elements
     const mainContentWrapper = document.querySelector('.container');
     const maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
-    const countdownSection = document.querySelector('.countdown-section');
+    const countdownSection = document.querySelector('.countdown-section'); // Needed for maintenance mode hiding
 
-    // --- SELECTORS UPDATED TO MATCH YOUR HTML ---
+    // Selectors for Shoutout sections (using corrected class/relative selectors)
     const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
-    // Selects the div with class 'creator-grid' immediately following the header
     const tiktokGridContainer = document.querySelector('#tiktok-shoutouts + .creator-grid');
-    // Selects the div with class 'unavailable-message' immediately following the grid container
     const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts + .creator-grid + .unavailable-message');
-    // Selects the div using its class name
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
-    // Selects the div using its class name
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
-    // --- END SELECTOR UPDATES ---
 
-
-    // Safety check for Firebase
+    // Safety check for Firebase before proceeding
     if (!firebaseAppInitialized || !db || !profileDocRef) {
          console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
          if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error. Please try again later.</p>'; maintenanceMessageElement.style.display = 'block'; }
          if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-         if (countdownSection) countdownSection.style.display = 'none';
-         return;
+         if (countdownSection) countdownSection.style.display = 'none'; // Hide countdown on critical error too
+         return; // Stop execution
     }
 
     // Fetch Central Site Configuration from 'site_config/mainProfile'
@@ -741,6 +736,7 @@ async function initializeHomepageContent() {
     let hideTikTokSection = false;
     let countdownTargetDate = null;
     let countdownTitle = null;
+    let countdownExpiredMessage = null;
 
     try {
         console.log("Fetching site settings from site_config/mainProfile...");
@@ -752,83 +748,115 @@ async function initializeHomepageContent() {
             hideTikTokSection = siteSettings.hideTikTokSection || false;
             countdownTargetDate = siteSettings.countdownTargetDate; // Expecting Firestore Timestamp
             countdownTitle = siteSettings.countdownTitle;           // Expecting String
+            countdownExpiredMessage = siteSettings.countdownExpiredMessage; // Expecting String or null
         } else {
             console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
+            // Defaults are already false/null
         }
-        console.log("Settings fetched:", { maintenanceEnabled, hideTikTokSection, countdownTitle, countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing' });
+        // Log fetched settings
+        console.log("Settings fetched:", {
+             maintenanceEnabled,
+             hideTikTokSection,
+             countdownTitle,
+             countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
+             countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
+            });
 
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
+        // Display a general error and stop loading content
         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">An error occurred loading site configuration: ${error.message}.</p>`; maintenanceMessageElement.style.display = 'block'; }
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
-        return;
+        return; // Stop execution
     }
 
-    // Apply Maintenance Mode
+    // --- Apply Maintenance Mode First ---
     if (maintenanceEnabled) {
         console.log("Maintenance mode is ON. Hiding main content and countdown.");
-        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-        if (countdownSection) countdownSection.style.display = 'none';
-        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p>The site is currently undergoing maintenance. Please check back later.</p>'; maintenanceMessageElement.style.display = 'block'; }
-        return;
+        if (mainContentWrapper) { mainContentWrapper.style.display = 'none'; }
+        // Also hide countdown section when in maintenance mode
+        if (countdownSection) { countdownSection.style.display = 'none'; }
+        // Display the maintenance message
+        if (maintenanceMessageElement) {
+             maintenanceMessageElement.innerHTML = '<p>The site is currently undergoing maintenance. Please check back later.</p>';
+             maintenanceMessageElement.style.display = 'block';
+        }
+        return; // Stop further execution of this function
     } else {
+        // --- Maintenance Mode is OFF ---
         console.log("Maintenance mode is OFF. Proceeding with content display...");
-        if (mainContentWrapper) mainContentWrapper.style.display = '';
-        if (countdownSection) countdownSection.style.display = ''; // Show section initially (function hides if data invalid)
-        if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
+        // Ensure main content and countdown section are potentially visible
+        if (mainContentWrapper) { mainContentWrapper.style.display = ''; } // Revert to default display
+        if (countdownSection) { countdownSection.style.display = 'block'; } // Ensure countdown section is visible initially (its own logic will hide if needed)
+        // Hide maintenance message if it exists
+        if (maintenanceMessageElement) { maintenanceMessageElement.style.display = 'none'; }
     }
+    // --- End Maintenance Mode Logic ---
 
-    // Start Countdown (using fetched config)
-    startEventCountdown(countdownTargetDate, countdownTitle);
+    // --- Start Countdown (if not in maintenance mode) ---
+    // Pass fetched config, including the message. The function handles its own visibility based on valid data.
+    startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
+    // --- End Start Countdown ---
 
-    // Apply TikTok Visibility Logic using the corrected selectors
-    // Check if BOTH header and grid were found using the NEW selectors
+    // --- Apply TikTok Visibility Logic ---
+    // Check if the necessary elements for TikTok section exist
     if (!tiktokHeaderContainer || !tiktokGridContainer) {
+         // Log warning if elements are missing - can't apply logic without them
          console.warn("Could not find TikTok header (#tiktok-shoutouts) and/or grid container (#tiktok-shoutouts + .creator-grid) to apply visibility logic.");
-         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none'; // Hide message if structure is wrong
+         // Attempt to hide the unavailable message just in case it exists but others don't
+         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
     } else {
-        // Elements found, proceed with logic
+        // Elements found, proceed with show/hide logic based on fetched setting
         if (hideTikTokSection) {
+            // HIDE TikTok Section, SHOW Unavailable Message
             console.log("Hiding TikTok section based on settings.");
             tiktokHeaderContainer.style.display = 'none';
             tiktokGridContainer.style.display = 'none';
             if (tiktokUnavailableMessage) {
                 tiktokUnavailableMessage.innerHTML = '<p style="margin:0; padding: 15px; text-align: center;"><strong>Notice:</strong> Due to current regulations in the United States, TikTok content is unavailable at this time.</p>';
                 tiktokUnavailableMessage.style.display = 'block';
-            } else { console.warn("TikTok unavailable message element (#tiktok-shoutouts + .creator-grid + .unavailable-message) not found."); } // Updated selector check
-        } else {
-            console.log("Showing TikTok section based on settings.");
-            tiktokHeaderContainer.style.display = '';
-            tiktokGridContainer.style.display = ''; // Assuming default display is suitable
-            if (tiktokUnavailableMessage) {
-                tiktokUnavailableMessage.style.display = 'none';
-                tiktokUnavailableMessage.innerHTML = '';
+            } else {
+                // Log if the message element itself is missing
+                console.warn("TikTok unavailable message element (#tiktok-shoutouts + .creator-grid + .unavailable-message) not found.");
             }
+        } else {
+            // SHOW TikTok Section, HIDE Unavailable Message
+            console.log("Showing TikTok section based on settings.");
+            tiktokHeaderContainer.style.display = ''; // Revert to default display (likely 'block' or CSS default)
+            tiktokGridContainer.style.display = '';    // Revert grid to default (likely 'grid' or CSS default)
+            if (tiktokUnavailableMessage) {
+                tiktokUnavailableMessage.style.display = 'none'; // Hide message
+                tiktokUnavailableMessage.innerHTML = ''; // Clear any previous message content
+            }
+            // Load TikTok shoutout data ONLY if the section is visible
             const timestampElement = tiktokHeaderContainer.querySelector('#tiktok-last-updated-timestamp');
-            loadShoutoutPlatformData('tiktok', tiktokGridContainer, timestampElement); // Pass the correctly selected grid container
+            loadShoutoutPlatformData('tiktok', tiktokGridContainer, timestampElement);
         }
     }
+    // --- End TikTok Visibility Logic ---
 
 
-    // Load ALL OTHER Content Sections using corrected selectors where applicable
+    // --- Load ALL OTHER Content Sections ---
     console.log("Initiating loading of other content sections...");
 
-    displayProfileData(siteSettings); // Call profile display with already fetched data
+    // Display profile info using already fetched siteSettings
+    displayProfileData(siteSettings);
 
-    // Pass the correctly selected grid containers to loadShoutoutPlatformData
+    // Load other sections concurrently
     const otherLoadPromises = [
         displayPresidentData(),
-        // These calls should now find the elements using the class selectors
+        // Pass the correctly selected grid containers
         loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
         loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
         loadAndDisplayUsefulLinks(),
         loadAndDisplaySocialLinks(),
         loadAndDisplayDisabilities(),
         loadAndDisplayTechItems(),
-        loadAndDisplayFaqs()
+        loadAndDisplayFaqs() // This also attaches listeners after loading
     ];
 
+    // Wait for all promises to settle and log any errors
     const otherResults = await Promise.allSettled(otherLoadPromises);
     otherResults.forEach((result, index) => {
         const functionNames = ["President", "Instagram Shoutouts", "YouTube Shoutouts", "UsefulLinks", "SocialLinks", "Disabilities", "TechItems", "FAQs"];
@@ -837,8 +865,5 @@ async function initializeHomepageContent() {
         }
     });
     console.log("Other dynamic content loading initiated.");
+    // --- End Load Other Content ---
 }
-
-
-// --- Call the main initialization function when the DOM is ready ---
-document.addEventListener('DOMContentLoaded', initializeHomepageContent);
