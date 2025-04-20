@@ -89,8 +89,11 @@ document.addEventListener('DOMContentLoaded', () => { //
     // --- Add these with other DOM element references ---
     const countdownTitleInput = document.getElementById('countdown-title-input');
     const countdownDatetimeInput = document.getElementById('countdown-datetime-input');
-    const saveCountdownSettingsButton = document.getElementById('save-countdown-settings-button');
+    const saveCountdownSettingsButton = document.getElementById('save-countdown-settings-button'); // Make sure this is added too
+    const settingsStatusMessage = document.getElementById('settings-status-message');
+    // ****** ADD THIS LINE FOR THE EXPIRED MESSAGE TEXTAREA ******
     const countdownExpiredMessageInput = document.getElementById('countdown-expired-message-input');
+    // ****** END ADD LINE ******
 
     // FAQ Management Elements
     const addFaqForm = document.getElementById('add-faq-form');
