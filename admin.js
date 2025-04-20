@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     const countdownTitleInput = document.getElementById('countdown-title-input');
     const countdownDatetimeInput = document.getElementById('countdown-datetime-input');
     const saveCountdownSettingsButton = document.getElementById('save-countdown-settings-button');
+    const countdownExpiredMessageInput = document.getElementById('countdown-expired-message-input');
 
     // FAQ Management Elements
     const addFaqForm = document.getElementById('add-faq-form');
@@ -1099,14 +1100,17 @@ function renderYouTubeCard(account) { //
     }
     // *** END displayFilteredShoutouts FUNCTION ***
 
-// --- CORRECTED: Function to Load Profile Data AND Countdown Settings ---
+// --- CORRECTED (v3): Function to Load Profile Data AND All Countdown Settings ---
 async function loadProfileData() {
+    // Ensure user is logged in
     if (!auth || !auth.currentUser) {
         console.warn("Auth not ready or user not logged in when trying to load profile.");
         return;
     }
-    // Check required form elements exist
-    if (!profileForm || !maintenanceModeToggle || !hideTikTokSectionToggle || !countdownTitleInput || !countdownDatetimeInput || !adminPfpPreview /* Added check */) {
+    // Check required form elements exist (Add countdownExpiredMessageInput)
+    if (!profileForm || !maintenanceModeToggle || !hideTikTokSectionToggle ||
+        !countdownTitleInput || !countdownDatetimeInput || !countdownExpiredMessageInput || // Added check
+        !adminPfpPreview || !profileStatusInput /* Added check */ ) {
         console.error("One or more profile/settings form elements missing in admin.html!");
         if (profileStatusMessage) showProfileStatus("Error: Page structure incorrect.", true);
         else if(settingsStatusMessage) showSettingsStatus("Error: Page structure incorrect.", true);
@@ -1122,6 +1126,7 @@ async function loadProfileData() {
             console.log("Loaded profile/settings data:", data);
 
             // --- Populate fields INSIDE this block ---
+            // Profile fields
             if(profileUsernameInput) profileUsernameInput.value = data.username || '';
             if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || '';
             if(profileBioInput) profileBioInput.value = data.bio || '';
@@ -1133,13 +1138,14 @@ async function loadProfileData() {
             hideTikTokSectionToggle.checked = data.hideTikTokSection || false;
             hideTikTokSectionToggle.disabled = false;
 
-            // *** Load Countdown Settings (NOW CORRECTLY PLACED) ***
+            // *** Load Countdown Settings ***
             if (countdownTitleInput) {
                 countdownTitleInput.value = data.countdownTitle || '';
                 countdownTitleInput.disabled = false;
             }
             if (countdownDatetimeInput) {
-                if (data.countdownTargetDate && data.countdownTargetDate instanceof Timestamp) {
+                // Check if the timestamp exists AND is a Timestamp object
+                if (data.countdownTargetDate && data.countdownTargetDate instanceof Timestamp) { // <<< Requires Timestamp import
                     try {
                         const targetDate = data.countdownTargetDate.toDate();
                         const year = targetDate.getFullYear();
@@ -1148,60 +1154,77 @@ async function loadProfileData() {
                         const hours = String(targetDate.getHours()).padStart(2, '0');
                         const minutes = String(targetDate.getMinutes()).padStart(2, '0');
                         const seconds = String(targetDate.getSeconds()).padStart(2, '0');
-                        countdownDatetimeInput.value = `<span class="math-inline">\{year\}\-</span>{month}-<span class="math-inline">\{day\}T</span>{hours}:<span class="math-inline">\{minutes\}\:</span>{seconds}`;
+                        // Set value for the text input
+                        countdownDatetimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
                         console.log("Loaded existing countdown date/time.");
                     } catch (dateError) {
                         console.error("Error processing countdown timestamp:", dateError);
-                        countdownDatetimeInput.value = '';
+                        countdownDatetimeInput.value = ''; // Clear on error
                         if (settingsStatusMessage) showSettingsStatus("Error reading existing date.", true);
                     }
                 } else {
+                    // Clear input if no valid timestamp exists in Firestore
                     countdownDatetimeInput.value = '';
-                    console.log("No existing countdown date/time found.");
+                    if(data.hasOwnProperty('countdownTargetDate')) { // Log if field exists but isn't a Timestamp
+                        console.warn("Field 'countdownTargetDate' exists but is not a Timestamp:", data.countdownTargetDate);
+                    } else {
+                        console.log("No existing countdown date/time found.");
+                    }
                 }
-                countdownDatetimeInput.disabled = false;
+                countdownDatetimeInput.disabled = false; // Enable input
+            }
+            // Load Expired Message
+            if (countdownExpiredMessageInput) {
+                countdownExpiredMessageInput.value = data.countdownExpiredMessage || ''; // Load message
+                countdownExpiredMessageInput.disabled = false; // Enable input
             }
             // *** End Countdown Load ***
 
             // Profile Picture Preview
-            if (data.profilePicUrl) { // Check if URL exists in data
-                adminPfpPreview.src = data.profilePicUrl;
-                adminPfpPreview.style.display = 'inline-block';
-                 // Add error handler here dynamically if needed, or rely on the global one added later
-                 adminPfpPreview.onerror = () => {
-                    console.warn("Admin Preview: Image failed to load from URL:", adminPfpPreview.src);
+            if (adminPfpPreview) { // Check if element exists
+                 if (data.profilePicUrl) {
+                    adminPfpPreview.src = data.profilePicUrl;
+                    adminPfpPreview.style.display = 'inline-block';
+                    adminPfpPreview.onerror = () => { // Add error handling here
+                        console.warn("Admin Preview: Image failed to load from URL:", adminPfpPreview.src);
+                        adminPfpPreview.style.display = 'none';
+                        if(profilePicUrlInput) profilePicUrlInput.classList.add('input-error');
+                    };
+                 } else {
+                    adminPfpPreview.src = '';
                     adminPfpPreview.style.display = 'none';
-                    if(profilePicUrlInput) profilePicUrlInput.classList.add('input-error');
-                 };
-            } else {
-                adminPfpPreview.src = '';
-                adminPfpPreview.style.display = 'none';
+                 }
             }
             // --- End populate fields ---
 
         } else {
-            // Handle doc not existing (keep existing logic)
+            // Handle doc not existing
             console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`);
             if (profileForm) profileForm.reset();
             if (profileStatusInput) profileStatusInput.value = 'offline';
             maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = false;
             hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = false;
+            // Clear and disable countdown inputs
             if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
             if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
+            if (countdownExpiredMessageInput) { countdownExpiredMessageInput.value = ''; countdownExpiredMessageInput.disabled = true; } // Clear/disable message
             if(adminPfpPreview) adminPfpPreview.style.display = 'none';
             if(settingsStatusMessage) showSettingsStatus("Settings document missing. Save to create.", true)
         }
     } catch (error) {
-        // Handle errors (keep existing logic)
+        // Handle errors loading doc
         console.error("Error loading profile/settings data:", error);
         if(profileStatusMessage) showProfileStatus("Error loading profile data.", true);
         if(settingsStatusMessage) showSettingsStatus("Error loading site settings.", true);
+        // Reset forms and disable inputs on error
         if (profileForm) profileForm.reset();
         if (profileStatusInput) profileStatusInput.value = 'offline';
         maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = true;
         hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = true;
+        // Disable countdown inputs on error
         if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
         if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
+        if (countdownExpiredMessageInput) { countdownExpiredMessageInput.value = ''; countdownExpiredMessageInput.disabled = true; } // Disable message
         if(adminPfpPreview) adminPfpPreview.style.display = 'none';
     }
 }
@@ -3247,10 +3270,11 @@ function displayFilteredActivityLog() {
     // ==================================
 
 
-     // --- *** NEW: Event Listener for Saving ONLY Countdown Settings *** ---
+     // --- *** UPDATED Event Listener for Saving ONLY Countdown Settings *** ---
     if (saveCountdownSettingsButton) { // Check if the specific button exists
         saveCountdownSettingsButton.addEventListener('click', async () => {
-            if (!countdownTitleInput || !countdownDatetimeInput || !settingsStatusMessage) {
+            // Check elements needed (include the expired message input)
+            if (!countdownTitleInput || !countdownDatetimeInput || !countdownExpiredMessageInput || !settingsStatusMessage) { // Added check for countdownExpiredMessageInput
                  console.error("Cannot save countdown - one or more countdown input elements are missing!");
                  showSettingsStatus("Error: Page structure problem. Cannot save countdown.", true);
                  return;
@@ -3261,56 +3285,83 @@ function displayFilteredActivityLog() {
                  return;
             }
 
+            // --- Read values (including the new textarea) ---
             const title = countdownTitleInput.value.trim();
             const dateTimeString = countdownDatetimeInput.value.trim();
+            const expiredMessage = countdownExpiredMessageInput.value.trim(); // <<<--- READ EXPIRED MESSAGE
 
             showSettingsStatus("Saving countdown settings...", false);
 
-            const updateData = {};
+            // Prepare data object FOR COUNTDOWN ONLY
+            const updateData = {
+                countdownTitle: title,
+                countdownExpiredMessage: expiredMessage // <<<--- INCLUDE EXPIRED MESSAGE IN DATA
+                // countdownTargetDate will be added below conditionally
+            };
             let isValid = true;
+            let targetTimestamp = null; // Initialize here
 
-            updateData.countdownTitle = title;
-
-            let targetTimestamp = null;
-            if (dateTimeString) {
+            // --- Handle Countdown Date/Time ---
+            if (dateTimeString) { // Only process if input is not empty
+                // Basic format validation
                 if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(dateTimeString)) {
                      showSettingsStatus('Invalid Date/Time format. Use YYYY-MM-DDTHH:MM:SS', true);
-                     isValid = false;
+                     isValid = false; // Stop saving
                 } else {
                     try {
+                        // Parse string as local date/time
                         const localDate = new Date(dateTimeString);
                         if (isNaN(localDate.getTime())) {
-                            throw new Error("Invalid date or time value.");
+                            throw new Error("Invalid date or time value resulted in an invalid Date object.");
                         }
-                        targetTimestamp = Timestamp.fromDate(localDate); // Convert to Timestamp
-                        updateData.countdownTargetDate = targetTimestamp;
+                        // Ensure Timestamp is imported at the top: import { Timestamp } from '...firebase-firestore.js'
+                        targetTimestamp = Timestamp.fromDate(localDate); // Convert valid local date to Firestore Timestamp
+                        updateData.countdownTargetDate = targetTimestamp; // Add Timestamp to update object
                         console.log("Converted input string to Timestamp:", targetTimestamp);
                     } catch (error) {
                         console.error("Error parsing date/time input:", error);
-                        showSettingsStatus(`Error parsing date/time: ${error.message}`, true);
-                        isValid = false;
+                        // Add more detail if Timestamp wasn't imported
+                         let errorText = `Error parsing date/time: ${error.message}`;
+                         if (error instanceof ReferenceError && error.message.includes("Timestamp is not defined")) {
+                            errorText += " (Import Timestamp from Firestore library at top of admin.js!)";
+                         }
+                        showSettingsStatus(errorText, true);
+                        isValid = false; // Stop saving if parsing fails
                     }
                 }
             } else {
-                 updateData.countdownTargetDate = null; // Set to null if empty
+                 // If the field is empty, explicitly set it to null in Firestore
+                 updateData.countdownTargetDate = null;
+                 // Alternatively, to completely remove the field: use deleteField() - import it first
+                 // updateData.countdownTargetDate = deleteField();
                  console.log("Countdown date/time field cleared. Setting to null.");
             }
 
+            // Proceed only if validation passed
             if (!isValid) {
-                return; // Stop if validation failed
+                return;
             }
 
+            // --- Update Firestore Document ---
             try {
                 console.log("Updating Firestore with countdown data:", updateData);
-                await updateDoc(profileDocRef, updateData); // Update ONLY countdown fields
+                await updateDoc(profileDocRef, updateData); // Save title, date, AND message
                 showSettingsStatus("Countdown settings saved successfully!", false);
                 console.log("Countdown settings updated in Firestore:", updateData);
+
+                // Log activity (optional: include message change status)
                  if (typeof logAdminActivity === 'function') {
-                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS', { title: title, targetSet: !!updateData.countdownTargetDate });
+                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS', {
+                          title: title,
+                          targetSet: !!updateData.countdownTargetDate, // true if date was set, false if null
+                          messageSet: !!expiredMessage // true if a custom message was provided
+                        });
                  } else { console.warn("logAdminActivity function not found!"); }
+
             } catch (error) {
                 console.error("Error saving countdown settings:", error);
                 showSettingsStatus(`Error saving countdown settings: ${error.message}`, true);
+                 // Log failure
                  if (typeof logAdminActivity === 'function') {
                       logAdminActivity('UPDATE_COUNTDOWN_SETTINGS_FAILED', { error: error.message });
                  }
@@ -3318,10 +3369,12 @@ function displayFilteredActivityLog() {
         });
     } else {
          console.error("Save Countdown Settings button (#save-countdown-settings-button) not found!");
+         // Display error if the button is missing from HTML
          if(settingsStatusMessage) {
              showSettingsStatus("Error: Save Countdown button missing from page.", true);
          }
     }
+    // --- *** END UPDATED Event Listener *** ---
 
     // ==================================
 // ===== FAQ Management Functions =====
