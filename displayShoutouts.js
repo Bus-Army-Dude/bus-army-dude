@@ -648,72 +648,53 @@ function startEventCountdown(targetTimestamp, countdownTitle) {
         return new Date(year, month + 1, 0).getDate();
     }
 
-   / Function containing the calculation logic (WITH DEBUG LOGS)
-function calculateAndUpdate() {
-    const now = new Date(); // Current date/time
-    const target = targetDateObj; // Target date/time object (should be defined outside this inner func)
-    const distance = target.getTime() - now.getTime(); // Total milliseconds remaining
+    // Function containing the calculation logic
+    function calculateAndUpdate() {
+        const now = new Date(); // Current date/time
+        const target = targetDateObj; // Target date/time object
+        const distance = target.getTime() - now.getTime(); // Total milliseconds remaining
 
-    // --- Log Start ---
-    console.log(`--- Tick @ ${now.toLocaleTimeString()} ---`);
-    console.log(`Target Time: ${target.toLocaleString()}`);
-    console.log(`Distance (ms): ${distance}`);
-    // --- End Log ---
+        if (distance < 0) {
+            if (intervalId) clearInterval(intervalId);
+            console.log(`Countdown for "${displayTitle}" finished.`);
+            updateDisplay(0, 0, 0, 0, 0, 0);
+            return false; // Indicate timer should stop
+        }
 
-    if (distance < 0) {
-        if (intervalId) clearInterval(intervalId);
-        console.log(`Countdown for "${displayTitle}" finished.`);
-        updateDisplay(0, 0, 0, 0, 0, 0);
-        return false; // Indicate timer should stop
+        // --- Calculate H:M:S based on total remaining time ---
+        const seconds = Math.floor((distance / 1000) % 60);
+        const minutes = Math.floor((distance / 1000 / 60) % 60);
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+
+        // --- Calculate Y:M:D based on calendar date difference ---
+        let years = target.getFullYear() - now.getFullYear();
+        let months = target.getMonth() - now.getMonth();
+        let days = target.getDate() - now.getDate();
+
+        // Borrow days if necessary
+        if (days < 0) {
+            months--; // Borrow a month
+            // Add days in the *previous* month (relative to target)
+            // To get the previous month correctly, handle month 0 (Jan)
+            const prevMonth = target.getMonth() === 0 ? 11 : target.getMonth() - 1;
+            const yearOfPrevMonth = target.getMonth() === 0 ? target.getFullYear() - 1 : target.getFullYear();
+            days += daysInMonth(prevMonth, yearOfPrevMonth);
+        }
+
+        // Borrow months if necessary
+        if (months < 0) {
+            years--; // Borrow a year
+            months += 12;
+        }
+
+        // Ensure no negative values (shouldn't happen if distance > 0, but safety)
+        years = Math.max(0, years);
+        months = Math.max(0, months);
+        days = Math.max(0, days);
+
+        updateDisplay(years, months, days, hours, minutes, seconds);
+        return true; // Indicate timer should continue
     }
-
-    // --- Calculate H:M:S based on total remaining time ---
-    const seconds = Math.floor((distance / 1000) % 60);
-    const minutes = Math.floor((distance / 1000 / 60) % 60);
-    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    console.log(`Calculated H/M/S: ${hours}h / ${minutes}m / ${seconds}s`); // Log HMS
-
-    // --- Calculate Y:M:D based on calendar date difference ---
-    let years = target.getFullYear() - now.getFullYear();
-    let months = target.getMonth() - now.getMonth();
-    let days = target.getDate() - now.getDate();
-    console.log(`Initial Y/M/D diff: ${years}y / ${months}m / ${days}d`); // Log initial YMD
-
-    // Helper function needed for borrowing days
-    function daysInMonth(month, year) { // month is 0-indexed
-         return new Date(year, month + 1, 0).getDate();
-    }
-
-    // Borrow days if necessary
-    if (days < 0) {
-        months--;
-        const prevMonth = now.getMonth(); // Use current month to find days in it for borrowing
-        const yearOfPrevMonth = now.getFullYear();
-         // Correction: Borrow days from the *current* month if day difference is negative
-         // Example: Target May 5, Now May 10. days = -5. Borrow days in April. month=3, year=2025.
-         // Correction 2: Simpler - if days negative, add days of *previous month relative to target*
-        const targetPrevMonth = target.getMonth() === 0 ? 11 : target.getMonth() - 1;
-        const yearOfTargetPrevMonth = target.getMonth() === 0 ? target.getFullYear() - 1 : target.getFullYear();
-         const daysToBorrow = daysInMonth(targetPrevMonth, yearOfTargetPrevMonth);
-         console.log(`Borrowing ${daysToBorrow} days from month ${targetPrevMonth+1}`);
-        days += daysToBorrow;
-    }
-
-    // Borrow months if necessary
-    if (months < 0) {
-        years--;
-        months += 12;
-    }
-
-    // Ensure no negative values
-    years = Math.max(0, years);
-    months = Math.max(0, months);
-    days = Math.max(0, days);
-    console.log(`Final Y/M/D after borrow: ${years}y / ${months}m / ${days}d`); // Log final YMD
-
-    updateDisplay(years, months, days, hours, minutes, seconds);
-    return true; // Indicate timer should continue
-} // --- End of calculateAndUpdate ---
 
     // --- Interval Setup ---
     let intervalId = null;
