@@ -793,17 +793,19 @@ async function initializeHomepageContent() {
     }
 
     // Apply Maintenance Mode
-    if (maintenanceEnabled) {
+        if (maintenanceEnabled) {
         console.log("Maintenance mode ON.");
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
-        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p>Site undergoing maintenance.</p>'; maintenanceMessageElement.style.display = 'block'; }
+        if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none'; // Hide small message
+        if (customMaintenanceScreen) customMaintenanceScreen.style.display = 'flex'; // Show the main overlay
         return;
     } else {
         console.log("Maintenance mode OFF.");
         if (mainContentWrapper) mainContentWrapper.style.display = '';
-        if (countdownSection) countdownSection.style.display = 'block'; // Show section initially
+        if (countdownSection) countdownSection.style.display = 'block';
         if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
+        if (customMaintenanceScreen) customMaintenanceScreen.style.display = 'none'; // Hide the overlay
     }
 
     // --- Start Countdown (Pass the fetched message) ---
