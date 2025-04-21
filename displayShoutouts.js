@@ -740,6 +740,10 @@ async function initializeHomepageContent() {
     const countdownSection = document.querySelector('.countdown-section');
     const maintenanceOverlay = document.getElementById("maintenance");
 
+    const tiktokHeaderContainer = document.getElementById('tiktok-header-container');
+    const tiktokGridContainer = document.getElementById('tiktok-grid-container');
+    const tiktokUnavailableMessage = document.getElementById('tiktok-unavailable-message');
+
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
@@ -829,7 +833,7 @@ async function initializeHomepageContent() {
              tiktokHeaderContainer.style.display = 'none';
              tiktokGridContainer.style.display = 'none';
              if (tiktokUnavailableMessage) {
-                 tiktokUnavailableMessage.innerHTML = '<p style="...">Notice...</p>';
+                 tiktokUnavailableMessage.innerHTML = '<p style="color: red;">TikTok section is unavailable at the moment.</p>';
                  tiktokUnavailableMessage.style.display = 'block';
              }
         } else {
@@ -877,3 +881,4 @@ async function initializeHomepageContent() {
 
 // Call the main initialization function when the DOM is ready
 document.addEventListener('DOMContentLoaded', initializeHomepageContent);
+
