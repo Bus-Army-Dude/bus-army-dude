@@ -61,7 +61,6 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
     } catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
 }
 
-// --- Functions to Render Cards (Shoutouts, Tech, FAQs) ---
 function renderTikTokCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
     const username = account.username || 'N/A';
@@ -70,7 +69,8 @@ function renderTikTokCard(account) {
     const followers = account.followers || 'N/A';
     const isVerified = account.isVerified || false;
     const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#';
-    const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : '';
+    const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge" onerror="this.src=\'images/default-badge.png\'">' : '';
+
     return `<div class="creator-card">
               <img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
               <div class="creator-info">
@@ -82,6 +82,7 @@ function renderTikTokCard(account) {
               </div>
             </div>`;
 }
+
 
 function renderInstagramCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
