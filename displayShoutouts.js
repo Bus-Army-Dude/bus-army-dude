@@ -889,3 +889,4 @@ async function initializeHomepageContent() {
 
 // Call the main initialization function when the DOM is ready
 document.addEventListener('DOMContentLoaded', initializeHomepageContent);
+
