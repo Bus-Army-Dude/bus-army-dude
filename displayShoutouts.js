@@ -740,9 +740,20 @@ async function initializeHomepageContent() {
     const countdownSection = document.querySelector('.countdown-section');
     const maintenanceOverlay = document.getElementById("maintenance");
 
-    const tiktokHeaderContainer = document.getElementById('tiktok-header-container');
-    const tiktokGridContainer = document.getElementById('tiktok-grid-container');
-    const tiktokUnavailableMessage = document.getElementById('tiktok-unavailable-message');
+    // Shoutout Containers
+    const tiktokShoutoutsContainer = document.getElementById('tiktok-shoutouts');
+    const instagramShoutoutsContainer = document.getElementById('instagram-shoutouts');
+    const youtubeShoutoutsContainer = document.getElementById('youtube-shoutouts');
+
+    // Creator Grids
+    const tiktokGridContainer = tiktokShoutoutsContainer.querySelector('.creator-grid');
+    const instagramGridContainer = instagramShoutoutsContainer.querySelector('.instagram-creator-grid');
+    const youtubeGridContainer = youtubeShoutoutsContainer.querySelector('.youtube-creator-grid');
+
+    // Unavailable Message Containers
+    const tiktokUnavailableMessage = tiktokShoutoutsContainer.querySelector('.unavailable-message');
+    const instagramUnavailableMessage = instagramShoutoutsContainer.querySelector('.unavailable-message');
+    const youtubeUnavailableMessage = youtubeShoutoutsContainer.querySelector('.unavailable-message');
 
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
@@ -824,29 +835,48 @@ async function initializeHomepageContent() {
     }
 
     // Apply TikTok Visibility Logic
-    if (!tiktokHeaderContainer || !tiktokGridContainer) {
-         console.warn("Could not find TikTok header/grid containers.");
-         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
-    } else {
-        if (hideTikTokSection) {
-             console.log("Hiding TikTok section.");
-             tiktokHeaderContainer.style.display = 'none';
-             tiktokGridContainer.style.display = 'none';
-             if (tiktokUnavailableMessage) {
-                 tiktokUnavailableMessage.innerHTML = '<p style="color: red;">TikTok section is unavailable at the moment.</p>';
-                 tiktokUnavailableMessage.style.display = 'block';
-             }
-        } else {
-            console.log("Showing TikTok section.");
-            tiktokHeaderContainer.style.display = '';
-            tiktokGridContainer.style.display = '';
-            if (tiktokUnavailableMessage) {
-                tiktokUnavailableMessage.style.display = 'none';
-                tiktokUnavailableMessage.innerHTML = '';
-            }
-            const tsEl = tiktokHeaderContainer.querySelector('#tiktok-last-updated-timestamp');
-            loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl); // Load data
+    if (hideTikTokSection) {
+        console.log("Hiding TikTok section.");
+        tiktokShoutoutsContainer.style.display = 'none';
+        if (tiktokUnavailableMessage) {
+            tiktokUnavailableMessage.innerHTML = '<p style="color: red;">TikTok section is unavailable at the moment.</p>';
+            tiktokUnavailableMessage.style.display = 'block';
         }
+    } else {
+        console.log("Showing TikTok section.");
+        tiktokShoutoutsContainer.style.display = '';
+        if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
+        loadShoutoutPlatformData('tiktok', tiktokGridContainer, document.getElementById('tiktok-last-updated-timestamp'));
+    }
+
+    // Apply Instagram Visibility Logic
+    if (hideInstagramSection) {
+        console.log("Hiding Instagram section.");
+        instagramShoutoutsContainer.style.display = 'none';
+        if (instagramUnavailableMessage) {
+            instagramUnavailableMessage.innerHTML = '<p style="color: red;">Instagram section is unavailable at the moment.</p>';
+            instagramUnavailableMessage.style.display = 'block';
+        }
+    } else {
+        console.log("Showing Instagram section.");
+        instagramShoutoutsContainer.style.display = '';
+        if (instagramUnavailableMessage) instagramUnavailableMessage.style.display = 'none';
+        loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp'));
+    }
+
+    // Apply YouTube Visibility Logic
+    if (hideYouTubeSection) {
+        console.log("Hiding YouTube section.");
+        youtubeShoutoutsContainer.style.display = 'none';
+        if (youtubeUnavailableMessage) {
+            youtubeUnavailableMessage.innerHTML = '<p style="color: red;">YouTube section is unavailable at the moment.</p>';
+            youtubeUnavailableMessage.style.display = 'block';
+        }
+    } else {
+        console.log("Showing YouTube section.");
+        youtubeShoutoutsContainer.style.display = '';
+        if (youtubeUnavailableMessage) youtubeUnavailableMessage.style.display = 'none';
+        loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp'));
     }
 
     // Load additional content sections
@@ -855,8 +885,6 @@ async function initializeHomepageContent() {
 
     const otherLoadPromises = [
         displayPresidentData(),
-        loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
-        loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
         loadAndDisplayUsefulLinks(),
         loadAndDisplaySocialLinks(),
         loadAndDisplayDisabilities(),
@@ -877,8 +905,9 @@ async function initializeHomepageContent() {
 
     // Start Countdown
     startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
-} 
+}
 
 // Call the main initialization function when the DOM is ready
 document.addEventListener('DOMContentLoaded', initializeHomepageContent);
+
 
