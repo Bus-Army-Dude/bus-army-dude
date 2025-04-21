@@ -730,13 +730,14 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
 // --- ***** END: Countdown Timer Logic (v7) ***** ---
 
 
-// --- MASTER INITIALIZATION FUNCTION (Corrected v9 - Fetches and Passes Expired Message) ---
+// --- MASTER INITIALIZATION FUNCTION (Corrected v10) ---
 async function initializeHomepageContent() {
     console.log("Initializing homepage content...");
 
     const mainContentWrapper = document.querySelector('.container');
     const maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
     const countdownSection = document.querySelector('.countdown-section');
+    const maintenanceOverlay = document.getElementById("maintenance");
 
     // Selectors
     const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
@@ -747,20 +748,27 @@ async function initializeHomepageContent() {
 
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
-         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
-         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error.</p>'; maintenanceMessageElement.style.display = 'block'; }
-         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-         if (countdownSection) countdownSection.style.display = 'none';
-         return;
+        console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
+
+        if (maintenanceOverlay) maintenanceOverlay.style.display = 'flex';
+
+        if (maintenanceMessageElement) {
+            maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error.</p>';
+            maintenanceMessageElement.style.display = 'block';
+        }
+
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+        if (countdownSection) countdownSection.style.display = 'none';
+        return;
     }
 
-    // Fetch Central Site Configuration from 'site_config/mainProfile'
+    // Fetch Central Site Configuration
     let siteSettings = {};
     let maintenanceEnabled = false;
     let hideTikTokSection = false;
     let countdownTargetDate = null;
     let countdownTitle = null;
-    let countdownExpiredMessage = null; // <<< Variable initialized
+    let countdownExpiredMessage = null;
 
     try {
         console.log("Fetching site settings from site_config/mainProfile...");
@@ -772,41 +780,61 @@ async function initializeHomepageContent() {
             hideTikTokSection = siteSettings.hideTikTokSection || false;
             countdownTargetDate = siteSettings.countdownTargetDate;
             countdownTitle = siteSettings.countdownTitle;
-            countdownExpiredMessage = siteSettings.countdownExpiredMessage; // <<< GET THE MESSAGE HERE
+            countdownExpiredMessage = siteSettings.countdownExpiredMessage;
         } else {
-            console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
+            console.warn("Site settings document not found. Using defaults.");
         }
-        console.log("Settings fetched:", { // Updated log
-             maintenanceEnabled,
-             hideTikTokSection,
-             countdownTitle,
-             countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
-             countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
-            });
+
+        console.log("Settings fetched:", {
+            maintenanceEnabled,
+            hideTikTokSection,
+            countdownTitle,
+            countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
+            countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
+        });
 
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
-        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">Error loading config: ${error.message}.</p>`; maintenanceMessageElement.style.display = 'block'; }
+
+        if (maintenanceOverlay) maintenanceOverlay.style.display = 'flex';
+
+        if (maintenanceMessageElement) {
+            maintenanceMessageElement.innerHTML = `<p class="error">Error loading config: ${error.message}.</p>`;
+            maintenanceMessageElement.style.display = 'block';
+        }
+
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
         return;
     }
 
     // Apply Maintenance Mode
-        if (maintenanceEnabled) {
+    if (maintenanceEnabled) {
         console.log("Maintenance mode ON.");
+
+        if (maintenanceOverlay) maintenanceOverlay.style.display = 'flex';
+
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
-        if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none'; // Hide small message
-        if (customMaintenanceScreen) customMaintenanceScreen.style.display = 'flex'; // Show the main overlay
+
+        if (maintenanceMessageElement) {
+            maintenanceMessageElement.innerHTML = '<p>Site undergoing maintenance.</p>';
+            maintenanceMessageElement.style.display = 'block';
+        }
+
         return;
     } else {
         console.log("Maintenance mode OFF.");
+
+        if (maintenanceOverlay) maintenanceOverlay.style.display = 'none';
+
         if (mainContentWrapper) mainContentWrapper.style.display = '';
         if (countdownSection) countdownSection.style.display = 'block';
         if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
-        if (customMaintenanceScreen) customMaintenanceScreen.style.display = 'none'; // Hide the overlay
     }
+
+    // ← Add any extra stuff (like loading shoutouts or countdown logic) here later
+}
 
     // --- Start Countdown (Pass the fetched message) ---
     startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage); // <<< PASS 3rd ARGUMENT HERE
