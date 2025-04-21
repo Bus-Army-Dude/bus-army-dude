@@ -730,7 +730,7 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
 // --- ***** END: Countdown Timer Logic (v7) ***** ---
 
 
-// --- MASTER INITIALIZATION FUNCTION (Corrected v10) ---
+// --- MASTER INITIALIZATION FUNCTION (Corrected v11) ---
 async function initializeHomepageContent() {
     console.log("Initializing homepage content...");
 
@@ -849,35 +849,14 @@ async function initializeHomepageContent() {
         loadShoutoutPlatformData('tiktok', tiktokGridContainer, document.getElementById('tiktok-last-updated-timestamp'));
     }
 
-    // Apply Instagram Visibility Logic
-    if (hideInstagramSection) {
-        console.log("Hiding Instagram section.");
-        instagramShoutoutsContainer.style.display = 'none';
-        if (instagramUnavailableMessage) {
-            instagramUnavailableMessage.innerHTML = '<p style="color: red;">Instagram section is unavailable at the moment.</p>';
-            instagramUnavailableMessage.style.display = 'block';
-        }
-    } else {
-        console.log("Showing Instagram section.");
-        instagramShoutoutsContainer.style.display = '';
-        if (instagramUnavailableMessage) instagramUnavailableMessage.style.display = 'none';
-        loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp'));
-    }
+    // Instagram and YouTube sections will always be visible
+    console.log("Showing Instagram and YouTube sections.");
+    instagramShoutoutsContainer.style.display = '';
+    youtubeShoutoutsContainer.style.display = '';
 
-    // Apply YouTube Visibility Logic
-    if (hideYouTubeSection) {
-        console.log("Hiding YouTube section.");
-        youtubeShoutoutsContainer.style.display = 'none';
-        if (youtubeUnavailableMessage) {
-            youtubeUnavailableMessage.innerHTML = '<p style="color: red;">YouTube section is unavailable at the moment.</p>';
-            youtubeUnavailableMessage.style.display = 'block';
-        }
-    } else {
-        console.log("Showing YouTube section.");
-        youtubeShoutoutsContainer.style.display = '';
-        if (youtubeUnavailableMessage) youtubeUnavailableMessage.style.display = 'none';
-        loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp'));
-    }
+    // Load Instagram and YouTube Shoutouts Data
+    loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp'));
+    loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp'));
 
     // Load additional content sections
     console.log("Initiating loading of other content sections...");
@@ -909,5 +888,3 @@ async function initializeHomepageContent() {
 
 // Call the main initialization function when the DOM is ready
 document.addEventListener('DOMContentLoaded', initializeHomepageContent);
-
-
