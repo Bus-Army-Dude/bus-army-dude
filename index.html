@@ -80,22 +80,19 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
     
-    <div class="maintenance-overlay" id="maintenance">
-  <div class="maintenance-content">
-    <div class="maintenance-loader"></div> <!-- Optional spinner -->
-    <img src="your-logo.svg" alt="Logo" class="maintenance-logo" />
-    <h1>We'll be back soon!</h1>
-    <p>We're doing some maintenance to keep things running smooth. Hang tight!</p>
-    <p class="maintenance-status-message">Status: Updating systems...</p>
-    <div class="maintenance-socials">
-      <p>Follow us for updates:</p>
-      <a href="https://www.tiktok.com/@bus.army.dude"><i class="fab fa-tiktok"></i>Twitter</a>
-      <a href="https://www.instagram.com/riverkritzar"><i class="fab fa-instagram"></i>Instagram</a>
-      <a href="https://bus-army-dude.instatus.com/"><i class="fa-solid fa-wifi"></i></i>Status Page</a>
-    </div>
-  </div>
+<div id="maintenanceModeMessage" style="display: none; background-color: red; color: white; text-align: center; padding: 20px;">
+    <h2>We're Performing Some Upgrades!</h2>
+    <p>
+        Our website is currently undergoing scheduled maintenance to improve your experience. We’re making some big updates, so things will be smoother, faster, and even better when we're done.
+    </p>
+    <p>
+        During this time, certain features may be temporarily unavailable, and you might not be able to access all parts of the site. But don’t worry, we’re working hard to get everything back up and running as quickly as possible.
+    </p>
+    <p>
+        Please check back soon, or follow our social media pages for updates on when we’ll be live again. We appreciate your patience and can’t wait to show you what’s new!
+    </p>
+    <p><strong>Thank you for your understanding!</strong></p>
 </div>
-
 <div id="main-content-wrapper">
   <div class="profile-section">
     <button class="merch-button" aria-label="Merch" onclick="window.location.href='https://bus-army-dude.github.io/bus-army-dude/merchandise.html'"></button>
@@ -133,26 +130,28 @@ s0.parentNode.insertBefore(s1,s0);
                     <h2>TikTok Creator Shoutouts</h2>
                     <p id="tiktok-last-updated-timestamp">Last Updated: Loading...</p>
                 </div>
-                <div class="creator-grid" id="tiktok-grid"></div> <!-- This is the grid element -->
+                <div class="creator-grid">
+                    </div>
                 <div class="unavailable-message" style="display: none;"></div>
             </div>
-            
+
             <div class="shoutouts-section section">
                 <div id="instagram-shoutouts">
                     <h2>Instagram Creator Shoutouts</h2>
                     <p id="instagram-last-updated-timestamp">Last Updated: Loading...</p>
                 </div>
-                <div class="creator-grid" id="instagram-grid"></div> <!-- This is the grid element -->
+                <div class="instagram-creator-grid">
+                    </div>
             </div>
-            
+
             <div class="shoutouts-section section">
                 <div id="youtube-shoutouts">
                     <h2>YouTube Creator Shoutouts</h2>
                     <p id="youtube-last-updated-timestamp">Last Updated: Loading...</p>
                 </div>
-                <div class="creator-grid" id="youtube-grid"></div> <!-- This is the grid element -->
+                <div class="youtube-creator-grid">
             </div>
-
+        </div>
 
         <div class="useful-links-section section">
              <h2 class="section-title">Useful Links</h2>
