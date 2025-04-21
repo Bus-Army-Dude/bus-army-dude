@@ -61,6 +61,7 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
     } catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
 }
 
+// --- Functions to Render Cards (Shoutouts, Tech, FAQs) ---
 function renderTikTokCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
     const username = account.username || 'N/A';
@@ -69,8 +70,7 @@ function renderTikTokCard(account) {
     const followers = account.followers || 'N/A';
     const isVerified = account.isVerified || false;
     const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#';
-    const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge" onerror="this.src=\'images/default-badge.png\'">' : '';
-
+    const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : '';
     return `<div class="creator-card">
               <img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.src='images/default-profile.jpg'">
               <div class="creator-info">
@@ -82,7 +82,6 @@ function renderTikTokCard(account) {
               </div>
             </div>`;
 }
-
 
 function renderInstagramCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
@@ -731,53 +730,37 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
 // --- ***** END: Countdown Timer Logic (v7) ***** ---
 
 
-// --- MASTER INITIALIZATION FUNCTION (Corrected v11) ---
+// --- MASTER INITIALIZATION FUNCTION (Corrected v9 - Fetches and Passes Expired Message) ---
 async function initializeHomepageContent() {
     console.log("Initializing homepage content...");
 
-    // DOM Elements
     const mainContentWrapper = document.querySelector('.container');
     const maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
     const countdownSection = document.querySelector('.countdown-section');
-    const maintenanceOverlay = document.getElementById("maintenance");
 
-    // Shoutout Containers
-    const tiktokShoutoutsContainer = document.getElementById('tiktok-shoutouts');
-    const instagramShoutoutsContainer = document.getElementById('instagram-shoutouts');
-    const youtubeShoutoutsContainer = document.getElementById('youtube-shoutouts');
-
-    // Creator Grids
-    const tiktokGridContainer = tiktokShoutoutsContainer.querySelector('.creator-grid');
-    const instagramGridContainer = instagramShoutoutsContainer.querySelector('.instagram-creator-grid');
-    const youtubeGridContainer = youtubeShoutoutsContainer.querySelector('.youtube-creator-grid');
-
-    // Unavailable Message Containers
-    const tiktokUnavailableMessage = tiktokShoutoutsContainer.querySelector('.unavailable-message');
-    const instagramUnavailableMessage = instagramShoutoutsContainer.querySelector('.unavailable-message');
-    const youtubeUnavailableMessage = youtubeShoutoutsContainer.querySelector('.unavailable-message');
+    // Selectors
+    const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
+    const tiktokGridContainer = document.querySelector('#tiktok-shoutouts + .creator-grid');
+    const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts + .creator-grid + .unavailable-message');
+    const instagramGridContainer = document.querySelector('.instagram-creator-grid');
+    const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
 
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
-        console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
-        
-        if (maintenanceOverlay) maintenanceOverlay.style.display = 'flex';
-        if (maintenanceMessageElement) {
-            maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error.</p>';
-            maintenanceMessageElement.style.display = 'block';
-        }
-
-        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-        if (countdownSection) countdownSection.style.display = 'none';
-        return;
+         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
+         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error.</p>'; maintenanceMessageElement.style.display = 'block'; }
+         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+         if (countdownSection) countdownSection.style.display = 'none';
+         return;
     }
 
-    // Fetch Central Site Configuration
+    // Fetch Central Site Configuration from 'site_config/mainProfile'
     let siteSettings = {};
     let maintenanceEnabled = false;
     let hideTikTokSection = false;
     let countdownTargetDate = null;
     let countdownTitle = null;
-    let countdownExpiredMessage = null;
+    let countdownExpiredMessage = null; // <<< Variable initialized
 
     try {
         console.log("Fetching site settings from site_config/mainProfile...");
@@ -789,28 +772,21 @@ async function initializeHomepageContent() {
             hideTikTokSection = siteSettings.hideTikTokSection || false;
             countdownTargetDate = siteSettings.countdownTargetDate;
             countdownTitle = siteSettings.countdownTitle;
-            countdownExpiredMessage = siteSettings.countdownExpiredMessage;
+            countdownExpiredMessage = siteSettings.countdownExpiredMessage; // <<< GET THE MESSAGE HERE
         } else {
-            console.warn("Site settings document not found. Using defaults.");
+            console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
         }
-
-        console.log("Settings fetched:", {
-            maintenanceEnabled,
-            hideTikTokSection,
-            countdownTitle,
-            countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
-            countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
-        });
+        console.log("Settings fetched:", { // Updated log
+             maintenanceEnabled,
+             hideTikTokSection,
+             countdownTitle,
+             countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
+             countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
+            });
 
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
-
-        if (maintenanceOverlay) maintenanceOverlay.style.display = 'flex';
-        if (maintenanceMessageElement) {
-            maintenanceMessageElement.innerHTML = `<p class="error">Error loading config: ${error.message}.</p>`;
-            maintenanceMessageElement.style.display = 'block';
-        }
-
+        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">Error loading config: ${error.message}.</p>`; maintenanceMessageElement.style.display = 'block'; }
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
         return;
@@ -819,74 +795,60 @@ async function initializeHomepageContent() {
     // Apply Maintenance Mode
     if (maintenanceEnabled) {
         console.log("Maintenance mode ON.");
-        if (maintenanceOverlay) maintenanceOverlay.style.display = 'flex';
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
-        if (maintenanceMessageElement) {
-            maintenanceMessageElement.innerHTML = '<p>Site undergoing maintenance.</p>';
-            maintenanceMessageElement.style.display = 'block';
-        }
+        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p>Site undergoing maintenance.</p>'; maintenanceMessageElement.style.display = 'block'; }
         return;
     } else {
         console.log("Maintenance mode OFF.");
-        if (maintenanceOverlay) maintenanceOverlay.style.display = 'none';
         if (mainContentWrapper) mainContentWrapper.style.display = '';
-        if (countdownSection) countdownSection.style.display = 'block';
+        if (countdownSection) countdownSection.style.display = 'block'; // Show section initially
         if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
     }
 
+    // --- Start Countdown (Pass the fetched message) ---
+    startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage); // <<< PASS 3rd ARGUMENT HERE
+
     // Apply TikTok Visibility Logic
-    if (hideTikTokSection) {
-        console.log("Hiding TikTok section.");
-        tiktokShoutoutsContainer.style.display = 'none';
-        if (tiktokUnavailableMessage) {
-            tiktokUnavailableMessage.innerHTML = '<p style="color: red;">TikTok section is unavailable at the moment.</p>';
-            tiktokUnavailableMessage.style.display = 'block';
-        }
+    if (!tiktokHeaderContainer || !tiktokGridContainer) {
+         console.warn("Could not find TikTok header/grid containers.");
+         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
     } else {
-        console.log("Showing TikTok section.");
-        tiktokShoutoutsContainer.style.display = '';
-        if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
-        loadShoutoutPlatformData('tiktok', tiktokGridContainer, document.getElementById('tiktok-last-updated-timestamp'));
+        if (hideTikTokSection) {
+             console.log("Hiding TikTok section.");
+             tiktokHeaderContainer.style.display = 'none';
+             tiktokGridContainer.style.display = 'none';
+             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p style="...">Notice...</p>'; tiktokUnavailableMessage.style.display = 'block';}
+             else { console.warn("TikTok unavailable message element not found."); }
+        } else {
+            console.log("Showing TikTok section.");
+            tiktokHeaderContainer.style.display = '';
+            tiktokGridContainer.style.display = '';
+             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.style.display = 'none'; tiktokUnavailableMessage.innerHTML = ''; }
+            const tsEl = tiktokHeaderContainer.querySelector('#tiktok-last-updated-timestamp');
+            loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl); // Load data
+        }
     }
 
-    // Instagram and YouTube sections will always be visible
-    console.log("Showing Instagram and YouTube sections.");
-    instagramShoutoutsContainer.style.display = '';
-    youtubeShoutoutsContainer.style.display = '';
-
-    // Load Instagram and YouTube Shoutouts Data
-    loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp'));
-    loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp'));
-
-    // Load additional content sections
+    // --- Load ALL OTHER Content Sections ---
     console.log("Initiating loading of other content sections...");
-    displayProfileData(siteSettings);
+    displayProfileData(siteSettings); // Pass settings
 
     const otherLoadPromises = [
         displayPresidentData(),
+        loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
+        loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
         loadAndDisplayUsefulLinks(),
         loadAndDisplaySocialLinks(),
         loadAndDisplayDisabilities(),
         loadAndDisplayTechItems(),
         loadAndDisplayFaqs()
-    ];
-
+     ];
     const otherResults = await Promise.allSettled(otherLoadPromises);
-    otherResults.forEach((result, index) => {
-        if (result.status === 'fulfilled') {
-            console.log(`Content ${index} loaded successfully.`);
-        } else {
-            console.error(`Error loading content ${index}:`, result.reason);
-        }
-    });
-
+    otherResults.forEach((result, index) => { /* ... handle results ... */ });
     console.log("Other dynamic content loading initiated.");
+} // --- End of initializeHomepageContent ---
 
-    // Start Countdown
-    startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
-}
 
-// Call the main initialization function when the DOM is ready
+// --- Call the main initialization function when the DOM is ready ---
 document.addEventListener('DOMContentLoaded', initializeHomepageContent);
-
