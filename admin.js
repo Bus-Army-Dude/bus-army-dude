@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     const logListContainer = document.getElementById('activity-log-list');       // Needed by functions
     const logCountElement = document.getElementById('activity-log-count');         // Needed by functions
     const refreshLogBtn = document.getElementById('refresh-log-button');
-    const searchLogInput = document.getElementById('search-activity-log');
     const clearLogBtn = document.getElementById('clear-log-button');
     const filterLogDateInput = document.getElementById('filter-log-date');
     const filterLogDateButton = document.getElementById('filter-log-date-button');
@@ -80,9 +79,12 @@ document.addEventListener('DOMContentLoaded', () => { //
     let isAddingShoutout = false; // Flag to prevent double submissions
 
     // --- Activity Log Listeners ---
-    if (refreshLogBtn) {
-        refreshLogBtn.addEventListener('click', loadActivityLog); // Refresh reloads all
-    }
+if (refreshLogBtn) {
+     refreshLogBtn.addEventListener('click', () => {
+          if (filterLogDateInput) filterLogDateInput.value = ''; // Clear date input visually
+          loadActivityLogPage('initial', null); // <<< CORRECTED CALL
+     });
+}
 
     const searchLogInput = document.getElementById('search-activity-log');
     if (searchLogInput) {
@@ -679,11 +681,12 @@ if (searchInputDisabilities) {
         const querySnapshot = await getDocs(activityLogCollectionRef);
 
         if (querySnapshot.empty) {
-             showAdminStatus("Activity log is already empty.", false);
-             if (clearButton) clearButton.disabled = false;
-             loadActivityLog(); // Refresh display
-             return;
-        }
+         if (showAdminStatus) showAdminStatus("Activity log is already empty.", false);
+         if (clearButton) clearButton.disabled = false;
+         // ** UPDATE THIS CALL v **
+         loadActivityLogPage('initial', null); // Refresh display (will show empty)
+         return;
+    }
 
         // Create an array of delete promises
         const deletePromises = [];
@@ -700,10 +703,12 @@ if (searchInputDisabilities) {
 
     } catch (error) {
         console.error("Error clearing activity log:", error);
-        showAdminStatus(`Error clearing activity log: ${error.message}`, true);
+        if (showAdminStatus) showAdminStatus(`Error clearing activity log: ${error.message}`, true);
     } finally {
          if (clearButton) clearButton.disabled = false; // Re-enable button
-         loadActivityLog(); // Refresh the displayed log (should be empty)
+         if(filterLogDateInput) filterLogDateInput.value = ''; // Clear date filter after clearing log
+         // ** UPDATE THIS CALL v **
+         loadActivityLogPage('initial', null); // Refresh the displayed log (should be empty)
     }
 }
 
