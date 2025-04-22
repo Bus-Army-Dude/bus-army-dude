@@ -827,7 +827,7 @@ async function loadActivityLog() {
     try {
         // Ensure Firestore functions are imported (collection, query, orderBy, limit, getDocs)
         const activityLogCollectionRef = collection(db, "activity_log"); // Define or ensure global reference
-        const logQuery = query(activityLogCollectionRef, orderBy("timestamp", "desc"), limit(50)); // Load recent 50
+        const logQuery = query(activityLogCollectionRef, orderBy("timestamp", "desc"), limit(900000000)); // Load recent 50
         const querySnapshot = await getDocs(logQuery);
 
         querySnapshot.forEach(doc => {
