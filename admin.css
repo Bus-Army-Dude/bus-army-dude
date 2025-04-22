@@ -873,29 +873,34 @@ button.edit-button:focus-visible {
 /* Edit Modal Styles        */
 /* ======================== */
 .modal {
-  /* IMPORTANT: This needs to be changed by JavaScript to show the modal */
-  /* e.g., modalElement.style.display = 'flex'; */
+  /* IMPORTANT: JavaScript MUST set 'display: flex;' to show this */
   display: none; /* MODAL IS HIDDEN BY DEFAULT */
-  align-items: center; /* Vertically center content */
-  justify-content: center; /* Horizontally center content */
 
-  /* --- Styling --- */
-  position: fixed;
+  /* --- Positioning & Centering --- */
+  position: fixed; /* Relative to viewport */
   z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; /* Enable scroll if content overflows */
+  overflow: hidden; /* Prevent body scrolling when modal is open */
+
+  /* ** USE FLEXBOX TO CENTER CONTENT ** */
+  display: flex; /* Default display when shown by JS */
+  align-items: center; /* Vertically center .modal-content */
+  justify-content: center; /* Horizontally center .modal-content */
+  padding: 20px; /* Add space around the modal content */
+
+  /* --- Backdrop --- */
   background-color: var(--modal-backdrop-color);
-  backdrop-filter: blur(12px) saturate(150%); /* Enhanced blur */
+  backdrop-filter: blur(12px) saturate(150%);
   -webkit-backdrop-filter: blur(12px) saturate(150%);
+
+  /* --- Animation --- */
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Optional: Add a class for JavaScript to toggle visibility */
-/* .modal.is-visible { display: flex; } */
-
+/* Keep your keyframes */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -903,55 +908,63 @@ button.edit-button:focus-visible {
 
 .modal-content {
   background-color: var(--glass-bg); /* Glass effect */
-  margin: 5vh auto; /* Use vh for vertical margin, auto for horizontal centering */
-  padding: 40px 50px; /* More padding */
-  border: 1px solid var(--subtle-border-color); /* Subtle border */
+  /* ** REMOVED margin: 5vh auto; ** (Flexbox on parent centers it) */
+  padding: 40px 50px; /* Keep your internal padding */
+  border: 1px solid var(--subtle-border-color);
   width: 90%;
-  max-width: 700px; /* Slightly wider */
-  position: relative;
-  border-radius: var(--border-radius-xl); /* Larger radius for modals */
-  box-shadow: 0 20px 50px -15px var(--deep-shadow-color); /* Deeper shadow */
+  max-width: 700px; /* Keep max-width */
+  position: relative; /* Keep for close button */
+  border-radius: var(--border-radius-xl);
+  box-shadow: 0 20px 50px -15px var(--deep-shadow-color);
+
+  /* ** ADDED internal scrolling for tall content ** */
+  overflow-y: auto; /* Allow this box to scroll */
+  max-height: calc(100vh - 40px); /* Limit height (100vh minus modal padding * 2) */
+
+  /* --- Animation --- */
   animation: slideInFromTop 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-  overflow: visible; /* Ensure shadows aren't clipped */
 }
+
+/* Keep your keyframes */
 @keyframes slideInFromTop {
     from { transform: translateY(-50px) scale(0.95); opacity: 0; }
     to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
+/* Keep .close-button and modal form styles as they were */
 .close-button {
   color: var(--secondary-text);
   position: absolute;
   top: 20px;
   right: 25px;
   font-size: 30px;
-  font-weight: 300; /* Lighter weight for close 'x' */
+  font-weight: 300;
   line-height: 1;
   transition: color var(--transition-speed) var(--transition-timing-fast), transform 0.2s ease;
   border: none;
-  background: transparent; /* Ensure no background */
-  padding: 5px; /* Add padding for easier clicking */
+  background: transparent;
+  padding: 5px;
   cursor: pointer;
   opacity: 0.8;
-  z-index: 10; /* Ensure it's above content */
+  z-index: 10;
 }
 .close-button:hover, .close-button:focus {
     color: var(--text-color);
     text-decoration: none;
-    transform: scale(1.15) rotate(90deg); /* Rotate effect */
+    transform: scale(1.15) rotate(90deg);
     opacity: 1;
-    outline: none; /* Remove default outline */
+    outline: none;
 }
 
-/* Ensure consistent button margin in modal forms */
+/* Keep form action margins */
 #edit-shoutout-form .form-actions button,
 #profile-form .form-actions button,
 #edit-disability-form .form-actions button,
 #edit-useful-link-form .form-actions button,
 #edit-social-link-form .form-actions button,
 #president-form .form-actions button,
-#edit-faq-form .form-actions button, /* Added FAQ */
-#edit-tech-item-form .form-actions button /* Added Tech */
+#edit-faq-form .form-actions button,
+#edit-tech-item-form .form-actions button
 {
     margin-right: 10px;
 }
@@ -961,8 +974,8 @@ button.edit-button:focus-visible {
 #edit-useful-link-form .form-actions button:last-child,
 #edit-social-link-form .form-actions button:last-child,
 #president-form .form-actions button:last-child,
-#edit-faq-form .form-actions button:last-child, /* Added FAQ */
-#edit-tech-item-form .form-actions button:last-child /* Added Tech */
+#edit-faq-form .form-actions button:last-child,
+#edit-tech-item-form .form-actions button:last-child
 {
     margin-right: 0;
 }
