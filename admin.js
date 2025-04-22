@@ -437,7 +437,7 @@ if (searchInputDisabilities) {
                      // *** END ADDED CODE ***
                  }
 
-                editModal.style.display = 'block'; // Show the modal
+                editModal.style.display = 'flex'; // Show the modal
             } else { //
                  showAdminStatus("Error: Could not load data for editing. Document not found.", true); //
             }
