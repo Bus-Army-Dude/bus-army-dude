@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     
     // Site Settings Elements
     const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle'); //
-    const hideTikTokSectionToggle = document.getElementById('hide-tiktok-section-toggle'); //
+    const tiktokDisabledUSToggle = document.getElementById('tiktok-disabled-us-toggle'); // <<< ADD THIS
     const settingsStatusMessage = document.getElementById('settings-status-message'); //
 
     // Shoutout Elements (Add Forms, Lists, Search)
@@ -446,6 +446,16 @@ if (searchInputDisabilities) {
              showAdminStatus(`Error loading data: ${error.message}`, true); //
          });
     }
+
+    if (tiktokDisabledUSToggle) {
+        tiktokDisabledUSToggle.addEventListener('change', (e) => {
+            // Call the new save function when the US toggle changes
+            saveTikTokRegionStatus("US", e.target.checked);
+        });
+    } else {
+        console.warn("TikTok US disable toggle element not found.");
+    }
+    // --- *** END of new listener *** ---
 
     // Closes the edit modal and resets the form
     function closeEditModal() { //
@@ -1016,56 +1026,72 @@ async function loadProfileData() {
          });
     }
 
-// *** NEW FUNCTION TO SAVE Hide TikTok Section Status ***
-    async function saveHideTikTokSectionStatus(isEnabled) {
+// --- *** NEW: Function to Save TikTok Region Status *** ---
+    // This function saves changes to the 'tiktokDisabledRegions' array in Firestore
+    async function saveTikTokRegionStatus(regionCode, isDisabled) {
         // Ensure user is logged in
         if (!auth || !auth.currentUser) {
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
-            // Revert checkbox state visually if save fails due to auth issue
-            if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled;
+            showSettingsStatus("Error: Not logged in.", true);
+            // Revert toggle visually on auth error (assuming tiktokDisabledUSToggle exists)
+            if (regionCode === "US" && tiktokDisabledUSToggle) tiktokDisabledUSToggle.checked = !isDisabled;
             return;
         }
+        // Ensure Firestore reference is available
+        if (!profileDocRef) {
+             showSettingsStatus("Error: Config reference missing.", true);
+             if (regionCode === "US" && tiktokDisabledUSToggle) tiktokDisabledUSToggle.checked = !isDisabled;
+             return;
+        }
 
-        // Use the specific status message area for settings, fallback to main admin status
-        const statusElement = settingsStatusMessage || adminStatusElement; //
-
-        // Show saving message
+        const statusElement = settingsStatusMessage || adminStatusElement; // Use settings status first
         if (statusElement) {
-            statusElement.textContent = "Saving setting...";
-            statusElement.className = "status-message"; // Reset style
+            statusElement.textContent = "Saving TikTok region setting...";
+            statusElement.className = "status-message pending";
             statusElement.style.display = 'block';
         }
 
         try {
-            // Use profileDocRef (site_config/mainProfile) to store the flag
-            // Use setDoc with merge: true to update only this field without overwriting others
-            await setDoc(profileDocRef, {
-                hideTikTokSection: isEnabled // Save the boolean value (true/false)
-            }, { merge: true });
+            // 1. Get the current array from Firestore
+            const docSnap = await getDoc(profileDocRef);
+            // Initialize with an empty array if the field doesn't exist or isn't an array
+            const currentDisabled = Array.isArray(docSnap.data()?.tiktokDisabledRegions)
+                                       ? docSnap.data().tiktokDisabledRegions
+                                       : [];
+            const regionSet = new Set(currentDisabled); // Use a Set for easy add/delete of unique codes
 
-            console.log("Hide TikTok Section status saved:", isEnabled);
+            // 2. Modify the Set based on the toggle state
+            const upperRegionCode = regionCode.toUpperCase(); // Ensure consistent casing (e.g., "US")
+            if (isDisabled) {
+                regionSet.add(upperRegionCode); // Add region to the disabled list
+            } else {
+                regionSet.delete(upperRegionCode); // Remove region from the disabled list
+            }
 
-            // Show success message using the dedicated settings status element or fallback
-            const message = `TikTok homepage section set to ${isEnabled ? 'hidden' : 'visible'}.`;
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
-                 showSettingsStatus(message, false); // Uses the settings-specific display/clear logic
-             } else { // Fallback if specific element wasn't found initially
-                 showAdminStatus(message, false);
-             }
+            // 3. Convert back to an array for saving
+            const newDisabledRegions = Array.from(regionSet);
+
+            // 4. Update the document in Firestore
+            await updateDoc(profileDocRef, {
+                tiktokDisabledRegions: newDisabledRegions // Save the entire updated array
+            });
+
+            const message = `TikTok section ${isDisabled ? 'disabled' : 'enabled'} for ${regionCode}.`;
+            console.log("TikTok region status saved:", newDisabledRegions);
+            showSettingsStatus(message, false); // Show success in settings area
+
+            // Log activity
+            if (typeof logAdminActivity === 'function') {
+                logAdminActivity('UPDATE_SITE_SETTINGS', { setting: `tiktokDisabled_${regionCode}`, value: isDisabled, fullList: newDisabledRegions });
+            }
 
         } catch (error) {
-            console.error("Error saving Hide TikTok Section status:", error);
-            // Show error message in the specific status area or fallback
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) {
-                showSettingsStatus(`Error saving setting: ${error.message}`, true);
-            } else {
-                showAdminStatus(`Error saving Hide TikTok setting: ${error.message}`, true);
-            }
-            // Revert checkbox state visually on error
-             if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled;
+            console.error(`Error saving TikTok region status for ${regionCode}:`, error);
+            showSettingsStatus(`Error saving setting: ${error.message}`, true);
+            // Revert toggle visually on error
+            if (regionCode === "US" && tiktokDisabledUSToggle) tiktokDisabledUSToggle.checked = !isDisabled;
         }
     }
-    // *** END NEW FUNCTION ***
+    // --- *** END of new save function *** ---
 
 // *** FUNCTION TO SAVE Maintenance Mode Status ***
 
