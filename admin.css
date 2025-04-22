@@ -647,8 +647,8 @@ button.edit-button:focus-visible {
 
 /* Icon Styling */
 .status-message::before {
-    /* Assuming Font Awesome 5 Free */
-    font-family: "Font Awesome 5 Free";
+    /* Assuming Font Awesome 6 Free */
+    font-family: "Font Awesome 6 Free"; /* Updated */
     font-weight: 900; /* Solid style */
     position: absolute;
     left: 18px; /* Position icon */
@@ -949,7 +949,10 @@ button.edit-button:focus-visible {
 #edit-disability-form .form-actions button,
 #edit-useful-link-form .form-actions button,
 #edit-social-link-form .form-actions button,
-#president-form .form-actions button {
+#president-form .form-actions button,
+#edit-faq-form .form-actions button, /* Added FAQ */
+#edit-tech-item-form .form-actions button /* Added Tech */
+{
     margin-right: 10px;
 }
 #edit-shoutout-form .form-actions button:last-child,
@@ -957,7 +960,10 @@ button.edit-button:focus-visible {
 #edit-disability-form .form-actions button:last-child,
 #edit-useful-link-form .form-actions button:last-child,
 #edit-social-link-form .form-actions button:last-child,
-#president-form .form-actions button:last-child {
+#president-form .form-actions button:last-child,
+#edit-faq-form .form-actions button:last-child, /* Added FAQ */
+#edit-tech-item-form .form-actions button:last-child /* Added Tech */
+{
     margin-right: 0;
 }
 
@@ -983,6 +989,8 @@ button.edit-button:focus-visible {
 /* ======================== */
 /* Activity Log             */
 /* ======================== */
+#activity-log-section { } /* Keep for potential specific overrides */
+
 #activity-log-list {
     max-height: 550px; /* More height */
 }
@@ -1089,7 +1097,8 @@ button.edit-button:focus-visible {
     transform: none;
     box-shadow: 0 4px 12px -3px var(--shadow-color); /* Slightly deeper shadow on hover */
 }
-.shoutout-preview-area .youtube-cover-photo { display: none; }
+.shoutout-preview-area .youtube-cover-photo { display: none; } /* Keep hidden in admin preview */
+
 .shoutout-preview-area .creator-pic,
 .shoutout-preview-area .instagram-creator-pic,
 .shoutout-preview-area .youtube-creator-pic {
@@ -1177,11 +1186,7 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile { color: #fff
 
 
 /* --- Tech Preview --- */
-/* Styles for the PREVIEW container DIVs */
-.tech-preview-area {
-  border: 1px dashed var(--border-color);
-  /* Inherits base preview styles now */
-}
+/* .tech-preview-area inherits base preview styles */
 .tech-preview-area .tech-item {
     background: rgba(var(--content-bg-rgb), 0.7); /* Glassy item */
     backdrop-filter: blur(5px);
@@ -1227,7 +1232,6 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile { color: #fff
     color: var(--text-color); font-weight: 600; font-size: 13px; z-index: 1;
     text-shadow: 0 0 3px var(--content-bg);
 }
-
 
 /* --- FAQ Admin List Styles --- */
 #faq-list-admin .list-item-admin .item-details { width: 100%; }
