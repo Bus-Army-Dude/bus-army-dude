@@ -210,7 +210,14 @@ a:hover {
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
+
+    /* --- Animation Added --- */
+    animation: fadeInSlideUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    /* ^ name    ^ duration ^ timing function   ^ keeps final state */
+    opacity: 0; /* Start hidden for animation */
+    /* --- End Animation --- */
 }
+
 #login-section h2 { text-align: center; border-bottom: none; margin-bottom: 30px; font-size: 1.5rem;}
 
 /* ======================== */
@@ -560,31 +567,52 @@ button.edit-button:hover
 .status-message {
     margin-top: 25px;
     margin-bottom: 20px;
-    padding: 12px 20px;
+    padding: 12px 20px 12px 45px; /* Added left padding for icon */
     font-weight: 500;
-    text-align: center;
+    text-align: left; /* Align text left */
     border-radius: var(--border-radius-md);
     border: 1px solid transparent;
+    border-left-width: 5px; /* Add thick left border */
     display: none;
     clear: both;
     font-size: 0.95em;
+    position: relative; /* Needed for absolute positioning of pseudo-element */
     transition: background-color var(--transition-speed) var(--transition-timing),
                 color var(--transition-speed) var(--transition-timing),
                 border-color var(--transition-speed) var(--transition-timing);
 }
 .status-message:not(:empty) { display: block; }
 
+/* Icon Styling */
+.status-message::before {
+    font-family: "Font Awesome 5 Free"; /* Adjust if using FA v6 or other library */
+    font-weight: 900; /* Use solid style */
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+}
+
 .status-message.success {
     color: var(--success-text-color);
     background-color: var(--success-bg-color);
-    border-color: rgba(var(--color-success-action-glow), 0.5); /* Use RGB of success color */
+    border-color: var(--color-success-action); /* Use main success color for border */
 }
+.status-message.success::before {
+    content: "\f058"; /* Font Awesome check-circle icon */
+    color: var(--color-success-action);
+}
+
 .status-message.error {
     color: var(--error-text-color);
     background-color: var(--error-bg-color);
-    border-color: rgba(var(--danger-rgb), 0.3); /* Use RGB of danger color */
+    border-color: var(--color-danger); /* Use main danger color for border */
 }
-
+.status-message.error::before {
+    content: "\f071"; /* Font Awesome exclamation-triangle icon */
+    color: var(--color-danger);
+}
 
 /* ======================== */
 /* Dynamic List Styles      */
@@ -1482,4 +1510,15 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
 /* Ensure search input has good spacing */
 #faq-management .form-group label[for="search-faq"] {
     margin-top: 20px; /* Add space above search bar */
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px); /* Start slightly lower */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
