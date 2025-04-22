@@ -437,7 +437,7 @@ if (searchInputDisabilities) {
                      // *** END ADDED CODE ***
                  }
 
-                editModal.style.display = 'flex'; // Show the modal
+                editModal.style.display = 'block'; // Show the modal
             } else { //
                  showAdminStatus("Error: Could not load data for editing. Document not found.", true); //
             }
@@ -1973,34 +1973,34 @@ async function handleDeleteUsefulLink(docId, listItemElement) { //
 
 
 // *** Function to Open and Populate the Edit Useful Link Modal ***
-function openEditUsefulLinkModal(docId) {
-    if (!editUsefulLinkModal || !editUsefulLinkForm) {
-        console.error("Edit useful link modal elements not found.");
-        showAdminStatus("UI Error: Cannot open edit form.", true);
-        return;
+function openEditUsefulLinkModal(docId) { //
+    if (!editUsefulLinkModal || !editUsefulLinkForm) { //
+        console.error("Edit useful link modal elements not found."); //
+        showAdminStatus("UI Error: Cannot open edit form.", true); //
+        return; //
     }
 
-    const docRef = doc(db, 'useful_links', docId);
-    showEditLinkStatus("Loading link data...");
+    const docRef = doc(db, 'useful_links', docId); //
+    showEditLinkStatus("Loading link data..."); // Show status inside modal
 
-    getDoc(docRef).then(docSnap => {
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            editUsefulLinkForm.setAttribute('data-doc-id', docId);
-            if (editLinkLabelInput) editLinkLabelInput.value = data.label || '';
-            if (editLinkUrlInput) editLinkUrlInput.value = data.url || '';
-            if (editLinkOrderInput) editLinkOrderInput.value = data.order ?? '';
+    getDoc(docRef).then(docSnap => { //
+        if (docSnap.exists()) { //
+            const data = docSnap.data(); //
+            editUsefulLinkForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
+            if (editLinkLabelInput) editLinkLabelInput.value = data.label || ''; //
+            if (editLinkUrlInput) editLinkUrlInput.value = data.url || ''; //
+            if (editLinkOrderInput) editLinkOrderInput.value = data.order ?? ''; //
 
-            editUsefulLinkModal.style.display = 'flex'; // *** CORRECTED: Use 'flex' ***
-            showEditLinkStatus("");
-        } else {
-            showAdminStatus("Error: Could not load link data for editing.", true);
-            showEditLinkStatus("Error: Link not found.", true);
+            editUsefulLinkModal.style.display = 'block'; //
+            showEditLinkStatus(""); // Clear loading message
+        } else { //
+            showAdminStatus("Error: Could not load link data for editing.", true); //
+             showEditLinkStatus("Error: Link not found.", true); // Show error inside modal
         }
-    }).catch(error => {
-        console.error("Error getting link document for edit:", error);
-        showAdminStatus(`Error loading link data: ${error.message}`, true);
-        showEditLinkStatus(`Error: ${error.message}`, true);
+    }).catch(error => { //
+        console.error("Error getting link document for edit:", error); //
+        showAdminStatus(`Error loading link data: ${error.message}`, true); //
+        showEditLinkStatus(`Error: ${error.message}`, true); //
     });
 }
 
@@ -2282,36 +2282,36 @@ function displayFilteredSocialLinks() {
 
 
    // --- Function to Open and Populate the Edit Social Link Modal ---
-function openEditSocialLinkModal(docId) {
-    if (!editSocialLinkModal || !editSocialLinkForm) {
-        console.error("Edit social link modal elements not found.");
-        showAdminStatus("UI Error: Cannot open edit form.", true);
-        return;
-    }
+   function openEditSocialLinkModal(docId) {
+       if (!editSocialLinkModal || !editSocialLinkForm) {
+           console.error("Edit social link modal elements not found.");
+           showAdminStatus("UI Error: Cannot open edit form.", true);
+           return;
+       }
 
-    const docRef = doc(db, 'social_links', docId);
-    showEditSocialLinkStatus("Loading link data...");
+       const docRef = doc(db, 'social_links', docId);
+       showEditSocialLinkStatus("Loading link data..."); // Show status inside modal
 
-    getDoc(docRef).then(docSnap => {
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            editSocialLinkForm.setAttribute('data-doc-id', docId);
-            if (editSocialLinkLabelInput) editSocialLinkLabelInput.value = data.label || '';
-            if (editSocialLinkUrlInput) editSocialLinkUrlInput.value = data.url || '';
-            if (editSocialLinkOrderInput) editSocialLinkOrderInput.value = data.order ?? '';
+       getDoc(docRef).then(docSnap => {
+           if (docSnap.exists()) {
+               const data = docSnap.data();
+               editSocialLinkForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
+               if (editSocialLinkLabelInput) editSocialLinkLabelInput.value = data.label || '';
+               if (editSocialLinkUrlInput) editSocialLinkUrlInput.value = data.url || '';
+               if (editSocialLinkOrderInput) editSocialLinkOrderInput.value = data.order ?? '';
 
-            editSocialLinkModal.style.display = 'flex'; // *** CORRECTED: Use 'flex' ***
-            showEditSocialLinkStatus("");
-        } else {
-            showAdminStatus("Error: Could not load link data for editing.", true);
-            showEditSocialLinkStatus("Error: Link not found.", true);
-        }
-    }).catch(error => {
-        console.error("Error getting link document for edit:", error);
-        showAdminStatus(`Error loading link data: ${error.message}`, true);
-        showEditSocialLinkStatus(`Error: ${error.message}`, true);
-    });
-}
+               editSocialLinkModal.style.display = 'block';
+               showEditSocialLinkStatus(""); // Clear loading message
+           } else {
+               showAdminStatus("Error: Could not load link data for editing.", true);
+                showEditSocialLinkStatus("Error: Link not found.", true); // Show error inside modal
+           }
+       }).catch(error => {
+           console.error("Error getting link document for edit:", error);
+           showAdminStatus(`Error loading link data: ${error.message}`, true);
+           showEditSocialLinkStatus(`Error: ${error.message}`, true);
+       });
+   }
 
    // --- Function to Close the Edit Social Link Modal ---
    function closeEditSocialLinkModal() {
@@ -2877,24 +2877,24 @@ function displayFilteredActivityLog() {
          }
     }
 
-   /** Opens the Edit Tech Item modal and populates it with data */
-async function openEditTechItemModal(docId) {
-    if (!editTechItemModal || !editTechItemForm) { console.error("Edit tech item modal elements not found."); showAdminStatus("UI Error: Cannot open edit form.", true); return; }
-    showEditTechItemStatus("Loading item data...");
-    if(editTechItemPreview) editTechItemPreview.innerHTML = '<p><small>Loading preview...</small></p>';
-    try {
-        const docRef = doc(db, 'tech_items', docId); const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const data = docSnap.data(); editTechItemForm.setAttribute('data-doc-id', docId);
-            const inputs = editTechItemForm.querySelectorAll('input[name], select[name], textarea[name]');
-            inputs.forEach(input => { const name = input.name; if (data.hasOwnProperty(name)) { input.value = data[name] ?? ''; } else { input.value = ''; } });
+    /** Opens the Edit Tech Item modal and populates it with data */
+    async function openEditTechItemModal(docId) {
+        // ... (function code from previous response, INCLUDING triggering preview/listener attach) ...
+         if (!editTechItemModal || !editTechItemForm) { console.error("Edit tech item modal elements not found."); showAdminStatus("UI Error: Cannot open edit form.", true); return; }
+         showEditTechItemStatus("Loading item data...");
+         if(editTechItemPreview) editTechItemPreview.innerHTML = '<p><small>Loading preview...</small></p>';
+         try {
+             const docRef = doc(db, 'tech_items', docId); const docSnap = await getDoc(docRef);
+             if (docSnap.exists()) {
+                 const data = docSnap.data(); editTechItemForm.setAttribute('data-doc-id', docId);
+                 const inputs = editTechItemForm.querySelectorAll('input[name], select[name], textarea[name]');
+                 inputs.forEach(input => { const name = input.name; if (data.hasOwnProperty(name)) { input.value = data[name] ?? ''; } else { input.value = ''; } });
+                 editTechItemModal.style.display = 'block'; showEditTechItemStatus("");
+                 updateTechItemPreview('edit'); attachTechPreviewListeners(editTechItemForm, 'edit');
+             } else { showAdminStatus("Error: Could not load tech item data for editing (not found).", true); showEditTechItemStatus("Error: Item not found.", true); if(editTechItemPreview) editTechItemPreview.innerHTML = '<p class="error"><small>Item not found.</small></p>'; }
+         } catch (error) { console.error("Error getting tech item document for edit:", error); showAdminStatus(`Error loading tech item data: ${error.message}`, true); showEditTechItemStatus(`Error: ${error.message}`, true); if(editTechItemPreview) editTechItemPreview.innerHTML = `<p class="error"><small>Error loading preview: ${error.message}</small></p>`; }
+    }
 
-            editTechItemModal.style.display = 'flex'; // *** CORRECTED: Use 'flex' ***
-            showEditTechItemStatus("");
-            updateTechItemPreview('edit'); attachTechPreviewListeners(editTechItemForm, 'edit');
-        } else { showAdminStatus("Error: Could not load tech item data for editing (not found).", true); showEditTechItemStatus("Error: Item not found.", true); if(editTechItemPreview) editTechItemPreview.innerHTML = '<p class="error"><small>Item not found.</small></p>'; }
-    } catch (error) { console.error("Error getting tech item document for edit:", error); showAdminStatus(`Error loading tech item data: ${error.message}`, true); showEditTechItemStatus(`Error: ${error.message}`, true); if(editTechItemPreview) editTechItemPreview.innerHTML = `<p class="error"><small>Error loading preview: ${error.message}</small></p>`; }
-}
      /** Closes the Edit Tech Item modal */
     function closeEditTechItemModal() {
         // ... (function code from previous response, INCLUDING resetting preview) ...
@@ -3172,22 +3172,21 @@ async function handleDeleteFaq(docId, listItemElement) {
 
 /** Opens and populates the edit FAQ modal */
 async function openEditFaqModal(docId) {
-    if (!editFaqModal || !editFaqForm) { console.error("Edit FAQ modal elements missing."); return; }
-    showEditFaqStatus("Loading FAQ data...");
-    try {
-        const docRef = doc(db, 'faqs', docId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            editFaqForm.setAttribute('data-doc-id', docId);
-            if(editFaqQuestionInput) editFaqQuestionInput.value = data.question || '';
-            if(editFaqAnswerInput) editFaqAnswerInput.value = data.answer || '';
-            if(editFaqOrderInput) editFaqOrderInput.value = data.order ?? '';
-
-            editFaqModal.style.display = 'flex'; // *** CORRECTED: Use 'flex' ***
-            showEditFaqStatus("");
-        } else { showAdminStatus("Error loading FAQ data (not found).", true); showEditFaqStatus("Error: FAQ not found.", true); }
-    } catch (error) { console.error("Error getting FAQ doc for edit:", error); showAdminStatus(`Error loading FAQ: ${error.message}`, true); showEditFaqStatus(`Error: ${error.message}`, true); }
+     if (!editFaqModal || !editFaqForm) { console.error("Edit FAQ modal elements missing."); return; }
+     showEditFaqStatus("Loading FAQ data...");
+     try {
+         const docRef = doc(db, 'faqs', docId);
+         const docSnap = await getDoc(docRef);
+         if (docSnap.exists()) {
+             const data = docSnap.data();
+             editFaqForm.setAttribute('data-doc-id', docId);
+             if(editFaqQuestionInput) editFaqQuestionInput.value = data.question || '';
+             if(editFaqAnswerInput) editFaqAnswerInput.value = data.answer || '';
+             if(editFaqOrderInput) editFaqOrderInput.value = data.order ?? '';
+             editFaqModal.style.display = 'block';
+             showEditFaqStatus("");
+         } else { showAdminStatus("Error loading FAQ data (not found).", true); showEditFaqStatus("Error: FAQ not found.", true); }
+     } catch (error) { console.error("Error getting FAQ doc for edit:", error); showAdminStatus(`Error loading FAQ: ${error.message}`, true); showEditFaqStatus(`Error: ${error.message}`, true); }
 }
 
 /** Closes the edit FAQ modal */
@@ -3441,36 +3440,39 @@ async function loadDisabilitiesAdmin() {
     }
 
      // Function to Open and Populate the Edit Disability Modal
-function openEditDisabilityModal(docId) {
-    if (!editDisabilityModal || !editDisabilityForm) {
-        console.error("Edit disability modal elements not found.");
-        showAdminStatus("UI Error: Cannot open edit form.", true);
-        return;
-    }
-
-    const docRef = doc(db, 'disabilities', docId);
-    showEditDisabilityStatus("Loading disability data...");
-
-    getDoc(docRef).then(docSnap => {
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            editDisabilityForm.setAttribute('data-doc-id', docId);
-            if (editDisabilityNameInput) editDisabilityNameInput.value = data.name || '';
-            if (editDisabilityUrlInput) editDisabilityUrlInput.value = data.url || '';
-            if (editDisabilityOrderInput) editDisabilityOrderInput.value = data.order ?? '';
-
-            editDisabilityModal.style.display = 'flex'; // *** CORRECTED: Use 'flex' ***
-            showEditDisabilityStatus("");
-        } else {
-            showAdminStatus("Error: Could not load disability data for editing.", true);
-            showEditDisabilityStatus("Error: Link not found.", true);
+    function openEditDisabilityModal(docId) {
+        // Use consts defined earlier for modal elements
+        if (!editDisabilityModal || !editDisabilityForm) {
+            console.error("Edit disability modal elements not found.");
+            showAdminStatus("UI Error: Cannot open edit form.", true);
+            return;
         }
-    }).catch(error => {
-        console.error("Error getting disability document for edit:", error);
-        showAdminStatus(`Error loading disability data: ${error.message}`, true);
-        showEditDisabilityStatus(`Error: ${error.message}`, true);
-    });
-}
+
+        // Use the disabilitiesCollectionRef defined earlier
+        const docRef = doc(db, 'disabilities', docId);
+        showEditDisabilityStatus("Loading disability data..."); // Use specific status func
+
+        getDoc(docRef).then(docSnap => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                editDisabilityForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
+                // Populate modal inputs using consts defined earlier
+                if (editDisabilityNameInput) editDisabilityNameInput.value = data.name || '';
+                if (editDisabilityUrlInput) editDisabilityUrlInput.value = data.url || '';
+                if (editDisabilityOrderInput) editDisabilityOrderInput.value = data.order ?? '';
+
+                editDisabilityModal.style.display = 'block'; // Show the modal
+                showEditDisabilityStatus(""); // Clear loading message
+            } else {
+                showAdminStatus("Error: Could not load disability data for editing.", true);
+                showEditDisabilityStatus("Error: Link not found.", true); // Show error inside modal
+            }
+        }).catch(error => {
+            console.error("Error getting disability document for edit:", error);
+            showAdminStatus(`Error loading disability data: ${error.message}`, true);
+            showEditDisabilityStatus(`Error: ${error.message}`, true);
+        });
+    }
 
     // Function to Close the Edit Disability Modal
     function closeEditDisabilityModal() {
