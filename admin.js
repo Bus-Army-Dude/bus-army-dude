@@ -39,20 +39,27 @@ document.addEventListener('DOMContentLoaded', () => { //
     // Reference for President Info
     const presidentDocRef = doc(db, "site_config", "currentPresident"); 
 
-    // --- Get Activity Log Elements ---
+    // --- Get Activity Log Elements (Combined & Corrected) ---
+    const logListContainer = document.getElementById('activity-log-list');       // Needed by functions
+    const logCountElement = document.getElementById('activity-log-count');         // Needed by functions
     const refreshLogBtn = document.getElementById('refresh-log-button');
     const searchLogInput = document.getElementById('search-activity-log');
     const clearLogBtn = document.getElementById('clear-log-button');
     const filterLogDateInput = document.getElementById('filter-log-date');
     const filterLogDateButton = document.getElementById('filter-log-date-button');
     const clearLogFilterButton = document.getElementById('clear-log-filter-button');
-    const logPrevButton = document.getElementById('log-prev-button');
-    const logNextButton = document.getElementById('log-next-button');
+    const logPrevButton = document.getElementById('log-prev-button');           // Declared ONCE
+    const logNextButton = document.getElementById('log-next-button');           // Declared ONCE
+    const logPageInfo = document.getElementById('log-page-info');             // Added here
 
-    // New Pagination Elements
-    const logPrevButton = document.getElementById('log-prev-button');
-    const logNextButton = document.getElementById('log-next-button');
-    const logPageInfo = document.getElementById('log-page-info'); // Use the ID from HTML
+    // --- State Variables for Activity Log ---
+    // let allActivityLogEntries = []; // Defined globally
+    const activityLogPageSize = 50;
+    let firstVisibleLogDoc = null;
+    let lastVisibleLogDoc = null;
+    let currentPageNumber = 1;
+    let currentLogFilterDate = null;
+    // --- End Activity Log State ---
 
     // Reference for Faq Info
     const faqsCollectionRef = collection(db, "faqs");
@@ -704,15 +711,6 @@ if (searchInputDisabilities) {
 // ==================================
 // == ACTIVITY LOG IMPLEMENTATION ===
 // ==================================
-
-// --- State Variables for Activity Log ---
-let allActivityLogEntries = [];    // Holds ONLY the current page's logs
-const activityLogPageSize = 50;    // How many logs per page
-let firstVisibleLogDoc = null;     // Firestore snapshot for previous page cursor
-let lastVisibleLogDoc = null;      // Firestore snapshot for next page cursor
-let currentPageNumber = 1;       // Track current page
-let currentLogFilterDate = null;  // Store the currently active filter date (null if none)
-// --- End Activity Log State ---
 
 /**
  * Logs an admin activity to the 'activity_log' Firestore collection.
