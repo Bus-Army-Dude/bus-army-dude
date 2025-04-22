@@ -15,7 +15,6 @@ let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the ful
 let allUsefulLinks = [];
 let allSocialLinks = [];
 let allDisabilities = [];
-let allActivityLogEntries = []; // Global variable for client-side filtering
 let allTechItems = []; // For Tech section
 let allFaqs = [];
 
@@ -57,18 +56,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll']; //
 
     let isAddingShoutout = false; // Flag to prevent double submissions
-
-    // --- Activity Log Listeners ---
-    const refreshLogBtn = document.getElementById('refresh-log-button');
-    if (refreshLogBtn) {
-        refreshLogBtn.addEventListener('click', loadActivityLog); // Refresh reloads all
-    }
-
-    const searchLogInput = document.getElementById('search-activity-log');
-    if (searchLogInput) {
-        // Use 'input' to filter as the user types
-        searchLogInput.addEventListener('input', displayFilteredActivityLog);
-    }
 
     // --- DOM Element References ---
     const loginSection = document.getElementById('login-section'); //
@@ -580,278 +567,6 @@ if (searchInputDisabilities) {
     }
     // --- END MODIFIED: renderAdminListItem Function ---
 
-    async function handleClearActivityLog() {
-    // *** STRONG CONFIRMATION ***
-    if (!confirm("ARE YOU ABSOLUTELY SURE you want to delete ALL activity log entries?\n\nThis action cannot be undone!")) {
-        return; // Stop if user cancels
-    }
-    // Second confirmation for extra safety
-    if (!confirm("SECOND CONFIRMATION: Really delete everything in the log?")) {
-        return;
-    }
-
-    const clearButton = document.getElementById('clear-log-button'); // Get button for disabling
-    if (clearButton) clearButton.disabled = true; // Disable button during operation
-    showAdminStatus("Clearing activity log... This may take a moment.", false);
-
-    try {
-        const activityLogCollectionRef = collection(db, "activity_log");
-        // Fetch all document IDs (or full docs - getDocs is simpler here for client-side loop)
-        // WARNING: Inefficient for very large collections! Consider Cloud Function instead.
-        const querySnapshot = await getDocs(activityLogCollectionRef);
-
-        if (querySnapshot.empty) {
-             showAdminStatus("Activity log is already empty.", false);
-             if (clearButton) clearButton.disabled = false;
-             loadActivityLog(); // Refresh display
-             return;
-        }
-
-        // Create an array of delete promises
-        const deletePromises = [];
-        querySnapshot.forEach((doc) => {
-            deletePromises.push(deleteDoc(doc.ref));
-        });
-
-        // Wait for all delete operations to complete
-        await Promise.all(deletePromises);
-
-        console.log(`Successfully deleted ${deletePromises.length} log entries.`);
-        showAdminStatus("Activity log cleared successfully.", false);
-        logAdminActivity('ACTIVITY_LOG_CLEARED', { count: deletePromises.length }); // Log the clear action itself
-
-    } catch (error) {
-        console.error("Error clearing activity log:", error);
-        showAdminStatus(`Error clearing activity log: ${error.message}`, true);
-    } finally {
-         if (clearButton) clearButton.disabled = false; // Re-enable button
-         loadActivityLog(); // Refresh the displayed log (should be empty)
-    }
-}
-
- // ==================================
-// == ACTIVITY LOG IMPLEMENTATION ===
-// ==================================
-
-let allActivityLogEntries = []; // Global variable for client-side filtering
-
-/**
- * Logs an admin activity to the 'activity_log' Firestore collection.
- * @param {string} actionType - A code representing the action (e.g., 'UPDATE_PROFILE').
- * @param {object} details - An object containing relevant details about the action.
- */
-async function logAdminActivity(actionType, details = {}) {
-    // Ensure Firestore functions are imported at the top of admin.js
-    // Ensure 'auth', 'db', 'collection', 'addDoc', 'serverTimestamp' are available
-    if (!auth.currentUser) {
-        console.warn("Cannot log activity: No user logged in.");
-        return;
-    }
-
-    const logEntry = {
-        timestamp: serverTimestamp(),
-        adminEmail: auth.currentUser.email || 'Unknown Email',
-        adminUid: auth.currentUser.uid,
-        actionType: actionType,
-        details: details
-    };
-
-    try {
-        // *** Make sure 'activityLogCollectionRef' is defined globally or get it here ***
-        const activityLogCollectionRef = collection(db, "activity_log"); // Define reference here if not global
-        await addDoc(activityLogCollectionRef, logEntry);
-        console.log(`Activity logged: ${actionType}`, details);
-    } catch (error) {
-        console.error("Error writing to activity log:", error);
-        // Optionally use showAdminStatus("Warning: Could not write to activity log.", true);
-    }
-}
-
-/**
- * Renders a single log entry into an HTML element with improved structure.
- * @param {object} logData - The data object for one log entry.
- * @returns {HTMLDivElement} - The div element representing the log entry.
- */
-function renderLogEntry(logData) {
-    const logEntryDiv = document.createElement('div');
-    logEntryDiv.className = 'log-entry'; // Main container class
-
-    const timestampStr = logData.timestamp?.toDate?.().toLocaleString() ?? 'No timestamp';
-    const adminIdentifier = logData.adminEmail || logData.adminUid || 'Unknown Admin';
-    const actionType = logData.actionType || 'UNKNOWN_ACTION';
-
-    // Build HTML for details section more carefully
-    let detailsHtmlContent = '';
-    if (logData.details && typeof logData.details === 'object' && Object.keys(logData.details).length > 0) {
-        for (const key in logData.details) {
-            if (Object.hasOwnProperty.call(logData.details, key)) {
-                let value = logData.details[key];
-                let valueStr = '';
-                // Check if it's our specific 'changes' object format
-                if (typeof value === 'object' && value !== null && value.hasOwnProperty('to')) {
-                    // Make it slightly more readable for simple values
-                    const toValue = value.to;
-                     // Check if 'from' value also exists for comparison display
-                     const fromValue = value.from;
-                     let changeDescription = `set to: "${String(toValue)}"`; // Default
-                     if (value.hasOwnProperty('from')) {
-                          changeDescription = `changed from "${String(fromValue)}" to "${String(toValue)}"`;
-                     } else if (typeof toValue === 'string' || typeof toValue === 'number' || typeof toValue === 'boolean') {
-                        // Keep simple 'set to' if 'from' isn't present but 'to' is simple
-                        changeDescription = `set to: "${String(toValue)}"`;
-                     } else {
-                         // Fallback for complex 'to' values without 'from'
-                         changeDescription = `set to: ${JSON.stringify(toValue)}`;
-                     }
-                     valueStr = changeDescription;
-
-                } else {
-                    // Fallback for details that don't use the { from: ..., to: ...} structure
-                    valueStr = JSON.stringify(value);
-                }
-
-                // Basic sanitization to prevent HTML injection
-                const safeKey = key.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                let safeValueStr = valueStr.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-                 // If logging 'changes', format the nested structure better
-                 if (key === 'changes' && typeof value === 'object' && value !== null) {
-                     let changesSubList = '';
-                     for (const fieldKey in value) {
-                         if (Object.hasOwnProperty.call(value, fieldKey)) {
-                             const changeDetail = value[fieldKey];
-                             const safeFieldKey = fieldKey.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                             let changeValueStr = `set to ${JSON.stringify(changeDetail.to).replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
-                              if (changeDetail.hasOwnProperty('from')) {
-                                  changeValueStr = `from ${JSON.stringify(changeDetail.from).replace(/</g, "&lt;").replace(/>/g, "&gt;")} to ${JSON.stringify(changeDetail.to).replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
-                              }
-                             changesSubList += `<div class="detail-change-item" style="margin-left: 15px;"> - <strong>${safeFieldKey}:</strong> ${changeValueStr}</div>`;
-                         }
-                     }
-                      // Override safeValueStr for the 'changes' key
-                     safeValueStr = changesSubList ? `<div class="detail-changes-list">${changesSubList}</div>` : 'No specific changes listed.';
-                       detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
-                 } else {
-                     // Default display for other keys or non-object 'changes'
-                      detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
-                 }
-            }
-        }
-    } else if (logData.details != null) { // Handle non-object details (e.g., just a string or number)
-        detailsHtmlContent = `<div class="detail-item">${String(logData.details).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
-    }
-
-
-    // Assemble the final entry structure
-    logEntryDiv.innerHTML = `
-        <div class="log-meta"><small>${timestampStr} - ${adminIdentifier}</small></div>
-        <div class="log-action"><strong>Action:</strong> <span>${actionType}</span></div>
-        ${detailsHtmlContent ? `<div class="log-details"><small class="details-label">Details:</small><div class="details-content">${detailsHtmlContent}</div></div>` : ''}
-    `; // Use divs for structure
-
-    return logEntryDiv;
-}
-
-
-/**
- * Filters the globally stored log entries and renders them to the list container.
- */
-function displayFilteredActivityLog() {
-    // Get elements needed - ensure they exist in your DOM references or get them here
-    const logListContainer = document.getElementById('activity-log-list');
-    const searchInput = document.getElementById('search-activity-log');
-    const logCountElement = document.getElementById('activity-log-count');
-
-    // Add checks for elements existence at the beginning
-    if (!logListContainer || !searchInput || !logCountElement) {
-        console.error("Log display/search elements missing in displayFilteredActivityLog.");
-        if(logListContainer) logListContainer.innerHTML = "<p class='error'>Log display elements missing.</p>";
-        return;
-    }
-
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    logListContainer.innerHTML = ''; // Clear previous entries
-
-    const filteredLogs = allActivityLogEntries.filter(log => {
-        if (!searchTerm) return true; // Show all if search is empty
-
-        const timestampStr = log.timestamp?.toDate?.().toLocaleString()?.toLowerCase() ?? '';
-        const email = (log.adminEmail || '').toLowerCase();
-        const action = (log.actionType || '').toLowerCase();
-        const details = JSON.stringify(log.details || {}).toLowerCase();
-
-        return email.includes(searchTerm) ||
-               action.includes(searchTerm) ||
-               details.includes(searchTerm) ||
-               timestampStr.includes(searchTerm);
-    });
-
-    if (filteredLogs.length === 0) {
-        logListContainer.innerHTML = searchTerm ? `<p>No log entries found matching "${searchTerm}".</p>` : '<p>No activity log entries found.</p>';
-    } else {
-        filteredLogs.forEach(logData => {
-            // Check if renderLogEntry exists before calling
-            if (typeof renderLogEntry === 'function') {
-                const entryElement = renderLogEntry(logData);
-                logListContainer.appendChild(entryElement);
-            } else {
-                console.error("renderLogEntry function is missing!");
-                logListContainer.innerHTML = '<p class="error">Error rendering log entries.</p>';
-                return false; // Stop loop if renderer is missing
-            }
-        });
-    }
-    logCountElement.textContent = `(${filteredLogs.length})`;
-}
-
-/**
- * Fetches recent activity logs from Firestore, stores them globally, and triggers display.
- */
-async function loadActivityLog() {
-    // Get elements needed - ensure they exist in your DOM references or get them here
-    const logListContainer = document.getElementById('activity-log-list');
-    const logCountElement = document.getElementById('activity-log-count');
-    const searchInput = document.getElementById('search-activity-log');
-
-    // Add checks for elements existence at the beginning
-    if (!logListContainer || !logCountElement || !searchInput) {
-        console.error("Required elements for loadActivityLog are missing.");
-        if(logListContainer) logListContainer.innerHTML = '<p class="error">Error: Log display elements missing.</p>';
-        return;
-    }
-    searchInput.value = ''; // Reset search on load
-    logListContainer.innerHTML = '<p>Loading activity log...</p>';
-    logCountElement.textContent = '(...)';
-    allActivityLogEntries = []; // Clear global store
-
-    try {
-        // Ensure Firestore functions are imported (collection, query, orderBy, limit, getDocs)
-        const activityLogCollectionRef = collection(db, "activity_log"); // Define or ensure global reference
-        const logQuery = query(activityLogCollectionRef, orderBy("timestamp", "desc"), limit(50)); // Load recent 50
-        const querySnapshot = await getDocs(logQuery);
-
-        querySnapshot.forEach(doc => {
-            allActivityLogEntries.push({ id: doc.id, ...doc.data() });
-        });
-
-        console.log(`Loaded ${allActivityLogEntries.length} log entries.`);
-        displayFilteredActivityLog(); // Display the fetched logs
-
-    } catch (error) {
-        console.error("Error loading activity log:", error);
-        logListContainer.innerHTML = `<p class="error">Error loading activity log: ${error.message}</p>`;
-        logCountElement.textContent = '(Error)';
-        // Use showAdminStatus if available and desired
-        if (typeof showAdminStatus === 'function') {
-             showAdminStatus(`Failed to load activity log: ${error.message}`, true);
-        }
-    }
-}
-
-// ========================================
-// == END ACTIVITY LOG IMPLEMENTATION =====
-// ========================================
-
 // --- Copied Shoutout Card Rendering Functions (from displayShoutouts.js) ---
     // NOTE: Ensure image paths ('check.png', 'images/default-profile.jpg') are accessible
     //       from the admin page, or use absolute paths / different logic.
@@ -1261,12 +976,6 @@ async function loadProfileData() {
             await setDoc(profileDocRef, { ...newData, lastUpdated: serverTimestamp() }, { merge: true });
             console.log("Profile data save successful:", profileDocRef.path);
             showProfileStatus("Profile updated successfully!", false);
-
-            // *** Log Activity ***
-            if (typeof logAdminActivity === 'function') {
-                 logAdminActivity('UPDATE_PROFILE', { fieldsUpdated: Object.keys(newData) });
-            } else { console.error("logAdminActivity function not found!");}
-
             // Update preview image
             if (adminPfpPreview && newData.profilePicUrl) {
                 adminPfpPreview.src = newData.profilePicUrl;
@@ -1343,12 +1052,6 @@ async function loadProfileData() {
              } else { // Fallback if specific element wasn't found initially
                  showAdminStatus(message, false);
              }
-
-            // Log the activity
-            if (typeof logAdminActivity === 'function') {
-                 logAdminActivity('UPDATE_SITE_SETTINGS', { setting: 'hideTikTokSection', value: isEnabled });
-             } else { console.warn("logAdminActivity function not found!"); }
-
 
         } catch (error) {
             console.error("Error saving Hide TikTok Section status:", error);
@@ -1606,18 +1309,6 @@ onAuthStateChanged(auth, user => {
         }
         // --- End Updated Greeting Logic ---
 
-
-        // ****** Log the login event FIRST ******
-        // This initiates the write to Firestore
-        if (typeof logAdminActivity === 'function') {
-            logAdminActivity('ADMIN_LOGIN', { email: user.email, uid: user.uid });
-            // Note: We don't strictly NEED to await this for the fix,
-            // as loadActivityLog is called later.
-        } else {
-            // This error indicates a problem with the core log function setup
-            console.error("logAdminActivity function not found! Cannot log login event.");
-        }
-
         // *** Load Tech Items (with extra logging) ***
         console.log("DEBUG: AuthState - Checking if loadTechItemsAdmin should run..."); // <<< ADD LOG
         if (typeof loadTechItemsAdmin === 'function' && techItemsListAdmin) {
@@ -1699,16 +1390,6 @@ onAuthStateChanged(auth, user => {
         } else {
             console.error("loadPresidentData function is missing!");
             showAdminStatus("Error: Cannot load president data.", true);
-        }
-
-        // ****** Load the Activity Log LAST ******
-        // Calling this after the other loads gives the ADMIN_LOGIN entry's
-        // serverTimestamp a better chance to be resolved by Firestore.
-        if (typeof loadActivityLog === 'function') {
-            loadActivityLog();
-        } else {
-             console.error("loadActivityLog function is missing!");
-             showAdminStatus("Error: Cannot load activity log.", true);
         }
         // --- End Load Activity Log ---
 
@@ -1979,15 +1660,7 @@ async function handleAddShoutout(platform, formElement) {
         const docRef = await addDoc(collection(db, 'shoutouts'), accountData);
         console.log(`DEBUG: addDoc SUCCESS for ${username}. New ID: ${docRef.id}`);
 
-        // *** Log Activity *** <--- ADDED LOGGING HERE
-        if (typeof logAdminActivity === 'function') {
-            logAdminActivity('SHOUTOUT_ADD', {
-                platform: platform,
-                username: username,
-                nickname: nickname,
-                id: docRef.id
-             });
-        } else { console.warn("logAdminActivity function not found!"); }
+
         // ******************
 
         await updateMetadataTimestamp(platform); // Update timestamp
