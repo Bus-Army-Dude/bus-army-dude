@@ -15,6 +15,8 @@ const firebaseConfig = {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
+import { db } from './firebase-init.js';
+
 // --- Initialize Firebase ---
 let db;
 let firebaseAppInitialized = false;
