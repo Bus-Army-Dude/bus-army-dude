@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     const logListContainer = document.getElementById('activity-log-list');       // Needed by functions
     const logCountElement = document.getElementById('activity-log-count');         // Needed by functions
     const refreshLogBtn = document.getElementById('refresh-log-button');
-    const clearLogBtn = document.getElementById('clear-log-button');
     const filterLogDateInput = document.getElementById('filter-log-date');
     const filterLogDateButton = document.getElementById('filter-log-date-button');
     const clearLogFilterButton = document.getElementById('clear-log-filter-button');
