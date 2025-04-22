@@ -744,19 +744,22 @@ async function initializeHomepageContent() {
     const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts + .creator-grid + .unavailable-message');
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
+    const usefulLinksSection = document.querySelector('.useful-links-section'); // Get the useful links section
 
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
-         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
-         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error.</p>'; maintenanceMessageElement.style.display = 'block'; }
-         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-         if (countdownSection) countdownSection.style.display = 'none';
-         return;
+        console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
+        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error.</p>'; maintenanceMessageElement.style.display = 'block'; }
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+        if (countdownSection) countdownSection.style.display = 'none';
+        return;
     }
 
     // Fetch Central Site Configuration from 'site_config/mainProfile'
     let siteSettings = {};
     let maintenanceEnabled = false;
+    let maintenanceTitle = "Site Under Maintenance"; // Default title
+    let maintenanceMessage = "We are currently performing scheduled maintenance. Please check back later for updates."; // Default message
     let hideTikTokSection = false;
     let countdownTargetDate = null;
     let countdownTitle = null;
@@ -769,6 +772,8 @@ async function initializeHomepageContent() {
         if (configSnap.exists()) {
             siteSettings = configSnap.data() || {};
             maintenanceEnabled = siteSettings.isMaintenanceModeEnabled || false;
+            maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle; // Get custom title
+            maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage; // Get custom message
             hideTikTokSection = siteSettings.hideTikTokSection || false;
             countdownTargetDate = siteSettings.countdownTargetDate;
             countdownTitle = siteSettings.countdownTitle;
@@ -777,12 +782,14 @@ async function initializeHomepageContent() {
             console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
         }
         console.log("Settings fetched:", { // Updated log
-             maintenanceEnabled,
-             hideTikTokSection,
-             countdownTitle,
-             countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
-             countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
-            });
+            maintenanceEnabled,
+            maintenanceTitle,
+            maintenanceMessage,
+            hideTikTokSection,
+            countdownTitle,
+            countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
+            countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
+        });
 
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
@@ -797,13 +804,34 @@ async function initializeHomepageContent() {
         console.log("Maintenance mode ON.");
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
-        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p>Site undergoing maintenance.</p>'; maintenanceMessageElement.style.display = 'block'; }
+        if (maintenanceMessageElement) {
+            maintenanceMessageElement.innerHTML = `
+                <h2>${maintenanceTitle}</h2>
+                <p style="font-size: 1.1em; line-height: 1.6; margin-top: 15px; margin-bottom: 20px;">
+                    ${maintenanceMessage.replace(/\n/g, '<br>')}
+                </p>
+                <div class="links-container">
+                    <h3>Stay Updated:</h3>
+                    <a href="https://bus-army-dude.instatus.com/" target="_blank" rel="noopener noreferrer" class="link-button">Status Page</a>
+                    <a href="https://instagram.com/riverkritzar" target="_blank" rel="noopener noreferrer" class="link-button">Instagram</a>
+                    <a href="https://tiktok.com/@bus.army.dude" target="_blank" rel="noopener noreferrer" class="link-button">TikTok</a>
+                </div>
+            `;
+            maintenanceMessageElement.style.display = 'block';
+        }
+        if (usefulLinksSection) {
+            usefulLinksSection.style.display = 'none'; // Hide the regular useful links
+        }
         return;
     } else {
         console.log("Maintenance mode OFF.");
         if (mainContentWrapper) mainContentWrapper.style.display = '';
         if (countdownSection) countdownSection.style.display = 'block'; // Show section initially
         if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
+        if (usefulLinksSection) {
+            usefulLinksSection.style.display = 'block'; // Show the regular useful links
+            loadAndDisplayUsefulLinks(); // Load the links
+        }
     }
 
     // --- Start Countdown (Pass the fetched message) ---
