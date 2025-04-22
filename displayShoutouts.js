@@ -818,7 +818,7 @@ async function initializeHomepageContent() {
              console.log("Hiding TikTok section.");
              tiktokHeaderContainer.style.display = 'none';
              tiktokGridContainer.style.display = 'none';
-             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p style="...">Notice...</p>'; tiktokUnavailableMessage.style.display = 'block';}
+             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p style="...">TikTok shoutouts are currently hidden by the site administrator.</p>'; tiktokUnavailableMessage.style.display = 'block';}
              else { console.warn("TikTok unavailable message element not found."); }
         } else {
             console.log("Showing TikTok section.");
