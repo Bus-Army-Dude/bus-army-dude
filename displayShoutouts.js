@@ -765,6 +765,21 @@ async function initializeHomepageContent() {
     let countdownTitle = null;
     let countdownExpiredMessage = null; // <<< Variable initialized
 
+    // Element to hold the loading animation
+    let loadingOverlay = document.getElementById('maintenanceLoadingOverlay');
+    if (!loadingOverlay) {
+        loadingOverlay = document.createElement('div');
+        loadingOverlay.id = 'maintenanceLoadingOverlay';
+        loadingOverlay.className = 'maintenance-overlay';
+        loadingOverlay.innerHTML = '<div class="maintenance-loader"></div>';
+        document.body.appendChild(loadingOverlay);
+    }
+
+    // Initially show the loading overlay
+    if (maintenanceEnabled || !siteSettings.isMaintenanceModeEnabled) { // Show loading even if maintenance is off initially
+        loadingOverlay.style.display = 'flex';
+    }
+
     try {
         console.log("Fetching site settings from site_config/mainProfile...");
         const configSnap = await getDoc(profileDocRef);
@@ -796,6 +811,7 @@ async function initializeHomepageContent() {
         if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">Error loading config: ${error.message}.</p>`; maintenanceMessageElement.style.display = 'block'; }
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
+        if (loadingOverlay) loadingOverlay.style.display = 'none'; // Hide loading on error
         return;
     }
 
@@ -804,20 +820,21 @@ async function initializeHomepageContent() {
         console.log("Maintenance mode ON.");
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
-        if (maintenanceMessageElement) {
-            maintenanceMessageElement.innerHTML = `
-                <h2>${maintenanceTitle}</h2>
-                <p style="font-size: 1.1em; line-height: 1.6; margin-top: 15px; margin-bottom: 20px;">
-                    ${maintenanceMessage.replace(/\n/g, '<br>')}
-                </p>
-                <div class="links-container">
-                    <h3>Stay Updated:</h3>
-                    <a href="https://bus-army-dude.instatus.com/" target="_blank" rel="noopener noreferrer" class="link-button">Status Page</a>
-                    <a href="https://instagram.com/riverkritzar" target="_blank" rel="noopener noreferrer" class="link-button">Instagram</a>
-                    <a href="https://tiktok.com/@bus.army.dude" target="_blank" rel="noopener noreferrer" class="link-button">TikTok</a>
+        if (loadingOverlay) {
+            loadingOverlay.innerHTML = `
+                <div class="maintenance-content">
+                    <h1>Site Message</h1>
+                    <h2>${maintenanceTitle}</h2>
+                    <p>${maintenanceMessage.replace(/\n/g, '<br>')}</p>
+                    <div class="maintenance-socials">
+                        <p>Stay Updated:</p>
+                        <a href="https://bus-army-dude.instatus.com/" target="_blank" rel="noopener noreferrer">Status Page</a>
+                        <a href="https://instagram.com/riverkritzar" target="_blank" rel="noopener noreferrer">Instagram</a>
+                        <a href="https://tiktok.com/@bus.army.dude" target="_blank" rel="noopener noreferrer">TikTok</a>
+                    </div>
                 </div>
             `;
-            maintenanceMessageElement.style.display = 'block';
+            loadingOverlay.style.display = 'flex';
         }
         if (usefulLinksSection) {
             usefulLinksSection.style.display = 'none'; // Hide the regular useful links
@@ -832,6 +849,7 @@ async function initializeHomepageContent() {
             usefulLinksSection.style.display = 'block'; // Show the regular useful links
             loadAndDisplayUsefulLinks(); // Load the links
         }
+        if (loadingOverlay) loadingOverlay.style.display = 'none'; // Hide loading when maintenance is off
     }
 
     // --- Start Countdown (Pass the fetched message) ---
@@ -839,20 +857,20 @@ async function initializeHomepageContent() {
 
     // Apply TikTok Visibility Logic
     if (!tiktokHeaderContainer || !tiktokGridContainer) {
-         console.warn("Could not find TikTok header/grid containers.");
-         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
+        console.warn("Could not find TikTok header/grid containers.");
+        if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
     } else {
         if (hideTikTokSection) {
-             console.log("Hiding TikTok section.");
-             tiktokHeaderContainer.style.display = 'none';
-             tiktokGridContainer.style.display = 'none';
-             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p style="...">TikTok shoutouts are currently hidden by the site administrator.</p>'; tiktokUnavailableMessage.style.display = 'block';}
-             else { console.warn("TikTok unavailable message element not found."); }
+            console.log("Hiding TikTok section.");
+            tiktokHeaderContainer.style.display = 'none';
+            tiktokGridContainer.style.display = 'none';
+            if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p style="...">Notice...</p>'; tiktokUnavailableMessage.style.display = 'block';}
+            else { console.warn("TikTok unavailable message element not found."); }
         } else {
             console.log("Showing TikTok section.");
             tiktokHeaderContainer.style.display = '';
             tiktokGridContainer.style.display = '';
-             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.style.display = 'none'; tiktokUnavailableMessage.innerHTML = ''; }
+            if (tiktokUnavailableMessage) { tiktokUnavailableMessage.style.display = 'none'; tiktokUnavailableMessage.innerHTML = ''; }
             const tsEl = tiktokHeaderContainer.querySelector('#tiktok-last-updated-timestamp');
             loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl); // Load data
         }
@@ -866,12 +884,11 @@ async function initializeHomepageContent() {
         displayPresidentData(),
         loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
         loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
-        loadAndDisplayUsefulLinks(),
         loadAndDisplaySocialLinks(),
         loadAndDisplayDisabilities(),
         loadAndDisplayTechItems(),
         loadAndDisplayFaqs()
-     ];
+    ];
     const otherResults = await Promise.allSettled(otherLoadPromises);
     otherResults.forEach((result, index) => { /* ... handle results ... */ });
     console.log("Other dynamic content loading initiated.");
