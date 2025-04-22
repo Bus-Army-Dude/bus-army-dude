@@ -15,6 +15,7 @@ let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the ful
 let allUsefulLinks = [];
 let allSocialLinks = [];
 let allDisabilities = [];
+let allActivityLogEntries = []; // Global variable for client-side filtering
 let allTechItems = []; // For Tech section
 let allFaqs = [];
 
@@ -39,26 +40,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     // Reference for President Info
     const presidentDocRef = doc(db, "site_config", "currentPresident"); 
 
-    // --- Get Activity Log Elements (Combined & Corrected) ---
-    const logListContainer = document.getElementById('activity-log-list');       // Needed by functions
-    const logCountElement = document.getElementById('activity-log-count');         // Needed by functions
-    const refreshLogBtn = document.getElementById('refresh-log-button');
-    const filterLogDateInput = document.getElementById('filter-log-date');
-    const filterLogDateButton = document.getElementById('filter-log-date-button');
-    const clearLogFilterButton = document.getElementById('clear-log-filter-button');
-    const logPrevButton = document.getElementById('log-prev-button');           // Declared ONCE
-    const logNextButton = document.getElementById('log-next-button');           // Declared ONCE
-    const logPageInfo = document.getElementById('log-page-info');             // Added here
-
-    // --- State Variables for Activity Log ---
-    // let allActivityLogEntries = []; // Defined globally
-    const activityLogPageSize = 50;
-    let firstVisibleLogDoc = null;
-    let lastVisibleLogDoc = null;
-    let currentPageNumber = 1;
-    let currentLogFilterDate = null;
-    // --- End Activity Log State ---
-
     // Reference for Faq Info
     const faqsCollectionRef = collection(db, "faqs");
 
@@ -78,76 +59,16 @@ document.addEventListener('DOMContentLoaded', () => { //
     let isAddingShoutout = false; // Flag to prevent double submissions
 
     // --- Activity Log Listeners ---
-if (refreshLogBtn) {
-     refreshLogBtn.addEventListener('click', () => {
-          if (filterLogDateInput) filterLogDateInput.value = ''; // Clear date input visually
-          loadActivityLogPage('initial', null); // <<< CORRECTED CALL
-     });
-}
+    const refreshLogBtn = document.getElementById('refresh-log-button');
+    if (refreshLogBtn) {
+        refreshLogBtn.addEventListener('click', loadActivityLog); // Refresh reloads all
+    }
 
     const searchLogInput = document.getElementById('search-activity-log');
     if (searchLogInput) {
         // Use 'input' to filter as the user types
         searchLogInput.addEventListener('input', displayFilteredActivityLog);
     }
-
-    // Filter by Date Button
-    if (filterLogDateButton && filterLogDateInput) {
-        filterLogDateButton.addEventListener('click', () => {
-            const dateValue = filterLogDateInput.value; // YYYY-MM-DD string
-            if (dateValue) {
-                 try {
-                     // Create date object representing the selected day in UTC
-                     const dateParts = dateValue.split('-');
-                     const year = parseInt(dateParts[0], 10);
-                     const month = parseInt(dateParts[1], 10) - 1; // Month is 0-indexed
-                     const day = parseInt(dateParts[2], 10);
-                     // Use UTC to avoid timezone interpretation issues from the string alone
-                     const selectedDate = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
-
-                    if (!isNaN(selectedDate.getTime())) {
-                         // Pass the JS Date object; loadActivityLogPage converts to Timestamp
-                        loadActivityLogPage('initial', selectedDate);
-                    } else {
-                         if(showAdminStatus) showAdminStatus("Invalid date selected.", true);
-                    }
-                } catch (e) {
-                    console.error("Error parsing date input", e);
-                     if(showAdminStatus) showAdminStatus("Could not parse date.", true);
-                }
-            } else {
-                // If no date is entered, maybe clear filter instead of showing error?
-                // Or show error as below:
-                 if(showAdminStatus) showAdminStatus("Please select a date to filter by.", true);
-            }
-        });
-         // Optional: Trigger filter on date input change directly?
-         // filterLogDateInput.addEventListener('change', () => filterLogDateButton.click());
-    }
-
-    // Clear Date Filter Button
-    if (clearLogFilterButton && filterLogDateInput) {
-        clearLogFilterButton.addEventListener('click', () => {
-            filterLogDateInput.value = ''; // Clear the input
-            loadActivityLogPage('initial', null); // Load first page, reset filter state
-        });
-    }
-
-    // Previous Page Button
-    if (logPrevButton) {
-        logPrevButton.addEventListener('click', () => loadActivityLogPage('previous')); // Filter date is handled by global state
-    }
-
-    // Next Page Button
-    if (logNextButton) {
-        logNextButton.addEventListener('click', () => loadActivityLogPage('next')); // Filter date is handled by global state
-    }
-
-    // Clear All Logs Button Listener
-    if (clearLogBtn) {
-         clearLogBtn.addEventListener('click', handleClearActivityLog);
-    }
-
 
     // --- DOM Element References ---
     const loginSection = document.getElementById('login-section'); //
@@ -680,12 +601,11 @@ if (searchInputDisabilities) {
         const querySnapshot = await getDocs(activityLogCollectionRef);
 
         if (querySnapshot.empty) {
-         if (showAdminStatus) showAdminStatus("Activity log is already empty.", false);
-         if (clearButton) clearButton.disabled = false;
-         // ** UPDATE THIS CALL v **
-         loadActivityLogPage('initial', null); // Refresh display (will show empty)
-         return;
-    }
+             showAdminStatus("Activity log is already empty.", false);
+             if (clearButton) clearButton.disabled = false;
+             loadActivityLog(); // Refresh display
+             return;
+        }
 
         // Create an array of delete promises
         const deletePromises = [];
@@ -702,18 +622,18 @@ if (searchInputDisabilities) {
 
     } catch (error) {
         console.error("Error clearing activity log:", error);
-        if (showAdminStatus) showAdminStatus(`Error clearing activity log: ${error.message}`, true);
+        showAdminStatus(`Error clearing activity log: ${error.message}`, true);
     } finally {
          if (clearButton) clearButton.disabled = false; // Re-enable button
-         if(filterLogDateInput) filterLogDateInput.value = ''; // Clear date filter after clearing log
-         // ** UPDATE THIS CALL v **
-         loadActivityLogPage('initial', null); // Refresh the displayed log (should be empty)
+         loadActivityLog(); // Refresh the displayed log (should be empty)
     }
 }
 
-// ==================================
+ // ==================================
 // == ACTIVITY LOG IMPLEMENTATION ===
 // ==================================
+
+let allActivityLogEntries = []; // Global variable for client-side filtering
 
 /**
  * Logs an admin activity to the 'activity_log' Firestore collection.
@@ -721,6 +641,7 @@ if (searchInputDisabilities) {
  * @param {object} details - An object containing relevant details about the action.
  */
 async function logAdminActivity(actionType, details = {}) {
+    // Ensure Firestore functions are imported at the top of admin.js
     // Ensure 'auth', 'db', 'collection', 'addDoc', 'serverTimestamp' are available
     if (!auth.currentUser) {
         console.warn("Cannot log activity: No user logged in.");
@@ -736,7 +657,8 @@ async function logAdminActivity(actionType, details = {}) {
     };
 
     try {
-        const activityLogCollectionRef = collection(db, "activity_log");
+        // *** Make sure 'activityLogCollectionRef' is defined globally or get it here ***
+        const activityLogCollectionRef = collection(db, "activity_log"); // Define reference here if not global
         await addDoc(activityLogCollectionRef, logEntry);
         console.log(`Activity logged: ${actionType}`, details);
     } catch (error) {
@@ -747,7 +669,6 @@ async function logAdminActivity(actionType, details = {}) {
 
 /**
  * Renders a single log entry into an HTML element with improved structure.
- * Uses HTML entities for safety.
  * @param {object} logData - The data object for one log entry.
  * @returns {HTMLDivElement} - The div element representing the log entry.
  */
@@ -759,19 +680,6 @@ function renderLogEntry(logData) {
     const adminIdentifier = logData.adminEmail || logData.adminUid || 'Unknown Admin';
     const actionType = logData.actionType || 'UNKNOWN_ACTION';
 
-    // Helper function to escape basic HTML
-    const escapeHtml = (unsafe) => {
-        if (typeof unsafe !== 'string') {
-            unsafe = JSON.stringify(unsafe); // Stringify non-strings
-        }
-        return unsafe
-             .replace(/&/g, "&amp;")
-             .replace(/</g, "&lt;")
-             .replace(/>/g, "&gt;")
-             .replace(/"/g, "&quot;")
-             .replace(/'/g, "&#039;");
-     };
-
     // Build HTML for details section more carefully
     let detailsHtmlContent = '';
     if (logData.details && typeof logData.details === 'object' && Object.keys(logData.details).length > 0) {
@@ -781,55 +689,63 @@ function renderLogEntry(logData) {
                 let valueStr = '';
                 // Check if it's our specific 'changes' object format
                 if (typeof value === 'object' && value !== null && value.hasOwnProperty('to')) {
+                    // Make it slightly more readable for simple values
                     const toValue = value.to;
-                    const fromValue = value.from;
-                    let changeDescription = `set to: "${escapeHtml(String(toValue))}"`; // Default
-                    if (value.hasOwnProperty('from')) {
-                         changeDescription = `changed from "${escapeHtml(String(fromValue))}" to "${escapeHtml(String(toValue))}"`;
-                    } else if (typeof toValue === 'string' || typeof toValue === 'number' || typeof toValue === 'boolean') {
-                        changeDescription = `set to: "${escapeHtml(String(toValue))}"`;
-                    } else {
-                         changeDescription = `set to: ${escapeHtml(JSON.stringify(toValue))}`;
-                    }
-                    valueStr = changeDescription;
+                     // Check if 'from' value also exists for comparison display
+                     const fromValue = value.from;
+                     let changeDescription = `set to: "${String(toValue)}"`; // Default
+                     if (value.hasOwnProperty('from')) {
+                          changeDescription = `changed from "${String(fromValue)}" to "${String(toValue)}"`;
+                     } else if (typeof toValue === 'string' || typeof toValue === 'number' || typeof toValue === 'boolean') {
+                        // Keep simple 'set to' if 'from' isn't present but 'to' is simple
+                        changeDescription = `set to: "${String(toValue)}"`;
+                     } else {
+                         // Fallback for complex 'to' values without 'from'
+                         changeDescription = `set to: ${JSON.stringify(toValue)}`;
+                     }
+                     valueStr = changeDescription;
+
                 } else {
-                     // Fallback for details that don't use the { from: ..., to: ...} structure
-                    valueStr = escapeHtml(JSON.stringify(value));
+                    // Fallback for details that don't use the { from: ..., to: ...} structure
+                    valueStr = JSON.stringify(value);
                 }
 
-                const safeKey = escapeHtml(key);
-                let safeValueStr = valueStr; // Already escaped above
+                // Basic sanitization to prevent HTML injection
+                const safeKey = key.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                let safeValueStr = valueStr.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-                // If logging 'changes', format the nested structure better
-                if (key === 'changes' && typeof value === 'object' && value !== null) {
-                    let changesSubList = '';
-                    for (const fieldKey in value) {
-                        if (Object.hasOwnProperty.call(value, fieldKey)) {
-                            const changeDetail = value[fieldKey];
-                            const safeFieldKey = escapeHtml(fieldKey);
-                            let changeValueDisplay = `set to ${escapeHtml(JSON.stringify(changeDetail.to))}`;
-                             if (changeDetail.hasOwnProperty('from')) {
-                                 changeValueDisplay = `from ${escapeHtml(JSON.stringify(changeDetail.from))} to ${escapeHtml(JSON.stringify(changeDetail.to))}`;
-                             }
-                            changesSubList += `<div class="detail-change-item" style="margin-left: 15px;"> - <strong>${safeFieldKey}:</strong> ${changeValueDisplay}</div>`;
-                        }
-                    }
-                    safeValueStr = changesSubList ? `<div class="detail-changes-list">${changesSubList}</div>` : 'No specific changes listed.';
-                     detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`; // Note: sub-list HTML is not escaped here as it's constructed safely
-                } else {
-                    detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
-                }
+                 // If logging 'changes', format the nested structure better
+                 if (key === 'changes' && typeof value === 'object' && value !== null) {
+                     let changesSubList = '';
+                     for (const fieldKey in value) {
+                         if (Object.hasOwnProperty.call(value, fieldKey)) {
+                             const changeDetail = value[fieldKey];
+                             const safeFieldKey = fieldKey.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                             let changeValueStr = `set to ${JSON.stringify(changeDetail.to).replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
+                              if (changeDetail.hasOwnProperty('from')) {
+                                  changeValueStr = `from ${JSON.stringify(changeDetail.from).replace(/</g, "&lt;").replace(/>/g, "&gt;")} to ${JSON.stringify(changeDetail.to).replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
+                              }
+                             changesSubList += `<div class="detail-change-item" style="margin-left: 15px;"> - <strong>${safeFieldKey}:</strong> ${changeValueStr}</div>`;
+                         }
+                     }
+                      // Override safeValueStr for the 'changes' key
+                     safeValueStr = changesSubList ? `<div class="detail-changes-list">${changesSubList}</div>` : 'No specific changes listed.';
+                       detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
+                 } else {
+                     // Default display for other keys or non-object 'changes'
+                      detailsHtmlContent += `<div class="detail-item"><strong>${safeKey}:</strong> ${safeValueStr}</div>`;
+                 }
             }
         }
-    } else if (logData.details != null) { // Handle non-object details
-        detailsHtmlContent = `<div class="detail-item">${escapeHtml(String(logData.details))}</div>`;
+    } else if (logData.details != null) { // Handle non-object details (e.g., just a string or number)
+        detailsHtmlContent = `<div class="detail-item">${String(logData.details).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
     }
 
 
     // Assemble the final entry structure
     logEntryDiv.innerHTML = `
-        <div class="log-meta"><small>${escapeHtml(timestampStr)} - ${escapeHtml(adminIdentifier)}</small></div>
-        <div class="log-action"><strong>Action:</strong> <span>${escapeHtml(actionType)}</span></div>
+        <div class="log-meta"><small>${timestampStr} - ${adminIdentifier}</small></div>
+        <div class="log-action"><strong>Action:</strong> <span>${actionType}</span></div>
         ${detailsHtmlContent ? `<div class="log-details"><small class="details-label">Details:</small><div class="details-content">${detailsHtmlContent}</div></div>` : ''}
     `; // Use divs for structure
 
@@ -838,18 +754,17 @@ function renderLogEntry(logData) {
 
 
 /**
- * Filters the globally stored log entries FOR THE CURRENT PAGE and renders them.
- * Updates pagination UI elements.
+ * Filters the globally stored log entries and renders them to the list container.
  */
 function displayFilteredActivityLog() {
+    // Get elements needed - ensure they exist in your DOM references or get them here
     const logListContainer = document.getElementById('activity-log-list');
     const searchInput = document.getElementById('search-activity-log');
     const logCountElement = document.getElementById('activity-log-count');
-    const logPageInfo = document.getElementById('log-page-info'); // Get page info span
 
-    // Checks for elements
-    if (!logListContainer || !searchInput || !logCountElement || !logPageInfo) {
-        console.error("Log display/search/page elements missing in displayFilteredActivityLog.");
+    // Add checks for elements existence at the beginning
+    if (!logListContainer || !searchInput || !logCountElement) {
+        console.error("Log display/search elements missing in displayFilteredActivityLog.");
         if(logListContainer) logListContainer.innerHTML = "<p class='error'>Log display elements missing.</p>";
         return;
     }
@@ -857,14 +772,12 @@ function displayFilteredActivityLog() {
     const searchTerm = searchInput.value.trim().toLowerCase();
     logListContainer.innerHTML = ''; // Clear previous entries
 
-    // Filter the CURRENT PAGE's logs stored in allActivityLogEntries
     const filteredLogs = allActivityLogEntries.filter(log => {
-        if (!searchTerm) return true; // Show all on current page if search is empty
+        if (!searchTerm) return true; // Show all if search is empty
 
         const timestampStr = log.timestamp?.toDate?.().toLocaleString()?.toLowerCase() ?? '';
         const email = (log.adminEmail || '').toLowerCase();
         const action = (log.actionType || '').toLowerCase();
-        // Stringify details for simple text search within details object
         const details = JSON.stringify(log.details || {}).toLowerCase();
 
         return email.includes(searchTerm) ||
@@ -873,19 +786,11 @@ function displayFilteredActivityLog() {
                timestampStr.includes(searchTerm);
     });
 
-    // Render logs
     if (filteredLogs.length === 0) {
-        if (searchTerm) {
-             logListContainer.innerHTML = `<p>No logs found matching "${searchTerm}" on this page.</p>`;
-        } else if (allActivityLogEntries.length > 0) {
-            // Page has logs, but none match the search
-             logListContainer.innerHTML = '<p>No logs match search criteria on this page.</p>';
-        } else {
-            // Page was empty to begin with (no logs loaded/found for this page/filter)
-             logListContainer.innerHTML = '<p>No activity log entries loaded for this view.</p>';
-        }
+        logListContainer.innerHTML = searchTerm ? `<p>No log entries found matching "${searchTerm}".</p>` : '<p>No activity log entries found.</p>';
     } else {
         filteredLogs.forEach(logData => {
+            // Check if renderLogEntry exists before calling
             if (typeof renderLogEntry === 'function') {
                 const entryElement = renderLogEntry(logData);
                 logListContainer.appendChild(entryElement);
@@ -896,243 +801,56 @@ function displayFilteredActivityLog() {
             }
         });
     }
-
-    // Update count (shows count for the *current filtered view* of the page)
-    logCountElement.textContent = `(${filteredLogs.length} shown)`; // Clarify count refers to shown items
-
-    // Update Page Number Display
-    if (logPageInfo) {
-        logPageInfo.textContent = `Page: ${currentPageNumber}`;
-    }
+    logCountElement.textContent = `(${filteredLogs.length})`;
 }
 
 /**
- * Fetches and displays a specific page of activity logs, optionally filtered by date.
- * Manages pagination state and button enablement.
- * @param {'initial' | 'next' | 'previous'} direction - Controls pagination.
- * @param {Date | null} [filterDate=currentLogFilterDate] - Optional date to filter by. Defaults to the current filter.
+ * Fetches recent activity logs from Firestore, stores them globally, and triggers display.
  */
-async function loadActivityLogPage(direction = 'initial', filterDate = currentLogFilterDate) {
-    console.log(`loadActivityLogPage called with direction: ${direction}, filterDate: ${filterDate}`);
-    currentLogFilterDate = filterDate; // Update the global filter state
-
-    // --- Get Elements (ensure they exist) ---
+async function loadActivityLog() {
+    // Get elements needed - ensure they exist in your DOM references or get them here
     const logListContainer = document.getElementById('activity-log-list');
     const logCountElement = document.getElementById('activity-log-count');
-    const logPrevButton = document.getElementById('log-prev-button');
-    const logNextButton = document.getElementById('log-next-button');
-    if (!logListContainer || !logCountElement || !logPrevButton || !logNextButton || !logPageInfo) {
-        console.error("Required elements for log pagination/display are missing.");
-        if(logListContainer) logListContainer.innerHTML = "<p class='error'>Log display elements missing.</p>";
+    const searchInput = document.getElementById('search-activity-log');
+
+    // Add checks for elements existence at the beginning
+    if (!logListContainer || !logCountElement || !searchInput) {
+        console.error("Required elements for loadActivityLog are missing.");
+        if(logListContainer) logListContainer.innerHTML = '<p class="error">Error: Log display elements missing.</p>';
         return;
     }
-
-    // --- UI Updates for Loading State ---
+    searchInput.value = ''; // Reset search on load
     logListContainer.innerHTML = '<p>Loading activity log...</p>';
     logCountElement.textContent = '(...)';
-    logPrevButton.disabled = true;
-    logNextButton.disabled = true;
-    if (logPageInfo) logPageInfo.textContent = 'Page: ...';
-    allActivityLogEntries = []; // Clear the array for the new page's data
+    allActivityLogEntries = []; // Clear global store
 
     try {
-        const activityLogCollectionRef = collection(db, "activity_log");
-        let queryConstraints = [orderBy("timestamp", "desc")]; // Base constraint: newest first
-
-        // --- Apply Date Filtering ---
-        if (filterDate instanceof Date && !isNaN(filterDate)) {
-            console.log("Applying date filter for:", filterDate.toLocaleDateString());
-            // Use UTC to define the day boundaries to avoid timezone off-by-one errors
-            const startOfDayUTC = new Date(Date.UTC(filterDate.getUTCFullYear(), filterDate.getUTCMonth(), filterDate.getUTCDate(), 0, 0, 0, 0));
-            const endOfDayUTC = new Date(Date.UTC(filterDate.getUTCFullYear(), filterDate.getUTCMonth(), filterDate.getUTCDate(), 23, 59, 59, 999));
-
-            const startTimestamp = Timestamp.fromDate(startOfDayUTC);
-            const endTimestamp = Timestamp.fromDate(endOfDayUTC);
-
-            queryConstraints.push(where("timestamp", ">=", startTimestamp));
-            queryConstraints.push(where("timestamp", "<=", endTimestamp));
-        } else {
-            console.log("No date filter applied or date is invalid.");
-            currentLogFilterDate = null; // Ensure filter state is null if not valid
-        }
-
-        // --- Apply Pagination Cursors ---
-         if (direction === 'initial') {
-            console.log("Fetching initial page.");
-            currentPageNumber = 1;
-            firstVisibleLogDoc = null; // Reset cursors for initial load or filter change
-            lastVisibleLogDoc = null;
-            queryConstraints.push(limit(activityLogPageSize));
-        } else if (direction === 'next' && lastVisibleLogDoc) {
-            console.log("Fetching next page after:", lastVisibleLogDoc.id);
-            queryConstraints.push(startAfter(lastVisibleLogDoc));
-            queryConstraints.push(limit(activityLogPageSize));
-            // Page number incremented *after* successful fetch
-        } else if (direction === 'previous' && firstVisibleLogDoc) {
-            console.log("Fetching previous page before:", firstVisibleLogDoc.id);
-            queryConstraints = [ // Rebuild constraints for previous page query
-                orderBy("timestamp", "desc"), // Keep original order
-                 ...(filterDate instanceof Date && !isNaN(filterDate) ? [ // Re-add date filter if active
-                     where("timestamp", ">=", Timestamp.fromDate(new Date(Date.UTC(filterDate.getUTCFullYear(), filterDate.getUTCMonth(), filterDate.getUTCDate(), 0, 0, 0, 0)))),
-                     where("timestamp", "<=", Timestamp.fromDate(new Date(Date.UTC(filterDate.getUTCFullYear(), filterDate.getUTCMonth(), filterDate.getUTCDate(), 23, 59, 59, 999))))
-                 ] : []),
-                 endBefore(firstVisibleLogDoc), // End before the first item of the current page
-                 limitToLast(activityLogPageSize) // Get the last N items (which are the previous page)
-             ];
-             // Page number decremented *after* successful fetch
-        } else if (direction !== 'initial') {
-             console.warn(`Cannot navigate ${direction}. Missing required boundary document. Reloading first page.`);
-              if (showAdminStatus) showAdminStatus("Cannot navigate further, reloading first page.", true);
-             currentPageNumber = 1;
-             firstVisibleLogDoc = null;
-             lastVisibleLogDoc = null;
-             filterDate = currentLogFilterDate; // Keep current date filter if any
-             // Rebuild query constraints for initial load
-              queryConstraints = [orderBy("timestamp", "desc")];
-              if (filterDate instanceof Date && !isNaN(filterDate)) {
-                    const startTimestamp = Timestamp.fromDate(new Date(Date.UTC(filterDate.getUTCFullYear(), filterDate.getUTCMonth(), filterDate.getUTCDate(), 0, 0, 0, 0)));
-                    const endTimestamp = Timestamp.fromDate(new Date(Date.UTC(filterDate.getUTCFullYear(), filterDate.getUTCMonth(), filterDate.getUTCDate(), 23, 59, 59, 999)));
-                    queryConstraints.push(where("timestamp", ">=", startTimestamp));
-                    queryConstraints.push(where("timestamp", "<=", endTimestamp));
-              }
-             queryConstraints.push(limit(activityLogPageSize));
-             direction = 'initial'; // Treat as initial load
-        } else { // Initial load case (already handled above)
-             queryConstraints.push(limit(activityLogPageSize));
-        }
-
-
-        // --- Execute Query ---
-        const logQuery = query(activityLogCollectionRef, ...queryConstraints);
+        // Ensure Firestore functions are imported (collection, query, orderBy, limit, getDocs)
+        const activityLogCollectionRef = collection(db, "activity_log"); // Define or ensure global reference
+        const logQuery = query(activityLogCollectionRef, orderBy("timestamp", "desc"), limit(50)); // Load recent 50
         const querySnapshot = await getDocs(logQuery);
-        const fetchedDocs = querySnapshot.docs; // Get the documents array
 
-        // --- Process Results ---
-        if (!querySnapshot.empty) {
-            // Update page number *after* successful fetch
-             if (direction === 'next') currentPageNumber++;
-             if (direction === 'previous') currentPageNumber--;
-             // Reset to 1 on initial load/filter change
-             if (direction === 'initial') currentPageNumber = 1;
-
-
-            firstVisibleLogDoc = fetchedDocs[0]; // First doc of the *fetched* set
-            lastVisibleLogDoc = fetchedDocs[fetchedDocs.length - 1]; // Last doc of the *fetched* set
-
-            fetchedDocs.forEach(doc => {
-                allActivityLogEntries.push({ id: doc.id, ...doc.data() });
-            });
-
-            console.log(`Loaded ${allActivityLogEntries.length} log entries for page ${currentPageNumber}.`);
-            displayFilteredActivityLog(); // Render the current page's logs
-
-            // --- Update Button States ---
-            logPrevButton.disabled = currentPageNumber <= 1;
-            // Disable next if we received fewer docs than requested (likely the last page)
-            logNextButton.disabled = fetchedDocs.length < activityLogPageSize;
-
-        } else {
-            // No documents found for this query
-            console.log(`No activity logs found for ${direction} page ${currentPageNumber} ${filterDate ? 'on ' + filterDate.toLocaleDateString() : ''}.`);
-            logListContainer.innerHTML = `<p>No activity logs found for this ${filterDate ? 'date' : 'page'}.</p>`;
-            logCountElement.textContent = '(0)';
-            if (logPageInfo) logPageInfo.textContent = `Page: ${currentPageNumber}`;
-
-            // Adjust button states when hitting the ends
-             if (direction === 'next') {
-                logNextButton.disabled = true;
-                logPrevButton.disabled = currentPageNumber <= 1; // Can still go back if not page 1
-                // Don't change page number if fetch failed
-            } else if (direction === 'previous') {
-                logPrevButton.disabled = true;
-                logNextButton.disabled = false; // If we tried to go previous, there must be a next
-                // Don't change page number if fetch failed
-            } else { // Initial load was empty
-                 logPrevButton.disabled = true;
-                 logNextButton.disabled = true;
-                 currentPageNumber = 1; // Reset page num
-                 firstVisibleLogDoc = null; // Clear cursors
-                 lastVisibleLogDoc = null;
-            }
-        }
-
-    } catch (error) {
-        console.error("Error loading activity log page:", error);
-        logListContainer.innerHTML = `<p class="error">Error loading activity log: ${error.message}</p>`;
-        logCountElement.textContent = '(Error)';
-        if (showAdminStatus) showAdminStatus(`Failed to load activity log: ${error.message}`, true);
-        // Disable buttons on error
-         if(logPrevButton) logPrevButton.disabled = true;
-         if(logNextButton) logNextButton.disabled = true;
-         currentPageNumber = 1; // Reset page number on error
-         firstVisibleLogDoc = null; // Clear cursors on error
-         lastVisibleLogDoc = null;
-         currentLogFilterDate = null; // Reset filter on error
-         const filterInput = document.getElementById('filter-log-date');
-         if (filterInput) filterInput.value = '';
-
-    }
-}
-
-/**
- * Handles the deletion of ALL activity log entries after confirmation.
- */
-async function handleClearActivityLog() {
-    // *** STRONG CONFIRMATION ***
-    if (!confirm("ARE YOU ABSOLUTELY SURE you want to delete ALL activity log entries?\n\nThis action cannot be undone!")) {
-        return; // Stop if user cancels
-    }
-    // Second confirmation for extra safety
-    if (!confirm("SECOND CONFIRMATION: Really delete everything in the log?")) {
-        return;
-    }
-
-    const clearButton = document.getElementById('clear-log-button');
-    const filterLogDateInput = document.getElementById('filter-log-date');
-    if (clearButton) clearButton.disabled = true;
-    if (showAdminStatus) showAdminStatus("Clearing activity log... This may take a moment.", false);
-
-    try {
-        const activityLogCollectionRef = collection(db, "activity_log");
-        // Fetch all document IDs (or full docs - getDocs is simpler here for client-side loop)
-        // WARNING: Inefficient for very large collections! Consider Cloud Function with batch writes/deletes instead.
-        const querySnapshot = await getDocs(activityLogCollectionRef); // No limit here - intention is to delete ALL
-
-        if (querySnapshot.empty) {
-             if (showAdminStatus) showAdminStatus("Activity log is already empty.", false);
-             if (clearButton) clearButton.disabled = false;
-            loadActivityLogPage('initial', null); // Refresh display (will show empty)
-            return;
-        }
-
-        // Create an array of delete promises
-        const deletePromises = [];
-        querySnapshot.forEach((doc) => {
-            deletePromises.push(deleteDoc(doc.ref));
+        querySnapshot.forEach(doc => {
+            allActivityLogEntries.push({ id: doc.id, ...doc.data() });
         });
 
-        // Wait for all delete operations to complete
-        await Promise.all(deletePromises);
-
-        const deletedCount = deletePromises.length;
-        console.log(`Successfully deleted ${deletedCount} log entries.`);
-         if (showAdminStatus) showAdminStatus(`Activity log cleared successfully (${deletedCount} entries deleted).`, false);
-        logAdminActivity('ACTIVITY_LOG_CLEARED', { count: deletedCount }); // Log the clear action itself
+        console.log(`Loaded ${allActivityLogEntries.length} log entries.`);
+        displayFilteredActivityLog(); // Display the fetched logs
 
     } catch (error) {
-        console.error("Error clearing activity log:", error);
-         if (showAdminStatus) showAdminStatus(`Error clearing activity log: ${error.message}`, true);
-    } finally {
-         if (clearButton) clearButton.disabled = false; // Re-enable button
-         if(filterLogDateInput) filterLogDateInput.value = ''; // Clear date filter after clearing log
-         loadActivityLogPage('initial', null); // Refresh the displayed log (should be empty)
+        console.error("Error loading activity log:", error);
+        logListContainer.innerHTML = `<p class="error">Error loading activity log: ${error.message}</p>`;
+        logCountElement.textContent = '(Error)';
+        // Use showAdminStatus if available and desired
+        if (typeof showAdminStatus === 'function') {
+             showAdminStatus(`Failed to load activity log: ${error.message}`, true);
+        }
     }
 }
 
 // ========================================
 // == END ACTIVITY LOG IMPLEMENTATION =====
 // ========================================
-
 
 // --- Copied Shoutout Card Rendering Functions (from displayShoutouts.js) ---
     // NOTE: Ensure image paths ('check.png', 'images/default-profile.jpg') are accessible
@@ -1986,14 +1704,11 @@ onAuthStateChanged(auth, user => {
         // ****** Load the Activity Log LAST ******
         // Calling this after the other loads gives the ADMIN_LOGIN entry's
         // serverTimestamp a better chance to be resolved by Firestore.
-        if (typeof loadActivityLogPage === 'function') { // <<< Use the new function name
-            loadActivityLogPage('initial', null);      // <<< Call the new function for the first page, no filter
+        if (typeof loadActivityLog === 'function') {
+            loadActivityLog();
         } else {
-             console.error("loadActivityLogPage function is missing!"); // <<< Update error message too
-             // Use showAdminStatus if available and desired
-             if (typeof showAdminStatus === 'function') {
-                 showAdminStatus("Error: Cannot load activity log.", true);
-             }
+             console.error("loadActivityLog function is missing!");
+             showAdminStatus("Error: Cannot load activity log.", true);
         }
         // --- End Load Activity Log ---
 
