@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     let isAddingShoutout = false; // Flag to prevent double submissions
 
     // --- Activity Log Listeners ---
-    const refreshLogBtn = document.getElementById('refresh-log-button');
     if (refreshLogBtn) {
         refreshLogBtn.addEventListener('click', loadActivityLog); // Refresh reloads all
     }
