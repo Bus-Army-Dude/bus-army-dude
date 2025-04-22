@@ -776,9 +776,7 @@ async function initializeHomepageContent() {
     }
 
     // Initially show the loading overlay
-    if (maintenanceEnabled || !siteSettings.isMaintenanceModeEnabled) { // Show loading even if maintenance is off initially
-        loadingOverlay.style.display = 'flex';
-    }
+    loadingOverlay.style.display = 'flex';
 
     try {
         console.log("Fetching site settings from site_config/mainProfile...");
