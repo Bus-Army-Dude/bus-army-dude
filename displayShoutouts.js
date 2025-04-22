@@ -11,15 +11,14 @@ const firebaseConfig = {
     measurementId: "G-DQPH8YL789" // Optional
 };
 
-// Import necessary Firebase functions (v9+ modular SDK)
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+// Keep import for getFirestore and other Firestore functions
 import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 import { db } from './firebase-init.js';
 
 // --- Initialize Firebase ---
-let db;
-let firebaseAppInitialized = false;
+// Remove the entire try...catch block for Firebase initialization
+
 // Declare references in module scope
 let profileDocRef; // Holds main site config (profile, status, maintenance, tiktok hide, countdown)
 let presidentDocRef;
@@ -30,20 +29,16 @@ let techItemsCollectionRef;
 let shoutoutsMetaRef; // Assumes 'siteConfig' is a top-level collection for this doc path
 let faqsCollectionRef;
 
-try {
-    const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    // Assign references
-    profileDocRef = doc(db, "site_config", "mainProfile"); // <<< Central config doc
-    presidentDocRef = doc(db, "site_config", "currentPresident");
-    usefulLinksCollectionRef = collection(db, "useful_links");
-    socialLinksCollectionRef = collection(db, "social_links");
-    disabilitiesCollectionRef = collection(db, "disabilities");
-    techItemsCollectionRef = collection(db, "tech_items");
-    shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
-    faqsCollectionRef = collection(db, "faqs");
-    firebaseAppInitialized = true;
-    console.log("Firebase initialized for display.");
+// Assign references (now using the imported 'db')
+profileDocRef = doc(db, "site_config", "mainProfile"); // <<< Central config doc
+presidentDocRef = doc(db, "site_config", "currentPresident");
+usefulLinksCollectionRef = collection(db, "useful_links");
+socialLinksCollectionRef = collection(db, "social_links");
+disabilitiesCollectionRef = collection(db, "disabilities");
+techItemsCollectionRef = collection(db, "tech_items");
+shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+faqsCollectionRef = collection(db, "faqs");
+console.log("Using Firebase initialized by firebase-init.js for display.");
 } catch (error) {
     console.error("Firebase initialization failed:", error);
     const body = document.body;
