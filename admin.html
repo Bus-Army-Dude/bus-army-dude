@@ -676,37 +676,22 @@
         </div>
         </div> </section>
                 
-             <section class="admin-section" id="activity-log-section" aria-labelledby="activity-log-heading">
-    <h3 id="activity-log-heading">Admin Activity Log</h3>
+             <!-- Activity Log Section -->
+<section class="admin-section" id="activity-log-section" aria-labelledby="activity-log-heading">
+                <h3 id="activity-log-heading">Admin Activity Log</h3>
 
-    <h5 id="existing-log-heading">
-        Displayed Activity <span id="activity-log-count" class="list-count"></span>
-        </h5>
+                <h5 id="existing-log-heading">
+                    Recent Activity <span id="activity-log-count" class="list-count"></span> </h5>
 
-    <div class="list-controls activity-log-controls">
-        <button type="button" id="refresh-log-button" class="secondary-button" title="Reload the latest log entries">Refresh Log</button>
+                <div class="list-controls">
+                    <button type="button" id="refresh-log-button" class="secondary-button">Refresh Log</button>
+                    <input type="search" id="search-activity-log" placeholder="Search Activity Log..." aria-label="Search Activity Log">
+                    <button type="button" id="clear-log-button" class="danger-button">Clear All Logs</button>
+                </div>
 
-        <input type="search" id="search-activity-log" placeholder="Search Displayed Logs..." aria-label="Search Displayed Activity Log">
-
-        <div class="date-filter-group">
-             <label for="filter-log-date">Filter by Date:</label>
-             <input type="date" id="filter-log-date" aria-label="Filter logs by date">
-             <button type="button" id="filter-log-date-button" title="Apply date filter">Filter</button>
-             <button type="button" id="clear-log-filter-button" class="secondary-button" title="Clear date filter and show recent">Show Recent</button>
-        </div>
-         <button type="button" id="clear-log-button" class="danger-button" style="margin-left: 20px;" title="Permanently delete ALL log entries">Clear All Logs</button>
-
-    </div>
-
-    <div id="activity-log-list" class="list-container-admin log-container" role="log" aria-live="polite" aria-atomic="true" aria-labelledby="existing-log-heading">
-        <p>Loading activity log...</p>
-    </div>
-
-    <div class="log-navigation list-pagination">
-         <button id="log-prev-button" disabled title="Go to previous page">Previous Page</button>
-         <span id="log-page-info">Page: 1</span> <button id="log-next-button" disabled title="Go to next page">Next Page</button>
-    </div>
-     </section>
+                <div id="activity-log-list" class="list-container-admin log-container" role="list" aria-labelledby="existing-log-heading">
+                    <p>Loading activity log...</p> </div>
+            </section>
 
 </main>
 
