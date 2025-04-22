@@ -1,4 +1,4 @@
-/* admin.css - Apple OS Blend Theme (macOS/iOS/visionOS Inspired) */
+/* admin.css - Apple OS Blend Theme (macOS/iOS/visionOS Inspired - Applied to Original Base) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -28,7 +28,7 @@
     --apple-light-input-bg: #ffffff;
     --apple-light-input-border: #d2d2d7;
     --apple-light-input-focus-border: #007aff;
-    --apple-light-input-focus-shadow: rgba(0, 122, 255, 0.2); /* Base for glow */
+    /* --apple-light-input-focus-shadow: rgba(0, 122, 255, 0.2); /* Original shadow, now used for glow */
     --apple-light-focus-glow: 0 0 0 4px rgba(0, 122, 255, 0.15); /* VisionOS inspired focus glow */
     --apple-light-shadow: rgba(0, 0, 0, 0.06); /* Softer shadow */
     --apple-light-deep-shadow: rgba(0, 0, 0, 0.12); /* Slightly deeper shadow for modals */
@@ -53,7 +53,7 @@
     --apple-dark-input-bg: #2c2c2e;
     --apple-dark-input-border: #3a3a3c;
     --apple-dark-input-focus-border: #0a84ff;
-    --apple-dark-input-focus-shadow: rgba(10, 132, 255, 0.3); /* Base for glow */
+    /* --apple-dark-input-focus-shadow: rgba(10, 132, 255, 0.3); /* Original shadow, now used for glow */
     --apple-dark-focus-glow: 0 0 0 4px rgba(10, 132, 255, 0.2); /* VisionOS inspired focus glow */
     --apple-dark-shadow: rgba(0, 0, 0, 0.2); /* Softer shadow */
     --apple-dark-deep-shadow: rgba(0, 0, 0, 0.3); /* Slightly deeper shadow for modals */
@@ -105,10 +105,14 @@
     --accent-rgb: 10, 132, 255; /* Dark mode blue */
     --danger-rgb: 255, 59, 48; /* Danger red */
     --content-bg-rgb: 29, 29, 31; /* Dark content bg */
+    /* Keep original focus shadow vars if needed elsewhere, but rename main focus to glow */
+    --input-focus-shadow-color: var(--apple-dark-input-focus-shadow);
+    --accent-glow-color: var(--focus-glow-color); /* Alias for consistency */
+
 }
 
 /* --- Light Mode Override --- */
-body:not(.dark-mode) {
+body:not(.dark-mode) { /* Default to light if no class or if class is not dark-mode */
     --bg-color: var(--apple-light-bg);
     --content-bg: var(--apple-light-content-bg);
     --glass-bg: var(--apple-light-glass-bg);
@@ -133,6 +137,8 @@ body:not(.dark-mode) {
     --modal-backdrop-color: var(--apple-light-modal-backdrop);
     --accent-rgb: 0, 122, 255; /* Light mode blue */
     --content-bg-rgb: 255, 255, 255; /* Light content bg */
+    --input-focus-shadow-color: var(--apple-light-input-focus-shadow); /* Keep original */
+    --accent-glow-color: var(--focus-glow-color); /* Alias */
 }
 
 /* Explicit Light Mode Class */
@@ -161,6 +167,8 @@ body.light-mode {
     --modal-backdrop-color: var(--apple-light-modal-backdrop);
     --accent-rgb: 0, 122, 255; /* Light mode blue */
     --content-bg-rgb: 255, 255, 255; /* Light content bg */
+    --input-focus-shadow-color: var(--apple-light-input-focus-shadow); /* Keep original */
+    --accent-glow-color: var(--focus-glow-color); /* Alias */
 }
 
 /* ======================== */
@@ -235,8 +243,9 @@ a:hover {
     max-width: 420px;
     margin-left: auto;
     margin-right: auto;
-    animation: fadeInSlideUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-    opacity: 0;
+    /* Removed animation - Assuming JS handles entry */
+    /* animation: fadeInSlideUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; */
+    /* opacity: 0; */
 }
 #login-section h2 { text-align: center; border-bottom: none; margin-bottom: 35px; font-size: 1.6rem;}
 
@@ -267,7 +276,8 @@ a:hover {
     padding: 35px; /* More padding */
     border: 1px solid var(--subtle-border-color);
     border-radius: var(--border-radius-md);
-    background-color: transparent; /* Inherit container background or set specific glass */
+    background-color: rgba(var(--content-bg-rgb), 0.3); /* Subtle glass background */
+    /* Or keep transparent: background-color: transparent; */
 }
 .admin-section:last-of-type { margin-bottom: 20px; }
 
@@ -305,7 +315,7 @@ textarea {
     font-size: 1rem;
     font-family: inherit;
     background-color: var(--input-bg-color);
-    /* background-color: rgba(var(--content-bg-rgb), 0.5); /* Subtle glass input? */
+    /* background-color: rgba(var(--content-bg-rgb), 0.5); /* Optional: Subtle glass input */
     color: var(--text-color);
     box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset;
     transition: border-color var(--transition-speed) var(--transition-timing-fast),
@@ -404,7 +414,8 @@ select {
     flex-shrink: 0;
     margin: 0;
 }
-/* No separate dark mode needed if using --color-secondary-action */
+/* Dark mode uses the same variable now */
+/* body.dark-mode .apple-toggle-label { background-color: var(--apple-dark-secondary-text); } */
 
 .apple-toggle-label::after {
     content: '';
@@ -432,6 +443,7 @@ select {
     box-shadow: var(--focus-glow-color); /* VisionOS inspired glow */
 }
 
+/* Style for a text label that might follow the toggle */
 .checkbox-group .apple-toggle-label + label {
     font-weight: normal;
     font-size: 1rem;
@@ -614,16 +626,16 @@ button.edit-button:focus-visible {
 .status-message {
     margin-top: 30px;
     margin-bottom: 25px;
-    padding: 15px 20px 15px 50px; /* More padding */
+    padding: 15px 20px 15px 50px; /* More padding, left padding for icon */
     font-weight: 500;
-    text-align: left;
+    text-align: left; /* Align left */
     border-radius: var(--border-radius-md);
     border: 1px solid transparent;
     border-left-width: 4px; /* Slightly thinner colored border */
     display: none; /* Initially hidden */
     clear: both;
     font-size: 0.98em;
-    position: relative;
+    position: relative; /* Needed for icon positioning */
     background-color: var(--glass-bg); /* Use glass bg */
     backdrop-filter: blur(5px); /* Subtle blur */
     -webkit-backdrop-filter: blur(5px);
@@ -635,10 +647,11 @@ button.edit-button:focus-visible {
 
 /* Icon Styling */
 .status-message::before {
+    /* Assuming Font Awesome 5 Free */
     font-family: "Font Awesome 5 Free";
-    font-weight: 900; /* Solid */
+    font-weight: 900; /* Solid style */
     position: absolute;
-    left: 18px;
+    left: 18px; /* Position icon */
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.3em; /* Larger icon */
@@ -646,23 +659,23 @@ button.edit-button:focus-visible {
 
 .status-message.success {
     color: var(--success-text-color);
-    background-color: var(--success-bg-color); /* Use light bg color */
+    background-color: var(--success-bg-color); /* Use lighter solid bg color */
     border-color: var(--color-success-action);
     backdrop-filter: none; /* Remove backdrop if using solid bg */
 }
 .status-message.success::before {
-    content: "\f058"; /* check-circle */
+    content: "\f058"; /* Font Awesome check-circle icon */
     color: var(--color-success-action);
 }
 
 .status-message.error {
     color: var(--error-text-color);
-    background-color: var(--error-bg-color); /* Use light bg color */
+    background-color: var(--error-bg-color); /* Use lighter solid bg color */
     border-color: var(--color-danger);
     backdrop-filter: none; /* Remove backdrop if using solid bg */
 }
 .status-message.error::before {
-    content: "\f071"; /* exclamation-triangle */
+    content: "\f071"; /* Font Awesome exclamation-triangle icon */
     color: var(--color-danger);
 }
 
@@ -760,7 +773,7 @@ button.edit-button:focus-visible {
     padding: 30px;
     border: 1px solid var(--subtle-border-color);
     border-radius: var(--border-radius-md);
-    background-color: var(--content-bg); /* Solid content bg */
+    background-color: rgba(var(--content-bg-rgb), 0.3); /* Subtle glass */
 }
 .shoutouts-platform-container:last-of-type { margin-bottom: 0; }
 .shoutouts-platform-container h4 {
@@ -815,7 +828,7 @@ button.edit-button:focus-visible {
 .president-preview-area {
     align-items: flex-start;
 }
-
+/* Placeholder text */
 .shoutout-preview-area > p, .president-preview-area > p, .tech-preview-area > p {
     color: var(--secondary-text);
     font-style: italic;
@@ -861,10 +874,10 @@ button.edit-button:focus-visible {
 /* ======================== */
 .modal {
   /* IMPORTANT: This needs to be changed by JavaScript to show the modal */
-  /* For example, add a class 'is-visible' or set style.display = 'flex' */
+  /* e.g., modalElement.style.display = 'flex'; */
   display: none; /* MODAL IS HIDDEN BY DEFAULT */
-  align-items: center; /* Vertically center content (if using flex) */
-  justify-content: center; /* Horizontally center content (if using flex) */
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
 
   /* --- Styling --- */
   position: fixed;
@@ -873,7 +886,7 @@ button.edit-button:focus-visible {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; /* Enable scroll if needed */
+  overflow: auto; /* Enable scroll if content overflows */
   background-color: var(--modal-backdrop-color);
   backdrop-filter: blur(12px) saturate(150%); /* Enhanced blur */
   -webkit-backdrop-filter: blur(12px) saturate(150%);
@@ -881,9 +894,7 @@ button.edit-button:focus-visible {
 }
 
 /* Optional: Add a class for JavaScript to toggle visibility */
-.modal.is-visible {
-    display: flex; /* Or display: block; */
-}
+/* .modal.is-visible { display: flex; } */
 
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -929,7 +940,7 @@ button.edit-button:focus-visible {
     text-decoration: none;
     transform: scale(1.15) rotate(90deg); /* Rotate effect */
     opacity: 1;
-    outline: none;
+    outline: none; /* Remove default outline */
 }
 
 /* Ensure consistent button margin in modal forms */
@@ -1166,6 +1177,11 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile { color: #fff
 
 
 /* --- Tech Preview --- */
+/* Styles for the PREVIEW container DIVs */
+.tech-preview-area {
+  border: 1px dashed var(--border-color);
+  /* Inherits base preview styles now */
+}
 .tech-preview-area .tech-item {
     background: rgba(var(--content-bg-rgb), 0.7); /* Glassy item */
     backdrop-filter: blur(5px);
@@ -1250,7 +1266,7 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile { color: #fff
   text-align: right;
 }
 
-@keyframes fadeInSlideUp {
+@keyframes fadeInSlideUp { /* Keep this if used elsewhere */
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
