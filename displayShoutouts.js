@@ -730,26 +730,40 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
 // --- ***** END: Countdown Timer Logic (v7) ***** ---
 
 
-// --- MASTER INITIALIZATION FUNCTION (Corrected v9 - Fetches and Passes Expired Message) ---
+// --- MASTER INITIALIZATION FUNCTION (Corrected v10 - Handles Maintenance Overlay) ---
 async function initializeHomepageContent() {
     console.log("Initializing homepage content...");
 
-    const mainContentWrapper = document.querySelector('.container');
-    const maintenanceMessageElement = document.getElementById('maintenanceModeMessage');
+    // --- Get references to key elements ---
+    const mainContentWrapper = document.getElementById('main-content-wrapper'); // Get the main content DIV
+    const maintenanceOverlay = document.getElementById('maintenanceLoadingOverlay'); // Get the overlay DIV
     const countdownSection = document.querySelector('.countdown-section');
+    const usefulLinksSection = document.querySelector('.useful-links-section'); // Get the useful links section
+    const bodyElement = document.body; // Get the body element
 
-    // Selectors
+    // Other selectors for dynamic content loading
     const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
     const tiktokGridContainer = document.querySelector('#tiktok-shoutouts + .creator-grid');
     const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts + .creator-grid + .unavailable-message');
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
-    const usefulLinksSection = document.querySelector('.useful-links-section'); // Get the useful links section
 
     // Safety check for Firebase
     if (!firebaseAppInitialized || !db || !profileDocRef) {
         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
-        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = '<p class="error">Site configuration error.</p>'; maintenanceMessageElement.style.display = 'block'; }
+        // Attempt to show error in overlay if possible, otherwise fallback
+        if (maintenanceOverlay) {
+            const titleElement = maintenanceOverlay.querySelector('.maintenance-content h1');
+            const messageElement = maintenanceOverlay.querySelector('.maintenance-content p');
+            if(titleElement) titleElement.textContent = "Configuration Error";
+            if(messageElement) messageElement.textContent = "Could not load site configuration. Please try again later.";
+             maintenanceOverlay.querySelector('.maintenance-loader')?.remove(); // Remove loader on error
+             maintenanceOverlay.style.display = 'flex';
+             bodyElement.classList.add('maintenance-active');
+        } else {
+             // Fallback if overlay itself is missing
+             if (mainContentWrapper) mainContentWrapper.innerHTML = '<p class="error" style="text-align: center; padding: 50px;">Site configuration error.</p>';
+        }
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
         return;
@@ -763,7 +777,7 @@ async function initializeHomepageContent() {
     let hideTikTokSection = false;
     let countdownTargetDate = null;
     let countdownTitle = null;
-    let countdownExpiredMessage = null; // <<< Variable initialized
+    let countdownExpiredMessage = null;
 
     try {
         console.log("Fetching site settings from site_config/mainProfile...");
@@ -772,28 +786,37 @@ async function initializeHomepageContent() {
         if (configSnap.exists()) {
             siteSettings = configSnap.data() || {};
             maintenanceEnabled = siteSettings.isMaintenanceModeEnabled || false;
-            maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle; // Get custom title
-            maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage; // Get custom message
+            // Use fetched values OR defaults if fields are missing/empty in Firestore
+            maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle;
+            maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage;
             hideTikTokSection = siteSettings.hideTikTokSection || false;
-            countdownTargetDate = siteSettings.countdownTargetDate;
-            countdownTitle = siteSettings.countdownTitle;
-            countdownExpiredMessage = siteSettings.countdownExpiredMessage; // <<< GET THE MESSAGE HERE
+            countdownTargetDate = siteSettings.countdownTargetDate; // Can be null/undefined
+            countdownTitle = siteSettings.countdownTitle; // Can be null/undefined
+            countdownExpiredMessage = siteSettings.countdownExpiredMessage; // Can be null/undefined
         } else {
             console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
         }
-        console.log("Settings fetched:", { // Updated log
-            maintenanceEnabled,
-            maintenanceTitle,
-            maintenanceMessage,
-            hideTikTokSection,
-            countdownTitle,
+        console.log("Settings fetched:", {
+            maintenanceEnabled, maintenanceTitle, maintenanceMessage, hideTikTokSection,
+            countdownTitle: countdownTitle || '(Not Set)',
             countdownTargetDate: countdownTargetDate ? 'Exists' : 'Missing',
             countdownExpiredMessage: countdownExpiredMessage ? 'Exists' : 'Missing/Empty'
         });
 
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
-        if (maintenanceMessageElement) { maintenanceMessageElement.innerHTML = `<p class="error">Error loading config: ${error.message}.</p>`; maintenanceMessageElement.style.display = 'block'; }
+        // Attempt to show error in overlay
+         if (maintenanceOverlay) {
+            const titleElement = maintenanceOverlay.querySelector('.maintenance-content h1');
+            const messageElement = maintenanceOverlay.querySelector('.maintenance-content p');
+            if(titleElement) titleElement.textContent = "Loading Error";
+            if(messageElement) messageElement.textContent = `Error loading site configuration: ${error.message}`;
+             maintenanceOverlay.querySelector('.maintenance-loader')?.remove();
+             maintenanceOverlay.style.display = 'flex';
+             bodyElement.classList.add('maintenance-active');
+         } else {
+             if (mainContentWrapper) mainContentWrapper.innerHTML = `<p class="error" style="text-align: center; padding: 50px;">Error loading config: ${error.message}.</p>`;
+         }
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
         if (countdownSection) countdownSection.style.display = 'none';
         return;
@@ -801,80 +824,148 @@ async function initializeHomepageContent() {
 
     // Apply Maintenance Mode
     if (maintenanceEnabled) {
-        console.log("Maintenance mode ON.");
+        console.log("Maintenance mode ON. Activating overlay.");
+
+        // Hide main content
         if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-        if (countdownSection) countdownSection.style.display = 'none';
-        if (maintenanceMessageElement) {
-            maintenanceMessageElement.innerHTML = `
-                <h2>${maintenanceTitle}</h2>
-                <p style="font-size: 1.1em; line-height: 1.6; margin-top: 15px; margin-bottom: 20px;">
-                    ${maintenanceMessage.replace(/\n/g, '<br>')}
-                </p>
-                <div class="links-container">
-                    <h3>Stay Updated:</h3>
-                    <a href="https://bus-army-dude.instatus.com/" target="_blank" rel="noopener noreferrer" class="link-button">Status Page</a>
-                    <a href="https://instagram.com/riverkritzar" target="_blank" rel="noopener noreferrer" class="link-button">Instagram</a>
-                    <a href="https://tiktok.com/@bus.army.dude" target="_blank" rel="noopener noreferrer" class="link-button">TikTok</a>
-                </div>
-            `;
-            maintenanceMessageElement.style.display = 'block';
+         if (countdownSection) countdownSection.style.display = 'none'; // Hide countdown too
+
+        // Show and populate the overlay
+        if (maintenanceOverlay) {
+            // Find elements *inside* the overlay to populate
+            const titleElement = maintenanceOverlay.querySelector('.maintenance-content h1');
+            const messageElement = maintenanceOverlay.querySelector('.maintenance-content p');
+            const socialsContainer = maintenanceOverlay.querySelector('.maintenance-socials');
+
+            if (titleElement) {
+                titleElement.textContent = maintenanceTitle; // Use fetched or default title
+            } else {
+                console.warn("Maintenance title element (h1) not found inside overlay.");
+            }
+
+            if (messageElement) {
+                // Use textContent for safety, assuming message doesn't need HTML from DB
+                messageElement.textContent = maintenanceMessage; // Use fetched or default message
+            } else {
+                console.warn("Maintenance message element (p) not found inside overlay.");
+            }
+
+            // --- Populate Social Links ---
+            if (socialsContainer) {
+                // Using example links, replace with dynamic loading if needed
+                socialsContainer.innerHTML = `
+                    <p>Stay Updated:</p>
+                    <a href="https://bus-army-dude.instatus.com/" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-chart-line"></i> Status Page
+                    </a>
+                    <a href="https://instagram.com/riverkritzar" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://tiktok.com/@bus.army.dude" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a>
+                `;
+            } else {
+                 console.warn("Maintenance socials container (.maintenance-socials) not found inside overlay.");
+            }
+            // --- End Social Links ---
+
+            maintenanceOverlay.style.display = 'flex'; // Show the overlay
+            bodyElement.classList.add('maintenance-active'); // Add class to body to disable scroll
+
+        } else {
+             console.error("Maintenance overlay element (#maintenanceLoadingOverlay) not found in index.html!");
+             // Fallback if overlay structure is missing
+             if (mainContentWrapper) mainContentWrapper.innerHTML = `<p style="padding: 50px; text-align: center; color: red;">Site Maintenance Active (UI Error)</p>`;
         }
-        if (usefulLinksSection) {
-            usefulLinksSection.style.display = 'none'; // Hide the regular useful links
-        }
-        return;
+
+        // Explicitly hide the old message element if it exists
+        const oldMaintenanceMessageElement = document.getElementById('maintenanceModeMessage');
+        if (oldMaintenanceMessageElement) oldMaintenanceMessageElement.style.display = 'none';
+
+        return; // Stop further content loading
+
     } else {
+        // Maintenance mode OFF
         console.log("Maintenance mode OFF.");
-        if (mainContentWrapper) mainContentWrapper.style.display = '';
-        if (countdownSection) countdownSection.style.display = 'block'; // Show section initially
-        if (maintenanceMessageElement) maintenanceMessageElement.style.display = 'none';
+        if (mainContentWrapper) mainContentWrapper.style.display = ''; // Show main content
+        if (maintenanceOverlay) maintenanceOverlay.style.display = 'none'; // Hide overlay
+        bodyElement.classList.remove('maintenance-active'); // Remove class from body
+
+        // Ensure countdown section is visible if maintenance is off
+        if (countdownSection) countdownSection.style.display = 'block';
+
+         // Explicitly hide the old message element if it exists
+        const oldMaintenanceMessageElement = document.getElementById('maintenanceModeMessage');
+        if (oldMaintenanceMessageElement) oldMaintenanceMessageElement.style.display = 'none';
+
+        // Show and load useful links if maintenance is off
         if (usefulLinksSection) {
-            usefulLinksSection.style.display = 'block'; // Show the regular useful links
+            usefulLinksSection.style.display = 'block';
             loadAndDisplayUsefulLinks(); // Load the links
         }
-    }
 
-    // --- Start Countdown (Pass the fetched message) ---
-    startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage); // <<< PASS 3rd ARGUMENT HERE
+        // --- Proceed with loading normal content ---
 
-    // Apply TikTok Visibility Logic
-    if (!tiktokHeaderContainer || !tiktokGridContainer) {
-         console.warn("Could not find TikTok header/grid containers.");
-         if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
-    } else {
-        if (hideTikTokSection) {
-             console.log("Hiding TikTok section.");
-             tiktokHeaderContainer.style.display = 'none';
-             tiktokGridContainer.style.display = 'none';
-             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p style="...">TikTok shoutouts are currently hidden by the site administrator.</p>'; tiktokUnavailableMessage.style.display = 'block';}
-             else { console.warn("TikTok unavailable message element not found."); }
+        // Start Countdown (Pass the fetched message)
+        startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
+
+        // Apply TikTok Visibility Logic
+        let isTikTokVisible = false; // Flag to track if TikTok should load
+        if (!tiktokHeaderContainer || !tiktokGridContainer) {
+             console.warn("Could not find TikTok header/grid containers.");
+             if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
         } else {
-            console.log("Showing TikTok section.");
-            tiktokHeaderContainer.style.display = '';
-            tiktokGridContainer.style.display = '';
-             if (tiktokUnavailableMessage) { tiktokUnavailableMessage.style.display = 'none'; tiktokUnavailableMessage.innerHTML = ''; }
-            const tsEl = tiktokHeaderContainer.querySelector('#tiktok-last-updated-timestamp');
-            loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl); // Load data
+            if (hideTikTokSection) {
+                 console.log("Hiding TikTok section.");
+                 tiktokHeaderContainer.style.display = 'none';
+                 tiktokGridContainer.style.display = 'none';
+                 if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p>TikTok shoutouts are currently hidden by the site administrator.</p>'; tiktokUnavailableMessage.style.display = 'block';}
+                 else { console.warn("TikTok unavailable message element not found."); }
+                 isTikTokVisible = false;
+            } else {
+                console.log("Showing TikTok section.");
+                tiktokHeaderContainer.style.display = '';
+                tiktokGridContainer.style.display = '';
+                 if (tiktokUnavailableMessage) { tiktokUnavailableMessage.style.display = 'none'; tiktokUnavailableMessage.innerHTML = ''; }
+                 isTikTokVisible = true; // TikTok should load
+            }
         }
-    }
 
-    // --- Load ALL OTHER Content Sections ---
-    console.log("Initiating loading of other content sections...");
-    displayProfileData(siteSettings); // Pass settings
+        // --- Load ALL OTHER Content Sections ---
+        console.log("Initiating loading of other content sections...");
+        displayProfileData(siteSettings); // Pass settings
 
-    const otherLoadPromises = [
-        displayPresidentData(),
-        loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
-        loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
-        loadAndDisplayUsefulLinks(),
-        loadAndDisplaySocialLinks(),
-        loadAndDisplayDisabilities(),
-        loadAndDisplayTechItems(),
-        loadAndDisplayFaqs()
-     ];
-    const otherResults = await Promise.allSettled(otherLoadPromises);
-    otherResults.forEach((result, index) => { /* ... handle results ... */ });
-    console.log("Other dynamic content loading initiated.");
+        const otherLoadPromises = [
+            displayPresidentData(),
+            loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
+            loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
+            // loadAndDisplayUsefulLinks(), // Already called above
+            loadAndDisplaySocialLinks(),
+            loadAndDisplayDisabilities(),
+            loadAndDisplayTechItems(),
+            loadAndDisplayFaqs()
+         ];
+
+         // Conditionally add TikTok loading promise
+         if (isTikTokVisible && tiktokGridContainer) {
+              const tsEl = tiktokHeaderContainer?.querySelector('#tiktok-last-updated-timestamp');
+              if (tsEl) {
+                  otherLoadPromises.push(loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl));
+              } else {
+                   console.warn("Could not load TikTok section - timestamp element missing.");
+              }
+         }
+
+        const otherResults = await Promise.allSettled(otherLoadPromises);
+        // Optional: Check results for errors
+        otherResults.forEach((result, index) => {
+             if (result.status === 'rejected') {
+                 console.error(`Error loading content section ${index}:`, result.reason);
+             }
+        });
+        console.log("Other dynamic content loading initiated.");
+    } // End of the main else (maintenance mode OFF) block
 } // --- End of initializeHomepageContent ---
 
 
