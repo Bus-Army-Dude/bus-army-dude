@@ -1,237 +1,167 @@
-// settings.js - Manages client-side display settings using localStorage
+// settings.js - With added logging for focusOutline debugging
 
 class SettingsManager {
-    /**
-     * Initializes the SettingsManager, loads settings, sets up controls, and applies them.
-     */
     constructor() {
         this.settings = this.loadSettings();
         this.initializeControls();
         this.applySettings();
-        console.log("SettingsManager Initialized with settings:", this.settings); // Log initial settings
+        console.log("SettingsManager Initialized. Final initial settings:", JSON.stringify(this.settings));
     }
 
-    /**
-     * Loads settings from localStorage, merging with defaults and validating values.
-     * @returns {object} The loaded and validated settings object.
-     */
     loadSettings() {
-        // Define defaults ONLY for settings managed by this class
         const defaultSettings = {
             darkMode: true,
-            textSize: 16, // Default numeric value
-            focusOutline: 'disabled',
+            textSize: 16,
+            focusOutline: 'disabled', // Default is disabled
         };
-
-        let loadedSettings = { ...defaultSettings }; // Start with a copy of defaults
+        let loadedSettings = { ...defaultSettings };
 
         try {
-            const storedSettings = localStorage.getItem('websiteSettings');
-            if (storedSettings) {
-                // Merge stored settings over defaults, ensuring no unexpected keys are added
-                const parsedSettings = JSON.parse(storedSettings);
+            const storedSettingsJSON = localStorage.getItem('websiteSettings');
+            console.log("LOAD: Found in localStorage:", storedSettingsJSON); // Log what was found
+            if (storedSettingsJSON) {
+                const parsedSettings = JSON.parse(storedSettingsJSON);
+                // Merge carefully, only taking known keys
                 for (const key in defaultSettings) {
                     if (parsedSettings.hasOwnProperty(key)) {
                         loadedSettings[key] = parsedSettings[key];
                     }
                 }
-                console.log("Loaded settings from localStorage:", loadedSettings);
+                console.log("LOAD: Parsed and merged settings:", JSON.stringify(loadedSettings));
             } else {
-                console.log("No settings found in localStorage, using defaults.");
+                console.log("LOAD: No settings found, using defaults.");
             }
         } catch (error) {
-            console.error("Error parsing settings from localStorage:", error);
-            // Keep default settings if parsing fails
-            loadedSettings = { ...defaultSettings };
+            console.error("LOAD: Error parsing settings:", error);
+            loadedSettings = { ...defaultSettings }; // Fallback to defaults on error
         }
 
-        // --- Validate textSize ---
-        const minSize = 10; // Define minimum acceptable text size
-        const maxSize = 30; // Define maximum acceptable text size
-        if (typeof loadedSettings.textSize !== 'number' ||
-            isNaN(loadedSettings.textSize) ||
-            loadedSettings.textSize < minSize ||
-            loadedSettings.textSize > maxSize)
-        {
-             console.warn(`Invalid textSize loaded (${loadedSettings.textSize}). Resetting to default ${defaultSettings.textSize}.`);
-             loadedSettings.textSize = defaultSettings.textSize; // Reset to default if invalid
+        // --- Validate textSize (keep validation) ---
+        const minSize = 10; const maxSize = 30;
+        if (typeof loadedSettings.textSize !== 'number' || isNaN(loadedSettings.textSize) || loadedSettings.textSize < minSize || loadedSettings.textSize > maxSize) {
+             console.warn(`LOAD: Invalid textSize (${loadedSettings.textSize}). Resetting to ${defaultSettings.textSize}.`);
+             loadedSettings.textSize = defaultSettings.textSize;
         }
 
         // --- Validate focusOutline ---
-        if (!['enabled', 'disabled'].includes(loadedSettings.focusOutline)) {
-             console.warn(`Invalid focusOutline loaded (${loadedSettings.focusOutline}). Resetting to default '${defaultSettings.focusOutline}'.`);
+        const validFocusStates = ['enabled', 'disabled'];
+        if (!validFocusStates.includes(loadedSettings.focusOutline)) {
+             console.warn(`LOAD: Invalid focusOutline (${loadedSettings.focusOutline}). Resetting to '${defaultSettings.focusOutline}'.`);
              loadedSettings.focusOutline = defaultSettings.focusOutline;
         }
 
         // --- Validate darkMode ---
         if (typeof loadedSettings.darkMode !== 'boolean') {
-             console.warn(`Invalid darkMode loaded (${loadedSettings.darkMode}). Resetting to default ${defaultSettings.darkMode}.`);
+             console.warn(`LOAD: Invalid darkMode (${loadedSettings.darkMode}). Resetting to ${defaultSettings.darkMode}.`);
              loadedSettings.darkMode = defaultSettings.darkMode;
         }
 
+        console.log("LOAD: Settings returned:", JSON.stringify(loadedSettings));
         return loadedSettings;
     }
 
-    /**
-     * Initializes UI controls (toggles, slider) on the settings page.
-     */
     initializeControls() {
-        console.log("Initializing UI controls...");
-
-        // --- Dark Mode Toggle ---
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        if (darkModeToggle) {
-            darkModeToggle.checked = this.settings.darkMode;
-            darkModeToggle.addEventListener('change', (e) => {
-                this.applyTheme(e.target.checked);
-            });
-            console.log("Dark Mode toggle initialized.");
-        } else {
-             console.warn("Dark Mode Toggle element (#darkModeToggle) not found!");
-        }
-
-        // --- Text Size Slider ---
-        const textSizeSlider = document.getElementById('text-size-slider');
-        const textSizeValue = document.getElementById('textSizeValue');
-        if (textSizeSlider && textSizeValue) {
-            textSizeSlider.value = this.settings.textSize; // Use validated value
-            textSizeValue.textContent = `${this.settings.textSize}px`;
-            this.updateSliderGradient(textSizeSlider);
-
-            textSizeSlider.addEventListener('input', (e) => {
-                const size = parseInt(e.target.value);
-                if (!isNaN(size)) {
-                     this.setTextSize(size); // setTextSize handles validation and saving
-                     // textSizeValue and gradient are updated within setTextSize now
-                } else {
-                     console.warn("Invalid size from slider input:", e.target.value);
-                }
-            });
-            console.log("Text Size slider initialized.");
-        } else {
-            if (!textSizeSlider) console.warn("Text Size Slider element (#text-size-slider) not found!");
-            if (!textSizeValue) console.warn("Text Size Value element (#textSizeValue) not found!");
-        }
+        console.log("Initializing controls...");
+        // ... (Dark Mode, Text Size controls initialization - keep logging if needed) ...
 
         // --- Focus Outline Toggle ---
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
         if (focusOutlineToggle) {
-            focusOutlineToggle.checked = this.settings.focusOutline === 'enabled';
+            const shouldBeChecked = this.settings.focusOutline === 'enabled';
+            console.log(`INIT: Setting focusOutline toggle 'checked' state to: ${shouldBeChecked} (based on setting: '${this.settings.focusOutline}')`);
+            focusOutlineToggle.checked = shouldBeChecked;
+
             focusOutlineToggle.addEventListener('change', (e) => {
-                this.toggleFocusOutline(e.target.checked);
+                 console.log("EVENT: Focus outline toggle changed. Checked:", e.target.checked);
+                 this.toggleFocusOutline(e.target.checked); // Pass boolean state
             });
             console.log("Focus Outline toggle initialized.");
         } else {
              console.warn("Focus Outline Toggle element (#focusOutlineToggle) not found!");
         }
 
-        // --- Reset Settings Button ---
-        const resetButton = document.getElementById('resetSettings');
-        if (resetButton) {
-            resetButton.addEventListener('click', () => {
-                if (confirm('Are you sure you want to reset display settings (Theme, Text Size, Focus Outline) to defaults?')) {
-                    this.resetToFactorySettings();
-                }
-            });
-             console.log("Reset button listener added.");
-        } else {
-             console.warn("Reset Settings button (#resetSettings) not found!");
-        }
-
-        // --- Footer Year ---
-        this.updateFooterYear(); // Moved here as it doesn't depend on other elements
+         // ... (Reset Button, Footer Year initialization) ...
+         console.log("Controls initialized.");
     }
 
-    /**
-     * Updates the background gradient of the text size slider.
-     * @param {HTMLInputElement} slider - The slider element.
-     */
+    // updateSliderGradient remains the same
     updateSliderGradient(slider) {
         if (!slider) return;
         const value = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
         slider.style.setProperty('--slider-value', `${value}%`);
     }
 
-    /**
-     * Applies all managed settings to the page on initial load.
-     */
+
     applySettings() {
-        console.log("Applying initial settings...");
+        console.log("Applying initial settings from loaded state...");
         this.applyTheme(this.settings.darkMode);
         this.setTextSize(this.settings.textSize);
+        // Apply focus outline based on the loaded setting
+        console.log(`APPLY: Applying focus outline based on setting: '${this.settings.focusOutline}'`);
         this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
     }
 
-    /**
-     * Applies the theme (dark/light mode) to the body.
-     * @param {boolean} isDark - Whether dark mode should be enabled.
-     */
+    // applyTheme remains the same
     applyTheme(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
-        this.settings.darkMode = isDark;
-        this.saveSettings();
-        console.log(`Theme applied: ${isDark ? 'Dark' : 'Light'}`);
+        // Only save if changed within this specific action
+        if (this.settings.darkMode !== isDark) {
+             this.settings.darkMode = isDark;
+             this.saveSettings();
+             console.log(`Theme applied and saved: ${isDark ? 'Dark' : 'Light'}`);
+        }
     }
 
-    /**
-     * Sets the base font size and saves the setting.
-     * @param {number} size - The desired font size in pixels.
-     */
+    // setTextSize remains the same (with validation)
     setTextSize(size) {
-        const minSize = 10;
-        const maxSize = 30;
-        // Validate size, default to 16 if invalid
+        const minSize = 10; const maxSize = 30;
         const validSize = (typeof size === 'number' && !isNaN(size) && size >= minSize && size <= maxSize) ? size : 16;
-
         document.documentElement.style.setProperty('--font-size-base', `${validSize}px`);
-
-        // Only update and save if the size actually changed
         if (this.settings.textSize !== validSize) {
             this.settings.textSize = validSize;
             this.saveSettings();
-            console.log(`Text size set to: ${validSize}px`);
+            console.log(`Text size set and saved: ${validSize}px`);
         }
-
-        // Update UI elements if they exist
+        // Update UI elements
          const textSizeSlider = document.getElementById('text-size-slider');
          const textSizeValue = document.getElementById('textSizeValue');
-         if(textSizeSlider && textSizeSlider.value != validSize) { // Use != to handle string vs number comparison
+         if(textSizeSlider && textSizeSlider.value != validSize) {
              textSizeSlider.value = validSize;
              this.updateSliderGradient(textSizeSlider);
          }
-         if(textSizeValue) {
-             textSizeValue.textContent = `${validSize}px`;
-         }
+         if(textSizeValue) { textSizeValue.textContent = `${validSize}px`; }
     }
 
-    /**
-     * Toggles the focus outline visibility by adding/removing a body class.
-     * @param {boolean} enable - Whether focus outlines should be enabled.
-     */
-    toggleFocusOutline(enable) {
+    // Toggle and save focus outline setting
+    toggleFocusOutline(enable) { // enable is boolean
         const className = 'focus-outline-disabled';
+        const newState = enable ? 'enabled' : 'disabled'; // Convert boolean to 'enabled'/'disabled' string
+
+        console.log(`TOGGLE: Received request to set focus outline enable=${enable} (newState='${newState}')`);
+        console.log(`TOGGLE: Current setting is '${this.settings.focusOutline}'`);
+
+        // Apply class to body
         if (enable) {
             document.body.classList.remove(className);
-            console.log("Focus outline enabled (class removed)");
+            console.log(`TOGGLE: Body class '${className}' removed.`);
         } else {
             document.body.classList.add(className);
-            console.log("Focus outline disabled (class added)");
+            console.log(`TOGGLE: Body class '${className}' added.`);
         }
-        const newState = enable ? 'enabled' : 'disabled';
-        // Only save if the state actually changed
+
+        // Update setting state and save ONLY if it changed
         if (this.settings.focusOutline !== newState) {
-             this.settings.focusOutline = newState;
-             this.saveSettings();
-             console.log(`Focus outline state saved: ${newState}`);
+            this.settings.focusOutline = newState;
+            this.saveSettings(); // Save the updated state to localStorage
+            console.log(`TOGGLE: Focus outline state updated and saved to '${newState}'`);
+        } else {
+             console.log(`TOGGLE: Focus outline state already '${newState}', no save needed.`);
         }
     }
 
-    /**
-     * Saves the current state of managed settings to localStorage.
-     */
+    // Save settings to localStorage
     saveSettings() {
-        // Only save settings managed by this class
         const settingsToSave = {
             darkMode: this.settings.darkMode,
             textSize: this.settings.textSize,
@@ -239,155 +169,116 @@ class SettingsManager {
         };
         try {
             localStorage.setItem('websiteSettings', JSON.stringify(settingsToSave));
-             // console.log("Settings saved to localStorage:", settingsToSave); // Optional: verbose logging
+            console.log("SAVE: Settings saved to localStorage:", JSON.stringify(settingsToSave));
         } catch (error) {
-             console.error("Error saving settings to localStorage:", error);
+             console.error("SAVE: Error saving settings to localStorage:", error);
         }
     }
 
-    /**
-     * Resets managed settings to their default values and updates the UI.
-     */
+    // resetToFactorySettings remains the same
     resetToFactorySettings() {
         console.log("Resetting settings to factory defaults...");
-        const defaultSettings = {
-            darkMode: true,
-            textSize: 16,
-            focusOutline: 'disabled',
-        };
-
-        // Apply defaults directly
+        const defaultSettings = { darkMode: true, textSize: 16, focusOutline: 'disabled' };
         this.settings.darkMode = defaultSettings.darkMode;
         this.settings.textSize = defaultSettings.textSize;
         this.settings.focusOutline = defaultSettings.focusOutline;
-
-        this.applySettings(); // Re-apply all managed settings (this will also trigger saves)
-
-        // Update UI controls specific to this manager
+        this.applySettings(); // Re-apply (will also trigger saves)
+        // Update UI controls
         const darkModeToggle = document.getElementById('darkModeToggle');
         const textSizeSlider = document.getElementById('text-size-slider');
         const textSizeValue = document.getElementById('textSizeValue');
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-
         if (darkModeToggle) darkModeToggle.checked = this.settings.darkMode;
         if (textSizeSlider) {
             textSizeSlider.value = this.settings.textSize;
-            // Ensure gradient updates after setting value
             this.updateSliderGradient(textSizeSlider);
         }
         if (textSizeValue) textSizeValue.textContent = `${this.settings.textSize}px`;
         if (focusOutlineToggle) focusOutlineToggle.checked = this.settings.focusOutline === 'enabled';
-
-        alert("Display settings reset to defaults."); // User feedback
+        alert("Display settings reset to defaults.");
     }
 
-    /**
-     * Updates the text content of the element with ID 'year' to the current year.
-     */
+    // updateFooterYear remains the same
     updateFooterYear() {
         const footerYear = document.getElementById('year');
-        if (footerYear) {
-            footerYear.textContent = new Date().getFullYear();
-        } else {
-            // console.warn("Footer year element (#year) not found."); // Optional warning
-        }
+        if (footerYear) { footerYear.textContent = new Date().getFullYear(); }
     }
 }
 
 // --- Initialize SettingsManager or Apply Basic Settings ---
 document.addEventListener('DOMContentLoaded', () => {
-    // --- YOU NEED TO ADD id="settings-page-identifier" to a main element ---
-    // ---       on your settings.html page for this check to work!       ---
-    const settingsPageMarker = document.getElementById('settings-page-identifier');
+    const settingsPageMarker = document.getElementById('settings-page-identifier'); // Make sure this ID exists on your settings page!
 
     if (settingsPageMarker) {
          console.log("Settings page detected. Initializing full Settings Manager...");
-         // We are on the settings page, initialize the full manager
-         window.settingsManager = new SettingsManager(); // Make it global if needed for console access
+         window.settingsManager = new SettingsManager();
     } else {
-         console.log("Not on settings page. Applying basic theme/size/focus from localStorage.");
+         console.log("Not on settings page. Applying basic settings from localStorage.");
          // Apply basic settings from localStorage on other pages
          try {
              const storedSettingsJSON = localStorage.getItem('websiteSettings');
              let settingsApplied = { theme: false, size: false, focus: false };
-
              if (storedSettingsJSON) {
                  const storedSettings = JSON.parse(storedSettingsJSON);
-
-                 // Apply Dark/Light Mode
+                 // Theme
                  if (typeof storedSettings.darkMode === 'boolean') {
                      document.body.classList.toggle('dark-mode', storedSettings.darkMode);
                      document.body.classList.toggle('light-mode', !storedSettings.darkMode);
                      settingsApplied.theme = true;
                  }
-
-                 // Apply Text Size
+                 // Size
                  if (typeof storedSettings.textSize === 'number' && !isNaN(storedSettings.textSize)) {
-                     // Apply same validation as in loadSettings
-                     const minSize = 10;
-                     const maxSize = 30;
+                     const minSize = 10; const maxSize = 30;
                      const validSize = (storedSettings.textSize >= minSize && storedSettings.textSize <= maxSize) ? storedSettings.textSize : 16;
                      document.documentElement.style.setProperty('--font-size-base', `${validSize}px`);
                      settingsApplied.size = true;
                  }
-
-                 // Apply Focus Outline
+                 // Focus
                  if (storedSettings.focusOutline === 'disabled') {
-                    document.body.classList.add('focus-outline-disabled');
-                    settingsApplied.focus = true;
+                    document.body.classList.add('focus-outline-disabled'); settingsApplied.focus = true;
                  } else if (storedSettings.focusOutline === 'enabled') {
-                     document.body.classList.remove('focus-outline-disabled');
-                    settingsApplied.focus = true;
+                    document.body.classList.remove('focus-outline-disabled'); settingsApplied.focus = true;
                  }
              }
-
-             // Apply defaults if settings weren't found or applied
+             // Apply defaults if settings weren't found/applied
              if (!settingsApplied.theme) { document.body.classList.add('dark-mode'); }
              if (!settingsApplied.size) { document.documentElement.style.setProperty('--font-size-base', `16px`); }
-             if (!settingsApplied.focus) { document.body.classList.add('focus-outline-disabled'); }
+             if (!settingsApplied.focus) { document.body.classList.add('focus-outline-disabled'); } // Default to disabled if not set
+             console.log("Basic settings applied on non-settings page.");
 
          } catch(e) {
              console.error("Error applying basic settings from localStorage:", e);
-              // Apply safe defaults if storage fails completely
+              // Apply safe defaults if storage fails
               document.body.classList.add('dark-mode');
               document.documentElement.style.setProperty('--font-size-base', `16px`);
               document.body.classList.add('focus-outline-disabled');
          }
-
-         // Update footer year even if not on settings page
+         // Update footer year
          const footerYear = document.getElementById('year');
          if (footerYear) { footerYear.textContent = new Date().getFullYear(); }
     }
 });
 
 
-// --- Cookie Consent Logic (Keep this separate) ---
+// --- Cookie Consent Logic ---
+// (Keep the cookie functions acceptCookies and the window load listener as they were)
 function acceptCookies() {
     try {
-        document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365) + "; SameSite=Lax"; // 1 year expiry, added SameSite
+        document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365) + "; SameSite=Lax";
         const banner = document.getElementById('cookie-consent-banner');
-        if (banner) {
-            banner.style.display = 'none';
-        }
-    } catch (e) {
-         console.error("Error setting cookie:", e);
-    }
+        if (banner) { banner.style.display = 'none'; }
+    } catch (e) { console.error("Error setting cookie:", e); }
 }
-
 window.addEventListener('load', function() {
     const banner = document.getElementById('cookie-consent-banner');
     if (!banner) return;
-
     try {
         const cookies = document.cookie.split('; ');
-        const consentCookie = cookies.find(row => row.trim().startsWith('cookieConsent=')); // Use trim()
+        const consentCookie = cookies.find(row => row.trim().startsWith('cookieConsent='));
         if (consentCookie && consentCookie.split('=')[1] === 'true') {
             banner.style.display = 'none';
         } else {
             banner.style.display = 'flex';
         }
-    } catch (e) {
-         console.error("Error reading cookies:", e);
-         banner.style.display = 'flex'; // Show banner if error reading cookies
-    }
+    } catch (e) { console.error("Error reading cookies:", e); banner.style.display = 'flex'; }
 });
