@@ -64,63 +64,64 @@
 
             </form>
             <div id="auth-status" class="status-message" role="alert" aria-live="polite"></div>
-      <section class="admin-section" id="site-settings" aria-labelledby="settings-heading">
-             <h3 id="settings-heading">Site Settings</h3>
+        </section>
 
-             <div class="form-group checkbox-group apple-toggle-group">
-                 <input type="checkbox" id="maintenance-mode-toggle" name="maintenanceMode" class="apple-toggle-checkbox">
-                 <label for="maintenance-mode-toggle" class="apple-toggle-label"></label>
-                 <label for="maintenance-mode-toggle">Enable Maintenance Mode</label>
-                 <small>Puts the public site into maintenance mode.</small> {/* cite: 1 */}
-             </div>
+        <main id="admin-content" style="display: none;" tabindex="-1">
+            <header class="admin-header">
+                <h2>Manage Content</h2>
+                <span id="admin-greeting" aria-live="polite"></span>
+                <span id="inactivity-timer-display" class="timer-display"></span>
+                <button type="button" id="logout-button">Logout</button>
+            </header>
 
-             <div class="form-group">
-                 <label for="maintenance-status-select">Current System Status:</label>
-                 <select id="maintenance-status-select" name="maintenanceStatus">
-                     <option value="operational">Operational</option>
-                     <option value="maintenance">Under Maintenance</option>
-                     <option value="degraded">Degraded Performance</option>
-                     <option value="partial_outage">Partial System Outage</option>
-                     <option value="major_outage">Major System Outage</option>
-                 </select>
-                 <small>Select the status to display on the maintenance/status page.</small>
-             </div>
-             <div class="form-group checkbox-group apple-toggle-group">
-                 <input type="checkbox" id="hide-tiktok-section-toggle" name="hideTikTokSection" class="apple-toggle-checkbox">
-                 <label for="hide-tiktok-section-toggle" class="apple-toggle-label"></label>
-                 <label for="hide-tiktok-section-toggle">Hide TikTok Section on Homepage</label>
-                 <small>If checked, the entire TikTok creator shoutout section will be hidden from the public homepage.</small> {/* cite: 1 */}
-             </div>
+            <div id="admin-status" class="status-message" role="status" aria-live="polite"></div>
 
-             <hr style="border-color: var(--border-color); margin: 2rem 0;">
+            <section class="admin-section" id="site-settings" aria-labelledby="settings-heading">
+    <h3 id="settings-heading">Site Settings</h3>
 
-             <h4>Homepage Countdown Timer</h4>
+    <div class="form-group checkbox-group apple-toggle-group">
+        <input type="checkbox" id="maintenance-mode-toggle" name="maintenanceMode" class="apple-toggle-checkbox">
+        <label for="maintenance-mode-toggle" class="apple-toggle-label"></label>
+        <label for="maintenance-mode-toggle">Enable Maintenance Mode</label>
+        <small>Puts the public site into maintenance mode, showing only a maintenance message.</small>
+        </div>
 
-             <div class="form-group">
-                 <label for="countdown-title-input">Countdown Title:</label>
-                 <input type="text" id="countdown-title-input" name="countdownTitle" placeholder="e.g., Countdown to Earth Day!">
-                 <small>The main title displayed above the countdown timer.</small> {/* cite: 1 */}
-             </div>
+    <div class="form-group checkbox-group apple-toggle-group">
+        <input type="checkbox" id="hide-tiktok-section-toggle" name="hideTikTokSection" class="apple-toggle-checkbox">
+        <label for="hide-tiktok-section-toggle" class="apple-toggle-label"></label>
+        <label for="hide-tiktok-section-toggle">Hide TikTok Section on Homepage</label>
+        <small>If checked, the entire TikTok creator shoutout section will be hidden from the public homepage.</small>
+         </div>
 
-             <div class="form-group">
-                 <label for="countdown-datetime-input">Countdown Target Date & Time:</label>
-                 <input type="text" id="countdown-datetime-input" name="countdownTargetDateTime" placeholder="YYYY-MM-DDTHH:MM:SS (e.g., 2025-12-31T23:59:59)">
-                 <small>Enter the target date and time in your local timezone (Bowling Green, Ohio is EDT - current time is Thursday, April 24, 2025 at 12:39:47 PM EDT) using the specified format.</small> {/* cite: 1 */}
-             </div>
+    <hr style="border-color: var(--border-color); margin: 2rem 0;">
 
-             <div class="form-group">
-                 <label for="countdown-expired-message-input">Expired Message:</label>
-                 <textarea id="countdown-expired-message-input" name="countdownExpiredMessage" rows="3" placeholder="Message shown when countdown ends (e.g., Happy Earth Day!)"></textarea>
-                 <small>This message replaces the countdown numbers when the target time is reached. Leave blank for a default message.</small> {/* cite: 1 */}
-             </div>
+    <h4>Homepage Countdown Timer</h4>
 
-             <div class="form-group">
-                  <button id="save-countdown-settings-button" class="button">Save Countdown Settings</button>
-                  </div>
+    <div class="form-group">
+        <label for="countdown-title-input">Countdown Title:</label>
+        <input type="text" id="countdown-title-input" name="countdownTitle" placeholder="e.g., Countdown to Earth Day!">
+        <small>The main title displayed above the countdown timer.</small>
+    </div>
 
-             <div id="settings-status-message" class="status-message" role="status" aria-live="polite"></div>
+    <div class="form-group">
+        <label for="countdown-datetime-input">Countdown Target Date & Time:</label>
+        <input type="text" id="countdown-datetime-input" name="countdownTargetDateTime" placeholder="YYYY-MM-DDTHH:MM:SS (e.g., 2025-12-31T23:59:59)">
+         <small>Enter the target date and time in your local timezone (Bowling Green, Ohio is EDT - current time Sun, Apr 20 2025 2:21 PM EDT) using the specified format.</small>
+    </div>
 
-         </section>
+    <div class="form-group">
+        <label for="countdown-expired-message-input">Expired Message:</label>
+        <textarea id="countdown-expired-message-input" name="countdownExpiredMessage" rows="3" placeholder="Message shown when countdown ends (e.g., Happy Earth Day!)"></textarea>
+        <small>This message replaces the countdown numbers when the target time is reached. Leave blank for a default message.</small>
+    </div>
+
+    <div class="form-group">
+         <button id="save-countdown-settings-button" class="button">Save Countdown Settings</button>
+         </div>
+
+    <div id="settings-status-message" class="status-message" role="status" aria-live="polite"></div>
+
+</section>
             <section class="admin-section" id="profile-management" aria-labelledby="profile-heading">
                 <h3 id="profile-heading">Manage Homepage Profile</h3>
 
