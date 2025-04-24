@@ -2264,36 +2264,45 @@ body.focus-outline-disabled :focus {
 /* Custom Maintenance Screen Styles */
 /* ======================== */
 
+/* Rule to prevent scrolling when overlay is active */
+body.maintenance-active {
+    overflow: hidden;
+}
+
+/* Main overlay container */
 .maintenance-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(13, 15, 18, 0.97);
-    color: #E0E5EC;
-    display: flex;
+    background-color: rgba(13, 15, 18, 0.97); /* Dark semi-transparent background */
+    color: #E0E5EC; /* Light text color for contrast */
+    display: none; /* Starts hidden - JS will change this to 'flex' */
     justify-content: center;
     align-items: center;
     text-align: center;
-    z-index: 9999;
+    z-index: 9999; /* Ensure it's on top */
     padding: 20px;
     box-sizing: border-box;
-    animation: fadeIn 0.4s ease-in-out forwards;
-    opacity: 0;
+    opacity: 0; /* Start fully transparent for fade-in */
+    animation: fadeIn 0.4s ease-in-out forwards; /* Apply fade-in animation */
 }
 
+/* Animation for the overlay fade-in */
 @keyframes fadeIn {
     to {
         opacity: 1;
     }
 }
 
+/* Container for the centered content */
 .maintenance-content {
     max-width: 600px;
     width: 100%;
 }
 
+/* Optional: Style for a logo if you add one */
 .maintenance-logo {
     max-width: 150px;
     height: auto;
@@ -2301,29 +2310,33 @@ body.focus-outline-disabled :focus {
     opacity: 0.8;
 }
 
+/* Loading spinner animation */
 .maintenance-loader {
-    border: 4px solid rgba(255, 255, 255, 0.1);
-    border-top: 4px solid #00ffff;
+    border: 4px solid rgba(255, 255, 255, 0.1); /* Light border */
+    border-top: 4px solid #00ffff; /* Cyan spinner color */
     border-radius: 50%;
     width: 40px;
     height: 40px;
     animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
+    margin: 0 auto 30px; /* Center and add space below */
 }
 
+/* Keyframes for the spinner rotation */
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
 }
 
+/* Title styling (targets the h1 inside .maintenance-content) */
 .maintenance-content h1 {
     font-size: 2.5rem;
     margin-bottom: 15px;
-    color: #00FFFF;
+    color: #00FFFF; /* Cyan title color */
     font-weight: 700;
 }
 
+/* Message styling (targets the p inside .maintenance-content) */
 .maintenance-content p {
     font-size: 1.1rem;
     line-height: 1.6;
@@ -2331,40 +2344,49 @@ body.focus-outline-disabled :focus {
     opacity: 0.9;
 }
 
+/* Optional: Style for an additional status message */
 .maintenance-content .maintenance-status-message {
     font-size: 0.9rem;
     font-style: italic;
     opacity: 0.7;
-    margin-top: -15px;
+    margin-top: -15px; /* Adjust spacing if needed */
 }
 
+/* Container for social/update links */
 .maintenance-socials {
     margin-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
     padding-top: 25px;
 }
 
+/* Style for the "Stay Updated:" text above the links */
 .maintenance-socials p {
     margin-bottom: 15px;
     font-size: 1rem;
     opacity: 0.8;
 }
 
+/* Styling for the individual links */
 .maintenance-socials a {
-    color: #33ffff;
+    color: #33ffff; /* Lighter cyan for links */
     text-decoration: none;
     margin: 0 10px;
     font-size: 1rem;
     transition: color 0.2s ease;
+    display: inline-block; /* Allow margins */
+    margin-bottom: 10px; /* Space below links if they wrap */
 }
 
+/* Styling for icons within the links */
 .maintenance-socials a i {
-    margin-right: 5px;
-    font-size: 1.2rem;
+    margin-right: 8px; /* Space between icon and text */
+    font-size: 1.2rem; /* Icon size */
+    vertical-align: middle; /* Align icon with text */
 }
 
+/* Link hover effect */
 .maintenance-socials a:hover {
-    color: #ffffff;
+    color: #ffffff; /* White on hover */
 }
 
 /* ================ */
@@ -2372,15 +2394,20 @@ body.focus-outline-disabled :focus {
 /* ================ */
 @media (max-width: 480px) {
     .maintenance-content h1 {
-        font-size: 1.8rem;
+        font-size: 1.8rem; /* Smaller title on small screens */
     }
 
     .maintenance-content p {
-        font-size: 1rem;
+        font-size: 1rem; /* Smaller message text */
     }
 
     .maintenance-logo {
-        max-width: 100px;
+        max-width: 100px; /* Smaller logo */
         margin-bottom: 20px;
+    }
+
+     .maintenance-socials a {
+        margin: 0 5px; /* Less horizontal margin */
+        font-size: 0.95rem; /* Slightly smaller links */
     }
 }
