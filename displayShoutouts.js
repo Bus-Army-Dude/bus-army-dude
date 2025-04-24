@@ -12,7 +12,54 @@ const firebaseConfig = {
 };
 
 // Import necessary Firebase functions (v9+ modular SDK)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+
+// --- Initialize Firebase ---
+let db;
+let firebaseAppInitialized = false;
+// Declare references in module scope
+let profileDocRef; // Holds main site config (profile, status, maintenance, tiktok hide, countdown)
+let presidentDocRef;
+let usefulLinksCollectionRef;
+let socialLinksCollectionRef;
+let disabilitiesCollectionRef;
+let techItemsCollectionRef;
+let shoutoutsMetaRef; // Assumes 'siteConfig' is a top-level collection for this doc path
+let faqsCollectionRef;
+
+try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    // Assign references
+    profileDocRef = doc(db, "site_config", "mainProfile"); // <<< Central config doc
+    presidentDocRef = doc(db, "site_config", "currentPresident");
+    usefulLinksCollectionRef = collection(db, "useful_links");
+    socialLinksCollectionRef = collection(db, "social_links");
+    disabilitiesCollectionRef = collection(db, "disabilities");
+    techItemsCollectionRef = collection(db, "tech_items");
+    shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+    faqsCollectionRef = collection(db, "faqs");
+    firebaseAppInitialized = true;
+    console.log("Firebase initialized for display.");
+} catch (error) {
+    console.error("Firebase initialization failed:", error);
+    const body = document.body;
+    if (body) {
+        body.innerHTML = '<p class="error" style="text-align: center; padding: 50px; color: red; font-size: 1.2em;">Could not connect to required services. Please try again later.</p>';
+    }
+    firebaseAppInitialized = false;
+}
+
+// --- Helper Function to Format Timestamps ---
+function formatFirestoreTimestamp(firestoreTimestamp) {
+    if (!firestoreTimestamp || !(firestoreTimestamp instanceof Timestamp)) { return 'N/A'; }
+    try {
+        const date = firestoreTimestamp.toDate();
+        const locale = navigator.language || 'en-US';
+        return date.toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' });
+    } catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
+}
 
 // --- Functions to Render Cards (Shoutouts, Tech, FAQs) ---
 function renderTikTokCard(account) {
