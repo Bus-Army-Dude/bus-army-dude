@@ -72,6 +72,8 @@ document.addEventListener('DOMContentLoaded', () => { //
     const passwordGroup = document.getElementById('password-group'); //
     const loginButton = document.getElementById('login-button'); //
     const timerDisplayElement = document.getElementById('inactivity-timer-display'); //
+    const maintenanceStatusSelect = document.getElementById('maintenance-status-select'); // New select element
+    const saveSiteSettingsButton = document.getElementById('save-site-settings-button'); // Assuming a general save button now
 
     // --- Add these with other DOM element references ---
     const countdownTitleInput = document.getElementById('countdown-title-input');
@@ -817,352 +819,337 @@ function renderYouTubeCard(account) { //
     }
     // *** END displayFilteredShoutouts FUNCTION ***
 
-// --- CORRECTED (v3): Function to Load Profile Data AND All Countdown Settings ---
-async function loadProfileData() {
+// --- CORRECTED (v4): Function to Load Profile Data including Maintenance Status ---
+async function loadProfileData() { //
     // Ensure user is logged in
-    if (!auth || !auth.currentUser) {
-        console.warn("Auth not ready or user not logged in when trying to load profile.");
-        return;
+    if (!auth || !auth.currentUser) { //
+        console.warn("Auth not ready or user not logged in when trying to load profile."); //
+        return; //
     }
-    // Check required form elements exist (Add countdownExpiredMessageInput)
-    if (!profileForm || !maintenanceModeToggle || !hideTikTokSectionToggle ||
-        !countdownTitleInput || !countdownDatetimeInput || !countdownExpiredMessageInput || // Added check
-        !adminPfpPreview || !profileStatusInput /* Added check */ ) {
-        console.error("One or more profile/settings form elements missing in admin.html!");
-        if (profileStatusMessage) showProfileStatus("Error: Page structure incorrect.", true);
-        else if(settingsStatusMessage) showSettingsStatus("Error: Page structure incorrect.", true);
-        return;
+    // Check required form elements exist (including the new select)
+    // --- Make sure maintenanceStatusSelect is defined as a constant earlier in your script ---
+    // const maintenanceStatusSelect = document.getElementById('maintenance-status-select');
+    if (!profileForm || !maintenanceModeToggle || !hideTikTokSectionToggle || //
+        !maintenanceStatusSelect || // Check if the select element exists //
+        !countdownTitleInput || !countdownDatetimeInput || !countdownExpiredMessageInput || //
+        !adminPfpPreview || !profileStatusInput) { //
+        console.error("One or more profile/settings form elements missing in admin.html!"); //
+        const statusMsgEl = profileStatusMessage || settingsStatusMessage; //
+        if (statusMsgEl) { //
+             if (!maintenanceStatusSelect) console.error("MISSING: #maintenance-status-select"); //
+             showSettingsStatus("Error: Page structure incorrect. Refresh or check admin.html.", true); //
+        }
+        return; //
     }
 
-    console.log("Attempting to load profile & countdown data from:", profileDocRef.path);
+    console.log("Attempting to load profile & settings data from:", profileDocRef.path); //
     try {
-        const docSnap = await getDoc(profileDocRef); // Fetch the profile/settings document
+        const docSnap = await getDoc(profileDocRef); // Fetch the profile/settings document //
 
-        if (docSnap.exists()) {
-            const data = docSnap.data(); // <<< 'data' is defined HERE
-            console.log("Loaded profile/settings data:", data);
+        if (docSnap.exists()) { //
+            const data = docSnap.data(); //
+            console.log("Loaded profile/settings data:", data); //
 
-            // --- Populate fields INSIDE this block ---
+            // --- Populate fields ---
             // Profile fields
-            if(profileUsernameInput) profileUsernameInput.value = data.username || '';
-            if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || '';
-            if(profileBioInput) profileBioInput.value = data.bio || '';
-            if(profileStatusInput) profileStatusInput.value = data.status || 'offline';
+            if(profileUsernameInput) profileUsernameInput.value = data.username || ''; //
+            if(profilePicUrlInput) profilePicUrlInput.value = data.profilePicUrl || ''; //
+            if(profileBioInput) profileBioInput.value = data.bio || ''; //
+            if(profileStatusInput) profileStatusInput.value = data.status || 'offline'; //
 
             // Toggles
-            maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false;
-            maintenanceModeToggle.disabled = false;
-            hideTikTokSectionToggle.checked = data.hideTikTokSection || false;
-            hideTikTokSectionToggle.disabled = false;
+            maintenanceModeToggle.checked = data.isMaintenanceModeEnabled || false; //
+            maintenanceModeToggle.disabled = false; //
+            hideTikTokSectionToggle.checked = data.hideTikTokSection || false; //
+            hideTikTokSectionToggle.disabled = false; //
 
-            // *** Load Countdown Settings ***
-            if (countdownTitleInput) {
-                countdownTitleInput.value = data.countdownTitle || '';
-                countdownTitleInput.disabled = false;
+            // --- Load Maintenance Status ---
+            if (maintenanceStatusSelect) { //
+                maintenanceStatusSelect.value = data.maintenanceStatus || 'operational'; // Load saved status or default //
+                maintenanceStatusSelect.disabled = false; //
             }
-            if (countdownDatetimeInput) {
-                // Check if the timestamp exists AND is a Timestamp object
-                if (data.countdownTargetDate && data.countdownTargetDate instanceof Timestamp) { // <<< Requires Timestamp import
+            // --- End Load Maintenance Status ---
+
+            // Load Countdown Settings
+             if (countdownTitleInput) { //
+                countdownTitleInput.value = data.countdownTitle || ''; //
+                countdownTitleInput.disabled = false; //
+            }
+            if (countdownDatetimeInput) { //
+                if (data.countdownTargetDate && data.countdownTargetDate instanceof Timestamp) { //
                     try {
-                        const targetDate = data.countdownTargetDate.toDate();
-                        const year = targetDate.getFullYear();
-                        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
-                        const day = String(targetDate.getDate()).padStart(2, '0');
-                        const hours = String(targetDate.getHours()).padStart(2, '0');
-                        const minutes = String(targetDate.getMinutes()).padStart(2, '0');
-                        const seconds = String(targetDate.getSeconds()).padStart(2, '0');
-                        // Set value for the text input
-                        countdownDatetimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-                        console.log("Loaded existing countdown date/time.");
+                        const targetDate = data.countdownTargetDate.toDate(); //
+                        const year = targetDate.getFullYear(); //
+                        const month = String(targetDate.getMonth() + 1).padStart(2, '0'); //
+                        const day = String(targetDate.getDate()).padStart(2, '0'); //
+                        const hours = String(targetDate.getHours()).padStart(2, '0'); //
+                        const minutes = String(targetDate.getMinutes()).padStart(2, '0'); //
+                        const seconds = String(targetDate.getSeconds()).padStart(2, '0'); //
+                        countdownDatetimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`; //
+                        console.log("Loaded existing countdown date/time."); //
                     } catch (dateError) {
-                        console.error("Error processing countdown timestamp:", dateError);
-                        countdownDatetimeInput.value = ''; // Clear on error
-                        if (settingsStatusMessage) showSettingsStatus("Error reading existing date.", true);
+                        console.error("Error processing countdown timestamp:", dateError); //
+                        countdownDatetimeInput.value = ''; //
+                        if (settingsStatusMessage) showSettingsStatus("Error reading existing date.", true); //
                     }
                 } else {
-                    // Clear input if no valid timestamp exists in Firestore
-                    countdownDatetimeInput.value = '';
-                    if(data.hasOwnProperty('countdownTargetDate')) { // Log if field exists but isn't a Timestamp
-                        console.warn("Field 'countdownTargetDate' exists but is not a Timestamp:", data.countdownTargetDate);
+                    countdownDatetimeInput.value = ''; //
+                    if(data.hasOwnProperty('countdownTargetDate')) { //
+                        console.warn("Field 'countdownTargetDate' exists but is not a Timestamp:", data.countdownTargetDate); //
                     } else {
-                        console.log("No existing countdown date/time found.");
+                        console.log("No existing countdown date/time found."); //
                     }
                 }
-                countdownDatetimeInput.disabled = false; // Enable input
+                countdownDatetimeInput.disabled = false; //
             }
-            // Load Expired Message
-            if (countdownExpiredMessageInput) {
-                countdownExpiredMessageInput.value = data.countdownExpiredMessage || ''; // Load message
-                countdownExpiredMessageInput.disabled = false; // Enable input
+            if (countdownExpiredMessageInput) { //
+                countdownExpiredMessageInput.value = data.countdownExpiredMessage || ''; //
+                countdownExpiredMessageInput.disabled = false; //
             }
             // *** End Countdown Load ***
 
             // Profile Picture Preview
-            if (adminPfpPreview) { // Check if element exists
-                 if (data.profilePicUrl) {
-                    adminPfpPreview.src = data.profilePicUrl;
-                    adminPfpPreview.style.display = 'inline-block';
-                    adminPfpPreview.onerror = () => { // Add error handling here
-                        console.warn("Admin Preview: Image failed to load from URL:", adminPfpPreview.src);
-                        adminPfpPreview.style.display = 'none';
-                        if(profilePicUrlInput) profilePicUrlInput.classList.add('input-error');
+             if (adminPfpPreview) { //
+                 if (data.profilePicUrl) { //
+                    adminPfpPreview.src = data.profilePicUrl; //
+                    adminPfpPreview.style.display = 'inline-block'; //
+                    adminPfpPreview.onerror = () => { //
+                        console.warn("Admin Preview: Image failed to load from URL:", adminPfpPreview.src); //
+                        adminPfpPreview.style.display = 'none'; //
+                        if(profilePicUrlInput) profilePicUrlInput.classList.add('input-error'); //
                     };
                  } else {
-                    adminPfpPreview.src = '';
-                    adminPfpPreview.style.display = 'none';
+                    adminPfpPreview.src = ''; //
+                    adminPfpPreview.style.display = 'none'; //
                  }
             }
             // --- End populate fields ---
 
         } else {
             // Handle doc not existing
-            console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`);
-            if (profileForm) profileForm.reset();
-            if (profileStatusInput) profileStatusInput.value = 'offline';
-            maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = false;
-            hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = false;
-            // Clear and disable countdown inputs
-            if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
-            if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
-            if (countdownExpiredMessageInput) { countdownExpiredMessageInput.value = ''; countdownExpiredMessageInput.disabled = true; } // Clear/disable message
-            if(adminPfpPreview) adminPfpPreview.style.display = 'none';
-            if(settingsStatusMessage) showSettingsStatus("Settings document missing. Save to create.", true)
+            console.warn(`Profile document ('${profileDocRef.path}') not found. Displaying defaults.`); //
+            if (profileForm) profileForm.reset(); //
+            if (profileStatusInput) profileStatusInput.value = 'offline'; //
+            maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = false; //
+            hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = false; //
+
+            // --- Reset Maintenance Status Select on Doc Not Found ---
+            if (maintenanceStatusSelect) { //
+                maintenanceStatusSelect.value = 'operational'; //
+                maintenanceStatusSelect.disabled = true; //
+            }
+            // --- End Reset ---
+
+            // Reset countdown inputs
+            if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; } //
+            if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; } //
+            if (countdownExpiredMessageInput) { countdownExpiredMessageInput.value = ''; countdownExpiredMessageInput.disabled = true; } //
+            if(adminPfpPreview) adminPfpPreview.style.display = 'none'; //
+            if(settingsStatusMessage) showSettingsStatus("Settings document missing. Save to create.", true); //
         }
     } catch (error) {
         // Handle errors loading doc
-        console.error("Error loading profile/settings data:", error);
-        if(profileStatusMessage) showProfileStatus("Error loading profile data.", true);
-        if(settingsStatusMessage) showSettingsStatus("Error loading site settings.", true);
+        console.error("Error loading profile/settings data:", error); //
+        if(profileStatusMessage) showProfileStatus("Error loading profile data.", true); //
+        if(settingsStatusMessage) showSettingsStatus("Error loading site settings.", true); //
+
         // Reset forms and disable inputs on error
-        if (profileForm) profileForm.reset();
-        if (profileStatusInput) profileStatusInput.value = 'offline';
-        maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = true;
-        hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = true;
+        if (profileForm) profileForm.reset(); //
+        if (profileStatusInput) profileStatusInput.value = 'offline'; //
+        maintenanceModeToggle.checked = false; maintenanceModeToggle.disabled = true; //
+        hideTikTokSectionToggle.checked = false; hideTikTokSectionToggle.disabled = true; //
+
+         // --- Disable Maintenance Status Select on Error ---
+         if (maintenanceStatusSelect) { //
+            maintenanceStatusSelect.value = 'operational'; //
+            maintenanceStatusSelect.disabled = true; //
+         }
+         // --- End Disable ---
+
         // Disable countdown inputs on error
-        if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; }
-        if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; }
-        if (countdownExpiredMessageInput) { countdownExpiredMessageInput.value = ''; countdownExpiredMessageInput.disabled = true; } // Disable message
-        if(adminPfpPreview) adminPfpPreview.style.display = 'none';
+        if (countdownTitleInput) { countdownTitleInput.value = ''; countdownTitleInput.disabled = true; } //
+        if (countdownDatetimeInput) { countdownDatetimeInput.value = ''; countdownDatetimeInput.disabled = true; } //
+        if (countdownExpiredMessageInput) { countdownExpiredMessageInput.value = ''; countdownExpiredMessageInput.disabled = true; } //
+        if(adminPfpPreview) adminPfpPreview.style.display = 'none'; //
     }
-}
+} //
 
 
-    // --- Function to Save Profile Data (with Logging) ---
-    async function saveProfileData(event) {
-        event.preventDefault();
-        if (!auth || !auth.currentUser) { showProfileStatus("Error: Not logged in.", true); return; }
-        if (!profileForm) return;
-        console.log("Attempting to save profile data..."); // Debug log
+// --- Function to Save Profile Data (Now includes Maintenance Status) ---
+async function saveProfileData(event) { //
+    event.preventDefault(); //
+    if (!auth || !auth.currentUser) { showProfileStatus("Error: Not logged in.", true); return; } //
+    if (!profileForm) return; //
+    console.log("Attempting to save profile data..."); //
 
-        const newData = {
-            username: profileUsernameInput?.value.trim() || "",
-            profilePicUrl: profilePicUrlInput?.value.trim() || "",
-            bio: profileBioInput?.value.trim() || "",
-            status: profileStatusInput?.value || "offline",
-            countdownTitle: countdownTitleInput?.value.trim() || "", // Save title
-            countdownTargetDateTime: countdownDatetimeInput?.value.trim() || "" // Save date/time string
-        };
+    // Read data from form elements
+    const profileDataToSave = { //
+        username: profileUsernameInput?.value.trim() || "", //
+        profilePicUrl: profilePicUrlInput?.value.trim() || "", //
+        bio: profileBioInput?.value.trim() || "", //
+        status: profileStatusInput?.value || "offline", // Profile online/offline status //
 
-        // Basic validation for the datetime string format (optional but recommended)
-        const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
-        if (newData.countdownTargetDateTime && !dateTimeRegex.test(newData.countdownTargetDateTime)) {
-             showProfileStatus("Invalid Countdown Date/Time format. Please use YYYY-MM-DDTHH:MM:SS", true);
-             return; // Stop saving if format is wrong
+        // --- Add Maintenance Status to the saved data ---
+        // Ensure maintenanceStatusSelect is defined earlier in your script
+        maintenanceStatus: maintenanceStatusSelect?.value || 'operational' //
+        // --- End Add ---
+    };
+
+    // Note: This function, as named, primarily saves profile details + the maintenance status.
+    // Countdown settings are saved via their dedicated button/function.
+    // If you merge saving, you'd read countdown values here too.
+
+    showProfileStatus("Saving profile..."); //
+    try {
+        // Use setDoc with merge: true to update profile fields + maintenanceStatus
+        // without affecting other unrelated fields (like countdown settings).
+        await setDoc(profileDocRef, { ...profileDataToSave, lastUpdated: serverTimestamp() }, { merge: true }); //
+
+        console.log("Profile data save successful:", profileDocRef.path); //
+        showProfileStatus("Profile updated successfully!", false); //
+
+        // Update preview image
+        if (adminPfpPreview && profileDataToSave.profilePicUrl) { //
+            adminPfpPreview.src = profileDataToSave.profilePicUrl; //
+            adminPfpPreview.style.display = 'inline-block'; //
+        } else if (adminPfpPreview) { //
+            adminPfpPreview.src = ''; //
+            adminPfpPreview.style.display = 'none'; //
         }
 
+    } catch (error) {
+        console.error("Error saving profile data:", error); //
+        showProfileStatus(`Error saving profile: ${error.message}`, true); //
+    }
+} //
 
-        showProfileStatus("Saving profile...");
-        try {
-            await setDoc(profileDocRef, { ...newData, lastUpdated: serverTimestamp() }, { merge: true });
-            console.log("Profile data save successful:", profileDocRef.path);
-            showProfileStatus("Profile updated successfully!", false);
-            // Update preview image
-            if (adminPfpPreview && newData.profilePicUrl) {
-                adminPfpPreview.src = newData.profilePicUrl;
-                adminPfpPreview.style.display = 'inline-block';
-            } else if (adminPfpPreview) {
-                adminPfpPreview.src = '';
-                adminPfpPreview.style.display = 'none';
-            }
-
-        } catch (error) {
-            console.error("Error saving profile data:", error);
-            showProfileStatus(`Error saving profile: ${error.message}`, true);
+// --- Event listener for profile picture URL input (Keep this as it was in your code) ---
+if (profilePicUrlInput && adminPfpPreview) { //
+    profilePicUrlInput.addEventListener('input', () => { //
+        const url = profilePicUrlInput.value.trim(); //
+        if (url) { //
+            adminPfpPreview.src = url; //
+            adminPfpPreview.style.display = 'inline-block'; //
+        } else { //
+            adminPfpPreview.style.display = 'none'; //
         }
+    });
+    adminPfpPreview.onerror = () => { //
+        console.warn("Preview image failed to load from URL:", adminPfpPreview.src); //
+        adminPfpPreview.style.display = 'none'; //
+        if(profilePicUrlInput) profilePicUrlInput.classList.add('input-error'); //
+    };
+    profilePicUrlInput.addEventListener('focus', () => { //
+        if(profilePicUrlInput) profilePicUrlInput.classList.remove('input-error'); //
+    });
+} //
+
+// *** FUNCTION TO SAVE Hide TikTok Section Status ***
+async function saveHideTikTokSectionStatus(isEnabled) { //
+    // Ensure user is logged in
+    if (!auth || !auth.currentUser) { //
+        showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status //
+        // Revert checkbox state visually if save fails due to auth issue
+        if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled; //
+        return; //
     }
 
-    // Event listener for profile picture URL input to update preview (optional but helpful)
-    if (profilePicUrlInput && adminPfpPreview) { //
-        profilePicUrlInput.addEventListener('input', () => { //
-            const url = profilePicUrlInput.value.trim(); //
-            if (url) { //
-                adminPfpPreview.src = url; //
-                adminPfpPreview.style.display = 'inline-block'; //
-            } else { //
-                adminPfpPreview.style.display = 'none'; //
-            }
-        });
-        // Handle image loading errors for the preview
-        adminPfpPreview.onerror = () => { //
-            console.warn("Preview image failed to load from URL:", adminPfpPreview.src); //
-            // Optionally show a placeholder or hide the preview on error
-            // adminPfpPreview.src = 'path/to/error-placeholder.png';
-             adminPfpPreview.style.display = 'none'; //
-             profilePicUrlInput.classList.add('input-error'); // Add error class to input
-        };
-         // Remove error class when input changes
-         profilePicUrlInput.addEventListener('focus', () => { //
-            profilePicUrlInput.classList.remove('input-error'); //
-         });
+    // Use the specific status message area for settings, fallback to main admin status
+    const statusElement = settingsStatusMessage || adminStatusElement; //
+
+    // Show saving message
+    if (statusElement) { //
+        statusElement.textContent = "Saving setting..."; //
+        statusElement.className = "status-message"; // Reset style //
+        statusElement.style.display = 'block'; //
     }
 
-// *** NEW FUNCTION TO SAVE Hide TikTok Section Status ***
-    async function saveHideTikTokSectionStatus(isEnabled) {
-        // Ensure user is logged in
-        if (!auth || !auth.currentUser) {
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
-            // Revert checkbox state visually if save fails due to auth issue
-            if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled;
-            return;
+    try {
+        // Use profileDocRef (site_config/mainProfile) to store the flag
+        // Use setDoc with merge: true to update only this field without overwriting others
+        await setDoc(profileDocRef, { //
+            hideTikTokSection: isEnabled // Save the boolean value (true/false) //
+        }, { merge: true }); //
+
+        console.log("Hide TikTok Section status saved:", isEnabled); //
+
+        // Show success message using the dedicated settings status element or fallback
+        const message = `TikTok homepage section set to ${isEnabled ? 'hidden' : 'visible'}.`; //
+         if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element //
+             showSettingsStatus(message, false); // Uses the settings-specific display/clear logic //
+         } else { // Fallback if specific element wasn't found initially //
+             showAdminStatus(message, false); //
+         }
+
+    } catch (error) {
+        console.error("Error saving Hide TikTok Section status:", error); //
+        // Show error message in the specific status area or fallback
+        if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
+            showSettingsStatus(`Error saving setting: ${error.message}`, true); //
+        } else { //
+            showAdminStatus(`Error saving Hide TikTok setting: ${error.message}`, true); //
         }
-
-        // Use the specific status message area for settings, fallback to main admin status
-        const statusElement = settingsStatusMessage || adminStatusElement; //
-
-        // Show saving message
-        if (statusElement) {
-            statusElement.textContent = "Saving setting...";
-            statusElement.className = "status-message"; // Reset style
-            statusElement.style.display = 'block';
-        }
-
-        try {
-            // Use profileDocRef (site_config/mainProfile) to store the flag
-            // Use setDoc with merge: true to update only this field without overwriting others
-            await setDoc(profileDocRef, {
-                hideTikTokSection: isEnabled // Save the boolean value (true/false)
-            }, { merge: true });
-
-            console.log("Hide TikTok Section status saved:", isEnabled);
-
-            // Show success message using the dedicated settings status element or fallback
-            const message = `TikTok homepage section set to ${isEnabled ? 'hidden' : 'visible'}.`;
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
-                 showSettingsStatus(message, false); // Uses the settings-specific display/clear logic
-             } else { // Fallback if specific element wasn't found initially
-                 showAdminStatus(message, false);
-             }
-
-        } catch (error) {
-            console.error("Error saving Hide TikTok Section status:", error);
-            // Show error message in the specific status area or fallback
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) {
-                showSettingsStatus(`Error saving setting: ${error.message}`, true);
-            } else {
-                showAdminStatus(`Error saving Hide TikTok setting: ${error.message}`, true);
-            }
-            // Revert checkbox state visually on error
-             if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled;
-        }
+        // Revert checkbox state visually on error
+         if(hideTikTokSectionToggle) hideTikTokSectionToggle.checked = !isEnabled; //
     }
-    // *** END NEW FUNCTION ***
-
-// *** FUNCTION TO SAVE Maintenance Mode Status ***
-
-    async function saveMaintenanceModeStatus(isEnabled) { //
-
-        // Ensure user is logged in
-
-        if (!auth || !auth.currentUser) { //
-
-            showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status
-
-            // Revert checkbox state visually if save fails due to auth issue
-
-            if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
-
-            return; //
-
-        }
+} //
+// *** END FUNCTION ***
 
 
+// *** FUNCTION TO SAVE Maintenance Mode Status (Includes saving System Status) ***
+async function saveMaintenanceModeStatus(isEnabled) { //
 
-        // Use the specific status message area for settings, fallback to main admin status
+    // Ensure user is logged in
+    if (!auth || !auth.currentUser) { //
+        showAdminStatus("Error: Not logged in. Cannot save settings.", true); // Use main admin status //
+        // Revert checkbox state visually if save fails due to auth issue
+        if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+        return; //
+    }
 
-        const statusElement = settingsStatusMessage || adminStatusElement; //
+    // Use the specific status message area for settings, fallback to main admin status
+    const statusElement = settingsStatusMessage || adminStatusElement; //
 
+    // Show saving message
+    if (statusElement) { //
+        statusElement.textContent = "Saving setting..."; //
+        statusElement.className = "status-message"; // Reset style //
+        statusElement.style.display = 'block'; //
+    }
 
+    // --- Get the current status from the dropdown ---
+    const currentStatus = maintenanceStatusSelect?.value || 'operational'; //
+    // --- End Get Status ---
 
-        // Show saving message
+    try {
+        // Use setDoc with merge: true to update both fields
+        await setDoc(profileDocRef, { //
+            isMaintenanceModeEnabled: isEnabled, // Save the toggle state //
+            maintenanceStatus: currentStatus    // *** ALSO SAVE the status dropdown value *** //
+        }, { merge: true }); //
 
-        if (statusElement) { //
+        console.log(`Maintenance mode status saved: ${isEnabled}, System Status: ${currentStatus}`); //
 
-            statusElement.textContent = "Saving setting..."; //
+        // Show success message
+         if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element //
+             showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic //
+         } else { // Fallback if specific element wasn't found initially //
+             showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
+         }
 
-            statusElement.className = "status-message"; // Reset style
-
-            statusElement.style.display = 'block'; //
-
-        }
-
-
-
-        try { //
-
-            // Use profileDocRef (site_config/mainProfile) to store the flag
-
-            // Use setDoc with merge: true to update only this field without overwriting others
-
-            await setDoc(profileDocRef, { //
-
-                isMaintenanceModeEnabled: isEnabled // Save the boolean value (true/false)
-
-            }, { merge: true }); //
-
-
-
-            console.log("Maintenance mode status saved:", isEnabled); //
-
-
-
-            // Show success message using the dedicated settings status element or fallback
-
-             if (statusElement === settingsStatusMessage && settingsStatusMessage) { // Check if we are using the specific element
-
-                 showSettingsStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); // Uses the settings-specific display/clear logic
-
-             } else { // Fallback if specific element wasn't found initially
-
-                showAdminStatus(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}.`, false); //
-
-             }
-
-
-
-        } catch (error) { //
-
-            console.error("Error saving maintenance mode status:", error); //
-
-            // Show error message in the specific status area or fallback
-
-            if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
-
-                 showSettingsStatus(`Error saving setting: ${error.message}`, true); //
-
-            } else { //
-
-                showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
-
-            }
-
-            // Revert checkbox state visually on error
-
-             if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
-
-        }
-
-    }
-    // *** END FUNCTION ***
+    } catch (error) { //
+        console.error("Error saving maintenance mode status:", error); //
+        // Show error message in the specific status area or fallback
+        if (statusElement === settingsStatusMessage && settingsStatusMessage) { //
+             showSettingsStatus(`Error saving setting: ${error.message}`, true); //
+         } else { //
+             showAdminStatus(`Error saving maintenance mode: ${error.message}`, true); //
+         }
+        // Revert checkbox state visually on error
+         if(maintenanceModeToggle) maintenanceModeToggle.checked = !isEnabled; //
+    }
+} //
+// *** END FUNCTION ***
 
 // --- Inactivity Logout & Timer Display Functions ---
 
