@@ -1,10 +1,10 @@
-/* styles.css - Apple-Inspired Theme (Revision 2) */
+/* styles.css - Apple-Inspired Theme (Revision 5) */
 
 /* ======================== */
 /* Theme Variables    */
 /* ======================== */
 :root {
-  /* --- Font (Apple uses San Francisco, this is the closest web fallback) --- */
+  /* --- Font --- */
   --system-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
   /* --- Base Sizes/Timing --- */
@@ -13,23 +13,23 @@
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
-  --border-radius-pill: 999px; /* For pill shapes */
+  --border-radius-pill: 999px;
   --transition-speed: 0.25s;
   --transition-timing: ease-in-out;
 
-  /* --- Dark Mode Colors (Apple-Inspired) --- */
+  /* --- Dark Mode Colors --- */
   --dark-bg: #000000;
   --dark-content-bg: #1c1c1e;
+  --dark-card-bg: #2c2c2e;
   --dark-text: rgba(255, 255, 255, 0.9);
   --dark-secondary-text: rgba(235, 235, 245, 0.6);
   --dark-border: rgba(84, 84, 88, 0.65);
+  --dark-card-border: rgba(84, 84, 88, 0.5);
   --dark-accent: #0a84ff;
   --dark-hover: #3f9eff;
   --dark-link: #0a84ff;
   --dark-shadow: rgba(0, 0, 0, 0.4);
   --dark-icon: rgba(235, 235, 245, 0.9);
-  --dark-card-bg: #2c2c2e; /* Slightly lighter card background */
-  --dark-card-border: rgba(84, 84, 88, 0.5); /* Slightly softer card border */
 
   /* Input and Dropdowns (Dark) */
   --input-bg-dark: #1c1c1e;
@@ -41,19 +41,19 @@
   --dropdown-border-dark: rgba(84, 84, 88, 0.65);
   --dropdown-focus-border-dark: var(--input-focus-border-dark);
 
-  /* --- Light Mode Colors (Apple-Inspired) --- */
+  /* --- Light Mode Colors --- */
   --light-bg: #f2f2f7;
   --light-content-bg: #ffffff;
+  --light-card-bg: #ffffff;
   --light-text: #1d1d1f;
   --light-secondary-text: rgba(60, 60, 67, 0.6);
   --light-border: rgba(60, 60, 67, 0.29);
+  --light-card-border: rgba(60, 60, 67, 0.2);
   --light-accent: #007aff;
   --light-hover: #0056b3;
   --light-link: #007aff;
   --light-shadow: rgba(0, 0, 0, 0.1);
   --light-icon: #ffffff;
-  --light-card-bg: #ffffff; /* White cards in light mode */
-  --light-card-border: rgba(60, 60, 67, 0.2); /* Softer card border */
 
   /* Input and Dropdowns (Light) */
   --input-bg-light: #ffffff;
@@ -68,16 +68,16 @@
   /* Fallback/Default theme variables (default to dark mode) */
   --bg-color: var(--dark-bg);
   --content-bg: var(--dark-content-bg);
+  --card-bg: var(--dark-card-bg);
   --text-color: var(--dark-text);
   --secondary-text: var(--dark-secondary-text);
   --border-color: var(--dark-border);
+  --card-border: var(--dark-card-border);
   --accent-color: var(--dark-accent);
   --hover-color: var(--dark-hover);
   --link-color: var(--dark-link);
   --shadow-color: var(--dark-shadow);
   --icon-color: var(--dark-icon);
-  --card-bg: var(--dark-card-bg);
-  --card-border: var(--dark-card-border);
   --input-bg: var(--input-bg-dark);
   --input-border: var(--input-border-dark);
   --input-focus-border: var(--input-focus-border-dark);
@@ -88,20 +88,21 @@
   --dropdown-focus-border: var(--dropdown-focus-border-dark);
 }
 
-/* Light Mode Override */
-body.light-e { /* Ensure this class name matches your HTML */
+/* Light Mode Override - ** FIX: Ensure ALL relevant BG/Border vars are overridden ** */
+body.light-e {
   --bg-color: var(--light-bg);
   --content-bg: var(--light-content-bg);
+  --card-bg: var(--light-card-bg); /* <<< FIXED */
   --text-color: var(--light-text);
   --secondary-text: var(--light-secondary-text);
   --border-color: var(--light-border);
+  --card-border: var(--light-card-border); /* <<< FIXED */
   --accent-color: var(--light-accent);
   --hover-color: var(--light-hover);
   --link-color: var(--light-link);
   --shadow-color: var(--light-shadow);
-  --icon-color: var(--light-icon);
-  --card-bg: var(--light-card-bg);
-  --card-border: var(--light-card-border);
+  /* Icons on accent backgrounds stay white, others might need changing */
+  /* --icon-color: var(--light-text); */ /* Example if icons need to be dark */
   --input-bg: var(--input-bg-light);
   --input-border: var(--input-border-light);
   --input-focus-border: var(--input-focus-border-light);
@@ -131,7 +132,10 @@ body {
 .container {
     max-width: 1100px;
     margin: 30px auto;
-    padding: 0 30px;
+    padding: 0 15px;
+}
+@media (min-width: 768px) {
+    .container { padding: 0 30px; }
 }
 
 /* ======================== */
@@ -149,10 +153,10 @@ body {
 .version-info-section,
 .legal-section,
 [data-section-id="events"] {
-    padding: 30px;
+    padding: 25px;
     border-radius: var(--border-radius-lg);
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     background-color: color-mix(in srgb, var(--content-bg) 85%, transparent);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -170,21 +174,41 @@ body {
 .event-card,
 .creator-card,
 .instagram-creator-card,
-.youtube-creator-card {
-    padding: 20px;
+.youtube-creator-card,
+.version-number,
+.build-number,
+.os-info,
+.device-info,
+.update-time,
+.countdown,
+.copy-protection-message,
+.legal-protection-message,
+.watermark-message {
+    padding: 18px;
     border-radius: var(--border-radius-md);
-    background-color: var(--card-bg); /* Use specific card background */
-    border: 1px solid var(--card-border); /* Use specific card border */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.04); /* Slightly adjusted card shadow */
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.04);
     transition: transform 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing);
-    margin-bottom: 15px; /* Consistent spacing */
+    margin-bottom: 15px;
+    color: var(--text-color); /* Ensure text color is inherited correctly */
 }
-.tech-item:last-child,
-.faq-item:last-child,
-.event-card:last-child,
-.creator-card:last-child,
-.instagram-creator-card:last-child,
-.youtube-creator-card:last-child {
+/* Fix text color specifically for legal messages if needed */
+.copy-protection-message,
+.legal-protection-message,
+.watermark-message {
+    color: var(--text-color);
+}
+
+
+.tech-section > .tech-item:last-child,
+.faq-container > .faq-item:last-child,
+.events-container > .event-card:last-child,
+.creator-grid > .creator-card:last-child,
+.instagram-creator-grid > .instagram-creator-card:last-child,
+.youtube-creator-grid > .youtube-creator-card:last-child,
+.version-info-section > div:last-of-type,
+.legal-section > div:last-of-type {
     margin-bottom: 0;
 }
 
@@ -193,7 +217,10 @@ body {
 .event-card:hover,
 .creator-card:hover,
 .instagram-creator-card:hover,
-.youtube-creator-card:hover {
+.youtube-creator-card:hover,
+.copy-protection-message:hover,
+.legal-protection-message:hover,
+.watermark-message:hover {
     transform: translateY(-3px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 8px 25px rgba(0, 0, 0, 0.07);
 }
@@ -201,6 +228,7 @@ body {
 /* ======================== */
 /* Profile Section Specifics */
 /* ======================== */
+/* ... styles for profile pic, status, username, icon buttons ... */
 .profile-section { text-align: center; }
 .profile-pic-wrapper { position: relative; width: 150px; margin: 0 auto 15px; }
 .profile-pic { width: 150px; height: 150px; border-radius: 50%; display: block; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); object-fit: cover; }
@@ -209,8 +237,6 @@ body {
 .username-checkmark { display: flex; align-items: center; justify-content: center; margin: 15px 0; }
 .username-checkmark h1 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-color); background: none; -webkit-background-clip: unset; background-clip: unset; }
 .verified { width: 20px; height: 20px; margin-left: 8px; color: var(--accent-color); }
-
-/* Icon Buttons */
 .settings-button, .merch-button, .weather-button { position: absolute; border-radius: 50%; width: 36px; height: 36px; background-color: color-mix(in srgb, var(--content-bg) 80%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-position: center; background-size: 16px; background-repeat: no-repeat; cursor: pointer; padding: 0; z-index: 10; transition: all 0.2s ease-out; }
 .settings-button:hover, .merch-button:hover, .weather-button:hover { transform: scale(1.1); background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .settings-button { top: 20px; right: 20px; background-image: url('settings-icon.png'); } /* Update path */
@@ -220,12 +246,13 @@ body {
 /* ======================== */
 /* Date/Time Section        */
 /* ======================== */
-.datetime-section { background-color: var(--card-bg); padding: 15px; border-radius: var(--border-radius-md); margin-bottom: 30px; text-align: center; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 5px rgba(0, 0, 0, 0.04); border: 1px solid var(--card-border); }
+.datetime-section { /* Uses shared card style */ margin-top: 30px; text-align: center; }
 .current-datetime { font-family: var(--system-font-stack); font-size: 1.1em; font-weight: 500; color: var(--secondary-text); margin: 0; }
 
 /* ======================== */
 /* President Section        */
 /* ======================== */
+/* ... President styles ... */
 .president-section { /* Uses shared section style */ }
 .president-info { display: flex; align-items: center; gap: 30px; padding: 10px 0; }
 .president-photo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); flex-shrink: 0; }
@@ -239,8 +266,8 @@ body {
 /* ======================== */
 .social-links-section, .useful-links-section { text-align: center; /* Uses shared section style */ }
 .social-links-section h2, .useful-links-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
-.social-links-container, .links-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-.social-button, .link-button { display: flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: var(--border-radius-pill); /* Pill shape */ background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; letter-spacing: 0; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; text-align: center; gap: 10px; }
+.social-links-container, .links-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+.social-button, .link-button { display: flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: var(--border-radius-pill); background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; letter-spacing: 0; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; text-align: center; gap: 10px; width: 100%; /* Ensure button takes grid width */ box-sizing: border-box; }
 .social-button:hover, .link-button:hover { filter: brightness(115%); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
 .social-button .social-icon { font-size: 1.1rem; color: inherit; flex-shrink: 0; line-height: 1; }
 .social-button span { flex-grow: 1; text-align: center; line-height: 1.2; }
@@ -257,47 +284,42 @@ body {
 .tech-detail i { width: 18px; text-align: center; color: var(--secondary-text); opacity: 0.8; }
 .tech-detail span { font-weight: 500; color: var(--text-color); margin-right: 5px; }
 
-/* --- Stylized Battery Icon --- */
+/* --- Battery Styles - FIX Visibility --- */
 .battery-container { display: flex; align-items: center; gap: 10px; margin-top: 15px; color: var(--secondary-text); font-size: 0.9rem; }
-.apple-battery { /* Container for the Apple-like battery */
-    width: 28px; height: 13px;
-    border: 1.5px solid var(--secondary-text);
-    border-radius: 4px; /* Slightly rounded corners */
+.battery-icon { /* Outer shape */
     position: relative;
-    display: inline-block;
+    width: 25px; height: 12px; /* Ensure dimensions are set */
+    border: 1.5px solid var(--secondary-text);
+    border-radius: 3px;
+    display: inline-block; /* Make sure it's displayed */
     margin-right: 8px;
-    background-color: transparent; /* Make background transparent */
+    background-color: transparent; /* Ensure it's not hidden by background */
+    vertical-align: middle;
+    overflow: hidden; /* Keep level contained */
 }
-.apple-battery::after { /* Terminal */
-    content: '';
-    position: absolute;
-    right: -4px; /* Position outside */
-    top: 2px; bottom: 2px; /* Centered vertically */
-    width: 2px; /* Thinner terminal */
-    background-color: var(--secondary-text);
-    border-radius: 0 1px 1px 0;
+.battery-icon::after { /* Terminal */
+    content: ''; position: absolute; right: -4px; top: 2px; width: 2px; height: 6px; /* Check dimensions/position */
+    background-color: var(--secondary-text); border-radius: 0 1px 1px 0;
+    display: block; /* Ensure pseudo-element is displayed */
 }
-.apple-battery-level { /* Inner fill level */
-    position: absolute;
-    left: 1px; top: 1px; bottom: 1px; /* Inset slightly */
-    height: calc(100% - 2px);
-    border-radius: 2px; /* Inner rounding */
-    background-color: var(--text-color); /* Default fill (matches text) */
+.battery-level { /* Inner fill level */
+    position: absolute; left: 1px; top: 1px; bottom: 1px;
+    height: calc(100% - 2px); /* Ensure height is calculated */
+    border-radius: 1.5px;
+    background-color: var(--text-color); /* Default fill */
+    /* Width is set by inline style from JS */
     transition: width 0.4s ease, background-color 0.4s ease;
+    display: block; /* Ensure it's displayed */
 }
-/* Color states */
-.apple-battery.low-power .apple-battery-level { background-color: #ffcc00; } /* Yellow */
-.apple-battery.critical .apple-battery-level { background-color: #ff3b30; } /* Red */
-/* Light mode adjustments for fill color if needed */
-body.light-e .apple-battery-level { background-color: var(--text-color); }
-body.light-e .apple-battery.low-power .apple-battery-level { background-color: #ffcc00; }
-body.light-e .apple-battery.critical .apple-battery-level { background-color: #ff3b30; }
+.battery-icon.low-power .battery-level { background-color: #ffcc00; }
+.battery-icon.critical .battery-level { background-color: #ff3b30; }
+.battery-percentage { font-weight: 500; color: var(--text-color); margin-left: -5px; }
 
-.battery-percentage { font-weight: 500; color: var(--text-color); }
 
 /* ======================== */
 /* FAQ Section              */
 /* ======================== */
+/* ... FAQ styles remain largely the same ... */
 .faq-section { /* Uses shared section style */ }
 .faq-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .faq-container { display: flex; flex-direction: column; gap: 10px; }
@@ -313,9 +335,11 @@ body.light-e .apple-battery.critical .apple-battery-level { background-color: #f
 .faq-answer p { margin: 0 0 10px 0; }
 .faq-answer p:last-child { margin-bottom: 0; }
 
+
 /* ======================== */
 /* Event Section            */
 /* ======================== */
+/* ... Event styles remain largely the same ... */
 [data-section-id="events"] { /* Uses shared section style */ }
 [data-section-id="events"] h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .events-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
@@ -325,42 +349,82 @@ body.light-e .apple-battery.critical .apple-battery-level { background-color: #f
 .event-info { margin: 15px 0; gap: 15px; }
 .event-row { display: flex; gap: 10px; font-size: 0.95rem; color: var(--secondary-text); }
 .event-row .icon { color: var(--accent-color); width: 20px; text-align: center; }
-.event-link { /* Uses refined button style */ display: inline-flex; width: auto; margin: 20px 0 0 0; padding: 10px 20px; font-size: 0.9rem; border-radius: var(--border-radius-pill); /* Pill shape */ }
+.event-link { display: inline-flex; width: auto; margin: 20px 0 0 0; padding: 10px 20px; font-size: 0.9rem; border-radius: var(--border-radius-pill); /* Pill shape */ background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; }
+.event-link:hover { filter: brightness(115%); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
 
 
 /* ======================== */
 /* Disabilities Section     */
 /* ======================== */
+/* ... Disabilities styles remain largely the same ... */
 .disabilities-section { /* Uses shared section style */ }
 .disabilities-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color); }
 .disabilities-section p { margin-bottom: 20px; color: var(--secondary-text); font-size: 1rem; }
-.disabilities-section ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; } /* Use grid for spacing */
+.disabilities-section ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .disabilities-section li { margin-bottom: 0; }
 .disabilities-section a { display: block; color: var(--text-color); text-decoration: none; padding: 15px; border-radius: var(--border-radius-md); background-color: var(--card-bg); border: 1px solid var(--card-border); transition: background-color 0.2s ease, transform 0.2s ease; font-weight: 500; }
 .disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg)); transform: translateY(-2px); color: var(--accent-color); }
+
 
 /* ======================== */
 /* Shoutouts Section        */
 /* ======================== */
 .shoutouts-section { /* Uses shared section style */ padding-bottom: 10px; }
 .shoutouts-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 10px; color: var(--text-color); display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
-#tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);}
+#tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);} /* Ensure Font Awesome is linked */
 #instagram-header::before { content: '\f16d'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
 #youtube-header::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
 #tiktok-last-updated-timestamp, #lastUpdatedInstagram, #lastUpdatedYouTube { color: var(--secondary-text); font-size: 0.85em; margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
 #tiktok-last-updated-timestamp::before, #lastUpdatedInstagram::before, #lastUpdatedYouTube::before { content: '\f017'; font-family: 'Font Awesome 5 Free'; font-weight: 900; }
 .creator-grid, .instagram-creator-grid, .youtube-creator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-.creator-card, .instagram-creator-card, .youtube-creator-card { /* Uses shared card style */ display: flex; flex-direction: column; text-align: left; }
+
+/* Shoutout Cards */
+.creator-card, .instagram-creator-card, .youtube-creator-card { /* Uses shared card style */ display: flex; flex-direction: column; text-align: left; overflow: hidden; /* <<< Added for cover photo fix */ }
 .creator-pic, .instagram-creator-pic, .youtube-creator-pic { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-bg); box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; flex-shrink: 0; }
-.youtube-cover-photo { width: 100%; height: 100px; object-fit: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; margin: -20px -20px 15px -20px; }
+
+/* YouTube Cover Photo Fix */
+.youtube-creator-card { padding-top: 0; /* Remove top padding from card itself */ }
+.youtube-cover-photo {
+    width: 100%; /* Span full width of container */
+    height: 100px; /* Adjust height as needed */
+    object-fit: cover;
+    display: block; /* Ensure it's a block element */
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; /* Round only top corners */
+    margin: 0 0 15px 0; /* Remove negative horizontal margins, adjust bottom */
+}
+
 .creator-header, .instagram-creator-header, .youtube-creator-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .creator-header h3, .instagram-creator-header h3, .youtube-creator-header h3 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-color); line-height: 1.3; }
 .verified-badge, .instagram-verified-badge, .youtube-verified-badge { width: 14px; height: 14px; margin-left: 5px; }
 .creator-username, .instagram-creator-username, .youtube-creator-username { color: var(--secondary-text); font-size: 0.85rem; margin: 0 0 8px 0; word-break: break-all; }
 .creator-bio, .instagram-creator-bio, .youtube-creator-bio { color: var(--secondary-text); margin: 8px 0; font-size: 0.9rem; line-height: 1.4; }
-.follower-count, .instagram-follower-count, .youtube-subscriber-count { color: var(--text-color); font-weight: 500; margin: 8px 0; font-size: 0.85rem; }
-.visit-profile, .instagram-visit-profile, .youtube-visit-profile { /* Pill Button */ display: inline-flex; width: auto; padding: 6px 16px; font-size: 0.85rem; border-radius: var(--border-radius-pill); margin-top: 15px; align-self: flex-start; background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; }
+
+/* Follower/Subscriber Count - Modernized */
+.follower-count, .instagram-follower-count, .youtube-subscriber-count {
+    color: var(--secondary-text); /* Use secondary color */
+    font-size: 0.85rem; /* Smaller size */
+    font-weight: 400; /* Lighter weight */
+    margin: 8px 0 0 0; /* Top margin only, less bottom margin */
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space for potential icon */
+}
+/* Add icons (requires Font Awesome) */
+.follower-count::before, .instagram-follower-count::before { content: '\f0c0'; /* fa-users */ font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 0.9em; opacity: 0.7; }
+.youtube-subscriber-count::before { content: '\f167'; /* fa-youtube */ font-family: 'Font Awesome 5 Brands'; font-weight: 400; font-size: 1em; opacity: 0.7; color: #FF0000; /* YouTube Red */ margin-right: 2px; }
+
+/* Pill Buttons */
+.visit-profile, .instagram-visit-profile, .youtube-visit-profile {
+    display: inline-flex; width: auto; padding: 6px 16px; font-size: 0.85rem;
+    border-radius: var(--border-radius-pill); /* <<< PILL SHAPE */
+    margin-top: 15px; align-self: flex-start; background: var(--accent-color);
+    color: #ffffff; text-decoration: none; font-weight: 500;
+    transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08);
+    border: none;
+}
 .visit-profile:hover, .instagram-visit-profile:hover, .youtube-visit-profile:hover { filter: brightness(115%); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
+
 
 /* ======================== */
 /* Version Info Section     */
@@ -368,37 +432,16 @@ body.light-e .apple-battery.critical .apple-battery-level { background-color: #f
 .version-info-section { /* Uses shared section style */ font-size: 0.9rem; }
 .version-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
 .version-header::before { content: "📊"; font-size: 1.1em; }
-
-/* Container for each version info item */
-.version-number, .build-number, .os-info, .device-info, .update-time, .countdown {
-    padding: 10px 15px;
-    border-radius: var(--border-radius-md); /* Consistent rounding */
-    margin-bottom: 10px;
-    font-size: 0.95em; /* Relative to section font size */
-    background-color: var(--card-bg); /* Use card background */
-    border: 1px solid var(--card-border); /* Use card border */
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03); /* Subtle shadow */
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.version-number:last-child, .build-number:last-child, .os-info:last-child, .device-info:last-child, .update-time:last-child, .countdown:last-child {
-    margin-bottom: 0;
-}
-
-/* Labels with icons */
+/* Inner items use shared card style */
+.version-number, .build-number, .os-info, .device-info, .update-time, .countdown { /* Uses shared card style */ display: flex; align-items: center; gap: 10px; font-size: 0.95em; margin-bottom: 10px; /* Re-add margin if needed */ }
 .version-number::before { content: "🔢 Version:"; }
 .build-number::before { content: "🏗️ Build:"; }
 .os-info::before { content: "💻 OS:"; }
 .device-info::before { content: "📱 Device:"; }
 .update-time::before { content: "🕒 Time:"; }
 .countdown::before { content: "⏱️"; }
+.version-number::before, .build-number::before, .os-info::before, .device-info::before, .update-time::before, .countdown::before { color: var(--secondary-text); font-weight: 500; min-width: 80px; }
 
-.version-number::before, .build-number::before, .os-info::before, .device-info::before, .update-time::before, .countdown::before {
-    color: var(--secondary-text);
-    font-weight: 500;
-    min-width: 80px; /* Align labels */
-}
 
 /* ======================== */
 /* Legal Section            */
@@ -407,56 +450,39 @@ body.light-e .apple-battery.critical .apple-battery-level { background-color: #f
 .legal-section::before { /* Optional top decorative border */ content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #ff4757, color-mix(in srgb, #ff4757 70%, transparent), #ff4757); }
 .legal-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
 .legal-header::before { content: '⚖️'; font-size: 1.1em; }
-
-/* Container for legal messages */
-.copy-protection-message, .legal-protection-message, .watermark-message {
-    padding: 12px 15px;
-    font-size: 0.95em;
-    margin: 10px 0;
-    border-radius: var(--border-radius-md);
-    background-color: var(--card-bg); /* Use card background */
-    border: 1px solid var(--card-border); /* Use card border */
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.2s ease;
-    border-left-width: 4px; /* Keep colored left border */
-}
+/* Inner items use shared card style */
+.copy-protection-message, .legal-protection-message, .watermark-message { /* Uses shared card style */ display: flex; align-items: center; gap: 12px; font-size: 0.95em; margin-bottom: 10px; border-left-width: 4px; }
 .copy-protection-message { border-left-color: #ff4757; }
 .legal-protection-message { border-left-color: #ffa502; }
 .watermark-message { border-left-color: #2ed573; }
 .copy-protection-message::before, .legal-protection-message::before, .watermark-message::before { content: '⚠️'; font-size: 1.1em; }
-.copy-protection-message:hover, .legal-protection-message:hover, .watermark-message:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
-
 .last-updated { color: var(--secondary-text); font-size: 0.8em; margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
 .last-updated::before { content: '🕒'; font-size: 1em; }
+
 
 /* ======================== */
 /* Countdown Section        */
 /* ======================== */
 .countdown-section { /* Uses shared section style */ text-align: center; }
-.countdown-section h2 { /* Title Styling */ font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
+.countdown-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
-.countdown-block { text-align: center; } /* Container for number + label */
+.countdown-block { text-align: center; }
 
-/* Individual Flip Clock "Card" */
+/* Flip Clock "Card" */
 .flip-clock { perspective: 400px; margin-bottom: 5px; display: inline-block; }
-.flip-clock-inner { position: relative; width: 70px; height: 90px; /* Adjust size */ transform-style: preserve-3d; transition: transform 0.6s ease-in-out; display: flex; align-items: center; justify-content: center; }
+.flip-clock-inner { position: relative; width: 70px; height: 90px; transform-style: preserve-3d; transition: transform 0.6s ease-in-out; display: flex; align-items: center; justify-content: center; }
 .flip-clock-inner.flip { transform: rotateX(180deg); }
 .flip-clock-front, .flip-clock-back {
     position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center;
-    font-size: 2.2em; font-weight: 600; /* Bolder font */
+    font-size: 2.2em; font-weight: 600;
     background-color: var(--card-bg); /* Use card background */
     border: 1px solid var(--card-border); /* Use card border */
-    border-radius: var(--border-radius-md); /* Match card rounding */
+    border-radius: var(--border-radius-md);
     color: var(--text-color);
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 .flip-clock-back { transform: rotateX(180deg); }
-
 .countdown-label { color: var(--secondary-text); font-size: 0.8em; font-weight: 500; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px; }
-
 
 /* ======================== */
 /* Scroll-to-Top Button     */
@@ -464,39 +490,35 @@ body.light-e .apple-battery.critical .apple-battery-level { background-color: #f
 .scroll-to-top {
     position: fixed;
     bottom: 25px;
-    left: 25px; /* Positioned bottom-left */
-    width: 44px;
-    height: 44px;
+    left: 25px; /* <<< FIXED POSITION */
+    right: auto; /* <<< Ensure right is not set */
+    width: 44px; height: 44px;
     background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     border-radius: 50%;
-    cursor: pointer;
-    z-index: 1000;
-    display: none; /* Hidden by default */
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    cursor: pointer; z-index: 1000; display: none; opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 .scroll-to-top.visible { display: block; opacity: 1; }
 .scroll-to-top:hover { background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); transform: scale(1.05); }
 
 /* Progress Ring & Arrow - Setup for JS */
-.progress-ring { transform: rotate(-90deg); position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-.progress-ring circle { cx: 50%; cy: 50%; r: 20; fill: transparent; } /* Adjusted radius for 44px size */
+.scroll-to-top svg.progress-ring { /* Target the SVG element */
+    transform: rotate(-90deg);
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; /* Ensure SVG fills the button */
+}
+.progress-ring circle { cx: 50%; cy: 50%; r: 20; fill: transparent; } /* r should be slightly less than half width/height */
 .progress-bg { stroke: var(--border-color); opacity: 0.3; stroke-width: 3; }
 .progress-indicator {
-    stroke: var(--accent-color);
-    stroke-width: 3;
-    stroke-linecap: round;
-    /* Circumference: 2 * pi * 20 = ~125.66 */
-    stroke-dasharray: 125.66;
-    stroke-dashoffset: 125.66; /* Start empty, JS will change this */
-    transition: stroke-dashoffset 0.1s linear; /* Smooth progress update */
+    stroke: var(--accent-color); stroke-width: 3; stroke-linecap: round;
+    stroke-dasharray: 125.66; /* Circumference: 2 * pi * 20 */
+    stroke-dashoffset: 125.66; /* Start empty, JS sets this */
+    transition: stroke-dashoffset 0.1s linear;
 }
 .arrow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; color: var(--accent-color); pointer-events: none; }
-/* Ensure Font Awesome is linked if using font icon for arrow, e.g., content: '\f062'; */
 
 
 /* ======================== */
@@ -541,25 +563,39 @@ footer { text-align: center; padding: 25px 20px; margin-top: 40px; color: var(--
 
 
 /* ======================== */
-/* Responsive (Final Check) */
+/* Responsive Fixes & Final */
 /* ======================== */
 @media (max-width: 768px) {
     body { padding: 15px; }
     .container { padding: 0 15px; }
     .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 20px; margin-top: 20px; margin-bottom: 20px; border-radius: var(--border-radius-md); }
-    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card { padding: 15px; }
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message { padding: 15px; }
     .president-info { flex-direction: column; text-align: center; }
     .president-photo { width: 120px; height: 120px; margin-bottom: 15px;}
     .profile-pic { width: 120px; height: 120px; }
+
+    /* Button Overflow Fix & Back-to-Top scaling */
+    .social-links-container, .links-container { grid-template-columns: 1fr; } /* Force single column */
+    .social-button, .link-button { width: 100%; /* Ensure buttons fill column */ }
+
+    .scroll-to-top { width: 40px; height: 40px; left: 20px; bottom: 20px; } /* Smaller button */
+    .progress-ring circle { r: 18; } /* Adjusted radius for 40px size */
+    .progress-indicator { stroke-dasharray: 113.1; stroke-dashoffset: 113.1; /* 2*pi*18 */ }
+    .arrow { font-size: 16px; }
 }
 
 @media (max-width: 480px) {
     body { padding: 10px; }
     .container { padding: 0 10px; }
+     /* Adjust section padding */
     .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 15px; margin-top: 15px; margin-bottom: 15px; }
-    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card { padding: 12px; }
+     /* Adjust card padding */
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message { padding: 12px; }
     .profile-pic { width: 100px; height: 100px; }
     .president-photo { width: 100px; height: 100px; }
-    .social-button, .link-button { width: 100%; } /* Stack buttons */
-    .social-links-container, .links-container { grid-template-columns: 1fr; }
+
+    .scroll-to-top { width: 36px; height: 36px; left: 15px; bottom: 15px; } /* Even smaller */
+    .progress-ring circle { r: 16; } /* Adjusted radius for 36px size */
+    .progress-indicator { stroke-dasharray: 100.53; stroke-dashoffset: 100.53; /* 2*pi*16 */ }
+    .arrow { font-size: 14px; }
 }
