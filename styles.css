@@ -1,4 +1,4 @@
-/* styles.css - Apple-Inspired Theme */
+/* styles.css - Apple-Inspired Theme (Revision 2) */
 
 /* ======================== */
 /* Theme Variables    */
@@ -13,6 +13,7 @@
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
+  --border-radius-pill: 999px; /* For pill shapes */
   --transition-speed: 0.25s;
   --transition-timing: ease-in-out;
 
@@ -26,7 +27,9 @@
   --dark-hover: #3f9eff;
   --dark-link: #0a84ff;
   --dark-shadow: rgba(0, 0, 0, 0.4);
-  --dark-icon: rgba(235, 235, 245, 0.9); /* Default icon color */
+  --dark-icon: rgba(235, 235, 245, 0.9);
+  --dark-card-bg: #2c2c2e; /* Slightly lighter card background */
+  --dark-card-border: rgba(84, 84, 88, 0.5); /* Slightly softer card border */
 
   /* Input and Dropdowns (Dark) */
   --input-bg-dark: #1c1c1e;
@@ -48,7 +51,9 @@
   --light-hover: #0056b3;
   --light-link: #007aff;
   --light-shadow: rgba(0, 0, 0, 0.1);
-  --light-icon: #ffffff; /* Icon color for use ON accent backgrounds */
+  --light-icon: #ffffff;
+  --light-card-bg: #ffffff; /* White cards in light mode */
+  --light-card-border: rgba(60, 60, 67, 0.2); /* Softer card border */
 
   /* Input and Dropdowns (Light) */
   --input-bg-light: #ffffff;
@@ -70,7 +75,9 @@
   --hover-color: var(--dark-hover);
   --link-color: var(--dark-link);
   --shadow-color: var(--dark-shadow);
-  --icon-color: var(--dark-icon); /* Default icon color */
+  --icon-color: var(--dark-icon);
+  --card-bg: var(--dark-card-bg);
+  --card-border: var(--dark-card-border);
   --input-bg: var(--input-bg-dark);
   --input-border: var(--input-border-dark);
   --input-focus-border: var(--input-focus-border-dark);
@@ -92,7 +99,9 @@ body.light-e { /* Ensure this class name matches your HTML */
   --hover-color: var(--light-hover);
   --link-color: var(--light-link);
   --shadow-color: var(--light-shadow);
-  --icon-color: var(--light-icon); /* Icon color for use ON accent backgrounds */
+  --icon-color: var(--light-icon);
+  --card-bg: var(--light-card-bg);
+  --card-border: var(--light-card-border);
   --input-bg: var(--input-bg-light);
   --input-border: var(--input-border-light);
   --input-focus-border: var(--input-focus-border-light);
@@ -109,13 +118,13 @@ body.light-e { /* Ensure this class name matches your HTML */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: var(--system-font-stack); /* Apply the font stack */
+    font-family: var(--system-font-stack);
     font-size: var(--base-font-size);
     margin: 0;
-    padding: 20px; /* Base padding */
+    padding: 20px;
     line-height: var(--line-height);
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smoother theme transition */
-    -webkit-font-smoothing: antialiased; /* Improve font rendering */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
@@ -141,16 +150,13 @@ body {
 .legal-section,
 [data-section-id="events"] {
     padding: 30px;
-    border-radius: var(--border-radius-lg); /* 12px */
+    border-radius: var(--border-radius-lg);
     margin-top: 30px;
     margin-bottom: 30px;
-    /* Frosted Glass Effect */
     background-color: color-mix(in srgb, var(--content-bg) 85%, transparent);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    /* Subtle border */
     border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
-    /* Softer, layered shadow */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(0, 0, 0, 0.06);
     width: 100%;
     box-sizing: border-box;
@@ -162,16 +168,16 @@ body {
 .tech-item,
 .faq-item,
 .event-card,
-.creator-card,             /* Added */
-.instagram-creator-card,   /* Added */
-.youtube-creator-card {   /* Added */
+.creator-card,
+.instagram-creator-card,
+.youtube-creator-card {
     padding: 20px;
-    border-radius: var(--border-radius-md); /* 8px */
-    background-color: color-mix(in srgb, var(--content-bg) 90%, transparent);
-    border: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 3px 10px rgba(0, 0, 0, 0.04);
+    border-radius: var(--border-radius-md);
+    background-color: var(--card-bg); /* Use specific card background */
+    border: 1px solid var(--card-border); /* Use specific card border */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.04); /* Slightly adjusted card shadow */
     transition: transform 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing);
-    margin-bottom: 20px; /* Ensure spacing between cards */
+    margin-bottom: 15px; /* Consistent spacing */
 }
 .tech-item:last-child,
 .faq-item:last-child,
@@ -193,662 +199,264 @@ body {
 }
 
 /* ======================== */
-/* Profile Section          */
+/* Profile Section Specifics */
 /* ======================== */
-.profile-section {
-    text-align: center;
-    /* Shared styles handle background, padding, border, shadow, etc. */
-}
+.profile-section { text-align: center; }
+.profile-pic-wrapper { position: relative; width: 150px; margin: 0 auto 15px; }
+.profile-pic { width: 150px; height: 150px; border-radius: 50%; display: block; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); object-fit: cover; }
+.profile-status-container { position: absolute; bottom: 5px; right: 5px; width: 30px; height: 30px; border-radius: 50%; background: var(--content-bg); border: 2px solid color-mix(in srgb, var(--border-color) 80%, transparent); display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.profile-status { font-size: 16px; }
+.username-checkmark { display: flex; align-items: center; justify-content: center; margin: 15px 0; }
+.username-checkmark h1 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-color); background: none; -webkit-background-clip: unset; background-clip: unset; }
+.verified { width: 20px; height: 20px; margin-left: 8px; color: var(--accent-color); }
 
-.profile-pic-wrapper {
-    position: relative;
-    width: 150px;
-    margin: 0 auto 15px; /* Add bottom margin */
-}
-
-.profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    display: block;
-    border: 4px solid var(--content-bg); /* Border matches content background */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Softer shadow */
-    object-fit: cover; /* Ensure image covers */
-}
-
-.profile-status-container {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--content-bg);
-    border: 2px solid color-mix(in srgb, var(--border-color) 80%, transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-
-.profile-status {
-    font-size: 16px; /* Keep emoji size reasonable */
-}
-
-.username-checkmark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 15px 0;
-}
-
-.username-checkmark h1 {
-    margin: 0;
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 700; /* Use a bold weight */
-    color: var(--text-color); /* Use primary text color */
-    background: none; /* Remove gradient */
-    -webkit-background-clip: unset;
-    background-clip: unset;
-}
-
-.verified {
-    width: 20px; /* Adjust size as needed */
-    height: 20px;
-    margin-left: 8px; /* Space from username */
-    color: var(--accent-color); /* Use accent color for verified check */
-    /* Consider using an SVG or Font Awesome icon here */
-}
-
-/* --- Icon Buttons (Settings, Merch, Weather) --- */
-.settings-button, .merch-button, .weather-button {
-    position: absolute;
-    border-radius: 50%; /* Circular */
-    width: 36px;
-    height: 36px;
-    background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    background-position: center;
-    background-size: 16px; /* Adjust icon size */
-    background-repeat: no-repeat;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.2s ease-out;
-}
-.settings-button:hover, .merch-button:hover, .weather-button:hover {
-    transform: scale(1.1);
-    background-color: color-mix(in srgb, var(--content-bg) 95%, transparent);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-/* Specific button positions */
-.settings-button { top: 20px; right: 20px; background-image: url('settings-icon.png'); } /* Update with actual icon path */
-.merch-button { top: 20px; left: 20px; background-image: url('gift-bag-icon.png'); } /* Update with actual icon path */
-.weather-button { bottom: 20px; left: 20px; background-image: url('weather-icon.png');} /* Update with actual icon path */
-/* Ensure you have icons at these paths or use Font Awesome */
-
+/* Icon Buttons */
+.settings-button, .merch-button, .weather-button { position: absolute; border-radius: 50%; width: 36px; height: 36px; background-color: color-mix(in srgb, var(--content-bg) 80%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-position: center; background-size: 16px; background-repeat: no-repeat; cursor: pointer; padding: 0; z-index: 10; transition: all 0.2s ease-out; }
+.settings-button:hover, .merch-button:hover, .weather-button:hover { transform: scale(1.1); background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+.settings-button { top: 20px; right: 20px; background-image: url('settings-icon.png'); } /* Update path */
+.merch-button { top: 20px; left: 20px; background-image: url('gift-bag-icon.png'); } /* Update path */
+.weather-button { bottom: 20px; left: 20px; background-image: url('weather-icon.png');} /* Update path */
 
 /* ======================== */
-/* Current Date/Time Section */
+/* Date/Time Section        */
 /* ======================== */
-.datetime-section {
-    background-color: var(--content-bg); /* Use standard content background */
-    padding: 15px;
-    border-radius: var(--border-radius-md); /* Consistent radius */
-    margin-bottom: 30px;
-    text-align: center;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 5px rgba(0, 0, 0, 0.04); /* Softer shadow */
-    border: 1px solid var(--border-color); /* Consistent border */
-}
-
-.current-datetime {
-    font-family: var(--system-font-stack); /* Use system font */
-    font-size: 1.1em; /* Slightly larger */
-    font-weight: 500;
-    color: var(--secondary-text); /* Use secondary text color */
-    margin: 0;
-}
+.datetime-section { background-color: var(--card-bg); padding: 15px; border-radius: var(--border-radius-md); margin-bottom: 30px; text-align: center; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 5px rgba(0, 0, 0, 0.04); border: 1px solid var(--card-border); }
+.current-datetime { font-family: var(--system-font-stack); font-size: 1.1em; font-weight: 500; color: var(--secondary-text); margin: 0; }
 
 /* ======================== */
 /* President Section        */
 /* ======================== */
-.president-section {
-    /* Shared styles handle background, padding, border, shadow, etc. */
-}
-
-.president-info {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    padding: 10px 0; /* Adjust padding if needed */
-}
-
-.president-photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--content-bg); /* Match content background */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    flex-shrink: 0;
-}
-
-.president-details {
-    flex: 1;
-    text-align: left; /* Align text left */
-}
-
-.president-name {
-    font-size: 1.8rem; /* Adjust size */
-    font-weight: 600; /* Standard bold */
-    color: var(--text-color);
-    margin: 0 0 5px 0;
-}
-
-.president-details p { /* Style paragraphs within details */
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--secondary-text);
-    margin: 4px 0; /* Adjust spacing */
-}
-.president-details p strong {
-    color: var(--text-color); /* Make labels slightly more prominent */
-    font-weight: 500;
-}
+.president-section { /* Uses shared section style */ }
+.president-info { display: flex; align-items: center; gap: 30px; padding: 10px 0; }
+.president-photo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); flex-shrink: 0; }
+.president-details { flex: 1; text-align: left; }
+.president-name { font-size: 1.8rem; font-weight: 600; color: var(--text-color); margin: 0 0 5px 0; }
+.president-details p { font-size: 1rem; line-height: 1.5; color: var(--secondary-text); margin: 4px 0; }
+.president-details p strong { color: var(--text-color); font-weight: 500; }
 
 /* ======================== */
 /* Social & Useful Links    */
 /* ======================== */
-.social-links-section,
-.useful-links-section {
-    text-align: center;
-    /* Shared styles handle background, padding, border, shadow, etc. */
-}
-
-.social-links-section h2, /* Target titles if they exist */
-.useful-links-section h2 {
-    font-size: 1.5rem; /* Consistent title size */
-    font-weight: 600;
-    margin-bottom: 25px;
-    color: var(--text-color);
-}
-
-.social-links-container,
-.links-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
-    gap: 15px; /* Consistent gap */
-    margin-top: 20px;
-}
-
-/* --- Button Style for Social/Useful Links --- */
-.social-button,
-.link-button {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center content */
-    padding: 12px 20px;
-    border-radius: var(--border-radius-lg); /* More rounded */
-    background: var(--accent-color);
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0;
-    transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08);
-    border: none;
-    text-align: center; /* Ensure text is centered if flex alignment changes */
-    gap: 10px; /* Space between icon and text */
-}
-
-.social-button:hover,
-.link-button:hover {
-    filter: brightness(115%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08);
-}
-
-.social-button .social-icon {
-    font-size: 1.1rem; /* Adjust icon size */
-    color: inherit; /* Inherit color from button text (white) */
-    flex-shrink: 0;
-    line-height: 1; /* Ensure proper vertical alignment */
-}
-
-.social-button span {
-    flex-grow: 1;
-    text-align: center; /* Center text within the button */
-    line-height: 1.2; /* Adjust for potentially wrapping text */
-}
+.social-links-section, .useful-links-section { text-align: center; /* Uses shared section style */ }
+.social-links-section h2, .useful-links-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
+.social-links-container, .links-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+.social-button, .link-button { display: flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: var(--border-radius-pill); /* Pill shape */ background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; letter-spacing: 0; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; text-align: center; gap: 10px; }
+.social-button:hover, .link-button:hover { filter: brightness(115%); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
+.social-button .social-icon { font-size: 1.1rem; color: inherit; flex-shrink: 0; line-height: 1; }
+.social-button span { flex-grow: 1; text-align: center; line-height: 1.2; }
 
 /* ======================== */
 /* Tech Section             */
 /* ======================== */
-.tech-section {
-    /* Shared styles handle background, padding, border, shadow, etc. */
-}
-.tech-section h2 { /* Style section title if present */
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 25px;
-    color: var(--text-color);
-}
+.tech-section { /* Uses shared section style */ }
+.tech-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
+.tech-item { /* Uses shared card style */ margin-bottom: 15px; }
+.tech-item h3 { margin: 0 0 15px 0; color: var(--text-color); font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; }
+.tech-item h3 i { font-size: 1.2rem; color: var(--accent-color); }
+.tech-detail { display: flex; align-items: center; gap: 10px; margin: 8px 0; color: var(--secondary-text); font-size: 0.95rem; }
+.tech-detail i { width: 18px; text-align: center; color: var(--secondary-text); opacity: 0.8; }
+.tech-detail span { font-weight: 500; color: var(--text-color); margin-right: 5px; }
 
-.tech-item {
-    /* Card styles handle background, padding, border, shadow */
-    margin-bottom: 15px; /* Spacing between tech items */
-}
-
-.tech-item h3 {
-    margin: 0 0 15px 0;
-    color: var(--text-color); /* Use primary text color for title */
-    font-size: 1.1rem; /* Adjust size */
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-bottom: 1px solid var(--border-color); /* Add separator */
-    padding-bottom: 10px;
-}
-
-.tech-item h3 i { /* Icon in title */
-    font-size: 1.2rem;
-    color: var(--accent-color); /* Accent color for icon */
-}
-
-.tech-detail {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 8px 0; /* Adjust spacing */
-    color: var(--secondary-text); /* Secondary text for details */
-    font-size: 0.95rem;
-}
-
-.tech-detail i { /* Detail icons */
-    width: 18px; /* Slightly smaller icons */
-    text-align: center;
-    color: var(--secondary-text); /* Match text color */
-    opacity: 0.8;
-}
-
-.tech-detail span { /* The label part (e.g., "Model:") */
-    font-weight: 500;
-    color: var(--text-color); /* Primary text color for label */
-    margin-right: 5px;
-}
-
-/* --- Battery Styles --- */
-.battery-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 15px;
-    color: var(--secondary-text);
-    font-size: 0.9rem;
-}
-.battery-icon { /* The outer battery shape */
+/* --- Stylized Battery Icon --- */
+.battery-container { display: flex; align-items: center; gap: 10px; margin-top: 15px; color: var(--secondary-text); font-size: 0.9rem; }
+.apple-battery { /* Container for the Apple-like battery */
+    width: 28px; height: 13px;
+    border: 1.5px solid var(--secondary-text);
+    border-radius: 4px; /* Slightly rounded corners */
     position: relative;
-    width: 25px; /* Smaller battery icon */
-    height: 12px;
-    border: 1px solid var(--secondary-text);
-    border-radius: 2px;
     display: inline-block;
-    margin-right: 5px; /* Space after icon */
+    margin-right: 8px;
+    background-color: transparent; /* Make background transparent */
 }
-.battery-icon::after { /* The battery terminal */
+.apple-battery::after { /* Terminal */
     content: '';
     position: absolute;
-    right: -3px;
-    top: 2px;
-    width: 1px;
-    height: 6px;
+    right: -4px; /* Position outside */
+    top: 2px; bottom: 2px; /* Centered vertically */
+    width: 2px; /* Thinner terminal */
     background-color: var(--secondary-text);
     border-radius: 0 1px 1px 0;
 }
-.battery-level { /* The colored fill level */
-    height: 100%;
-    background-color: var(--accent-color); /* Default green/blue */
-    border-radius: 1px;
-    transition: width 0.4s ease;
+.apple-battery-level { /* Inner fill level */
+    position: absolute;
+    left: 1px; top: 1px; bottom: 1px; /* Inset slightly */
+    height: calc(100% - 2px);
+    border-radius: 2px; /* Inner rounding */
+    background-color: var(--text-color); /* Default fill (matches text) */
+    transition: width 0.4s ease, background-color 0.4s ease;
 }
-.low-power .battery-level { background-color: #ffcc00; } /* Yellow */
-.critical .battery-level { background-color: #ff3b30; } /* Red */
-.battery-percentage { /* The text percentage */
-   font-weight: 500;
-   color: var(--text-color);
-}
+/* Color states */
+.apple-battery.low-power .apple-battery-level { background-color: #ffcc00; } /* Yellow */
+.apple-battery.critical .apple-battery-level { background-color: #ff3b30; } /* Red */
+/* Light mode adjustments for fill color if needed */
+body.light-e .apple-battery-level { background-color: var(--text-color); }
+body.light-e .apple-battery.low-power .apple-battery-level { background-color: #ffcc00; }
+body.light-e .apple-battery.critical .apple-battery-level { background-color: #ff3b30; }
 
+.battery-percentage { font-weight: 500; color: var(--text-color); }
 
 /* ======================== */
 /* FAQ Section              */
 /* ======================== */
-.faq-section {
-    /* Shared styles handle background, padding, border, shadow, etc. */
-}
-.faq-section h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 25px;
-    color: var(--text-color);
-}
-
-.faq-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Reduced gap between FAQ items */
-}
-
-.faq-item {
-    /* Card styles handle background, padding, border, shadow */
-    overflow: hidden; /* Keep overflow hidden for animation */
-}
-
-.faq-question {
-    width: 100%;
-    padding: 15px 20px; /* Adjust padding */
-    background-color: transparent; /* Handled by .faq-item */
-    color: var(--text-color);
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1rem; /* Adjust size */
-    font-weight: 500;
-    transition: background-color 0.2s ease; /* Transition background */
-}
-.faq-question:hover {
-   background-color: color-mix(in srgb, var(--border-color) 20%, transparent); /* Subtle hover */
-}
-
-.faq-icon { /* The +/- icon */
-    width: 20px; /* Adjust size */
-    height: 20px;
-    font-size: 1.2rem;
-    color: var(--secondary-text);
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-    margin-left: 15px;
-    display: flex; /* Center icon if using font icon */
-    align-items: center;
-    justify-content: center;
-}
-/* Replace +/- content using ::before pseudo-element */
-.faq-icon::before {
-    content: '+';
-}
-.faq-item.active .faq-icon::before {
-    content: '−'; /* Minus sign */
-}
-.faq-item.active .faq-icon {
-    transform: rotate(180deg); /* Keep rotation if desired */
-    color: var(--accent-color);
-}
-
-.faq-answer {
-    padding: 0 20px; /* Horizontal padding only when closed */
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    color: var(--secondary-text); /* Answer text is secondary */
-    line-height: 1.6;
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
-    font-size: 0.95rem;
-}
-.faq-item.active .faq-answer {
-    padding: 15px 20px; /* Add vertical padding when open */
-    max-height: 500px; /* Allow enough height for content */
-    opacity: 1;
-}
-.faq-answer p { margin: 0 0 10px 0; } /* Spacing for paragraphs in answer */
+.faq-section { /* Uses shared section style */ }
+.faq-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
+.faq-container { display: flex; flex-direction: column; gap: 10px; }
+.faq-item { /* Uses shared card style */ overflow: hidden; }
+.faq-question { width: 100%; padding: 15px 20px; background-color: transparent; color: var(--text-color); border: none; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1rem; font-weight: 500; transition: background-color 0.2s ease; }
+.faq-question:hover { background-color: color-mix(in srgb, var(--card-border) 50%, transparent); }
+.faq-icon { width: 20px; height: 20px; font-size: 1.2rem; color: var(--secondary-text); transition: transform 0.3s ease; flex-shrink: 0; margin-left: 15px; display: flex; align-items: center; justify-content: center; }
+.faq-icon::before { content: '+'; }
+.faq-item.active .faq-icon::before { content: '−'; }
+.faq-item.active .faq-icon { transform: rotate(180deg); color: var(--accent-color); }
+.faq-answer { padding: 0 20px; max-height: 0; opacity: 0; overflow: hidden; color: var(--secondary-text); line-height: 1.6; transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out; font-size: 0.95rem; }
+.faq-item.active .faq-answer { padding: 15px 20px; max-height: 500px; opacity: 1; }
+.faq-answer p { margin: 0 0 10px 0; }
 .faq-answer p:last-child { margin-bottom: 0; }
-
 
 /* ======================== */
 /* Event Section            */
 /* ======================== */
-[data-section-id="events"] {
-     /* Shared styles handle background, padding, border, shadow, etc. */
-}
-[data-section-id="events"] h2 { /* Title */
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 25px;
-    color: var(--text-color);
-}
-.events-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust minmax */
-    gap: 15px; /* Consistent gap */
-}
-.event-card {
-     /* Card styles handle background, padding, border, shadow */
-}
-/* Keep specific event card internal styles (.event-header, .event-title, etc.) */
+[data-section-id="events"] { /* Uses shared section style */ }
+[data-section-id="events"] h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
+.events-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+.event-card { /* Uses shared card style */ }
 .event-title { font-weight: 600; color: var(--text-color); font-size: 1.1rem;}
 .event-badge { background: var(--accent-color); color: white; font-size: 0.8rem; padding: 4px 10px; border-radius: 12px; font-weight: 500;}
 .event-info { margin: 15px 0; gap: 15px; }
-.event-row { gap: 10px; font-size: 0.95rem; color: var(--secondary-text); }
-.event-row .icon { color: var(--accent-color); }
-.event-link { /* Uses the refined button style from above */
-    display: inline-flex; /* Make it inline-flex */
-    width: auto; /* Allow button to size to content */
-    margin: 20px 0 0 0; /* Adjust margin */
-    padding: 10px 20px; /* Adjust padding */
-    font-size: 0.9rem;
-}
+.event-row { display: flex; gap: 10px; font-size: 0.95rem; color: var(--secondary-text); }
+.event-row .icon { color: var(--accent-color); width: 20px; text-align: center; }
+.event-link { /* Uses refined button style */ display: inline-flex; width: auto; margin: 20px 0 0 0; padding: 10px 20px; font-size: 0.9rem; border-radius: var(--border-radius-pill); /* Pill shape */ }
+
 
 /* ======================== */
 /* Disabilities Section     */
 /* ======================== */
-.disabilities-section {
-     /* Shared styles handle background, padding, border, shadow, etc. */
-}
-.disabilities-section h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: var(--text-color);
-}
-.disabilities-section p { /* The introductory paragraph */
-    margin-bottom: 20px;
-    color: var(--secondary-text);
-    font-size: 1rem;
-}
-.disabilities-section ul { list-style: none; padding: 0; margin: 0; }
-.disabilities-section li { margin-bottom: 10px; }
-.disabilities-section li:last-child { margin-bottom: 0; }
-
-.disabilities-section a { /* Treat these like list items/cards */
-    display: block;
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 15px;
-    border-radius: var(--border-radius-md);
-    background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); /* Match card bg */
-    border: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent); /* Match card border */
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    font-weight: 500;
-}
-.disabilities-section a:hover {
-    background-color: color-mix(in srgb, var(--accent-color) 15%, var(--content-bg)); /* Subtle accent hover */
-    transform: translateY(-2px);
-    color: var(--accent-color); /* Accent text color on hover */
-}
-
+.disabilities-section { /* Uses shared section style */ }
+.disabilities-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color); }
+.disabilities-section p { margin-bottom: 20px; color: var(--secondary-text); font-size: 1rem; }
+.disabilities-section ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; } /* Use grid for spacing */
+.disabilities-section li { margin-bottom: 0; }
+.disabilities-section a { display: block; color: var(--text-color); text-decoration: none; padding: 15px; border-radius: var(--border-radius-md); background-color: var(--card-bg); border: 1px solid var(--card-border); transition: background-color 0.2s ease, transform 0.2s ease; font-weight: 500; }
+.disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg)); transform: translateY(-2px); color: var(--accent-color); }
 
 /* ======================== */
 /* Shoutouts Section        */
 /* ======================== */
-.shoutouts-section {
-     /* Shared styles handle background, padding, border, shadow, etc. */
-     padding-bottom: 10px; /* Reduce bottom padding slightly */
-}
-.shoutouts-section h2 { /* Title like TikTok, Instagram etc. */
-    font-size: 1.5rem;
-    font-weight: 600;
+.shoutouts-section { /* Uses shared section style */ padding-bottom: 10px; }
+.shoutouts-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 10px; color: var(--text-color); display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+#tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);}
+#instagram-header::before { content: '\f16d'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
+#youtube-header::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
+#tiktok-last-updated-timestamp, #lastUpdatedInstagram, #lastUpdatedYouTube { color: var(--secondary-text); font-size: 0.85em; margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
+#tiktok-last-updated-timestamp::before, #lastUpdatedInstagram::before, #lastUpdatedYouTube::before { content: '\f017'; font-family: 'Font Awesome 5 Free'; font-weight: 900; }
+.creator-grid, .instagram-creator-grid, .youtube-creator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+.creator-card, .instagram-creator-card, .youtube-creator-card { /* Uses shared card style */ display: flex; flex-direction: column; text-align: left; }
+.creator-pic, .instagram-creator-pic, .youtube-creator-pic { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-bg); box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; flex-shrink: 0; }
+.youtube-cover-photo { width: 100%; height: 100px; object-fit: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; margin: -20px -20px 15px -20px; }
+.creator-header, .instagram-creator-header, .youtube-creator-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.creator-header h3, .instagram-creator-header h3, .youtube-creator-header h3 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-color); line-height: 1.3; }
+.verified-badge, .instagram-verified-badge, .youtube-verified-badge { width: 14px; height: 14px; margin-left: 5px; }
+.creator-username, .instagram-creator-username, .youtube-creator-username { color: var(--secondary-text); font-size: 0.85rem; margin: 0 0 8px 0; word-break: break-all; }
+.creator-bio, .instagram-creator-bio, .youtube-creator-bio { color: var(--secondary-text); margin: 8px 0; font-size: 0.9rem; line-height: 1.4; }
+.follower-count, .instagram-follower-count, .youtube-subscriber-count { color: var(--text-color); font-weight: 500; margin: 8px 0; font-size: 0.85rem; }
+.visit-profile, .instagram-visit-profile, .youtube-visit-profile { /* Pill Button */ display: inline-flex; width: auto; padding: 6px 16px; font-size: 0.85rem; border-radius: var(--border-radius-pill); margin-top: 15px; align-self: flex-start; background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; }
+.visit-profile:hover, .instagram-visit-profile:hover, .youtube-visit-profile:hover { filter: brightness(115%); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
+
+/* ======================== */
+/* Version Info Section     */
+/* ======================== */
+.version-info-section { /* Uses shared section style */ font-size: 0.9rem; }
+.version-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
+.version-header::before { content: "📊"; font-size: 1.1em; }
+
+/* Container for each version info item */
+.version-number, .build-number, .os-info, .device-info, .update-time, .countdown {
+    padding: 10px 15px;
+    border-radius: var(--border-radius-md); /* Consistent rounding */
     margin-bottom: 10px;
-    color: var(--text-color);
+    font-size: 0.95em; /* Relative to section font size */
+    background-color: var(--card-bg); /* Use card background */
+    border: 1px solid var(--card-border); /* Use card border */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03); /* Subtle shadow */
     display: flex;
     align-items: center;
     gap: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
 }
-/* Icons before shoutout titles */
-#tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);} /* Example: Using Twitter icon for TikTok */
-#instagram-header::before { content: '\f16d'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
-#youtube-header::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
+.version-number:last-child, .build-number:last-child, .os-info:last-child, .device-info:last-child, .update-time:last-child, .countdown:last-child {
+    margin-bottom: 0;
+}
 
-/* Timestamp styles */
-#tiktok-last-updated-timestamp,
-#lastUpdatedInstagram,
-#lastUpdatedYouTube {
+/* Labels with icons */
+.version-number::before { content: "🔢 Version:"; }
+.build-number::before { content: "🏗️ Build:"; }
+.os-info::before { content: "💻 OS:"; }
+.device-info::before { content: "📱 Device:"; }
+.update-time::before { content: "🕒 Time:"; }
+.countdown::before { content: "⏱️"; }
+
+.version-number::before, .build-number::before, .os-info::before, .device-info::before, .update-time::before, .countdown::before {
     color: var(--secondary-text);
-    font-size: 0.85em;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-#tiktok-last-updated-timestamp::before,
-#lastUpdatedInstagram::before,
-#lastUpdatedYouTube::before {
-    content: '\f017'; /* Clock icon */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900; /* Solid style */
-}
-
-/* Grid container */
-.creator-grid,
-.instagram-creator-grid,
-.youtube-creator-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
-    gap: 15px;
-}
-
-/* Shoutout Cards - Use shared card styles */
-.creator-card,
-.instagram-creator-card,
-.youtube-creator-card {
-    /* Card styles handle background, padding, border, shadow */
-    display: flex; /* Use flex for better layout control */
-    flex-direction: column;
-    text-align: left; /* Align card content left */
-}
-
-/* Card internal elements */
-.creator-pic, .instagram-creator-pic, .youtube-creator-pic {
-    width: 50px; /* Smaller profile pics */
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--content-bg); /* Match background */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 10px;
-}
-.youtube-cover-photo { /* Ensure cover photo styles don't conflict */
-    width: 100%; /* Full width within card */
-    height: 100px; /* Adjust height */
-    object-fit: cover;
-    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; /* Round top corners */
-    margin: -20px -20px 15px -20px; /* Extend to edges, adjust bottom margin */
-}
-.creator-header, .instagram-creator-header, .youtube-creator-header {
-    align-items: center;
-    margin-bottom: 4px;
-}
-.creator-header h3, .instagram-creator-header h3, .youtube-creator-header h3 {
-    margin: 0;
-    font-size: 1rem; /* Adjust size */
-    font-weight: 600;
-    color: var(--text-color);
-    line-height: 1.3;
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-.verified-badge, .instagram-verified-badge, .youtube-verified-badge {
-    width: 14px; /* Smaller checkmark */
-    height: 14px;
-    margin-left: 5px;
-}
-.creator-username, .instagram-creator-username, .youtube-creator-username {
-    color: var(--secondary-text);
-    font-size: 0.85rem;
-    margin: 0 0 8px 0; /* Adjust spacing */
-    word-break: break-all;
-}
-.creator-bio, .instagram-creator-bio, .youtube-creator-bio {
-    color: var(--secondary-text);
-    margin: 8px 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-.follower-count, .instagram-follower-count, .youtube-subscriber-count {
-    color: var(--text-color); /* Primary text for count */
     font-weight: 500;
-    margin: 8px 0;
-    font-size: 0.85rem;
-}
-.visit-profile, .instagram-visit-profile, .youtube-visit-profile {
-    /* Use refined button style */
-    padding: 6px 14px;
-    font-size: 0.85rem;
-    border-radius: var(--border-radius-lg); /* Consistent rounding */
-    margin-top: 15px; /* Space above button */
-    align-self: flex-start; /* Align button left */
+    min-width: 80px; /* Align labels */
 }
 
 /* ======================== */
-/* Version Info & Legal     */
+/* Legal Section            */
 /* ======================== */
-.version-info-section, .legal-section {
-    /* Shared section styles handle main appearance */
-    font-size: 0.9rem; /* Slightly smaller base font for these */
-}
-.version-header, .legal-header {
-    font-size: 1.1rem; /* Smaller headers */
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-}
-.version-number, .build-number, .os-info, .device-info, .update-time, .countdown {
-    padding: 10px 15px;
-    border-radius: var(--border-radius-md);
-    margin-bottom: 8px;
-    font-size: 0.9em;
-}
+.legal-section { /* Uses shared section style */ font-size: 0.9rem; }
+.legal-section::before { /* Optional top decorative border */ content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #ff4757, color-mix(in srgb, #ff4757 70%, transparent), #ff4757); }
+.legal-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
+.legal-header::before { content: '⚖️'; font-size: 1.1em; }
+
+/* Container for legal messages */
 .copy-protection-message, .legal-protection-message, .watermark-message {
     padding: 12px 15px;
-    font-size: 0.9em;
+    font-size: 0.95em;
     margin: 10px 0;
     border-radius: var(--border-radius-md);
+    background-color: var(--card-bg); /* Use card background */
+    border: 1px solid var(--card-border); /* Use card border */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+    border-left-width: 4px; /* Keep colored left border */
 }
-.last-updated {
-    margin-top: 15px;
-    padding-top: 10px;
-    font-size: 0.8em;
-}
-/* Keep unique legal section ::before if desired */
-.legal-section::before { height: 2px; /* Make top border thinner */ }
+.copy-protection-message { border-left-color: #ff4757; }
+.legal-protection-message { border-left-color: #ffa502; }
+.watermark-message { border-left-color: #2ed573; }
+.copy-protection-message::before, .legal-protection-message::before, .watermark-message::before { content: '⚠️'; font-size: 1.1em; }
+.copy-protection-message:hover, .legal-protection-message:hover, .watermark-message:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+
+.last-updated { color: var(--secondary-text); font-size: 0.8em; margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
+.last-updated::before { content: '🕒'; font-size: 1em; }
 
 /* ======================== */
-/* Footer                   */
+/* Countdown Section        */
 /* ======================== */
-footer {
-    text-align: center;
-    padding: 25px 20px;
-    margin-top: 40px;
-    color: var(--secondary-text);
-    border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
+.countdown-section { /* Uses shared section style */ text-align: center; }
+.countdown-section h2 { /* Title Styling */ font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
+.countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+.countdown-block { text-align: center; } /* Container for number + label */
+
+/* Individual Flip Clock "Card" */
+.flip-clock { perspective: 400px; margin-bottom: 5px; display: inline-block; }
+.flip-clock-inner { position: relative; width: 70px; height: 90px; /* Adjust size */ transform-style: preserve-3d; transition: transform 0.6s ease-in-out; display: flex; align-items: center; justify-content: center; }
+.flip-clock-inner.flip { transform: rotateX(180deg); }
+.flip-clock-front, .flip-clock-back {
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center;
+    font-size: 2.2em; font-weight: 600; /* Bolder font */
+    background-color: var(--card-bg); /* Use card background */
+    border: 1px solid var(--card-border); /* Use card border */
+    border-radius: var(--border-radius-md); /* Match card rounding */
+    color: var(--text-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
+.flip-clock-back { transform: rotateX(180deg); }
+
+.countdown-label { color: var(--secondary-text); font-size: 0.8em; font-weight: 500; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px; }
+
 
 /* ======================== */
 /* Scroll-to-Top Button     */
@@ -856,14 +464,14 @@ footer {
 .scroll-to-top {
     position: fixed;
     bottom: 25px;
-    right: 25px; /* Positioned bottom-right */
-    width: 44px; /* Size similar to macOS/iOS controls */
+    left: 25px; /* Positioned bottom-left */
+    width: 44px;
     height: 44px;
     background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
-    border-radius: 50%; /* Circular */
+    border-radius: 50%;
     cursor: pointer;
     z-index: 1000;
     display: none; /* Hidden by default */
@@ -871,72 +479,66 @@ footer {
     transition: opacity 0.3s ease, transform 0.3s ease;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
-.scroll-to-top.visible {
-    display: block; /* Show when needed */
-    opacity: 1;
-}
-.scroll-to-top:hover {
-    background-color: color-mix(in srgb, var(--content-bg) 95%, transparent);
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
+.scroll-to-top.visible { display: block; opacity: 1; }
+.scroll-to-top:hover { background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); transform: scale(1.05); }
 
-/* Progress Ring & Arrow */
-.progress-ring { transform: rotate(-90deg); }
+/* Progress Ring & Arrow - Setup for JS */
+.progress-ring { transform: rotate(-90deg); position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.progress-ring circle { cx: 50%; cy: 50%; r: 20; fill: transparent; } /* Adjusted radius for 44px size */
 .progress-bg { stroke: var(--border-color); opacity: 0.3; stroke-width: 3; }
-.progress-indicator { stroke: var(--accent-color); stroke-width: 3; stroke-linecap: round; }
-.arrow { font-size: 18px; color: var(--accent-color); transform: translate(-50%, -50%); } /* Centered arrow */
+.progress-indicator {
+    stroke: var(--accent-color);
+    stroke-width: 3;
+    stroke-linecap: round;
+    /* Circumference: 2 * pi * 20 = ~125.66 */
+    stroke-dasharray: 125.66;
+    stroke-dashoffset: 125.66; /* Start empty, JS will change this */
+    transition: stroke-dashoffset 0.1s linear; /* Smooth progress update */
+}
+.arrow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; color: var(--accent-color); pointer-events: none; }
+/* Ensure Font Awesome is linked if using font icon for arrow, e.g., content: '\f062'; */
+
 
 /* ======================== */
 /* Focus Outline Management */
 /* ======================== */
-:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-}
-body.focus-outline-disabled :focus {
-    outline: none !important;
-}
-@media (max-width: 1024px) {
-    #focus-outline-setting-card { display: none; }
-}
+:focus { outline: 2px solid var(--accent-color); outline-offset: 2px; }
+body.focus-outline-disabled :focus { outline: none !important; }
+@media (max-width: 1024px) { #focus-outline-setting-card { display: none; } }
 
 /* ======================== */
 /* Maintenance Screen       */
 /* ======================== */
 body.maintenance-active { overflow: hidden; }
-.maintenance-overlay {
-    /* Keep existing styles, ensure colors use variables */
-    background-color: rgba(0, 0, 0, 0.9); /* Darker backdrop */
-    color: var(--dark-text); /* Use dark mode text color */
-    display: none;
-    /* ... other styles */
-}
-.maintenance-loader {
-    border: 4px solid rgba(255, 255, 255, 0.2); /* Dimmer track */
-    border-top: 4px solid var(--dark-accent); /* Use accent color */
-    /* ... other styles */
-}
-.maintenance-content h1 { color: var(--dark-accent); }
-.maintenance-content p { color: var(--dark-text); opacity: 0.8; }
-.maintenance-socials a { color: var(--dark-link); }
+.maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); color: var(--dark-text); display: none; justify-content: center; align-items: center; text-align: center; z-index: 9999; padding: 20px; box-sizing: border-box; opacity: 0; animation: fadeIn 0.4s ease-in-out forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+.maintenance-content { max-width: 600px; width: 100%; }
+.maintenance-logo { max-width: 150px; height: auto; margin-bottom: 30px; opacity: 0.8; }
+.maintenance-loader { border: 4px solid rgba(255, 255, 255, 0.2); border-top: 4px solid var(--dark-accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 30px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.maintenance-content h1 { font-size: 2.5rem; margin-bottom: 15px; color: var(--dark-accent); font-weight: 700; }
+.maintenance-content p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px; opacity: 0.9; }
+.maintenance-content .maintenance-status-message { font-size: 0.9rem; font-style: italic; opacity: 0.7; margin-top: -15px; }
+.maintenance-socials { margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 25px; }
+.maintenance-socials p { margin-bottom: 15px; font-size: 1rem; opacity: 0.8; }
+.maintenance-socials a { color: var(--dark-link); text-decoration: none; margin: 0 10px; font-size: 1rem; transition: color 0.2s ease; display: inline-block; margin-bottom: 10px; }
+.maintenance-socials a i { margin-right: 8px; font-size: 1.2rem; vertical-align: middle; }
 .maintenance-socials a:hover { color: var(--dark-hover); }
+@media (max-width: 480px) { .maintenance-content h1 { font-size: 1.8rem; } .maintenance-content p { font-size: 1rem; } .maintenance-logo { max-width: 100px; margin-bottom: 20px; } .maintenance-socials a { margin: 0 5px; font-size: 0.95rem; } }
+
 
 /* ======================== */
 /* Copy Protection          */
 /* ======================== */
-* {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-img {
-    pointer-events: none;
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-}
+* { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+img { pointer-events: none; -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
+
+
+/* ======================== */
+/* Footer                   */
+/* ======================== */
+footer { text-align: center; padding: 25px 20px; margin-top: 40px; color: var(--secondary-text); border-top: 1px solid var(--border-color); font-size: 0.9rem; }
+
 
 /* ======================== */
 /* Responsive (Final Check) */
@@ -944,17 +546,8 @@ img {
 @media (max-width: 768px) {
     body { padding: 15px; }
     .container { padding: 0 15px; }
-    /* Adjust section padding */
-    .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] {
-        padding: 20px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        border-radius: var(--border-radius-md); /* Slightly less rounded on mobile */
-    }
-    /* Adjust card padding */
-    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card {
-        padding: 15px;
-    }
+    .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 20px; margin-top: 20px; margin-bottom: 20px; border-radius: var(--border-radius-md); }
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card { padding: 15px; }
     .president-info { flex-direction: column; text-align: center; }
     .president-photo { width: 120px; height: 120px; margin-bottom: 15px;}
     .profile-pic { width: 120px; height: 120px; }
@@ -963,16 +556,8 @@ img {
 @media (max-width: 480px) {
     body { padding: 10px; }
     .container { padding: 0 10px; }
-     /* Adjust section padding */
-    .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] {
-        padding: 15px;
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-     /* Adjust card padding */
-    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card {
-        padding: 12px;
-    }
+    .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 15px; margin-top: 15px; margin-bottom: 15px; }
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card { padding: 12px; }
     .profile-pic { width: 100px; height: 100px; }
     .president-photo { width: 100px; height: 100px; }
     .social-button, .link-button { width: 100%; } /* Stack buttons */
