@@ -1,4 +1,4 @@
-/* styles.css - Apple-Inspired Theme (Revision 5) */
+/* styles.css - Apple-Inspired Theme (Revision 8 - Focus on Light Mode & Visibility) */
 
 /* ======================== */
 /* Theme Variables    */
@@ -54,6 +54,7 @@
   --light-link: #007aff;
   --light-shadow: rgba(0, 0, 0, 0.1);
   --light-icon: #ffffff;
+  --light-icon-dark: #1d1d1f; /* Icon color for light backgrounds */
 
   /* Input and Dropdowns (Light) */
   --input-bg-light: #ffffff;
@@ -78,6 +79,7 @@
   --link-color: var(--dark-link);
   --shadow-color: var(--dark-shadow);
   --icon-color: var(--dark-icon);
+  --icon-color-on-accent: var(--light-icon);
   --input-bg: var(--input-bg-dark);
   --input-border: var(--input-border-dark);
   --input-focus-border: var(--input-focus-border-dark);
@@ -88,21 +90,21 @@
   --dropdown-focus-border: var(--dropdown-focus-border-dark);
 }
 
-/* Light Mode Override - ** FIX: Ensure ALL relevant BG/Border vars are overridden ** */
-body.light-e {
+/* Light Mode Override - ** !! REPLACE 'light-mode' if your class is different !! ** */
+body.light-mode {
   --bg-color: var(--light-bg);
   --content-bg: var(--light-content-bg);
-  --card-bg: var(--light-card-bg); /* <<< FIXED */
+  --card-bg: var(--light-card-bg);         /* <<< Ensures override */
   --text-color: var(--light-text);
   --secondary-text: var(--light-secondary-text);
   --border-color: var(--light-border);
-  --card-border: var(--light-card-border); /* <<< FIXED */
+  --card-border: var(--light-card-border);   /* <<< Ensures override */
   --accent-color: var(--light-accent);
   --hover-color: var(--light-hover);
   --link-color: var(--light-link);
   --shadow-color: var(--light-shadow);
-  /* Icons on accent backgrounds stay white, others might need changing */
-  /* --icon-color: var(--light-text); */ /* Example if icons need to be dark */
+  --icon-color: var(--light-icon-dark);
+  --icon-color-on-accent: var(--light-icon);
   --input-bg: var(--input-bg-light);
   --input-border: var(--input-border-light);
   --input-focus-border: var(--input-focus-border-light);
@@ -113,146 +115,111 @@ body.light-e {
   --dropdown-focus-border: var(--dropdown-focus-border-light);
 }
 
+/* Force card styles in light mode (if simple override fails) */
+/* ** !! THIS USES '!important'. ONLY KEEP IF NECESSARY AFTER CHECKING BODY CLASS !! ** */
+body.light-mode .tech-item,
+body.light-mode .faq-item,
+body.light-mode .event-card,
+body.light-mode .creator-card,
+body.light-mode .instagram-creator-card,
+body.light-mode .youtube-creator-card,
+body.light-mode .version-number,
+body.light-mode .build-number,
+body.light-mode .os-info,
+body.light-mode .device-info,
+body.light-mode .update-time,
+body.light-mode .countdown, /* Also style countdown block if needed */
+body.light-mode .copy-protection-message,
+body.light-mode .legal-protection-message,
+body.light-mode .watermark-message,
+body.light-mode .disabilities-section a {
+    background-color: var(--card-bg) !important;
+    border-color: var(--card-border) !important;
+    color: var(--text-color) !important; /* Ensure text color is also light */
+}
+
+/* Force text colors within light mode cards */
+body.light-mode .tech-detail,
+body.light-mode .faq-answer,
+body.light-mode .event-row,
+body.light-mode .creator-bio,
+body.light-mode .follower-count,
+body.light-mode .instagram-follower-count,
+body.light-mode .youtube-subscriber-count,
+body.light-mode .version-number::before,
+body.light-mode .build-number::before,
+body.light-mode .os-info::before,
+body.light-mode .device-info::before,
+body.light-mode .update-time::before,
+body.light-mode .president-details p,
+body.light-mode .disabilities-section p,
+body.light-mode .last-updated {
+     color: var(--secondary-text) !important;
+}
+body.light-mode .president-details p strong,
+body.light-mode .tech-detail span,
+body.light-mode .battery-percentage { /* Ensure battery % is readable */
+      color: var(--text-color) !important;
+}
+
+
 /* ======================== */
 /* Base Styles              */
 /* ======================== */
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--system-font-stack);
-    font-size: var(--base-font-size);
-    margin: 0;
-    padding: 20px;
-    line-height: var(--line-height);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.container {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 0 15px;
-}
-@media (min-width: 768px) {
-    .container { padding: 0 30px; }
-}
+/* ... (Body, Container styles remain the same) ... */
+body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--system-font-stack); font-size: var(--base-font-size); margin: 0; padding: 20px; line-height: var(--line-height); transition: background-color 0.3s ease, color 0.3s ease; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.container { max-width: 1100px; margin: 30px auto; padding: 0 15px; }
+@media (min-width: 768px) { .container { padding: 0 30px; } }
 
 /* ======================== */
 /* Shared Section Styling   */
 /* ======================== */
-.profile-section,
-.countdown-section,
-.president-section,
-.social-links-section,
-.useful-links-section,
-.tech-section,
-.faq-section,
-.shoutouts-section,
-.disabilities-section,
-.version-info-section,
-.legal-section,
-[data-section-id="events"] {
-    padding: 25px;
-    border-radius: var(--border-radius-lg);
-    margin-top: 25px;
-    margin-bottom: 25px;
-    background-color: color-mix(in srgb, var(--content-bg) 85%, transparent);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(0, 0, 0, 0.06);
-    width: 100%;
-    box-sizing: border-box;
-}
+/* ... (Section styles remain the same) ... */
+.profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 25px; border-radius: var(--border-radius-lg); margin-top: 25px; margin-bottom: 25px; background-color: color-mix(in srgb, var(--content-bg) 85%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(0, 0, 0, 0.06); width: 100%; box-sizing: border-box; }
 
 /* ======================== */
 /* Card Styling (Items within sections) */
 /* ======================== */
-.tech-item,
-.faq-item,
-.event-card,
-.creator-card,
-.instagram-creator-card,
-.youtube-creator-card,
-.version-number,
-.build-number,
-.os-info,
-.device-info,
-.update-time,
-.countdown,
-.copy-protection-message,
-.legal-protection-message,
-.watermark-message {
-    padding: 18px;
-    border-radius: var(--border-radius-md);
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.04);
-    transition: transform 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing);
-    margin-bottom: 15px;
-    color: var(--text-color); /* Ensure text color is inherited correctly */
-}
-/* Fix text color specifically for legal messages if needed */
-.copy-protection-message,
-.legal-protection-message,
-.watermark-message {
-    color: var(--text-color);
-}
-
-
-.tech-section > .tech-item:last-child,
-.faq-container > .faq-item:last-child,
-.events-container > .event-card:last-child,
-.creator-grid > .creator-card:last-child,
-.instagram-creator-grid > .instagram-creator-card:last-child,
-.youtube-creator-grid > .youtube-creator-card:last-child,
-.version-info-section > div:last-of-type,
-.legal-section > div:last-of-type {
-    margin-bottom: 0;
-}
-
-.tech-item:hover,
-.faq-item:hover,
-.event-card:hover,
-.creator-card:hover,
-.instagram-creator-card:hover,
-.youtube-creator-card:hover,
-.copy-protection-message:hover,
-.legal-protection-message:hover,
-.watermark-message:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 8px 25px rgba(0, 0, 0, 0.07);
-}
+/* ... (Shared Card styles including version/legal inner items remain the same) ... */
+.tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message, .disabilities-section a { padding: 18px; border-radius: var(--border-radius-md); background-color: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.04); transition: transform 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing), background-color 0.2s ease, border-color 0.2s ease; margin-bottom: 15px; color: var(--text-color); }
+.disabilities-section a { display: block; text-decoration: none; font-weight: 500; }
+.tech-section > .tech-item:last-child, .faq-container > .faq-item:last-child, .events-container > .event-card:last-child, .creator-grid > .creator-card:last-child, .instagram-creator-grid > .instagram-creator-card:last-child, .youtube-creator-grid > .youtube-creator-card:last-child, .version-info-section > div:last-of-type, .legal-section > div:last-of-type, .disabilities-section ul > li:last-child > a { margin-bottom: 0; }
+.tech-item:hover, .faq-item:hover, .event-card:hover, .creator-card:hover, .instagram-creator-card:hover, .youtube-creator-card:hover, .copy-protection-message:hover, .legal-protection-message:hover, .watermark-message:hover, .disabilities-section a:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 8px 25px rgba(0, 0, 0, 0.07); }
+.disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg)); color: var(--accent-color); border-color: color-mix(in srgb, var(--accent-color) 30%, var(--card-border)); }
 
 /* ======================== */
 /* Profile Section Specifics */
 /* ======================== */
-/* ... styles for profile pic, status, username, icon buttons ... */
+/* ... username, verified check, icon buttons ... */
 .profile-section { text-align: center; }
 .profile-pic-wrapper { position: relative; width: 150px; margin: 0 auto 15px; }
 .profile-pic { width: 150px; height: 150px; border-radius: 50%; display: block; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); object-fit: cover; }
-.profile-status-container { position: absolute; bottom: 5px; right: 5px; width: 30px; height: 30px; border-radius: 50%; background: var(--content-bg); border: 2px solid color-mix(in srgb, var(--border-color) 80%, transparent); display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.profile-status-container {
+    position: absolute; /* Keep absolute */
+    bottom: 5px; right: 5px; /* Default position */
+    width: 30px; height: 30px; border-radius: 50%; background: var(--content-bg); border: 2px solid color-mix(in srgb, var(--border-color) 80%, transparent); display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
 .profile-status { font-size: 16px; }
 .username-checkmark { display: flex; align-items: center; justify-content: center; margin: 15px 0; }
 .username-checkmark h1 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-color); background: none; -webkit-background-clip: unset; background-clip: unset; }
 .verified { width: 20px; height: 20px; margin-left: 8px; color: var(--accent-color); }
 .settings-button, .merch-button, .weather-button { position: absolute; border-radius: 50%; width: 36px; height: 36px; background-color: color-mix(in srgb, var(--content-bg) 80%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-position: center; background-size: 16px; background-repeat: no-repeat; cursor: pointer; padding: 0; z-index: 10; transition: all 0.2s ease-out; }
 .settings-button:hover, .merch-button:hover, .weather-button:hover { transform: scale(1.1); background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-.settings-button { top: 20px; right: 20px; background-image: url('settings-icon.png'); } /* Update path */
-.merch-button { top: 20px; left: 20px; background-image: url('gift-bag-icon.png'); } /* Update path */
-.weather-button { bottom: 20px; left: 20px; background-image: url('weather-icon.png');} /* Update path */
+.settings-button { top: 20px; right: 20px; background-image: url('settings-icon.png'); }
+.merch-button { top: 20px; left: 20px; background-image: url('gift-bag-icon.png'); }
+.weather-button { bottom: 20px; left: 20px; background-image: url('weather-icon.png');}
 
 /* ======================== */
 /* Date/Time Section        */
 /* ======================== */
-.datetime-section { /* Uses shared card style */ margin-top: 30px; text-align: center; }
+/* ... (Date/Time styles remain the same) ... */
+.datetime-section { background-color: var(--card-bg); padding: 15px; border-radius: var(--border-radius-md); margin-top: 30px; margin-bottom: 30px; text-align: center; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 5px rgba(0, 0, 0, 0.04); border: 1px solid var(--card-border); }
 .current-datetime { font-family: var(--system-font-stack); font-size: 1.1em; font-weight: 500; color: var(--secondary-text); margin: 0; }
 
 /* ======================== */
 /* President Section        */
 /* ======================== */
-/* ... President styles ... */
+/* ... (President styles remain the same) ... */
 .president-section { /* Uses shared section style */ }
 .president-info { display: flex; align-items: center; gap: 30px; padding: 10px 0; }
 .president-photo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); flex-shrink: 0; }
@@ -261,13 +228,15 @@ body {
 .president-details p { font-size: 1rem; line-height: 1.5; color: var(--secondary-text); margin: 4px 0; }
 .president-details p strong { color: var(--text-color); font-weight: 500; }
 
+
 /* ======================== */
 /* Social & Useful Links    */
 /* ======================== */
+/* ... (Link styles remain largely the same, responsive fix below) ... */
 .social-links-section, .useful-links-section { text-align: center; /* Uses shared section style */ }
 .social-links-section h2, .useful-links-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .social-links-container, .links-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
-.social-button, .link-button { display: flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: var(--border-radius-pill); background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; letter-spacing: 0; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; text-align: center; gap: 10px; width: 100%; /* Ensure button takes grid width */ box-sizing: border-box; }
+.social-button, .link-button { display: flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: var(--border-radius-pill); background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; letter-spacing: 0; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; text-align: center; gap: 10px; width: 100%; box-sizing: border-box; }
 .social-button:hover, .link-button:hover { filter: brightness(115%); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
 .social-button .social-icon { font-size: 1.1rem; color: inherit; flex-shrink: 0; line-height: 1; }
 .social-button span { flex-grow: 1; text-align: center; line-height: 1.2; }
@@ -275,6 +244,7 @@ body {
 /* ======================== */
 /* Tech Section             */
 /* ======================== */
+/* ... (Tech styles largely the same, Battery fix below) ... */
 .tech-section { /* Uses shared section style */ }
 .tech-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .tech-item { /* Uses shared card style */ margin-bottom: 15px; }
@@ -284,42 +254,47 @@ body {
 .tech-detail i { width: 18px; text-align: center; color: var(--secondary-text); opacity: 0.8; }
 .tech-detail span { font-weight: 500; color: var(--text-color); margin-right: 5px; }
 
-/* --- Battery Styles - FIX Visibility --- */
-.battery-container { display: flex; align-items: center; gap: 10px; margin-top: 15px; color: var(--secondary-text); font-size: 0.9rem; }
+/* Battery Styles - ** FIX VISIBILITY ** */
+.battery-container { display: flex; align-items: center; gap: 5px; margin-top: 15px; color: var(--secondary-text); font-size: 0.9rem; }
 .battery-icon { /* Outer shape */
-    position: relative;
-    width: 25px; height: 12px; /* Ensure dimensions are set */
+    position: relative; /* Needed for absolute positioning of level and percentage */
+    width: 25px; height: 12px;
     border: 1.5px solid var(--secondary-text);
     border-radius: 3px;
-    display: inline-block; /* Make sure it's displayed */
-    margin-right: 8px;
-    background-color: transparent; /* Ensure it's not hidden by background */
+    display: inline-block;
+    margin-right: 5px; /* Reduced margin */
+    background-color: transparent;
     vertical-align: middle;
-    overflow: hidden; /* Keep level contained */
+    overflow: hidden;
 }
 .battery-icon::after { /* Terminal */
-    content: ''; position: absolute; right: -4px; top: 2px; width: 2px; height: 6px; /* Check dimensions/position */
-    background-color: var(--secondary-text); border-radius: 0 1px 1px 0;
-    display: block; /* Ensure pseudo-element is displayed */
+    content: ''; position: absolute; right: -4px; top: 2px; width: 2px; height: 6px;
+    background-color: var(--secondary-text); border-radius: 0 1px 1px 0; display: block;
 }
 .battery-level { /* Inner fill level */
     position: absolute; left: 1px; top: 1px; bottom: 1px;
-    height: calc(100% - 2px); /* Ensure height is calculated */
-    border-radius: 1.5px;
-    background-color: var(--text-color); /* Default fill */
-    /* Width is set by inline style from JS */
+    height: calc(100% - 2px); border-radius: 1.5px;
+    background-color: var(--text-color);
     transition: width 0.4s ease, background-color 0.4s ease;
-    display: block; /* Ensure it's displayed */
+    display: block;
+    z-index: 1; /* Ensure fill is behind text */
 }
 .battery-icon.low-power .battery-level { background-color: #ffcc00; }
 .battery-icon.critical .battery-level { background-color: #ff3b30; }
-.battery-percentage { font-weight: 500; color: var(--text-color); margin-left: -5px; }
 
+.battery-percentage {
+    position: relative; /* Position relative to container */
+    font-weight: 500;
+    color: var(--text-color); /* Use primary text color */
+    z-index: 2; /* Ensure text is on top */
+    /* No absolute positioning needed if it follows the icon */
+    padding-left: 2px; /* Add slight space after icon */
+}
 
 /* ======================== */
 /* FAQ Section              */
 /* ======================== */
-/* ... FAQ styles remain largely the same ... */
+/* ... (FAQ styles remain the same, behavior requires JS) ... */
 .faq-section { /* Uses shared section style */ }
 .faq-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .faq-container { display: flex; flex-direction: column; gap: 10px; }
@@ -339,7 +314,7 @@ body {
 /* ======================== */
 /* Event Section            */
 /* ======================== */
-/* ... Event styles remain largely the same ... */
+/* ... (Event styles remain the same) ... */
 [data-section-id="events"] { /* Uses shared section style */ }
 [data-section-id="events"] h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .events-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
@@ -352,18 +327,17 @@ body {
 .event-link { display: inline-flex; width: auto; margin: 20px 0 0 0; padding: 10px 20px; font-size: 0.9rem; border-radius: var(--border-radius-pill); /* Pill shape */ background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; }
 .event-link:hover { filter: brightness(115%); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
 
-
 /* ======================== */
 /* Disabilities Section     */
 /* ======================== */
-/* ... Disabilities styles remain largely the same ... */
+/* ... (Disabilities styles remain the same) ... */
 .disabilities-section { /* Uses shared section style */ }
 .disabilities-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color); }
 .disabilities-section p { margin-bottom: 20px; color: var(--secondary-text); font-size: 1rem; }
 .disabilities-section ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .disabilities-section li { margin-bottom: 0; }
-.disabilities-section a { display: block; color: var(--text-color); text-decoration: none; padding: 15px; border-radius: var(--border-radius-md); background-color: var(--card-bg); border: 1px solid var(--card-border); transition: background-color 0.2s ease, transform 0.2s ease; font-weight: 500; }
-.disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg)); transform: translateY(-2px); color: var(--accent-color); }
+.disabilities-section a { /* Uses shared card style */ display: block; text-decoration: none; font-weight: 500; }
+.disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg)); color: var(--accent-color); border-color: color-mix(in srgb, var(--accent-color) 30%, var(--card-border)); transform: translateY(-3px); /* Keep hover transform */ }
 
 
 /* ======================== */
@@ -371,27 +345,26 @@ body {
 /* ======================== */
 .shoutouts-section { /* Uses shared section style */ padding-bottom: 10px; }
 .shoutouts-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 10px; color: var(--text-color); display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
-#tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);} /* Ensure Font Awesome is linked */
+/* ... Icons & Timestamps ... */
+#tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);}
 #instagram-header::before { content: '\f16d'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
 #youtube-header::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
 #tiktok-last-updated-timestamp, #lastUpdatedInstagram, #lastUpdatedYouTube { color: var(--secondary-text); font-size: 0.85em; margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
 #tiktok-last-updated-timestamp::before, #lastUpdatedInstagram::before, #lastUpdatedYouTube::before { content: '\f017'; font-family: 'Font Awesome 5 Free'; font-weight: 900; }
 .creator-grid, .instagram-creator-grid, .youtube-creator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-
-/* Shoutout Cards */
-.creator-card, .instagram-creator-card, .youtube-creator-card { /* Uses shared card style */ display: flex; flex-direction: column; text-align: left; overflow: hidden; /* <<< Added for cover photo fix */ }
+.creator-card, .instagram-creator-card, .youtube-creator-card { /* Uses shared card style */ display: flex; flex-direction: column; text-align: left; overflow: hidden; }
 .creator-pic, .instagram-creator-pic, .youtube-creator-pic { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-bg); box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; flex-shrink: 0; }
 
 /* YouTube Cover Photo Fix */
-.youtube-creator-card { padding-top: 0; /* Remove top padding from card itself */ }
+.youtube-creator-card { padding-top: 0 !important; /* Override card padding */ }
 .youtube-cover-photo {
-    width: 100%; /* Span full width of container */
-    height: 100px; /* Adjust height as needed */
-    object-fit: cover;
-    display: block; /* Ensure it's a block element */
-    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; /* Round only top corners */
-    margin: 0 0 15px 0; /* Remove negative horizontal margins, adjust bottom */
+    width: 100%; height: 100px; object-fit: cover; display: block;
+    border-top-left-radius: var(--border-radius-md); /* Match card radius */
+    border-top-right-radius: var(--border-radius-md); /* Match card radius */
+    margin: 0 0 15px 0; /* No negative margins needed */
 }
+/* Add padding back to the info container inside YouTube card */
+.youtube-creator-info { padding: 0 18px 18px 18px; /* Match card padding, skip top */ }
 
 .creator-header, .instagram-creator-header, .youtube-creator-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .creator-header h3, .instagram-creator-header h3, .youtube-creator-header h3 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-color); line-height: 1.3; }
@@ -401,30 +374,15 @@ body {
 
 /* Follower/Subscriber Count - Modernized */
 .follower-count, .instagram-follower-count, .youtube-subscriber-count {
-    color: var(--secondary-text); /* Use secondary color */
-    font-size: 0.85rem; /* Smaller size */
-    font-weight: 400; /* Lighter weight */
-    margin: 8px 0 0 0; /* Top margin only, less bottom margin */
-    display: flex;
-    align-items: center;
-    gap: 5px; /* Space for potential icon */
+    color: var(--secondary-text); font-size: 0.85rem; font-weight: 400;
+    margin: 8px 0 0 0; display: flex; align-items: center; gap: 5px;
 }
-/* Add icons (requires Font Awesome) */
-.follower-count::before, .instagram-follower-count::before { content: '\f0c0'; /* fa-users */ font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 0.9em; opacity: 0.7; }
-.youtube-subscriber-count::before { content: '\f167'; /* fa-youtube */ font-family: 'Font Awesome 5 Brands'; font-weight: 400; font-size: 1em; opacity: 0.7; color: #FF0000; /* YouTube Red */ margin-right: 2px; }
+.follower-count::before, .instagram-follower-count::before { content: '\f0c0'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 0.9em; opacity: 0.7; color: var(--secondary-text); }
+.youtube-subscriber-count::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; font-weight: 400; font-size: 1em; opacity: 0.7; color: #FF0000; margin-right: 2px; }
 
 /* Pill Buttons */
-.visit-profile, .instagram-visit-profile, .youtube-visit-profile {
-    display: inline-flex; width: auto; padding: 6px 16px; font-size: 0.85rem;
-    border-radius: var(--border-radius-pill); /* <<< PILL SHAPE */
-    margin-top: 15px; align-self: flex-start; background: var(--accent-color);
-    color: #ffffff; text-decoration: none; font-weight: 500;
-    transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08);
-    border: none;
-}
+.visit-profile, .instagram-visit-profile, .youtube-visit-profile { /* Uses shared pill button style */ display: inline-flex; width: auto; padding: 6px 16px; font-size: 0.85rem; border-radius: var(--border-radius-pill); margin-top: 15px; align-self: flex-start; background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; }
 .visit-profile:hover, .instagram-visit-profile:hover, .youtube-visit-profile:hover { filter: brightness(115%); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
-
 
 /* ======================== */
 /* Version Info Section     */
@@ -433,7 +391,7 @@ body {
 .version-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
 .version-header::before { content: "📊"; font-size: 1.1em; }
 /* Inner items use shared card style */
-.version-number, .build-number, .os-info, .device-info, .update-time, .countdown { /* Uses shared card style */ display: flex; align-items: center; gap: 10px; font-size: 0.95em; margin-bottom: 10px; /* Re-add margin if needed */ }
+.version-number, .build-number, .os-info, .device-info, .update-time, .countdown { display: flex; align-items: center; gap: 10px; font-size: 0.95em; margin-bottom: 10px; }
 .version-number::before { content: "🔢 Version:"; }
 .build-number::before { content: "🏗️ Build:"; }
 .os-info::before { content: "💻 OS:"; }
@@ -447,11 +405,11 @@ body {
 /* Legal Section            */
 /* ======================== */
 .legal-section { /* Uses shared section style */ font-size: 0.9rem; }
-.legal-section::before { /* Optional top decorative border */ content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #ff4757, color-mix(in srgb, #ff4757 70%, transparent), #ff4757); }
+.legal-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #ff4757, color-mix(in srgb, #ff4757 70%, transparent), #ff4757); }
 .legal-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
 .legal-header::before { content: '⚖️'; font-size: 1.1em; }
 /* Inner items use shared card style */
-.copy-protection-message, .legal-protection-message, .watermark-message { /* Uses shared card style */ display: flex; align-items: center; gap: 12px; font-size: 0.95em; margin-bottom: 10px; border-left-width: 4px; }
+.copy-protection-message, .legal-protection-message, .watermark-message { display: flex; align-items: center; gap: 12px; font-size: 0.95em; margin-bottom: 10px; border-left-width: 4px; }
 .copy-protection-message { border-left-color: #ff4757; }
 .legal-protection-message { border-left-color: #ffa502; }
 .watermark-message { border-left-color: #2ed573; }
@@ -463,74 +421,54 @@ body {
 /* ======================== */
 /* Countdown Section        */
 /* ======================== */
-.countdown-section { /* Uses shared section style */ text-align: center; }
+/* ... Countdown styles largely the same ... */
+.countdown-section { text-align: center; /* Uses shared section style */ }
 .countdown-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
 .countdown-block { text-align: center; }
-
-/* Flip Clock "Card" */
+/* Flip Clock "Card" - uses shared card style now */
 .flip-clock { perspective: 400px; margin-bottom: 5px; display: inline-block; }
 .flip-clock-inner { position: relative; width: 70px; height: 90px; transform-style: preserve-3d; transition: transform 0.6s ease-in-out; display: flex; align-items: center; justify-content: center; }
 .flip-clock-inner.flip { transform: rotateX(180deg); }
-.flip-clock-front, .flip-clock-back {
-    position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center;
-    font-size: 2.2em; font-weight: 600;
-    background-color: var(--card-bg); /* Use card background */
-    border: 1px solid var(--card-border); /* Use card border */
-    border-radius: var(--border-radius-md);
-    color: var(--text-color);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
+.flip-clock-front, .flip-clock-back { /* Use card styles */ position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 2.2em; font-weight: 600; background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--border-radius-md); color: var(--text-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .flip-clock-back { transform: rotateX(180deg); }
 .countdown-label { color: var(--secondary-text); font-size: 0.8em; font-weight: 500; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px; }
+
 
 /* ======================== */
 /* Scroll-to-Top Button     */
 /* ======================== */
 .scroll-to-top {
-    position: fixed;
-    bottom: 25px;
-    left: 25px; /* <<< FIXED POSITION */
-    right: auto; /* <<< Ensure right is not set */
-    width: 44px; height: 44px;
-    background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
+    position: fixed; bottom: 25px; left: 25px; /* <<< POSITION FIXED */ right: auto;
+    width: 44px; height: 44px; background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
-    border-radius: 50%;
-    cursor: pointer; z-index: 1000; display: none; opacity: 0;
+    border-radius: 50%; cursor: pointer; z-index: 1000; display: none; opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
     box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 .scroll-to-top.visible { display: block; opacity: 1; }
 .scroll-to-top:hover { background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); transform: scale(1.05); }
-
-/* Progress Ring & Arrow - Setup for JS */
-.scroll-to-top svg.progress-ring { /* Target the SVG element */
-    transform: rotate(-90deg);
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%; /* Ensure SVG fills the button */
-}
-.progress-ring circle { cx: 50%; cy: 50%; r: 20; fill: transparent; } /* r should be slightly less than half width/height */
+.scroll-to-top svg.progress-ring { transform: rotate(-90deg); position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.progress-ring circle { cx: 50%; cy: 50%; r: 20; fill: transparent; }
 .progress-bg { stroke: var(--border-color); opacity: 0.3; stroke-width: 3; }
-.progress-indicator {
-    stroke: var(--accent-color); stroke-width: 3; stroke-linecap: round;
-    stroke-dasharray: 125.66; /* Circumference: 2 * pi * 20 */
-    stroke-dashoffset: 125.66; /* Start empty, JS sets this */
-    transition: stroke-dashoffset 0.1s linear;
-}
+.progress-indicator { stroke: var(--accent-color); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 125.66; stroke-dashoffset: 125.66; transition: stroke-dashoffset 0.1s linear; }
 .arrow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; color: var(--accent-color); pointer-events: none; }
 
 
 /* ======================== */
 /* Focus Outline Management */
 /* ======================== */
+/* ... (Focus styles remain the same) ... */
 :focus { outline: 2px solid var(--accent-color); outline-offset: 2px; }
 body.focus-outline-disabled :focus { outline: none !important; }
 @media (max-width: 1024px) { #focus-outline-setting-card { display: none; } }
 
+
 /* ======================== */
 /* Maintenance Screen       */
 /* ======================== */
+/* ... (Maintenance styles remain the same) ... */
 body.maintenance-active { overflow: hidden; }
 .maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); color: var(--dark-text); display: none; justify-content: center; align-items: center; text-align: center; z-index: 9999; padding: 20px; box-sizing: border-box; opacity: 0; animation: fadeIn 0.4s ease-in-out forwards; }
 @keyframes fadeIn { to { opacity: 1; } }
@@ -563,39 +501,55 @@ footer { text-align: center; padding: 25px 20px; margin-top: 40px; color: var(--
 
 
 /* ======================== */
-/* Responsive Fixes & Final */
+/* Responsive Fixes         */
 /* ======================== */
 @media (max-width: 768px) {
     body { padding: 15px; }
     .container { padding: 0 15px; }
     .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 20px; margin-top: 20px; margin-bottom: 20px; border-radius: var(--border-radius-md); }
-    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message { padding: 15px; }
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message, .disabilities-section a { padding: 15px; }
     .president-info { flex-direction: column; text-align: center; }
     .president-photo { width: 120px; height: 120px; margin-bottom: 15px;}
     .profile-pic { width: 120px; height: 120px; }
 
-    /* Button Overflow Fix & Back-to-Top scaling */
-    .social-links-container, .links-container { grid-template-columns: 1fr; } /* Force single column */
-    .social-button, .link-button { width: 100%; /* Ensure buttons fill column */ }
+    /* Button Overflow & Profile Status Fix */
+    .social-links-container, .links-container { grid-template-columns: 1fr !important; } /* Force single column */
+    .social-button, .link-button { width: 100% !important; /* Ensure buttons fill column */ }
+    .profile-pic-wrapper { position: relative; width: 120px; /* Ensure wrapper size matches pic */ }
+    .profile-status-container {
+        position: absolute; /* Re-affirm */
+        bottom: 3px; right: 3px; /* Adjust if needed */
+        width: 25px; height: 25px;
+    }
+    .profile-status { font-size: 14px; }
 
-    .scroll-to-top { width: 40px; height: 40px; left: 20px; bottom: 20px; } /* Smaller button */
-    .progress-ring circle { r: 18; } /* Adjusted radius for 40px size */
-    .progress-indicator { stroke-dasharray: 113.1; stroke-dashoffset: 113.1; /* 2*pi*18 */ }
+    /* Back-to-Top scaling */
+    .scroll-to-top { width: 40px; height: 40px; left: 20px; bottom: 20px; }
+    .progress-ring circle { r: 18; }
+    .progress-indicator { stroke-dasharray: 113.1; stroke-dashoffset: 113.1; }
     .arrow { font-size: 16px; }
 }
 
 @media (max-width: 480px) {
     body { padding: 10px; }
     .container { padding: 0 10px; }
-     /* Adjust section padding */
     .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 15px; margin-top: 15px; margin-bottom: 15px; }
-     /* Adjust card padding */
-    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message { padding: 12px; }
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message, .disabilities-section a { padding: 12px; }
     .profile-pic { width: 100px; height: 100px; }
     .president-photo { width: 100px; height: 100px; }
 
-    .scroll-to-top { width: 36px; height: 36px; left: 15px; bottom: 15px; } /* Even smaller */
-    .progress-ring circle { r: 16; } /* Adjusted radius for 36px size */
-    .progress-indicator { stroke-dasharray: 100.53; stroke-dashoffset: 100.53; /* 2*pi*16 */ }
+    /* Profile Status Fix */
+     .profile-pic-wrapper { position: relative; width: 100px; /* Ensure wrapper size matches pic */ }
+     .profile-status-container {
+         position: absolute; /* Re-affirm */
+         bottom: 2px; right: 2px; /* Adjust further */
+         width: 22px; height: 22px;
+     }
+     .profile-status { font-size: 12px; }
+
+    /* Back-to-Top scaling */
+    .scroll-to-top { width: 36px; height: 36px; left: 15px; bottom: 15px; }
+    .progress-ring circle { r: 16; }
+    .progress-indicator { stroke-dasharray: 100.53; stroke-dashoffset: 100.53; }
     .arrow { font-size: 14px; }
 }
