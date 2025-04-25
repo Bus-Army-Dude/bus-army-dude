@@ -259,6 +259,39 @@ document.addEventListener("DOMContentLoaded", function() {
             link: "https://riverkritzar-shop.fourthwall.com/en-usd/products/autism-awareness-puzzle-ceramic-mug",
             category: "Kitchenwear"
         },
+        {
+            name: "ALL TIME BEST Basketball Graphic Sweatshirt",
+            price: 12.05,
+            originalPrice: 12.05, // Same as price, for non-sale
+            discount: 0, // No discount
+            stock: "in-stock",
+            sale: false, // No sale
+            image: "product_images/alltimebestsweatshirt.webp",
+            link: "https://riverkritzar-shop.fourthwall.com/products/all-time-best-basketball-graphic-sweatshirt",
+            category: "Hoodies & Sweatshirts"
+        },
+        {
+            name: "Timeless Basketball Graphic Tee",
+            price: 26.00,
+            originalPrice: 26.00, // Same as price, for non-sale
+            discount: 0, // No discount
+            stock: "in-stock",
+            sale: false, // No sale
+            image: "product_images/timelessbasketball.webp",
+            link: "https://riverkritzar-shop.fourthwall.com/products/timeless-basketball-graphic-tee",
+            category: "T-Shirts"
+        },
+        {
+            name: "Timeless Hoops Foam Trucker Hat",
+            price: 23.00,
+            originalPrice: 23.00, // Same as price, for non-sale
+            discount: 0, // No discount
+            stock: "in-stock",
+            sale: false, // No sale
+            image: "product_images/timelesshoophat.webp",
+            link: "https://riverkritzar-shop.fourthwall.com/products/timeless-hoops-foam-trucker-hat",
+            category: "Hats"
+        },
     ];
 
     const productGrid = document.getElementById("product-grid");
