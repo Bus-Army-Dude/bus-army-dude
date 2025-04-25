@@ -1,100 +1,131 @@
-/* settings-style.css */
+/* settings-style.css - Refactored for Apple Settings Theme */
 
-/* Settings Modal Base (Apple-Themed) */
+/* Settings Modal Base */
 .settings-modal {
-    display: none;
+    display: none; /* Hidden by default */
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0; /* Cover entire viewport */
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent background using theme variable */
+    background-color: color-mix(in srgb, var(--bg-color, #000) 70%, transparent);
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px); /* Apply backdrop blur */
+    -webkit-backdrop-filter: blur(15px);
+    opacity: 0; /* Start hidden for transition */
+    transition: opacity 0.3s ease-in-out;
 }
 
 .settings-modal.active {
     display: flex;
+    opacity: 1;
 }
 
 .settings-content {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    border-radius: 14px;
-    padding: 24px;
+    background-color: var(--content-bg); /* Use theme content background */
+    color: var(--text-color); /* Use theme text color */
+    border-radius: 14px; /* Keep existing radius */
+    padding: 0; /* Remove padding, handle sections internally */
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    max-height: 90vh;
+    box-shadow: 0 10px 30px var(--shadow-color); /* Use theme shadow */
+    max-height: 85vh; /* Limit height slightly more */
     overflow-y: auto;
     box-sizing: border-box;
+    border: 1px solid var(--border-color); /* Add subtle border */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Settings Header */
-.settings-content .title-2 {
-    font-size: 1.7rem;
-    font-weight: 600;
-    color: #1d1d1f;
-    margin-bottom: 20px;
-    text-align: left;
+.settings-content .settings-header-area { /* New wrapper for padding */
+    padding: 18px var(--content-padding, 20px); /* Use theme padding */
+    border-bottom: 0.5px solid var(--border-color); /* Thinner border */
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
-/* Settings Sections */
-.settings-content .settings-sections {
-    margin-top: 20px;
+.settings-content .title-2 { /* Assuming .title-2 is used for modal title */
+    font-size: 1.7rem; /* Keep size */
+    font-weight: 600; /* Keep weight */
+    color: var(--text-color);
+    margin: 0; /* Remove margin */
+    text-align: center; /* Center title */
 }
 
+/* Settings Body (Scrollable Area) */
+.settings-content .settings-body {
+    padding: 0 var(--content-padding, 20px) var(--content-padding, 20px); /* Padding for content */
+    overflow-y: auto; /* Allow body to scroll */
+    flex-grow: 1; /* Allow body to take available space */
+}
+
+
+/* Settings Sections (Groupings) */
 .settings-content .settings-section {
-    margin-bottom: 28px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    margin-top: var(--section-gap, 24px); /* Space between sections */
+}
+.settings-content .settings-section:first-child {
+    margin-top: var(--content-padding, 20px); /* Space from header */
 }
 
-.settings-content .settings-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
 
 .settings-content .settings-section-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem; /* Slightly larger section title */
     font-weight: 500;
-    color: #1d1d1f;
-    margin-bottom: 16px;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    padding: 0 5px; /* Slight indent */
 }
 
-/* Setting Items */
+/* Settings Items Container (Within a Section) */
+.settings-content .settings-items-group {
+    background-color: var(--content-bg); /* Ensure background */
+    border-radius: var(--border-radius-standard, 10px); /* Standard radius */
+    border: 0.5px solid var(--border-color); /* Add subtle border */
+    overflow: hidden; /* Clip items inside */
+}
+
+
+/* Setting Items (Rows) */
 .settings-content .setting-item {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align items to the start (left) */
-    padding: 14px 16px;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-    margin: 8px 0;
+    display: flex; /* Use flex for label and control */
+    justify-content: space-between;
+    align-items: center; /* Center items vertically */
+    padding: 12px var(--standard-padding, 15px); /* Consistent padding */
+    border-bottom: 0.5px solid var(--border-color); /* Divider line */
+    transition: background-color 0.2s ease;
+    margin: 0; /* Remove margin */
+    min-height: 44px; /* iOS standard touch target */
+}
+
+.settings-content .setting-item:last-child {
+    border-bottom: none; /* No border on last item in a group */
 }
 
 .settings-content .setting-item:hover {
-    background-color: #f0f0f0;
+    /* Subtle hover - might be too much on touch */
+    /* background-color: color-mix(in srgb, var(--border-color) 20%, var(--content-bg)); */
 }
 
 .settings-content .setting-label {
-    color: #333;
-    font-size: 0.95rem;
+    color: var(--text-color); /* Use theme text color */
+    font-size: 1.6rem; /* Slightly smaller base size */
     font-weight: 400;
-    margin-bottom: 8px; /* Add space between label and toggle */
+    margin: 0; /* Remove margin */
+    flex-grow: 1; /* Allow label to take space */
+    padding-right: 10px; /* Space before control */
 }
 
-/* Settings Description */
+/* Settings Description (Placed below the item if needed - requires HTML change) */
+/* Or keep it simple, maybe use tooltips */
 .settings-content .settings-description {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 8px; /* Add space between toggle and description */
-    line-height: 1.5;
-    opacity: 0.9;
+    display: none; /* Hide by default, integrate differently if needed */
+    /* font-size: 1.3rem;
+    color: var(--secondary-text);
+    padding: 0 var(--standard-padding, 15px) 10px;
+    line-height: 1.4; */
 }
 
 /* Apple-Style Toggle Switch */
@@ -104,249 +135,186 @@
     width: 51px;
     height: 31px;
     flex-shrink: 0;
-    margin-bottom: 8px; /* Add space between toggle and description */
+    /* Remove margin */
 }
 
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
 
 .toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #e0e0e0;
-    -webkit-transition: .4s;
-    transition: .4s;
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--toggle-off); /* Use theme variable */
+    transition: .2s; /* Faster transition */
     border-radius: 34px;
-    border: 1px solid #c0c0c0;
+    /* border: 0.5px solid color-mix(in srgb, var(--border-color) 50%, transparent); */ /* Optional subtle border */
 }
 
 .toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 23px;
-    width: 23px;
-    top: 3px;
-    left: 3px;
+    position: absolute; content: "";
+    height: 27px; width: 27px;
+    left: 2px; bottom: 2px; /* Adjusted position */
     background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+    transition: .2s;
     border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 input:checked + .toggle-slider {
-    background-color: #0a84ff;
-    border: 1px solid #0a84ff;
+    background-color: var(--toggle-on); /* Use theme variable */
+    /* border-color: var(--toggle-on); */
 }
 
 input:checked + .toggle-slider:before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
     transform: translateX(20px);
 }
 
-/* Hover and Focus States */
-.toggle-switch:hover .toggle-slider {
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+/* Focus state for toggle */
+.toggle-switch input:focus-visible + .toggle-slider {
+     box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 30%, transparent); /* Focus ring */
 }
 
-input:checked + .toggle-slider:hover {
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-/* Select Inputs */
+/* Select Inputs - Styled to look more like iOS picker button */
 .settings-content .settings-select {
-    width: 100%;
-    padding: 12px 14px;
+    width: auto; /* Don't force full width */
+    min-width: 100px; /* Minimum width */
+    padding: 6px 28px 6px 12px; /* Adjusted padding */
     border-radius: 8px;
-    border: 1px solid #ddd;
-    background-color: white;
-    color: #333;
+    border: 1px solid transparent; /* No border by default */
+    background-color: color-mix(in srgb, var(--border-color) 20%, var(--content-bg)); /* Subtle background */
+    color: var(--text-color);
     font: inherit;
+    font-size: 1.5rem; /* Smaller font */
     cursor: pointer;
-    transition: all 0.3s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    transition: all 0.2s ease;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23${encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--secondary-text').trim().substring(1))}'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E"); /* Chevron down */
     background-repeat: no-repeat;
-    background-position: right 12px center;
+    background-position: right 8px center;
     background-size: 16px;
-    padding-right: 36px;
 }
 
 .settings-content .settings-select:hover {
-    border-color: #0a84ff;
+    background-color: color-mix(in srgb, var(--border-color) 40%, var(--content-bg));
+    border-color: transparent;
 }
 
 .settings-content .settings-select:focus {
     outline: none;
-    border-color: #0a84ff;
-    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2);
+    border-color: transparent;
+     box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 30%, transparent); /* Focus ring */
 }
 
-/* Action Buttons */
+
+/* Action Buttons Area */
 .settings-content .settings-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end; /* Align buttons right */
     gap: 12px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
+    margin-top: var(--section-gap, 24px); /* Space above buttons */
+    padding: var(--standard-padding) var(--content-padding, 20px) 0; /* Padding top only */
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
+/* Buttons - Use standard iOS style */
 .settings-content .settings-save,
 .settings-content .settings-close {
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 8px 16px; /* Consistent padding */
+    border-radius: 8px; /* Standard radius */
     border: none;
     cursor: pointer;
     font: inherit;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 1.6rem; /* Slightly smaller font */
+    font-weight: 500; /* Medium weight */
+    transition: all 0.2s ease;
+    text-align: center;
 }
 
 .settings-content .settings-save {
-    background-color: #0a84ff;
-    color: white;
+    background-color: var(--accent-color); /* Theme accent */
+    color: var(--button-text-color); /* Theme button text */
 }
-
 .settings-content .settings-save:hover {
-    background-color: #007aff;
-    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+    background-color: var(--hover-color);
+    /* box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-color) 40%, transparent); */ /* Optional subtle shadow */
 }
 
 .settings-content .settings-close {
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: color-mix(in srgb, var(--border-color) 50%, var(--content-bg)); /* Subtle gray background */
+    color: var(--accent-color); /* Accent color text */
 }
-
 .settings-content .settings-close:hover {
-    background-color: #e0e0e0;
+    background-color: color-mix(in srgb, var(--border-color) 70%, var(--content-bg));
 }
 
 /* Animations */
 @keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
-
 .settings-modal.active .settings-content {
-    animation: modalFadeIn 0.3s ease forwards;
+    animation: modalFadeIn 0.25s ease-out forwards;
 }
 
-/* Dark Mode Adjustments */
-[data-theme="dark"] .settings-content {
-    background-color: var(--surface);
-    color: var(--on-surface);
-}
-
-[data-theme="dark"] .settings-content .title-2,
-[data-theme="dark"] .settings-content .settings-section-title,
-[data-theme="dark"] .settings-content .setting-label {
-    color: var(--on-surface);
-}
-
-[data-theme="dark"] .settings-content .settings-select {
-    background-color: var(--surface);
-    color: var(--on-surface);
-    border-color: var(--outline);
-}
-
-[data-theme="dark"] .settings-content .setting-item:hover {
-    background-color: var(--outline);
-}
-
-[data-theme="dark"] .toggle-slider {
-    background-color: var(--on-surface-variant);
-    border: 1px solid var(--outline);
-}
-
-[data-theme="dark"] input:checked + .toggle-slider {
-    background-color: #0a84ff;
-    border: 1px solid #0a84ff;
-}
+/* Remove specific [data-theme="dark"] overrides within this file */
+/* Rely on global theme variables changing via prefers-color-scheme */
 
 /* Responsive Design */
 @media (max-width: 480px) {
     .settings-content {
         width: 95%;
-        padding: 20px;
+        max-height: 90vh;
+        padding: 0; /* Remove padding, handle in sections */
     }
-
+    .settings-content .settings-header-area {
+        padding: 15px;
+    }
+    .settings-content .settings-body {
+        padding: 0 15px 15px;
+    }
+     .settings-content .settings-section:first-child {
+        margin-top: 15px;
+    }
+    .settings-content .setting-item {
+        padding: 10px 12px; /* Reduce padding */
+        min-height: 40px;
+    }
+    .settings-content .setting-label {
+        font-size: 1.5rem;
+    }
+    .settings-content .settings-select {
+        font-size: 1.4rem;
+        padding: 5px 24px 5px 10px;
+    }
     .settings-content .settings-actions {
-        flex-direction: column;
-        gap: 8px;
+        flex-direction: column-reverse; /* Stack buttons, Save on bottom */
+        gap: 10px;
+        padding: var(--standard-padding) var(--standard-padding) 0;
+        margin-top: var(--card-gap);
     }
-
     .settings-content .settings-save,
     .settings-content .settings-close {
         width: 100%;
+        padding: 10px; /* Larger tap target */
+        font-size: 1.6rem;
     }
 }
 
 /* Refresh Message */
 .refresh-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    padding: 12px 16px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
-    display: flex;
-    gap: 10px;
-    align-items: center;
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background-color: var(--content-bg); /* Use theme bg */
+    color: var(--text-color); /* Use theme text */
+    padding: 10px 15px; /* Adjusted padding */
+    border-radius: var(--border-radius-standard);
+    box-shadow: var(--shadow); /* Use theme shadow */
+    border: 0.5px solid var(--border-color); /* Add border */
+    z-index: 1001; display: flex; gap: 10px; align-items: center;
     animation: slideUp 0.3s ease;
+    font-size: 1.4rem; /* Adjust size */
 }
+@keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+.refresh-content { display: flex; gap: 8px; align-items: center; }
+.refresh-close { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; color: var(--secondary-text); margin-left: 5px; }
+.refresh-close svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; }
+.refresh-close:hover { color: var(--text-color); }
 
-[data-theme="dark"] .refresh-message{
-    background-color: #333;
-    color: #eee;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translate(-50%, 20px);
-        opacity: 0;
-    }
-    to {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-}
-
-.refresh-content {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.refresh-close {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.refresh-close svg {
-    width: 16px;
-    height: 16px;
-}
+/* Remove [data-theme="dark"] override for refresh message */
