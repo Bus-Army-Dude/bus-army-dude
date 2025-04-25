@@ -1,5 +1,64 @@
 /* settings-style.css - Refactored for Apple Settings Theme */
 
+/* ======================== */
+/* MAIN THEME VARIABLES (Put in your global CSS file) */
+/* Based on Apple Settings Style */
+/* ======================== */
+:root {
+  /* Default = Light Mode Variables */
+  --font-size-base: 17px;
+  --bg-color: #f5f5f7;         /* Apple's light background */
+  --content-bg: #ffffff;      /* Content area background */
+  --text-color: #1d1d1f;       /* Apple's primary text */
+  --secondary-text: #86868b;   /* Apple's secondary text */
+  --border-color: #d2d2d7;     /* Apple's border color */
+  --accent-color: #0066cc;     /* Apple blue */
+  --hover-color: #0071e3;      /* Apple blue hover */
+  --link-color: var(--accent-color);
+  --button-text-color: #ffffff;/* White text for accent buttons */
+  --toggle-on: #34c759;        /* Apple green */
+  --toggle-off: #e9e9eb;       /* Apple toggle off */
+  --red-color: #ff3b30;        /* Apple red */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow color */
+  --shadow: 0 1px 4px var(--shadow-color); /* Standard shadow */
+  --slider-thumb-color: #ffffff;
+  --slider-track-color: #e9e9eb;
+  --slider-track-filled-color: #0066cc;
+  --focus-outline-color: #0066cc;
+
+  /* General UI Elements */
+  --border-radius-standard: 10px;
+  --standard-padding: 15px;
+  --content-padding: 20px;
+  --section-gap: 24px;
+  --card-gap: 16px;
+  --transition-duration: 0.2s;
+  --transition-timing: ease-in-out;
+  --ff-apple: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Dark Mode Variables (Auto-applied via OS setting) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #000000;         /* Apple's dark background */
+    --content-bg: #1d1d1f;      /* Dark content area */
+    --text-color: #f5f5f7;       /* Light text */
+    --secondary-text: #86868b;   /* Secondary text */
+    --border-color: #424245;     /* Dark borders */
+    /* Keep light mode accent blue for consistency? Or use a brighter one? */
+    /* --accent-color: #0a84ff; */
+    /* --hover-color: #0b8fff; */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow: 0 1px 4px var(--shadow-color);
+    --slider-track-color: #424245;
+    --toggle-off: #636366;       /* Dark mode toggle off */
+  }
+}
+
+/* ======================== */
+/* END OF MAIN THEME VARIABLES */
+/* ======================== */
+
 /* Settings Modal Base */
 .settings-modal {
     display: none; /* Hidden by default */
