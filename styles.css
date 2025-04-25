@@ -1,4 +1,4 @@
-/* styles.css - Apple-Inspired Theme (Revision 8 - Focus on Light Mode & Visibility) */
+/* styles.css - Apple-Inspired Theme (Revision 10 - Final CSS Fix Attempts) */
 
 /* ======================== */
 /* Theme Variables    */
@@ -90,15 +90,15 @@
   --dropdown-focus-border: var(--dropdown-focus-border-dark);
 }
 
-/* Light Mode Override - ** !! REPLACE 'light-mode' if your class is different !! ** */
+/* Light Mode Override - ** !! REPLACE 'light-mode' IF YOUR CLASS IS DIFFERENT !! ** */
 body.light-mode {
   --bg-color: var(--light-bg);
   --content-bg: var(--light-content-bg);
-  --card-bg: var(--light-card-bg);         /* <<< Ensures override */
+  --card-bg: var(--light-card-bg);
   --text-color: var(--light-text);
   --secondary-text: var(--light-secondary-text);
   --border-color: var(--light-border);
-  --card-border: var(--light-card-border);   /* <<< Ensures override */
+  --card-border: var(--light-card-border);
   --accent-color: var(--light-accent);
   --hover-color: var(--light-hover);
   --link-color: var(--light-link);
@@ -115,8 +115,8 @@ body.light-mode {
   --dropdown-focus-border: var(--dropdown-focus-border-light);
 }
 
-/* Force card styles in light mode (if simple override fails) */
-/* ** !! THIS USES '!important'. ONLY KEEP IF NECESSARY AFTER CHECKING BODY CLASS !! ** */
+/* Force card styles in light mode - ** !! CHECK BODY CLASS NAME BEFORE USING !! ** */
+/* This uses !important as a last resort */
 body.light-mode .tech-item,
 body.light-mode .faq-item,
 body.light-mode .event-card,
@@ -128,45 +128,55 @@ body.light-mode .build-number,
 body.light-mode .os-info,
 body.light-mode .device-info,
 body.light-mode .update-time,
-body.light-mode .countdown, /* Also style countdown block if needed */
+body.light-mode .countdown,
 body.light-mode .copy-protection-message,
 body.light-mode .legal-protection-message,
 body.light-mode .watermark-message,
-body.light-mode .disabilities-section a {
+body.light-mode .disabilities-section a,
+body.light-mode .flip-clock-front, /* Force countdown card style */
+body.light-mode .flip-clock-back { /* Force countdown card style */
     background-color: var(--card-bg) !important;
     border-color: var(--card-border) !important;
-    color: var(--text-color) !important; /* Ensure text color is also light */
+    color: var(--text-color) !important;
 }
-
-/* Force text colors within light mode cards */
+/* Force text colors within light mode cards/elements */
 body.light-mode .tech-detail,
 body.light-mode .faq-answer,
 body.light-mode .event-row,
 body.light-mode .creator-bio,
-body.light-mode .follower-count,
-body.light-mode .instagram-follower-count,
-body.light-mode .youtube-subscriber-count,
+body.light-mode .follower-count, /* Includes icon */
+body.light-mode .instagram-follower-count, /* Includes icon */
+body.light-mode .youtube-subscriber-count, /* Includes icon */
 body.light-mode .version-number::before,
 body.light-mode .build-number::before,
 body.light-mode .os-info::before,
 body.light-mode .device-info::before,
 body.light-mode .update-time::before,
+body.light-mode .countdown-label, /* Countdown label */
 body.light-mode .president-details p,
 body.light-mode .disabilities-section p,
 body.light-mode .last-updated {
      color: var(--secondary-text) !important;
 }
 body.light-mode .president-details p strong,
-body.light-mode .tech-detail span,
-body.light-mode .battery-percentage { /* Ensure battery % is readable */
+body.light-mode .tech-detail span {
       color: var(--text-color) !important;
+}
+/* Ensure battery text is readable in light mode */
+body.light-mode .battery-percentage {
+    color: #000000 !important; /* Force black text */
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.6) !important; /* Light shadow */
+}
+/* Ensure countdown number is primary text color */
+body.light-mode .flip-clock-front,
+body.light-mode .flip-clock-back {
+    color: var(--text-color) !important;
 }
 
 
 /* ======================== */
 /* Base Styles              */
 /* ======================== */
-/* ... (Body, Container styles remain the same) ... */
 body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--system-font-stack); font-size: var(--base-font-size); margin: 0; padding: 20px; line-height: var(--line-height); transition: background-color 0.3s ease, color 0.3s ease; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .container { max-width: 1100px; margin: 30px auto; padding: 0 15px; }
 @media (min-width: 768px) { .container { padding: 0 30px; } }
@@ -174,47 +184,58 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 /* ======================== */
 /* Shared Section Styling   */
 /* ======================== */
-/* ... (Section styles remain the same) ... */
 .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] { padding: 25px; border-radius: var(--border-radius-lg); margin-top: 25px; margin-bottom: 25px; background-color: color-mix(in srgb, var(--content-bg) 85%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(0, 0, 0, 0.06); width: 100%; box-sizing: border-box; }
 
 /* ======================== */
 /* Card Styling (Items within sections) */
 /* ======================== */
-/* ... (Shared Card styles including version/legal inner items remain the same) ... */
-.tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, .countdown, .copy-protection-message, .legal-protection-message, .watermark-message, .disabilities-section a { padding: 18px; border-radius: var(--border-radius-md); background-color: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.04); transition: transform 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing), background-color 0.2s ease, border-color 0.2s ease; margin-bottom: 15px; color: var(--text-color); }
+.tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card, .version-number, .build-number, .os-info, .device-info, .update-time, /* .countdown applied below */ .copy-protection-message, .legal-protection-message, .watermark-message, .disabilities-section a { padding: 18px; border-radius: var(--border-radius-md); background-color: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.04); transition: transform 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing), background-color 0.2s ease, border-color 0.2s ease; margin-bottom: 15px; color: var(--text-color); }
 .disabilities-section a { display: block; text-decoration: none; font-weight: 500; }
 .tech-section > .tech-item:last-child, .faq-container > .faq-item:last-child, .events-container > .event-card:last-child, .creator-grid > .creator-card:last-child, .instagram-creator-grid > .instagram-creator-card:last-child, .youtube-creator-grid > .youtube-creator-card:last-child, .version-info-section > div:last-of-type, .legal-section > div:last-of-type, .disabilities-section ul > li:last-child > a { margin-bottom: 0; }
+/* Hover styles */
 .tech-item:hover, .faq-item:hover, .event-card:hover, .creator-card:hover, .instagram-creator-card:hover, .youtube-creator-card:hover, .copy-protection-message:hover, .legal-protection-message:hover, .watermark-message:hover, .disabilities-section a:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 8px 25px rgba(0, 0, 0, 0.07); }
 .disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg)); color: var(--accent-color); border-color: color-mix(in srgb, var(--accent-color) 30%, var(--card-border)); }
+
 
 /* ======================== */
 /* Profile Section Specifics */
 /* ======================== */
-/* ... username, verified check, icon buttons ... */
 .profile-section { text-align: center; }
-.profile-pic-wrapper { position: relative; width: 150px; margin: 0 auto 15px; }
-.profile-pic { width: 150px; height: 150px; border-radius: 50%; display: block; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); object-fit: cover; }
+.profile-pic-wrapper {
+    position: relative; /* Crucial for absolute positioning of status */
+    width: 150px; /* Match pic size */
+    height: 150px; /* Match pic size */
+    margin: 0 auto 15px;
+}
+.profile-pic { width: 100%; height: 100%; border-radius: 50%; display: block; border: 4px solid var(--content-bg); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); object-fit: cover; }
 .profile-status-container {
-    position: absolute; /* Keep absolute */
-    bottom: 5px; right: 5px; /* Default position */
+    position: absolute;
+    bottom: 5px; right: 5px; /* Default */
     width: 30px; height: 30px; border-radius: 50%; background: var(--content-bg); border: 2px solid color-mix(in srgb, var(--border-color) 80%, transparent); display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 .profile-status { font-size: 16px; }
-.username-checkmark { display: flex; align-items: center; justify-content: center; margin: 15px 0; }
+.username-checkmark { display: flex; align-items: center; justify-content: center; margin: 15px 0; gap: 0; /* Remove gap if any */ }
 .username-checkmark h1 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-color); background: none; -webkit-background-clip: unset; background-clip: unset; }
-.verified { width: 20px; height: 20px; margin-left: 8px; color: var(--accent-color); }
+.verified {
+    width: 20px; height: 20px;
+    margin-left: 4px; /* ** REDUCED MARGIN ** */
+    color: var(--accent-color);
+    display: inline-block; /* Ensure it flows with text */
+    vertical-align: middle; /* Align with text vertically */
+}
 .settings-button, .merch-button, .weather-button { position: absolute; border-radius: 50%; width: 36px; height: 36px; background-color: color-mix(in srgb, var(--content-bg) 80%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-position: center; background-size: 16px; background-repeat: no-repeat; cursor: pointer; padding: 0; z-index: 10; transition: all 0.2s ease-out; }
 .settings-button:hover, .merch-button:hover, .weather-button:hover { transform: scale(1.1); background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .settings-button { top: 20px; right: 20px; background-image: url('settings-icon.png'); }
 .merch-button { top: 20px; left: 20px; background-image: url('gift-bag-icon.png'); }
 .weather-button { bottom: 20px; left: 20px; background-image: url('weather-icon.png');}
 
+
 /* ======================== */
 /* Date/Time Section        */
 /* ======================== */
-/* ... (Date/Time styles remain the same) ... */
-.datetime-section { background-color: var(--card-bg); padding: 15px; border-radius: var(--border-radius-md); margin-top: 30px; margin-bottom: 30px; text-align: center; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 5px rgba(0, 0, 0, 0.04); border: 1px solid var(--card-border); }
-.current-datetime { font-family: var(--system-font-stack); font-size: 1.1em; font-weight: 500; color: var(--secondary-text); margin: 0; }
+.datetime-section { /* Uses shared card style */ margin-top: 30px; text-align: center; padding: 12px 15px; /* Reduced padding */ }
+.current-datetime { font-family: var(--system-font-stack); font-size: 1rem; font-weight: 500; color: var(--secondary-text); margin: 0; }
+
 
 /* ======================== */
 /* President Section        */
@@ -241,6 +262,7 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 .social-button .social-icon { font-size: 1.1rem; color: inherit; flex-shrink: 0; line-height: 1; }
 .social-button span { flex-grow: 1; text-align: center; line-height: 1.2; }
 
+
 /* ======================== */
 /* Tech Section             */
 /* ======================== */
@@ -254,18 +276,24 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 .tech-detail i { width: 18px; text-align: center; color: var(--secondary-text); opacity: 0.8; }
 .tech-detail span { font-weight: 500; color: var(--text-color); margin-right: 5px; }
 
-/* Battery Styles - ** FIX VISIBILITY ** */
-.battery-container { display: flex; align-items: center; gap: 5px; margin-top: 15px; color: var(--secondary-text); font-size: 0.9rem; }
-.battery-icon { /* Outer shape */
-    position: relative; /* Needed for absolute positioning of level and percentage */
+/* Battery Styles - ** FIX VISIBILITY & STRUCTURE ** */
+.battery-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Reduced gap */
+    margin-top: 15px;
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+.battery-icon { /* The outer shape */
+    position: relative; /* Context for absolute positioned children */
     width: 25px; height: 12px;
     border: 1.5px solid var(--secondary-text);
     border-radius: 3px;
     display: inline-block;
-    margin-right: 5px; /* Reduced margin */
     background-color: transparent;
     vertical-align: middle;
-    overflow: hidden;
+    overflow: hidden; /* Clip the level */
 }
 .battery-icon::after { /* Terminal */
     content: ''; position: absolute; right: -4px; top: 2px; width: 2px; height: 6px;
@@ -277,19 +305,26 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
     background-color: var(--text-color);
     transition: width 0.4s ease, background-color 0.4s ease;
     display: block;
-    z-index: 1; /* Ensure fill is behind text */
+    z-index: 1; /* Behind text */
+    /* Width controlled by inline style from JS */
 }
 .battery-icon.low-power .battery-level { background-color: #ffcc00; }
 .battery-icon.critical .battery-level { background-color: #ff3b30; }
 
 .battery-percentage {
-    position: relative; /* Position relative to container */
-    font-weight: 500;
-    color: var(--text-color); /* Use primary text color */
-    z-index: 2; /* Ensure text is on top */
-    /* No absolute positioning needed if it follows the icon */
-    padding-left: 2px; /* Add slight space after icon */
+    font-weight: 500; /* Regular weight is often clearer */
+    color: var(--text-color); /* Primary text color */
+    margin-left: 4px; /* Space after the icon */
+    line-height: 1; /* Ensure consistent alignment */
+    z-index: 2; /* In case it overlaps slightly */
+    position: relative; /* Keep in normal flow */
+    /* Removed absolute positioning and text shadow for simplicity */
 }
+/* Ensure light mode text is visible */
+body.light-mode .battery-percentage {
+    color: var(--text-color) !important; /* Force light mode text color */
+}
+
 
 /* ======================== */
 /* FAQ Section              */
@@ -327,6 +362,7 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 .event-link { display: inline-flex; width: auto; margin: 20px 0 0 0; padding: 10px 20px; font-size: 0.9rem; border-radius: var(--border-radius-pill); /* Pill shape */ background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; }
 .event-link:hover { filter: brightness(115%); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
 
+
 /* ======================== */
 /* Disabilities Section     */
 /* ======================== */
@@ -337,7 +373,7 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 .disabilities-section ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .disabilities-section li { margin-bottom: 0; }
 .disabilities-section a { /* Uses shared card style */ display: block; text-decoration: none; font-weight: 500; }
-.disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg)); color: var(--accent-color); border-color: color-mix(in srgb, var(--accent-color) 30%, var(--card-border)); transform: translateY(-3px); /* Keep hover transform */ }
+.disabilities-section a:hover { background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg)); color: var(--accent-color); border-color: color-mix(in srgb, var(--accent-color) 30%, var(--card-border)); transform: translateY(-3px); }
 
 
 /* ======================== */
@@ -345,13 +381,14 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 /* ======================== */
 .shoutouts-section { /* Uses shared section style */ padding-bottom: 10px; }
 .shoutouts-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 10px; color: var(--text-color); display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
-/* ... Icons & Timestamps ... */
 #tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);}
 #instagram-header::before { content: '\f16d'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
 #youtube-header::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
 #tiktok-last-updated-timestamp, #lastUpdatedInstagram, #lastUpdatedYouTube { color: var(--secondary-text); font-size: 0.85em; margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
 #tiktok-last-updated-timestamp::before, #lastUpdatedInstagram::before, #lastUpdatedYouTube::before { content: '\f017'; font-family: 'Font Awesome 5 Free'; font-weight: 900; }
 .creator-grid, .instagram-creator-grid, .youtube-creator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+
+/* Shoutout Cards */
 .creator-card, .instagram-creator-card, .youtube-creator-card { /* Uses shared card style */ display: flex; flex-direction: column; text-align: left; overflow: hidden; }
 .creator-pic, .instagram-creator-pic, .youtube-creator-pic { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-bg); box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; flex-shrink: 0; }
 
@@ -361,14 +398,13 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
     width: 100%; height: 100px; object-fit: cover; display: block;
     border-top-left-radius: var(--border-radius-md); /* Match card radius */
     border-top-right-radius: var(--border-radius-md); /* Match card radius */
-    margin: 0 0 15px 0; /* No negative margins needed */
+    margin: 0 0 15px 0; /* Reset margins */
 }
-/* Add padding back to the info container inside YouTube card */
-.youtube-creator-info { padding: 0 18px 18px 18px; /* Match card padding, skip top */ }
+.youtube-creator-info { padding: 0 18px 18px 18px; /* Add padding back to content below cover */ }
 
 .creator-header, .instagram-creator-header, .youtube-creator-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .creator-header h3, .instagram-creator-header h3, .youtube-creator-header h3 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-color); line-height: 1.3; }
-.verified-badge, .instagram-verified-badge, .youtube-verified-badge { width: 14px; height: 14px; margin-left: 5px; }
+.verified-badge, .instagram-verified-badge, .youtube-verified-badge { width: 14px; height: 14px; margin-left: 4px; /* Reduced margin */ vertical-align: middle; /* Better alignment */ }
 .creator-username, .instagram-creator-username, .youtube-creator-username { color: var(--secondary-text); font-size: 0.85rem; margin: 0 0 8px 0; word-break: break-all; }
 .creator-bio, .instagram-creator-bio, .youtube-creator-bio { color: var(--secondary-text); margin: 8px 0; font-size: 0.9rem; line-height: 1.4; }
 
@@ -377,12 +413,13 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
     color: var(--secondary-text); font-size: 0.85rem; font-weight: 400;
     margin: 8px 0 0 0; display: flex; align-items: center; gap: 5px;
 }
-.follower-count::before, .instagram-follower-count::before { content: '\f0c0'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 0.9em; opacity: 0.7; color: var(--secondary-text); }
+.follower-count::before, .instagram-follower-count::before { content: '\f0c0'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 0.9em; opacity: 0.7; color: inherit; /* Inherit secondary text color */ }
 .youtube-subscriber-count::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; font-weight: 400; font-size: 1em; opacity: 0.7; color: #FF0000; margin-right: 2px; }
 
 /* Pill Buttons */
 .visit-profile, .instagram-visit-profile, .youtube-visit-profile { /* Uses shared pill button style */ display: inline-flex; width: auto; padding: 6px 16px; font-size: 0.85rem; border-radius: var(--border-radius-pill); margin-top: 15px; align-self: flex-start; background: var(--accent-color); color: #ffffff; text-decoration: none; font-weight: 500; transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08); border: none; }
 .visit-profile:hover, .instagram-visit-profile:hover, .youtube-visit-profile:hover { filter: brightness(115%); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08); }
+
 
 /* ======================== */
 /* Version Info Section     */
@@ -391,7 +428,7 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 .version-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
 .version-header::before { content: "📊"; font-size: 1.1em; }
 /* Inner items use shared card style */
-.version-number, .build-number, .os-info, .device-info, .update-time, .countdown { display: flex; align-items: center; gap: 10px; font-size: 0.95em; margin-bottom: 10px; }
+.version-number, .build-number, .os-info, .device-info, .update-time, .countdown { /* Uses shared card style */ display: flex; align-items: center; gap: 10px; font-size: 0.95em; margin-bottom: 10px; }
 .version-number::before { content: "🔢 Version:"; }
 .build-number::before { content: "🏗️ Build:"; }
 .os-info::before { content: "💻 OS:"; }
@@ -405,11 +442,11 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 /* Legal Section            */
 /* ======================== */
 .legal-section { /* Uses shared section style */ font-size: 0.9rem; }
-.legal-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #ff4757, color-mix(in srgb, #ff4757 70%, transparent), #ff4757); }
+.legal-section::before { /* Optional top decorative border */ content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #ff4757, color-mix(in srgb, #ff4757 70%, transparent), #ff4757); }
 .legal-header { font-size: 1.1rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
 .legal-header::before { content: '⚖️'; font-size: 1.1em; }
 /* Inner items use shared card style */
-.copy-protection-message, .legal-protection-message, .watermark-message { display: flex; align-items: center; gap: 12px; font-size: 0.95em; margin-bottom: 10px; border-left-width: 4px; }
+.copy-protection-message, .legal-protection-message, .watermark-message { /* Uses shared card style */ display: flex; align-items: center; gap: 12px; font-size: 0.95em; margin-bottom: 10px; border-left-width: 4px; }
 .copy-protection-message { border-left-color: #ff4757; }
 .legal-protection-message { border-left-color: #ffa502; }
 .watermark-message { border-left-color: #2ed573; }
@@ -421,12 +458,11 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 /* ======================== */
 /* Countdown Section        */
 /* ======================== */
-/* ... Countdown styles largely the same ... */
 .countdown-section { text-align: center; /* Uses shared section style */ }
 .countdown-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color: var(--text-color); }
 .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
 .countdown-block { text-align: center; }
-/* Flip Clock "Card" - uses shared card style now */
+/* Flip Clock "Card" */
 .flip-clock { perspective: 400px; margin-bottom: 5px; display: inline-block; }
 .flip-clock-inner { position: relative; width: 70px; height: 90px; transform-style: preserve-3d; transition: transform 0.6s ease-in-out; display: flex; align-items: center; justify-content: center; }
 .flip-clock-inner.flip { transform: rotateX(180deg); }
@@ -438,15 +474,7 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 /* ======================== */
 /* Scroll-to-Top Button     */
 /* ======================== */
-.scroll-to-top {
-    position: fixed; bottom: 25px; left: 25px; /* <<< POSITION FIXED */ right: auto;
-    width: 44px; height: 44px; background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
-    border-radius: 50%; cursor: pointer; z-index: 1000; display: none; opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-}
+.scroll-to-top { position: fixed; bottom: 25px; left: 25px; right: auto; width: 44px; height: 44px; background-color: color-mix(in srgb, var(--content-bg) 80%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent); border-radius: 50%; cursor: pointer; z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
 .scroll-to-top.visible { display: block; opacity: 1; }
 .scroll-to-top:hover { background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); transform: scale(1.05); }
 .scroll-to-top svg.progress-ring { transform: rotate(-90deg); position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
@@ -459,7 +487,6 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 /* ======================== */
 /* Focus Outline Management */
 /* ======================== */
-/* ... (Focus styles remain the same) ... */
 :focus { outline: 2px solid var(--accent-color); outline-offset: 2px; }
 body.focus-outline-disabled :focus { outline: none !important; }
 @media (max-width: 1024px) { #focus-outline-setting-card { display: none; } }
@@ -513,14 +540,10 @@ footer { text-align: center; padding: 25px 20px; margin-top: 40px; color: var(--
     .profile-pic { width: 120px; height: 120px; }
 
     /* Button Overflow & Profile Status Fix */
-    .social-links-container, .links-container { grid-template-columns: 1fr !important; } /* Force single column */
-    .social-button, .link-button { width: 100% !important; /* Ensure buttons fill column */ }
-    .profile-pic-wrapper { position: relative; width: 120px; /* Ensure wrapper size matches pic */ }
-    .profile-status-container {
-        position: absolute; /* Re-affirm */
-        bottom: 3px; right: 3px; /* Adjust if needed */
-        width: 25px; height: 25px;
-    }
+    .social-links-container, .links-container { grid-template-columns: 1fr !important; }
+    .social-button, .link-button { width: 100% !important; box-sizing: border-box; } /* Added box-sizing */
+    .profile-pic-wrapper { position: relative; width: 120px; margin: 0 auto 15px; }
+    .profile-status-container { position: absolute; bottom: 3px; right: 3px; width: 25px; height: 25px; }
     .profile-status { font-size: 14px; }
 
     /* Back-to-Top scaling */
@@ -539,12 +562,8 @@ footer { text-align: center; padding: 25px 20px; margin-top: 40px; color: var(--
     .president-photo { width: 100px; height: 100px; }
 
     /* Profile Status Fix */
-     .profile-pic-wrapper { position: relative; width: 100px; /* Ensure wrapper size matches pic */ }
-     .profile-status-container {
-         position: absolute; /* Re-affirm */
-         bottom: 2px; right: 2px; /* Adjust further */
-         width: 22px; height: 22px;
-     }
+     .profile-pic-wrapper { position: relative; width: 100px; margin: 0 auto 15px; }
+     .profile-status-container { position: absolute; bottom: 2px; right: 2px; width: 22px; height: 22px; }
      .profile-status { font-size: 12px; }
 
     /* Back-to-Top scaling */
