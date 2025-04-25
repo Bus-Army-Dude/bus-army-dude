@@ -3065,28 +3065,32 @@ function showEditFaqStatus(message, isError = false) {
 
 /** Renders a single FAQ item in the admin list */
 function renderFaqAdminListItem(container, docId, faqData, deleteHandler, editHandler) {
-     if (!container) { console.warn("FAQ list container missing"); return; }
-     const itemDiv = document.createElement('div');
-     itemDiv.className = 'list-item-admin';
-     itemDiv.setAttribute('data-id', docId);
-     const shortAnswer = (faqData.answer || '').substring(0, 100); // Snippet
-     itemDiv.innerHTML = `
-         <div class="item-content">
-             <div class="item-details">
-                 <strong><span class="math-inline">\{faqData\.question \|\| 'N/A'\}</strong\>
-<p style="opacity: 0.8; font-style: italic;">{shortAnswer}${ (faqData.answer || '').length > 100 ? '...' : '' }</p>
-<small>Order: ${faqData.order ?? 'N/A'}</small>
-</div>
-</div>
-<div class="item-actions">
-<button type="button" class="edit-button small-button">Edit</button>
-<button type="button" class="delete-button small-button">Delete</button>
-</div>`;
-const editButton = itemDiv.querySelector('.edit-button');
-if (editButton) editButton.addEventListener('click', () => editHandler(docId));
-const deleteButton = itemDiv.querySelector('.delete-button');
-if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, itemDiv));
-container.appendChild(itemDiv);
+     if (!container) { console.warn("FAQ list container missing"); return; }
+     const itemDiv = document.createElement('div');
+     itemDiv.className = 'list-item-admin';
+     itemDiv.setAttribute('data-id', docId);
+     const shortAnswer = (faqData.answer || '').substring(0, 100); // Snippet
+
+    // --- UPDATED INNER HTML ---
+    itemDiv.innerHTML = `
+      <div class="item-content">
+          <div class="item-details">
+              <p><strong>Question:</strong> ${faqData.question || 'N/A'}</p> 
+              <p style="opacity: 0.8;"><strong>Answer Snippet:</strong> ${shortAnswer}${(faqData.answer || '').length > 100 ? '...' : ''}</p> 
+              <small>Order: ${faqData.order ?? 'N/A'}</small>
+          </div>
+      </div>
+      <div class="item-actions">
+          <button type="button" class="edit-button small-button">Edit</button>
+          <button type="button" class="delete-button small-button">Delete</button>
+      </div>`;
+    // --- END UPDATED INNER HTML ---
+
+    const editButton = itemDiv.querySelector('.edit-button');
+    if (editButton) editButton.addEventListener('click', () => editHandler(docId));
+    const deleteButton = itemDiv.querySelector('.delete-button');
+    if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, itemDiv));
+    container.appendChild(itemDiv);
 }
 
 /** Filters and displays FAQs based on search */
