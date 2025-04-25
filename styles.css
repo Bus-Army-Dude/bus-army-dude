@@ -1,3 +1,5 @@
+/* styles.css - Apple-Inspired Theme */
+
 /* ======================== */
 /* Theme Variables    */
 /* ======================== */
@@ -6,52 +8,52 @@
   --system-font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
   /* --- Base Sizes/Timing --- */
-  --base-font-size: 16px; /* Standard base */
-  --line-height: 1.5;     /* Slightly tighter line height */
+  --base-font-size: 16px;
+  --line-height: 1.5;
   --border-radius-sm: 4px;
-  --border-radius-md: 8px; /* Common Apple corner radius */
-  --border-radius-lg: 12px;/* Common Apple corner radius */
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
   --transition-speed: 0.25s;
   --transition-timing: ease-in-out;
 
   /* --- Dark Mode Colors (Apple-Inspired) --- */
-  --dark-bg: #000000;              /* True black background (common in newer interfaces) */
-  --dark-content-bg: #1c1c1e;     /* Standard dark grey content background */
-  --dark-text: rgba(255, 255, 255, 0.9); /* Slightly off-white primary text */
-  --dark-secondary-text: rgba(235, 235, 245, 0.6); /* Standard secondary text (iOS-like gray) */
-  --dark-border: rgba(84, 84, 88, 0.65); /* Standard dark border/separator color */
-  --dark-accent: #0a84ff;          /* Standard Apple blue accent for dark mode */
-  --dark-hover: #3f9eff;           /* Lighter blue on hover */
-  --dark-link: #0a84ff;            /* Links use accent color */
-  --dark-shadow: rgba(0, 0, 0, 0.4); /* Deeper shadow for dark mode */
-  --dark-icon: rgba(235, 235, 245, 0.9); /* Icons match secondary text typically */
+  --dark-bg: #000000;
+  --dark-content-bg: #1c1c1e;
+  --dark-text: rgba(255, 255, 255, 0.9);
+  --dark-secondary-text: rgba(235, 235, 245, 0.6);
+  --dark-border: rgba(84, 84, 88, 0.65);
+  --dark-accent: #0a84ff;
+  --dark-hover: #3f9eff;
+  --dark-link: #0a84ff;
+  --dark-shadow: rgba(0, 0, 0, 0.4);
+  --dark-icon: rgba(235, 235, 245, 0.9); /* Default icon color */
 
   /* Input and Dropdowns (Dark) */
-  --input-bg-dark: #1c1c1e;        /* Match content background */
+  --input-bg-dark: #1c1c1e;
   --input-border-dark: rgba(84, 84, 88, 0.65);
-  --input-focus-border-dark: #0a84ff; /* Blue focus */
+  --input-focus-border-dark: #0a84ff;
   --input-text-dark: rgba(255, 255, 255, 0.9);
-  --dropdown-background-dark: #2c2c2e; /* Slightly different dropdown bg */
+  --dropdown-background-dark: #2c2c2e;
   --dropdown-text-dark: rgba(255, 255, 255, 0.9);
   --dropdown-border-dark: rgba(84, 84, 88, 0.65);
   --dropdown-focus-border-dark: var(--input-focus-border-dark);
 
   /* --- Light Mode Colors (Apple-Inspired) --- */
-  --light-bg: #f2f2f7;              /* Standard light mode background */
-  --light-content-bg: #ffffff;     /* White content background */
-  --light-text: #1d1d1f;            /* Standard black text */
-  --light-secondary-text: rgba(60, 60, 67, 0.6); /* Standard secondary text (iOS-like gray) */
-  --light-border: rgba(60, 60, 67, 0.29); /* Standard light border/separator */
-  --light-accent: #007aff;          /* Standard Apple blue accent for light mode */
-  --light-hover: #0056b3;           /* Darker blue on hover */
-  --light-link: #007aff;            /* Links use accent color */
-  --light-shadow: rgba(0, 0, 0, 0.1); /* Standard light shadow */
-  --light-icon: #ffffff;           /* Keep white icons for accents, may need adjustment */
+  --light-bg: #f2f2f7;
+  --light-content-bg: #ffffff;
+  --light-text: #1d1d1f;
+  --light-secondary-text: rgba(60, 60, 67, 0.6);
+  --light-border: rgba(60, 60, 67, 0.29);
+  --light-accent: #007aff;
+  --light-hover: #0056b3;
+  --light-link: #007aff;
+  --light-shadow: rgba(0, 0, 0, 0.1);
+  --light-icon: #ffffff; /* Icon color for use ON accent backgrounds */
 
   /* Input and Dropdowns (Light) */
   --input-bg-light: #ffffff;
   --input-border-light: rgba(60, 60, 67, 0.29);
-  --input-focus-border-light: #007aff; /* Blue focus */
+  --input-focus-border-light: #007aff;
   --input-text-light: #1d1d1f;
   --dropdown-background-light: #ffffff;
   --dropdown-text-light: #1d1d1f;
@@ -68,7 +70,7 @@
   --hover-color: var(--dark-hover);
   --link-color: var(--dark-link);
   --shadow-color: var(--dark-shadow);
-  --icon-color: var(--dark-icon);
+  --icon-color: var(--dark-icon); /* Default icon color */
   --input-bg: var(--input-bg-dark);
   --input-border: var(--input-border-dark);
   --input-focus-border: var(--input-focus-border-dark);
@@ -90,7 +92,7 @@ body.light-e { /* Ensure this class name matches your HTML */
   --hover-color: var(--light-hover);
   --link-color: var(--light-link);
   --shadow-color: var(--light-shadow);
-  --icon-color: var(--light-icon);
+  --icon-color: var(--light-icon); /* Icon color for use ON accent backgrounds */
   --input-bg: var(--input-bg-light);
   --input-border: var(--input-border-light);
   --input-focus-border: var(--input-focus-border-light);
@@ -101,13 +103,16 @@ body.light-e { /* Ensure this class name matches your HTML */
   --dropdown-focus-border: var(--dropdown-focus-border-light);
 }
 
-/* Base Styles - Applying the font variable */
+/* ======================== */
+/* Base Styles              */
+/* ======================== */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: var(--system-font-stack); /* Apply the font stack */
+    font-size: var(--base-font-size);
     margin: 0;
-    padding: 20px;
+    padding: 20px; /* Base padding */
     line-height: var(--line-height);
     transition: background-color 0.3s ease, color 0.3s ease; /* Smoother theme transition */
     -webkit-font-smoothing: antialiased; /* Improve font rendering */
@@ -115,44 +120,102 @@ body {
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 30px;
 }
 
-/* Profile Section */
-.profile-section {
-    position: relative;
-    text-align: center;
-    margin-top: 20px;
+/* ======================== */
+/* Shared Section Styling   */
+/* ======================== */
+.profile-section,
+.countdown-section,
+.president-section,
+.social-links-section,
+.useful-links-section,
+.tech-section,
+.faq-section,
+.shoutouts-section,
+.disabilities-section,
+.version-info-section,
+.legal-section,
+[data-section-id="events"] {
+    padding: 30px;
+    border-radius: var(--border-radius-lg); /* 12px */
+    margin-top: 30px;
     margin-bottom: 30px;
-    padding: 25px;
-    background: var(--content-bg);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px -8px var(--shadow-color), 0 0 0 1px var(--border-color);
-    backdrop-filter: blur(10px);
+    /* Frosted Glass Effect */
+    background-color: color-mix(in srgb, var(--content-bg) 85%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* Subtle border */
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    /* Softer, layered shadow */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Profile Pic Wrapper */
+/* ======================== */
+/* Card Styling (Items within sections) */
+/* ======================== */
+.tech-item,
+.faq-item,
+.event-card,
+.creator-card,             /* Added */
+.instagram-creator-card,   /* Added */
+.youtube-creator-card {   /* Added */
+    padding: 20px;
+    border-radius: var(--border-radius-md); /* 8px */
+    background-color: color-mix(in srgb, var(--content-bg) 90%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s var(--transition-timing), box-shadow 0.2s var(--transition-timing);
+    margin-bottom: 20px; /* Ensure spacing between cards */
+}
+.tech-item:last-child,
+.faq-item:last-child,
+.event-card:last-child,
+.creator-card:last-child,
+.instagram-creator-card:last-child,
+.youtube-creator-card:last-child {
+    margin-bottom: 0;
+}
+
+.tech-item:hover,
+.faq-item:hover,
+.event-card:hover,
+.creator-card:hover,
+.instagram-creator-card:hover,
+.youtube-creator-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+/* ======================== */
+/* Profile Section          */
+/* ======================== */
+.profile-section {
+    text-align: center;
+    /* Shared styles handle background, padding, border, shadow, etc. */
+}
+
 .profile-pic-wrapper {
     position: relative;
     width: 150px;
-    margin: 0 auto;
+    margin: 0 auto 15px; /* Add bottom margin */
 }
 
-/* Profile Picture */
 .profile-pic {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    margin: 0 auto;
     display: block;
-    border: 3px solid var(--link-color);
-    position: relative;
-    box-shadow: 0 4px 15px var(--shadow-color);
+    border: 4px solid var(--content-bg); /* Border matches content background */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Softer shadow */
+    object-fit: cover; /* Ensure image covers */
 }
 
-/* Profile Status Container */
 .profile-status-container {
     position: absolute;
     bottom: 5px;
@@ -161,19 +224,18 @@ body {
     height: 30px;
     border-radius: 50%;
     background: var(--content-bg);
-    border: 3px solid var(--link-color);
+    border: 2px solid color-mix(in srgb, var(--border-color) 80%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
 .profile-status {
-    font-size: 16px;
+    font-size: 16px; /* Keep emoji size reasonable */
 }
 
-/* Username Checkmark */
 .username-checkmark {
     display: flex;
     align-items: center;
@@ -184,161 +246,85 @@ body {
 .username-checkmark h1 {
     margin: 0;
     font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 800;
-    background: linear-gradient(120deg, var(--secondary-text), var(--link-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    font-weight: 700; /* Use a bold weight */
+    color: var(--text-color); /* Use primary text color */
+    background: none; /* Remove gradient */
+    -webkit-background-clip: unset;
+    background-clip: unset;
 }
 
 .verified {
-    width: 20px;
+    width: 20px; /* Adjust size as needed */
     height: 20px;
-    margin-left: 5px;
+    margin-left: 8px; /* Space from username */
+    color: var(--accent-color); /* Use accent color for verified check */
+    /* Consider using an SVG or Font Awesome icon here */
 }
 
-/* Settings Button */
-.settings-button {
+/* --- Icon Buttons (Settings, Merch, Weather) --- */
+.settings-button, .merch-button, .weather-button {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('settings-icon.png') center/18px no-repeat, var(--link-color);
-    border: none;
+    border-radius: 50%; /* Circular */
+    width: 36px;
+    height: 36px;
+    background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-position: center;
+    background-size: 16px; /* Adjust icon size */
+    background-repeat: no-repeat;
     cursor: pointer;
     padding: 0;
     z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
+    transition: all 0.2s ease-out;
 }
-
-.settings-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
+.settings-button:hover, .merch-button:hover, .weather-button:hover {
+    transform: scale(1.1);
+    background-color: color-mix(in srgb, var(--content-bg) 95%, transparent);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
+/* Specific button positions */
+.settings-button { top: 20px; right: 20px; background-image: url('settings-icon.png'); } /* Update with actual icon path */
+.merch-button { top: 20px; left: 20px; background-image: url('gift-bag-icon.png'); } /* Update with actual icon path */
+.weather-button { bottom: 20px; left: 20px; background-image: url('weather-icon.png');} /* Update with actual icon path */
+/* Ensure you have icons at these paths or use Font Awesome */
 
-/* Merch Button */
-.merch-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('gift-bag-icon.png') center/18px no-repeat, var(--accent-color);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--accent-color);
-}
 
-.merch-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
-}
-
-/* Weather Button */
-.weather-button {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: url('weather-icon.png') center/18px no-repeat, var(--link-color);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
-}
-
-.weather-button:hover {
-    transform: translateY(-2px) rotate(45deg);
-    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
-}
-
-/* Media Queries */
-@media screen and (max-width: 768px) {
-    .profile-pic {
-        width: 120px;
-        height: 120px;
-    }
-
-    .settings-button,
-    .merch-button,
-    .weather-button {
-        width: 35px;
-        height: 35px;
-    }
-
-    .username-checkmark h1 {
-        font-size: 1.8rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .profile-pic {
-        width: 100px;
-        height: 100px;
-    }
-
-    .settings-button,
-    .merch-button,
-    .weather-button {
-        width: 30px;
-        height: 30px;
-    }
-
-    .username-checkmark h1 {
-        font-size: 1.5rem;
-    }
-}
-
+/* ======================== */
 /* Current Date/Time Section */
+/* ======================== */
 .datetime-section {
-    background-color: var(--content-bg);
+    background-color: var(--content-bg); /* Use standard content background */
     padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    border-radius: var(--border-radius-md); /* Consistent radius */
+    margin-bottom: 30px;
     text-align: center;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 5px rgba(0, 0, 0, 0.04); /* Softer shadow */
+    border: 1px solid var(--border-color); /* Consistent border */
 }
 
 .current-datetime {
-    font-family: monospace;
-    font-size: 1.2em;
-    color: var(--accent-color);
+    font-family: var(--system-font-stack); /* Use system font */
+    font-size: 1.1em; /* Slightly larger */
+    font-weight: 500;
+    color: var(--secondary-text); /* Use secondary text color */
     margin: 0;
 }
 
-/* President Section */
+/* ======================== */
+/* President Section        */
+/* ======================== */
 .president-section {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    padding: 30px;
-    border-radius: 16px;
-    margin-bottom: 30px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
-    width: 100%;
-    box-sizing: border-box;
+    /* Shared styles handle background, padding, border, shadow, etc. */
 }
 
 .president-info {
     display: flex;
     align-items: center;
     gap: 30px;
-    padding: 10px;
+    padding: 10px 0; /* Adjust padding if needed */
 }
 
 .president-photo {
@@ -346,1427 +332,604 @@ body {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--accent-color);
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
+    border: 4px solid var(--content-bg); /* Match content background */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
 }
 
 .president-details {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    text-align: left; /* Align text left */
 }
 
 .president-name {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 1.8rem; /* Adjust size */
+    font-weight: 600; /* Standard bold */
     color: var(--text-color);
-    margin: 0;
+    margin: 0 0 5px 0;
 }
 
-.president-title {
-    font-size: 18px;
-    color: var(--accent-color);
-    margin: 0;
+.president-details p { /* Style paragraphs within details */
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--secondary-text);
+    margin: 4px 0; /* Adjust spacing */
+}
+.president-details p strong {
+    color: var(--text-color); /* Make labels slightly more prominent */
+    font-weight: 500;
 }
 
-.president-description {
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--text-color);
-    opacity: 0.9;
-    margin: 10px 0;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .president-section {
-        padding: 20px;
-    }
-
-    .president-info {
-        gap: 20px;
-    }
-
-    .president-photo {
-        width: 120px;
-        height: 120px;
-    }
-
-    .president-name {
-        font-size: 20px;
-    }
-
-    .president-title {
-        font-size: 16px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .president-section {
-        padding: 15px;
-    }
-
-    .president-info {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .president-photo {
-        width: 100px;
-        height: 100px;
-    }
-
-    .president-description {
-        font-size: 14px;
-    }
-}
-
-/* Social Links Section */
-.social-links-section {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    margin: 20px 0;
+/* ======================== */
+/* Social & Useful Links    */
+/* ======================== */
+.social-links-section,
+.useful-links-section {
     text-align: center;
-    backdrop-filter: blur(10px);
-    width: 100%;
-    box-sizing: border-box;
+    /* Shared styles handle background, padding, border, shadow, etc. */
+}
+
+.social-links-section h2, /* Target titles if they exist */
+.useful-links-section h2 {
+    font-size: 1.5rem; /* Consistent title size */
+    font-weight: 600;
+    margin-bottom: 25px;
     color: var(--text-color);
 }
 
-.social-links-container {
+.social-links-container,
+.links-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+    gap: 15px; /* Consistent gap */
     margin-top: 20px;
-    width: 100%;
-    box-sizing: border-box;
 }
 
-.social-button {
+/* --- Button Style for Social/Useful Links --- */
+.social-button,
+.link-button {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 14px 24px;
-    background: linear-gradient(145deg,
-        var(--accent-color),
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff)
-    );
-    border-radius: 25px;
+    justify-content: center; /* Center content */
+    padding: 12px 20px;
+    border-radius: var(--border-radius-lg); /* More rounded */
+    background: var(--accent-color);
+    color: #ffffff;
     text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
-    position: relative;
-    overflow: hidden;
+    font-weight: 500;
+    letter-spacing: 0;
+    transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1), inset 0 1px 0 hsla(0,0%,100%,.08);
+    border: none;
+    text-align: center; /* Ensure text is centered if flex alignment changes */
+    gap: 10px; /* Space between icon and text */
 }
 
-.social-button:hover {
+.social-button:hover,
+.link-button:hover {
+    filter: brightness(115%);
     transform: translateY(-2px);
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff),
-        var(--accent-color)
-    );
-    box-shadow: 
-        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
-        0 0 0 1px var(--accent-color);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12), inset 0 1px 0 hsla(0,0%,100%,.08);
 }
 
 .social-button .social-icon {
-    font-size: 20px;
-    margin-right: 15px;
-    color: var(--icon-color); /* Use theme icon color */
+    font-size: 1.1rem; /* Adjust icon size */
+    color: inherit; /* Inherit color from button text (white) */
     flex-shrink: 0;
+    line-height: 1; /* Ensure proper vertical alignment */
 }
 
 .social-button span {
     flex-grow: 1;
-    text-align: center;
-    color: var(--icon-color); /* Use theme icon color */
+    text-align: center; /* Center text within the button */
+    line-height: 1.2; /* Adjust for potentially wrapping text */
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .social-links-section {
-        padding: 20px;
-    }
-
-    .social-links-container {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    .social-button {
-        padding: 12px 20px;
-        font-size: 0.95em;
-    }
+/* ======================== */
+/* Tech Section             */
+/* ======================== */
+.tech-section {
+    /* Shared styles handle background, padding, border, shadow, etc. */
 }
-
-@media screen and (max-width: 480px) {
-    .social-links-section {
-        padding: 15px;
-    }
-
-    .social-button {
-        padding: 12px 16px;
-    }
-
-    .social-button .social-icon {
-        font-size: 18px;
-        margin-right: 12px;
-    }
-}
-
-/* Useful Links Section */
-.useful-links-section {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    margin: 25px 0;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Title Styling */
-.useful-links-section h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+.tech-section h2 { /* Style section title if present */
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
     color: var(--text-color);
 }
 
-/* Links Container */
-.links-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns for desktop */
-    gap: 18px;
-    margin-top: 20px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Link Button */
-.link-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 24px;
-    width: 100%;
-    background: linear-gradient(145deg,
-        var(--accent-color),
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff)
-    );
-    border-radius: 25px;
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-sizing: border-box;
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
-}
-
-/* Button Hover Effects */
-.link-button:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff),
-        var(--accent-color)
-    );
-    box-shadow: 
-        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
-        0 0 0 1px var(--accent-color);
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .useful-links-section {
-        padding: 20px;
-    }
-
-    .links-container {
-        grid-template-columns: 1fr; /* Single column for mobile */
-        gap: 15px;
-    }
-
-    .link-button {
-        padding: 12px 20px;
-        font-size: 0.95em;
-    }
-
-    .useful-links-section h2 {
-        font-size: 1.6rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .useful-links-section {
-        padding: 15px;
-    }
-
-    .link-button {
-        padding: 12px 16px;
-    }
-
-    .useful-links-section h2 {
-        font-size: 1.4rem;
-    }
-}
-
-/* Tech Information Section */
-.tech-section {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    padding: 30px;
-    border-radius: 16px;
-    margin-bottom: 30px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
-    width: 100%;
-    box-sizing: border-box;
-}
-
 .tech-item {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 95%, white),
-        var(--content-bg)
-    );
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 15px;
-    border: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 15%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
-}
-
-.tech-item:last-child {
-    margin-bottom: 0;
+    /* Card styles handle background, padding, border, shadow */
+    margin-bottom: 15px; /* Spacing between tech items */
 }
 
 .tech-item h3 {
     margin: 0 0 15px 0;
-    color: var(--accent-color);
-    font-size: 1.2rem;
+    color: var(--text-color); /* Use primary text color for title */
+    font-size: 1.1rem; /* Adjust size */
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 10px;
+    border-bottom: 1px solid var(--border-color); /* Add separator */
+    padding-bottom: 10px;
 }
 
-.tech-item h3 i {
-    font-size: 1.4rem;
-    color: var(--accent-color);
+.tech-item h3 i { /* Icon in title */
+    font-size: 1.2rem;
+    color: var(--accent-color); /* Accent color for icon */
 }
 
 .tech-detail {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 10px 0;
-    color: var(--text-color);
+    margin: 8px 0; /* Adjust spacing */
+    color: var(--secondary-text); /* Secondary text for details */
+    font-size: 0.95rem;
 }
 
-.tech-detail i {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-color);
-    font-size: 1rem;
+.tech-detail i { /* Detail icons */
+    width: 18px; /* Slightly smaller icons */
+    text-align: center;
+    color: var(--secondary-text); /* Match text color */
+    opacity: 0.8;
 }
 
-.tech-detail span {
-    font-weight: 600;
-    color: var(--secondary-text);
-    margin-right: 8px;
+.tech-detail span { /* The label part (e.g., "Model:") */
+    font-weight: 500;
+    color: var(--text-color); /* Primary text color for label */
+    margin-right: 5px;
 }
 
-/* Battery Icon Container */
+/* --- Battery Styles --- */
 .battery-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     margin-top: 15px;
+    color: var(--secondary-text);
+    font-size: 0.9rem;
 }
-
-.battery-icon {
+.battery-icon { /* The outer battery shape */
     position: relative;
-    width: 180px;
-    height: 40px;
-    border: 2px solid color-mix(in srgb, var(--text-color) 50%, transparent);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 95%, white),
-        var(--content-bg)
-    );
-    box-shadow: inset 0 0 5px color-mix(in srgb, var(--shadow-color) 30%, transparent);
-    overflow: hidden;
+    width: 25px; /* Smaller battery icon */
+    height: 12px;
+    border: 1px solid var(--secondary-text);
+    border-radius: 2px;
+    display: inline-block;
+    margin-right: 5px; /* Space after icon */
 }
-
-.battery-icon::after {
+.battery-icon::after { /* The battery terminal */
     content: '';
     position: absolute;
-    right: -10px;
-    top: 8px;
-    width: 8px;
-    height: 24px;
-    background-color: color-mix(in srgb, var(--text-color) 50%, transparent);
-    border-radius: 2px;
+    right: -3px;
+    top: 2px;
+    width: 1px;
+    height: 6px;
+    background-color: var(--secondary-text);
+    border-radius: 0 1px 1px 0;
 }
-
-.battery-level {
+.battery-level { /* The colored fill level */
     height: 100%;
-    background: linear-gradient(145deg,
-        #32CD32,
-        color-mix(in srgb, #32CD32 80%, #ffffff)
-    );
-    transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background-color: var(--accent-color); /* Default green/blue */
+    border-radius: 1px;
+    transition: width 0.4s ease;
+}
+.low-power .battery-level { background-color: #ffcc00; } /* Yellow */
+.critical .battery-level { background-color: #ff3b30; } /* Red */
+.battery-percentage { /* The text percentage */
+   font-weight: 500;
+   color: var(--text-color);
 }
 
-.low-power .battery-level {
-    background: linear-gradient(145deg,
-        #FFCC00,
-        color-mix(in srgb, #FFCC00 80%, #ffffff)
-    );
-}
 
-.critical .battery-level {
-    background: linear-gradient(145deg,
-        #FF3B30,
-        color-mix(in srgb, #FF3B30 80%, #ffffff)
-    );
+/* ======================== */
+/* FAQ Section              */
+/* ======================== */
+.faq-section {
+    /* Shared styles handle background, padding, border, shadow, etc. */
 }
-
-.battery-percentage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--text-color);
+.faq-section h2 {
+    font-size: 1.5rem;
     font-weight: 600;
-    font-size: 14px;
-    z-index: 1;
+    margin-bottom: 25px;
+    color: var(--text-color);
 }
 
-/* Media Queries */
-@media screen and (max-width: 768px) {
-    .tech-section {
-        padding: 20px;
-    }
-
-    .tech-item {
-        padding: 15px;
-    }
-
-    .battery-icon {
-        width: 150px;
-        height: 35px;
-    }
+.faq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Reduced gap between FAQ items */
 }
 
-@media screen and (max-width: 480px) {
-    .tech-section {
-        padding: 15px;
-    }
-
-    .tech-item {
-        padding: 12px;
-    }
-
-    .battery-icon {
-        width: 120px;
-        height: 30px;
-    }
-
-    .battery-percentage {
-        font-size: 12px;
-    }
+.faq-item {
+    /* Card styles handle background, padding, border, shadow */
+    overflow: hidden; /* Keep overflow hidden for animation */
 }
 
-/* Disabilities Section */
+.faq-question {
+    width: 100%;
+    padding: 15px 20px; /* Adjust padding */
+    background-color: transparent; /* Handled by .faq-item */
+    color: var(--text-color);
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem; /* Adjust size */
+    font-weight: 500;
+    transition: background-color 0.2s ease; /* Transition background */
+}
+.faq-question:hover {
+   background-color: color-mix(in srgb, var(--border-color) 20%, transparent); /* Subtle hover */
+}
+
+.faq-icon { /* The +/- icon */
+    width: 20px; /* Adjust size */
+    height: 20px;
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 15px;
+    display: flex; /* Center icon if using font icon */
+    align-items: center;
+    justify-content: center;
+}
+/* Replace +/- content using ::before pseudo-element */
+.faq-icon::before {
+    content: '+';
+}
+.faq-item.active .faq-icon::before {
+    content: '−'; /* Minus sign */
+}
+.faq-item.active .faq-icon {
+    transform: rotate(180deg); /* Keep rotation if desired */
+    color: var(--accent-color);
+}
+
+.faq-answer {
+    padding: 0 20px; /* Horizontal padding only when closed */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    color: var(--secondary-text); /* Answer text is secondary */
+    line-height: 1.6;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+    font-size: 0.95rem;
+}
+.faq-item.active .faq-answer {
+    padding: 15px 20px; /* Add vertical padding when open */
+    max-height: 500px; /* Allow enough height for content */
+    opacity: 1;
+}
+.faq-answer p { margin: 0 0 10px 0; } /* Spacing for paragraphs in answer */
+.faq-answer p:last-child { margin-bottom: 0; }
+
+
+/* ======================== */
+/* Event Section            */
+/* ======================== */
+[data-section-id="events"] {
+     /* Shared styles handle background, padding, border, shadow, etc. */
+}
+[data-section-id="events"] h2 { /* Title */
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--text-color);
+}
+.events-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust minmax */
+    gap: 15px; /* Consistent gap */
+}
+.event-card {
+     /* Card styles handle background, padding, border, shadow */
+}
+/* Keep specific event card internal styles (.event-header, .event-title, etc.) */
+.event-title { font-weight: 600; color: var(--text-color); font-size: 1.1rem;}
+.event-badge { background: var(--accent-color); color: white; font-size: 0.8rem; padding: 4px 10px; border-radius: 12px; font-weight: 500;}
+.event-info { margin: 15px 0; gap: 15px; }
+.event-row { gap: 10px; font-size: 0.95rem; color: var(--secondary-text); }
+.event-row .icon { color: var(--accent-color); }
+.event-link { /* Uses the refined button style from above */
+    display: inline-flex; /* Make it inline-flex */
+    width: auto; /* Allow button to size to content */
+    margin: 20px 0 0 0; /* Adjust margin */
+    padding: 10px 20px; /* Adjust padding */
+    font-size: 0.9rem;
+}
+
+/* ======================== */
+/* Disabilities Section     */
+/* ======================== */
 .disabilities-section {
-    background-color: var(--content-bg);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 10px var(--shadow-color);
+     /* Shared styles handle background, padding, border, shadow, etc. */
 }
-
 .disabilities-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
     margin-bottom: 15px;
     color: var(--text-color);
 }
-
-.disabilities-section p {
+.disabilities-section p { /* The introductory paragraph */
     margin-bottom: 20px;
-    color: var(--text-color);
+    color: var(--secondary-text);
+    font-size: 1rem;
 }
+.disabilities-section ul { list-style: none; padding: 0; margin: 0; }
+.disabilities-section li { margin-bottom: 10px; }
+.disabilities-section li:last-child { margin-bottom: 0; }
 
-.disabilities-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.disabilities-section li {
-    margin-bottom: 10px;
-}
-
-.disabilities-section li:last-child {
-    margin-bottom: 0;
-}
-
-.disabilities-section a {
+.disabilities-section a { /* Treat these like list items/cards */
     display: block;
     color: var(--text-color);
     text-decoration: none;
     padding: 15px;
-    transition: all 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 8px;
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    background-color: color-mix(in srgb, var(--content-bg) 95%, transparent); /* Match card bg */
+    border: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent); /* Match card border */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    font-weight: 500;
 }
-
 .disabilities-section a:hover {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
+    background-color: color-mix(in srgb, var(--accent-color) 15%, var(--content-bg)); /* Subtle accent hover */
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px var(--shadow-color);
+    color: var(--accent-color); /* Accent text color on hover */
 }
 
-@media (prefers-color-scheme: dark) {
-    .disabilities-section a:hover {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
-}
 
-@media (prefers-color-scheme: light) {
-    .disabilities-section a:hover {
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-    }
-}
-
-/* Container for each section - matching site style */
+/* ======================== */
+/* Shoutouts Section        */
+/* ======================== */
 .shoutouts-section {
-    background-color: var(--content-bg);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
+     /* Shared styles handle background, padding, border, shadow, etc. */
+     padding-bottom: 10px; /* Reduce bottom padding slightly */
 }
-
-/* Container for each section - matching site style */
-.shoutouts-section {
-    background-color: var(--content-bg);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-/* Section Headers and Timestamps */
-.shoutouts-section h2 {
-    color: var(--text-color);
+.shoutouts-section h2 { /* Title like TikTok, Instagram etc. */
+    font-size: 1.5rem;
+    font-weight: 600;
     margin-bottom: 10px;
+    color: var(--text-color);
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 1.8em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
 }
+/* Icons before shoutout titles */
+#tiktok-header::before { content: '\f099'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color);} /* Example: Using Twitter icon for TikTok */
+#instagram-header::before { content: '\f16d'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
+#youtube-header::before { content: '\f167'; font-family: 'Font Awesome 5 Brands'; color: var(--accent-color); }
 
-/* TikTok Section Header */
-#tiktok-header::before {
-    content: '\e07b'; /* Font Awesome TikTok icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
-/* Instagram Section Header */
-#instagram-header::before {
-    content: '\f16d'; /* Font Awesome Instagram icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
-/* YouTube Section Header */
-#youtube-header::before {
-    content: '\f167'; /* Font Awesome YouTube icon */
-    font-family: 'Font Awesome 5 Brands';
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
+/* Timestamp styles */
 #tiktok-last-updated-timestamp,
 #lastUpdatedInstagram,
 #lastUpdatedYouTube {
     color: var(--secondary-text);
-    font-size: 0.9em;
+    font-size: 0.85em;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 }
-
-#lastUpdatedInstagram::before,
 #tiktok-last-updated-timestamp::before,
+#lastUpdatedInstagram::before,
 #lastUpdatedYouTube::before {
-    content: '\f073'; /* Font Awesome calendar icon */
+    content: '\f017'; /* Clock icon */
     font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
+    font-weight: 900; /* Solid style */
 }
 
-/* Common Creator Grid Styles */
+/* Grid container */
 .creator-grid,
 .instagram-creator-grid,
 .youtube-creator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Increased minimum width */
-    gap: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    gap: 15px;
 }
 
-/* Common Creator Card Styles */
+/* Shoutout Cards - Use shared card styles */
 .creator-card,
 .instagram-creator-card,
 .youtube-creator-card {
-    background-color: var(--bg-color);
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
+    /* Card styles handle background, padding, border, shadow */
+    display: flex; /* Use flex for better layout control */
     flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    width: 100%;
-    box-sizing: border-box;
-    max-width: 100%;
-    position: relative;
-    overflow: visible; /* Changed to visible */
-    min-height: fit-content;
-    height: auto; /* Ensure height adjusts with content */
+    text-align: left; /* Align card content left */
 }
 
-/* YouTube Cover Photo */
-.youtube-cover-photo {
-    width: calc(100% + 30px);
-    height: 150px;
-    object-fit: contain;
-    display: block;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    margin: -30px -15px 10px -15px; /* Increased negative top margin and reduced bottom margin */
-    vertical-align: top; /* Add this to remove any implicit spacing */
-}
-
-/* YouTube Creator Info Container */
-.youtube-creator-info {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 0;
-}
-
-.creator-card:hover,
-.instagram-creator-card:hover,
-.youtube-creator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-/* Common Profile Picture Styles */
-.creator-pic,
-.instagram-creator-pic,
-.youtube-creator-pic {
-    width: 60px;
-    height: 60px;
+/* Card internal elements */
+.creator-pic, .instagram-creator-pic, .youtube-creator-pic {
+    width: 50px; /* Smaller profile pics */
+    height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--accent-color);
-    margin-bottom: 15px;
-    position: relative;
-    z-index: 1;
-}
-
-/* Common Header Styles */
-.creator-header,
-.instagram-creator-header,
-.youtube-creator-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 5px;
-}
-
-/* Username Container with Verification Badge */
-.username-container,
-.instagram-username-container,
-.youtube-username-container {
-    display: flex;
-    align-items: flex-start; /* Changed from center to flex-start */
-    gap: 4px;
+    border: 2px solid var(--content-bg); /* Match background */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     margin-bottom: 10px;
-    flex-wrap: wrap;
-    width: 100%;
-    overflow: visible;
-    padding-right: 8px;
-    min-height: min-content; /* Added for flexible height */
 }
-
-/* Common Username Styles */
-.creator-username,
-.instagram-creator-username,
-.youtube-creator-username {
-    color: var(--secondary-text);
-    font-size: max(0.9em, 14px); /* Set minimum font size */
+.youtube-cover-photo { /* Ensure cover photo styles don't conflict */
+    width: 100%; /* Full width within card */
+    height: 100px; /* Adjust height */
+    object-fit: cover;
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; /* Round top corners */
+    margin: -20px -20px 15px -20px; /* Extend to edges, adjust bottom margin */
+}
+.creator-header, .instagram-creator-header, .youtube-creator-header {
+    align-items: center;
+    margin-bottom: 4px;
+}
+.creator-header h3, .instagram-creator-header h3, .youtube-creator-header h3 {
     margin: 0;
-    width: auto;
-    max-width: 100%;
+    font-size: 1rem; /* Adjust size */
+    font-weight: 600;
+    color: var(--text-color);
+    line-height: 1.3;
     overflow-wrap: break-word;
+    word-break: break-word;
+}
+.verified-badge, .instagram-verified-badge, .youtube-verified-badge {
+    width: 14px; /* Smaller checkmark */
+    height: 14px;
+    margin-left: 5px;
+}
+.creator-username, .instagram-creator-username, .youtube-creator-username {
+    color: var(--secondary-text);
+    font-size: 0.85rem;
+    margin: 0 0 8px 0; /* Adjust spacing */
     word-break: break-all;
-    white-space: normal;
-    line-height: 1.5; /* Increased line height */
-    hyphens: auto; /* Added for better word breaks */
 }
-
-/* Verification Badge Styles */
-.verified-badge,
-.instagram-verified-badge,
-.youtube-verified-badge {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-/* Common Bio Styles */
-.creator-bio,
-.instagram-creator-bio,
-.youtube-creator-bio {
+.creator-bio, .instagram-creator-bio, .youtube-creator-bio {
     color: var(--secondary-text);
-    margin: 10px 0;
-    font-size: 0.9em;
+    margin: 8px 0;
+    font-size: 0.9rem;
     line-height: 1.4;
-    word-break: break-word;
 }
-
-/* Common Follower/Subscriber Count Styles */
-.follower-count,
-.instagram-follower-count,
-.youtube-subscriber-count {
-    color: var(--accent-color);
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-/* Common Visit Profile Button Styles - Unified Design */
-.visit-profile,
-.instagram-visit-profile,
-.youtube-visit-profile {
-    display: inline-block;
-    background-color: var(--accent-color);
-    color: white;
-    text-decoration: none;
-    padding: 8px 20px;
-    border-radius: 25px;
-    margin-top: 10px;
-    transition: all 0.2s ease;
-    text-align: center;
+.follower-count, .instagram-follower-count, .youtube-subscriber-count {
+    color: var(--text-color); /* Primary text for count */
     font-weight: 500;
-    border: 2px solid var(--accent-color);
-    position: relative;
-    overflow: hidden;
-    width: fit-content;
+    margin: 8px 0;
+    font-size: 0.85rem;
 }
-
-.visit-profile:hover,
-.instagram-visit-profile:hover,
-.youtube-visit-profile:hover {
-    background-color: transparent;
-    color: var(--accent-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Creator Name Styles */
-.creator-header h3,
-.instagram-creator-header h3,
-.youtube-creator-header h3 {
-    margin: 0;
-    font-size: max(1.1em, 16px); /* Set minimum font size */
-    color: var(--text-color);
-    line-height: 1.4;
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-
-/* Unavailable Message Styles */
-.unavailable-message {
-    color: var(--secondary-text);
-    font-size: 18px;
-    margin-top: 20px;
-    text-align: center;
-    background-color: var(--content-bg);
-    padding: 20px;
-    border: 2px solid var(--accent-color);
-    border-radius: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.unavailable-message-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: var(--text-color);
-}
-
-/* Media queries for mobile responsiveness */
-@media screen and (max-width: 1400px) {
-    .creator-grid,
-    .instagram-creator-grid,
-    .youtube-creator-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .shoutouts-section {
-        padding: 15px;
-        margin-bottom: 20px;
-        overflow: hidden;
-    }
-
-    .creator-grid,
-    .instagram-creator-grid,
-    .youtube-creator-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        overflow: visible;
-    }
-
-    .creator-card,
-    .instagram-creator-card,
-    .youtube-creator-card {
-        padding: 12px;
-        overflow: hidden;
-        height: auto;
-        min-height: fit-content;
-    }
-
-    .creator-header h3,
-    .instagram-creator-header h3,
-    .youtube-creator-header h3 {
-        overflow-wrap: break-word;
-        word-break: break-word;
-    }
-
-    .youtube-cover-photo {
-        width: calc(100% + 24px);
-        margin: -12px -12px 15px -12px;
-    }
-
-    .username-container,
-    .instagram-username-container,
-    .youtube-username-container {
-        padding-right: 6px;
-    }
-
-    .creator-username,
-    .instagram-creator-username,
-    .youtube-creator-username {
-        font-size: 0.85em;
-    }
-}
-
-/* Extra small devices */
-@media screen and (max-width: 380px) {
-    .shoutouts-section {
-        padding: 10px;
-        overflow: hidden;
-    }
-
-    .creator-grid,
-    .instagram-creator-grid,
-    .youtube-creator-grid {
-        gap: 10px;
-        overflow: visible;
-    }
-
-    .creator-card,
-    .instagram-creator-card,
-    .youtube-creator-card {
-        padding: 10px;
-        overflow: hidden;
-        height: auto;
-        min-height: fit-content;
-    }
-
-    .youtube-cover-photo {
-        width: calc(100% + 20px);
-        margin: -10px -10px 15px -10px;
-    }
-
-    .username-container,
-    .instagram-username-container,
-    .youtube-username-container {
-        padding-right: 4px;
-    }
-
-    .creator-username,
-    .instagram-creator-username,
-    .youtube-creator-username {
-        font-size: 0.8em;
-    }
-}
-
-:root {
-    --accent-color-rgb: 0, 123, 255; /* Match this to your accent color */
-    --shadow-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Countdown Styles */
-.countdown-section {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    padding: 30px;
-    border-radius: 16px;
-    margin: 30px auto;
-    text-align: center;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.countdown-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-.countdown-block {
-    text-align: center;
-}
-
-.flip-clock {
-    perspective: 400px;
-    margin-bottom: 10px;
-    display: inline-block;
-}
-
-.flip-clock-inner {
-    position: relative;
-    width: 60px;
-    height: 80px;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.flip-clock-inner.flip {
-    transform: rotateX(180deg);
-}
-
-.flip-clock-front,
-.flip-clock-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    font-weight: bold;
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--accent-color), var(--content-bg) 85%),
-        var(--content-bg)
-    );
-    border: 2px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
-    border-radius: 12px;
-    color: var(--text-color);
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 15%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
-}
-
-.flip-clock-back {
-    transform: rotateX(180deg);
-}
-
-.countdown-label {
-    color: var(--accent-color);
-    font-size: 0.9em;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-top: 10px;
-    letter-spacing: 0.5px;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .countdown-section {
-        padding: 20px;
-    }
-
-    .countdown-container {
-        gap: 15px;
-    }
-
-    .flip-clock-inner {
-        width: 50px;
-        height: 70px;
-    }
-
-    .flip-clock-front,
-    .flip-clock-back {
-        font-size: 1.8em;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .countdown-section {
-        padding: 15px;
-    }
-
-    .countdown-container {
-        gap: 10px;
-    }
-
-    .flip-clock-inner {
-        width: 40px;
-        height: 60px;
-    }
-
-    .flip-clock-front,
-    .flip-clock-back {
-        font-size: 1.5em;
-        border-radius: 8px;
-    }
-
-    .countdown-label {
-        font-size: 0.8em;
-    }
+.visit-profile, .instagram-visit-profile, .youtube-visit-profile {
+    /* Use refined button style */
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    border-radius: var(--border-radius-lg); /* Consistent rounding */
+    margin-top: 15px; /* Space above button */
+    align-self: flex-start; /* Align button left */
 }
 
 /* ======================== */
-/*     Back to Top Button   */
+/* Version Info & Legal     */
 /* ======================== */
-
-.scroll-to-top {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 60px;
-  height: 60px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  z-index: 9999;
-  display: none;
-  transition: opacity 0.3s ease;
+.version-info-section, .legal-section {
+    /* Shared section styles handle main appearance */
+    font-size: 0.9rem; /* Slightly smaller base font for these */
 }
-
-.scroll-to-top.visible {
-  display: block;
-  opacity: 1;
-}
-
-.progress-ring {
-  transform: rotate(-90deg);
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.progress-bg {
-  fill: none;
-  stroke: var(--border-color);
-  stroke-width: 4;
-  opacity: 0.3;
-}
-
-.progress-indicator {
-  fill: none;
-  stroke: var(--accent-color);
-  stroke-width: 4;
-  stroke-dasharray: 163.36; /* 2πr where r=26 */
-  stroke-dashoffset: 163.36;
-  transition: stroke-dashoffset 0.2s ease-out;
-}
-
-.arrow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  font-size: 28px;
-  color: var(--accent-color);
-  pointer-events: none;
-}
-
-/* Version Info Section */
-.version-info-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-}
-
-/* Version Header */
-.version-header {
-    color: var(--text-color);
+.version-header, .legal-header {
+    font-size: 1.1rem; /* Smaller headers */
     margin-bottom: 15px;
-    font-size: 1.2em;
-    font-weight: 600;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    padding-bottom: 8px;
 }
-
-.version-header::before {
-    content: "📊";
+.version-number, .build-number, .os-info, .device-info, .update-time, .countdown {
+    padding: 10px 15px;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 8px;
+    font-size: 0.9em;
 }
-
-/* Common Info Box Styles */
-.version-number,
-.build-number,
-.os-info,
-.device-info,
-.update-time {
-    color: var(--text-color);
-    font-size: 1em;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    border: 1px solid var(--border-color);
+.copy-protection-message, .legal-protection-message, .watermark-message {
+    padding: 12px 15px;
+    font-size: 0.9em;
+    margin: 10px 0;
+    border-radius: var(--border-radius-md);
 }
-
-/* Label Content with Icons */
-.version-number::before { content: "🔢 Version:"; }
-.build-number::before { content: "🏗️ Build:"; }
-.os-info::before { content: "💻 Operating System:"; }
-.device-info::before { content: "📱 Device el:"; }
-.update-time::before { content: "🕒 Current Date & Time:"; }
-
-/* Label Styling */
-.version-number::before,
-.build-number::before,
-.os-info::before,
-.device-info::before,
-.update-time::before {
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-/* Countdown Styling */
-.countdown {
-    color: var(--text-color);
-    font-size: 1em;
-    font-weight: 600;
-    background: var(--bg-color);
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    margin-top: 10px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.countdown::before {
-    content: "⏱️";
-}
-
-/* Media queries */
-@media screen and (max-width: 768px) {
-    .version-info-section {
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-
-    .version-header {
-        font-size: 1.1em;
-    }
-
-    .version-number,
-    .build-number,
-    .os-info,
-    .device-info,
-    .update-time,
-    .countdown {
-        font-size: 0.9em;
-        padding: 12px;
-    }
-}
-
-@media screen and (max-width: 380px) {
-    .version-info-section {
-        padding: 10px;
-    }
-
-    .version-number,
-    .build-number,
-    .os-info,
-    .device-info,
-    .update-time,
-    .countdown {
-        padding: 10px;
-        font-size: 0.85em;
-    }
-}
-
-@keyframes updatePulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.01); }
-    100% { transform: scale(1); }
-}
-
-.version-update {
-    animation: updatePulse 0.3s ease-in-out;
-}
-
-/* Copyright and Legal Notices */
-.legal-section {
-    background: linear-gradient(145deg, 
-        var(--content-bg),
-        color-mix(in srgb, var(--content-bg) 95%, #ff4757)
-    );
-    border-radius: 16px;
-    padding: 25px;
-    margin: 35px 0;
-    box-shadow: 
-        0 10px 30px -10px var(--shadow-color),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-    width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    border: 1px solid rgba(255, 71, 87, 0.1);
-}
-
-/* Decorative top border */
-.legal-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, 
-        #ff4757,
-        color-mix(in srgb, #ff4757 70%, white),
-        #ff4757
-    );
-}
-
-/* Legal Section Header */
-.legal-header {
-    color: var(--text-color);
-    font-size: 1.3em;
-    font-weight: 700;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 71, 87, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.legal-header::before {
-    content: '⚖️';
-    font-size: 1.2em;
-}
-
-/* Protection Messages */
-.copy-protection-message,
-.legal-protection-message,
-.watermark-message {
-    background: color-mix(in srgb, var(--bg-color) 95%, #ff4757);
-    color: var(--text-color);
-    padding: 16px 20px;
-    font-size: 0.95em;
-    margin: 15px 0;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px -5px rgba(255, 71, 87, 0.15);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 71, 87, 0.1);
-    position: relative;
-}
-
-/* Message icons */
-.copy-protection-message::before,
-.legal-protection-message::before,
-.watermark-message::before {
-    content: '⚠️';
-    font-size: 1.2em;
-    min-width: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Message types */
-.copy-protection-message {
-    border-left: 4px solid #ff4757;
-}
-
-.legal-protection-message {
-    border-left: 4px solid #ffa502;
-}
-
-.watermark-message {
-    border-left: 4px solid #2ed573;
-}
-
-/* Hover Effects */
-.copy-protection-message:hover,
-.legal-protection-message:hover,
-.watermark-message:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px -8px rgba(255, 71, 87, 0.2);
-}
-
-/* Last Updated Text */
 .last-updated {
+    margin-top: 15px;
+    padding-top: 10px;
+    font-size: 0.8em;
+}
+/* Keep unique legal section ::before if desired */
+.legal-section::before { height: 2px; /* Make top border thinner */ }
+
+/* ======================== */
+/* Footer                   */
+/* ======================== */
+footer {
+    text-align: center;
+    padding: 25px 20px;
+    margin-top: 40px;
     color: var(--secondary-text);
-    font-size: 0.85em;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 71, 87, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
 }
 
-.last-updated::before {
-    content: '🕒';
-    font-size: 1.1em;
+/* ======================== */
+/* Scroll-to-Top Button     */
+/* ======================== */
+.scroll-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px; /* Positioned bottom-right */
+    width: 44px; /* Size similar to macOS/iOS controls */
+    height: 44px;
+    background-color: color-mix(in srgb, var(--content-bg) 80%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    border-radius: 50%; /* Circular */
+    cursor: pointer;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+.scroll-to-top.visible {
+    display: block; /* Show when needed */
+    opacity: 1;
+}
+.scroll-to-top:hover {
+    background-color: color-mix(in srgb, var(--content-bg) 95%, transparent);
+    transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-/* Media Queries */
-@media screen and (max-width: 768px) {
-    .legal-section {
-        padding: 20px;
-        margin: 25px 0;
-    }
+/* Progress Ring & Arrow */
+.progress-ring { transform: rotate(-90deg); }
+.progress-bg { stroke: var(--border-color); opacity: 0.3; stroke-width: 3; }
+.progress-indicator { stroke: var(--accent-color); stroke-width: 3; stroke-linecap: round; }
+.arrow { font-size: 18px; color: var(--accent-color); transform: translate(-50%, -50%); } /* Centered arrow */
 
-    .legal-header {
-        font-size: 1.2em;
-    }
-
-    .copy-protection-message,
-    .legal-protection-message,
-    .watermark-message {
-        padding: 14px 16px;
-        font-size: 0.9em;
-        gap: 12px;
-    }
-
-    .last-updated {
-        font-size: 0.8em;
-    }
+/* ======================== */
+/* Focus Outline Management */
+/* ======================== */
+:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+body.focus-outline-disabled :focus {
+    outline: none !important;
+}
+@media (max-width: 1024px) {
+    #focus-outline-setting-card { display: none; }
 }
 
-@media screen and (max-width: 380px) {
-    .legal-section {
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 14px;
-    }
-
-    .legal-header {
-        font-size: 1.1em;
-    }
-
-    .copy-protection-message,
-    .legal-protection-message,
-    .watermark-message {
-        padding: 12px 14px;
-        font-size: 0.85em;
-        gap: 10px;
-    }
+/* ======================== */
+/* Maintenance Screen       */
+/* ======================== */
+body.maintenance-active { overflow: hidden; }
+.maintenance-overlay {
+    /* Keep existing styles, ensure colors use variables */
+    background-color: rgba(0, 0, 0, 0.9); /* Darker backdrop */
+    color: var(--dark-text); /* Use dark mode text color */
+    display: none;
+    /* ... other styles */
 }
+.maintenance-loader {
+    border: 4px solid rgba(255, 255, 255, 0.2); /* Dimmer track */
+    border-top: 4px solid var(--dark-accent); /* Use accent color */
+    /* ... other styles */
+}
+.maintenance-content h1 { color: var(--dark-accent); }
+.maintenance-content p { color: var(--dark-text); opacity: 0.8; }
+.maintenance-socials a { color: var(--dark-link); }
+.maintenance-socials a:hover { color: var(--dark-hover); }
 
-/* Copy Protection */
+/* ======================== */
+/* Copy Protection          */
+/* ======================== */
 * {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
-
 img {
     pointer-events: none;
     -webkit-user-drag: none;
@@ -1775,686 +938,43 @@ img {
     -o-user-drag: none;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
-    color: var(--secondary-text);
-    border-top: 1px solid var(--border-color);
-}
-
-/* Responsive Design */
+/* ======================== */
+/* Responsive (Final Check) */
+/* ======================== */
 @media (max-width: 768px) {
-    .container {
-        padding: 0 10px;
-    }
-    
-    .countdown-item {
-        min-width: 80px;
-    }
-    
-    .creator-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-    
-    .president-info {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .social-links-container {
-        gap: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
-    .profile-pic {
-        width: 120px;
-        height: 120px;
-    }
-    
-    .social-button {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .creator-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .countdown-container {
-        flex-wrap: wrap;
-    }
-}
-
-:root {
-    --accent-color: #2563eb; /* ern blue */
-    --accent-color-rgb: 37, 99, 235;
-    --bg-color: #ffffff;
-    --content-bg: #f8fafc;
-    --text-color: #0f172a;
-    --border-color: #e2e8f0;
-    --border-color-rgb: 226, 232, 240;
-    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Dark e variables */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #0f172a;
-        --content-bg: #1e293b;
-        --text-color: #f8fafc;
-        --border-color: #334155;
-        --border-color-rgb: 51, 65, 85;
-    }
-}
-
-/* FAQ Section Styles */
-.faq-section {
-  background: linear-gradient(145deg, color-mix(in srgb, var(--content-bg) 98%, white), var(--content-bg));
-  padding: 30px;
-  border-radius: 16px;
-  margin-bottom: 30px;
-  box-shadow: 0 8px 32px -8px var(--shadow-color), 0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-  backdrop-filter: blur(10px);
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.faq-section h2 {
-  color: var(--text-color);
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-}
-
-.faq-container {
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* Category Styling */
-.faq-category {
-  color: var(--text-color);
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 2rem 0 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid color-mix(in srgb, var(--accent-color) 15%, transparent);
-  position: relative;
-}
-
-.faq-category::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 50px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 80%, transparent));
-}
-
-/* FAQ Item Styling */
-.faq-item {
-  background: linear-gradient(145deg, color-mix(in srgb, var(--content-bg) 95%, white), var(--content-bg));
-  border: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 4px 15px color-mix(in srgb, var(--accent-color) 15%, transparent), 0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
-}
-
-.faq-question {
-  width: 100%;
-  padding: 1.5rem;
-  background-color: transparent;
-  color: var(--text-color);
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.1rem;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* FAQ Icon Styling */
-.faq-icon {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: linear-gradient(145deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 80%, #ffffff));
-  color: white;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  font-size: 1rem;
-  flex-shrink: 0;
-  margin-left: 1rem;
-  box-shadow: 0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent);
-}
-
-/* FAQ Answer Styling */
-.faq-answer {
-  padding: 0 1.5rem;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  color: var(--text-color);
-  line-height: 1.6;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  margin-top: 0.5rem;
-}
-
-.faq-answer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0;
-}
-
-.faq-answer li {
-  padding-left: 1.5rem;
-  position: relative;
-  margin-bottom: 0.5rem;
-}
-
-.faq-answer li::before {
-  content: "•";
-  color: var(--accent-color);
-  position: absolute;
-  left: 0;
-}
-
-/* Active State Styling */
-.faq-item.active {
-  background: linear-gradient(145deg, color-mix(in srgb, var(--accent-color) 98%, var(--content-bg)), var(--content-bg));
-}
-
-.faq-item.active .faq-answer {
-  padding: 1.5rem; 
-  max-height: none;  /* Allow full expansion */
-  opacity: 1;
-  overflow: visible;  /* Allow content to overflow */
-}
-
-.faq-item.active .faq-icon {
-  transform: rotate(45deg);
-  background: linear-gradient(145deg, color-mix(in srgb, var(--accent-color) 80%, #ffffff), var(--accent-color));
-}
-
-/* Media Queries */
-@media screen and (max-width: 768px) {
-  .faq-section {
-    padding: 20px;
-  }
-
-  .faq-section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .faq-category {
-    font-size: 1.25rem;
-    margin: 1.5rem 0 0.75rem;
-  }
-
-  .faq-question {
-    padding: 1.25rem;
-    font-size: 1rem;
-  }
-
-  .faq-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 0.875rem;
-  }
-
-  .faq-item.active .faq-answer {
-    padding: 1.5rem;
-    max-height: none;  /* Ensure no max-height limits */
-    opacity: 1;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .faq-section {
-    padding: 15px;
-  }
-
-  .faq-question {
-    padding: 1rem;
-    font-size: 0.95rem;
-  }
-
-  .faq-icon {
-    width: 18px;
-    height: 18px;
-    margin-left: 0.5rem;
-  }
-
-  .faq-item.active .faq-answer {
-    padding: 1.25rem 1.5rem;
-    max-height: none;  /* Ensure no max-height limits */
-    opacity: 1;
-  }
-}
-
-/* Event Section Container */
-[data-section-id="events"] {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
-    padding: 30px;
-    border-radius: 16px;
-    margin-bottom: 30px;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.section-content {
-    padding: 0;
-}
-
-.section-title {
-    text-align: left;
-    margin-bottom: 20px;
-    color: var(--text-color);
-    font-size: var(--title-size);
-    font-weight: 600;
-}
-
-/* Events Grid Container */
-.events-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    width: 100%;
-}
-
-/* Event Card Styles */
-.event-card {
-    position: relative;
-    padding: 24px;
-    border-radius: 16px;
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 95%, white),
-        var(--content-bg)
-    );
-    border: 1px solid color-mix(in srgb, var(--border-color) 15%, transparent);
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 15%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
-}
-
-/* Event Header */
-.event-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.event-title {
-    margin: 0;
-    font-size: var(--title-size);
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.event-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: linear-gradient(145deg,
-        var(--accent-color),
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff)
-    );
-    color: var(--button-text);
-    font-size: 0.9em;
-    font-weight: 500;
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent);
-}
-
-/* Event Information Layout */
-.event-info {
-    display: grid;
-    gap: 24px;
-    margin: 20px 0;
-}
-
-.event-datetime,
-.event-details {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* Event Row Styling */
-.event-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    color: var(--text-color);
-    font-size: var(--font-size);
-}
-
-.event-row .icon {
-    flex-shrink: 0;
-    width: 20px;
-    font-size: 1.2em;
-    text-align: center;
-    color: var(--accent-color);
-}
-
-/* Join Event Button */
-.event-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 24px auto 0;
-    padding: 14px 28px;
-    border-radius: 25px;
-    background: linear-gradient(145deg,
-        var(--accent-color),
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff)
-    );
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    width: auto;
-    max-width: 100%;
-    box-sizing: border-box;
-    box-shadow: 
-        0 4px 15px color-mix(in srgb, var(--accent-color) 30%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
-}
-
-.event-link:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--accent-color) 80%, #ffffff),
-        var(--accent-color)
-    );
-    box-shadow: 
-        0 8px 20px color-mix(in srgb, var(--accent-color) 40%, transparent),
-        0 0 0 1px var(--accent-color);
-}
-
-/* Timezone Info */
-.timezone-info {
-    margin-top: 16px;
-    text-align: center;
-    font-size: 0.9em;
-    color: var(--secondary-text);
-}
-
-/* Empty State */
-.no-events {
-    text-align: center;
-    color: var(--text-color);
-    padding: 24px;
-    font-size: var(--font-size);
-}
-
-/* Event Type Indicators */
-.event-card.stream {
-    border-left: 4px solid var(--accent-color);
-}
-
-.event-card.community {
-    border-left: 4px solid var(--secondary-color, #6c5ce7);
-}
-
-.event-card.empty {
-    text-align: center;
-    padding: 40px 24px;
-}
-
-/* Media Queries */
-@media screen and (max-width: 768px) {
-    [data-section-id="events"] {
+    body { padding: 15px; }
+    .container { padding: 0 15px; }
+    /* Adjust section padding */
+    .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] {
         padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-radius: var(--border-radius-md); /* Slightly less rounded on mobile */
     }
-
-    .events-container {
-        grid-template-columns: 1fr;
-    }
-
-    .event-card {
-        padding: 16px;
-    }
-
-    .event-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .event-badge {
-        align-self: flex-start;
-    }
-
-    .event-link {
-        width: 100%;
-        padding: 12px 20px;
-        font-size: 0.95em;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    [data-section-id="events"] {
+    /* Adjust card padding */
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card {
         padding: 15px;
     }
+    .president-info { flex-direction: column; text-align: center; }
+    .president-photo { width: 120px; height: 120px; margin-bottom: 15px;}
+    .profile-pic { width: 120px; height: 120px; }
+}
 
-    .event-card {
+@media (max-width: 480px) {
+    body { padding: 10px; }
+    .container { padding: 0 10px; }
+     /* Adjust section padding */
+    .profile-section, .countdown-section, .president-section, .social-links-section, .useful-links-section, .tech-section, .faq-section, .shoutouts-section, .disabilities-section, .version-info-section, .legal-section, [data-section-id="events"] {
+        padding: 15px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+     /* Adjust card padding */
+    .tech-item, .faq-item, .event-card, .creator-card, .instagram-creator-card, .youtube-creator-card {
         padding: 12px;
     }
-
-    .event-link {
-        padding: 12px 16px;
-        font-size: 0.9em;
-    }
-}
-
-/* Default focus outline style */
-:focus {
-    /* Use a clear outline - adjust color/style as needed */
-    outline: 2px solid #A020F0;
-    outline-offset: 2px; /* Optional: adds space between element and outline */
-}
-
-/* If the 'focus-outline-disabled' class is added to the body, remove the outline */
-body.focus-outline-disabled :focus {
-    outline: none !important; /* Remove outline when disabled. !important can help override conflicts. */
-}
-
-/* --- Hides the Focus Outline setting control on smaller screens --- */
-@media (max-width: 1024px) { /* Adjust breakpoint (1024px = typical tablet/large phone cutoff) */
-    #focus-outline-setting-card {
-        display: none;
-    }
-}
-
-/* ======================== */
-/* Custom Maintenance Screen Styles */
-/* ======================== */
-
-/* Rule to prevent scrolling when overlay is active */
-body.maintenance-active {
-    overflow: hidden;
-}
-
-/* Main overlay container */
-.maintenance-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(13, 15, 18, 0.97); /* Dark semi-transparent background */
-    color: #E0E5EC; /* Light text color for contrast */
-    display: none; /* Starts hidden - JS will change this to 'flex' */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 9999; /* Ensure it's on top */
-    padding: 20px;
-    box-sizing: border-box;
-    opacity: 0; /* Start fully transparent for fade-in */
-    animation: fadeIn 0.4s ease-in-out forwards; /* Apply fade-in animation */
-}
-
-/* Animation for the overlay fade-in */
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-
-/* Container for the centered content */
-.maintenance-content {
-    max-width: 600px;
-    width: 100%;
-}
-
-/* Optional: Style for a logo if you add one */
-.maintenance-logo {
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 30px;
-    opacity: 0.8;
-}
-
-/* Loading spinner animation */
-.maintenance-loader {
-    border: 4px solid rgba(255, 255, 255, 0.1); /* Light border */
-    border-top: 4px solid #00ffff; /* Cyan spinner color */
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 30px; /* Center and add space below */
-}
-
-/* Keyframes for the spinner rotation */
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Title styling (targets the h1 inside .maintenance-content) */
-.maintenance-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    color: #00FFFF; /* Cyan title color */
-    font-weight: 700;
-}
-
-/* Message styling (targets the p inside .maintenance-content) */
-.maintenance-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 25px;
-    opacity: 0.9;
-}
-
-/* Optional: Style for an additional status message */
-.maintenance-content .maintenance-status-message {
-    font-size: 0.9rem;
-    font-style: italic;
-    opacity: 0.7;
-    margin-top: -15px; /* Adjust spacing if needed */
-}
-
-/* Container for social/update links */
-.maintenance-socials {
-    margin-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
-    padding-top: 25px;
-}
-
-/* Style for the "Stay Updated:" text above the links */
-.maintenance-socials p {
-    margin-bottom: 15px;
-    font-size: 1rem;
-    opacity: 0.8;
-}
-
-/* Styling for the individual links */
-.maintenance-socials a {
-    color: #33ffff; /* Lighter cyan for links */
-    text-decoration: none;
-    margin: 0 10px;
-    font-size: 1rem;
-    transition: color 0.2s ease;
-    display: inline-block; /* Allow margins */
-    margin-bottom: 10px; /* Space below links if they wrap */
-}
-
-/* Styling for icons within the links */
-.maintenance-socials a i {
-    margin-right: 8px; /* Space between icon and text */
-    font-size: 1.2rem; /* Icon size */
-    vertical-align: middle; /* Align icon with text */
-}
-
-/* Link hover effect */
-.maintenance-socials a:hover {
-    color: #ffffff; /* White on hover */
-}
-
-/* ================ */
-/* Responsive Tweaks */
-/* ================ */
-@media (max-width: 480px) {
-    .maintenance-content h1 {
-        font-size: 1.8rem; /* Smaller title on small screens */
-    }
-
-    .maintenance-content p {
-        font-size: 1rem; /* Smaller message text */
-    }
-
-    .maintenance-logo {
-        max-width: 100px; /* Smaller logo */
-        margin-bottom: 20px;
-    }
-
-     .maintenance-socials a {
-        margin: 0 5px; /* Less horizontal margin */
-        font-size: 0.95rem; /* Slightly smaller links */
-    }
+    .profile-pic { width: 100px; height: 100px; }
+    .president-photo { width: 100px; height: 100px; }
+    .social-button, .link-button { width: 100%; } /* Stack buttons */
+    .social-links-container, .links-container { grid-template-columns: 1fr; }
 }
