@@ -81,24 +81,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     const countdownExpiredMessageInput = document.getElementById('countdown-expired-message-input');
     // ****** END ADD LINE ******
 
-    // --- Business Info Management Elements ---
-    const businessInfoForm = document.getElementById('business-info-form');
-    const contactEmailInput = document.getElementById('business-contact-email');
-    // Timezone select is removed
-    const regularHoursContainer = document.getElementById('regular-hours-container');
-    const holidayHoursList = document.getElementById('holiday-hours-list');
-    const temporaryHoursList = document.getElementById('temporary-hours-list');
-    const addHolidayButton = document.getElementById('add-holiday-button');
-    const addTemporaryButton = document.getElementById('add-temporary-button');
-    const statusOverrideSelect = document.getElementById('business-status-override');
-    const businessInfoStatusMessage = document.getElementById('business-info-status-message');
-    
-    // Reference to the Firestore document (ensure 'doc' and 'db' are available)
-    const businessDocRef = doc(db, "site_config", "businessDetails");
-    
-    // Days array used by hours functions
-    const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
     // FAQ Management Elements
     const addFaqForm = document.getElementById('add-faq-form');
     const faqListAdmin = document.getElementById('faq-list-admin');
@@ -762,335 +744,160 @@ function renderYouTubeCard(account) {
     }
     // *** END updateShoutoutPreview FUNCTION ***
 
-    // --- Helper to show status for Business Info section ---
-    function showBusinessInfoStatus(message, isError = false) {
-        const statusElement = document.getElementById('business-info-status-message');
-        if (!statusElement) { console.warn("Business info status element not found"); return; }
-        statusElement.textContent = message;
-        statusElement.className = `status-message ${isError ? 'error' : 'success'}`;
-        // Clear message after 5 seconds
-        setTimeout(() => { if (statusElement && statusElement.textContent === message) { statusElement.textContent = ''; statusElement.className = 'status-message'; } }, 5000);
-    }
-    
-    // --- Helper function needed by hours population (if not already present) ---
-    function capitalizeFirstLetter(string) {
-      if (!string) return '';
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+// ========================================================
+// ===== START: BUSINESS INFO CODE FOR admin.js =========
+// ========================================================
 
-    // --- Populate Regular Hours Form ---
-function populateRegularHoursForm(hoursData = {}) {
-    if (!regularHoursContainer) return;
-    regularHoursContainer.innerHTML = ''; // Clear existing
-    daysOfWeek.forEach(day => {
-        const dayData = hoursData[day] || { open: '', close: '', isClosed: true }; // Default to closed
-        const groupDiv = document.createElement('div');
-        groupDiv.className = 'day-hours-group';
-        groupDiv.innerHTML = `
-            <label for="${day}-isClosed">${capitalizeFirstLetter(day)}</label>
-            <div class="time-inputs">
-                <label for="${day}-open" class="sr-only">Open Time:</label>
-                <input type="time" id="${day}-open" name="${day}-open" value="${dayData.open || ''}" ${dayData.isClosed ? 'disabled' : ''}>
-                <span> - </span>
-                <label for="${day}-close" class="sr-only">Close Time:</label>
-                <input type="time" id="${day}-close" name="${day}-close" value="${dayData.close || ''}" ${dayData.isClosed ? 'disabled' : ''}>
-            </div>
-            <div class="form-group checkbox-group">
-                <input type="checkbox" id="${day}-isClosed" name="${day}-isClosed" ${dayData.isClosed ? 'checked' : ''}>
-                <label for="${day}-isClosed">Closed all day</label>
-            </div>
-        `;
-        // Add event listener to disable/enable time inputs based on checkbox
-        const isClosedCheckbox = groupDiv.querySelector(`#${day}-isClosed`);
-        const openInput = groupDiv.querySelector(`#${day}-open`);
-        const closeInput = groupDiv.querySelector(`#${day}-close`);
-        isClosedCheckbox.addEventListener('change', (e) => {
-            const isDisabled = e.target.checked;
-            openInput.disabled = isDisabled;
-            closeInput.disabled = isDisabled;
-            if (isDisabled) {
-                openInput.value = '';
-                closeInput.value = '';
-            }
-        });
-        regularHoursContainer.appendChild(groupDiv);
-    });
+// --- Business Info Element References (Defined once) ---
+const businessInfoForm = document.getElementById('business-info-form');
+const contactEmailInput = document.getElementById('business-contact-email');
+const regularHoursContainer = document.getElementById('regular-hours-container');
+const holidayHoursList = document.getElementById('holiday-hours-list');
+const temporaryHoursList = document.getElementById('temporary-hours-list');
+const addHolidayButton = document.getElementById('add-holiday-button');
+const addTemporaryButton = document.getElementById('add-temporary-button');
+const statusOverrideSelect = document.getElementById('business-status-override');
+const businessInfoStatusMessage = document.getElementById('business-info-status-message');
+const adminPreviewStatus = document.getElementById('admin-preview-status');
+const adminPreviewHours = document.getElementById('admin-preview-hours');
+const adminPreviewContact = document.getElementById('admin-preview-contact');
+
+// --- Firestore Reference & Constants ---
+// Ensure 'doc', 'db', 'serverTimestamp', 'setDoc', 'getDoc' are imported/available
+const businessDocRef = doc(db, "site_config", "businessDetails");
+const daysOfWeekBI = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']; // Use unique name
+
+// --- Business Info Helper Functions ---
+function showBusinessInfoStatus(message, isError = false) {
+    if (!businessInfoStatusMessage) { console.warn("Business info status element missing"); return; }
+    businessInfoStatusMessage.textContent = message;
+    businessInfoStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+    setTimeout(() => { if (businessInfoStatusMessage && businessInfoStatusMessage.textContent === message) { businessInfoStatusMessage.textContent = ''; businessInfoStatusMessage.className = 'status-message'; } }, 5000);
 }
 
+// Ensure capitalizeFirstLetter is defined elsewhere ONCE in your script or add it here if needed
+// function capitalizeFirstLetter(string) { if (!string) return ''; return string.charAt(0).toUpperCase() + string.slice(1); }
 
-// --- Render a Holiday Entry ---
-function renderHolidayEntry(entry = {}, index) {
-    const uniqueId = `holiday-${Date.now()}-${index}`; // More unique ID for labels
-    const entryDiv = document.createElement('div');
-    entryDiv.className = 'hour-entry holiday-entry';
-    entryDiv.setAttribute('data-id', uniqueId); // Use for removal reference
-    entryDiv.innerHTML = `
-        <button type="button" class="remove-hour-button" title="Remove Holiday/Specific Date">&times;</button>
-        <div class="form-group">
-            <label for="holiday-date-${uniqueId}">Date:</label>
-            <input type="date" id="holiday-date-${uniqueId}" name="holiday-date-${uniqueId}" value="${entry.date || ''}" required>
-        </div>
-        <div class="form-group">
-            <label for="holiday-label-${uniqueId}">Label (Optional):</label>
-            <input type="text" id="holiday-label-${uniqueId}" name="holiday-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Christmas Day">
-        </div>
-         <div class="time-inputs">
-             <label for="holiday-open-${uniqueId}" class="sr-only">Open Time:</label>
-             <input type="time" id="holiday-open-${uniqueId}" name="holiday-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}>
-             <span> - </span>
-             <label for="holiday-close-${uniqueId}" class="sr-only">Close Time:</label>
-             <input type="time" id="holiday-close-${uniqueId}" name="holiday-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}>
-        </div>
-        <div class="form-group checkbox-group">
-             <input type="checkbox" id="holiday-isClosed-${uniqueId}" name="holiday-isClosed-${uniqueId}" ${entry.isClosed ? 'checked' : ''}>
-            <label for="holiday-isClosed-${uniqueId}">Closed all day</label>
-        </div>
-    `;
-    // Listener for remove button
-    entryDiv.querySelector('.remove-hour-button').addEventListener('click', () => entryDiv.remove());
-    // Listener for closed checkbox
-     const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`);
-     const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`);
-     const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`);
-     isClosedCheckbox.addEventListener('change', (e) => {
-         const isDisabled = e.target.checked;
-         openInput.disabled = isDisabled;
-         closeInput.disabled = isDisabled;
-         if(isDisabled) { openInput.value = ''; closeInput.value = ''; }
-     });
+function formatTimeForAdminPreview(timeString) { // Renamed for clarity
+    if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return ''; try { const [hour, minute] = timeString.split(':'); const hourNum = parseInt(hour, 10); if (isNaN(hourNum)) return timeString; const ampm = hourNum >= 12 ? 'PM' : 'AM'; const hour12 = hourNum % 12 || 12; return `${hour12}:${minute} ${ampm}`; } catch (e) { return timeString; }
+}
+
+function timeStringToMinutesBI(timeStr) { // Renamed for clarity
+    if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return null;
+    try { const [hours, minutes] = timeStr.split(':').map(Number); if (isNaN(hours) || isNaN(minutes)) return null; return hours * 60 + minutes; }
+    catch (e) { console.error("Error converting time string to minutes:", timeStr, e); return null; }
+}
+
+// --- Form Population ---
+function populateRegularHoursFormBI(hoursData = {}) { // Renamed for clarity
+    if (!regularHoursContainer) { console.error("Regular hours container not found"); return; }
+    regularHoursContainer.innerHTML = ''; daysOfWeekBI.forEach(day => { const dayData = hoursData[day] || { open: '', close: '', isClosed: true }; const groupDiv = document.createElement('div'); groupDiv.className = 'day-hours-group'; /* ... (rest of innerHTML for day group - unchanged) ... */ groupDiv.innerHTML = `<label for="${day}-isClosed">${capitalizeFirstLetter(day)}</label><div class="time-inputs"><label for="${day}-open" class="sr-only">Open Time:</label><input type="time" id="${day}-open" name="${day}-open" value="${dayData.open || ''}" ${dayData.isClosed ? 'disabled' : ''}><span> - </span><label for="${day}-close" class="sr-only">Close Time:</label><input type="time" id="${day}-close" name="${day}-close" value="${dayData.close || ''}" ${dayData.isClosed ? 'disabled' : ''}></div><div class="form-group checkbox-group"><input type="checkbox" id="${day}-isClosed" name="${day}-isClosed" ${dayData.isClosed ? 'checked' : ''} class="regular-hours-input"><label for="${day}-isClosed">Closed all day</label></div>`; const isClosedCheckbox = groupDiv.querySelector(`#${day}-isClosed`); const openInput = groupDiv.querySelector(`#${day}-open`); const closeInput = groupDiv.querySelector(`#${day}-close`); isClosedCheckbox.addEventListener('change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if (isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreviewBI(); }); openInput?.addEventListener('input', updateAdminPreviewBI); closeInput?.addEventListener('input', updateAdminPreviewBI); regularHoursContainer.appendChild(groupDiv); });
+}
+
+function renderHolidayEntryBI(entry = {}, index) { // Renamed for clarity
+    const uniqueId = `holiday-${Date.now()}-${index}`; const entryDiv = document.createElement('div'); entryDiv.className = 'hour-entry holiday-entry'; entryDiv.setAttribute('data-id', uniqueId); /* ... (rest of innerHTML for holiday entry - unchanged) ... */ entryDiv.innerHTML = `<button type="button" class="remove-hour-button" title="Remove Holiday/Specific Date">&times;</button><div class="form-group"><label for="holiday-date-${uniqueId}">Date:</label><input type="date" id="holiday-date-${uniqueId}" class="holiday-input" name="holiday-date-${uniqueId}" value="${entry.date || ''}" required></div><div class="form-group"><label for="holiday-label-${uniqueId}">Label (Optional):</label><input type="text" id="holiday-label-${uniqueId}" class="holiday-input" name="holiday-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Christmas Day"></div><div class="time-inputs"><label for="holiday-open-${uniqueId}" class="sr-only">Open Time:</label><input type="time" id="holiday-open-${uniqueId}" class="holiday-input" name="holiday-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}><span> - </span><label for="holiday-close-${uniqueId}" class="sr-only">Close Time:</label><input type="time" id="holiday-close-${uniqueId}" class="holiday-input" name="holiday-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}></div><div class="form-group checkbox-group"><input type="checkbox" id="holiday-isClosed-${uniqueId}" name="holiday-isClosed-${uniqueId}" class="holiday-input" ${entry.isClosed ? 'checked' : ''}><label for="holiday-isClosed-${uniqueId}">Closed all day</label></div>`;
+    entryDiv.querySelector('.remove-hour-button').addEventListener('click', () => { entryDiv.remove(); updateAdminPreviewBI(); });
+    const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`); const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`); const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`); isClosedCheckbox.addEventListener('change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreviewBI(); }); entryDiv.querySelectorAll('.holiday-input').forEach(input => input.addEventListener('input', updateAdminPreviewBI)); isClosedCheckbox.addEventListener('change', updateAdminPreviewBI);
     return entryDiv;
 }
 
-// --- Render a Temporary Hours Entry ---
-function renderTemporaryEntry(entry = {}, index) {
-     const uniqueId = `temp-${Date.now()}-${index}`; // More unique ID for labels
-     const entryDiv = document.createElement('div');
-     entryDiv.className = 'hour-entry temporary-entry';
-     entryDiv.setAttribute('data-id', uniqueId); // Use for removal reference
-     entryDiv.innerHTML = `
-         <button type="button" class="remove-hour-button" title="Remove Temporary Period">&times;</button>
-        <div class="form-group">
-            <label for="temp-start-${uniqueId}">Start Date:</label>
-            <input type="date" id="temp-start-${uniqueId}" name="temp-start-${uniqueId}" value="${entry.startDate || ''}" required>
-        </div>
-        <div class="form-group">
-            <label for="temp-end-${uniqueId}">End Date:</label>
-            <input type="date" id="temp-end-${uniqueId}" name="temp-end-${uniqueId}" value="${entry.endDate || ''}" required>
-        </div>
-        <div class="form-group">
-            <label for="temp-label-${uniqueId}">Label (Optional):</label>
-            <input type="text" id="temp-label-${uniqueId}" name="temp-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Summer Event">
-        </div>
-         <div class="time-inputs">
-             <label for="temp-open-${uniqueId}" class="sr-only">Open Time:</label>
-             <input type="time" id="temp-open-${uniqueId}" name="temp-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}>
-             <span> - </span>
-             <label for="temp-close-${uniqueId}" class="sr-only">Close Time:</label>
-             <input type="time" id="temp-close-${uniqueId}" name="temp-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}>
-        </div>
-         <div class="form-group checkbox-group">
-            <input type="checkbox" id="temp-isClosed-${uniqueId}" name="temp-isClosed-${uniqueId}" ${entry.isClosed ? 'checked' : ''}>
-            <label for="temp-isClosed-${uniqueId}">Closed all day during this period</label>
-        </div>
-    `;
-     // Listener for remove button
-    entryDiv.querySelector('.remove-hour-button').addEventListener('click', () => entryDiv.remove());
-     // Listener for closed checkbox
-     const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`);
-     const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`);
-     const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`);
-     isClosedCheckbox.addEventListener('change', (e) => {
-         const isDisabled = e.target.checked;
-         openInput.disabled = isDisabled;
-         closeInput.disabled = isDisabled;
-          if(isDisabled) { openInput.value = ''; closeInput.value = ''; }
-     });
+function renderTemporaryEntryBI(entry = {}, index) { // Renamed for clarity
+     const uniqueId = `temp-${Date.now()}-${index}`; const entryDiv = document.createElement('div'); entryDiv.className = 'hour-entry temporary-entry'; entryDiv.setAttribute('data-id', uniqueId); /* ... (rest of innerHTML for temp entry - unchanged) ... */ entryDiv.innerHTML = `<button type="button" class="remove-hour-button" title="Remove Temporary Period">&times;</button><div class="form-group"><label for="temp-start-${uniqueId}">Start Date:</label><input type="date" id="temp-start-${uniqueId}" class="temp-input" name="temp-start-${uniqueId}" value="${entry.startDate || ''}" required></div><div class="form-group"><label for="temp-end-${uniqueId}">End Date:</label><input type="date" id="temp-end-${uniqueId}" class="temp-input" name="temp-end-${uniqueId}" value="${entry.endDate || ''}" required></div><div class="form-group"><label for="temp-label-${uniqueId}">Label (Optional):</label><input type="text" id="temp-label-${uniqueId}" class="temp-input" name="temp-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Summer Event"></div><div class="time-inputs"><label for="temp-open-${uniqueId}" class="sr-only">Open Time:</label><input type="time" id="temp-open-${uniqueId}" class="temp-input" name="temp-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}><span> - </span><label for="temp-close-${uniqueId}" class="sr-only">Close Time:</label><input type="time" id="temp-close-${uniqueId}" class="temp-input" name="temp-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}></div><div class="form-group checkbox-group"><input type="checkbox" id="temp-isClosed-${uniqueId}" name="temp-isClosed-${uniqueId}" class="temp-input" ${entry.isClosed ? 'checked' : ''}><label for="temp-isClosed-${uniqueId}">Closed all day during this period</label></div>`;
+     entryDiv.querySelector('.remove-hour-button').addEventListener('click', () => { entryDiv.remove(); updateAdminPreviewBI(); });
+     const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`); const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`); const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`); isClosedCheckbox.addEventListener('change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreviewBI(); }); entryDiv.querySelectorAll('.temp-input').forEach(input => input.addEventListener('input', updateAdminPreviewBI)); isClosedCheckbox.addEventListener('change', updateAdminPreviewBI);
     return entryDiv;
 }
 
-// --- Load Business Info Data (Simplified - No Timezone Field) ---
+// --- Load/Save Data ---
 async function loadBusinessInfoData() {
-    if (!businessInfoForm) {
-        console.log("Business info form not found in admin panel.");
-        return;
-    }
-    console.log("Attempting to load business info data...");
-
-    try {
-        const docSnap = await getDoc(businessDocRef);
-        let data = {}; // Initialize data object
-
-        if (docSnap.exists()) {
-            data = docSnap.data();
-            console.log("Loaded business info data (no timezone field expected):", data);
-        } else {
-            console.log("Business info document does not exist yet. Using defaults.");
-        }
-
-        // Populate form fields
-        if (contactEmailInput) contactEmailInput.value = data.contactEmail || '';
-        if (statusOverrideSelect) statusOverrideSelect.value = data.statusOverride || 'auto';
-
-        // Timezone Select is removed
-
-        populateRegularHoursForm(data.regularHours); // Uses data.regularHours or {}
-
-        // Populate Holidays
-        if (holidayHoursList) {
-            holidayHoursList.innerHTML = ''; // Clear
-            (data.holidayHours || []).forEach((entry, index) => {
-                holidayHoursList.appendChild(renderHolidayEntry(entry, index));
-            });
-        }
-        // Populate Temporary Hours
-        if (temporaryHoursList) {
-            temporaryHoursList.innerHTML = ''; // Clear
-            (data.temporaryHours || []).forEach((entry, index) => {
-                temporaryHoursList.appendChild(renderTemporaryEntry(entry, index));
-            });
-        }
-
-    } catch (error) {
-        console.error("Error loading business info:", error);
-        showBusinessInfoStatus("Error loading business information.", true);
-        populateRegularHoursForm(); // Show default structure on error
-        if (holidayHoursList) holidayHoursList.innerHTML = '';
-        if (temporaryHoursList) temporaryHoursList.innerHTML = '';
-    }
+    if (!businessInfoForm) return; console.log("Loading business info data...");
+    try { const docSnap = await getDoc(businessDocRef); let data = {}; if (docSnap.exists()) data = docSnap.data(); else console.log("Business info doc doesn't exist.");
+        if (contactEmailInput) contactEmailInput.value = data.contactEmail || ''; if (statusOverrideSelect) statusOverrideSelect.value = data.statusOverride || 'auto';
+        populateRegularHoursFormBI(data.regularHours);
+        if (holidayHoursList) { holidayHoursList.innerHTML = ''; (data.holidayHours || []).forEach((entry, index) => holidayHoursList.appendChild(renderHolidayEntryBI(entry, index))); }
+        if (temporaryHoursList) { temporaryHoursList.innerHTML = ''; (data.temporaryHours || []).forEach((entry, index) => temporaryHoursList.appendChild(renderTemporaryEntryBI(entry, index))); }
+        updateAdminPreviewBI(); // Update preview after loading
+    } catch (error) { console.error("Error loading business info:", error); showBusinessInfoStatus("Error loading business info.", true); populateRegularHoursFormBI(); if (holidayHoursList) holidayHoursList.innerHTML = ''; if (temporaryHoursList) temporaryHoursList.innerHTML = ''; updateAdminPreviewBI(); }
 }
 
-// --- Save Business Info Data (Simplified - No Timezone Field) ---
 async function saveBusinessInfoData(event) {
-    event.preventDefault();
-    if (!auth || !auth.currentUser) { showBusinessInfoStatus("Error: Not logged in.", true); return; }
-    if (!businessInfoForm) return;
-
-    showBusinessInfoStatus("Saving business info...");
-
-    const newData = {
-        contactEmail: contactEmailInput?.value.trim() || null,
-        // timezone field removed
-        statusOverride: statusOverrideSelect?.value || "auto",
-        regularHours: {},
-        holidayHours: [],
-        temporaryHours: [],
-        lastUpdated: serverTimestamp() // Ensure serverTimestamp is imported from Firestore
-    };
-
-    // Collect Regular Hours
-    daysOfWeek.forEach(day => {
-        const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false;
-        const openTime = document.getElementById(`${day}-open`)?.value || null;
-        const closeTime = document.getElementById(`${day}-close`)?.value || null;
-        newData.regularHours[day] = {
-            open: isClosed ? null : openTime,
-            close: isClosed ? null : closeTime,
-            isClosed: isClosed
-        };
-        if (!isClosed && (!openTime || !closeTime)) {
-             console.warn(`Missing open/close time for ${day} but not marked as closed.`);
-             // Add user feedback if desired: showBusinessInfoStatus(`Missing open/close time for ${day}.`, true); return;
-         }
-    });
-
-    // Collect Holiday Hours
-    document.querySelectorAll('.holiday-entry').forEach(entryDiv => {
-         const id = entryDiv.getAttribute('data-id'); // Use data-id to get unique IDs
-         const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false;
-         const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null;
-         const openTime = entryDiv.querySelector(`#holiday-open-${id}`)?.value || null;
-         const closeTime = entryDiv.querySelector(`#holiday-close-${id}`)?.value || null;
-         if (date) {
-             const entryData = { date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed };
-             if (!isClosed && (!openTime || !closeTime)) console.warn(`Missing open/close time for holiday ${date}...`);
-             newData.holidayHours.push(entryData);
-         }
-    });
-
-    // Collect Temporary Hours
-    document.querySelectorAll('.temporary-entry').forEach(entryDiv => {
-         const id = entryDiv.getAttribute('data-id'); // Use data-id to get unique IDs
-         const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false;
-         const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null;
-         const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null;
-         const openTime = entryDiv.querySelector(`#temp-open-${id}`)?.value || null;
-         const closeTime = entryDiv.querySelector(`#temp-close-${id}`)?.value || null;
-         if (startDate && endDate) {
-             if (endDate < startDate) { showBusinessInfoStatus(`Error: Temp hours end date (${endDate}) < start date (${startDate}).`, true); return; } // Prevent saving if invalid range
-             const entryData = { startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed };
-              if (!isClosed && (!openTime || !closeTime)) console.warn(`Missing open/close time for temp period ${startDate}-${endDate}...`);
-             newData.temporaryHours.push(entryData);
-         }
-    });
-
-    // Sort arrays for consistency
-    newData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1));
-    newData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
-
-    try {
-        await setDoc(businessDocRef, newData); // Use setDoc without merge to replace arrays entirely
-        console.log("Business info saved successfully.");
-        showBusinessInfoStatus("Business info updated successfully!", false);
-    } catch (error) {
-        console.error("Error saving business info:", error);
-        showBusinessInfoStatus(`Error saving business info: ${error.message}`, true);
-    }
+    event.preventDefault(); if (!auth || !auth.currentUser) { showBusinessInfoStatus("Not logged in.", true); return; } if (!businessInfoForm) return; showBusinessInfoStatus("Saving..."); const newData = { contactEmail: contactEmailInput?.value.trim() || null, statusOverride: statusOverrideSelect?.value || "auto", regularHours: {}, holidayHours: [], temporaryHours: [], lastUpdated: serverTimestamp() }; let formIsValid = true;
+    daysOfWeekBI.forEach(day => { const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false; const openTime = document.getElementById(`${day}-open`)?.value || null; const closeTime = document.getElementById(`${day}-close`)?.value || null; newData.regularHours[day] = { open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed: isClosed }; });
+    document.querySelectorAll('.holiday-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false; const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null; if (date) { const entryData = { date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#holiday-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#holiday-close-${id}`)?.value || null), isClosed }; newData.holidayHours.push(entryData); } else formIsValid = false; });
+    document.querySelectorAll('.temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { showBusinessInfoStatus(`Error: Temp End Date < Start Date.`, true); formIsValid = false; return; } const entryData = { startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null), isClosed }; newData.temporaryHours.push(entryData); } else formIsValid = false; });
+    if (!formIsValid) { showBusinessInfoStatus("Check inputs; required holiday/temp dates missing.", true); return; }
+    newData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); newData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+    try { await setDoc(businessDocRef, newData); console.log("Business info saved."); showBusinessInfoStatus("Business info updated!", false); } catch (error) { console.error("Error saving business info:", error); showBusinessInfoStatus(`Error saving: ${error.message}`, true); }
 }
 
-/** Filters and displays shoutouts in the admin list */
-function displayFilteredShoutouts(platform) {
-    const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
-    const countElement = document.getElementById(`${platform}-count`);
-    const searchInput = document.getElementById(`search-${platform}`);
+// --- Admin Preview Function (Using Minutes Comparison) ---
+function updateAdminPreviewBI() { // Renamed for clarity
+    if (!businessInfoForm || !adminPreviewStatus || !adminPreviewHours || !adminPreviewContact) return;
+    // 1. Read Form Values
+    const currentFormData = { contactEmail: contactEmailInput?.value.trim() || null, statusOverride: statusOverrideSelect?.value || "auto", regularHours: {}, holidayHours: [], temporaryHours: [] };
+    daysOfWeekBI.forEach(day => { const el = document.getElementById(`${day}-isClosed`); if (!el) return; const isClosed = el.checked; const openVal = document.getElementById(`${day}-open`)?.value; const closeVal = document.getElementById(`${day}-close`)?.value; currentFormData.regularHours[day] = { open: isClosed ? null : (openVal || null), close: isClosed ? null : (closeVal || null), isClosed: isClosed }; });
+    document.querySelectorAll('.holiday-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false; const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null; if (date) { currentFormData.holidayHours.push({ date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#holiday-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#holiday-close-${id}`)?.value || null), isClosed }); } });
+    document.querySelectorAll('.temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { adminPreviewStatus.innerHTML = `<span class="status-unavailable">Preview Error</span>`; return; } currentFormData.temporaryHours.push({ startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null), isClosed }); } });
+    currentFormData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); currentFormData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
 
-    if (!listContainer || !searchInput || !allShoutouts || !allShoutouts[platform]) {
-        console.error(`Missing elements or data for filtering platform: ${platform}.`);
-        if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list.</p>`;
-        return;
-    }
+    // 2. Calculate Preview Status using Admin's Browser Time
+    let currentStatus = 'Closed'; let statusReason = 'Regular Hours';
+    const previewNow = new Date(); const previewDayIndex = previewNow.getDay(); const previewDayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][previewDayIndex]; const previewDateStr = previewNow.toLocaleDateString('en-CA');
+    const previewCurrentMinutes = previewNow.getHours() * 60 + previewNow.getMinutes();
+    let activeHoursRule = null;
 
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    const fullList = allShoutouts[platform];
+    if (currentFormData.statusOverride !== 'auto') { currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable'); statusReason = 'Manual Override'; activeHoursRule = { reason: statusReason }; }
+    else { const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr); if (todayHoliday) { statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`; if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; } else { const openMins = timeStringToMinutesBI(todayHoliday.open); const closeMins = timeStringToMinutesBI(todayHoliday.close); if(openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins){ currentStatus = 'Open'; } else { currentStatus = 'Closed'; } } activeHoursRule = { ...todayHoliday, reason: statusReason }; }
+    else { const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate); if (activeTemporary) { statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`; if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) { currentStatus = 'Closed'; } else { const openMins = timeStringToMinutesBI(activeTemporary.open); const closeMins = timeStringToMinutesBI(activeTemporary.close); if(openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins){ currentStatus = 'Open'; } else { currentStatus = 'Temporarily Unavailable'; /* Corrected */ } } activeHoursRule = { ...activeTemporary, reason: statusReason }; }
+    else { statusReason = 'Regular Hours'; const todayRegularHours = currentFormData.regularHours[previewDayName]; if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) { const openMins = timeStringToMinutesBI(todayRegularHours.open); const closeMins = timeStringToMinutesBI(todayRegularHours.close); if(openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins){ currentStatus = 'Open'; } else { currentStatus = 'Closed'; } activeHoursRule = { ...todayRegularHours, day: previewDayName }; }
+    else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true }; } } } }
 
-    const filteredList = fullList.filter(account => {
-        if (!searchTerm) return true;
-        const nickname = (account.nickname || '').toLowerCase();
-        const username = (account.username || '').toLowerCase();
-        return nickname.includes(searchTerm) || username.includes(searchTerm);
-    });
+    // 3. Display Status in Preview
+     let statusClass = 'status-closed'; if (currentStatus === 'Open') statusClass = 'status-open'; else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
+     adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
 
-    listContainer.innerHTML = ''; // Clear the current list
+    // 4. Display Regular Hours in Preview (Shows ET formatted)
+    let hoursHtml = '<ul>'; const displayOrder = daysOfWeekBI;
+     displayOrder.forEach(day => { const dayData = currentFormData.regularHours[day]; const isCurrentDay = day === previewDayName; const highlightClass = isCurrentDay ? 'current-day-preview' : ''; hoursHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `; if (dayData && !dayData.isClosed && dayData.open && dayData.close) { hoursHtml += `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>`; } else { hoursHtml += `<span>Closed</span>`; } hoursHtml += `</li>`; });
+     hoursHtml += '</ul>'; hoursHtml += `<p style="font-size: 0.8em; margin-top: 10px; color: var(--secondary-text);">Preview based on your browser time. Assumes ET input.</p>`;
+     adminPreviewHours.innerHTML = hoursHtml;
 
-    if (filteredList.length > 0) {
-        filteredList.forEach(account => {
-            if (typeof renderAdminListItem === 'function') {
-                // *** CHANGE HERE: Pass the whole 'account' object as itemData ***
-                renderAdminListItem(
-                    listContainer,
-                    account.id,     // Document ID
-                    platform,       // Platform name
-                    account,        // <<< Pass the full account data object
-                    handleDeleteShoutout, // Pass delete handler
-                    openEditModal       // Pass edit handler
-                );
-            } else {
-                console.error("renderAdminListItem function is not defined during filtering!");
-                listContainer.innerHTML = `<p class="error">Critical Error: Rendering function missing.</p>`;
-                return; // Stop rendering this list
-            }
-        });
-    } else {
-        if (searchTerm) {
-            listContainer.innerHTML = `<p>No shoutouts found matching "${searchInput.value}".</p>`;
-        } else {
-            listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
-        }
-    }
-
-    if (countElement) {
-        countElement.textContent = `(${filteredList.length})`;
-    }
+    // 5. Display Contact Info in Preview
+    if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`; } else { adminPreviewContact.innerHTML = ''; }
 }
+
+// --- Attach Business Info Event Listeners (Ensure runs only once) ---
+function setupBusinessInfoListeners() {
+    if (businessInfoForm && businessInfoForm.dataset.listenerAttached === 'true') {
+        console.log("Business info listeners already attached.");
+        return; // Prevent re-attaching
+    }
+    console.log("Attaching Business Info Listeners...");
+
+    // Add Buttons
+    if (addHolidayButton) { addHolidayButton.addEventListener('click', () => { if(holidayHoursList){ holidayHoursList.appendChild(renderHolidayEntryBI({ isClosed: true }, holidayHoursList.children.length)); updateAdminPreviewBI(); } }); }
+    if (addTemporaryButton) { addTemporaryButton.addEventListener('click', () => { if(temporaryHoursList){ temporaryHoursList.appendChild(renderTemporaryEntryBI({ isClosed: false }, temporaryHoursList.children.length)); updateAdminPreviewBI(); } }); }
+
+    // Form Submit
+    if (businessInfoForm) { businessInfoForm.addEventListener('submit', saveBusinessInfoData); }
+
+    // Live Preview Updates
+    if (businessInfoForm && typeof updateAdminPreviewBI === 'function') {
+        businessInfoForm.addEventListener('input', (e) => { if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') { updateAdminPreviewBI(); } });
+        businessInfoForm.addEventListener('change', (e) => { if (e.target.type === 'checkbox') { updateAdminPreviewBI(); } }); // For checkboxes specifically
+
+        // Observer for list changes
+        const listObserver = new MutationObserver((mutationsList) => { for(let mutation of mutationsList) { if (mutation.type === 'childList' && (mutation.target === holidayHoursList || mutation.target === temporaryHoursList)) { updateAdminPreviewBI(); break; } } });
+        if (holidayHoursList) listObserver.observe(holidayHoursList, { childList: true });
+        if (temporaryHoursList) listObserver.observe(temporaryHoursList, { childList: true });
+    } else if (businessInfoForm) { console.warn("updateAdminPreviewBI function not found, live preview will not update."); }
+
+    if(businessInfoForm) businessInfoForm.dataset.listenerAttached = 'true'; // Mark as attached
+}
+
+// ======================================================
+// ===== END: BUSINESS INFO CODE FOR admin.js ===========
+// ======================================================
 
 // --- CORRECTED (v3): Function to Load Profile Data AND All Countdown Settings ---
 async function loadProfileData() {
@@ -1578,27 +1385,25 @@ if (businessInfoForm && typeof updateAdminPreview === 'function') { // Check if 
 }
 // --- End Business Info Event Listeners ---
 
-    // Add these functions to your admin.js file
-
-// --- Helper function for formatting time in the preview ---
-function formatTimeForPreview(timeString) { // Converts HH:MM to AM/PM format
+    // --- Add these Helpers to admin.js (if not already present) ---
+function formatTimeForPreview(timeString) {
     if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '';
     try {
         const [hour, minute] = timeString.split(':');
         const hourNum = parseInt(hour, 10);
-        if (isNaN(hourNum)) return timeString; // Return original if hour isn't a number
+        if (isNaN(hourNum)) return timeString;
         const ampm = hourNum >= 12 ? 'PM' : 'AM';
-        const hour12 = hourNum % 12 || 12; // Convert 0 to 12
+        const hour12 = hourNum % 12 || 12;
         return `${hour12}:${minute} ${ampm}`;
-    } catch (e) {
-        console.error("Error formatting time:", timeString, e);
-        return timeString; // Return original on error
-    }
+    } catch (e) { return timeString; }
+}
+function capitalizeFirstLetter(string) {
+  if (!string) return '';
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// --- Main Preview Update Function (Corrected for Temporary Status) ---
+// --- REPLACE Existing updateAdminPreview in admin.js with this ---
 function updateAdminPreview() {
-    // Get references to preview elements (ensure these IDs exist in admin.html)
     const adminPreviewStatus = document.getElementById('admin-preview-status');
     const adminPreviewHours = document.getElementById('admin-preview-hours');
     const adminPreviewContact = document.getElementById('admin-preview-contact');
@@ -1609,50 +1414,90 @@ function updateAdminPreview() {
     }
 
     // 1. Read Current Form Values Directly
-    const currentFormData = { /* ... (Code to read form values as before) ... */
+    const currentFormData = {
         contactEmail: contactEmailInput?.value.trim() || null,
         statusOverride: statusOverrideSelect?.value || "auto",
         regularHours: {}, holidayHours: [], temporaryHours: [] };
+    // (Code to read form values into currentFormData - assuming this part is correct from previous steps)
     daysOfWeek.forEach(day => { const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false; currentFormData.regularHours[day] = { open: isClosed ? null : (document.getElementById(`${day}-open`)?.value || null), close: isClosed ? null : (document.getElementById(`${day}-close`)?.value || null), isClosed: isClosed }; });
     document.querySelectorAll('.holiday-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false; const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null; if (date) { currentFormData.holidayHours.push({ date: date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#holiday-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#holiday-close-${id}`)?.value || null), isClosed: isClosed }); } });
     document.querySelectorAll('.temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { adminPreviewStatus.innerHTML = `<span class="status-unavailable">Preview Error: Temp End Date < Start Date</span>`; adminPreviewHours.innerHTML = ''; adminPreviewContact.innerHTML = ''; return; } currentFormData.temporaryHours.push({ startDate: startDate, endDate: endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null), isClosed: isClosed }); } });
-     // Sort arrays for preview consistency
-     currentFormData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1));
-     currentFormData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+    currentFormData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); currentFormData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
 
 
-    // 2. Calculate Status (using current browser time for preview simulation)
-    let currentStatus = 'Closed'; let statusReason = 'Regular Hours'; let previewDisplayHoursList = [];
+    // 2. Calculate Status (using browser time for preview)
+    let currentStatus = 'Closed'; let statusReason = 'Regular Hours';
     const previewNow = new Date(); let previewTimezone;
-    try { previewTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { /*... error handling ...*/ return; }
-    const previewDayIndex = previewNow.getDay(); const previewDayName = ['sunday', 'monday', /*...*/ 'saturday'][previewDayIndex]; const previewDateStr = previewNow.toLocaleDateString('en-CA'); const previewTimestamp = previewNow.getTime();
+    try { previewTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { adminPreviewStatus.innerHTML=`Preview Error: TZ Detect`; return; }
+    const previewDayIndex = previewNow.getDay(); const previewDayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][previewDayIndex]; const previewDateStr = previewNow.toLocaleDateString('en-CA'); const previewTimestamp = previewNow.getTime();
 
-    // Re-use the same UTC conversion helper used by the main display script
-    // Make sure getUTCTimestampForTime is defined in admin.js scope as well,
-    // or move it to a shared utility file if possible.
-    // For now, assuming it's available here or copy it here.
-     function getUTCTimestampForTime(businessTimezone, timeString) { /* ... include the function definition ... */
-            if (!timeString || !timeString.includes(':')) return null; try { const [hour, minute] = timeString.split(':').map(Number); if (isNaN(hour) || isNaN(minute)) return null; const now = new Date(); const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: businessTimezone, year: 'numeric', month: '2-digit', day: '2-digit', }); const parts = formatter.formatToParts(now).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {}); const year = parseInt(parts.year); const month = parseInt(parts.month) - 1; const day = parseInt(parts.day); if (isNaN(year) || isNaN(month) || isNaN(day)) { throw new Error("Could not determine current date components in business timezone."); } const offsetFormatter = new Intl.DateTimeFormat('en-US', { timeZone: businessTimezone, hour: 'numeric', minute: 'numeric', timeZoneName: 'longOffset', hour12: false }); const dateAsUTC = new Date(Date.UTC(year, month, day, hour, minute)); if (isNaN(dateAsUTC.getTime())) { throw new Error(`Invalid Date constructed for UTC check: ${year}-${month+1}-${day} ${hour}:${minute}`); } const formattedPartsWithOffset = offsetFormatter.formatToParts(dateAsUTC).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {}); const offsetString = formattedPartsWithOffset.timeZoneName; if (!offsetString || !offsetString.startsWith('GMT')) { console.warn(`Could not reliably determine TZ offset for ${businessTimezone} at ${timeString}.`); return null; } const offsetMatch = offsetString.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/); if (!offsetMatch) { throw new Error(`Could not parse timezone offset string: ${offsetString}`); } const offsetSign = offsetMatch[1] === '+' ? 1 : -1; const offsetHours = parseInt(offsetMatch[2], 10); const offsetMinutes = parseInt(offsetMatch[3] || '0', 10); const targetUTCHour = hour - (offsetSign * offsetHours); const targetUTCMinute = minute - (offsetSign * offsetMinutes); const correctUTCTimestamp = Date.UTC(year, month, day, targetUTCHour, targetUTCMinute); if (isNaN(correctUTCTimestamp)) { throw new Error("Final UTC timestamp calculation resulted in NaN."); } return correctUTCTimestamp; } catch (e) { console.error(`Error in getUTCTimestampForTime for [${businessTimezone}, ${timeString}]:`, e); return null; }
+    // Simplified comparison for preview using local time representation
+     function getApproxLocalTimestampForPreview(timeString) {
+        if (!timeString || !timeString.includes(':')) return null;
+        try {
+            const [hour, minute] = timeString.split(':').map(Number);
+            if(isNaN(hour) || isNaN(minute)) return null;
+            const localPreviewTime = new Date(previewNow); // Copy current time
+            localPreviewTime.setHours(hour, minute, 0, 0);
+            return localPreviewTime.getTime();
+        } catch(e) { return null; }
      }
 
     let activeHoursRule = null;
 
-    // --- Status Calculation Logic (Mirrors displayShoutouts.js) ---
-    // 1. Override Check
-    if (currentFormData.statusOverride !== 'auto') { currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable'); statusReason = 'Manual Override'; activeHoursRule = { reason: statusReason }; }
-    else {
-        // 2. Holiday Check
+    // --- Status Calculation Logic (Mirrors displayShoutouts.js logic) ---
+    if (currentFormData.statusOverride !== 'auto') {
+        currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
+        statusReason = 'Manual Override'; activeHoursRule = { reason: statusReason };
+    } else {
         const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr);
-        if (todayHoliday) { statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`; if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; activeHoursRule = { ...todayHoliday, isClosed: true }; } else { const openUTC = getUTCTimestampForTime(assumedBusinessTimezoneForPreview, todayHoliday.open); const closeUTC = getUTCTimestampForTime(assumedBusinessTimezoneForPreview, todayHoliday.close); if (openUTC !== null && closeUTC !== null && previewTimestamp >= openUTC && previewTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...todayHoliday }; } else { currentStatus = 'Closed'; activeHoursRule = { ...todayHoliday, isEffectivelyClosed: true }; } } }
-        else {
-            // 3. Temporary Check
-            const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
-            if (activeTemporary) { statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`; if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) { currentStatus = 'Closed'; activeHoursRule = { ...activeTemporary, isClosed: true }; } else { const openUTC = getUTCTimestampForTime(assumedBusinessTimezoneForPreview, activeTemporary.open); const closeUTC = getUTCTimestampForTime(assumedBusinessTimezoneForPreview, activeTemporary.close); if (openUTC !== null && closeUTC !== null && previewTimestamp >= openUTC && previewTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...activeTemporary }; } else { currentStatus = 'Temporarily Unavailable'; activeHoursRule = { ...activeTemporary, isEffectivelyClosed: true }; } } } // <<< Fixed logic here
-            else {
-                 // 4. Regular Hours Check
-                 statusReason = 'Regular Hours'; const todayRegularHours = currentFormData.regularHours[previewDayName]; if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) { const openUTC = getUTCTimestampForTime(assumedBusinessTimezoneForPreview, todayRegularHours.open); const closeUTC = getUTCTimestampForTime(assumedBusinessTimezoneForPreview, todayRegularHours.close); if (openUTC !== null && closeUTC !== null && previewTimestamp >= openUTC && previewTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...todayRegularHours, day: previewDayName }; } else { currentStatus = 'Closed'; activeHoursRule = { ...todayRegularHours, day: previewDayName, isEffectivelyClosed: true }; } }
-                 else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true }; }
+        if (todayHoliday) {
+             statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
+             if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; }
+             else {
+                 const openMS = getApproxLocalTimestampForPreview(todayHoliday.open);
+                 const closeMS = getApproxLocalTimestampForPreview(todayHoliday.close);
+                 if(openMS !== null && closeMS !== null && previewTimestamp >= openMS && previewTimestamp < closeMS){ currentStatus = 'Open'; } else { currentStatus = 'Closed'; }
+             } activeHoursRule = { ...todayHoliday, reason: statusReason };
+        } else {
+             const activeTemporary = currentFormData.temporaryHours.find(t => 
+    previewDateStr >= t.startDate && previewDateStr <= t.endDate
+); 
+if (activeTemporary) {
+    statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate}–${activeTemporary.endDate}`})`;
+    if (activeTemporary.isClosed) {
+        currentStatus = 'Temporarily Unavailable';
+    } else {
+        const openMins = timeStringToMinutesBI(activeTemporary.open);
+        const closeMins = timeStringToMinutesBI(activeTemporary.close);
+        
+        if (openMins === null || closeMins === null) {
+            currentStatus = 'Temporarily Unavailable';
+        } else {
+            // Check if current time is within temporary hours
+            if (previewCurrentMinutes >= openMins && 
+                previewCurrentMinutes < closeMins) {
+                currentStatus = 'Open';
+            } else {
+                // Outside temporary hours = Temporarily Unavailable
+                currentStatus = 'Temporarily Unavailable';
             }
+        }
+    }
+    activeHoursRule = { ...activeTemporary, reason: statusReason };
+             } else {
+                  statusReason = 'Regular Hours';
+                  const todayRegularHours = currentFormData.regularHours[previewDayName];
+                  if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
+                      const openMS = getApproxLocalTimestampForPreview(todayRegularHours.open);
+                      const closeMS = getApproxLocalTimestampForPreview(todayRegularHours.close);
+                      if(openMS !== null && closeMS !== null && previewTimestamp >= openMS && previewTimestamp < closeMS){ currentStatus = 'Open'; }
+                      else { currentStatus = 'Closed'; }
+                      activeHoursRule = { ...todayRegularHours, day: previewDayName };
+                  } else {
+                      currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true };
+                  }
+             }
         }
     }
 
@@ -1660,18 +1505,17 @@ function updateAdminPreview() {
      let statusClass = 'status-closed'; if (currentStatus === 'Open') statusClass = 'status-open'; else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
      adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
 
-    // 4. Format and Display Hours in Preview (Using simple ET formatting for preview)
+    // 4. Format and Display Hours in Preview (Shows entered ET times formatted)
     let hoursHtml = '<ul>'; const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
      displayOrder.forEach(day => { const dayData = currentFormData.regularHours[day]; const isCurrentDay = day === previewDayName; const highlightClass = isCurrentDay ? 'current-day-preview' : ''; hoursHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `; if (dayData && !dayData.isClosed && dayData.open && dayData.close) { hoursHtml += `<span>${formatTimeForPreview(dayData.open)} - ${formatTimeForPreview(dayData.close)} ET</span>`; } else { hoursHtml += `<span>Closed</span>`; } hoursHtml += `</li>`; });
      hoursHtml += '</ul>';
-     hoursHtml += `<p style="font-size: 0.8em; margin-top: 10px; color: var(--secondary-text);">Preview based on your current browser time. Assumes ET input.</p>`;
+     hoursHtml += `<p style="font-size: 0.8em; margin-top: 10px; color: var(--secondary-text);">Preview based on your browser time. Assumes ET input.</p>`;
      adminPreviewHours.innerHTML = hoursHtml;
 
     // 5. Display Contact Info in Preview
     if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`; }
     else { adminPreviewContact.innerHTML = ''; }
 }
-
 // --- END PREVIEW FUNCTION ---
 
 // --- 'Next' Button Logic ---
@@ -1786,9 +1630,6 @@ onAuthStateChanged(auth, user => {
         }
         // <<< ADD THIS BLOCK END >>> ---
 
-        loadBusinessInfoData(); // <<< ADD THIS LINE HERE
-
-
         // Clear any previous login status messages
         if (authStatus) { authStatus.textContent = ''; authStatus.className = 'status-message'; authStatus.style.display = 'none'; }
         if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; }
@@ -1819,6 +1660,12 @@ onAuthStateChanged(auth, user => {
             if(!disabilitiesListAdmin) console.warn("Disabilities list container missing during initial load.");
             if(typeof loadDisabilitiesAdmin !== 'function') console.error("loadDisabilitiesAdmin function missing during initial load!");
         }
+
+        loadBusinessInfoData(); // <<< Load Business Info Data
+
+        // Setup Listeners (call this *after* elements are potentially created/loaded)
+        setupBusinessInfoListeners(); // <<< Setup listeners for buttons/preview
+        
         // *** Load President Data ***
         if (typeof loadPresidentData === 'function') {
             loadPresidentData(); // Load president data on login
