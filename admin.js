@@ -1460,16 +1460,31 @@ function updateAdminPreview() {
                  if(openMS !== null && closeMS !== null && previewTimestamp >= openMS && previewTimestamp < closeMS){ currentStatus = 'Open'; } else { currentStatus = 'Closed'; }
              } activeHoursRule = { ...todayHoliday, reason: statusReason };
         } else {
-             const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
-             if (activeTemporary) {
-                 statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-                 if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) { currentStatus = 'Closed'; }
-                 else {
-                     const openMS = getApproxLocalTimestampForPreview(activeTemporary.open);
-                     const closeMS = getApproxLocalTimestampForPreview(activeTemporary.close);
-                     if(openMS !== null && closeMS !== null && previewTimestamp >= openMS && previewTimestamp < closeMS){ currentStatus = 'Open'; }
-                     else { currentStatus = 'Temporarily Unavailable'; /* <<< FIXED PREVIEW LOGIC */ }
-                 } activeHoursRule = { ...activeTemporary, reason: statusReason };
+             const activeTemporary = currentFormData.temporaryHours.find(t => 
+    previewDateStr >= t.startDate && previewDateStr <= t.endDate
+); 
+if (activeTemporary) {
+    statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate}–${activeTemporary.endDate}`})`;
+    if (activeTemporary.isClosed) {
+        currentStatus = 'Temporarily Unavailable';
+    } else {
+        const openMins = timeStringToMinutesBI(activeTemporary.open);
+        const closeMins = timeStringToMinutesBI(activeTemporary.close);
+        
+        if (openMins === null || closeMins === null) {
+            currentStatus = 'Temporarily Unavailable';
+        } else {
+            // Check if current time is within temporary hours
+            if (previewCurrentMinutes >= openMins && 
+                previewCurrentMinutes < closeMins) {
+                currentStatus = 'Open';
+            } else {
+                // Outside temporary hours = Temporarily Unavailable
+                currentStatus = 'Temporarily Unavailable';
+            }
+        }
+    }
+    activeHoursRule = { ...activeTemporary, reason: statusReason };
              } else {
                   statusReason = 'Regular Hours';
                   const todayRegularHours = currentFormData.regularHours[previewDayName];
