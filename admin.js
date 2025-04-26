@@ -957,6 +957,109 @@ function setupBusinessInfoListeners() {
 // ===== END: BUSINESS INFO CODE FOR admin.js ===========
 // ======================================================
 
+    // ======================================================
+// ===== START: Business Info Save Function =============
+// ======================================================
+
+async function saveBusinessInfoData(event) {
+    event.preventDefault();
+    const businessInfoForm = document.getElementById('business-info-form'); // Get form ref inside function
+    const contactEmailInput = document.getElementById('business-contact-email');
+    const statusOverrideSelect = document.getElementById('business-status-override');
+
+    if (!auth || !auth.currentUser) { showBusinessInfoStatus("Not logged in.", true); return; }
+    if (!businessInfoForm) { console.error("Save failed: Business info form not found"); return; }
+
+    showBusinessInfoStatus("Saving business info...");
+
+    // Define days array locally or ensure it's accessible
+    const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+    const newData = {
+        contactEmail: contactEmailInput?.value.trim() || null,
+        statusOverride: statusOverrideSelect?.value || "auto",
+        regularHours: {},
+        holidayHours: [],
+        temporaryHours: [],
+        lastUpdated: serverTimestamp() // Ensure serverTimestamp is available
+    };
+    let formIsValid = true;
+
+    // Collect Regular Hours
+    daysOfWeek.forEach(day => {
+        const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false;
+        const openTime = document.getElementById(`${day}-open`)?.value || null;
+        const closeTime = document.getElementById(`${day}-close`)?.value || null;
+        newData.regularHours[day] = {
+            open: isClosed ? null : openTime,
+            close: isClosed ? null : closeTime,
+            isClosed: isClosed
+        };
+        // Optional: Add validation if needed
+        // if (!isClosed && (!openTime || !closeTime)) {
+        //    console.warn(`Missing time for ${day}.`);
+        //    formIsValid = false;
+        // }
+    });
+
+    // Collect Holiday Hours
+    document.querySelectorAll('#holiday-hours-list .holiday-entry').forEach(entryDiv => {
+        const id = entryDiv.getAttribute('data-id'); if (!id) return;
+        const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false;
+        const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null;
+        const openTime = entryDiv.querySelector(`#holiday-open-${id}`)?.value || null;
+        const closeTime = entryDiv.querySelector(`#holiday-close-${id}`)?.value || null;
+        if (date) {
+            const entryData = { date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed };
+            newData.holidayHours.push(entryData);
+        } else {
+            console.warn("Holiday entry missing date.");
+            formIsValid = false; // Date is required
+        }
+    });
+
+    // Collect Temporary Hours
+    document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => {
+        const id = entryDiv.getAttribute('data-id'); if (!id) return;
+        const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false;
+        const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null;
+        const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null;
+        const openTime = entryDiv.querySelector(`#temp-open-${id}`)?.value || null;
+        const closeTime = entryDiv.querySelector(`#temp-close-${id}`)?.value || null;
+        if (startDate && endDate) {
+            if (endDate < startDate) { showBusinessInfoStatus(`Error: Temp End Date (${endDate}) < Start Date (${startDate}).`, true); formIsValid = false; return; }
+            const entryData = { startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed };
+            newData.temporaryHours.push(entryData);
+        } else {
+            console.warn("Temp entry missing dates.");
+            formIsValid = false; // Dates are required
+        }
+    });
+
+    if (!formIsValid) {
+        showBusinessInfoStatus("Save failed. Check inputs; required holiday/temp dates might be missing.", true);
+        return;
+    }
+
+    // Sort arrays for consistency
+    newData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1));
+    newData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+
+    try {
+        const businessDocRef = doc(db, "site_config", "businessDetails"); // Ensure this ref is correct
+        await setDoc(businessDocRef, newData);
+        console.log("Business info saved successfully.");
+        showBusinessInfoStatus("Business info updated successfully!", false);
+    } catch (error) {
+        console.error("Error saving business info:", error);
+        showBusinessInfoStatus(`Error saving business info: ${error.message}`, true);
+    }
+}
+
+// ======================================================
+// ===== END: Business Info Save Function ===============
+// ======================================================
+
 // --- CORRECTED (v3): Function to Load Profile Data AND All Countdown Settings ---
 async function loadProfileData() {
     // Ensure user is logged in
