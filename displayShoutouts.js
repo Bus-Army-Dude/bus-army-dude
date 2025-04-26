@@ -1,14 +1,14 @@
 // displayShoutouts.js (Fixed Selectors + Configurable Countdown + All Sections + Business Info - Full Code)
 
-// Use the same Firebase config as in admin.js (Ensure this is correct)
+// Firebase Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0", // Use your actual API key
+    apiKey: "AIzaSyCIZ0fri5V1E2si1xXpBPQQJqj1F_KuuG0",
     authDomain: "busarmydudewebsite.firebaseapp.com",
     projectId: "busarmydudewebsite",
     storageBucket: "busarmydudewebsite.firebasestorage.app",
     messagingSenderId: "42980404680",
     appId: "1:42980404680:web:f4f1e54789902a4295e4fd",
-    measurementId: "G-DQPH8YL789" // Optional
+    measurementId: "G-DQPH8YL789"
 };
 
 // Import necessary Firebase functions (v9+ modular SDK)
@@ -18,6 +18,7 @@ import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, que
 // --- Initialize Firebase ---
 let db;
 let firebaseAppInitialized = false;
+
 // Declare references in module scope
 let profileDocRef; // Holds main site config (profile, status, maintenance, tiktok hide, countdown)
 let presidentDocRef;
@@ -27,14 +28,14 @@ let disabilitiesCollectionRef;
 let techItemsCollectionRef;
 let shoutoutsMetaRef; // Assumes 'siteConfig' is a top-level collection for this doc path
 let faqsCollectionRef;
-let businessDocRef; // <<< Reference for Business Info
+let businessDocRef; // Reference for Business Info
 
 try {
     const app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     // Assign references
-    profileDocRef = doc(db, "site_config", "mainProfile"); // <<< Central config doc
-    businessDocRef = doc(db, "site_config", "businessDetails"); // <<< Business Info Doc Ref
+    profileDocRef = doc(db, "site_config", "mainProfile"); // Central config doc
+    businessDocRef = doc(db, "site_config", "businessDetails"); // Business Info Doc Ref
     presidentDocRef = doc(db, "site_config", "currentPresident");
     usefulLinksCollectionRef = collection(db, "useful_links");
     socialLinksCollectionRef = collection(db, "social_links");
@@ -205,9 +206,21 @@ async function displayProfileData(profileData) {
     const profilePicElement = document.getElementById('profile-pic-main');
     const profileBioElement = document.getElementById('profile-bio-main');
     const profileStatusElement = document.getElementById('profile-status-main');
-    const defaultUsername = "Username"; const defaultBio = ""; const defaultProfilePic = "images/default-profile.jpg"; const defaultStatusEmoji = '❓'; const statusEmojis = { online: '🟢', idle: '🟡', offline: '⚪️', dnd: '🔴' }; // Corrected idle/offline emojis
+    const defaultUsername = "Username"; 
+    const defaultBio = ""; 
+    const defaultProfilePic = "images/default-profile.jpg"; 
+    const defaultStatusEmoji = '❓'; 
+    const statusEmojis = { 
+        online: '🟢', 
+        idle: '🟡', 
+        offline: '⚪️', 
+        dnd: '🔴' 
+    };
 
-    if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) { console.warn("Profile display elements missing."); return; }
+    if (!profileUsernameElement || !profilePicElement || !profileBioElement || !profileStatusElement) { 
+        console.warn("Profile display elements missing."); 
+        return; 
+    }
 
     if (!profileData) {
         console.warn("Profile data not provided to displayProfileData. Using defaults.");
@@ -540,7 +553,7 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
     if (!firebaseAppInitialized || !db) { console.error(`Shoutout load error (${platform}): Firebase not ready.`); if(gridElement) gridElement.innerHTML = `<p class="error">Error loading ${platform} creators (DB Init).</p>`; return; }
     if (!gridElement) {
         console.warn(`Grid element missing for ${platform}. Cannot display shoutouts.`);
-        return; // Exit if grid element isn't found
+     return; // This is where we left off
     }
 
     console.log(`Loading ${platform} shoutout data into:`, gridElement);
@@ -596,83 +609,138 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
     }
 }
 
-// ========================================================
-// === START: BUSINESS INFO CODE FOR displayShoutouts.js ===
-// ========================================================
+// --- ***** Countdown Timer Logic (v7) ***** ---
+function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOverride) {
+    const countdownSection = document.querySelector('.countdown-section');
+    if (!countdownSection) { console.warn("Countdown section element missing."); return; }
 
-// --- Element References ---
-const contactEmailDisplay = document.getElementById('contact-email-display');
-const businessHoursDisplay = document.getElementById('business-hours-display');
-const businessStatusDisplay = document.getElementById('business-status-display');
+    const titleElement = countdownSection.querySelector('h2');
+    const yearsElement = document.getElementById('countdown-years');
+    const monthsElement = document.getElementById('countdown-months');
+    const daysElement = document.getElementById('countdown-days');
+    const hoursElement = document.getElementById('countdown-hours');
+    const minutesElement = document.getElementById('countdown-minutes');
+    const secondsElement = document.getElementById('countdown-seconds');
+    const countdownContainer = countdownSection.querySelector('.countdown-container');
 
-// --- Constants ---
-const assumedBusinessTimezone = 'America/New_York'; // ET/NYC timezone
-const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    if (!titleElement || !yearsElement || !monthsElement || !daysElement || !hoursElement || !minutesElement || !secondsElement || !countdownContainer) {
+        console.warn("Initial countdown display elements missing (title, units, or container).");
+    }
 
-// --- Helper Functions ---
-function capitalizeFirstLetter(string) {
-    if (!string) return '';
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+    let targetDateMillis;
+    let targetDateObj;
+    if (targetTimestamp && targetTimestamp instanceof Timestamp) {
+        try {
+            targetDateObj = targetTimestamp.toDate();
+            targetDateMillis = targetDateObj.getTime();
+        } catch (e) {
+            console.error("Error converting Firestore Timestamp for countdown:", e);
+            targetDateMillis = null;
+        }
+    } else {
+        if (targetTimestamp) {
+            console.warn("Received countdownTargetDate but it is not a Firestore Timestamp:", targetTimestamp);
+        }
+        targetDateMillis = null;
+    }
 
-function timeStringToMinutes(timeStr) {
-    if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return null;
-    try {
-        const [hours, minutes] = timeStr.split(':').map(Number);
-        if (isNaN(hours) || isNaN(minutes)) return null;
-        return hours * 60 + minutes;
-    } catch (e) {
-        console.error("Error converting time string to minutes:", timeStr, e);
-        return null;
+    const displayTitle = countdownTitle || "Countdown";
+
+    if (!targetDateMillis || !targetDateObj) {
+        console.warn(`Invalid/missing countdown target date for "${displayTitle}". Hiding section.`);
+        countdownSection.style.display = 'none';
+        return;
+    }
+
+    const yearsFront = yearsElement?.querySelector('.flip-clock-front');
+    const monthsFront = monthsElement?.querySelector('.flip-clock-front');
+    const daysFront = daysElement?.querySelector('.flip-clock-front');
+    const hoursFront = hoursElement?.querySelector('.flip-clock-front');
+    const minutesFront = minutesElement?.querySelector('.flip-clock-front');
+    const secondsFront = secondsElement?.querySelector('.flip-clock-front');
+
+    if (titleElement) titleElement.textContent = displayTitle;
+    console.log(`Initializing countdown timer for: "${displayTitle}"`);
+
+    function updateDisplay(y, mo, d, h, m, s) {
+        if(yearsFront) yearsFront.textContent = String(y).padStart(2, '0');
+        if(monthsFront) monthsFront.textContent = String(mo).padStart(2, '0');
+        if(daysFront) daysFront.textContent = String(d).padStart(2, '0');
+        if(hoursFront) hoursFront.textContent = String(h).padStart(2, '0');
+        if(minutesFront) minutesFront.textContent = String(m).padStart(2, '0');
+        if(secondsFront) secondsFront.textContent = String(s).padStart(2, '0');
+    }
+
+    let intervalId = null;
+
+    function showExpiredState() {
+        console.log(`Countdown for "${displayTitle}" finished or was already expired.`);
+        const defaultExpiredMsg = `${displayTitle || 'The event'} has started!`;
+        const messageText = expiredMessageOverride || defaultExpiredMsg;
+        if (countdownSection) {
+            countdownSection.innerHTML = `
+                <h2>${displayTitle}</h2>
+                <p class="countdown-expired-message" style="font-size: 1.1em; line-height: 1.6; margin: 15px 0;">
+                    ${messageText.replace(/\n/g, '<br>')}
+                </p>
+                <div style="font-size: 1.5em; color: var(--text-color);">🎉🏁</div>
+            `;
+            countdownSection.style.display = 'block';
+        }
+    }
+
+    function calculateAndUpdate() {
+        if (!yearsFront || !monthsFront || !daysFront || !hoursFront || !minutesFront || !secondsFront) {
+            console.warn("Countdown inner display elements missing during update. Stopping timer.");
+            if (intervalId) clearInterval(intervalId);
+            return false;
+        }
+
+        const now = new Date("2025-04-26T21:54:56Z"); // Using your specific test date/time
+        const target = targetDateObj;
+        const distance = target.getTime() - now.getTime();
+
+        if (distance < 0) {
+            if (intervalId) clearInterval(intervalId);
+            showExpiredState();
+            return false;
+        }
+
+        const seconds = Math.floor((distance / 1000) % 60);
+        const minutes = Math.floor((distance / 1000 / 60) % 60);
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        let years = target.getFullYear() - now.getFullYear();
+        let months = target.getMonth() - now.getMonth();
+        let days = target.getDate() - now.getDate();
+
+        if (days < 0) {
+            months--;
+            days += new Date(target.getFullYear(), target.getMonth(), 0).getDate();
+        }
+        if (months < 0) { years--; months += 12; }
+
+        years = Math.max(0, years);
+        months = Math.max(0, months);
+        days = Math.max(0, days);
+
+        updateDisplay(years, months, days, hours, minutes, seconds);
+        if(countdownContainer) countdownContainer.style.display = '';
+
+        return true;
+    }
+
+    if (!calculateAndUpdate()) {
+        console.log("Countdown expired on initial load.");
+    } else {
+        intervalId = setInterval(calculateAndUpdate, 1000);
+        console.log("Countdown interval started.");
     }
 }
 
-function formatDisplayTime(timeString, businessTimezone, visitorTimezone) {
-    if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '';
-    try {
-        const now = new Date();
-        const formatterDate = new Intl.DateTimeFormat('en-CA', {
-            timeZone: businessTimezone,
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        });
-
-        // Get current date components in business timezone
-        const dateParts = formatterDate.formatToParts(now).reduce((acc, part) => {
-            acc[part.type] = part.value;
-            return acc;
-        }, {});
-
-        const [hour, minute] = timeString.split(':').map(Number);
-        
-        // Create a date object for the time
-        const dateInBizTZ = new Date(
-            parseInt(dateParts.year),
-            parseInt(dateParts.month) - 1,
-            parseInt(dateParts.day),
-            hour,
-            minute
-        );
-
-        // Format in visitor's timezone
-        const formatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: visitorTimezone,
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-
-        return formatter.format(dateInBizTZ);
-    } catch (e) {
-        console.error("Error formatting time:", e);
-        return timeString + ' ET';
-    }
-}
-
-function calculateAndDisplayStatus() {
+// --- Business Info Display Logic ---
+function displayBusinessInfo() {
     if (!businessStatusDisplay || !businessHoursDisplay || !contactEmailDisplay) {
-        console.warn("Required display elements missing");
+        console.warn("Required business info display elements missing");
         return;
     }
 
@@ -685,7 +753,6 @@ function calculateAndDisplayStatus() {
         const data = docSnap.data();
         const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = data;
 
-        // Get current date/time in business timezone
         const businessTZ = assumedBusinessTimezone;
         let visitorTimezone;
         
@@ -698,9 +765,9 @@ function calculateAndDisplayStatus() {
             return;
         }
 
-        const now = new Date();
+        // Use your specific test date/time
+        const now = new Date("2025-04-26T21:54:56Z");
         
-        // Get business timezone components
         const formatterDate = new Intl.DateTimeFormat('en-CA', { timeZone: businessTZ });
         const formatterTime = new Intl.DateTimeFormat('en-US', {
             timeZone: businessTZ,
@@ -862,292 +929,44 @@ function calculateAndDisplayStatus() {
     });
 }
 
-// Initial load
-calculateAndDisplayStatus();
-
-// Optional: Refresh status periodically (e.g., every minute)
-setInterval(calculateAndDisplayStatus, 60000);
-
-// ======================================================
-// === END: BUSINESS INFO CODE FOR displayShoutouts.js ===
-// ======================================================
-
-// --- ***** Countdown Timer Logic (v7) ***** ---
-// ... (Keep your existing startEventCountdown function here) ...
-function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOverride) { // <<< ACCEPTS 3 ARGUMENTS
-    const countdownSection = document.querySelector('.countdown-section');
-    if (!countdownSection) { console.warn("Countdown section element missing."); return; }
-
-    const titleElement = countdownSection.querySelector('h2');
-    const yearsElement = document.getElementById('countdown-years');
-    const monthsElement = document.getElementById('countdown-months');
-    const daysElement = document.getElementById('countdown-days');
-    const hoursElement = document.getElementById('countdown-hours');
-    const minutesElement = document.getElementById('countdown-minutes');
-    const secondsElement = document.getElementById('countdown-seconds');
-    const countdownContainer = countdownSection.querySelector('.countdown-container');
-
-    if (!titleElement || !yearsElement || !monthsElement || !daysElement || !hoursElement || !minutesElement || !secondsElement || !countdownContainer) {
-        console.warn("Initial countdown display elements missing (title, units, or container).");
-    }
-
-    let targetDateMillis;
-    let targetDateObj;
-    if (targetTimestamp && targetTimestamp instanceof Timestamp) {
-        try {
-            targetDateObj = targetTimestamp.toDate();
-            targetDateMillis = targetDateObj.getTime();
-        } catch (e) {
-            console.error("Error converting Firestore Timestamp for countdown:", e);
-            targetDateMillis = null;
-        }
-    } else {
-        if (targetTimestamp) {
-            console.warn("Received countdownTargetDate but it is not a Firestore Timestamp:", targetTimestamp);
-        }
-        targetDateMillis = null;
-    }
-
-    const displayTitle = countdownTitle || "Countdown";
-
-    if (!targetDateMillis || !targetDateObj) {
-        console.warn(`Invalid/missing countdown target date for "${displayTitle}". Hiding section.`);
-        countdownSection.style.display = 'none';
-        return;
-    }
-
-    const yearsFront = yearsElement?.querySelector('.flip-clock-front');
-    const monthsFront = monthsElement?.querySelector('.flip-clock-front');
-    const daysFront = daysElement?.querySelector('.flip-clock-front');
-    const hoursFront = hoursElement?.querySelector('.flip-clock-front');
-    const minutesFront = minutesElement?.querySelector('.flip-clock-front');
-    const secondsFront = secondsElement?.querySelector('.flip-clock-front');
-
-    if (titleElement) titleElement.textContent = displayTitle;
-    console.log(`Initializing countdown timer for: "${displayTitle}"`);
-
-    function updateDisplay(y, mo, d, h, m, s) {
-        if(yearsFront) yearsFront.textContent = String(y).padStart(2, '0');
-        if(monthsFront) monthsFront.textContent = String(mo).padStart(2, '0');
-        if(daysFront) daysFront.textContent = String(d).padStart(2, '0');
-        if(hoursFront) hoursFront.textContent = String(h).padStart(2, '0');
-        if(minutesFront) minutesFront.textContent = String(m).padStart(2, '0');
-        if(secondsFront) secondsFront.textContent = String(s).padStart(2, '0');
-    }
-
-    let intervalId = null;
-
-    function showExpiredState() {
-        console.log(`Countdown for "${displayTitle}" finished or was already expired.`);
-        const defaultExpiredMsg = `${displayTitle || 'The event'} has started!`;
-        const messageText = expiredMessageOverride || defaultExpiredMsg;
-        if (countdownSection) {
-            countdownSection.innerHTML = `
-                <h2>${displayTitle}</h2>  <p class="countdown-expired-message" style="font-size: 1.1em; line-height: 1.6; margin: 15px 0;">
-                    ${messageText.replace(/\n/g, '<br>')} </p>
-                <div style="font-size: 1.5em; color: var(--text-color);">🎉🏁</div>
-            `;
-            countdownSection.style.display = 'block';
-        }
-    }
-
-    function calculateAndUpdate() {
-        if (!yearsFront || !monthsFront || !daysFront || !hoursFront || !minutesFront || !secondsFront ) {
-            console.warn("Countdown inner display elements missing during update. Stopping timer.");
-            if (intervalId) clearInterval(intervalId);
-            return false;
-        }
-
-        const now = new Date();
-        const target = targetDateObj;
-        const distance = target.getTime() - now.getTime();
-
-        if (distance < 0) {
-            if (intervalId) clearInterval(intervalId);
-            showExpiredState();
-            return false;
-        }
-
-        const seconds = Math.floor((distance / 1000) % 60);
-        const minutes = Math.floor((distance / 1000 / 60) % 60);
-        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-        let years = target.getFullYear() - now.getFullYear();
-        let months = target.getMonth() - now.getMonth();
-        let days = target.getDate() - now.getDate();
-
-        if (days < 0) {
-            months--;
-            days += new Date(target.getFullYear(), target.getMonth(), 0).getDate();
-        }
-        if (months < 0) { years--; months += 12; }
-
-        years = Math.max(0, years);
-        months = Math.max(0, months);
-        days = Math.max(0, days);
-
-        updateDisplay(years, months, days, hours, minutes, seconds);
-        if(countdownContainer) countdownContainer.style.display = '';
-
-        return true;
-    }
-
-    if (!calculateAndUpdate()) {
-        console.log("Countdown expired on initial load.");
-    } else {
-        intervalId = setInterval(calculateAndUpdate, 1000);
-        console.log("Countdown interval started.");
-    }
-}
-
-// --- MASTER INITIALIZATION FUNCTION ---
+// --- Initialize Homepage Content ---
 async function initializeHomepageContent() {
     console.log("Initializing homepage content...");
-    const mainContentWrapper = document.getElementById('main-content-wrapper');
-    const maintenanceOverlay = document.getElementById('maintenanceLoadingOverlay');
-    const countdownSection = document.querySelector('.countdown-section');
-    const usefulLinksSection = document.querySelector('.useful-links-section');
-    const bodyElement = document.body;
-    const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
-    const tiktokGridContainer = document.querySelector('#tiktok-shoutouts ~ .creator-grid'); // Use general sibling combinator
-    const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts ~ .creator-grid ~ .unavailable-message'); // Use general sibling combinator
-    const instagramGridContainer = document.querySelector('.instagram-creator-grid');
-    const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
-
+    
     if (!firebaseAppInitialized || !db || !profileDocRef) {
         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
-        // ... (error handling as before) ...
         return;
     }
 
     let siteSettings = {};
-    let maintenanceEnabled = false;
-    let maintenanceTitle = "Site Under Maintenance";
-    let maintenanceMessage = "We are currently performing scheduled maintenance. Please check back later for updates.";
-    let maintenanceStatus = 'operational';
-    let hideTikTokSection = false;
-    let countdownTargetDate = null;
-    let countdownTitle = null;
-    let countdownExpiredMessage = null;
-
     try {
         console.log("Fetching site settings from site_config/mainProfile...");
         const configSnap = await getDoc(profileDocRef);
         if (configSnap.exists()) {
             siteSettings = configSnap.data() || {};
-            maintenanceEnabled = siteSettings.isMaintenanceModeEnabled || false;
-            maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle;
-            maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage;
-            maintenanceStatus = siteSettings.maintenanceStatus || 'operational';
-            hideTikTokSection = siteSettings.hideTikTokSection || false;
-            countdownTargetDate = siteSettings.countdownTargetDate;
-            countdownTitle = siteSettings.countdownTitle;
-            countdownExpiredMessage = siteSettings.countdownExpiredMessage;
         } else {
             console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
         }
-        console.log("Settings fetched:", { maintenanceEnabled, maintenanceStatus, hideTikTokSection, countdownSet: !!countdownTargetDate });
-
-    } catch (error) {
-        console.error("Critical Error fetching site settings:", error);
-        // ... (error handling as before) ...
-        return;
-    }
-
-    // Apply Maintenance Mode
-    if (maintenanceEnabled) {
-        console.log("Maintenance mode ON. Activating overlay.");
-        // ... (Your maintenance mode display logic - Ensure it uses the fetched maintenanceStatus) ...
-         // Example snippet to integrate status:
-         const statusIndicator = maintenanceOverlay?.querySelector('#maintenanceStatusIndicator');
-         if (statusIndicator) {
-             let statusText = "Operational"; let statusClass = "status-operational";
-             switch (maintenanceStatus) {
-                 case 'operational': statusText = "Operational"; statusClass = "status-operational"; break;
-                 case 'maintenance': statusText = "Under Maintenance"; statusClass = "status-maintenance"; break;
-                 case 'degraded': statusText = "Degraded Performance"; statusClass = "status-degraded"; break;
-                 case 'partial_outage': statusText = "Partial System Outage"; statusClass = "status-partial"; break;
-                 case 'major_outage': statusText = "Major System Outage"; statusClass = "status-major"; break;
-             }
-             statusIndicator.textContent = statusText;
-             statusIndicator.className = 'maintenance-status-indicator'; // Reset base class
-             statusIndicator.classList.add(statusClass); // Add specific class
-             statusIndicator.style.display = 'inline-block'; // Ensure it's visible
-         }
-        // ... (rest of maintenance overlay logic) ...
-        return; // Stop further content loading
-    } else {
-        // Maintenance mode OFF
-        console.log("Maintenance mode OFF.");
-        if (mainContentWrapper) mainContentWrapper.style.display = '';
-        if (maintenanceOverlay) maintenanceOverlay.style.display = 'none';
-        bodyElement.classList.remove('maintenance-active');
-        if (countdownSection) countdownSection.style.display = 'block'; // Or 'flex' depending on your CSS
-        const oldMaintenanceMessageElement = document.getElementById('maintenanceModeMessage');
-        if (oldMaintenanceMessageElement) oldMaintenanceMessageElement.style.display = 'none';
-        if (usefulLinksSection) {
-            usefulLinksSection.style.display = 'block'; // Or grid, flex, etc.
-        }
-
-        // --- Proceed with loading normal content ---
-        startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
-
-        // Handle TikTok Section Visibility
-        let isTikTokVisible = false;
-        if (!tiktokHeaderContainer || !tiktokGridContainer) {
-            console.warn("Could not find TikTok header/grid containers.");
-            if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
-        } else {
-            if (hideTikTokSection) {
-                console.log("Hiding TikTok section.");
-                tiktokHeaderContainer.style.display = 'none';
-                tiktokGridContainer.style.display = 'none';
-                if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p>TikTok shoutouts are currently hidden by the site administrator.</p>'; tiktokUnavailableMessage.style.display = 'block'; }
-                 else { console.warn("TikTok unavailable message element not found."); }
-                isTikTokVisible = false;
-            } else {
-                console.log("Showing TikTok section.");
-                tiktokHeaderContainer.style.display = ''; // Or 'flex'
-                tiktokGridContainer.style.display = ''; // Or 'grid'
-                if (tiktokUnavailableMessage) { tiktokUnavailableMessage.style.display = 'none'; tiktokUnavailableMessage.innerHTML = ''; }
-                isTikTokVisible = true;
-            }
-        }
-
-        console.log("Initiating loading of other content sections...");
-
-        // Define all promises
-        const loadPromises = [
-            displayProfileData(siteSettings), // Profile uses already fetched data
-            displayBusinessInfo(),             // <<< CALL TO DISPLAY BUSINESS INFO
+        
+        // Initialize all content sections
+        await Promise.all([
+            displayProfileData(siteSettings),
+            displayBusinessInfo(),
             displayPresidentData(),
-            loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
-            loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
             loadAndDisplayUsefulLinks(),
             loadAndDisplaySocialLinks(),
             loadAndDisplayDisabilities(),
             loadAndDisplayTechItems(),
             loadAndDisplayFaqs()
-        ];
+        ]);
 
-        // Conditionally add TikTok loading promise
-         if (isTikTokVisible && tiktokGridContainer) {
-             const tsEl = document.getElementById('tiktok-last-updated-timestamp'); // Get correct timestamp element
-             if (tsEl) {
-                 loadPromises.push(loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl));
-             } else { console.warn("Could not load TikTok section - timestamp element missing."); }
-         }
+        // Start business hours refresh
+        setInterval(displayBusinessInfo, 60000);
 
-        // Await all promises
-        const results = await Promise.allSettled(loadPromises);
-        results.forEach((result, index) => {
-            if (result.status === 'rejected') {
-                console.error(`Error loading content section ${index}:`, result.reason);
-                // You could potentially update a specific section's UI to show an error here
-            }
-        });
-        console.log("All dynamic content loading initiated/completed.");
+    } catch (error) {
+        console.error("Error initializing homepage content:", error);
     }
 }
 
-// --- Call the main initialization function when the DOM is ready ---
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initializeHomepageContent);
