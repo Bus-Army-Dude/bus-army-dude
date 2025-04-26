@@ -475,39 +475,63 @@ async function loadAndDisplayFaqs() {
     }
 }
 
-/** Attaches accordion functionality using event delegation */
+/** Attaches accordion functionality using event delegation - Only one open at a time */
 function attachFaqAccordionListeners() {
     const container = document.getElementById('faq-container-dynamic');
     if (!container) { console.error("FAQ Accordion Error: Container #faq-container-dynamic not found for listeners."); return; }
 
-    console.log("Attaching FAQ accordion listeners...");
+    console.log("Attaching FAQ accordion listeners (single open)...");
+    // Prevent attaching multiple listeners if the function runs again
     if (container.dataset.faqListenersAttached === 'true') {
         console.log("FAQ listeners already attached, skipping.");
         return;
     }
     container.dataset.faqListenersAttached = 'true';
 
+    // Get all FAQ items within the container *once*
+    const allFaqItems = container.querySelectorAll('.faq-item');
+
     container.addEventListener('click', (event) => {
         const questionButton = event.target.closest('.faq-question');
-        if (!questionButton) return;
-        const faqItem = questionButton.closest('.faq-item');
-        if (!faqItem) return;
-        const answer = faqItem.querySelector('.faq-answer');
-        if (!answer) return;
-        const icon = questionButton.querySelector('.faq-icon');
-        const isActive = faqItem.classList.contains('active');
+        if (!questionButton) return; // Exit if the click wasn't on a question button or its child
 
-        if (isActive) {
-            faqItem.classList.remove('active');
+        const clickedFaqItem = questionButton.closest('.faq-item');
+        if (!clickedFaqItem) return; // Exit if the button isn't inside a .faq-item
+
+        const answer = clickedFaqItem.querySelector('.faq-answer');
+        if (!answer) return; // Exit if the answer element is missing
+
+        const icon = questionButton.querySelector('.faq-icon');
+        const wasActive = clickedFaqItem.classList.contains('active');
+
+        // --- Close all other FAQ items ---
+        allFaqItems.forEach(item => {
+            // Check if this item is NOT the one that was clicked AND if it is currently active
+            if (item !== clickedFaqItem && item.classList.contains('active')) {
+                item.classList.remove('active'); // Remove the active class
+                const otherAnswer = item.querySelector('.faq-answer');
+                const otherIcon = item.querySelector('.faq-icon');
+                if (otherAnswer) otherAnswer.style.maxHeight = null; // Collapse the answer panel
+                if (otherIcon) otherIcon.textContent = '+'; // Reset the icon
+            }
+        });
+
+        // --- Toggle the clicked item ---
+        if (wasActive) {
+            // If it was already active, clicking it again should close it.
+            // The loop above wouldn't have closed it, so we do it here.
+            clickedFaqItem.classList.remove('active');
             answer.style.maxHeight = null;
             if (icon) icon.textContent = '+';
         } else {
-            faqItem.classList.add('active');
+            // If it was not active, open it. (Others are already closed by the loop above)
+            clickedFaqItem.classList.add('active');
+            // Set max-height to the scroll height to animate opening
             answer.style.maxHeight = answer.scrollHeight + "px";
-             if (icon) icon.textContent = '-';
+             if (icon) icon.textContent = '-'; // Change icon to indicate open state
         }
     });
-    console.log("FAQ accordion listeners attached.");
+    console.log("FAQ accordion listeners attached (single open).");
 }
 
 // Handles Shoutout Platforms display
