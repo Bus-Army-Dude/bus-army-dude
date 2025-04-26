@@ -508,7 +508,7 @@ if (searchInputDisabilities) {
          console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
       }
     }
-/** Renders a single shoutout item in the admin list, including follower/subscriber count */
+/** Renders a single shoutout item in the admin list, including follower/subscriber count and verified status */
 function renderAdminListItem(container, docId, platform, itemData, deleteHandler, editHandler) {
     if (!container) { console.warn("List container not found for platform:", platform); return; }
 
@@ -520,6 +520,7 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
     const nickname = itemData.nickname || 'N/A';
     const username = itemData.username || 'N/A';
     const order = itemData.order ?? 'N/A';
+    const isVerified = itemData.isVerified || false; // Get verified status
     let countText = ''; // Text for follower/subscriber count
 
     // Determine count text based on platform
@@ -533,25 +534,26 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
 
     // Construct direct link URL based on platform
     let directLinkUrl = '#'; // Default placeholder
-    let safeUsername = username || ''; // Ensure username is not null/undefined
+    let safeUsername = username || '';
 
     if (platform === 'tiktok' && safeUsername) {
         directLinkUrl = `https://tiktok.com/@${encodeURIComponent(safeUsername)}`;
     } else if (platform === 'instagram' && safeUsername) {
         directLinkUrl = `https://instagram.com/${encodeURIComponent(safeUsername)}`;
     } else if (platform === 'youtube' && safeUsername) {
-        // Corrected YouTube URL logic
         let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`;
         directLinkUrl = `https://www.youtube.com/${encodeURIComponent(youtubeHandle)}`; // Standard YT URL
     }
 
-    // Build inner HTML - Added countText next to Order
+    // Add verified indicator (e.g., a checkmark emoji) if true
+    const verifiedIndicator = isVerified ? '<span class="verified-indicator" title="Verified">✅</span>' : ''; // Simple emoji indicator
+
+    // Build inner HTML - Added verifiedIndicator and countText
     itemDiv.innerHTML = `
         <div class="item-content">
             <div class="item-details">
-                <strong>${nickname}</strong>
-                <span>(@${username})</span>
-                <small>Order: ${order} | ${countText}</small> 
+                <strong>${nickname}</strong> ${verifiedIndicator} <span>(@${username})</span>
+                <small>Order: ${order} | ${countText}</small>
             </div>
         </div>
         <div class="item-actions">
@@ -564,10 +566,10 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
 
     // Add event listeners for Edit and Delete buttons
     const editButton = itemDiv.querySelector('.edit-button');
-    if (editButton) editButton.addEventListener('click', () => editHandler(docId, platform)); // Pass docId and platform
+    if (editButton) editButton.addEventListener('click', () => editHandler(docId, platform));
 
     const deleteButton = itemDiv.querySelector('.delete-button');
-    if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, platform, itemDiv)); // Pass docId, platform, and element
+    if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, platform, itemDiv));
 
     // Add the completed item to the list container
     container.appendChild(itemDiv);
