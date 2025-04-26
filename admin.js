@@ -575,95 +575,88 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
     container.appendChild(itemDiv);
 }
 
-// --- Copied Shoutout Card Rendering Functions (from displayShoutouts.js) ---
-    // NOTE: Ensure image paths ('check.png', 'images/default-profile.jpg') are accessible
-    //       from the admin page, or use absolute paths / different logic.
+// --- Copied Shoutout Card Rendering Functions (for Admin Preview) ---
+// NOTE: Ensure image paths ('check.png', 'images/default-profile.jpg', etc.)
+//       are accessible from the admin page's context.
 
-    function renderTikTokCard(account) { //
-        // Use default values if account data is missing
-        const profilePic = account.profilePic || 'images/default-profile.jpg'; // Default image path
-        const username = account.username || 'N/A'; //
-        const nickname = account.nickname || 'N/A'; //
-        const bio = account.bio || ''; // Default to empty string
-        const followers = account.followers || 'N/A'; //
-        const isVerified = account.isVerified || false; //
-        // Construct profile URL safely
-        const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#'; //
-        // Correct path for admin context might be needed for check.png
-        const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : ''; //
+function renderTikTokCard(account) {
+    const profilePic = account.profilePic || 'images/default-profile.jpg';
+    const username = account.username || 'N/A';
+    const nickname = account.nickname || 'N/A';
+    const bio = account.bio || '';
+    const followers = account.followers || 'N/A';
+    const isVerified = account.isVerified || false; // Read current status
+    const profileUrl = username !== 'N/A' ? `https://tiktok.com/@${encodeURIComponent(username)}` : '#';
+    // *** This ternary operator is key: returns '' if false ***
+    const verifiedBadge = isVerified ? '<img src="check.png" alt="Verified" class="verified-badge">' : '';
 
-        return `
-             <div class="creator-card">
-                 <img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
-                 <div class="creator-info">
-                     <div class="creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
-                     <p class="creator-username">@${username}</p>
-                     <p class="creator-bio">${bio}</p>
-                     <p class="follower-count">${followers} Followers</p>
-                     <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="visit-profile"> Visit Profile </a>
-                 </div>
-             </div>`; //
-       }
+    return `
+        <div class="creator-card">
+            <img src="${profilePic}" alt="@${username}" class="creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
+            <div class="creator-info">
+                <div class="creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
+                <p class="creator-username">@${username}</p>
+                <p class="creator-bio">${bio}</p>
+                <p class="follower-count">${followers} Followers</p>
+                <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="visit-profile"> Visit Profile </a>
+            </div>
+        </div>`;
+}
 
-function renderInstagramCard(account) { //
-        // Use default values if account data is missing
-        const profilePic = account.profilePic || 'images/default-profile.jpg'; // Default image path
-        const username = account.username || 'N/A'; //
-        const nickname = account.nickname || 'N/A'; //
-        const bio = account.bio || ''; // Default to empty string
-        const followers = account.followers || 'N/A'; //
-        const isVerified = account.isVerified || false; //
-        // Construct profile URL safely
-        const profileUrl = username !== 'N/A' ? `https://instagram.com/${encodeURIComponent(username)}` : '#'; //
-         // Correct path for admin context might be needed for instagramcheck.png
-         const verifiedBadge = isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : ''; // Uses specific class from display CSS
+function renderInstagramCard(account) {
+    const profilePic = account.profilePic || 'images/default-profile.jpg';
+    const username = account.username || 'N/A';
+    const nickname = account.nickname || 'N/A';
+    const bio = account.bio || '';
+    const followers = account.followers || 'N/A';
+    const isVerified = account.isVerified || false; // Read current status
+    const profileUrl = username !== 'N/A' ? `https://instagram.com/${encodeURIComponent(username)}` : '#';
+    // *** This ternary operator is key: returns '' if false ***
+    const verifiedBadge = isVerified ? '<img src="instagramcheck.png" alt="Verified" class="instagram-verified-badge">' : '';
 
-         return `
-             <div class="instagram-creator-card">
-                 <img src="${profilePic}" alt="${nickname}" class="instagram-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
-                 <div class="instagram-creator-info">
-                     <div class="instagram-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
-                     <p class="instagram-creator-username">@${username}</p>
-                     <p class="instagram-creator-bio">${bio}</p>
-                     <p class="instagram-follower-count">${followers} Followers</p>
-                     <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="instagram-visit-profile"> Visit Profile </a>
-                 </div>
-             </div>`; //
-       }
+    return `
+        <div class="instagram-creator-card">
+            <img src="${profilePic}" alt="${nickname}" class="instagram-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
+            <div class="instagram-creator-info">
+                <div class="instagram-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
+                <p class="instagram-creator-username">@${username}</p>
+                <p class="instagram-creator-bio">${bio}</p>
+                <p class="instagram-follower-count">${followers} Followers</p>
+                <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="instagram-visit-profile"> Visit Profile </a>
+            </div>
+        </div>`;
+}
 
-function renderYouTubeCard(account) { //
-        // Use default values if account data is missing
-        const profilePic = account.profilePic || 'images/default-profile.jpg'; // Default image path
-        const username = account.username || 'N/A'; // YouTube handle
-        const nickname = account.nickname || 'N/A'; // Channel name
-        const bio = account.bio || ''; //
-        const subscribers = account.subscribers || 'N/A'; //
-        const coverPhoto = account.coverPhoto || null; // May not exist
-        const isVerified = account.isVerified || false; //
-        // Construct channel URL safely using the handle
-        let safeUsername = username; //
-        if (username !== 'N/A' && !username.startsWith('@')) { //
-            safeUsername = `@${username}`; // Prepend @ if missing for handle URL
-        }
-        const channelUrl = username !== 'N/A' ? `https://youtube.com/$${encodeURIComponent(safeUsername)}` : '#'; //
-        // Correct path for admin context might be needed for youtubecheck.png
-        const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : ''; // Uses specific class from display CSS
-
-        return `
-            <div class="youtube-creator-card">
-                ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
-                <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
-                <div class="youtube-creator-info">
-                    <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
-                    <div class="username-container"><p class="youtube-creator-username">@${username}</p></div>
-                    <p class="youtube-creator-bio">${bio}</p>
-                    <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
-                    <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
-                </div>
-            </div>`; //
+function renderYouTubeCard(account) {
+    const profilePic = account.profilePic || 'images/default-profile.jpg';
+    const username = account.username || 'N/A'; // YouTube handle
+    const nickname = account.nickname || 'N/A'; // Channel name
+    const bio = account.bio || '';
+    const subscribers = account.subscribers || 'N/A';
+    const coverPhoto = account.coverPhoto || null;
+    const isVerified = account.isVerified || false; // Read current status
+    let safeUsername = username;
+    if (username !== 'N/A' && !username.startsWith('@')) {
+        safeUsername = `@${username}`;
     }
-    // --- END Copied Rendering Functions ---
+    const channelUrl = username !== 'N/A' ? `https://www.youtube.com/${encodeURIComponent(safeUsername)}` : '#'; // Corrected URL
+    // *** This ternary operator is key: returns '' if false ***
+    const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : '';
 
+    return `
+        <div class="youtube-creator-card">
+            ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
+            <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
+            <div class="youtube-creator-info">
+                <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
+                <div class="username-container"><p class="youtube-creator-username">${safeUsername}</p></div>
+                <p class="youtube-creator-bio">${bio}</p>
+                <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
+                <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
+            </div>
+        </div>`;
+}
+    
 // *** NEW FUNCTION: Updates Shoutout Preview Area ***
     function updateShoutoutPreview(formType, platform) { //
         let formElement; //
