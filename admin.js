@@ -1578,6 +1578,295 @@ if (businessInfoForm && typeof updateAdminPreview === 'function') { // Check if 
 }
 // --- End Business Info Event Listeners ---
 
+    // Add these functions to your admin.js file
+
+// --- Helper function for formatting time in the preview ---
+function formatTimeForPreview(timeString) { // Converts HH:MM to AM/PM format
+    if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '';
+    try {
+        const [hour, minute] = timeString.split(':');
+        const hourNum = parseInt(hour, 10);
+        if (isNaN(hourNum)) return timeString; // Return original if hour isn't a number
+        const ampm = hourNum >= 12 ? 'PM' : 'AM';
+        const hour12 = hourNum % 12 || 12; // Convert 0 to 12
+        return `${hour12}:${minute} ${ampm}`;
+    } catch (e) {
+        console.error("Error formatting time:", timeString, e);
+        return timeString; // Return original on error
+    }
+}
+
+// --- Main Preview Update Function ---
+function updateAdminPreview() {
+    // Get references to preview elements (ensure these IDs exist in admin.html)
+    const adminPreviewStatus = document.getElementById('admin-preview-status');
+    const adminPreviewHours = document.getElementById('admin-preview-hours');
+    const adminPreviewContact = document.getElementById('admin-preview-contact');
+    const assumedBusinessTimezoneForPreview = 'America/New_York'; // ET Timezone
+
+    if (!businessInfoForm || !adminPreviewStatus || !adminPreviewHours || !adminPreviewContact) {
+        // console.log("Preview elements or form not ready for updateAdminPreview.");
+        return;
+    }
+
+    // 1. Read Current Form Values Directly
+    const currentFormData = {
+        contactEmail: contactEmailInput?.value.trim() || null,
+        statusOverride: statusOverrideSelect?.value || "auto",
+        regularHours: {},
+        holidayHours: [],
+        temporaryHours: []
+    };
+
+    // Collect Regular Hours from form
+    daysOfWeek.forEach(day => {
+        const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false;
+        currentFormData.regularHours[day] = {
+            open: isClosed ? null : (document.getElementById(`${day}-open`)?.value || null),
+            close: isClosed ? null : (document.getElementById(`${day}-close`)?.value || null),
+            isClosed: isClosed
+        };
+    });
+
+    // Collect Holiday Hours from form
+    document.querySelectorAll('.holiday-entry').forEach(entryDiv => {
+        const id = entryDiv.getAttribute('data-id');
+        if (!id) return; // Skip if no ID somehow
+        const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false;
+        const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null;
+        if (date) { // Only include if date is set
+            currentFormData.holidayHours.push({
+                date: date,
+                label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null,
+                open: isClosed ? null : (entryDiv.querySelector(`#holiday-open-${id}`)?.value || null),
+                close: isClosed ? null : (entryDiv.querySelector(`#holiday-close-${id}`)?.value || null),
+                isClosed: isClosed
+            });
+        }
+    });
+
+     // Collect Temporary Hours from form
+    document.querySelectorAll('.temporary-entry').forEach(entryDiv => {
+        const id = entryDiv.getAttribute('data-id');
+        if (!id) return; // Skip if no ID
+        const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false;
+        const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null;
+        const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null;
+         if (startDate && endDate) {
+             // Basic validation for preview (prevent endless loops/errors)
+             if (endDate < startDate) {
+                  adminPreviewStatus.innerHTML = `<span class="status-unavailable">Preview Error: Temp End Date < Start Date</span>`;
+                  adminPreviewHours.innerHTML = '';
+                  adminPreviewContact.innerHTML = '';
+                  return; // Stop preview update
+             }
+             currentFormData.temporaryHours.push({
+                 startDate: startDate,
+                 endDate: endDate,
+                 label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null,
+                 open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null),
+                 close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null),
+                 isClosed: isClosed
+             });
+         }
+    });
+
+    // 2. Calculate Status (using current browser time for preview simulation)
+    let currentStatus = 'Closed';
+    let statusReason = 'Regular Hours';
+    let previewDisplayHoursList = []; // To store formatted hours for preview display
+
+    const previewNow = new Date(); // Admin's current local time
+    let previewTimezone;
+    try {
+        previewTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Admin's timezone
+    } catch (e) {
+         adminPreviewStatus.innerHTML = `<span class="status-unavailable">Preview Error: Cannot detect your timezone.</span>`;
+         adminPreviewHours.innerHTML = '';
+         adminPreviewContact.innerHTML = '';
+        return;
+    }
+
+    const previewDayIndex = previewNow.getDay();
+    const previewDayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][previewDayIndex];
+    const previewDateStr = previewNow.toLocaleDateString('en-CA'); // YYYY-MM-DD format in local timezone
+    const previewTimestamp = previewNow.getTime();
+
+    // Helper to get UTC timestamp range for a given ET time on a specific date
+    // NOTE: This is a simplified approach. Libraries like Luxon or date-fns-tz handle DST more robustly.
+    function getUTCRangeForETTime(dateStr, timeStr) {
+        if (!timeStr) return null;
+        try {
+            // Construct a date string assuming the time is in ET for that date
+            const dateTimeStr = `${dateStr}T${timeStr}:00`;
+            // Create a date object interpreting the string *as if* it's in ET
+            // This is tricky - use Intl to format to parts IN ET, then build a UTC date from parts
+            const formatter = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezoneForPreview, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+            const parts = formatter.formatToParts(new Date(dateTimeStr)).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {});
+            // Construct UTC timestamp from parts (Month is 0-indexed in Date.UTC)
+            const utcTimestamp = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+            if (isNaN(utcTimestamp)) return null; // Check if conversion failed
+            return utcTimestamp;
+        } catch (e) {
+            console.error(`Error converting ET time ${timeStr} on ${dateStr} to UTC:`, e);
+            return null;
+        }
+    }
+
+    // --- Determine Applicable Hours for Preview ---
+    let activeHoursRule = null; // Store the rule object governing the status
+
+    // 1. Check Manual Override from form
+    if (currentFormData.statusOverride !== 'auto') {
+        currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
+        statusReason = 'Manual Override';
+        activeHoursRule = { reason: statusReason };
+    } else {
+        // 2. Check Holidays for today (using previewDateStr)
+        const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr);
+        if (todayHoliday) {
+            statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
+            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) {
+                currentStatus = 'Closed';
+                activeHoursRule = { ...todayHoliday, reason: statusReason, isClosed: true };
+            } else {
+                const openTimestampUTC = getUTCRangeForETTime(previewDateStr, todayHoliday.open);
+                const closeTimestampUTC = getUTCRangeForETTime(previewDateStr, todayHoliday.close);
+                if (openTimestampUTC !== null && closeTimestampUTC !== null && previewTimestamp >= openTimestampUTC && previewTimestamp < closeTimestampUTC) {
+                    currentStatus = 'Open';
+                    activeHoursRule = { ...todayHoliday, reason: statusReason };
+                } else {
+                    currentStatus = 'Closed';
+                    activeHoursRule = { ...todayHoliday, reason: statusReason, isEffectivelyClosed: true };
+                }
+            }
+        } else {
+            // 3. Check Temporary Hours covering today
+            const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
+            if (activeTemporary) {
+                statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate} to ${activeTemporary.endDate}`})`;
+                if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
+                    currentStatus = 'Closed';
+                    activeHoursRule = { ...activeTemporary, reason: statusReason, isClosed: true };
+                } else {
+                     const openTimestampUTC = getUTCRangeForETTime(previewDateStr, activeTemporary.open);
+                     const closeTimestampUTC = getUTCRangeForETTime(previewDateStr, activeTemporary.close);
+                      if (openTimestampUTC !== null && closeTimestampUTC !== null && previewTimestamp >= openTimestampUTC && previewTimestamp < closeTimestampUTC) {
+                         currentStatus = 'Open';
+                         activeHoursRule = { ...activeTemporary, reason: statusReason };
+                     } else {
+                        currentStatus = 'Closed';
+                         activeHoursRule = { ...activeTemporary, reason: statusReason, isEffectivelyClosed: true };
+                     }
+                }
+            } else {
+                 // 4. Use Regular Hours
+                 statusReason = 'Regular Hours';
+                 const todayRegularHours = currentFormData.regularHours[previewDayName];
+                 if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
+                      const openTimestampUTC = getUTCRangeForETTime(previewDateStr, todayRegularHours.open);
+                      const closeTimestampUTC = getUTCRangeForETTime(previewDateStr, todayRegularHours.close);
+                       if (openTimestampUTC !== null && closeTimestampUTC !== null && previewTimestamp >= openTimestampUTC && previewTimestamp < closeTimestampUTC) {
+                          currentStatus = 'Open';
+                          activeHoursRule = { ...todayRegularHours, reason: statusReason, day: previewDayName };
+                      } else {
+                           currentStatus = 'Closed';
+                           activeHoursRule = { ...todayRegularHours, reason: statusReason, day: previewDayName, isEffectivelyClosed: true };
+                      }
+                 } else {
+                     // Default to closed if no regular hours or marked closed
+                     currentStatus = 'Closed';
+                     activeHoursRule = { ...(todayRegularHours || {}), reason: statusReason, day: previewDayName, isClosed: true };
+                 }
+            }
+        }
+    }
+
+
+    // 3. Display Status in Preview
+     let statusClass = 'status-closed';
+     if (currentStatus === 'Open') statusClass = 'status-open';
+     else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
+     adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
+
+
+    // 4. Format and Display Hours in Preview (Converted to Admin's Local Time)
+    let hoursHtml = '<ul>';
+    const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+    // Helper to format time range in local timezone
+    function formatLocalRange(dateStr, openET, closeET, localTimezone) {
+        if (!openET || !closeET) return "Closed";
+        try {
+            // Get UTC timestamps for the ET times
+            const openUTC = getUTCRangeForETTime(dateStr, openET);
+            const closeUTC = getUTCRangeForETTime(dateStr, closeET);
+            if (openUTC === null || closeUTC === null) return "Invalid Time";
+
+            // Format these UTC timestamps into the local timezone
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: localTimezone,
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+            // Create Date objects from UTC timestamps to format them
+            const openLocalStr = formatter.format(new Date(openUTC));
+            const closeLocalStr = formatter.format(new Date(closeUTC));
+
+             // Basic check if close time wraps past midnight locally compared to ET (might need refinement)
+            // This is complex - for simplicity, we just show the converted times.
+            // A more robust solution would involve date-fns-tz or Luxon.
+            return `${openLocalStr} - ${closeLocalStr}`;
+
+        } catch (e) {
+            console.error("Error formatting local range:", e);
+            return "Error";
+        }
+    }
+
+     displayOrder.forEach(day => {
+         const dayData = currentFormData.regularHours[day];
+         const isCurrentDay = day === previewDayName; // Use admin's current day
+         const highlightClass = isCurrentDay ? 'current-day-preview' : ''; // CSS class for highlighting
+
+         hoursHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `;
+
+         if (dayData && !dayData.isClosed && dayData.open && dayData.close) {
+            // For the preview, we need a date string for the conversion helper
+            // This is tricky as we need *today's* date if it's today, *next week's* date otherwise?
+            // Simplification: Just show the ET times formatted nicely for the preview list
+            // Or attempt conversion using *today's* date - might be slightly off near DST changes/midnight
+            let formattedRange = `${formatTimeForPreview(dayData.open)} - ${formatTimeForPreview(dayData.close)} ET`; // Default to ET display in preview for simplicity
+            // --- OPTIONAL: Attempt local conversion (use with caution) ---
+            // let localRange = formatLocalRange(previewDateStr, dayData.open, dayData.close, previewTimezone);
+            // formattedRange = localRange !== "Invalid Time" && localRange !== "Error" ? localRange : formattedRange; // Fallback to ET if conversion fails
+            // --- End Optional ---
+
+            hoursHtml += `<span>${formattedRange}</span>`;
+         } else {
+             hoursHtml += `<span>Closed</span>`;
+         }
+         hoursHtml += `</li>`;
+     });
+     hoursHtml += '</ul>';
+     // Add detected timezone note
+      hoursHtml += `<p style="font-size: 0.8em; margin-top: 10px; color: var(--secondary-text);">Preview based on your detected timezone: ${previewTimezone}. Actual display varies by visitor.</p>`;
+
+     adminPreviewHours.innerHTML = hoursHtml;
+
+
+    // 5. Display Contact Info in Preview
+    if (currentFormData.contactEmail) {
+        adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`;
+    } else {
+        adminPreviewContact.innerHTML = '';
+    }
+}
+
+
+// --- END PREVIEW FUNCTION ---
+
 // --- 'Next' Button Logic ---
     // Handles the first step of the two-step login
     if (nextButton && emailInput && authStatus && emailGroup && passwordGroup && loginButton) { //
