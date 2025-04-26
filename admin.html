@@ -164,59 +164,63 @@
                  <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
             </section>
 
-            <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
-    <h3 id="business-info-heading">Manage Business Information</h3>
-
+            <!-- Business Hours Management Section -->
+<section id="business-info-section" class="admin-section">
+    <h2>Business Information Management</h2>
+    
+    <!-- Status Messages -->
+    <div id="business-info-status-message" class="status-message"></div>
+    
+    <!-- Business Info Form -->
     <form id="business-info-form">
+        <!-- Contact Info -->
         <div class="form-group">
             <label for="business-contact-email">Contact Email:</label>
-            <input type="email" id="business-contact-email" name="contactEmail" placeholder="Enter contact email address">
+            <input type="email" id="business-contact-email" name="contactEmail">
         </div>
 
-        <h4>Regular Business Hours</h4>
-        <p><small><i>Enter all times based on US Eastern Time (ET / New York). They will be automatically converted for visitors.</i></small></p>
-        <div id="regular-hours-container" class="hours-grid">
-            </div>
-
-        <h4>Holiday Hours / Specific Date Closures</h4>
-        <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
-        <div id="holiday-hours-list" class="special-hours-list">
-            </div>
-        <button type="button" id="add-holiday-button" class="button-secondary small-button">Add Holiday/Specific Date</button>
-
-        <h4>Temporary Hours (e.g., Events, Renovations)</h4>
-        <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
-        <div id="temporary-hours-list" class="special-hours-list">
-            </div>
-        <button type="button" id="add-temporary-button" class="button-secondary small-button">Add Temporary Hours Period</button>
-
+        <!-- Status Override -->
         <div class="form-group">
             <label for="business-status-override">Status Override:</label>
             <select id="business-status-override" name="statusOverride">
-                <option value="auto">Automatic (Based on Hours/Time)</option>
+                <option value="auto">Automatic (Based on Hours)</option>
                 <option value="open">Force Open</option>
                 <option value="closed">Force Closed</option>
                 <option value="unavailable">Force Temporarily Unavailable</option>
             </select>
-            <small>Overrides the automatic open/closed calculation.</small>
         </div>
 
-        <div class="form-actions">
-            <button type="submit" id="save-business-info-button" class="button-primary">Save Business Info</button>
+        <!-- Regular Hours -->
+        <div class="form-section">
+            <h3>Regular Hours</h3>
+            <div id="regular-hours-container"></div>
         </div>
-    </form> <div class="admin-preview-container">
-        <h4>Live Preview (Simulated Visitor View)</h4>
-        <p><small><i>This preview uses your current browser time and attempts to simulate how a visitor in your timezone would see the hours and status based on the unsaved values above. The actual display depends on each visitor's timezone. Assumes ET input.</i></small></p>
-        <div class="preview-content">
-            <div id="admin-preview-status" class="preview-status">Status: Update form to preview...</div>
-            <div id="admin-preview-hours" class="preview-hours">
-                </div>
-            <div id="admin-preview-contact" class="preview-contact">
-                </div>
-        </div>
-    </div>
-    <div id="business-info-status-message" class="status-message" role="status" aria-live="polite"></div>
 
+        <!-- Holiday Hours -->
+        <div class="form-section">
+            <h3>Holiday Hours</h3>
+            <div id="holiday-hours-list"></div>
+            <button type="button" id="add-holiday-button" class="secondary-button">Add Holiday</button>
+        </div>
+
+        <!-- Temporary Hours -->
+        <div class="form-section">
+            <h3>Temporary Hours</h3>
+            <div id="temporary-hours-list"></div>
+            <button type="button" id="add-temporary-button" class="secondary-button">Add Temporary Hours</button>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <h3>Live Preview</h3>
+            <div id="admin-preview-status"></div>
+            <div id="admin-preview-hours"></div>
+            <div id="admin-preview-contact"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="primary-button">Save Business Info</button>
+    </form>
 </section>
 
              <section class="admin-section" id="president-management" aria-labelledby="president-heading">
