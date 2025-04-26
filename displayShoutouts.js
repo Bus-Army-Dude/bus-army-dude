@@ -1160,17 +1160,5 @@ async function initializeHomepageContent() {
     }
 }
 
-// REPLACE the original listener at the end of the file with this block:
-document.addEventListener('DOMContentLoaded', () => {
-    console.log(">>> DOMContentLoaded FIRED! Attempting initialization...");
-    try {
-        // Try changing background color as a visual test
-        document.body.style.backgroundColor = 'limegreen'; // Make it obvious!
-        // Now call the main function
-        initializeHomepageContent();
-    } catch (error) {
-        console.error(">>> ERROR OCCURRED *DURING* initializeHomepageContent call:", error);
-        // Display error directly on page as fallback if console is missed
-         document.body.innerHTML = `<p class="error" style="padding: 50px; color: red; font-size: 1.2em;">A critical error occurred during initialization: ${error.message}</p>`;
-    }
-});
+// --- Call the main initialization function when the DOM is ready ---
+document.addEventListener('DOMContentLoaded', initializeHomepageContent);
