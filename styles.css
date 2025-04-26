@@ -2420,3 +2420,226 @@ body.maintenance-active {
         font-size: 0.95rem; /* Slightly smaller links */
     }
 }
+
+/* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
+
+/* Container for the whole section */
+.business-info-section { /* You might already have this or similar styling */
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--content-bg) 98%, white), /* Use your theme colors */
+        var(--content-bg)
+    );
+    padding: 30px; /* Adjust padding as needed */
+    border-radius: 16px; /* Use your theme's border-radius */
+    margin-bottom: 30px; /* Space below the section */
+    box-shadow:
+        0 8px 32px -8px var(--shadow-color),
+        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
+    backdrop-filter: blur(10px); /* Optional blur effect */
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--text-color); /* Ensure text color is set */
+}
+
+/* Optional Title inside the section */
+.business-info-section h2 {
+    color: var(--text-color);
+    font-size: 1.8rem; /* Adjust size */
+    font-weight: 700; /* Adjust weight */
+    margin-bottom: 20px; /* Space below title */
+    text-align: center; /* Or left */
+    border-bottom: 1px solid var(--border-color); /* Optional separator */
+    padding-bottom: 10px; /* Space for separator */
+}
+
+
+/* Status Display Area */
+.business-status { /* Styles the div holding the status */
+    font-size: 1.1em; /* Adjust size */
+    font-weight: 600; /* Make it slightly bold */
+    text-align: center; /* Or left */
+    margin-bottom: 20px; /* Space below status */
+    padding: 10px;
+    border-radius: 8px; /* Use your theme radius */
+    /* Optional subtle background based on overall theme */
+    /* background-color: rgba(var(--accent-color-rgb), 0.05); */
+    /* border: 1px solid rgba(var(--border-color-rgb), 0.5); */
+}
+
+/* Status Text Colors (Span inside .business-status) */
+.business-status .status-open {
+    color: #34c759; /* Or your theme's success/green color: var(--color-success-action); */
+}
+.business-status .status-closed {
+    color: #ff3b30; /* Or your theme's danger/red color: var(--color-danger); */
+}
+.business-status .status-unavailable {
+    color: #ff9500; /* Or your theme's warning/orange color */
+}
+.business-status .status-reason { /* Styling for the (Reason) part */
+    font-size: 0.85em;
+    font-weight: normal;
+    color: var(--secondary-text);
+    margin-left: 8px;
+    display: inline-block;
+}
+
+/* Hours Display Area */
+.hours-list { /* Styles the div holding the hours list */
+    margin-top: 15px;
+}
+
+.hours-list h4 { /* Style for the "Hours (Your Local Time)" heading */
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--secondary-text); /* Subtler color */
+    margin-bottom: 10px;
+    text-align: center; /* Or left */
+}
+
+.hours-list ul { /* Styles the generated <ul> */
+    list-style: none;
+    padding: 0;
+    margin: 0 auto; /* Center the list container if needed */
+    max-width: 350px; /* Optional: constrain width */
+}
+
+.hours-list li { /* Styles each day's list item */
+    display: flex;
+    justify-content: space-between; /* Pushes day and time apart */
+    padding: 8px 12px; /* Padding inside list item */
+    margin-bottom: 5px; /* Space between days */
+    border-bottom: 1px solid var(--border-color); /* Separator line */
+    font-size: 1em;
+    border-radius: 4px; /* Subtle rounding */
+    transition: background-color 0.2s ease; /* Smooth transition for highlight */
+}
+.hours-list li:last-child {
+    border-bottom: none; /* Remove border from last item */
+}
+
+.hours-list li strong { /* Styles the Day Name */
+    font-weight: 500; /* Medium weight */
+    color: var(--text-color);
+    margin-right: 10px; /* Space after day */
+}
+.hours-list li span { /* Styles the Time Range */
+    color: var(--secondary-text);
+    font-family: monospace; /* Optional: Monospace for time */
+    font-size: 0.95em;
+}
+
+/* Highlighting for the current day */
+/* Ensure your display JS adds THIS EXACT class 'current-day' */
+.hours-list li.current-day {
+    background-color: rgba(var(--accent-color-rgb), 0.1); /* Use accent color with low opacity */
+    /* border-left: 3px solid var(--accent-color); */ /* Optional accent border */
+}
+.hours-list li.current-day strong,
+.hours-list li.current-day span {
+    color: var(--text-color); /* Make text slightly darker/clearer */
+    font-weight: 600; /* Make current day bolder */
+}
+
+
+/* Contact Info Area */
+.contact-info { /* Styles the div holding the contact info */
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color); /* Separator */
+    text-align: center; /* Or left */
+    font-size: 0.95em;
+    color: var(--secondary-text);
+}
+.contact-info a { /* Style the mailto link specifically */
+    color: var(--link-color); /* Use theme link color */
+    text-decoration: underline;
+}
+.contact-info a:hover {
+    color: var(--hover-color); /* Use theme hover color */
+}
+
+/* ======================================== */
+/* Responsive Adjustments for Business Info */
+/* (Add to the END of your styles.css)    */
+/* ======================================== */
+
+@media screen and (max-width: 768px) { /* Adjust breakpoint if needed */
+
+    .business-info-section {
+        padding: 20px; /* Reduce padding on smaller screens */
+        margin-bottom: 20px; /* Reduce bottom margin */
+    }
+
+    .business-info-section h2 {
+        font-size: 1.5rem; /* Slightly smaller title */
+        margin-bottom: 15px;
+    }
+
+    .business-status {
+        font-size: 1em; /* Adjust status font size */
+        padding: 8px;
+        margin-bottom: 15px;
+    }
+    .business-status .status-reason {
+        font-size: 0.8em; /* Smaller reason text */
+        display: block; /* Allow reason to wrap below status */
+        margin-left: 0;
+        margin-top: 3px;
+    }
+
+
+    .hours-list h4 {
+        font-size: 1em; /* Smaller hours heading */
+    }
+
+    .hours-list ul {
+        max-width: 100%; /* Allow list to take full width */
+    }
+
+    .hours-list li {
+        padding: 6px 8px; /* Reduce padding */
+        font-size: 0.95em; /* Slightly smaller text */
+        /* Optional: Stack day and time on very small screens */
+        /* flex-direction: column; */
+        /* align-items: flex-start; */
+    }
+     /* Optional: Adjust spacing if stacking */
+     /* .hours-list li strong { margin-bottom: 3px; } */
+
+
+    .contact-info {
+        font-size: 0.9em; /* Smaller contact text */
+        margin-top: 15px;
+        padding-top: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) { /* Further adjustments for very small screens */
+
+    .business-info-section {
+        padding: 15px;
+        border-radius: 12px; /* Slightly smaller radius */
+    }
+
+     .business-info-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .business-status {
+        font-size: 0.95em;
+    }
+
+    .hours-list li {
+        font-size: 0.9em;
+         /* Consider uncommenting stacking for very small screens */
+        /* flex-direction: column; */
+        /* align-items: flex-start; */
+    }
+     /* Optional: Adjust spacing if stacking */
+     /* .hours-list li strong { margin-bottom: 3px; } */
+
+     .contact-info {
+        font-size: 0.85em;
+     }
+}
