@@ -856,24 +856,27 @@ function calculateAndDisplayStatusConverted(businessData) {
             );
             
             if (activeTemporary) {
-                statusReason = `Temporary Hours (${activeTemporary.label || 
-                              `${activeTemporary.startDate}–${activeTemporary.endDate}`})`;
-                
-                if (activeTemporary.isClosed) {
-                    currentStatus = 'Temporarily Unavailable';
-                } else {
-                    const openMinutes = timeStringToMinutes(activeTemporary.open);
-                    const closeMinutes = timeStringToMinutes(activeTemporary.close);
-                    
-                    if (openMinutes === null || closeMinutes === null || 
-                        currentMinutesInBizTZ < openMinutes || 
-                        currentMinutesInBizTZ >= closeMinutes) {
-                        currentStatus = 'Temporarily Unavailable';
-                    } else {
-                        currentStatus = 'Open';
-                    }
-                }
-                activeHoursRule = activeTemporary;
+    // Use the label from admin portal if available, otherwise use date range
+    statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate}–${activeTemporary.endDate}`})`;
+    if (activeTemporary.isClosed) {
+        currentStatus = 'Temporarily Unavailable';
+    } else {
+        const openMinutes = timeStringToMinutes(activeTemporary.open);
+        const closeMinutes = timeStringToMinutes(activeTemporary.close);
+        
+        if (openMinutes === null || closeMinutes === null) {
+            currentStatus = 'Temporarily Unavailable';
+        } else {
+            // Check if current time is within temporary hours (4:00 PM - 9:00 PM in your case)
+            if (currentMinutesInBizTZ >= openMinutes && currentMinutesInBizTZ < closeMinutes) {
+                currentStatus = 'Open';
+            } else {
+                // Outside temporary hours = Temporarily Unavailable
+                currentStatus = 'Temporarily Unavailable';
+            }
+        }
+    }
+    activeHoursRule = activeTemporary;
             } else {
                 // Regular hours
                 statusReason = 'Regular Hours';
