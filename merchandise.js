@@ -292,6 +292,39 @@ document.addEventListener("DOMContentLoaded", function() {
             link: "https://riverkritzar-shop.fourthwall.com/products/timeless-hoops-foam-trucker-hat",
             category: "Hats"
         },
+        {
+            name: "ALL TIME BEST Basketball-Inspired Baby Bodysuit",
+            price: 18.99,
+            originalPrice: 18.99, // Same as price, for non-sale
+            discount: 0, // No discount
+            stock: "in-stock",
+            sale: false, // No sale
+            image: "product_images/alltimebestbodysuit.webp",
+            link: "https://busarmydude-shop.fourthwall.com/products/all-time-best-basketball-inspired-baby-bodysuit",
+            category: "Baby & Toddler"
+        },
+        {
+            name: "Timeless Hoops Baby Tee",
+            price: 17.99,
+            originalPrice: 17.99, // Same as price, for non-sale
+            discount: 0, // No discount
+            stock: "in-stock",
+            sale: false, // No sale
+            image: "product_images/timelesstee.webp",
+            link: "https://busarmydude-shop.fourthwall.com/products/timeless-hoops-baby-tee",
+            category: "Baby & Toddler"
+        },
+        {
+            name: "ALL TIME BEST Basketball Baby Onesie",
+            price: 18.99,
+            originalPrice: 18.99, // Same as price, for non-sale
+            discount: 0, // No discount
+            stock: "in-stock",
+            sale: false, // No sale
+            image: "product_images/alltimebestbabyonsie.webp",
+            link: "https://busarmydude-shop.fourthwall.com/products/all-time-best-basketball-baby-onesie",
+            category: "Baby & Toddler"
+        },
     ];
 
     const productGrid = document.getElementById("product-grid");
