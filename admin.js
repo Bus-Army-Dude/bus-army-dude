@@ -831,39 +831,220 @@ async function saveBusinessInfoData(event) {
 }
 
 // --- Admin Preview Function (Using Minutes Comparison) ---
-function updateAdminPreviewBI() { // Renamed for clarity
+function updateAdminPreviewBI() {
     if (!businessInfoForm || !adminPreviewStatus || !adminPreviewHours || !adminPreviewContact) return;
-    // 1. Read Form Values
-    const currentFormData = { contactEmail: contactEmailInput?.value.trim() || null, statusOverride: statusOverrideSelect?.value || "auto", regularHours: {}, holidayHours: [], temporaryHours: [] };
-    daysOfWeekBI.forEach(day => { const el = document.getElementById(`${day}-isClosed`); if (!el) return; const isClosed = el.checked; const openVal = document.getElementById(`${day}-open`)?.value; const closeVal = document.getElementById(`${day}-close`)?.value; currentFormData.regularHours[day] = { open: isClosed ? null : (openVal || null), close: isClosed ? null : (closeVal || null), isClosed: isClosed }; });
-    document.querySelectorAll('.holiday-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false; const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null; if (date) { currentFormData.holidayHours.push({ date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#holiday-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#holiday-close-${id}`)?.value || null), isClosed }); } });
-    document.querySelectorAll('.temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { adminPreviewStatus.innerHTML = `<span class="status-unavailable">Preview Error</span>`; return; } currentFormData.temporaryHours.push({ startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null), isClosed }); } });
-    currentFormData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); currentFormData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+
+    // 1. Read Current Form Values
+    const currentFormData = {
+        contactEmail: contactEmailInput?.value.trim() || null,
+        statusOverride: statusOverrideSelect?.value || "auto",
+        regularHours: {},
+        holidayHours: [],
+        temporaryHours: []
+    };
+
+    // Get Regular Hours
+    daysOfWeekBI.forEach(day => {
+        const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false;
+        const openTime = document.getElementById(`${day}-open`)?.value || null;
+        const closeTime = document.getElementById(`${day}-close`)?.value || null;
+        currentFormData.regularHours[day] = {
+            isClosed: isClosed,
+            open: !isClosed && openTime ? openTime : null,
+            close: !isClosed && closeTime ? closeTime : null
+        };
+    });
+
+    // Get Holiday Hours
+    document.querySelectorAll('.holiday-entry').forEach(entryDiv => {
+        const id = entryDiv.getAttribute('data-id');
+        if (!id) return;
+        
+        const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false;
+        const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value;
+        const label = entryDiv.querySelector(`#holiday-label-${id}`)?.value?.trim();
+        const openTime = entryDiv.querySelector(`#holiday-open-${id}`)?.value;
+        const closeTime = entryDiv.querySelector(`#holiday-close-${id}`)?.value;
+
+        if (date) {
+            currentFormData.holidayHours.push({
+                date: date,
+                label: label || '',
+                isClosed: isClosed,
+                open: !isClosed && openTime ? openTime : null,
+                close: !isClosed && closeTime ? closeTime : null
+            });
+        }
+    });
+
+    // Get Temporary Hours
+    document.querySelectorAll('.temporary-entry').forEach(entryDiv => {
+        const id = entryDiv.getAttribute('data-id');
+        if (!id) return;
+        
+        const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false;
+        const startDate = entryDiv.querySelector(`#temp-startDate-${id}`)?.value;
+        const endDate = entryDiv.querySelector(`#temp-endDate-${id}`)?.value;
+        const label = entryDiv.querySelector(`#temp-label-${id}`)?.value?.trim();
+        const openTime = entryDiv.querySelector(`#temp-open-${id}`)?.value;
+        const closeTime = entryDiv.querySelector(`#temp-close-${id}`)?.value;
+
+        if (startDate && endDate) {
+            currentFormData.temporaryHours.push({
+                startDate: startDate,
+                endDate: endDate,
+                label: label || '',
+                isClosed: isClosed,
+                open: !isClosed && openTime ? openTime : null,
+                close: !isClosed && closeTime ? closeTime : null
+            });
+        }
+    });
+
+    // Sort arrays by date
+    currentFormData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1));
+    currentFormData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
 
     // 2. Calculate Preview Status using Admin's Browser Time
-    let currentStatus = 'Closed'; let statusReason = 'Regular Hours';
-    const previewNow = new Date(); const previewDayIndex = previewNow.getDay(); const previewDayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][previewDayIndex]; const previewDateStr = previewNow.toLocaleDateString('en-CA');
+    let currentStatus = 'Closed';
+    let statusReason = 'Regular Hours';
+
+    const previewNow = new Date();
+    const previewDayIndex = previewNow.getDay();
+    const previewDayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][previewDayIndex];
+    const previewDateStr = previewNow.toISOString().split('T')[0]; // YYYY-MM-DD
     const previewCurrentMinutes = previewNow.getHours() * 60 + previewNow.getMinutes();
+
     let activeHoursRule = null;
 
-    if (currentFormData.statusOverride !== 'auto') { currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable'); statusReason = 'Manual Override'; activeHoursRule = { reason: statusReason }; }
-    else { const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr); if (todayHoliday) { statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`; if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; } else { const openMins = timeStringToMinutesBI(todayHoliday.open); const closeMins = timeStringToMinutesBI(todayHoliday.close); if(openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins){ currentStatus = 'Open'; } else { currentStatus = 'Closed'; } } activeHoursRule = { ...todayHoliday, reason: statusReason }; }
-    else { const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate); if (activeTemporary) { statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`; if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) { currentStatus = 'Closed'; } else { const openMins = timeStringToMinutesBI(activeTemporary.open); const closeMins = timeStringToMinutesBI(activeTemporary.close); if(openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins){ currentStatus = 'Open'; } else { currentStatus = 'Temporarily Unavailable'; /* Corrected */ } } activeHoursRule = { ...activeTemporary, reason: statusReason }; }
-    else { statusReason = 'Regular Hours'; const todayRegularHours = currentFormData.regularHours[previewDayName]; if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) { const openMins = timeStringToMinutesBI(todayRegularHours.open); const closeMins = timeStringToMinutesBI(todayRegularHours.close); if(openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins){ currentStatus = 'Open'; } else { currentStatus = 'Closed'; } activeHoursRule = { ...todayRegularHours, day: previewDayName }; }
-    else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true }; } } } }
+    // Status Calculation Logic (Order: Override > Holiday > Temporary > Regular)
+    if (currentFormData.statusOverride !== 'auto') {
+        currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : 
+                       (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
+        statusReason = 'Manual Override';
+        activeHoursRule = { reason: statusReason };
+    } else {
+        // Check for holiday first
+        const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr);
+        if (todayHoliday) {
+            statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
+            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) {
+                currentStatus = 'Closed';
+            } else {
+                const openMins = timeStringToMinutes(todayHoliday.open);
+                const closeMins = timeStringToMinutes(todayHoliday.close);
+                currentStatus = (openMins !== null && closeMins !== null && 
+                               previewCurrentMinutes >= openMins && 
+                               previewCurrentMinutes < closeMins) ? 'Open' : 'Closed';
+            }
+            activeHoursRule = { ...todayHoliday, reason: statusReason };
+        } else {
+            // Check for temporary hours
+            const activeTemporary = currentFormData.temporaryHours.find(t => {
+                if (previewDateStr >= t.startDate && previewDateStr <= t.endDate) {
+                    if (t.isClosed) return true;
+                    const openMins = timeStringToMinutes(t.open);
+                    const closeMins = timeStringToMinutes(t.close);
+                    if (openMins === null || closeMins === null) return false;
+                    const isWithinTimeRange = previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins;
+                    return isWithinTimeRange;
+                }
+                return false;
+            });
+
+            if (activeTemporary) {
+                statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+                if (activeTemporary.isClosed) {
+                    currentStatus = 'Temporarily Unavailable';
+                } else {
+                    const openMins = timeStringToMinutes(activeTemporary.open);
+                    const closeMins = timeStringToMinutes(activeTemporary.close);
+                    if (openMins === null || closeMins === null) {
+                        currentStatus = 'Temporarily Unavailable';
+                    } else {
+                        currentStatus = (previewCurrentMinutes >= openMins && 
+                                      previewCurrentMinutes < closeMins) ? 'Open' : 'Temporarily Unavailable';
+                    }
+                }
+                activeHoursRule = { ...activeTemporary, reason: statusReason };
+            } else {
+                // Regular hours
+                statusReason = 'Regular Hours';
+                const todayRegularHours = currentFormData.regularHours[previewDayName];
+                if (todayRegularHours && !todayRegularHours.isClosed && 
+                    todayRegularHours.open && todayRegularHours.close) {
+                    const openMins = timeStringToMinutes(todayRegularHours.open);
+                    const closeMins = timeStringToMinutes(todayRegularHours.close);
+                    currentStatus = (openMins !== null && closeMins !== null && 
+                                   previewCurrentMinutes >= openMins && 
+                                   previewCurrentMinutes < closeMins) ? 'Open' : 'Closed';
+                    activeHoursRule = { ...todayRegularHours, day: previewDayName };
+                } else {
+                    currentStatus = 'Closed';
+                    activeHoursRule = { 
+                        ...(todayRegularHours || {}), 
+                        day: previewDayName, 
+                        isClosed: true 
+                    };
+                }
+            }
+        }
+    }
 
     // 3. Display Status in Preview
-     let statusClass = 'status-closed'; if (currentStatus === 'Open') statusClass = 'status-open'; else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
-     adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
+    let statusClass = currentStatus === 'Open' ? 'status-open' : 
+                     currentStatus === 'Temporarily Unavailable' ? 'status-unavailable' : 
+                     'status-closed';
 
-    // 4. Display Regular Hours in Preview (Shows ET formatted)
-    let hoursHtml = '<ul>'; const displayOrder = daysOfWeekBI;
-     displayOrder.forEach(day => { const dayData = currentFormData.regularHours[day]; const isCurrentDay = day === previewDayName; const highlightClass = isCurrentDay ? 'current-day-preview' : ''; hoursHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `; if (dayData && !dayData.isClosed && dayData.open && dayData.close) { hoursHtml += `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>`; } else { hoursHtml += `<span>Closed</span>`; } hoursHtml += `</li>`; });
-     hoursHtml += '</ul>'; hoursHtml += `<p style="font-size: 0.8em; margin-top: 10px; color: var(--secondary-text);">Preview based on your browser time. Assumes ET input.</p>`;
-     adminPreviewHours.innerHTML = hoursHtml;
+    if (adminPreviewStatus) {
+        adminPreviewStatus.innerHTML = `
+            <span class="${statusClass}">${currentStatus}</span>
+            <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>
+        `;
+    }
 
-    // 5. Display Contact Info in Preview
-    if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`; } else { adminPreviewContact.innerHTML = ''; }
+    // 4. Format and Display Hours
+    const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    let hoursHtml = '<ul>';
+
+    displayOrder.forEach(day => {
+        const dayData = currentFormData.regularHours[day];
+        const isCurrentDay = day === previewDayName;
+        const highlightClass = isCurrentDay ? 'current-day' : '';
+
+        hoursHtml += `
+            <li class="${highlightClass}">
+                <strong>${capitalizeFirstLetter(day)}:</strong> 
+        `;
+
+        if (dayData && !dayData.isClosed && dayData.open && dayData.close) {
+            hoursHtml += `
+                <span>${formatTimeForDisplay(dayData.open)} - ${formatTimeForDisplay(dayData.close)}</span>
+            `;
+        } else {
+            hoursHtml += '<span>Closed</span>';
+        }
+
+        hoursHtml += '</li>';
+    });
+
+    hoursHtml += '</ul>';
+    hoursHtml += `
+        <p class="hours-timezone-note">
+            Preview based on your browser time. Hours in ET.
+        </p>
+    `;
+
+    if (adminPreviewHours) {
+        adminPreviewHours.innerHTML = hoursHtml;
+    }
+
+    // 5. Display Contact Info
+    if (adminPreviewContact) {
+        adminPreviewContact.innerHTML = currentFormData.contactEmail ? 
+            `Contact: <a href="mailto:${currentFormData.contactEmail}">${currentFormData.contactEmail}</a>` : 
+            '';
+    }
 }
 
 // --- Attach Business Info Event Listeners (Ensure runs only once) ---
