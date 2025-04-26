@@ -63,12 +63,6 @@ function formatFirestoreTimestamp(firestoreTimestamp) {
     } catch (error) { console.error("Error formatting timestamp:", error); return 'Invalid Date'; }
 }
 
-// Helper function needed by hours display
-function capitalizeFirstLetter(string) {
-  if (!string) return '';
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 // --- Functions to Render Cards (Shoutouts, Tech, FAQs) ---
 function renderTikTokCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
