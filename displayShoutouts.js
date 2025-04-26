@@ -789,11 +789,14 @@ async function displayBusinessInfo() {
 
 /**
  * Calculates Open/Closed status and displays hours converted to visitor's timezone.
+ * Handles Temporary Hours status display more specifically.
  * @param {object} businessData - The fetched data from Firestore.
  */
 function calculateAndDisplayStatusConverted(businessData) {
     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
-    let currentStatus = 'Closed'; let statusReason = 'Regular Hours'; let displayHoursListHtml = '<ul>';
+    let currentStatus = 'Closed'; // Default
+    let statusReason = 'Regular Hours';
+    let displayHoursListHtml = '<ul>';
     const businessTimezone = assumedBusinessTimezone; // Use defined constant
 
     const visitorNow = new Date(); let visitorTimezone;
@@ -815,26 +818,66 @@ function calculateAndDisplayStatusConverted(businessData) {
     let activeHoursRule = null;
 
     // 1. Override Check
-    if (statusOverride !== 'auto') { /* ... as before ... */ currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable'); statusReason = 'Manual Override'; activeHoursRule = { reason: statusReason }; }
-    else {
-        // 2. Holiday Check
+    if (statusOverride !== 'auto') {
+        currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
+        statusReason = 'Manual Override';
+        activeHoursRule = { reason: statusReason };
+    } else {
+        // 2. Holiday Check (Holidays override temporary/regular)
         const todayHoliday = holidayHours.find(h => h.date === businessDateStr);
-        if (todayHoliday) { /* ... as before ... */ statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`; if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; activeHoursRule = { ...todayHoliday, isClosed: true }; } else { const openUTC = getUTCTimestampForTime(businessTimezone, todayHoliday.open); const closeUTC = getUTCTimestampForTime(businessTimezone, todayHoliday.close); if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...todayHoliday }; } else { currentStatus = 'Closed'; activeHoursRule = { ...todayHoliday, isEffectivelyClosed: true }; } } }
-        else {
-            // 3. Temporary Check
+        if (todayHoliday) {
+            statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
+            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) {
+                currentStatus = 'Closed';
+                activeHoursRule = { ...todayHoliday, reason: statusReason, isClosed: true };
+            } else {
+                const openUTC = getUTCTimestampForTime(businessTimezone, todayHoliday.open);
+                const closeUTC = getUTCTimestampForTime(businessTimezone, todayHoliday.close);
+                if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) {
+                    currentStatus = 'Open'; // Open during specific holiday hours
+                    activeHoursRule = { ...todayHoliday, reason: statusReason };
+                } else {
+                    currentStatus = 'Closed'; // Closed outside specific holiday hours
+                    activeHoursRule = { ...todayHoliday, reason: statusReason, isEffectivelyClosed: true };
+                }
+            }
+        } else {
+            // 3. Temporary Check (Only if no holiday applies today)
             const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
-            if (activeTemporary) { /* ... as before ... */ statusReason = `Temporary Hours (${activeTemporary.label || 'Ongoing'})`; if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) { currentStatus = 'Closed'; activeHoursRule = { ...activeTemporary, isClosed: true }; } else { const openUTC = getUTCTimestampForTime(businessTimezone, activeTemporary.open); const closeUTC = getUTCTimestampForTime(businessTimezone, activeTemporary.close); if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...activeTemporary }; } else { currentStatus = 'Closed'; activeHoursRule = { ...activeTemporary, isEffectivelyClosed: true }; } } }
-            else {
-                 // 4. Regular Hours Check
+            if (activeTemporary) {
+                statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+                if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
+                    currentStatus = 'Closed'; // Explicitly closed during temp period
+                    activeHoursRule = { ...activeTemporary, reason: statusReason, isClosed: true };
+                } else {
+                    const openUTC = getUTCTimestampForTime(businessTimezone, activeTemporary.open);
+                    const closeUTC = getUTCTimestampForTime(businessTimezone, activeTemporary.close);
+                    if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) {
+                        currentStatus = 'Open'; // Open during specific temporary hours
+                        activeHoursRule = { ...activeTemporary, reason: statusReason };
+                    } else {
+                        // *** MODIFIED LOGIC HERE ***
+                        currentStatus = 'Temporarily Unavailable'; // Use this status when outside temp hours
+                        activeHoursRule = { ...activeTemporary, reason: statusReason, isEffectivelyClosed: true };
+                    }
+                }
+            } else {
+                 // 4. Regular Hours Check (Only if no holiday or temp period applies)
                  statusReason = 'Regular Hours';
                  const todayRegularHours = regularHours[businessDayName];
                  if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
                       const openUTC = getUTCTimestampForTime(businessTimezone, todayRegularHours.open);
                       const closeUTC = getUTCTimestampForTime(businessTimezone, todayRegularHours.close);
-                       if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...todayRegularHours, day: businessDayName }; }
-                       else { currentStatus = 'Closed'; activeHoursRule = { ...todayRegularHours, day: businessDayName, isEffectivelyClosed: true }; }
+                       if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) {
+                          currentStatus = 'Open'; // Open during regular hours
+                          activeHoursRule = { ...todayRegularHours, reason: statusReason, day: businessDayName };
+                      } else {
+                           currentStatus = 'Closed'; // Closed outside regular hours
+                           activeHoursRule = { ...todayRegularHours, reason: statusReason, day: businessDayName, isEffectivelyClosed: true };
+                      }
                  } else {
-                     currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: businessDayName, isClosed: true };
+                     currentStatus = 'Closed'; // Closed if regular day is marked closed
+                     activeHoursRule = { ...(todayRegularHours || {}), reason: statusReason, day: businessDayName, isClosed: true };
                  }
             }
         }
@@ -843,14 +886,15 @@ function calculateAndDisplayStatusConverted(businessData) {
     // --- Display Status ---
     let statusClass = 'status-closed';
     if (currentStatus === 'Open') statusClass = 'status-open';
-    else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
+    else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable'; // Use CSS for this class
     if (businessStatusDisplay) {
          businessStatusDisplay.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
     }
 
-    // --- Format and Display Hours List ---
+    // --- Format and Display Hours List --- (This part remains the same)
      const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
      const visitorLocalDayIndex = visitorNow.getDay();
+     displayHoursListHtml = '<ul>'; // Reset HTML string
      displayOrder.forEach(day => {
          const dayData = regularHours[day];
          const isCurrentDayForVisitor = day === ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][visitorLocalDayIndex];
