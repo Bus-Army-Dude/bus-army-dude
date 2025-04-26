@@ -69,6 +69,16 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// ===== START: Business Info Display Constants =====
+// (Ensure these IDs exist in your index.html)
+const contactEmailDisplay = document.getElementById('contact-email-display');
+const businessHoursDisplay = document.getElementById('business-hours-display');
+const businessStatusDisplay = document.getElementById('business-status-display');
+
+// Define the assumed timezone for stored hours in Firestore
+const assumedBusinessTimezone = 'America/New_York';
+// ===== END: Business Info Display Constants =====
+
 // --- Functions to Render Cards (Shoutouts, Tech, FAQs) ---
 function renderTikTokCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
