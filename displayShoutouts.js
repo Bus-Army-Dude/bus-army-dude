@@ -606,255 +606,102 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
 // ===== START: BUSINESS INFO DISPLAY FUNCTIONS =========
 // ======================================================
 
-// --- Element References (Ensure these IDs exist in index.html) ---
-const contactEmailDisplay = document.getElementById('contact-email-display');
-const businessHoursDisplay = document.getElementById('business-hours-display');
-const businessStatusDisplay = document.getElementById('business-status-display');
-
-// Define the assumed timezone for stored hours
-const assumedBusinessTimezone = 'America/New_York';
-
-// Helper function to format time (e.g., 14:30 -> 2:30 PM) for visitor display
-function formatDisplayTime(timeString, targetTimezone) {
+/**
+ * Formats a time string (HH:MM assumed to be in business timezone) into the visitor's local time format.
+ * @param {string} timeString - The HH:MM time string (e.g., "09:00", "17:30").
+ * @param {string} businessTimezone - The IANA timezone name of the business (e.g., "America/New_York").
+ * @param {string} visitorTimezone - The detected IANA timezone name of the visitor.
+ * @returns {string} Formatted time string (e.g., "9:00 AM") or original with TZ on error.
+ */
+function formatDisplayTime(timeString, businessTimezone, visitorTimezone) {
+    // --- Function code provided in the previous response ---
+    // (Ensure this function definition is included)
     if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '';
     try {
         const refDateStr = new Date().toLocaleDateString('en-CA'); // Get YYYY-MM-DD
         const dateTimeStr = `${refDateStr}T${timeString}:00`;
-
-        const formatterET = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+        const formatterET = new Intl.DateTimeFormat('en-US', { timeZone: businessTimezone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
         const partsET = formatterET.formatToParts(new Date(dateTimeStr)).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {});
-
-        if (isNaN(partsET.year) || isNaN(partsET.month) || isNaN(partsET.day) || isNaN(partsET.hour) || isNaN(partsET.minute) || isNaN(partsET.second)) {
-            throw new Error("Invalid date/time parts obtained from ET time.");
-        }
+        if (isNaN(partsET.year) || isNaN(partsET.month) || isNaN(partsET.day) || isNaN(partsET.hour) || isNaN(partsET.minute) || isNaN(partsET.second)) { throw new Error("Invalid date/time parts."); }
         const utcTimestamp = Date.UTC(partsET.year, partsET.month - 1, partsET.day, partsET.hour, partsET.minute, partsET.second);
-
-        if (isNaN(utcTimestamp)) { throw new Error("Could not get valid UTC timestamp from ET time."); }
-
-        const formatterLocal = new Intl.DateTimeFormat('en-US', {
-            timeZone: targetTimezone,
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-
+        if (isNaN(utcTimestamp)) { throw new Error("Could not get valid UTC timestamp."); }
+        const formatterLocal = new Intl.DateTimeFormat('en-US', { timeZone: visitorTimezone, hour: 'numeric', minute: '2-digit', hour12: true });
         return formatterLocal.format(new Date(utcTimestamp));
-
     } catch (e) {
-        console.error(`Error formatting display time '${timeString}' for timezone '${targetTimezone}':`, e);
-        return timeString + " ET"; // Fallback on error
+        console.error(`Error formatting display time '${timeString}' for visitor TZ '${visitorTimezone}':`, e);
+        return timeString + " ET"; // Fallback
     }
 }
 
-// Fetches and displays business info
+
+/**
+ * Fetches and displays business info (Contact, Status, Hours).
+ */
 async function displayBusinessInfo() {
-    if (!contactEmailDisplay || !businessHoursDisplay || !businessStatusDisplay) {
-         console.warn("One or more business info display elements are missing from index.html.");
-         // Optionally hide the whole section if elements are missing
-         const section = document.querySelector('.business-info-section');
-         if(section) section.style.display = 'none';
-         return;
-    }
-    if (!firebaseAppInitialized || !db) {
-        console.error("Business Info Display Error: Firebase not ready.");
-        if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error (DB)';
-        return;
-    }
-    if (!businessDocRef) { // Check if the reference itself was initialized
-        console.error("Business Info Display Error: Document reference missing.");
-         if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error (Config)';
-         return;
-    }
+    // --- Function code provided in the previous response ---
+    // (Ensure this function definition is included)
+     if (!contactEmailDisplay || !businessHoursDisplay || !businessStatusDisplay) { console.warn("Business info display elements missing."); const section = document.querySelector('.business-info-section'); if(section) section.style.display = 'none'; return; }
+     if (!firebaseAppInitialized || !db) { console.error("Business Info Display Error: Firebase not ready."); if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error (DB)'; return; }
+     if (!businessDocRef) { console.error("Business Info Display Error: Document reference missing."); if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error (Config)'; return; } // Added check for ref
 
-    try {
-        const docSnap = await getDoc(businessDocRef);
-
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            console.log("Fetched business info for display (assuming ET):", data);
-
-            // Display Contact Email
-            if (data.contactEmail) {
-                contactEmailDisplay.innerHTML = `Contact: <a href="mailto:${data.contactEmail}">${data.contactEmail}</a>`;
-            } else {
-                 contactEmailDisplay.innerHTML = ''; // Clear if no email
-            }
-
-            // Calculate and Display Status & Hours
-            calculateAndDisplayStatusConverted(data); // Use the conversion function
-
-        } else {
-            console.log("Business info document ('site_config/businessDetails') not found.");
+     try {
+         const docSnap = await getDoc(businessDocRef); // businessDocRef should be defined globally where db is initialized
+         if (docSnap.exists()) {
+             const data = docSnap.data();
+             console.log("Fetched business info for display (assuming ET):", data);
+             if (data.contactEmail) { contactEmailDisplay.innerHTML = `Contact: <a href="mailto:${data.contactEmail}">${data.contactEmail}</a>`; } else { contactEmailDisplay.innerHTML = ''; }
+             calculateAndDisplayStatusConverted(data);
+         } else {
+             console.log("Business info document ('site_config/businessDetails') not found.");
              if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: N/A';
              if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Business hours not available.</p>';
              if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
-             // Optionally hide the whole section if no data found
-              const section = document.querySelector('.business-info-section');
-              if(section) section.style.display = 'none';
-        }
-    } catch (error) {
-        console.error("Error fetching/displaying business info:", error);
-        if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error';
-        if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Error loading hours.</p>';
-        if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
-    }
+             const section = document.querySelector('.business-info-section'); if(section) section.style.display = 'none';
+         }
+     } catch (error) {
+         console.error("Error fetching/displaying business info:", error);
+         if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error';
+         if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Error loading hours.</p>';
+         if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
+     }
 }
 
-// Calculates status and displays hours converted to visitor's timezone
+/**
+ * Calculates Open/Closed status and displays hours converted to visitor's timezone.
+ * @param {object} businessData - The fetched data from Firestore.
+ */
 function calculateAndDisplayStatusConverted(businessData) {
-    const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
-    let currentStatus = 'Closed'; // Default
-    let statusReason = 'Regular Hours';
-    let displayHoursListHtml = '<ul>'; // Start building HTML for hours list
+    // --- Function code provided in the previous response ---
+    // (Ensure this function definition is included, including the nested getUTCTimestampForETTime / getSpecificETDateTimeObject helpers)
+     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
+     let currentStatus = 'Closed'; let statusReason = 'Regular Hours'; let displayHoursListHtml = '<ul>';
+     const visitorNow = new Date(); let visitorTimezone;
+     try { visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone; if (!visitorTimezone) throw new Error("TZ detection failed."); } catch (e) { console.error("TZ Error:", e); if(businessStatusDisplay) businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Unavailable (TZ Error)</span>'; if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Could not determine local time.</p>'; return; }
+     const visitorTimestamp = visitorNow.getTime();
+     let nowInBusinessTZ; try { nowInBusinessTZ = new Date(visitorNow.toLocaleString('en-US', { timeZone: assumedBusinessTimezone })); } catch (e) { console.error("Cannot get time in Biz TZ", e); if(businessStatusDisplay) businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Error (TZ Calc)</span>'; if(businessHoursDisplay) businessHoursDisplay.innerHTML = ''; return; }
+     const businessDateStr = nowInBusinessTZ.toLocaleDateString('en-CA'); const businessDayIndex = nowInBusinessTZ.getDay(); const businessDayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][businessDayIndex];
+     console.log(`Visitor Now: ${visitorNow.toLocaleString()}, Visitor TZ: ${visitorTimezone}`); console.log(`Business Now: ${nowInBusinessTZ.toLocaleString()}, Business Date: ${businessDateStr}, Business Day: ${businessDayName}`);
 
-    // --- Visitor's Date/Time Handling ---
-    const visitorNow = new Date();
-    let visitorTimezone;
-    try {
-        visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        if (!visitorTimezone) throw new Error("Timezone detection returned undefined/null.");
-    } catch (e) {
-        console.error("Could not detect/use visitor timezone:", e);
-        businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Unavailable (Timezone Error)</span>';
-        businessHoursDisplay.innerHTML = '<p>Could not determine local time.</p>';
-        return;
-    }
-
-    const visitorDayIndex = visitorNow.getDay();
-    const visitorDayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][visitorDayIndex];
-    const visitorDateStr = visitorNow.toLocaleDateString('en-CA'); // YYYY-MM-DD in local
-    const visitorTimestamp = visitorNow.getTime();
-
-    console.log(`Visitor Time: ${visitorNow.toLocaleString()}, Timezone: ${visitorTimezone}, DateStr: ${visitorDateStr}`);
-
-    // Helper to get UTC timestamp for a given ET time on a specific date
-     function getUTCTimestampForETTime(dateStr, timeStr) { // Renamed from getUTCRange...
-        if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return null;
-        try {
-            const dateTimeStr = `${dateStr}T${timeStr}:00`;
-            const formatter = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
-            const parts = formatter.formatToParts(new Date(dateTimeStr)).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {});
-             if (isNaN(parts.year) || isNaN(parts.month) || isNaN(parts.day) || isNaN(parts.hour) || isNaN(parts.minute) || isNaN(parts.second)) {
-                 throw new Error("Invalid date/time parts obtained.");
-             }
-            const utcTimestamp = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
-            if (isNaN(utcTimestamp)) return null;
-            return utcTimestamp;
-        } catch (e) {
-            console.error(`Error converting ET time ${timeStr} on ${dateStr} to UTC:`, e);
-            return null;
-        }
-    }
-
-    // --- Determine Applicable Hours & Status ---
-    let activeHoursRule = null;
-
-    // 1. Check Manual Override
-    if (statusOverride !== 'auto') {
-        currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
-        statusReason = 'Manual Override';
-        activeHoursRule = { reason: statusReason };
-    } else {
-        // 2. Check Holidays for today
-        const todayHoliday = holidayHours.find(h => h.date === visitorDateStr);
-        if (todayHoliday) {
-            statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
-            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) {
-                currentStatus = 'Closed';
-                activeHoursRule = { ...todayHoliday, reason: statusReason, isClosed: true };
-            } else {
-                const openTimestampUTC = getUTCTimestampForETTime(visitorDateStr, todayHoliday.open);
-                const closeTimestampUTC = getUTCTimestampForETTime(visitorDateStr, todayHoliday.close);
-                if (openTimestampUTC !== null && closeTimestampUTC !== null && visitorTimestamp >= openTimestampUTC && visitorTimestamp < closeTimestampUTC) {
-                    currentStatus = 'Open';
-                    activeHoursRule = { ...todayHoliday, reason: statusReason };
-                } else {
-                    currentStatus = 'Closed';
-                    activeHoursRule = { ...todayHoliday, reason: statusReason, isEffectivelyClosed: true };
-                }
-            }
-        } else {
-            // 3. Check Temporary Hours covering today
-            const activeTemporary = temporaryHours.find(t => visitorDateStr >= t.startDate && visitorDateStr <= t.endDate);
-            if (activeTemporary) {
-                statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate} to ${activeTemporary.endDate}`})`;
-                if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
-                    currentStatus = 'Closed';
-                    activeHoursRule = { ...activeTemporary, reason: statusReason, isClosed: true };
-                } else {
-                     const openTimestampUTC = getUTCTimestampForETTime(visitorDateStr, activeTemporary.open);
-                     const closeTimestampUTC = getUTCTimestampForETTime(visitorDateStr, activeTemporary.close);
-                      if (openTimestampUTC !== null && closeTimestampUTC !== null && visitorTimestamp >= openTimestampUTC && visitorTimestamp < closeTimestampUTC) {
-                         currentStatus = 'Open';
-                         activeHoursRule = { ...activeTemporary, reason: statusReason };
-                     } else {
-                        currentStatus = 'Closed';
-                         activeHoursRule = { ...activeTemporary, reason: statusReason, isEffectivelyClosed: true };
-                     }
-                }
-            } else {
-                 // 4. Use Regular Hours
-                 statusReason = 'Regular Hours';
-                 const approxETDateStr = visitorDateStr; // Still an approximation for date
-                 const todayRegularHours = regularHours[visitorDayName];
-
-                 if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
-                      const openTimestampUTC = getUTCTimestampForETTime(approxETDateStr, todayRegularHours.open);
-                      const closeTimestampUTC = getUTCTimestampForETTime(approxETDateStr, todayRegularHours.close);
-                       if (openTimestampUTC !== null && closeTimestampUTC !== null && visitorTimestamp >= openTimestampUTC && visitorTimestamp < closeTimestampUTC) {
-                          currentStatus = 'Open';
-                          activeHoursRule = { ...todayRegularHours, reason: statusReason, day: visitorDayName };
-                      } else {
-                           currentStatus = 'Closed';
-                           activeHoursRule = { ...todayRegularHours, reason: statusReason, day: visitorDayName, isEffectivelyClosed: true };
-                      }
-                 } else {
-                     currentStatus = 'Closed';
-                     activeHoursRule = { ...(todayRegularHours || {}), reason: statusReason, day: visitorDayName, isClosed: true };
-                 }
-            }
-        }
-    }
-
-    // --- Display Status ---
-    let statusClass = 'status-closed';
-    if (currentStatus === 'Open') statusClass = 'status-open';
-    else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
-    // Ensure status element exists before updating
-    if (businessStatusDisplay) {
-         businessStatusDisplay.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
-    }
-
-    // --- Format and Display Hours List ---
-     const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-     displayOrder.forEach(day => {
-         const dayData = regularHours[day];
-         const isCurrentDay = day === visitorDayName;
-         const highlightClass = isCurrentDay ? 'current-day' : ''; // Ensure CSS uses .current-day
-
-         displayHoursListHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `;
-
-         if (dayData && !dayData.isClosed && dayData.open && dayData.close) {
-            const openLocalStr = formatDisplayTime(dayData.open, visitorTimezone);
-            const closeLocalStr = formatDisplayTime(dayData.close, visitorTimezone);
-             if (openLocalStr.includes('ET') || closeLocalStr.includes('ET')) {
-                  displayHoursListHtml += `<span>${formatTimeForPreview(dayData.open)} - ${formatTimeForPreview(dayData.close)} ET (Timezone Error)</span>`;
-             } else {
-                  displayHoursListHtml += `<span>${openLocalStr} - ${closeLocalStr}</span>`;
-             }
-         } else {
-             displayHoursListHtml += `<span>Closed</span>`;
-         }
-         displayHoursListHtml += `</li>`;
-     });
-     displayHoursListHtml += '</ul>';
-     // Add visitor's detected timezone info
-      displayHoursListHtml += `<p style="font-size: 0.8em; margin-top: 10px; text-align: center; color: var(--secondary-text);">Hours displayed in your detected timezone: ${visitorTimezone.replace('_', ' ')}</p>`;
-
-     // Ensure hours element exists before updating
-      if (businessHoursDisplay) {
-           businessHoursDisplay.innerHTML = displayHoursListHtml;
+      function getUTCTimestampForETTime(dateStr, timeStr) { /* ... include the helper from previous response ... */
+            if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return null; try { const dateTimeStr = `${dateStr}T${timeStr}:00`; const formatter = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false }); const parts = formatter.formatToParts(new Date(dateTimeStr)).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {}); if (isNaN(parts.year) || isNaN(parts.month) || isNaN(parts.day) || isNaN(parts.hour) || isNaN(parts.minute) || isNaN(parts.second)) { throw new Error("Invalid date/time parts obtained."); } const utcTimestamp = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second); if (isNaN(utcTimestamp)) return null; return utcTimestamp; } catch (e) { console.error(`Error converting ET time ${timeStr} on ${dateStr} to UTC:`, e); return null; }
       }
+      function getSpecificETDateTimeObject(dateStr, timeStr) { /* ... include the helper from previous response ... */
+            if (!timeStr || !timeStr.includes(':') || !dateStr) return null; try { const isoStr = `${dateStr}T${timeStr}:00`; const formatter = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false }); const parts = formatter.formatToParts(new Date(isoStr)).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {}); if (isNaN(parts.year) || isNaN(parts.month) || isNaN(parts.day) || isNaN(parts.hour) || isNaN(parts.minute) || isNaN(parts.second)) { throw new Error("Invalid date/time parts from Intl."); } return Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second); } catch (e) { console.error(`Error creating specific ET Date object for time ${timeStr} on ${dateStr}:`, e); return null; }
+      }
+
+     let activeHoursRule = null;
+     if (statusOverride !== 'auto') { currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable'); statusReason = 'Manual Override'; activeHoursRule = { reason: statusReason }; }
+     else { const todayHoliday = holidayHours.find(h => h.date === businessDateStr); if (todayHoliday) { statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`; if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; activeHoursRule = { ...todayHoliday, reason: statusReason, isClosed: true }; } else { const openUTC = getSpecificETDateTimeObject(businessDateStr, todayHoliday.open); const closeUTC = getSpecificETDateTimeObject(businessDateStr, todayHoliday.close); if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...todayHoliday, reason: statusReason }; } else { currentStatus = 'Closed'; activeHoursRule = { ...todayHoliday, reason: statusReason, isEffectivelyClosed: true }; } } }
+     else { const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate); if (activeTemporary) { statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate} to ${activeTemporary.endDate}`})`; if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) { currentStatus = 'Closed'; activeHoursRule = { ...activeTemporary, reason: statusReason, isClosed: true }; } else { const openUTC = getSpecificETDateTimeObject(businessDateStr, activeTemporary.open); const closeUTC = getSpecificETDateTimeObject(businessDateStr, activeTemporary.close); if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...activeTemporary, reason: statusReason }; } else { currentStatus = 'Closed'; activeHoursRule = { ...activeTemporary, reason: statusReason, isEffectivelyClosed: true }; } } }
+     else { statusReason = 'Regular Hours'; const todayRegularHours = regularHours[businessDayName]; if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) { const openUTC = getUTCTimestampForETTime(businessDateStr, todayRegularHours.open); const closeUTC = getUTCTimestampForETTime(businessDateStr, todayRegularHours.close); if (openUTC !== null && closeUTC !== null && visitorTimestamp >= openUTC && visitorTimestamp < closeUTC) { currentStatus = 'Open'; activeHoursRule = { ...todayRegularHours, reason: statusReason, day: businessDayName }; } else { currentStatus = 'Closed'; activeHoursRule = { ...todayRegularHours, reason: statusReason, day: businessDayName, isEffectivelyClosed: true }; } }
+     else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), reason: statusReason, day: businessDayName, isClosed: true }; } } } }
+
+     let statusClass = 'status-closed'; if (currentStatus === 'Open') statusClass = 'status-open'; else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable'; if (businessStatusDisplay) { businessStatusDisplay.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`; }
+
+     const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']; const visitorLocalDayIndex = visitorNow.getDay();
+     displayOrder.forEach(day => { const dayData = regularHours[day]; const isCurrentDayForVisitor = day === ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][visitorLocalDayIndex]; const highlightClass = isCurrentDayForVisitor ? 'current-day' : ''; displayHoursListHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `; if (dayData && !dayData.isClosed && dayData.open && dayData.close) { const openLocalStr = formatDisplayTime(dayData.open, assumedBusinessTimezone, visitorTimezone); const closeLocalStr = formatDisplayTime(dayData.close, assumedBusinessTimezone, visitorTimezone); if (openLocalStr.includes('ET') || closeLocalStr.includes('ET')) { displayHoursListHtml += `<span>${formatDisplayTime(dayData.open, assumedBusinessTimezone, 'UTC')} - ${formatDisplayTime(dayData.close, assumedBusinessTimezone, 'UTC')} ET (Conversion Error)</span>`; } else { displayHoursListHtml += `<span>${openLocalStr} - ${closeLocalStr}</span>`; } } else { displayHoursListHtml += `<span>Closed</span>`; } displayHoursListHtml += `</li>`; });
+     displayHoursListHtml += '</ul>'; displayHoursListHtml += `<p style="font-size: 0.8em; margin-top: 10px; text-align: center; color: var(--secondary-text);">Hours displayed in your detected timezone: ${visitorTimezone.replace('_', ' ')}</p>`;
+     if (businessHoursDisplay) { businessHoursDisplay.innerHTML = displayHoursListHtml; }
 }
 
 // ======================================================
