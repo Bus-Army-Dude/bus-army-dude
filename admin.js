@@ -779,10 +779,6 @@ function showBusinessInfoStatus(message, isError = false) {
     setTimeout(() => { if (businessInfoStatusMessage && businessInfoStatusMessage.textContent === message) { businessInfoStatusMessage.textContent = ''; businessInfoStatusMessage.className = 'status-message'; } }, 5000);
 }
 
-function capitalizeFirstLetter(string) { // Ensure this exists or add it
-  if (!string) return ''; return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function formatTimeForPreview(timeString) { // Ensure this exists or add it
     if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return ''; try { const [hour, minute] = timeString.split(':'); const hourNum = parseInt(hour, 10); if (isNaN(hourNum)) return timeString; const ampm = hourNum >= 12 ? 'PM' : 'AM'; const hour12 = hourNum % 12 || 12; return `${hour12}:${minute} ${ampm}`; } catch (e) { return timeString; }
 }
