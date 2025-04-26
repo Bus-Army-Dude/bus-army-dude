@@ -508,64 +508,70 @@ if (searchInputDisabilities) {
          console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
       }
     }
-// --- MODIFIED: renderAdminListItem Function (Includes Direct Link) ---
-    // This function creates the HTML for a single item in the admin shoutout list
-    function renderAdminListItem(container, docId, platform, username, nickname, order, deleteHandler, editHandler) { //
-        // The 'isEnabled' status will be passed here later when implementing that feature
-        if (!container) { console.warn("List container not found for platform:", platform); return; } //
+/** Renders a single shoutout item in the admin list, including follower/subscriber count */
+function renderAdminListItem(container, docId, platform, itemData, deleteHandler, editHandler) {
+    if (!container) { console.warn("List container not found for platform:", platform); return; }
 
-        const itemDiv = document.createElement('div'); //
-        itemDiv.className = 'list-item-admin'; // Base class
-        itemDiv.setAttribute('data-id', docId); //
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'list-item-admin';
+    itemDiv.setAttribute('data-id', docId);
 
-        // Placeholder comment: Add 'disabled-item' class later based on the 'isEnabled' field
-        // Example: if (isEnabled === false) itemDiv.classList.add('disabled-item');
+    // Extract details safely
+    const nickname = itemData.nickname || 'N/A';
+    const username = itemData.username || 'N/A';
+    const order = itemData.order ?? 'N/A';
+    let countText = ''; // Text for follower/subscriber count
 
-        // Construct direct link URL based on platform
-        let directLinkUrl = '#'; // Default placeholder
-        let safeUsername = username || ''; // Ensure username is not null/undefined
-
-        if (platform === 'tiktok' && safeUsername) { //
-            directLinkUrl = `https://tiktok.com/@${encodeURIComponent(safeUsername)}`; //
-        } else if (platform === 'instagram' && safeUsername) { //
-            directLinkUrl = `https://instagram.com/${encodeURIComponent(safeUsername)}`; //
-        } else if (platform === 'youtube' && safeUsername) { //
-            // Construct YouTube URL (ensure 'username' is the handle like '@MrBeast')
-            let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`; //
-             // Assuming standard youtube.com/@handle format is desired for handles:
-             directLinkUrl = `https://youtube.com/${encodeURIComponent(youtubeHandle)}`; //
-        }
-
-        // Build inner HTML - Structure includes item details and action buttons
-        // NOTE: A checkbox for bulk actions will be added here later
-        // NOTE: An indicator for enabled/disabled status will be added later
-        itemDiv.innerHTML = `
-            <div class="item-content">
-                 <div class="item-details">
-                    <strong>${nickname || 'N/A'}</strong>
-                    <span>(@${username || 'N/A'})</span>
-                    <small>Order: ${order ?? 'N/A'}</small>
-                 </div>
-            </div>
-            <div class="item-actions">
-                <a href="${directLinkUrl}" target="_blank" rel="noopener noreferrer" class="direct-link small-button" title="Visit Profile/Channel">
-                    <i class="fas fa-external-link-alt"></i> Visit
-                </a>
-                <button type="button" class="edit-button small-button">Edit</button>
-                <button type="button" class="delete-button small-button">Delete</button>
-            </div>`; //
-
-        // Add event listeners for Edit and Delete buttons
-        const editButton = itemDiv.querySelector('.edit-button'); //
-        if (editButton) editButton.addEventListener('click', () => editHandler(docId, platform)); //
-
-        const deleteButton = itemDiv.querySelector('.delete-button'); //
-        if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, platform, itemDiv)); //
-
-        // Add the completed item to the list container
-        container.appendChild(itemDiv); //
+    // Determine count text based on platform
+    if (platform === 'youtube') {
+        const subscribers = itemData.subscribers || 'N/A';
+        countText = `Subs: ${subscribers}`;
+    } else if (platform === 'tiktok' || platform === 'instagram') {
+        const followers = itemData.followers || 'N/A';
+        countText = `Followers: ${followers}`;
     }
-    // --- END MODIFIED: renderAdminListItem Function ---
+
+    // Construct direct link URL based on platform
+    let directLinkUrl = '#'; // Default placeholder
+    let safeUsername = username || ''; // Ensure username is not null/undefined
+
+    if (platform === 'tiktok' && safeUsername) {
+        directLinkUrl = `https://tiktok.com/@${encodeURIComponent(safeUsername)}`;
+    } else if (platform === 'instagram' && safeUsername) {
+        directLinkUrl = `https://instagram.com/${encodeURIComponent(safeUsername)}`;
+    } else if (platform === 'youtube' && safeUsername) {
+        // Corrected YouTube URL logic
+        let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`;
+        directLinkUrl = `https://www.youtube.com/${encodeURIComponent(youtubeHandle)}`; // Standard YT URL
+    }
+
+    // Build inner HTML - Added countText next to Order
+    itemDiv.innerHTML = `
+        <div class="item-content">
+            <div class="item-details">
+                <strong>${nickname}</strong>
+                <span>(@${username})</span>
+                <small>Order: ${order} | ${countText}</small> 
+            </div>
+        </div>
+        <div class="item-actions">
+            <a href="${directLinkUrl}" target="_blank" rel="noopener noreferrer" class="direct-link small-button" title="Visit Profile/Channel">
+                <i class="fas fa-external-link-alt"></i> Visit
+            </a>
+            <button type="button" class="edit-button small-button">Edit</button>
+            <button type="button" class="delete-button small-button">Delete</button>
+        </div>`;
+
+    // Add event listeners for Edit and Delete buttons
+    const editButton = itemDiv.querySelector('.edit-button');
+    if (editButton) editButton.addEventListener('click', () => editHandler(docId, platform)); // Pass docId and platform
+
+    const deleteButton = itemDiv.querySelector('.delete-button');
+    if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, platform, itemDiv)); // Pass docId, platform, and element
+
+    // Add the completed item to the list container
+    container.appendChild(itemDiv);
+}
 
 // --- Copied Shoutout Card Rendering Functions (from displayShoutouts.js) ---
     // NOTE: Ensure image paths ('check.png', 'images/default-profile.jpg') are accessible
@@ -743,79 +749,60 @@ function renderYouTubeCard(account) { //
     }
     // *** END updateShoutoutPreview FUNCTION ***
 
-// *** FUNCTION: Displays Filtered Shoutouts (for Search Bar) ***
-    // This function takes the platform name, filters the globally stored list,
-    // and renders only the matching items based on search input.
-    function displayFilteredShoutouts(platform) { //
-        // Get the correct list container, count element, and search input for the given platform
-        const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`); //
-        const countElement = document.getElementById(`${platform}-count`); //
-        const searchInput = document.getElementById(`search-${platform}`); // Get the specific search input
+/** Filters and displays shoutouts in the admin list */
+function displayFilteredShoutouts(platform) {
+    const listContainer = document.getElementById(`shoutouts-${platform}-list-admin`);
+    const countElement = document.getElementById(`${platform}-count`);
+    const searchInput = document.getElementById(`search-${platform}`);
 
-        // Safety checks for required elements and data
-        if (!listContainer || !searchInput || !allShoutouts || !allShoutouts[platform]) { //
-            console.error(`Missing elements or data for filtering platform: ${platform}.`); //
-            console.log(`DEBUG: displayFilteredShoutouts clearing list for ${platform} at ${new Date().toLocaleTimeString()}`); // <-- ADD THIS LINE
-            if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list (elements/data missing).</p>`; //
-            return; //
-        }
+    if (!listContainer || !searchInput || !allShoutouts || !allShoutouts[platform]) {
+        console.error(`Missing elements or data for filtering platform: ${platform}.`);
+        if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying filtered list.</p>`;
+        return;
+    }
 
-        const searchTerm = searchInput.value.trim().toLowerCase(); // Get current search term, lowercase
-        const fullList = allShoutouts[platform]; // Get the full list stored earlier for this platform
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const fullList = allShoutouts[platform];
 
-        // Filter the full list based on the search term
-        const filteredList = fullList.filter(account => { //
-            // Check if search term is empty (show all) or if it matches nickname or username
-            if (!searchTerm) { //
-                return true; // Show all if search is empty
+    const filteredList = fullList.filter(account => {
+        if (!searchTerm) return true;
+        const nickname = (account.nickname || '').toLowerCase();
+        const username = (account.username || '').toLowerCase();
+        return nickname.includes(searchTerm) || username.includes(searchTerm);
+    });
+
+    listContainer.innerHTML = ''; // Clear the current list
+
+    if (filteredList.length > 0) {
+        filteredList.forEach(account => {
+            if (typeof renderAdminListItem === 'function') {
+                // *** CHANGE HERE: Pass the whole 'account' object as itemData ***
+                renderAdminListItem(
+                    listContainer,
+                    account.id,     // Document ID
+                    platform,       // Platform name
+                    account,        // <<< Pass the full account data object
+                    handleDeleteShoutout, // Pass delete handler
+                    openEditModal       // Pass edit handler
+                );
+            } else {
+                console.error("renderAdminListItem function is not defined during filtering!");
+                listContainer.innerHTML = `<p class="error">Critical Error: Rendering function missing.</p>`;
+                return; // Stop rendering this list
             }
-            // Ensure properties exist before calling toLowerCase
-            const nickname = (account.nickname || '').toLowerCase(); //
-            const username = (account.username || '').toLowerCase(); //
-            return nickname.includes(searchTerm) || username.includes(searchTerm); //
         });
-
-        // Clear the current list display before rendering filtered items
-        listContainer.innerHTML = ''; //
-
-        // Render the filtered items by calling renderAdminListItem for each
-        if (filteredList.length > 0) { //
-            filteredList.forEach(account => { //
-                // Ensure renderAdminListItem exists before calling
-                if (typeof renderAdminListItem === 'function') { //
-                    renderAdminListItem( //
-                        listContainer, //
-                        account.id, // Pass the document ID
-                        platform, //
-                        account.username, // Pass username
-                        account.nickname, // Pass nickname
-                        account.order,    // Pass order
-                        // account.isEnabled, // Pass status later if needed for styling disabled items
-                        handleDeleteShoutout, // Pass delete handler
-                        openEditModal         // Pass edit handler
-                    );
-                } else { //
-                     console.error("renderAdminListItem function is not defined during filtering!"); //
-                     // Avoid infinite loop if render fails
-                     listContainer.innerHTML = `<p class="error">Critical Error: Rendering function missing.</p>`; //
-                     return; // Stop rendering this list
-                }
-            });
-        } else { //
-            // Display appropriate 'not found' message
-            if (searchTerm) { // If search term exists but no results
-                listContainer.innerHTML = `<p>No shoutouts found matching "${searchInput.value}".</p>`; //
-            } else { // If no search term and list was initially empty
-                listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`; //
-            }
-        }
-
-        // Update the count display based on the filtered list length
-        if (countElement) { //
-            countElement.textContent = `(${filteredList.length})`; //
+    } else {
+        if (searchTerm) {
+            listContainer.innerHTML = `<p>No shoutouts found matching "${searchInput.value}".</p>`;
+        } else {
+            listContainer.innerHTML = `<p>No ${platform} shoutouts found.</p>`;
         }
     }
-    // *** END displayFilteredShoutouts FUNCTION ***
+
+    if (countElement) {
+        countElement.textContent = `(${filteredList.length})`;
+    }
+}
 
 // --- CORRECTED (v3): Function to Load Profile Data AND All Countdown Settings ---
 async function loadProfileData() {
