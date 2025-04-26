@@ -760,9 +760,24 @@ function calculateAndDisplayStatusConverted(businessData) {
                 if (activeTemporary.isClosed) {
                     currentStatus = 'Temporarily Unavailable';
                 } else {
-                    currentStatus = 'Open';
+                    // Check if we have valid times
+                    const openMinutes = timeStringToMinutes(activeTemporary.open);
+                    const closeMinutes = timeStringToMinutes(activeTemporary.close);
+                    
+                    if (openMinutes === null || closeMinutes === null) {
+                        currentStatus = 'Temporarily Unavailable';
+                    } else {
+                        // Check if current time is within operating hours
+                        if (currentMinutesInBizTZ >= openMinutes && currentMinutesInBizTZ < closeMinutes) {
+                            currentStatus = 'Open';
+                        } else {
+                            // Outside operating hours during temporary period = Temporarily Unavailable
+                            currentStatus = 'Temporarily Unavailable';
+                        }
+                    }
                 }
                 activeHoursRule = activeTemporary;
+            }
             } else {
                 // Regular hours
                 statusReason = 'Regular Hours';
