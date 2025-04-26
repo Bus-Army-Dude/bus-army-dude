@@ -753,50 +753,50 @@ function calculateAndDisplayStatusConverted(businessData) {
                 activeHoursRule = todayHoliday;
             }
         } else {
-            // Check for temporary hours
-            const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
-            if (activeTemporary) {
-                statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate}–${activeTemporary.endDate}`})`;
-                if (activeTemporary.isClosed) {
+    // Check for temporary hours
+    const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
+        if (activeTemporary) {
+            statusReason = `Temporary Hours (${activeTemporary.label || `${activeTemporary.startDate}–${activeTemporary.endDate}`})`;
+            if (activeTemporary.isClosed) {
+                currentStatus = 'Temporarily Unavailable';
+            } else {
+                const openMinutes = timeStringToMinutes(activeTemporary.open);
+                const closeMinutes = timeStringToMinutes(activeTemporary.close);
+                
+                if (openMinutes === null || closeMinutes === null || 
+                    currentMinutesInBizTZ < openMinutes || 
+                    currentMinutesInBizTZ >= closeMinutes) {
+                    // Outside hours or invalid times = Temporarily Unavailable
                     currentStatus = 'Temporarily Unavailable';
                 } else {
-                    // Check if we have valid times
-                    const openMinutes = timeStringToMinutes(activeTemporary.open);
-                    const closeMinutes = timeStringToMinutes(activeTemporary.close);
-                    
-                    if (openMinutes === null || closeMinutes === null) {
-                        currentStatus = 'Temporarily Unavailable';
-                    } else {
-                        // Check if current time is within operating hours
-                        if (currentMinutesInBizTZ >= openMinutes && currentMinutesInBizTZ < closeMinutes) {
-                            currentStatus = 'Open';
-                        } else {
-                            // Outside operating hours during temporary period = Temporarily Unavailable
-                            currentStatus = 'Temporarily Unavailable';
-                        }
-                    }
+                    // Within valid hours = Open
+                    currentStatus = 'Open';
                 }
-                activeHoursRule = activeTemporary;
             }
-            } else {
-                // Regular hours
-                statusReason = 'Regular Hours';
-                const todayRegularHours = regularHours[businessDayName];
-                if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
-                    if (
-                        currentMinutesInBizTZ >= timeStringToMinutes(todayRegularHours.open) &&
-                        currentMinutesInBizTZ < timeStringToMinutes(todayRegularHours.close)
-                    ) {
-                        currentStatus = 'Open';
-                        activeHoursRule = todayRegularHours;
-                    } else {
-                        currentStatus = 'Closed';
-                        activeHoursRule = todayRegularHours;
-                    }
+            activeHoursRule = activeTemporary;
+        } else {
+            // Regular hours
+            statusReason = 'Regular Hours';
+            const todayRegularHours = regularHours[businessDayName];
+            if (todayRegularHours && !todayRegularHours.isClosed && 
+                todayRegularHours.open && todayRegularHours.close) {
+                const openMinutes = timeStringToMinutes(todayRegularHours.open);
+                const closeMinutes = timeStringToMinutes(todayRegularHours.close);
+                if (currentMinutesInBizTZ >= openMinutes && 
+                    currentMinutesInBizTZ < closeMinutes) {
+                    currentStatus = 'Open';
+                    activeHoursRule = todayRegularHours;
                 } else {
                     currentStatus = 'Closed';
-                    activeHoursRule = { ...(todayRegularHours || {}), day: businessDayName, isClosed: true };
+                    activeHoursRule = todayRegularHours;
                 }
+            } else {
+                currentStatus = 'Closed';
+                activeHoursRule = { 
+                    ...(todayRegularHours || {}), 
+                    day: businessDayName, 
+                    isClosed: true 
+                };
             }
         }
     }
