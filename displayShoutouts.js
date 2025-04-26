@@ -609,8 +609,10 @@ const businessStatusDisplay = document.getElementById('business-status-display')
 const assumedBusinessTimezone = 'America/New_York';
 
 // --- Helper Functions ---
-// Ensure capitalizeFirstLetter exists ONCE in this file
-// function capitalizeFirstLetter(string) { if (!string) return ''; return string.charAt(0).toUpperCase() + string.slice(1); }
+function capitalizeFirstLetter(string) {
+  if (!string) return '';
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 // Helper to convert "HH:MM" to minutes since midnight
 function timeStringToMinutes(timeStr) {
