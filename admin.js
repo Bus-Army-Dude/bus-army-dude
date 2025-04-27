@@ -765,8 +765,7 @@ function renderYouTubeCard(account) {
 
 // --- Business Info Constants & References ---
 const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']; // Use simple name
-const businessDocRef = doc(db, "site_config", "businessDetails");
-
+    
 // --- Business Info Helper Functions ---
 function showBusinessInfoStatus(message, isError = false) {
     const el = document.getElementById('business-info-status-message'); if (!el) {console.warn("Business info status message element not found!"); return;} el.textContent = message; el.className = `status-message ${isError ? 'error' : 'success'}`; el.style.display='block'; setTimeout(() => { if (el && el.textContent === message) { el.textContent = ''; el.className = 'status-message'; el.style.display='none';} }, 5000);
