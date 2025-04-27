@@ -2025,22 +2025,41 @@ footer {
   }
 }
 
-/* Default focus outline style */
-:focus {
-    /* Use a clear outline - adjust color/style as needed */
-    outline: 2px solid #A020F0;
-    outline-offset: 2px; /* Optional: adds space between element and outline */
+/* Focus Outline Styles */
+*:focus {
+    outline: none; /* Remove default focus outlines */
 }
 
-/* If the 'focus-outline-disabled' class is added to the body, remove the outline */
-body.focus-outline-disabled :focus {
-    outline: none !important; /* Remove outline when disabled. !important can help override conflicts. */
+/* Only show focus outlines when enabled (body doesn't have focus-outline-disabled class) */
+body:not(.focus-outline-disabled) *:focus {
+    outline: 2px solid var(--accent-color); /* Use theme accent color instead of purple */
+    outline-offset: 2px;
 }
 
-/* --- Hides the Focus Outline setting control on smaller screens --- */
-@media (max-width: 1024px) { /* Adjust breakpoint (1024px = typical tablet/large phone cutoff) */
+/* Remove default webkit tap highlight */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Special focus styles for interactive elements */
+body:not(.focus-outline-disabled) button:focus,
+body:not(.focus-outline-disabled) a:focus,
+body:not(.focus-outline-disabled) input:focus,
+body:not(.focus-outline-disabled) select:focus,
+body:not(.focus-outline-disabled) textarea:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Focus outline setting card responsive behavior */
+#focus-outline-setting-card {
+    display: block;
+}
+
+@media (max-width: 768px) {
     #focus-outline-setting-card {
-        display: none;
+        /* Don't hide on mobile, just adjust layout */
+        margin-bottom: 1rem;
     }
 }
 
