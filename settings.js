@@ -1,5 +1,4 @@
-// settings.js - Manages client-side display settings using localStorage
-
+// settings.js
 class SettingsManager {
     constructor() {
         this.settings = this.loadSettings();
@@ -11,7 +10,7 @@ class SettingsManager {
         const defaultSettings = {
             darkMode: true,
             textSize: 16,
-            focusOutline: 'disabled',
+            focusOutline: 'disabled'
         };
 
         try {
@@ -47,14 +46,11 @@ class SettingsManager {
             
             textSizeSlider.addEventListener('input', (e) => {
                 const size = parseInt(e.target.value);
-                if (!isNaN(size)) {
-                    this.setTextSize(size);
-                    textSizeValue.textContent = `${size}px`;
-                    this.updateSliderGradient(textSizeSlider);
-                }
+                this.setTextSize(size);
+                textSizeValue.textContent = `${size}px`;
+                this.updateSliderGradient(textSizeSlider);
             });
             
-            // Initial gradient update
             this.updateSliderGradient(textSizeSlider);
         }
 
@@ -80,11 +76,8 @@ class SettingsManager {
 
     updateSliderGradient(slider) {
         if (!slider) return;
-        const min = parseInt(slider.min) || 12;
-        const max = parseInt(slider.max) || 24;
-        const value = parseInt(slider.value) || 16;
-        const percentage = ((value - min) / (max - min)) * 100;
-        slider.style.setProperty('--slider-value', `${percentage}%`);
+        const value = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+        slider.style.setProperty('--slider-value', `${value}%`);
     }
 
     applySettings() {
@@ -101,22 +94,10 @@ class SettingsManager {
     }
 
     setTextSize(size) {
-        const validSize = Math.min(Math.max(parseInt(size) || 16, 12), 24);
-        document.documentElement.style.setProperty('--font-size-base', `${validSize}px`);
-        this.settings.textSize = validSize;
-        this.saveSettings();
-
-        // Update UI elements if they exist
-        const textSizeValue = document.getElementById('textSizeValue');
-        const textSizeSlider = document.getElementById('text-size-slider');
-        
-        if (textSizeValue) {
-            textSizeValue.textContent = `${validSize}px`;
-        }
-        
-        if (textSizeSlider) {
-            textSizeSlider.value = validSize;
-            this.updateSliderGradient(textSizeSlider);
+        if (size >= 12 && size <= 24) {
+            document.documentElement.style.setProperty('--font-size-base', `${size}px`);
+            this.settings.textSize = size;
+            this.saveSettings();
         }
     }
 
@@ -139,14 +120,16 @@ class SettingsManager {
             return;
         }
 
-        // Default values
         const defaults = {
             darkMode: true,
             textSize: 16,
             focusOutline: 'disabled'
         };
 
-        // Update UI elements first
+        // Reset internal settings
+        this.settings = { ...defaults };
+
+        // Update UI elements
         const darkModeToggle = document.getElementById('darkModeToggle');
         const textSizeSlider = document.getElementById('text-size-slider');
         const textSizeValue = document.getElementById('textSizeValue');
@@ -160,16 +143,10 @@ class SettingsManager {
         if (textSizeValue) textSizeValue.textContent = `${defaults.textSize}px`;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaults.focusOutline === 'enabled';
 
-        // Reset internal settings
-        this.settings = { ...defaults };
+        // Apply settings
+        this.applySettings();
 
-        // Apply the changes immediately
-        document.documentElement.style.setProperty('--font-size-base', `${defaults.textSize}px`);
-        document.body.classList.remove('light-mode');
-        document.body.classList.add('dark-mode');
-        document.body.classList.toggle('focus-outline-disabled', defaults.focusOutline === 'disabled');
-
-        // Clear and save
+        // Save settings
         localStorage.removeItem('websiteSettings');
         this.saveSettings();
 
@@ -177,25 +154,9 @@ class SettingsManager {
     }
 }
 
-// Initialize settings manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     const settingsPageMarker = document.getElementById('settings-page-identifier');
     if (settingsPageMarker) {
         window.settingsManager = new SettingsManager();
-    }
-});
-
-// Cookie consent logic
-function acceptCookies() {
-    document.cookie = "cookieConsent=true; path=/; max-age=31536000; SameSite=Lax; Secure";
-    const banner = document.getElementById('cookie-consent-banner');
-    if (banner) banner.style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const banner = document.getElementById('cookie-consent-banner');
-    if (banner) {
-        const hasConsent = document.cookie.split('; ').some(row => row.startsWith('cookieConsent=true'));
-        banner.style.display = hasConsent ? 'none' : 'flex';
     }
 });
