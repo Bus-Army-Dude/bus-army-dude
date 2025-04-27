@@ -761,7 +761,7 @@ function renderYouTubeCard(account) {
 // ======================================================
 
 // --- Business Info Constant & Ref ---
-const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']; // Use simple name
+const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 const businessDocRef = doc(db, "site_config", "businessDetails"); // Ensure db is initialized before this line
 
 // --- Business Info Helper Functions ---
@@ -1647,7 +1647,7 @@ function updateAdminPreview() {
      adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
 
     // 4. Display Hours
-    let hoursHtml = '<ul>'; const displayOrder = daysOfWeekBI; // Use BI version if defined
+    let hoursHtml = '<ul>'; const displayOrder = daysOfWeek; // Use the correctly defined constant
     displayOrder.forEach(day => {
          const dayData = currentFormData.regularHours[day];
          const isCurrentDay = day === previewDayName;
