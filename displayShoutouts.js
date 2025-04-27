@@ -1111,29 +1111,29 @@ async function initializeHomepageContent() {
         return;
     }
 
-    // Apply Maintenance Mode
     if (maintenanceEnabled) {
-        console.log("Maintenance mode ON. Activating overlay...");
+    console.log("Maintenance mode ON. Activating overlay...");
+    
+    if (maintenanceOverlay) {
+        // Update overlay content
+        const titleElement = maintenanceOverlay.querySelector('h1');
+        const messageElement = maintenanceOverlay.querySelector('p');
         
-        if (maintenanceOverlay) {
-            // Update overlay content
-            const titleElement = maintenanceOverlay.querySelector('h1');
-            const messageElement = maintenanceOverlay.querySelector('p');
-            
-            if (titleElement) titleElement.textContent = maintenanceTitle;
-            if (messageElement) messageElement.textContent = maintenanceMessage;
+        if (titleElement) titleElement.textContent = maintenanceTitle;
+        if (messageElement) messageElement.textContent = maintenanceMessage;
 
-            // Show overlay and prevent scrolling
-            maintenanceOverlay.style.display = 'flex';
-            bodyElement.classList.add('maintenance-active');
+        // Show overlay
+        maintenanceOverlay.style.display = 'flex';
+        maintenanceOverlay.classList.add('active');
+        document.body.classList.add('maintenance-active');
 
-            // Hide main content
-            if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-        } else {
-            console.error("Maintenance overlay element not found!");
-        }
-        
-        return; // Stop further content loading
+        // Hide main content
+        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+    } else {
+        console.error("Maintenance overlay element not found!");
+    }
+    
+    return; // Stop further content loading
     } else {
         // Maintenance mode OFF
         console.log("Maintenance mode OFF.");
