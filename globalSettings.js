@@ -1,4 +1,4 @@
-// globalSettings.js (Corrected Version with DOMContentLoaded)
+// globalSettings.js (Complete Version with DOM Initialization and Focus Outline Support)
 
 class GlobalSettings {
     constructor() {
@@ -7,14 +7,14 @@ class GlobalSettings {
 
         // Defer DOM-related initialization until the DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
-             console.log("DOM loaded, initializing GlobalSettings DOM interactions...");
-             this.initDOMRelated(); // Initialize DOM elements and apply initial styles
-             this.initFontSizeControls(); // Initialize slider if present
-             this.startObserver(); // Start observing for DOM changes after initial setup
+            console.log("DOM loaded, initializing GlobalSettings DOM interactions...");
+            this.initDOMRelated(); // Initialize DOM elements and apply initial styles
+            this.initFontSizeControls(); // Initialize slider if present
+            this.startObserver(); // Start observing for DOM changes after initial setup
         });
 
-         // Set up storage listener immediately (doesn't require DOM)
-         this.initStorageListener();
+        // Set up storage listener immediately (doesn't require DOM)
+        this.initStorageListener();
     }
 
     /**
@@ -22,39 +22,43 @@ class GlobalSettings {
      * @returns {object} The loaded settings or default settings.
      */
     loadSettingsInternalOnly() {
-         const defaultSettings = {
-             darkMode: true, // Default to dark mode as per original body class
-             fontSize: 14,   // Default font size
-             lastUpdate: Date.now()
-         };
-         const savedSettings = localStorage.getItem('websiteSettings');
-         try {
-             const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
-             // Basic validation
-             settings.darkMode = typeof settings.darkMode === 'boolean' ? settings.darkMode : defaultSettings.darkMode;
-             settings.fontSize = typeof settings.fontSize === 'number' && settings.fontSize >= 12 && settings.fontSize <= 24 ? settings.fontSize : defaultSettings.fontSize;
-             return settings;
-         } catch (e) {
-              console.error("Error parsing settings from localStorage, using defaults.", e);
-              return defaultSettings;
-         }
+        const defaultSettings = {
+            darkMode: true, // Default to dark mode as per original body class
+            fontSize: 14,   // Default font size
+            focusOutline: 'disabled', // Default focus outline setting
+            lastUpdate: Date.now()
+        };
+        const savedSettings = localStorage.getItem('websiteSettings');
+        try {
+            const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+            // Basic validation
+            settings.darkMode = typeof settings.darkMode === 'boolean' ? settings.darkMode : defaultSettings.darkMode;
+            settings.fontSize = typeof settings.fontSize === 'number' && settings.fontSize >= 12 && settings.fontSize <= 24 ? settings.fontSize : defaultSettings.fontSize;
+            settings.focusOutline = ['enabled', 'disabled'].includes(settings.focusOutline) ? settings.focusOutline : defaultSettings.focusOutline;
+            return settings;
+        } catch (e) {
+            console.error("Error parsing settings from localStorage, using defaults.", e);
+            return defaultSettings;
+        }
     }
 
-     /**
-      * Initializes DOM-related settings application *after* DOM is loaded.
-      */
-     initDOMRelated() {
-         // Apply dark mode class to body first
-         this.applyDarkMode(this.settings.darkMode);
-         // Apply initial font size now that elements exist
-         this.applyFontSize(this.settings.fontSize);
-     }
+    /**
+     * Initializes DOM-related settings application *after* DOM is loaded.
+     */
+    initDOMRelated() {
+        // Apply dark mode class to body first
+        this.applyDarkMode(this.settings.darkMode);
+        // Apply initial font size now that elements exist
+        this.applyFontSize(this.settings.fontSize);
+        // Apply focus outline setting
+        this.applyFocusOutline(this.settings.focusOutline === 'enabled');
+    }
 
-     /**
-      * Sets up the listener for changes in localStorage across tabs.
-      */
-     initStorageListener() {
-         window.addEventListener('storage', (e) => {
+    /**
+     * Sets up the listener for changes in localStorage across tabs.
+     */
+    initStorageListener() {
+        window.addEventListener('storage', (e) => {
             if (e.key === 'websiteSettings') {
                 console.log("Storage event detected for websiteSettings.");
                 try {
@@ -68,8 +72,8 @@ class GlobalSettings {
                     console.error("Error parsing settings from storage event:", err);
                 }
             }
-         });
-     }
+        });
+    }
 
     /**
      * Initializes the font size slider controls if they exist on the page.
@@ -91,26 +95,26 @@ class GlobalSettings {
                 }
             });
         } else {
-             console.log("Font size slider controls not found on this page.");
+            console.log("Font size slider controls not found on this page.");
         }
     }
 
-     /**
-      * Updates the font size slider's visual state (value, label, gradient).
-      */
-     updateFontSizeSliderDisplay() {
-         const textSizeSlider = document.getElementById('text-size-slider');
-         const textSizeValue = document.getElementById('textSizeValue');
-          if (textSizeSlider && textSizeValue) {
-               try{
-                   textSizeSlider.value = this.settings.fontSize;
-                   textSizeValue.textContent = `${this.settings.fontSize}px`;
-                   this.updateSliderGradient(textSizeSlider);
-               } catch(e){
-                   console.error("Error updating font size slider display:", e);
-               }
-          }
-     }
+    /**
+     * Updates the font size slider's visual state (value, label, gradient).
+     */
+    updateFontSizeSliderDisplay() {
+        const textSizeSlider = document.getElementById('text-size-slider');
+        const textSizeValue = document.getElementById('textSizeValue');
+        if (textSizeSlider && textSizeValue) {
+            try {
+                textSizeSlider.value = this.settings.fontSize;
+                textSizeValue.textContent = `${this.settings.fontSize}px`;
+                this.updateSliderGradient(textSizeSlider);
+            } catch(e) {
+                console.error("Error updating font size slider display:", e);
+            }
+        }
+    }
 
     /**
      * Updates the background gradient for the slider track.
@@ -118,7 +122,7 @@ class GlobalSettings {
      */
     updateSliderGradient(slider) {
         if (!slider || typeof slider.min === 'undefined' || typeof slider.max === 'undefined') return;
-        try{
+        try {
             const min = parseFloat(slider.min);
             const max = parseFloat(slider.max);
             const val = parseFloat(slider.value);
@@ -136,7 +140,6 @@ class GlobalSettings {
      */
     applyFontSize(size) {
         const cleanSize = Math.min(Math.max(parseInt(size, 10) || 16, 12), 24); // Ensure valid integer 12-24
-        // console.log(`Applying font size: ${cleanSize}px`); // Optional log
 
         // Map of tag names to scaling factors
         const textElements = {
@@ -148,17 +151,17 @@ class GlobalSettings {
 
         Object.entries(textElements).forEach(([elementTag, scale]) => {
             try {
-                 const elements = document.getElementsByTagName(elementTag);
-                 for (let i = 0; i < elements.length; i++) {
-                     const el = elements[i];
-                     // *** Safety Check ***
-                     if (el && typeof el.style !== 'undefined') { // Check if element and style property exist
-                         el.style.fontSize = `${cleanSize * scale}px`;
-                     }
-                 }
+                const elements = document.getElementsByTagName(elementTag);
+                for (let i = 0; i < elements.length; i++) {
+                    const el = elements[i];
+                    // *** Safety Check ***
+                    if (el && typeof el.style !== 'undefined') { // Check if element and style property exist
+                        el.style.fontSize = `${cleanSize * scale}px`;
+                    }
+                }
             } catch (e) {
-                 // Avoid crashing if error occurs on one tag type
-                 console.error(`Error applying font size to <${elementTag}> elements:`, e);
+                // Avoid crashing if error occurs on one tag type
+                console.error(`Error applying font size to <${elementTag}> elements:`, e);
             }
         });
 
@@ -176,8 +179,8 @@ class GlobalSettings {
      */
     applyDarkMode(isDark) {
         if (typeof isDark !== 'boolean') return; // Type safety
-         document.body.classList.toggle('dark-mode', isDark);
-         document.body.classList.toggle('light-mode', !isDark); // Ensure opposite class is removed/added
+        document.body.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('light-mode', !isDark); // Ensure opposite class is removed/added
 
         // Update and save settings ONLY if the mode actually changed
         if (this.settings.darkMode !== isDark) {
@@ -188,19 +191,35 @@ class GlobalSettings {
     }
 
     /**
-     * Applies all current settings (dark mode, font size).
+     * Applies focus outline setting.
+     * @param {boolean} enable - True to enable focus outlines, false to disable.
+     */
+    applyFocusOutline(enable) {
+        document.body.classList.toggle('focus-outline-disabled', !enable);
+        
+        // Update and save settings ONLY if the focus outline setting actually changed
+        const newSetting = enable ? 'enabled' : 'disabled';
+        if (this.settings.focusOutline !== newSetting) {
+            this.settings.focusOutline = newSetting;
+            this.settings.lastUpdate = Date.now();
+            this.saveSettings();
+        }
+    }
+
+    /**
+     * Applies all current settings (dark mode, font size, focus outline).
      */
     applyAllSettings() {
         console.log("Applying all settings from GlobalSettings...");
         this.applyDarkMode(this.settings.darkMode);
         this.applyFontSize(this.settings.fontSize);
+        this.applyFocusOutline(this.settings.focusOutline === 'enabled');
     }
 
     /**
      * Saves the current settings object to localStorage.
      */
     saveSettings() {
-         // console.log("Saving settings to localStorage:", this.settings); // Optional log
         try {
             localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
         } catch (e) {
@@ -208,39 +227,32 @@ class GlobalSettings {
         }
     }
 
-     /**
-      * Initializes and starts the MutationObserver to reapply font size on DOM changes.
-      */
-     startObserver() {
-          console.log("Starting MutationObserver for font size adjustments.");
-          try {
-              const observer = new MutationObserver((mutations) => {
-                  // Basic check: If any nodes were added, re-apply font size.
-                  // More complex logic could be added here to check *which* nodes were added
-                  // or to debounce the applyFontSize call if changes happen rapidly.
-                  let nodesAdded = false;
-                   mutations.forEach((mutation) => {
-                       if (mutation.addedNodes.length) {
-                            nodesAdded = true;
-                       }
-                   });
+    /**
+     * Initializes and starts the MutationObserver to reapply font size on DOM changes.
+     */
+    startObserver() {
+        console.log("Starting MutationObserver for font size adjustments.");
+        try {
+            const observer = new MutationObserver((mutations) => {
+                let nodesAdded = false;
+                mutations.forEach((mutation) => {
+                    if (mutation.addedNodes.length) {
+                        nodesAdded = true;
+                    }
+                });
 
-                   if(nodesAdded) {
-                        // console.log("DOM changed, potentially reapplying font size.");
-                        // Re-check font size application - this prevents unnecessary saves if size didn't change
-                        this.applyFontSize(this.settings.fontSize);
-                   }
-              });
-              // Start observing the document body for additions/removals in the subtree
-              observer.observe(document.body, { childList: true, subtree: true });
-              console.log("MutationObserver started.");
-          } catch (e) {
-               console.error("Failed to start MutationObserver:", e);
-          }
-     }
-
-} // End of GlobalSettings class
-
+                if(nodesAdded) {
+                    this.applyFontSize(this.settings.fontSize);
+                }
+            });
+            // Start observing the document body for additions/removals in the subtree
+            observer.observe(document.body, { childList: true, subtree: true });
+            console.log("MutationObserver started.");
+        } catch (e) {
+            console.error("Failed to start MutationObserver:", e);
+        }
+    }
+}
 
 // --- Initialize the Global Settings ---
 // The constructor now handles waiting for DOMContentLoaded for DOM manipulations
@@ -249,8 +261,4 @@ try {
     console.log("GlobalSettings instance created.");
 } catch(e) {
     console.error("Failed to initialize GlobalSettings:", e);
-    // Fallback or alert user?
 }
-
-// --- Optional: Export if needed by other modules ---
-// export default globalSettings; // If you use ES modules elsewhere and need access
