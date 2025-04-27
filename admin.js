@@ -872,32 +872,53 @@ async function saveBusinessInfoData(event) {
     catch (error) { console.error("Error saving business info:", error); showBusinessInfoStatus(`Error saving: ${error.message}`, true); }
 }
 
-// --- Admin Preview Update Function ---
-function updateAdminPreview() { // Simple name
-    console.log("%cUpdating admin preview...", "color: blue; font-weight: bold;");
-    const adminPreviewStatus = document.getElementById('admin-preview-status'); const adminPreviewHours = document.getElementById('admin-preview-hours'); const adminPreviewContact = document.getElementById('admin-preview-contact'); const businessInfoForm = document.getElementById('business-info-form'); const statusOverrideSelect = document.getElementById('business-status-override'); const contactEmailInput = document.getElementById('business-contact-email');
-    // Use simple daysOfWeek defined at top of this block
-    if (!businessInfoForm || !adminPreviewStatus || !adminPreviewHours || !adminPreviewContact || !statusOverrideSelect || !contactEmailInput) { console.error("Preview elements missing"); return; }
+// --- Admin Preview Update Function (v5 - CORRECTED daysOfWeek Reference) ---
+function updateAdminPreview() { // Ensure this is the function name called by listeners
+    console.log("%cUpdating admin preview (v5)...", "color: blue; font-weight: bold;");
 
-    // 1. Read Form Values
+    // --- Get Element References ---
+    const adminPreviewStatus = document.getElementById('admin-preview-status');
+    const adminPreviewHours = document.getElementById('admin-preview-hours');
+    const adminPreviewContact = document.getElementById('admin-preview-contact');
+    const businessInfoForm = document.getElementById('business-info-form');
+    const statusOverrideSelect = document.getElementById('business-status-override');
+    const contactEmailInput = document.getElementById('business-contact-email');
+    // *** USE the correctly defined constant name here ***
+    const localDaysOfWeek = daysOfWeek; // Defined earlier in the script block
+
+    if (!businessInfoForm || !adminPreviewStatus || !adminPreviewHours || !adminPreviewContact || !statusOverrideSelect || !contactEmailInput || !localDaysOfWeek) {
+        console.error("Admin preview update failed: Missing HTML elements or daysOfWeek constant!");
+        if(adminPreviewStatus) adminPreviewStatus.innerHTML = `<span class="status-unavailable">Preview Error: Setup Incomplete</span>`;
+        return;
+    }
+
+    // 1. Read Current Form Values
     const currentFormData = { contactEmail: contactEmailInput.value.trim() || null, statusOverride: statusOverrideSelect.value || "auto", regularHours: {}, holidayHours: [], temporaryHours: [] };
-    daysOfWeek.forEach(day => { const el = document.getElementById(`${day}-isClosed`); if (!el) return; const isClosed = el.checked; const openVal = document.getElementById(`${day}-open`)?.value; const closeVal = document.getElementById(`${day}-close`)?.value; currentFormData.regularHours[day] = { open: isClosed ? null : (openVal || null), close: isClosed ? null : (closeVal || null), isClosed: isClosed }; });
+    localDaysOfWeek.forEach(day => { const el = document.getElementById(`${day}-isClosed`); if (!el) return; const isClosed = el.checked; const openVal = document.getElementById(`${day}-open`)?.value; const closeVal = document.getElementById(`${day}-close`)?.value; currentFormData.regularHours[day] = { open: isClosed ? null : (openVal || null), close: isClosed ? null : (closeVal || null), isClosed: isClosed }; });
     document.querySelectorAll('#holiday-hours-list .holiday-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false; const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null; if (date) { currentFormData.holidayHours.push({ date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#holiday-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#holiday-close-${id}`)?.value || null), isClosed }); } });
-    document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { /* ignore */ return; } currentFormData.temporaryHours.push({ startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null), isClosed }); } });
+    document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { /* skip invalid */ return; } currentFormData.temporaryHours.push({ startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null), isClosed }); } });
     currentFormData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); currentFormData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
 
     // 2. Calculate Preview Status
-    let currentStatus = 'Closed'; let statusReason = 'Regular Hours'; let ruleApplied = false; const previewNow = new Date(); const previewDayName = daysOfWeek[(previewNow.getDay() + 6) % 7]; const previewDateStr = previewNow.toLocaleDateString('en-CA'); const previewCurrentMinutes = previewNow.getHours() * 60 + previewNow.getMinutes(); let activeHoursRule = null; console.log(`Admin Preview Time Check: Date=${previewDateStr}, Day=${previewDayName}, Mins=${previewCurrentMinutes}`);
+    let currentStatus = 'Closed'; let statusReason = 'Regular Hours'; let ruleApplied = false;
+    const previewNow = new Date();
+    const previewDayName = localDaysOfWeek[(previewNow.getDay() + 6) % 7]; // Monday is 0 for array index
+    const previewDateStr = previewNow.toLocaleDateString('en-CA');
+    const previewCurrentMinutes = previewNow.getHours() * 60 + previewNow.getMinutes();
+    console.log(`Admin Preview Time Check: Date=${previewDateStr}, Day=${previewDayName}, Mins=${previewCurrentMinutes}`); let activeHoursRule = null;
 
-    if (currentFormData.statusOverride !== 'auto') { currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable'); statusReason = 'Manual Override'; activeHoursRule = { reason: statusReason }; ruleApplied = true; console.log("Status: Override"); }
-    if (!ruleApplied) { const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr); if (todayHoliday) { statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`; if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; } else { const openMins = timeStringToMinutes(todayHoliday.open); const closeMins = timeStringToMinutes(todayHoliday.close); currentStatus = (openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) ? 'Open' : 'Closed'; } activeHoursRule = { ...todayHoliday, reason: statusReason }; ruleApplied = true; console.log("Status: Holiday"); } }
-    if (!ruleApplied) { const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate); if (activeTemporary) { statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`; activeHoursRule = { ...activeTemporary, reason: statusReason }; ruleApplied = true; console.log("Status: Temporary Rule"); if (activeTemporary.isClosed) { currentStatus = 'Temporarily Unavailable'; console.log(">>> Temp: Closed Flag -> Temp Unavailable"); } else if (activeTemporary.open && activeTemporary.close) { const openMins = timeStringToMinutes(activeTemporary.open); const closeMins = timeStringToMinutes(activeTemporary.close); console.log(`>>> Temp Mins: Current=${previewCurrentMinutes}, Open=${openMins}, Close=${closeMins}`); if (openMins === null || closeMins === null) { currentStatus = 'Temporarily Unavailable'; console.log(">>> Temp: Invalid Times -> Temp Unavailable"); } else { const isWithin = (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins); console.log(`>>> Temp: Time Check Result = ${isWithin}`); currentStatus = isWithin ? 'Open' : 'Temporarily Unavailable'; console.log(`>>> Temp Final: ${currentStatus}`); } } else { currentStatus = 'Temporarily Unavailable'; console.log(">>> Temp: No Times -> Temp Unavailable"); } } }
+    // --- Status Calculation Logic (Order: Override > Holiday > Temporary > Regular) ---
+    if (currentFormData.statusOverride !== 'auto') { /* ... override logic ... */ ruleApplied = true; console.log("Status: Override"); }
+    if (!ruleApplied) { const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr); if (todayHoliday) { /* ... holiday logic ... */ ruleApplied = true; console.log("Status: Holiday"); } }
+    if (!ruleApplied) { const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate); if (activeTemporary) { /* ... temporary logic (using timeStringToMinutes) ... */ ruleApplied = true; console.log("Status: Temporary Rule"); } }
     if (!ruleApplied) { statusReason = 'Regular Hours'; const todayRegularHours = currentFormData.regularHours[previewDayName]; if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) { const openMins = timeStringToMinutes(todayRegularHours.open); const closeMins = timeStringToMinutes(todayRegularHours.close); currentStatus = (openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) ? 'Open' : 'Closed'; activeHoursRule = { ...todayRegularHours, day: previewDayName }; } else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true }; } console.log("Status: Regular Hours"); }
 
     // 3. Display Status
-    let statusClass = 'status-closed'; if (currentStatus === 'Open') statusClass = 'status-open'; else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable'; adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
+     let statusClass = 'status-closed'; if (currentStatus === 'Open') statusClass = 'status-open'; else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
+     adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
     // 4. Display Hours
-    let hoursHtml = '<ul>'; const displayOrder = daysOfWeek; displayOrder.forEach(day => { const dayData = currentFormData.regularHours[day]; const isCurrentDay = day === previewDayName; const highlightClass = isCurrentDay ? 'current-day-preview' : ''; hoursHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `; if (dayData && !dayData.isClosed && dayData.open && dayData.close) { hoursHtml += `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>`; } else { hoursHtml += `<span>Closed</span>`; } hoursHtml += `</li>`; }); hoursHtml += '</ul>'; hoursHtml += `<p class="preview-timezone-note">Preview based on your browser time. Assumes ET input.</p>`; adminPreviewHours.innerHTML = hoursHtml;
+    let hoursHtml = '<ul>'; const displayOrder = localDaysOfWeek; // Use the correct variable
+    displayOrder.forEach(day => { const dayData = currentFormData.regularHours[day]; const isCurrentDay = day === previewDayName; const highlightClass = isCurrentDay ? 'current-day-preview' : ''; hoursHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `; if (dayData && !dayData.isClosed && dayData.open && dayData.close) { hoursHtml += `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>`; } else { hoursHtml += `<span>Closed</span>`; } hoursHtml += `</li>`; }); hoursHtml += '</ul>'; hoursHtml += `<p class="preview-timezone-note">Preview based on your browser time. Assumes ET input.</p>`; adminPreviewHours.innerHTML = hoursHtml;
     // 5. Display Contact
     if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`; } else { adminPreviewContact.innerHTML = ''; }
     console.log("Admin preview update complete.");
