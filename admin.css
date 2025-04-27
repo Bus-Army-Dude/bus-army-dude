@@ -1410,31 +1410,82 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
 }
 
 /* ======================================== */
-/* Business Info Section Styles           */
-/* (Add these rules to your admin.css)    */
+/* Business Info Section Styles - Complete  */
 /* ======================================== */
 
 /* Grid layout for regular hours */
 .hours-grid {
     display: grid;
-    /* Adjust columns for different screen sizes if needed */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    margin-bottom: 25px; /* Space below the grid */
-    margin-top: 10px; /* Space above the grid */
+    margin: 20px 0 30px;
 }
 
-/* Styling for each day's hour group */
+/* Modern input styling for date and time */
+input[type="date"],
+input[type="time"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--input-bg, #ffffff);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md, 8px);
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    min-height: 42px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Input hover and focus states */
+input[type="date"]:hover,
+input[type="time"]:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+input[type="date"]:focus,
+input[type="time"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+    outline: none;
+}
+
+/* Calendar/Clock icon styling */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    padding: 8px;
+    cursor: pointer;
+    position: absolute;
+    right: 4px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Day hours group styling */
 .day-hours-group {
     border: 1px solid var(--border-color);
-    padding: 15px 20px;
-    border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Use main background for slight contrast */
+    padding: 20px;
+    border-radius: var(--border-radius-lg, 12px);
+    background-color: var(--bg-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Style the Day Label (e.g., "Monday") */
+.day-hours-group:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Day label styling */
 .day-hours-group > label:first-of-type {
-    font-weight: 600; /* Bolder day label */
+    font-weight: 600;
     color: var(--text-color);
     text-transform: capitalize;
     margin-bottom: 12px;
@@ -1442,156 +1493,139 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
     font-size: 1rem;
 }
 
-/* Container for Open/Close time inputs */
+/* Time inputs container */
 .day-hours-group .time-inputs,
 .special-hours-list .hour-entry .time-inputs {
     display: flex;
-    gap: 8px; /* Space between time inputs and hyphen */
+    gap: 12px;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    position: relative;
 }
 
-/* Adjust time input width */
+/* Time separator */
+.time-inputs::before {
+    content: "to";
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+/* Time input width adjustments */
 .day-hours-group input[type="time"],
 .special-hours-list .hour-entry input[type="time"] {
-    width: auto; /* Don't force full width */
-    flex-grow: 1; /* Allow shrinking/growing */
-    min-width: 100px; /* Ensure minimum width */
-    padding: 8px 10px; /* Slightly smaller padding */
+    width: calc(50% - 6px);
+    min-width: 130px;
 }
 
-/* Hide screen-reader-only labels visually */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-
-/* Container for Holiday and Temporary hour entries */
+/* Special hours container */
 .special-hours-list {
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin: 20px 0;
 }
 
-/* Styling for individual Holiday/Temporary entry blocks */
+/* Special hours entry styling */
 .special-hours-list .hour-entry {
     border: 1px solid var(--border-color);
-    padding: 20px;
-    padding-right: 45px; /* Space for remove button */
-    margin-bottom: 15px;
-    border-radius: var(--border-radius-md);
-    background-color: var(--content-bg); /* Match container background */
-    position: relative; /* Needed for absolute positioning of remove button */
+    padding: 25px;
+    padding-right: 45px;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius-lg, 12px);
+    background-color: var(--content-bg);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Style inner labels within holiday/temp entries */
+.special-hours-list .hour-entry:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Special hours labels */
 .special-hours-list .hour-entry .form-group label:not(.apple-toggle-label) {
-    font-weight: normal; /* Normal weight */
-    text-transform: none;
-    margin-bottom: 5px;
+    font-weight: 500;
+    margin-bottom: 8px;
     font-size: 0.9em;
-    color: var(--secondary-text); /* Use secondary text color */
+    color: var(--text-color);
+    display: block;
 }
 
-/* Add some margin below inputs in these entries */
-.special-hours-list .hour-entry input[type="date"],
-.special-hours-list .hour-entry input[type="text"] {
-    margin-bottom: 10px;
-}
-
-/* Style the remove button (X) for holiday/temp entries */
+/* Remove button */
 .special-hours-list .hour-entry .remove-hour-button {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: var(--color-secondary-action); /* Use secondary grey */
+    background: var(--color-secondary-action);
     color: white;
     border: none;
     border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
-    line-height: 28px; /* Center the '×' */
-    text-align: center;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    line-height: 1;
     cursor: pointer;
     padding: 0;
     opacity: 0.7;
-    transition: opacity 0.2s ease, background-color 0.2s ease;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .special-hours-list .hour-entry .remove-hour-button:hover {
     opacity: 1;
-    background-color: var(--color-danger); /* Turn red on hover */
+    background-color: var(--color-danger);
+    transform: scale(1.05);
 }
 
-/* Note styling (the small italic text) */
-#business-info-management p > small > i,
-.admin-preview-container p > small > i {
-    color: var(--secondary-text);
-    font-size: 0.9em; /* Match surrounding small tag */
-    line-height: 1.4;
-}
-
-
-/* ======================================== */
-/* Business Info Preview Styles           */
-/* (Add these rules to your admin.css)    */
-/* ======================================== */
-
+/* Preview container */
 .admin-preview-container {
     margin-top: 30px;
-    padding: 20px 25px; /* Adjust padding */
-    border: 1px solid var(--border-color); /* Use standard border */
-    border-radius: var(--border-radius-md);
-    background-color: var(--bg-color); /* Use main background */
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg, 12px);
+    background-color: var(--bg-color);
 }
 
+/* Preview heading */
 .admin-preview-container h4 {
-    margin-top: 0;
-    /* color: var(--accent-color); */ /* Optional: Use accent color for preview heading */
-    color: var(--text-color); /* Or just standard text color */
-    border-bottom: none;
+    margin: 0 0 15px;
+    color: var(--text-color);
     font-size: 1.1rem;
-    margin-bottom: 10px; /* Space below heading */
+    font-weight: 600;
 }
 
-.admin-preview-container p > small > i {
-     display: block; /* Make the note block level */
-     margin-bottom: 15px; /* Space below the note */
-}
-
+/* Preview content */
 .preview-content {
-    margin-top: 0; /* Remove extra margin */
     font-size: 0.95em;
-    line-height: 1.5; /* Improve line spacing */
+    line-height: 1.5;
 }
 
+/* Status display */
 .preview-status {
-    margin-bottom: 15px;
-    font-weight: 600; /* Make status slightly bolder */
-    font-size: 1.05em; /* Slightly larger status */
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Status colors (using existing classes from your CSS) */
-.preview-status .status-open { color: #34c759; } /* Apple Green */
-.preview-status .status-closed { color: #ff3b30; } /* Apple Red */
-.preview-status .status-unavailable { color: #ff9500; } /* Apple Orange */
+/* Status colors */
+.status-open { color: #34c759; }
+.status-closed { color: #ff3b30; }
+.status-unavailable { color: #ff9500; }
 
-.preview-status .status-reason {
+/* Status reason */
+.status-reason {
     font-size: 0.9em;
     font-weight: normal;
     color: var(--secondary-text);
-    margin-left: 8px; /* More space for reason */
-    display: inline-block; /* Prevent wrapping if possible */
 }
 
+/* Hours list */
 .preview-hours ul {
     list-style: none;
     padding: 0;
@@ -1599,42 +1633,71 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
 }
 
 .preview-hours li {
-    margin-bottom: 5px; /* Space between days */
-    padding: 4px 8px; /* Padding inside list item */
+    padding: 8px 12px;
     border-radius: var(--border-radius-sm);
-    display: flex; /* Use flex for alignment */
-    justify-content: space-between; /* Space out day name and time */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.95em;
+    margin-bottom: 4px;
 }
-.preview-hours li strong {
-    font-weight: 500; /* Medium weight for day name */
-    margin-right: 10px; /* Space after day name */
-    text-transform: capitalize;
-}
-.preview-hours li span {
-    /* Style for the time text if needed */
-    color: var(--secondary-text);
-}
+
+/* Current day highlight */
 .preview-hours li.current-day-preview {
-    background-color: rgba(var(--accent-rgb), 0.1); /* Use theme's accent */
-    font-weight: 600; /* Bold current day */
-}
-.preview-hours li.current-day-preview span {
-    color: var(--text-color); /* Make time text darker on highlight */
+    background-color: rgba(var(--accent-rgb), 0.1);
+    font-weight: 500;
 }
 
-
+/* Contact section */
 .preview-contact {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border-color); /* Separator */
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
     font-size: 0.9em;
     color: var(--secondary-text);
 }
+
+/* Links */
 .preview-contact a {
     color: var(--link-color);
     text-decoration: underline;
+    transition: color 0.2s ease;
 }
+
 .preview-contact a:hover {
     color: var(--hover-color);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    input[type="date"],
+    input[type="time"] {
+        background-color: var(--input-bg-dark, #2c2c2e);
+        border-color: var(--border-color-dark, #3a3a3c);
+    }
+    
+    input[type="date"]:disabled,
+    input[type="time"]:disabled {
+        background-color: var(--disabled-bg-dark, #1c1c1e);
+    }
+
+    .day-hours-group,
+    .special-hours-list .hour-entry,
+    .admin-preview-container {
+        background-color: var(--bg-dark, #1c1c1e);
+        border-color: var(--border-color-dark, #3a3a3c);
+    }
+}
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
