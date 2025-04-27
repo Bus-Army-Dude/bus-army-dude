@@ -95,9 +95,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     
     // Reference to the Firestore document (ensure 'doc' and 'db' are available)
     const businessDocRef = doc(db, "site_config", "businessDetails");
-    
-    // Days array used by hours functions
-    const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
     // FAQ Management Elements
     const addFaqForm = document.getElementById('add-faq-form');
