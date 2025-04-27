@@ -3,6 +3,28 @@
 // Last Updated: 2025-04-27
 // Author: BusArmyDude
 
+// Define utils object in global scope
+window.utils = {
+    formatDate: function(date) {
+        return new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    },
+    debounce: function(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize settings from localStorage
     try {
@@ -201,25 +223,3 @@ if (window.history.replaceState) {
 const themeChangeEvent = new CustomEvent('themeChange', {
     detail: { timestamp: new Date().toISOString() }
 });
-
-// Export any needed functions
-export const utils = {
-    formatDate: (date) => {
-        return new Date(date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    },
-    debounce: (func, wait) => {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-};
