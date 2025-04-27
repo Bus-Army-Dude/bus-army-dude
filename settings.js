@@ -19,7 +19,7 @@ class SettingsManager {
         // Define defaults ONLY for settings managed by this class
         const defaultSettings = {
             darkMode: true,
-            textSize: 16, // Default numeric value
+            textSize: 14, // Default numeric value
             focusOutline: 'disabled',
         };
 
@@ -252,7 +252,7 @@ class SettingsManager {
         console.log("Resetting settings to factory defaults...");
         const defaultSettings = {
             darkMode: true,
-            textSize: 16,
+            textSize: 14,
             focusOutline: 'disabled',
         };
 
