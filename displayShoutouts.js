@@ -1070,14 +1070,13 @@ async function initializeHomepageContent() {
     const usefulLinksSection = document.querySelector('.useful-links-section');
     const bodyElement = document.body;
     const tiktokHeaderContainer = document.getElementById('tiktok-shoutouts');
-    const tiktokGridContainer = document.querySelector('#tiktok-shoutouts ~ .creator-grid'); // Use general sibling combinator
-    const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts ~ .creator-grid ~ .unavailable-message'); // Use general sibling combinator
+    const tiktokGridContainer = document.querySelector('#tiktok-shoutouts ~ .creator-grid');
+    const tiktokUnavailableMessage = document.querySelector('#tiktok-shoutouts ~ .creator-grid ~ .unavailable-message');
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
 
     if (!firebaseAppInitialized || !db || !profileDocRef) {
         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
-        // ... (error handling as before) ...
         return;
     }
 
@@ -1085,7 +1084,6 @@ async function initializeHomepageContent() {
     let maintenanceEnabled = false;
     let maintenanceTitle = "Site Under Maintenance";
     let maintenanceMessage = "We are currently performing scheduled maintenance. Please check back later for updates.";
-    let maintenanceStatus = 'operational';
     let hideTikTokSection = false;
     let countdownTargetDate = null;
     let countdownTitle = null;
@@ -1099,7 +1097,6 @@ async function initializeHomepageContent() {
             maintenanceEnabled = siteSettings.isMaintenanceModeEnabled || false;
             maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle;
             maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage;
-            maintenanceStatus = siteSettings.maintenanceStatus || 'operational';
             hideTikTokSection = siteSettings.hideTikTokSection || false;
             countdownTargetDate = siteSettings.countdownTargetDate;
             countdownTitle = siteSettings.countdownTitle;
@@ -1107,35 +1104,35 @@ async function initializeHomepageContent() {
         } else {
             console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
         }
-        console.log("Settings fetched:", { maintenanceEnabled, maintenanceStatus, hideTikTokSection, countdownSet: !!countdownTargetDate });
+        console.log("Settings fetched:", { maintenanceEnabled, hideTikTokSection, countdownSet: !!countdownTargetDate });
 
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
-        // ... (error handling as before) ...
         return;
     }
 
     // Apply Maintenance Mode
     if (maintenanceEnabled) {
-        console.log("Maintenance mode ON. Activating overlay.");
-        // ... (Your maintenance mode display logic - Ensure it uses the fetched maintenanceStatus) ...
-         // Example snippet to integrate status:
-         const statusIndicator = maintenanceOverlay?.querySelector('#maintenanceStatusIndicator');
-         if (statusIndicator) {
-             let statusText = "Operational"; let statusClass = "status-operational";
-             switch (maintenanceStatus) {
-                 case 'operational': statusText = "Operational"; statusClass = "status-operational"; break;
-                 case 'maintenance': statusText = "Under Maintenance"; statusClass = "status-maintenance"; break;
-                 case 'degraded': statusText = "Degraded Performance"; statusClass = "status-degraded"; break;
-                 case 'partial_outage': statusText = "Partial System Outage"; statusClass = "status-partial"; break;
-                 case 'major_outage': statusText = "Major System Outage"; statusClass = "status-major"; break;
-             }
-             statusIndicator.textContent = statusText;
-             statusIndicator.className = 'maintenance-status-indicator'; // Reset base class
-             statusIndicator.classList.add(statusClass); // Add specific class
-             statusIndicator.style.display = 'inline-block'; // Ensure it's visible
-         }
-        // ... (rest of maintenance overlay logic) ...
+        console.log("Maintenance mode ON. Activating overlay...");
+        
+        if (maintenanceOverlay) {
+            // Update overlay content
+            const titleElement = maintenanceOverlay.querySelector('h1');
+            const messageElement = maintenanceOverlay.querySelector('p');
+            
+            if (titleElement) titleElement.textContent = maintenanceTitle;
+            if (messageElement) messageElement.textContent = maintenanceMessage;
+
+            // Show overlay and prevent scrolling
+            maintenanceOverlay.style.display = 'flex';
+            bodyElement.classList.add('maintenance-active');
+
+            // Hide main content
+            if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+        } else {
+            console.error("Maintenance overlay element not found!");
+        }
+        
         return; // Stop further content loading
     } else {
         // Maintenance mode OFF
@@ -1143,11 +1140,11 @@ async function initializeHomepageContent() {
         if (mainContentWrapper) mainContentWrapper.style.display = '';
         if (maintenanceOverlay) maintenanceOverlay.style.display = 'none';
         bodyElement.classList.remove('maintenance-active');
-        if (countdownSection) countdownSection.style.display = 'block'; // Or 'flex' depending on your CSS
+        if (countdownSection) countdownSection.style.display = 'block';
         const oldMaintenanceMessageElement = document.getElementById('maintenanceModeMessage');
         if (oldMaintenanceMessageElement) oldMaintenanceMessageElement.style.display = 'none';
         if (usefulLinksSection) {
-            usefulLinksSection.style.display = 'block'; // Or grid, flex, etc.
+            usefulLinksSection.style.display = 'block';
         }
 
         // --- Proceed with loading normal content ---
@@ -1163,14 +1160,21 @@ async function initializeHomepageContent() {
                 console.log("Hiding TikTok section.");
                 tiktokHeaderContainer.style.display = 'none';
                 tiktokGridContainer.style.display = 'none';
-                if (tiktokUnavailableMessage) { tiktokUnavailableMessage.innerHTML = '<p>TikTok shoutouts are currently hidden by the site administrator.</p>'; tiktokUnavailableMessage.style.display = 'block'; }
-                 else { console.warn("TikTok unavailable message element not found."); }
+                if (tiktokUnavailableMessage) {
+                    tiktokUnavailableMessage.innerHTML = '<p>TikTok shoutouts are currently hidden by the site administrator.</p>';
+                    tiktokUnavailableMessage.style.display = 'block';
+                } else {
+                    console.warn("TikTok unavailable message element not found.");
+                }
                 isTikTokVisible = false;
             } else {
                 console.log("Showing TikTok section.");
-                tiktokHeaderContainer.style.display = ''; // Or 'flex'
-                tiktokGridContainer.style.display = ''; // Or 'grid'
-                if (tiktokUnavailableMessage) { tiktokUnavailableMessage.style.display = 'none'; tiktokUnavailableMessage.innerHTML = ''; }
+                tiktokHeaderContainer.style.display = '';
+                tiktokGridContainer.style.display = '';
+                if (tiktokUnavailableMessage) {
+                    tiktokUnavailableMessage.style.display = 'none';
+                    tiktokUnavailableMessage.innerHTML = '';
+                }
                 isTikTokVisible = true;
             }
         }
@@ -1179,8 +1183,8 @@ async function initializeHomepageContent() {
 
         // Define all promises
         const loadPromises = [
-            displayProfileData(siteSettings), // Profile uses already fetched data
-            displayBusinessInfo(),             // <<< CALL TO DISPLAY BUSINESS INFO
+            displayProfileData(siteSettings),
+            displayBusinessInfo(),
             displayPresidentData(),
             loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
             loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
@@ -1192,19 +1196,20 @@ async function initializeHomepageContent() {
         ];
 
         // Conditionally add TikTok loading promise
-         if (isTikTokVisible && tiktokGridContainer) {
-             const tsEl = document.getElementById('tiktok-last-updated-timestamp'); // Get correct timestamp element
-             if (tsEl) {
-                 loadPromises.push(loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl));
-             } else { console.warn("Could not load TikTok section - timestamp element missing."); }
-         }
+        if (isTikTokVisible && tiktokGridContainer) {
+            const tsEl = document.getElementById('tiktok-last-updated-timestamp');
+            if (tsEl) {
+                loadPromises.push(loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl));
+            } else {
+                console.warn("Could not load TikTok section - timestamp element missing.");
+            }
+        }
 
         // Await all promises
         const results = await Promise.allSettled(loadPromises);
         results.forEach((result, index) => {
             if (result.status === 'rejected') {
                 console.error(`Error loading content section ${index}:`, result.reason);
-                // You could potentially update a specific section's UI to show an error here
             }
         });
         console.log("All dynamic content loading initiated/completed.");
