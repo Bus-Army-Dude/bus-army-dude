@@ -1,128 +1,225 @@
-class CommonManager {
-    constructor() {
-        this.removeNoJsClass();
-        this.settings = this.loadSettings();
-        this.initializeThemeColors();
-        this.applySettings();
-        this.initializeControls();
-    }
+// common.js - Common functionality across all pages
+// Version: 2.0.0
+// Last Updated: 2025-04-27
+// Author: BusArmyDude
 
-    removeNoJsClass() {
-        document.documentElement.classList.remove('no-js');
-        document.documentElement.classList.add('js');
-    }
-
-    loadSettings() {
-        const defaultSettings = {
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize settings from localStorage
+    try {
+        const settings = JSON.parse(localStorage.getItem('websiteSettings')) || {
             darkMode: true,
             fontSize: 14,
-        };
-        return JSON.parse(localStorage.getItem('websiteSettings')) || defaultSettings;
-    }
-
-    initializeThemeColors() {
-        this.darkTheme = {
-            '--bg-color': '#1a1a1a',
-            '--text-color': '#ffffff',
-            '--secondary-text': '#a0a0a0',
-            '--border-color': '#333333',
-            '--accent-color': '#007aff',
-            '--content-bg': '#2d2d2d'
+            focusOutline: 'disabled',
+            lastUpdate: Date.now()
         };
 
-        this.lightTheme = {
-            '--bg-color': '#ffffff',
-            '--text-color': '#000000',
-            '--secondary-text': '#666666',
-            '--border-color': '#dddddd',
-            '--accent-color': '#007aff',
-            '--content-bg': '#f5f5f5'
-        };
+        // Apply focus outline setting
+        if (settings.focusOutline === 'disabled') {
+            document.body.classList.add('focus-outline-disabled');
+        }
+
+        // Apply dark mode setting
+        if (settings.darkMode) {
+            document.body.classList.add('dark-mode');
+            document.body.classList.remove('light-mode');
+        } else {
+            document.body.classList.add('light-mode');
+            document.body.classList.remove('dark-mode');
+        }
+    } catch (error) {
+        console.error('Error loading settings:', error);
+        // Apply default settings if there's an error
+        document.body.classList.add('focus-outline-disabled');
+        document.body.classList.add('dark-mode');
     }
 
-    applySettings() {
-        this.applyTheme(this.settings.darkMode);
-        this.setFontSize(this.settings.fontSize);
-    }
+    // Setup navigation menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
 
-    applyTheme(isDark = this.settings.darkMode) {
-        const theme = isDark ? this.darkTheme : this.lightTheme;
-        Object.entries(theme).forEach(([property, value]) => {
-            document.documentElement.style.setProperty(property, value);
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', !isExpanded);
+            navMenu.classList.toggle('show');
+            menuToggle.classList.toggle('active');
         });
-        document.body.classList.toggle('dark-mode', isDark);
-        document.body.classList.toggle('light-mode', !isDark);
     }
 
-    setFontSize(size) {
-        document.documentElement.style.setProperty('--font-size-base', `${size}px`);
-    }
-
-    initializeControls() {
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        if (darkModeToggle) {
-            darkModeToggle.checked = this.settings.darkMode;
-            darkModeToggle.addEventListener('change', (e) => {
-                this.settings.darkMode = e.target.checked;
-                this.applyTheme(this.settings.darkMode);
-                this.saveSettings();
-            });
+    // Close menu when clicking outside
+    document.addEventListener('click', (event) => {
+        if (navMenu && 
+            navMenu.classList.contains('show') && 
+            !navMenu.contains(event.target) && 
+            !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('show');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
         }
+    });
 
-        // Initialize font size slider
-        const textSizeSlider = document.getElementById('text-size-slider');
-        const textSizeValue = document.getElementById('textSizeValue');
-        
-        if (textSizeSlider && textSizeValue) {
-            textSizeSlider.value = this.settings.fontSize;
-            textSizeValue.textContent = `${this.settings.fontSize}px`;
+    // Add smooth scrolling to all links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                // Update URL without scrolling
+                history.pushState(null, null, this.getAttribute('href'));
+            }
+        });
+    });
+
+    // Back to top button functionality
+    const backToTopButton = document.getElementById('back-to-top');
+    if (backToTopButton) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Handle external links
+    document.querySelectorAll('a[href^="http"]').forEach(link => {
+        if (!link.hostname.includes(window.location.hostname)) {
+            link.setAttribute('rel', 'noopener noreferrer');
+            link.setAttribute('target', '_blank');
             
-            textSizeSlider.addEventListener('input', (e) => {
-                const size = parseInt(e.target.value);
-                this.settings.fontSize = size;
-                this.setFontSize(size);
-                textSizeValue.textContent = `${size}px`;
-                this.saveSettings();
-            });
+            // Add external link icon if not already present
+            if (!link.querySelector('.fa-external-link-alt')) {
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-external-link-alt';
+                icon.style.marginLeft = '0.5em';
+                icon.style.fontSize = '0.8em';
+                link.appendChild(icon);
+            }
         }
-    }
+    });
 
-    saveSettings() {
-        localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
-    }
+    // Initialize tooltips if any
+    const tooltips = document.querySelectorAll('[data-tooltip]');
+    tooltips.forEach(element => {
+        element.addEventListener('mouseenter', (e) => {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = element.getAttribute('data-tooltip');
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            tooltip.style.top = `${rect.bottom + window.scrollY + 5}px`;
+            tooltip.style.left = `${rect.left + (rect.width - tooltip.offsetWidth) / 2}px`;
+            
+            element.addEventListener('mouseleave', () => tooltip.remove());
+        });
+    });
 
-    // Method to reset settings to default
-    resetToDefaults() {
-        localStorage.removeItem('websiteSettings');
-        this.settings = this.loadSettings();
-        this.applySettings();
-    }
-}
+    // Handle form submissions
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
 
-// Accept cookies function
-function acceptCookies() {
-    document.cookie = "cookieConsent=true; path=/; max-age=" + (60 * 60 * 24 * 365);
-    const banner = document.getElementById('cookie-consent-banner');
-    if (banner) {
-        banner.style.display = 'none';
-    }
-}
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('error');
+                } else {
+                    field.classList.remove('error');
+                }
+            });
 
-// Check cookie consent on page load
-window.addEventListener('load', function() {
-    const banner = document.getElementById('cookie-consent-banner');
-    if (!banner) return;
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+            }
+        });
+    });
 
-    const cookies = document.cookie.split('; ');
-    const consentCookie = cookies.find(row => row.startsWith('cookieConsent='));
-    if (consentCookie && consentCookie.split('=')[1] === 'true') {
-        banner.style.display = 'none';
-    } else {
-        banner.style.display = 'flex';
-    }
+    // Initialize lazy loading for images
+    document.querySelectorAll('img[data-src]').forEach(img => {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    img.src = img.getAttribute('data-src');
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
+            });
+        });
+        observer.observe(img);
+    });
+
+    // Handle keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        // ESC key closes any open menus
+        if (e.key === 'Escape') {
+            if (navMenu && navMenu.classList.contains('show')) {
+                navMenu.classList.remove('show');
+                menuToggle.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
 });
 
-// Initialize CommonManager when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    const commonManager = new CommonManager();
+// Error handling
+window.addEventListener('error', (e) => {
+    console.error('Global error:', e.message);
+    // You could add error reporting here
 });
+
+// Performance monitoring
+if ('performance' in window) {
+    window.addEventListener('load', () => {
+        const timing = performance.timing;
+        const pageLoadTime = timing.loadEventEnd - timing.navigationStart;
+        console.log(`Page load time: ${pageLoadTime}ms`);
+    });
+}
+
+// Prevent form resubmission on page refresh
+if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+}
+
+// Add custom event for theme changes
+const themeChangeEvent = new CustomEvent('themeChange', {
+    detail: { timestamp: new Date().toISOString() }
+});
+
+// Export any needed functions
+export const utils = {
+    formatDate: (date) => {
+        return new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    },
+    debounce: (func, wait) => {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+};
