@@ -47,9 +47,11 @@ class SettingsManager {
             
             textSizeSlider.addEventListener('input', (e) => {
                 const size = parseInt(e.target.value);
-                this.setTextSize(size);
-                textSizeValue.textContent = `${size}px`;
-                this.updateSliderGradient(textSizeSlider);
+                if (!isNaN(size)) {
+                    this.setTextSize(size);
+                    textSizeValue.textContent = `${size}px`;
+                    this.updateSliderGradient(textSizeSlider);
+                }
             });
             
             // Initial gradient update
@@ -78,8 +80,11 @@ class SettingsManager {
 
     updateSliderGradient(slider) {
         if (!slider) return;
-        const value = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-        slider.style.setProperty('--slider-value', `${value}%`);
+        const min = parseInt(slider.min) || 12;
+        const max = parseInt(slider.max) || 24;
+        const value = parseInt(slider.value) || 16;
+        const percentage = ((value - min) / (max - min)) * 100;
+        slider.style.setProperty('--slider-value', `${percentage}%`);
     }
 
     applySettings() {
@@ -96,10 +101,22 @@ class SettingsManager {
     }
 
     setTextSize(size) {
-        if (size >= 12 && size <= 24) {
-            document.documentElement.style.setProperty('--font-size-base', `${size}px`);
-            this.settings.textSize = size;
-            this.saveSettings();
+        const validSize = Math.min(Math.max(parseInt(size) || 16, 12), 24);
+        document.documentElement.style.setProperty('--font-size-base', `${validSize}px`);
+        this.settings.textSize = validSize;
+        this.saveSettings();
+
+        // Update UI elements if they exist
+        const textSizeValue = document.getElementById('textSizeValue');
+        const textSizeSlider = document.getElementById('text-size-slider');
+        
+        if (textSizeValue) {
+            textSizeValue.textContent = `${validSize}px`;
+        }
+        
+        if (textSizeSlider) {
+            textSizeSlider.value = validSize;
+            this.updateSliderGradient(textSizeSlider);
         }
     }
 
@@ -129,10 +146,7 @@ class SettingsManager {
             focusOutline: 'disabled'
         };
 
-        // Reset internal settings
-        this.settings = { ...defaults };
-
-        // Update UI elements
+        // Update UI elements first
         const darkModeToggle = document.getElementById('darkModeToggle');
         const textSizeSlider = document.getElementById('text-size-slider');
         const textSizeValue = document.getElementById('textSizeValue');
@@ -146,8 +160,14 @@ class SettingsManager {
         if (textSizeValue) textSizeValue.textContent = `${defaults.textSize}px`;
         if (focusOutlineToggle) focusOutlineToggle.checked = defaults.focusOutline === 'enabled';
 
-        // Apply settings
-        this.applySettings();
+        // Reset internal settings
+        this.settings = { ...defaults };
+
+        // Apply the changes immediately
+        document.documentElement.style.setProperty('--font-size-base', `${defaults.textSize}px`);
+        document.body.classList.remove('light-mode');
+        document.body.classList.add('dark-mode');
+        document.body.classList.toggle('focus-outline-disabled', defaults.focusOutline === 'disabled');
 
         // Clear and save
         localStorage.removeItem('websiteSettings');
