@@ -24,7 +24,7 @@ class GlobalSettings {
     loadSettingsInternalOnly() {
          const defaultSettings = {
              darkMode: true, // Default to dark mode as per original body class
-             fontSize: 16,   // Default font size
+             fontSize: 14,   // Default font size
              lastUpdate: Date.now()
          };
          const savedSettings = localStorage.getItem('websiteSettings');
