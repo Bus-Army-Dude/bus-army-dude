@@ -820,34 +820,39 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             }
             activeHoursRule = { ...todayHoliday, reason: statusReason };
         } else {
-            // Check for temporary hours
-            const activeTemporary = temporaryHours.find(t => {
-                if (businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
-                    if (t.isClosed) return true;
-                    const openMins = timeStringToMinutes(t.open);
-                    const closeMins = timeStringToMinutes(t.close);
-                    if (openMins === null || closeMins === null) return false;
-                    const isWithinTimeRange = currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins;
-                    return isWithinTimeRange;
-                }
-                return false;
-            });
+    // Check for temporary hours
+    const activeTemporary = temporaryHours.find(t => {
+        if (businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
+            if (t.isClosed) return true;
+            const openMins = timeStringToMinutes(t.open);
+            const closeMins = timeStringToMinutes(t.close);
+            if (openMins === null || closeMins === null) return false;
+            // Changed: Now we only care if the date matches, not the time range
+            return true;
+        }
+        return false;
+    });
 
-            if (activeTemporary) {
-                statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-                if (activeTemporary.isClosed) {
+    if (activeTemporary) {
+        statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+        if (activeTemporary.isClosed) {
+            currentStatus = 'Open';
+        } else {
+            const openMins = timeStringToMinutes(activeTemporary.open);
+            const closeMins = timeStringToMinutes(activeTemporary.close);
+            if (openMins === null || closeMins === null) {
+                currentStatus = 'Open';
+            } else {
+                // If within the specified time range -> Temporarily Unavailable
+                // If outside the time range -> Open
+                if (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
                     currentStatus = 'Temporarily Unavailable';
                 } else {
-                    const openMins = timeStringToMinutes(activeTemporary.open);
-                    const closeMins = timeStringToMinutes(activeTemporary.close);
-                    if (openMins === null || closeMins === null) {
-                        currentStatus = 'Temporarily Unavailable';
-                    } else {
-                        currentStatus = (currentMinutesInBizTZ >= openMins && 
-                                      currentMinutesInBizTZ < closeMins) ? 'Open' : 'Temporarily Unavailable';
-                    }
+                    currentStatus = 'Open';
                 }
-                activeHoursRule = { ...activeTemporary, reason: statusReason };
+            }
+        }
+        activeHoursRule = { ...activeTemporary, reason: statusReason };
             } else {
                 // Regular hours
                 statusReason = 'Regular Hours';
