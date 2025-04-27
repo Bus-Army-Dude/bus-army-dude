@@ -910,7 +910,7 @@ function updateAdminPreview() { // Ensure this is the function name called by li
     // --- Status Calculation Logic (Order: Override > Holiday > Temporary > Regular) ---
     if (currentFormData.statusOverride !== 'auto') { /* ... override logic ... */ ruleApplied = true; console.log("Status: Override"); }
     if (!ruleApplied) { const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr); if (todayHoliday) { /* ... holiday logic ... */ ruleApplied = true; console.log("Status: Holiday"); } }
-    if (!ruleApplied) { const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);if (activeTemporary) { statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`; activeHoursRule = { ...activeTemporary, reason: statusReason }; ruleApplied = true; if (activeTemporary.isClosed) { currentStatus = 'Temporarily Unavailable';  } else if (activeTemporary.open && activeTemporary.close) {  const openMins = timeStringToMinutesBI(activeTemporary.open); const closeMins = timeStringToMinutesBI(activeTemporary.close);  if (openMins === null || closeMins === null) { currentStatus = 'Temporarily Unavailable';  } else {  // Check if current time is within the temporary hours range if (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) {  currentStatus = 'Open'; } else { currentStatus = 'Closed'; // Changed from 'Temporarily Unavailable' to 'Closed'  } }  } else { currentStatus = 'Temporarily Unavailable'; } }
+    if (!ruleApplied) { const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate); if (activeTemporary) { /* ... temporary logic (using timeStringToMinutes) ... */ ruleApplied = true; console.log("Status: Temporary Rule"); } }    
     if (!ruleApplied) { statusReason = 'Regular Hours'; const todayRegularHours = currentFormData.regularHours[previewDayName]; if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) { const openMins = timeStringToMinutes(todayRegularHours.open); const closeMins = timeStringToMinutes(todayRegularHours.close); currentStatus = (openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) ? 'Open' : 'Closed'; activeHoursRule = { ...todayRegularHours, day: previewDayName }; } else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true }; } console.log("Status: Regular Hours"); }
 
     // 3. Display Status
@@ -1591,42 +1591,35 @@ function updateAdminPreview() {
         }
     }
 
-    // Temporary Check (Corrected Logic)
-    if (!ruleApplied) {
-        const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
-        if (activeTemporary) {
-            statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-            activeHoursRule = { ...activeTemporary, reason: statusReason };
-            ruleApplied = true; // Mark rule as applied IF a temporary period matches today's DATE
-            console.log("Admin Preview Status determined by: Temporary Rule (Date Match)");
+   // Temporary Check (Fixed Logic)
+if (!ruleApplied) {
+    const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
+    if (activeTemporary) {
+        statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+        activeHoursRule = { ...activeTemporary, reason: statusReason };
+        ruleApplied = true;
 
-            if (activeTemporary.isClosed) {
+        if (activeTemporary.isClosed) {
+            currentStatus = 'Temporarily Unavailable';
+        } else if (activeTemporary.open && activeTemporary.close) {
+            const openMins = timeStringToMinutesBI(activeTemporary.open);
+            const closeMins = timeStringToMinutesBI(activeTemporary.close);
+
+            if (openMins === null || closeMins === null) {
                 currentStatus = 'Temporarily Unavailable';
-                console.log(">>> Admin Preview Temp Check: Rule marked 'Closed' -> Temporarily Unavailable");
-            } else if (activeTemporary.open && activeTemporary.close) {
-                const openMins = timeStringToMinutesBI(activeTemporary.open);
-                const closeMins = timeStringToMinutesBI(activeTemporary.close);
-                 console.log(`>>> Admin Preview Temp Check(Mins): CurrentLocalMins=${previewCurrentMinutes}, OpenETMins=${openMins}, CloseETMins=${closeMins}`);
-                if (openMins === null || closeMins === null) {
-                    currentStatus = 'Temporarily Unavailable';
-                    console.log(">>> Admin Preview Temp Check Result: Invalid Times -> Temporarily Unavailable");
+            } else {
+                // Check if current time is within the temporary hours range
+                if (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) {
+                    currentStatus = 'Open';
                 } else {
-                     const isWithin = (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins);
-                     console.log(`>>> Admin Preview Temp Check Condition Result: (Current >= Open && Current < Close) = ${isWithin}`);
-                     if (isWithin) {
-                         currentStatus = 'Open';
-                         console.log(">>> Admin Preview Temp Check Final Status: Open");
-                     } else {
-                         currentStatus = 'Temporarily Unavailable';
-                         console.log(">>> Admin Preview Temp Check Final Status: Temporarily Unavailable");
-                     }
+                    currentStatus = 'Closed'; // Changed from 'Temporarily Unavailable' to 'Closed'
                 }
-            } else { // No specific times, but not marked closed? Default to unavailable.
-                 currentStatus = 'Temporarily Unavailable';
-                 console.log(">>> Admin Preview Temp Check Result: No valid open/close times provided -> Temporarily Unavailable");
             }
+        } else {
+            currentStatus = 'Temporarily Unavailable';
         }
     }
+}
 
     // Regular Hours Check (Only if NO rule applied yet)
     if (!ruleApplied) {
