@@ -1591,35 +1591,28 @@ function updateAdminPreview() {
         }
     }
 
-   // Inside updateAdminPreview function in admin.js:
-// Temporary Check (Corrected Logic)
+ // Inside updateAdminPreview function in admin.js
 if (!ruleApplied) {
     const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
     if (activeTemporary) {
         statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-        activeHoursRule = { ...activeTemporary, reason: statusReason };
         ruleApplied = true;
 
-        if (activeTemporary.isClosed) {
+        if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
             currentStatus = 'Open';
         } else {
-            if (activeTemporary.open && activeTemporary.close) {
-                const openMins = timeStringToMinutes(activeTemporary.open);
-                const closeMins = timeStringToMinutes(activeTemporary.close);
-
-                if (openMins !== null && closeMins !== null) {
-                    if (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) {
-                        currentStatus = 'Temporarily Unavailable';
-                    } else {
-                        currentStatus = 'Open';
-                    }
-                } else {
-                    currentStatus = 'Open';
-                }
-            } else {
+            const openMins = timeStringToMinutesBI(activeTemporary.open);
+            const closeMins = timeStringToMinutesBI(activeTemporary.close);
+            
+            if (openMins === null || closeMins === null) {
                 currentStatus = 'Open';
+            } else {
+                currentStatus = (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) 
+                    ? 'Temporarily Unavailable' 
+                    : 'Open';
             }
         }
+        activeHoursRule = { ...activeTemporary, reason: statusReason };
     }
 }
     // Regular Hours Check (Only if NO rule applied yet)
