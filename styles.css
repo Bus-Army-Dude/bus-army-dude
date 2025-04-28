@@ -2208,42 +2208,29 @@ body.maintenance-active {
 
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
 
-/* Business Info Section Styles */
+/* ======================================== */
+/* == Business Info Section Styles == */
+/* ======================================== */
+
 .business-info-section {
-    background: linear-gradient(145deg,
-        color-mix(in srgb, var(--content-bg) 98%, white),
-        var(--content-bg)
-    );
+    background: var(--content-bg);
     padding: 30px;
-    border-radius: var(--border-radius-lg);
+    border-radius: 16px;
     margin: 25px 0;
-    box-shadow: 
-        0 8px 32px -8px var(--shadow-color),
-        0 0 0 1px color-mix(in srgb, var(--border-color) 15%, transparent);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px -8px var(--shadow-color);
 }
 
 /* Status Styles */
-.business-status {
+.business-status,
+.preview-status {
     margin-bottom: 20px;
     font-size: 1.2em;
     text-align: center;
 }
 
-.status-open { 
-    color: var(--status-open); 
-    font-weight: 600; 
-}
-
-.status-closed { 
-    color: var(--status-closed); 
-    font-weight: 600; 
-}
-
-.status-unavailable { 
-    color: var(--status-temp); 
-    font-weight: 600; 
-}
+.status-open { color: var(--status-open); font-weight: 600; }
+.status-closed { color: var(--status-closed); font-weight: 600; }
+.status-unavailable { color: var(--status-temp); font-weight: 600; }
 
 .status-reason {
     color: var(--secondary-text);
@@ -2259,44 +2246,36 @@ body.maintenance-active {
     font-weight: 500;
 }
 
-.countdown-closing {
-    color: var(--countdown-closing);
-}
-
-.countdown-opening {
-    color: var(--countdown-opening);
-}
-
-.countdown-temp-closing {
-    color: var(--countdown-temp-closing);
-}
-
-.countdown-temp-opening {
-    color: var(--countdown-temp-opening);
-}
+.countdown-closing { color: var(--countdown-closing); }
+.countdown-opening { color: var(--countdown-opening); }
+.countdown-temp-closing { color: var(--countdown-temp-closing); }
+.countdown-temp-opening { color: var(--countdown-temp-opening); }
 
 .additional-status-info {
     font-size: 0.85em;
     color: var(--secondary-text);
     margin-top: 8px;
     padding: 8px;
-    background: color-mix(in srgb, var(--content-bg) 95%, var(--accent-color));
-    border-radius: var(--border-radius-md);
+    background: var(--content-bg);
+    border-radius: 8px;
     display: inline-block;
 }
 
 /* Hours List Styles */
-.hours-list {
+.hours-list,
+.preview-hours {
     margin-top: 20px;
 }
 
-.hours-list ul {
+.hours-list ul,
+.preview-hours ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.hours-list li {
+.hours-list li,
+.preview-hours li {
     padding: 8px 0;
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -2304,15 +2283,17 @@ body.maintenance-active {
     align-items: center;
 }
 
-.hours-list li:last-child {
+.hours-list li:last-child,
+.preview-hours li:last-child {
     border-bottom: none;
 }
 
-.hours-list li.current-day {
-    background: color-mix(in srgb, var(--content-bg) 95%, var(--accent-color));
+.hours-list li.current-day,
+.preview-hours li.current-day {
+    background: var(--content-bg);
     margin: 0 -10px;
     padding: 8px 10px;
-    border-radius: var(--border-radius-md);
+    border-radius: 8px;
 }
 
 .hours-timezone-note {
@@ -2324,19 +2305,22 @@ body.maintenance-active {
 }
 
 /* Contact Info Styles */
-.contact-info {
+.contact-info,
+.preview-contact {
     margin-top: 20px;
     text-align: center;
     font-size: 0.9em;
 }
 
-.contact-info a {
+.contact-info a,
+.preview-contact a {
     color: var(--link-color);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
-.contact-info a:hover {
+.contact-info a:hover,
+.preview-contact a:hover {
     color: var(--hover-color);
     text-decoration: underline;
 }
@@ -2347,7 +2331,8 @@ body.maintenance-active {
         padding: 20px;
     }
     
-    .business-status {
+    .business-status,
+    .preview-status {
         font-size: 1.1em;
     }
     
@@ -2362,16 +2347,19 @@ body.maintenance-active {
         padding: 15px;
     }
     
-    .business-status {
+    .business-status,
+    .preview-status {
         font-size: 1em;
     }
     
-    .hours-list li {
+    .hours-list li,
+    .preview-hours li {
         flex-direction: column;
         align-items: flex-start;
     }
     
-    .hours-list li span {
+    .hours-list li span,
+    .preview-hours li span {
         margin-top: 4px;
     }
 }
