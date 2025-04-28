@@ -768,7 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contactEmail: ''
     };
 
-    // Initialize regular hours grid
+    // Initialize regular hours grid with weekday cards
     function setupRegularHours() {
         const container = document.getElementById('regular-hours-container');
         container.innerHTML = ''; // Clear existing content
@@ -785,6 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="time-inputs">
                     <input type="time" name="${dayLower}-open" value="${businessData.regularHours[dayLower]?.open || '09:00'}" 
                            ${businessData.regularHours[dayLower]?.isClosed ? 'disabled' : ''}>
+                    <span></span>
                     <input type="time" name="${dayLower}-close" value="${businessData.regularHours[dayLower]?.close || '17:00'}"
                            ${businessData.regularHours[dayLower]?.isClosed ? 'disabled' : ''}>
                 </div>
@@ -793,8 +794,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input type="checkbox" name="${dayLower}-closed" 
                                ${businessData.regularHours[dayLower]?.isClosed ? 'checked' : ''}>
                         <span class="toggle-slider"></span>
-                        <span class="toggle-label">Closed</span>
                     </label>
+                    <span class="toggle-label">Closed</span>
                 </div>
             `;
             
@@ -803,7 +804,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const timeInputs = dayGroup.querySelectorAll(`input[type="time"]`);
             
             closedToggle.addEventListener('change', (e) => {
-                timeInputs.forEach(input => input.disabled = e.target.checked);
+                timeInputs.forEach(input => {
+                    input.disabled = e.target.checked;
+                    if (e.target.checked) {
+                        input.parentElement.classList.add('disabled');
+                    } else {
+                        input.parentElement.classList.remove('disabled');
+                    }
+                });
                 updatePreview();
             });
             
@@ -837,6 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label>Hours</label>
                     <div class="time-inputs">
                         <input type="time" class="time-open" value="${data.open || ''}" ${data.isClosed ? 'disabled' : ''}>
+                        <span></span>
                         <input type="time" class="time-close" value="${data.close || ''}" ${data.isClosed ? 'disabled' : ''}>
                     </div>
                 </div>
@@ -844,8 +853,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label class="toggle-switch">
                         <input type="checkbox" class="closed-holiday" ${data.isClosed ? 'checked' : ''}>
                         <span class="toggle-slider"></span>
-                        <span class="toggle-label">Closed for Holiday</span>
                     </label>
+                    <span class="toggle-label">Closed for Holiday</span>
                 </div>
             </div>
         `;
@@ -856,12 +865,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const removeButton = entry.querySelector('.remove-hour-button');
         
         closedToggle.addEventListener('change', (e) => {
-            timeInputs.forEach(input => input.disabled = e.target.checked);
+            timeInputs.forEach(input => {
+                input.disabled = e.target.checked;
+                if (e.target.checked) {
+                    input.parentElement.classList.add('disabled');
+                } else {
+                    input.parentElement.classList.remove('disabled');
+                }
+            });
             updatePreview();
-        });
-        
-        timeInputs.forEach(input => {
-            input.addEventListener('change', updatePreview);
         });
         
         removeButton.addEventListener('click', () => {
@@ -902,6 +914,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label>Hours</label>
                     <div class="time-inputs">
                         <input type="time" class="time-open" value="${data.open || ''}" ${data.isClosed ? 'disabled' : ''}>
+                        <span></span>
                         <input type="time" class="time-close" value="${data.close || ''}" ${data.isClosed ? 'disabled' : ''}>
                     </div>
                 </div>
@@ -909,8 +922,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label class="toggle-switch">
                         <input type="checkbox" class="closed-temporary" ${data.isClosed ? 'checked' : ''}>
                         <span class="toggle-slider"></span>
-                        <span class="toggle-label">Temporarily Closed</span>
                     </label>
+                    <span class="toggle-label">Temporarily Closed</span>
                 </div>
             </div>
         `;
@@ -921,12 +934,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const removeButton = entry.querySelector('.remove-hour-button');
         
         closedToggle.addEventListener('change', (e) => {
-            timeInputs.forEach(input => input.disabled = e.target.checked);
+            timeInputs.forEach(input => {
+                input.disabled = e.target.checked;
+                if (e.target.checked) {
+                    input.parentElement.classList.add('disabled');
+                } else {
+                    input.parentElement.classList.remove('disabled');
+                }
+            });
             updatePreview();
-        });
-        
-        timeInputs.forEach(input => {
-            input.addEventListener('change', updatePreview);
         });
         
         removeButton.addEventListener('click', () => {
@@ -952,7 +968,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contactEmail: document.getElementById('contact-email').value
         };
 
-        // Regular hours
+        // Regular hours from weekday cards
         days.forEach(day => {
             const dayLower = day.toLowerCase();
             const isClosed = document.querySelector(`input[name="${dayLower}-closed"]`).checked;
@@ -999,6 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update preview
     function updatePreview() {
         const previewData = gatherFormData();
+        
         // Update status display
         const statusDisplay = document.getElementById('preview-status');
         calculateAndDisplayStatusConverted(previewData, statusDisplay);
@@ -1009,7 +1026,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize admin panel
-    function initializeAdminPanel() {
+    async function initializeAdminPanel() {
+        // Set up weekday cards
         setupRegularHours();
         
         // Add event listeners for buttons
@@ -1033,10 +1051,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         // Load initial data
-        loadFromDB();
+        await loadFromDB();
     }
 
-    // DB Operations (Replace with your actual DB implementation)
+    // DB Operations
     async function loadFromDB() {
         try {
             const docSnap = await getDoc(businessDocRef);
