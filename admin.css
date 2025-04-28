@@ -1426,7 +1426,7 @@ input[type="date"],
 input[type="time"] {
     appearance: none;
     -webkit-appearance: none;
-    background-color: var(--input-bg, #ffffff);
+    background-color: var(--input-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md, 8px);
     padding: 12px 14px;
@@ -1614,9 +1614,9 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* Status colors */
-.status-open { color: #34c759; }
-.status-closed { color: #ff3b30; }
-.status-unavailable { color: #ff9500; }
+.status-open { color: var(--status-open); }
+.status-closed { color: var(--status-closed); }
+.status-unavailable { color: var(--status-temp); }
 
 /* Status reason */
 .status-reason {
