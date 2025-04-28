@@ -833,26 +833,32 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         return false;
     });
 
-    if (activeTemporary) {
-        statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-        if (activeTemporary.isClosed) {
-            currentStatus = 'Open';
-        } else {
+    // Inside calculateAndDisplayStatusConvertedBI function in displayShoutouts.js:
+// Check for temporary hours
+const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
+if (activeTemporary) {
+    statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+    if (activeTemporary.isClosed) {
+        currentStatus = 'Open';
+    } else {
+        if (activeTemporary.open && activeTemporary.close) {
             const openMins = timeStringToMinutes(activeTemporary.open);
             const closeMins = timeStringToMinutes(activeTemporary.close);
-            if (openMins === null || closeMins === null) {
-                currentStatus = 'Open';
-            } else {
-                // If within the specified time range -> Temporarily Unavailable
-                // If outside the time range -> Open
+
+            if (openMins !== null && closeMins !== null) {
                 if (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
                     currentStatus = 'Temporarily Unavailable';
                 } else {
                     currentStatus = 'Open';
                 }
+            } else {
+                currentStatus = 'Open';
             }
+        } else {
+            currentStatus = 'Open';
         }
-        activeHoursRule = { ...activeTemporary, reason: statusReason };
+    }
+    activeHoursRule = { ...activeTemporary, reason: statusReason };
             } else {
                 // Regular hours
                 statusReason = 'Regular Hours';
