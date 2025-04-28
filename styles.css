@@ -2303,7 +2303,12 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.hours-list li.current-day .day-name,
+.preview-hours li.current-day .day-name {
+    color: var(--accent-color);
 }
 
 .hours-list li:last-child,
@@ -2315,11 +2320,10 @@ body.maintenance-active {
 .hours-list li.current-day,
 .preview-hours li.current-day {
     background: var(--current-day-bg);
-    border: 1px solid var(--current-day-border);
-    margin: 4px -10px;
-    padding: 12px 16px;
-    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
     font-weight: 500;
+    padding-left: 16px;
+    margin: 4px 0;
 }
 
 .hours-list li.current-day::before,
