@@ -2,67 +2,76 @@
 /*       Theme Variables    */
 /* ======================== */
 :root {
-  /* Light Mode Colors */
-  --light-bg: #ffffff;
-  --light-content-bg: #f5f5f5;
-  --light-text: #212529;
-  --light-secondary-text: #495057;
-  --light-border: #dee2e6;
-  --light-accent: #4CAF50;
-  --light-hover: #45a049;
-  --light-link: #007bff;
-  --light-shadow: rgba(0, 0, 0, 0.1);
-  --light-icon: #ffffff;
-  
-  /* Dark Mode Colors */
-  --dark-bg: #121212;
-  --dark-content-bg: #2d2d2d;
-  --dark-text: #E0E0E0;
-  --dark-secondary-text: #a0a0a0;
-  --dark-border: #333333;
-  --dark-accent: #4CAF50;
-  --dark-hover: #45a049;
-  --dark-link: #BB86FC;
-  --dark-shadow: rgba(0, 0, 0, 0.2);
-  --dark-icon: #000000;
+    /* Light Mode Colors */
+    --light-bg: #ffffff;
+    --light-content-bg: #f5f5f5;
+    --light-text: #212529;
+    --light-secondary-text: #495057;
+    --light-border: #dee2e6;
+    --light-accent: #4CAF50;
+    --light-hover: #45a049;
+    --light-link: #007bff;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-icon: #ffffff;
+    
+    /* Dark Mode Colors */
+    --dark-bg: #121212;
+    --dark-content-bg: #2d2d2d;
+    --dark-text: #E0E0E0;
+    --dark-secondary-text: #a0a0a0;
+    --dark-border: #333333;
+    --dark-accent: #4CAF50;
+    --dark-hover: #45a049;
+    --dark-link: #BB86FC;
+    --dark-shadow: rgba(0, 0, 0, 0.2);
+    --dark-icon: #000000;
 
-  /* Input and Dropdowns */
-  --input-bg: #ffffff;
-  --dropdown-background-dark: #222222;
-  --dropdown-text-dark: #ffffff;
-  --dropdown-border-dark: #555555;
-  --dropdown-focus-border: #007bff;
-  --dropdown-background-light: #ffffff;
-  --dropdown-text-light: #333333;
-  --dropdown-border-light: #cccccc;
-  --dropdown-focus-border-light: #007bff;
-  --dropdown-focus-border-dark: #ff5722;
+    /* Input and Dropdowns */
+    --input-bg: #ffffff;
+    --dropdown-background-dark: #222222;
+    --dropdown-text-dark: #ffffff;
+    --dropdown-border-dark: #555555;
+    --dropdown-focus-border: #007bff;
+    --dropdown-background-light: #ffffff;
+    --dropdown-text-light: #333333;
+    --dropdown-border-light: #cccccc;
+    --dropdown-focus-border-light: #007bff;
+    --dropdown-focus-border-dark: #ff5722;
 
-  /* Fallback theme variables if no e class is applied (default to dark e) */
-  --bg-color: var(--dark-bg);
-  --content-bg: var(--dark-content-bg);
-  --text-color: var(--dark-text);
-  --secondary-text: var(--dark-secondary-text);
-  --border-color: var(--dark-border);
-  --accent-color: var(--dark-accent);
-  --hover-color: var(--dark-hover);
-  --link-color: var(--dark-link);
-  --shadow-color: var(--dark-shadow);
-  --icon-color: var(--dark-icon);
+    /* Business Hours Status Colors */
+    --status-open: #34c759;
+    --status-closed: #ff3b30;
+    --status-temp: #ff9500;
+    --countdown-closing: #ff3b30;
+    --countdown-opening: #34c759;
+    --countdown-temp-closing: #ff9500;
+    --countdown-temp-opening: #34c759;
+
+    /* Fallback theme variables if no e class is applied (default to dark e) */
+    --bg-color: var(--dark-bg);
+    --content-bg: var(--dark-content-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary-text);
+    --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --hover-color: var(--dark-hover);
+    --link-color: var(--dark-link);
+    --shadow-color: var(--dark-shadow);
+    --icon-color: var(--dark-icon);
 }
 
 /* Light e Override */
 body.light-e {
-  --bg-color: var(--light-bg);
-  --content-bg: var(--light-content-bg);
-  --text-color: var(--light-text);
-  --secondary-text: var(--light-secondary-text);
-  --border-color: var(--light-border);
-  --accent-color: var(--light-accent);
-  --hover-color: var(--light-hover);
-  --link-color: var(--light-link);
-  --shadow-color: var(--light-shadow);
-  --icon-color: var(--light-icon);
+    --bg-color: var(--light-bg);
+    --content-bg: var(--light-content-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary-text);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --hover-color: var(--light-hover);
+    --link-color: var(--light-link);
+    --shadow-color: var(--light-shadow);
+    --icon-color: var(--light-icon);
 }
 
 /* Base Styles */
@@ -2199,10 +2208,6 @@ body.maintenance-active {
 
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
 
-/* ======================================== */
-/* == Business Info Section Styles (Public Page) == */
-/* ======================================== */
-
 /* Business Info Section Styles */
 .business-info-section {
     background: linear-gradient(145deg,
@@ -2210,7 +2215,7 @@ body.maintenance-active {
         var(--content-bg)
     );
     padding: 30px;
-    border-radius: 16px;
+    border-radius: var(--border-radius-lg);
     margin: 25px 0;
     box-shadow: 
         0 8px 32px -8px var(--shadow-color),
@@ -2218,15 +2223,27 @@ body.maintenance-active {
     backdrop-filter: blur(10px);
 }
 
+/* Status Styles */
 .business-status {
     margin-bottom: 20px;
     font-size: 1.2em;
     text-align: center;
 }
 
-.status-open { color: var(--success-color); font-weight: 600; }
-.status-closed { color: var(--danger-color); font-weight: 600; }
-.status-unavailable { color: var(--warning-color); font-weight: 600; }
+.status-open { 
+    color: var(--status-open); 
+    font-weight: 600; 
+}
+
+.status-closed { 
+    color: var(--status-closed); 
+    font-weight: 600; 
+}
+
+.status-unavailable { 
+    color: var(--status-temp); 
+    font-weight: 600; 
+}
 
 .status-reason {
     color: var(--secondary-text);
@@ -2234,12 +2251,28 @@ body.maintenance-active {
     margin-left: 10px;
 }
 
+/* Countdown Message Styles */
 .countdown-message {
     display: block;
     font-size: 0.9em;
-    color: var(--accent-color);
     margin-top: 5px;
     font-weight: 500;
+}
+
+.countdown-closing {
+    color: var(--countdown-closing);
+}
+
+.countdown-opening {
+    color: var(--countdown-opening);
+}
+
+.countdown-temp-closing {
+    color: var(--countdown-temp-closing);
+}
+
+.countdown-temp-opening {
+    color: var(--countdown-temp-opening);
 }
 
 .additional-status-info {
@@ -2248,10 +2281,11 @@ body.maintenance-active {
     margin-top: 8px;
     padding: 8px;
     background: color-mix(in srgb, var(--content-bg) 95%, var(--accent-color));
-    border-radius: 8px;
+    border-radius: var(--border-radius-md);
     display: inline-block;
 }
 
+/* Hours List Styles */
 .hours-list {
     margin-top: 20px;
 }
@@ -2278,7 +2312,7 @@ body.maintenance-active {
     background: color-mix(in srgb, var(--content-bg) 95%, var(--accent-color));
     margin: 0 -10px;
     padding: 8px 10px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-md);
 }
 
 .hours-timezone-note {
@@ -2289,6 +2323,7 @@ body.maintenance-active {
     font-style: italic;
 }
 
+/* Contact Info Styles */
 .contact-info {
     margin-top: 20px;
     text-align: center;
@@ -2298,19 +2333,24 @@ body.maintenance-active {
 .contact-info a {
     color: var(--link-color);
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .contact-info a:hover {
+    color: var(--hover-color);
     text-decoration: underline;
 }
 
+/* Responsive Styles */
 @media screen and (max-width: 768px) {
     .business-info-section {
         padding: 20px;
     }
+    
     .business-status {
         font-size: 1.1em;
     }
+    
     .additional-status-info {
         display: block;
         margin: 10px 0;
@@ -2321,13 +2361,16 @@ body.maintenance-active {
     .business-info-section {
         padding: 15px;
     }
+    
     .business-status {
         font-size: 1em;
     }
+    
     .hours-list li {
         flex-direction: column;
         align-items: flex-start;
     }
+    
     .hours-list li span {
         margin-top: 4px;
     }
