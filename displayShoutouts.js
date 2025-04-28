@@ -597,7 +597,7 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
 }
 
 // ========================================================
-// === START: BUSINESS INFO CODE FOR displayShoutouts.js v5 ===
+// === START: BUSINESS INFO CODE FOR displayShoutouts.js v6 ===
 // ========================================================
 
 // --- Element References ---
@@ -607,6 +607,7 @@ const businessStatusDisplay = document.getElementById('business-status-display')
 
 // --- Constants ---
 const assumedBusinessTimezone = 'America/New_York';
+const COUNTDOWN_THRESHOLD_MINUTES = 60; // Show countdown when within this many minutes
 
 // --- Helper Functions ---
 function capitalizeFirstLetter(string) {
@@ -624,6 +625,50 @@ function timeStringToMinutes(timeStr) {
         console.error("Error converting time string to minutes:", timeStr, e);
         return null;
     }
+}
+
+function calculateTimeUntil(targetMinutes, currentMinutes) {
+    const diffMinutes = targetMinutes - currentMinutes;
+    if (diffMinutes <= 0) return null;
+    if (diffMinutes > COUNTDOWN_THRESHOLD_MINUTES) return null;
+    return diffMinutes;
+}
+
+function formatCountdownMessage(minutes, type, additionalInfo = '') {
+    if (!minutes || minutes > COUNTDOWN_THRESHOLD_MINUTES) return '';
+    
+    let baseMessage = '';
+    switch(type) {
+        case 'opening':
+            baseMessage = `Opening in ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+            break;
+        case 'closing':
+            baseMessage = `Closing in ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+            break;
+        case 'temp_start':
+            baseMessage = `Closing Temporarily in ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+            break;
+        case 'temp_end':
+            baseMessage = `Opening again in ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+            break;
+        default:
+            return '';
+    }
+    
+    return additionalInfo ? `${baseMessage} (${additionalInfo})` : baseMessage;
+}
+
+function getBusinessHoursCountdown(openMins, closeMins, currentMins) {
+    if (currentMins < openMins) {
+        // Before opening
+        const minsUntilOpen = calculateTimeUntil(openMins, currentMins);
+        if (minsUntilOpen) return { type: 'opening', minutes: minsUntilOpen };
+    } else if (currentMins < closeMins) {
+        // During business hours
+        const minsUntilClose = calculateTimeUntil(closeMins, currentMins);
+        if (minsUntilClose) return { type: 'closing', minutes: minsUntilClose };
+    }
+    return null;
 }
 
 function formatDisplayTimeBI(timeString, visitorTimezone) {
@@ -741,6 +786,8 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     let currentStatus = 'Closed';
     let statusReason = 'Regular Hours';
     let displayHoursListHtml = '<ul>';
+    let countdownInfo = null;
+    let additionalStatusInfo = '';
     let visitorTimezone;
 
     try {
@@ -814,34 +861,57 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             } else {
                 const openMins = timeStringToMinutes(todayHoliday.open);
                 const closeMins = timeStringToMinutes(todayHoliday.close);
-                currentStatus = (openMins !== null && closeMins !== null && 
-                               currentMinutesInBizTZ >= openMins && 
-                               currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
+                
+                if (openMins !== null && closeMins !== null) {
+                    currentStatus = (currentMinutesInBizTZ >= openMins && 
+                                   currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
+                    
+                    // Get countdown information
+                    countdownInfo = getBusinessHoursCountdown(openMins, closeMins, currentMinutesInBizTZ);
+                }
             }
             activeHoursRule = { ...todayHoliday, reason: statusReason };
-      // Inside calculateAndDisplayStatusConvertedBI function - Temporary Hours Check
-} else {
-    // Check for temporary hours
-    const activeTemporary = temporaryHours.find(t => {
-        if (businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
-            // If the current date is within the temporary period, we check the time
-            if (t.open && t.close) {
-                const openMins = timeStringToMinutes(t.open);
-                const closeMins = timeStringToMinutes(t.close);
-                if (openMins === null || closeMins === null) return false;
-                // Only return true if we're within the time window
-                return (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins);
-            }
-            return t.isClosed; // Return true only if explicitly closed
-        }
-        return false;
-    });
+            additionalStatusInfo = `${todayHoliday.label || todayHoliday.date}: ${todayHoliday.isClosed ? 'Closed' : 
+                                  `${formatDisplayTimeBI(todayHoliday.open, visitorTimezone)} - ${formatDisplayTimeBI(todayHoliday.close, visitorTimezone)}`}`;
+        } else {
+            // Check for temporary hours
+            const activeTemporary = temporaryHours.find(t => {
+                if (businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
+                    if (t.open && t.close) {
+                        const openMins = timeStringToMinutes(t.open);
+                        const closeMins = timeStringToMinutes(t.close);
+                        if (openMins === null || closeMins === null) return false;
 
-    if (activeTemporary) {
-        statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-        currentStatus = 'Temporarily Unavailable';
-        activeHoursRule = { ...activeTemporary, reason: statusReason };
-    } else {
+                        // Within temporary period check
+                        if (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
+                            return true;
+                        }
+                        
+                        // Approaching temporary period check
+                        const minsUntilTemp = calculateTimeUntil(openMins, currentMinutesInBizTZ);
+                        if (minsUntilTemp && minsUntilTemp <= COUNTDOWN_THRESHOLD_MINUTES) {
+                            countdownInfo = { type: 'temp_start', minutes: minsUntilTemp };
+                            return true;
+                        }
+                        
+                        // Near end of temporary period check
+                        const minsUntilEnd = calculateTimeUntil(closeMins, currentMinutesInBizTZ);
+                        if (minsUntilEnd && minsUntilEnd <= COUNTDOWN_THRESHOLD_MINUTES) {
+                            countdownInfo = { type: 'temp_end', minutes: minsUntilEnd };
+                            return true;
+                        }
+                    }
+                    return t.isClosed;
+                }
+                return false;
+            });
+
+            if (activeTemporary) {
+                statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+                currentStatus = 'Temporarily Unavailable';
+                activeHoursRule = { ...activeTemporary, reason: statusReason };
+                additionalStatusInfo = `Temporarily Unavailable (${formatDisplayTimeBI(activeTemporary.open, visitorTimezone)} - ${formatDisplayTimeBI(activeTemporary.close, visitorTimezone)})`;
+            } else {
                 // Regular hours
                 statusReason = 'Regular Hours';
                 const todayRegularHours = regularHours[businessDayName];
@@ -849,9 +919,15 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                     todayRegularHours.open && todayRegularHours.close) {
                     const openMins = timeStringToMinutes(todayRegularHours.open);
                     const closeMins = timeStringToMinutes(todayRegularHours.close);
-                    currentStatus = (openMins !== null && closeMins !== null && 
-                                   currentMinutesInBizTZ >= openMins && 
-                                   currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
+                    
+                    if (openMins !== null && closeMins !== null) {
+                        currentStatus = (currentMinutesInBizTZ >= openMins && 
+                                       currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
+                        
+                        // Get countdown information
+                        countdownInfo = getBusinessHoursCountdown(openMins, closeMins, currentMinutesInBizTZ);
+                    }
+                    
                     activeHoursRule = { ...todayRegularHours, day: businessDayName };
                 } else {
                     currentStatus = 'Closed';
@@ -871,10 +947,22 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                      'status-closed';
 
     if (businessStatusDisplay) {
-        businessStatusDisplay.innerHTML = `
-            <span class="${statusClass}">${currentStatus}</span>
-            <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>
-        `;
+        let statusHtml = `<span class="${statusClass}">${currentStatus}</span>`;
+        
+        // Add countdown if available
+        if (countdownInfo) {
+            statusHtml += `<br><span class="countdown-message">${formatCountdownMessage(countdownInfo.minutes, countdownInfo.type, activeHoursRule?.reason)}</span>`;
+        }
+        
+        // Add status reason
+        statusHtml += `<span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
+        
+        // Add additional status info if available
+        if (additionalStatusInfo) {
+            statusHtml += `<div class="additional-status-info">${additionalStatusInfo}</div>`;
+        }
+        
+        businessStatusDisplay.innerHTML = statusHtml;
     }
 
     // Format and Display Hours List
@@ -919,7 +1007,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
 }
 
 // ======================================================
-// ===== END: BUSINESS INFO CODE FOR displayShoutouts.js ====
+// === END: BUSINESS INFO CODE FOR displayShoutouts.js ===
 // ======================================================
 
 // --- ***** Countdown Timer Logic (v7) ***** ---
