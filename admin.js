@@ -1600,23 +1600,25 @@ if (!ruleApplied) {
         activeHoursRule = { ...activeTemporary, reason: statusReason };
         ruleApplied = true;
 
-        if (activeTemporary.open && activeTemporary.close) {
-            const openMins = timeStringToMinutesBI(activeTemporary.open);
-            const closeMins = timeStringToMinutesBI(activeTemporary.close);
+        if (activeTemporary.isClosed) {
+            currentStatus = 'Open';
+        } else {
+            if (activeTemporary.open && activeTemporary.close) {
+                const openMins = timeStringToMinutes(activeTemporary.open);
+                const closeMins = timeStringToMinutes(activeTemporary.close);
 
-            if (openMins === null || closeMins === null) {
-                currentStatus = 'Open';
-            } else {
-                // If within the specified time range -> Temporarily Unavailable
-                // Otherwise -> Open
-                if (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) {
-                    currentStatus = 'Temporarily Unavailable';
+                if (openMins !== null && closeMins !== null) {
+                    if (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) {
+                        currentStatus = 'Temporarily Unavailable';
+                    } else {
+                        currentStatus = 'Open';
+                    }
                 } else {
                     currentStatus = 'Open';
                 }
+            } else {
+                currentStatus = 'Open';
             }
-        } else {
-            currentStatus = 'Open';
         }
     }
 }
