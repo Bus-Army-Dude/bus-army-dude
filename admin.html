@@ -165,64 +165,66 @@
             </section>
 
            <section class="admin-section">
-            <h2>Business Hours Administration</h2>
-            
-            <!-- Regular Hours -->
-            <div class="admin-block">
-                <h3>Regular Business Hours</h3>
-                <div id="regular-hours-container" class="hours-grid">
-                    <!-- Weekday cards will be dynamically inserted here -->
-                </div>
+    <h2>Business Hours Administration</h2>
+    
+    <form id="business-info-form">
+        <!-- Regular Hours -->
+        <div class="admin-block">
+            <h3>Regular Business Hours</h3>
+            <div id="regular-hours-container" class="hours-grid">
+                <!-- Weekday cards dynamically inserted here -->
             </div>
+        </div>
 
-            <!-- Holiday Hours -->
-            <div class="admin-block">
-                <h3>Holiday Hours</h3>
-                <button type="button" id="add-holiday" class="action-button">Add Holiday</button>
-                <div id="holiday-hours-list" class="special-hours-list"></div>
-            </div>
+        <!-- Holiday Hours -->
+        <div class="admin-block">
+            <h3>Holiday Hours</h3>
+            <button type="button" id="add-holiday-button" class="action-button">Add Holiday</button>
+            <div id="holiday-hours-list" class="special-hours-list"></div>
+        </div>
 
-            <!-- Temporary Hours -->
-            <div class="admin-block">
-                <h3>Temporary Hours</h3>
-                <button type="button" id="add-temporary" class="action-button">Add Temporary Hours</button>
-                <div id="temporary-hours-list" class="special-hours-list"></div>
-            </div>
+        <!-- Temporary Hours -->
+        <div class="admin-block">
+            <h3>Temporary Hours</h3>
+            <button type="button" id="add-temporary-button" class="action-button">Add Temporary Hours</button>
+            <div id="temporary-hours-list" class="special-hours-list"></div>
+        </div>
 
-            <!-- Status Override -->
-            <div class="admin-block">
-                <h3>Status Override</h3>
-                <select id="status-override" class="status-select">
-                    <option value="auto">Automatic (Based on Hours)</option>
-                    <option value="open">Force Open</option>
-                    <option value="closed">Force Closed</option>
-                    <option value="temp">Force Temporarily Unavailable</option>
-                </select>
-            </div>
+        <!-- Status Override -->
+        <div class="admin-block">
+            <h3>Status Override</h3>
+            <select id="business-status-override" class="status-select">
+                <option value="auto">Automatic (Based on Hours)</option>
+                <option value="open">Force Open</option>
+                <option value="closed">Force Closed</option>
+                <option value="temp">Force Temporarily Unavailable</option>
+            </select>
+        </div>
 
-            <!-- Contact Email -->
-            <div class="admin-block">
-                <h3>Contact Email</h3>
-                <input type="email" id="contact-email" class="email-input" placeholder="contact@example.com">
-            </div>
+        <!-- Contact Email -->
+        <div class="admin-block">
+            <h3>Contact Email</h3>
+            <input type="email" id="business-contact-email" class="email-input" placeholder="contact@example.com">
+        </div>
 
-            <!-- Save Actions -->
-            <div class="admin-actions">
-                <button type="button" id="save-changes" class="primary-button">Save Changes</button>
+        <!-- Preview -->
+        <div class="admin-preview-container">
+            <h4>Live Preview</h4>
+            <div class="preview-content">
+                <div id="admin-preview-status" class="preview-status"></div>
+                <div id="admin-preview-hours" class="preview-hours"></div>
+                <div id="admin-preview-contact" class="preview-contact"></div>
             </div>
+        </div>
 
-            <!-- Live Preview -->
-            <div class="admin-preview-container">
-                <h4>Live Preview</h4>
-                <div class="preview-content">
-                    <div id="preview-status" class="business-status"></div>
-                    <div id="preview-hours" class="hours-list"></div>
-                    <div id="preview-holiday" class="holiday-hours-list"></div>
-                    <div id="preview-special" class="special-hours-list"></div>
-                    <div id="preview-contact" class="contact-info"></div>
-                </div>
-            </div>
-        </section>
+        <div id="business-info-status-message" class="status-message"></div>
+        
+        <!-- Save Button -->
+        <div class="admin-actions">
+            <button type="submit" class="primary-button">Save Changes</button>
+        </div>
+    </form>
+</section>
 
              <section class="admin-section" id="president-management" aria-labelledby="president-heading">
                 <h3 id="president-heading">Manage Current President Info</h3>
