@@ -1747,6 +1747,36 @@ async function loadBusinessInfoData() {
     }
 }
 
+    // Preview Update Function
+function updateAdminPreview() {
+    const previewStatus = document.getElementById('admin-preview-status');
+    const previewHours = document.getElementById('admin-preview-hours');
+    const previewHoliday = document.getElementById('admin-preview-holiday');
+    const previewSpecial = document.getElementById('admin-preview-special');
+    const previewContact = document.getElementById('admin-preview-contact');
+
+    if (!previewStatus || !previewHours) return;
+
+    // Get current form data
+    const currentData = {
+        statusOverride: document.getElementById('business-status-override')?.value || 'auto',
+        contactEmail: document.getElementById('business-contact-email')?.value || '',
+        regularHours: {},
+        holidayHours: [],
+        temporaryHours: []
+    };
+
+    // Collect regular hours
+    daysOfWeek.forEach(day => {
+        currentData.regularHours[day] = {
+            isClosed: document.getElementById(`${day}-isClosed`)?.checked || false,
+            open: document.getElementById(`${day}-open`)?.value || null,
+            close: document.getElementById(`${day}-close`)?.value || null
+        };
+    });
+
+    // Collect holiday hours
+    document.querySelectorAll
 // ======================================================
 // ===== END: CORRECTED Admin Preview Functions =========
 // ======================================================
