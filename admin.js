@@ -757,7 +757,7 @@ function renderYouTubeCard(account) {
     // *** END updateShoutoutPreview FUNCTION ***
 
 // Admin panel functionality
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDate = new Date();
     let businessData = {
@@ -1018,78 +1018,69 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update status display
         const statusDisplay = document.getElementById('preview-status');
-        calculateAndDisplayStatusConverted(previewData, statusDisplay);
+        if (statusDisplay) {
+            calculateAndDisplayStatusConverted(previewData, statusDisplay);
+        }
         
         // Update hours display
         const hoursDisplay = document.getElementById('preview-hours');
-        displayBusinessHours(previewData, hoursDisplay);
+        if (hoursDisplay) {
+            displayBusinessHours(previewData, hoursDisplay);
+        }
     }
 
     // Initialize admin panel
     async function initializeAdminPanel() {
-        // Set up weekday cards
-        setupRegularHours();
-        
-        // Add event listeners for buttons
-        document.getElementById('add-holiday').addEventListener('click', () => addHolidayEntry());
-        document.getElementById('add-temporary').addEventListener('click', () => addTemporaryEntry());
-        
-        // Status override and contact email events
-        document.getElementById('status-override').addEventListener('change', updatePreview);
-        document.getElementById('contact-email').addEventListener('input', updatePreview);
-        
-        // Save changes button
-        document.getElementById('save-changes').addEventListener('click', async () => {
-            const data = gatherFormData();
-            try {
-                await saveToDB(data);
-                alert('Changes saved successfully!');
-            } catch (error) {
-                alert('Error saving changes. Please try again.');
-                console.error('Save error:', error);
-            }
-        });
-        
-        // Load initial data
-        await loadFromDB();
-    }
-
-    // DB Operations
-    async function loadFromDB() {
         try {
-            const docSnap = await getDoc(businessDocRef);
-            if (docSnap.exists()) {
-                businessData = docSnap.data();
-                setupRegularHours();
-                
-                // Load holiday hours
-                businessData.holidayHours?.forEach(holiday => addHolidayEntry(holiday));
-                
-                // Load temporary hours
-                businessData.temporaryHours?.forEach(temp => addTemporaryEntry(temp));
-                
-                // Load status override and contact email
-                document.getElementById('status-override').value = businessData.statusOverride || 'auto';
-                document.getElementById('contact-email').value = businessData.contactEmail || '';
-                
-                updatePreview();
+            // Load initial data
+            const loadedData = await loadBusinessInfoData();
+            if (loadedData) {
+                businessData = loadedData;
             }
+            
+            // Set up weekday cards
+            setupRegularHours();
+            
+            // Add event listeners for buttons
+            document.getElementById('add-holiday').addEventListener('click', () => addHolidayEntry());
+            document.getElementById('add-temporary').addEventListener('click', () => addTemporaryEntry());
+            
+            // Status override and contact email events
+            document.getElementById('status-override').addEventListener('change', updatePreview);
+            document.getElementById('contact-email').addEventListener('input', updatePreview);
+            
+            // Load holiday hours
+            businessData.holidayHours?.forEach(holiday => addHolidayEntry(holiday));
+            
+            // Load temporary hours
+            businessData.temporaryHours?.forEach(temp => addTemporaryEntry(temp));
+            
+            // Load status override and contact email
+            document.getElementById('status-override').value = businessData.statusOverride || 'auto';
+            document.getElementById('contact-email').value = businessData.contactEmail || '';
+            
+            // Save changes button
+            document.getElementById('save-changes').addEventListener('click', async () => {
+                const data = gatherFormData();
+                try {
+                    await setDoc(businessDocRef, data);
+                    alert('Changes saved successfully!');
+                } catch (error) {
+                    alert('Error saving changes. Please try again.');
+                    console.error('Save error:', error);
+                }
+            });
+            
+            // Initial preview update
+            updatePreview();
+            
         } catch (error) {
-            console.error('Error loading data:', error);
+            console.error('Error initializing admin panel:', error);
             alert('Error loading data. Please refresh the page.');
         }
     }
 
-    async function saveToDB(data) {
-        try {
-            await setDoc(businessDocRef, data);
-        } catch (error) {
-            console.error('Error saving data:', error);
-            throw error;
-        }
-    }
-
-    // Initialize the admin panel
+    // Initialize everything
     initializeAdminPanel();
 });
     
