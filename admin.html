@@ -172,7 +172,7 @@
         <div class="admin-block">
             <h3>Regular Business Hours</h3>
             <div id="regular-hours-container" class="hours-grid">
-                <!-- Weekday cards dynamically inserted here -->
+                <!-- Dynamic weekday cards -->
             </div>
         </div>
 
@@ -207,13 +207,40 @@
             <input type="email" id="business-contact-email" class="email-input" placeholder="contact@example.com">
         </div>
 
-        <!-- Preview -->
+        <!-- Live Preview -->
         <div class="admin-preview-container">
             <h4>Live Preview</h4>
             <div class="preview-content">
-                <div id="admin-preview-status" class="preview-status"></div>
-                <div id="admin-preview-hours" class="preview-hours"></div>
+                <!-- Status with Countdown -->
+                <div id="admin-preview-status" class="preview-status">
+                    <div class="status-indicator"></div>
+                    <div class="countdown-message"></div>
+                </div>
+                
+                <!-- Regular Hours -->
+                <div id="admin-preview-hours" class="preview-hours">
+                    <h3>Regular Hours</h3>
+                    <div class="hours-list"></div>
+                </div>
+                
+                <!-- Holiday Hours Preview -->
+                <div id="admin-preview-holiday" class="preview-holiday-hours">
+                    <h3>Holiday Hours</h3>
+                    <div class="holiday-hours-list"></div>
+                </div>
+                
+                <!-- Temporary Hours Preview -->
+                <div id="admin-preview-special" class="preview-special-hours">
+                    <h3>Special Hours</h3>
+                    <div class="special-hours-list"></div>
+                </div>
+                
+                <!-- Contact Info -->
                 <div id="admin-preview-contact" class="preview-contact"></div>
+                
+                <div class="preview-timezone-note">
+                    All times shown in your local timezone
+                </div>
             </div>
         </div>
 
@@ -225,7 +252,6 @@
         </div>
     </form>
 </section>
-
              <section class="admin-section" id="president-management" aria-labelledby="president-heading">
                 <h3 id="president-heading">Manage Current President Info</h3>
 
