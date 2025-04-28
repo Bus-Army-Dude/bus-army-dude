@@ -80,17 +80,12 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
     
-<div id="maintenanceLoadingOverlay" class="maintenance-overlay" style="display: none;">
-    <div class="maintenance-content">
-        <div class="maintenance-loader"></div>
-        <h1>Site Under Maintenance</h1>
-        <p>We are currently performing scheduled maintenance. Please check back later.</p>
-        <div class="maintenance-status">
-            <a href="https://bus-army-dude.instatus.com/" target="_blank" rel="noopener noreferrer">
-                <i class="fas fa-chart-line"></i>
-                View Status Page
-            </a>
-        </div>
+<div id="maintenanceLoadingOverlay" class="maintenance-overlay" style="display: none;"> <div class="maintenance-content">
+        <div class="maintenance-loader"></div> <h1>Site Under Maintenance</h1> <div id="maintenanceStatusIndicator" class="maintenance-status-indicator status-operational">Operational</div>
+        <p>We are currently performing scheduled maintenance...</p> <div class="maintenance-socials">
+            <p>Stay Updated:</p>
+            <a href="https://bus-army-dude.instatus.com/" target="_blank" rel="noopener noreferrer"><i class="fas fa-chart-line"></i> Status Page</a>
+            </div>
     </div>
 </div>
 
@@ -223,36 +218,17 @@ s0.parentNode.insertBefore(s1,s0);
 
         <body class="dark-mode">
     <div class="business-info-section">
-            <h2>Business Status & Hours</h2>
-            <div id="business-status-display" class="business-status">
-                <span class="status-indicator"></span>
-                <span class="countdown-message"></span>
-            </div>
-            
-            <!-- Regular Hours -->
-            <div class="hours-section">
-                <h3>Regular Hours</h3>
-                <div id="business-hours-display" class="hours-list"></div>
-            </div>
-
-            <!-- Holiday Hours -->
-            <div id="holiday-hours-section" class="hours-section">
-                <h3>Holiday Hours</h3>
-                <div id="holiday-hours-display" class="holiday-hours-list"></div>
-            </div>
-
-            <!-- Special Hours -->
-            <div id="special-hours-section" class="hours-section">
-                <h3>Special Hours</h3>
-                <div id="special-hours-display" class="special-hours-list"></div>
-            </div>
-
-            <div class="hours-timezone-note">
-                All times shown in your local timezone
-            </div>
-
-            <div id="contact-email-display" class="contact-info"></div>
-        </div>
+        <h2>Business Status & Hours</h2>
+        
+        <!-- Status Display -->
+        <div id="business-status-display" class="business-status"></div>
+        
+        <!-- Hours Display -->
+        <div id="business-hours-display" class="hours-list"></div>
+        
+        <!-- Contact Display -->
+        <div id="contact-email-display" class="contact-info"></div>
+    </div>
     
         <div class="faq-section section">
     <h2>Frequently Asked Questions</h2>
