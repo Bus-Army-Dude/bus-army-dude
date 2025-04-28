@@ -164,94 +164,72 @@
                  <div id="profile-status-message" class="status-message" role="status" aria-live="polite"></div>
             </section>
 
-           <section class="admin-section">
-    <h2>Business Hours Administration</h2>
-    
-    <form id="business-info-form">
-        <!-- Regular Hours -->
-        <div class="admin-block">
-            <h3>Regular Business Hours</h3>
-            <div id="regular-hours-container" class="hours-grid">
-                <!-- Dynamic weekday cards -->
-            </div>
-        </div>
+           <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
+            <h3 id="business-info-heading">Manage Business Information</h3>
 
-        <!-- Holiday Hours -->
-        <div class="admin-block">
-            <h3>Holiday Hours</h3>
-            <button type="button" id="add-holiday-button" class="action-button">Add Holiday</button>
-            <div id="holiday-hours-list" class="special-hours-list"></div>
-        </div>
-
-        <!-- Temporary Hours -->
-        <div class="admin-block">
-            <h3>Temporary Hours</h3>
-            <button type="button" id="add-temporary-button" class="action-button">Add Temporary Hours</button>
-            <div id="temporary-hours-list" class="special-hours-list"></div>
-        </div>
-
-        <!-- Status Override -->
-        <div class="admin-block">
-            <h3>Status Override</h3>
-            <select id="business-status-override" class="status-select">
-                <option value="auto">Automatic (Based on Hours)</option>
-                <option value="open">Force Open</option>
-                <option value="closed">Force Closed</option>
-                <option value="temp">Force Temporarily Unavailable</option>
-            </select>
-        </div>
-
-        <!-- Contact Email -->
-        <div class="admin-block">
-            <h3>Contact Email</h3>
-            <input type="email" id="business-contact-email" class="email-input" placeholder="contact@example.com">
-        </div>
-
-        <!-- Live Preview -->
-        <div class="admin-preview-container">
-            <h4>Live Preview</h4>
-            <div class="preview-content">
-                <!-- Status with Countdown -->
-                <div id="admin-preview-status" class="preview-status">
-                    <div class="status-indicator"></div>
-                    <div class="countdown-message"></div>
+            <form id="business-info-form">
+                <div class="form-group">
+                    <label for="business-contact-email">Contact Email:</label>
+                    <input type="email" id="business-contact-email" name="contactEmail" 
+                           placeholder="Enter contact email address">
                 </div>
-                
-                <!-- Regular Hours -->
-                <div id="admin-preview-hours" class="preview-hours">
-                    <h3>Regular Hours</h3>
-                    <div class="hours-list"></div>
+
+                <h4>Regular Business Hours</h4>
+                <p><small><i>Enter all times based on US Eastern Time (ET / New York). 
+                   They will be automatically converted for visitors.</i></small></p>
+                <div id="regular-hours-container" class="hours-grid"></div>
+
+                <h4>Holiday Hours / Specific Date Closures</h4>
+                <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
+                <div id="holiday-hours-list" class="special-hours-list"></div>
+                <button type="button" id="add-holiday-button" class="button-secondary small-button">
+                    Add Holiday/Specific Date
+                </button>
+
+                <h4>Temporary Hours (e.g., Events, Renovations)</h4>
+                <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
+                <div id="temporary-hours-list" class="special-hours-list"></div>
+                <button type="button" id="add-temporary-button" class="button-secondary small-button">
+                    Add Temporary Hours Period
+                </button>
+
+                <div class="form-group">
+                    <label for="business-status-override">Status Override:</label>
+                    <select id="business-status-override" name="statusOverride">
+                        <option value="auto">Automatic (Based on Hours/Time)</option>
+                        <option value="open">Force Open</option>
+                        <option value="closed">Force Closed</option>
+                        <option value="unavailable">Force Temporarily Unavailable</option>
+                    </select>
+                    <small>Overrides the automatic open/closed calculation.</small>
                 </div>
-                
-                <!-- Holiday Hours Preview -->
-                <div id="admin-preview-holiday" class="preview-holiday-hours">
-                    <h3>Holiday Hours</h3>
-                    <div class="holiday-hours-list"></div>
+
+                <div class="form-actions">
+                    <button type="submit" id="save-business-info-button" class="button-primary">
+                        Save Business Info
+                    </button>
                 </div>
-                
-                <!-- Temporary Hours Preview -->
-                <div id="admin-preview-special" class="preview-special-hours">
-                    <h3>Special Hours</h3>
-                    <div class="special-hours-list"></div>
-                </div>
-                
-                <!-- Contact Info -->
-                <div id="admin-preview-contact" class="preview-contact"></div>
-                
-                <div class="preview-timezone-note">
-                    All times shown in your local timezone
+            </form>
+
+            <div class="admin-preview-container">
+                <h4>Live Preview (Simulated Visitor View)</h4>
+                <p><small><i>This preview uses your current browser time and attempts to simulate 
+                   how a visitor in your timezone would see the hours and status based on the 
+                   unsaved values above. The actual display depends on each visitor's timezone. 
+                   Assumes ET input.</i></small></p>
+                <div class="preview-content">
+                    <div id="admin-preview-status" class="preview-status">
+                        Status: Update form to preview...
+                    </div>
+                    <div id="admin-preview-hours" class="preview-hours"></div>
+                    <div id="admin-preview-contact" class="preview-contact"></div>
                 </div>
             </div>
-        </div>
+            
+            <div id="business-info-status-message" class="status-message" 
+                 role="status" aria-live="polite"></div>
+        </section>
 
-        <div id="business-info-status-message" class="status-message"></div>
-        
-        <!-- Save Button -->
-        <div class="admin-actions">
-            <button type="submit" class="primary-button">Save Changes</button>
-        </div>
-    </form>
-</section>
              <section class="admin-section" id="president-management" aria-labelledby="president-heading">
                 <h3 id="president-heading">Manage Current President Info</h3>
 
