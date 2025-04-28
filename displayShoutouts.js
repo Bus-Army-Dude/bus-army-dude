@@ -819,26 +819,27 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                                currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
             }
             activeHoursRule = { ...todayHoliday, reason: statusReason };
-        } else {
+      // Inside calculateAndDisplayStatusConvertedBI function - Temporary Hours Check
+} else {
     // Check for temporary hours
-    const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
+    const activeTemporary = temporaryHours.find(t => {
+        if (businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
+            // If the current date is within the temporary period, we check the time
+            if (t.open && t.close) {
+                const openMins = timeStringToMinutes(t.open);
+                const closeMins = timeStringToMinutes(t.close);
+                if (openMins === null || closeMins === null) return false;
+                // Only return true if we're within the time window
+                return (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins);
+            }
+            return t.isClosed; // Return true only if explicitly closed
+        }
+        return false;
+    });
+
     if (activeTemporary) {
         statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-        
-        if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
-            currentStatus = 'Open';
-        } else {
-            const openMins = timeStringToMinutes(activeTemporary.open);
-            const closeMins = timeStringToMinutes(activeTemporary.close);
-            
-            if (openMins === null || closeMins === null) {
-                currentStatus = 'Open';
-            } else {
-                currentStatus = (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) 
-                    ? 'Temporarily Unavailable' 
-                    : 'Open';
-            }
-        }
+        currentStatus = 'Temporarily Unavailable';
         activeHoursRule = { ...activeTemporary, reason: statusReason };
     } else {
                 // Regular hours
