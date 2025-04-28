@@ -1591,28 +1591,28 @@ function updateAdminPreview() {
         }
     }
 
- // Inside updateAdminPreview function in admin.js
+ // Inside updateAdminPreview function in admin.js - Temporary Hours Check
 if (!ruleApplied) {
-    const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
+    const activeTemporary = currentFormData.temporaryHours.find(t => {
+        if (previewDateStr >= t.startDate && previewDateStr <= t.endDate) {
+            // If the current date is within the temporary period, we check the time
+            if (t.open && t.close) {
+                const openMins = timeStringToMinutesBI(t.open);
+                const closeMins = timeStringToMinutesBI(t.close);
+                if (openMins === null || closeMins === null) return false;
+                // Only return true if we're within the time window
+                return (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins);
+            }
+            return t.isClosed; // Return true only if explicitly closed
+        }
+        return false;
+    });
+
     if (activeTemporary) {
         statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-        ruleApplied = true;
-
-        if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
-            currentStatus = 'Open';
-        } else {
-            const openMins = timeStringToMinutesBI(activeTemporary.open);
-            const closeMins = timeStringToMinutesBI(activeTemporary.close);
-            
-            if (openMins === null || closeMins === null) {
-                currentStatus = 'Open';
-            } else {
-                currentStatus = (previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) 
-                    ? 'Temporarily Unavailable' 
-                    : 'Open';
-            }
-        }
+        currentStatus = 'Temporarily Unavailable';
         activeHoursRule = { ...activeTemporary, reason: statusReason };
+        ruleApplied = true;
     }
 }
     // Regular Hours Check (Only if NO rule applied yet)
