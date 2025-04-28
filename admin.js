@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => { //
     // Reference for President Info
     const presidentDocRef = doc(db, "site_config", "currentPresident"); 
 
+    const businessDocRef = doc(db, "site_config", "businessDetails"); // Make sure this matches your Firebase path
+
+
     // Reference for Faq Info
     const faqsCollectionRef = collection(db, "faqs");
 
