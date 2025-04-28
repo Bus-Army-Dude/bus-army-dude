@@ -167,49 +167,97 @@
            <section class="admin-section">
             <h2>Business Hours Administration</h2>
             
+            <!-- Regular Hours Section -->
             <div class="admin-block">
                 <h3>Regular Business Hours</h3>
-                <div id="regular-hours-container"></div>
+                <div id="regular-hours-container" class="hours-grid"></div>
+                <div class="closed-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="closed-day-toggle">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">Closed this day</span>
+                    </label>
+                </div>
             </div>
 
+            <!-- Holiday Hours Section -->
             <div class="admin-block">
                 <h3>Holiday Hours</h3>
-                <button type="button" id="add-holiday">Add Holiday</button>
-                <div id="holiday-hours-list"></div>
+                <div class="holiday-controls">
+                    <button type="button" id="add-holiday" class="action-button">Add Holiday</button>
+                    <button type="button" id="bulk-import" class="secondary-button">Bulk Import</button>
+                </div>
+                <div id="holiday-hours-list" class="special-hours-list">
+                    <!-- Holiday entries will be added here -->
+                </div>
             </div>
 
+            <!-- Temporary Hours Section -->
             <div class="admin-block">
                 <h3>Temporary Hours</h3>
-                <button type="button" id="add-temporary">Add Temporary Hours</button>
-                <div id="temporary-hours-list"></div>
+                <div class="temp-hours-controls">
+                    <button type="button" id="add-temporary" class="action-button">Add Temporary Hours</button>
+                </div>
+                <div id="temporary-hours-list" class="special-hours-list">
+                    <!-- Temporary hour entries will be added here -->
+                </div>
             </div>
 
+            <!-- Status Override Section -->
             <div class="admin-block">
                 <h3>Status Override</h3>
-                <select id="status-override">
-                    <option value="auto">Automatic</option>
+                <select id="status-override" class="status-select">
+                    <option value="auto">Automatic (Based on Hours)</option>
                     <option value="open">Force Open</option>
                     <option value="closed">Force Closed</option>
                     <option value="temp">Force Temporarily Unavailable</option>
                 </select>
+                <div class="override-message" id="override-message"></div>
             </div>
 
+            <!-- Contact Information -->
             <div class="admin-block">
                 <h3>Contact Email</h3>
-                <input type="email" id="contact-email" placeholder="contact@example.com">
+                <input type="email" id="contact-email" class="email-input" placeholder="contact@example.com">
             </div>
 
+            <!-- Save Actions -->
             <div class="admin-actions">
                 <button type="button" id="save-business-info" class="primary-button">Save Changes</button>
+                <button type="button" id="preview-changes" class="secondary-button">Preview Changes</button>
             </div>
 
-            <div class="admin-preview">
-                <h3>Live Preview</h3>
-                <p class="preview-note">This preview shows how the hours will appear to visitors in their local timezone.</p>
+            <!-- Live Preview Section -->
+            <div class="admin-preview-container">
+                <div class="preview-header">
+                    <h4>Live Preview</h4>
+                    <span class="preview-note">Preview shows how hours appear to visitors in their timezone</span>
+                </div>
                 <div class="preview-content">
-                    <div id="admin-preview-status" class="business-status"></div>
-                    <div id="admin-preview-hours" class="hours-list"></div>
-                    <div id="admin-preview-contact" class="contact-info"></div>
+                    <div id="admin-preview-status" class="preview-status">
+                        <span class="status-indicator"></span>
+                        <span class="countdown-message"></span>
+                    </div>
+                    
+                    <!-- Regular Hours Preview -->
+                    <div class="preview-section">
+                        <h5>Regular Hours</h5>
+                        <div id="admin-preview-hours" class="preview-hours"></div>
+                    </div>
+
+                    <!-- Holiday Hours Preview -->
+                    <div class="preview-section">
+                        <h5>Holiday Hours</h5>
+                        <div id="admin-preview-holiday" class="preview-holiday-hours"></div>
+                    </div>
+
+                    <!-- Special Hours Preview -->
+                    <div class="preview-section">
+                        <h5>Special Hours</h5>
+                        <div id="admin-preview-special" class="preview-special-hours"></div>
+                    </div>
+
+                    <div id="admin-preview-contact" class="preview-contact"></div>
                 </div>
             </div>
         </section>
