@@ -821,45 +821,26 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             activeHoursRule = { ...todayHoliday, reason: statusReason };
         } else {
     // Check for temporary hours
-    const activeTemporary = temporaryHours.find(t => {
-        if (businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
-            if (t.isClosed) return true;
-            const openMins = timeStringToMinutes(t.open);
-            const closeMins = timeStringToMinutes(t.close);
-            if (openMins === null || closeMins === null) return false;
-            // Changed: Now we only care if the date matches, not the time range
-            return true;
-        }
-        return false;
-    });
-
-    // Inside calculateAndDisplayStatusConvertedBI function in displayShoutouts.js:
-// Check for temporary hours
-const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
-if (activeTemporary) {
-    statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-    if (activeTemporary.isClosed) {
-        currentStatus = 'Open';
-    } else {
-        if (activeTemporary.open && activeTemporary.close) {
+    const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
+    if (activeTemporary) {
+        statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+        
+        if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
+            currentStatus = 'Open';
+        } else {
             const openMins = timeStringToMinutes(activeTemporary.open);
             const closeMins = timeStringToMinutes(activeTemporary.close);
-
-            if (openMins !== null && closeMins !== null) {
-                if (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
-                    currentStatus = 'Temporarily Unavailable';
-                } else {
-                    currentStatus = 'Open';
-                }
-            } else {
+            
+            if (openMins === null || closeMins === null) {
                 currentStatus = 'Open';
-            }
-        } else {
-            currentStatus = 'Open';
-        }
-    }
-    activeHoursRule = { ...activeTemporary, reason: statusReason };
             } else {
+                currentStatus = (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) 
+                    ? 'Temporarily Unavailable' 
+                    : 'Open';
+            }
+        }
+        activeHoursRule = { ...activeTemporary, reason: statusReason };
+    } else {
                 // Regular hours
                 statusReason = 'Regular Hours';
                 const todayRegularHours = regularHours[businessDayName];
