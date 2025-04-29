@@ -597,7 +597,7 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
 }
 
 // ========================================================
-// === START: BUSINESS INFO CODE FOR displayShoutouts.js v8 (Re-attempt Native TZ Conversion) ===
+// === START: BUSINESS INFO CODE FOR displayShoutouts.js v10 (Uses Luxon for Timezone Conversion) ===
 // ========================================================
 
 // --- Element References ---
@@ -609,7 +609,7 @@ const holidayHoursDisplay = document.getElementById('holiday-hours-display');
 
 
 // --- Constants ---
-const assumedBusinessTimezone = 'America/New_York'; // Your business's primary timezone
+const assumedBusinessTimezone = 'America/New_York'; // Your business's primary IANA timezone
 
 // --- Helper Functions ---
 function capitalizeFirstLetter(string) {
@@ -617,7 +617,7 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function timeStringToMinutes(timeStr) {
+function timeStringToMinutes(timeStr) { // Still used for status calculation (relative to business day)
     if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return null;
     try {
         const [hours, minutes] = timeStr.split(':').map(Number);
@@ -629,10 +629,23 @@ function timeStringToMinutes(timeStr) {
     }
 }
 
-// RE-ATTEMPTING Native Timezone Conversion (May be inaccurate around DST)
+// Uses Luxon for accurate Timezone Conversion & Formatting
 function formatDisplayTimeBI(timeString, visitorTimezone) {
+    // Check if Luxon is available
+    if (typeof luxon === 'undefined' || !luxon.DateTime) {
+        console.error("Luxon library not loaded!");
+        // Provide a basic fallback if Luxon fails
+        const [h, m] = timeString.split(':');
+        const hourNum = parseInt(h, 10);
+        if (isNaN(hourNum) || isNaN(parseInt(m, 10))) return 'Invalid';
+        const ampm = hourNum >= 12 ? 'PM' : 'AM';
+        const hour12 = hourNum % 12 || 12;
+        return `${hour12}:${String(m).padStart(2, '0')} ${ampm} ET (Lib Err)`;
+    }
+
+    const { DateTime } = luxon; // Get DateTime from the global Luxon object
     const businessTimezone = assumedBusinessTimezone;
-    if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '?'; // Return '?' for invalid input
+    if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '?';
 
     try {
         // 1. Parse HH:mm from input string
@@ -641,56 +654,34 @@ function formatDisplayTimeBI(timeString, visitorTimezone) {
             throw new Error("Invalid HH:MM format");
         }
 
-        // 2. Get today's date components in the *business* timezone
-        const now = new Date(); // Current moment
-        const formatterDate = new Intl.DateTimeFormat('en-CA', { // Use neutral locale for YYYY-MM-DD
-            timeZone: businessTimezone,
-            year: 'numeric', month: '2-digit', day: '2-digit'
-        });
-        const parts = formatterDate.formatToParts(now).reduce((acc, part) => {
-            acc[part.type] = part.value; return acc; }, {});
-        const year = parts.year;
-        const month = parts.month; // Keep as string '01'-'12'
-        const day = parts.day;   // Keep as string '01'-'31'
+        // 2. Get the current date in the *business* timezone using Luxon
+        const nowInBizTZ = DateTime.now().setZone(businessTimezone);
 
-        if (!year || !month || !day) {
-             throw new Error("Could not determine business date components.");
-        }
-
-        // 3. Construct an ISO-ish string representing the date and time *in the business timezone*.
-        //    Crucially, we do NOT add timezone info here yet, as `new Date()` interprets
-        //    strings without offset as local *or* UTC depending on format, which is unreliable.
-        //    We create it simply to have a date object set to the right clock time.
-        const dateStringForConstruction = `${year}-${month}-${day}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
-
-        // 4. Create a Date object. *This step's timezone interpretation is ambiguous*.
-        //    It likely uses the HOST system's timezone rules initially.
-        const tempDate = new Date(dateStringForConstruction);
-         if (isNaN(tempDate.getTime())) {
-            throw new Error("Failed to construct intermediate Date object");
-         }
-
-        // 5. NOW, use Intl.DateTimeFormat to format this date object *as if* it represents
-        //    an instant to be displayed in the VISITOR'S timezone.
-        const formatterLocal = new Intl.DateTimeFormat('en-US', { // Or appropriate locale
-            timeZone: visitorTimezone, // Convert to visitor's zone
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true,
-            // timeZoneName: 'short' // Optional: Add abbreviation like PST, CDT
+        // 3. Create a Luxon DateTime object for the specific time today *in the business timezone*
+        const bizTime = nowInBizTZ.set({
+            hour: hour,
+            minute: minute,
+            second: 0,
+            millisecond: 0
         });
 
-        return formatterLocal.format(tempDate);
+        // 4. Convert that specific moment to the visitor's timezone
+        const visitorTime = bizTime.setZone(visitorTimezone);
+
+        // 5. Format the time for display including the visitor's timezone abbreviation (e.g., PDT, EDT)
+        //    'h:mm a ZZZZ' gives format like "7:00 AM PDT"
+        return visitorTime.toFormat('h:mm a ZZZZ');
 
     } catch (e) {
-        console.error("Error formatting display time BI:", timeString, visitorTimezone, e);
+        console.error("Error formatting display time with Luxon:", timeString, visitorTimezone, e);
         // Fallback still shows assumed business zone designation
         const [h, m] = timeString.split(':');
         const hourNum = parseInt(h,10);
-         if (isNaN(hourNum) || isNaN(parseInt(m, 10))) return 'Invalid';
+         if (isNaN(hourNum) || isNaN(parseInt(m, 10))) return 'Invalid Time';
         const ampm = hourNum >= 12 ? 'PM' : 'AM';
         const hour12 = hourNum % 12 || 12;
-        return `${hour12}:${String(m).padStart(2, '0')} ${ampm} ET (Err)`; // Indicate error and assumed zone
+        // Indicate Luxon error but still show base time
+        return `${hour12}:${String(m).padStart(2, '0')} ${ampm} ET (LXN Err)`;
     }
 }
 
@@ -744,7 +735,7 @@ async function displayBusinessInfo() {
     }
 }
 
-// Function to calculate and display everything
+// Calculates and displays status and ALL hours lists
 function calculateAndDisplayStatusConvertedBI(businessData) {
     const contactEmailDisplay = document.getElementById('contact-email-display'); // Re-get just in case
     const businessHoursDisplay = document.getElementById('business-hours-display');
@@ -762,6 +753,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     let statusReason = 'Default';
     let visitorTimezone;
 
+    // --- Timezone Detection ---
     try {
         visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (!visitorTimezone) throw new Error("TZ detection failed.");
@@ -774,6 +766,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         return;
     }
 
+    // --- Calculate Current Time/Date in Business Timezone ---
     const visitorNow = new Date();
     let currentHourInBizTZ, currentMinuteInBizTZ, businessDateStr, businessDayName;
 
@@ -784,7 +777,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         currentMinuteInBizTZ = parseInt(partsTime.minute);
 
         const formatterDate = new Intl.DateTimeFormat('en-CA', { timeZone: assumedBusinessTimezone });
-        businessDateStr = formatterDate.format(visitorNow); // YYYY-MM-DD
+        businessDateStr = formatterDate.format(visitorNow); // YYYY-MM-DD format
 
         const formatterDay = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, weekday: 'long' });
         businessDayName = formatterDay.format(visitorNow).toLowerCase();
@@ -805,8 +798,8 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     let activeHoursRule = null;
     let ruleApplied = false;
 
-    // --- Status Calculation Logic --- (Using refined v12/v13 logic)
-    if (statusOverride !== 'auto') {
+    // --- Status Calculation Logic --- (Same v12/v13 logic from admin.js)
+     if (statusOverride !== 'auto') {
         currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
         statusReason = 'Manual Override';
         activeHoursRule = { reason: statusReason }; ruleApplied = true;
@@ -845,6 +838,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         }
     }
 
+
     // --- Display Calculated Status ---
     let statusClass = currentStatus === 'Open' ? 'status-open' : (currentStatus === 'Temporarily Unavailable' ? 'status-unavailable' : 'status-closed');
     businessStatusDisplay.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
@@ -859,7 +853,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         const highlightClass = isCurrentDayForVisitor ? 'current-day' : '';
         displayHoursListHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `;
         if (dayData && !dayData.isClosed && dayData.open && dayData.close) {
-            // Use the potentially inaccurate native conversion attempt
+            // *** Use Luxon-powered formatter ***
             const openLocalStr = formatDisplayTimeBI(dayData.open, visitorTimezone);
             const closeLocalStr = formatDisplayTimeBI(dayData.close, visitorTimezone);
             displayHoursListHtml += `<span>${openLocalStr} - ${closeLocalStr}</span>`;
@@ -869,7 +863,8 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         displayHoursListHtml += '</li>';
     });
     displayHoursListHtml += '</ul>';
-    displayHoursListHtml += `<p class="hours-timezone-note">Hours displayed in your detected time zone: ${visitorTimezone.replace('_', ' ')}</p>`;
+    // Updated Note: Reflects that times ARE converted
+    displayHoursListHtml += `<p class="hours-timezone-note">Hours displayed in your local time zone: ${visitorTimezone.replace('_', ' ')}</p>`;
     businessHoursDisplay.innerHTML = displayHoursListHtml;
 
 
@@ -890,7 +885,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                                 <span class="dates">${temp.startDate} to ${temp.endDate}</span>
                                 ${temp.isClosed ?
                                     '<span class="hours">Closed</span>' :
-                                    // Use the potentially inaccurate native conversion attempt
+                                    // *** Use Luxon-powered formatter ***
                                     `<span class="hours">${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}</span>`
                                 }
                             </div>
@@ -924,7 +919,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                             <div class="special-hours-details">
                                 ${holiday.isClosed ?
                                     '<span class="hours">Closed</span>' :
-                                    // Use the potentially inaccurate native conversion attempt
+                                     // *** Use Luxon-powered formatter ***
                                     `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
                                 }
                             </div>
