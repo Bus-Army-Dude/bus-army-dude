@@ -1268,7 +1268,6 @@ function setupBusinessInfoListeners() {
 // ======================================================
 // == END: ALL BUSINESS INFO CODE FOR admin.js ==========
 // ======================================================
-Fixed and cleaned up here is the code for the entire file
     
 /** Filters and displays shoutouts in the admin list */
 function displayFilteredShoutouts(platform) {
