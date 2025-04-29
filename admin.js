@@ -757,7 +757,7 @@ function renderYouTubeCard(account) {
     // *** END updateShoutoutPreview FUNCTION ***
 
 // ======================================================
-// ===== START: ALL BUSINESS INFO CODE FOR admin.js (v12 - Refined Temporary Status Logic) =====
+// ===== START: ALL BUSINESS INFO CODE FOR admin.js (v13 - Fixed Syntax Errors) =====
 // ======================================================
 
 // --- Business Info Constant & Ref ---
@@ -773,10 +773,21 @@ function capitalizeFirstLetter(string) {
     if (!string) return ''; return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// CORRECTED SYNTAX HERE
 function formatTimeForAdminPreview(timeString) { // For display in preview list
     if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '';
-    try { const [hour, minute] = timeString.split(':'); const hourNum = parseInt(hour, 10); if (isNaN(hourNum)) return timeString; const ampm = hourNum >= 12 ? 'PM' : 'AM'; const hour12 = hourNum % 12 || 12; return `<span class="math-inline">\{hour12\}\:</span>{minute} ${ampm}`; }
-    catch (e) { return timeString; }
+    try {
+        const [hour, minute] = timeString.split(':');
+        const hourNum = parseInt(hour, 10);
+        if (isNaN(hourNum)) return timeString;
+        const ampm = hourNum >= 12 ? 'PM' : 'AM';
+        const hour12 = hourNum % 12 || 12;
+        // Corrected return statement using template literal
+        return `${hour12}:${minute} ${ampm}`;
+    } catch (e) {
+        console.error("Error formatting time:", timeString, e);
+        return timeString;
+    }
 }
 
 function timeStringToMinutesBI(timeStr) { // For status calculations
@@ -795,19 +806,117 @@ function addListenerSafe(element, eventType, handler, flagSuffix = '') {
 }
 
 // --- Business Info Form Population & Rendering ---
+// CORRECTED SYNTAX HERE
 function populateRegularHoursForm(hoursData = {}) {
-    const container = document.getElementById('regular-hours-container'); if (!container) {console.error("Regular hours container not found"); return;} container.innerHTML = ''; daysOfWeek.forEach(day => { const dayData = hoursData[day] || { open: '', close: '', isClosed: true }; const groupDiv = document.createElement('div'); groupDiv.className = 'day-hours-group'; groupDiv.innerHTML = `<label for="<span class="math-inline">\{day\}\-isClosed"\></span>{capitalizeFirstLetter(day)}</label><div class="time-inputs"><label for="<span class="math-inline">\{day\}\-open" class\="sr\-only"\>Open Time\:</label\><input type\="time" id\="</span>{day}-open" name="<span class="math-inline">\{day\}\-open" value\="</span>{dayData.open || ''}" <span class="math-inline">\{dayData\.isClosed ? 'disabled' \: ''\}\><span\> \- </span\><label for\="</span>{day}-close" class="sr-only">Close Time:</label><input type="time" id="<span class="math-inline">\{day\}\-close" name\="</span>{day}-close" value="${dayData.close || ''}" <span class="math-inline">\{dayData\.isClosed ? 'disabled' \: ''\}\></div\><div class\="form\-group checkbox\-group"\><input type\="checkbox" id\="</span>{day}-isClosed" name="${day}-isClosed" <span class="math-inline">\{dayData\.isClosed ? 'checked' \: ''\} class\="regular\-hours\-input"\><label for\="</span>{day}-isClosed">Closed all day</label></div>`; const isClosedCheckbox = groupDiv.querySelector(`#${day}-isClosed`); const openInput = groupDiv.querySelector(`#${day}-open`); const closeInput = groupDiv.querySelector(`#${day}-close`); addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if (isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `reg_${day}_closed`); addListenerSafe(openInput, 'input', updateAdminPreview, `reg_${day}_open`); addListenerSafe(closeInput, 'input', updateAdminPreview, `reg_${day}_close`); container.appendChild(groupDiv); });
+    const container = document.getElementById('regular-hours-container');
+    if (!container) { console.error("Regular hours container not found"); return; }
+    container.innerHTML = '';
+    daysOfWeek.forEach(day => {
+        const dayData = hoursData[day] || { open: '', close: '', isClosed: true };
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'day-hours-group';
+        // Corrected innerHTML using proper template literals
+        groupDiv.innerHTML = `
+            <label for="${day}-isClosed">${capitalizeFirstLetter(day)}</label>
+            <div class="time-inputs">
+                <label for="${day}-open" class="sr-only">Open Time:</label>
+                <input type="time" id="${day}-open" name="${day}-open" value="${dayData.open || ''}" ${dayData.isClosed ? 'disabled' : ''}>
+                <span> - </span>
+                <label for="${day}-close" class="sr-only">Close Time:</label>
+                <input type="time" id="${day}-close" name="${day}-close" value="${dayData.close || ''}" ${dayData.isClosed ? 'disabled' : ''}>
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="${day}-isClosed" name="${day}-isClosed" ${dayData.isClosed ? 'checked' : ''} class="regular-hours-input">
+                <label for="${day}-isClosed">Closed all day</label>
+            </div>`;
+        const isClosedCheckbox = groupDiv.querySelector(`#${day}-isClosed`);
+        const openInput = groupDiv.querySelector(`#${day}-open`);
+        const closeInput = groupDiv.querySelector(`#${day}-close`);
+        addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if (isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `reg_${day}_closed`);
+        addListenerSafe(openInput, 'input', updateAdminPreview, `reg_${day}_open`);
+        addListenerSafe(closeInput, 'input', updateAdminPreview, `reg_${day}_close`);
+        container.appendChild(groupDiv);
+    });
 }
+
+// CORRECTED SYNTAX HERE
 function renderHolidayEntry(entry = {}, index) {
-    const uniqueId = `holiday-${Date.now()}-${index}`; const entryDiv = document.createElement('div'); entryDiv.className = 'hour-entry holiday-entry'; entryDiv.setAttribute('data-id', uniqueId); entryDiv.innerHTML = `<button type="button" class="remove-hour-button" title="Remove Holiday/Specific Date">×</button><div class="form-group"><label for="holiday-date-<span class="math-inline">\{uniqueId\}"\>Date\:</label\><input type\="date" id\="holiday\-date\-</span>{uniqueId}" class="holiday-input" name="holiday-date-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.date || ''}" required></div><div class="form-group"><label for="holiday-label-<span class="math-inline">\{uniqueId\}"\>Label \(Optional\)\:</label\><input type\="text" id\="holiday\-label\-</span>{uniqueId}" class="holiday-input" name="holiday-label-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.label || ''}" placeholder="e.g., Christmas Day"></div><div class="time-inputs"><label for="holiday-open-<span class="math-inline">\{uniqueId\}" class\="sr\-only"\>Open Time\:</label\><input type\="time" id\="holiday\-open\-</span>{uniqueId}" class="holiday-input" name="holiday-open-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.open || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\><span\> \- </span\><label for\="holiday\-close\-</span>{uniqueId}" class="sr-only">Close Time:</label><input type="time" id="holiday-close-<span class="math-inline">\{uniqueId\}" class\="holiday\-input" name\="holiday\-close\-</span>{uniqueId}" value="${entry.close || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\></div\><div class\="form\-group checkbox\-group"\><input type\="checkbox" id\="holiday\-isClosed\-</span>{uniqueId}" name="holiday-isClosed-${uniqueId}" class="holiday-input" <span class="math-inline">\{entry\.isClosed ? 'checked' \: ''\}\><label for\="holiday\-isClosed\-</span>{uniqueId}">Closed all day</label></div>`;
-    addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); updateAdminPreview(); }, `rem_hol_${uniqueId}`); const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`); const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`);  const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`); addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `hol_${uniqueId}_closed`); entryDiv.querySelectorAll('.holiday-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `hol_${uniqueId}_${input.name}`));
+    const uniqueId = `holiday-${Date.now()}-${index}`;
+    const entryDiv = document.createElement('div');
+    entryDiv.className = 'hour-entry holiday-entry';
+    entryDiv.setAttribute('data-id', uniqueId);
+    // Corrected innerHTML using proper template literals
+    entryDiv.innerHTML = `
+        <button type="button" class="remove-hour-button" title="Remove Holiday/Specific Date">×</button>
+        <div class="form-group">
+            <label for="holiday-date-${uniqueId}">Date:</label>
+            <input type="date" id="holiday-date-${uniqueId}" class="holiday-input" name="holiday-date-${uniqueId}" value="${entry.date || ''}" required>
+        </div>
+        <div class="form-group">
+            <label for="holiday-label-${uniqueId}">Label (Optional):</label>
+            <input type="text" id="holiday-label-${uniqueId}" class="holiday-input" name="holiday-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Christmas Day">
+        </div>
+        <div class="time-inputs">
+            <label for="holiday-open-${uniqueId}" class="sr-only">Open Time:</label>
+            <input type="time" id="holiday-open-${uniqueId}" class="holiday-input" name="holiday-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}>
+            <span> - </span>
+            <label for="holiday-close-${uniqueId}" class="sr-only">Close Time:</label>
+            <input type="time" id="holiday-close-${uniqueId}" class="holiday-input" name="holiday-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}>
+        </div>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="holiday-isClosed-${uniqueId}" name="holiday-isClosed-${uniqueId}" class="holiday-input" ${entry.isClosed ? 'checked' : ''}>
+            <label for="holiday-isClosed-${uniqueId}">Closed all day</label>
+        </div>`;
+    addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); updateAdminPreview(); }, `rem_hol_${uniqueId}`);
+    const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`);
+    const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`);
+    const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`);
+    addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `hol_${uniqueId}_closed`);
+    entryDiv.querySelectorAll('.holiday-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `hol_${uniqueId}_${input.name}`));
     return entryDiv;
 }
+
+// CORRECTED SYNTAX HERE
 function renderTemporaryEntry(entry = {}, index) {
-     const uniqueId = `temp-<span class="math-inline">\{Date\.now\(\)\}\-</span>{index}`; const entryDiv = document.createElement('div'); entryDiv.className = 'hour-entry temporary-entry'; entryDiv.setAttribute('data-id', uniqueId); entryDiv.innerHTML = `<button type="button" class="remove-hour-button" title="Remove Temporary Period">×</button><div class="form-group"><label for="temp-start-<span class="math-inline">\{uniqueId\}"\>Start Date\:</label\><input type\="date" id\="temp\-start\-</span>{uniqueId}" class="temp-input" name="temp-start-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.startDate || ''}" required></div><div class="form-group"><label for="temp-end-<span class="math-inline">\{uniqueId\}"\>End Date\:</label\><input type\="date" id\="temp\-end\-</span>{uniqueId}" class="temp-input" name="temp-end-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.endDate || ''}" required></div><div class="form-group"><label for="temp-label-<span class="math-inline">\{uniqueId\}"\>Label \(Optional\)\:</label\><input type\="text" id\="temp\-label\-</span>{uniqueId}" class="temp-input" name="temp-label-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.label || ''}" placeholder="e.g., Summer Event"></div><div class="time-inputs"><label for="temp-open-<span class="math-inline">\{uniqueId\}" class\="sr\-only"\>Open Time\:</label\><input type\="time" id\="temp\-open\-</span>{uniqueId}" class="temp-input" name="temp-open-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.open || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\><span\> \- </span\><label for\="temp\-close\-</span>{uniqueId}" class="sr-only">Close Time:</label><input type="time" id="temp-close-<span class="math-inline">\{uniqueId\}" class\="temp\-input" name\="temp\-close\-</span>{uniqueId}" value="${entry.close || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\></div\><div class\="form\-group checkbox\-group"\><input type\="checkbox" id\="temp\-isClosed\-</span>{uniqueId}" name="temp-isClosed-${uniqueId}" class="temp-input" <span class="math-inline">\{entry\.isClosed ? 'checked' \: ''\}\><label for\="temp\-isClosed\-</span>{uniqueId}">Closed all day during this period</label></div>`;
-     addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); updateAdminPreview(); }, `rem_tmp_${uniqueId}`); const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`); const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`); const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`); addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `tmp_${uniqueId}_closed`); entryDiv.querySelectorAll('.temp-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `tmp_${uniqueId}_${input.name}`));
-     return entryDiv;
+    const uniqueId = `temp-${Date.now()}-${index}`; // Corrected variable creation too
+    const entryDiv = document.createElement('div');
+    entryDiv.className = 'hour-entry temporary-entry';
+    entryDiv.setAttribute('data-id', uniqueId);
+    // Corrected innerHTML using proper template literals
+    entryDiv.innerHTML = `
+        <button type="button" class="remove-hour-button" title="Remove Temporary Period">×</button>
+        <div class="form-group">
+            <label for="temp-start-${uniqueId}">Start Date:</label>
+            <input type="date" id="temp-start-${uniqueId}" class="temp-input" name="temp-start-${uniqueId}" value="${entry.startDate || ''}" required>
+        </div>
+        <div class="form-group">
+            <label for="temp-end-${uniqueId}">End Date:</label>
+            <input type="date" id="temp-end-${uniqueId}" class="temp-input" name="temp-end-${uniqueId}" value="${entry.endDate || ''}" required>
+        </div>
+        <div class="form-group">
+            <label for="temp-label-${uniqueId}">Label (Optional):</label>
+            <input type="text" id="temp-label-${uniqueId}" class="temp-input" name="temp-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Summer Event">
+        </div>
+        <div class="time-inputs">
+            <label for="temp-open-${uniqueId}" class="sr-only">Open Time:</label>
+            <input type="time" id="temp-open-${uniqueId}" class="temp-input" name="temp-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}>
+            <span> - </span>
+            <label for="temp-close-${uniqueId}" class="sr-only">Close Time:</label>
+            <input type="time" id="temp-close-${uniqueId}" class="temp-input" name="temp-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}>
+        </div>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="temp-isClosed-${uniqueId}" name="temp-isClosed-${uniqueId}" class="temp-input" ${entry.isClosed ? 'checked' : ''}>
+            <label for="temp-isClosed-${uniqueId}">Closed all day during this period</label>
+        </div>`;
+    addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); updateAdminPreview(); }, `rem_tmp_${uniqueId}`);
+    const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`);
+    const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`);
+    const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`);
+    addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `tmp_${uniqueId}_closed`);
+    entryDiv.querySelectorAll('.temp-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `tmp_${uniqueId}_${input.name}`));
+    return entryDiv;
 }
+
 
 // --- Load Business Info Data ---
 async function loadBusinessInfoData() {
@@ -836,14 +945,20 @@ async function loadBusinessInfoData() {
         else { console.error("updateAdminPreview function missing!"); }
 
     } catch (error) {
-        console.error("Error loading business info:", error); showBusinessInfoStatus("Error loading info.", true);
+        console.error("Error loading business info:", error);
+        // Show more detailed error if possible
+        showBusinessInfoStatus(`Error loading info: ${error.message || error}`, true);
+        // Attempt to reset form state even on error
         if (typeof populateRegularHoursForm === 'function') populateRegularHoursForm();
-        if (holidayHoursList) holidayHoursList.innerHTML = ''; if (temporaryHoursList) temporaryHoursList.innerHTML = '';
-        if (typeof updateAdminPreview === 'function') updateAdminPreview();
+        if (holidayHoursList) holidayHoursList.innerHTML = '';
+        if (temporaryHoursList) temporaryHoursList.innerHTML = '';
+        if (typeof updateAdminPreview === 'function') updateAdminPreview(); // Update preview to show defaults/error state
     }
 }
 
+
 // --- Save Business Info Data ---
+// CORRECTED SYNTAX IN CONSOLE WARNING
 async function saveBusinessInfoData(event) {
     event.preventDefault();
     const businessInfoForm = document.getElementById('business-info-form');
@@ -858,7 +973,7 @@ async function saveBusinessInfoData(event) {
 
     daysOfWeek.forEach(day => { const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false; const openTime = document.getElementById(`${day}-open`)?.value || null; const closeTime = document.getElementById(`${day}-close`)?.value || null; newData.regularHours[day] = { open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed: isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing open/close time for ${day}`); } });
     document.querySelectorAll('#holiday-hours-list .holiday-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false; const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null; const openTime = entryDiv.querySelector(`#holiday-open-${id}`)?.value || null; const closeTime = entryDiv.querySelector(`#holiday-close-${id}`)?.value || null; if (date) { const entryData = { date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing holiday time ${date}`); } newData.holidayHours.push(entryData); } else { formIsValid = false; } });
-    document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; const openTime = entryDiv.querySelector(`#temp-open-${id}`)?.value || null; const closeTime = entryDiv.querySelector(`#temp-close-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { showBusinessInfoStatus(`Error: Temp End Date < Start Date.`, true); formIsValid = false; return; } const entryData = { startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing temp time <span class="math-inline">\{startDate\}\-</span>{endDate}`); } newData.temporaryHours.push(entryData); } else { formIsValid = false; } });
+    document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; const openTime = entryDiv.querySelector(`#temp-open-${id}`)?.value || null; const closeTime = entryDiv.querySelector(`#temp-close-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { showBusinessInfoStatus(`Error: Temp End Date < Start Date.`, true); formIsValid = false; return; } const entryData = { startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing temp time ${startDate}-${endDate}`); } newData.temporaryHours.push(entryData); } else { formIsValid = false; } }); // Corrected console warning syntax
 
     if (!formIsValid) { showBusinessInfoStatus("Save failed. Check required dates.", true); return; }
     newData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); newData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
@@ -868,11 +983,11 @@ async function saveBusinessInfoData(event) {
 }
 
 
-// --- Admin Preview Update Function (v12 - Refined Temporary Status Logic) ---
+// --- Admin Preview Update Function (v13 - Fixed Syntax Errors & Refined Temp Logic) ---
+// CORRECTED SYNTAX HERE
 function updateAdminPreview() {
-    console.log("%cUpdating admin preview (v12)...", "color: purple; font-weight: bold;");
+    console.log("%cUpdating admin preview (v13)...", "color: blue; font-weight: bold;");
 
-    // --- Get Element References ---
     const adminPreviewStatus = document.getElementById('admin-preview-status');
     const adminPreviewHours = document.getElementById('admin-preview-hours');
     const adminPreviewContact = document.getElementById('admin-preview-contact');
@@ -893,141 +1008,92 @@ function updateAdminPreview() {
     document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { /* skip invalid */ return; } currentFormData.temporaryHours.push({ startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : (entryDiv.querySelector(`#temp-open-${id}`)?.value || null), close: isClosed ? null : (entryDiv.querySelector(`#temp-close-${id}`)?.value || null), isClosed }); } });
     currentFormData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); currentFormData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
 
-    // 2. Calculate Preview Status using Admin's Browser Time
-    let currentStatus = 'Closed'; // Default status
-    let statusReason = 'Default'; // Default reason
+    // 2. Calculate Preview Status
+    let currentStatus = 'Closed';
+    let statusReason = 'Default';
     const previewNow = new Date();
-    const previewDayName = daysOfWeek[(previewNow.getDay() + 6) % 7]; // Monday is 0
-    const previewDateStr = previewNow.toLocaleDateString('en-CA'); // YYYY-MM-DD format
+    const previewDayName = daysOfWeek[(previewNow.getDay() + 6) % 7];
+    const previewDateStr = previewNow.toLocaleDateString('en-CA');
     const previewCurrentMinutes = previewNow.getHours() * 60 + previewNow.getMinutes();
-    console.log(`Admin Preview Time Check: Date=<span class="math-inline">\{previewDateStr\}, Day\=</span>{previewDayName}, Mins=${previewCurrentMinutes}`);
-    let activeHoursRule = null; // Stores the rule that determined the status
-    let ruleApplied = false; // Flag to stop checking once a definitive rule is found
+    // Corrected console log syntax
+    console.log(`Admin Preview Time Check: Date=${previewDateStr}, Day=${previewDayName}, Mins=${previewCurrentMinutes}`);
+    let activeHoursRule = null;
+    let ruleApplied = false;
 
-    // --- Status Calculation Logic (Order: Override > Holiday > Temporary > Regular) ---
-    // Override Check
+    // Status Calculation Logic (Order: Override > Holiday > Temporary > Regular)
     if (currentFormData.statusOverride !== 'auto') {
         currentStatus = currentFormData.statusOverride === 'open' ? 'Open' : (currentFormData.statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
         statusReason = 'Manual Override';
-        activeHoursRule = { reason: statusReason }; // Simple rule object for override
-        ruleApplied = true;
+        activeHoursRule = { reason: statusReason }; ruleApplied = true;
         console.log("Admin Preview Status determined by: Override");
     }
 
-    // Holiday Check
     if (!ruleApplied) {
         const todayHoliday = currentFormData.holidayHours.find(h => h.date === previewDateStr);
         if (todayHoliday) {
             statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
-            activeHoursRule = { ...todayHoliday, reason: statusReason }; // Include holiday details
-            ruleApplied = true; // Holiday rule takes precedence for the day
-
-            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) {
-                currentStatus = 'Closed'; // Closed all day for holiday
-            } else {
-                // Check time only if specific hours are set for the holiday
-                const openMins = timeStringToMinutesBI(todayHoliday.open);
-                const closeMins = timeStringToMinutesBI(todayHoliday.close);
-                currentStatus = (openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) ? 'Open' : 'Closed';
-            }
-            activeHoursRule.reason = statusReason + ` (${currentStatus})`; // Update reason with outcome
+            activeHoursRule = { ...todayHoliday, reason: statusReason }; ruleApplied = true;
+            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; }
+            else { const openMins = timeStringToMinutesBI(todayHoliday.open); const closeMins = timeStringToMinutesBI(todayHoliday.close); currentStatus = (openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) ? 'Open' : 'Closed'; }
+            activeHoursRule.reason = statusReason + ` (${currentStatus})`;
             console.log(`Admin Preview Status determined by: Holiday (${currentStatus})`);
         }
     }
 
-    // REFINED Temporary Hours Check
+    // Refined Temporary Hours Check (v12 logic)
     if (!ruleApplied) {
         const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
         if (activeTemporary) {
             console.log("Admin Preview: Found active temporary period:", activeTemporary);
-
-            // Case 1: Temporary rule is explicitly "Closed all day"
             if (activeTemporary.isClosed) {
-                currentStatus = 'Closed';
-                statusReason = `Temporary Hours (${activeTemporary.label || 'Active'}) - Closed All Day`;
-                activeHoursRule = { ...activeTemporary, reason: statusReason };
-                ruleApplied = true; // DEFINITIVE rule
+                currentStatus = 'Closed'; statusReason = `Temporary Hours (${activeTemporary.label || 'Active'}) - Closed All Day`;
+                activeHoursRule = { ...activeTemporary, reason: statusReason }; ruleApplied = true;
                 console.log("Admin Preview Status determined by: Temporary Rule (Closed All Day)");
-            }
-            // Case 2: Temporary rule has specific open/close times (and is NOT closed all day)
-            else if (activeTemporary.open && activeTemporary.close) {
-                const openMins = timeStringToMinutesBI(activeTemporary.open);
-                const closeMins = timeStringToMinutesBI(activeTemporary.close);
-
-                // If current time is WITHIN the temporary hours window
+            } else if (activeTemporary.open && activeTemporary.close) {
+                const openMins = timeStringToMinutesBI(activeTemporary.open); const closeMins = timeStringToMinutesBI(activeTemporary.close);
                 if (openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) {
-                    // *** CHANGED PER USER REQUEST ***
-                    currentStatus = 'Temporarily Unavailable';
-                    statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-                    activeHoursRule = { ...activeTemporary, reason: statusReason };
-                    ruleApplied = true; // This temporary rule DEFINES the status for this specific time.
+                    currentStatus = 'Temporarily Unavailable'; statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+                    activeHoursRule = { ...activeTemporary, reason: statusReason }; ruleApplied = true;
                     console.log("Admin Preview Status determined by: Temporary Rule (Specific Time - Set to Unavailable)");
-                } else {
-                    // Current time is OUTSIDE the temporary open/close hours, but WITHIN the temporary date range.
-                    // Temporary rule does NOT apply right now. Fall through to check regular hours.
-                    console.log("Admin Preview: Time is outside temporary specific hours. Falling through to regular hours check.");
-                    // DO NOT set ruleApplied = true
-                }
-            }
-            // Case 3: Temporary rule exists for the date but has no specific close/time info.
-            else {
-                console.log("Admin Preview: Temporary rule found but has no closing/timing info. Falling through.");
-                // DO NOT set ruleApplied = true
-            }
+                } else { console.log("Admin Preview: Time is outside temporary specific hours. Falling through."); }
+            } else { console.log("Admin Preview: Temporary rule found but has no closing/timing info. Falling through."); }
         }
     }
-    // END REFINED Temporary Hours Check
 
-    // Regular Hours Check (Only runs if ruleApplied is still false)
+    // Regular Hours Check
     if (!ruleApplied) {
-        statusReason = 'Regular Hours'; // Base reason for this block
-        const todayRegularHours = currentFormData.regularHours[previewDayName];
-
+        statusReason = 'Regular Hours'; const todayRegularHours = currentFormData.regularHours[previewDayName];
         if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
-            const openMins = timeStringToMinutesBI(todayRegularHours.open);
-            const closeMins = timeStringToMinutesBI(todayRegularHours.close);
-
-            // Check if current time is within regular open hours
+            const openMins = timeStringToMinutesBI(todayRegularHours.open); const closeMins = timeStringToMinutesBI(todayRegularHours.close);
             if (openMins !== null && closeMins !== null && previewCurrentMinutes >= openMins && previewCurrentMinutes < closeMins) {
-                currentStatus = 'Open';
-                activeHoursRule = { ...todayRegularHours, day: previewDayName, reason: statusReason + " (Open)" };
-            } else {
-                currentStatus = 'Closed'; // Outside regular hours
-                activeHoursRule = { ...todayRegularHours, day: previewDayName, reason: statusReason + " (Outside Hours)" };
-            }
-        } else {
-            // Regular hours indicate closed today (either marked isClosed or no hours set)
-            currentStatus = 'Closed';
-            activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true, reason: statusReason + " (Closed Today)" };
-        }
+                currentStatus = 'Open'; activeHoursRule = { ...todayRegularHours, day: previewDayName, reason: statusReason + " (Open)" };
+            } else { currentStatus = 'Closed'; activeHoursRule = { ...todayRegularHours, day: previewDayName, reason: statusReason + " (Outside Hours)" }; }
+        } else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: previewDayName, isClosed: true, reason: statusReason + " (Closed Today)" }; }
         console.log(`Admin Preview Status determined by: Regular Hours (${currentStatus})`);
-        // ruleApplied = true; // Mark rule applied AFTER regular check completes
     }
 
     // 3. Display Status
     let statusClass = 'status-closed';
     if (currentStatus === 'Open') statusClass = 'status-open';
-    // *** Ensure 'Temporarily Unavailable' gets the right class ***
     else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
-
-    // Display the reason from the determined rule, or the final calculated reason
     const displayReason = activeHoursRule?.reason || statusReason || 'Unknown';
-    adminPreviewStatus.innerHTML = `<span class="<span class="math-inline">\{statusClass\}"\></span>{currentStatus}</span> <span class="status-reason">(${displayReason})</span>`;
+    // Corrected innerHTML using proper template literals
+    adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${displayReason})</span>`;
 
 
     // 4. Display Hours (Regular, Temporary, Holiday)
-    // Clear the container *before* building the HTML to prevent visual duplication issues
     adminPreviewHours.innerHTML = ''; // Clear before appending sections
-
     let hoursHtml = '<h4>Regular Hours</h4><ul>';
-    daysOfWeek.forEach(day => { // Use daysOfWeek from outer scope
+    daysOfWeek.forEach(day => {
         const dayData = currentFormData.regularHours[day];
         const isCurrentDay = day === previewDayName;
         const highlightClass = isCurrentDay ? 'current-day-preview' : '';
+        // Corrected innerHTML using proper template literals
         hoursHtml += `
-            <li class="<span class="math-inline">\{highlightClass\}"\>
-<strong\></span>{capitalizeFirstLetter(day)}:</strong>
+            <li class="${highlightClass}">
+                <strong>${capitalizeFirstLetter(day)}:</strong>
                 ${dayData && !dayData.isClosed && dayData.open && dayData.close ?
+                    // Calls the corrected formatTimeForAdminPreview
                     `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>` :
                     '<span>Closed</span>'
                 }
@@ -1035,16 +1101,17 @@ function updateAdminPreview() {
     });
     hoursHtml += '</ul>';
 
-    // Add Temporary Hours if any exist
     if (currentFormData.temporaryHours && currentFormData.temporaryHours.length > 0) {
         hoursHtml += '<h4>Upcoming/Active Temporary Hours</h4><ul class="special-hours-preview">';
         currentFormData.temporaryHours.forEach(temp => {
             if (temp.startDate && temp.endDate) {
+                 // Corrected innerHTML using proper template literals
+                 // Now displays times correctly by calling the fixed formatTimeForAdminPreview
                 hoursHtml += `
                     <li>
-                        <strong><span class="math-inline">\{temp\.label \|\| 'Temporary Schedule'\}\:</strong\>
-<div class\="special\-hours\-details"\>
-<span class\="dates"\></span>{temp.startDate} to ${temp.endDate}</span>
+                        <strong>${temp.label || 'Temporary Schedule'}:</strong>
+                        <div class="special-hours-details">
+                            <span class="dates">${temp.startDate} to ${temp.endDate}</span>
                             ${temp.isClosed ?
                                 '<span class="hours">Closed</span>' :
                                 `<span class="hours">${formatTimeForAdminPreview(temp.open) || '?'} - ${formatTimeForAdminPreview(temp.close) || '?'} ET</span>`
@@ -1057,11 +1124,12 @@ function updateAdminPreview() {
         hoursHtml += '</ul>';
     }
 
-    // Add Holiday Hours if any exist
     if (currentFormData.holidayHours && currentFormData.holidayHours.length > 0) {
         hoursHtml += '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-preview">';
         currentFormData.holidayHours.forEach(holiday => {
             if (holiday.date) {
+                 // Corrected innerHTML using proper template literals
+                 // Now displays times correctly by calling the fixed formatTimeForAdminPreview
                 hoursHtml += `
                     <li>
                         <strong>${holiday.label || holiday.date}:</strong>
@@ -1079,11 +1147,11 @@ function updateAdminPreview() {
     }
 
     hoursHtml += '<p class="preview-timezone-note">Preview based on your browser time. Assumes ET input for hours.</p>';
-    // Now set the fully constructed HTML
     adminPreviewHours.innerHTML = hoursHtml;
 
     // 5. Display Contact
-    if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:<span class="math-inline">\{currentFormData\.contactEmail\}" target\="\_blank"\></span>{currentFormData.contactEmail}</a>`; }
+    // Corrected innerHTML using proper template literals
+    if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`; }
     else { adminPreviewContact.innerHTML = ''; }
 
     console.log("Admin preview update complete.");
@@ -1125,32 +1193,22 @@ function setupBusinessInfoListeners() {
     if (typeof updateAdminPreview === 'function') {
         // Use event delegation for inputs/changes within the form
         addListenerSafe(businessInfoForm, 'input', (e) => {
-            // Check if the event target is an input element we care about
             if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) {
-                 // Add a small delay to allow the DOM to update if needed, especially after checkbox changes
-                setTimeout(updateAdminPreview, 50);
+                 setTimeout(updateAdminPreview, 50); // Small delay
             }
         }, '_preview_input');
 
-        // Use 'change' specifically for checkboxes as 'input' might not fire reliably
         addListenerSafe(businessInfoForm, 'change', (e) => {
              if (e.target && e.target.type === 'checkbox') {
-                 // Add a small delay
-                setTimeout(updateAdminPreview, 50);
+                setTimeout(updateAdminPreview, 50); // Small delay
              }
         }, '_preview_change');
 
-
-        // Observer for list changes (adding/removing holiday/temp entries)
-        // This might be slightly redundant now with the direct calls in button listeners,
-        // but provides a fallback and handles direct DOM manipulation if any occurs.
         const listObserver = new MutationObserver((mutationsList) => {
-             // Check if any mutation actually added or removed nodes
             const changed = mutationsList.some(mutation => mutation.type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0));
             if (changed) {
                 console.log('Preview update triggered by MutationObserver.');
-                 // Add a small delay here too, maybe slightly longer
-                 setTimeout(updateAdminPreview, 100);
+                setTimeout(updateAdminPreview, 100); // Slightly longer delay
             }
         });
         if (holidayHoursList) listObserver.observe(holidayHoursList, { childList: true });
