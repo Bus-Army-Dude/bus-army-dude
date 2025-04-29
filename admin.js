@@ -781,6 +781,7 @@ function formatTimeForAdminPreview(timeString) { // For display in preview list
         if (isNaN(hourNum)) return timeString;
         const ampm = hourNum >= 12 ? 'PM' : 'AM';
         const hour12 = hourNum % 12 || 12;
+        // Corrected return statement using template literal
         return `<span class="math-inline">\{hour12\}\:</span>{minute} ${ampm}`;
     } catch (e) {
         console.error("Error formatting time:", timeString, e);
@@ -861,10 +862,11 @@ function renderHolidayEntry(entry = {}, index) {
 <input type\="checkbox" id\="holiday\-isClosed\-</span>{uniqueId}" name="holiday-isClosed-${uniqueId}" class="holiday-input" <span class="math-inline">\{entry\.isClosed ? 'checked' \: ''\}\>
 <label for\="holiday\-isClosed\-</span>{uniqueId}">Closed all day</label>
         </div>`;
-    addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); /* updateAdminPreview(); // Let observer handle this */ }, `rem_hol_${uniqueId}`); // Also removed from remove button
-    const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`);
-    const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`);
-    const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`);
+    // Ensure querySelectors below use the correctly generated uniqueId
+    addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); /* Let observer handle preview update */ }, `rem_hol_${uniqueId}`);
+    const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`); // Correct selector
+    const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`); // Correct selector
+    const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`); // Correct selector
     addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `hol_${uniqueId}_closed`);
     entryDiv.querySelectorAll('.holiday-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `hol_${uniqueId}_${input.name}`));
     return entryDiv;
@@ -900,10 +902,11 @@ function renderTemporaryEntry(entry = {}, index) {
 <input type\="checkbox" id\="temp\-isClosed\-</span>{uniqueId}" name="temp-isClosed-${uniqueId}" class="temp-input" <span class="math-inline">\{entry\.isClosed ? 'checked' \: ''\}\>
 <label for\="temp\-isClosed\-</span>{uniqueId}">Closed all day during this period</label>
         </div>`;
-    addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); /* updateAdminPreview(); // Let observer handle this */ }, `rem_tmp_${uniqueId}`); // Also removed from remove button
-    const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`);
-    const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`);
-    const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`);
+     // Ensure querySelectors below use the correctly generated uniqueId
+    addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); /* Let observer handle preview update */ }, `rem_tmp_${uniqueId}`);
+    const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`); // Correct selector
+    const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`); // Correct selector
+    const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`); // Correct selector
     addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `tmp_${uniqueId}_closed`);
     entryDiv.querySelectorAll('.temp-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `tmp_${uniqueId}_${input.name}`));
     return entryDiv;
@@ -930,8 +933,30 @@ async function loadBusinessInfoData() {
         if (statusOverrideSelect) statusOverrideSelect.value = data.statusOverride || 'auto';
 
         if (typeof populateRegularHoursForm === 'function') { populateRegularHoursForm(data.regularHours); } else { console.error("populateRegularHoursForm function missing!"); }
-        if (holidayHoursList && typeof renderHolidayEntry === 'function') { holidayHoursList.innerHTML = ''; (data.holidayHours || []).forEach((entry, index) => { holidayHoursList.appendChild(renderHolidayEntry(entry, index)); }); } else if (!holidayHoursList) { console.error("holidayHoursList element missing!"); } else { console.error("renderHolidayEntry function missing!"); }
-        if (temporaryHoursList && typeof renderTemporaryEntry === 'function') { temporaryHoursList.innerHTML = ''; (data.temporaryHours || []).forEach((entry, index) => { temporaryHoursList.appendChild(renderTemporaryEntry(entry, index)); }); } else if (!temporaryHoursList) { console.error("temporaryHoursList element missing!"); } else { console.error("renderTemporaryEntry function missing!"); }
+        // Wrap rendering in try...catch to pinpoint errors during load
+        if (holidayHoursList && typeof renderHolidayEntry === 'function') {
+             holidayHoursList.innerHTML = ''; // Clear first
+             (data.holidayHours || []).forEach((entry, index) => {
+                 try {
+                     holidayHoursList.appendChild(renderHolidayEntry(entry, index));
+                 } catch(renderError) {
+                     console.error(`Error rendering holiday entry ${index}:`, renderError, entry);
+                     holidayHoursList.innerHTML += `<li class='error'>Error rendering holiday entry ${index + 1}. Check console.</li>`;
+                 }
+             });
+        } else if (!holidayHoursList) { console.error("holidayHoursList element missing!"); } else { console.error("renderHolidayEntry function missing!"); }
+
+        if (temporaryHoursList && typeof renderTemporaryEntry === 'function') {
+            temporaryHoursList.innerHTML = ''; // Clear first
+             (data.temporaryHours || []).forEach((entry, index) => {
+                 try {
+                    temporaryHoursList.appendChild(renderTemporaryEntry(entry, index));
+                 } catch(renderError) {
+                     console.error(`Error rendering temporary entry ${index}:`, renderError, entry);
+                     temporaryHoursList.innerHTML += `<li class='error'>Error rendering temporary entry ${index + 1}. Check console.</li>`;
+                 }
+             });
+        } else if (!temporaryHoursList) { console.error("temporaryHoursList element missing!"); } else { console.error("renderTemporaryEntry function missing!"); }
 
         if (typeof updateAdminPreview === 'function') { updateAdminPreview(); console.log("Initial admin preview updated."); }
         else { console.error("updateAdminPreview function missing!"); }
@@ -940,8 +965,8 @@ async function loadBusinessInfoData() {
         console.error("Error loading business info:", error);
         showBusinessInfoStatus(`Error loading info: ${error.message || error}`, true);
         if (typeof populateRegularHoursForm === 'function') populateRegularHoursForm();
-        if (holidayHoursList) holidayHoursList.innerHTML = '';
-        if (temporaryHoursList) temporaryHoursList.innerHTML = '';
+        if (holidayHoursList) holidayHoursList.innerHTML = '<p class="error">Could not load holiday hours.</p>';
+        if (temporaryHoursList) temporaryHoursList.innerHTML = '<p class="error">Could not load temporary hours.</p>';
         if (typeof updateAdminPreview === 'function') updateAdminPreview();
     }
 }
@@ -972,7 +997,7 @@ async function saveBusinessInfoData(event) {
 }
 
 
-// --- Admin Preview Update Function (v13 - Fixed Syntax Errors & Refined Temp Logic) ---
+// --- Admin Preview Update Function (v13 - Syntax Fixed & Refined Temp Logic) ---
 function updateAdminPreview() {
     console.log("%cUpdating admin preview (v13)...", "color: blue; font-weight: bold;");
 
@@ -1155,12 +1180,16 @@ function setupBusinessInfoListeners() {
 
     // Add Buttons: Only append the element. Let the observer handle the preview update.
     addHolidayButton.addEventListener('click', () => {
+        // *** Add console log for debugging double add ***
+        console.log('Holiday Add Button Clicked');
         if (typeof renderHolidayEntry === 'function') {
             holidayHoursList.appendChild(renderHolidayEntry({ isClosed: true }, holidayHoursList.children.length));
             // REMOVED: updateAdminPreview();
         } else { console.error("renderHolidayEntry function missing!"); }
     });
     addTemporaryButton.addEventListener('click', () => {
+         // *** Add console log for debugging double add ***
+         console.log('Temporary Add Button Clicked');
         if (typeof renderTemporaryEntry === 'function') {
             temporaryHoursList.appendChild(renderTemporaryEntry({ isClosed: false }, temporaryHoursList.children.length));
              // REMOVED: updateAdminPreview();
@@ -1174,13 +1203,17 @@ function setupBusinessInfoListeners() {
         // Use event delegation for inputs/changes within the form
         addListenerSafe(businessInfoForm, 'input', (e) => {
             if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) {
-                 setTimeout(updateAdminPreview, 50); // Small delay needed? Test without if issues persist.
+                 // Using direct call now, removed setTimeout
+                 updateAdminPreview();
+                 // setTimeout(updateAdminPreview, 50);
             }
         }, '_preview_input');
 
         addListenerSafe(businessInfoForm, 'change', (e) => {
              if (e.target && e.target.type === 'checkbox') {
-                setTimeout(updateAdminPreview, 50); // Small delay needed? Test without if issues persist.
+                 // Using direct call now, removed setTimeout
+                 updateAdminPreview();
+                 // setTimeout(updateAdminPreview, 50);
              }
         }, '_preview_change');
 
@@ -1190,7 +1223,7 @@ function setupBusinessInfoListeners() {
             const changed = mutationsList.some(mutation => mutation.type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0));
             if (changed) {
                 console.log('Preview update triggered by MutationObserver.');
-                // Delay might not be needed here if DOM update is synchronous enough
+                // Using direct call now, removed setTimeout
                  updateAdminPreview();
                 // setTimeout(updateAdminPreview, 100);
             }
