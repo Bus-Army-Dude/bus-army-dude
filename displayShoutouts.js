@@ -833,26 +833,40 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         return false;
     });
 
-    if (activeTemporary) {
-        statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-        if (activeTemporary.isClosed) {
-            currentStatus = 'Open';
+    // Inside calculateAndDisplayStatusConvertedBI, modify the temporary hours check:
+if (activeTemporary) {
+    statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+    if (activeTemporary.isClosed) {
+        currentStatus = 'Closed';
+    } else {
+        const openMins = timeStringToMinutes(activeTemporary.open);
+        const closeMins = timeStringToMinutes(activeTemporary.close);
+        if (openMins === null || closeMins === null) {
+            currentStatus = 'Temporarily Unavailable';
         } else {
-            const openMins = timeStringToMinutes(activeTemporary.open);
-            const closeMins = timeStringToMinutes(activeTemporary.close);
-            if (openMins === null || closeMins === null) {
-                currentStatus = 'Open';
+            // If within the specified time range -> Temporarily Unavailable
+            // If outside the time range -> Follow regular hours logic
+            if (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
+                currentStatus = 'Temporarily Unavailable';
             } else {
-                // If within the specified time range -> Temporarily Unavailable
-                // If outside the time range -> Open
-                if (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
-                    currentStatus = 'Temporarily Unavailable';
+                // Check regular hours when outside temporary hours
+                const todayRegularHours = regularHours[businessDayName];
+                if (todayRegularHours && !todayRegularHours.isClosed && 
+                    todayRegularHours.open && todayRegularHours.close) {
+                    const regOpenMins = timeStringToMinutes(todayRegularHours.open);
+                    const regCloseMins = timeStringToMinutes(todayRegularHours.close);
+                    currentStatus = (regOpenMins !== null && regCloseMins !== null && 
+                                   currentMinutesInBizTZ >= regOpenMins && 
+                                   currentMinutesInBizTZ < regCloseMins) ? 'Open' : 'Closed';
+                    statusReason = 'Regular Hours';
                 } else {
-                    currentStatus = 'Open';
+                    currentStatus = 'Closed';
+                    statusReason = 'Regular Hours';
                 }
             }
         }
-        activeHoursRule = { ...activeTemporary, reason: statusReason };
+    }
+    activeHoursRule = { ...activeTemporary, reason: statusReason };
             } else {
                 // Regular hours
                 statusReason = 'Regular Hours';
