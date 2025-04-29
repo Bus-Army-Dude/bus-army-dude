@@ -1591,8 +1591,10 @@ function updateAdminPreview() {
         }
     }
 
-   // Inside updateAdminPreview function in admin.js:
-// Temporary Check (Corrected Logic)
+ // Inside updateAdminPreview function in admin.js:
+// Update this section of the function:
+
+// Inside temporary hours check
 if (!ruleApplied) {
     const activeTemporary = currentFormData.temporaryHours.find(t => previewDateStr >= t.startDate && previewDateStr <= t.endDate);
     if (activeTemporary) {
@@ -1600,12 +1602,14 @@ if (!ruleApplied) {
         activeHoursRule = { ...activeTemporary, reason: statusReason };
         ruleApplied = true;
 
-        if (activeTemporary.open && activeTemporary.close) {
-            const openMins = timeStringToMinutesBI(activeTemporary.open);
-            const closeMins = timeStringToMinutesBI(activeTemporary.close);
-
+        if (activeTemporary.isClosed) {
+            currentStatus = 'Closed';
+        } else if (activeTemporary.open && activeTemporary.close) {
+            const openMins = timeStringToMinutes(activeTemporary.open);
+            const closeMins = timeStringToMinutes(activeTemporary.close);
+            
             if (openMins === null || closeMins === null) {
-                currentStatus = 'Open';
+                currentStatus = 'Temporarily Unavailable';
             } else {
                 // If within the specified time range -> Temporarily Unavailable
                 // Otherwise -> Open
@@ -1613,10 +1617,12 @@ if (!ruleApplied) {
                     currentStatus = 'Temporarily Unavailable';
                 } else {
                     currentStatus = 'Open';
+                    statusReason = 'Regular Hours';
                 }
             }
         } else {
             currentStatus = 'Open';
+            statusReason = 'Regular Hours';
         }
     }
 }
