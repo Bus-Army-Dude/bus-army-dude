@@ -785,7 +785,7 @@ function formatTimeForAdminPreview(timeString) { // For display in preview list
         const ampm = hourNum >= 12 ? 'PM' : 'AM';
         const hour12 = hourNum % 12 || 12;
         // Corrected return statement using template literal
-        return `<span class="math-inline">\{hour12\}\:</span>{minute} ${ampm}`;
+        return `${hour12}:${minute} ${ampm}`;
     } catch (e) {
         console.error("Error formatting time:", timeString, e);
         return timeString;
@@ -819,17 +819,17 @@ function populateRegularHoursForm(hoursData = {}) {
         groupDiv.className = 'day-hours-group';
         // Corrected innerHTML using proper template literals
         groupDiv.innerHTML = `
-            <label for="<span class="math-inline">\{day\}\-isClosed"\></span>{capitalizeFirstLetter(day)}</label>
+            <label for="${day}-isClosed">${capitalizeFirstLetter(day)}</label>
             <div class="time-inputs">
-                <label for="<span class="math-inline">\{day\}\-open" class\="sr\-only"\>Open Time\:</label\>
-<input type\="time" id\="</span>{day}-open" name="<span class="math-inline">\{day\}\-open" value\="</span>{dayData.open || ''}" <span class="math-inline">\{dayData\.isClosed ? 'disabled' \: ''\}\>
-<span\> \- </span\>
-<label for\="</span>{day}-close" class="sr-only">Close Time:</label>
-                <input type="time" id="<span class="math-inline">\{day\}\-close" name\="</span>{day}-close" value="${dayData.close || ''}" <span class="math-inline">\{dayData\.isClosed ? 'disabled' \: ''\}\>
-</div\>
-<div class\="form\-group checkbox\-group"\>
-<input type\="checkbox" id\="</span>{day}-isClosed" name="${day}-isClosed" <span class="math-inline">\{dayData\.isClosed ? 'checked' \: ''\} class\="regular\-hours\-input"\>
-<label for\="</span>{day}-isClosed">Closed all day</label>
+                <label for="${day}-open" class="sr-only">Open Time:</label>
+                <input type="time" id="${day}-open" name="${day}-open" value="${dayData.open || ''}" ${dayData.isClosed ? 'disabled' : ''}>
+                <span> - </span>
+                <label for="${day}-close" class="sr-only">Close Time:</label>
+                <input type="time" id="${day}-close" name="${day}-close" value="${dayData.close || ''}" ${dayData.isClosed ? 'disabled' : ''}>
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="${day}-isClosed" name="${day}-isClosed" ${dayData.isClosed ? 'checked' : ''} class="regular-hours-input">
+                <label for="${day}-isClosed">Closed all day</label>
             </div>`;
         const isClosedCheckbox = groupDiv.querySelector(`#${day}-isClosed`);
         const openInput = groupDiv.querySelector(`#${day}-open`);
@@ -843,7 +843,7 @@ function populateRegularHoursForm(hoursData = {}) {
 
 // CORRECTED SYNTAX HERE
 function renderHolidayEntry(entry = {}, index) {
-    const uniqueId = `holiday-<span class="math-inline">\{Date\.now\(\)\}\-</span>{index}`;
+    const uniqueId = `holiday-${Date.now()}-${index}`;
     const entryDiv = document.createElement('div');
     entryDiv.className = 'hour-entry holiday-entry';
     entryDiv.setAttribute('data-id', uniqueId);
@@ -851,29 +851,29 @@ function renderHolidayEntry(entry = {}, index) {
     entryDiv.innerHTML = `
         <button type="button" class="remove-hour-button" title="Remove Holiday/Specific Date">×</button>
         <div class="form-group">
-            <label for="holiday-date-<span class="math-inline">\{uniqueId\}"\>Date\:</label\>
-<input type\="date" id\="holiday\-date\-</span>{uniqueId}" class="holiday-input" name="holiday-date-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.date || ''}" required>
+            <label for="holiday-date-${uniqueId}">Date:</label>
+            <input type="date" id="holiday-date-${uniqueId}" class="holiday-input" name="holiday-date-${uniqueId}" value="${entry.date || ''}" required>
         </div>
         <div class="form-group">
-            <label for="holiday-label-<span class="math-inline">\{uniqueId\}"\>Label \(Optional\)\:</label\>
-<input type\="text" id\="holiday\-label\-</span>{uniqueId}" class="holiday-input" name="holiday-label-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.label || ''}" placeholder="e.g., Christmas Day">
+            <label for="holiday-label-${uniqueId}">Label (Optional):</label>
+            <input type="text" id="holiday-label-${uniqueId}" class="holiday-input" name="holiday-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Christmas Day">
         </div>
         <div class="time-inputs">
-            <label for="holiday-open-<span class="math-inline">\{uniqueId\}" class\="sr\-only"\>Open Time\:</label\>
-<input type\="time" id\="holiday\-open\-</span>{uniqueId}" class="holiday-input" name="holiday-open-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.open || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\>
-<span\> \- </span\>
-<label for\="holiday\-close\-</span>{uniqueId}" class="sr-only">Close Time:</label>
-            <input type="time" id="holiday-close-<span class="math-inline">\{uniqueId\}" class\="holiday\-input" name\="holiday\-close\-</span>{uniqueId}" value="${entry.close || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\>
-</div\>
-<div class\="form\-group checkbox\-group"\>
-<input type\="checkbox" id\="holiday\-isClosed\-</span>{uniqueId}" name="holiday-isClosed-${uniqueId}" class="holiday-input" <span class="math-inline">\{entry\.isClosed ? 'checked' \: ''\}\>
-<label for\="holiday\-isClosed\-</span>{uniqueId}">Closed all day</label>
+            <label for="holiday-open-${uniqueId}" class="sr-only">Open Time:</label>
+            <input type="time" id="holiday-open-${uniqueId}" class="holiday-input" name="holiday-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}>
+            <span> - </span>
+            <label for="holiday-close-${uniqueId}" class="sr-only">Close Time:</label>
+            <input type="time" id="holiday-close-${uniqueId}" class="holiday-input" name="holiday-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}>
+        </div>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="holiday-isClosed-${uniqueId}" name="holiday-isClosed-${uniqueId}" class="holiday-input" ${entry.isClosed ? 'checked' : ''}>
+            <label for="holiday-isClosed-${uniqueId}">Closed all day</label>
         </div>`;
-    // Removed direct updateAdminPreview call from remove button listener
+    // Ensure querySelectors below use the correctly generated uniqueId
     addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); /* Let observer handle preview update */ }, `rem_hol_${uniqueId}`);
-    const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`);
-    const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`);
-    const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`);
+    const isClosedCheckbox = entryDiv.querySelector(`#holiday-isClosed-${uniqueId}`); // Correct selector
+    const openInput = entryDiv.querySelector(`#holiday-open-${uniqueId}`); // Correct selector
+    const closeInput = entryDiv.querySelector(`#holiday-close-${uniqueId}`); // Correct selector
     addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `hol_${uniqueId}_closed`);
     entryDiv.querySelectorAll('.holiday-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `hol_${uniqueId}_${input.name}`));
     return entryDiv;
@@ -881,7 +881,7 @@ function renderHolidayEntry(entry = {}, index) {
 
 // CORRECTED SYNTAX HERE
 function renderTemporaryEntry(entry = {}, index) {
-    const uniqueId = `temp-<span class="math-inline">\{Date\.now\(\)\}\-</span>{index}`;
+    const uniqueId = `temp-${Date.now()}-${index}`;
     const entryDiv = document.createElement('div');
     entryDiv.className = 'hour-entry temporary-entry';
     entryDiv.setAttribute('data-id', uniqueId);
@@ -889,33 +889,33 @@ function renderTemporaryEntry(entry = {}, index) {
     entryDiv.innerHTML = `
         <button type="button" class="remove-hour-button" title="Remove Temporary Period">×</button>
         <div class="form-group">
-            <label for="temp-start-<span class="math-inline">\{uniqueId\}"\>Start Date\:</label\>
-<input type\="date" id\="temp\-start\-</span>{uniqueId}" class="temp-input" name="temp-start-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.startDate || ''}" required>
+            <label for="temp-start-${uniqueId}">Start Date:</label>
+            <input type="date" id="temp-start-${uniqueId}" class="temp-input" name="temp-start-${uniqueId}" value="${entry.startDate || ''}" required>
         </div>
         <div class="form-group">
-            <label for="temp-end-<span class="math-inline">\{uniqueId\}"\>End Date\:</label\>
-<input type\="date" id\="temp\-end\-</span>{uniqueId}" class="temp-input" name="temp-end-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.endDate || ''}" required>
+            <label for="temp-end-${uniqueId}">End Date:</label>
+            <input type="date" id="temp-end-${uniqueId}" class="temp-input" name="temp-end-${uniqueId}" value="${entry.endDate || ''}" required>
         </div>
         <div class="form-group">
-            <label for="temp-label-<span class="math-inline">\{uniqueId\}"\>Label \(Optional\)\:</label\>
-<input type\="text" id\="temp\-label\-</span>{uniqueId}" class="temp-input" name="temp-label-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.label || ''}" placeholder="e.g., Summer Event">
+            <label for="temp-label-${uniqueId}">Label (Optional):</label>
+            <input type="text" id="temp-label-${uniqueId}" class="temp-input" name="temp-label-${uniqueId}" value="${entry.label || ''}" placeholder="e.g., Summer Event">
         </div>
         <div class="time-inputs">
-            <label for="temp-open-<span class="math-inline">\{uniqueId\}" class\="sr\-only"\>Open Time\:</label\>
-<input type\="time" id\="temp\-open\-</span>{uniqueId}" class="temp-input" name="temp-open-<span class="math-inline">\{uniqueId\}" value\="</span>{entry.open || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\>
-<span\> \- </span\>
-<label for\="temp\-close\-</span>{uniqueId}" class="sr-only">Close Time:</label>
-            <input type="time" id="temp-close-<span class="math-inline">\{uniqueId\}" class\="temp\-input" name\="temp\-close\-</span>{uniqueId}" value="${entry.close || ''}" <span class="math-inline">\{entry\.isClosed ? 'disabled' \: ''\}\>
-</div\>
-<div class\="form\-group checkbox\-group"\>
-<input type\="checkbox" id\="temp\-isClosed\-</span>{uniqueId}" name="temp-isClosed-${uniqueId}" class="temp-input" <span class="math-inline">\{entry\.isClosed ? 'checked' \: ''\}\>
-<label for\="temp\-isClosed\-</span>{uniqueId}">Closed all day during this period</label>
+            <label for="temp-open-${uniqueId}" class="sr-only">Open Time:</label>
+            <input type="time" id="temp-open-${uniqueId}" class="temp-input" name="temp-open-${uniqueId}" value="${entry.open || ''}" ${entry.isClosed ? 'disabled' : ''}>
+            <span> - </span>
+            <label for="temp-close-${uniqueId}" class="sr-only">Close Time:</label>
+            <input type="time" id="temp-close-${uniqueId}" class="temp-input" name="temp-close-${uniqueId}" value="${entry.close || ''}" ${entry.isClosed ? 'disabled' : ''}>
+        </div>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="temp-isClosed-${uniqueId}" name="temp-isClosed-${uniqueId}" class="temp-input" ${entry.isClosed ? 'checked' : ''}>
+            <label for="temp-isClosed-${uniqueId}">Closed all day during this period</label>
         </div>`;
-     // Removed direct updateAdminPreview call from remove button listener
+     // Ensure querySelectors below use the correctly generated uniqueId
     addListenerSafe(entryDiv.querySelector('.remove-hour-button'), 'click', () => { entryDiv.remove(); /* Let observer handle preview update */ }, `rem_tmp_${uniqueId}`);
-    const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`);
-    const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`);
-    const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`);
+    const isClosedCheckbox = entryDiv.querySelector(`#temp-isClosed-${uniqueId}`); // Correct selector
+    const openInput = entryDiv.querySelector(`#temp-open-${uniqueId}`); // Correct selector
+    const closeInput = entryDiv.querySelector(`#temp-close-${uniqueId}`); // Correct selector
     addListenerSafe(isClosedCheckbox, 'change', (e) => { const isDisabled = e.target.checked; openInput.disabled = isDisabled; closeInput.disabled = isDisabled; if(isDisabled) { openInput.value = ''; closeInput.value = ''; } updateAdminPreview(); }, `tmp_${uniqueId}_closed`);
     entryDiv.querySelectorAll('.temp-input').forEach(input => addListenerSafe(input, 'input', updateAdminPreview, `tmp_${uniqueId}_${input.name}`));
     return entryDiv;
@@ -949,8 +949,9 @@ async function loadBusinessInfoData() {
                  try {
                      holidayHoursList.appendChild(renderHolidayEntry(entry, index));
                  } catch(renderError) {
-                     console.error(`Error rendering holiday entry ${index}:`, renderError, entry);
-                     holidayHoursList.innerHTML += `<li class='error'>Error rendering holiday entry ${index + 1}. Check console.</li>`;
+                     // Log the specific error during rendering
+                     console.error(`Error rendering holiday entry ${index} from loaded data:`, renderError, entry);
+                     holidayHoursList.innerHTML += `<li class='error'>Error rendering loaded holiday entry ${index + 1}. Check console.</li>`;
                  }
              });
         } else if (!holidayHoursList) { console.error("holidayHoursList element missing!"); } else { console.error("renderHolidayEntry function missing!"); }
@@ -961,8 +962,9 @@ async function loadBusinessInfoData() {
                  try {
                     temporaryHoursList.appendChild(renderTemporaryEntry(entry, index));
                  } catch(renderError) {
-                     console.error(`Error rendering temporary entry ${index}:`, renderError, entry);
-                     temporaryHoursList.innerHTML += `<li class='error'>Error rendering temporary entry ${index + 1}. Check console.</li>`;
+                     // Log the specific error during rendering
+                     console.error(`Error rendering temporary entry ${index} from loaded data:`, renderError, entry);
+                     temporaryHoursList.innerHTML += `<li class='error'>Error rendering loaded temporary entry ${index + 1}. Check console.</li>`;
                  }
              });
         } else if (!temporaryHoursList) { console.error("temporaryHoursList element missing!"); } else { console.error("renderTemporaryEntry function missing!"); }
@@ -997,7 +999,7 @@ async function saveBusinessInfoData(event) {
 
     daysOfWeek.forEach(day => { const isClosed = document.getElementById(`${day}-isClosed`)?.checked || false; const openTime = document.getElementById(`${day}-open`)?.value || null; const closeTime = document.getElementById(`${day}-close`)?.value || null; newData.regularHours[day] = { open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed: isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing open/close time for ${day}`); } });
     document.querySelectorAll('#holiday-hours-list .holiday-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#holiday-isClosed-${id}`)?.checked || false; const date = entryDiv.querySelector(`#holiday-date-${id}`)?.value || null; const openTime = entryDiv.querySelector(`#holiday-open-${id}`)?.value || null; const closeTime = entryDiv.querySelector(`#holiday-close-${id}`)?.value || null; if (date) { const entryData = { date, label: entryDiv.querySelector(`#holiday-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing holiday time ${date}`); } newData.holidayHours.push(entryData); } else { formIsValid = false; } });
-    document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; const openTime = entryDiv.querySelector(`#temp-open-${id}`)?.value || null; const closeTime = entryDiv.querySelector(`#temp-close-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { showBusinessInfoStatus(`Error: Temp End Date < Start Date.`, true); formIsValid = false; return; } const entryData = { startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing temp time <span class="math-inline">\{startDate\}\-</span>{endDate}`); } newData.temporaryHours.push(entryData); } else { formIsValid = false; } });
+    document.querySelectorAll('#temporary-hours-list .temporary-entry').forEach(entryDiv => { const id = entryDiv.getAttribute('data-id'); if (!id) return; const isClosed = entryDiv.querySelector(`#temp-isClosed-${id}`)?.checked || false; const startDate = entryDiv.querySelector(`#temp-start-${id}`)?.value || null; const endDate = entryDiv.querySelector(`#temp-end-${id}`)?.value || null; const openTime = entryDiv.querySelector(`#temp-open-${id}`)?.value || null; const closeTime = entryDiv.querySelector(`#temp-close-${id}`)?.value || null; if (startDate && endDate) { if (endDate < startDate) { showBusinessInfoStatus(`Error: Temp End Date < Start Date.`, true); formIsValid = false; return; } const entryData = { startDate, endDate, label: entryDiv.querySelector(`#temp-label-${id}`)?.value.trim() || null, open: isClosed ? null : openTime, close: isClosed ? null : closeTime, isClosed }; if (!isClosed && (!openTime || !closeTime)) { console.warn(`Missing temp time ${startDate}-${endDate}`); } newData.temporaryHours.push(entryData); } else { formIsValid = false; } }); // Corrected console warning syntax
 
     if (!formIsValid) { showBusinessInfoStatus("Save failed. Check required dates.", true); return; }
     newData.holidayHours.sort((a, b) => (a.date > b.date ? 1 : -1)); newData.temporaryHours.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
@@ -1040,7 +1042,7 @@ function updateAdminPreview() {
     const previewDateStr = previewNow.toLocaleDateString('en-CA');
     const previewCurrentMinutes = previewNow.getHours() * 60 + previewNow.getMinutes();
     // Corrected console log syntax
-    console.log(`Admin Preview Time Check: Date=<span class="math-inline">\{previewDateStr\}, Day\=</span>{previewDayName}, Mins=${previewCurrentMinutes}`);
+    console.log(`Admin Preview Time Check: Date=${previewDateStr}, Day=${previewDayName}, Mins=${previewCurrentMinutes}`);
     let activeHoursRule = null;
     let ruleApplied = false;
 
@@ -1102,7 +1104,7 @@ function updateAdminPreview() {
     else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
     const displayReason = activeHoursRule?.reason || statusReason || 'Unknown';
     // Corrected innerHTML using proper template literals
-    adminPreviewStatus.innerHTML = `<span class="<span class="math-inline">\{statusClass\}"\></span>{currentStatus}</span> <span class="status-reason">(${displayReason})</span>`;
+    adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${displayReason})</span>`;
 
 
     // 4. Display Hours (Regular, Temporary, Holiday)
@@ -1114,8 +1116,8 @@ function updateAdminPreview() {
         const highlightClass = isCurrentDay ? 'current-day-preview' : '';
         // Corrected innerHTML using proper template literals
         hoursHtml += `
-            <li class="<span class="math-inline">\{highlightClass\}"\>
-<strong\></span>{capitalizeFirstLetter(day)}:</strong>
+            <li class="${highlightClass}">
+                <strong>${capitalizeFirstLetter(day)}:</strong>
                 ${dayData && !dayData.isClosed && dayData.open && dayData.close ?
                     // Calls the corrected formatTimeForAdminPreview
                     `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>` :
@@ -1133,9 +1135,9 @@ function updateAdminPreview() {
                  // Now displays times correctly by calling the fixed formatTimeForAdminPreview
                 hoursHtml += `
                     <li>
-                        <strong><span class="math-inline">\{temp\.label \|\| 'Temporary Schedule'\}\:</strong\>
-<div class\="special\-hours\-details"\>
-<span class\="dates"\></span>{temp.startDate} to ${temp.endDate}</span>
+                        <strong>${temp.label || 'Temporary Schedule'}:</strong>
+                        <div class="special-hours-details">
+                            <span class="dates">${temp.startDate} to ${temp.endDate}</span>
                             ${temp.isClosed ?
                                 '<span class="hours">Closed</span>' :
                                 `<span class="hours">${formatTimeForAdminPreview(temp.open) || '?'} - ${formatTimeForAdminPreview(temp.close) || '?'} ET</span>`
@@ -1175,7 +1177,7 @@ function updateAdminPreview() {
 
     // 5. Display Contact
     // Corrected innerHTML using proper template literals
-    if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:<span class="math-inline">\{currentFormData\.contactEmail\}" target\="\_blank"\></span>{currentFormData.contactEmail}</a>`; }
+    if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`; }
     else { adminPreviewContact.innerHTML = ''; }
 
     console.log("Admin preview update complete.");
