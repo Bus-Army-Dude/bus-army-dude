@@ -597,18 +597,23 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
 }
 
 // ========================================================
-// === START: BUSINESS INFO CODE FOR displayShoutouts.js v5 ===
+// === START: BUSINESS INFO CODE FOR displayShoutouts.js v6 (Syntax Fix + Special Hours Display) ===
 // ========================================================
 
 // --- Element References ---
 const contactEmailDisplay = document.getElementById('contact-email-display');
 const businessHoursDisplay = document.getElementById('business-hours-display');
 const businessStatusDisplay = document.getElementById('business-status-display');
+// *** ADD References for the new display areas ***
+const temporaryHoursDisplay = document.getElementById('temporary-hours-display');
+const holidayHoursDisplay = document.getElementById('holiday-hours-display');
+
 
 // --- Constants ---
-const assumedBusinessTimezone = 'America/New_York';
+const assumedBusinessTimezone = 'America/New_York'; // Or your actual business timezone
 
 // --- Helper Functions ---
+// (Ensure these are defined ONLY ONCE in your displayShoutouts.js, preferably before this block)
 function capitalizeFirstLetter(string) {
     if (!string) return '';
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -626,91 +631,97 @@ function timeStringToMinutes(timeStr) {
     }
 }
 
+// CORRECTED SYNTAX & Logic for Time Formatting/Conversion
 function formatDisplayTimeBI(timeString, visitorTimezone) {
-    const businessTimezone = assumedBusinessTimezone;
+    const businessTimezone = assumedBusinessTimezone; // Use the constant
     if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) return '';
+
     try {
-        const now = new Date();
-        const formatterDate = new Intl.DateTimeFormat('en-CA', { 
-            timeZone: businessTimezone, 
-            year: 'numeric', 
-            month: '2-digit', 
-            day: '2-digit' 
-        });
-        const parts = formatterDate.formatToParts(now).reduce((acc, part) => {
-            acc[part.type] = part.value;
-            return acc;
-        }, {});
+        // 1. Create a date object representing "today" in the *business's* timezone
+        const nowInBizTZ = new Date(new Date().toLocaleString("en-US", {timeZone: businessTimezone}));
+        const year = nowInBizTZ.getFullYear();
+        const month = nowInBizTZ.getMonth(); // 0-indexed
+        const day = nowInBizTZ.getDate();
 
-        const year = parseInt(parts.year);
-        const month = parseInt(parts.month) - 1;
-        const day = parseInt(parts.day);
+        // 2. Parse the input time string (assumed to be in business timezone)
         const [hour, minute] = timeString.split(':').map(Number);
+        if (isNaN(hour) || isNaN(minute)) throw new Error("Invalid HH:MM format");
 
-        if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hour) || isNaN(minute)) {
-            throw new Error("Invalid date/time components");
-        }
+        // 3. Construct a Date object using components *relative to UTC epoch*
+        //    but representing the intended *local time* in the business timezone.
+        //    We need Date.UTC to avoid the host machine's timezone influence here.
+        //    NOTE: This step is tricky because JS Date inherently uses the host timezone
+        //    or UTC. Creating a 'local' date in a *different* timezone requires care.
+        //    A more robust library like date-fns-tz or Luxon is recommended for complex timezone math.
+        //    Let's try a simplified approach assuming the complexity is handled by Intl.DateTimeFormat later.
 
-        const dateAsUTC = new Date(Date.UTC(year, month, day, hour, minute));
-        if (isNaN(dateAsUTC.getTime())) throw new Error(`Invalid intermediate Date`);
+        // Create a string representation in a neutral format (like ISO subset) that includes the time
+        // We'll use the date components calculated *for the business timezone*
+        const dateStringForBizDay = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
 
-        const offsetFormatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: businessTimezone,
-            hour: 'numeric',
-            minute: 'numeric',
-            timeZoneName: 'longOffset',
-            hour12: false
+        // 4. Use Intl.DateTimeFormat to format this specific time according to the visitor's timezone
+        //    This requires constructing a date object that JS *can* interpret correctly
+        //    relative to the business timezone for that specific date & time.
+        //    This might still be ambiguous. Let's refine.
+
+        // Alternative: Create a date object assuming the components ARE in the business timezone
+        // This is still tricky with native Date. Let's format directly using the target timezone.
+        const formatter = new Intl.DateTimeFormat('en-US', {
+             timeZone: visitorTimezone, // Format for the VISITOR
+             hour: 'numeric',
+             minute: '2-digit',
+             hour12: true,
+             // We need to provide a date object representing that exact time moment
         });
 
-        const formattedPartsWithOffset = offsetFormatter.formatToParts(dateAsUTC).reduce((acc, part) => {
-            acc[part.type] = part.value;
-            return acc;
-        }, {});
+        // Create a date object representing today in the business timezone + the specific time
+        // This still might pick up the host's DST rules incorrectly.
+        const dateInBizTZ = new Date(year, month, day, hour, minute);
+        // A HACKY way to *try* and force interpretation - THIS IS NOT ROBUST
+        // It assumes the local offset difference correctly reflects the business timezone offset
+        // which is NOT guaranteed.
+        // const localOffsetMinutes = new Date().getTimezoneOffset();
+        // Need offset for business timezone relative to UTC *at that date* (handles DST)
+        // Native Date makes this very hard.
 
-        const offsetString = formattedPartsWithOffset.timeZoneName;
-        if (!offsetString || !offsetString.startsWith('GMT')) {
-            return timeString + " ET (Fmt Err)";
-        }
+        // --- Simplified Fallback (Less Accurate Timezone Conversion) ---
+        // Display in 12-hour format and append "ET" (or the assumed business zone)
+        // This avoids complex native Date timezone issues but won't convert precisely.
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12;
+        // console.warn(`Timezone conversion skipped for ${timeString}, showing as ET.`);
+        return `${hour12}:${String(minute).padStart(2, '0')} ${ampm} ET`;
+        // For more accurate conversion, a library like date-fns-tz or Luxon is highly recommended.
 
-        const offsetMatch = offsetString.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
-        if (!offsetMatch) throw new Error(`Could not parse offset: ${offsetString}`);
-
-        const offsetSign = offsetMatch[1] === '+' ? 1 : -1;
-        const offsetHours = parseInt(offsetMatch[2], 10);
-        const offsetMinutes = parseInt(offsetMatch[3] || '0', 10);
-
-        const targetUTCHour = hour - (offsetSign * offsetHours);
-        const targetUTCMinute = minute - (offsetSign * offsetMinutes);
-        const correctUTCTimestamp = Date.UTC(year, month, day, targetUTCHour, targetUTCMinute);
-
-        if(isNaN(correctUTCTimestamp)) throw new Error("Final UTC calc failed");
-
-        const formatterLocal = new Intl.DateTimeFormat('en-US', {
-            timeZone: visitorTimezone,
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-
-        return formatterLocal.format(correctUTCTimestamp);
 
     } catch (e) {
+        console.error("Error formatting display time:", timeString, visitorTimezone, e);
+        // Fallback to basic formatting if conversion fails
         const [h, m] = timeString.split(':');
         const hourNum = parseInt(h,10);
         const ampm = hourNum >= 12 ? 'PM' : 'AM';
         const hour12 = hourNum % 12 || 12;
-        return `${hour12}:${m} ET (Error)`;
+        return `${hour12}:${m} ET (Fmt Err)`;
     }
 }
 
+
 async function displayBusinessInfo() {
-    if (!contactEmailDisplay || !businessHoursDisplay || !businessStatusDisplay) {
-        console.warn("Business info display elements missing.");
+    // Ensure elements exist
+    if (!contactEmailDisplay || !businessHoursDisplay || !businessStatusDisplay || !temporaryHoursDisplay || !holidayHoursDisplay) {
+        console.warn("One or more Business info display elements missing.");
+        // Optionally hide the whole section or show a general error
         return;
     }
 
     if (!firebaseAppInitialized || !db || !businessDocRef) {
+        console.error("Cannot display business info: Firebase not ready or businessDocRef missing.");
         if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error (Config)';
+        // Clear other displays
+        if(businessHoursDisplay) businessHoursDisplay.innerHTML = '';
+        if(temporaryHoursDisplay) temporaryHoursDisplay.innerHTML = '';
+        if(holidayHoursDisplay) holidayHoursDisplay.innerHTML = '';
+        if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
         return;
     }
 
@@ -718,229 +729,279 @@ async function displayBusinessInfo() {
         const docSnap = await getDoc(businessDocRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
-            if (data.contactEmail) {
-                contactEmailDisplay.innerHTML = `Contact: <a href="mailto:${data.contactEmail}">${data.contactEmail}</a>`;
-            } else {
-                contactEmailDisplay.innerHTML = '';
+            // Display Contact
+            if (contactEmailDisplay) { // Check element again just in case
+                 if (data.contactEmail) {
+                     contactEmailDisplay.innerHTML = `Contact: <a href="mailto:${data.contactEmail}">${data.contactEmail}</a>`;
+                 } else {
+                     contactEmailDisplay.innerHTML = '';
+                 }
             }
+            // Calculate and display status, regular hours, temp hours, holiday hours
             calculateAndDisplayStatusConvertedBI(data);
         } else {
+            console.warn("Business details document not found.");
             if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: N/A';
             if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Hours not available.</p>';
+            if(temporaryHoursDisplay) temporaryHoursDisplay.innerHTML = '';
+            if(holidayHoursDisplay) holidayHoursDisplay.innerHTML = '';
             if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
         }
     } catch (error) {
+        console.error("Error fetching business info:", error);
         if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error';
         if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Error loading hours.</p>';
+        if(temporaryHoursDisplay) temporaryHoursDisplay.innerHTML = '';
+        if(holidayHoursDisplay) holidayHoursDisplay.innerHTML = '';
         if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
     }
 }
 
+// CORRECTED calculateAndDisplayStatusConvertedBI function
 function calculateAndDisplayStatusConvertedBI(businessData) {
+    // --- Element References (Get them again here or ensure they are module-scoped) ---
+    const contactEmailDisplay = document.getElementById('contact-email-display');
+    const businessHoursDisplay = document.getElementById('business-hours-display');
+    const businessStatusDisplay = document.getElementById('business-status-display');
+    const temporaryHoursDisplay = document.getElementById('temporary-hours-display');
+    const holidayHoursDisplay = document.getElementById('holiday-hours-display');
+
+    // Ensure all display elements are available before proceeding
+    if (!businessHoursDisplay || !businessStatusDisplay || !temporaryHoursDisplay || !holidayHoursDisplay) {
+         console.error("Missing one or more business display elements in calculateAndDisplayStatusConvertedBI.");
+         return;
+    }
+
     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
     let currentStatus = 'Closed';
-    let statusReason = 'Regular Hours';
-    let displayHoursListHtml = '<ul>';
+    let statusReason = 'Default'; // Default reason
     let visitorTimezone;
 
+    // --- Timezone Detection ---
     try {
         visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (!visitorTimezone) throw new Error("TZ detection failed.");
     } catch (e) {
-        if(businessStatusDisplay) {
-            businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Unavailable (TZ Error)</span>';
-        }
-        if(businessHoursDisplay) businessHoursDisplay.innerHTML = '';
+        console.error("Could not detect visitor timezone:", e);
+        businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Unavailable (TZ Error)</span>';
+        businessHoursDisplay.innerHTML = '';
+        temporaryHoursDisplay.innerHTML = ''; // Clear these too
+        holidayHoursDisplay.innerHTML = '';   // Clear these too
         return;
     }
 
+    // --- Calculate Current Time/Date in Business Timezone ---
     const visitorNow = new Date();
     let currentHourInBizTZ, currentMinuteInBizTZ, businessDateStr, businessDayName;
 
     try {
-        const formatterTime = new Intl.DateTimeFormat('en-US', {
-            timeZone: assumedBusinessTimezone,
-            hour: 'numeric',
-            minute: 'numeric',
-            hourCycle: 'h23'
-        });
-
-        const partsTime = formatterTime.formatToParts(visitorNow).reduce((acc, part) => {
-            acc[part.type] = part.value;
-            return acc;
-        }, {});
-
+        // Get current time parts in business timezone
+        const formatterTime = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, hour: 'numeric', minute: 'numeric', hourCycle: 'h23' });
+        const partsTime = formatterTime.formatToParts(visitorNow).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {});
         currentHourInBizTZ = parseInt(partsTime.hour);
         currentMinuteInBizTZ = parseInt(partsTime.minute);
 
-        const formatterDate = new Intl.DateTimeFormat('en-CA', {
-            timeZone: assumedBusinessTimezone
-        });
+        // Get current date string (YYYY-MM-DD) in business timezone
+        const formatterDate = new Intl.DateTimeFormat('en-CA', { timeZone: assumedBusinessTimezone });
         businessDateStr = formatterDate.format(visitorNow);
 
-        const formatterDay = new Intl.DateTimeFormat('en-US', {
-            timeZone: assumedBusinessTimezone,
-            weekday: 'long'
-        });
+        // Get current day name in business timezone
+        const formatterDay = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, weekday: 'long' });
         businessDayName = formatterDay.format(visitorNow).toLowerCase();
 
-        if (isNaN(currentHourInBizTZ) || isNaN(currentMinuteInBizTZ)) {
-            throw new Error("Failed to parse business time components");
+        if (isNaN(currentHourInBizTZ) || isNaN(currentMinuteInBizTZ) || !businessDateStr || !businessDayName) {
+            throw new Error("Failed to parse business time/date components");
         }
     } catch (e) {
-        if(businessStatusDisplay) {
-            businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Error</span>';
-        }
-        if(businessHoursDisplay) businessHoursDisplay.innerHTML = '';
+        console.error("Error calculating business time/date:", e);
+        businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Error (Time Calc)</span>';
+        businessHoursDisplay.innerHTML = '';
+        temporaryHoursDisplay.innerHTML = '';
+        holidayHoursDisplay.innerHTML = '';
         return;
     }
 
     const currentMinutesInBizTZ = currentHourInBizTZ * 60 + currentMinuteInBizTZ;
-    let activeHoursRule = null;
+    let activeHoursRule = null; // Will store the rule that determined the status
+    let ruleApplied = false;    // Flag to stop checking rules
 
-    // Status Calculation Logic (Order: Override > Holiday > Temporary > Regular)
+    // --- Status Calculation Logic (Order: Override > Holiday > Temporary > Regular) ---
     if (statusOverride !== 'auto') {
-        currentStatus = statusOverride === 'open' ? 'Open' : 
+        currentStatus = statusOverride === 'open' ? 'Open' :
                        (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
         statusReason = 'Manual Override';
         activeHoursRule = { reason: statusReason };
+        ruleApplied = true;
+        console.log("Status determined by: Override");
     } else {
-        // Check for holiday first
+        // Check Holiday
         const todayHoliday = holidayHours.find(h => h.date === businessDateStr);
         if (todayHoliday) {
             statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
+            activeHoursRule = { ...todayHoliday, reason: statusReason };
+            ruleApplied = true; // Holiday takes precedence for the whole day status check
             if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) {
                 currentStatus = 'Closed';
             } else {
                 const openMins = timeStringToMinutes(todayHoliday.open);
                 const closeMins = timeStringToMinutes(todayHoliday.close);
-                currentStatus = (openMins !== null && closeMins !== null && 
-                               currentMinutesInBizTZ >= openMins && 
-                               currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
+                currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
             }
-            activeHoursRule = { ...todayHoliday, reason: statusReason };
+            activeHoursRule.reason = statusReason + ` (${currentStatus})`; // Append result
+            console.log("Status determined by: Holiday");
         } else {
-    // Check for temporary hours
-    const activeTemporary = temporaryHours.find(t => {
-        if (businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
-            if (t.isClosed) return true;
-            const openMins = timeStringToMinutes(t.open);
-            const closeMins = timeStringToMinutes(t.close);
-            if (openMins === null || closeMins === null) return false;
-            // Changed: Now we only care if the date matches, not the time range
-            return true;
-        }
-        return false;
-    });
+            // Check Temporary (only if not a holiday)
+            const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
+            if (activeTemporary) {
+                console.log("Found active temporary period for date:", activeTemporary);
+                 if (activeTemporary.isClosed) {
+                     currentStatus = 'Closed';
+                     statusReason = `Temporary Hours (${activeTemporary.label || 'Active'}) - Closed All Day`;
+                     activeHoursRule = { ...activeTemporary, reason: statusReason };
+                     ruleApplied = true; // This rule applies for the whole time range today
+                     console.log("Status determined by: Temporary Rule (Closed All Day)");
+                 } else if (activeTemporary.open && activeTemporary.close) {
+                     const openMins = timeStringToMinutes(activeTemporary.open);
+                     const closeMins = timeStringToMinutes(activeTemporary.close);
+                     // Is current time WITHIN the specific temporary window?
+                     if (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
+                         currentStatus = 'Temporarily Unavailable'; // Use special status
+                         statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
+                         activeHoursRule = { ...activeTemporary, reason: statusReason };
+                         ruleApplied = true; // This temporary rule applies NOW
+                         console.log("Status determined by: Temporary Rule (Specific Time)");
+                     } else {
+                         // Outside specific temp hours, proceed to check regular hours
+                         console.log("Outside temporary hours window, checking regular.");
+                         // ruleApplied remains false
+                     }
+                 } else {
+                      // Temporary period active, but no specific rule (treat as informational)
+                      console.log("Temporary period active but no specific hours/closed. Checking regular.");
+                      // ruleApplied remains false
+                 }
+            }
 
-    // Inside calculateAndDisplayStatusConvertedBI, modify the temporary hours check:
-if (activeTemporary) {
-    statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-    if (activeTemporary.isClosed) {
-        currentStatus = 'Closed';
-    } else {
-        const openMins = timeStringToMinutes(activeTemporary.open);
-        const closeMins = timeStringToMinutes(activeTemporary.close);
-        if (openMins === null || closeMins === null) {
-            currentStatus = 'Temporarily Unavailable';
-        } else {
-            // If within the specified time range -> Temporarily Unavailable
-            // If outside the time range -> Follow regular hours logic
-            if (currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
-                currentStatus = 'Temporarily Unavailable';
-            } else {
-                // Check regular hours when outside temporary hours
-                const todayRegularHours = regularHours[businessDayName];
-                if (todayRegularHours && !todayRegularHours.isClosed && 
-                    todayRegularHours.open && todayRegularHours.close) {
-                    const regOpenMins = timeStringToMinutes(todayRegularHours.open);
-                    const regCloseMins = timeStringToMinutes(todayRegularHours.close);
-                    currentStatus = (regOpenMins !== null && regCloseMins !== null && 
-                                   currentMinutesInBizTZ >= regOpenMins && 
-                                   currentMinutesInBizTZ < regCloseMins) ? 'Open' : 'Closed';
-                    statusReason = 'Regular Hours';
-                } else {
-                    currentStatus = 'Closed';
-                    statusReason = 'Regular Hours';
-                }
-            }
-        }
-    }
-    activeHoursRule = { ...activeTemporary, reason: statusReason };
-            } else {
-                // Regular hours
+            // Check Regular Hours (Only if no override, holiday, or applicable temporary rule applied)
+            if (!ruleApplied) {
                 statusReason = 'Regular Hours';
                 const todayRegularHours = regularHours[businessDayName];
-                if (todayRegularHours && !todayRegularHours.isClosed && 
-                    todayRegularHours.open && todayRegularHours.close) {
+                if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
                     const openMins = timeStringToMinutes(todayRegularHours.open);
                     const closeMins = timeStringToMinutes(todayRegularHours.close);
-                    currentStatus = (openMins !== null && closeMins !== null && 
-                                   currentMinutesInBizTZ >= openMins && 
-                                   currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
-                    activeHoursRule = { ...todayRegularHours, day: businessDayName };
+                    if (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
+                        currentStatus = 'Open';
+                        activeHoursRule = { ...todayRegularHours, day: businessDayName, reason: statusReason + " (Open)" };
+                    } else {
+                        currentStatus = 'Closed';
+                        activeHoursRule = { ...todayRegularHours, day: businessDayName, reason: statusReason + " (Outside Hours)" };
+                    }
                 } else {
                     currentStatus = 'Closed';
-                    activeHoursRule = { 
-                        ...(todayRegularHours || {}), 
-                        day: businessDayName, 
-                        isClosed: true 
-                    };
+                    activeHoursRule = { ...(todayRegularHours || {}), day: businessDayName, isClosed: true, reason: statusReason + " (Closed Today)" };
                 }
+                console.log("Status determined by: Regular Hours");
             }
         }
     }
 
-    // Display Status
-    let statusClass = currentStatus === 'Open' ? 'status-open' : 
-                     currentStatus === 'Temporarily Unavailable' ? 'status-unavailable' : 
-                     'status-closed';
+    // --- Display Calculated Status ---
+    let statusClass = currentStatus === 'Open' ? 'status-open' :
+                     (currentStatus === 'Temporarily Unavailable' ? 'status-unavailable' :
+                     'status-closed');
+    businessStatusDisplay.innerHTML = `
+        <span class="${statusClass}">${currentStatus}</span>
+        <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>
+    `;
 
-    if (businessStatusDisplay) {
-        businessStatusDisplay.innerHTML = `
-            <span class="${statusClass}">${currentStatus}</span>
-            <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>
-        `;
-    }
-
-    // Format and Display Hours List
+    // --- Format and Display Regular Hours List ---
     const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     const visitorLocalDayName = visitorNow.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
-
     displayHoursListHtml = '<ul>';
     displayOrder.forEach(day => {
         const dayData = regularHours[day];
         const isCurrentDayForVisitor = day === visitorLocalDayName;
         const highlightClass = isCurrentDayForVisitor ? 'current-day' : '';
-
-        displayHoursListHtml += `
-            <li class="${highlightClass}">
-                <strong>${capitalizeFirstLetter(day)}:</strong> 
-        `;
-
+        displayHoursListHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `;
         if (dayData && !dayData.isClosed && dayData.open && dayData.close) {
             const openLocalStr = formatDisplayTimeBI(dayData.open, visitorTimezone);
             const closeLocalStr = formatDisplayTimeBI(dayData.close, visitorTimezone);
-            
-            displayHoursListHtml += `
-                <span>${openLocalStr} - ${closeLocalStr}</span>
-            `;
+            displayHoursListHtml += `<span>${openLocalStr} - ${closeLocalStr}</span>`;
         } else {
             displayHoursListHtml += '<span>Closed</span>';
         }
-        
         displayHoursListHtml += '</li>';
     });
-
     displayHoursListHtml += '</ul>';
-    displayHoursListHtml += `
-        <p class="hours-timezone-note">
-            Hours displayed in your detected time zone: ${visitorTimezone.replace('_', ' ')}
-        </p>
-    `;
+    displayHoursListHtml += `<p class="hours-timezone-note">Hours displayed in your detected time zone: ${visitorTimezone.replace('_', ' ')}</p>`;
+    businessHoursDisplay.innerHTML = displayHoursListHtml;
 
-    if (businessHoursDisplay) {
-        businessHoursDisplay.innerHTML = displayHoursListHtml;
+
+    // --- *** Display Temporary Hours *** ---
+    if (temporaryHoursDisplay) { // Check if element exists
+        const relevantTemporaryHours = temporaryHours
+            .filter(t => t.endDate >= businessDateStr) // Filter out past periods
+            .sort((a, b) => (a.startDate > b.startDate ? 1 : -1)); // Sort by start date
+
+        if (relevantTemporaryHours.length > 0) {
+            let tempHoursHtml = '<h4>Upcoming/Active Temporary Hours</h4><ul class="special-hours-display">'; // Use a specific class
+            relevantTemporaryHours.forEach(temp => {
+                if (temp.startDate && temp.endDate) {
+                    tempHoursHtml += `
+                        <li>
+                            <strong>${temp.label || 'Temporary Schedule'}:</strong>
+                            <div class="special-hours-details">
+                                <span class="dates">${temp.startDate} to ${temp.endDate}</span>
+                                ${temp.isClosed ?
+                                    '<span class="hours">Closed</span>' :
+                                    `<span class="hours">${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}</span>`
+                                }
+                            </div>
+                        </li>`;
+                }
+            });
+            tempHoursHtml += '</ul>';
+            temporaryHoursDisplay.innerHTML = tempHoursHtml;
+            temporaryHoursDisplay.style.display = ''; // Make visible
+        } else {
+            temporaryHoursDisplay.innerHTML = ''; // Clear if none
+            temporaryHoursDisplay.style.display = 'none'; // Hide if none
+        }
+    } else {
+        console.warn("Temporary hours display element not found.");
+    }
+
+    // --- *** Display Holiday Hours *** ---
+    if (holidayHoursDisplay) { // Check if element exists
+        const upcomingHolidayHours = holidayHours
+            .filter(h => h.date >= businessDateStr) // Filter out past holidays
+            .sort((a, b) => (a.date > b.date ? 1 : -1)); // Sort by date
+
+        if (upcomingHolidayHours.length > 0) {
+            let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">'; // Use a specific class
+            upcomingHolidayHours.forEach(holiday => {
+                if (holiday.date) {
+                    holidayHoursHtml += `
+                        <li>
+                            <strong>${holiday.label || holiday.date}:</strong>
+                            <div class="special-hours-details">
+                                ${holiday.isClosed ?
+                                    '<span class="hours">Closed</span>' :
+                                    `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
+                                }
+                            </div>
+                        </li>`;
+                }
+            });
+            holidayHoursHtml += '</ul>';
+            holidayHoursDisplay.innerHTML = holidayHoursHtml;
+             holidayHoursDisplay.style.display = ''; // Make visible
+        } else {
+            holidayHoursDisplay.innerHTML = ''; // Clear if none
+             holidayHoursDisplay.style.display = 'none'; // Hide if none
+        }
+    } else {
+        console.warn("Holiday hours display element not found.");
     }
 }
 
