@@ -918,7 +918,68 @@ function updateAdminPreview() { // Ensure this is the function name called by li
      adminPreviewStatus.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
     // 4. Display Hours
     let hoursHtml = '<ul>'; const displayOrder = localDaysOfWeek; // Use the correct variable
-    displayOrder.forEach(day => { const dayData = currentFormData.regularHours[day]; const isCurrentDay = day === previewDayName; const highlightClass = isCurrentDay ? 'current-day-preview' : ''; hoursHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `; if (dayData && !dayData.isClosed && dayData.open && dayData.close) { hoursHtml += `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>`; } else { hoursHtml += `<span>Closed</span>`; } hoursHtml += `</li>`; }); hoursHtml += '</ul>'; hoursHtml += `<p class="preview-timezone-note">Preview based on your browser time. Assumes ET input.</p>`; adminPreviewHours.innerHTML = hoursHtml;
+    // Display Regular Hours
+hoursHtml = '<ul>';
+displayOrder.forEach(day => {
+    const dayData = currentFormData.regularHours[day];
+    const isCurrentDay = day === previewDayName;
+    const highlightClass = isCurrentDay ? 'current-day-preview' : '';
+    hoursHtml += `
+        <li class="${highlightClass}">
+            <strong>${capitalizeFirstLetter(day)}:</strong> 
+            ${dayData && !dayData.isClosed && dayData.open && dayData.close ? 
+                `<span>${formatTimeForAdminPreview(dayData.open)} - ${formatTimeForAdminPreview(dayData.close)} ET</span>` : 
+                '<span>Closed</span>'
+            }
+        </li>`;
+});
+hoursHtml += '</ul>';
+
+// Add Temporary Hours if any exist
+if (currentFormData.temporaryHours && currentFormData.temporaryHours.length > 0) {
+    hoursHtml += '<h4>Temporary Hours</h4><ul class="special-hours-preview">';
+    currentFormData.temporaryHours.forEach(temp => {
+        if (temp.startDate && temp.endDate) {
+            hoursHtml += `
+                <li>
+                    <strong>${temp.label || 'Temporary Schedule'}:</strong>
+                    <div class="special-hours-details">
+                        <span class="dates">${temp.startDate} to ${temp.endDate}</span>
+                        ${temp.isClosed ? 
+                            '<span class="hours">Closed</span>' : 
+                            `<span class="hours">${formatTimeForAdminPreview(temp.open)} - ${formatTimeForAdminPreview(temp.close)} ET</span>`
+                        }
+                    </div>
+                </li>
+            `;
+        }
+    });
+    hoursHtml += '</ul>';
+}
+
+// Add Holiday Hours if any exist
+if (currentFormData.holidayHours && currentFormData.holidayHours.length > 0) {
+    hoursHtml += '<h4>Holiday Hours</h4><ul class="special-hours-preview">';
+    currentFormData.holidayHours.forEach(holiday => {
+        if (holiday.date) {
+            hoursHtml += `
+                <li>
+                    <strong>${holiday.label || holiday.date}:</strong>
+                    <div class="special-hours-details">
+                        ${holiday.isClosed ? 
+                            '<span class="hours">Closed</span>' : 
+                            `<span class="hours">${formatTimeForAdminPreview(holiday.open)} - ${formatTimeForAdminPreview(holiday.close)} ET</span>`
+                        }
+                    </div>
+                </li>
+            `;
+        }
+    });
+    hoursHtml += '</ul>';
+}
+
+hoursHtml += '<p class="preview-timezone-note">Preview based on your browser time. Assumes ET input.</p>';
+adminPreviewHours.innerHTML = hoursHtml;
     // 5. Display Contact
     if (currentFormData.contactEmail) { adminPreviewContact.innerHTML = `Contact: <a href="mailto:${currentFormData.contactEmail}" target="_blank">${currentFormData.contactEmail}</a>`; } else { adminPreviewContact.innerHTML = ''; }
     console.log("Admin preview update complete.");
