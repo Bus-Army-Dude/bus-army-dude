@@ -1,7 +1,8 @@
 /* settings-style.css */
+/* UPDATED: All rules prefixed with #siteSettingsModalContainer for isolation */
 
 /* Settings Modal Base (Apple-Themed) */
-.settings-modal {
+#siteSettingsModalContainer.settings-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -16,11 +17,11 @@
     -webkit-backdrop-filter: blur(20px);
 }
 
-.settings-modal.active {
+#siteSettingsModalContainer.settings-modal.active {
     display: flex;
 }
 
-.settings-content {
+#siteSettingsModalContainer .settings-content {
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
     border-radius: 14px;
@@ -34,7 +35,7 @@
 }
 
 /* Settings Header */
-.settings-content .title-2 {
+#siteSettingsModalContainer .settings-content .title-2 {
     font-size: 1.7rem;
     font-weight: 600;
     color: #1d1d1f;
@@ -43,23 +44,23 @@
 }
 
 /* Settings Sections */
-.settings-content .settings-sections {
+#siteSettingsModalContainer .settings-content .settings-sections {
     margin-top: 20px;
 }
 
-.settings-content .settings-section {
+#siteSettingsModalContainer .settings-content .settings-section {
     margin-bottom: 28px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
 
-.settings-content .settings-section:last-child {
+#siteSettingsModalContainer .settings-content .settings-section:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
-.settings-content .settings-section-title {
+#siteSettingsModalContainer .settings-content .settings-section-title {
     font-size: 1.1rem;
     font-weight: 500;
     color: #1d1d1f;
@@ -67,7 +68,7 @@
 }
 
 /* Setting Items */
-.settings-content .setting-item {
+#siteSettingsModalContainer .settings-content .setting-item {
     display: flex;
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align items to the start (left) */
@@ -77,11 +78,11 @@
     margin: 8px 0;
 }
 
-.settings-content .setting-item:hover {
+#siteSettingsModalContainer .settings-content .setting-item:hover {
     background-color: #f0f0f0;
 }
 
-.settings-content .setting-label {
+#siteSettingsModalContainer .settings-content .setting-label {
     color: #333;
     font-size: 0.95rem;
     font-weight: 400;
@@ -89,7 +90,7 @@
 }
 
 /* Settings Description */
-.settings-content .settings-description {
+#siteSettingsModalContainer .settings-content .settings-description {
     font-size: 0.85rem;
     color: #666;
     margin-top: 8px; /* Add space between toggle and description */
@@ -98,7 +99,7 @@
 }
 
 /* Apple-Style Toggle Switch */
-.toggle-switch {
+#siteSettingsModalContainer .toggle-switch {
     position: relative;
     display: inline-block;
     width: 51px;
@@ -107,13 +108,13 @@
     margin-bottom: 8px; /* Add space between toggle and description */
 }
 
-.toggle-switch input {
+#siteSettingsModalContainer .toggle-switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.toggle-slider {
+#siteSettingsModalContainer .toggle-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -127,7 +128,7 @@
     border: 1px solid #c0c0c0;
 }
 
-.toggle-slider:before {
+#siteSettingsModalContainer .toggle-slider:before {
     position: absolute;
     content: "";
     height: 23px;
@@ -141,28 +142,28 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-input:checked + .toggle-slider {
+#siteSettingsModalContainer input:checked + .toggle-slider {
     background-color: #0a84ff;
     border: 1px solid #0a84ff;
 }
 
-input:checked + .toggle-slider:before {
+#siteSettingsModalContainer input:checked + .toggle-slider:before {
     -webkit-transform: translateX(20px);
     -ms-transform: translateX(20px);
     transform: translateX(20px);
 }
 
 /* Hover and Focus States */
-.toggle-switch:hover .toggle-slider {
+#siteSettingsModalContainer .toggle-switch:hover .toggle-slider {
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-input:checked + .toggle-slider:hover {
+#siteSettingsModalContainer input:checked + .toggle-slider:hover {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* Select Inputs */
-.settings-content .settings-select {
+#siteSettingsModalContainer .settings-content .settings-select {
     width: 100%;
     padding: 12px 14px;
     border-radius: 8px;
@@ -181,18 +182,18 @@ input:checked + .toggle-slider:hover {
     padding-right: 36px;
 }
 
-.settings-content .settings-select:hover {
+#siteSettingsModalContainer .settings-content .settings-select:hover {
     border-color: #0a84ff;
 }
 
-.settings-content .settings-select:focus {
+#siteSettingsModalContainer .settings-content .settings-select:focus {
     outline: none;
     border-color: #0a84ff;
     box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2);
 }
 
 /* Action Buttons */
-.settings-content .settings-actions {
+#siteSettingsModalContainer .settings-content .settings-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -201,8 +202,8 @@ input:checked + .toggle-slider:hover {
     border-top: 1px solid #eee;
 }
 
-.settings-content .settings-save,
-.settings-content .settings-close {
+#siteSettingsModalContainer .settings-content .settings-save,
+#siteSettingsModalContainer .settings-content .settings-close {
     padding: 10px 20px;
     border-radius: 20px;
     border: none;
@@ -212,22 +213,22 @@ input:checked + .toggle-slider:hover {
     transition: all 0.3s ease;
 }
 
-.settings-content .settings-save {
+#siteSettingsModalContainer .settings-content .settings-save {
     background-color: #0a84ff;
     color: white;
 }
 
-.settings-content .settings-save:hover {
+#siteSettingsModalContainer .settings-content .settings-save:hover {
     background-color: #007aff;
     box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
 }
 
-.settings-content .settings-close {
+#siteSettingsModalContainer .settings-content .settings-close {
     background-color: #f0f0f0;
     color: #333;
 }
 
-.settings-content .settings-close:hover {
+#siteSettingsModalContainer .settings-content .settings-close:hover {
     background-color: #e0e0e0;
 }
 
@@ -243,61 +244,61 @@ input:checked + .toggle-slider:hover {
     }
 }
 
-.settings-modal.active .settings-content {
+#siteSettingsModalContainer.settings-modal.active .settings-content {
     animation: modalFadeIn 0.3s ease forwards;
 }
 
-/* Dark Mode Adjustments */
-[data-theme="dark"] .settings-content {
+/* Dark Mode Adjustments (Assuming [data-theme="dark"] is on body/html) */
+[data-theme="dark"] #siteSettingsModalContainer .settings-content {
     background-color: var(--surface);
     color: var(--on-surface);
 }
 
-[data-theme="dark"] .settings-content .title-2,
-[data-theme="dark"] .settings-content .settings-section-title,
-[data-theme="dark"] .settings-content .setting-label {
+[data-theme="dark"] #siteSettingsModalContainer .settings-content .title-2,
+[data-theme="dark"] #siteSettingsModalContainer .settings-content .settings-section-title,
+[data-theme="dark"] #siteSettingsModalContainer .settings-content .setting-label {
     color: var(--on-surface);
 }
 
-[data-theme="dark"] .settings-content .settings-select {
+[data-theme="dark"] #siteSettingsModalContainer .settings-content .settings-select {
     background-color: var(--surface);
     color: var(--on-surface);
     border-color: var(--outline);
 }
 
-[data-theme="dark"] .settings-content .setting-item:hover {
+[data-theme="dark"] #siteSettingsModalContainer .settings-content .setting-item:hover {
     background-color: var(--outline);
 }
 
-[data-theme="dark"] .toggle-slider {
+[data-theme="dark"] #siteSettingsModalContainer .toggle-slider {
     background-color: var(--on-surface-variant);
     border: 1px solid var(--outline);
 }
 
-[data-theme="dark"] input:checked + .toggle-slider {
+[data-theme="dark"] #siteSettingsModalContainer input:checked + .toggle-slider {
     background-color: #0a84ff;
     border: 1px solid #0a84ff;
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
-    .settings-content {
+    #siteSettingsModalContainer .settings-content {
         width: 95%;
         padding: 20px;
     }
 
-    .settings-content .settings-actions {
+    #siteSettingsModalContainer .settings-content .settings-actions {
         flex-direction: column;
         gap: 8px;
     }
 
-    .settings-content .settings-save,
-    .settings-content .settings-close {
+    #siteSettingsModalContainer .settings-content .settings-save,
+    #siteSettingsModalContainer .settings-content .settings-close {
         width: 100%;
     }
 }
 
-/* Refresh Message */
+/* Refresh Message - NOT PREFIXED, assuming it's a global notification */
 .refresh-message {
     position: fixed;
     bottom: 20px;
@@ -314,7 +315,7 @@ input:checked + .toggle-slider:hover {
     animation: slideUp 0.3s ease;
 }
 
-[data-theme="dark"] .refresh-message{
+[data-theme="dark"] .refresh-message {
     background-color: #333;
     color: #eee;
 }
