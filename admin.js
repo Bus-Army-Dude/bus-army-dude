@@ -1208,7 +1208,7 @@ function setupBusinessInfoListeners() {
     console.log("Attaching Business Info Listeners NOW...");
 
     // Add Buttons: Only append the element. Let the observer handle the preview update.
-    // Use addListenerSafe to prevent accidental double-listening on buttons too
+    // Inside setupBusinessInfoListeners() - THIS IS CORRECT
     addListenerSafe(addHolidayButton, 'click', () => {
         console.log('Holiday Add Button Clicked - Attempting to add DOM element.'); // Debug Log
         if (typeof renderHolidayEntry === 'function') {
@@ -1217,14 +1217,14 @@ function setupBusinessInfoListeners() {
         } else { console.error("renderHolidayEntry function missing!"); }
     }, '_addHolBtn'); // Unique suffix for addListenerSafe
 
-    addListenerSafe(addTemporaryButton, 'click', () => {
-        console.log('Temporary Add Button Clicked - Attempting to add DOM element.'); // Debug Log
-        if (typeof renderTemporaryEntry === 'function') {
-            temporaryHoursList.appendChild(renderTemporaryEntry({ isClosed: false }, temporaryHoursList.children.length));
-             // REMOVED: updateAdminPreview(); // Let observer handle preview
-        } else { console.error("renderTemporaryEntry function missing!"); }
-    }, '_addTempBtn'); // Unique suffix for addListenerSafe
 
+    addListenerSafe(addTemporaryButton, 'click', () => {
+    console.log('Temporary Add Button Clicked - Attempting to add DOM element.'); // Debug Log
+    if (typeof renderTemporaryEntry === 'function') {
+        temporaryHoursList.appendChild(renderTemporaryEntry({ isClosed: false }, temporaryHoursList.children.length));
+        // REMOVED: updateAdminPreview(); // Let observer handle preview
+    } else { console.error("renderTemporaryEntry function missing!"); }
+}, '_addTempBtn'); // Unique suffix for addListenerSafe
     // Attach form submit listener using addListenerSafe
     addListenerSafe(businessInfoForm, 'submit', saveBusinessInfoData, '_bizSubmit');
 
@@ -1233,20 +1233,20 @@ function setupBusinessInfoListeners() {
         // Use event delegation for inputs/changes within the form
         addListenerSafe(businessInfoForm, 'input', (e) => {
             if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) {
-                 updateAdminPreview(); // Removed delay
+                updateAdminPreview(); // Trigger preview update on input
             }
-        }, '_preview_input');
+        }, '_preview_input'); // Unique suffix for listener
 
         addListenerSafe(businessInfoForm, 'change', (e) => {
              if (e.target && e.target.type === 'checkbox') {
-                 updateAdminPreview(); // Removed delay
+                 updateAdminPreview(); // Trigger preview update on checkbox change
              }
-        }, '_preview_change');
+        }, '_preview_change'); // Unique suffix for listener
 
 
         // Observer for list changes (adding/removing holiday/temp entries)
         const listObserver = new MutationObserver((mutationsList) => {
-            // Debounce observer updates slightly to avoid rapid firing if multiple changes happen at once
+            // Debounce observer updates slightly
             let observerTimeout;
             clearTimeout(observerTimeout);
             observerTimeout = setTimeout(() => {
@@ -1255,12 +1255,13 @@ function setupBusinessInfoListeners() {
                     console.log('Preview update triggered by MutationObserver.');
                     updateAdminPreview(); // Update preview after DOM change
                 }
-            }, 150); // Debounce delay
+            }, 150); // Small debounce delay
         });
 
+        // Ensure the lists exist before observing
         if (holidayHoursList) listObserver.observe(holidayHoursList, { childList: true });
         if (temporaryHoursList) listObserver.observe(temporaryHoursList, { childList: true });
-        console.log("MutationObserver set up for holiday/temporary lists.");
+        console.log("MutationObserver set up for holiday/temporary lists inside setupBusinessInfoListeners.");
 
     } else {
         console.warn("updateAdminPreview function not found, live preview will not work.");
@@ -1752,31 +1753,6 @@ async function loadProfileData() {
             document.removeEventListener(eventName, resetInactivityTimer, true); // Use capture phase
         });
     }
-
-    // --- Business Info Event Listeners ---
-if (addHolidayButton) {
-    addHolidayButton.addEventListener('click', () => {
-        if(holidayHoursList){
-             const newIndex = holidayHoursList.children.length;
-             holidayHoursList.appendChild(renderHolidayEntry({ isClosed: true }, newIndex)); // Default new holiday to closed
-        }
-    });
-}
-
-if (addTemporaryButton) {
-    addTemporaryButton.addEventListener('click', () => {
-         if(temporaryHoursList){
-             const newIndex = temporaryHoursList.children.length;
-             temporaryHoursList.appendChild(renderTemporaryEntry({ isClosed: false }, newIndex)); // Default new temp hours to open (requires times)
-         }
-    });
-}
-
-// Attach Form Submit Listener for Business Info
-if (businessInfoForm) {
-    businessInfoForm.addEventListener('submit', saveBusinessInfoData);
-}
-
 // --- Optional: Add listeners to update the PREVIEW as the form changes ---
 // (Requires the updateAdminPreview function and its helpers from the previous "preview" step)
 if (businessInfoForm && typeof updateAdminPreview === 'function') { // Check if preview function exists
