@@ -1,8 +1,6 @@
 :root {
-    /* Base sizes */
+    /* Base Variables */
     --base-font-size: 16px;
-    --focus-outline-width: 2px;
-    --focus-outline-offset: 2px;
     
     /* Light Theme Colors */
     --light-bg: #f5f5f7;
@@ -15,7 +13,6 @@
     --light-toggle-off: #e9e9eb;
     --light-toggle-on: #34c759;
     --light-danger: #ff3b30;
-    --light-focus: #0066cc;
     --light-shadow: rgba(0, 0, 0, 0.1);
     
     /* Dark Theme Colors */
@@ -29,7 +26,6 @@
     --dark-toggle-off: #424245;
     --dark-toggle-on: #34c759;
     --dark-danger: #ff3b30;
-    --dark-focus: #0066cc;
     --dark-shadow: rgba(0, 0, 0, 0.3);
     
     /* Default Theme (Light) */
@@ -43,58 +39,63 @@
     --toggle-off: var(--light-toggle-off);
     --toggle-on: var(--light-toggle-on);
     --danger-color: var(--light-danger);
-    --focus-color: var(--light-focus);
     --shadow-color: var(--light-shadow);
 }
 
-/* Dark Theme */
+/* Dark Theme Override */
 [data-theme="dark"] {
     --bg-color: var(--dark-bg);
     --content-bg: var(--dark-content-bg);
     --text-color: var(--dark-text);
     --secondary-text: var(--dark-secondary);
     --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --hover-color: var(--dark-hover);
-    --toggle-off: var(--dark-toggle-off);
-    --toggle-on: var(--dark-toggle-on);
-    --danger-color: var(--dark-danger);
-    --focus-color: var(--dark-focus);
     --shadow-color: var(--dark-shadow);
+    --toggle-off: var(--dark-toggle-off);
 }
 
 /* Base Styles */
-html {
-    font-size: var(--base-font-size);
-}
-
 body {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    font-size: var(--base-font-size);
     line-height: 1.5;
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Focus Outline Styles */
-:focus-visible {
-    outline: var(--focus-outline-width) solid var(--focus-color);
-    outline-offset: var(--focus-outline-offset);
+/* Focus Styles from your styles.css */
+*:focus {
+    outline: none;
 }
 
-.focus-outline-disabled *:focus-visible {
-    outline: none !important;
+body:not(.focus-outline-disabled) *:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
-/* Container and Section Styles */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body:not(.focus-outline-disabled) button:focus,
+body:not(.focus-outline-disabled) a:focus,
+body:not(.focus-outline-disabled) input:focus,
+body:not(.focus-outline-disabled) select:focus,
+body:not(.focus-outline-disabled) textarea:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Container */
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
 }
 
+/* Settings Section */
 .settings-section {
     background-color: var(--content-bg);
     border-radius: 16px;
@@ -102,7 +103,6 @@ body {
     box-shadow: 0 2px 8px var(--shadow-color);
 }
 
-/* Headers */
 .settings-header {
     display: flex;
     justify-content: space-between;
@@ -114,27 +114,26 @@ body {
 
 .settings-header h1 {
     margin: 0;
-    font-size: calc(var(--base-font-size) * 1.5);
+    font-size: 1.75rem;
     font-weight: 600;
 }
 
 .version {
     color: var(--secondary-text);
-    font-size: calc(var(--base-font-size) * 0.875);
+    font-size: 0.875rem;
 }
 
-/* Subsections */
+/* Setting Cards */
 .settings-subsection {
     margin-bottom: 2rem;
 }
 
 .subsection-title {
-    font-size: calc(var(--base-font-size) * 1.25);
+    font-size: 1.25rem;
     margin: 0 0 1rem;
     color: var(--text-color);
 }
 
-/* Setting Cards */
 .setting-card {
     display: flex;
     justify-content: space-between;
@@ -151,13 +150,13 @@ body {
 
 .setting-title {
     margin: 0 0 0.5rem;
-    font-size: calc(var(--base-font-size) * 1);
+    font-size: 1rem;
     font-weight: 500;
 }
 
 .setting-description {
     margin: 0;
-    font-size: calc(var(--base-font-size) * 0.875);
+    font-size: 0.875rem;
     color: var(--secondary-text);
 }
 
@@ -246,7 +245,7 @@ input:checked + .toggle-slider:before {
     color: var(--secondary-text);
 }
 
-/* Danger Zone */
+/* Reset Button */
 .danger-zone .subsection-title {
     color: var(--danger-color);
 }
@@ -257,7 +256,7 @@ input:checked + .toggle-slider:before {
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    font-size: calc(var(--base-font-size) * 0.875);
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     transition: opacity 0.3s;
@@ -267,7 +266,26 @@ input:checked + .toggle-slider:before {
     opacity: 0.9;
 }
 
-/* Links */
+/* DateTime Section */
+.datetime-section {
+    background-color: var(--content-bg);
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.current-datetime {
+    color: var(--text-color);
+    margin: 0;
+}
+
+.update-time {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+/* Back Link */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -275,7 +293,6 @@ input:checked + .toggle-slider:before {
     text-decoration: none;
     margin-top: 1.5rem;
     font-weight: 500;
-    font-size: calc(var(--base-font-size) * 1);
 }
 
 .back-link:hover {
@@ -287,7 +304,7 @@ footer {
     text-align: center;
     padding: 2rem;
     color: var(--secondary-text);
-    font-size: calc(var(--base-font-size) * 0.875);
+    font-size: 0.875rem;
 }
 
 footer a {
@@ -316,7 +333,6 @@ footer a:hover {
     max-width: 90%;
     width: 600px;
     z-index: 1000;
-    font-size: calc(var(--base-font-size) * 0.875);
 }
 
 #cookie-consent-banner.visible {
@@ -331,7 +347,6 @@ footer a:hover {
     border-radius: 8px;
     cursor: pointer;
     white-space: nowrap;
-    font-size: calc(var(--base-font-size) * 0.875);
 }
 
 /* Responsive Design */
@@ -358,5 +373,19 @@ footer a:hover {
         flex-direction: column;
         text-align: center;
         padding: 1rem;
+    }
+
+    #focus-outline-setting-card {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .subsection-title {
+        font-size: 1.125rem;
     }
 }
