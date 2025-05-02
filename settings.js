@@ -3,29 +3,21 @@ class SettingsManager {
         this.defaultSettings = {
             darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
             fontSize: 16,
-            focusOutline: 'disabled',
+            focusOutline: 'enabled',
             lastUpdated: Date.now()
         };
         
         this.currentUser = 'BusArmyDude';
         this.settings = this.loadSettings();
         
-        // Only apply settings if not on homepage
-        if (!this.isHomePage()) {
-            this.initializeControls();
-            this.applySettings();
-            this.setupEventListeners();
-        }
-        
-        // Always start time and user info
+        // Initialize time and user info immediately
         this.startTimeUpdate();
         this.displayUserInfo();
-    }
-
-    isHomePage() {
-        return window.location.pathname.endsWith('index.html') || 
-               window.location.pathname === '/' ||
-               window.location.pathname === '';
+        
+        // Initialize other settings
+        this.initializeControls();
+        this.applySettings();
+        this.setupEventListeners();
     }
 
     loadSettings() {
@@ -168,19 +160,16 @@ class SettingsManager {
     }
 
     applySettings() {
-        // Skip theme application if on homepage
-        if (!this.isHomePage()) {
-            // Apply Dark Mode
-            document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
-            
-            // Apply Font Size
-            document.documentElement.style.setProperty('--base-font-size', `${this.settings.fontSize}px`);
-            this.updateTextSize();
-            
-            // Apply Focus Outline
-            document.body.classList.toggle('focus-outline-disabled', 
-                this.settings.focusOutline === 'disabled');
-        }
+        // Apply Dark Mode
+        document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
+        
+        // Apply Font Size
+        document.documentElement.style.setProperty('--base-font-size', `${this.settings.fontSize}px`);
+        this.updateTextSize();
+        
+        // Apply Focus Outline
+        document.body.classList.toggle('focus-outline-disabled', 
+            this.settings.focusOutline === 'disabled');
     }
 
     updateTextSize() {
