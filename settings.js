@@ -7,17 +7,14 @@ class SettingsManager {
             lastUpdated: Date.now()
         };
         
-        this.currentUser = 'BusArmyDude';
+        this.currentUser = 'BusArmyDude'; // Set current user
         this.settings = this.loadSettings();
-        
-        // Initialize time and user info immediately
-        this.startTimeUpdate();
-        this.displayUserInfo();
-        
-        // Initialize other settings
         this.initializeControls();
         this.applySettings();
         this.setupEventListeners();
+        this.initializeCookieConsent();
+        this.startTimeUpdate();
+        this.displayUserInfo();
     }
 
     loadSettings() {
@@ -134,31 +131,6 @@ class SettingsManager {
         });
     }
 
-    startTimeUpdate() {
-        const updateTimeDisplay = () => {
-            const now = new Date();
-            const timeString = now.toISOString()
-                .replace('T', ' ')
-                .substring(0, 19);
-            
-            const timeElements = document.querySelectorAll('.current-datetime');
-            timeElements.forEach(element => {
-                element.textContent = `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${timeString}`;
-            });
-        };
-
-        // Update immediately and then every second
-        updateTimeDisplay();
-        setInterval(updateTimeDisplay, 1000);
-    }
-
-    displayUserInfo() {
-        const userElements = document.querySelectorAll('.current-user');
-        userElements.forEach(element => {
-            element.textContent = `Current User's Login: ${this.currentUser}`;
-        });
-    }
-
     applySettings() {
         // Apply Dark Mode
         document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
@@ -191,6 +163,31 @@ class SettingsManager {
         });
     }
 
+    startTimeUpdate() {
+        const updateTimeDisplay = () => {
+            const now = new Date();
+            const timeString = now.toISOString()
+                .replace('T', ' ')
+                .substring(0, 19);
+            
+            const timeElement = document.querySelector('.current-datetime');
+            if (timeElement) {
+                timeElement.textContent = `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${timeString}`;
+            }
+        };
+
+        // Update immediately and then every second
+        updateTimeDisplay();
+        setInterval(updateTimeDisplay, 1000);
+    }
+
+    displayUserInfo() {
+        const userElement = document.querySelector('.current-user');
+        if (userElement) {
+            userElement.textContent = `Current User's Login: ${this.currentUser}`;
+        }
+    }
+
     saveSettings() {
         try {
             this.settings.lastUpdated = Date.now();
@@ -214,9 +211,30 @@ class SettingsManager {
             alert('Settings have been reset to defaults.');
         }
     }
+
+    initializeCookieConsent() {
+        const banner = document.getElementById('cookie-consent-banner');
+        if (!banner) return;
+
+        const hasConsent = document.cookie.split(';').some(item => item.trim().startsWith('cookieConsent='));
+        if (!hasConsent) {
+            banner.classList.add('visible');
+        }
+    }
+}
+
+// Cookie consent function
+function acceptCookies() {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        document.cookie = "cookieConsent=true; path=/; max-age=31536000"; // 1 year
+        banner.classList.remove('visible');
+    }
 }
 
 // Initialize settings when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.settingsManager = new SettingsManager();
+    if (document.getElementById('settings-page-identifier')) {
+        window.settingsManager = new SettingsManager();
+    }
 });
