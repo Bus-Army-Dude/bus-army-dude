@@ -3,38 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Settings page for Bus Army Dude's Profile">
     <title>Settings - Bus Army Dude's Profile</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="settings.css">
+
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
     <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    
+    <!-- Web Manifest -->
     <link rel="manifest" href="/manifest.json">
+    
+    <!-- Microsoft Tile -->
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-E0RSQS1MS7');
-    </script>
-    <link rel="stylesheet" href="settings.css">
 </head>
 <body class="settings-page">
     <div id="settings-page-identifier" hidden></div>
     
     <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
+    
     <div class="container" role="main" id="main-content">
         <div class="settings-section">
+            <!-- Header -->
             <div class="settings-header">
                 <h1>Settings</h1>
                 <span class="version">v1.16.0</span>
             </div>
 
+            <!-- Appearance Section -->
             <div class="settings-subsection">
                 <h2 class="subsection-title">Appearance</h2>
                 <div class="setting-card">
@@ -42,15 +47,18 @@
                         <h3 class="setting-title">Dark Mode</h3>
                         <p class="setting-description">Switch between light and dark theme</p>
                     </div>
-                    <label for="darkModeToggle" class="toggle-switch" aria-label="Toggle dark mode">
+                    <label for="darkModeToggle" class="toggle-switch">
                         <input type="checkbox" id="darkModeToggle">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
             </div>
 
+            <!-- Accessibility Section -->
             <div class="settings-subsection">
                 <h2 class="subsection-title">Accessibility</h2>
+                
+                <!-- Text Size Control -->
                 <div class="setting-card">
                     <div class="setting-label">
                         <h3 class="setting-title">Text Size</h3>
@@ -77,18 +85,20 @@
                     </div>
                 </div>
 
-                <div class="setting-card">
+                <!-- Focus Outline Control -->
+                <div class="setting-card" id="focus-outline-setting-card">
                     <div class="setting-label">
                         <h3 class="setting-title">Focus Outline</h3>
                         <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
                     </div>
-                    <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
+                    <label for="focusOutlineToggle" class="toggle-switch">
                         <input type="checkbox" id="focusOutlineToggle">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
             </div>
 
+            <!-- Danger Zone -->
             <div class="settings-subsection danger-zone">
                 <h2 class="subsection-title">Danger Zone</h2>
                 <div class="setting-card">
@@ -100,10 +110,19 @@
                 </div>
             </div>
 
+            <!-- Back Link -->
             <a href="index.html" class="back-link">← Back to Profile</a>
+        </div>
+
+        <!-- Current Time Display -->
+        <div class="datetime-section">
+            <p class="current-datetime">
+                Current Time (UTC): <span class="update-time">2025-05-02 16:40:16</span>
+            </p>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
         <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
         <a href="privacy-policy.html">Privacy Policy</a>
@@ -111,11 +130,16 @@
         <a href="accessibility-statement.html">Accessibility Statement</a>
     </footer>
 
+    <!-- Cookie Consent -->
     <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-title">
-        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html">cookie policy</a>.</p>
+        <p id="cookie-consent-description">
+            We use cookies to improve your experience. By using our site, you agree to our 
+            <a href="cookie-policy.html">cookie policy</a>.
+        </p>
         <button onclick="acceptCookies()">Accept</button>
     </div>
 
+    <!-- Scripts -->
     <script src="settings.js"></script>
     <script src="script.js"></script>
 </body>
