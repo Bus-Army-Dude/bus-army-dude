@@ -12,6 +12,7 @@ class SettingsManager {
         this.applySettings();
         this.setupEventListeners();
         this.initializeCookieConsent();
+        this.startTimeUpdate();
     }
 
     loadSettings() {
@@ -134,13 +135,11 @@ class SettingsManager {
         
         // Apply Font Size
         document.documentElement.style.setProperty('--base-font-size', `${this.settings.fontSize}px`);
+        this.updateTextSize();
         
         // Apply Focus Outline
         document.body.classList.toggle('focus-outline-disabled', 
             this.settings.focusOutline === 'disabled');
-        
-        // Update all text elements
-        this.updateTextSize();
     }
 
     updateTextSize() {
@@ -194,6 +193,21 @@ class SettingsManager {
         if (!hasConsent) {
             banner.classList.add('visible');
         }
+    }
+
+    startTimeUpdate() {
+        const updateTimeDisplay = () => {
+            const now = new Date();
+            const timeString = now.toISOString().replace('T', ' ').substring(0, 19);
+            const timeElement = document.querySelector('.update-time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        };
+
+        // Update immediately and then every second
+        updateTimeDisplay();
+        setInterval(updateTimeDisplay, 1000);
     }
 }
 
