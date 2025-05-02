@@ -1,5 +1,11 @@
 class SettingsManager {
     constructor() {
+        // Skip initialization if we're on the homepage
+        if (window.location.pathname.endsWith('index.html') || 
+            window.location.pathname === '/') {
+            return;
+        }
+
         this.defaultSettings = {
             darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
             fontSize: 16,
@@ -7,7 +13,7 @@ class SettingsManager {
             lastUpdated: Date.now()
         };
         
-        this.currentUser = 'BusArmyDude'; // Set current user
+        this.currentUser = 'BusArmyDude';
         this.settings = this.loadSettings();
         this.initializeControls();
         this.applySettings();
@@ -131,7 +137,38 @@ class SettingsManager {
         });
     }
 
+    startTimeUpdate() {
+        const updateTimeDisplay = () => {
+            const now = new Date();
+            const timeString = now.toISOString()
+                .replace('T', ' ')
+                .substring(0, 19);
+            
+            const timeElement = document.querySelector('.current-datetime');
+            if (timeElement) {
+                timeElement.textContent = `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${timeString}`;
+            }
+        };
+
+        // Update immediately and then every second
+        updateTimeDisplay();
+        setInterval(updateTimeDisplay, 1000);
+    }
+
+    displayUserInfo() {
+        const userElement = document.querySelector('.current-user');
+        if (userElement) {
+            userElement.textContent = `Current User's Login: ${this.currentUser}`;
+        }
+    }
+
     applySettings() {
+        // Skip if we're on the homepage
+        if (window.location.pathname.endsWith('index.html') || 
+            window.location.pathname === '/') {
+            return;
+        }
+
         // Apply Dark Mode
         document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
         
@@ -161,31 +198,6 @@ class SettingsManager {
             }
             element.style.fontSize = `${baseSize * scale}px`;
         });
-    }
-
-    startTimeUpdate() {
-        const updateTimeDisplay = () => {
-            const now = new Date();
-            const timeString = now.toISOString()
-                .replace('T', ' ')
-                .substring(0, 19);
-            
-            const timeElement = document.querySelector('.current-datetime');
-            if (timeElement) {
-                timeElement.textContent = `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${timeString}`;
-            }
-        };
-
-        // Update immediately and then every second
-        updateTimeDisplay();
-        setInterval(updateTimeDisplay, 1000);
-    }
-
-    displayUserInfo() {
-        const userElement = document.querySelector('.current-user');
-        if (userElement) {
-            userElement.textContent = `Current User's Login: ${this.currentUser}`;
-        }
     }
 
     saveSettings() {
@@ -234,7 +246,5 @@ function acceptCookies() {
 
 // Initialize settings when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('settings-page-identifier')) {
-        window.settingsManager = new SettingsManager();
-    }
+    window.settingsManager = new SettingsManager();
 });
