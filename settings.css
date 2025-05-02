@@ -1,5 +1,10 @@
 :root {
-    /* Light Theme Variables */
+    /* Base sizes */
+    --base-font-size: 16px;
+    --focus-outline-width: 2px;
+    --focus-outline-offset: 2px;
+    
+    /* Light Theme Colors */
     --light-bg: #f5f5f7;
     --light-content-bg: #ffffff;
     --light-text: #1d1d1f;
@@ -7,12 +12,13 @@
     --light-border: #d2d2d7;
     --light-accent: #0066cc;
     --light-hover: #0071e3;
-    --light-shadow: rgba(0, 0, 0, 0.1);
-    --light-toggle-bg: #e9e9eb;
+    --light-toggle-off: #e9e9eb;
+    --light-toggle-on: #34c759;
     --light-danger: #ff3b30;
-    --light-success: #34c759;
-
-    /* Dark Theme Variables */
+    --light-focus: #0066cc;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    
+    /* Dark Theme Colors */
     --dark-bg: #000000;
     --dark-content-bg: #1d1d1f;
     --dark-text: #f5f5f7;
@@ -20,9 +26,12 @@
     --dark-border: #424245;
     --dark-accent: #0066cc;
     --dark-hover: #0071e3;
+    --dark-toggle-off: #424245;
+    --dark-toggle-on: #34c759;
+    --dark-danger: #ff3b30;
+    --dark-focus: #0066cc;
     --dark-shadow: rgba(0, 0, 0, 0.3);
-    --dark-toggle-bg: #424245;
-
+    
     /* Default Theme (Light) */
     --bg-color: var(--light-bg);
     --content-bg: var(--light-content-bg);
@@ -31,41 +40,61 @@
     --border-color: var(--light-border);
     --accent-color: var(--light-accent);
     --hover-color: var(--light-hover);
-    --shadow-color: var(--light-shadow);
-    --toggle-bg: var(--light-toggle-bg);
+    --toggle-off: var(--light-toggle-off);
+    --toggle-on: var(--light-toggle-on);
     --danger-color: var(--light-danger);
-    --success-color: var(--light-success);
+    --focus-color: var(--light-focus);
+    --shadow-color: var(--light-shadow);
 }
 
-/* Dark Theme Override */
+/* Dark Theme */
 [data-theme="dark"] {
     --bg-color: var(--dark-bg);
     --content-bg: var(--dark-content-bg);
     --text-color: var(--dark-text);
     --secondary-text: var(--dark-secondary);
     --border-color: var(--dark-border);
+    --accent-color: var(--dark-accent);
+    --hover-color: var(--dark-hover);
+    --toggle-off: var(--dark-toggle-off);
+    --toggle-on: var(--dark-toggle-on);
+    --danger-color: var(--dark-danger);
+    --focus-color: var(--dark-focus);
     --shadow-color: var(--dark-shadow);
-    --toggle-bg: var(--dark-toggle-bg);
 }
 
 /* Base Styles */
+html {
+    font-size: var(--base-font-size);
+}
+
 body {
     margin: 0;
     padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
     line-height: 1.5;
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Focus Outline Styles */
+:focus-visible {
+    outline: var(--focus-outline-width) solid var(--focus-color);
+    outline-offset: var(--focus-outline-offset);
+}
+
+.focus-outline-disabled *:focus-visible {
+    outline: none !important;
+}
+
+/* Container and Section Styles */
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
 }
 
-/* Settings Section Styles */
 .settings-section {
     background-color: var(--content-bg);
     border-radius: 16px;
@@ -73,6 +102,7 @@ body {
     box-shadow: 0 2px 8px var(--shadow-color);
 }
 
+/* Headers */
 .settings-header {
     display: flex;
     justify-content: space-between;
@@ -84,26 +114,27 @@ body {
 
 .settings-header h1 {
     margin: 0;
-    font-size: 1.75rem;
+    font-size: calc(var(--base-font-size) * 1.5);
     font-weight: 600;
 }
 
 .version {
     color: var(--secondary-text);
-    font-size: 0.875rem;
+    font-size: calc(var(--base-font-size) * 0.875);
 }
 
-/* Subsection Styles */
+/* Subsections */
 .settings-subsection {
     margin-bottom: 2rem;
 }
 
 .subsection-title {
-    font-size: 1.25rem;
+    font-size: calc(var(--base-font-size) * 1.25);
     margin: 0 0 1rem;
     color: var(--text-color);
 }
 
+/* Setting Cards */
 .setting-card {
     display: flex;
     justify-content: space-between;
@@ -120,13 +151,13 @@ body {
 
 .setting-title {
     margin: 0 0 0.5rem;
-    font-size: 1rem;
+    font-size: calc(var(--base-font-size) * 1);
     font-weight: 500;
 }
 
 .setting-description {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: calc(var(--base-font-size) * 0.875);
     color: var(--secondary-text);
 }
 
@@ -151,7 +182,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--toggle-bg);
+    background-color: var(--toggle-off);
     transition: 0.3s;
     border-radius: 34px;
 }
@@ -170,7 +201,7 @@ body {
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--success-color);
+    background-color: var(--toggle-on);
 }
 
 input:checked + .toggle-slider:before {
@@ -226,7 +257,7 @@ input:checked + .toggle-slider:before {
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    font-size: 0.875rem;
+    font-size: calc(var(--base-font-size) * 0.875);
     font-weight: 500;
     cursor: pointer;
     transition: opacity 0.3s;
@@ -236,7 +267,7 @@ input:checked + .toggle-slider:before {
     opacity: 0.9;
 }
 
-/* Back Link */
+/* Links */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -244,26 +275,11 @@ input:checked + .toggle-slider:before {
     text-decoration: none;
     margin-top: 1.5rem;
     font-weight: 500;
+    font-size: calc(var(--base-font-size) * 1);
 }
 
 .back-link:hover {
     text-decoration: underline;
-}
-
-/* Skip Link */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--accent-color);
-    color: white;
-    padding: 8px;
-    z-index: 100;
-    transition: top 0.3s;
-}
-
-.skip-link:focus {
-    top: 0;
 }
 
 /* Footer */
@@ -271,7 +287,7 @@ footer {
     text-align: center;
     padding: 2rem;
     color: var(--secondary-text);
-    font-size: 0.875rem;
+    font-size: calc(var(--base-font-size) * 0.875);
 }
 
 footer a {
@@ -284,7 +300,7 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* Cookie Consent Banner */
+/* Cookie Consent */
 #cookie-consent-banner {
     position: fixed;
     bottom: 1.25rem;
@@ -300,6 +316,7 @@ footer a:hover {
     max-width: 90%;
     width: 600px;
     z-index: 1000;
+    font-size: calc(var(--base-font-size) * 0.875);
 }
 
 #cookie-consent-banner.visible {
@@ -314,6 +331,7 @@ footer a:hover {
     border-radius: 8px;
     cursor: pointer;
     white-space: nowrap;
+    font-size: calc(var(--base-font-size) * 0.875);
 }
 
 /* Responsive Design */
@@ -340,23 +358,5 @@ footer a:hover {
         flex-direction: column;
         text-align: center;
         padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .settings-header h1 {
-        font-size: 1.5rem;
-    }
-
-    .subsection-title {
-        font-size: 1.125rem;
-    }
-
-    .setting-title {
-        font-size: 0.938rem;
-    }
-
-    .setting-description {
-        font-size: 0.813rem;
     }
 }
