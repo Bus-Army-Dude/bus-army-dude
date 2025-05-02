@@ -70,6 +70,26 @@
     --toggle-bg: var(--dark-toggle-bg);
 }
 
+/* Info Section Styles */
+.info-section {
+    background: var(--bg-secondary);
+    padding: var(--base-spacing);
+    border-radius: var(--base-border-radius);
+    margin-bottom: calc(var(--base-spacing) * 1.5);
+    border: 1px solid var(--border-color);
+}
+
+.current-datetime,
+.current-user {
+    margin: 5px 0;
+    font-family: 'SF Mono', SFMono-Regular, ui-monospace, monospace;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+/* Rest of your existing settings.css styles... */
+[Previous CSS content remains the same]
+
 /* Base Styles */
 body {
     margin: 0;
@@ -84,7 +104,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Info Section */
+/* Info Section Styles */
 .info-section {
     background: var(--bg-secondary);
     padding: var(--base-spacing);
