@@ -2072,149 +2072,179 @@ body:not(.focus-outline-disabled) textarea:focus {
     }
 }
 
-/* --- Enhanced Maintenance Overlay Styles --- */
+/* --- Enhanced Maintenance Overlay Styles (incorporating previous styles) --- */
 
 body.maintenance-active {
-    overflow: hidden; /* Prevent background scroll */
+    overflow: hidden;
 }
 
 .maintenance-overlay {
     position: fixed;
-    inset: 0; /* Modern shorthand for top/right/bottom/left: 0 */
+    inset: 0;
     width: 100%;
     height: 100%;
-    /* --- Cool Background: Dark gradient with a hint of cyan --- */
     background: radial-gradient(ellipse at center, rgba(13, 17, 23, 0.95) 0%, rgba(13, 17, 23, 0.99) 70%),
                 linear-gradient(to bottom, rgba(0, 50, 50, 0.1) 0%, rgba(13, 17, 23, 0.3) 100%);
-    /* --- Subtle Blur Effect (optional, check performance) --- */
     backdrop-filter: blur(3px);
-    display: none; /* Hidden by default */
+    display: none; /* Controlled by your style attribute or JS */
     justify-content: center;
     align-items: center;
     z-index: 9999;
     padding: 20px;
     box-sizing: border-box;
-    opacity: 0; /* Start fully transparent for fade-in */
-    transition: opacity 0.4s ease-in-out; /* Smooth fade-in transition */
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
 }
 
-/* --- Make overlay visible and fade in --- */
-.maintenance-overlay.active {
+.maintenance-overlay.active { /* Add this class via JS to show */
     display: flex;
     opacity: 1;
 }
 
 .maintenance-content {
-    max-width: min(550px, 90%); /* Slightly wider max */
+    max-width: min(550px, 90%);
     width: 100%;
     text-align: center;
-    /* --- More Engaging Entry Animation --- */
     animation: popInZoom 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    /* --- Add subtle depth --- */
-    background: rgba(18, 23, 30, 0.6); /* Slightly lighter background for contrast */
-    padding: clamp(25px, 6vw, 40px); /* Responsive padding */
-    border-radius: 12px; /* Soft rounded corners */
-    border: 1px solid rgba(0, 255, 255, 0.1); /* Subtle cyan border */
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1), /* Cyan glow */
-                0 4px 15px rgba(0, 0, 0, 0.3); /* Standard shadow */
+    background: rgba(18, 23, 30, 0.6);
+    padding: clamp(25px, 6vw, 40px);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1), 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* --- New Entry Animation: Pop & Zoom --- */
 @keyframes popInZoom {
-    0% {
-        opacity: 0;
-        transform: translateY(30px) scale(0.9);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* --- More Futuristic Loader --- */
 .maintenance-loader {
     width: 50px;
     height: 50px;
-    border: 4px solid transparent; /* Transparent base */
-    border-top: 4px solid #00ffff; /* Cyan top */
-    border-left: 4px solid #00ffff; /* Cyan left */
+    border: 4px solid transparent;
+    border-top: 4px solid #00ffff;
+    border-left: 4px solid #00ffff;
     border-radius: 50%;
-    margin: 0 auto 35px; /* Increased bottom margin */
-    animation: spinLoader 1.2s linear infinite, /* Rotation */
-               pulseGlow 2s ease-in-out infinite alternate; /* Pulsing glow */
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Static base glow */
+    margin: 0 auto 35px;
+    animation: spinLoader 1.2s linear infinite, pulseGlow 2s ease-in-out infinite alternate;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
-/* --- Loader Rotation --- */
 @keyframes spinLoader {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-/* --- Loader Pulsing Glow --- */
 @keyframes pulseGlow {
     0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.4); }
     100% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); }
 }
 
-/* --- Title Styling --- */
 .maintenance-content h1 {
-    color: #00ffff; /* Bright Cyan */
-    font-size: clamp(2rem, 6vw, 2.8rem); /* Slightly larger font */
-    margin: 0 0 25px; /* Increased bottom margin */
-    font-weight: 700; /* Bolder */
+    color: #00ffff;
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    margin: 0 0 25px;
+    font-weight: 700;
     line-height: 1.2;
-    text-shadow: 0 0 12px rgba(0, 255, 255, 0.6), /* Stronger glow */
-                 0 0 2px rgba(0, 255, 255, 1);   /* Sharper inner glow */
-    letter-spacing: 0.5px; /* Slight letter spacing */
+    text-shadow: 0 0 12px rgba(0, 255, 255, 0.6), 0 0 2px rgba(0, 255, 255, 1);
+    letter-spacing: 0.5px;
 }
 
-/* --- Paragraph Styling --- */
-.maintenance-content p {
-    color: #e0e0e0; /* Slightly off-white for softer look */
-    font-size: clamp(1rem, 3vw, 1.25rem); /* Slightly larger */
-    margin: 0 0 20px; /* Adjusted margin (no status section below) */
-    line-height: 1.6; /* Improved readability */
+.maintenance-content p { /* Style for the main paragraph */
+    color: #e0e0e0;
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    margin: 0 0 35px; /* Added margin-bottom to separate from socials section */
+    line-height: 1.6;
     opacity: 0.95;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Subtle shadow for depth */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+
+/* --- Updated Socials Section Styling --- */
+
+.maintenance-socials {
+    padding-top: 25px; /* Space above the content inside */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    gap: 15px; /* Space between the <p> and the <a> */
+}
+
+/* Style for the "Stay Updated:" paragraph */
+.maintenance-socials p {
+    color: rgba(224, 224, 224, 0.8); /* Slightly dimmer than main text */
+    font-size: clamp(0.9rem, 2.5vw, 1rem); /* Smaller text */
+    margin: 0; /* Remove default paragraph margin */
+    line-height: 1.4;
+    font-weight: 500;
+    text-shadow: none; /* Remove shadow from main <p> if needed */
+    opacity: 1; /* Reset opacity */
+}
+
+/* Style for the link containing icon + text */
+.maintenance-socials a {
+    display: inline-flex; /* Align icon and text nicely on the same line */
+    align-items: center; /* Vertically align icon and text */
+    gap: 8px; /* Space between icon and text */
+    color: #e0e0e0; /* Link color */
+    text-decoration: none;
+    font-size: clamp(1rem, 3vw, 1.1rem); /* Font size for the link text */
+    padding: 8px 15px; /* Add some padding for a larger click area */
+    border-radius: 20px; /* Slightly rounded shape */
+    background-color: rgba(0, 255, 255, 0.05); /* Very subtle background */
+    border: 1px solid rgba(0, 255, 255, 0.1); /* Subtle border */
+    transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Style for the icon within the link */
+.maintenance-socials a i {
+    font-size: 1.1em; /* Icon size relative to link text */
+    /* No specific color needed, inherits from <a> */
+}
+
+.maintenance-socials a:hover,
+.maintenance-socials a:focus {
+    color: #00ffff; /* Highlight color on hover/focus */
+    background-color: rgba(0, 255, 255, 0.15); /* Darker background on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); /* Add subtle glow */
+    outline: none;
 }
 
 /* --- Responsive Adjustments --- */
 @media screen and (max-width: 480px) {
-    .maintenance-content {
-        padding: 25px 20px; /* Adjust padding */
+     .maintenance-content {
+        padding: 25px 20px;
     }
-
-    .maintenance-loader {
+     .maintenance-loader {
         width: 40px;
         height: 40px;
-        border-width: 3px; /* Thinner border */
+        border-width: 3px;
         margin-bottom: 25px;
     }
-
-    .maintenance-content h1 {
+     .maintenance-content h1 {
          margin-bottom: 20px;
+    }
+     .maintenance-content p { /* Main paragraph */
+        margin-bottom: 25px;
+    }
+     .maintenance-socials {
+        padding-top: 20px;
+        gap: 12px;
+    }
+    .maintenance-socials a {
+        padding: 6px 12px; /* Adjust padding */
     }
 }
 
-/* Adjustments for very short screens */
 @media screen and (max-height: 500px) {
-    .maintenance-loader {
-        margin-bottom: 20px;
-    }
-
-    .maintenance-content h1 {
-        margin-bottom: 15px;
-    }
-
-    .maintenance-content p {
-        margin-bottom: 15px;
-    }
-
-    .maintenance-content {
-         padding-top: 20px;
-         padding-bottom: 20px;
-    }
+    /* (Previous height adjustments remain relevant) */
+     .maintenance-loader { margin-bottom: 15px; }
+     .maintenance-content h1 { margin-bottom: 15px; }
+     .maintenance-content p { margin-bottom: 20px; } /* Main paragraph */
+     .maintenance-socials { padding-top: 15px; gap: 10px; }
+     .maintenance-content { padding-top: 20px; padding-bottom: 20px; }
 }
 
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
