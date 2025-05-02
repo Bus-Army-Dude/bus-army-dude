@@ -1,32 +1,44 @@
-// settings.js
 class SettingsManager {
     constructor() {
+        this.defaultSettings = {
+            darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+            fontSize: 16,
+            focusOutline: 'enabled',
+            lastUpdated: Date.now()
+        };
+        
         this.settings = this.loadSettings();
         this.initializeControls();
         this.applySettings();
+        this.setupEventListeners();
+        this.initializeCookieConsent();
     }
 
     loadSettings() {
-        const defaultSettings = {
-            darkMode: true,
-            textSize: 16,
-            focusOutline: 'disabled'
-        };
-
         try {
             const stored = localStorage.getItem('websiteSettings');
             if (stored) {
                 const parsed = JSON.parse(stored);
                 return {
-                    darkMode: typeof parsed.darkMode === 'boolean' ? parsed.darkMode : defaultSettings.darkMode,
-                    textSize: parsed.textSize >= 12 && parsed.textSize <= 24 ? parsed.textSize : defaultSettings.textSize,
-                    focusOutline: ['enabled', 'disabled'].includes(parsed.focusOutline) ? parsed.focusOutline : defaultSettings.focusOutline
+                    darkMode: typeof parsed.darkMode === 'boolean' ? parsed.darkMode : this.defaultSettings.darkMode,
+                    fontSize: this.validateFontSize(parsed.fontSize),
+                    focusOutline: ['enabled', 'disabled'].includes(parsed.focusOutline) ? 
+                        parsed.focusOutline : this.defaultSettings.focusOutline,
+                    lastUpdated: Date.now()
                 };
             }
         } catch (error) {
             console.error("Error loading settings:", error);
         }
-        return defaultSettings;
+        return { ...this.defaultSettings };
+    }
+
+    validateFontSize(size) {
+        const parsed = parseInt(size);
+        if (isNaN(parsed) || parsed < 12 || parsed > 24) {
+            return this.defaultSettings.fontSize;
+        }
+        return parsed;
     }
 
     initializeControls() {
@@ -34,129 +46,147 @@ class SettingsManager {
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
             darkModeToggle.checked = this.settings.darkMode;
-            darkModeToggle.addEventListener('change', (e) => this.applyTheme(e.target.checked));
         }
 
         // Text Size Slider
         const textSizeSlider = document.getElementById('text-size-slider');
         const textSizeValue = document.getElementById('textSizeValue');
         if (textSizeSlider && textSizeValue) {
-            textSizeSlider.value = this.settings.textSize;
-            textSizeValue.textContent = `${this.settings.textSize}px`;
-            
-            textSizeSlider.addEventListener('input', (e) => {
-                const size = parseInt(e.target.value);
-                this.setTextSize(size);
-                textSizeValue.textContent = `${size}px`;
-                this.updateSliderGradient(textSizeSlider);
-            });
-            
-            this.updateSliderGradient(textSizeSlider);
+            textSizeSlider.value = this.settings.fontSize;
+            textSizeValue.textContent = `${this.settings.fontSize}px`;
         }
 
         // Focus Outline Toggle
         const focusOutlineToggle = document.getElementById('focusOutlineToggle');
         if (focusOutlineToggle) {
             focusOutlineToggle.checked = this.settings.focusOutline === 'enabled';
-            focusOutlineToggle.addEventListener('change', (e) => this.toggleFocusOutline(e.target.checked));
         }
 
-        // Reset Button
-        const resetButton = document.getElementById('resetSettings');
-        if (resetButton) {
-            resetButton.addEventListener('click', () => this.resetToFactorySettings());
-        }
-
-        // Update footer year
+        // Year in footer
         const yearElement = document.getElementById('year');
         if (yearElement) {
             yearElement.textContent = new Date().getFullYear();
         }
     }
 
-    updateSliderGradient(slider) {
-        if (!slider) return;
-        const value = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-        slider.style.setProperty('--slider-value', `${value}%`);
+    setupEventListeners() {
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', (e) => {
+                this.settings.darkMode = e.target.checked;
+                this.applySettings();
+                this.saveSettings();
+            });
+        }
+
+        // Text Size Slider
+        const textSizeSlider = document.getElementById('text-size-slider');
+        if (textSizeSlider) {
+            textSizeSlider.addEventListener('input', (e) => {
+                const size = parseInt(e.target.value);
+                this.settings.fontSize = size;
+                document.getElementById('textSizeValue').textContent = `${size}px`;
+                this.applySettings();
+                this.saveSettings();
+            });
+        }
+
+        // Focus Outline Toggle
+        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
+        if (focusOutlineToggle) {
+            focusOutlineToggle.addEventListener('change', (e) => {
+                this.settings.focusOutline = e.target.checked ? 'enabled' : 'disabled';
+                this.applySettings();
+                this.saveSettings();
+            });
+        }
+
+        // Reset Button
+        const resetButton = document.getElementById('resetSettings');
+        if (resetButton) {
+            resetButton.addEventListener('click', () => this.resetSettings());
+        }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)')
+            .addEventListener('change', e => {
+                if (!localStorage.getItem('websiteSettings')) {
+                    this.settings.darkMode = e.matches;
+                    this.applySettings();
+                    this.saveSettings();
+                }
+            });
+
+        // Listen for settings changes from other tabs
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'websiteSettings') {
+                this.settings = JSON.parse(e.newValue);
+                this.initializeControls();
+                this.applySettings();
+            }
+        });
     }
 
     applySettings() {
-        this.applyTheme(this.settings.darkMode);
-        this.setTextSize(this.settings.textSize);
-        this.toggleFocusOutline(this.settings.focusOutline === 'enabled');
-    }
-
-    applyTheme(isDark) {
-        document.body.classList.toggle('dark-mode', isDark);
-        document.body.classList.toggle('light-mode', !isDark);
-        this.settings.darkMode = isDark;
-        this.saveSettings();
-    }
-
-    setTextSize(size) {
-        if (size >= 12 && size <= 24) {
-            document.documentElement.style.setProperty('--font-size-base', `${size}px`);
-            this.settings.textSize = size;
-            this.saveSettings();
-        }
-    }
-
-    toggleFocusOutline(enable) {
-        document.body.classList.toggle('focus-outline-disabled', !enable);
-        this.settings.focusOutline = enable ? 'enabled' : 'disabled';
-        this.saveSettings();
+        // Apply Dark Mode
+        document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
+        
+        // Apply Font Size
+        document.documentElement.style.setProperty('--font-size-base', `${this.settings.fontSize}px`);
+        
+        // Apply Focus Outline
+        document.body.classList.toggle('focus-outline-disabled', 
+            this.settings.focusOutline === 'disabled');
     }
 
     saveSettings() {
         try {
+            this.settings.lastUpdated = Date.now();
             localStorage.setItem('websiteSettings', JSON.stringify(this.settings));
+            
+            // Dispatch event for other pages
+            window.dispatchEvent(new CustomEvent('settingsChanged', {
+                detail: this.settings
+            }));
         } catch (error) {
             console.error("Error saving settings:", error);
         }
     }
 
-    resetToFactorySettings() {
-        if (!confirm('Are you sure you want to reset all settings to their defaults?')) {
-            return;
+    resetSettings() {
+        if (confirm('Are you sure you want to reset all settings to their defaults?')) {
+            this.settings = { ...this.defaultSettings };
+            this.initializeControls();
+            this.applySettings();
+            this.saveSettings();
+            alert('Settings have been reset to defaults.');
         }
+    }
 
-        const defaults = {
-            darkMode: true,
-            textSize: 16,
-            focusOutline: 'disabled'
-        };
+    initializeCookieConsent() {
+        const banner = document.getElementById('cookie-consent-banner');
+        if (!banner) return;
 
-        // Reset internal settings
-        this.settings = { ...defaults };
-
-        // Update UI elements
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const textSizeSlider = document.getElementById('text-size-slider');
-        const textSizeValue = document.getElementById('textSizeValue');
-        const focusOutlineToggle = document.getElementById('focusOutlineToggle');
-
-        if (darkModeToggle) darkModeToggle.checked = defaults.darkMode;
-        if (textSizeSlider) {
-            textSizeSlider.value = defaults.textSize;
-            this.updateSliderGradient(textSizeSlider);
+        const hasConsent = document.cookie.split(';').some(item => item.trim().startsWith('cookieConsent='));
+        if (!hasConsent) {
+            banner.classList.add('visible');
         }
-        if (textSizeValue) textSizeValue.textContent = `${defaults.textSize}px`;
-        if (focusOutlineToggle) focusOutlineToggle.checked = defaults.focusOutline === 'enabled';
-
-        // Apply settings
-        this.applySettings();
-
-        // Save settings
-        localStorage.removeItem('websiteSettings');
-        this.saveSettings();
-
-        alert('Settings have been reset to defaults.');
     }
 }
 
+// Cookie consent function
+function acceptCookies() {
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+        document.cookie = "cookieConsent=true; path=/; max-age=31536000"; // 1 year
+        banner.classList.remove('visible');
+    }
+}
+
+// Initialize settings when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    const settingsPageMarker = document.getElementById('settings-page-identifier');
-    if (settingsPageMarker) {
+    if (document.getElementById('settings-page-identifier')) {
         window.settingsManager = new SettingsManager();
     }
 });
