@@ -133,11 +133,33 @@ class SettingsManager {
         document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
         
         // Apply Font Size
-        document.documentElement.style.setProperty('--font-size-base', `${this.settings.fontSize}px`);
+        document.documentElement.style.setProperty('--base-font-size', `${this.settings.fontSize}px`);
         
         // Apply Focus Outline
         document.body.classList.toggle('focus-outline-disabled', 
             this.settings.focusOutline === 'disabled');
+        
+        // Update all text elements
+        this.updateTextSize();
+    }
+
+    updateTextSize() {
+        const elements = document.querySelectorAll('body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, label');
+        const baseSize = this.settings.fontSize;
+        
+        elements.forEach(element => {
+            let scale = 1;
+            switch (element.tagName.toLowerCase()) {
+                case 'h1': scale = 2; break;
+                case 'h2': scale = 1.75; break;
+                case 'h3': scale = 1.5; break;
+                case 'h4': scale = 1.25; break;
+                case 'h5': scale = 1.15; break;
+                case 'h6': scale = 1.1; break;
+                default: scale = 1;
+            }
+            element.style.fontSize = `${baseSize * scale}px`;
+        });
     }
 
     saveSettings() {
