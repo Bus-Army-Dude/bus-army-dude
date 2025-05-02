@@ -7,12 +7,14 @@ class SettingsManager {
             lastUpdated: Date.now()
         };
         
+        this.currentUser = 'BusArmyDude'; // Set current user
         this.settings = this.loadSettings();
         this.initializeControls();
         this.applySettings();
         this.setupEventListeners();
         this.initializeCookieConsent();
         this.startTimeUpdate();
+        this.displayUserInfo();
     }
 
     loadSettings() {
@@ -161,6 +163,31 @@ class SettingsManager {
         });
     }
 
+    startTimeUpdate() {
+        const updateTimeDisplay = () => {
+            const now = new Date();
+            const timeString = now.toISOString()
+                .replace('T', ' ')
+                .substring(0, 19);
+            
+            const timeElement = document.querySelector('.current-datetime');
+            if (timeElement) {
+                timeElement.textContent = `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${timeString}`;
+            }
+        };
+
+        // Update immediately and then every second
+        updateTimeDisplay();
+        setInterval(updateTimeDisplay, 1000);
+    }
+
+    displayUserInfo() {
+        const userElement = document.querySelector('.current-user');
+        if (userElement) {
+            userElement.textContent = `Current User's Login: ${this.currentUser}`;
+        }
+    }
+
     saveSettings() {
         try {
             this.settings.lastUpdated = Date.now();
@@ -193,21 +220,6 @@ class SettingsManager {
         if (!hasConsent) {
             banner.classList.add('visible');
         }
-    }
-
-    startTimeUpdate() {
-        const updateTimeDisplay = () => {
-            const now = new Date();
-            const timeString = now.toISOString().replace('T', ' ').substring(0, 19);
-            const timeElement = document.querySelector('.update-time');
-            if (timeElement) {
-                timeElement.textContent = timeString;
-            }
-        };
-
-        // Update immediately and then every second
-        updateTimeDisplay();
-        setInterval(updateTimeDisplay, 1000);
     }
 }
 
