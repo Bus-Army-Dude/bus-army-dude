@@ -1,11 +1,5 @@
 class SettingsManager {
     constructor() {
-        // Skip initialization if we're on the homepage
-        if (window.location.pathname.endsWith('index.html') || 
-            window.location.pathname === '/') {
-            return;
-        }
-
         this.defaultSettings = {
             darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
             fontSize: 16,
@@ -15,12 +9,15 @@ class SettingsManager {
         
         this.currentUser = 'BusArmyDude';
         this.settings = this.loadSettings();
+        
+        // Initialize time and user info immediately
+        this.startTimeUpdate();
+        this.displayUserInfo();
+        
+        // Initialize other settings
         this.initializeControls();
         this.applySettings();
         this.setupEventListeners();
-        this.initializeCookieConsent();
-        this.startTimeUpdate();
-        this.displayUserInfo();
     }
 
     loadSettings() {
@@ -144,10 +141,10 @@ class SettingsManager {
                 .replace('T', ' ')
                 .substring(0, 19);
             
-            const timeElement = document.querySelector('.current-datetime');
-            if (timeElement) {
-                timeElement.textContent = `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${timeString}`;
-            }
+            const timeElements = document.querySelectorAll('.current-datetime');
+            timeElements.forEach(element => {
+                element.textContent = `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${timeString}`;
+            });
         };
 
         // Update immediately and then every second
@@ -156,19 +153,13 @@ class SettingsManager {
     }
 
     displayUserInfo() {
-        const userElement = document.querySelector('.current-user');
-        if (userElement) {
-            userElement.textContent = `Current User's Login: ${this.currentUser}`;
-        }
+        const userElements = document.querySelectorAll('.current-user');
+        userElements.forEach(element => {
+            element.textContent = `Current User's Login: ${this.currentUser}`;
+        });
     }
 
     applySettings() {
-        // Skip if we're on the homepage
-        if (window.location.pathname.endsWith('index.html') || 
-            window.location.pathname === '/') {
-            return;
-        }
-
         // Apply Dark Mode
         document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
         
@@ -222,25 +213,6 @@ class SettingsManager {
             this.saveSettings();
             alert('Settings have been reset to defaults.');
         }
-    }
-
-    initializeCookieConsent() {
-        const banner = document.getElementById('cookie-consent-banner');
-        if (!banner) return;
-
-        const hasConsent = document.cookie.split(';').some(item => item.trim().startsWith('cookieConsent='));
-        if (!hasConsent) {
-            banner.classList.add('visible');
-        }
-    }
-}
-
-// Cookie consent function
-function acceptCookies() {
-    const banner = document.getElementById('cookie-consent-banner');
-    if (banner) {
-        document.cookie = "cookieConsent=true; path=/; max-age=31536000"; // 1 year
-        banner.classList.remove('visible');
     }
 }
 
