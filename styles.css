@@ -2072,137 +2072,148 @@ body:not(.focus-outline-disabled) textarea:focus {
     }
 }
 
-/* Maintenance Overlay Styles */
+/* --- Enhanced Maintenance Overlay Styles --- */
+
+body.maintenance-active {
+    overflow: hidden; /* Prevent background scroll */
+}
+
 .maintenance-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0; /* Modern shorthand for top/right/bottom/left: 0 */
     width: 100%;
     height: 100%;
-    background: rgba(13, 17, 23, 0.98);
-    display: none;
+    /* --- Cool Background: Dark gradient with a hint of cyan --- */
+    background: radial-gradient(ellipse at center, rgba(13, 17, 23, 0.95) 0%, rgba(13, 17, 23, 0.99) 70%),
+                linear-gradient(to bottom, rgba(0, 50, 50, 0.1) 0%, rgba(13, 17, 23, 0.3) 100%);
+    /* --- Subtle Blur Effect (optional, check performance) --- */
+    backdrop-filter: blur(3px);
+    display: none; /* Hidden by default */
     justify-content: center;
     align-items: center;
     z-index: 9999;
     padding: 20px;
     box-sizing: border-box;
+    opacity: 0; /* Start fully transparent for fade-in */
+    transition: opacity 0.4s ease-in-out; /* Smooth fade-in transition */
+}
+
+/* --- Make overlay visible and fade in --- */
+.maintenance-overlay.active {
+    display: flex;
+    opacity: 1;
 }
 
 .maintenance-content {
-    max-width: min(500px, 90%);
+    max-width: min(550px, 90%); /* Slightly wider max */
     width: 100%;
     text-align: center;
-    animation: fadeInUp 0.5s ease-out;
+    /* --- More Engaging Entry Animation --- */
+    animation: popInZoom 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    /* --- Add subtle depth --- */
+    background: rgba(18, 23, 30, 0.6); /* Slightly lighter background for contrast */
+    padding: clamp(25px, 6vw, 40px); /* Responsive padding */
+    border-radius: 12px; /* Soft rounded corners */
+    border: 1px solid rgba(0, 255, 255, 0.1); /* Subtle cyan border */
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1), /* Cyan glow */
+                0 4px 15px rgba(0, 0, 0, 0.3); /* Standard shadow */
 }
 
-@keyframes fadeInUp {
-    from {
+/* --- New Entry Animation: Pop & Zoom --- */
+@keyframes popInZoom {
+    0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px) scale(0.9);
     }
-    to {
+    100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
+/* --- More Futuristic Loader --- */
 .maintenance-loader {
-    width: 48px;
-    height: 48px;
-    border: 3px solid rgba(0, 255, 255, 0.1);
+    width: 50px;
+    height: 50px;
+    border: 4px solid transparent; /* Transparent base */
+    border-top: 4px solid #00ffff; /* Cyan top */
+    border-left: 4px solid #00ffff; /* Cyan left */
     border-radius: 50%;
-    border-top-color: #00ffff;
-    margin: 0 auto 30px;
-    animation: spin 1s linear infinite;
+    margin: 0 auto 35px; /* Increased bottom margin */
+    animation: spinLoader 1.2s linear infinite, /* Rotation */
+               pulseGlow 2s ease-in-out infinite alternate; /* Pulsing glow */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Static base glow */
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+/* --- Loader Rotation --- */
+@keyframes spinLoader {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
+/* --- Loader Pulsing Glow --- */
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.4); }
+    100% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); }
+}
+
+/* --- Title Styling --- */
 .maintenance-content h1 {
-    color: #00ffff;
-    font-size: clamp(1.8rem, 5vw, 2.5rem);
-    margin: 0 0 20px;
-    font-weight: 600;
+    color: #00ffff; /* Bright Cyan */
+    font-size: clamp(2rem, 6vw, 2.8rem); /* Slightly larger font */
+    margin: 0 0 25px; /* Increased bottom margin */
+    font-weight: 700; /* Bolder */
     line-height: 1.2;
+    text-shadow: 0 0 12px rgba(0, 255, 255, 0.6), /* Stronger glow */
+                 0 0 2px rgba(0, 255, 255, 1);   /* Sharper inner glow */
+    letter-spacing: 0.5px; /* Slight letter spacing */
 }
 
+/* --- Paragraph Styling --- */
 .maintenance-content p {
-    color: #ffffff;
-    font-size: clamp(1rem, 3vw, 1.2rem);
-    margin: 0 0 30px;
-    line-height: 1.5;
-    opacity: 0.9;
+    color: #e0e0e0; /* Slightly off-white for softer look */
+    font-size: clamp(1rem, 3vw, 1.25rem); /* Slightly larger */
+    margin: 0 0 20px; /* Adjusted margin (no status section below) */
+    line-height: 1.6; /* Improved readability */
+    opacity: 0.95;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Subtle shadow for depth */
 }
 
-.maintenance-status {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.maintenance-status a {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 24px;
-    background: rgba(0, 255, 255, 0.1);
-    color: #00ffff;
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0, 255, 255, 0.2);
-}
-
-.maintenance-status a:hover {
-    background: rgba(0, 255, 255, 0.2);
-    transform: translateY(-2px);
-}
-
-.maintenance-status i {
-    font-size: 1.1em;
-}
-
-/* Prevent body scroll when overlay is active */
-body.maintenance-active {
-    overflow: hidden;
-}
-
-/* Ensure overlay is visible when active */
-.maintenance-overlay.active {
-    display: flex;
-}
-
-/* Additional responsive adjustments */
+/* --- Responsive Adjustments --- */
 @media screen and (max-width: 480px) {
     .maintenance-content {
-        padding: 20px;
+        padding: 25px 20px; /* Adjust padding */
     }
-    
+
     .maintenance-loader {
         width: 40px;
         height: 40px;
-        margin-bottom: 20px;
+        border-width: 3px; /* Thinner border */
+        margin-bottom: 25px;
     }
-    
-    .maintenance-status a {
-        padding: 10px 20px;
+
+    .maintenance-content h1 {
+         margin-bottom: 20px;
     }
 }
 
+/* Adjustments for very short screens */
 @media screen and (max-height: 500px) {
     .maintenance-loader {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
-    
+
     .maintenance-content h1 {
         margin-bottom: 15px;
     }
-    
+
     .maintenance-content p {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+    }
+
+    .maintenance-content {
+         padding-top: 20px;
+         padding-bottom: 20px;
     }
 }
 
