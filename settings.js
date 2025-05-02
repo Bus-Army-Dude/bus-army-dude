@@ -3,14 +3,15 @@ class SettingsManager {
         this.defaultSettings = {
             darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
             fontSize: 16,
-            focusOutline: 'disabled',
+            focusOutline: 'enabled',
             lastUpdated: Date.now()
         };
         
         this.currentUser = 'BusArmyDude';
         this.settings = this.loadSettings();
+        this.updateInterval = null;
         
-        // Initialize all features
+        // Initialize everything
         this.initializeControls();
         this.applySettings();
         this.setupEventListeners();
@@ -130,6 +131,9 @@ class SettingsManager {
                 this.applySettings();
             }
         });
+
+        // Cleanup on page unload
+        window.addEventListener('unload', () => this.cleanup());
     }
 
     startTimeUpdate() {
@@ -147,7 +151,7 @@ class SettingsManager {
 
         // Update immediately and then every second
         updateTimeDisplay();
-        setInterval(updateTimeDisplay, 1000);
+        this.updateInterval = setInterval(updateTimeDisplay, 1000);
     }
 
     displayUserInfo() {
@@ -158,8 +162,8 @@ class SettingsManager {
     }
 
     applySettings() {
-        // Apply Dark Mode
-        document.documentElement.setAttribute('data-theme', this.settings.darkMode ? 'dark' : 'light');
+        // Apply Light/Dark Mode
+        document.body.classList.toggle('light-e', !this.settings.darkMode);
         
         // Apply Font Size
         document.documentElement.style.setProperty('--base-font-size', `${this.settings.fontSize}px`);
@@ -210,6 +214,12 @@ class SettingsManager {
             this.applySettings();
             this.saveSettings();
             alert('Settings have been reset to defaults.');
+        }
+    }
+
+    cleanup() {
+        if (this.updateInterval) {
+            clearInterval(this.updateInterval);
         }
     }
 }
