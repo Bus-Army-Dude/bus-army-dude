@@ -1,135 +1,117 @@
 :root {
-    --font-size-base: 17px;
-    --bg-color: #f5f5f7; /* Apple's light background */
-    --content-bg: #ffffff; /* Content area background */
-    --text-color: #1d1d1f; /* Apple's primary text */
-    --secondary-text: #86868b; /* Apple's secondary text */
-    --border-color: #d2d2d7; /* Apple's border color */
-    --accent-color: #0066cc; /* Apple blue */
-    --hover-color: #0071e3; /* Apple blue hover */
-    --toggle-on: #34c759; /* Apple green */
-    --toggle-off: #e9e9eb; /* Apple toggle off */
-    --red-color: #ff3b30; /* Apple red */
-    --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow color */
-    --slider-thumb-color: #ffffff;
-    --slider-track-color: #e9e9eb;
-    --slider-track-filled-color: #0066cc;
-    --focus-outline-color: #0066cc;
+    /* Light Theme Variables */
+    --light-bg: #f5f5f7;
+    --light-content-bg: #ffffff;
+    --light-text: #1d1d1f;
+    --light-secondary: #86868b;
+    --light-border: #d2d2d7;
+    --light-accent: #0066cc;
+    --light-hover: #0071e3;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-toggle-bg: #e9e9eb;
+    --light-danger: #ff3b30;
+    --light-success: #34c759;
+
+    /* Dark Theme Variables */
+    --dark-bg: #000000;
+    --dark-content-bg: #1d1d1f;
+    --dark-text: #f5f5f7;
+    --dark-secondary: #86868b;
+    --dark-border: #424245;
+    --dark-accent: #0066cc;
+    --dark-hover: #0071e3;
+    --dark-shadow: rgba(0, 0, 0, 0.3);
+    --dark-toggle-bg: #424245;
+
+    /* Default Theme (Light) */
+    --bg-color: var(--light-bg);
+    --content-bg: var(--light-content-bg);
+    --text-color: var(--light-text);
+    --secondary-text: var(--light-secondary);
+    --border-color: var(--light-border);
+    --accent-color: var(--light-accent);
+    --hover-color: var(--light-hover);
+    --shadow-color: var(--light-shadow);
+    --toggle-bg: var(--light-toggle-bg);
+    --danger-color: var(--light-danger);
+    --success-color: var(--light-success);
 }
 
-/* Dark Mode Variables */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #000000; /* Apple's dark background */
-        --content-bg: #1d1d1f; /* Dark content area */
-        --text-color: #f5f5f7; /* Light text */
-        --secondary-text: #86868b; /* Secondary text */
-        --border-color: #424245; /* Dark borders */
-        --shadow-color: rgba(0, 0, 0, 0.3);
-        --slider-track-color: #424245;
-        --toggle-off: #636366; /* Dark mode toggle off */
-    }
+/* Dark Theme Override */
+[data-theme="dark"] {
+    --bg-color: var(--dark-bg);
+    --content-bg: var(--dark-content-bg);
+    --text-color: var(--dark-text);
+    --secondary-text: var(--dark-secondary);
+    --border-color: var(--dark-border);
+    --shadow-color: var(--dark-shadow);
+    --toggle-bg: var(--dark-toggle-bg);
 }
 
-/* ========== General Styles ========== */
-body.settings-page {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-size: var(--font-size-base);
-    line-height: 1.47059;
-    font-weight: 400;
-    letter-spacing: -0.022em;
+/* Base Styles */
+body {
     margin: 0;
     padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* ========== Skip Link ========== */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--accent-color);
-    color: white;
-    padding: 8px;
-    z-index: 100;
-    transition: top 0.3s;
-}
-
-.skip-link:focus {
-    top: 0;
-}
-
-/* ========== Container ========== */
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 2rem;
 }
 
-/* ========== Settings Section ========== */
+/* Settings Section Styles */
 .settings-section {
-    margin-bottom: 40px;
+    background-color: var(--content-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .settings-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 10px;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
 }
 
 .settings-header h1 {
-    font-size: 34px;
-    font-weight: 600;
     margin: 0;
-    letter-spacing: -0.003em;
-    color: var(--text-color);
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 .version {
-    font-size: 14px;
     color: var(--secondary-text);
+    font-size: 0.875rem;
 }
 
-/* ========== Settings Subsection ========== */
+/* Subsection Styles */
 .settings-subsection {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 4px var(--shadow-color);
-    overflow: hidden;
+    margin-bottom: 2rem;
 }
 
 .subsection-title {
-    font-size: 20px;
-    font-weight: 600;
-    padding: 15px 20px;
-    margin: 0;
-    border-bottom: 1px solid var(--border-color);
-    letter-spacing: 0.004em;
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+    color: var(--text-color);
 }
 
-/* ========== Setting Card ========== */
 .setting-card {
-    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.2s;
-}
-
-.setting-card:last-child {
-    border-bottom: none;
-}
-
-.setting-card:hover {
-    background-color: rgba(0, 0, 0, 0.02);
+    padding: 1.25rem;
+    background: var(--bg-color);
+    border-radius: 12px;
+    margin-bottom: 1rem;
 }
 
 .setting-label {
@@ -137,20 +119,18 @@ body.settings-page {
 }
 
 .setting-title {
-    font-size: 17px;
-    font-weight: 400;
-    margin: 0 0 5px 0;
-    color: var(--text-color);
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 .setting-description {
-    font-size: 14px;
-    color: var(--secondary-text);
     margin: 0;
-    line-height: 1.4;
+    font-size: 0.875rem;
+    color: var(--secondary-text);
 }
 
-/* ========== Toggle Switch ========== */
+/* Toggle Switch */
 .toggle-switch {
     position: relative;
     display: inline-block;
@@ -171,8 +151,8 @@ body.settings-page {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--toggle-off);
-    transition: 0.2s;
+    background-color: var(--toggle-bg);
+    transition: 0.3s;
     border-radius: 34px;
 }
 
@@ -184,222 +164,162 @@ body.settings-page {
     left: 2px;
     bottom: 2px;
     background-color: white;
-    transition: 0.2s;
+    transition: 0.3s;
     border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 3px var(--shadow-color);
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--toggle-on);
+    background-color: var(--success-color);
 }
 
 input:checked + .toggle-slider:before {
     transform: translateX(20px);
 }
 
-/* ========== Text Size Control ========== */
+/* Text Size Control */
 .text-size-control {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: 200px;
 }
 
 .size-value {
-    font-size: 15px;
+    text-align: center;
+    margin-bottom: 0.5rem;
     font-weight: 500;
     color: var(--accent-color);
-    margin-bottom: 8px;
-    text-align: center;
 }
 
-.slider-container {
-    width: 100%;
-}
-
-/* ========== Range Slider ========== */
 #text-size-slider {
     -webkit-appearance: none;
-    appearance: none;
     width: 100%;
     height: 4px;
-    background: var(--slider-track-color);
+    background: var(--border-color);
     border-radius: 2px;
     outline: none;
-    margin: 10px 0;
 }
 
 #text-size-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
     width: 20px;
     height: 20px;
+    background: var(--accent-color);
     border-radius: 50%;
-    background: var(--slider-thumb-color);
     cursor: pointer;
-    border: 0.5px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 3px var(--shadow-color);
 }
 
-#text-size-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--slider-thumb-color);
-    cursor: pointer;
-    border: 0.5px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-/* Size Labels */
 .size-labels {
     display: flex;
     justify-content: space-between;
-    margin-top: 8px;
-}
-
-.size-small {
-    font-size: 12px;
+    margin-top: 0.5rem;
     color: var(--secondary-text);
 }
 
-.size-medium {
-    font-size: 16px;
-    color: var(--secondary-text);
-}
-
-.size-large {
-    font-size: 20px;
-    color: var(--secondary-text);
-}
-
-/* ========== Danger Zone ========== */
+/* Danger Zone */
 .danger-zone .subsection-title {
-    color: var(--red-color);
+    color: var(--danger-color);
 }
 
-/* ========== Reset Button ========== */
 .reset-button {
-    background-color: var(--red-color);
+    background-color: var(--danger-color);
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: opacity 0.3s;
 }
 
 .reset-button:hover {
-    background-color: #ff2d20;
+    opacity: 0.9;
 }
 
-/* ========== Back Link ========== */
+/* Back Link */
 .back-link {
     display: inline-flex;
     align-items: center;
     color: var(--accent-color);
     text-decoration: none;
-    font-size: 17px;
-    padding: 8px 0;
-    transition: color 0.2s;
-    margin-top: 20px;
+    margin-top: 1.5rem;
+    font-weight: 500;
 }
 
 .back-link:hover {
-    color: var(--hover-color);
+    text-decoration: underline;
 }
 
-/* ========== Footer ========== */
+/* Skip Link */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent-color);
+    color: white;
+    padding: 8px;
+    z-index: 100;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Footer */
 footer {
     text-align: center;
-    padding: 20px;
-    background-color: var(--bg-color);
+    padding: 2rem;
     color: var(--secondary-text);
-    font-size: 14px;
-    border-top: 1px solid var(--border-color);
-    margin-top: 40px;
+    font-size: 0.875rem;
 }
 
 footer a {
     color: var(--accent-color);
     text-decoration: none;
-    margin: 0 10px;
+    margin: 0 0.5rem;
 }
 
 footer a:hover {
     text-decoration: underline;
-    color: var(--hover-color);
 }
 
-/* ========== Cookie Consent Banner ========== */
+/* Cookie Consent Banner */
 #cookie-consent-banner {
     position: fixed;
-    bottom: 20px;
+    bottom: 1.25rem;
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--content-bg);
-    border-radius: 10px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
-    padding: 20px;
-    display: flex;
+    padding: 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    display: none;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+    gap: 1rem;
     max-width: 90%;
     width: 600px;
     z-index: 1000;
 }
 
-#cookie-consent-banner p {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: var(--text-color);
-}
-
-#cookie-consent-banner a {
-    color: var(--accent-color);
-    text-decoration: none;
-}
-
-#cookie-consent-banner a:hover {
-    text-decoration: underline;
+#cookie-consent-banner.visible {
+    display: flex;
 }
 
 #cookie-consent-banner button {
     background-color: var(--accent-color);
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
     border-radius: 8px;
-    font-size: 15px;
-    font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    transition: background-color 0.2s;
 }
 
-#cookie-consent-banner button:hover {
-    background-color: var(--hover-color);
-}
-
-/* ========== Focus Styles ========== */
-:focus-visible {
-    outline: 2px solid var(--focus-outline-color);
-    outline-offset: 2px;
-    border-radius: 4px;
-}
-
-/* ========== Media Queries ========== */
+/* Responsive Design */
 @media (max-width: 768px) {
     .container {
-        padding: 20px;
-    }
-
-    .settings-header h1 {
-        font-size: 28px;
+        padding: 1rem;
     }
 
     .setting-card {
@@ -409,56 +329,34 @@ footer a:hover {
 
     .text-size-control {
         width: 100%;
-        margin-top: 15px;
+        margin-top: 1rem;
+    }
+
+    .toggle-switch {
+        margin-top: 1rem;
     }
 
     #cookie-consent-banner {
         flex-direction: column;
         text-align: center;
-        width: 85%;
+        padding: 1rem;
     }
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 15px;
-    }
-
     .settings-header h1 {
-        font-size: 24px;
+        font-size: 1.5rem;
     }
 
     .subsection-title {
-        font-size: 18px;
+        font-size: 1.125rem;
     }
 
     .setting-title {
-        font-size: 16px;
+        font-size: 0.938rem;
     }
 
     .setting-description {
-        font-size: 13px;
-    }
-
-    footer {
-        padding: 15px;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    footer a {
-        display: block;
-        margin: 5px 0;
-    }
-
-    #cookie-consent-banner {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        max-width: 100%;
-        transform: none;
-        border-radius: 10px 10px 0 0;
-        padding: 15px;
+        font-size: 0.813rem;
     }
 }
