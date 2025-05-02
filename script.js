@@ -133,6 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // --- End Cookie Consent ---
 
+    // Update footer year dynamically
+function updateFooterYear() {
+    const yearElement = document.getElementById('year');
+    if (yearElement) {
+        const currentYear = new Date().getFullYear();
+        yearElement.textContent = currentYear;
+    }
+}
+
+// Call the function to update the footer year
+updateFooterYear();
+
+
 }); // --- END OF PRIMARY DOMContentLoaded LISTENER ---
 
 
