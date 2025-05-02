@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Bus Army Dude's Profile</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ai-features.css">
-    <link rel="stylesheet" href="settings.css">
-
     <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
     <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
@@ -18,18 +14,17 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E0RSQS1MS7');
+    </script>
+    <link rel="stylesheet" href="settings.css">
 </head>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-E0RSQS1MS7');
-</script>
-
 <body class="settings-page">
-    <!-- Add this line right after body tag -->
     <div id="settings-page-identifier" hidden></div>
     
     <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
@@ -42,14 +37,13 @@
 
             <div class="settings-subsection">
                 <h2 class="subsection-title">Appearance</h2>
-
                 <div class="setting-card">
                     <div class="setting-label">
                         <h3 class="setting-title">Dark Mode</h3>
                         <p class="setting-description">Switch between light and dark theme</p>
                     </div>
                     <label for="darkModeToggle" class="toggle-switch" aria-label="Toggle dark mode">
-                        <input type="checkbox" id="darkModeToggle" data-settings-theme>
+                        <input type="checkbox" id="darkModeToggle">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
@@ -57,7 +51,6 @@
 
             <div class="settings-subsection">
                 <h2 class="subsection-title">Accessibility</h2>
-
                 <div class="setting-card">
                     <div class="setting-label">
                         <h3 class="setting-title">Text Size</h3>
@@ -84,13 +77,13 @@
                     </div>
                 </div>
 
-                <div class="setting-card" id="focus-outline-setting-card">
+                <div class="setting-card">
                     <div class="setting-label">
                         <h3 class="setting-title">Focus Outline</h3>
                         <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
                     </div>
                     <label for="focusOutlineToggle" class="toggle-switch" aria-label="Toggle focus outline visibility">
-                        <input type="checkbox" id="focusOutlineToggle" aria-label="Disable focus outline">
+                        <input type="checkbox" id="focusOutlineToggle">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
@@ -103,32 +96,27 @@
                         <h3 class="setting-title">Reset to Factory Settings</h3>
                         <p class="setting-description">Restore all settings to their default values</p>
                     </div>
-                    <button id="resetSettings" class="reset-button" aria-label="Reset to factory settings">Reset</button>
+                    <button id="resetSettings" class="reset-button">Reset</button>
                 </div>
             </div>
 
-            <a href="index.html" class="back-link" tabindex="0" aria-label="Back to Profile">← Back to Profile</a>
+            <a href="index.html" class="back-link">← Back to Profile</a>
         </div>
     </div>
 
     <footer>
         <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
-        <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
-        <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
-        <a href="accessibility-statement.html" aria-label="Accessibility Statement">Accessibility Statement</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="accessibility-statement.html">Accessibility Statement</a>
     </footer>
 
-    <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-banner-title" aria-describedby="cookie-consent-description">
-        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html" aria-label="View Cookie Policy">cookie policy</a>.</p>
-        <button onclick="acceptCookies()" aria-label="Accept cookies">Accept</button>
+    <div id="cookie-consent-banner" role="dialog" aria-labelledby="cookie-consent-title">
+        <p id="cookie-consent-description">We use cookies to improve your experience. By using our site, you agree to our <a href="cookie-policy.html">cookie policy</a>.</p>
+        <button onclick="acceptCookies()">Accept</button>
     </div>
 
     <script src="settings.js"></script>
-    <script src="globalSettings.js"></script>
-    <script src="common.js"></script>
     <script src="script.js"></script>
-    <script src="ai-features.js"></script>
-    <script src="ai-chatbot.js"></script>
-    <script src="admin.js"></script>
 </body>
 </html>
