@@ -70,78 +70,72 @@
     --toggle-bg: var(--dark-toggle-bg);
 }
 
-/* Info Section Styles */
-.info-section {
-    background: var(--bg-secondary);
-    padding: var(--base-spacing);
-    border-radius: var(--base-border-radius);
-    margin-bottom: calc(var(--base-spacing) * 1.5);
+/* Info Display Section */
+.info-display-section {
+    background-color: var(--content-bg);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .current-datetime,
 .current-user {
     margin: 5px 0;
-    font-family: 'SF Mono', SFMono-Regular, ui-monospace, monospace;
+    font-family: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 14px;
-    color: var(--text-primary);
+    color: var(--text-color);
+    line-height: 1.4;
 }
 
 /* Container */
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: calc(var(--base-spacing) * 2);
+    padding: 40px 20px;
 }
 
 /* Settings Section */
 .settings-section {
-    background-color: var(--bg-secondary);
-    border-radius: calc(var(--base-border-radius) * 1.6);
-    padding: calc(var(--base-spacing) * 2);
-    box-shadow: 0 2px 8px var(--shadow-color);
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
+/* Settings Header */
 .settings-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: calc(var(--base-spacing) * 2);
-    padding-bottom: var(--base-spacing);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
 }
 
 .settings-header h1 {
     margin: 0;
-    font-size: 1.75rem;
-    font-weight: 600;
+    font-size: 24px;
+    color: var(--text-color);
 }
 
 .version {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
+    color: var(--secondary-text);
+    font-size: 14px;
 }
 
-/* Setting Cards */
-.settings-subsection {
-    margin-bottom: calc(var(--base-spacing) * 2);
-}
-
-.subsection-title {
-    font-size: 1.25rem;
-    margin: 0 0 var(--base-spacing);
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
+/* Settings Card */
 .setting-card {
+    background-color: var(--content-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: calc(var(--base-spacing) * 1.25);
-    background: var(--bg-tertiary);
-    border-radius: var(--base-border-radius);
-    margin-bottom: var(--base-spacing);
 }
 
 .setting-label {
@@ -149,16 +143,15 @@
 }
 
 .setting-title {
-    margin: 0 0 4px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-primary);
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: var(--text-color);
 }
 
 .setting-description {
     margin: 0;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    font-size: 14px;
+    color: var(--secondary-text);
 }
 
 /* Toggle Switch */
@@ -182,7 +175,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--toggle-bg);
+    background-color: var(--toggle-off);
     transition: 0.3s;
     border-radius: 34px;
 }
@@ -201,7 +194,7 @@
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--success-color);
+    background-color: var(--status-open);
 }
 
 input:checked + .toggle-slider:before {
@@ -217,7 +210,7 @@ input:checked + .toggle-slider:before {
     text-align: center;
     margin-bottom: 8px;
     font-weight: 500;
-    color: var(--accent-color);
+    color: var(--text-color);
 }
 
 #text-size-slider {
@@ -239,74 +232,25 @@ input:checked + .toggle-slider:before {
     box-shadow: 0 1px 3px var(--shadow-color);
 }
 
-.size-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    color: var(--text-secondary);
-}
-
 /* Reset Button */
-.danger-zone .subsection-title {
-    color: var(--danger-color);
-}
-
 .reset-button {
-    background-color: var(--danger-color);
+    background-color: var(--status-closed);
     color: white;
     border: none;
     padding: 8px 16px;
-    border-radius: var(--base-border-radius);
-    font-size: 0.875rem;
-    font-weight: 500;
+    border-radius: 8px;
+    font-size: 14px;
     cursor: pointer;
-    transition: opacity 0.3s;
+    transition: opacity 0.2s;
 }
 
 .reset-button:hover {
     opacity: 0.9;
 }
 
-/* Back Link */
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    color: var(--accent-color);
-    text-decoration: none;
-    margin-top: calc(var(--base-spacing) * 1.5);
-    font-weight: 500;
-}
-
-.back-link:hover {
-    text-decoration: underline;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: calc(var(--base-spacing) * 2);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-.footer-links {
-    margin-top: var(--base-spacing);
-}
-
-footer a {
-    color: var(--accent-color);
-    text-decoration: none;
-    margin: 0 8px;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
     .container {
-        padding: var(--base-spacing);
+        padding: 20px;
     }
 
     .setting-card {
@@ -314,27 +258,12 @@ footer a:hover {
         align-items: flex-start;
     }
 
+    .toggle-switch,
+    .text-size-control {
+        margin-top: 10px;
+    }
+
     .text-size-control {
         width: 100%;
-        margin-top: var(--base-spacing);
-    }
-
-    .toggle-switch {
-        margin-top: var(--base-spacing);
-    }
-
-    .info-section {
-        font-size: 12px;
-        padding: calc(var(--base-spacing) * 0.75);
-    }
-}
-
-@media (max-width: 480px) {
-    .settings-header h1 {
-        font-size: 1.5rem;
-    }
-
-    .subsection-title {
-        font-size: 1.125rem;
     }
 }
