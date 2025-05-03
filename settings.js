@@ -3,7 +3,7 @@ class SettingsManager {
         this.defaultSettings = {
             darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
             fontSize: 16,
-            focusOutline: 'enabled',
+            focusOutline: 'disabled',
             lastUpdated: Date.now()
         };
         
