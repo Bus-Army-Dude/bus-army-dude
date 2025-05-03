@@ -36,6 +36,7 @@
     --dark-warning: #ff9f0a;
     --dark-shadow: rgba(0, 0, 0, 0.3);
     --dark-toggle-bg: #424245;
+    --dark-toggle-off: #4b4b4f;  /* Added explicit dark toggle-off color */
     
     /* Default Theme (Light) */
     --bg-primary: var(--light-bg-primary);
@@ -51,6 +52,12 @@
     --warning-color: var(--light-warning);
     --shadow-color: var(--light-shadow);
     --toggle-bg: var(--light-toggle-bg);
+    --toggle-off: var(--light-toggle-bg); /* Add explicit toggle-off color */
+    --status-open: var(--light-success);
+    --status-closed: var(--light-danger);
+    --content-bg: var(--light-bg-secondary);
+    --text-color: var(--light-text-primary);
+    --secondary-text: var(--light-text-secondary);
 }
 
 /* Dark Theme Override */
@@ -68,6 +75,12 @@
     --warning-color: var(--dark-warning);
     --shadow-color: var(--dark-shadow);
     --toggle-bg: var(--dark-toggle-bg);
+    --toggle-off: #4b4b4f; /* More visible toggle-off color for dark mode */
+    --status-open: var(--dark-success);
+    --status-closed: var(--dark-danger);
+    --content-bg: var(--dark-bg-secondary);
+    --text-color: var(--dark-text-primary);
+    --secondary-text: var(--dark-text-secondary);
 }
 
 /* Info Display Section */
@@ -178,6 +191,7 @@
     background-color: var(--toggle-off);
     transition: 0.3s;
     border-radius: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .toggle-slider:before {
@@ -186,7 +200,7 @@
     height: 27px;
     width: 27px;
     left: 2px;
-    bottom: 2px;
+    bottom: 1px;
     background-color: white;
     transition: 0.3s;
     border-radius: 50%;
