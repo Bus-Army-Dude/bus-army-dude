@@ -8,19 +8,19 @@
     --base-spacing: 16px;
     
     /* Light Theme (Apple-style) */
-    --light-bg-primary: #f5f5f7;      /* Main page background */
-    --light-bg-secondary: #ffffff;    /* Card/Content background */
-    --light-bg-tertiary: #f5f5f7;     /* Less distinct background */
-    --light-text-primary: #1d1d1f;    /* Primary text color */
-    --light-text-secondary: #86868b;  /* Secondary/muted text color */
-    --light-border: rgba(0, 0, 0, 0.1); /* Border color */
-    --light-accent: #0066cc;         /* Accent color (links, highlights) */
-    --light-accent-hover: #0071e3;    /* Accent color on hover */
-    --light-success: #34c759;        /* Success/On/Open status */
-    --light-danger: #ff3b30;         /* Danger/Off/Closed status */
-    --light-warning: #ff9500;        /* Warning status */
-    --light-shadow: rgba(0, 0, 0, 0.1); /* Shadow color */
-    --light-toggle-bg: #e9e9eb;      /* Toggle switch background (off state) */
+    --light-bg-primary: #f5f5f7;
+    --light-bg-secondary: #ffffff;
+    --light-bg-tertiary: #f5f5f7;
+    --light-text-primary: #1d1d1f;
+    --light-text-secondary: #86868b;
+    --light-border: rgba(0, 0, 0, 0.1);
+    --light-accent: #0066cc;
+    --light-accent-hover: #0071e3;
+    --light-success: #34c759;
+    --light-danger: #ff3b30;
+    --light-warning: #ff9500;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-toggle-bg: #e9e9eb;
     
     /* Dark Theme (Apple-style) */
     --dark-bg-primary: #000000;
@@ -37,17 +37,12 @@
     --dark-shadow: rgba(0, 0, 0, 0.3);
     --dark-toggle-bg: #424245;
     
-    /* --- Default Theme (Light) --- */
-    /* Map semantic names to light theme values */
-    /* This section defines the colors used when data-theme is NOT 'dark' */
+    /* Default Theme (Light) */
     --bg-primary: var(--light-bg-primary);
-    --bg-secondary: var(--light-bg-secondary);      
+    --bg-secondary: var(--light-bg-secondary);
     --bg-tertiary: var(--light-bg-tertiary);
-    --content-bg: var(--light-bg-secondary);        
     --text-primary: var(--light-text-primary);
     --text-secondary: var(--light-text-secondary);
-    --text-color: var(--light-text-primary);       
-    --secondary-text: var(--light-text-secondary);  
     --border-color: var(--light-border);
     --accent-color: var(--light-accent);
     --accent-hover: var(--light-accent-hover);
@@ -55,23 +50,22 @@
     --danger-color: var(--light-danger);
     --warning-color: var(--light-warning);
     --shadow-color: var(--light-shadow);
-    --toggle-bg: var(--light-toggle-bg);           
-    --status-open: var(--light-success);            
-    --status-closed: var(--light-danger);          
+    --toggle-bg: var(--light-toggle-bg);
+    --toggle-off: var(--light-toggle-bg); /* Add explicit toggle-off color */
+    --status-open: var(--light-success);
+    --status-closed: var(--light-danger);
+    --content-bg: var(--light-bg-secondary);
+    --text-color: var(--light-text-primary);
+    --secondary-text: var(--light-text-secondary);
 }
 
-/* --- Dark Theme Override --- */
-/* These styles ONLY apply if an element has data-theme="dark" OR is inside one */
+/* Dark Theme Override */
 [data-theme="dark"] {
-    /* Map semantic names to dark theme values */
     --bg-primary: var(--dark-bg-primary);
-    --bg-secondary: var(--dark-bg-secondary);       
+    --bg-secondary: var(--dark-bg-secondary);
     --bg-tertiary: var(--dark-bg-tertiary);
-    --content-bg: var(--dark-bg-secondary);        
     --text-primary: var(--dark-text-primary);
     --text-secondary: var(--dark-text-secondary);
-    --text-color: var(--dark-text-primary);         
-    --secondary-text: var(--dark-text-secondary);  
     --border-color: var(--dark-border);
     --accent-color: var(--dark-accent);
     --accent-hover: var(--dark-accent-hover);
@@ -79,17 +73,13 @@
     --danger-color: var(--dark-danger);
     --warning-color: var(--dark-warning);
     --shadow-color: var(--dark-shadow);
-    --toggle-bg: var(--dark-toggle-bg);           
-    --status-open: var(--dark-success);             
-    --status-closed: var(--dark-danger);            
-}
-
-/* Apply base background to the whole page */
-body {
-    background-color: var(--bg-primary); 
-    color: var(--text-color); /* Set default text color */
-    font-family: var(--system-font); /* Apply base font */
-    margin: 0; /* Remove default body margin */
+    --toggle-bg: var(--dark-toggle-bg);
+    --toggle-off: var(--dark-toggle-bg); /* Add explicit toggle-off color */
+    --status-open: var(--dark-success);
+    --status-closed: var(--dark-danger);
+    --content-bg: var(--dark-bg-secondary);
+    --text-color: var(--dark-text-primary);
+    --secondary-text: var(--dark-text-secondary);
 }
 
 /* Info Display Section */
@@ -197,9 +187,10 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--toggle-bg); /* Uses light/dark toggle bg */
+    background-color: var(--toggle-off);
     transition: 0.3s;
     border-radius: 34px;
+    border: 1px solid var(--border-color);
 }
 
 .toggle-slider:before {
@@ -208,16 +199,15 @@ body {
     height: 27px;
     width: 27px;
     left: 2px;
-    bottom: 2px;
-    background-color: white; /* Knob is always white */
+    bottom: 1px;
+    background-color: white;
     transition: 0.3s;
     border-radius: 50%;
-    box-shadow: 0 1px 3px var(--shadow-color); /* Shadow uses theme color */
+    box-shadow: 0 1px 3px var(--shadow-color);
 }
 
-/* When toggle is checked (ON) */
 input:checked + .toggle-slider {
-    background-color: var(--status-open); /* Uses light/dark success color */
+    background-color: var(--status-open);
 }
 
 input:checked + .toggle-slider:before {
@@ -249,7 +239,7 @@ input:checked + .toggle-slider:before {
     -webkit-appearance: none;
     width: 20px;
     height: 20px;
-    background: var(--accent-color); /* Thumb uses theme accent color */
+    background: var(--accent-color);
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 1px 3px var(--shadow-color);
@@ -257,8 +247,8 @@ input:checked + .toggle-slider:before {
 
 /* Reset Button */
 .reset-button {
-    background-color: var(--status-closed); /* Uses light/dark danger color */
-    color: white; /* Text on button assumed white */
+    background-color: var(--status-closed);
+    color: white;
     border: none;
     padding: 8px 16px;
     border-radius: 8px;
@@ -271,7 +261,6 @@ input:checked + .toggle-slider:before {
     opacity: 0.9;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .container {
         padding: 20px;
