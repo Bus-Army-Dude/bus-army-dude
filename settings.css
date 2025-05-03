@@ -1,166 +1,135 @@
 :root {
-    /* System Fonts */
-    --system-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-
-    /* Base Variables */
-    --base-font-size: 16px;
-    --base-border-radius: 10px;
-    --base-spacing: 16px;
-
-    /* Light Theme (Apple-style) */
-    --light-bg-primary: #f5f5f7;
-    --light-bg-secondary: #ffffff;
-    --light-bg-tertiary: #f5f5f7;
-    --light-text-primary: #1d1d1f;
-    --light-text-secondary: #86868b;
-    --light-border: rgba(0, 0, 0, 0.1);
-    --light-accent: #0066cc;
-    --light-accent-hover: #0071e3;
-    --light-success: #34c759;
-    --light-danger: #ff3b30;
-    --light-warning: #ff9500;
-    --light-shadow: rgba(0, 0, 0, 0.1);
-    --light-toggle-bg: #e9e9eb;
-
-    /* Dark Theme (Apple-style) */
-    --dark-bg-primary: #000000;
-    --dark-bg-secondary: #1d1d1f;
-    --dark-bg-tertiary: #2c2c2e;
-    --dark-text-primary: #f5f5f7;
-    --dark-text-secondary: #86868b;
-    --dark-border: rgba(255, 255, 255, 0.1);
-    --dark-accent: #0a84ff;
-    --dark-accent-hover: #409cff;
-    --dark-success: #30d158;
-    --dark-danger: #ff453a;
-    --dark-warning: #ff9f0a;
-    --dark-shadow: rgba(0, 0, 0, 0.3);
-    --dark-toggle-bg: #424245;
-    --dark-toggle-off: #4b4b4f;
-
-    /* Default Theme (Light) */
-    --bg-primary: var(--light-bg-primary);
-    --bg-secondary: var(--light-bg-secondary);
-    --bg-tertiary: var(--light-bg-tertiary);
-    --text-primary: var(--light-text-primary);
-    --text-secondary: var(--light-text-secondary);
-    --border-color: var(--light-border);
-    --accent-color: var(--light-accent);
-    --accent-hover: var(--light-accent-hover);
-    --success-color: var(--light-success);
-    --danger-color: var(--light-danger);
-    --warning-color: var(--light-warning);
-    --shadow-color: var(--light-shadow);
-    --toggle-bg: var(--light-toggle-bg);
-    --toggle-off: var(--light-toggle-bg);
-    --status-open: var(--light-success);
-    --status-closed: var(--light-danger);
-
-    /* Fix: content-bg used for cards, match to secondary bg by default */
-    --content-bg: var(--light-bg-secondary);
+    --font-size-base: 17px;
+    --bg-color: #f5f5f7; /* Apple's light background */
+    --content-bg: #ffffff; /* Content area background */
+    --text-color: #1d1d1f; /* Apple's primary text */
+    --secondary-text: #86868b; /* Apple's secondary text */
+    --border-color: #d2d2d7; /* Apple's border color */
+    --accent-color: #0066cc; /* Apple blue */
+    --hover-color: #0071e3; /* Apple blue hover */
+    --toggle-on: #34c759; /* Apple green */
+    --toggle-off: #e9e9eb; /* Apple toggle off */
+    --red-color: #ff3b30; /* Apple red */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow color */
+    --slider-thumb-color: #ffffff;
+    --slider-track-color: #e9e9eb;
+    --slider-track-filled-color: #0066cc;
+    --focus-outline-color: #0066cc;
 }
 
-[data-theme="dark"] {
-    --bg-primary: var(--dark-bg-primary);
-    --bg-secondary: var(--dark-bg-secondary);
-    --bg-tertiary: var(--dark-bg-tertiary);
-    --text-primary: var(--dark-text-primary);
-    --text-secondary: var(--dark-text-secondary);
-    --border-color: var(--dark-border);
-    --accent-color: var(--dark-accent);
-    --accent-hover: var(--dark-accent-hover);
-    --success-color: var(--dark-success);
-    --danger-color: var(--dark-danger);
-    --warning-color: var(--dark-warning);
-    --shadow-color: var(--dark-shadow);
-    --toggle-bg: var(--dark-toggle-bg);
-    --toggle-off: var(--dark-toggle-off);
-    --status-open: var(--dark-success);
-    --status-closed: var(--dark-danger);
-    --content-bg: var(--dark-bg-secondary);
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #000000; /* Apple's dark background */
+        --content-bg: #1d1d1f; /* Dark content area */
+        --text-color: #f5f5f7; /* Light text */
+        --secondary-text: #86868b; /* Secondary text */
+        --border-color: #424245; /* Dark borders */
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --slider-track-color: #424245;
+        --toggle-off: #636366; /* Dark mode toggle off */
+    }
 }
 
-/* General Styles */
-body {
-    font-family: var(--system-font);
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    font-size: var(--base-font-size);
+/* ========== General Styles ========== */
+body.settings-page {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: var(--font-size-base);
+    line-height: 1.47059;
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    margin: 0;
+    padding: 0;
 }
 
+/* ========== Skip Link ========== */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent-color);
+    color: white;
+    padding: 8px;
+    z-index: 100;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* ========== Container ========== */
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 40px 20px;
 }
 
-/* Info Display Section */
-.info-display-section {
-    background-color: var(--bg-secondary);
-    padding: 15px 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.current-datetime,
-.current-user {
-    margin: 5px 0;
-    font-family: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 14px;
-    color: var(--text-primary);
-    line-height: 1.4;
-}
-
-/* Section Title */
-.section-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin: 32px 0 20px 0;
-    color: var(--text-primary);
-}
-
-/* Settings Section */
+/* ========== Settings Section ========== */
 .settings-section {
-    background-color: var(--content-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    margin-bottom: 40px;
 }
 
-/* Settings Header */
 .settings-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
 }
 
 .settings-header h1 {
+    font-size: 34px;
+    font-weight: 600;
     margin: 0;
-    font-size: 24px;
-    color: var(--text-primary);
+    letter-spacing: -0.003em;
+    color: var(--text-color);
 }
 
 .version {
-    color: var(--text-secondary);
     font-size: 14px;
+    color: var(--secondary-text);
 }
 
-/* Settings Card */
-.setting-card {
+/* ========== Settings Subsection ========== */
+.settings-subsection {
     background-color: var(--content-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px var(--shadow-color);
+    overflow: hidden;
+}
+
+.subsection-title {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 15px 20px;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+    letter-spacing: 0.004em;
+}
+
+/* ========== Setting Card ========== */
+.setting-card {
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+}
+
+.setting-card:last-child {
+    border-bottom: none;
+}
+
+.setting-card:hover {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
 .setting-label {
@@ -168,19 +137,20 @@ body {
 }
 
 .setting-title {
+    font-size: 17px;
+    font-weight: 400;
     margin: 0 0 5px 0;
-    font-size: 16px;
-    color: var(--text-primary);
-    font-weight: 600;
+    color: var(--text-color);
 }
 
 .setting-description {
-    margin: 0;
     font-size: 14px;
-    color: var(--text-secondary);
+    color: var(--secondary-text);
+    margin: 0;
+    line-height: 1.4;
 }
 
-/* Toggle Switch */
+/* ========== Toggle Switch ========== */
 .toggle-switch {
     position: relative;
     display: inline-block;
@@ -202,9 +172,8 @@ body {
     right: 0;
     bottom: 0;
     background-color: var(--toggle-off);
-    transition: 0.3s;
+    transition: 0.2s;
     border-radius: 34px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .toggle-slider:before {
@@ -213,90 +182,224 @@ body {
     height: 27px;
     width: 27px;
     left: 2px;
-    bottom: 1px;
+    bottom: 2px;
     background-color: white;
-    transition: 0.3s;
+    transition: 0.2s;
     border-radius: 50%;
-    box-shadow: 0 1px 3px var(--shadow-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--status-open);
+    background-color: var(--toggle-on);
 }
 
 input:checked + .toggle-slider:before {
     transform: translateX(20px);
 }
 
-/* Text Size Control */
+/* ========== Text Size Control ========== */
 .text-size-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 200px;
-    margin-left: 32px;
 }
 
 .size-value {
-    text-align: center;
-    margin-bottom: 8px;
+    font-size: 15px;
     font-weight: 500;
-    color: var(--text-primary);
+    color: var(--accent-color);
+    margin-bottom: 8px;
+    text-align: center;
 }
 
+.slider-container {
+    width: 100%;
+}
+
+/* ========== Range Slider ========== */
 #text-size-slider {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 4px;
-    background: var(--border-color);
+    background: var(--slider-track-color);
     border-radius: 2px;
     outline: none;
+    margin: 10px 0;
 }
 
 #text-size-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
+    appearance: none;
     width: 20px;
     height: 20px;
-    background: var(--accent-color);
     border-radius: 50%;
+    background: var(--slider-thumb-color);
     cursor: pointer;
-    box-shadow: 0 1px 3px var(--shadow-color);
+    border: 0.5px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 #text-size-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: var(--accent-color);
     border-radius: 50%;
+    background: var(--slider-thumb-color);
     cursor: pointer;
-    box-shadow: 0 1px 3px var(--shadow-color);
+    border: 0.5px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-#text-size-slider::-ms-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--accent-color);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 1px 3px var(--shadow-color);
+/* Size Labels */
+.size-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
 }
 
-/* Reset Button */
+.size-small {
+    font-size: 12px;
+    color: var(--secondary-text);
+}
+
+.size-medium {
+    font-size: 16px;
+    color: var(--secondary-text);
+}
+
+.size-large {
+    font-size: 20px;
+    color: var(--secondary-text);
+}
+
+/* ========== Danger Zone ========== */
+.danger-zone .subsection-title {
+    color: var(--red-color);
+}
+
+/* ========== Reset Button ========== */
 .reset-button {
-    background-color: var(--status-closed);
+    background-color: var(--red-color);
     color: white;
     border: none;
     padding: 8px 16px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
-    transition: opacity 0.2s;
+    transition: background-color 0.2s;
 }
 
 .reset-button:hover {
-    opacity: 0.9;
+    background-color: #ff2d20;
 }
 
+/* ========== Back Link ========== */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 17px;
+    padding: 8px 0;
+    transition: color 0.2s;
+    margin-top: 20px;
+}
+
+.back-link:hover {
+    color: var(--hover-color);
+}
+
+/* ========== Footer ========== */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--secondary-text);
+    font-size: 14px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 40px;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+    color: var(--hover-color);
+}
+
+/* ========== Cookie Consent Banner ========== */
+#cookie-consent-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 90%;
+    width: 600px;
+    z-index: 1000;
+}
+
+#cookie-consent-banner p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+#cookie-consent-banner a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+#cookie-consent-banner a:hover {
+    text-decoration: underline;
+}
+
+#cookie-consent-banner button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+#cookie-consent-banner button:hover {
+    background-color: var(--hover-color);
+}
+
+/* ========== Focus Styles ========== */
+:focus-visible {
+    outline: 2px solid var(--focus-outline-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ========== Media Queries ========== */
 @media (max-width: 768px) {
     .container {
         padding: 20px;
+    }
+
+    .settings-header h1 {
+        font-size: 28px;
     }
 
     .setting-card {
@@ -306,21 +409,56 @@ input:checked + .toggle-slider:before {
 
     .text-size-control {
         width: 100%;
-        margin-left: 0;
-        margin-top: 12px;
+        margin-top: 15px;
     }
 
-    .settings-header {
+    #cookie-consent-banner {
         flex-direction: column;
-        align-items: flex-start;
+        text-align: center;
+        width: 85%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
     }
 
     .settings-header h1 {
-        font-size: 20px;
-        margin-bottom: 8px;
+        font-size: 24px;
     }
 
-    .version {
-        font-size: 12px;
+    .subsection-title {
+        font-size: 18px;
+    }
+
+    .setting-title {
+        font-size: 16px;
+    }
+
+    .setting-description {
+        font-size: 13px;
+    }
+
+    footer {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    footer a {
+        display: block;
+        margin: 5px 0;
+    }
+
+    #cookie-consent-banner {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        border-radius: 10px 10px 0 0;
+        padding: 15px;
     }
 }
