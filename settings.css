@@ -55,9 +55,6 @@
     --toggle-off: var(--light-toggle-bg); /* Add explicit toggle-off color */
     --status-open: var(--light-success);
     --status-closed: var(--light-danger);
-    --content-bg: var(--light-bg-secondary);
-    --text-color: var(--light-text-primary);
-    --secondary-text: var(--light-text-secondary);
 }
 
 /* Dark Theme Override */
@@ -75,17 +72,14 @@
     --warning-color: var(--dark-warning);
     --shadow-color: var(--dark-shadow);
     --toggle-bg: var(--dark-toggle-bg);
-    --toggle-off: #4b4b4f; /* More visible toggle-off color for dark mode */
+    --toggle-off: var(--dark-toggle-off); /* More visible toggle-off color for dark mode */
     --status-open: var(--dark-success);
     --status-closed: var(--dark-danger);
-    --content-bg: var(--dark-bg-secondary);
-    --text-color: var(--dark-text-primary);
-    --secondary-text: var(--dark-text-secondary);
 }
 
 /* Info Display Section */
 .info-display-section {
-    background-color: var(--content-bg);
+    background-color: var(--bg-secondary);
     padding: 15px 20px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -98,7 +92,7 @@
     margin: 5px 0;
     font-family: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 14px;
-    color: var(--text-color);
+    color: var(--text-primary);
     line-height: 1.4;
 }
 
@@ -131,11 +125,11 @@
 .settings-header h1 {
     margin: 0;
     font-size: 24px;
-    color: var(--text-color);
+    color: var(--text-primary);
 }
 
 .version {
-    color: var(--secondary-text);
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
@@ -158,13 +152,13 @@
 .setting-title {
     margin: 0 0 5px 0;
     font-size: 16px;
-    color: var(--text-color);
+    color: var(--text-primary);
 }
 
 .setting-description {
     margin: 0;
     font-size: 14px;
-    color: var(--secondary-text);
+    color: var(--text-secondary);
 }
 
 /* Toggle Switch */
@@ -224,7 +218,7 @@ input:checked + .toggle-slider:before {
     text-align: center;
     margin-bottom: 8px;
     font-weight: 500;
-    color: var(--text-color);
+    color: var(--text-primary);
 }
 
 #text-size-slider {
