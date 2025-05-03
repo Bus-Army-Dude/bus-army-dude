@@ -77,8 +77,6 @@
     --toggle-off: var(--dark-toggle-off);
     --status-open: var(--dark-success);
     --status-closed: var(--dark-danger);
-
-    /* Fix: content-bg used for cards, match to dark secondary bg */
     --content-bg: var(--dark-bg-secondary);
 }
 
@@ -306,13 +304,23 @@ input:checked + .toggle-slider:before {
         align-items: flex-start;
     }
 
-    .toggle-switch,
-    .text-size-control {
-        margin-top: 10px;
-        margin-left: 0;
-    }
-
     .text-size-control {
         width: 100%;
+        margin-left: 0;
+        margin-top: 12px;
+    }
+
+    .settings-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .settings-header h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .version {
+        font-size: 12px;
     }
 }
