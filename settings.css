@@ -1,12 +1,12 @@
 :root {
     /* System Fonts */
     --system-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-    
+
     /* Base Variables */
     --base-font-size: 16px;
     --base-border-radius: 10px;
     --base-spacing: 16px;
-    
+
     /* Light Theme (Apple-style) */
     --light-bg-primary: #f5f5f7;
     --light-bg-secondary: #ffffff;
@@ -21,7 +21,7 @@
     --light-warning: #ff9500;
     --light-shadow: rgba(0, 0, 0, 0.1);
     --light-toggle-bg: #e9e9eb;
-    
+
     /* Dark Theme (Apple-style) */
     --dark-bg-primary: #000000;
     --dark-bg-secondary: #1d1d1f;
@@ -36,8 +36,8 @@
     --dark-warning: #ff9f0a;
     --dark-shadow: rgba(0, 0, 0, 0.3);
     --dark-toggle-bg: #424245;
-    --dark-toggle-off: #4b4b4f;  /* Added explicit dark toggle-off color */
-    
+    --dark-toggle-off: #4b4b4f;
+
     /* Default Theme (Light) */
     --bg-primary: var(--light-bg-primary);
     --bg-secondary: var(--light-bg-secondary);
@@ -52,12 +52,14 @@
     --warning-color: var(--light-warning);
     --shadow-color: var(--light-shadow);
     --toggle-bg: var(--light-toggle-bg);
-    --toggle-off: var(--light-toggle-bg); /* Add explicit toggle-off color */
+    --toggle-off: var(--light-toggle-bg);
     --status-open: var(--light-success);
     --status-closed: var(--light-danger);
+
+    /* Fix: content-bg used for cards, match to secondary bg by default */
+    --content-bg: var(--light-bg-secondary);
 }
 
-/* Dark Theme Override */
 [data-theme="dark"] {
     --bg-primary: var(--dark-bg-primary);
     --bg-secondary: var(--dark-bg-secondary);
@@ -72,9 +74,26 @@
     --warning-color: var(--dark-warning);
     --shadow-color: var(--dark-shadow);
     --toggle-bg: var(--dark-toggle-bg);
-    --toggle-off: var(--dark-toggle-off); /* More visible toggle-off color for dark mode */
+    --toggle-off: var(--dark-toggle-off);
     --status-open: var(--dark-success);
     --status-closed: var(--dark-danger);
+
+    /* Fix: content-bg used for cards, match to dark secondary bg */
+    --content-bg: var(--dark-bg-secondary);
+}
+
+/* General Styles */
+body {
+    font-family: var(--system-font);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: var(--base-font-size);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
 /* Info Display Section */
@@ -96,11 +115,12 @@
     line-height: 1.4;
 }
 
-/* Container */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px 20px;
+/* Section Title */
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 32px 0 20px 0;
+    color: var(--text-primary);
 }
 
 /* Settings Section */
@@ -153,6 +173,7 @@
     margin: 0 0 5px 0;
     font-size: 16px;
     color: var(--text-primary);
+    font-weight: 600;
 }
 
 .setting-description {
@@ -212,6 +233,7 @@ input:checked + .toggle-slider:before {
 /* Text Size Control */
 .text-size-control {
     width: 200px;
+    margin-left: 32px;
 }
 
 .size-value {
@@ -232,6 +254,24 @@ input:checked + .toggle-slider:before {
 
 #text-size-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+#text-size-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+#text-size-slider::-ms-thumb {
     width: 20px;
     height: 20px;
     background: var(--accent-color);
@@ -269,6 +309,7 @@ input:checked + .toggle-slider:before {
     .toggle-switch,
     .text-size-control {
         margin-top: 10px;
+        margin-left: 0;
     }
 
     .text-size-control {
