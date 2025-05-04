@@ -4978,6 +4978,8 @@ async function loadDisabilitiesAdmin() {
     if (cancelEditButton) { cancelEditButton.addEventListener('click', closeEditModal); }
 
     // --- Status Page Management Event Listeners ---
+    const addGroupForm = document.getElementById('add-group-form'); // <<< DEFINITION
+    const groupsListAdminContainer = document.getElementById('groups-list-admin');
     if (addComponentForm) { addComponentForm.addEventListener('submit', handleAddComponent); }
     if (editComponentForm) { editComponentForm.addEventListener('submit', handleUpdateComponent); }
     if (cancelEditComponentButton) { cancelEditComponentButton.addEventListener('click', closeEditComponentModal); }
