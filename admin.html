@@ -165,148 +165,89 @@
             </section>
 
             <section class="admin-section" id="status-page-management" aria-labelledby="status-page-heading">
-                <h3 id="status-page-heading"><i class="fas fa-heartbeat"></i> Manage Status Page</h3>
+    <h3 id="status-page-heading"><i class="fas fa-heartbeat"></i> Manage Status Page</h3>
 
-                <div class="admin-subsection" id="status-components-management">
-                    <h4>Manage Components</h4>
-                    <form id="add-component-form" aria-labelledby="add-component-heading">
-                        <h5 id="add-component-heading">Add New Component</h5>
-                        <div class="form-group">
-                            <label for="component-name">Component Name:</label>
-                            <input type="text" id="component-name" name="name" required placeholder="e.g., Main Website, API">
-                        </div>
-                        <div class="form-group">
-                            <label for="component-description">Description:</label>
-                            <input type="text" id="component-description" name="description" placeholder="e.g., Primary user-facing website.">
-                        </div>
-                        <div class="form-group">
-                            <label for="component-order">Display Order:</label>
-                            <input type="number" id="component-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
-                        </div>
-                        <div class="form-actions">
-                           <button type="submit" class="button-primary">Add Component</button>
-                        </div>
-                    </form>
-
-                    <h5 id="existing-components-heading">
-                        Existing Components <span id="components-count-admin" class="list-count"></span>
-                    </h5>
-                    <div id="components-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-components-heading">
-                        <p>Loading components...</p>
-                        </div>
-                </div>
-                <hr style="border-color: var(--border-color); margin: 2.5rem 0;">
-
-                <div class="admin-subsection" id="status-incidents-management">
-                    <h4>Manage Incidents</h4>
-                    <form id="add-incident-form" aria-labelledby="add-incident-heading">
-                        <h5 id="add-incident-heading">Create New Incident</h5>
-                        <div class="form-group">
-                            <label for="incident-title">Incident Title:</label>
-                            <input type="text" id="incident-title" name="title" required placeholder="e.g., Website Unresponsive">
-                        </div>
-                        <div class="form-group">
-                            <label for="incident-impact">Impact / Initial Status:</label>
-                            <select id="incident-impact" name="impact" required>
-                                <option value="" disabled selected>-- Select Impact --</option>
-                                <option value="Degraded Performance">Degraded Performance</option>
-                                <option value="Partial Outage">Partial Outage</option>
-                                <option value="Major Outage">Major Outage</option>
-                            </select>
-                        </div>
-                         <div class="form-group">
-                            <label for="incident-current-status">Current Status:</label>
-                            <select id="incident-current-status" name="status" required>
-                                <option value="Investigating" selected>Investigating</option>
-                                <option value="Identified">Identified</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="incident-components">Affected Components:</label>
-                            <select id="incident-components" name="affectedComponents" multiple required size="4">
-                                <option value="">Loading components...</option>
-                            </select>
-                            <small>Hold Ctrl/Cmd to select multiple.</small>
-                        </div>
-                         <div class="form-group">
-                            <label for="incident-initial-update">Initial Update Message:</label>
-                            <textarea id="incident-initial-update" name="initialUpdate" rows="3" required placeholder="Describe the issue being investigated..."></textarea>
-                        </div>
-                        <div class="form-actions">
-                           <button type="submit" class="button-primary">Create Incident</button>
-                        </div>
-                    </form>
-
-                    <h5 id="active-incidents-heading">
-                        Active Incidents <span id="active-incidents-count-admin" class="list-count"></span>
-                    </h5>
-                    <div id="active-incidents-list-admin" class="list-container-admin incidents-admin-list" role="list" aria-labelledby="active-incidents-heading">
-                        <p>Loading active incidents...</p>
-                        </div>
-                </div>
-                </section>
-            <div id="edit-component-modal" class="modal" style="display: none;"
-                 role="dialog" aria-modal="true" aria-labelledby="edit-component-modal-heading">
-                <div class="modal-content">
-                    <button type="button" class="close-button" id="cancel-edit-component-button" aria-label="Close dialog">&times;</button>
-                    <h2 id="edit-component-modal-heading">Edit Component</h2>
-                    <form id="edit-component-form" data-doc-id="">
-                        <div class="form-group">
-                            <label for="edit-component-name">Component Name:</label>
-                            <input type="text" id="edit-component-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-component-description">Description:</label>
-                            <input type="text" id="edit-component-description" name="description">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-component-order">Display Order:</label>
-                            <input type="number" id="edit-component-order" name="order" min="0" step="1" required>
-                        </div>
-                        <div class="form-actions">
-                          <button type="submit" class="button-primary">Save Component Changes</button>
-                          <button type="button" id="cancel-edit-component-button-secondary" class="secondary-button">Cancel</button>
-                        </div>
-                    </form>
-                    <div id="edit-component-status-message" class="status-message" role="status" aria-live="polite"></div>
-                </div>
+    <div class="admin-subsection" id="status-components-management">
+        <h4>Manage Components</h4>
+        <form id="add-component-form" aria-labelledby="add-component-heading">
+            <h5 id="add-component-heading">Add New Component</h5>
+            <div class="form-group">
+                <label for="component-name">Component Name:</label>
+                <input type="text" id="component-name" name="name" required placeholder="e.g., Main Website, API">
             </div>
-
-            <div id="update-incident-modal" class="modal" style="display: none;"
-                 role="dialog" aria-modal="true" aria-labelledby="update-incident-modal-heading">
-                <div class="modal-content">
-                    <button type="button" class="close-button" id="cancel-update-incident-button" aria-label="Close dialog">&times;</button>
-                    <h2 id="update-incident-modal-heading">Update Incident: <span id="update-incident-modal-title"></span></h2>
-                    <form id="update-incident-form" data-doc-id="">
-                         <div class="form-group">
-                             <label>Previous Updates:</label>
-                             <div id="incident-previous-updates" class="previous-updates-log">
-                                 <p><small>Loading previous updates...</small></p>
-                             </div>
-                         </div>
-                         <hr/>
-                         <div class="form-group">
-                            <label for="incident-new-update">New Update Message:</label>
-                            <textarea id="incident-new-update" name="newMessage" rows="3" required placeholder="Provide an update on the situation..."></textarea>
-                        </div>
-                         <div class="form-group">
-                            <label for="incident-new-status">Change Incident Status To:</label>
-                            <select id="incident-new-status" name="newStatus" required>
-                                <option value="Investigating">Investigating</option>
-                                <option value="Identified">Identified</option>
-                                <option value="Monitoring">Monitoring</option>
-                                <option value="Resolved">Resolved</option>
-                            </select>
-                        </div>
-                        <div class="form-actions">
-                          <button type="submit" class="button-primary">Post Update & Set Status</button>
-                          <button type="button" id="cancel-update-incident-button-secondary" class="secondary-button">Cancel</button>
-                        </div>
-                    </form>
-                    <div id="update-incident-status-message" class="status-message" role="status" aria-live="polite"></div>
-                </div>
+            <div class="form-group">
+                <label for="component-description">Description:</label>
+                <input type="text" id="component-description" name="description" placeholder="e.g., Primary user-facing website.">
             </div>
+            <div class="form-group">
+                <label for="component-order">Display Order:</label>
+                <input type="number" id="component-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
+            </div>
+            <div class="form-actions">
+               <button type="submit" class="button-primary">Add Component</button>
+            </div>
+        </form>
 
+        <h5 id="existing-components-heading">
+            Existing Components <span id="components-count-admin" class="list-count"></span>
+        </h5>
+        <div id="components-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-components-heading">
+            <p>Loading components...</p>
+        </div>
+    </div>
+    <hr style="border-color: var(--border-color); margin: 2.5rem 0;">
+
+    <div class="admin-subsection" id="status-incidents-management">
+        <h4>Manage Incidents</h4>
+        <form id="add-incident-form" aria-labelledby="add-incident-heading">
+            <h5 id="add-incident-heading">Create New Incident</h5>
+            <div class="form-group">
+                <label for="incident-title">Incident Title:</label>
+                <input type="text" id="incident-title" name="title" required placeholder="e.g., Website Unresponsive">
+            </div>
+            <div class="form-group">
+                <label for="incident-impact">Impact / Initial Status:</label>
+                <select id="incident-impact" name="impact" required>
+                    <option value="" disabled selected>-- Select Impact --</option>
+                    <option value="Degraded Performance">Degraded Performance</option>
+                    <option value="Partial Outage">Partial Outage</option>
+                    <option value="Major Outage">Major Outage</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="incident-current-status">Current Status:</label>
+                <select id="incident-current-status" name="status" required>
+                    <option value="Investigating" selected>Investigating</option>
+                    <option value="Identified">Identified</option>
+                </select>
+            </div>
+            <!-- Add the missing affected components container here -->
+            <div class="form-group">
+                <label>Affected Components:</label>
+                <div id="incident-affected-components-container">
+                    <!-- Components will be dynamically populated here -->
+                    <p>Loading components...</p>
+                </div>
+                <small>Select components and their status during the incident.</small>
+            </div>
+            <div class="form-group">
+                <label for="incident-initial-update">Initial Update Message:</label>
+                <textarea id="incident-initial-update" name="initialUpdate" rows="3" required placeholder="Describe the issue being investigated..."></textarea>
+            </div>
+            <div class="form-actions">
+               <button type="submit" class="button-primary">Create Incident</button>
+            </div>
+        </form>
+
+        <h5 id="active-incidents-heading">
+            Active Incidents <span id="active-incidents-count-admin" class="list-count"></span>
+        </h5>
+        <div id="active-incidents-list-admin" class="list-container-admin incidents-admin-list" role="list" aria-labelledby="active-incidents-heading">
+            <p>Loading active incidents...</p>
+        </div>
+    </div>
+</section>
+            
            <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
                 <h3 id="business-info-heading">Manage Business Information</h3>
             
