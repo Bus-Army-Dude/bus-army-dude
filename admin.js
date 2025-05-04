@@ -1,238 +1,118 @@
-// admin.js (Version includes Preview Prep + Previous Features + Social Links)
+admin.js (Version includes Status Page Management - Corrected Order)
 
 // *** Import Firebase services from your corrected init file ***
 import { db, auth } from './firebase-init.js'; // Ensure path is correct
 
-// Import Firebase functions (Includes 'where', 'query', 'orderBy', 'limit')
+// Import Firebase functions (Includes 'where', 'query', 'orderBy', 'limit', 'arrayUnion')
 import {
-    getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit, Timestamp, deleteField // <<< MAKE SURE Timestamp IS HERE
+    getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp, getDoc, query, orderBy, where, limit, Timestamp, deleteField, arrayUnion // Added arrayUnion
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-// *** Global Variable for Client-Side Filtering ***
-let allShoutouts = { tiktok: [], instagram: [], youtube: [] }; // Stores the full lists for filtering
-
+// *** Global Variables for Client-Side Filtering/Data Storage ***
+let allShoutouts = { tiktok: [], instagram: [], youtube: [] };
 let allUsefulLinks = [];
 let allSocialLinks = [];
 let allDisabilities = [];
-let allTechItems = []; // For Tech section
+let allTechItems = [];
 let allFaqs = [];
+let allActivityLogEntries = []; // For Activity Log
+let allStatusGroups = []; // For Status Page
+let allStatusComponents = []; // For Status Page
 
-document.addEventListener('DOMContentLoaded', () => { //
+
+document.addEventListener('DOMContentLoaded', () => {
     // First, check if db and auth were successfully imported/initialized
-    if (!db || !auth) { //
-         console.error("Firestore (db) or Auth not initialized correctly. Check firebase-init.js and imports."); //
-         alert("FATAL ERROR: Firebase services failed to load. Admin panel disabled."); //
-         return; // Stop executing if Firebase isn't ready
+    if (!db || !auth) {
+        console.error("Firestore (db) or Auth not initialized correctly. Check firebase-init.js and imports.");
+        alert("FATAL ERROR: Firebase services failed to load. Admin panel disabled.");
+        return; // Stop executing if Firebase isn't ready
     }
-    console.log("Admin DOM Loaded. Setting up UI and CRUD functions."); //
+    console.log("Admin DOM Loaded. Setting up UI and CRUD functions.");
 
-    // --- Firestore Reference for Profile / Site Config ---
-    const profileDocRef = doc(db, "site_config", "mainProfile"); //
-    // Reference for Shoutout Metadata (used for timestamps)
-    const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata'); //
-    // *** Firestore Reference for Useful Links ***
-    const usefulLinksCollectionRef = collection(db, "useful_links"); // Collection name
-    // --- Firestore Reference for Social Links ---
-    // IMPORTANT: Assumes you have a Firestore collection named 'social_links'
+    // ============================================================
+    // SECTION 1: FIRESTORE REFERENCES
+    // ============================================================
+    const profileDocRef = doc(db, "site_config", "mainProfile");
+    const shoutoutsMetaRef = doc(db, 'siteConfig', 'shoutoutsMetadata');
+    const usefulLinksCollectionRef = collection(db, "useful_links");
     const socialLinksCollectionRef = collection(db, "social_links");
-    // Reference for President Info
-    const presidentDocRef = doc(db, "site_config", "currentPresident"); 
-
-    // Reference for Faq Info
+    const presidentDocRef = doc(db, "site_config", "currentPresident");
     const faqsCollectionRef = collection(db, "faqs");
-
-    // Firestore Reference for Disabilities
     const disabilitiesCollectionRef = collection(db, "disabilities");
-
-    // Firestore Reference for Tech
-    const techItemsCollectionRef = collection(db, "tech_items"); // Tech collection ref
-    // --- Firestore References for Status Page ---
-    const statusGroupsCollectionRef = collection(db, "status_groups"); // New
+    const techItemsCollectionRef = collection(db, "tech_items");
+    const businessDocRef = doc(db, "site_config", "businessDetails");
+    const statusGroupsCollectionRef = collection(db, "status_groups");
     const componentsCollectionRef = collection(db, "status_components");
     const incidentsCollectionRef = collection(db, "status_incidents");
-    const maintenanceCollectionRef = collection(db, "status_maintenance"); // New
+    const maintenanceCollectionRef = collection(db, "status_maintenance");
+    // Add Activity Log Collection Ref if needed for clear button logic
+    const activityLogCollectionRef = collection(db, "activity_log");
 
 
-    // --- Inactivity Logout Variables ---
-    let inactivityTimer; //
-    let expirationTime; //
-    let displayIntervalId; //
-    const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
-    const activityEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll']; //
+    // ============================================================
+    // SECTION 2: DOM ELEMENT REFERENCES
+    // ============================================================
 
-    let isAddingShoutout = false; // Flag to prevent double submissions
+    // --- Login & Core Admin Elements ---
+    const loginSection = document.getElementById('login-section');
+    const adminContent = document.getElementById('admin-content');
+    const loginForm = document.getElementById('login-form');
+    const logoutButton = document.getElementById('logout-button');
+    const authStatus = document.getElementById('auth-status');
+    const adminGreeting = document.getElementById('admin-greeting');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const adminStatusElement = document.getElementById('admin-status');
+    const nextButton = document.getElementById('next-button');
+    const emailGroup = document.getElementById('email-group');
+    const passwordGroup = document.getElementById('password-group');
+    const loginButton = document.getElementById('login-button');
+    const timerDisplayElement = document.getElementById('inactivity-timer-display');
 
-    // --- DOM Element References ---
-    const loginSection = document.getElementById('login-section'); //
-    const adminContent = document.getElementById('admin-content'); //
-    const loginForm = document.getElementById('login-form'); //
-    const logoutButton = document.getElementById('logout-button'); //
-    const authStatus = document.getElementById('auth-status'); //
-    const adminGreeting = document.getElementById('admin-greeting'); //
-    const emailInput = document.getElementById('email'); //
-    const passwordInput = document.getElementById('password'); //
-    const adminStatusElement = document.getElementById('admin-status'); //
-    const nextButton = document.getElementById('next-button'); //
-    const emailGroup = document.getElementById('email-group'); //
-    const passwordGroup = document.getElementById('password-group'); //
-    const loginButton = document.getElementById('login-button'); //
-    const timerDisplayElement = document.getElementById('inactivity-timer-display'); //
-
-    // --- Add these with other DOM element references ---
+    // --- Site Settings Elements ---
+    const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle');
+    const hideTikTokSectionToggle = document.getElementById('hide-tiktok-section-toggle');
+    const settingsStatusMessage = document.getElementById('settings-status-message');
     const countdownTitleInput = document.getElementById('countdown-title-input');
     const countdownDatetimeInput = document.getElementById('countdown-datetime-input');
-    const saveCountdownSettingsButton = document.getElementById('save-countdown-settings-button'); // Make sure this is added too
-    // ****** ADD THIS LINE FOR THE EXPIRED MESSAGE TEXTAREA ******
+    const saveCountdownSettingsButton = document.getElementById('save-countdown-settings-button');
     const countdownExpiredMessageInput = document.getElementById('countdown-expired-message-input');
-    // ****** END ADD LINE ******
+
+    // --- Profile Management Elements ---
+    const profileForm = document.getElementById('profile-form');
+    const profileUsernameInput = document.getElementById('profile-username');
+    const profilePicUrlInput = document.getElementById('profile-pic-url');
+    const profileBioInput = document.getElementById('profile-bio');
+    const profileStatusInput = document.getElementById('profile-status');
+    const profileStatusMessage = document.getElementById('profile-status-message');
+    const adminPfpPreview = document.getElementById('admin-pfp-preview');
 
     // --- Business Info Management Elements ---
     const businessInfoForm = document.getElementById('business-info-form');
     const contactEmailInput = document.getElementById('business-contact-email');
-    // Timezone select is removed
     const regularHoursContainer = document.getElementById('regular-hours-container');
     const holidayHoursList = document.getElementById('holiday-hours-list');
     const temporaryHoursList = document.getElementById('temporary-hours-list');
     const addHolidayButton = document.getElementById('add-holiday-button');
     const addTemporaryButton = document.getElementById('add-temporary-button');
-    const statusOverrideSelect = document.getElementById('business-status-override'); // <<< FIRST DECLARATION HERE
+    const businessStatusOverrideSelect = document.getElementById('business-status-override'); // Renamed for clarity
     const businessInfoStatusMessage = document.getElementById('business-info-status-message');
 
-    // FAQ Management Elements
-    const addFaqForm = document.getElementById('add-faq-form');
-    const faqListAdmin = document.getElementById('faq-list-admin');
-    const faqCount = document.getElementById('faq-count');
-    const searchFaqInput = document.getElementById('search-faq');
-    const editFaqModal = document.getElementById('edit-faq-modal');
-    const editFaqForm = document.getElementById('edit-faq-form');
-    const cancelEditFaqButton = document.getElementById('cancel-edit-faq-button');
-    const cancelEditFaqButtonSecondary = document.getElementById('cancel-edit-faq-button-secondary');
-    const editFaqStatusMessage = document.getElementById('edit-faq-status-message');
-    const editFaqQuestionInput = document.getElementById('edit-faq-question'); // Specific input refs
-    const editFaqAnswerInput = document.getElementById('edit-faq-answer');
-    const editFaqOrderInput = document.getElementById('edit-faq-order');
+    // --- President Management Elements ---
+    const presidentForm = document.getElementById('president-form');
+    const presidentNameInput = document.getElementById('president-name');
+    const presidentBornInput = document.getElementById('president-born');
+    const presidentHeightInput = document.getElementById('president-height');
+    const presidentPartyInput = document.getElementById('president-party');
+    const presidentTermInput = document.getElementById('president-term');
+    const presidentVpInput = document.getElementById('president-vp');
+    const presidentImageUrlInput = document.getElementById('president-image-url');
+    const presidentStatusMessage = document.getElementById('president-status-message');
+    const presidentPreviewArea = document.getElementById('president-preview');
 
-    // Profile Management Elements
-    const profileForm = document.getElementById('profile-form'); //
-    const profileUsernameInput = document.getElementById('profile-username'); //
-    const profilePicUrlInput = document.getElementById('profile-pic-url'); //
-    const profileBioInput = document.getElementById('profile-bio'); //
-    const profileStatusInput = document.getElementById('profile-status'); //
-    const profileStatusMessage = document.getElementById('profile-status-message'); //
-    const adminPfpPreview = document.getElementById('admin-pfp-preview'); //
-
-    // --- Status Page Management Elements ---
-    const addComponentForm = document.getElementById('add-component-form');
-    const componentGroupSelect = document.getElementById('component-group-select'); // In Add form
-    const componentsListAdminContainer = document.getElementById('components-list-admin');
-    const componentsCountAdmin = document.getElementById('components-count-admin');
-    const editComponentModal = document.getElementById('edit-component-modal');
-    const editComponentForm = document.getElementById('edit-component-form');
-    const cancelEditComponentButton = document.getElementById('cancel-edit-component-button');
-    const cancelEditComponentButtonSecondary = document.getElementById('cancel-edit-component-button-secondary');
-    const editComponentNameInput = document.getElementById('edit-component-name');
-    const editComponentDescriptionInput = document.getElementById('edit-component-description');
-    const editComponentGroupSelect = document.getElementById('edit-component-group-select'); // In Edit modal
-    const editComponentOrderInput = document.getElementById('edit-component-order');
-    const editComponentStatusMessage = document.getElementById('edit-component-status-message');
-
-    const addIncidentForm = document.getElementById('add-incident-form');
-    const incidentAffectedComponentsContainer = document.getElementById('incident-affected-components-container');
-    const incidentStartTimeOptionNow = document.getElementById('start-now');
-    const incidentStartTimeOptionSpecific = document.getElementById('start-specific');
-    const incidentStartDateTimeField = document.getElementById('incident-start-datetime');
-    const activeIncidentsListAdminContainer = document.getElementById('active-incidents-list-admin');
-    const activeIncidentsCountAdmin = document.getElementById('active-incidents-count-admin');
-
-    const updateIncidentModal = document.getElementById('update-incident-modal');
-    const updateIncidentForm = document.getElementById('update-incident-form');
-    const updateIncidentModalTitle = document.getElementById('update-incident-modal-title');
-    const incidentPreviousUpdatesContainer = document.getElementById('incident-previous-updates');
-    const incidentNewUpdateInput = document.getElementById('incident-new-update');
-    const incidentNewStatusSelect = document.getElementById('incident-new-status');
-    const cancelUpdateIncidentButton = document.getElementById('cancel-update-incident-button');
-    const cancelUpdateIncidentButtonSecondary = document.getElementById('cancel-update-incident-button-secondary');
-    const updateIncidentStatusMessage = document.getElementById('update-incident-status-message');
-    const addMaintenanceForm = document.getElementById('add-maintenance-form');
-    const maintenanceAffectedComponentsContainer = document.getElementById('maintenance-affected-components-container');
-    const maintenanceListAdminContainer = document.getElementById('maintenance-list-admin');
-    const maintenanceCountAdmin = document.getElementById('maintenance-count-admin');
-    const editMaintenanceModal = document.getElementById('edit-maintenance-modal');
-    const editMaintenanceForm = document.getElementById('edit-maintenance-form');
-    const cancelEditMaintenanceButton = document.getElementById('cancel-edit-maintenance-button');
-    const cancelEditMaintenanceButtonSecondary = document.getElementById('cancel-edit-maintenance-button-secondary');
-    const editMaintenanceTitleInput = document.getElementById('edit-maintenance-title');
-    const editMaintenanceDescriptionInput = document.getElementById('edit-maintenance-description');
-    const editMaintenanceStartTimeInput = document.getElementById('edit-maintenance-start-time');
-    const editMaintenanceEndTimeInput = document.getElementById('edit-maintenance-end-time');
-    const editMaintenanceAffectedComponentsContainer = document.getElementById('edit-maintenance-affected-components-container');
-    const editMaintenanceStatusSelect = document.getElementById('edit-maintenance-status');
-    const maintenancePreviousUpdatesContainer = document.getElementById('maintenance-previous-updates');
-    const maintenanceNewUpdateInput = document.getElementById('maintenance-new-update');
-    const editMaintenanceStatusMessage = document.getElementById('edit-maintenance-status-message');
-    // --- Status Page Management Elements ---
-    const saveStatusOverrideButton = document.getElementById('save-status-override-button'); // <<< THIS LINE
-    const overrideStatusMessage = document.getElementById('override-status-message');
-    const addGroupForm = document.getElementById('add-group-form'); // <<< DEFINITION
-
-    // Global variable to store components for dropdown population
-    let allStatusGroups = [];
-    let allStatusComponents = [];
-
-    // Disabilities Management Elements
-    const addDisabilityForm = document.getElementById('add-disability-form');
-    const disabilitiesListAdmin = document.getElementById('disabilities-list-admin');
-    const disabilitiesCount = document.getElementById('disabilities-count'); // Span to show count
-    const editDisabilityModal = document.getElementById('edit-disability-modal');
-    const editDisabilityForm = document.getElementById('edit-disability-form');
-    const cancelEditDisabilityButton = document.getElementById('cancel-edit-disability-button'); // Close X button
-    const cancelEditDisabilityButtonSecondary = document.getElementById('cancel-edit-disability-button-secondary'); // Secondary Cancel Button
-    const editDisabilityNameInput = document.getElementById('edit-disability-name');
-    const editDisabilityUrlInput = document.getElementById('edit-disability-url');
-    const editDisabilityOrderInput = document.getElementById('edit-disability-order');
-    const editDisabilityStatusMessage = document.getElementById('edit-disability-status-message'); // Status inside edit modal
-    
-    // Site Settings Elements
-    const maintenanceModeToggle = document.getElementById('maintenance-mode-toggle'); //
-    const hideTikTokSectionToggle = document.getElementById('hide-tiktok-section-toggle'); //
-    const settingsStatusMessage = document.getElementById('settings-status-message'); //
-
-    // Shoutout Elements (Add Forms, Lists, Search)
-    const addShoutoutTiktokForm = document.getElementById('add-shoutout-tiktok-form'); //
-    const shoutoutsTiktokListAdmin = document.getElementById('shoutouts-tiktok-list-admin'); //
-    const addShoutoutInstagramForm = document.getElementById('add-shoutout-instagram-form'); //
-    const shoutoutsInstagramListAdmin = document.getElementById('shoutouts-instagram-list-admin'); //
-    const addShoutoutYoutubeForm = document.getElementById('add-shoutout-youtube-form'); //
-    const shoutoutsYoutubeListAdmin = document.getElementById('shoutouts-youtube-list-admin'); //
-    const searchInputTiktok = document.getElementById('search-tiktok'); //
-    const searchInputInstagram = document.getElementById('search-instagram'); //
-    const searchInputYoutube = document.getElementById('search-youtube'); //
-
-    // Shoutout Edit Modal Elements
-    const editModal = document.getElementById('edit-shoutout-modal'); //
-    const editForm = document.getElementById('edit-shoutout-form'); //
-    const cancelEditButton = document.getElementById('cancel-edit-button'); //
-    const editUsernameInput = document.getElementById('edit-username'); //
-    const editNicknameInput = document.getElementById('edit-nickname'); //
-    const editOrderInput = document.getElementById('edit-order'); //
-    const editIsVerifiedInput = document.getElementById('edit-isVerified'); //
-    const editBioInput = document.getElementById('edit-bio'); //
-    const editProfilePicInput = document.getElementById('edit-profilePic'); //
-    const editIsEnabledInput = document.getElementById('edit-isEnabled'); // Reference for per-shoutout enable/disable (if added later)
-    const editFollowersInput = document.getElementById('edit-followers'); //
-    const editSubscribersInput = document.getElementById('edit-subscribers'); //
-    const editCoverPhotoInput = document.getElementById('edit-coverPhoto'); //
-    const editPlatformSpecificDiv = document.getElementById('edit-platform-specific'); //
-
-    // Shoutout Preview Area Elements
-    const addTiktokPreview = document.getElementById('add-tiktok-preview'); //
-    const addInstagramPreview = document.getElementById('add-instagram-preview'); //
-    const addYoutubePreview = document.getElementById('add-youtube-preview'); //
-    const editShoutoutPreview = document.getElementById('edit-shoutout-preview'); //
-
-    // Tech Management Elements
-    const addTechItemForm = document.getElementById('add-tech-item-form'); // Declared
+    // --- Tech Management Elements ---
+    const addTechItemForm = document.getElementById('add-tech-item-form');
     const techItemsListAdmin = document.getElementById('tech-items-list-admin');
     const techItemsCount = document.getElementById('tech-items-count');
     const searchTechItemsInput = document.getElementById('search-tech-items');
@@ -244,52 +124,118 @@ document.addEventListener('DOMContentLoaded', () => { //
     const addTechItemPreview = document.getElementById('add-tech-item-preview');
     const editTechItemPreview = document.getElementById('edit-tech-item-preview');
 
-    // Useful Links Elements
-    const addUsefulLinkForm = document.getElementById('add-useful-link-form'); //
-    const usefulLinksListAdmin = document.getElementById('useful-links-list-admin'); //
-    const usefulLinksCount = document.getElementById('useful-links-count'); // Span to show count
-    const editUsefulLinkModal = document.getElementById('edit-useful-link-modal'); //
-    const editUsefulLinkForm = document.getElementById('edit-useful-link-form'); //
-    const cancelEditLinkButton = document.getElementById('cancel-edit-link-button'); // Close X button
-    const cancelEditLinkButtonSecondary = document.getElementById('cancel-edit-link-button-secondary'); // Secondary Cancel Button
-    const editLinkLabelInput = document.getElementById('edit-link-label'); //
-    const editLinkUrlInput = document.getElementById('edit-link-url'); //
-    const editLinkOrderInput = document.getElementById('edit-link-order'); //
-    const editLinkStatusMessage = document.getElementById('edit-link-status-message'); // Status inside edit modal
+    // --- FAQ Management Elements ---
+    const addFaqForm = document.getElementById('add-faq-form');
+    const faqListAdmin = document.getElementById('faq-list-admin');
+    const faqCount = document.getElementById('faq-count');
+    const searchFaqInput = document.getElementById('search-faq');
+    const editFaqModal = document.getElementById('edit-faq-modal');
+    const editFaqForm = document.getElementById('edit-faq-form');
+    const cancelEditFaqButton = document.getElementById('cancel-edit-faq-button');
+    const cancelEditFaqButtonSecondary = document.getElementById('cancel-edit-faq-button-secondary');
+    const editFaqStatusMessage = document.getElementById('edit-faq-status-message');
+    const editFaqQuestionInput = document.getElementById('edit-faq-question');
+    const editFaqAnswerInput = document.getElementById('edit-faq-answer');
+    const editFaqOrderInput = document.getElementById('edit-faq-order');
+
+    // --- Disabilities Management Elements ---
+    const addDisabilityForm = document.getElementById('add-disability-form');
+    const disabilitiesListAdmin = document.getElementById('disabilities-list-admin');
+    const disabilitiesCount = document.getElementById('disabilities-count');
+    const searchInputDisabilities = document.getElementById('search-disabilities'); // Added for consistency
+    const editDisabilityModal = document.getElementById('edit-disability-modal');
+    const editDisabilityForm = document.getElementById('edit-disability-form');
+    const cancelEditDisabilityButton = document.getElementById('cancel-edit-disability-button');
+    const cancelEditDisabilityButtonSecondary = document.getElementById('cancel-edit-disability-button-secondary');
+    const editDisabilityNameInput = document.getElementById('edit-disability-name');
+    const editDisabilityUrlInput = document.getElementById('edit-disability-url');
+    const editDisabilityOrderInput = document.getElementById('edit-disability-order');
+    const editDisabilityStatusMessage = document.getElementById('edit-disability-status-message');
+
+    // --- Useful Links Elements ---
+    const addUsefulLinkForm = document.getElementById('add-useful-link-form');
+    const usefulLinksListAdmin = document.getElementById('useful-links-list-admin');
+    const usefulLinksCount = document.getElementById('useful-links-count');
+    const searchInputUsefulLinks = document.getElementById('search-useful-links'); // Added for consistency
+    const editUsefulLinkModal = document.getElementById('edit-useful-link-modal');
+    const editUsefulLinkForm = document.getElementById('edit-useful-link-form');
+    const cancelEditLinkButton = document.getElementById('cancel-edit-link-button');
+    const cancelEditLinkButtonSecondary = document.getElementById('cancel-edit-link-button-secondary');
+    const editLinkLabelInput = document.getElementById('edit-link-label');
+    const editLinkUrlInput = document.getElementById('edit-link-url');
+    const editLinkOrderInput = document.getElementById('edit-link-order');
+    const editLinkStatusMessage = document.getElementById('edit-link-status-message');
 
     // --- Social Links Elements ---
     const addSocialLinkForm = document.getElementById('add-social-link-form');
     const socialLinksListAdmin = document.getElementById('social-links-list-admin');
-    const socialLinksCount = document.getElementById('social-links-count'); // Span to show count
+    const socialLinksCount = document.getElementById('social-links-count');
+    const searchInputSocialLinks = document.getElementById('search-social-links'); // Added for consistency
     const editSocialLinkModal = document.getElementById('edit-social-link-modal');
     const editSocialLinkForm = document.getElementById('edit-social-link-form');
-    const cancelEditSocialLinkButton = document.getElementById('cancel-edit-social-link-button'); // Close X button
-    const cancelEditSocialLinkButtonSecondary = document.getElementById('cancel-edit-social-link-button-secondary'); // Secondary Cancel Button
+    const cancelEditSocialLinkButton = document.getElementById('cancel-edit-social-link-button');
+    const cancelEditSocialLinkButtonSecondary = document.getElementById('cancel-edit-social-link-button-secondary');
     const editSocialLinkLabelInput = document.getElementById('edit-social-link-label');
     const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
     const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
-    const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message'); // Status inside edit modal
+    const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message');
 
-    // President Management Elements
-    const presidentForm = document.getElementById('president-form');
-    const presidentNameInput = document.getElementById('president-name');
-    const presidentBornInput = document.getElementById('president-born');
-    const presidentHeightInput = document.getElementById('president-height');
-    const presidentPartyInput = document.getElementById('president-party');
-    const presidentTermInput = document.getElementById('president-term');
-    const presidentVpInput = document.getElementById('president-vp');
-    const presidentImageUrlInput = document.getElementById('president-image-url');
-    const presidentStatusMessage = document.getElementById('president-status-message');
-    const presidentPreviewArea = document.getElementById('president-preview');
+    // --- Shoutout Elements ---
+    const addShoutoutTiktokForm = document.getElementById('add-shoutout-tiktok-form');
+    const shoutoutsTiktokListAdmin = document.getElementById('shoutouts-tiktok-list-admin');
+    const addShoutoutInstagramForm = document.getElementById('add-shoutout-instagram-form');
+    const shoutoutsInstagramListAdmin = document.getElementById('shoutouts-instagram-list-admin');
+    const addShoutoutYoutubeForm = document.getElementById('add-shoutout-youtube-form');
+    const shoutoutsYoutubeListAdmin = document.getElementById('shoutouts-youtube-list-admin');
+    const searchInputTiktok = document.getElementById('search-tiktok');
+    const searchInputInstagram = document.getElementById('search-instagram');
+    const searchInputYoutube = document.getElementById('search-youtube');
+    const editModal = document.getElementById('edit-shoutout-modal');
+    const editForm = document.getElementById('edit-shoutout-form');
+    const cancelEditButton = document.getElementById('cancel-edit-button');
+    const editUsernameInput = document.getElementById('edit-username');
+    const editNicknameInput = document.getElementById('edit-nickname');
+    const editOrderInput = document.getElementById('edit-order');
+    const editIsVerifiedInput = document.getElementById('edit-isVerified');
+    const editBioInput = document.getElementById('edit-bio');
+    const editProfilePicInput = document.getElementById('edit-profilePic');
+    const editFollowersInput = document.getElementById('edit-followers');
+    const editSubscribersInput = document.getElementById('edit-subscribers');
+    const editCoverPhotoInput = document.getElementById('edit-coverPhoto');
+    const editPlatformSpecificDiv = document.getElementById('edit-platform-specific');
+    const addTiktokPreview = document.getElementById('add-tiktok-preview');
+    const addInstagramPreview = document.getElementById('add-instagram-preview');
+    const addYoutubePreview = document.getElementById('add-youtube-preview');
+    const editShoutoutPreview = document.getElementById('edit-shoutout-preview');
+    // Count spans for shoutouts
+    const tiktokCount = document.getElementById('tiktok-count');
+    const instagramCount = document.getElementById('instagram-count');
+    const youtubeCount = document.getElementById('youtube-count');
+
+    // --- Status Page Management Elements (DEFINITIONS MUST BE HERE) ---
+    const statusOverrideSelect = document.getElementById('status-override-select'); // <<< DEFINITION HERE
+    const saveStatusOverrideButton = document.getElementById('save-status-override-button');
+    const overrideStatusMessage = document.getElementById('override-status-message');
+
+    const addGroupForm = document.getElementById('add-group-form'); // <<< DEFINITION HERE
+    const groupsListAdminContainer = document.getElementById('groups-list-admin');
+    const groupsCountAdmin = document.getElementById('groups-count-admin');
+    const editGroupModal = document.getElementById('edit-group-modal');
+    const editGroupForm = document.getElementById('edit-group-form'); // <<< DEFINITION HERE
+    const cancelEditGroupButton = document.getElementById('cancel-edit-group-button');
+    const cancelEditGroupButtonSecondary = document.getElementById('cancel-edit-group-button-secondary');
+    const editGroupNameInput = document.getElementById('edit-group-name');
+    const editGroupOrderInput = document.getElementById('edit-group-order');
+    const editGroupCollapsedInput = document.getElementById('edit-group-collapsed');
+    const editGroupStatusMessage = document.getElementById('edit-group-status-message');
     
 // --- Helper Functions ---
-    // Displays status messages in the main admin status area
-    function showAdminStatus(message, isError = false) { //
-        if (!adminStatusElement) { console.warn("Admin status element not found"); return; } //
-        adminStatusElement.textContent = message; //
-        adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`; //
-        // Clear message after 5 seconds
-        setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000); //
+     // Displays status messages in the main admin status area
+    function showAdminStatus(message, isError = false) {
+        if (!adminStatusElement) { console.warn("Admin status element not found"); return; }
+        adminStatusElement.textContent = message;
+        adminStatusElement.className = `status-message ${isError ? 'error' : 'success'}`;
+        setTimeout(() => { if (adminStatusElement) { adminStatusElement.textContent = ''; adminStatusElement.className = 'status-message'; } }, 5000);
     }
 
     // Displays status messages in the profile section's status area
