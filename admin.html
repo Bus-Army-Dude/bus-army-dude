@@ -167,59 +167,6 @@
             <section class="admin-section" id="status-page-management" aria-labelledby="status-page-heading">
                 <h3 id="status-page-heading"><i class="fas fa-heartbeat"></i> Manage Status Page</h3>
 
-                <div class="admin-subsection" id="status-overall-override">
-                    <h4>Overall Status Override</h4>
-                    <div class="form-group">
-                        <label for="status-override-select">Set Overall Status:</label>
-                        <select id="status-override-select" name="statusPageOverride">
-                            <option value="Automatic">Automatic (Calculated)</option>
-                            <option value="Operational">Force: Operational</option>
-                            <option value="Under Maintenance">Force: Under Maintenance</option>
-                            <option value="Degraded Performance">Force: Degraded Performance</option>
-                            <option value="Partial Outage">Force: Partial Outage</option>
-                            <option value="Major Outage">Force: Major Outage</option>
-                        </select>
-                        <small>Manually override the status displayed at the top of the public status page. Set to "Automatic" to let the system calculate based on component statuses.</small>
-                    </div>
-                    <div class="form-actions">
-                         <button type="button" id="save-status-override-button" class="button-primary small-button">Save Override</button>
-                    </div>
-                     <div id="override-status-message" class="status-message" role="status" aria-live="polite"></div>
-                </div>
-                <hr>
-
-                <div class="admin-subsection" id="status-groups-management">
-                    <h4>Manage Component Groups</h4>
-                    <form id="add-group-form" aria-labelledby="add-group-heading">
-                        <h5 id="add-group-heading">Add New Group</h5>
-                        <div class="form-group">
-                            <label for="group-name">Group Name:</label>
-                            <input type="text" id="group-name" name="name" required placeholder="e.g., Core Services">
-                        </div>
-                        <div class="form-group">
-                            <label for="group-order">Display Order:</label>
-                            <input type="number" id="group-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
-                        </div>
-                         <div class="form-group checkbox-group apple-toggle-group">
-                             <input type="checkbox" id="group-collapsed" name="isCollapsedByDefault" value="true" class="apple-toggle-checkbox">
-                             <label for="group-collapsed" class="apple-toggle-label"></label>
-                             <label for="group-collapsed">Collapsed by Default?</label>
-                             <small>Check if the group should be collapsed when visitors first load the status page.</small>
-                         </div>
-                        <div class="form-actions">
-                           <button type="submit" class="button-primary">Add Group</button>
-                        </div>
-                    </form>
-
-                    <h5 id="existing-groups-heading">
-                        Existing Groups <span id="groups-count-admin" class="list-count"></span>
-                    </h5>
-                    <div id="groups-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-groups-heading">
-                        <p>Loading groups...</p>
-                        </div>
-                </div>
-                <hr>
-
                 <div class="admin-subsection" id="status-components-management">
                     <h4>Manage Components</h4>
                     <form id="add-component-form" aria-labelledby="add-component-heading">
@@ -232,14 +179,8 @@
                             <label for="component-description">Description:</label>
                             <input type="text" id="component-description" name="description" placeholder="e.g., Primary user-facing website.">
                         </div>
-                         <div class="form-group">
-                            <label for="component-group-select">Assign to Group (Optional):</label>
-                            <select id="component-group-select" name="groupId">
-                                <option value="">-- No Group --</option>
-                                </select>
-                        </div>
                         <div class="form-group">
-                            <label for="component-order">Display Order (within group or overall):</label>
+                            <label for="component-order">Display Order:</label>
                             <input type="number" id="component-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
                         </div>
                         <div class="form-actions">
@@ -254,7 +195,7 @@
                         <p>Loading components...</p>
                         </div>
                 </div>
-                <hr>
+                <hr style="border-color: var(--border-color); margin: 2.5rem 0;">
 
                 <div class="admin-subsection" id="status-incidents-management">
                     <h4>Manage Incidents</h4>
@@ -264,35 +205,33 @@
                             <label for="incident-title">Incident Title:</label>
                             <input type="text" id="incident-title" name="title" required placeholder="e.g., Website Unresponsive">
                         </div>
+                        <div class="form-group">
+                            <label for="incident-impact">Impact / Initial Status:</label>
+                            <select id="incident-impact" name="impact" required>
+                                <option value="" disabled selected>-- Select Impact --</option>
+                                <option value="Degraded Performance">Degraded Performance</option>
+                                <option value="Partial Outage">Partial Outage</option>
+                                <option value="Major Outage">Major Outage</option>
+                            </select>
+                        </div>
                          <div class="form-group">
-                            <label for="incident-initial-status">Initial Incident Status:</label>
-                            <select id="incident-initial-status" name="status" required>
+                            <label for="incident-current-status">Current Status:</label>
+                            <select id="incident-current-status" name="status" required>
                                 <option value="Investigating" selected>Investigating</option>
                                 <option value="Identified">Identified</option>
-                                </select>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="incident-components">Affected Components:</label>
+                            <select id="incident-components" name="affectedComponents" multiple required size="4">
+                                <option value="">Loading components...</option>
+                            </select>
+                            <small>Hold Ctrl/Cmd to select multiple.</small>
                         </div>
                          <div class="form-group">
                             <label for="incident-initial-update">Initial Update Message:</label>
                             <textarea id="incident-initial-update" name="initialUpdate" rows="3" required placeholder="Describe the issue being investigated..."></textarea>
                         </div>
-                        <div class="form-group">
-                            <label>Affected Components & Their Status During Incident:</label>
-                            <div id="incident-affected-components-container">
-                                <p><small>Loading components...</small></p>
-                                </div>
-                             <small>Select components affected by this incident and set their current status.</small>
-                        </div>
-                         <div class="form-group">
-                             <label>Incident Start Time:</label>
-                             <div class="radio-group">
-                                 <input type="radio" id="start-now" name="startTimeOption" value="now" checked>
-                                 <label for="start-now">Now</label>
-                                 <input type="radio" id="start-specific" name="startTimeOption" value="specific">
-                                 <label for="start-specific">Specific Date/Time</label>
-                             </div>
-                             <input type="datetime-local" id="incident-start-datetime" name="specificStartTime" style="display: none; margin-top: 10px;">
-                         </div>
-
                         <div class="form-actions">
                            <button type="submit" class="button-primary">Create Incident</button>
                         </div>
@@ -304,78 +243,11 @@
                     <div id="active-incidents-list-admin" class="list-container-admin incidents-admin-list" role="list" aria-labelledby="active-incidents-heading">
                         <p>Loading active incidents...</p>
                         </div>
-                     </div>
-                <hr>
-
-                 <div class="admin-subsection" id="status-maintenance-management">
-                    <h4>Manage Scheduled Maintenance</h4>
-                    <form id="add-maintenance-form" aria-labelledby="add-maintenance-heading">
-                        <h5 id="add-maintenance-heading">Schedule New Maintenance</h5>
-                        <div class="form-group">
-                            <label for="maintenance-title">Maintenance Title:</label>
-                            <input type="text" id="maintenance-title" name="title" required placeholder="e.g., Database Upgrade">
-                        </div>
-                         <div class="form-group">
-                            <label for="maintenance-description">Description / Initial Update:</label>
-                            <textarea id="maintenance-description" name="description" rows="3" required placeholder="Details about the maintenance..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="maintenance-start-time">Planned Start Time:</label>
-                            <input type="datetime-local" id="maintenance-start-time" name="startTime" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="maintenance-end-time">Planned End Time:</label>
-                            <input type="datetime-local" id="maintenance-end-time" name="endTime" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Affected Components During Maintenance:</label>
-                             <div id="maintenance-affected-components-container">
-                                <p><small>Loading components...</small></p>
-                                </div>
-                            <small>Select components that will be affected.</small>
-                        </div>
-                        <div class="form-actions">
-                           <button type="submit" class="button-primary">Schedule Maintenance</button>
-                        </div>
-                    </form>
-
-                    <h5 id="scheduled-maintenance-heading">
-                        Upcoming & Ongoing Maintenance <span id="maintenance-count-admin" class="list-count"></span>
-                    </h5>
-                    <div id="maintenance-list-admin" class="list-container-admin maintenance-admin-list" role="list" aria-labelledby="scheduled-maintenance-heading">
-                        <p>Loading maintenance schedule...</p>
-                        </div>
                 </div>
                 </section>
-            <div id="edit-group-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-group-modal-heading">
+            <div id="edit-component-modal" class="modal" style="display: none;"
+                 role="dialog" aria-modal="true" aria-labelledby="edit-component-modal-heading">
                 <div class="modal-content">
-                    <button type="button" class="close-button" id="cancel-edit-group-button" aria-label="Close dialog">&times;</button>
-                    <h2 id="edit-group-modal-heading">Edit Component Group</h2>
-                    <form id="edit-group-form" data-doc-id="">
-                        <div class="form-group">
-                            <label for="edit-group-name">Group Name:</label>
-                            <input type="text" id="edit-group-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-group-order">Display Order:</label>
-                            <input type="number" id="edit-group-order" name="order" min="0" step="1" required>
-                        </div>
-                         <div class="form-group checkbox-group apple-toggle-group">
-                             <input type="checkbox" id="edit-group-collapsed" name="isCollapsedByDefault" value="true" class="apple-toggle-checkbox">
-                             <label for="edit-group-collapsed" class="apple-toggle-label"></label>
-                             <label for="edit-group-collapsed">Collapsed by Default?</label>
-                         </div>
-                        <div class="form-actions">
-                          <button type="submit" class="button-primary">Save Group Changes</button>
-                          <button type="button" id="cancel-edit-group-button-secondary" class="secondary-button">Cancel</button>
-                        </div>
-                    </form>
-                    <div id="edit-group-status-message" class="status-message" role="status" aria-live="polite"></div>
-                </div>
-            </div>
-
-            <div id="edit-component-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-component-modal-heading">
-                 <div class="modal-content">
                     <button type="button" class="close-button" id="cancel-edit-component-button" aria-label="Close dialog">&times;</button>
                     <h2 id="edit-component-modal-heading">Edit Component</h2>
                     <form id="edit-component-form" data-doc-id="">
@@ -386,12 +258,6 @@
                         <div class="form-group">
                             <label for="edit-component-description">Description:</label>
                             <input type="text" id="edit-component-description" name="description">
-                        </div>
-                         <div class="form-group">
-                            <label for="edit-component-group-select">Assign to Group:</label>
-                            <select id="edit-component-group-select" name="groupId">
-                                <option value="">-- No Group --</option>
-                                </select>
                         </div>
                         <div class="form-group">
                             <label for="edit-component-order">Display Order:</label>
@@ -406,8 +272,9 @@
                 </div>
             </div>
 
-            <div id="update-incident-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="update-incident-modal-heading">
-                 <div class="modal-content">
+            <div id="update-incident-modal" class="modal" style="display: none;"
+                 role="dialog" aria-modal="true" aria-labelledby="update-incident-modal-heading">
+                <div class="modal-content">
                     <button type="button" class="close-button" id="cancel-update-incident-button" aria-label="Close dialog">&times;</button>
                     <h2 id="update-incident-modal-heading">Update Incident: <span id="update-incident-modal-title"></span></h2>
                     <form id="update-incident-form" data-doc-id="">
@@ -439,66 +306,6 @@
                     <div id="update-incident-status-message" class="status-message" role="status" aria-live="polite"></div>
                 </div>
             </div>
-
-             <div id="edit-maintenance-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-maintenance-modal-heading">
-                 <div class="modal-content">
-                     <button type="button" class="close-button" id="cancel-edit-maintenance-button" aria-label="Close dialog">&times;</button>
-                     <h2 id="edit-maintenance-modal-heading">Edit Scheduled Maintenance</h2>
-                     <form id="edit-maintenance-form" data-doc-id="">
-                         <div class="form-group">
-                             <label for="edit-maintenance-title">Maintenance Title:</label>
-                             <input type="text" id="edit-maintenance-title" name="title" required>
-                         </div>
-                         <div class="form-group">
-                             <label for="edit-maintenance-description">Description:</label>
-                             <textarea id="edit-maintenance-description" name="description" rows="3" required></textarea>
-                         </div>
-                         <div class="form-group">
-                             <label for="edit-maintenance-start-time">Planned Start Time:</label>
-                             <input type="datetime-local" id="edit-maintenance-start-time" name="startTime" required>
-                         </div>
-                         <div class="form-group">
-                             <label for="edit-maintenance-end-time">Planned End Time:</label>
-                             <input type="datetime-local" id="edit-maintenance-end-time" name="endTime" required>
-                         </div>
-                          <div class="form-group">
-                             <label>Affected Components:</label>
-                              <div id="edit-maintenance-affected-components-container">
-                                 <p><small>Loading components...</small></p>
-                             </div>
-                             <small>Select components that will be affected.</small>
-                         </div>
-                         <div class="form-group">
-                             <label for="edit-maintenance-status">Maintenance Status:</label>
-                             <select id="edit-maintenance-status" name="status" required>
-                                 <option value="Scheduled">Scheduled</option>
-                                 <option value="In Progress">In Progress</option>
-                                 <option value="Completed">Completed</option>
-                                 <option value="Cancelled">Cancelled</option>
-                             </select>
-                         </div>
-
-                         <hr/>
-                         <h4>Maintenance Updates</h4>
-                          <div class="form-group">
-                              <label>Previous Updates:</label>
-                              <div id="maintenance-previous-updates" class="previous-updates-log">
-                                  <p><small>No previous updates.</small></p>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                             <label for="maintenance-new-update">Add New Update (Optional):</label>
-                             <textarea id="maintenance-new-update" name="newUpdateMessage" rows="2" placeholder="e.g., Starting maintenance now..."></textarea>
-                         </div>
-
-                         <div class="form-actions">
-                           <button type="submit" class="button-primary">Save Maintenance Changes</button>
-                           <button type="button" id="cancel-edit-maintenance-button-secondary" class="secondary-button">Cancel</button>
-                         </div>
-                     </form>
-                     <div id="edit-maintenance-status-message" class="status-message" role="status" aria-live="polite"></div>
-                 </div>
-             </div>
 
            <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
                 <h3 id="business-info-heading">Manage Business Information</h3>
