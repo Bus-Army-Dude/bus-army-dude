@@ -455,28 +455,37 @@ body {
   display: none;
 }
 
-.search-wrapper .leading-icon {
-  position: absolute;
-  top: 50%;
-  left: 16px;
-  transform: translateY(-50%);
-  pointer-events: none; /* Prevent icon from intercepting clicks */
-  color: var(--on-surface-variant); /* Ensure icon color */
+.search-wrapper span.leading-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--on-surface-variant);
+    z-index: 1;
+    display: none; /* Hide by default */
 }
 
 .search-wrapper > .m-icon { /* This seems intended for larger screens only */
   display: none;
 }
 
-.search-wrapper .icon-btn { /* Style for the back button */
-  background-color: transparent;
-  box-shadow: none;
-   /* Ensure it's clickable */
-  position: absolute;
-  top: 50%;
-  left: 0; /* Position it left */
-  transform: translateY(-50%);
-  z-index: 2; /* Above input field */
+.search-wrapper button.icon-btn.leading-icon {
+    background-color: transparent;
+    box-shadow: none;
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    z-index: 2;
+    color: var(--on-surface); /* Use standard color */
+    pointer-events: auto; /* Make clickable */
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-circle);
 }
 
 
