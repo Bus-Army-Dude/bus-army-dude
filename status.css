@@ -41,10 +41,6 @@
     --status-maintenance-color: #6c757d; /* Grey */
     --status-maintenance-bg: rgba(108, 117, 125, 0.1);
     --status-maintenance-border: rgba(108, 117, 125, 0.3);
-
-    --status-unknown-color: var(--secondary-text);
-    --status-unknown-bg: rgba(108, 117, 125, 0.1);
-    --status-unknown-border: rgba(108, 117, 125, 0.3);
 }
 
 /* General Status Badge Style */
@@ -60,91 +56,288 @@
 }
 
 /* Apply specific colors */
-.status-operational { color: var(--status-operational-color); background-color: var(--status-operational-bg); border-color: var(--status-operational-border); }
-.status-degraded-performance { color: var(--status-degraded-color); background-color: var(--status-degraded-bg); border-color: var(--status-degraded-border); } /* Adjusted class name */
-.status-partial-outage { color: var(--status-partial-outage-color); background-color: var(--status-partial-outage-bg); border-color: var(--status-partial-outage-border); }
-.status-major-outage { color: var(--status-major-outage-color); background-color: var(--status-major-outage-bg); border-color: var(--status-major-outage-border); }
-.status-investigating { color: var(--status-investigating-color); background-color: var(--status-investigating-bg); border-color: var(--status-investigating-border); }
-.status-identified { color: var(--status-identified-color); background-color: var(--status-identified-bg); border-color: var(--status-identified-border); }
-.status-monitoring { color: var(--status-monitoring-color); background-color: var(--status-monitoring-bg); border-color: var(--status-monitoring-border); }
-.status-resolved { color: var(--status-resolved-color); background-color: var(--status-resolved-bg); border-color: var(--status-resolved-border); }
-.status-maintenance { color: var(--status-maintenance-color); background-color: var(--status-maintenance-bg); border-color: var(--status-maintenance-border); }
-.status-unknown { color: var(--status-unknown-color); background-color: var(--status-unknown-bg); border-color: var(--status-unknown-border); }
+.status-operational {
+    color: var(--status-operational-color);
+    background-color: var(--status-operational-bg);
+    border-color: var(--status-operational-border);
+}
+.status-degraded {
+    color: var(--status-degraded-color);
+    background-color: var(--status-degraded-bg);
+    border-color: var(--status-degraded-border);
+}
+.status-partial-outage {
+    color: var(--status-partial-outage-color);
+    background-color: var(--status-partial-outage-bg);
+    border-color: var(--status-partial-outage-border);
+}
+.status-major-outage {
+    color: var(--status-major-outage-color);
+    background-color: var(--status-major-outage-bg);
+    border-color: var(--status-major-outage-border);
+}
+.status-investigating {
+    color: var(--status-investigating-color);
+    background-color: var(--status-investigating-bg);
+    border-color: var(--status-investigating-border);
+}
+.status-identified {
+    color: var(--status-identified-color);
+    background-color: var(--status-identified-bg);
+    border-color: var(--status-identified-border);
+}
+.status-monitoring {
+    color: var(--status-monitoring-color);
+    background-color: var(--status-monitoring-bg);
+    border-color: var(--status-monitoring-border);
+}
+.status-resolved {
+    color: var(--status-resolved-color);
+    background-color: var(--status-resolved-bg);
+    border-color: var(--status-resolved-border);
+}
+.status-maintenance {
+    color: var(--status-maintenance-color);
+    background-color: var(--status-maintenance-bg);
+    border-color: var(--status-maintenance-border);
+}
 
 /* ======================================== */
 /* Page Header & Overall Banner            */
 /* ======================================== */
 
-.status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
-.status-header h1 { margin: 0; font-size: 2rem; }
-.status-header .back-link { font-size: 0.9em; /* Additional styles from home-button class */ }
+.status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
 
-.overall-status-banner { padding: 15px 20px; border-radius: 10px; margin-bottom: 30px; text-align: center; font-size: 1.1em; font-weight: 500; border: 1px solid transparent; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
-.overall-status-banner p { margin: 0; }
-.overall-status-banner.all-operational { background-color: var(--status-operational-bg); color: var(--status-operational-color); border-color: var(--status-operational-border); }
-.overall-status-banner.has-issues { background-color: var(--status-partial-outage-bg); color: var(--status-partial-outage-color); border-color: var(--status-partial-outage-border); }
-.overall-status-banner.major-issues { background-color: var(--status-major-outage-bg); color: var(--status-major-outage-color); border-color: var(--status-major-outage-border); }
-.overall-status-banner.unknown { background-color: var(--status-unknown-bg); color: var(--status-unknown-color); border-color: var(--status-unknown-border); }
+.status-header h1 {
+    margin: 0;
+    font-size: 2rem; /* Adjust as needed */
+}
+
+.status-header .back-link {
+    font-size: 0.9em;
+    /* Inherits home-button styles for consistency if class is added */
+}
+
+.overall-status-banner {
+    padding: 15px 20px;
+    border-radius: 10px; /* Match component/incident style */
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* Style banner based on overall status (JS will add these classes) */
+.overall-status-banner.all-operational {
+    background-color: var(--status-operational-bg);
+    color: var(--status-operational-color);
+    border-color: var(--status-operational-border);
+}
+.overall-status-banner.has-issues {
+    background-color: var(--status-partial-outage-bg); /* Orange background for any issue */
+    color: var(--status-partial-outage-color);
+    border-color: var(--status-partial-outage-border);
+}
+.overall-status-banner.major-issues {
+    background-color: var(--status-major-outage-bg); /* Red background for major outage */
+    color: var(--status-major-outage-color);
+    border-color: var(--status-major-outage-border);
+}
 
 /* ======================================== */
 /* General Section Styling                */
 /* ======================================== */
 
-.status-section { margin-bottom: 40px; }
-.status-section h2 { font-size: 1.5rem; color: var(--text-color); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+.status-section {
+    margin-bottom: 40px;
+}
+
+.status-section h2 {
+    font-size: 1.5rem; /* Adjust as needed */
+    color: var(--text-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
 
 /* ======================================== */
 /* Components Section                       */
 /* ======================================== */
 
-.components-list { display: flex; flex-direction: column; gap: 15px; }
-.components-list > p { /* Loading/Empty message */ padding: 20px; background-color: var(--content-bg); border-radius: 10px; text-align: center; color: var(--secondary-text); border: 1px dashed var(--border-color); }
-.component-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: var(--content-bg); border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px var(--shadow-color); transition: box-shadow 0.2s; flex-wrap: wrap; gap: 10px; }
-.component-item:hover { box-shadow: 0 3px 6px var(--shadow-color); }
-.component-item > div:first-child { flex-grow: 1; } /* Allow name/desc part to grow */
-.component-name { font-weight: 500; color: var(--text-color); display: block; margin-bottom: 3px; }
-.component-description { font-size: 0.9em; color: var(--secondary-text); margin: 0; line-height: 1.4; }
-.component-status { flex-shrink: 0; /* Prevent status badge from shrinking */ margin-left: 15px; }
+.components-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.component-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--content-bg); /* Use content background */
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px var(--shadow-color);
+    transition: box-shadow 0.2s;
+}
+
+.component-item:hover {
+     box-shadow: 0 3px 6px var(--shadow-color);
+}
+
+.component-name {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-right: 15px; /* Space between name and status */
+}
 
 /* ======================================== */
 /* Incidents Section                        */
 /* ======================================== */
 
-.incidents-list { display: flex; flex-direction: column; gap: 25px; }
-.incidents-list > p { /* Loading/Empty message */ padding: 20px; background-color: var(--content-bg); border-radius: 10px; text-align: center; color: var(--secondary-text); border: 1px dashed var(--border-color); }
-.incident-item { background-color: var(--content-bg); border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 2px 5px var(--shadow-color); overflow: hidden; }
-.incident-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: rgba(var(--accent-rgb, 0, 0, 0), 0.05); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 10px; }
-.incident-title { font-size: 1.2em; font-weight: 600; margin: 0; color: var(--text-color); }
-.incident-status { /* Uses base badge style */ flex-shrink: 0; }
-.incident-updates { padding: 0; }
-.incident-update { padding: 15px 20px; border-bottom: 1px solid var(--border-color); background-color: rgba(var(--bg-color-rgb, 255, 255, 255), 0.5); /* Slightly different bg for updates */ }
-.incident-update:last-child { border-bottom: none; }
-.incident-update p { margin: 0 0 8px 0; color: var(--text-color); line-height: 1.5; }
-.incident-update time { font-size: 0.85em; color: var(--secondary-text); display: block; }
-.incident-update time strong { color: var(--text-color); font-weight: 500; } /* Make status within time bold */
-.incident-footer { padding: 10px 20px; background-color: rgba(var(--content-bg-rgb, 240, 240, 240), 0.5); border-top: 1px solid var(--border-color); font-size: 0.85em; color: var(--secondary-text); }
-.incident-footer p { margin: 3px 0; }
+.incidents-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* More space between incidents */
+}
+
+.incidents-list > p { /* Style loading/empty messages */
+    padding: 20px;
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    text-align: center;
+    color: var(--secondary-text);
+    border: 1px dashed var(--border-color);
+}
+
+
+.incident-item {
+    background-color: var(--content-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px var(--shadow-color);
+    overflow: hidden; /* Ensure content stays within borders */
+}
+
+.incident-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: rgba(var(--accent-rgb, 0, 0, 0), 0.05); /* Slightly different header background */
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 10px;
+}
+
+.incident-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.incident-updates {
+    padding: 0; /* Remove padding, handled by individual updates */
+}
+
+.incident-update {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.incident-update:last-child {
+    border-bottom: none;
+}
+
+.incident-update p {
+    margin: 0 0 8px 0; /* Space below message */
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.incident-update time {
+    font-size: 0.85em;
+    color: var(--secondary-text);
+    display: block; /* Put time on its own line */
+}
 
 /* ======================================== */
 /* Responsive Adjustments                   */
 /* ======================================== */
 
 @media (max-width: 768px) {
-    .status-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .status-header h1 { font-size: 1.8rem; }
-    .component-item { align-items: flex-start; }
-    .component-status { margin-left: 0; margin-top: 5px; }
-    .incident-header { align-items: flex-start; }
-    .incident-title { font-size: 1.1em; }
+    .status-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .status-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .component-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .component-name {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .incident-header {
+        align-items: flex-start; /* Align title and status top */
+    }
+
+    .incident-title {
+        font-size: 1.1em;
+    }
 }
 
 @media (max-width: 480px) {
-    .status-header h1 { font-size: 1.6rem; }
-    .overall-status-banner { font-size: 1em; padding: 12px 15px; }
-    .status-section h2 { font-size: 1.3rem; }
-    .component-item, .incident-header, .incident-update, .incident-footer { padding: 12px 15px; }
-    .component-status, .incident-status { padding: 4px 10px; font-size: 0.8em; }
-    .incident-title { font-size: 1em; }
-    .incident-update time { font-size: 0.8em; }
-    .incident-footer { font-size: 0.8em; }
+    .status-header h1 {
+        font-size: 1.6rem;
+    }
+
+     .overall-status-banner {
+        font-size: 1em;
+        padding: 12px 15px;
+    }
+
+    .status-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .component-item,
+    .incident-header,
+    .incident-update {
+        padding: 12px 15px;
+    }
+
+    .component-status,
+    .incident-status {
+        padding: 4px 10px;
+        font-size: 0.8em;
+    }
+
+    .incident-title {
+        font-size: 1em;
+    }
+
+     .incident-update time {
+        font-size: 0.8em;
+    }
 }
