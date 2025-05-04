@@ -132,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => { //
     const editComponentDescriptionInput = document.getElementById('edit-component-description');
     const editComponentOrderInput = document.getElementById('edit-component-order');
     const editComponentStatusMessage = document.getElementById('edit-component-status-message');
+    const incidentAffectedComponentsContainer = document.getElementById('incident-affected-components-container');
+
 
     const addIncidentForm = document.getElementById('add-incident-form');
     const incidentComponentsSelect = document.getElementById('incident-components'); // Multi-select
@@ -1019,6 +1021,83 @@ function renderYouTubeCard(account) {
         } catch (error) { console.error("Error loading active incidents:", error); activeIncidentsListAdminContainer.innerHTML = `<p class="error">Error loading.</p>`; if(activeIncidentsCountAdmin) activeIncidentsCountAdmin.textContent = '(Error)'; showAdminStatus("Error loading incidents.", true); }
     }
 
+// Status Page Management Functions
+async function setupStatusPageManagement() {
+    if (addComponentForm) {
+        addComponentForm.addEventListener('submit', handleAddComponent);
+    }
+    if (addIncidentForm) {
+        addIncidentForm.addEventListener('submit', handleAddIncident);
+    }
+    
+    await Promise.all([
+        loadComponentsAdmin(),
+        loadIncidentsAdmin()
+    ]);
+
+    // Setup affected components container
+    if (incidentAffectedComponentsContainer) {
+        populateAffectedComponentsContainer();
+    }
+}
+
+    
+async function populateAffectedComponentsContainer() {
+    if (!incidentAffectedComponentsContainer) return;
+
+    try {
+        incidentAffectedComponentsContainer.innerHTML = '<p>Loading components...</p>';
+        const componentsSnapshot = await getDocs(collection(db, 'status_components'));
+        
+        if (componentsSnapshot.empty) {
+            incidentAffectedComponentsContainer.innerHTML = '<p>No components available. Please create components first.</p>';
+            return;
+        }
+
+        incidentAffectedComponentsContainer.innerHTML = '';
+        const components = [];
+        componentsSnapshot.forEach(doc => {
+            components.push({ id: doc.id, ...doc.data() });
+        });
+        components.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+        components.forEach(component => {
+            const row = document.createElement('div');
+            row.className = 'affected-component-row';
+            row.innerHTML = `
+                <div class="checkbox-group">
+                    <input type="checkbox" 
+                           id="affected-component-${component.id}" 
+                           name="affectedComponents" 
+                           value="${component.id}"
+                           class="affected-component-checkbox">
+                    <label for="affected-component-${component.id}">${component.name}</label>
+                </div>
+                <select class="component-status-select" 
+                        name="componentStatus-${component.id}"
+                        disabled>
+                    <option value="degraded_performance">Degraded Performance</option>
+                    <option value="partial_outage">Partial Outage</option>
+                    <option value="major_outage">Major Outage</option>
+                </select>
+            `;
+
+            const checkbox = row.querySelector('.affected-component-checkbox');
+            const statusSelect = row.querySelector('.component-status-select');
+            
+            checkbox.addEventListener('change', () => {
+                statusSelect.disabled = !checkbox.checked;
+            });
+
+            incidentAffectedComponentsContainer.appendChild(row);
+        });
+    } catch (error) {
+        console.error("Error populating affected components:", error);
+        incidentAffectedComponentsContainer.innerHTML = '<p class="error">Error loading components. Please try again.</p>';
+    }
+}
+
+    
         /** Handles creating a new incident (CORRECTED for serverTimestamp in array) */
     async function handleAddIncident(event) {
         event.preventDefault();
