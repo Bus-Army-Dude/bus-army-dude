@@ -198,45 +198,47 @@
                 <hr style="border-color: var(--border-color); margin: 2.5rem 0;">
 
                 <div class="admin-subsection" id="status-incidents-management">
-                    <h4>Manage Incidents</h4>
-                    <form id="add-incident-form" aria-labelledby="add-incident-heading">
-                        <h5 id="add-incident-heading">Create New Incident</h5>
-                        <div class="form-group">
-                            <label for="incident-title">Incident Title:</label>
-                            <input type="text" id="incident-title" name="title" required placeholder="e.g., Website Unresponsive">
-                        </div>
-                        <div class="form-group">
-                            <label for="incident-impact">Impact / Initial Status:</label>
-                            <select id="incident-impact" name="impact" required>
-                                <option value="" disabled selected>-- Select Impact --</option>
-                                <option value="Degraded Performance">Degraded Performance</option>
-                                <option value="Partial Outage">Partial Outage</option>
-                                <option value="Major Outage">Major Outage</option>
-                                </select>
-                        </div>
-                         <div class="form-group">
-                            <label for="incident-current-status">Current Status:</label>
-                            <select id="incident-current-status" name="status" required>
-                                <option value="Investigating" selected>Investigating</option>
-                                <option value="Identified">Identified</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Affected Components:</label>
-                            <div id="incident-affected-components-container">
-                                <!-- Components will be dynamically populated here -->
+                        <h4>Manage Incidents</h4>
+                        <form id="add-incident-form" aria-labelledby="add-incident-heading">
+                            <h5 id="add-incident-heading">Create New Incident</h5>
+                            <div class="form-group">
+                                <label for="incident-title">Incident Title:</label>
+                                <input type="text" id="incident-title" name="title" required placeholder="e.g., Website Unresponsive">
                             </div>
-                            <small>Select components and their status during the incident.</small>
-                        </div>
-                         <div class="form-group">
-                            <label for="incident-initial-update">Initial Update Message:</label>
-                            <textarea id="incident-initial-update" name="initialUpdate" rows="3" required placeholder="Describe the issue being investigated..."></textarea>
-                        </div>
-                        <div class="form-actions">
-                           <button type="submit" class="button-primary">Create Incident</button>
-                        </div>
-                    </form>
-
+                            <div class="form-group">
+                                <label for="incident-impact">Impact / Initial Status:</label>
+                                <select id="incident-impact" name="impact" required>
+                                    <option value="" disabled selected>-- Select Impact --</option>
+                                    <option value="Degraded Performance">Degraded Performance</option>
+                                    <option value="Partial Outage">Partial Outage</option>
+                                    <option value="Major Outage">Major Outage</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="incident-current-status">Current Status:</label>
+                                <select id="incident-current-status" name="status" required>
+                                    <option value="Investigating" selected>Investigating</option>
+                                    <option value="Identified">Identified</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="incident-affected-components-container">Affected Components:</label>
+                                <div id="incident-affected-components-container" class="affected-components-container">
+                                    <!-- Components will be dynamically added here -->
+                                    <p class="loading-message">Loading components...</p>
+                                </div>
+                                <small>Select components and their status during the incident.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="incident-initial-update">Initial Update Message:</label>
+                                <textarea id="incident-initial-update" name="initialUpdate" rows="3" required 
+                                          placeholder="Describe the issue being investigated..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="button-primary">Create Incident</button>
+                            </div>
+                        </form>
+                    </div>
                     <h5 id="active-incidents-heading">
                         Active Incidents <span id="active-incidents-count-admin" class="list-count"></span>
                     </h5>
