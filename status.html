@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status - Bus Army Dude</title>
+
+    <link rel="stylesheet" href="styles.css">    <link rel="stylesheet" href="settings.css"> <link rel="stylesheet" href="status.css">   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E0RSQS1MS7');
+    </script>
+
+    </head>
+<body class="dark-mode"> <div class="container">
+
+        <header class="status-header">
+            <h1>System Status</h1>
+            <a href="index.html" class="back-link home-button">← Back to Home</a>
+        </header>
+
+        <section id="overall-status-banner" class="overall-status-banner" aria-live="polite">
+            <p>Loading overall system status...</p>
+        </section>
+
+        <section class="components-section status-section" aria-labelledby="components-heading">
+            <h2 id="components-heading">Component Status</h2>
+            <div id="components-list" class="components-list">
+                <p>Loading component statuses...</p>
+                </div>
+        </section>
+
+        <section class="incidents-section active-incidents status-section" aria-labelledby="active-incidents-heading">
+            <h2 id="active-incidents-heading">Active Incidents</h2>
+            <div id="active-incidents-list" class="incidents-list">
+                <p>Loading active incidents...</p>
+                </div>
+        </section>
+
+        <section class="incidents-section past-incidents status-section" aria-labelledby="past-incidents-heading">
+            <h2 id="past-incidents-heading">Past Incidents</h2>
+            <div id="past-incidents-list" class="incidents-list">
+                <p>Loading past incidents...</p>
+                </div>
+             </section>
+
+        </div> <footer>
+        <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
+         </footer>
+
+    <script type="module" src="firebase-init.js"></script>
+
+    <script src="globalSettings.js"></script> <script src="settings.js"></script>     <script src="common.js"></script>       <script type="module" src="status.js"></script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
