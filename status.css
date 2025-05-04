@@ -1,150 +1,180 @@
-/* status.css - Styles specific to the status page */
+/* status.css - Styles specific to the status page (v2) */
 
 /* ======================================== */
-/* Status Variables & Indicators            */
+/* Status Variables & Indicators (Keep as is) */
 /* ======================================== */
-
 :root {
-    /* Define status colors (adjust as needed for your theme) */
     --status-operational-color: #28a745; /* Green */
     --status-operational-bg: rgba(40, 167, 69, 0.1);
     --status-operational-border: rgba(40, 167, 69, 0.3);
-
     --status-degraded-color: #ffc107;   /* Yellow/Amber */
     --status-degraded-bg: rgba(255, 193, 7, 0.1);
     --status-degraded-border: rgba(255, 193, 7, 0.3);
-
     --status-partial-outage-color: #fd7e14; /* Orange */
     --status-partial-outage-bg: rgba(253, 126, 20, 0.1);
     --status-partial-outage-border: rgba(253, 126, 20, 0.3);
-
     --status-major-outage-color: #dc3545; /* Red */
     --status-major-outage-bg: rgba(220, 53, 69, 0.1);
     --status-major-outage-border: rgba(220, 53, 69, 0.3);
-
     --status-investigating-color: #007bff; /* Blue */
     --status-investigating-bg: rgba(0, 123, 255, 0.1);
     --status-investigating-border: rgba(0, 123, 255, 0.3);
-
     --status-identified-color: #6f42c1; /* Purple */
     --status-identified-bg: rgba(111, 66, 193, 0.1);
     --status-identified-border: rgba(111, 66, 193, 0.3);
-
     --status-monitoring-color: #17a2b8; /* Teal */
     --status-monitoring-bg: rgba(23, 162, 184, 0.1);
     --status-monitoring-border: rgba(23, 162, 184, 0.3);
-
     --status-resolved-color: var(--secondary-text); /* Grey for resolved */
     --status-resolved-bg: rgba(108, 117, 125, 0.1);
     --status-resolved-border: rgba(108, 117, 125, 0.3);
-
     --status-maintenance-color: #6c757d; /* Grey */
     --status-maintenance-bg: rgba(108, 117, 125, 0.1);
     --status-maintenance-border: rgba(108, 117, 125, 0.3);
-
+    --status-under-maintenance-color: var(--status-maintenance-color); /* Alias for consistency */
+    --status-under-maintenance-bg: var(--status-maintenance-bg);
+    --status-under-maintenance-border: var(--status-maintenance-border);
     --status-unknown-color: var(--secondary-text);
     --status-unknown-bg: rgba(108, 117, 125, 0.1);
     --status-unknown-border: rgba(108, 117, 125, 0.3);
+    --uptime-bar-operational: var(--status-operational-color);
+    --uptime-bar-incident: var(--status-partial-outage-color); /* Or choose another incident color */
+    --uptime-bar-maintenance: var(--status-maintenance-color);
+    --uptime-bar-nodata: var(--border-color);
 }
 
-/* General Status Badge Style */
-.component-status,
-.incident-status {
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 20px; /* Pill shape */
-    font-size: 0.85em;
-    font-weight: 600;
-    border: 1px solid transparent;
-    white-space: nowrap;
+/* General Status Badge Style (Keep as is) */
+.component-status, .incident-status, .maintenance-status, .group-status {
+    display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid transparent; white-space: nowrap;
 }
-
-/* Apply specific colors */
+/* Apply specific colors (Add new statuses) */
 .status-operational { color: var(--status-operational-color); background-color: var(--status-operational-bg); border-color: var(--status-operational-border); }
-.status-degraded-performance { color: var(--status-degraded-color); background-color: var(--status-degraded-bg); border-color: var(--status-degraded-border); } /* Adjusted class name */
+.status-degraded-performance { color: var(--status-degraded-color); background-color: var(--status-degraded-bg); border-color: var(--status-degraded-border); }
 .status-partial-outage { color: var(--status-partial-outage-color); background-color: var(--status-partial-outage-bg); border-color: var(--status-partial-outage-border); }
 .status-major-outage { color: var(--status-major-outage-color); background-color: var(--status-major-outage-bg); border-color: var(--status-major-outage-border); }
 .status-investigating { color: var(--status-investigating-color); background-color: var(--status-investigating-bg); border-color: var(--status-investigating-border); }
 .status-identified { color: var(--status-identified-color); background-color: var(--status-identified-bg); border-color: var(--status-identified-border); }
 .status-monitoring { color: var(--status-monitoring-color); background-color: var(--status-monitoring-bg); border-color: var(--status-monitoring-border); }
 .status-resolved { color: var(--status-resolved-color); background-color: var(--status-resolved-bg); border-color: var(--status-resolved-border); }
-.status-maintenance { color: var(--status-maintenance-color); background-color: var(--status-maintenance-bg); border-color: var(--status-maintenance-border); }
+.status-maintenance, .status-scheduled, .status-in-progress, .status-completed, .status-cancelled { color: var(--status-maintenance-color); background-color: var(--status-maintenance-bg); border-color: var(--status-maintenance-border); }
+.status-under-maintenance { color: var(--status-under-maintenance-color); background-color: var(--status-under-maintenance-bg); border-color: var(--status-under-maintenance-border); }
 .status-unknown { color: var(--status-unknown-color); background-color: var(--status-unknown-bg); border-color: var(--status-unknown-border); }
 
 /* ======================================== */
-/* Page Header & Overall Banner            */
+/* Page Header & Overall Banner (Keep as is) */
 /* ======================================== */
-
 .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
 .status-header h1 { margin: 0; font-size: 2rem; }
-.status-header .back-link { font-size: 0.9em; /* Additional styles from home-button class */ }
-
+.status-header .back-link { font-size: 0.9em; }
 .overall-status-banner { padding: 15px 20px; border-radius: 10px; margin-bottom: 30px; text-align: center; font-size: 1.1em; font-weight: 500; border: 1px solid transparent; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
 .overall-status-banner p { margin: 0; }
 .overall-status-banner.all-operational { background-color: var(--status-operational-bg); color: var(--status-operational-color); border-color: var(--status-operational-border); }
 .overall-status-banner.has-issues { background-color: var(--status-partial-outage-bg); color: var(--status-partial-outage-color); border-color: var(--status-partial-outage-border); }
 .overall-status-banner.major-issues { background-color: var(--status-major-outage-bg); color: var(--status-major-outage-color); border-color: var(--status-major-outage-border); }
+.overall-status-banner.under-maintenance { background-color: var(--status-maintenance-bg); color: var(--status-maintenance-color); border-color: var(--status-maintenance-border); } /* Added maintenance style */
 .overall-status-banner.unknown { background-color: var(--status-unknown-bg); color: var(--status-unknown-color); border-color: var(--status-unknown-border); }
 
 /* ======================================== */
-/* General Section Styling                */
+/* General Section Styling (Keep as is)     */
 /* ======================================== */
-
 .status-section { margin-bottom: 40px; }
 .status-section h2 { font-size: 1.5rem; color: var(--text-color); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
 
 /* ======================================== */
-/* Components Section                       */
+/* Scheduled Maintenance Section (NEW)      */
 /* ======================================== */
+.maintenance-list > p { /* Loading/Empty message */ padding: 20px; background-color: var(--content-bg); border-radius: 10px; text-align: center; color: var(--secondary-text); border: 1px dashed var(--border-color); }
+.maintenance-item { background-color: var(--content-bg); border: 1px solid var(--border-color); border-left: 5px solid var(--status-maintenance-color); /* Left border */ border-radius: 8px; padding: 15px 20px; margin-bottom: 15px; box-shadow: 0 1px 3px var(--shadow-color); }
+.maintenance-item h4 { font-size: 1.1em; margin: 0 0 10px 0; display: flex; justify-content: space-between; align-items: center; }
+.maintenance-item h4 .maintenance-status { font-size: 0.8em; } /* Style status badge */
+.maintenance-item p { margin: 5px 0; font-size: 0.95em; line-height: 1.5; }
+.maintenance-item .maintenance-times { margin-top: 10px; font-size: 0.9em; color: var(--secondary-text); }
+.maintenance-item .maintenance-times p { margin: 3px 0; }
+.maintenance-item small { display: block; margin-top: 10px; font-size: 0.85em; color: var(--secondary-text); font-style: italic; }
 
-.components-list { display: flex; flex-direction: column; gap: 15px; }
-.components-list > p { /* Loading/Empty message */ padding: 20px; background-color: var(--content-bg); border-radius: 10px; text-align: center; color: var(--secondary-text); border: 1px dashed var(--border-color); }
-.component-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: var(--content-bg); border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px var(--shadow-color); transition: box-shadow 0.2s; flex-wrap: wrap; gap: 10px; }
-.component-item:hover { box-shadow: 0 3px 6px var(--shadow-color); }
-.component-item > div:first-child { flex-grow: 1; } /* Allow name/desc part to grow */
+/* ======================================== */
+/* Components Section (Updated for Groups)  */
+/* ======================================== */
+.status-legend { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; font-size: 0.85em; color: var(--secondary-text); }
+.legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.legend-color { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
+.legend-color.status-operational { background-color: var(--status-operational-color); }
+.legend-color.status-degraded-performance { background-color: var(--status-degraded-color); }
+.legend-color.status-partial-outage { background-color: var(--status-partial-outage-color); }
+.legend-color.status-major-outage { background-color: var(--status-major-outage-color); }
+.legend-color.status-under-maintenance { background-color: var(--status-maintenance-color); }
+
+#component-groups-list > p { /* Loading message */ padding: 20px; text-align: center; color: var(--secondary-text); }
+
+.component-group { border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 20px; overflow: hidden; background-color: var(--content-bg); box-shadow: 0 1px 3px var(--shadow-color); }
+.group-summary { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; cursor: pointer; background-color: rgba(var(--accent-rgb, 0, 0, 0), 0.03); transition: background-color 0.2s; list-style: none; /* Remove default marker */ }
+.group-summary::-webkit-details-marker { display: none; } /* Hide marker in Webkit */
+.group-summary:hover { background-color: rgba(var(--accent-rgb, 0, 0, 0), 0.06); }
+.group-name { font-weight: 600; font-size: 1.1em; color: var(--text-color); }
+.group-status { /* Uses base badge styles */ margin-left: auto; margin-right: 15px; }
+.group-toggle-icon { width: 1em; height: 1em; display: inline-block; border-style: solid; border-width: 0 2px 2px 0; padding: 3px; border-color: var(--secondary-text); transform: rotate(45deg); transition: transform 0.2s ease-in-out; flex-shrink: 0; }
+.component-group[open] > .group-summary > .group-toggle-icon { transform: rotate(-135deg); margin-top: -5px; }
+.group-components-list { padding: 10px 20px 20px 20px; display: flex; flex-direction: column; gap: 15px; }
+
+.component-item { /* Shared style for grouped and ungrouped */ display: flex; justify-content: space-between; align-items: flex-start; /* Align top */ padding: 15px 0; border-bottom: 1px solid var(--border-color); gap: 15px; }
+.group-components-list .component-item:last-child { border-bottom: none; padding-bottom: 0; }
+.ungrouped-component { /* Add padding/border if needed when outside a group */ padding: 15px 20px; background-color: var(--content-bg); border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px var(--shadow-color); margin-bottom: 15px; }
+.component-info { flex-grow: 1; }
 .component-name { font-weight: 500; color: var(--text-color); display: block; margin-bottom: 3px; }
-.component-description { font-size: 0.9em; color: var(--secondary-text); margin: 0; line-height: 1.4; }
-.component-status { flex-shrink: 0; /* Prevent status badge from shrinking */ margin-left: 15px; }
+.component-status { flex-shrink: 0; }
+
+/* --- Uptime Bar Styles (NEW) --- */
+.component-uptime { display: flex; align-items: center; gap: 8px; flex-basis: 250px; /* Give uptime section some width */ flex-shrink: 0; justify-content: flex-end; }
+.uptime-label { font-size: 0.8em; color: var(--secondary-text); white-space: nowrap; }
+.uptime-bar-container { display: flex; height: 8px; width: 100px; /* Fixed width for bars */ background-color: var(--uptime-bar-nodata); border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); }
+.uptime-bar-segment { height: 100%; /* JS will set width and background-color */ }
+.uptime-percentage { font-size: 0.85em; font-weight: 500; color: var(--text-color); min-width: 45px; text-align: right; }
 
 /* ======================================== */
-/* Incidents Section                        */
+/* Incidents Section (Keep as is)           */
 /* ======================================== */
-
 .incidents-list { display: flex; flex-direction: column; gap: 25px; }
-.incidents-list > p { /* Loading/Empty message */ padding: 20px; background-color: var(--content-bg); border-radius: 10px; text-align: center; color: var(--secondary-text); border: 1px dashed var(--border-color); }
+.incidents-list > p { padding: 20px; background-color: var(--content-bg); border-radius: 10px; text-align: center; color: var(--secondary-text); border: 1px dashed var(--border-color); }
 .incident-item { background-color: var(--content-bg); border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 2px 5px var(--shadow-color); overflow: hidden; }
 .incident-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: rgba(var(--accent-rgb, 0, 0, 0), 0.05); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 10px; }
 .incident-title { font-size: 1.2em; font-weight: 600; margin: 0; color: var(--text-color); }
-.incident-status { /* Uses base badge style */ flex-shrink: 0; }
 .incident-updates { padding: 0; }
-.incident-update { padding: 15px 20px; border-bottom: 1px solid var(--border-color); background-color: rgba(var(--bg-color-rgb, 255, 255, 255), 0.5); /* Slightly different bg for updates */ }
+.incident-update { padding: 15px 20px; border-bottom: 1px solid var(--border-color); background-color: rgba(var(--bg-color-rgb, 255, 255, 255), 0.5); }
 .incident-update:last-child { border-bottom: none; }
 .incident-update p { margin: 0 0 8px 0; color: var(--text-color); line-height: 1.5; }
 .incident-update time { font-size: 0.85em; color: var(--secondary-text); display: block; }
-.incident-update time strong { color: var(--text-color); font-weight: 500; } /* Make status within time bold */
+.incident-update time strong { color: var(--text-color); font-weight: 500; }
 .incident-footer { padding: 10px 20px; background-color: rgba(var(--content-bg-rgb, 240, 240, 240), 0.5); border-top: 1px solid var(--border-color); font-size: 0.85em; color: var(--secondary-text); }
 .incident-footer p { margin: 3px 0; }
 
 /* ======================================== */
-/* Responsive Adjustments                   */
+/* Responsive Adjustments (Updated)         */
 /* ======================================== */
-
 @media (max-width: 768px) {
     .status-header { flex-direction: column; align-items: flex-start; gap: 10px; }
     .status-header h1 { font-size: 1.8rem; }
-    .component-item { align-items: flex-start; }
-    .component-status { margin-left: 0; margin-top: 5px; }
+    .group-summary { flex-wrap: wrap; } /* Allow group status to wrap */
+    .group-status { margin-left: 0; margin-top: 5px; flex-basis: 100%; text-align: left; } /* Group status below name */
+    .component-item { flex-direction: column; align-items: flex-start; padding: 10px 0; } /* Stack component info/uptime */
+    .component-status { margin-left: 0; margin-top: 8px; }
+    .component-uptime { flex-basis: auto; width: 100%; justify-content: flex-start; margin-top: 10px; } /* Uptime below */
     .incident-header { align-items: flex-start; }
     .incident-title { font-size: 1.1em; }
+    .maintenance-item h4 { flex-direction: column; align-items: flex-start; gap: 5px; }
 }
 
 @media (max-width: 480px) {
     .status-header h1 { font-size: 1.6rem; }
     .overall-status-banner { font-size: 1em; padding: 12px 15px; }
     .status-section h2 { font-size: 1.3rem; }
-    .component-item, .incident-header, .incident-update, .incident-footer { padding: 12px 15px; }
-    .component-status, .incident-status { padding: 4px 10px; font-size: 0.8em; }
+    .group-summary, .incident-header, .incident-update, .incident-footer, .maintenance-item { padding-left: 15px; padding-right: 15px; }
+    .group-components-list { padding: 10px 15px 15px 15px; }
+    .component-item { padding-left: 0; padding-right: 0; }
+    .component-status, .incident-status, .maintenance-status, .group-status { padding: 4px 10px; font-size: 0.8em; }
     .incident-title { font-size: 1em; }
     .incident-update time { font-size: 0.8em; }
     .incident-footer { font-size: 0.8em; }
+    .component-uptime { flex-wrap: wrap; } /* Allow uptime percentage to wrap */
+    .uptime-percentage { min-width: auto; margin-left: 8px; }
+    .status-legend { gap: 10px; font-size: 0.8em; }
 }
