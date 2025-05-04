@@ -48,8 +48,10 @@ document.addEventListener('DOMContentLoaded', () => { //
     // Firestore Reference for Tech
     const techItemsCollectionRef = collection(db, "tech_items"); // Tech collection ref
     // --- Firestore References for Status Page ---
+    const statusGroupsCollectionRef = collection(db, "status_groups"); // New
     const componentsCollectionRef = collection(db, "status_components");
     const incidentsCollectionRef = collection(db, "status_incidents");
+    const maintenanceCollectionRef = collection(db, "status_maintenance"); // New
 
 
     // --- Inactivity Logout Variables ---
@@ -122,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => { //
 
     // --- Status Page Management Elements ---
     const addComponentForm = document.getElementById('add-component-form');
+    const componentGroupSelect = document.getElementById('component-group-select'); // In Add form
     const componentsListAdminContainer = document.getElementById('components-list-admin');
     const componentsCountAdmin = document.getElementById('components-count-admin');
     const editComponentModal = document.getElementById('edit-component-modal');
@@ -130,11 +133,15 @@ document.addEventListener('DOMContentLoaded', () => { //
     const cancelEditComponentButtonSecondary = document.getElementById('cancel-edit-component-button-secondary');
     const editComponentNameInput = document.getElementById('edit-component-name');
     const editComponentDescriptionInput = document.getElementById('edit-component-description');
+    const editComponentGroupSelect = document.getElementById('edit-component-group-select'); // In Edit modal
     const editComponentOrderInput = document.getElementById('edit-component-order');
     const editComponentStatusMessage = document.getElementById('edit-component-status-message');
 
     const addIncidentForm = document.getElementById('add-incident-form');
-    const incidentComponentsSelect = document.getElementById('incident-components'); // Multi-select
+    const incidentAffectedComponentsContainer = document.getElementById('incident-affected-components-container');
+    const incidentStartTimeOptionNow = document.getElementById('start-now');
+    const incidentStartTimeOptionSpecific = document.getElementById('start-specific');
+    const incidentStartDateTimeField = document.getElementById('incident-start-datetime');
     const activeIncidentsListAdminContainer = document.getElementById('active-incidents-list-admin');
     const activeIncidentsCountAdmin = document.getElementById('active-incidents-count-admin');
 
@@ -147,8 +154,26 @@ document.addEventListener('DOMContentLoaded', () => { //
     const cancelUpdateIncidentButton = document.getElementById('cancel-update-incident-button');
     const cancelUpdateIncidentButtonSecondary = document.getElementById('cancel-update-incident-button-secondary');
     const updateIncidentStatusMessage = document.getElementById('update-incident-status-message');
+    const addMaintenanceForm = document.getElementById('add-maintenance-form');
+    const maintenanceAffectedComponentsContainer = document.getElementById('maintenance-affected-components-container');
+    const maintenanceListAdminContainer = document.getElementById('maintenance-list-admin');
+    const maintenanceCountAdmin = document.getElementById('maintenance-count-admin');
+    const editMaintenanceModal = document.getElementById('edit-maintenance-modal');
+    const editMaintenanceForm = document.getElementById('edit-maintenance-form');
+    const cancelEditMaintenanceButton = document.getElementById('cancel-edit-maintenance-button');
+    const cancelEditMaintenanceButtonSecondary = document.getElementById('cancel-edit-maintenance-button-secondary');
+    const editMaintenanceTitleInput = document.getElementById('edit-maintenance-title');
+    const editMaintenanceDescriptionInput = document.getElementById('edit-maintenance-description');
+    const editMaintenanceStartTimeInput = document.getElementById('edit-maintenance-start-time');
+    const editMaintenanceEndTimeInput = document.getElementById('edit-maintenance-end-time');
+    const editMaintenanceAffectedComponentsContainer = document.getElementById('edit-maintenance-affected-components-container');
+    const editMaintenanceStatusSelect = document.getElementById('edit-maintenance-status');
+    const maintenancePreviousUpdatesContainer = document.getElementById('maintenance-previous-updates');
+    const maintenanceNewUpdateInput = document.getElementById('maintenance-new-update');
+    const editMaintenanceStatusMessage = document.getElementById('edit-maintenance-status-message');
 
     // Global variable to store components for dropdown population
+    let allStatusGroups = [];
     let allStatusComponents = [];
 
     // Disabilities Management Elements
@@ -822,29 +847,119 @@ function renderYouTubeCard(account) {
         if (!isError) { setTimeout(() => { if (updateIncidentStatusMessage) { updateIncidentStatusMessage.textContent = ''; updateIncidentStatusMessage.className = 'status-message'; } }, 3000); }
     }
 
+    /** Shows status messages inside the Edit Maintenance modal */
+    function showEditMaintenanceStatus(message, isError = false) {
+        if (!editMaintenanceStatusMessage) return;
+        editMaintenanceStatusMessage.textContent = message;
+        editMaintenanceStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+        if (!isError) { setTimeout(() => { if (editMaintenanceStatusMessage) { editMaintenanceStatusMessage.textContent = ''; editMaintenanceStatusMessage.className = 'status-message'; } }, 3000); }
+    }
+
+    /** Shows status messages for the Overall Status Override section */
+    function showOverrideStatus(message, isError = false) {
+        if (!overrideStatusMessage) { console.warn("Override status message element not found"); return; }
+        overrideStatusMessage.textContent = message;
+        overrideStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
+        setTimeout(() => { if (overrideStatusMessage) { overrideStatusMessage.textContent = ''; overrideStatusMessage.className = 'status-message'; } }, 3000);
+    }
+
+    /** Converts datetime-local input value to Firestore Timestamp */
+    function datetimeLocalToTimestamp(dateTimeString) {
+        if (!dateTimeString) return null;
+        try {
+            // Ensure Timestamp is imported from 'firebase/firestore'
+            return Timestamp.fromDate(new Date(dateTimeString));
+        } catch (e) {
+            console.error("Error converting datetime-local string to Timestamp:", e);
+            return null;
+        }
+    }
+
+    /** Converts Firestore Timestamp to datetime-local string value */
+    function timestampToDatetimeLocal(timestamp) {
+        if (!timestamp || typeof timestamp.toDate !== 'function') return '';
+        try {
+            const date = timestamp.toDate();
+            // Format: YYYY-MM-DDTHH:mm
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        } catch (e) {
+            console.error("Error converting Timestamp to datetime-local string:", e);
+            return '';
+        }
+    }
+
     // --- Status Page: Component Management Functions ---
 
-    /** Renders a single status component item in the admin list */
+    async function loadStatusOverride() {
+        if (!statusOverrideSelect) return;
+        try {
+            // Assuming profileDocRef is defined globally and points to 'site_config/mainProfile'
+            const docSnap = await getDoc(profileDocRef);
+            if (docSnap.exists()) {
+                const currentOverride = docSnap.data()?.statusPageOverride || 'Automatic';
+                statusOverrideSelect.value = currentOverride;
+            } else {
+                console.warn("Main profile document not found, cannot load status override.");
+                statusOverrideSelect.value = 'Automatic'; // Default
+            }
+        } catch (error) {
+            console.error("Error loading status override:", error);
+            showOverrideStatus("Error loading override setting.", true);
+        }
+    }
+
+    /** Saves the selected overall status override */
+    async function saveStatusOverride() {
+        if (!statusOverrideSelect || !auth.currentUser) {
+            showOverrideStatus("Cannot save override (not logged in or element missing).", true);
+            return;
+        }
+        const newOverrideValue = statusOverrideSelect.value;
+        showOverrideStatus("Saving override...");
+        try {
+             // Assuming profileDocRef is defined globally
+            await updateDoc(profileDocRef, {
+                statusPageOverride: newOverrideValue
+            });
+            showOverrideStatus("Overall status override saved successfully.", false);
+            // Optional: logAdminActivity('STATUS_OVERRIDE_UPDATE', { override: newOverrideValue });
+        } catch (error) {
+            console.error("Error saving status override:", error);
+            showOverrideStatus(`Error saving override: ${error.message}`, true);
+            // Optional: logAdminActivity('STATUS_OVERRIDE_UPDATE_FAILED', { override: newOverrideValue, error: error.message });
+        }
+    }
+
+     /** Renders a single status component item in the admin list (MODIFIED to show group) */
     function renderComponentAdminListItem(container, docId, componentData) {
-        // ... (Copy the full function from the previous responses) ...
          if (!container) return;
         const itemDiv = document.createElement('div');
         itemDiv.className = 'list-item-admin component-admin-item';
         itemDiv.setAttribute('data-id', docId);
         itemDiv.setAttribute('data-status', componentData.currentStatus || 'Unknown');
         const statusClass = getStatusClassAdmin(componentData.currentStatus);
-        const statusOptions = ["Operational", "Degraded Performance", "Partial Outage", "Major Outage"];
+        const statusOptions = ["Operational", "Under Maintenance", "Degraded Performance", "Partial Outage", "Major Outage"]; // Added Maintenance
         let selectOptions = '';
         statusOptions.forEach(opt => {
             const selected = (opt === componentData.currentStatus) ? 'selected' : '';
             selectOptions += `<option value="${opt}" ${selected}>${opt}</option>`;
         });
+
+        // Find group name
+        const group = allStatusGroups.find(g => g.id === componentData.groupId);
+        const groupName = group ? group.name : 'Ungrouped';
+
         itemDiv.innerHTML = `
             <div class="item-content">
                 <div class="item-details">
                     <strong>${componentData.name || 'N/A'}</strong>
                     <span>${componentData.description || 'No description'}</span>
-                    <small>Order: ${componentData.order ?? 'N/A'}</small>
+                    <small>Group: ${groupName} | Order: ${componentData.order ?? 'N/A'}</small> {/* Show Group */}
                 </div>
                 <div class="component-status-controls">
                      <span class="component-current-status ${statusClass}">${componentData.currentStatus || 'Unknown'}</span>
@@ -861,73 +976,89 @@ function renderYouTubeCard(account) {
         container.appendChild(itemDiv);
     }
 
-    /** Loads status components from Firestore into the admin list and populates select dropdowns */
+    /** Loads status components, organizing by group (MODIFIED) */
     async function loadComponentsAdmin() {
-        // ... (Copy the full function from the previous responses) ...
-         if (!componentsListAdminContainer) { console.error("Component admin list container missing."); return; }
+        if (!componentsListAdminContainer) { console.error("Component admin list container missing."); return; }
         if (componentsCountAdmin) componentsCountAdmin.textContent = '(...)';
         componentsListAdminContainer.innerHTML = `<p>Loading components...</p>`;
-        allStatusComponents = [];
-        let componentOptionsHtml = '';
+        allStatusComponents = []; // Clear global array
+        let totalComponents = 0;
+
         try {
-            const componentQuery = query(componentsCollectionRef, orderBy("order", "asc"));
-            const querySnapshot = await getDocs(componentQuery);
-            componentsListAdminContainer.innerHTML = '';
-            if (querySnapshot.empty) {
+            // Fetch all components first
+            const componentQuery = query(componentsCollectionRef, orderBy("order", "asc")); // Order globally first
+            const componentSnapshot = await getDocs(componentQuery);
+            componentSnapshot.forEach(doc => allStatusComponents.push({ id: doc.id, ...doc.data() }));
+            totalComponents = allStatusComponents.length;
+
+            componentsListAdminContainer.innerHTML = ''; // Clear loading
+
+            if (totalComponents === 0) {
                 componentsListAdminContainer.innerHTML = '<p>No components created yet.</p>';
-                componentOptionsHtml = '<option value="" disabled>No components available</option>';
             } else {
-                querySnapshot.forEach((doc) => {
-                    const componentData = { id: doc.id, ...doc.data() };
-                    allStatusComponents.push(componentData);
-                    renderComponentAdminListItem(componentsListAdminContainer, doc.id, componentData);
-                    componentOptionsHtml += `<option value="${doc.id}">${componentData.name || doc.id}</option>`;
+                // Sort components by group first, then by order within the group
+                allStatusComponents.sort((a, b) => {
+                    const groupAOrder = allStatusGroups.find(g => g.id === a.groupId)?.order ?? Infinity; // Ungrouped last
+                    const groupBOrder = allStatusGroups.find(g => g.id === b.groupId)?.order ?? Infinity;
+                    if (groupAOrder !== groupBOrder) {
+                        return groupAOrder - groupBOrder; // Sort by group order
+                    }
+                    return (a.order ?? Infinity) - (b.order ?? Infinity); // Then by component order
+                });
+
+                // Render sorted components
+                allStatusComponents.forEach(compData => {
+                    renderComponentAdminListItem(componentsListAdminContainer, compData.id, compData);
                 });
             }
-            if (componentsCountAdmin) componentsCountAdmin.textContent = `(${querySnapshot.size})`;
-            if (incidentComponentsSelect) incidentComponentsSelect.innerHTML = componentOptionsHtml;
+            if (componentsCountAdmin) componentsCountAdmin.textContent = `(${totalComponents})`;
+
+            // Populate affected components sections (needs allStatusComponents)
+            populateAffectedComponentsCheckboxes(incidentAffectedComponentsContainer);
+            populateAffectedComponentsCheckboxes(maintenanceAffectedComponentsContainer); // For Add Maintenance
+            // Note: Edit Maintenance modal population happens when it opens
+
         } catch (error) {
             console.error("Error loading components for admin:", error);
             componentsListAdminContainer.innerHTML = `<p class="error">Error loading components.</p>`;
             if (componentsCountAdmin) componentsCountAdmin.textContent = '(Error)';
-            if (incidentComponentsSelect) incidentComponentsSelect.innerHTML = '<option value="" disabled>Error loading</option>';
             showAdminStatus("Error loading components.", true);
         }
     }
 
-    /** Handles adding a new status component */
+    /** Handles adding a new status component (MODIFIED to include group) */
     async function handleAddComponent(event) {
-        // ... (Copy the full function from the previous responses) ...
-         event.preventDefault(); if (!addComponentForm) return;
+        event.preventDefault(); if (!addComponentForm) return;
         const nameInput = addComponentForm.querySelector('#component-name');
         const descriptionInput = addComponentForm.querySelector('#component-description');
         const orderInput = addComponentForm.querySelector('#component-order');
+        const groupSelect = addComponentForm.querySelector('#component-group-select'); // Get group select
         const name = nameInput?.value.trim(); const description = descriptionInput?.value.trim();
         const orderStr = orderInput?.value.trim(); const order = parseInt(orderStr);
+        const groupId = groupSelect?.value || null; // Get selected group ID, null if "-- No Group --"
         if (!name || !orderStr || isNaN(order) || order < 0) { showAdminStatus("Name and valid Order required.", true); return; }
-        const componentData = { name, description: description || null, order, currentStatus: "Operational", lastUpdated: serverTimestamp(), createdAt: serverTimestamp() };
+        const componentData = { name, description: description || null, order, groupId, currentStatus: "Operational", lastUpdated: serverTimestamp(), createdAt: serverTimestamp() };
         showAdminStatus("Adding component...");
         try {
             await addDoc(componentsCollectionRef, componentData);
-            showAdminStatus("Component added.", false); addComponentForm.reset(); loadComponentsAdmin();
+            showAdminStatus("Component added.", false); addComponentForm.reset();
+            loadComponentsAdmin(); // Reload components
         } catch (error) { console.error("Error adding component:", error); showAdminStatus(`Error: ${error.message}`, true); }
     }
 
-    /** Handles deleting a status component */
-    async function handleDeleteComponent(docId) {
-        // ... (Copy the full function from the previous responses) ...
-         if (!docId || !confirm(`Delete this component?`)) return; showAdminStatus("Deleting component...");
-        try {
-            await deleteDoc(doc(db, 'status_components', docId));
-            showAdminStatus("Component deleted.", false); loadComponentsAdmin();
-        } catch (error) { console.error(`Error deleting component ${docId}:`, error); showAdminStatus(`Error: ${error.message}`, true); }
-    }
-
-    /** Opens the Edit Component modal */
+    /** Opens the Edit Component modal (MODIFIED to handle group) */
     async function openEditComponentModal(docId) {
-        // ... (Copy the full function from the previous responses) ...
-         if (!editComponentModal || !editComponentForm || !docId) return;
+        if (!editComponentModal || !editComponentForm || !docId) return;
         editComponentForm.reset(); showEditComponentStatus("Loading...");
+        // Ensure group dropdown is populated (might need to call loadGroupsAdmin if not already done)
+        if (editComponentGroupSelect && editComponentGroupSelect.options.length <= 1 && allStatusGroups.length > 0) {
+             let groupOptionsHtml = '<option value="">-- No Group --</option>';
+             allStatusGroups.forEach(g => { groupOptionsHtml += `<option value="${g.id}">${g.name || g.id}</option>`; });
+             editComponentGroupSelect.innerHTML = groupOptionsHtml;
+        } else if (editComponentGroupSelect && editComponentGroupSelect.options.length <= 1) {
+             editComponentGroupSelect.innerHTML = '<option value="">-- No Groups Available --</option>';
+        }
+
         try {
             const docRef = doc(db, "status_components", docId); const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
@@ -935,27 +1066,21 @@ function renderYouTubeCard(account) {
                 if(editComponentNameInput) editComponentNameInput.value = data.name || '';
                 if(editComponentDescriptionInput) editComponentDescriptionInput.value = data.description || '';
                 if(editComponentOrderInput) editComponentOrderInput.value = data.order ?? '';
+                if(editComponentGroupSelect) editComponentGroupSelect.value = data.groupId || ""; // Set selected group
                 editComponentModal.style.display = 'block'; showEditComponentStatus("");
             } else { showAdminStatus("Error: Component not found.", true); showEditComponentStatus("Error: Not found.", true); }
         } catch (error) { showAdminStatus(`Error loading: ${error.message}`, true); showEditComponentStatus(`Error: ${error.message}`, true); }
     }
 
-    /** Closes the Edit Component modal */
-    function closeEditComponentModal() {
-        // ... (Copy the full function from the previous responses) ...
-         if (editComponentModal) editComponentModal.style.display = 'none'; if (editComponentForm) editComponentForm.reset();
-        editComponentForm?.removeAttribute('data-doc-id'); if (editComponentStatusMessage) editComponentStatusMessage.textContent = '';
-    }
-
-    /** Handles updating a component from the edit modal */
+    /** Handles updating a component from the edit modal (MODIFIED for group) */
     async function handleUpdateComponent(event) {
-        // ... (Copy the full function from the previous responses) ...
-         event.preventDefault(); if (!editComponentForm) return; const docId = editComponentForm.getAttribute('data-doc-id');
+        event.preventDefault(); if (!editComponentForm) return; const docId = editComponentForm.getAttribute('data-doc-id');
         if (!docId) { showEditComponentStatus("Error: Missing ID.", true); return; }
         const name = editComponentNameInput?.value.trim(); const description = editComponentDescriptionInput?.value.trim();
         const orderStr = editComponentOrderInput?.value.trim(); const order = parseInt(orderStr);
+        const groupId = editComponentGroupSelect?.value || null; // Get selected group
         if (!name || !orderStr || isNaN(order) || order < 0) { showEditComponentStatus("Name and valid Order required.", true); return; }
-        const updatedData = { name, description: description || null, order, lastUpdated: serverTimestamp() };
+        const updatedData = { name, description: description || null, order, groupId, lastUpdated: serverTimestamp() }; // Include groupId
         showEditComponentStatus("Saving...");
         try {
             await updateDoc(doc(db, "status_components", docId), updatedData);
@@ -963,28 +1088,99 @@ function renderYouTubeCard(account) {
         } catch (error) { console.error(`Error updating component ${docId}:`, error); showEditComponentStatus(`Error: ${error.message}`, true); }
     }
 
-    /** Handles the quick status change dropdown */
+    /** Populates a container with checkboxes and status selects for components */
+    function populateAffectedComponentsCheckboxes(containerElement, selectedComponents = [], componentStatuses = {}) {
+        if (!containerElement) return;
+        containerElement.innerHTML = ''; // Clear previous
+        if (allStatusComponents.length === 0) {
+            containerElement.innerHTML = '<p><small>No components available.</small></p>';
+            return;
+        }
+
+        const statusOptionsHtml = `
+            <option value="Operational">Operational</option>
+            <option value="Under Maintenance">Under Maintenance</option>
+            <option value="Degraded Performance">Degraded Performance</option>
+            <option value="Partial Outage">Partial Outage</option>
+            <option value="Major Outage">Major Outage</option>
+        `;
+
+        // Group components for better UI (optional, but helpful)
+        const groupedComponents = allStatusComponents.reduce((acc, comp) => {
+            const groupId = comp.groupId || 'ungrouped';
+            if (!acc[groupId]) {
+                acc[groupId] = {
+                    name: allStatusGroups.find(g => g.id === groupId)?.name || 'Ungrouped',
+                    components: []
+                };
+            }
+            acc[groupId].components.push(comp);
+            return acc;
+        }, {});
+
+        // Render grouped components
+        Object.values(groupedComponents).forEach(group => {
+             const groupHeader = document.createElement('h6');
+             groupHeader.textContent = group.name;
+             groupHeader.style.marginTop = '10px';
+             containerElement.appendChild(groupHeader);
+
+             group.components.forEach(component => {
+                const isChecked = selectedComponents.includes(component.id);
+                const currentCompStatus = componentStatuses[component.id] || component.currentStatus || 'Operational'; // Use provided status or component's current
+
+                const row = document.createElement('div');
+                row.className = 'affected-component-row';
+                row.innerHTML = `
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="affected-${containerElement.id}-${component.id}" name="affectedComponents" value="${component.id}" ${isChecked ? 'checked' : ''}>
+                        <label for="affected-${containerElement.id}-${component.id}">${component.name}</label>
+                    </div>
+                    <select name="componentStatus-${component.id}" class="small-button" ${!isChecked ? 'disabled' : ''}>
+                        ${statusOptionsHtml}
+                    </select>
+                `;
+                // Set the selected status for the dropdown
+                const selectElement = row.querySelector('select');
+                if (selectElement) {
+                    selectElement.value = currentCompStatus;
+                }
+                // Add listener to enable/disable status select based on checkbox
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                checkbox?.addEventListener('change', (e) => {
+                    if(selectElement) selectElement.disabled = !e.target.checked;
+                });
+
+                containerElement.appendChild(row);
+            });
+        });
+    }
+
+    /** Handles the quick status change dropdown (MODIFIED to include Maintenance) */
     async function handleQuickStatusChange(docId, newStatus) {
-        // ... (Copy the full function from the previous responses) ...
          if (!docId || !newStatus) return; showAdminStatus(`Updating status...`);
         try {
             await updateDoc(doc(db, "status_components", docId), { currentStatus: newStatus, lastUpdated: serverTimestamp() });
             showAdminStatus(`Status updated to ${newStatus}.`, false);
             const listItem = componentsListAdminContainer?.querySelector(`.component-admin-item[data-id="${docId}"]`);
-            if (listItem) {
+            if (listItem) { // Update UI directly
                 const statusSpan = listItem.querySelector('.component-current-status');
                 const statusSelect = listItem.querySelector('.component-status-quick-change');
                 const newStatusClass = getStatusClassAdmin(newStatus);
                 listItem.setAttribute('data-status', newStatus);
                 if(statusSpan) { statusSpan.textContent = newStatus; statusSpan.className = `component-current-status ${newStatusClass}`; }
-                if(statusSelect) statusSelect.value = ""; // Reset select
-            } else { loadComponentsAdmin(); }
+                if(statusSelect) {
+                     // Update selected option in dropdown
+                     Array.from(statusSelect.options).forEach(option => { option.selected = (option.value === newStatus); });
+                     statusSelect.value = newStatus; // Ensure visual selection matches
+                }
+            } else { loadComponentsAdmin(); } // Fallback to reload
         } catch (error) { console.error(`Error updating status ${docId}:`, error); showAdminStatus(`Error: ${error.message}`, true); }
     }
 
-    /** Renders a single active incident item in the admin list */
+   /** Renders a single active incident item in the admin list (MODIFIED) */
     function renderIncidentAdminListItem(container, docId, incidentData) {
-        // ... (Copy the full function from the previous responses) ...
+        // ... (Keep the existing rendering logic, ensure it uses formatAdminTimestamp) ...
          if (!container) return; const itemDiv = document.createElement('div');
         itemDiv.className = 'list-item-admin incident-admin-item'; itemDiv.setAttribute('data-id', docId);
         const status = incidentData.status || 'Unknown'; const statusClass = getStatusClassAdmin(status);
@@ -1005,9 +1201,9 @@ function renderYouTubeCard(account) {
         container.appendChild(itemDiv);
     }
 
-    /** Loads active incidents into the admin list */
+    /** Loads active incidents into the admin list (No changes needed here if index is created) */
     async function loadIncidentsAdmin() {
-        // ... (Copy the full function from the previous responses) ...
+        // ... (Keep existing function, ensure index error message is helpful) ...
          if (!activeIncidentsListAdminContainer) return; if(activeIncidentsCountAdmin) activeIncidentsCountAdmin.textContent = '(...)';
         activeIncidentsListAdminContainer.innerHTML = '<p>Loading active incidents...</p>';
         try {
@@ -1016,40 +1212,105 @@ function renderYouTubeCard(account) {
             if (querySnapshot.empty) { activeIncidentsListAdminContainer.innerHTML = '<p>No active incidents.</p>'; }
             else { querySnapshot.forEach((doc) => { renderIncidentAdminListItem(activeIncidentsListAdminContainer, doc.id, doc.data()); }); }
             if(activeIncidentsCountAdmin) activeIncidentsCountAdmin.textContent = `(${querySnapshot.size})`;
-        } catch (error) { console.error("Error loading active incidents:", error); activeIncidentsListAdminContainer.innerHTML = `<p class="error">Error loading.</p>`; if(activeIncidentsCountAdmin) activeIncidentsCountAdmin.textContent = '(Error)'; showAdminStatus("Error loading incidents.", true); }
+        } catch (error) {
+             console.error("Error loading active incidents:", error);
+             if (error.code === 'failed-precondition') {
+                  activeIncidentsListAdminContainer.innerHTML = `<p class="error">Error: Missing Firestore index for incidents. Please create it using the link in the browser console (F12).</p>`;
+                  showAdminStatus("Incident Query Error: Missing index. Check console.", true);
+             } else {
+                 activeIncidentsListAdminContainer.innerHTML = `<p class="error">Error loading incidents.</p>`;
+                 showAdminStatus("Error loading incidents.", true);
+             }
+              if(activeIncidentsCountAdmin) activeIncidentsCountAdmin.textContent = '(Error)';
+         }
     }
 
-    /** Handles creating a new incident */
+   /** Handles creating a new incident (MODIFIED) */
     async function handleAddIncident(event) {
-        // ... (Copy the full function from the previous responses) ...
-         event.preventDefault(); if (!addIncidentForm || !incidentComponentsSelect) return;
+        event.preventDefault(); if (!addIncidentForm || !incidentAffectedComponentsContainer) return;
         const title = addIncidentForm.querySelector('#incident-title')?.value.trim();
-        const impact = addIncidentForm.querySelector('#incident-impact')?.value;
-        const initialStatus = addIncidentForm.querySelector('#incident-current-status')?.value;
+        // Impact is now implicitly set by component statuses
+        const initialStatus = addIncidentForm.querySelector('#incident-initial-status')?.value;
         const initialUpdateMessage = addIncidentForm.querySelector('#incident-initial-update')?.value.trim();
-        const selectedComponents = Array.from(incidentComponentsSelect.selectedOptions).map(option => option.value);
-        if (!title || !impact || !initialStatus || !initialUpdateMessage || selectedComponents.length === 0) { showAdminStatus("Fill all fields & select components.", true); return; }
-        const initialUpdate = { message: initialUpdateMessage, status: initialStatus, timestamp: serverTimestamp() };
-        const incidentData = { title, impact, status: initialStatus, affectedComponents: selectedComponents, updates: [initialUpdate], createdAt: serverTimestamp(), resolvedAt: null };
+        const startTimeOption = addIncidentForm.querySelector('input[name="startTimeOption"]:checked')?.value;
+        const specificStartTimeStr = addIncidentForm.querySelector('#incident-start-datetime')?.value;
+
+        // Get affected components AND their desired status during the incident
+        const affectedComponentsData = [];
+        const componentCheckboxes = incidentAffectedComponentsContainer.querySelectorAll('input[name="affectedComponents"]:checked');
+        if (componentCheckboxes.length === 0) {
+            showAdminStatus("Please select at least one affected component.", true); return;
+        }
+        componentCheckboxes.forEach(checkbox => {
+            const compId = checkbox.value;
+            const statusSelect = incidentAffectedComponentsContainer.querySelector(`select[name="componentStatus-${compId}"]`);
+            const componentStatusDuringIncident = statusSelect ? statusSelect.value : 'Degraded Performance'; // Default if select fails
+            affectedComponentsData.push({ id: compId, status: componentStatusDuringIncident });
+        });
+
+        let incidentStartTime = serverTimestamp(); // Default to now
+        if (startTimeOption === 'specific') {
+            incidentStartTime = datetimeLocalToTimestamp(specificStartTimeStr);
+            if (!incidentStartTime) {
+                showAdminStatus("Invalid specific start date/time provided.", true); return;
+            }
+        }
+
+        if (!title || !initialStatus || !initialUpdateMessage) {
+             showAdminStatus("Please fill out Title, Initial Status, and Initial Update.", true); return;
+        }
+
+        const initialUpdate = { message: initialUpdateMessage, status: initialStatus, timestamp: incidentStartTime }; // Use incident start time
+        const incidentData = {
+            title,
+            status: initialStatus,
+            affectedComponents: affectedComponentsData.map(c => c.id), // Store only IDs in incident doc
+            updates: [initialUpdate],
+            createdAt: incidentStartTime, // Use chosen start time
+            resolvedAt: null
+        };
+
         showAdminStatus("Creating incident...");
         try {
-            await addDoc(incidentsCollectionRef, incidentData); showAdminStatus("Incident created.", false); addIncidentForm.reset();
-            Array.from(incidentComponentsSelect.options).forEach(opt => opt.selected = false); loadIncidentsAdmin();
-            const updatePromises = selectedComponents.map(compId => updateDoc(doc(db, "status_components", compId), { currentStatus: impact, lastUpdated: serverTimestamp() }));
-            await Promise.all(updatePromises); console.log("Affected component statuses updated."); loadComponentsAdmin();
+            await addDoc(incidentsCollectionRef, incidentData);
+            showAdminStatus("Incident created.", false); addIncidentForm.reset();
+            // Reset specific start time field and radio button
+            if(incidentStartDateTimeField) incidentStartDateTimeField.style.display = 'none';
+            if(incidentStartTimeOptionNow) incidentStartTimeOptionNow.checked = true;
+            // Reload incidents list
+            loadIncidentsAdmin();
+
+            // --- Update status of affected components ---
+            const updatePromises = affectedComponentsData.map(compData => {
+                const compRef = doc(db, "status_components", compData.id);
+                return updateDoc(compRef, {
+                    currentStatus: compData.status, // Set component status to what was selected
+                    lastUpdated: serverTimestamp()
+                });
+            });
+            await Promise.all(updatePromises);
+            console.log("Affected component statuses updated for new incident.");
+            loadComponentsAdmin(); // Reload component list to show changes
+
         } catch (error) { console.error("Error creating incident:", error); showAdminStatus(`Error: ${error.message}`, true); }
     }
 
-    /** Opens the Update Incident modal */
+   /** Opens the Update Incident modal (MODIFIED to load affected components correctly) */
     async function openUpdateIncidentModal(docId) {
-        // ... (Copy the full function from the previous responses, ensuring collection name string 'status_incidents' is correct) ...
-         if (!updateIncidentModal || !updateIncidentForm || !docId) return; updateIncidentForm.reset(); updateIncidentForm.setAttribute('data-doc-id', docId);
-        showUpdateIncidentStatus("Loading details..."); if(incidentPreviousUpdatesContainer) incidentPreviousUpdatesContainer.innerHTML = '<p><small>Loading...</small></p>'; if(updateIncidentModalTitle) updateIncidentModalTitle.textContent = 'Loading...';
+        if (!updateIncidentModal || !updateIncidentForm || !docId) return;
+        updateIncidentForm.reset(); updateIncidentForm.setAttribute('data-doc-id', docId);
+        showUpdateIncidentStatus("Loading details...");
+        if(incidentPreviousUpdatesContainer) incidentPreviousUpdatesContainer.innerHTML = '<p><small>Loading...</small></p>';
+        if(updateIncidentModalTitle) updateIncidentModalTitle.textContent = 'Loading...';
         try {
-            const docRef = doc(db, "status_incidents", docId); // Corrected collection name
-            const docSnap = await getDoc(docRef); if (docSnap.exists()) {
-                const incident = docSnap.data(); if(updateIncidentModalTitle) updateIncidentModalTitle.textContent = incident.title || 'Untitled';
-                if (incidentPreviousUpdatesContainer) { let updatesHtml = ''; if (incident.updates && incident.updates.length > 0) { const sortedUpdates = [...incident.updates].sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis()); sortedUpdates.forEach(update => { updatesHtml += `<div class="update-entry"><p>${update.message || ''}</p><time>${formatAdminTimestamp(update.timestamp)} - <strong>${update.status || ''}</strong></time></div>`; }); } else { updatesHtml = '<p><small>No previous updates.</small></p>'; } incidentPreviousUpdatesContainer.innerHTML = updatesHtml; }
+            const docRef = doc(db, "status_incidents", docId); // Corrected collection name string
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const incident = docSnap.data();
+                if(updateIncidentModalTitle) updateIncidentModalTitle.textContent = incident.title || 'Untitled';
+                if (incidentPreviousUpdatesContainer) { // Populate previous updates
+                    let updatesHtml = ''; if (incident.updates && incident.updates.length > 0) { const sortedUpdates = [...incident.updates].sort((a, b) => (b.timestamp?.toMillis() ?? 0) - (a.timestamp?.toMillis() ?? 0)); sortedUpdates.forEach(update => { updatesHtml += `<div class="update-entry"><p>${update.message || ''}</p><time>${formatAdminTimestamp(update.timestamp)} - <strong>${update.status || ''}</strong></time></div>`; }); } else { updatesHtml = '<p><small>No previous updates.</small></p>'; } incidentPreviousUpdatesContainer.innerHTML = updatesHtml;
+                }
                 if(incidentNewStatusSelect) incidentNewStatusSelect.value = incident.status || 'Investigating';
                 updateIncidentModal.style.display = 'block'; showUpdateIncidentStatus("");
             } else { showAdminStatus("Error: Incident not found.", true); showUpdateIncidentStatus("Error: Not found.", true); }
@@ -1064,36 +1325,241 @@ function renderYouTubeCard(account) {
         if (incidentPreviousUpdatesContainer) incidentPreviousUpdatesContainer.innerHTML = ''; if(updateIncidentModalTitle) updateIncidentModalTitle.textContent = '';
     }
 
-    /** Handles adding a new update to an incident from the modal */
+    /** Handles adding a new update to an incident from the modal (MODIFIED for component status updates) */
     async function handleAddNewIncidentUpdate(event) {
-        // ... (Copy the full function from the previous responses, ensuring collection name string 'status_incidents' is correct) ...
          event.preventDefault(); if (!updateIncidentForm) return; const docId = updateIncidentForm.getAttribute('data-doc-id');
         if (!docId) { showUpdateIncidentStatus("Error: Missing ID.", true); return; }
-        const message = updateIncidentForm.querySelector('#incident-new-update')?.value.trim(); const newStatus = updateIncidentForm.querySelector('#incident-new-status')?.value;
+        const message = updateIncidentForm.querySelector('#incident-new-update')?.value.trim();
+        const newStatus = updateIncidentForm.querySelector('#incident-new-status')?.value;
         if (!message || !newStatus) { showUpdateIncidentStatus("Message and status required.", true); return; }
-        const newUpdate = { message, status: newStatus, timestamp: serverTimestamp() }; showUpdateIncidentStatus("Posting update...");
+        const newUpdate = { message, status: newStatus, timestamp: serverTimestamp() };
+        showUpdateIncidentStatus("Posting update...");
         try {
             const docRef = doc(db, 'status_incidents', docId); // Corrected collection name
             const updateData = { updates: arrayUnion(newUpdate), status: newStatus };
             if (newStatus === "Resolved") { updateData.resolvedAt = serverTimestamp(); }
             await updateDoc(docRef, updateData); showAdminStatus("Incident updated.", false); closeUpdateIncidentModal(); loadIncidentsAdmin();
-            if (newStatus === "Resolved") { const incidentSnap = await getDoc(docRef); if (incidentSnap.exists()) { const affected = incidentSnap.data().affectedComponents || []; const promises = affected.map(id => updateDoc(doc(db, "status_components", id), { currentStatus: "Operational", lastUpdated: serverTimestamp() }).catch(e => console.warn(e))); await Promise.all(promises); console.log("Affected components set to Operational."); loadComponentsAdmin(); } }
+
+            // --- Update component statuses ONLY if resolved ---
+            if (newStatus === "Resolved") {
+                const incidentSnap = await getDoc(docRef); // Re-fetch to get affected components
+                if (incidentSnap.exists()) {
+                    const affected = incidentSnap.data().affectedComponents || [];
+                    // Set components back to Operational
+                    const updatePromises = affected.map(compId => {
+                        const compRef = doc(db, "status_components", compId);
+                        return updateDoc(compRef, { currentStatus: "Operational", lastUpdated: serverTimestamp() })
+                               .catch(err => console.warn(`Error updating component ${compId} to Operational: ${err.message}`));
+                    });
+                    await Promise.all(updatePromises);
+                    console.log("Affected components set back to Operational after resolve.");
+                    loadComponentsAdmin(); // Reload components list
+                }
+            }
         } catch (error) { console.error(`Error updating incident ${docId}:`, error); showUpdateIncidentStatus(`Error: ${error.message}`, true); }
     }
 
-    /** Handles marking an incident as resolved directly from the list */
+    /** Handles marking an incident as resolved directly from the list (MODIFIED for component status updates) */
     async function handleResolveIncident(docId) {
-        // ... (Copy the full function from the previous responses, ensuring collection name string 'status_incidents' is correct) ...
          if (!docId || !confirm(`Mark incident as Resolved?`)) return; showAdminStatus(`Resolving...`);
         try {
             const docRef = doc(db, 'status_incidents', docId); // Corrected collection name
             const finalUpdate = { message: "The incident has been resolved.", status: "Resolved", timestamp: serverTimestamp() };
             const updateData = { status: "Resolved", resolvedAt: serverTimestamp(), updates: arrayUnion(finalUpdate) };
             await updateDoc(docRef, updateData); showAdminStatus("Incident Resolved.", false);
-            const incidentSnap = await getDoc(docRef); if (incidentSnap.exists()) { const affected = incidentSnap.data().affectedComponents || []; const promises = affected.map(id => updateDoc(doc(db, "status_components", id), { currentStatus: "Operational", lastUpdated: serverTimestamp() }).catch(e => console.warn(e))); await Promise.all(promises); console.log("Affected components set to Operational."); loadComponentsAdmin(); }
+
+            // Update affected components back to Operational
+            const incidentSnap = await getDoc(docRef); if (incidentSnap.exists()) {
+                const affected = incidentSnap.data().affectedComponents || [];
+                const promises = affected.map(id => updateDoc(doc(db, "status_components", id), { currentStatus: "Operational", lastUpdated: serverTimestamp() }).catch(e => console.warn(e)));
+                await Promise.all(promises); console.log("Affected components set to Operational."); loadComponentsAdmin();
+            }
             loadIncidentsAdmin();
         } catch (error) { console.error(`Error resolving incident ${docId}:`, error); showAdminStatus(`Error: ${error.message}`, true); }
     }
+
+    /** Renders a single group item in the admin list */
+    function renderGroupAdminListItem(container, docId, groupData) {
+        if (!container) return;
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'list-item-admin group-admin-item';
+        itemDiv.setAttribute('data-id', docId);
+        itemDiv.innerHTML = `
+            <div class="item-content">
+                <div class="item-details">
+                    <strong>${groupData.name || 'N/A'}</strong>
+                    <span>${groupData.isCollapsedByDefault ? 'Collapsed by Default' : 'Expanded by Default'}</span>
+                    <small>Order: ${groupData.order ?? 'N/A'}</small>
+                </div>
+            </div>
+            <div class="item-actions">
+                <button type="button" class="edit-group-button small-button" data-doc-id="${docId}">Edit</button>
+                <button type="button" class="delete-group-button small-button" data-doc-id="${docId}">Delete</button>
+            </div>`;
+        container.appendChild(itemDiv);
+    }
+
+    /** Loads groups into the admin list and populates select dropdowns */
+    async function loadGroupsAdmin() {
+        if (!groupsListAdminContainer) { console.error("Groups admin list container missing."); return; }
+        if (groupsCountAdmin) groupsCountAdmin.textContent = '(...)';
+        groupsListAdminContainer.innerHTML = `<p>Loading groups...</p>`;
+        allStatusGroups = []; // Clear global array
+        let groupOptionsHtml = '<option value="">-- No Group --</option>'; // Start with no group option
+
+        try {
+            const groupQuery = query(statusGroupsCollectionRef, orderBy("order", "asc"));
+            const querySnapshot = await getDocs(groupQuery);
+            groupsListAdminContainer.innerHTML = ''; // Clear loading
+
+            if (querySnapshot.empty) {
+                groupsListAdminContainer.innerHTML = '<p>No groups created yet.</p>';
+            } else {
+                querySnapshot.forEach((doc) => {
+                    const groupData = { id: doc.id, ...doc.data() };
+                    allStatusGroups.push(groupData); // Store for later use
+                    renderGroupAdminListItem(groupsListAdminContainer, doc.id, groupData);
+                    groupOptionsHtml += `<option value="${doc.id}">${groupData.name || doc.id}</option>`;
+                });
+            }
+            if (groupsCountAdmin) groupsCountAdmin.textContent = `(${querySnapshot.size})`;
+
+            // Populate the group select dropdowns in the component forms
+            if (componentGroupSelect) componentGroupSelect.innerHTML = groupOptionsHtml;
+            if (editComponentGroupSelect) editComponentGroupSelect.innerHTML = groupOptionsHtml;
+
+        } catch (error) {
+            console.error("Error loading groups for admin:", error);
+            groupsListAdminContainer.innerHTML = `<p class="error">Error loading groups.</p>`;
+            if (groupsCountAdmin) groupsCountAdmin.textContent = '(Error)';
+            if (componentGroupSelect) componentGroupSelect.innerHTML = '<option value="">Error Loading</option>';
+            if (editComponentGroupSelect) editComponentGroupSelect.innerHTML = '<option value="">Error Loading</option>';
+            showAdminStatus("Error loading component groups.", true);
+        }
+    }
+
+    /** Handles adding a new component group */
+    async function handleAddGroup(event) {
+        event.preventDefault(); if (!addGroupForm) return;
+        const nameInput = addGroupForm.querySelector('#group-name');
+        const orderInput = addGroupForm.querySelector('#group-order');
+        const collapsedInput = addGroupForm.querySelector('#group-collapsed');
+        const name = nameInput?.value.trim();
+        const orderStr = orderInput?.value.trim(); const order = parseInt(orderStr);
+        const isCollapsed = collapsedInput?.checked || false;
+        if (!name || !orderStr || isNaN(order) || order < 0) { showAdminStatus("Group Name and valid Order required.", true); return; }
+        const groupData = { name, order, isCollapsedByDefault: isCollapsed, createdAt: serverTimestamp() };
+        showAdminStatus("Adding group...");
+        try {
+            await addDoc(statusGroupsCollectionRef, groupData);
+            showAdminStatus("Group added.", false); addGroupForm.reset(); if(collapsedInput) collapsedInput.checked = false;
+            loadGroupsAdmin(); // Reload groups list and dropdowns
+        } catch (error) { console.error("Error adding group:", error); showAdminStatus(`Error: ${error.message}`, true); }
+    }
+
+    /** Handles deleting a component group */
+    async function handleDeleteGroup(docId) {
+        if (!docId) return;
+        // ** IMPORTANT: Add check/warning about components still assigned to this group? **
+        // For now, just deletes the group. Components will become ungrouped.
+        if (!confirm(`Delete this group? Components within it will become ungrouped.`)) return;
+        showAdminStatus("Deleting group...");
+        try {
+            await deleteDoc(doc(db, 'status_groups', docId));
+            // Optional: Update components that had this groupId to have groupId = null
+            showAdminStatus("Group deleted.", false);
+            loadGroupsAdmin(); // Reload list & dropdowns
+            loadComponentsAdmin(); // Reload components to reflect ungrouping
+        } catch (error) { console.error(`Error deleting group ${docId}:`, error); showAdminStatus(`Error: ${error.message}`, true); }
+    }
+
+    /** Opens the Edit Group modal */
+    async function openEditGroupModal(docId) {
+        if (!editGroupModal || !editGroupForm || !docId) return;
+        editGroupForm.reset(); showEditGroupStatus("Loading...");
+        try {
+            const docRef = doc(db, "status_groups", docId); const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data(); editGroupForm.setAttribute('data-doc-id', docId);
+                if(editGroupNameInput) editGroupNameInput.value = data.name || '';
+                if(editGroupOrderInput) editGroupOrderInput.value = data.order ?? '';
+                if(editGroupCollapsedInput) editGroupCollapsedInput.checked = data.isCollapsedByDefault || false;
+                editGroupModal.style.display = 'block'; showEditGroupStatus("");
+            } else { showAdminStatus("Error: Group not found.", true); showEditGroupStatus("Error: Not found.", true); }
+        } catch (error) { showAdminStatus(`Error loading: ${error.message}`, true); showEditGroupStatus(`Error: ${error.message}`, true); }
+    }
+
+    /** Closes the Edit Group modal */
+    function closeEditGroupModal() {
+        if (editGroupModal) editGroupModal.style.display = 'none'; if (editGroupForm) editGroupForm.reset();
+        editGroupForm?.removeAttribute('data-doc-id'); if (editGroupStatusMessage) editGroupStatusMessage.textContent = '';
+    }
+
+    /** Handles updating a group from the edit modal */
+    async function handleUpdateGroup(event) {
+        event.preventDefault(); if (!editGroupForm) return; const docId = editGroupForm.getAttribute('data-doc-id');
+        if (!docId) { showEditGroupStatus("Error: Missing ID.", true); return; }
+        const name = editGroupNameInput?.value.trim(); const orderStr = editGroupOrderInput?.value.trim();
+        const order = parseInt(orderStr); const isCollapsed = editGroupCollapsedInput?.checked || false;
+        if (!name || !orderStr || isNaN(order) || order < 0) { showEditGroupStatus("Name and valid Order required.", true); return; }
+        const updatedData = { name, order, isCollapsedByDefault: isCollapsed };
+        showEditGroupStatus("Saving...");
+        try {
+            await updateDoc(doc(db, "status_groups", docId), updatedData);
+            showAdminStatus("Group updated.", false); closeEditGroupModal(); loadGroupsAdmin();
+        } catch (error) { console.error(`Error updating group ${docId}:`, error); showEditGroupStatus(`Error: ${error.message}`, true); }
+    }
+
+    /** Renders a single maintenance item in the admin list */
+    function renderMaintenanceAdminListItem(container, docId, maintData) {
+        if (!container) return;
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'list-item-admin maintenance-admin-item';
+        itemDiv.setAttribute('data-id', docId);
+        const status = maintData.status || 'Scheduled';
+        const statusClass = getStatusClassAdmin(status); // Reuse status class helper
+        const affected = maintData.affectedComponents?.join(', ') || 'None listed';
+
+        itemDiv.innerHTML = `
+            <div class="item-content">
+                <div class="item-details">
+                    <strong>${maintData.title || 'Untitled Maintenance'}</strong>
+                    <span class="maintenance-current-status ${statusClass}">${status}</span>
+                    <small>Starts: ${formatAdminTimestamp(maintData.startTime)} | Ends: ${formatAdminTimestamp(maintData.endTime)}</small>
+                    <small>Affected: ${affected}</small>
+                    <p>${(maintData.description || '').substring(0, 100)}${(maintData.description || '').length > 100 ? '...' : ''}</p>
+                </div>
+            </div>
+            <div class="item-actions">
+                 <button type="button" class="edit-maintenance-button small-button" data-doc-id="${docId}">Edit / Add Update</button>
+                 <button type="button" class="delete-maintenance-button small-button" data-doc-id="${docId}">Delete</button>
+             </div>`;
+        container.appendChild(itemDiv);
+    }
+
+    // --- Status Page Management Event Listeners ---
+    if (saveStatusOverrideButton) { saveStatusOverrideButton.addEventListener('click', saveStatusOverride); } // Overall status
+    if (addGroupForm) { addGroupForm.addEventListener('submit', handleAddGroup); } // Add Group
+    if (editGroupForm) { editGroupForm.addEventListener('submit', handleUpdateGroup); } // Edit Group Modal
+    if (cancelEditGroupButton) { cancelEditGroupButton.addEventListener('click', closeEditGroupModal); }
+    if (cancelEditGroupButtonSecondary) { cancelEditGroupButtonSecondary.addEventListener('click', closeEditGroupModal); }
+    if (groupsListAdminContainer) { // Group List Actions
+        groupsListAdminContainer.addEventListener('click', (event) => {
+            const target = event.target; const listItem = target.closest('.group-admin-item'); const docId = listItem?.getAttribute('data-id'); if (!docId) return;
+            if (target.classList.contains('edit-group-button')) { openEditGroupModal(docId); }
+            else if (target.classList.contains('delete-group-button')) { handleDeleteGroup(docId); }
+        });
+    }
+
+    if (addComponentForm) { addComponentForm.addEventListener('submit', handleAddComponent); } // Add Component
+    if (editComponentForm) { editComponentForm.addEventListener('submit', handleUpdateComponent); } // Edit Component Modal
+    if (cancelEditComponentButton) { cancelEditComponentButton.addEventListener('click', closeEditComponentModal); }
+    if (cancelEditComponentButtonSecondary) { cancelEditComponentButtonSecondary.addEventListener('click', closeEditComponentModal); }
+    if (componentsListAdminContainer) { // Component List Actions
+         componentsListAdminContainer.addEventListener('click', (event) => { const target = event.target; const listItem = target.closest('.component-admin-item'); const docId = listItem?.getAttribute('data-id'); if (!docId) return; if (target.classList.contains('edit-component-button')) { openEditComponentModal(docId); } else if (target.classList.contains('delete-component-button')) { handleDeleteComponent(docId); } });
+         componentsListAdminContainer.addEventListener('change', (event) => { const target = event.target; if (target.classList.contains('component-status-quick-change')) { const docId = target.getAttribute('data-doc-id'); const newStatus = target.value; if (docId && newStatus) { handleQuickStatusChange(docId, newStatus); } else { target.value = ""; } } });
+     }
+
 
 // ======================================================
 // ===== START: ALL BUSINESS INFO CODE FOR admin.js (v15 - Syntax Fixed & Double Add Fix + Logging) =====
@@ -2981,8 +3447,10 @@ function closeEditUsefulLinkModal() { //
             showAdminStatus("Useful link updated successfully.", false);
             closeEditUsefulLinkModal();
             loadUsefulLinksAdmin();
+            closeEditGroupModal();
             closeEditComponentModal();
             closeUpdateIncidentModal();
+            closeEditMaintenanceModal();
 
         } catch (error) {
             console.error(`Error updating useful link (ID: ${docId}):`, error);
@@ -4511,12 +4979,27 @@ async function loadDisabilitiesAdmin() {
          componentsListAdminContainer.addEventListener('click', (event) => { const target = event.target; const listItem = target.closest('.component-admin-item'); const docId = listItem?.getAttribute('data-id'); if (!docId) return; if (target.classList.contains('edit-component-button')) { openEditComponentModal(docId); } else if (target.classList.contains('delete-component-button')) { handleDeleteComponent(docId); } });
          componentsListAdminContainer.addEventListener('change', (event) => { const target = event.target; if (target.classList.contains('component-status-quick-change')) { const docId = target.getAttribute('data-doc-id'); const newStatus = target.value; if (docId && newStatus) { handleQuickStatusChange(docId, newStatus); } else { target.value = ""; } } });
      }
-    if (addIncidentForm) { addIncidentForm.addEventListener('submit', handleAddIncident); }
-    if (updateIncidentForm) { updateIncidentForm.addEventListener('submit', handleAddNewIncidentUpdate); }
+    if (addIncidentForm) { // Incident Form Radio Buttons for Start Time
+            addIncidentForm.addEventListener('change', (event) => {
+                if (event.target.name === 'startTimeOption') {
+                    if(incidentStartDateTimeField) incidentStartDateTimeField.style.display = (event.target.value === 'specific') ? 'block' : 'none';
+                }
+            });
+            addIncidentForm.addEventListener('submit', handleAddIncident); // Add Incident
+        }    
+    if (updateIncidentForm) { updateIncidentForm.addEventListener('submit', handleAddNewIncidentUpdate); } // Update Incident Modal
     if (cancelUpdateIncidentButton) { cancelUpdateIncidentButton.addEventListener('click', closeUpdateIncidentModal); }
     if (cancelUpdateIncidentButtonSecondary) { cancelUpdateIncidentButtonSecondary.addEventListener('click', closeUpdateIncidentModal); }
-    if (activeIncidentsListAdminContainer) { /* ... (Copy incident list delegation listener from previous response) ... */
+    if (activeIncidentsListAdminContainer) { // Incident List Actions
          activeIncidentsListAdminContainer.addEventListener('click', (event) => { const target = event.target; const listItem = target.closest('.incident-admin-item'); const docId = listItem?.getAttribute('data-id'); if (!docId) return; if (target.classList.contains('update-incident-button')) { openUpdateIncidentModal(docId); } else if (target.classList.contains('resolve-incident-button')) { handleResolveIncident(docId); } });
+     }
+
+    if (addMaintenanceForm) { addMaintenanceForm.addEventListener('submit', handleAddMaintenance); } // Add Maintenance
+    if (editMaintenanceForm) { editMaintenanceForm.addEventListener('submit', handleUpdateMaintenance); } // Edit Maintenance Modal
+    if (cancelEditMaintenanceButton) { cancelEditMaintenanceButton.addEventListener('click', closeEditMaintenanceModal); }
+    if (cancelEditMaintenanceButtonSecondary) { cancelEditMaintenanceButtonSecondary.addEventListener('click', closeEditMaintenanceModal); }
+    if (maintenanceListAdminContainer) { // Maintenance List Actions
+         maintenanceListAdminContainer.addEventListener('click', (event) => { const target = event.target; const listItem = target.closest('.maintenance-admin-item'); const docId = listItem?.getAttribute('data-id'); if (!docId) return; if (target.classList.contains('edit-maintenance-button')) { openEditMaintenanceModal(docId); } else if (target.classList.contains('delete-maintenance-button')) { handleDeleteMaintenance(docId); } });
      }
 
     // --- Tech Management Listeners --- <<< PASTE HERE >>> ---
@@ -4565,6 +5048,13 @@ async function loadDisabilitiesAdmin() {
     if (cancelEditDisabilityButton) { cancelEditDisabilityButton.addEventListener('click', closeEditDisabilityModal); }
     if (cancelEditDisabilityButtonSecondary) { cancelEditDisabilityButtonSecondary.addEventListener('click', closeEditDisabilityModal); }
 
+     console.log("Loading status page admin data...");
+    if (typeof loadStatusOverride === 'function') { loadStatusOverride(); } // Load override setting
+    if (typeof loadGroupsAdmin === 'function') { loadGroupsAdmin(); }       // Load groups first
+    if (typeof loadComponentsAdmin === 'function') { loadComponentsAdmin(); } // Then components
+    if (typeof loadIncidentsAdmin === 'function') { loadIncidentsAdmin(); }   // Then incidents
+    if (typeof loadMaintenanceAdmin === 'function') { loadMaintenanceAdmin(); } // Then maintenance
+
 
     // --- Attach Event Listeners for Search & Previews ---
 
@@ -4594,6 +5084,7 @@ async function loadDisabilitiesAdmin() {
         if (event.target === editFaqModal) { closeEditFaqModal(); } // <<< ADD THIS LINE
         if (event.target === editComponentModal) { closeEditComponentModal(); } // <-- Add this check
         if (event.target === updateIncidentModal) { closeUpdateIncidentModal(); } // <-- Add this check
+        if (event.target === editMaintenanceModal) { closeEditMaintenanceModal(); }
     });
 
 // --- Ensure this is the closing }); for the main DOMContentLoaded listener ---
