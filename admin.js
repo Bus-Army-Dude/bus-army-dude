@@ -1028,24 +1028,7 @@ async function setupStatusPageManagement() {
     }
     if (addIncidentForm) {
         addIncidentForm.addEventListener('submit', handleAddIncident);
-        await initializeIncidentComponents();
     }
-
-    async function initializeIncidentComponents() {
-    if (!incidentAffectedComponentsContainer) {
-        console.error('Affected components container not found');
-        return;
-    }
-
-        try {
-        // Get components from Firestore
-        const componentsQuery = query(collection(db, 'status_components'), orderBy('order', 'asc'));
-        const componentsSnapshot = await getDocs(componentsQuery);
-
-        if (componentsSnapshot.empty) {
-            incidentAffectedComponentsContainer.innerHTML = '<p class="empty-message">No components available. Please create components first.</p>';
-            return;
-        }
     
     await Promise.all([
         loadComponentsAdmin(),
@@ -1078,25 +1061,20 @@ async function populateAffectedComponentsContainer() {
         });
         components.sort((a, b) => (a.order || 0) - (b.order || 0));
 
-        // Create component rows
-        componentsSnapshot.forEach((doc) => {
-            const component = doc.data();
-            const componentRow = document.createElement('div');
-            componentRow.className = 'affected-component-row';
-            
-            componentRow.innerHTML = `
+        components.forEach(component => {
+            const row = document.createElement('div');
+            row.className = 'affected-component-row';
+            row.innerHTML = `
                 <div class="checkbox-group">
                     <input type="checkbox" 
-                           id="component-${doc.id}" 
-                           name="affected_components" 
-                           value="${doc.id}"
-                           class="component-checkbox">
-                    <label for="component-${doc.id}" class="component-checkbox-label">
-                        ${component.name || 'Unnamed Component'}
-                    </label>
+                           id="affected-component-${component.id}" 
+                           name="affectedComponents" 
+                           value="${component.id}"
+                           class="affected-component-checkbox">
+                    <label for="affected-component-${component.id}">${component.name}</label>
                 </div>
-                <select name="component_status_${doc.id}" 
-                        class="status-select" 
+                <select class="component-status-select" 
+                        name="componentStatus-${component.id}"
                         disabled>
                     <option value="degraded_performance">Degraded Performance</option>
                     <option value="partial_outage">Partial Outage</option>
@@ -1104,9 +1082,8 @@ async function populateAffectedComponentsContainer() {
                 </select>
             `;
 
-            // Add event listener to enable/disable status select
-            const checkbox = componentRow.querySelector('.component-checkbox');
-            const statusSelect = componentRow.querySelector('.status-select');
+            const checkbox = row.querySelector('.affected-component-checkbox');
+            const statusSelect = row.querySelector('.component-status-select');
             
             checkbox.addEventListener('change', () => {
                 statusSelect.disabled = !checkbox.checked;
@@ -1149,14 +1126,12 @@ async function populateAffectedComponentsContainer() {
             showAdminStatus("Please select at least one affected component.", true); return;
         }
         componentCheckboxes.forEach(checkbox => {
-        const componentId = checkbox.value;
-        const statusSelect = incidentAffectedComponentsContainer.querySelector(`select[name="component_status_${componentId}"]`);
-        if (statusSelect) {
-            affectedComponents[componentId] = {
-                status: statusSelect.value
-            };
-        }
-    });
+            const compId = checkbox.value;
+             // *** This line requires 'incidentAffectedComponentsContainer' to be defined earlier ***
+            const statusSelect = incidentAffectedComponentsContainer.querySelector(`select[name="componentStatus-${compId}"]`);
+            const componentStatusDuringIncident = statusSelect ? statusSelect.value : 'Degraded Performance';
+            affectedComponentsData.push({ id: compId, status: componentStatusDuringIncident });
+        });
 
         // Determine the correct timestamp for the 'createdAt' field
         let incidentCreatedAtTimestamp;
@@ -1181,25 +1156,15 @@ async function populateAffectedComponentsContainer() {
             timestamp: Timestamp.now() // FIX: Use client timestamp here
         };
 
-        try {
         const incidentData = {
-            title,
-            impact,
-            status,
-            affectedComponents,
-            updates: [{
-                message: initialUpdate,
-                timestamp: serverTimestamp(),
-                status: status
-            }],
-            created: serverTimestamp(),
-            resolved: null
+            title: title,
+            status: initialStatus,
+            affectedComponents: affectedComponentsData.map(c => c.id),
+            updates: [initialUpdate],
+            createdAt: incidentCreatedAtTimestamp, // Use determined start time
+            resolvedAt: null
         };
 
-        await addDoc(collection(db, 'status_incidents'), incidentData);
-
-            
-            
         showAdminStatus("Creating incident...");
         try {
             const docRef = await addDoc(incidentsCollectionRef, incidentData);
@@ -1211,13 +1176,14 @@ async function populateAffectedComponentsContainer() {
             populateAffectedComponentsCheckboxes(incidentAffectedComponentsContainer); // Clear selections
             loadIncidentsAdmin();
 
-             // Update affected components status
-        const updatePromises = Object.entries(affectedComponents).map(([componentId, data]) => {
-            return updateDoc(doc(db, 'status_components', componentId), {
-                currentStatus: data.status,
-                lastUpdated: serverTimestamp()
+            // Update status of affected components
+            const updatePromises = affectedComponentsData.map(compData => {
+                const compRef = doc(db, "status_components", compData.id);
+                return updateDoc(compRef, {
+                    currentStatus: compData.status,
+                    lastUpdated: serverTimestamp()
+                });
             });
-        });
             await Promise.all(updatePromises);
             console.log("Affected component statuses updated for new incident.");
             loadComponentsAdmin(); // Reload component list
