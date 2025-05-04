@@ -1019,7 +1019,7 @@ function renderYouTubeCard(account) {
         } catch (error) { console.error("Error loading active incidents:", error); activeIncidentsListAdminContainer.innerHTML = `<p class="error">Error loading.</p>`; if(activeIncidentsCountAdmin) activeIncidentsCountAdmin.textContent = '(Error)'; showAdminStatus("Error loading incidents.", true); }
     }
 
-     /** Handles creating a new incident (CORRECTED for serverTimestamp in array) */
+    /** Handles creating a new incident (CORRECTED for serverTimestamp in array) */
     async function handleAddIncident(event) {
         event.preventDefault();
         if (!addIncidentForm || !incidentAffectedComponentsContainer) return;
@@ -1083,13 +1083,17 @@ function renderYouTubeCard(account) {
 
         showAdminStatus("Creating incident...");
         try {
+            // Use the correct collection reference defined earlier
             const docRef = await addDoc(incidentsCollectionRef, incidentData); // This should now work
             showAdminStatus("Incident created successfully.", false);
             addIncidentForm.reset();
+            // Reset specific start time field and radio button
             if(incidentStartDateTimeField) incidentStartDateTimeField.style.display = 'none';
             if(incidentStartTimeOptionNow) incidentStartTimeOptionNow.checked = true;
-            populateAffectedComponentsCheckboxes(incidentAffectedComponentsContainer); // Clear selections in the form
-            loadIncidentsAdmin(); // Reload the list of active incidents
+            // Clear component selections in the form
+            populateAffectedComponentsCheckboxes(incidentAffectedComponentsContainer);
+            // Reload incidents list
+            loadIncidentsAdmin();
 
             // --- Update status of affected components ---
             const updatePromises = affectedComponentsData.map(compData => {
@@ -1103,13 +1107,17 @@ function renderYouTubeCard(account) {
             console.log("Affected component statuses updated for new incident.");
             loadComponentsAdmin(); // Reload component list to show changes
              // Optional: Log activity
-             logAdminActivity('INCIDENT_CREATE', { title: title, status: initialStatus });
+             if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('INCIDENT_CREATE', { title: title, status: initialStatus });
+             }
 
         } catch (error) {
             console.error("Error creating incident:", error);
             showAdminStatus(`Error creating incident: ${error.message}`, true);
               // Optional: Log failed activity
-             logAdminActivity('INCIDENT_CREATE_FAILED', { title: title, error: error.message });
+             if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('INCIDENT_CREATE_FAILED', { title: title, error: error.message });
+             }
         }
     }
 
