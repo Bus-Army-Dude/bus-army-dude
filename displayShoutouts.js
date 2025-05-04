@@ -1,4 +1,4 @@
-// displayShoutouts.js (MODIFIED - Handles index.html AND status.html)
+// displayShoutouts.js (MODIFIED - Handles index.html AND status.html - Fixed Limit Import)
 
 // --- Firebase Configuration ---
 const firebaseConfig = {
@@ -13,7 +13,18 @@ const firebaseConfig = {
 
 // --- Firebase Imports ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, getDoc, Timestamp, orderBy, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    Timestamp,
+    orderBy,
+    query,
+    where,
+    limit // <<< CORRECTED: Added limit function import
+} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 // --- Firebase Initialization ---
 let db;
@@ -336,7 +347,8 @@ async function loadStatusIncidents() {
 
     try {
         // Use the correct collection reference
-        const q = query(incidentsCollectionRef, orderBy("createdAt", "desc"), limit(15));
+        // *** This is the query that needs the index ***
+        const q = query(incidentsCollectionRef, orderBy("createdAt", "desc"), limit(15)); // Added limit back
         const querySnapshot = await getDocs(q);
         let activeIncidentsHtml = ''; let pastIncidentsHtml = '';
         let activeCount = 0; let pastCount = 0;
@@ -421,7 +433,7 @@ async function initializeHomepageContent() {
     let siteSettings = {}; let maintenanceEnabled = false; let maintenanceTitle = "Site Under Maintenance"; let maintenanceMessage = "Performing scheduled maintenance..."; let hideTikTokSection = false; let countdownTargetDate = null; let countdownTitle = null; let countdownExpiredMessage = null;
     try {
         const configSnap = await getDoc(profileDocRef); if (configSnap.exists()) { siteSettings = configSnap.data() || {}; maintenanceEnabled = siteSettings.isMaintenanceModeEnabled || false; maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle; maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage; hideTikTokSection = siteSettings.hideTikTokSection || false; countdownTargetDate = siteSettings.countdownTargetDate; countdownTitle = siteSettings.countdownTitle; countdownExpiredMessage = siteSettings.countdownExpiredMessage; } else { console.warn("Site settings document not found."); }
-    } catch (error) { console.error("Error fetching site settings:", error); }
+    } catch (error) { console.error("Error fetching site settings:", error); /* Handle error */ }
 
     // --- Maintenance Mode Check ---
     if (maintenanceEnabled) {
