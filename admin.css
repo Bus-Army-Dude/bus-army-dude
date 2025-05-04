@@ -1198,6 +1198,199 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
     display: none;
 }
 
+/* =========================================== */
+/* == START: Status Page Management Styles == */
+/* =========================================== */
+
+/* --- General Section Styling --- */
+#status-page-management h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+}
+
+#status-page-management h4 {
+    margin-top: 1.5em; /* Add space above subsection headings */
+    margin-bottom: 1em;
+}
+
+#status-page-management h5 {
+    margin-top: 1.2em;
+     margin-bottom: 0.8em;
+    font-size: 1.1em; /* Slightly larger sub-heading */
+     color: var(--secondary-text);
+}
+
+#status-page-management hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2.5rem 0; /* Use existing margin style */
+}
+
+/* --- Component List Item Specifics --- */
+.component-admin-item .item-content {
+    /* Flexbox already applied by .list-item-admin .item-content */
+    /* You might want to adjust alignment if needed */
+     align-items: center; /* Center vertically */
+     flex-wrap: wrap; /* Allow wrapping */
+     gap: 15px; /* Space between details and controls */
+}
+
+.component-admin-item .item-details {
+    flex-grow: 1; /* Allow details to take available space */
+}
+
+/* --- Component Status Controls (Right Side) --- */
+.component-status-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between current status and dropdown */
+    flex-shrink: 0; /* Prevent shrinking on smaller screens */
+    flex-wrap: wrap; /* Allow wrapping */
+}
+
+.component-current-status {
+    /* Uses base .component-status styles from status.css, imported via status.js */
+    /* We just need to ensure alignment and spacing */
+    padding: 4px 10px; /* Slightly smaller padding for admin */
+    font-size: 0.8em;
+    border-radius: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Quick Status Change Dropdown */
+.component-status-quick-change {
+    /* Inherit base select styles */
+    padding: 5px 8px !important; /* Override base padding */
+    font-size: 0.85em !important; /* Smaller font */
+    width: auto; /* Don't force full width */
+    min-width: 150px;
+    flex-grow: 0; /* Don't allow it to grow excessively */
+    background-position: right 0.5rem center; /* Adjust arrow position */
+    border-radius: var(--border-radius-sm); /* Smaller radius */
+}
+
+/* --- Incident Form Specifics --- */
+#add-incident-form label[for="incident-components"] {
+    display: block; /* Ensure label is block */
+     margin-bottom: 8px;
+}
+#add-incident-form #incident-components {
+    /* Style the multi-select box */
+    min-height: 80px; /* Give it some height */
+    border: 1px solid var(--input-border-color);
+    border-radius: var(--border-radius-md);
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    padding: 5px;
+}
+#add-incident-form #incident-components option {
+    padding: 4px 8px;
+    color: var(--text-color); /* Ensure options are readable */
+     background-color: var(--input-bg-color); /* Match background */
+}
+#add-incident-form #incident-components option:checked {
+     background-color: var(--accent-color); /* Highlight selected */
+     color: white;
+}
+
+/* --- Incident List Item Specifics --- */
+.incident-admin-item .item-details strong {
+    font-size: 1.05em; /* Slightly larger title */
+    display: block;
+    margin-bottom: 5px;
+}
+
+.incident-admin-item .incident-current-status {
+     /* Uses base .incident-status styles */
+     display: inline-block; /* Make it inline */
+     margin-right: 10px; /* Add space */
+     font-size: 0.8em;
+     padding: 3px 8px;
+}
+
+.incident-admin-item small {
+    /* Style for affected components/opened time */
+    display: block;
+    margin: 5px 0;
+    font-size: 0.8em;
+    color: var(--secondary-text);
+}
+.incident-admin-item p { /* Style for latest update snippet */
+    font-size: 0.9em;
+    margin-top: 8px;
+    font-style: italic;
+    color: var(--secondary-text);
+    opacity: 0.9;
+     /* Limit lines shown */
+     display: -webkit-box;
+     -webkit-line-clamp: 2;
+     -webkit-box-orient: vertical;
+     overflow: hidden;
+     text-overflow: ellipsis;
+}
+
+.incident-admin-item .item-actions button {
+    margin-left: 5px; /* Add spacing between buttons */
+}
+
+/* Specific button color for resolve */
+.resolve-incident-button {
+    background-color: var(--color-success-action) !important; /* Use success green */
+    color: white !important;
+}
+.resolve-incident-button:hover {
+     background-color: var(--color-success-action-hover) !important;
+}
+
+
+/* --- Update Incident Modal Specifics --- */
+#update-incident-modal #update-incident-modal-title {
+    /* Style for the incident title span inside the modal h2 */
+    font-weight: normal;
+    font-size: 0.9em;
+    color: var(--secondary-text);
+}
+
+.previous-updates-log {
+    max-height: 200px; /* Limit height */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 10px;
+    background-color: var(--bg-color); /* Slightly different bg */
+    margin-bottom: 15px; /* Space below log */
+    font-size: 0.9em;
+}
+
+.previous-updates-log .update-entry {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+}
+.previous-updates-log .update-entry:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+     padding-bottom: 0;
+}
+.previous-updates-log .update-entry p {
+    margin: 0 0 5px 0;
+}
+.previous-updates-log .update-entry time {
+    font-size: 0.9em;
+    color: var(--secondary-text);
+}
+.previous-updates-log .update-entry strong { /* Style the status in the log */
+     font-weight: 500;
+     margin-left: 5px;
+     /* Add color based on status class if needed */
+}
+
+/* =========================================== */
+/* == END: Status Page Management Styles ===== */
+/* =========================================== */
+
 /* ======================== */
 /* Tech Section Admin Styles*/
 /* ======================== */
