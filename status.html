@@ -15,7 +15,7 @@
       gtag('config', 'G-E0RSQS1MS7');
     </script>
 
-    </head>
+</head>
 <body class="dark-mode"> <div class="container">
 
         <header class="status-header">
@@ -27,10 +27,24 @@
             <p>Loading overall system status...</p>
         </section>
 
+        <section class="maintenance-section status-section" aria-labelledby="maintenance-heading">
+            <h2 id="maintenance-heading">Scheduled Maintenance</h2>
+            <div id="maintenance-list" class="maintenance-list">
+                <p>Loading scheduled maintenance...</p>
+                </div>
+        </section>
+
         <section class="components-section status-section" aria-labelledby="components-heading">
             <h2 id="components-heading">Component Status</h2>
-            <div id="components-list" class="components-list">
-                <p>Loading component statuses...</p>
+            <div class="status-legend">
+                <span class="legend-item"><span class="legend-color status-operational"></span> Operational</span>
+                <span class="legend-item"><span class="legend-color status-degraded-performance"></span> Degraded</span>
+                <span class="legend-item"><span class="legend-color status-partial-outage"></span> Partial Outage</span>
+                <span class="legend-item"><span class="legend-color status-major-outage"></span> Major Outage</span>
+                <span class="legend-item"><span class="legend-color status-under-maintenance"></span> Maintenance</span>
+            </div>
+            <div id="component-groups-list">
+                <p>Loading components...</p>
                 </div>
         </section>
 
@@ -46,16 +60,17 @@
             <div id="past-incidents-list" class="incidents-list">
                 <p>Loading past incidents...</p>
                 </div>
-             </section>
+        </section>
 
-        </div> <footer>
+    </div> <footer>
         <p>© <span id="year"></span> Bus Army Dude. All Rights Reserved.</p>
-         </footer>
+    </footer>
 
     <script type="module" src="firebase-init.js"></script>
-
-    <script src="globalSettings.js"></script> <script src="settings.js"></script>     <script src="common.js"></script>       <script type="module" src="displayShoutouts.js"></script>
-
+    <script src="globalSettings.js"></script>
+    <script src="settings.js"></script>
+    <script src="common.js"></script>
+    <script type="module" src="displayShoutouts.js"></script>
     <script src="script.js"></script>
 
 </body>
