@@ -1,56 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <title>Weather - Bus Army Dude's Profile</title> <meta charset="UTF-8">
+    <title>Weather - Bus Army Dude's Profile</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="Weather App"> <meta name="description" content="Explore accurate and real-time weather information">
+    <meta name="title" content="weatherio">
+    <meta name="description" content="Explore accurate and real-time weather information">
 
     <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <link rel="stylesheet" href="assest/css/weather-style.css">
     <link rel="stylesheet" href="assest/css/settings-style.css">
 
-    <script type="module" src="assest/js/app.js" defer></script>
-    <script type="module" src="assest/js/route.js" defer></script>
-    <script type="module" src="assest/js/module.js" defer></script>
-    <script type="module" src="assest/js/settings.js" defer></script> </head>
+    <script type="module" src="assest/js/app.js"></script>
+    <script type="module" src="assest/js/route.js"></script>
+    <script type="module" src="assest/js/module.js"></script>
+    <script type="module" src="assest/js/settings.js"></script>
+</head>
 
+     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0RSQS1MS7"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
+    
       gtag('config', 'G-E0RSQS1MS7');
     </script>
-
-<body class="weather-page">
-
+    
+<body>
     <header class="header">
         <div class="container">
-            <a href="#" class="logo"> <img src="assest/images/logo.png" width="150" height="auto" alt="logo"> </a>
-
+            <a href="" class="logo">
+                <img src="assest/images/logo.png" alt="logo">
+            </a>
             <div class="search-view" data-search-view>
-                <div class="search-wrapper">
-                     <input type="search" ...>
-                     <span class="m-icon leading-icon">search</span>
-                     <button class="icon-btn leading-icon has-state" ... data-search-toggler>
-                         <span class="m-icon">arrow_back</span>
-                     </button>
-                 </div>
-                <div class="search-result" data-search-result></div>
+              <div class="search-wrapper">
+                <input type="search" name="search" class="search-field" placeholder="Search city..." autocomplete="off" data-search-field>
+                <span class="m-icon">search</span>
+                <button class="icon-btn leading-icon has-state" aria-label="close search" data-search-toggler>
+                  <span class="m-icon">arrow_back</span>
+                </button>
+              </div>
+              <div class="search-result" data-search-result></div>
             </div>
 
             <div class="header-actions">
-                <button class="icon-btn has-state" aria-label="open search" data-search-toggler>
-                    <span class="m-icon">search</span>
-                </button>
-
                 <a href="#/current-location" class="btn-primary has-state" data-current-location-btn>
                     <span class="m-icon">my_location</span>
                     <span class="span">Current Location</span>
@@ -61,7 +58,15 @@
                     <span class="span">Settings</span>
                 </button>
 
-                </div>
+                <button class="btn-primary has-state" data-settings-btn onclick="window.location.href='index.html';">
+                    <span class="m-icon material-icons">home</span>
+                    <span class="span">Home</span>
+                </button>
+
+                <button class="icon-btn has-state" aria-label="open search" data-search-toggler>
+                    <span class="m-icon">search</span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -75,102 +80,100 @@
                 <section class="section highlights" aria-labelledby="highlights-label" data-highlights></section>
                 <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast></section>
             </div>
-            <div class="loading" data-loading></div> </article>
-    </main>
-
+            <div class="loading" data-loading></div>
+        </article>
+    <main>
     <div id="siteSettingsModalContainer" class="settings-modal" data-settings-modal>
-        <div class="settings-content">
-            <h2 class="title-2">Settings</h2>
-            <form data-settings-form>
-                <div class="settings-section">
-                    <h3 class="settings-section-title">Units</h3>
-                    <div class="setting-item">
-                        <label class="setting-label" for="temperature">Temperature:</label>
-                        <select id="temperature" name="temperature" class="settings-select" data-settings-temp> <option value="celsius">Celsius (°C)</option>
-                            <option value="fahrenheit">Fahrenheit (°F)</option>
-                            <option value="kelvin">Kelvin (K)</option>
-                        </select>
-                        <p class="settings-description">Choose the unit for temperature displays.</p>
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label" for="windSpeed">Wind Speed:</label>
-                        <select id="windSpeed" name="windSpeed" class="settings-select" data-settings-speed> <option value="ms">m/s</option>
-                            <option value="kph">km/h</option>
-                            <option value="mph">mph</option>
-                            <option value="knots">knots</option>
-                            <option value="beaufort">Beaufort</option>
-                        </select>
-                        <p class="settings-description">Choose the unit for wind speed displays.</p>
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label" for="pressure">Pressure:</label>
-                        <select id="pressure" name="pressure" class="settings-select" data-settings-pressure> <option value="hpa">hPa</option>
-                            <option value="inhg">inHg</option>
-                            <option value="mmhg">mmHg</option>
-                            <option value="kpa">kPa</option>
-                            <option value="mbar">mbar</option>
-                        </select>
-                        <p class="settings-description">Choose the unit for atmospheric pressure displays.</p>
-                    </div>
+    <div class="settings-content">
+        <h2 class="title-2">Settings</h2>
+        <form data-settings-form>
+            <div class="settings-section">
+                <h3 class="settings-section-title">Units</h3>
+                <div class="setting-item">
+                    <label class="setting-label" for="temperature">Temperature:</label>
+                    <select name="temperature" class="settings-select" data-settings-temp>
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                    <p class="settings-description">Choose the unit for temperature displays.</p>
                 </div>
-
-                <div class="settings-section">
-                    <h3 class="settings-section-title">Time & Location</h3>
-                    <div class="setting-item">
-                        <label class="setting-label" for="timeFormatToggle">24-Hour Time:</label> <label class="toggle-switch">
-                            <input type="checkbox" id="timeFormatToggle" name="timeFormat" data-settings-time> <span class="toggle-slider"></span>
-                        </label>
-                        <p class="settings-description">
-                            Toggle between 12-hour and 24-hour time formats.<br>
-                            <b>You must refresh the page after you hit save changes.</b>
-                        </p>
-                    </div>
-                    <div class="setting-item">
-                        <label class="setting-label" for="locationToggle">Location Services:</label> <label class="toggle-switch">
-                            <input type="checkbox" id="locationToggle" name="location" data-settings-location> <span class="toggle-slider"></span>
-                        </label>
-                        <p class="settings-description">Enable or disable location services for automatic location detection.</p>
-                    </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="windSpeed">Wind Speed:</label>
+                    <select name="windSpeed" class="settings-select" data-settings-speed>
+                        <option value="ms">m/s</option>
+                        <option value="kph">km/h</option>
+                        <option value="mph">mph</option>
+                        <option value="knots">knots</option>
+                        <option value="beaufort">Beaufort</option>
+                    </select>
+                    <p class="settings-description">Choose the unit for wind speed displays.</p>
                 </div>
-
-                <div class="settings-section">
-                    <h3 class="settings-section-title">Appearance</h3>
-                     <div class="setting-item">
-                         <label class="setting-label" for="darkModeToggle">Dark Mode:</label> <label class="toggle-switch">
-                             <input type="checkbox" id="darkModeToggle" name="darkMode" data-dark-mode-toggle data-settings-theme> <span class="toggle-slider"></span>
-                         </label>
-                         <p class="settings-description">Toggle between light and dark color themes.</p>
-                     </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="pressure">Pressure:</label>
+                    <select name="pressure" class="settings-select" data-settings-pressure>
+                        <option value="hpa">hPa</option>
+                        <option value="inhg">inHg</option>
+                        <option value="mmhg">mmHg</option>
+                        <option value="kpa">kPa</option>
+                        <option value="mbar">mbar</option>
+                    </select>
+                    <p class="settings-description">Choose the unit for atmospheric pressure displays.</p>
                 </div>
-
-                <div class="settings-actions">
-                    <button type="submit" class="settings-save" data-settings-save>Save Changes</button> <button type="button" class="settings-close" data-settings-close>Close</button>
+            </div>
+            <div class="settings-section">
+                <h3 class="settings-section-title">Time & Location</h3>
+                <div class="setting-item">
+                    <label class="setting-label" for="timeFormat">24-Hour Time:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="timeFormat" data-settings-time>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <p class="settings-description">
+                        Toggle between 12-hour and 24-hour time formats.<br>
+                        <b>You must refresh the page after you hit save changes.</b>
+                    </p>
                 </div>
-            </form>
-        </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="location">Location Services:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="location" data-settings-location>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <p class="settings-description">Enable or disable location services for automatic location detection.</p>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h3 class="settings-section-title">Appearance</h3>
+                 <div class="setting-item">
+                    <label class="setting-label" for="darkMode">Dark Mode:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="darkMode" data-dark-mode-toggle data-settings-theme>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <p class="settings-description">Toggle between light and dark color themes.</p>
+                </div>
+            </div>
+            <div class="settings-actions">
+                <button type="submit" class="settings-save" data-settings-save>Save</button>
+                <button type="button" class="settings-close" data-settings-close>Close</button>
+            </div>
+        </form>
     </div>
-
+</div>
+    
     <section class="error-content" data-error-content>
         <h2 class="heading">404</h2>
         <p class="body-1">Page not found!</p>
-        <a href="#/weather?lat=41.37&lon=-83.65" class="btn-primary"> <span class="span">Go Home</span>
+        <a href="#/weather" class="btn-primary">
+            <span class="span">Go Home</span>
         </a>
     </section>
-
-    <div class="refresh-message" data-refresh-message>
-        <div class="refresh-content">
-            <span>Please refresh the page for some settings to take effect.</span>
-            <button class="refresh-close" aria-label="Close refresh message" data-refresh-close>
-                <span class="m-icon">close</span>
-            </button>
-        </div>
-    </div>
-
+</body>
     <script src="common.js"></script>
     <script src="globalSettings.js"></script>
     <script src="script.js"></script>
     <script src="ai-features.js"></script>
+    <script src="settings.js"></script>
     <script src="copyright.js"></script>
-
-</body>
 </html>
