@@ -2641,16 +2641,18 @@ function formatTimeForPreview(timeString) { // Converts HH:MM to AM/PM format
             authStatus.style.display = 'block'; // Ensure it's visible or use 'none' to hide
 
             // Hide email field and Next button
-            emailGroup.style.display = 'none'; //
-            nextButton.style.display = 'none'; //
-
+            if(emailGroup) emailGroup.style.display = 'none';
+            if(nextButton) nextButton.style.display = 'none';
+            
             // Show password field and the actual Login button
-            passwordGroup.style.display = 'block'; //
-            loginButton.style.display = 'inline-block'; // Or 'block' depending on layout
-
-            // Focus the password input for better UX
-            if(passwordInput) { //
-                 passwordInput.focus(); //
+            if(passwordGroup) passwordGroup.style.display = 'block';
+            if(loginButton) loginButton.style.display = 'inline-block'; // Or 'block'
+            
+            // Focus the password input AFTER a very short delay
+            if (passwordInput) {
+                setTimeout(() => { // Add setTimeout
+                    passwordInput.focus();
+                }, 0); // Delay of 0ms is usually enough for the browser to catch up
             }
         });
     } else { //
