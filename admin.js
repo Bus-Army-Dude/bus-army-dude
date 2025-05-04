@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     const componentsCollectionRef = collection(db, "status_components");
     const incidentsCollectionRef = collection(db, "status_incidents");
 
+
     // --- Inactivity Logout Variables ---
     let inactivityTimer; //
     let expirationTime; //
