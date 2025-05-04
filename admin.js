@@ -171,6 +171,10 @@ document.addEventListener('DOMContentLoaded', () => { //
     const maintenancePreviousUpdatesContainer = document.getElementById('maintenance-previous-updates');
     const maintenanceNewUpdateInput = document.getElementById('maintenance-new-update');
     const editMaintenanceStatusMessage = document.getElementById('edit-maintenance-status-message');
+    // --- Status Page Management Elements ---
+    const statusOverrideSelect = document.getElementById('status-override-select');
+    const saveStatusOverrideButton = document.getElementById('save-status-override-button'); // <<< THIS LINE
+    const overrideStatusMessage = document.getElementById('override-status-message');
 
     // Global variable to store components for dropdown population
     let allStatusGroups = [];
@@ -1538,7 +1542,9 @@ function renderYouTubeCard(account) {
     }
 
     // --- Status Page Management Event Listeners ---
-    if (saveStatusOverrideButton) { saveStatusOverrideButton.addEventListener('click', saveStatusOverride); } // Overall status
+    if (saveStatusOverrideButton) { // <<< THIS BLOCK uses the variable
+        saveStatusOverrideButton.addEventListener('click', saveStatusOverride);
+    }    
     if (addGroupForm) { addGroupForm.addEventListener('submit', handleAddGroup); } // Add Group
     if (editGroupForm) { editGroupForm.addEventListener('submit', handleUpdateGroup); } // Edit Group Modal
     if (cancelEditGroupButton) { cancelEditGroupButton.addEventListener('click', closeEditGroupModal); }
