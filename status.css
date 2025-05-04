@@ -125,7 +125,17 @@
 .incident-footer { padding: 10px 20px; background-color: rgba(var(--content-bg-rgb, 240, 240, 240), 0.5); border-top: 1px solid var(--border-color); font-size: 0.85em; color: var(--secondary-text); }
 .incident-footer p { margin: 3px 0; }
 
-/* Status Page Management Styles */
+/* Incident Management Styles */
+.affected-components-container {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 8px;
+    background: var(--bg-secondary);
+    max-height: 250px;
+    overflow-y: auto;
+}
+
 .affected-component-row {
     display: flex;
     align-items: center;
@@ -138,29 +148,29 @@
     border-bottom: none;
 }
 
-#incident-affected-components-container {
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    margin-top: 5px;
-    background-color: var(--bg-secondary);
-}
-
 .affected-component-row .checkbox-group {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex: 1;
 }
 
-.affected-component-row .component-status-select {
-    width: auto;
-    min-width: 160px;
+.affected-component-row .status-select {
+    width: 180px;
     margin-left: 10px;
 }
 
-.component-status-select[disabled] {
+.loading-message {
+    text-align: center;
+    color: var(--text-muted);
+    margin: 10px 0;
+}
+
+.component-checkbox-label {
+    margin-bottom: 0;
+    user-select: none;
+}
+
+.affected-component-row select:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
