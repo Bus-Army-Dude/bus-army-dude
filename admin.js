@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     const temporaryHoursList = document.getElementById('temporary-hours-list');
     const addHolidayButton = document.getElementById('add-holiday-button');
     const addTemporaryButton = document.getElementById('add-temporary-button');
-    const statusOverrideSelect = document.getElementById('business-status-override');
+    const statusOverrideSelect = document.getElementById('business-status-override'); // <<< FIRST DECLARATION HERE
     const businessInfoStatusMessage = document.getElementById('business-info-status-message');
 
     // FAQ Management Elements
@@ -172,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     const maintenanceNewUpdateInput = document.getElementById('maintenance-new-update');
     const editMaintenanceStatusMessage = document.getElementById('edit-maintenance-status-message');
     // --- Status Page Management Elements ---
-    const statusOverrideSelect = document.getElementById('status-override-select');
     const saveStatusOverrideButton = document.getElementById('save-status-override-button'); // <<< THIS LINE
     const overrideStatusMessage = document.getElementById('override-status-message');
 
