@@ -1,8 +1,10 @@
 /* settings-style.css */
-/* UPDATED: All rules prefixed with #siteSettingsModalContainer for isolation */
+/* UPDATED: All modal rules prefixed with 'body.weather-page #siteSettingsModalContainer'
+   to apply ONLY to the settings modal on the weather page.
+   Refresh message styles remain global. */
 
-/* Settings Modal Base (Apple-Themed) */
-#siteSettingsModalContainer.settings-modal {
+/* Settings Modal Base (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer.settings-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -17,11 +19,11 @@
     -webkit-backdrop-filter: blur(20px);
 }
 
-#siteSettingsModalContainer.settings-modal.active {
+body.weather-page #siteSettingsModalContainer.settings-modal.active {
     display: flex;
 }
 
-#siteSettingsModalContainer .settings-content {
+body.weather-page #siteSettingsModalContainer .settings-content {
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
     border-radius: 14px;
@@ -34,8 +36,8 @@
     box-sizing: border-box;
 }
 
-/* Settings Header */
-#siteSettingsModalContainer .settings-content .title-2 {
+/* Settings Header (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .settings-content .title-2 {
     font-size: 1.7rem;
     font-weight: 600;
     color: #1d1d1f;
@@ -43,32 +45,32 @@
     text-align: left;
 }
 
-/* Settings Sections */
-#siteSettingsModalContainer .settings-content .settings-sections {
+/* Settings Sections (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .settings-content .settings-sections {
     margin-top: 20px;
 }
 
-#siteSettingsModalContainer .settings-content .settings-section {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-section {
     margin-bottom: 28px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
 
-#siteSettingsModalContainer .settings-content .settings-section:last-child {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-section:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
-#siteSettingsModalContainer .settings-content .settings-section-title {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-section-title {
     font-size: 1.1rem;
     font-weight: 500;
     color: #1d1d1f;
     margin-bottom: 16px;
 }
 
-/* Setting Items */
-#siteSettingsModalContainer .settings-content .setting-item {
+/* Setting Items (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .settings-content .setting-item {
     display: flex;
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align items to the start (left) */
@@ -78,43 +80,43 @@
     margin: 8px 0;
 }
 
-#siteSettingsModalContainer .settings-content .setting-item:hover {
+body.weather-page #siteSettingsModalContainer .settings-content .setting-item:hover {
     background-color: #f0f0f0;
 }
 
-#siteSettingsModalContainer .settings-content .setting-label {
+body.weather-page #siteSettingsModalContainer .settings-content .setting-label {
     color: #333;
     font-size: 0.95rem;
     font-weight: 400;
     margin-bottom: 8px; /* Add space between label and toggle */
 }
 
-/* Settings Description */
-#siteSettingsModalContainer .settings-content .settings-description {
+/* Settings Description (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .settings-content .settings-description {
     font-size: 0.85rem;
     color: #666;
-    margin-top: 8px; /* Add space between toggle and description */
+    margin-top: 8px; /* Add space between toggle/input and description */
     line-height: 1.5;
     opacity: 0.9;
 }
 
-/* Apple-Style Toggle Switch */
-#siteSettingsModalContainer .toggle-switch {
+/* Apple-Style Toggle Switch (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .toggle-switch {
     position: relative;
     display: inline-block;
     width: 51px;
     height: 31px;
     flex-shrink: 0;
-    margin-bottom: 8px; /* Add space between toggle and description */
+    margin-bottom: 8px; /* Add space below toggle if description follows */
 }
 
-#siteSettingsModalContainer .toggle-switch input {
+body.weather-page #siteSettingsModalContainer .toggle-switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-#siteSettingsModalContainer .toggle-slider {
+body.weather-page #siteSettingsModalContainer .toggle-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -128,7 +130,7 @@
     border: 1px solid #c0c0c0;
 }
 
-#siteSettingsModalContainer .toggle-slider:before {
+body.weather-page #siteSettingsModalContainer .toggle-slider:before {
     position: absolute;
     content: "";
     height: 23px;
@@ -142,28 +144,28 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-#siteSettingsModalContainer input:checked + .toggle-slider {
+body.weather-page #siteSettingsModalContainer input:checked + .toggle-slider {
     background-color: #0a84ff;
     border: 1px solid #0a84ff;
 }
 
-#siteSettingsModalContainer input:checked + .toggle-slider:before {
+body.weather-page #siteSettingsModalContainer input:checked + .toggle-slider:before {
     -webkit-transform: translateX(20px);
     -ms-transform: translateX(20px);
     transform: translateX(20px);
 }
 
-/* Hover and Focus States */
-#siteSettingsModalContainer .toggle-switch:hover .toggle-slider {
+/* Hover and Focus States (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .toggle-switch:hover .toggle-slider {
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-#siteSettingsModalContainer input:checked + .toggle-slider:hover {
+body.weather-page #siteSettingsModalContainer input:checked + .toggle-slider:hover {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Select Inputs */
-#siteSettingsModalContainer .settings-content .settings-select {
+/* Select Inputs (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .settings-content .settings-select {
     width: 100%;
     padding: 12px 14px;
     border-radius: 8px;
@@ -180,20 +182,21 @@
     background-position: right 12px center;
     background-size: 16px;
     padding-right: 36px;
+     margin-bottom: 8px; /* Add space below select if description follows */
 }
 
-#siteSettingsModalContainer .settings-content .settings-select:hover {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-select:hover {
     border-color: #0a84ff;
 }
 
-#siteSettingsModalContainer .settings-content .settings-select:focus {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-select:focus {
     outline: none;
     border-color: #0a84ff;
     box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2);
 }
 
-/* Action Buttons */
-#siteSettingsModalContainer .settings-content .settings-actions {
+/* Action Buttons (Scoped to Weather Page) */
+body.weather-page #siteSettingsModalContainer .settings-content .settings-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -202,8 +205,8 @@
     border-top: 1px solid #eee;
 }
 
-#siteSettingsModalContainer .settings-content .settings-save,
-#siteSettingsModalContainer .settings-content .settings-close {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-save,
+body.weather-page #siteSettingsModalContainer .settings-content .settings-close {
     padding: 10px 20px;
     border-radius: 20px;
     border: none;
@@ -213,26 +216,27 @@
     transition: all 0.3s ease;
 }
 
-#siteSettingsModalContainer .settings-content .settings-save {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-save {
     background-color: #0a84ff;
     color: white;
 }
 
-#siteSettingsModalContainer .settings-content .settings-save:hover {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-save:hover {
     background-color: #007aff;
     box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
 }
 
-#siteSettingsModalContainer .settings-content .settings-close {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-close {
     background-color: #f0f0f0;
     color: #333;
 }
 
-#siteSettingsModalContainer .settings-content .settings-close:hover {
+body.weather-page #siteSettingsModalContainer .settings-content .settings-close:hover {
     background-color: #e0e0e0;
 }
 
-/* Animations */
+/* Animations (Scoped to Weather Page) */
+/* Keyframes are global, but the animation application is scoped */
 @keyframes modalFadeIn {
     from {
         opacity: 0;
@@ -244,76 +248,126 @@
     }
 }
 
-#siteSettingsModalContainer.settings-modal.active .settings-content {
+body.weather-page #siteSettingsModalContainer.settings-modal.active .settings-content {
     animation: modalFadeIn 0.3s ease forwards;
 }
 
-/* Dark Mode Adjustments (Assuming [data-theme="dark"] is on body/html) */
-[data-theme="dark"] #siteSettingsModalContainer .settings-content {
-    background-color: var(--surface);
-    color: var(--on-surface);
+/* Dark Mode Adjustments (Scoped to Weather Page within [data-theme="dark"]) */
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content {
+    /* Assuming --surface, --on-surface etc. are globally defined */
+    background-color: var(--surface, #2c2c2e); /* Fallback dark surface */
+    color: var(--on-surface, #ffffff);       /* Fallback dark text */
+    border-color: var(--outline, #444);      /* Fallback dark border */
 }
 
-[data-theme="dark"] #siteSettingsModalContainer .settings-content .title-2,
-[data-theme="dark"] #siteSettingsModalContainer .settings-content .settings-section-title,
-[data-theme="dark"] #siteSettingsModalContainer .settings-content .setting-label {
-    color: var(--on-surface);
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .title-2,
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-section-title,
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .setting-label {
+    color: var(--on-surface, #ffffff);
+}
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-description {
+     color: var(--on-surface-variant, #a0a0a0); /* Lighter secondary text */
+     opacity: 1; /* Ensure it's visible */
 }
 
-[data-theme="dark"] #siteSettingsModalContainer .settings-content .settings-select {
-    background-color: var(--surface);
-    color: var(--on-surface);
-    border-color: var(--outline);
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-section {
+    border-color: var(--outline, #444); /* Darker border */
+}
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-actions {
+     border-color: var(--outline, #444); /* Darker border */
 }
 
-[data-theme="dark"] #siteSettingsModalContainer .settings-content .setting-item:hover {
-    background-color: var(--outline);
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-select {
+    background-color: var(--surface, #2c2c2e);
+    color: var(--on-surface, #ffffff);
+    border-color: var(--outline, #555); /* Slightly different border for inputs */
+    /* Adjust SVG color for dark mode if needed */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-select:hover {
+     border-color: #0a84ff; /* Keep accent for hover */
+}
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-select:focus {
+    border-color: #0a84ff;
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.3); /* Focus remains the same */
 }
 
-[data-theme="dark"] #siteSettingsModalContainer .toggle-slider {
-    background-color: var(--on-surface-variant);
-    border: 1px solid var(--outline);
+
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .setting-item:hover {
+    background-color: var(--outline, #3a3a3c); /* Darker hover */
 }
 
-[data-theme="dark"] #siteSettingsModalContainer input:checked + .toggle-slider {
-    background-color: #0a84ff;
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .toggle-slider {
+    background-color: var(--on-surface-variant, #666); /* Darker toggle off */
+    border: 1px solid var(--outline, #555);
+}
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .toggle-slider:before {
+     background-color: #ccc; /* Slightly darker knob background */
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer input:checked + .toggle-slider {
+    background-color: #0a84ff; /* Keep accent color for 'on' state */
     border: 1px solid #0a84ff;
 }
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer input:checked + .toggle-slider:before {
+     background-color: white; /* Keep knob white when active */
+}
 
-/* Responsive Design */
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-close {
+    background-color: var(--outline, #444);
+    color: var(--on-surface, #ffffff);
+}
+[data-theme="dark"] body.weather-page #siteSettingsModalContainer .settings-content .settings-close:hover {
+     background-color: var(--on-surface-variant, #555);
+}
+
+/* Responsive Design (Scoped to Weather Page) */
 @media (max-width: 480px) {
-    #siteSettingsModalContainer .settings-content {
+    body.weather-page #siteSettingsModalContainer .settings-content {
         width: 95%;
         padding: 20px;
+        max-height: 95vh; /* Allow slightly more height on small screens */
     }
 
-    #siteSettingsModalContainer .settings-content .settings-actions {
+    body.weather-page #siteSettingsModalContainer .settings-content .settings-actions {
         flex-direction: column;
         gap: 8px;
     }
 
-    #siteSettingsModalContainer .settings-content .settings-save,
-    #siteSettingsModalContainer .settings-content .settings-close {
+    body.weather-page #siteSettingsModalContainer .settings-content .settings-save,
+    body.weather-page #siteSettingsModalContainer .settings-content .settings-close {
         width: 100%;
+        padding: 12px 20px; /* Slightly larger tap target */
     }
 }
 
-/* Refresh Message - NOT PREFIXED, assuming it's a global notification */
+/* ======================================= */
+/* == Refresh Message - GLOBAL STYLES == */
+/* ======================================= */
+/* These rules are NOT prefixed and will apply globally */
+
 .refresh-message {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     background-color: white;
+    color: #333; /* Default text color for light mode */
     padding: 12px 16px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     z-index: 1001;
-    display: flex;
+    display: none; /* Hidden by default */
     gap: 10px;
     align-items: center;
-    animation: slideUp 0.3s ease;
+    /* Will be animated by JS adding/removing a class or direct style */
 }
+.refresh-message.visible {
+    display: flex; /* Show when visible */
+    animation: slideUp 0.3s ease forwards;
+}
+
 
 [data-theme="dark"] .refresh-message {
     background-color: #333;
@@ -335,6 +389,7 @@
     display: flex;
     gap: 10px;
     align-items: center;
+    font-size: 0.9rem;
 }
 
 .refresh-close {
@@ -345,9 +400,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: inherit; /* Inherit color */
 }
 
 .refresh-close svg {
     width: 16px;
     height: 16px;
+    fill: currentColor; /* Use text color for SVG */
 }
