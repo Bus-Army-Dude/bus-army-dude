@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', () => { //
     const componentsCollectionRef = collection(db, "status_components");
     const incidentsCollectionRef = collection(db, "status_incidents");
 
+    // Set up form handlers
+    setupIncidentManagement();
+    setupComponentManagement();
 
     // --- Inactivity Logout Variables ---
     let inactivityTimer; //
@@ -1177,6 +1180,199 @@ function renderYouTubeCard(account) {
         } catch (error) { console.error(`Error resolving incident ${docId}:`, error); showAdminStatus(`Error: ${error.message}`, true); }
     }
 
+
+    function setupIncidentManagement() {
+    const addIncidentForm = document.getElementById('add-incident-form');
+    if (addIncidentForm) {
+        populateAffectedComponentsContainer();
+        addIncidentForm.addEventListener('submit', handleAddIncident);
+    }
+}
+
+async function populateAffectedComponentsContainer() {
+    const container = document.getElementById('incident-affected-components-container');
+    if (!container) return;
+
+    try {
+        container.innerHTML = '<p>Loading components...</p>';
+        const componentsSnapshot = await getDocs(collection(db, 'status_components'));
+        
+        if (componentsSnapshot.empty) {
+            container.innerHTML = '<p>No components available.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        const components = [];
+        componentsSnapshot.forEach(doc => {
+            components.push({ id: doc.id, ...doc.data() });
+        });
+        components.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+        components.forEach(component => {
+            const row = document.createElement('div');
+            row.className = 'affected-component-row';
+            row.innerHTML = `
+                <div class="checkbox-group">
+                    <input type="checkbox" 
+                           id="affected-component-${component.id}" 
+                           name="affected-components" 
+                           value="${component.id}"
+                           class="affected-component-checkbox">
+                    <label for="affected-component-${component.id}">${component.name}</label>
+                </div>
+                <select class="component-status-select" 
+                        id="component-status-${component.id}" 
+                        disabled>
+                    <option value="degraded_performance">Degraded Performance</option>
+                    <option value="partial_outage">Partial Outage</option>
+                    <option value="major_outage">Major Outage</option>
+                </select>
+            `;
+
+            const checkbox = row.querySelector('.affected-component-checkbox');
+            const statusSelect = row.querySelector('.component-status-select');
+            
+            checkbox.addEventListener('change', () => {
+                statusSelect.disabled = !checkbox.checked;
+            });
+
+            container.appendChild(row);
+        });
+    } catch (error) {
+        console.error("Error populating affected components:", error);
+        container.innerHTML = '<p>Error loading components. Please try again.</p>';
+    }
+}
+
+function getSelectedComponents() {
+    const selectedComponents = {};
+    const checkboxes = document.querySelectorAll('.affected-component-checkbox:checked');
+    
+    checkboxes.forEach(checkbox => {
+        const componentId = checkbox.value;
+        const statusSelect = document.getElementById(`component-status-${componentId}`);
+        selectedComponents[componentId] = {
+            status: statusSelect.value
+        };
+    });
+    
+    return selectedComponents;
+}
+
+async function handleAddIncident(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const title = form.querySelector('#incident-title').value;
+    const impact = form.querySelector('#incident-impact').value;
+    const status = form.querySelector('#incident-current-status').value;
+    const initialUpdate = form.querySelector('#incident-initial-update').value;
+    const affectedComponents = getSelectedComponents();
+
+    try {
+        const incidentRef = await addDoc(collection(db, 'status_incidents'), {
+            title,
+            impact,
+            status,
+            affectedComponents,
+            updates: [{
+                message: initialUpdate,
+                timestamp: serverTimestamp(),
+                status: status
+            }],
+            created: serverTimestamp(),
+            resolved: null
+        });
+
+        form.reset();
+        showStatusMessage('Incident created successfully', 'success');
+        await loadActiveIncidents();
+    } catch (error) {
+        console.error('Error creating incident:', error);
+        showStatusMessage('Error creating incident: ' + error.message, 'error');
+    }
+}
+
+// Status message helper
+function showStatusMessage(message, isError = false) {
+    const statusElement = document.getElementById('admin-status');
+    if (statusElement) {
+        statusElement.textContent = message;
+        statusElement.className = `status-message ${isError ? 'error' : 'success'}`;
+        statusElement.style.display = 'block';
+        setTimeout(() => {
+            statusElement.style.display = 'none';
+        }, 5000);
+    }
+}
+
+// Load active incidents
+async function loadActiveIncidents() {
+    const container = document.getElementById('active-incidents-list-admin');
+    if (!container) return;
+
+    try {
+        const q = query(
+            collection(db, 'status_incidents'),
+            where('resolved', '==', null),
+            orderBy('created', 'desc')
+        );
+
+        const snapshot = await getDocs(q);
+        container.innerHTML = '';
+
+        if (snapshot.empty) {
+            container.innerHTML = '<p>No active incidents.</p>';
+            return;
+        }
+
+        snapshot.forEach(doc => {
+            const incident = doc.data();
+            const incidentElement = createIncidentElement(doc.id, incident);
+            container.appendChild(incidentElement);
+        });
+
+        // Update count
+        const countElement = document.getElementById('active-incidents-count-admin');
+        if (countElement) {
+            countElement.textContent = `(${snapshot.size})`;
+        }
+    } catch (error) {
+        console.error('Error loading incidents:', error);
+        container.innerHTML = '<p>Error loading incidents.</p>';
+    }
+}
+
+function createIncidentElement(id, incident) {
+    const div = document.createElement('div');
+    div.className = 'list-item-admin';
+    div.innerHTML = `
+        <div class="item-content">
+            <div class="item-details">
+                <strong>${incident.title}</strong>
+                <span class="incident-current-status status-${incident.status.toLowerCase()}">${incident.status}</span>
+                <p>${incident.updates[incident.updates.length - 1].message}</p>
+                <small>Created: ${incident.created.toDate().toLocaleString()}</small>
+            </div>
+        </div>
+        <div class="item-actions">
+            <button class="update-incident-button button-primary small-button" data-id="${id}">Update</button>
+            <button class="resolve-incident-button small-button" data-id="${id}">Resolve</button>
+        </div>
+    `;
+
+    // Add event listeners
+    div.querySelector('.update-incident-button').addEventListener('click', () => {
+        showUpdateIncidentModal(id);
+    });
+    div.querySelector('.resolve-incident-button').addEventListener('click', () => {
+        handleResolveIncident(id);
+    });
+
+    return div;
+}
+    
 // ======================================================
 // ===== START: ALL BUSINESS INFO CODE FOR admin.js (v15 - Syntax Fixed & Double Add Fix + Logging) =====
 // ======================================================
