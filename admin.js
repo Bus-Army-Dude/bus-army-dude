@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => { //
     // --- Status Page Management Elements ---
     const saveStatusOverrideButton = document.getElementById('save-status-override-button'); // <<< THIS LINE
     const overrideStatusMessage = document.getElementById('override-status-message');
+    const addGroupForm = document.getElementById('add-group-form'); // <<< DEFINITION
 
     // Global variable to store components for dropdown population
     let allStatusGroups = [];
@@ -4978,7 +4979,6 @@ async function loadDisabilitiesAdmin() {
     if (cancelEditButton) { cancelEditButton.addEventListener('click', closeEditModal); }
 
     // --- Status Page Management Event Listeners ---
-    const addGroupForm = document.getElementById('add-group-form'); // <<< DEFINITION
     const groupsListAdminContainer = document.getElementById('groups-list-admin');
     if (addComponentForm) { addComponentForm.addEventListener('submit', handleAddComponent); }
     if (editComponentForm) { editComponentForm.addEventListener('submit', handleUpdateComponent); }
