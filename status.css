@@ -125,6 +125,46 @@
 .incident-footer { padding: 10px 20px; background-color: rgba(var(--content-bg-rgb, 240, 240, 240), 0.5); border-top: 1px solid var(--border-color); font-size: 0.85em; color: var(--secondary-text); }
 .incident-footer p { margin: 3px 0; }
 
+/* Status Page Management Styles */
+.affected-component-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.affected-component-row:last-child {
+    border-bottom: none;
+}
+
+#incident-affected-components-container {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-top: 5px;
+    background-color: var(--bg-secondary);
+}
+
+.affected-component-row .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.affected-component-row .component-status-select {
+    width: auto;
+    min-width: 160px;
+    margin-left: 10px;
+}
+
+.component-status-select[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* ======================================== */
 /* Responsive Adjustments                   */
 /* ======================================== */
