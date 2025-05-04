@@ -1019,25 +1019,101 @@ function renderYouTubeCard(account) {
         } catch (error) { console.error("Error loading active incidents:", error); activeIncidentsListAdminContainer.innerHTML = `<p class="error">Error loading.</p>`; if(activeIncidentsCountAdmin) activeIncidentsCountAdmin.textContent = '(Error)'; showAdminStatus("Error loading incidents.", true); }
     }
 
-    /** Handles creating a new incident */
+     /** Handles creating a new incident (CORRECTED for serverTimestamp in array) */
     async function handleAddIncident(event) {
-        // ... (Copy the full function from the previous responses) ...
-         event.preventDefault(); if (!addIncidentForm || !incidentComponentsSelect) return;
-        const title = addIncidentForm.querySelector('#incident-title')?.value.trim();
-        const impact = addIncidentForm.querySelector('#incident-impact')?.value;
-        const initialStatus = addIncidentForm.querySelector('#incident-current-status')?.value;
-        const initialUpdateMessage = addIncidentForm.querySelector('#incident-initial-update')?.value.trim();
-        const selectedComponents = Array.from(incidentComponentsSelect.selectedOptions).map(option => option.value);
-        if (!title || !impact || !initialStatus || !initialUpdateMessage || selectedComponents.length === 0) { showAdminStatus("Fill all fields & select components.", true); return; }
-        const initialUpdate = { message: initialUpdateMessage, status: initialStatus, timestamp: serverTimestamp() };
-        const incidentData = { title, impact, status: initialStatus, affectedComponents: selectedComponents, updates: [initialUpdate], createdAt: serverTimestamp(), resolvedAt: null };
+        event.preventDefault();
+        if (!addIncidentForm || !incidentAffectedComponentsContainer) return;
+
+        const titleInput = addIncidentForm.querySelector('#incident-title');
+        const initialStatusSelect = addIncidentForm.querySelector('#incident-initial-status');
+        const initialUpdateInput = addIncidentForm.querySelector('#incident-initial-update');
+        const startTimeOption = addIncidentForm.querySelector('input[name="startTimeOption"]:checked')?.value;
+        const specificStartTimeStr = addIncidentForm.querySelector('#incident-start-datetime')?.value;
+
+        const title = titleInput?.value.trim();
+        const initialStatus = initialStatusSelect?.value;
+        const initialUpdateMessage = initialUpdateInput?.value.trim();
+
+        // Get affected components AND their desired status during the incident
+        const affectedComponentsData = [];
+        const componentCheckboxes = incidentAffectedComponentsContainer.querySelectorAll('input[name="affectedComponents"]:checked');
+        if (componentCheckboxes.length === 0) {
+            showAdminStatus("Please select at least one affected component.", true); return;
+        }
+        componentCheckboxes.forEach(checkbox => {
+            const compId = checkbox.value;
+            const statusSelect = incidentAffectedComponentsContainer.querySelector(`select[name="componentStatus-${compId}"]`);
+            const componentStatusDuringIncident = statusSelect ? statusSelect.value : 'Degraded Performance'; // Default if select fails
+            affectedComponentsData.push({ id: compId, status: componentStatusDuringIncident });
+        });
+
+        // Determine the correct timestamp for the 'createdAt' field
+        let incidentCreatedAtTimestamp;
+        if (startTimeOption === 'specific') {
+            const specificTimestamp = datetimeLocalToTimestamp(specificStartTimeStr); // Use helper
+            if (!specificTimestamp) {
+                showAdminStatus("Invalid specific start date/time provided.", true); return;
+            }
+            incidentCreatedAtTimestamp = specificTimestamp;
+        } else {
+            // If 'Now' is selected, use serverTimestamp() for createdAt
+            incidentCreatedAtTimestamp = serverTimestamp();
+        }
+
+        if (!title || !initialStatus || !initialUpdateMessage) {
+             showAdminStatus("Please fill out Title, Initial Status, and Initial Update.", true); return;
+        }
+
+        // *** FIX IS HERE: Use Timestamp.now() for the initial update within the array ***
+        const initialUpdate = {
+            message: initialUpdateMessage,
+            status: initialStatus, // Status at the time of this update
+            timestamp: Timestamp.now() // Use client-side timestamp for the array element
+        };
+
+        const incidentData = {
+            title: title,
+            status: initialStatus, // Current status of the incident
+            affectedComponents: affectedComponentsData.map(c => c.id), // Store only IDs in incident doc
+            updates: [initialUpdate], // Array now contains a client-side timestamp
+            createdAt: incidentCreatedAtTimestamp, // Use server timestamp or specific date here
+            resolvedAt: null // Initially not resolved
+        };
+
         showAdminStatus("Creating incident...");
         try {
-            await addDoc(incidentsCollectionRef, incidentData); showAdminStatus("Incident created.", false); addIncidentForm.reset();
-            Array.from(incidentComponentsSelect.options).forEach(opt => opt.selected = false); loadIncidentsAdmin();
-            const updatePromises = selectedComponents.map(compId => updateDoc(doc(db, "status_components", compId), { currentStatus: impact, lastUpdated: serverTimestamp() }));
-            await Promise.all(updatePromises); console.log("Affected component statuses updated."); loadComponentsAdmin();
-        } catch (error) { console.error("Error creating incident:", error); showAdminStatus(`Error: ${error.message}`, true); }
+            const docRef = await addDoc(incidentsCollectionRef, incidentData); // This should now work
+            showAdminStatus("Incident created successfully.", false);
+            addIncidentForm.reset();
+            if(incidentStartDateTimeField) incidentStartDateTimeField.style.display = 'none';
+            if(incidentStartTimeOptionNow) incidentStartTimeOptionNow.checked = true;
+            populateAffectedComponentsCheckboxes(incidentAffectedComponentsContainer); // Clear selections in the form
+            loadIncidentsAdmin(); // Reload the list of active incidents
+
+            // --- Update status of affected components ---
+            const updatePromises = affectedComponentsData.map(compData => {
+                const compRef = doc(db, "status_components", compData.id);
+                return updateDoc(compRef, {
+                    currentStatus: compData.status, // Set component status to what was selected
+                    lastUpdated: serverTimestamp() // Use server timestamp for the component update itself
+                });
+            });
+            await Promise.all(updatePromises);
+            console.log("Affected component statuses updated for new incident.");
+            loadComponentsAdmin(); // Reload component list to show changes
+             // Optional: Log activity
+             if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('INCIDENT_CREATE', { title: title, status: initialStatus });
+             }
+
+        } catch (error) {
+            console.error("Error creating incident:", error);
+            showAdminStatus(`Error creating incident: ${error.message}`, true);
+              // Optional: Log failed activity
+             if (typeof logAdminActivity === 'function') {
+                 logAdminActivity('INCIDENT_CREATE_FAILED', { title: title, error: error.message });
+             }
+        }
     }
 
     /** Opens the Update Incident modal */
