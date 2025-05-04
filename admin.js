@@ -1022,7 +1022,12 @@ function renderYouTubeCard(account) {
         /** Handles creating a new incident (CORRECTED for serverTimestamp in array) */
     async function handleAddIncident(event) {
         event.preventDefault();
-        if (!addIncidentForm || !incidentAffectedComponentsContainer) return;
+        // *** This line requires 'addIncidentForm' and 'incidentAffectedComponentsContainer' to be defined earlier ***
+        if (!addIncidentForm || !incidentAffectedComponentsContainer) {
+            console.error("Add Incident Error: Form or component container element not found.");
+            showAdminStatus("Error: Cannot create incident, page element missing.", true);
+            return;
+        }
 
         const titleInput = addIncidentForm.querySelector('#incident-title');
         const initialStatusSelect = addIncidentForm.querySelector('#incident-initial-status');
@@ -1036,14 +1041,15 @@ function renderYouTubeCard(account) {
 
         // Get affected components AND their desired status during the incident
         const affectedComponentsData = [];
+         // *** This line requires 'incidentAffectedComponentsContainer' to be defined earlier ***
         const componentCheckboxes = incidentAffectedComponentsContainer.querySelectorAll('input[name="affectedComponents"]:checked');
         if (componentCheckboxes.length === 0) {
             showAdminStatus("Please select at least one affected component.", true); return;
         }
         componentCheckboxes.forEach(checkbox => {
             const compId = checkbox.value;
+             // *** This line requires 'incidentAffectedComponentsContainer' to be defined earlier ***
             const statusSelect = incidentAffectedComponentsContainer.querySelector(`select[name="componentStatus-${compId}"]`);
-            // Determine the status to set for the component (use a reasonable default if select fails)
             const componentStatusDuringIncident = statusSelect ? statusSelect.value : 'Degraded Performance';
             affectedComponentsData.push({ id: compId, status: componentStatusDuringIncident });
         });
@@ -1057,7 +1063,6 @@ function renderYouTubeCard(account) {
             }
             incidentCreatedAtTimestamp = specificTimestamp;
         } else {
-            // If 'Now' is selected, use serverTimestamp() for createdAt
             incidentCreatedAtTimestamp = serverTimestamp();
         }
 
@@ -1065,48 +1070,45 @@ function renderYouTubeCard(account) {
              showAdminStatus("Please fill out Title, Initial Status, and Initial Update.", true); return;
         }
 
-        // *** FIX IS HERE: Use Timestamp.now() for the initial update within the array ***
+        // Use client-side timestamp for the initial update array element
         const initialUpdate = {
             message: initialUpdateMessage,
-            status: initialStatus, // Status at the time of this update
-            timestamp: Timestamp.now() // Use client-side timestamp for the array element
+            status: initialStatus,
+            timestamp: Timestamp.now() // FIX: Use client timestamp here
         };
 
         const incidentData = {
             title: title,
-            status: initialStatus, // Current status of the incident
-            affectedComponents: affectedComponentsData.map(c => c.id), // Store only IDs in incident doc
-            updates: [initialUpdate], // Array now contains a client-side timestamp
-            createdAt: incidentCreatedAtTimestamp, // Use server timestamp or specific date here
-            resolvedAt: null // Initially not resolved
+            status: initialStatus,
+            affectedComponents: affectedComponentsData.map(c => c.id),
+            updates: [initialUpdate],
+            createdAt: incidentCreatedAtTimestamp, // Use determined start time
+            resolvedAt: null
         };
 
         showAdminStatus("Creating incident...");
         try {
-            // Use the correct collection reference defined earlier
-            const docRef = await addDoc(incidentsCollectionRef, incidentData); // This should now work
+            const docRef = await addDoc(incidentsCollectionRef, incidentData);
             showAdminStatus("Incident created successfully.", false);
             addIncidentForm.reset();
-            // Reset specific start time field and radio button
             if(incidentStartDateTimeField) incidentStartDateTimeField.style.display = 'none';
             if(incidentStartTimeOptionNow) incidentStartTimeOptionNow.checked = true;
-            // Clear component selections in the form
-            populateAffectedComponentsCheckboxes(incidentAffectedComponentsContainer);
-            // Reload incidents list
+            // *** This line requires 'incidentAffectedComponentsContainer' to be defined earlier ***
+            populateAffectedComponentsCheckboxes(incidentAffectedComponentsContainer); // Clear selections
             loadIncidentsAdmin();
 
-            // --- Update status of affected components ---
+            // Update status of affected components
             const updatePromises = affectedComponentsData.map(compData => {
                 const compRef = doc(db, "status_components", compData.id);
                 return updateDoc(compRef, {
-                    currentStatus: compData.status, // Set component status to what was selected
-                    lastUpdated: serverTimestamp() // Use server timestamp for the component update itself
+                    currentStatus: compData.status,
+                    lastUpdated: serverTimestamp()
                 });
             });
             await Promise.all(updatePromises);
             console.log("Affected component statuses updated for new incident.");
-            loadComponentsAdmin(); // Reload component list to show changes
-             // Optional: Log activity
+            loadComponentsAdmin(); // Reload component list
+
              if (typeof logAdminActivity === 'function') {
                  logAdminActivity('INCIDENT_CREATE', { title: title, status: initialStatus });
              }
@@ -1114,7 +1116,6 @@ function renderYouTubeCard(account) {
         } catch (error) {
             console.error("Error creating incident:", error);
             showAdminStatus(`Error creating incident: ${error.message}`, true);
-              // Optional: Log failed activity
              if (typeof logAdminActivity === 'function') {
                  logAdminActivity('INCIDENT_CREATE_FAILED', { title: title, error: error.message });
              }
