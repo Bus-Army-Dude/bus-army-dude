@@ -455,37 +455,43 @@ body {
   display: none;
 }
 
+/* 1. Styles for the decorative search SPAN (Magnifying Glass) */
 .search-wrapper span.leading-icon {
     position: absolute;
     top: 50%;
     left: 16px;
     transform: translateY(-50%);
-    pointer-events: none;
-    color: var(--on-surface-variant);
+    pointer-events: none;           /* Keep it non-interactive */
+    color: var(--on-surface-variant); /* Keep it visually secondary */
     z-index: 1;
-    display: none; /* Hide by default */
+    display: none;                  /* ** HIDE BY DEFAULT (Mobile First) ** */
 }
 
 .search-wrapper > .m-icon { /* This seems intended for larger screens only */
   display: none;
 }
 
+/* 2. Styles for the back BUTTON (Arrow Back) */
 .search-wrapper button.icon-btn.leading-icon {
     background-color: transparent;
     box-shadow: none;
     position: absolute;
     top: 50%;
-    left: 16px;
+    left: 16px; /* Check if this should be 0 or 16px */
     transform: translateY(-50%);
     z-index: 2;
-    color: var(--on-surface); /* Use standard color */
-    pointer-events: auto; /* Make clickable */
+    color: var(--on-surface);        /* Make it look active */
+    pointer-events: auto;            /* Make it clickable */
     cursor: pointer;
     width: 48px;
     height: 48px;
-    display: grid;
+    display: grid;                   /* ** SHOW BY DEFAULT (Mobile First) - using grid for centering */
     place-items: center;
     border-radius: var(--radius-circle);
+}
+
+.search-wrapper button.icon-btn.leading-icon .m-icon {
+    color: inherit;                  /* Icon uses button's color */
 }
 
 
@@ -946,197 +952,202 @@ article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
 
 /* MEDIA QUERIES */
 
-/* Tablet Styles */
+/* Tablet Styles (Unchanged from your provided base) */
 @media (min-width: 768px) {
-  :root {
-    /* Adjust base font size or specific variables if needed */
-  }
+    :root {
+        /* Adjust base font size or specific variables if needed */
+    }
 
-  .container { padding: 24px; }
-  .title-1 { --title-1: 2.4rem; }
-  .section > .title-2 { margin-block-end: 16px; }
-  .card-lg { padding: 24px; }
-  .card-sm { padding: 20px; } /* Remove display: grid; unless needed */
-  .badge { top: 20px; right: 20px; }
+    .container { padding: 24px; }
+    .title-1 { --title-1: 2.4rem; } /* Reverted to original definition approach */
+    .section > .title-2 { margin-block-end: 16px; }
+    .card-lg { padding: 24px; }
+    .card-sm { padding: 20px; }
+    .badge { top: 20px; right: 20px; }
 
-  .header {
-    /* Adjust header styles for tablet if necessary */
-    /* height: 96px; */ /* Example */
-  }
-  .header .btn-primary .span { display: block; }
-  .header .btn-primary { padding-inline: 16px 24px; }
-  .header-actions { gap: 24px; }
+    .header {
+        /* Adjust header styles for tablet if necessary */
+        /* height: 96px; */ /* Example */
+    }
+    .header .btn-primary .span { display: block; }
+    .header .btn-primary { padding-inline: 16px 24px; }
+    .header-actions { gap: 24px; }
 
-  /* Adjust search view animation origin if header size/layout changes */
-  .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
+    /* Adjust search view animation origin if header size/layout changes */
+    .search-view { clip-path: circle(3% at calc(100% - 273px) 6%); }
 
-  main {
-     height: calc(100vh - 96px); /* Adjust height for potentially taller header */
-     height: calc(100svh - 96px);
-     /* padding-top: 96px; */ /* If header is fixed/sticky */
-   }
-  article.container {
-    padding-block-start: 0;
-    grid-template-columns: 280px minmax(0, 1fr); /* Two-column layout */
-    align-items: flex-start;
-    gap: 24px;
-   }
-  .content-left { /* Left column (current weather, forecast) */
-     position: sticky;
-     top: 24px; /* Add space from top */
-     /* Adjust max-height based on header and top offset */
-     /* max-height: calc(100svh - 96px - 24px); */
-     /* overflow-y: auto; */ /* Allow left column to scroll if needed */
-  }
-  .section:not(:last-child) { margin-block: 20px; } /* Adjust vertical spacing */
-  .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
+    main {
+        height: calc(100vh - 96px); /* Adjust height for potentially taller header */
+        height: calc(100svh - 96px);
+        /* padding-top: 96px; */ /* If header is fixed/sticky */
+    }
+    article.container {
+        padding-block-start: 0;
+        grid-template-columns: 280px minmax(0, 1fr); /* Two-column layout */
+        align-items: flex-start;
+        gap: 24px;
+    }
+    .content-left { /* Left column (current weather, forecast) */
+        position: sticky;
+        top: 24px; /* Add space from top */
+        /* Adjust max-height based on header and top offset */
+        /* max-height: calc(100svh - 96px - 24px); */
+        /* overflow-y: auto; */ /* Allow left column to scroll if needed */
+    }
+    .section:not(:last-child) { margin-block-end: 20px; } /* Adjust vertical spacing */
+    .forecast-card .card-item:not(:last-child) { margin-block-end: 16px; }
 
-  .highlight-list { grid-template-columns: 1fr 1fr; } /* Two columns for highlights */
-  .highlight-card:nth-child(-n + 2) { /* AQI and Sunrise/Sunset */
-    grid-column: span 2; /* Span full width */
-    height: 160px; /* Adjust height */
-  }
-  .highlight-card:nth-child(n + 3) { /* Feels Like, Wind, etc. */
-    height: 120px; /* Adjust height */
-   }
-  .highlights .m-icon { font-size: 3.6rem; }
+    .highlight-list { grid-template-columns: 1fr 1fr; } /* Two columns for highlights */
+    .highlight-card:nth-child(-n + 2) { /* AQI and Sunrise/Sunset */
+        grid-column: span 2; /* Span full width */
+        height: 160px; /* Adjust height */
+    }
+    .highlight-card:nth-child(n + 3) { /* Feels Like, Wind, etc. */
+        height: 120px; /* Adjust height */
+    }
+    .highlights .m-icon { font-size: 3.6rem; }
 
-  /* AQI card items layout (unchanged) */
-  .highlight-card.one .card-item {
-    width: 25%;
-    flex-direction: column-reverse;
-    gap: 8px;
-   }
-   /* Sunrise/Sunset layout already fixed globally */
+    /* AQI card items layout (unchanged) */
+    .highlight-card.one .card-item {
+        width: 25%;
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+    /* Sunrise/Sunset layout already fixed globally */
 
-  .slider-container { /* Make slider fit within right column */
-     margin-inline: 0; /* Remove negative margin */
-     padding-inline: 0; /* Remove padding */
-     border-radius: var(--radius-16); /* Add radius */
-     /* background-color: var(--surface); */ /* Optional: background for slider area */
-  }
-   .slider-list {
-     padding-inline: 16px; /* Add padding back inside list */
-   }
+    .slider-container { /* Make slider fit within right column */
+        margin-inline: 0; /* Remove negative margin */
+        padding-inline: 0; /* Remove padding */
+        border-radius: var(--radius-16); /* Add radius */
+        /* background-color: var(--surface); */ /* Optional: background for slider area */
+    }
+    .slider-list {
+        padding-inline: 16px; /* Add padding back inside list */
+    }
 
-  .hourly-forecast .card-sm { padding: 16px; } /* Adjust padding if needed */
+    .hourly-forecast .card-sm { padding: 16px; } /* Adjust padding if needed */
 }
+
 
 /* Desktop Styles */
 @media (min-width: 1200px) {
-  :root {
-     --heading: 8rem;
-     --title-2: 2rem;
-     /* Increase base font size slightly for desktop? */
-     /* font-size: 10.5px; */
-   }
-  .container { padding: 40px; }
-  .title-1 { --title-1: 2.6rem; }
-  .card-lg { padding: 36px; }
-  .card-sm { padding: 24px; }
-  .title-2 { margin-block-end: 12px; }
-  /* Sunrise/Sunset layout already fixed globally */
-  /* .highlight-card.two .card-item { column-gap: 24px; } /* Remove if causing issues */
+    :root {
+        --heading: 8rem;
+        --title-2: 2rem;
+        /* Increase base font size slightly for desktop? */
+        /* font-size: 10.5px; */
+    }
+    .container { padding: 40px; }
+    .title-1 { --title-1: 2.6rem; } /* Reverted to original definition approach */
+    .card-lg { padding: 36px; }
+    .card-sm { padding: 24px; }
+    .title-2 { margin-block-end: 12px; }
+    /* Sunrise/Sunset layout already fixed globally */
 
-  .header {
-     position: relative; /* Can be relative if not sticky */
-     height: 120px; /* Taller header */
-     z-index: 4;
-   }
-  .header .icon-btn { display: none; } /* Hide mobile search icon */
-  .logo img { width: 200px; }
-  .header .container { padding-block: 0; height: 100%; }
+    .header {
+        position: relative; /* Can be relative if not sticky */
+        height: 120px; /* Taller header */
+        z-index: 4;
+    }
+    .header .icon-btn { display: none; } /* Hide mobile search toggler IN HEADER */
+    .logo img { width: 200px; }
+    .header .container { padding-block: 0; height: 100%; }
 
-  /* Desktop Search View - Integrated into header */
-  .search-view, .search-view.active {
-    all: unset; /* Reset mobile styles */
-    display: block;
-    position: relative;
-    width: 500px; /* Fixed width */
-    animation: none;
-  }
-  .search-wrapper { border-block-end: none; }
-  .search-wrapper > .m-icon { display: block; } /* Show search icon inside field */
-   .search-wrapper .leading-icon { /* Adjust leading icon position */
-    left: 16px;
-  }
-   .search-wrapper .icon-btn { display: none; } /* Hide back button */
+    /* Desktop Search View - Integrated into header */
+    .search-view, .search-view.active {
+        all: unset; /* Reset mobile styles */
+        display: block;
+        position: relative;
+        width: 500px; /* Fixed width */
+        animation: none;
+    }
+    .search-wrapper { border-block-end: none; }
 
-  .search-field, .search-view .view-list {
-     background-color: var(--surface); /* Explicit background */
-   }
-  .search-field {
-     height: 56px;
-     line-height: 56px;
-     border-radius: var(--radius-28);
-     padding-inline: 56px 16px; /* Keep padding for icon */
-   }
-   /* Search Results Dropdown */
-  .search-result, .search-view:not(:focus-within) .search-result {
-     display: none; /* Hide results by default */
-   }
-  .search-view:focus-within .search-result.active {
-     display: block; /* Show results when input is focused and results exist */
-   }
-  .search-view:has(.search-result.active):focus-within .search-field {
-     border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
-     border-bottom-right-radius: 0;
-   }
-  .search-view .view-list {
-     position: absolute;
-     top: 100%; /* Position below search field */
-     left: 0;
-     width: 100%;
-     max-height: 360px;
-     border-radius: 0 0 var(--radius-28) var(--radius-28);
-     border: 1px solid var(--outline); /* Add border */
-     border-block-start: none; /* Remove top border */
-     overflow-y: auto; /* Keep overlay for webkit */
-     z-index: 5; /* Above other content */
-     box-shadow: var(--shadow-2); /* Add shadow */
-  }
-   .search-view .view-list:empty {
-     /* Optional: style for empty results */
-     /* min-height: 120px; */
-     /* display: none; */ /* Or hide it completely */
-   }
+    /* --- CORRECTED/VERIFIED SEARCH ICON RULES --- */
+    .search-wrapper span.leading-icon { /* TARGET SPAN: Show magnifying glass */
+        display: block;
+        /* Adjust positioning if needed, inherited 'left: 16px' might be okay */
+    }
+    .search-wrapper button.icon-btn.leading-icon { /* TARGET BUTTON: Hide back button */
+        display: none;
+    }
+    /* --- END CORRECTIONS --- */
 
-  main {
-     height: calc(100vh - 120px); /* Adjust height for taller header */
-     height: calc(100svh - 120px);
-     /* padding-top: 120px; */ /* If header is fixed/sticky */
-   }
-  article.container {
-     grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
-     gap: 40px;
-   }
-    .content-left {
-      top: 40px; /* Adjust sticky top offset */
-      /* max-height: calc(100svh - 120px - 40px); */ /* Adjust max height */
+    .search-field, .search-view .view-list {
+        background-color: var(--surface); /* Explicit background */
+    }
+    .search-field {
+        height: 56px;
+        line-height: 56px;
+        border-radius: var(--radius-28);
+        padding-inline: 56px 16px; /* Padding to accommodate the visible span icon */
+    }
+    /* Search Results Dropdown */
+    .search-result, .search-view:not(:focus-within) .search-result {
+        display: none; /* Hide results by default */
+    }
+    .search-view:focus-within .search-result.active {
+        display: block; /* Show results when input is focused and results exist */
+    }
+    .search-view:has(.search-result.active):focus-within .search-field {
+        border-bottom-left-radius: 0; /* Flatten bottom corners when dropdown open */
+        border-bottom-right-radius: 0;
+    }
+    .search-view .view-list {
+        position: absolute;
+        top: 100%; /* Position below search field */
+        left: 0;
+        width: 100%;
+        max-height: 360px;
+        border-radius: 0 0 var(--radius-28) var(--radius-28);
+        border: 1px solid var(--outline); /* Add border */
+        border-block-start: none; /* Remove top border */
+        overflow-y: auto; /* Keep overlay for webkit */
+        z-index: 5; /* Above other content */
+        box-shadow: var(--shadow-2); /* Add shadow */
+    }
+    .search-view .view-list:empty {
+        /* Optional: style for empty results */
+        /* display: none; */ /* Or hide it completely */
     }
 
-  .current-weather .weather-icon { width: 80px; height: 80px;}
-  .forecast-card .title-2 { --title-2: 2.2rem; }
+    main {
+        height: calc(100vh - 120px); /* Adjust height for taller header */
+        height: calc(100svh - 120px);
+        /* padding-top: 120px; */ /* If header is fixed/sticky */
+    }
+    article.container {
+        grid-template-columns: 360px minmax(0, 1fr); /* Wider left column */
+        gap: 40px;
+    }
+    .content-left {
+        top: 40px; /* Adjust sticky top offset */
+        /* max-height: calc(100svh - 120px - 40px); */ /* Adjust max height */
+    }
 
-  .highlight-card:nth-child(-n + 2) { height: 200px; } /* Taller main highlight cards */
-  .highlight-card:nth-child(n + 3) { height: 150px; } /* Taller secondary highlight cards */
-  .highlight-card .m-icon { font-size: 4rem; }
-  .slider-list { gap: 16px; }
+    .current-weather .weather-icon { width: 80px; height: 80px;}
+    .forecast-card .title-2 { --title-2: 2.2rem; } /* Reverted to original definition approach */
+
+    .highlight-card:nth-child(-n + 2) { height: 200px; } /* Taller main highlight cards */
+    .highlight-card:nth-child(n + 3) { height: 150px; } /* Taller secondary highlight cards */
+    .highlight-card .m-icon { font-size: 4rem; }
+    .slider-list { gap: 16px; }
 }
 
-/* Wider Desktop Styles */
+
+/* Wider Desktop Styles (Unchanged) */
 @media (min-width: 1400px) {
-  .highlight-list {
-     grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
-   }
-   .highlight-card:nth-child(-n + 2) {
-     grid-column: span 2; /* AQI/Sunrise still span 2 */
-     height: 200px;
-   }
-   .highlight-card:nth-child(n + 3) {
-     grid-column: span 1; /* Others take 1 column */
-     height: 150px;
-   }
+    .highlight-list {
+        grid-template-columns: repeat(4, 1fr); /* Four columns for highlights */
+    }
+    .highlight-card:nth-child(-n + 2) {
+        grid-column: span 2; /* AQI/Sunrise still span 2 */
+        height: 200px;
+    }
+    .highlight-card:nth-child(n + 3) {
+        grid-column: span 1; /* Others take 1 column */
+        height: 150px;
+    }
 }
 
 /* --- Light Mode Specific Overrides --- */
