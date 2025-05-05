@@ -566,18 +566,25 @@
                 <label for="edit-social-link-label">Link Label:</label>
                 <input type="text" id="edit-social-link-label" name="label" required>
             </div>
-            <div class="form-group">
-                <label for="edit-social-link-url">Link URL:</label>
-                <input type="url" id="edit-social-link-url" name="url" required inputmode="url">
-            </div>
-            <div class="form-group">
-                <label for="edit-social-link-order">Display Order:</label>
-                <input type="number" id="edit-social-link-order" name="order" min="0" step="1" required>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="button-primary">Save Changes</button>
-              <button type="button" id="cancel-edit-social-link-button-secondary" class="secondary-button">Cancel</button> </div>
-        </form>
+             <div class="form-group">
+            <label for="edit-social-link-url">Link URL:</label>
+            <input type="url" id="edit-social-link-url" name="url" required inputmode="url">
+        </div>
+
+        <div class="form-group">
+             <label for="edit-social-link-icon-class">Font Awesome Icon Class (Optional):</label>
+             <input type="text" id="edit-social-link-icon-class" name="iconClass" placeholder="e.g., fa-brands fa-tiktok">
+             <small>Find classes at Font Awesome (e.g., 'fa-brands fa-tiktok', 'fa-brands fa-facebook'). Leave blank to auto-detect.</small>
+        </div>
+        <div class="form-group">
+            <label for="edit-social-link-order">Display Order:</label>
+            <input type="number" id="edit-social-link-order" name="order" min="0" step="1" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="button-primary">Save Changes</button>
+          <button type="button" id="cancel-edit-social-link-button-secondary" class="secondary-button">Cancel</button>
+        </div>
+    </form>
          <div id="edit-social-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
 </div>
 
