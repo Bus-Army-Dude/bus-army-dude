@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => { //
     const addSocialLinkForm = document.getElementById('add-social-link-form');
     const socialLinksListAdmin = document.getElementById('social-links-list-admin');
     const socialLinksCount = document.getElementById('social-links-count');
-    const searchInputSocialLinks = document.getElementById('search-social-links');
     const editSocialLinkModal = document.getElementById('edit-social-link-modal');
     const editSocialLinkForm = document.getElementById('edit-social-link-form');
     const editSocialLinkLabelInput = document.getElementById('edit-social-link-label');
