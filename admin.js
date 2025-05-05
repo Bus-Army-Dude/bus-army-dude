@@ -2730,48 +2730,64 @@ async function loadSocialLinksAdmin() {
 }
 
     // --- REVISED + CORRECTED Filtering Function for Social Links ---
-// (Make sure this function exists in your file now)
+// --- REVISED Filtering Function for Social Links ---
 function displayFilteredSocialLinks() {
-    const listContainer = socialLinksListAdmin;
-    const countElement = socialLinksCount;
+    // Re-select elements inside the function for safety
+    const listContainer = document.getElementById('social-links-list-admin');
+    const countElement = document.getElementById('social-links-count');
     const searchInput = document.getElementById('search-social-links');
 
-    if (!listContainer || !searchInput || typeof allSocialLinks === 'undefined') {
-        console.error("Social Links Filter Error: Missing elements/data.");
-         if(listContainer) listContainer.innerHTML = `<p class="error">Error displaying list.</p>`;
+    // Add more robust checks for elements and data
+    if (!listContainer || !searchInput || !countElement) {
+        console.error("Social Links Filter Error: Crucial display elements missing.");
+        if(listContainer) listContainer.innerHTML = `<p class="error">UI Error displaying list.</p>`;
         return;
     }
+     if (typeof allSocialLinks === 'undefined') { // Check if the data array exists
+         console.error("Social Links Filter Error: Data array 'allSocialLinks' is undefined.");
+         listContainer.innerHTML = `<p class="error">Data error displaying list.</p>`;
+         if (countElement) countElement.textContent = '(Error)';
+         return;
+     }
 
     const searchTerm = searchInput.value.trim().toLowerCase();
-    // console.log(`Filtering Social Links: Term = "${searchTerm}"`); // Keep or remove logs
+    listContainer.innerHTML = ''; // Clear list
 
     let listToRender = [];
-
     if (!searchTerm) {
-        // console.log("Social Links: Search term is empty, using full list.");
         listToRender = allSocialLinks;
     } else {
-        // console.log("Social Links: Search term found, filtering list...");
         listToRender = allSocialLinks.filter(link => {
             const label = (link.label || '').toLowerCase();
-             // --- Only check the label ---
-            return label.includes(searchTerm);
+            const url = (link.url || '').toLowerCase(); // Also search URL
+            return label.includes(searchTerm) || url.includes(searchTerm);
         });
     }
 
-     // console.log(`Rendering ${listToRender.length} social links.`);
-
-    listContainer.innerHTML = '';
-
     if (listToRender.length > 0) {
+        // *** Check if ALL required functions exist BEFORE looping ***
+        // This is the crucial check to prevent the error you saw
+        if (typeof renderSocialLinkAdminListItem !== 'function' ||
+            typeof handleDeleteSocialLink !== 'function' ||
+            typeof openEditSocialLinkModal !== 'function') {
+             console.error("Error: One or more required handlers (render, delete, edit) for social links are missing or not defined in the current scope!");
+             listContainer.innerHTML = '<p class="error">Rendering function error. Check console.</p>';
+             if (countElement) countElement.textContent = '(Error)';
+             return; // Stop processing if handlers are missing
+        }
+
+        // If the check passes, proceed with rendering
         listToRender.forEach(link => {
-            if (typeof renderSocialLinkAdminListItem === 'function' && typeof handleDeleteSocialLink === 'function' && typeof openEditSocialLinkModal === 'function') {
-                renderSocialLinkAdminListItem(listContainer, link.id, link.label, link.url, link.order, handleDeleteSocialLink, openEditSocialLinkModal);
-            } else {
-                 console.error("Error: renderSocialLinkAdminListItem or its handlers are missing!");
-                 listContainer.innerHTML = '<p class="error">Rendering function error.</p>';
-                 return;
-            }
+            // Now we know the functions exist, so we can call render
+            renderSocialLinkAdminListItem(
+                listContainer,
+                link.id,
+                link.label,
+                link.url,
+                link.order,
+                handleDeleteSocialLink, // Pass the actual function reference
+                openEditSocialLinkModal   // Pass the actual function reference
+            );
         });
     } else {
         if (searchTerm) {
@@ -2780,7 +2796,12 @@ function displayFilteredSocialLinks() {
              listContainer.innerHTML = `<p>No social links found.</p>`;
         }
     }
-    if (countElement) { countElement.textContent = `(${listToRender.length})`; }
+    // Ensure countElement is updated correctly
+    if (countElement) {
+        countElement.textContent = `(${listToRender.length})`;
+    } else {
+        console.warn("Social links count element not found for update.");
+    }
 }
 
 
