@@ -527,10 +527,17 @@
             <label for="social-link-url">Link URL:</label>
             <input type="url" id="social-link-url" name="url" required placeholder="https://..." inputmode="url">
         </div>
+
+        <div class="form-group">
+            <label for="social-link-icon-class">Font Awesome Icon Class (Optional):</label>
+            <input type="text" id="social-link-icon-class" name="iconClass" placeholder="e.g., fa-brands fa-tiktok">
+            <small>Find classes at Font Awesome (e.g., 'fa-brands fa-tiktok', 'fa-brands fa-facebook'). Leave blank to auto-detect.</small>
+        </div>
         <div class="form-group">
             <label for="social-link-order">Display Order:</label>
             <input type="number" id="social-link-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
         </div>
+
         <div class="form-actions">
            <button type="submit" class="button-primary">Add Social Link</button>
         </div>
