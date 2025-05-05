@@ -2784,177 +2784,214 @@ function displayFilteredSocialLinks() {
 }
 
 
-   // --- Function to Handle Adding a New Social Link ---
-   async function handleAddSocialLink(event) {
-       event.preventDefault();
-       if (!addSocialLinkForm) return;
-
-       const labelInput = addSocialLinkForm.querySelector('#social-link-label');
-       const urlInput = addSocialLinkForm.querySelector('#social-link-url');
-       const orderInput = addSocialLinkForm.querySelector('#social-link-order');
-
-       const label = labelInput?.value.trim();
-       const url = urlInput?.value.trim();
-       const orderStr = orderInput?.value.trim();
-       const order = parseInt(orderStr);
-
-       if (!label || !url || !orderStr || isNaN(order) || order < 0) {
-           showAdminStatus("Invalid input for Social Link. Check required fields and ensure Order is a non-negative number.", true);
-           return;
-       }
-
-       // Simple check for valid URL structure
-       try {
-           new URL(url); // This will throw an error if the URL is invalid
-       } catch (_) {
-           showAdminStatus("Invalid URL format. Please enter a valid URL starting with http:// or https://", true);
-           return;
-       }
-
-       const linkData = {
-           label: label,
-           url: url,
-           order: order,
-           createdAt: serverTimestamp()
-       };
-
-       showAdminStatus("Adding social link...");
-       try {
-           const docRef = await addDoc(socialLinksCollectionRef, linkData);
-           console.log("Social link added with ID:", docRef.id);
-           // Optionally: await updateMetadataTimestamp('socialLinks');
-           showAdminStatus("Social link added successfully.", false);
-           addSocialLinkForm.reset(); // Reset the form
-           loadSocialLinksAdmin(); // Reload the list
-
-       } catch (error) {
-           console.error("Error adding social link:", error);
-           showAdminStatus(`Error adding social link: ${error.message}`, true);
-       }
-   }
-
-   // --- Function to Handle Deleting a Social Link ---
-   async function handleDeleteSocialLink(docId, listItemElement) {
-       if (!confirm("Are you sure you want to permanently delete this social link?")) {
-           return;
-       }
-
-       showAdminStatus("Deleting social link...");
-       try {
-           await deleteDoc(doc(db, 'social_links', docId));
-           // Optionally: await updateMetadataTimestamp('socialLinks');
-           showAdminStatus("Social link deleted successfully.", false);
-           loadSocialLinksAdmin(); // Reload list
-
-       } catch (error) {
-           console.error(`Error deleting social link (ID: ${docId}):`, error);
-           showAdminStatus(`Error deleting social link: ${error.message}`, true);
-       }
-   }
-
-
-   // --- Function to Open and Populate the Edit Social Link Modal ---
-   function openEditSocialLinkModal(docId) {
-       if (!editSocialLinkModal || !editSocialLinkForm) {
-           console.error("Edit social link modal elements not found.");
-           showAdminStatus("UI Error: Cannot open edit form.", true);
-           return;
-       }
-
-       const docRef = doc(db, 'social_links', docId);
-       showEditSocialLinkStatus("Loading link data..."); // Show status inside modal
-
-       getDoc(docRef).then(docSnap => {
-           if (docSnap.exists()) {
-               const data = docSnap.data();
-               editSocialLinkForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
-               if (editSocialLinkLabelInput) editSocialLinkLabelInput.value = data.label || '';
-               if (editSocialLinkUrlInput) editSocialLinkUrlInput.value = data.url || '';
-               if (editSocialLinkOrderInput) editSocialLinkOrderInput.value = data.order ?? '';
-
-               editSocialLinkModal.style.display = 'block';
-               showEditSocialLinkStatus(""); // Clear loading message
-           } else {
-               showAdminStatus("Error: Could not load link data for editing.", true);
-                showEditSocialLinkStatus("Error: Link not found.", true); // Show error inside modal
-           }
-       }).catch(error => {
-           console.error("Error getting link document for edit:", error);
-           showAdminStatus(`Error loading link data: ${error.message}`, true);
-           showEditSocialLinkStatus(`Error: ${error.message}`, true);
-       });
-   }
-
-   // --- Function to Close the Edit Social Link Modal ---
-   function closeEditSocialLinkModal() {
-       if (editSocialLinkModal) editSocialLinkModal.style.display = 'none';
-       if (editSocialLinkForm) editSocialLinkForm.reset();
-       editSocialLinkForm?.removeAttribute('data-doc-id');
-       if (editSocialLinkStatusMessage) editSocialLinkStatusMessage.textContent = ''; // Clear status message inside modal
-   }
-
-   // --- Function to Handle Updating a Social Link (with DETAILED Logging) ---
-    async function handleUpdateSocialLink(event) {
-        event.preventDefault();
-        if (!editSocialLinkForm) return;
-        const docId = editSocialLinkForm.getAttribute('data-doc-id');
-        if (!docId) { showEditSocialLinkStatus("Error: Missing document ID...", true); return; }
-        console.log("Attempting to update social link (detailed log):", docId);
-
-        // 1. Get NEW data from form
-        const label = editSocialLinkLabelInput?.value.trim();
-        const url = editSocialLinkUrlInput?.value.trim();
-        const orderStr = editSocialLinkOrderInput?.value.trim();
-        const order = parseInt(orderStr);
-
-        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditSocialLinkStatus("Invalid input...", true); return; }
-        try { new URL(url); } catch (_) { showEditSocialLinkStatus("Invalid URL format.", true); return; }
-
-        const newDataFromForm = { label: label, url: url, order: order };
-        showEditSocialLinkStatus("Saving changes...");
-        const docRef = doc(db, 'social_links', docId); // Define once
-
-        try {
-            // 2. Get OLD data BEFORE saving
-            let oldData = {};
-            const oldDataSnap = await getDoc(docRef);
-            if (oldDataSnap.exists()) { oldData = oldDataSnap.data(); }
-
-            // 3. Save NEW data
-            await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
-            console.log("Social link update successful:", docId);
-
-            // 4. Compare and find changes
-            const changes = {};
-            let hasChanges = false;
-            for (const key in newDataFromForm) {
-                if (oldData[key] !== newDataFromForm[key]) {
-                    changes[key] = { to: newDataFromForm[key] };
-                    hasChanges = true;
-                }
-            }
-
-            // 5. Log ONLY actual changes
-            if (hasChanges) {
-                 console.log("DEBUG: Detected social link changes:", changes);
-                 if (typeof logAdminActivity === 'function') {
-                     logAdminActivity('SOCIAL_LINK_UPDATE', { id: docId, label: label, changes: changes });
-                 } else { console.error("logAdminActivity function not found!");}
-            } else {
-                 console.log("DEBUG: Social link update saved, but no values changed.");
-            }
-
-            showAdminStatus("Social link updated successfully.", false);
-            closeEditSocialLinkModal();
-            loadSocialLinksAdmin();
-        } catch (error) {
-            console.error(`Error updating social link (ID: ${docId}):`, error);
-            showEditSocialLinkStatus(`Error saving: ${error.message}`, true);
-            showAdminStatus(`Error updating social link: ${error.message}`, true);
-        }
+   // --- Function to Handle Adding a New Social Link (UPDATED) ---
+async function handleAddSocialLink(event) {
+    event.preventDefault();
+    const addSocialLinkForm = document.getElementById('add-social-link-form'); // Ensure this is defined
+    if (!addSocialLinkForm) {
+        console.error("Add Social Link form not found!");
+        return;
     }
 
-// --- Attach Event Listeners for Forms ---
+    const labelInput = addSocialLinkForm.querySelector('#social-link-label');
+    const urlInput = addSocialLinkForm.querySelector('#social-link-url');
+    const orderInput = addSocialLinkForm.querySelector('#social-link-order');
+    // *** Get the new icon class input ***
+    const iconClassInput = addSocialLinkForm.querySelector('#social-link-icon-class');
+
+    const label = labelInput?.value.trim();
+    const url = urlInput?.value.trim();
+    const orderStr = orderInput?.value.trim();
+    const order = parseInt(orderStr);
+    // *** Get the icon class value ***
+    const iconClassValue = iconClassInput?.value.trim(); // Get value, trim whitespace
+
+    if (!label || !url || !orderStr || isNaN(order) || order < 0) {
+        showAdminStatus("Invalid input for Social Link. Check required fields and ensure Order is a non-negative number.", true);
+        return;
+    }
+
+    // Simple check for valid URL structure
+    try {
+        new URL(url); // This will throw an error if the URL is invalid
+    } catch (_) {
+        showAdminStatus("Invalid URL format. Please enter a valid URL starting with http:// or https://", true);
+        return;
+    }
+
+    // *** Prepare linkData object ***
+    const linkData = {
+        label: label,
+        url: url,
+        order: order,
+        createdAt: serverTimestamp()
+        // *** Conditionally add iconClass ***
+        // Only add the field if the user entered something
+    };
+    if (iconClassValue) {
+        linkData.iconClass = iconClassValue;
+        console.log("Adding with specified icon class:", iconClassValue);
+    } else {
+        console.log("No icon class specified, will auto-detect on frontend.");
+        // Don't add the iconClass field to Firestore if it's empty
+    }
+
+
+    showAdminStatus("Adding social link...");
+    try {
+        const docRef = await addDoc(socialLinksCollectionRef, linkData); // Ensure socialLinksCollectionRef is defined
+        console.log("Social link added with ID:", docRef.id);
+        // Optionally: await updateMetadataTimestamp('socialLinks');
+        showAdminStatus("Social link added successfully.", false);
+        addSocialLinkForm.reset(); // Reset the form
+        loadSocialLinksAdmin(); // Reload the list
+
+    } catch (error) {
+        console.error("Error adding social link:", error);
+        showAdminStatus(`Error adding social link: ${error.message}`, true);
+    }
+}
+
+// --- Function to Open and Populate the Edit Social Link Modal (UPDATED) ---
+function openEditSocialLinkModal(docId) {
+    // Ensure modal and form elements are defined
+    const editSocialLinkModal = document.getElementById('edit-social-link-modal');
+    const editSocialLinkForm = document.getElementById('edit-social-link-form');
+    const editSocialLinkLabelInput = document.getElementById('edit-social-link-label');
+    const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
+    const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
+    // *** Get the edit icon class input ***
+    const editSocialLinkIconClassInput = document.getElementById('edit-social-link-icon-class');
+
+    if (!editSocialLinkModal || !editSocialLinkForm || !editSocialLinkLabelInput || !editSocialLinkUrlInput || !editSocialLinkOrderInput || !editSocialLinkIconClassInput) {
+        console.error("Edit social link modal elements not found.");
+        showAdminStatus("UI Error: Cannot open edit form.", true);
+        return;
+    }
+
+    const docRef = doc(db, 'social_links', docId); // Ensure db and doc are defined
+    showEditSocialLinkStatus("Loading link data..."); // Show status inside modal
+
+    getDoc(docRef).then(docSnap => { // Ensure getDoc is defined
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            editSocialLinkForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
+            editSocialLinkLabelInput.value = data.label || '';
+            editSocialLinkUrlInput.value = data.url || '';
+            editSocialLinkOrderInput.value = data.order ?? '';
+            // *** Populate the icon class input ***
+            editSocialLinkIconClassInput.value = data.iconClass || ''; // Populate if exists, otherwise empty
+
+            editSocialLinkModal.style.display = 'block';
+            showEditSocialLinkStatus(""); // Clear loading message
+        } else {
+            showAdminStatus("Error: Could not load link data for editing.", true);
+            showEditSocialLinkStatus("Error: Link not found.", true); // Show error inside modal
+        }
+    }).catch(error => {
+        console.error("Error getting link document for edit:", error);
+        showAdminStatus(`Error loading link data: ${error.message}`, true);
+        showEditSocialLinkStatus(`Error: ${error.message}`, true);
+    });
+}
+
+// --- Function to Handle Updating a Social Link (UPDATED) ---
+async function handleUpdateSocialLink(event) {
+    event.preventDefault();
+    const editSocialLinkForm = document.getElementById('edit-social-link-form'); // Ensure defined
+    if (!editSocialLinkForm) return;
+
+    const docId = editSocialLinkForm.getAttribute('data-doc-id');
+    if (!docId) { showEditSocialLinkStatus("Error: Missing document ID...", true); return; }
+    console.log("Attempting to update social link (detailed log):", docId);
+
+    // 1. Get NEW data from form
+    const editSocialLinkLabelInput = document.getElementById('edit-social-link-label');
+    const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
+    const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
+    // *** Get the edit icon class input ***
+    const editSocialLinkIconClassInput = document.getElementById('edit-social-link-icon-class');
+
+    const label = editSocialLinkLabelInput?.value.trim();
+    const url = editSocialLinkUrlInput?.value.trim();
+    const orderStr = editSocialLinkOrderInput?.value.trim();
+    const order = parseInt(orderStr);
+    // *** Get the icon class value ***
+    const iconClassValue = editSocialLinkIconClassInput?.value.trim();
+
+    if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditSocialLinkStatus("Invalid input...", true); return; }
+    try { new URL(url); } catch (_) { showEditSocialLinkStatus("Invalid URL format.", true); return; }
+
+    // *** Prepare newDataFromForm object ***
+    const newDataFromForm = {
+        label: label,
+        url: url,
+        order: order
+        // iconClass will be added conditionally below
+    };
+    // *** Conditionally add iconClass ***
+    if (iconClassValue) {
+        newDataFromForm.iconClass = iconClassValue;
+         console.log("Updating with specified icon class:", iconClassValue);
+    } else {
+        // If the input is empty, we might want to remove the field from Firestore
+        // Use deleteField for this (import it: import { deleteField } from "...")
+        // newDataFromForm.iconClass = deleteField(); // Uncomment if you want empty input to REMOVE the field
+        // Or, simply don't include it in newDataFromForm if you want empty input to leave the existing value (if any) untouched.
+        // For now, we'll just not include it if empty, leaving existing value if present.
+         console.log("No icon class specified in edit form.");
+    }
+
+    showEditSocialLinkStatus("Saving changes...");
+    const docRef = doc(db, 'social_links', docId); // Define once
+
+    try {
+        // 2. Get OLD data BEFORE saving
+        let oldData = {};
+        const oldDataSnap = await getDoc(docRef);
+        if (oldDataSnap.exists()) { oldData = oldDataSnap.data(); }
+
+        // 3. Save NEW data (including lastModified timestamp)
+        await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
+        console.log("Social link update successful:", docId);
+
+        // 4. Compare and find changes (Include iconClass in comparison)
+        const changes = {};
+        let hasChanges = false;
+        const keysToCompare = ['label', 'url', 'order', 'iconClass']; // Add iconClass here
+        keysToCompare.forEach(key => {
+            const oldValue = oldData[key] ?? null; // Treat undefined as null for comparison
+            const newValue = newDataFromForm[key] ?? null; // Treat undefined as null
+            // Check if the field exists in newDataFromForm OR if it existed in oldData but is now removed
+            if (newDataFromForm.hasOwnProperty(key) || (oldData.hasOwnProperty(key) && !newDataFromForm.hasOwnProperty(key))) {
+                 if (oldValue !== newValue) {
+                    changes[key] = { from: oldValue, to: newValue }; // Log both old and new
+                    hasChanges = true;
+                 }
+            }
+        });
+
+
+        // 5. Log ONLY actual changes
+        if (hasChanges) {
+            console.log("DEBUG: Detected social link changes:", changes);
+            if (typeof logAdminActivity === 'function') {
+                logAdminActivity('SOCIAL_LINK_UPDATE', { id: docId, label: label, changes: changes });
+            } else { console.error("logAdminActivity function not found!"); }
+        } else {
+            console.log("DEBUG: Social link update saved, but no values actually changed.");
+        }
+
+        showAdminStatus("Social link updated successfully.", false);
+        closeEditSocialLinkModal(); // Ensure this function is defined
+        loadSocialLinksAdmin(); // Ensure this function is defined
+
+    } catch (error) {
+        console.error(`Error updating social link (ID: ${docId}):`, error);
+        showEditSocialLinkStatus(`Error saving: ${error.message}`, true);
+        showAdminStatus(`Error updating social link: ${error.message}`, true);
+     }
+ }
 
     // Add Shoutout Forms
     if (addShoutoutTiktokForm) { //
