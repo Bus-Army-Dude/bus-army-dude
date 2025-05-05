@@ -378,7 +378,6 @@ if (searchInputUsefulLinks) {
 }
 
 // Search Listener for Social Links (NEW)
-const searchInputSocialLinks = document.getElementById('search-social-links');
 if (searchInputSocialLinks) {
     searchInputSocialLinks.addEventListener('input', displayFilteredSocialLinks);
 }
