@@ -193,18 +193,20 @@ document.addEventListener('DOMContentLoaded', () => { //
     const editLinkOrderInput = document.getElementById('edit-link-order'); //
     const editLinkStatusMessage = document.getElementById('edit-link-status-message'); // Status inside edit modal
 
-    // --- Social Links Elements ---
+    // --- Ensure all your DOM element variables are defined here ---
     const addSocialLinkForm = document.getElementById('add-social-link-form');
     const socialLinksListAdmin = document.getElementById('social-links-list-admin');
-    const socialLinksCount = document.getElementById('social-links-count'); // Span to show count
+    const socialLinksCount = document.getElementById('social-links-count');
+    const searchInputSocialLinks = document.getElementById('search-social-links');
     const editSocialLinkModal = document.getElementById('edit-social-link-modal');
     const editSocialLinkForm = document.getElementById('edit-social-link-form');
-    const cancelEditSocialLinkButton = document.getElementById('cancel-edit-social-link-button'); // Close X button
-    const cancelEditSocialLinkButtonSecondary = document.getElementById('cancel-edit-social-link-button-secondary'); // Secondary Cancel Button
     const editSocialLinkLabelInput = document.getElementById('edit-social-link-label');
     const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
     const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
-    const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message'); // Status inside edit modal
+    const editSocialLinkIconClassInput = document.getElementById('edit-social-link-icon-class'); // The new input
+    const editSocialLinkStatusMessage = document.getElementById('edit-social-link-status-message');
+    const cancelEditSocialLinkButton = document.getElementById('cancel-edit-social-link-button');
+    const cancelEditSocialLinkButtonSecondary = document.getElementById('cancel-edit-social-link-button-secondary');
 
     // President Management Elements
     const presidentForm = document.getElementById('president-form');
@@ -388,11 +390,10 @@ if (searchInputDisabilities) {
 }
 
     // --- Add this near other status message functions ---
-    function showEditSocialLinkStatus(message, isError = false) {
+     function showEditSocialLinkStatus(message, isError = false) {
        if (!editSocialLinkStatusMessage) { console.warn("Edit social link status message element not found"); return; }
        editSocialLinkStatusMessage.textContent = message;
        editSocialLinkStatusMessage.className = `status-message ${isError ? 'error' : 'success'}`;
-       // Clear message after 3 seconds
        setTimeout(() => { if (editSocialLinkStatusMessage) { editSocialLinkStatusMessage.textContent = ''; editSocialLinkStatusMessage.className = 'status-message'; } }, 3000);
     }
 
@@ -755,6 +756,31 @@ function renderYouTubeCard(account) {
         }
     }
     // *** END updateShoutoutPreview FUNCTION ***
+
+    // --- Global Click Listener for Modals (Ensure this is defined ONCE) ---
+    // Check if listener already exists to prevent duplicates if code runs multiple times
+    if (!window.adminModalClickListenerAttached) {
+        window.addEventListener('click', (event) => {
+            // Re-select modals inside the handler for safety
+            const editShoutoutModalElem = document.getElementById('edit-shoutout-modal');
+            const editUsefulLinkModalElem = document.getElementById('edit-useful-link-modal');
+            const editSocialLinkModalElem = document.getElementById('edit-social-link-modal'); // Re-select here
+            const editDisabilityModalElem = document.getElementById('edit-disability-modal');
+            const editTechItemModalElem = document.getElementById('edit-tech-item-modal');
+            const editFaqModalElem = document.getElementById('edit-faq-modal');
+
+            // Check if the click target is the backdrop of any modal
+            if (event.target === editShoutoutModalElem && typeof closeEditModal === 'function') { closeEditModal(); }
+            if (event.target === editUsefulLinkModalElem && typeof closeEditUsefulLinkModal === 'function') { closeEditUsefulLinkModal(); }
+            // *** Check if closeEditSocialLinkModal is a function before calling ***
+            if (event.target === editSocialLinkModalElem && typeof closeEditSocialLinkModal === 'function') { closeEditSocialLinkModal(); }
+            if (event.target === editDisabilityModalElem && typeof closeEditDisabilityModal === 'function') { closeEditDisabilityModal(); }
+            if (event.target === editTechItemModalElem && typeof closeEditTechItemModal === 'function') { closeEditTechItemModal(); }
+            if (event.target === editFaqModalElem && typeof closeEditFaqModal === 'function') { closeEditFaqModal(); }
+        });
+        window.adminModalClickListenerAttached = true; // Set flag
+        console.log("Global modal click listener attached.");
+    }
 
 
 
@@ -2649,24 +2675,29 @@ function closeEditUsefulLinkModal() { //
 
 // --- Function to render a single Social Link item in the admin list ---
    function renderSocialLinkAdminListItem(container, docId, label, url, order, deleteHandler, editHandler) {
-       if (!container) return;
+       if (!container) {
+           console.warn("Social link list container missing during render.");
+           return;
+       }
 
        const itemDiv = document.createElement('div');
        itemDiv.className = 'list-item-admin';
        itemDiv.setAttribute('data-id', docId);
 
-       // Basic validation for URL before creating the link
        let displayUrl = url || 'N/A';
        let visitUrl = '#';
        try {
-           if (url) {
-               visitUrl = new URL(url).href; // Ensures it's a valid structure
+           if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+               visitUrl = new URL(url).href;
+           } else if (url) {
+               visitUrl = `https://${url}`;
+               try { new URL(visitUrl); } catch { visitUrl = '#'; displayUrl += " (Invalid URL)"; }
            }
        } catch (e) {
             console.warn(`Invalid URL skipped for visit button: ${url}`);
             displayUrl += " (Invalid URL)";
+            visitUrl = '#';
        }
-
 
        itemDiv.innerHTML = `
            <div class="item-content">
@@ -2684,121 +2715,118 @@ function closeEditUsefulLinkModal() { //
                <button type="button" class="delete-button small-button">Delete</button>
            </div>`;
 
-       // Add event listeners
        const editButton = itemDiv.querySelector('.edit-button');
-       if (editButton) editButton.addEventListener('click', () => editHandler(docId)); // Pass only docId
+       if (editButton && typeof editHandler === 'function') {
+            editButton.addEventListener('click', () => editHandler(docId));
+       } else if (editButton) {
+           console.warn("Edit handler missing for social link:", docId);
+           editButton.disabled = true;
+       }
 
        const deleteButton = itemDiv.querySelector('.delete-button');
-       if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, itemDiv)); // Pass docId and the item element
+       if (deleteButton && typeof deleteHandler === 'function') {
+           deleteButton.addEventListener('click', () => deleteHandler(docId, itemDiv));
+       } else if (deleteButton) {
+           console.warn("Delete handler missing for social link:", docId);
+           deleteButton.disabled = true;
+       }
 
        container.appendChild(itemDiv);
    }
 
-
    // *** CORRECTED Function to Load Social Links ***
 async function loadSocialLinksAdmin() {
-    if (!socialLinksListAdmin) { console.error("Social links list container missing."); return; }
-    if (socialLinksCount) socialLinksCount.textContent = '';
-    socialLinksListAdmin.innerHTML = `<p>Loading social links...</p>`;
-    allSocialLinks = []; // Clear the global array
+        if (!socialLinksListAdmin) { console.error("Social links list container missing."); return; }
+        if (socialLinksCount) socialLinksCount.textContent = '';
+        socialLinksListAdmin.innerHTML = `<p>Loading social links...</p>`;
+        allSocialLinks = []; // Clear the global array
 
-    try {
-        const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc"));
-        const querySnapshot = await getDocs(linkQuery);
+        try {
+            const linkQuery = query(socialLinksCollectionRef, orderBy("order", "asc"));
+            const querySnapshot = await getDocs(linkQuery);
 
-        // Populate the global array
-        querySnapshot.forEach((doc) => {
-            allSocialLinks.push({ id: doc.id, ...doc.data() }); // Store data in the array
-        });
-         console.log(`Stored ${allSocialLinks.length} social links.`);
+            querySnapshot.forEach((doc) => {
+                allSocialLinks.push({ id: doc.id, ...doc.data() });
+            });
+             console.log(`Stored ${allSocialLinks.length} social links.`);
 
-        // Call the filter function to display initially (will show all)
-        displayFilteredSocialLinks();
+            displayFilteredSocialLinks(); // Call the filter function
 
-    } catch (error) {
-        console.error("Error loading social links:", error);
-        let errorMsg = "Error loading social links.";
-        if (error.code === 'failed-precondition') {
-            errorMsg = "Error: Missing Firestore index for social links (order). Check console.";
-            showAdminStatus(errorMsg, true);
-        } else {
-            showAdminStatus(errorMsg + `: ${error.message}`, true);
+        } catch (error) {
+            console.error("Error loading social links:", error);
+            let errorMsg = "Error loading social links.";
+            if (error.code === 'failed-precondition') {
+                errorMsg = "Error: Missing Firestore index for social links (order). Check console.";
+                showAdminStatus(errorMsg, true);
+            } else {
+                showAdminStatus(errorMsg + `: ${error.message}`, true);
+            }
+            socialLinksListAdmin.innerHTML = `<p class="error">${errorMsg}</p>`;
+            if (socialLinksCount) socialLinksCount.textContent = '(Error)';
         }
-        socialLinksListAdmin.innerHTML = `<p class="error">${errorMsg}</p>`;
-        if (socialLinksCount) socialLinksCount.textContent = '(Error)';
     }
-}
+
 
     // --- REVISED + CORRECTED Filtering Function for Social Links ---
-// --- REVISED Filtering Function for Social Links ---
 function displayFilteredSocialLinks() {
-    // Re-select elements inside the function for safety
-    const listContainer = document.getElementById('social-links-list-admin');
-    const countElement = document.getElementById('social-links-count');
-    const searchInput = document.getElementById('search-social-links');
-
-    // Add more robust checks for elements and data
-    if (!listContainer || !searchInput || !countElement) {
-        console.error("Social Links Filter Error: Crucial display elements missing.");
-        if(listContainer) listContainer.innerHTML = `<p class="error">UI Error displaying list.</p>`;
-        return;
-    }
-     if (typeof allSocialLinks === 'undefined') { // Check if the data array exists
-         console.error("Social Links Filter Error: Data array 'allSocialLinks' is undefined.");
-         listContainer.innerHTML = `<p class="error">Data error displaying list.</p>`;
-         if (countElement) countElement.textContent = '(Error)';
-         return;
-     }
-
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    listContainer.innerHTML = ''; // Clear list
-
-    let listToRender = [];
-    if (!searchTerm) {
-        listToRender = allSocialLinks;
-    } else {
-        listToRender = allSocialLinks.filter(link => {
-            const label = (link.label || '').toLowerCase();
-            const url = (link.url || '').toLowerCase(); // Also search URL
-            return label.includes(searchTerm) || url.includes(searchTerm);
-        });
-    }
-
-    if (listToRender.length > 0) {
-        // *** Check if ALL required functions exist BEFORE looping ***
-        // This is the crucial check to prevent the error you saw
-        if (typeof renderSocialLinkAdminListItem !== 'function' ||
-            typeof handleDeleteSocialLink !== 'function' ||
-            typeof openEditSocialLinkModal !== 'function') {
-             console.error("Error: One or more required handlers (render, delete, edit) for social links are missing or not defined in the current scope!");
-             listContainer.innerHTML = '<p class="error">Rendering function error. Check console.</p>';
-             if (countElement) countElement.textContent = '(Error)';
-             return; // Stop processing if handlers are missing
+        if (!socialLinksListAdmin || !searchInputSocialLinks || !socialLinksCount) {
+            console.error("Social Links Filter Error: Crucial display elements missing.");
+            if(socialLinksListAdmin) socialLinksListAdmin.innerHTML = `<p class="error">UI Error displaying list.</p>`;
+            return;
         }
+         if (typeof allSocialLinks === 'undefined') {
+             console.error("Social Links Filter Error: Data array 'allSocialLinks' is undefined.");
+             socialLinksListAdmin.innerHTML = `<p class="error">Data error displaying list.</p>`;
+             if (socialLinksCount) socialLinksCount.textContent = '(Error)';
+             return;
+         }
 
-        // If the check passes, proceed with rendering
-        listToRender.forEach(link => {
-            // Now we know the functions exist, so we can call render
-            renderSocialLinkAdminListItem(
-                listContainer,
-                link.id,
-                link.label,
-                link.url,
-                link.order,
-                handleDeleteSocialLink, // Pass the actual function reference
-                openEditSocialLinkModal   // Pass the actual function reference
-            );
-        });
-    } else {
-        if (searchTerm) {
-            listContainer.innerHTML = `<p>No social links found matching "${searchTerm}".</p>`;
+        const searchTerm = searchInputSocialLinks.value.trim().toLowerCase();
+        socialLinksListAdmin.innerHTML = '';
+
+        let listToRender = [];
+        if (!searchTerm) {
+            listToRender = allSocialLinks;
         } else {
-             listContainer.innerHTML = `<p>No social links found.</p>`;
+            listToRender = allSocialLinks.filter(link => {
+                const label = (link.label || '').toLowerCase();
+                const url = (link.url || '').toLowerCase();
+                return label.includes(searchTerm) || url.includes(searchTerm);
+            });
         }
-    }
-    // Ensure countElement is updated correctly
-    if (countElement) {
-        countElement.textContent = `(${listToRender.length})`;
+
+        if (listToRender.length > 0) {
+            // Check if ALL required functions exist BEFORE looping
+            if (typeof renderSocialLinkAdminListItem !== 'function' ||
+                typeof handleDeleteSocialLink !== 'function' ||
+                typeof openEditSocialLinkModal !== 'function') {
+                 console.error("CRITICAL Error: One or more required handlers (render, delete, edit) for social links are not defined in this scope!");
+                 socialLinksListAdmin.innerHTML = '<p class="error">Rendering function error. Check console.</p>';
+                 if (socialLinksCount) socialLinksCount.textContent = '(Error)';
+                 return; // Stop processing
+            }
+
+            listToRender.forEach(link => {
+                renderSocialLinkAdminListItem(
+                    socialLinksListAdmin,
+                    link.id,
+                    link.label,
+                    link.url,
+                    link.order,
+                    handleDeleteSocialLink, // Pass the actual function reference
+                    openEditSocialLinkModal   // Pass the actual function reference
+                );
+            });
+        } else {
+            if (searchTerm) {
+                socialLinksListAdmin.innerHTML = `<p>No social links found matching "${searchTerm}".</p>`;
+            } else {
+                 socialLinksListAdmin.innerHTML = `<p>No social links found.</p>`;
+            }
+        }
+        if (socialLinksCount) {
+            socialLinksCount.textContent = `(${listToRender.length})`;
+        }
     } else {
         console.warn("Social links count element not found for update.");
     }
@@ -2807,212 +2835,175 @@ function displayFilteredSocialLinks() {
 
    // --- Function to Handle Adding a New Social Link (UPDATED) ---
 async function handleAddSocialLink(event) {
-    event.preventDefault();
-    const addSocialLinkForm = document.getElementById('add-social-link-form'); // Ensure this is defined
-    if (!addSocialLinkForm) {
-        console.error("Add Social Link form not found!");
-        return;
+        event.preventDefault();
+        if (!addSocialLinkForm) { console.error("Add Social Link form not found!"); return; }
+
+        const labelInput = addSocialLinkForm.querySelector('#social-link-label');
+        const urlInput = addSocialLinkForm.querySelector('#social-link-url');
+        const orderInput = addSocialLinkForm.querySelector('#social-link-order');
+        const iconClassInput = addSocialLinkForm.querySelector('#social-link-icon-class');
+
+        const label = labelInput?.value.trim();
+        const url = urlInput?.value.trim();
+        const orderStr = orderInput?.value.trim();
+        const order = parseInt(orderStr);
+        const iconClassValue = iconClassInput?.value.trim();
+
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) {
+            showAdminStatus("Invalid input for Social Link. Check required fields and ensure Order is a non-negative number.", true);
+            return;
+        }
+        try { new URL(url); } catch (_) {
+            showAdminStatus("Invalid URL format. Please enter a valid URL starting with http:// or https://", true);
+            return;
+        }
+
+        const linkData = {
+            label: label, url: url, order: order, createdAt: serverTimestamp()
+        };
+        if (iconClassValue) {
+            linkData.iconClass = iconClassValue;
+        }
+
+        showAdminStatus("Adding social link...");
+        try {
+            const docRef = await addDoc(socialLinksCollectionRef, linkData);
+            console.log("Social link added with ID:", docRef.id);
+            showAdminStatus("Social link added successfully.", false);
+            addSocialLinkForm.reset();
+            loadSocialLinksAdmin(); // Reload the list
+        } catch (error) {
+            console.error("Error adding social link:", error);
+            showAdminStatus(`Error adding social link: ${error.message}`, true);
+        }
     }
 
-    const labelInput = addSocialLinkForm.querySelector('#social-link-label');
-    const urlInput = addSocialLinkForm.querySelector('#social-link-url');
-    const orderInput = addSocialLinkForm.querySelector('#social-link-order');
-    // *** Get the new icon class input ***
-    const iconClassInput = addSocialLinkForm.querySelector('#social-link-icon-class');
-
-    const label = labelInput?.value.trim();
-    const url = urlInput?.value.trim();
-    const orderStr = orderInput?.value.trim();
-    const order = parseInt(orderStr);
-    // *** Get the icon class value ***
-    const iconClassValue = iconClassInput?.value.trim(); // Get value, trim whitespace
-
-    if (!label || !url || !orderStr || isNaN(order) || order < 0) {
-        showAdminStatus("Invalid input for Social Link. Check required fields and ensure Order is a non-negative number.", true);
-        return;
+async function handleDeleteSocialLink(docId, listItemElement) {
+        if (!confirm("Are you sure you want to permanently delete this social link?")) {
+            return;
+        }
+        showAdminStatus("Deleting social link...");
+        try {
+            await deleteDoc(doc(db, 'social_links', docId));
+            showAdminStatus("Social link deleted successfully.", false);
+            loadSocialLinksAdmin(); // Reload list
+        } catch (error) {
+            console.error(`Error deleting social link (ID: ${docId}):`, error);
+            showAdminStatus(`Error deleting social link: ${error.message}`, true);
+        }
     }
-
-    // Simple check for valid URL structure
-    try {
-        new URL(url); // This will throw an error if the URL is invalid
-    } catch (_) {
-        showAdminStatus("Invalid URL format. Please enter a valid URL starting with http:// or https://", true);
-        return;
-    }
-
-    // *** Prepare linkData object ***
-    const linkData = {
-        label: label,
-        url: url,
-        order: order,
-        createdAt: serverTimestamp()
-        // *** Conditionally add iconClass ***
-        // Only add the field if the user entered something
-    };
-    if (iconClassValue) {
-        linkData.iconClass = iconClassValue;
-        console.log("Adding with specified icon class:", iconClassValue);
-    } else {
-        console.log("No icon class specified, will auto-detect on frontend.");
-        // Don't add the iconClass field to Firestore if it's empty
-    }
-
-
-    showAdminStatus("Adding social link...");
-    try {
-        const docRef = await addDoc(socialLinksCollectionRef, linkData); // Ensure socialLinksCollectionRef is defined
-        console.log("Social link added with ID:", docRef.id);
-        // Optionally: await updateMetadataTimestamp('socialLinks');
-        showAdminStatus("Social link added successfully.", false);
-        addSocialLinkForm.reset(); // Reset the form
-        loadSocialLinksAdmin(); // Reload the list
-
-    } catch (error) {
-        console.error("Error adding social link:", error);
-        showAdminStatus(`Error adding social link: ${error.message}`, true);
-    }
-}
 
 // --- Function to Open and Populate the Edit Social Link Modal (UPDATED) ---
 function openEditSocialLinkModal(docId) {
-    // Ensure modal and form elements are defined
-    const editSocialLinkModal = document.getElementById('edit-social-link-modal');
-    const editSocialLinkForm = document.getElementById('edit-social-link-form');
-    const editSocialLinkLabelInput = document.getElementById('edit-social-link-label');
-    const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
-    const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
-    // *** Get the edit icon class input ***
-    const editSocialLinkIconClassInput = document.getElementById('edit-social-link-icon-class');
+        if (!editSocialLinkModal || !editSocialLinkForm || !editSocialLinkLabelInput || !editSocialLinkUrlInput || !editSocialLinkOrderInput || !editSocialLinkIconClassInput) {
+            console.error("Edit social link modal elements not found.");
+            showAdminStatus("UI Error: Cannot open edit form.", true);
+            return;
+        }
+        const docRef = doc(db, 'social_links', docId);
+        showEditSocialLinkStatus("Loading link data...");
 
-    if (!editSocialLinkModal || !editSocialLinkForm || !editSocialLinkLabelInput || !editSocialLinkUrlInput || !editSocialLinkOrderInput || !editSocialLinkIconClassInput) {
-        console.error("Edit social link modal elements not found.");
-        showAdminStatus("UI Error: Cannot open edit form.", true);
-        return;
+        getDoc(docRef).then(docSnap => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                editSocialLinkForm.setAttribute('data-doc-id', docId);
+                editSocialLinkLabelInput.value = data.label || '';
+                editSocialLinkUrlInput.value = data.url || '';
+                editSocialLinkOrderInput.value = data.order ?? '';
+                editSocialLinkIconClassInput.value = data.iconClass || ''; // Populate icon class
+
+                editSocialLinkModal.style.display = 'block';
+                showEditSocialLinkStatus("");
+            } else {
+                showAdminStatus("Error: Could not load link data for editing.", true);
+                showEditSocialLinkStatus("Error: Link not found.", true);
+            }
+        }).catch(error => {
+            console.error("Error getting link document for edit:", error);
+            showAdminStatus(`Error loading link data: ${error.message}`, true);
+            showEditSocialLinkStatus(`Error: ${error.message}`, true);
+        });
     }
 
-    const docRef = doc(db, 'social_links', docId); // Ensure db and doc are defined
-    showEditSocialLinkStatus("Loading link data..."); // Show status inside modal
-
-    getDoc(docRef).then(docSnap => { // Ensure getDoc is defined
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            editSocialLinkForm.setAttribute('data-doc-id', docId); // Store doc ID on the form
-            editSocialLinkLabelInput.value = data.label || '';
-            editSocialLinkUrlInput.value = data.url || '';
-            editSocialLinkOrderInput.value = data.order ?? '';
-            // *** Populate the icon class input ***
-            editSocialLinkIconClassInput.value = data.iconClass || ''; // Populate if exists, otherwise empty
-
-            editSocialLinkModal.style.display = 'block';
-            showEditSocialLinkStatus(""); // Clear loading message
-        } else {
-            showAdminStatus("Error: Could not load link data for editing.", true);
-            showEditSocialLinkStatus("Error: Link not found.", true); // Show error inside modal
-        }
-    }).catch(error => {
-        console.error("Error getting link document for edit:", error);
-        showAdminStatus(`Error loading link data: ${error.message}`, true);
-        showEditSocialLinkStatus(`Error: ${error.message}`, true);
-    });
-}
+function closeEditSocialLinkModal() {
+       if (editSocialLinkModal) editSocialLinkModal.style.display = 'none';
+       if (editSocialLinkForm) {
+           editSocialLinkForm.reset();
+           editSocialLinkForm.removeAttribute('data-doc-id');
+       }
+       if (editSocialLinkStatusMessage) editSocialLinkStatusMessage.textContent = '';
+    }
 
 // --- Function to Handle Updating a Social Link (UPDATED) ---
 async function handleUpdateSocialLink(event) {
-    event.preventDefault();
-    const editSocialLinkForm = document.getElementById('edit-social-link-form'); // Ensure defined
-    if (!editSocialLinkForm) return;
+        event.preventDefault();
+        if (!editSocialLinkForm) return;
+        const docId = editSocialLinkForm.getAttribute('data-doc-id');
+        if (!docId) { showEditSocialLinkStatus("Error: Missing document ID...", true); return; }
 
-    const docId = editSocialLinkForm.getAttribute('data-doc-id');
-    if (!docId) { showEditSocialLinkStatus("Error: Missing document ID...", true); return; }
-    console.log("Attempting to update social link (detailed log):", docId);
+        const label = editSocialLinkLabelInput?.value.trim();
+        const url = editSocialLinkUrlInput?.value.trim();
+        const orderStr = editSocialLinkOrderInput?.value.trim();
+        const order = parseInt(orderStr);
+        const iconClassValue = editSocialLinkIconClassInput?.value.trim();
 
-    // 1. Get NEW data from form
-    const editSocialLinkLabelInput = document.getElementById('edit-social-link-label');
-    const editSocialLinkUrlInput = document.getElementById('edit-social-link-url');
-    const editSocialLinkOrderInput = document.getElementById('edit-social-link-order');
-    // *** Get the edit icon class input ***
-    const editSocialLinkIconClassInput = document.getElementById('edit-social-link-icon-class');
+        if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditSocialLinkStatus("Invalid input...", true); return; }
+        try { new URL(url); } catch (_) { showEditSocialLinkStatus("Invalid URL format.", true); return; }
 
-    const label = editSocialLinkLabelInput?.value.trim();
-    const url = editSocialLinkUrlInput?.value.trim();
-    const orderStr = editSocialLinkOrderInput?.value.trim();
-    const order = parseInt(orderStr);
-    // *** Get the icon class value ***
-    const iconClassValue = editSocialLinkIconClassInput?.value.trim();
-
-    if (!label || !url || !orderStr || isNaN(order) || order < 0) { showEditSocialLinkStatus("Invalid input...", true); return; }
-    try { new URL(url); } catch (_) { showEditSocialLinkStatus("Invalid URL format.", true); return; }
-
-    // *** Prepare newDataFromForm object ***
-    const newDataFromForm = {
-        label: label,
-        url: url,
-        order: order
-        // iconClass will be added conditionally below
-    };
-    // *** Conditionally add iconClass ***
-    if (iconClassValue) {
-        newDataFromForm.iconClass = iconClassValue;
-         console.log("Updating with specified icon class:", iconClassValue);
-    } else {
-        // If the input is empty, we might want to remove the field from Firestore
-        // Use deleteField for this (import it: import { deleteField } from "...")
-        // newDataFromForm.iconClass = deleteField(); // Uncomment if you want empty input to REMOVE the field
-        // Or, simply don't include it in newDataFromForm if you want empty input to leave the existing value (if any) untouched.
-        // For now, we'll just not include it if empty, leaving existing value if present.
-         console.log("No icon class specified in edit form.");
-    }
-
-    showEditSocialLinkStatus("Saving changes...");
-    const docRef = doc(db, 'social_links', docId); // Define once
-
-    try {
-        // 2. Get OLD data BEFORE saving
-        let oldData = {};
-        const oldDataSnap = await getDoc(docRef);
-        if (oldDataSnap.exists()) { oldData = oldDataSnap.data(); }
-
-        // 3. Save NEW data (including lastModified timestamp)
-        await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
-        console.log("Social link update successful:", docId);
-
-        // 4. Compare and find changes (Include iconClass in comparison)
-        const changes = {};
-        let hasChanges = false;
-        const keysToCompare = ['label', 'url', 'order', 'iconClass']; // Add iconClass here
-        keysToCompare.forEach(key => {
-            const oldValue = oldData[key] ?? null; // Treat undefined as null for comparison
-            const newValue = newDataFromForm[key] ?? null; // Treat undefined as null
-            // Check if the field exists in newDataFromForm OR if it existed in oldData but is now removed
-            if (newDataFromForm.hasOwnProperty(key) || (oldData.hasOwnProperty(key) && !newDataFromForm.hasOwnProperty(key))) {
-                 if (oldValue !== newValue) {
-                    changes[key] = { from: oldValue, to: newValue }; // Log both old and new
-                    hasChanges = true;
-                 }
-            }
-        });
-
-
-        // 5. Log ONLY actual changes
-        if (hasChanges) {
-            console.log("DEBUG: Detected social link changes:", changes);
-            if (typeof logAdminActivity === 'function') {
-                logAdminActivity('SOCIAL_LINK_UPDATE', { id: docId, label: label, changes: changes });
-            } else { console.error("logAdminActivity function not found!"); }
+        const newDataFromForm = { label: label, url: url, order: order };
+        if (iconClassValue) {
+            newDataFromForm.iconClass = iconClassValue;
         } else {
-            console.log("DEBUG: Social link update saved, but no values actually changed.");
+            // Optional: Remove field if empty using deleteField()
+            // newDataFromForm.iconClass = deleteField();
         }
 
-        showAdminStatus("Social link updated successfully.", false);
-        closeEditSocialLinkModal(); // Ensure this function is defined
-        loadSocialLinksAdmin(); // Ensure this function is defined
+        showEditSocialLinkStatus("Saving changes...");
+        const docRef = doc(db, 'social_links', docId);
 
-    } catch (error) {
-        console.error(`Error updating social link (ID: ${docId}):`, error);
-        showEditSocialLinkStatus(`Error saving: ${error.message}`, true);
-        showAdminStatus(`Error updating social link: ${error.message}`, true);
-     }
- }
+        try {
+            let oldData = {};
+            const oldDataSnap = await getDoc(docRef);
+            if (oldDataSnap.exists()) { oldData = oldDataSnap.data(); }
+
+            await updateDoc(docRef, { ...newDataFromForm, lastModified: serverTimestamp() });
+            console.log("Social link update successful:", docId);
+
+            // --- Logging Changes (Simplified) ---
+            let hasChanges = false;
+            const changes = {};
+            const keysToCompare = ['label', 'url', 'order', 'iconClass'];
+            keysToCompare.forEach(key => {
+                const oldValue = oldData[key] ?? null;
+                const newValue = newDataFromForm[key] ?? null;
+                 // Check if the key exists in either old or new data to correctly log additions/removals
+                 if (oldData.hasOwnProperty(key) || newDataFromForm.hasOwnProperty(key)) {
+                    if (oldValue !== newValue) {
+                        changes[key] = { from: oldValue, to: newValue };
+                        hasChanges = true;
+                    }
+                 }
+            });
+            if (hasChanges && typeof logAdminActivity === 'function') {
+                 logAdminActivity('SOCIAL_LINK_UPDATE', { id: docId, label: label, changes: changes });
+            } else if (hasChanges) {
+                 console.warn("logAdminActivity function not found for SOCIAL_LINK_UPDATE!");
+            }
+            // --- End Logging ---
+
+            showAdminStatus("Social link updated successfully.", false);
+            closeEditSocialLinkModal();
+            loadSocialLinksAdmin();
+
+        } catch (error) {
+            console.error(`Error updating social link (ID: ${docId}):`, error);
+            showEditSocialLinkStatus(`Error saving: ${error.message}`, true);
+            showAdminStatus(`Error updating social link: ${error.message}`, true);
+            if (typeof logAdminActivity === 'function') {
+                logAdminActivity('SOCIAL_LINK_UPDATE_FAILED', { id: docId, label: label, error: error.message });
+            }
+        }
+    }
 
     // Add Shoutout Forms
     if (addShoutoutTiktokForm) { //
@@ -3887,19 +3878,22 @@ async function handleUpdateFaq(event) {
         cancelEditLinkButtonSecondary.addEventListener('click', closeEditUsefulLinkModal); //
     }
 
-   // --- Social Links Event Listeners ---
-   if (addSocialLinkForm) {
-       addSocialLinkForm.addEventListener('submit', handleAddSocialLink);
-   }
-   if (editSocialLinkForm) {
-       editSocialLinkForm.addEventListener('submit', handleUpdateSocialLink);
-   }
-   if (cancelEditSocialLinkButton) { // X close button
-       cancelEditSocialLinkButton.addEventListener('click', closeEditSocialLinkModal);
-   }
-   if (cancelEditSocialLinkButtonSecondary) { // Secondary Cancel button
-       cancelEditSocialLinkButtonSecondary.addEventListener('click', closeEditSocialLinkModal);
-   }
+   // --- Attach Event Listeners ---
+    if (addSocialLinkForm) {
+        addSocialLinkForm.addEventListener('submit', handleAddSocialLink);
+    }
+    if (editSocialLinkForm) {
+        editSocialLinkForm.addEventListener('submit', handleUpdateSocialLink);
+    }
+    if (cancelEditSocialLinkButton) {
+        cancelEditSocialLinkButton.addEventListener('click', closeEditSocialLinkModal);
+    }
+    if (cancelEditSocialLinkButtonSecondary) {
+        cancelEditSocialLinkButtonSecondary.addEventListener('click', closeEditSocialLinkModal);
+    }
+    if (searchInputSocialLinks) {
+        searchInputSocialLinks.addEventListener('input', displayFilteredSocialLinks);
+    }
 
 
     // Function to render a single Disability Link item in the admin list
