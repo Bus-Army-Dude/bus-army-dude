@@ -450,8 +450,8 @@ body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
     body.settings-page button:focus-visible,
     body.settings-page a:focus-visible,
     body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
-        outline: none; /* Remove the outline for touch-primary devices */
-        outline-offset: 0; /* Reset the offset */
+        outline: none !important; /* Add !important */
+        outline-offset: 0;
     }
 }
 /* --- END MODIFICATION --- */
