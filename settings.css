@@ -151,7 +151,7 @@ body.settings-page .setting-card:hover {
     }
     /* Optional: Dark mode border for subsection if needed */
     /* body.settings-page .settings-subsection {
-       border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.1);
     } */
 }
 
@@ -326,7 +326,7 @@ body.settings-page .reset-button {
     background-color: var(--red-color);
 }
 body.settings-page #cookie-consent-banner button {
-     background-color: var(--accent-color);
+    background-color: var(--accent-color);
 }
 
 
@@ -435,10 +435,26 @@ body.settings-page input:focus-visible,
 body.settings-page button:focus-visible,
 body.settings-page a:focus-visible,
 body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
-     outline: 2px solid var(--focus-outline-color);
-     outline-offset: 2px;
-     border-radius: 4px;
+    outline: 2px solid var(--focus-outline-color);
+    outline-offset: 2px;
+    border-radius: 4px;
 }
+
+/* --- MODIFICATION FOR DESKTOP-ONLY FOCUS OUTLINES --- */
+/* Target devices where hover is not the primary interaction method
+   AND the primary pointer is coarse (like a finger).
+   This typically covers most touch-screen mobile phones and tablets. */
+@media (hover: none) and (pointer: coarse) {
+    body.settings-page :focus-visible,
+    body.settings-page input:focus-visible,
+    body.settings-page button:focus-visible,
+    body.settings-page a:focus-visible,
+    body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
+        outline: none; /* Remove the outline for touch-primary devices */
+        outline-offset: 0; /* Reset the offset */
+    }
+}
+/* --- END MODIFICATION --- */
 
 
 /* ========== Media Queries (Scoped) ========== */
@@ -458,7 +474,7 @@ body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
         gap: 15px; /* Add gap between label and control */
     }
     body.settings-page .setting-label {
-       padding-right: 0; /* Remove right padding when stacked */
+        padding-right: 0; /* Remove right padding when stacked */
     }
 
     body.settings-page .text-size-control {
