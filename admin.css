@@ -1410,7 +1410,7 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
 }
 
 /* ======================================== */
-/* Business Info Section Styles           */
+/* Business Info Section Styles             */
 /* (Add these rules to your admin.css)    */
 /* ======================================== */
 
@@ -1421,7 +1421,7 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     margin-bottom: 25px; /* Space below the grid */
-    margin-top: 10px; /* Space above the grid */
+    margin-top: 10px;    /* Space above the grid */
 }
 
 /* Styling for each day's hour group */
@@ -1457,8 +1457,26 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
     width: auto; /* Don't force full width */
     flex-grow: 1; /* Allow shrinking/growing */
     min-width: 100px; /* Ensure minimum width */
-    padding: 8px 10px; /* Slightly smaller padding */
+    padding: 10px 12px; /* Harmonized padding with other modern inputs */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm, 6px);
+    background-color: var(--bg-color, #fff);
+    font-size: 0.95rem;
+    color: var(--text-color);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
 }
+
+.day-hours-group input[type="time"]:focus,
+.special-hours-list .hour-entry input[type="time"]:focus {
+    border-color: var(--color-primary-action, #007bff);
+    box-shadow: 0 0 0 2px rgba(var(--color-primary-action-rgb, 0,123,255), 0.25);
+    outline: none;
+}
+
 
 /* Hide screen-reader-only labels visually */
 .sr-only {
@@ -1485,26 +1503,85 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
     border: 1px solid var(--border-color);
     padding: 20px;
     padding-right: 45px; /* Space for remove button */
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* Slightly increased margin for separation */
     border-radius: var(--border-radius-md);
     background-color: var(--content-bg); /* Match container background */
     position: relative; /* Needed for absolute positioning of remove button */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Add a very subtle shadow to the entry block itself for depth */
 }
 
 /* Style inner labels within holiday/temp entries */
 .special-hours-list .hour-entry .form-group label:not(.apple-toggle-label) {
-    font-weight: normal; /* Normal weight */
+    font-weight: 500; /* Slightly less bold, but still clear */
     text-transform: none;
-    margin-bottom: 5px;
-    font-size: 0.9em;
+    margin-bottom: 8px; /* Increased margin */
+    font-size: 0.85rem; /* Slightly adjusted for hierarchy */
     color: var(--secondary-text); /* Use secondary text color */
+    display: block; /* Ensure it takes full width above input */
 }
 
-/* Add some margin below inputs in these entries */
+/* --- Modernized Holiday/Temporary Inputs --- */
+
+/* Shared styling for date and text inputs in special hours */
 .special-hours-list .hour-entry input[type="date"],
 .special-hours-list .hour-entry input[type="text"] {
-    margin-bottom: 10px;
+    width: 100%; /* Make them take full width of their container */
+    margin-bottom: 15px; /* Slightly increased margin for better spacing */
+    padding: 10px 12px; /* More generous padding */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm, 6px); /* Use a smaller border-radius variable or a fixed value for a sleeker look */
+    background-color: var(--bg-color, #fff); /* Ensure a clear background, potentially different from the entry background for contrast */
+    font-size: 0.95rem; /* Slightly larger font for readability */
+    color: var(--text-color);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions for focus */
+    -webkit-appearance: none; /* Remove default system styling in WebKit browsers */
+    -moz-appearance: none;    /* Remove default system styling in Firefox */
+    appearance: none;         /* Remove default system styling */
+    box-sizing: border-box; /* Add for consistent sizing */
 }
+
+/* Placeholder styling for modern inputs */
+.special-hours-list .hour-entry input[type="date"]::placeholder,
+.special-hours-list .hour-entry input[type="text"]::placeholder {
+    color: var(--secondary-text, #888);
+    opacity: 0.7;
+}
+
+/* Enhanced focus state */
+.special-hours-list .hour-entry input[type="date"]:focus,
+.special-hours-list .hour-entry input[type="text"]:focus {
+    border-color: var(--color-primary-action, #007bff); /* Use a primary action color for the border */
+    box-shadow: 0 0 0 2px rgba(var(--color-primary-action-rgb, 0,123,255), 0.25); /* Subtle glow effect */
+    outline: none; /* Remove default browser outline */
+}
+
+/* Specific styling for the date input to improve appearance */
+.special-hours-list .hour-entry input[type="date"] {
+    position: relative; /* Required for custom icon positioning */
+}
+
+/* Style the calendar picker icon (works in WebKit/Chromium based browsers) */
+/* Since 'appearance: none;' hides the default icon, we add our own. */
+.special-hours-list .hour-entry input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16"><path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Adjust position as needed */
+    width: 20px; /* Width of the clickable area for the icon */
+    height: 20px; /* Height of the clickable area for the icon */
+    /* If you want the icon to be part of the input's padding area, adjust padding-right on the input itself */
+}
+
+.special-hours-list .hour-entry input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+/* Note: For Firefox, styling the date picker icon is much more limited.
+   You might need a JavaScript-based custom date picker for full cross-browser control if this is critical. */
+
+/* --- End of Modernized Inputs --- */
+
 
 /* Style the remove button (X) for holiday/temp entries */
 .special-hours-list .hour-entry .remove-hour-button {
@@ -1541,7 +1618,7 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
 
 
 /* ======================================== */
-/* Business Info Preview Styles           */
+/* Business Info Preview Styles             */
 /* (Add these rules to your admin.css)    */
 /* ======================================== */
 
