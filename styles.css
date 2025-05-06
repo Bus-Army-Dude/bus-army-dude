@@ -912,25 +912,23 @@ body {
 
 /* This rule styles the timestamp text container itself */
 #tiktok-last-updated-timestamp,
-#lastUpdatedInstagram,
-#lastUpdatedYouTube {
-    color: var(--secondary-text);
-    font-size: 0.9em;
-    margin-bottom: 20px;
-    display: flex;         /* IMPORTANT: Enables flexbox for alignment */
-    align-items: center;   /* Vertically aligns the icon and text */
-    gap: 4px;            /* Adds a small space between the icon and text */
+#instagram-last-updated-timestamp, /* UPDATED ID to match HTML */
+#youtube-last-updated-timestamp {  /* UPDATED ID to match HTML */
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* This rule ADDS THE ICON before each timestamp */
-#lastUpdatedInstagram::before,
 #tiktok-last-updated-timestamp::before,
-#lastUpdatedYouTube::before {
-    content: '\f073'; /* Font Awesome calendar icon unicode */
-    font-family: 'Font Awesome 5 Free'; /* Specifies the Font Awesome font */
-    font-weight: 900; /* Ensures the solid style of the icon is used */
-    /* You could add color: var(--some-color); here if you want the icon
-       to be a different color from the timestamp text */
+#instagram-last-updated-timestamp::before, /* UPDATED ID to match HTML */
+#youtube-last-updated-timestamp::before {  /* UPDATED ID to match HTML */
+    content: '\f073'; /* Font Awesome calendar icon unicode */
+    font-family: 'Font Awesome 6 Free'; /* For Font Awesome 6 */
+    font-weight: 900; /* For the solid style */
 }
 
 /* Common Creator Grid Styles */
