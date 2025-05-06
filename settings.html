@@ -54,55 +54,51 @@
             </div>
 
             <!-- Accessibility Section -->
-            <div class="settings-subsection">
-                <h2 class="subsection-title">Accessibility</h2>
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Text Size</h3>
-                        <p class="setting-description">Adjust the text size for better readability</p>
-                    </div>
-                    <div class="text-size-control">
-                        <div class="size-value" id="textSizeValue">16px</div>
-                        <div class="slider-container">
-                            <input
-                                type="range"
-                                id="text-size-slider"
-                                min="12"
-                                max="24"
-                                value="16"
-                                step="1"
-                                aria-label="Adjust text size"
-                            >
-                            <div class="size-labels">
-                                <span class="size-small">A</span>
-                                <span class="size-medium">A</span>
-                                <span class="size-large">A</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="settings-subsection"> <h2 class="subsection-title">Accessibility</h2>
 
-                <div class="setting-card focus-outline-setting-card"> <div class="setting-label">
-                    <h3 class="setting-title">Focus Outline</h3>
-                    <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
-                </div>
-                <label for="focusOutlineToggle" class="toggle-switch">
-                    <input type="checkbox" id="focusOutlineToggle">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <!-- Danger Zone -->
-            <div class="settings-subsection danger-zone">
-                <h2 class="subsection-title">Danger Zone</h2>
-                <div class="setting-card">
-                    <div class="setting-label">
-                        <h3 class="setting-title">Reset to Factory Settings</h3>
-                        <p class="setting-description">Restore all settings to their default values</p>
-                    </div>
-                    <button id="resetSettings" class="reset-button">Reset</button>
-                </div>
-            </div>
+              <div class="setting-card">
+                  <div class="setting-label">
+                      <h3 class="setting-title">Text Size</h3>
+                      <p class="setting-description">Adjust the text size for better readability</p>
+                  </div>
+                  <div class="text-size-control">
+                      <div class="size-value" id="textSizeValue">16px</div>
+                      <div class="slider-container">
+                          <input
+                              type="range"
+                              id="text-size-slider"
+                              min="12"
+                              max="24"
+                              value="16"
+                              step="1"
+                              aria-label="Adjust text size"
+                          >
+                          <div class="size-labels">
+                              <span class="size-small">A</span>
+                              <span class="size-medium">A</span>
+                              <span class="size-large">A</span>
+                          </div>
+                      </div>
+                  </div>
+              </div> <div class="setting-card focus-outline-setting-card">
+                  <div class="setting-label">
+                      <h3 class="setting-title">Focus Outline</h3>
+                      <p class="setting-description">Toggle the focus outline for accessibility purposes</p>
+                  </div>
+                  <label for="focusOutlineToggle" class="toggle-switch">
+                      <input type="checkbox" id="focusOutlineToggle">
+                      <span class="toggle-slider"></span>
+                  </label>
+              </div> </div> <div class="settings-subsection danger-zone">
+              <h2 class="subsection-title">Danger Zone</h2>
+              <div class="setting-card">
+                  <div class="setting-label">
+                      <h3 class="setting-title">Reset to Factory Settings</h3>
+                      <p class="setting-description">Restore all settings to their default values</p>
+                  </div>
+                  <button id="resetSettings" class="reset-button">Reset</button>
+              </div>
+          </div>
 
             <a href="index.html" class="back-link">← Back to Profile</a>
         </div>
