@@ -2278,9 +2278,6 @@ async function handleAddShoutout(platform, formElement) {
         console.error(`Error during handleAddShoutout for ${platform}:`, error);
         showAdminStatus(`Error adding ${platform} shoutout: ${error.message}`, true);
         // Optionally log failure here too if desired
-         if (typeof logAdminActivity === 'function') {
-             logAdminActivity('SHOUTOUT_ADD_FAILED', { platform: platform, username: username, error: error.message });
-         }
     } finally {
         setTimeout(() => {
             isAddingShoutout = false;
@@ -2357,16 +2354,6 @@ async function handleAddShoutout(platform, formElement) {
                 }
             }
 
-            // 5. Log ONLY actual changes
-            if (hasChanges) {
-                 console.log("DEBUG: Detected shoutout changes:", changes);
-                 if (typeof logAdminActivity === 'function') {
-                     logAdminActivity('SHOUTOUT_UPDATE', { id: docId, platform: platform, username: username, changes: changes });
-                 } else { console.error("logAdminActivity function not found!");}
-            } else {
-                 console.log("DEBUG: Shoutout update saved, but no values actually changed.");
-            }
-
             if (typeof closeEditModal === 'function') closeEditModal();
             if (typeof loadShoutoutsAdmin === 'function') loadShoutoutsAdmin(platform);
 
@@ -2412,15 +2399,6 @@ async function handleAddShoutout(platform, formElement) {
             await updateMetadataTimestamp(platform); // Update site timestamp
             showAdminStatus(`${platform.charAt(0).toUpperCase() + platform.slice(1)} shoutout deleted successfully.`, false);
 
-            // *** Step 3: Log the Deletion Activity AFTER successful deletion ***
-            if (typeof logAdminActivity === 'function') {
-                logAdminActivity('SHOUTOUT_DELETE', detailsToLog); // Log the details gathered before deletion
-            } else {
-                console.error("logAdminActivity function not found! Cannot log deletion.");
-            }
-            // *** End Log Activity ***
-
-
             // Step 4: Reload the list to update UI and internal 'allShoutouts' array.
             if (typeof loadShoutoutsAdmin === 'function') {
                 loadShoutoutsAdmin(platform);
@@ -2429,14 +2407,8 @@ async function handleAddShoutout(platform, formElement) {
         } catch (error) {
             console.error(`Error deleting ${platform} shoutout (ID: ${docId}):`, error);
             showAdminStatus(`Error deleting ${platform} shoutout: ${error.message}`, true);
-
-            // *** Optionally log the FAILED delete attempt ***
-             if (typeof logAdminActivity === 'function') {
-                 // Log failure with details gathered before attempting delete (if fetch worked)
-                 logAdminActivity('SHOUTOUT_DELETE_FAILED', { ...detailsToLog, error: error.message });
-             }
-        }
-    }
+         }
+     }
 
     
 // *** Function to render a single Useful Link item in the admin list ***
@@ -2651,16 +2623,6 @@ function closeEditUsefulLinkModal() { //
                     changes[key] = { to: newDataFromForm[key] };
                     hasChanges = true;
                 }
-            }
-
-            // 5. Log ONLY actual changes
-            if (hasChanges) {
-                 console.log("DEBUG: Detected useful link changes:", changes);
-                 if (typeof logAdminActivity === 'function') {
-                    logAdminActivity('USEFUL_LINK_UPDATE', { id: docId, label: label, changes: changes });
-                 } else { console.error("logAdminActivity function not found!");}
-            } else {
-                 console.log("DEBUG: Useful link update saved, but no values changed.");
             }
 
             showAdminStatus("Useful link updated successfully.", false);
@@ -3156,16 +3118,6 @@ if (maintenanceModeToggle) {
                 }
             }
 
-            // 5. Log ONLY actual changes
-            if (hasChanges) {
-                 console.log("DEBUG: Detected president info changes:", changes);
-                 if (typeof logAdminActivity === 'function') {
-                     logAdminActivity('UPDATE_PRESIDENT_INFO', { name: newDataFromForm.name, changes: changes });
-                 } else { console.error("logAdminActivity function not found!");}
-            } else {
-                 console.log("DEBUG: President info save submitted, but no values changed.");
-            }
-
         } catch (error) {
             console.error("Error saving president data:", error);
             showPresidentStatus(`Error saving president info: ${error.message}`, true);
@@ -3401,7 +3353,6 @@ function displayFilteredActivityLog() {
          try {
              const docRef = await addDoc(techItemsCollectionRef, techData);
              console.log("Tech item added with ID:", docRef.id);
-              if (typeof logAdminActivity === 'function') { logAdminActivity('TECH_ITEM_ADD', { name: techData.name, id: docRef.id }); } else { console.warn("logAdminActivity function not found!"); }
              showAdminStatus("Tech item added successfully.", false);
              addTechItemForm.reset();
              if (addTechItemPreview) { addTechItemPreview.innerHTML = '<p><small>Preview will appear here as you type.</small></p>'; }
@@ -3419,12 +3370,10 @@ function displayFilteredActivityLog() {
               const itemSnap = await getDoc(doc(db, 'tech_items', docId));
               if (itemSnap.exists()) itemNameToLog = itemSnap.data().name || 'Unknown Item';
              await deleteDoc(doc(db, 'tech_items', docId));
-              if (typeof logAdminActivity === 'function') { logAdminActivity('TECH_ITEM_DELETE', { name: itemNameToLog, id: docId }); } else { console.warn("logAdminActivity function not found!"); }
              showAdminStatus("Tech item deleted successfully.", false);
              loadTechItemsAdmin();
          } catch (error) {
              console.error(`Error deleting tech item (ID: ${docId}):`, error);
-              if (typeof logAdminActivity === 'function') { logAdminActivity('TECH_ITEM_DELETE_FAILED', { name: itemNameToLog, id: docId, error: error.message }); }
              showAdminStatus(`Error deleting tech item: ${error.message}`, true);
          }
     }
@@ -3467,9 +3416,7 @@ function displayFilteredActivityLog() {
              await updateDoc(docRef, updatedData);
               const changes = {}; let hasChanges = false;
               for (const key in updatedData) { if (key !== 'lastModified' && oldData[key] !== updatedData[key]) { changes[key] = { from: oldData[key] ?? null, to: updatedData[key] }; hasChanges = true; } }
-              if (hasChanges && typeof logAdminActivity === 'function') { logAdminActivity('TECH_ITEM_UPDATE', { name: techNameForLog, id: docId, changes: changes }); } else if (hasChanges) { console.warn("logAdminActivity function not found!"); } else { console.log("Tech item updated, but no data fields changed value."); }
              showAdminStatus("Tech item updated successfully.", false); closeEditTechItemModal(); loadTechItemsAdmin();
-         } catch (error) { console.error(`Error updating tech item (ID: ${docId}):`, error); showEditTechItemStatus(`Error saving: ${error.message}`, true); if (typeof logAdminActivity === 'function') { logAdminActivity('TECH_ITEM_UPDATE_FAILED', { name: techNameForLog, id: docId, error: error.message }); } }
     }
 
     // --- Tech Preview Rendering Functions ---
@@ -3583,19 +3530,11 @@ function displayFilteredActivityLog() {
                 showSettingsStatus("Countdown settings saved successfully!", false);
                 console.log("Countdown settings updated in Firestore successfully.");
 
-                // Log activity
-                 if (typeof logAdminActivity === 'function') {
-                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS', { title: title, targetSet: !!updateData.countdownTargetDate, messageSet: !!expiredMessage });
-                 } else { console.warn("logAdminActivity function not found!"); }
-
             } catch (error) {
                  // --- LOG 4: Failure ---
                 console.error(">>> updateDoc FAILED <<<", error);
                 showSettingsStatus(`Error saving countdown settings: ${error.message}`, true);
-                 if (typeof logAdminActivity === 'function') {
-                      logAdminActivity('UPDATE_COUNTDOWN_SETTINGS_FAILED', { error: error.message });
-                 }
-            }
+             }
         });
     } else {
          console.error("Save Countdown Settings button (#save-countdown-settings-button) not found!");
@@ -3700,7 +3639,6 @@ async function handleAddFaq(event) {
      try {
          const docRef = await addDoc(faqsCollectionRef, faqData);
          console.log("FAQ added with ID:", docRef.id);
-         logAdminActivity('FAQ_ADD', { question: question, id: docRef.id });
          showAdminStatus("FAQ added successfully.", false);
          addFaqForm.reset();
          loadFaqsAdmin();
@@ -3716,12 +3654,10 @@ async function handleDeleteFaq(docId, listItemElement) {
          const faqSnap = await getDoc(doc(db, 'faqs', docId));
          if (faqSnap.exists()) questionToLog = faqSnap.data().question || 'Unknown Question';
          await deleteDoc(doc(db, 'faqs', docId));
-         logAdminActivity('FAQ_DELETE', { question: questionToLog, id: docId });
          showAdminStatus("FAQ deleted successfully.", false);
          loadFaqsAdmin();
      } catch (error) {
          console.error(`Error deleting FAQ (ID: ${docId}):`, error);
-         logAdminActivity('FAQ_DELETE_FAILED', { question: questionToLog, id: docId, error: error.message });
          showAdminStatus(`Error deleting FAQ: ${error.message}`, true);
      }
 }
@@ -3773,12 +3709,10 @@ async function handleUpdateFaq(event) {
          // Log changes
          const changes = {}; let hasChanges = false;
          for (const key in updatedData) { if (key !== 'lastModified' && oldData[key] !== updatedData[key]) { changes[key] = { from: oldData[key] ?? null, to: updatedData[key] }; hasChanges = true; } }
-         if (hasChanges) { logAdminActivity('FAQ_UPDATE', { id: docId, question: question, changes: changes }); }
-         else { console.log("FAQ updated but no values changed."); }
          showAdminStatus("FAQ updated successfully.", false);
          closeEditFaqModal();
          loadFaqsAdmin();
-     } catch (error) { console.error(`Error updating FAQ (ID: ${docId}):`, error); showEditFaqStatus(`Error saving: ${error.message}`, true); logAdminActivity('FAQ_UPDATE_FAILED', { id: docId, question: question, error: error.message }); }
+     } catch (error) { console.error(`Error updating FAQ (ID: ${docId}):`, error); showEditFaqStatus(`Error saving: ${error.message}`, true); }
 }
 
 // ==================================
@@ -4082,17 +4016,6 @@ async function loadDisabilitiesAdmin() {
                     hasChanges = true;
                 }
             }
-
-             // 5. Log ONLY actual changes
-            if (hasChanges) {
-                console.log("DEBUG: Detected disability link changes:", changes);
-                 if (typeof logAdminActivity === 'function') {
-                    logAdminActivity('DISABILITY_LINK_UPDATE', { id: docId, name: name, changes: changes });
-                 } else { console.error("logAdminActivity function not found!");}
-            } else {
-                 console.log("DEBUG: Disability link update saved, but no values changed.");
-            }
-
             showAdminStatus("Disability link updated successfully.", false);
             closeEditDisabilityModal();
             loadDisabilitiesAdmin();
@@ -4160,14 +4083,6 @@ async function loadDisabilitiesAdmin() {
      if (searchTechItemsInput) {
         searchTechItemsInput.addEventListener('input', displayFilteredTechItems);
      }
-
-    // --- Activity Log Listeners (Add this one) ---
-    const clearLogBtn = document.getElementById('clear-log-button');
-    if (clearLogBtn) {
-        clearLogBtn.addEventListener('click', handleClearActivityLog);
-    } else {
-        console.warn("Clear log button not found.");
-    }
 
     // Useful Links Forms & Modals
     if (addUsefulLinkForm) { addUsefulLinkForm.addEventListener('submit', handleAddUsefulLink); }
