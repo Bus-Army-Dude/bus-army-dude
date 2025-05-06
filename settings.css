@@ -450,11 +450,29 @@ body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
     body.settings-page button:focus-visible,
     body.settings-page a:focus-visible,
     body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
-        outline: none !important; /* Add !important */
-        outline-offset: 0;
+        outline: none; /* Remove the outline for touch-primary devices */
+        outline-offset: 0; /* Reset the offset */
     }
 }
-/* --- END MODIFICATION --- */
+/* --- END MODIFICATION FOR DESKTOP-ONLY FOCUS OUTLINES --- */
+
+/* --- HIDE FOCUS OUTLINE SETTING CARD ON MOBILE/TABLET --- */
+/* Define default display for desktop (using the class you added to the HTML) */
+/* This ensures it shows up on larger screens by default */
+body.settings-page .focus-outline-setting-card { /* Ensure you added this class to the HTML card */
+    display: flex;
+    align-items: center; /* Match general .setting-card behavior */
+    /* Other properties like padding, border-bottom are inherited from .setting-card */
+}
+
+/* Hide the specific "Focus Outline" setting card on screens up to tablet size */
+/* Adjust the max-width value if your definition of "tablet" is different */
+@media (max-width: 1023px) {
+    body.settings-page .focus-outline-setting-card { /* Ensure you added this class to the HTML card */
+        display: none; /* Hide the element completely on smaller screens */
+    }
+}
+/* --- END HIDE FOCUS OUTLINE SETTING CARD --- */
 
 
 /* ========== Media Queries (Scoped) ========== */
@@ -476,6 +494,11 @@ body.settings-page [tabindex]:not([tabindex="-1"]):focus-visible {
     body.settings-page .setting-label {
         padding-right: 0; /* Remove right padding when stacked */
     }
+
+    /* If .focus-outline-setting-card was visible at this breakpoint (i.e., 1023px was not used),
+       it would also stack due to the general .setting-card rule above.
+       However, with max-width: 1023px hiding it, this part isn't strictly for it
+       unless you change the 1023px breakpoint. */
 
     body.settings-page .text-size-control {
         width: 100%; /* Make slider full width */
