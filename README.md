@@ -178,50 +178,7 @@ The **Settings Page** allows users to adjust appearance and accessibility option
 ### Accessibility Settings
    - **Focus Outline Toggle**: Enables or disables the focus outline for keyboard navigation.
 
-### Owner-Only Settings
-   - **Maintenance Mode**: Allows me to temporarily take the site down for maintenance.
-   - **Profile Status**: Displays my status as **Online**, **Offline**, or **Idle**.
-   - **Reset to Factory Settings**: Resets all settings to their default values.
-
----
-
-## Blog Page (Introduced in v1.15.0)
-
-The **Blog Page** was added in version **v1.15.0** and is designed to provide users with a streamlined way to read and explore blog posts. Below is a comprehensive breakdown of the features on the Blog Page:
-
-### Main Features
-
-1. **Category Dropdown**
-   - The **Category Dropdown** allows users to filter blog posts by category (e.g., Technology, Health, Business, etc.).
-
-2. **Blog Post Cards**
-   - The blog posts are displayed in cards, each containing:
-     - **Image**: A thumbnail image representing the post.
-     - **Title**: The title of the blog post.
-     - **Short Description**: A brief summary of the post.
-     - **Posted Time & By**: Displays when the post was made (e.g., "1 day ago") and the author’s name.
-
-3. **Blog Post Modal**
-   - When a user clicks on a blog post card, a modal opens with the following structure:
-     - **Category**: Displays the category of the blog post.
-     - **Title**: The title of the post.
-     - **Short Description**: A brief description of the post.
-     - **Posted By & Date**: Shows who posted the blog and when (in a relative format like "1 day ago").
-     - **Image**: An image associated with the post.
-     - **Content**: The full content of the blog post.
-     - **Close Button**: A button to close the modal. Users can also press the `Esc` key to close the modal.
-
-4. **Filter by Time**
-   - A **Filter by Time** dropdown allows users to filter blog posts by when they were posted:
-     - **Anytime**
-     - **Past Hour**
-     - **Past 24 Hours**
-     - **Past Week**
-     - **Past Year**
-
-5. **Home Button**
-   - A **Home Page** button is located outside the modal, allowing users to return to the main homepage.
-
+**Reset to Factory Settings**: Resets all settings to their default values.
 ---
 
 ## Security Features
@@ -241,13 +198,13 @@ The website is designed with several security measures to protect content:
 
 This website is built using a combination of **JavaScript**, **CSS**, and **HTML**. Below is the breakdown of language usage:
 
-- **JavaScript**: 59.7%  
+- **JavaScript**: 60.9%  
    JavaScript powers the interactive elements of the website, such as settings management, dynamic weather updates, and user interface interactions.
 
-- **CSS**: 26.2%  
+- **CSS**: 24.9%  
    CSS controls the visual styling and ensures the website is fully responsive, including support for both light and dark themes and device-specific layouts.
 
-- **HTML**: 14.1%  
+- **HTML**: 14.2%  
    HTML provides the basic structure and content of the site, serving as the backbone of the Home Page, Weather Page, and Settings Page.
 
 ---
