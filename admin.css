@@ -1,4 +1,4 @@
-/* admin.css - Apple-Inspired Theme (Unified Preview Styles + President Preview + Toggles) */
+/* admin.css - Apple-Inspired Theme (Unified Preview Styles + President Preview + Toggles + Admin List PFP) */
 
 /* ======================== */
 /* Theme Variables          */
@@ -485,15 +485,15 @@ button.bulk-delete-button:hover
 }
 
 button.secondary-button,
-.list-item-admin button,
-button.edit-button
+.list-item-admin button, /* This covers edit/delete inside list items */
+button.edit-button /* More specific edit button if used elsewhere */
 {
     background-color: var(--color-secondary-action);
     color: #fff;
 }
 button.secondary-button:hover,
-.list-item-admin button:hover,
-button.edit-button:hover
+.list-item-admin button:hover, /* This covers edit/delete inside list items */
+button.edit-button:hover /* More specific edit button if used elsewhere */
 {
     background-color: var(--color-secondary-action-hover);
 }
@@ -620,11 +620,12 @@ button.edit-button:hover
 .list-item-admin:hover { background-color: rgba(var(--accent-rgb), 0.05); }
 
 .list-item-admin .item-content {
+    /* Flex properties are now handled by the new PFP styles */
     flex-grow: 1;
     word-break: break-word;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    /* display: flex; /* MOVED TO NEW PFP STYLES */
+    /* align-items: center; /* MOVED TO NEW PFP STYLES */
+    /* gap: 12px; /* MOVED TO NEW PFP STYLES */
 }
 /* Target toggle specifically in list item */
 .list-item-admin .item-content .apple-toggle-checkbox {
@@ -634,6 +635,7 @@ button.edit-button:hover
     /* Uses base toggle styles */
 }
 .list-item-admin .item-details {
+    /* Flex properties are now handled by the new PFP styles */
     flex-grow: 1;
 }
 
@@ -676,6 +678,79 @@ button.edit-button:hover
 .list-item-admin.disabled-item .item-content strong {
     text-decoration: line-through;
     color: var(--secondary-text);
+}
+
+/* =============================================== */
+/* Admin List Item Profile Picture Styles        */
+/* =============================================== */
+
+/* Styles for the admin list item content to align items */
+.list-item-admin .item-content {
+    display: flex; /* Enables flexbox for alignment */
+    align-items: center; /* Vertically centers items in the flex container */
+    gap: 12px; /* Adjust gap for Apple feel - was 10px, then 12px from your styles */
+}
+
+/* Container for the profile picture in the admin list */
+.admin-list-item-pfp-container {
+    flex-shrink: 0; /* Prevents the image container from shrinking */
+    display: flex; /* To center the image if it's smaller than the container */
+    justify-content: center; /* Horizontally centers the image */
+    align-items: center; /* Vertically centers the image */
+    width: 50px;  /* Or your desired width, e.g., 44px for a more Apple-like list item icon size */
+    height: 50px; /* Or your desired height */
+}
+
+/* Styling for the profile picture itself in the admin list */
+.admin-list-item-pfp {
+    width: 100%; /* Makes the image take the full width of its container */
+    height: 100%; /* Makes the image take the full height of its container */
+    border-radius: 50%; /* Makes the image round */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border: 1px solid var(--border-color); /* Use your theme's border color */
+    background-color: var(--input-bg-color); /* A light background for transparency in PFP */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Subtle shadow */
+}
+
+/* Ensure the text details take up the remaining space */
+.list-item-admin .item-details {
+    flex-grow: 1; /* Allows the details section to grow and fill available space */
+    display: flex;
+    flex-direction: column; /* Stack nickname and other details vertically */
+    gap: 2px; /* Small gap between text lines in details */
+    overflow: hidden; /* To allow text-overflow ellipsis if needed */
+}
+
+.list-item-admin .item-details strong,
+.list-item-admin .item-details span,
+.list-item-admin .item-details small {
+    display: block; /* Make them block to stack properly */
+    white-space: nowrap; /* Prevent wrapping for short texts */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for long texts */
+}
+
+.list-item-admin .item-details strong {
+    font-weight: 500; /* From your existing styles */
+    color: var(--text-color);
+}
+.list-item-admin .item-details span { /* For @username */
+    color: var(--secondary-text);
+    font-size: 0.85em; /* From your existing styles */
+    margin-left: 0; /* Reset margin if any */
+}
+.list-item-admin .item-details small { /* For Order | Count */
+    color: var(--secondary-text);
+    font-size: 0.75em; /* From your existing styles */
+    display: block;
+    margin-top: 2px; /* Was 4px */
+    opacity: 0.8;
+}
+
+.list-item-admin .verified-indicator {
+    font-size: 0.8em; /* Adjust size of the checkmark if needed */
+    margin-left: 4px;
+    vertical-align: middle;
 }
 
 
@@ -863,10 +938,10 @@ button.edit-button:hover
     font-weight: 500;
 }
 #site-settings small { /* Handled by base .checkbox-group small */
-   /* display: block; */
-   /* margin-top: 6px; */
-   /* color: var(--secondary-text); */
-   /* font-size: 0.85em; */
+    /* display: block; */
+    /* margin-top: 6px; */
+    /* color: var(--secondary-text); */
+    /* font-size: 0.85em; */
 }
 #settings-status-message { margin-top: 10px; }
 
@@ -1121,7 +1196,7 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
 
 
 /* ============================================= */
-/* === ADMIN PRESIDENT PREVIEW STYLES        === */
+/* === ADMIN PRESIDENT PREVIEW STYLES          === */
 /* ============================================= */
 
 #president-preview .president-section {
@@ -1421,7 +1496,7 @@ body:not(.dark-mode) .shoutout-preview-area .youtube-visit-profile {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     margin-bottom: 25px; /* Space below the grid */
-    margin-top: 10px;    /* Space above the grid */
+    margin-top: 10px;     /* Space above the grid */
 }
 
 /* Styling for each day's hour group */
