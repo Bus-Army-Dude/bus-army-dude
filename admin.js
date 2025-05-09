@@ -524,7 +524,7 @@ if (searchInputDisabilities) {
          console.log(`DEBUG: Submit listener flag already set for ${formElement.id}, skipping addEventListener.`);
       }
     }
-/** Renders a single shoutout item in the admin list, including follower/subscriber count and verified status */
+/** Renders a single shoutout item in the admin list, including profile picture, follower/subscriber count and verified status */
 function renderAdminListItem(container, docId, platform, itemData, deleteHandler, editHandler) {
     if (!container) { console.warn("List container not found for platform:", platform); return; }
 
@@ -537,6 +537,7 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
     const username = itemData.username || 'N/A';
     const order = itemData.order ?? 'N/A';
     const isVerified = itemData.isVerified || false; // Get verified status
+    const profilePicUrl = itemData.profilePic || 'images/default-profile.jpg'; // Default image if none
     let countText = ''; // Text for follower/subscriber count
 
     // Determine count text based on platform
@@ -564,9 +565,11 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
     // Add verified indicator (e.g., a checkmark emoji) if true
     const verifiedIndicator = isVerified ? '<span class="verified-indicator" title="Verified">✅</span>' : ''; // Simple emoji indicator
 
-    // Build inner HTML - Added verifiedIndicator and countText
+    // Build inner HTML - Added profile picture container and image
     itemDiv.innerHTML = `
         <div class="item-content">
+            <div class="admin-list-item-pfp-container">  <img src="${profilePicUrl}" alt="PFP for ${nickname}" class="admin-list-item-pfp" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
+            </div>
             <div class="item-details">
                 <strong>${nickname}</strong> ${verifiedIndicator} <span>(@${username})</span>
                 <small>Order: ${order} | ${countText}</small>
