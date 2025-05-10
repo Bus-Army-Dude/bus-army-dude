@@ -2226,7 +2226,7 @@ body.maintenance-active {
 }
 
 /* ====================================== */
-/* 🧃 Business Info Section (Revamped) 🧃 */
+/* 🧃 Business Info Section (Full CSS) 🧃 */
 /* ====================================== */
 
 .business-info-section {
@@ -2234,8 +2234,8 @@ body.maintenance-active {
   padding: 2.5rem;
   border-radius: 1.5rem;
   margin: 2.5rem 0;
-  border: 1px solid var(--border-color-subtle);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 12px 30px var(--shadow-color);
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -2244,7 +2244,7 @@ body.maintenance-active {
   font-weight: 700;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  color: var(--heading-color);
+  color: var(--text-color);
   border-bottom: 2px solid var(--accent-color);
 }
 
@@ -2258,14 +2258,14 @@ body.maintenance-active {
   font-weight: 600;
   border-radius: 999px;
   margin-bottom: 1.5rem;
-  background: var(--badge-bg);
-  color: var(--badge-color);
+  background: var(--content-bg);
+  color: var(--status-open);
   border: 2px solid currentColor;
 }
 
-.status-open { color: #38d39f; }
-.status-closed { color: #f44336; }
-.status-unavailable { color: #ff9800; }
+.status-open { color: var(--status-open); }
+.status-closed { color: var(--status-closed); }
+.status-unavailable { color: var(--status-temp); }
 
 .status-reason {
   font-size: 0.9rem;
@@ -2286,17 +2286,17 @@ body.maintenance-active {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-bottom: 1px solid var(--border-color-light);
+  border-bottom: 1px solid var(--border-color);
   font-size: 1rem;
   transition: background 0.2s ease;
 }
 
 .hours-list li:hover {
-  background-color: rgba(var(--accent-rgb), 0.05);
+  background-color: rgba(var(--accent-color), 0.05);
 }
 
 .hours-list .current-day {
-  background: rgba(var(--accent-rgb), 0.1);
+  background: rgba(76, 175, 80, 0.1);
   border-radius: 0.75rem;
   font-weight: 700;
   color: var(--accent-color);
@@ -2309,7 +2309,7 @@ body.maintenance-active {
 }
 
 .hours-list li span {
-  color: var(--text-color-light);
+  color: var(--secondary-text);
   font-weight: 400;
   text-align: right;
 }
@@ -2319,7 +2319,7 @@ body.maintenance-active {
 #holiday-hours-display {
   margin-top: 2.5rem;
   padding-top: 2rem;
-  border-top: 2px dashed var(--border-color-light);
+  border-top: 2px dashed var(--border-color);
 }
 
 #temporary-hours-display:empty,
@@ -2342,24 +2342,24 @@ body.maintenance-active {
 }
 
 .special-hours-display li {
-  background: var(--content-bg-alt);
+  background: var(--content-bg);
   padding: 1.25rem;
   margin-bottom: 1rem;
   border-radius: 1rem;
   border-left: 5px solid var(--accent-color);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 3px 10px var(--shadow-color);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .special-hours-display li:hover {
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 5px 15px var(--shadow-color);
 }
 
 .special-hours-display li strong {
   display: block;
   font-size: 1.05rem;
-  color: var(--accent-color-dark);
+  color: var(--accent-color);
   margin-bottom: 0.5rem;
 }
 
@@ -2382,7 +2382,7 @@ body.maintenance-active {
 }
 
 .special-hours-display .hours.closed {
-  color: #ff3b30;
+  color: var(--status-closed);
   font-weight: 700;
 }
 
@@ -2393,8 +2393,8 @@ body.maintenance-active {
   margin-top: 2rem;
   padding: 0.75rem;
   border-radius: 0.5rem;
-  background: rgba(255,255,255,0.05);
-  color: var(--text-color-light);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--secondary-text);
   font-style: italic;
 }
 
@@ -2402,9 +2402,9 @@ body.maintenance-active {
 .contact-info {
   margin-top: 2.5rem;
   padding-top: 2rem;
-  border-top: 1px solid var(--border-color-light);
+  border-top: 1px solid var(--border-color);
   font-size: 0.95rem;
-  color: var(--text-color-medium);
+  color: var(--secondary-text);
 }
 
 
