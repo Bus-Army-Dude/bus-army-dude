@@ -2235,7 +2235,6 @@ body.maintenance-active {
     margin: 2.5rem 0;
     border: 1px solid var(--border-color-subtle);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .business-info-section h2 {
@@ -2245,6 +2244,9 @@ body.maintenance-active {
     padding-bottom: 1rem;
     color: var(--heading-color);
     border-bottom: 2px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 /* === Business Status (Pill Style Container) === */
@@ -2258,22 +2260,22 @@ body.maintenance-active {
     border-radius: 9999px;
     margin-bottom: 1.5rem;
     color: #fff; /* Text always white for contrast */
-    background-color: var(--badge-bg); /* fallback */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: none;
     user-select: none; /* NO text highlighting */
 }
 
 /* Status Background Colors (Pill) */
 .status-open {
-    background-color: #38d39f;
+    background: linear-gradient(135deg, #38d39f, #2ecc71);
 }
 
 .status-closed {
-    background-color: #f44336;
+    background: linear-gradient(135deg, #f44336, #d32f2f);
 }
 
 .status-unavailable {
-    background-color: #ff9800;
+    background: linear-gradient(135deg, #ff9800, #f57c00);
 }
 
 .status-reason {
