@@ -2727,3 +2727,17 @@ body.maintenance-active {
      }
 
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  html, body {
+    background-color: #ffffff !important; /* Ensure the background is white */
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Hide any potential scrollbars on the blank page */
+    margin: 0;
+    padding: 0;
+  }
+}
