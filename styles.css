@@ -2272,12 +2272,13 @@ body.maintenance-active {
     padding: 1rem 1.5rem;
     font-size: 1.1rem;
     font-weight: 700;
-    border-radius: 30px;
+    border-radius: 30px; /* This is for the pill shape */
     margin-bottom: 1.5rem;
-    color: #fff; /* Text color remains white for good contrast */
-    border: none; /* Remove any outline or border */
-    text-align: center; /* Ensures text is aligned properly inside the pill */
-    user-select: none; /* Prevent text highlighting */
+    color: #fff; /* Text color */
+    border: none; /* Remove border */
+    text-align: center;
+    user-select: none; /* Prevent text selection */
+    transition: background-color 0.3s ease; /* Smooth color transition */
 }
 
 /* Status Background Colors */
@@ -2293,6 +2294,7 @@ body.maintenance-active {
     background-color: #ff9500; /* Orange for Temporarily Unavailable */
 }
 
+/* Reason Text */
 .status-reason {
     font-size: 0.9rem;
     font-weight: 400;
