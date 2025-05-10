@@ -686,73 +686,110 @@ button.edit-button:hover /* More specific edit button if used elsewhere */
 
 /* Styles for the admin list item content to align items */
 .list-item-admin .item-content {
-    display: flex; /* Enables flexbox for alignment */
-    align-items: center; /* Vertically centers items in the flex container */
-    gap: 12px; /* Adjust gap for Apple feel - was 10px, then 12px from your styles */
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 /* Container for the profile picture in the admin list */
 .admin-list-item-pfp-container {
-    flex-shrink: 0; /* Prevents the image container from shrinking */
-    display: flex; /* To center the image if it's smaller than the container */
-    justify-content: center; /* Horizontally centers the image */
-    align-items: center; /* Vertically centers the image */
-    width: 50px;  /* Or your desired width, e.g., 44px for a more Apple-like list item icon size */
-    height: 50px; /* Or your desired height */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
 }
 
-/* Styling for the profile picture itself in the admin list */
 .admin-list-item-pfp {
-    width: 100%; /* Makes the image take the full width of its container */
-    height: 100%; /* Makes the image take the full height of its container */
-    border-radius: 50%; /* Makes the image round */
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-    border: 1px solid var(--border-color); /* Use your theme's border color */
-    background-color: var(--input-bg-color); /* A light background for transparency in PFP */
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Subtle shadow */
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 /* Ensure the text details take up the remaining space */
 .list-item-admin .item-details {
-    flex-grow: 1; /* Allows the details section to grow and fill available space */
+    flex-grow: 1;
     display: flex;
-    flex-direction: column; /* Stack nickname and other details vertically */
-    gap: 2px; /* Small gap between text lines in details */
-    overflow: hidden; /* To allow text-overflow ellipsis if needed */
+    flex-direction: column; /* This will stack .name-line, username span, and small tag */
+    gap: 2px;
+    overflow: hidden;
 }
 
-.list-item-admin .item-details strong,
-.list-item-admin .item-details span,
-.list-item-admin .item-details small {
-    display: block; /* Make them block to stack properly */
-    white-space: nowrap; /* Prevent wrapping for short texts */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis for long texts */
+/* NEW: Styles for the line containing the name and verified badge */
+.list-item-admin .item-details .name-line {
+    display: flex; /* Aligns name and badge in a row */
+    align-items: center; /* Vertically aligns them */
+    gap: 4px; /* Adjust space between name and badge */
+    /* Ensure this line itself doesn't get unwanted block properties if any were generic */
+    display: flex !important; /* if necessary to override broader rules, but try without !important first */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.list-item-admin .item-details strong {
-    font-weight: 500; /* From your existing styles */
+/* MODIFIED: Adjustments for elements within .item-details */
+/* Remove display:block from strong if it's inside name-line. Its display will be handled by flex. */
+.list-item-admin .item-details .name-line > strong {
+    font-weight: 500;
     color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline; /* Or remove 'display:block' if inherited from a more general rule */
 }
-.list-item-admin .item-details span { /* For @username */
-    color: var(--secondary-text);
-    font-size: 0.85em; /* From your existing styles */
-    margin-left: 0; /* Reset margin if any */
+
+/* MODIFIED: Adjust .verified-indicator to work within the flex name-line */
+.list-item-admin .item-details .name-line > .verified-indicator {
+    font-size: 0.8em;
+    /* margin-left: 4px; /* Replaced by gap on .name-line parent */
+    vertical-align: middle; /* Good for baseline alignment with text */
+    flex-shrink: 0; /* Prevent badge from shrinking */
+    display: inline-block; /* Or remove 'display:block' if inherited */
 }
-.list-item-admin .item-details small { /* For Order | Count */
-    color: var(--secondary-text);
-    font-size: 0.75em; /* From your existing styles */
+
+/* Keep other .item-details children (username, small text) as block to stack below the name-line */
+.list-item-admin .item-details > span { /* For @username, direct child of .item-details */
     display: block;
-    margin-top: 2px; /* Was 4px */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--secondary-text);
+    font-size: 0.85em;
+    margin-left: 0;
+}
+
+.list-item-admin .item-details > small { /* For Order | Count, direct child of .item-details */
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--secondary-text);
+    font-size: 0.75em;
+    margin-top: 2px;
     opacity: 0.8;
 }
 
-.list-item-admin .verified-indicator {
-    font-size: 0.8em; /* Adjust size of the checkmark if needed */
-    margin-left: 4px;
-    vertical-align: middle;
+/* REMOVE or COMMENT OUT the generic rule that made all children of .item-details block, if it exists like this: */
+/*
+.list-item-admin .item-details strong,
+.list-item-admin .item-details span,  // This was too broad
+.list-item-admin .item-details small {
+    display: block; // This caused the issue for the verified indicator if it was a span
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
+*/
+/* INSTEAD, be more specific for the username span and small tag if they are not already covered by the rules above: */
+.list-item-admin .item-details > span:not(.verified-indicator):not(.name-line) { /* Specifically target username span */
+    display: block;
+    /* other styles for username span here if needed */
+}
 
 /* ======================== */
 /* Creator Shoutouts Section */
