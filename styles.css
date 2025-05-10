@@ -2274,25 +2274,23 @@ body.maintenance-active {
     font-weight: 700;
     border-radius: 30px;
     margin-bottom: 1.5rem;
-    color: #fff; /* Text always white for contrast */
     border: 2px solid currentColor;
     transition: background-color 0.3s ease, color 0.3s ease;
+    color: #fff; /* Always keep text color white for contrast */
+    user-select: none; /* Prevent text highlighting */
 }
 
 /* Status Background Colors */
 .status-open {
     background-color: #34c759; /* Green for Open */
-    color: #fff; /* White text */
 }
 
 .status-closed {
     background-color: #ff3b30; /* Red for Closed */
-    color: #fff; /* White text */
 }
 
 .status-temp {
     background-color: #ff9500; /* Orange for Temporarily Unavailable */
-    color: #fff; /* White text */
 }
 
 .status-reason {
@@ -2300,6 +2298,14 @@ body.maintenance-active {
     font-weight: 400;
     font-style: italic;
     opacity: 0.8;
+}
+
+/* Ensure the text inside the status does NOT get highlighted */
+.business-status span {
+    background: transparent !important;
+    color: inherit; /* Inherit text color */
+    padding: 0;
+    margin: 0;
 }
 
 /* Business Hours List */
