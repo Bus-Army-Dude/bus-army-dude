@@ -2254,38 +2254,35 @@ body.maintenance-active {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.6rem 1.4rem;
+    padding: 0.8rem 1.6rem;
     font-size: 1.1rem;
     font-weight: 600;
-    border-radius: 9999px;
+    border-radius: 9999px; /* Full pill shape */
     margin-bottom: 1.5rem;
     color: #fff; /* Text always white for contrast */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     border: none;
     user-select: none; /* NO text highlighting */
 }
 
-/* Status Background Colors (Pill) */
+/* Status Background Colors (Pill) - Exact colors from images */
 .status-open {
-    background: linear-gradient(135deg, #38d39f, #2ecc71);
+    background-color: #3DD5C4; /* Turquoise/teal from Image 1 */
 }
 
 .status-closed {
-    background: linear-gradient(135deg, #f44336, #d32f2f);
+    background-color: #FF2E00; /* Red from Image 3 */
 }
 
 .status-unavailable {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
+    background-color: #FF9900; /* Orange from Image 2 */
 }
 
-/* Ensure specific status text styling */
-.open-text, .closed-text, .unavailable-text {
-    background: none;
-    color: inherit;
-    font-weight: inherit;
-    padding: 0;
-    margin: 0;
-    display: inline;
+/* Status text styling - ensuring no highlighting on text */
+.business-status span {
+    background: transparent; /* Ensure no background on the text itself */
+    color: #fff;
+    font-weight: 600;
 }
 
 .status-reason {
