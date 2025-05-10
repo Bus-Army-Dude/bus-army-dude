@@ -2275,23 +2275,22 @@ body.maintenance-active {
     border-radius: 30px;
     margin-bottom: 1.5rem;
     color: #fff; /* Text color remains white for good contrast */
+    border: none; /* Remove any outline or border */
+    text-align: center; /* Ensures text is aligned properly inside the pill */
     user-select: none; /* Prevent text highlighting */
 }
 
 /* Status Background Colors */
 .status-open {
     background-color: #34c759; /* Green for Open */
-    border: none; /* Remove the border for open status */
 }
 
 .status-closed {
     background-color: #ff3b30; /* Red for Closed */
-    border: none; /* Remove the border for closed status */
 }
 
 .status-temp {
     background-color: #ff9500; /* Orange for Temporarily Unavailable */
-    border: none; /* Remove the border for temporarily unavailable status */
 }
 
 .status-reason {
@@ -2300,6 +2299,7 @@ body.maintenance-active {
     font-style: italic;
     opacity: 0.8;
 }
+
 
 /* Business Hours List */
 .hours-list ul {
