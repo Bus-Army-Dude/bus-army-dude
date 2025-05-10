@@ -2226,7 +2226,7 @@ body.maintenance-active {
 }
 
 /* ======================== */
-/*    Business Info Styles   */
+/* Business Info Styles  */
 /* ======================== */
 .business-info-section {
     background: var(--content-bg);
@@ -2265,7 +2265,7 @@ body.maintenance-active {
 }
 
 /* ======================== */
-/*       Business Status     */
+/* Business Status       */
 /* ======================== */
 .business-status {
     display: inline-flex;
@@ -2278,25 +2278,24 @@ body.maintenance-active {
     margin-bottom: 1.5rem;
     border: 2px solid var(--border-color);
     transition: background-color 0.3s ease, color 0.3s ease;
-    color: var(--text-color);  /* Ensure normal text color */
 }
 
 /* Status Color for Open */
 .status-open {
     background-color: var(--status-open); /* Green background for open status */
-    color: var(--text-color); /* Normal text color (not highlighted) */
+    color: #fff; /* White text for better contrast on green */
 }
 
 /* Status Color for Closed */
 .status-closed {
     background-color: var(--status-closed); /* Red background for closed status */
-    color: var(--text-color); /* Normal text color (not highlighted) */
+    color: #fff; /* White text for better contrast on red */
 }
 
 /* Status Color for Temporarily Unavailable */
 .status-temp {
     background-color: var(--status-temp); /* Orange background for temporary status */
-    color: var(--text-color); /* Normal text color (not highlighted) */
+    color: #fff; /* White text for better contrast on orange */
 }
 
 .status-reason {
@@ -2304,6 +2303,7 @@ body.maintenance-active {
     font-weight: 400;
     font-style: italic;
     opacity: 0.8;
+    color: var(--text-color); /* Ensure the reason text uses the default text color */
 }
 
 
