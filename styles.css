@@ -2259,18 +2259,34 @@ body.maintenance-active {
     margin-bottom: 1.5rem;
     background: var(--badge-bg);
     color: var(--badge-color);
-    border: 2px solid currentColor;
+    border: 2px solid transparent;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.status-open { color: #38d39f; }
-.status-closed { color: #f44336; }
-.status-unavailable { color: #ff9800; }
+/* === Colored Status Backgrounds === */
+.status-open {
+    background-color: #38d39f !important;
+    color: #ffffff !important;
+    border-color: #2ebf91 !important;
+}
+
+.status-closed {
+    background-color: #f44336 !important;
+    color: #ffffff !important;
+    border-color: #d32f2f !important;
+}
+
+.status-unavailable {
+    background-color: #ff9800 !important;
+    color: #ffffff !important;
+    border-color: #ef6c00 !important;
+}
 
 .status-reason {
     font-size: 0.9rem;
     font-weight: 400;
     font-style: italic;
-    opacity: 0.8;
+    opacity: 0.85;
 }
 
 /* === Business Hours === */
@@ -2287,21 +2303,20 @@ body.maintenance-active {
     padding: 1rem 0;
     border-bottom: 1px solid var(--border-color-light);
     font-size: 1rem;
-    transition: background 0.2s ease;
 }
 
-.hours-list li:hover {
-    background-color: rgba(var(--accent-rgb), 0.05);
-}
-
-/* === Current Day Styling === */
+/* Current Day - standout without hover */
 .hours-list .current-day {
-    background: rgba(var(--accent-rgb), 0.1);
+    background: rgba(var(--accent-rgb), 0.15);
     border-radius: 0.75rem;
     font-weight: 700;
     color: var(--accent-color);
     padding: 1rem;
-    /* No hover effect */
+}
+
+/* No hover for business hours */
+.hours-list li:hover {
+    background-color: transparent;
 }
 
 .hours-list li strong {
@@ -2407,7 +2422,6 @@ body.maintenance-active {
     font-size: 0.95rem;
     color: var(--text-color-medium);
 }
-
 
 /* ======================================== */
 /* == Admin Panel Specific Hours Styles == */
