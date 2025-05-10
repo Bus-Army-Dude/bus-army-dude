@@ -2247,24 +2247,25 @@ body.maintenance-active {
     border-bottom: 2px solid var(--accent-color);
 }
 
-/* === Status Badge === */
+/* === Business Status (Pill Style Container) === */
 .business-status {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1.5rem;
-    font-size: 1.05rem;
+    gap: 0.6rem;
+    padding: 0.6rem 1.4rem;
+    font-size: 1.1rem;
     font-weight: 600;
     border-radius: 9999px;
     margin-bottom: 1.5rem;
-    color: #fff;
+    color: #fff; /* Text always white for contrast */
+    background-color: var(--badge-bg); /* fallback */
     border: none;
-    text-transform: uppercase;
+    user-select: none; /* NO text highlighting */
 }
 
-/* Pill badge background colors */
+/* Status Background Colors (Pill) */
 .status-open {
-    background-color: #28c76f;
+    background-color: #38d39f;
 }
 
 .status-closed {
@@ -2276,12 +2277,10 @@ body.maintenance-active {
 }
 
 .status-reason {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 400;
     font-style: italic;
-    opacity: 0.8;
-    color: var(--text-color-light);
-    margin-top: 0.25rem;
+    opacity: 0.9;
 }
 
 /* === Business Hours === */
