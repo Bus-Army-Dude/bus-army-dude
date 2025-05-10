@@ -2274,10 +2274,11 @@ body.maintenance-active {
     font-weight: 700;
     border-radius: 30px; /* Pill shape */
     margin-bottom: 1.5rem;
-    background-color: var(--status-open); /* Default background */
+    background-color: var(--status-default); /* Default background (changeable based on status) */
     color: var(--dark-bg); /* Text color */
     border: 2px solid currentColor;
     transition: background-color 0.3s ease, color 0.3s ease;
+    user-select: none; /* Prevent text highlighting */
 }
 
 /* Status Color Classes */
@@ -2301,6 +2302,7 @@ body.maintenance-active {
     background: transparent; /* No highlight color */
     color: inherit; /* Keep original text color */
 }
+
 
 
 /* Business Hours List */
