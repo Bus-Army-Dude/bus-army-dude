@@ -2276,27 +2276,27 @@ body.maintenance-active {
     font-weight: 700;
     border-radius: 30px;
     margin-bottom: 1.5rem;
-    color: var(--text-color);  /* Neutral text color for clarity */
-    border: 2px solid currentColor;
+    color: var(--text-color);  /* Keep the text neutral color */
+    border: 2px solid var(--border-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Status Color for Open */
 .status-open {
-    background-color: var(--status-open); /* Green for open */
-    color: var(--light-bg); /* Light text for contrast */
+    background-color: var(--status-open); /* Green background for open status */
+    color: var(--text-color); /* No text highlight, use normal text color */
 }
 
 /* Status Color for Closed */
 .status-closed {
-    background-color: var(--status-closed); /* Red for closed */
-    color: var(--light-bg); /* Light text for contrast */
+    background-color: var(--status-closed); /* Red background for closed status */
+    color: var(--text-color); /* No text highlight, use normal text color */
 }
 
 /* Status Color for Temporarily Unavailable */
 .status-temp {
-    background-color: var(--status-temp); /* Orange for temporarily unavailable */
-    color: var(--light-bg); /* Light text for contrast */
+    background-color: var(--status-temp); /* Orange background for temporary status */
+    color: var(--text-color); /* No text highlight, use normal text color */
 }
 
 .status-reason {
