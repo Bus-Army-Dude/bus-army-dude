@@ -3,28 +3,28 @@
 /* ======================== */
 :root {
     /* Light Mode Colors */
-    --light-bg: #ffffff; /* systemBackground */
-    --light-content-bg: #f2f2f7; /* secondarySystemBackground */
-    --light-text: #1c1c1e; /* label */
-    --light-secondary-text: #3a3a3c; /* secondaryLabel */
-    --light-border: #d1d1d6; /* separator */
-    --light-accent: #007aff; /* iOS Blue */
-    --light-hover: #e5e5ea;
-    --light-link: #007aff;
-    --light-shadow: rgba(60, 60, 67, 0.1);
-    --light-icon: #1c1c1e;
-
+    --light-bg: #ffffff;
+    --light-content-bg: #f5f5f5;
+    --light-text: #212529;
+    --light-secondary-text: #495057;
+    --light-border: #dee2e6;
+    --light-accent: #4CAF50;
+    --light-hover: #45a049;
+    --light-link: #007bff;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --light-icon: #ffffff;
+    
     /* Dark Mode Colors */
-    --dark-bg: #1c1c1e; /* systemBackground (dark) */
-    --dark-content-bg: #2c2c2e; /* secondarySystemBackground (dark) */
-    --dark-text: #f2f2f7; /* label (dark) */
-    --dark-secondary-text: #aeaeb2; /* secondaryLabel (dark) */
-    --dark-border: #3a3a3c; /* separator (dark) */
-    --dark-accent: #0a84ff; /* iOS Blue (dark) */
-    --dark-hover: #3a3a3c;
-    --dark-link: #0a84ff;
-    --dark-shadow: rgba(0, 0, 0, 0.4);
-    --dark-icon: #f2f2f7;
+    --dark-bg: #121212;
+    --dark-content-bg: #2d2d2d;
+    --dark-text: #E0E0E0;
+    --dark-secondary-text: #a0a0a0;
+    --dark-border: #333333;
+    --dark-accent: #4CAF50;
+    --dark-hover: #45a049;
+    --dark-link: #BB86FC;
+    --dark-shadow: rgba(0, 0, 0, 0.2);
+    --dark-icon: #000000;
 
     /* Input and Dropdowns */
     --input-bg: #ffffff;
