@@ -2244,9 +2244,6 @@ body.maintenance-active {
     padding-bottom: 1rem;
     color: var(--heading-color);
     border-bottom: 2px solid var(--accent-color);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
 }
 
 /* === Business Status (Pill Style Container) === */
@@ -2278,11 +2275,12 @@ body.maintenance-active {
     background-color: #FF9900; /* Orange from Image 2 */
 }
 
-/* Status text styling - ensuring no highlighting on text */
+/* Ensure status text has NO background highlighting */
 .business-status span {
-    background: transparent; /* Ensure no background on the text itself */
-    color: #fff;
-    font-weight: 600;
+    background: transparent !important; /* Force no background on the text */
+    color: inherit;
+    padding: 0;
+    margin: 0;
 }
 
 .status-reason {
