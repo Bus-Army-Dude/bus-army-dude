@@ -2252,200 +2252,184 @@ body.maintenance-active {
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
 
 /* ======================================== */
-/* == Business Info Section Styles (Updated) == */
+/* == Business Info Section Styles (Revamped) == */
 /* ======================================== */
 
-/* --- Main Container (Public Page) --- */
+/* --- Main Container --- */
 .business-info-section {
     background: var(--content-bg);
-    padding: 25px;
-    border-radius: 16px;
-    margin: 30px 0;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 30px;
+    border-radius: 20px;
+    margin: 40px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
 }
 
-.business-info-section h2 { /* Style the main section title */
-    margin-top: 0;
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
-    font-size: 1.4em;
+/* Section Header */
+.business-info-section h2 {
+    margin: 0 0 30px;
+    padding-bottom: 16px;
+    font-size: 1.6em;
+    font-weight: 700;
+    border-bottom: 2px solid var(--border-color);
     color: var(--text-color);
 }
 
-/* --- Status Display (Public Page) --- */
+/* --- Status Display --- */
 .business-status {
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    font-weight: 500;
+    font-size: 1.25em;
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .status-open {
-    color: #34c759; /* Apple Green */
-    font-weight: 600;
+    color: #32d74b;
 }
 
 .status-closed {
-    color: #ff3b30; /* Apple Red */
-    font-weight: 600;
+    color: #ff453a;
 }
 
 .status-unavailable {
-    color: #ff9500; /* Apple Orange */
-    font-weight: 600;
+    color: #ff9f0a;
 }
 
 .status-reason {
     font-size: 0.9em;
+    font-weight: 400;
     color: var(--secondary-text);
-    font-weight: normal;
-    margin-left: 8px;
 }
 
-/* --- Regular Hours List (Public Page) --- */
+/* --- Hours List --- */
 .hours-list {
     margin: 20px 0;
 }
 
 .hours-list ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 .hours-list li {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Vertically align items */
-    padding: 10px 0; /* Increased padding */
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.95em; /* Slightly smaller font */
-}
-
-.hours-list li:last-child {
-    border-bottom: none;
+    align-items: center;
+    padding: 14px 20px;
+    background: rgba(var(--accent-rgb), 0.02);
+    border-radius: 12px;
+    margin-bottom: 10px;
 }
 
 .hours-list li strong {
-     flex-basis: 120px; /* Give day names a consistent width */
-     flex-shrink: 0;
-     margin-right: 10px;
+    flex-basis: 140px;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .hours-list li span {
-    color: var(--secondary-text); /* Dim the time/closed text slightly */
     text-align: right;
+    color: var(--secondary-text);
 }
-
 
 .hours-list .current-day {
-    font-weight: 600;
-    background: rgba(var(--accent-rgb), 0.08); /* Slightly different background */
-    margin: -5px -10px; /* Adjust negative margin */
-    padding: 10px 10px; /* Adjust padding */
-    border-radius: 8px;
-    border-bottom: 1px solid transparent; /* Override border */
-}
-.hours-list .current-day:last-child {
-    border-bottom: 1px solid transparent; /* Override border */
-}
-.hours-list .current-day strong,
-.hours-list .current-day span {
-    color: var(--accent-color); /* Highlight text color */
+    background: rgba(var(--accent-rgb), 0.2); /* Stronger background for "current day" */
+    color: var(--accent-color); /* Accent color for strong contrast */
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow to make it pop */
 }
 
-
-/* --- Special Hours Display (Temporary & Holiday - Public Page) --- */
-/* Style the containers for the special hours lists */
+/* --- Special Hours --- */
 #temporary-hours-display,
 #holiday-hours-display {
-    margin-top: 25px;
+    margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px dashed var(--border-color);
 }
-/* Hide if empty (JS should handle this too) */
+
 #temporary-hours-display:empty,
 #holiday-hours-display:empty {
     display: none;
 }
 
-/* Style the headings for special hours */
 #temporary-hours-display h4,
 #holiday-hours-display h4 {
-    font-size: 1.1em;
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: var(--accent-color); /* Use accent color for headings */
+    font-size: 1.2em;
+    margin: 0 0 15px;
+    font-weight: 600;
+    color: var(--accent-color);
 }
 
-/* Style the UL holding the special hours */
-.special-hours-display { /* Class used in JS */
+.special-hours-display {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-/* Style each special hour list item */
 .special-hours-display li {
-    background: var(--bg-color); /* Slightly different background maybe? */
-    padding: 12px 15px; /* Adjust padding */
-    border-radius: 8px;
-    margin-bottom: 10px;
+    background: var(--bg-color);
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
     border: 1px solid var(--border-color);
-    font-size: 0.9em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .special-hours-display li strong {
-    display: block; /* Make label/date take full width */
-    font-weight: 500;
-    margin-bottom: 5px;
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-color);
 }
 
 .special-hours-display .special-hours-details {
     display: flex;
-    justify-content: space-between; /* Space out date and hours */
-    align-items: center;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 10px;
     color: var(--secondary-text);
 }
 
 .special-hours-display .dates {
-    /* Style for the date range/specific date */
     font-style: italic;
 }
 
 .special-hours-display .hours {
-     /* Style for the hours/closed text */
     font-weight: 500;
 }
 
-
-/* --- Timezone Note (Public Page) --- */
+/* --- Timezone Note --- */
 .hours-timezone-note {
-    margin-top: 20px;
-    font-size: 0.85em; /* Make it smaller */
-    color: var(--secondary-text);
+    margin-top: 25px;
+    font-size: 0.85em;
     font-style: italic;
-    text-align: center; /* Center it */
+    color: var(--secondary-text);
+    text-align: center;
 }
 
-/* --- Contact Info (Public Page) --- */
+/* --- Contact Info --- */
 .contact-info {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border-color);
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px dashed var(--border-color);
+    text-align: center;
+    font-size: 0.95em;
     color: var(--secondary-text);
-    font-size: 0.9em;
-    text-align: center; /* Center it */
 }
 
 .contact-info a {
     color: var(--link-color);
-    text-decoration: none; /* Remove underline by default */
+    text-decoration: none;
 }
+
 .contact-info a:hover {
-     text-decoration: underline; /* Add underline on hover */
+    text-decoration: underline;
+    color: var(--accent-color);
 }
 
 
