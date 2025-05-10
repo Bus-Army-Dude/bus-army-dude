@@ -2264,7 +2264,9 @@ body.maintenance-active {
     transform: scaleX(1);
 }
 
-/* Business Status */
+/* ======================== */
+/*       Business Status     */
+/* ======================== */
 .business-status {
     display: inline-flex;
     align-items: center;
@@ -2274,25 +2276,27 @@ body.maintenance-active {
     font-weight: 700;
     border-radius: 30px;
     margin-bottom: 1.5rem;
-    background-color: var(--status-open);
-    color: var(--dark-bg);
+    color: var(--text-color);  /* Neutral text color for clarity */
     border: 2px solid currentColor;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Status Color for Open */
 .status-open {
-    background-color: #34c759;
-    color: #fff;
+    background-color: var(--status-open); /* Green for open */
+    color: var(--light-bg); /* Light text for contrast */
 }
 
+/* Status Color for Closed */
 .status-closed {
-    background-color: #ff3b30;
-    color: #fff;
+    background-color: var(--status-closed); /* Red for closed */
+    color: var(--light-bg); /* Light text for contrast */
 }
 
+/* Status Color for Temporarily Unavailable */
 .status-temp {
-    background-color: #ff9500;
-    color: #fff;
+    background-color: var(--status-temp); /* Orange for temporarily unavailable */
+    color: var(--light-bg); /* Light text for contrast */
 }
 
 .status-reason {
