@@ -2234,14 +2234,13 @@ body.maintenance-active {
     border-radius: 1.5rem;
     margin: 2.5rem 0;
     border: 1px solid var(--border-color);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     overflow: hidden;
 }
 
 .business-info-section h2 {
     font-size: 2rem;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--accent-color);
     margin-bottom: 2rem;
     text-transform: uppercase;
@@ -2265,34 +2264,35 @@ body.maintenance-active {
     transform: scaleX(1);
 }
 
+/* Business Status */
 .business-status {
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.8rem 1.5rem;
-    font-size: 1.2rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
     font-weight: 700;
     border-radius: 30px;
     margin-bottom: 1.5rem;
-    transition: all 0.3s ease;
-    background: var(--badge-bg);
-    color: var(--badge-color);
+    background-color: var(--status-open);
+    color: var(--dark-bg);
     border: 2px solid currentColor;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .status-open {
-    color: #34c759;
-    background: rgba(52, 199, 89, 0.1);
+    background-color: #34c759;
+    color: #fff;
 }
 
 .status-closed {
-    color: #ff3b30;
-    background: rgba(255, 59, 48, 0.1);
+    background-color: #ff3b30;
+    color: #fff;
 }
 
-.status-unavailable {
-    color: #ff9500;
-    background: rgba(255, 149, 0, 0.1);
+.status-temp {
+    background-color: #ff9500;
+    color: #fff;
 }
 
 .status-reason {
@@ -2314,25 +2314,17 @@ body.maintenance-active {
     justify-content: space-between;
     align-items: center;
     padding: 1.2rem 0;
-    border-bottom: 1px solid var(--border-color-light);
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 500;
-    position: relative;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.hours-list li:hover {
-    background-color: rgba(var(--accent-rgb), 0.1);
-    transform: translateX(10px);
+    border-bottom: 1px solid var(--border-color-light);
 }
 
 .hours-list .current-day {
-    background: rgba(var(--accent-rgb), 0.2);
-    border-radius: 0.75rem;
-    font-weight: 700;
-    color: var(--accent-color);
+    background-color: var(--accent-color-light);
+    border-radius: 8px;
     padding: 1.25rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-weight: 600;
+    color: var(--accent-color);
     border-left: 6px solid var(--accent-color);
 }
 
@@ -2376,18 +2368,12 @@ body.maintenance-active {
 }
 
 .special-hours-display li {
-    background: var(--content-bg-alt);
+    background-color: var(--content-bg-alt);
     padding: 1.5rem;
     margin-bottom: 1rem;
     border-radius: 1.25rem;
     border-left: 5px solid var(--accent-color);
     box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.special-hours-display li:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .special-hours-display li strong {
