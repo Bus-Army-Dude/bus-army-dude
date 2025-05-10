@@ -2320,12 +2320,13 @@ body.maintenance-active {
 }
 
 .hours-list .current-day {
-    background-color: var(--accent-color-light);
-    border-radius: 8px;
+    background-color: var(--accent-color);
+    color: #fff;
+    font-weight: 700;
     padding: 1.25rem;
-    font-weight: 600;
-    color: var(--accent-color);
-    border-left: 6px solid var(--accent-color);
+    border-radius: 10px;
+    border-left: 8px solid var(--accent-color-dark);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Business Hours - Day Styling */
