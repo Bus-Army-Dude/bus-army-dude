@@ -2226,7 +2226,7 @@ body.maintenance-active {
 }
 
 /* ======================== */
-/* Business Info Styles  */
+/* Business Info Styles   */
 /* ======================== */
 .business-info-section {
     background: var(--content-bg);
@@ -2265,8 +2265,15 @@ body.maintenance-active {
 }
 
 /* ======================== */
-/* Business Status       */
+/* Business Status        */
 /* ======================== */
+.business-status-container {
+    margin-bottom: 1.5rem;
+    border-radius: 30px;
+    border: 2px solid var(--border-color);
+    overflow: hidden; /* To contain the rounded background */
+}
+
 .business-status {
     display: inline-flex;
     align-items: center;
@@ -2274,28 +2281,24 @@ body.maintenance-active {
     padding: 1rem 1.5rem;
     font-size: 1.1rem;
     font-weight: 700;
-    border-radius: 30px;
-    margin-bottom: 1.5rem;
-    border: 2px solid var(--border-color);
+    border-radius: inherit; /* Inherit border-radius from the container */
     transition: background-color 0.3s ease, color 0.3s ease;
+    color: #fff; /* Set default text color to white to work with the colored backgrounds */
 }
 
 /* Status Color for Open */
 .status-open {
     background-color: var(--status-open); /* Green background for open status */
-    color: #fff; /* White text for better contrast on green */
 }
 
 /* Status Color for Closed */
 .status-closed {
     background-color: var(--status-closed); /* Red background for closed status */
-    color: #fff; /* White text for better contrast on red */
 }
 
 /* Status Color for Temporarily Unavailable */
 .status-temp {
     background-color: var(--status-temp); /* Orange background for temporary status */
-    color: #fff; /* White text for better contrast on orange */
 }
 
 .status-reason {
