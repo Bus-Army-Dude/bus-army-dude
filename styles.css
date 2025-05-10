@@ -2228,59 +2228,75 @@ body.maintenance-active {
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
 
 /* ======================================== */
-/* == Business Info Section Styles (Updated) == */
+/* == Business Info Section Styles (Awesome Edition) == */
 /* ======================================== */
 
 /* --- Main Container (Public Page) --- */
 .business-info-section {
-    background: var(--content-bg);
-    padding: 25px;
-    border-radius: 16px;
-    margin: 30px 0;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    background: var(--content-bg); /* Consider a very subtle gradient if it fits your theme */
+    /* background: linear-gradient(180deg, var(--content-bg-light, var(--content-bg)) 0%, var(--content-bg) 100%); */
+    padding: 30px 35px; /* Slightly more padding for a more spacious feel */
+    border-radius: 20px; /* A slightly larger radius can feel more modern */
+    margin: 35px 0;
+    box-shadow: 0 8px 25px -5px var(--shadow-color, rgba(0,0,0,0.1)), /* Softer, more diffused shadow */
+                0 4px 15px -6px var(--shadow-color-secondary, rgba(0,0,0,0.08)); /* Optional second layer for depth */
+    border: 1px solid var(--border-color-subtle, transparent); /* Optional subtle border */
 }
 
-.business-info-section h2 { /* Style the main section title */
+.business-info-section h2 {
     margin-top: 0;
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
-    font-size: 1.4em;
-    color: var(--text-color);
+    margin-bottom: 30px; /* More space after the title */
+    border-bottom: 1px solid var(--accent-color, var(--border-color)); /* Use accent for more pop or a lighter border */
+    padding-bottom: 20px;
+    font-size: 1.6em; /* Slightly larger for more importance */
+    color: var(--heading-color, var(--text-color)); /* Potentially a dedicated heading color */
+    font-weight: 600; /* Ensure it's suitably bold */
+    letter-spacing: -0.5px; /* Subtle letter spacing for refinement */
 }
 
 /* --- Status Display (Public Page) --- */
 .business-status {
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    font-weight: 500;
+    margin-bottom: 25px;
+    font-size: 1.3em; /* Make it more prominent */
+    font-weight: 600; /* Already good, ensure it stands out */
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: inline-block; /* To contain the background and padding */
+    /* Consider adding a subtle background based on status, if not too noisy */
 }
 
+/* Consider adding icons (e.g., Font Awesome) before the status text */
+/* Example: <span class="business-status status-open"><i class="fas fa-store"></i> Open</span> */
+
 .status-open {
-    color: #34c759; /* Apple Green */
-    font-weight: 600;
+    color: #28a745; /* A slightly more standard success green, if Apple Green isn't a strict req */
+    /* background-color: rgba(40, 167, 69, 0.1); */ /* Optional subtle background */
+    font-weight: 700; /* Even bolder */
 }
 
 .status-closed {
-    color: #ff3b30; /* Apple Red */
-    font-weight: 600;
+    color: #dc3545; /* Standard danger red */
+    /* background-color: rgba(220, 53, 69, 0.1); */
+    font-weight: 700;
 }
 
 .status-unavailable {
-    color: #ff9500; /* Apple Orange */
-    font-weight: 600;
+    color: #ffc107; /* Standard warning yellow/orange */
+    /* background-color: rgba(255, 193, 7, 0.15); */
+    font-weight: 700;
 }
 
 .status-reason {
-    font-size: 0.9em;
+    font-size: 0.85em; /* Slightly smaller relative to the new status size */
     color: var(--secondary-text);
-    font-weight: normal;
-    margin-left: 8px;
+    font-weight: 400; /* Lighter than the status */
+    margin-left: 10px;
+    font-style: italic;
 }
 
 /* --- Regular Hours List (Public Page) --- */
 .hours-list {
-    margin: 20px 0;
+    margin: 25px 0;
 }
 
 .hours-list ul {
@@ -2292,10 +2308,13 @@ body.maintenance-active {
 .hours-list li {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Vertically align items */
-    padding: 10px 0; /* Increased padding */
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.95em; /* Slightly smaller font */
+    align-items: center;
+    padding: 15px 10px; /* More vertical padding */
+    border-bottom: 1px solid var(--border-color-light, #eee); /* Lighter border */
+    font-size: 1em; /* Increase base font size a bit */
+}
+.hours-list li:hover {
+    background-color: rgba(var(--accent-rgb), 0.05); /* Subtle hover for interactivity */
 }
 
 .hours-list li:last-child {
@@ -2303,127 +2322,160 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-     flex-basis: 120px; /* Give day names a consistent width */
-     flex-shrink: 0;
-     margin-right: 10px;
+    flex-basis: 130px; /* Slightly more space if day names are long */
+    flex-shrink: 0;
+    margin-right: 15px;
+    font-weight: 500; /* Standard weight for the day */
+    color: var(--text-color-medium, var(--text-color));
 }
 
 .hours-list li span {
-    color: var(--secondary-text); /* Dim the time/closed text slightly */
+    color: var(--text-color-light, var(--secondary-text)); /* Ensure good contrast */
     text-align: right;
+    font-weight: 400;
 }
-
 
 .hours-list .current-day {
-    font-weight: 600;
-    background: rgba(var(--accent-rgb), 0.08); /* Slightly different background */
-    margin: -5px -10px; /* Adjust negative margin */
-    padding: 10px 10px; /* Adjust padding */
-    border-radius: 8px;
-    border-bottom: 1px solid transparent; /* Override border */
+    font-weight: 700; /* Bolder for current day */
+    background: rgba(var(--accent-rgb), 0.1); /* Slightly more noticeable background */
+    margin: 0 -15px; /* Extend to edges if padding is 15px on parent */
+    padding: 15px 15px; /* Match li padding */
+    border-radius: 10px;
+    border-bottom: 1px solid transparent; /* Keep this */
+    box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.15) inset; /* Inner shadow for a subtle glow */
 }
 .hours-list .current-day:last-child {
-    border-bottom: 1px solid transparent; /* Override border */
+    border-bottom: 1px solid transparent; /* Keep this */
 }
 .hours-list .current-day strong,
 .hours-list .current-day span {
-    color: var(--accent-color); /* Highlight text color */
+    color: var(--accent-color-dark, var(--accent-color)); /* Darker shade of accent for better readability */
+}
+.hours-list .current-day strong {
+    font-weight: 700; /* Ensure day is bold */
+}
+.hours-list .current-day span {
+    font-weight: 600; /* Make time a bit bolder too */
 }
 
 
 /* --- Special Hours Display (Temporary & Holiday - Public Page) --- */
-/* Style the containers for the special hours lists */
 #temporary-hours-display,
 #holiday-hours-display {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border-color);
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 2px dashed var(--border-color-light, #eee); /* Make it look more distinct, like a tear-off section */
 }
-/* Hide if empty (JS should handle this too) */
+
 #temporary-hours-display:empty,
 #holiday-hours-display:empty {
     display: none;
 }
 
-/* Style the headings for special hours */
 #temporary-hours-display h4,
 #holiday-hours-display h4 {
-    font-size: 1.1em;
+    font-size: 1.25em; /* Larger heading */
     margin-top: 0;
-    margin-bottom: 15px;
-    color: var(--accent-color); /* Use accent color for headings */
+    margin-bottom: 20px;
+    color: var(--accent-color-dark, var(--accent-color)); /* Darker accent for readability */
+    font-weight: 600;
+    /* Consider an icon next to the heading */
+    /* Example: <i class="fas fa-exclamation-triangle"></i> Temporary Hours */
 }
 
-/* Style the UL holding the special hours */
-.special-hours-display { /* Class used in JS */
+.special-hours-display {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-/* Style each special hour list item */
 .special-hours-display li {
-    background: var(--bg-color); /* Slightly different background maybe? */
-    padding: 12px 15px; /* Adjust padding */
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border: 1px solid var(--border-color);
-    font-size: 0.9em;
+    background: var(--content-bg-alt, #f9f9f9); /* Slightly different background for emphasis */
+    padding: 18px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color-accent, rgba(var(--accent-rgb), 0.3)); /* Border with accent color */
+    font-size: 0.95em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for each item */
+}
+.special-hours-display li:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-.special-hours-display li strong {
-    display: block; /* Make label/date take full width */
-    font-weight: 500;
-    margin-bottom: 5px;
+.special-hours-display li strong { /* This is the label like "Holiday Closure", "Special Event" */
+    display: block;
+    font-weight: 600; /* Bolder */
+    margin-bottom: 8px;
+    color: var(--accent-color-darker, var(--accent-color)); /* Make label stand out */
+    font-size: 1.05em;
 }
 
 .special-hours-display .special-hours-details {
     display: flex;
-    justify-content: space-between; /* Space out date and hours */
+    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    gap: 10px;
-    color: var(--secondary-text);
+    flex-wrap: wrap;
+    gap: 8px; /* Slightly less gap */
+    color: var(--text-color-medium, var(--secondary-text));
 }
 
 .special-hours-display .dates {
-    /* Style for the date range/specific date */
     font-style: italic;
+    font-size: 0.95em;
+    background: rgba(var(--accent-rgb), 0.08); /* Give dates a subtle badge-like background */
+    padding: 3px 8px;
+    border-radius: 4px;
 }
 
 .special-hours-display .hours {
-     /* Style for the hours/closed text */
-    font-weight: 500;
+    font-weight: 600; /* Make hours stand out */
+    color: var(--text-color, #333);
+}
+.special-hours-display .hours.closed { /* Add a class if it's closed */
+    color: var(--status-closed, #ff3b30); /* Use your status color */
+    font-weight: 700;
 }
 
 
 /* --- Timezone Note (Public Page) --- */
 .hours-timezone-note {
-    margin-top: 20px;
-    font-size: 0.85em; /* Make it smaller */
-    color: var(--secondary-text);
+    margin-top: 30px; /* More space before it */
+    font-size: 0.9em;
+    color: var(--text-color-light, var(--secondary-text));
     font-style: italic;
-    text-align: center; /* Center it */
+    text-align: center;
+    padding: 10px;
+    background: rgba(0,0,0,0.02); /* Very subtle background to frame it slightly */
+    border-radius: 8px;
 }
 
 /* --- Contact Info (Public Page) --- */
 .contact-info {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border-color);
-    color: var(--secondary-text);
-    font-size: 0.9em;
-    text-align: center; /* Center it */
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border-color-light, #eee); /* Lighter border */
+    color: var(--text-color-medium, var(--secondary-text));
+    font-size: 0.95em;
+    text-align: center;
 }
+/* Consider adding icons for phone, email, website if you display these here */
+/* Example: <p><i class="fas fa-phone"></i> <a href="tel:...">...</a></p> */
 
 .contact-info a {
-    color: var(--link-color);
-    text-decoration: none; /* Remove underline by default */
+    color: var(--link-color-strong, var(--link-color)); /* Potentially a stronger link color */
+    text-decoration: none;
+    font-weight: 500;
+    padding: 2px 4px; /* Add some padding for easier clicking and visual separation */
+    border-radius: 4px;
 }
-.contact-info a:hover {
-     text-decoration: underline; /* Add underline on hover */
+.contact-info a:hover,
+.contact-info a:focus { /* Add focus for accessibility */
+    color: var(--link-hover-color, var(--accent-color)); /* Use accent color on hover */
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px; /* Slightly thicker underline */
+    background-color: rgba(var(--accent-rgb), 0.1); /* Subtle background on hover */
 }
-
 
 /* ======================================== */
 /* == Admin Panel Specific Hours Styles == */
