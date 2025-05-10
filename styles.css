@@ -2272,34 +2272,34 @@ body.maintenance-active {
     padding: 1rem 1.5rem;
     font-size: 1.1rem;
     font-weight: 700;
-    border-radius: 30px; /* This is for the pill shape */
+    border-radius: 30px; /* Pill shape */
     margin-bottom: 1.5rem;
-    color: #fff; /* Text color */
-    border: none; /* Remove border */
-    text-align: center;
-    user-select: none; /* Prevent text selection */
-    transition: background-color 0.3s ease; /* Smooth color transition */
+    background-color: var(--status-open); /* Default background */
+    color: var(--dark-bg); /* Text color */
+    border: 2px solid currentColor;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Status Background Colors */
+/* Status Color Classes */
 .status-open {
-    background-color: #34c759; /* Green for Open */
+    background-color: #34c759; /* Green for open */
+    color: #fff;
 }
 
 .status-closed {
-    background-color: #ff3b30; /* Red for Closed */
+    background-color: #ff3b30; /* Red for closed */
+    color: #fff;
 }
 
 .status-temp {
-    background-color: #ff9500; /* Orange for Temporarily Unavailable */
+    background-color: #ff9500; /* Orange for temporarily unavailable */
+    color: #fff;
 }
 
-/* Reason Text */
-.status-reason {
-    font-size: 0.9rem;
-    font-weight: 400;
-    font-style: italic;
-    opacity: 0.8;
+/* Prevent Highlighting in the status element */
+.business-status::selection {
+    background: transparent; /* No highlight color */
+    color: inherit; /* Keep original text color */
 }
 
 
