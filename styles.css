@@ -2228,24 +2228,6 @@ body.maintenance-active {
 /* ======================== */
 /*    Business Info Styles   */
 /* ======================== */
-.business-info-section {
-    background: var(--content-bg);
-    padding: 2.5rem;
-    border-radius: 1.5rem;
-    margin: 2.5rem 0;
-    border: 1px solid var(--border-color-subtle);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-}
-
-.business-info-section h2 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    color: var(--heading-color);
-    border-bottom: 2px solid var(--accent-color);
-}
-
 /* === Business Status (Pill Style Container) === */
 .business-status {
     display: inline-flex;
@@ -2260,6 +2242,7 @@ body.maintenance-active {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     border: none;
     user-select: none; /* NO text highlighting */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
 }
 
 /* Status Background Colors (Pill) - Exact colors from images */
@@ -2275,19 +2258,22 @@ body.maintenance-active {
     background-color: #FF9900; /* Orange from Image 2 */
 }
 
-/* Ensure status text has NO background highlighting */
+/* Light text shadow for better contrast */
 .business-status span {
     background: transparent !important; /* Force no background on the text */
     color: inherit;
     padding: 0;
     margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* Light shadow for better contrast */
 }
 
+/* Optional: Status Reason (Smaller Text) */
 .status-reason {
     font-size: 0.85rem;
     font-weight: 400;
     font-style: italic;
     opacity: 0.9;
+    color: rgba(255, 255, 255, 0.8); /* Slightly lighter text color for reason */
 }
 
 /* === Business Hours === */
