@@ -212,6 +212,28 @@ body {
     box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--accent-color);
 }
 
+/* Weather Button */
+.weather-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: url('weather-icon.png') center/18px no-repeat, var(--link-color);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow-color), 0 0 0 1px var(--link-color);
+}
+
+.weather-button:hover {
+    transform: translateY(-2px) rotate(45deg);
+    box-shadow: 0 8px 20px var(--shadow-color), 0 0 0 1px var(--link-color);
+}
+
 /* Media Queries */
 @media screen and (max-width: 768px) {
     .profile-pic {
@@ -221,6 +243,7 @@ body {
 
     .settings-button,
     .merch-button,
+    .weather-button {
         width: 35px;
         height: 35px;
     }
@@ -238,6 +261,7 @@ body {
 
     .settings-button,
     .merch-button,
+    .weather-button {
         width: 30px;
         height: 30px;
     }
@@ -2225,179 +2249,205 @@ body.maintenance-active {
      .maintenance-content { padding-top: 20px; padding-bottom: 20px; }
 }
 
-/* ======================== */
-/*    Business Info Styles   */
-/* ======================== */
+/* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
+
+/* ======================================== */
+/* == Business Info Section Styles (Updated) == */
+/* ======================================== */
+
+/* --- Main Container (Public Page) --- */
 .business-info-section {
-  background: var(--content-bg);
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  margin: 2.5rem 0;
-  border: 1px solid var(--border-color-subtle);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    background: var(--content-bg);
+    padding: 25px;
+    border-radius: 16px;
+    margin: 30px 0;
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
-.business-info-section h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  color: var(--heading-color);
-  border-bottom: 2px solid var(--accent-color);
+.business-info-section h2 { /* Style the main section title */
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    font-size: 1.4em;
+    color: var(--text-color);
 }
 
-/* === Status Pill === */
+/* --- Status Display (Public Page) --- */
 .business-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.7rem 1.4rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 999px;
-  margin-bottom: 1.5rem;
-  color: #fff;
-  user-select: text;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: 500;
 }
 
-/* Pill Background Colors */
 .status-open {
-  background-color: #38d39f;
+    color: #34c759; /* Apple Green */
+    font-weight: 600;
 }
 
 .status-closed {
-  background-color: #f44336;
+    color: #ff3b30; /* Apple Red */
+    font-weight: 600;
 }
 
 .status-unavailable {
-  background-color: #ff9800;
+    color: #ff9500; /* Apple Orange */
+    font-weight: 600;
 }
 
-/* Kill selection highlight for status + hours */
-.business-status::selection,
-.business-status *::selection,
-.hours-list li::selection,
-.hours-list li *::selection {
-  background: transparent !important;
-  color: inherit !important;
+.status-reason {
+    font-size: 0.9em;
+    color: var(--secondary-text);
+    font-weight: normal;
+    margin-left: 8px;
 }
 
-/* === Business Hours === */
+/* --- Regular Hours List (Public Page) --- */
+.hours-list {
+    margin: 20px 0;
+}
+
 .hours-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .hours-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border-color-light);
-  font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically align items */
+    padding: 10px 0; /* Increased padding */
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95em; /* Slightly smaller font */
 }
 
-.hours-list li:hover {
-  background-color: transparent; /* kill hover */
+.hours-list li:last-child {
+    border-bottom: none;
 }
 
-/* Highlight Current Day */
-.hours-list .current-day {
-  background-color: rgba(var(--accent-rgb), 0.15);
-  border-radius: 1rem;
-  font-weight: 700;
-  color: var(--accent-color);
-  padding: 1rem;
-  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
-}
-
-/* Text */
 .hours-list li strong {
-  color: var(--text-color);
-  font-weight: 600;
+     flex-basis: 120px; /* Give day names a consistent width */
+     flex-shrink: 0;
+     margin-right: 10px;
 }
 
 .hours-list li span {
-  color: var(--text-color-light);
-  font-weight: 400;
-  text-align: right;
+    color: var(--secondary-text); /* Dim the time/closed text slightly */
+    text-align: right;
 }
 
-/* === Temporary & Holiday Hours === */
+
+.hours-list .current-day {
+    font-weight: 600;
+    background: rgba(var(--accent-rgb), 0.08); /* Slightly different background */
+    margin: -5px -10px; /* Adjust negative margin */
+    padding: 10px 10px; /* Adjust padding */
+    border-radius: 8px;
+    border-bottom: 1px solid transparent; /* Override border */
+}
+.hours-list .current-day:last-child {
+    border-bottom: 1px solid transparent; /* Override border */
+}
+.hours-list .current-day strong,
+.hours-list .current-day span {
+    color: var(--accent-color); /* Highlight text color */
+}
+
+
+/* --- Special Hours Display (Temporary & Holiday - Public Page) --- */
+/* Style the containers for the special hours lists */
 #temporary-hours-display,
 #holiday-hours-display {
-  margin-top: 2.5rem;
-  padding-top: 2rem;
-  border-top: 2px dashed var(--border-color-light);
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
 }
-
+/* Hide if empty (JS should handle this too) */
 #temporary-hours-display:empty,
 #holiday-hours-display:empty {
-  display: none;
+    display: none;
 }
 
+/* Style the headings for special hours */
 #temporary-hours-display h4,
 #holiday-hours-display h4 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: var(--accent-color);
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--accent-color); /* Use accent color for headings */
 }
 
-.special-hours-display {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Style the UL holding the special hours */
+.special-hours-display { /* Class used in JS */
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
+/* Style each special hour list item */
 .special-hours-display li {
-  background: var(--content-bg-alt);
-  padding: 1.25rem;
-  margin-bottom: 1rem;
-  border-radius: 1rem;
-  border-left: 5px solid var(--accent-color);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    background: var(--bg-color); /* Slightly different background maybe? */
+    padding: 12px 15px; /* Adjust padding */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    font-size: 0.9em;
 }
 
 .special-hours-display li strong {
-  display: block;
-  font-size: 1.05rem;
-  color: var(--accent-color-dark);
-  margin-bottom: 0.5rem;
+    display: block; /* Make label/date take full width */
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
-.special-hours-details {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+.special-hours-display .special-hours-details {
+    display: flex;
+    justify-content: space-between; /* Space out date and hours */
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 10px;
+    color: var(--secondary-text);
 }
 
 .special-hours-display .dates {
-  font-style: italic;
-  font-size: 0.9rem;
-  opacity: 0.7;
+    /* Style for the date range/specific date */
+    font-style: italic;
 }
 
 .special-hours-display .hours {
-  font-weight: 600;
-  color: var(--text-color);
+     /* Style for the hours/closed text */
+    font-weight: 500;
 }
 
-.special-hours-display .hours.closed {
-  color: #ff3b30;
-  font-weight: 700;
+
+/* --- Timezone Note (Public Page) --- */
+.hours-timezone-note {
+    margin-top: 20px;
+    font-size: 0.85em; /* Make it smaller */
+    color: var(--secondary-text);
+    font-style: italic;
+    text-align: center; /* Center it */
 }
 
-/* === Contact Info === */
+/* --- Contact Info (Public Page) --- */
 .contact-info {
-  margin-top: 2.5rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-color-light);
-  font-size: 0.95rem;
-  color: var(--text-color-medium);
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    text-align: center; /* Center it */
 }
+
+.contact-info a {
+    color: var(--link-color);
+    text-decoration: none; /* Remove underline by default */
+}
+.contact-info a:hover {
+     text-decoration: underline; /* Add underline on hover */
+}
+
 
 /* ======================================== */
 /* == Admin Panel Specific Hours Styles == */
@@ -2676,18 +2726,4 @@ body.maintenance-active {
          width: 100%; /* Take full width */
      }
 
-}
-
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  html, body {
-    background-color: #ffffff !important; /* Ensure the background is white */
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* Hide any potential scrollbars on the blank page */
-    margin: 0;
-    padding: 0;
-  }
 }
