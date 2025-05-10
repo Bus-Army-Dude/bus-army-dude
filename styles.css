@@ -2298,9 +2298,10 @@ body.maintenance-active {
 }
 
 /* Prevent Highlighting in the status element */
-.business-status::selection {
-    background: transparent; /* No highlight color */
-    color: inherit; /* Keep original text color */
+.business-status::selection,
+.business-status *::selection {
+  background: transparent !important;
+  color: inherit !important;
 }
 
 
