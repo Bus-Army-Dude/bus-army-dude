@@ -2252,52 +2252,58 @@ body.maintenance-active {
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
 
 /* ======================================== */
-/* == Business Info Section Styles (Maximized) == */
+/* == Business Info Section Styles (Revised Design) == */
 /* ======================================== */
 
 /* --- Main Container --- */
 .business-info-section {
     background: var(--content-bg);
-    padding: 35px;
-    border-radius: 25px;
+    padding: 40px;
+    border-radius: 20px;
     margin: 50px 0;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    overflow: hidden;
+    border: 2px solid var(--border-color);
 }
 
 /* Section Header */
 .business-info-section h2 {
-    margin: 0 0 30px;
+    margin: 0 0 35px;
     padding-bottom: 20px;
-    font-size: 1.75em;
-    font-weight: 800;
-    border-bottom: 3px solid var(--border-color);
+    font-size: 2em;
+    font-weight: 900;
     color: var(--text-color);
     text-transform: uppercase;
+    border-bottom: 3px solid var(--accent-color);
+    letter-spacing: 1.5px;
+    text-align: center;
 }
 
 /* --- Status Display --- */
 .business-status {
     font-size: 1.5em;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 30px;
     display: flex;
-    align-items: center;
-    gap: 15px;
+    justify-content: center;
+    gap: 30px;
     text-transform: capitalize;
+    text-align: center;
 }
 
 .status-open {
-    color: #32d74b;
+    color: #32d74b; /* Apple Green */
+    font-size: 1.6em;
 }
 
 .status-closed {
-    color: #ff453a;
+    color: #ff453a; /* Apple Red */
+    font-size: 1.6em;
 }
 
 .status-unavailable {
-    color: #ff9f0a;
+    color: #ff9f0a; /* Apple Orange */
+    font-size: 1.6em;
 }
 
 .status-reason {
@@ -2306,60 +2312,58 @@ body.maintenance-active {
     color: var(--secondary-text);
 }
 
-/* --- Hours List --- */
+/* --- Regular Hours List --- */
 .hours-list {
-    margin: 25px 0;
+    margin: 30px 0;
+    font-size: 1.05em;
 }
 
 .hours-list ul {
     list-style: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
 }
 
 .hours-list li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 25px;
-    background: rgba(var(--accent-rgb), 0.1);
+    padding: 15px 20px;
+    background: var(--accent-background);
     border-radius: 15px;
-    margin-bottom: 15px;
-    transition: background 0.3s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .hours-list li strong {
-    flex-basis: 150px;
-    font-weight: 700;
-    color: var(--text-color);
+    font-weight: 800;
+    flex-basis: 140px;
+    color: var(--primary-text);
+    font-size: 1.1em;
 }
 
 .hours-list li span {
     text-align: right;
     color: var(--secondary-text);
+    font-weight: 500;
 }
 
 .hours-list .current-day {
-    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.35), rgba(var(--accent-rgb), 0.6));
-    color: #fff;
-    font-weight: 700;
-    padding: 15px 25px;
-    border-radius: 18px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    font-size: 1.2em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border: 2px solid #fff;
-    transform: scale(1.05);
-    transition: transform 0.3s ease, background 0.3s ease;
+    background: var(--accent-color);
+    color: white;
+    font-weight: 800;
+    font-size: 1.25em;
+    padding: 18px 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--accent-color);
 }
 
-.hours-list .current-day:hover {
-    transform: scale(1.1); /* Slight scaling effect for hover */
-}
-
-.hours-list li span {
-    color: var(--secondary-text);
+.hours-list .current-day strong,
+.hours-list .current-day span {
+    color: white;
 }
 
 /* --- Special Hours --- */
@@ -2367,7 +2371,7 @@ body.maintenance-active {
 #holiday-hours-display {
     margin-top: 35px;
     padding-top: 25px;
-    border-top: 2px dashed var(--border-color);
+    border-top: 3px solid var(--accent-color);
 }
 
 #temporary-hours-display:empty,
@@ -2382,6 +2386,7 @@ body.maintenance-active {
     font-weight: 700;
     color: var(--accent-color);
     text-transform: uppercase;
+    text-align: center;
 }
 
 .special-hours-display {
@@ -2394,19 +2399,23 @@ body.maintenance-active {
     background: var(--bg-color);
     padding: 18px 22px;
     border-radius: 15px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     border: 2px solid var(--border-color);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+    color: var(--primary-text);
+    font-size: 1em;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .special-hours-display li:hover {
+    transform: translateY(-5px);
     background: rgba(var(--accent-rgb), 0.05);
 }
 
 .special-hours-display li strong {
     display: block;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 8px;
     color: var(--text-color);
 }
@@ -2415,7 +2424,7 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 15px;
     color: var(--secondary-text);
 }
 
@@ -2430,34 +2439,34 @@ body.maintenance-active {
 /* --- Timezone Note --- */
 .hours-timezone-note {
     margin-top: 25px;
-    font-size: 0.9em;
+    font-size: 1em;
     font-style: italic;
     color: var(--secondary-text);
     text-align: center;
-    letter-spacing: 0.5px;
 }
 
 /* --- Contact Info --- */
 .contact-info {
     margin-top: 40px;
-    padding-top: 30px;
-    border-top: 2px dashed var(--border-color);
+    padding-top: 25px;
+    border-top: 3px dashed var(--accent-color);
     text-align: center;
     font-size: 1em;
     color: var(--secondary-text);
     font-weight: 500;
+    letter-spacing: 1px;
 }
 
 .contact-info a {
     color: var(--link-color);
     text-decoration: none;
+    font-weight: 600;
 }
 
 .contact-info a:hover {
     text-decoration: underline;
     color: var(--accent-color);
 }
-
 
 /* ======================================== */
 /* == Admin Panel Specific Hours Styles == */
