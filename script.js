@@ -1,19 +1,54 @@
-// main-script.js (Earth Day Countdown & Duplicate FAQ Logic Removed)
+// main-script.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Enhanced Copy Protection
-    const enhancedCopyProtection = {
+    // Enhanced Interaction Control (Copy Protection, Drag Prevention, Context Menu)
+    const enhancedInteractionControl = {
         init() {
+            // Prevent context menu (right-click/long-press menu)
             document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('selectstart', e => e.preventDefault());
-            document.addEventListener('copy', e => e.preventDefault());
+
+            // Prevent text selection globally, but allow in inputs/textareas
+            document.addEventListener('selectstart', e => {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && !e.target.isContentEditable) {
+                    e.preventDefault();
+                }
+            });
+
+            // Prevent copying globally, but allow from inputs/textareas
+            document.addEventListener('copy', e => {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && !e.target.isContentEditable) {
+                    e.preventDefault();
+                }
+            });
+
+            // Prevent dragging of links and buttons
+            document.addEventListener('dragstart', e => {
+                // Check if the target or its parent is a link or an element styled as a button
+                if (e.target.closest('a, .social-button, .link-button, .settings-button, .merch-button, .weather-button, .disabilities-section a, .visit-profile')) {
+                    e.preventDefault();
+                }
+            });
+
+            // Attempt to suppress long-press actions on specific links/buttons (mainly for mobile)
+            // Note: CSS ` -webkit-touch-callout: none;` is generally more effective for iOS link previews.
+            const interactiveElements = document.querySelectorAll(
+                'a, .social-button, .link-button, .settings-button, .merch-button, .weather-button, .disabilities-section a, .visit-profile'
+            );
+            interactiveElements.forEach(element => {
+                // Setting draggable to false can sometimes help
+                element.setAttribute('draggable', 'false');
+
+                // For touch devices, you might try to intercept touch events,
+                // but -webkit-touch-callout: none; in CSS is key for iOS.
+                // This JS part for touch is often redundant if CSS is well-applied.
+            });
         }
     };
 
-    // Initialize copy protection
-    enhancedCopyProtection.init();
+    // Initialize interaction controls
+    enhancedInteractionControl.init();
 
-   // Time update function
+    // Time update function
     function updateTime() {
         const now = new Date();
         const options = {
@@ -28,11 +63,33 @@ document.addEventListener('DOMContentLoaded', () => {
             timeZoneName: 'long'
         };
 
-        const timestamp = now.toLocaleString('en-US', options);
-        const timeElement = document.querySelector('.update-time');
+        let timestamp;
+        try {
+            timestamp = now.toLocaleString('en-US', options);
+        } catch (e) {
+            // Fallback for environments that might not support timeZoneName: 'long' fully
+            const fallbackOptions = { ...options };
+            delete fallbackOptions.timeZoneName;
+            timestamp = now.toLocaleString('en-US', fallbackOptions) + " (Local Time)";
+        }
 
-        if (timeElement) {
-            timeElement.textContent = `${timestamp}`;
+
+        // Update time in the ".update-time" element within the Version Info Section
+        const versionTimeElement = document.querySelector('.version-info-section .update-time');
+        if (versionTimeElement) {
+             // For version info, maybe a simpler timestamp is better.
+            const simpleOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true};
+            try {
+                 versionTimeElement.textContent = ` ${now.toLocaleString('en-US', simpleOptions)}`;
+            } catch (e) {
+                versionTimeElement.textContent = ` ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+            }
+        }
+
+        // Update time in the ".current-datetime" element within the Datetime Section
+        const dateTimeSectionElement = document.querySelector('.datetime-section .current-datetime');
+        if (dateTimeSectionElement) {
+            dateTimeSectionElement.textContent = timestamp;
         }
     }
 
@@ -43,61 +100,68 @@ document.addEventListener('DOMContentLoaded', () => {
     const refreshInterval = 5 * 60 * 1000; // 5 minutes in milliseconds
     let refreshTime = Date.now() + refreshInterval;
 
-    function updatePageRefreshCountdown() { // Renamed function for clarity
-        const countdownElement = document.querySelector('.countdown'); // Target element for refresh timer
+    function updatePageRefreshCountdown() {
+        const countdownElement = document.querySelector('.version-info-section .countdown'); // Specific target
         const currentTime = Date.now();
         const timeLeft = Math.ceil((refreshTime - currentTime) / 1000);
 
-        if (timeLeft >= 0) {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            if (countdownElement) {
-                countdownElement.textContent = `Page refreshing in: ${minutes}m ${seconds}s`;
+        if (countdownElement) { // Check if element exists before updating
+            if (timeLeft >= 0) {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                // Using innerHTML to allow for potential styling of the numbers later
+                countdownElement.innerHTML = `Page refreshing in: <span class="timer-digits">${minutes}m ${seconds.toString().padStart(2, '0')}s</span>`;
+            } else {
+                countdownElement.textContent = "Refreshing now...";
+                smoothReload();
             }
-        } else {
-            smoothReload(); // Reload when time is up
         }
     }
 
     // Smoothly reload the page
     function smoothReload() {
         const body = document.body;
-        body.style.transition = 'opacity 0.5s ease';
+        body.style.transition = 'opacity 0.5s ease-in-out';
         body.style.opacity = '0';
         setTimeout(() => {
             location.reload();
-        }, 500);
+        }, 500); // Match transition duration
     }
 
-    // Initialize page refresh countdown
-    updatePageRefreshCountdown();
+    // Initialize page refresh countdown only if the element exists
+    if (document.querySelector('.version-info-section .countdown')) {
+        updatePageRefreshCountdown();
+        // Update Page Refresh countdown every second
+        setInterval(updatePageRefreshCountdown, 1000);
+    }
 
-    // --- Set Intervals ---
+
     // Update Time display every second
     setInterval(updateTime, 1000);
-    // Update Page Refresh countdown every second
-    setInterval(updatePageRefreshCountdown, 1000);
 
-    // --- End Intervals ---
 
-    // --- Back to top button functionality (Moved inside DOMContentLoaded) ---
+    // --- Back to top button functionality ---
     const scrollBtn = document.getElementById('scrollToTop');
-    const indicator = document.querySelector('.progress-indicator');
+    const indicator = document.querySelector('.scroll-to-top .progress-indicator'); // More specific selector
 
     function updateScrollIndicator() {
-        // Check if elements exist before using them
         if (!indicator || !scrollBtn) {
-             // console.warn("Scroll indicator or button not found."); // Optional warning
-             return;
+            return;
         }
-        const scrollTop = window.scrollY;
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        // Prevent division by zero if docHeight is 0
-        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-        const offset = 163.36 * (1 - progress); // Use the value from your original code
-        indicator.style.strokeDashoffset = offset;
+        const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0; // Cap progress at 1
 
-        // Show/hide button
+        // Make sure the circle element and its radius 'r' attribute exist
+        const radius = indicator.r ? indicator.r.baseVal.value : 0; // Get radius from SVG attribute
+        if (radius > 0) {
+            const circumference = 2 * Math.PI * radius;
+            indicator.style.strokeDasharray = circumference;
+            const offset = circumference * (1 - progress);
+            indicator.style.strokeDashoffset = offset;
+        }
+
+
         if (scrollTop > 100) {
             scrollBtn.classList.add('visible');
         } else {
@@ -105,59 +169,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initial call and listener for scroll indicator
-    updateScrollIndicator(); // Run once on load
-    window.addEventListener('scroll', updateScrollIndicator);
+    if (scrollBtn && indicator) {
+        const radius = indicator.r ? indicator.r.baseVal.value : 0;
+        if (radius > 0) {
+             const circumference = 2 * Math.PI * radius;
+             indicator.style.strokeDasharray = circumference;
+             indicator.style.strokeDashoffset = circumference; // Start with full offset
+        }
+        updateScrollIndicator(); // Initial call
+        window.addEventListener('scroll', updateScrollIndicator, { passive: true });
 
-    if (scrollBtn) {
-        scrollBtn.addEventListener('click', () => {
+        scrollBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Good practice for buttons that trigger JS actions
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
-    // --- End Back to top button ---
 
-    // --- Cookie Consent (Moved inside DOMContentLoaded) ---
-    const cookieConsent = document.getElementById('cookieConsent');
-    const acceptCookiesBtn = document.getElementById('acceptCookies');
+    // --- Cookie Consent ---
+    const cookieConsent = document.getElementById('cookieConsent'); // Assuming you have this element
+    const acceptCookiesBtn = document.getElementById('acceptCookies'); // Assuming you have this button
 
     if (cookieConsent && acceptCookiesBtn) {
-         // Check if the user has already accepted cookies
         if (!localStorage.getItem('cookieAccepted')) {
-            cookieConsent.style.display = 'block';
+            cookieConsent.style.display = 'block'; // Or 'flex' or your preferred display type
         }
-        // Accept cookies button functionality
-        acceptCookiesBtn.onclick = function() {
+        acceptCookiesBtn.addEventListener('click', function() {
             localStorage.setItem('cookieAccepted', 'true');
             cookieConsent.style.display = 'none';
-        };
+        });
     }
-    // --- End Cookie Consent ---
 
     // Update footer year dynamically
-function updateFooterYear() {
-    const yearElement = document.getElementById('year');
-    if (yearElement) {
-        const currentYear = new Date().getFullYear();
-        yearElement.textContent = currentYear;
+    function updateFooterYear() {
+        const yearElement = document.getElementById('year'); // Assuming <span id="year"></span> in footer
+        if (yearElement) {
+            const currentYear = new Date().getFullYear();
+            yearElement.textContent = currentYear;
+        }
     }
-}
-
-// Call the function to update the footer year
-updateFooterYear();
-
+    updateFooterYear();
 
 }); // --- END OF PRIMARY DOMContentLoaded LISTENER ---
 
 
 // --- HTTPS Redirect (Runs immediately) ---
-if (window.location.protocol !== 'https:') {
+// Consider server-side HTTPS enforcement for better security and reliability.
+// This client-side redirect is a fallback.
+if (window.location.protocol !== "https:" && window.location.hostname !== "localhost" && !window.location.hostname.startsWith("127.")) {
     console.log("Redirecting to HTTPS...");
-    window.location.href = "https://" + window.location.host + window.location.pathname;
+    window.location.href = "https://" + window.location.host + window.location.pathname + window.location.search;
 }
 
 // --- Page Load Animation (Runs on window load) ---
 window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
+    document.body.classList.add('loaded'); // Assuming 'loaded' class triggers animations or visibility
 });
 
 // --- NOTE on FAQs ---
