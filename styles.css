@@ -2274,25 +2274,25 @@ body.maintenance-active {
     font-weight: 700;
     border-radius: 30px;
     margin-bottom: 1.5rem;
-    background-color: var(--status-open);
-    color: var(--dark-bg);
+    color: #fff; /* Text always white for contrast */
     border: 2px solid currentColor;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Status Background Colors */
 .status-open {
-    background-color: #34c759;
-    color: #fff;
+    background-color: #34c759; /* Green for Open */
+    color: #fff; /* White text */
 }
 
 .status-closed {
-    background-color: #ff3b30;
-    color: #fff;
+    background-color: #ff3b30; /* Red for Closed */
+    color: #fff; /* White text */
 }
 
 .status-temp {
-    background-color: #ff9500;
-    color: #fff;
+    background-color: #ff9500; /* Orange for Temporarily Unavailable */
+    color: #fff; /* White text */
 }
 
 .status-reason {
