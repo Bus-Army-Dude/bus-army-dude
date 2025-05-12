@@ -2257,30 +2257,29 @@ body.maintenance-active {
 
 /* --- Main Container (Public Page) --- */
 .business-info-section {
-    background: #1a1a1a; /* Dark background for better contrast */
+    background: var(--content-bg);
     padding: 25px;
     border-radius: 16px;
     margin: 30px 0;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
-    color: #f4f4f4;
+    box-shadow: 0 3px 12px var(--shadow-color);
 }
 
 /* Section Header */
 .business-info-section h2 {
     margin-top: 0;
     margin-bottom: 20px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    font-size: 1.35em; /* Slightly reduced */
+    font-size: 1.35em;  /* Slightly reduced */
     font-weight: 700;
-    color: #f4f4f4;
+    color: var(--text-color);
     text-align: center;
 }
 
 /* --- Status Display (Public Page) --- */
 .business-status {
     margin-bottom: 20px;
-    font-size: 1.15em; /* Slightly reduced */
+    font-size: 1.15em;  /* Slightly reduced */
     font-weight: 500;
     text-align: center;
 }
@@ -2301,8 +2300,8 @@ body.maintenance-active {
 }
 
 .status-reason {
-    font-size: 0.85em; /* Reduced size */
-    color: #c7c7c7;
+    font-size: 0.85em;  /* Reduced size */
+    color: var(--secondary-text);
     font-weight: normal;
     margin-top: 5px;
 }
@@ -2322,10 +2321,9 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0; /* Reduced padding */
-    border-bottom: 1px solid #333;
-    font-size: 0.9em; /* Reduced size */
-    color: #f4f4f4;
+    padding: 8px 0;  /* Reduced padding */
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9em;  /* Reduced size */
 }
 
 .hours-list li:last-child {
@@ -2333,30 +2331,34 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-    flex-basis: 120px; /* Consistent width */
-    flex-shrink: 0;
-    margin-right: 10px;
+     flex-basis: 120px; /* Consistent width */
+     flex-shrink: 0;
+     margin-right: 10px;
 }
 
 .hours-list li span {
-    color: #c7c7c7;
+    color: var(--secondary-text);
     text-align: right;
 }
 
 /* --- Current Day Highlight --- */
 .hours-list .current-day {
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--accent-rgb), 0.15); /* More noticeable background */
     margin: -5px -10px;
     padding: 10px 10px;
     border-radius: 8px;
-    border: 2px solid #34c759; /* Accent border */
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--accent-color); /* Added border for pop */
+    box-shadow: 0 2px 6px rgba(var(--accent-rgb), 0.1); /* Added subtle shadow */
+}
+
+.hours-list .current-day:last-child {
+    border-bottom: 1px solid transparent; /* Override border */
 }
 
 .hours-list .current-day strong,
 .hours-list .current-day span {
-    color: #34c759;
+    color: var(--accent-color);
 }
 
 /* --- Special Hours Display (Temporary & Holiday) --- */
@@ -2364,7 +2366,7 @@ body.maintenance-active {
 #holiday-hours-display {
     margin-top: 25px;
     padding-top: 20px;
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--border-color);
 }
 
 #temporary-hours-display:empty,
@@ -2377,7 +2379,7 @@ body.maintenance-active {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 15px;
-    color: #34c759;
+    color: var(--accent-color); /* Accent color for headings */
     font-weight: 600;
 }
 
@@ -2389,13 +2391,12 @@ body.maintenance-active {
 }
 
 .special-hours-display li {
-    background: #333; /* Darker background for special hours */
+    background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
-    margin-bottom: 12px;
-    border: 1px solid #444;
-    font-size: 0.9em;
-    color: #f4f4f4;
+    margin-bottom: 12px;  /* Slightly reduced margin */
+    border: 1px solid var(--border-color);
+    font-size: 0.9em;  /* Slightly reduced size */
 }
 
 .special-hours-display li strong {
@@ -2409,7 +2410,7 @@ body.maintenance-active {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
-    color: #c7c7c7;
+    color: var(--secondary-text);
 }
 
 .special-hours-display .dates {
@@ -2424,7 +2425,7 @@ body.maintenance-active {
 .hours-timezone-note {
     margin-top: 20px;
     font-size: 0.85em;
-    color: #c7c7c7;
+    color: var(--secondary-text);
     font-style: italic;
     text-align: center;
 }
@@ -2433,14 +2434,14 @@ body.maintenance-active {
 .contact-info {
     margin-top: 25px;
     padding-top: 20px;
-    border-top: 1px solid #333;
-    color: #c7c7c7;
+    border-top: 1px solid var(--border-color);
+    color: var(--secondary-text);
     font-size: 0.9em;
     text-align: center;
 }
 
 .contact-info a {
-    color: #34c759;
+    color: var(--link-color);
     text-decoration: none;
 }
 
