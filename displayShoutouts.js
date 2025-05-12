@@ -869,12 +869,12 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
 
 
    // Helper function to format date as "Monday, May 26, 2025"
-    function formatDate(dateStr) {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('en-US', options);
-    }
-    
+function formatDate(dateStr) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', options);
+}
+
     // --- Display Temporary Hours ---
     if (temporaryHoursDisplay) {
         const relevantTemporaryHours = temporaryHours
