@@ -2305,7 +2305,7 @@ body.maintenance-active {
     margin-top: 5px;
 }
 
-/* --- Regular Hours List (Public Page) --- */
+/* --- Regular Hours List --- */
 .hours-list {
     margin: 20px 0;
 }
@@ -2356,9 +2356,27 @@ body.maintenance-active {
 }
 
 /* --- Temporary Hours Display --- */
+#temporary-hours-display {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+#temporary-hours-display:empty {
+    display: none;
+}
+
+#temporary-hours-display h4 {
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #007aff; /* Blue for Temporary Hours */
+    font-weight: 600;
+}
+
 .temporary-hours-display li {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Date under the name */
     justify-content: flex-start;
     background: var(--bg-color);
     padding: 12px 15px;
@@ -2379,10 +2397,28 @@ body.maintenance-active {
 }
 
 /* --- Holiday Hours Display --- */
+#holiday-hours-display {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+#holiday-hours-display:empty {
+    display: none;
+}
+
+#holiday-hours-display h4 {
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #34c759; /* Green for Holiday Hours */
+    font-weight: 600;
+}
+
 .holiday-hours-display li {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Time aligned to the right */
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
@@ -2404,7 +2440,6 @@ body.maintenance-active {
 .holiday-hours-display .hours {
     text-align: right;
     font-weight: 600;
-    color: var(--text-color);
 }
 
 /* --- Timezone Note --- */
