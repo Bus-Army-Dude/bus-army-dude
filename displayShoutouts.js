@@ -868,12 +868,12 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     businessHoursDisplay.innerHTML = displayHoursListHtml;
 
 
-    // --- Display Temporary Hours ---
+   // --- Display Temporary Hours ---
     if (temporaryHoursDisplay) {
         const relevantTemporaryHours = temporaryHours
             .filter(t => t.endDate >= businessDateStr)
             .sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
-
+    
         if (relevantTemporaryHours.length > 0) {
             let tempHoursHtml = '<h4>Upcoming/Active Temporary Hours</h4><ul class="special-hours-display">';
             relevantTemporaryHours.forEach(temp => {
@@ -882,12 +882,11 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                         <li>
                             <strong>${temp.label || 'Temporary Schedule'}:</strong>
                             <div class="special-hours-details">
-                                <span class="dates">${temp.startDate} to ${temp.endDate}</span>
                                 ${temp.isClosed ?
                                     '<span class="hours">Closed</span>' :
-                                    // *** Use Luxon-powered formatter ***
                                     `<span class="hours">${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}</span>`
                                 }
+                                <span class="dates">${temp.startDate} to ${temp.endDate}</span>
                             </div>
                         </li>`;
                 }
@@ -902,7 +901,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     } else {
         console.warn("Temporary hours display element not found.");
     }
-
+    
     // --- Display Holiday Hours ---
     if (holidayHoursDisplay) {
         const upcomingHolidayHours = holidayHours
@@ -917,13 +916,11 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                         <li>
                             <div class="special-hours-details">
                                 <strong>${holiday.label || 'Holiday'}</strong>
-                                <span class="dates">${holiday.date}</span>
-                            </div>
-                            <div class="hours">
                                 ${holiday.isClosed 
-                                    ? '<span>Closed</span>' 
-                                    : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`
+                                    ? '<span class="hours">Closed</span>' 
+                                    : `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
                                 }
+                                <span class="dates">${holiday.date}</span>
                             </div>
                         </li>`;
                 }
