@@ -2276,7 +2276,7 @@ body.maintenance-active {
     text-align: center;
 }
 
-/* --- Status Display --- */
+/* --- Status Display (Public Page) --- */
 .business-status {
     margin-bottom: 20px;
     font-size: 1.15em;
@@ -2285,24 +2285,23 @@ body.maintenance-active {
 }
 
 .status-open {
-    color: #34c759; /* Green */
+    color: #34c759; /* Apple Green */
     font-weight: 600;
 }
 
 .status-closed {
-    color: #ff3b30; /* Red */
+    color: #ff3b30; /* Apple Red */
     font-weight: 600;
 }
 
 .status-unavailable {
-    color: #ff9500; /* Orange */
+    color: #ff9500; /* Apple Orange */
     font-weight: 600;
 }
 
 .status-reason {
     font-size: 0.85em;
     color: var(--secondary-text);
-    font-weight: normal;
     margin-top: 5px;
 }
 
@@ -2332,7 +2331,6 @@ body.maintenance-active {
 
 .hours-list li strong {
     flex-basis: 120px;
-    flex-shrink: 0;
     margin-right: 10px;
 }
 
@@ -2350,10 +2348,6 @@ body.maintenance-active {
     border-radius: 8px;
     border: 2px solid var(--accent-color);
     box-shadow: 0 2px 6px rgba(var(--accent-rgb), 0.1);
-}
-
-.hours-list .current-day:last-child {
-    border-bottom: 1px solid transparent;
 }
 
 .hours-list .current-day strong,
@@ -2382,8 +2376,8 @@ body.maintenance-active {
 
 .temporary-hours-display li {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Date under the name */
+    justify-content: flex-start;
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
@@ -2394,13 +2388,7 @@ body.maintenance-active {
 
 .temporary-hours-display li strong {
     font-weight: 600;
-    display: block;
     margin-bottom: 5px;
-}
-
-.temporary-hours-display .temporary-hours-details {
-    display: flex;
-    flex-direction: column;
 }
 
 .temporary-hours-display .dates {
@@ -2430,7 +2418,7 @@ body.maintenance-active {
 .holiday-hours-display li {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Time aligned to the right */
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
@@ -2441,13 +2429,7 @@ body.maintenance-active {
 
 .holiday-hours-display li strong {
     font-weight: 600;
-    display: block;
     margin-bottom: 5px;
-}
-
-.holiday-hours-display .holiday-hours-details {
-    display: flex;
-    flex-direction: column;
 }
 
 .holiday-hours-display .dates {
@@ -2458,7 +2440,6 @@ body.maintenance-active {
 .holiday-hours-display .hours {
     text-align: right;
     font-weight: 600;
-    color: var(--text-color);
 }
 
 /* --- Timezone Note --- */
