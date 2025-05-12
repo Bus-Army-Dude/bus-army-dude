@@ -2252,7 +2252,7 @@ body.maintenance-active {
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
 
 /* ======================================== */
-/* == Business Info Section Styles == */
+/* == Business Info Section Styles (Updated) == */
 /* ======================================== */
 
 /* --- Main Container (Public Page) --- */
@@ -2264,7 +2264,7 @@ body.maintenance-active {
     box-shadow: 0 3px 12px var(--shadow-color);
 }
 
-/* Section Header */
+/* --- Section Header --- */
 .business-info-section h2 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -2361,21 +2361,18 @@ body.maintenance-active {
     color: var(--accent-color);
 }
 
-/* --- Special Hours Display (Temporary & Holiday) --- */
-#temporary-hours-display,
-#holiday-hours-display {
+/* --- Temporary Hours Display --- */
+#temporary-hours-display {
     margin-top: 25px;
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
 }
 
-#temporary-hours-display:empty,
-#holiday-hours-display:empty {
+#temporary-hours-display:empty {
     display: none;
 }
 
-#temporary-hours-display h4,
-#holiday-hours-display h4 {
+#temporary-hours-display h4 {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 15px;
@@ -2383,14 +2380,14 @@ body.maintenance-active {
     font-weight: 600;
 }
 
-/* Special hours list style */
-.special-hours-display {
+/* Temporary hours list style */
+.temporary-hours-display {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.special-hours-display li {
+.temporary-hours-display li {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -2402,22 +2399,80 @@ body.maintenance-active {
     font-size: 0.9em;
 }
 
-.special-hours-display li strong {
+.temporary-hours-display li strong {
     font-weight: 600;
     margin-bottom: 5px;
 }
 
-.special-hours-display .special-hours-details {
+.temporary-hours-display .temporary-hours-details {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack name and date vertically */
 }
 
-.special-hours-display .dates {
+.temporary-hours-display .dates {
     font-style: italic;
     color: var(--secondary-text);
 }
 
-.special-hours-display .hours {
+.temporary-hours-display .hours {
+    text-align: right;
+    font-weight: 600;
+}
+
+/* --- Holiday Hours Display --- */
+#holiday-hours-display {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+#holiday-hours-display:empty {
+    display: none;
+}
+
+#holiday-hours-display h4 {
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Holiday hours list style */
+.holiday-hours-display {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.holiday-hours-display li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    font-size: 0.9em;
+}
+
+.holiday-hours-display li strong {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.holiday-hours-display .holiday-hours-details {
+    display: flex;
+    flex-direction: column; /* Stack name and date vertically */
+}
+
+.holiday-hours-display .dates {
+    font-style: italic;
+    color: var(--secondary-text);
+}
+
+.holiday-hours-display .hours {
     text-align: right;
     font-weight: 600;
 }
