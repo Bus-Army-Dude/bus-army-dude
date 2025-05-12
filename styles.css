@@ -2264,7 +2264,7 @@ body.maintenance-active {
     box-shadow: 0 3px 12px var(--shadow-color);
 }
 
-/* --- Section Header --- */
+/* Section Header */
 .business-info-section h2 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -2376,15 +2376,8 @@ body.maintenance-active {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 15px;
-    color: var(--accent-color);
+    color: #007aff; /* Blue for Temporary Hours */
     font-weight: 600;
-}
-
-/* Temporary hours list style */
-.temporary-hours-display {
-    list-style: none;
-    padding: 0;
-    margin: 0;
 }
 
 .temporary-hours-display li {
@@ -2401,22 +2394,18 @@ body.maintenance-active {
 
 .temporary-hours-display li strong {
     font-weight: 600;
+    display: block;
     margin-bottom: 5px;
 }
 
 .temporary-hours-display .temporary-hours-details {
     display: flex;
-    flex-direction: column; /* Stack name and date vertically */
+    flex-direction: column;
 }
 
 .temporary-hours-display .dates {
     font-style: italic;
     color: var(--secondary-text);
-}
-
-.temporary-hours-display .hours {
-    text-align: right;
-    font-weight: 600;
 }
 
 /* --- Holiday Hours Display --- */
@@ -2434,15 +2423,8 @@ body.maintenance-active {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 15px;
-    color: var(--accent-color);
+    color: #34c759; /* Green for Holiday Hours */
     font-weight: 600;
-}
-
-/* Holiday hours list style */
-.holiday-hours-display {
-    list-style: none;
-    padding: 0;
-    margin: 0;
 }
 
 .holiday-hours-display li {
@@ -2459,12 +2441,13 @@ body.maintenance-active {
 
 .holiday-hours-display li strong {
     font-weight: 600;
+    display: block;
     margin-bottom: 5px;
 }
 
 .holiday-hours-display .holiday-hours-details {
     display: flex;
-    flex-direction: column; /* Stack name and date vertically */
+    flex-direction: column;
 }
 
 .holiday-hours-display .dates {
@@ -2475,6 +2458,7 @@ body.maintenance-active {
 .holiday-hours-display .hours {
     text-align: right;
     font-weight: 600;
+    color: var(--text-color);
 }
 
 /* --- Timezone Note --- */
