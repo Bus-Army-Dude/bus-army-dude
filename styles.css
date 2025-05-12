@@ -2418,7 +2418,7 @@ body.maintenance-active {
 .holiday-hours-display li {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Time aligned to the right */
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
@@ -2430,7 +2430,6 @@ body.maintenance-active {
 .holiday-hours-display li strong {
     font-weight: 600;
     margin-bottom: 5px;
-    display: block;
 }
 
 .holiday-hours-display .dates {
@@ -2441,7 +2440,6 @@ body.maintenance-active {
 .holiday-hours-display .hours {
     text-align: right;
     font-weight: 600;
-    color: var(--text-color);
 }
 
 /* --- Timezone Note --- */
