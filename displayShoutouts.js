@@ -903,7 +903,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         console.warn("Temporary hours display element not found.");
     }
 
-    // --- Display Holiday Hours ---
+   // --- Display Holiday Hours ---
     if (holidayHoursDisplay) {
         const upcomingHolidayHours = holidayHours
             .filter(h => h.date >= businessDateStr)
@@ -915,14 +915,14 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 if (holiday.date) {
                     holidayHoursHtml += `
                         <li>
-                            <div>
+                            <div class="special-hours-details">
                                 <strong>${holiday.label || 'Holiday'}</strong>
                                 <span class="dates">${holiday.date}</span>
                             </div>
                             <div class="hours">
-                                ${holiday.isClosed ?
-                                    '<span>Closed</span>' :
-                                    `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`
+                                ${holiday.isClosed 
+                                    ? '<span>Closed</span>' 
+                                    : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`
                                 }
                             </div>
                         </li>`;
