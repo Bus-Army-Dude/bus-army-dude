@@ -2252,7 +2252,7 @@ body.maintenance-active {
 /* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
 
 /* ======================================== */
-/* == Business Info Section Styles (Updated) == */
+/* == Business Info Section Styles == */
 /* ======================================== */
 
 /* --- Main Container (Public Page) --- */
@@ -2270,43 +2270,43 @@ body.maintenance-active {
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    font-size: 1.35em;  /* Slightly reduced */
+    font-size: 1.35em;
     font-weight: 700;
     color: var(--text-color);
     text-align: center;
 }
 
-/* --- Status Display (Public Page) --- */
+/* --- Status Display --- */
 .business-status {
     margin-bottom: 20px;
-    font-size: 1.15em;  /* Slightly reduced */
+    font-size: 1.15em;
     font-weight: 500;
     text-align: center;
 }
 
 .status-open {
-    color: #34c759; /* Apple Green */
+    color: #34c759; /* Green */
     font-weight: 600;
 }
 
 .status-closed {
-    color: #ff3b30; /* Apple Red */
+    color: #ff3b30; /* Red */
     font-weight: 600;
 }
 
 .status-unavailable {
-    color: #ff9500; /* Apple Orange */
+    color: #ff9500; /* Orange */
     font-weight: 600;
 }
 
 .status-reason {
-    font-size: 0.85em;  /* Reduced size */
+    font-size: 0.85em;
     color: var(--secondary-text);
     font-weight: normal;
     margin-top: 5px;
 }
 
-/* --- Regular Hours List (Public Page) --- */
+/* --- Regular Hours List --- */
 .hours-list {
     margin: 20px 0;
 }
@@ -2321,9 +2321,9 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;  /* Reduced padding */
+    padding: 8px 0;
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.9em;  /* Reduced size */
+    font-size: 0.9em;
 }
 
 .hours-list li:last-child {
@@ -2331,9 +2331,9 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-     flex-basis: 120px; /* Consistent width */
-     flex-shrink: 0;
-     margin-right: 10px;
+    flex-basis: 120px;
+    flex-shrink: 0;
+    margin-right: 10px;
 }
 
 .hours-list li span {
@@ -2344,16 +2344,16 @@ body.maintenance-active {
 /* --- Current Day Highlight --- */
 .hours-list .current-day {
     font-weight: 600;
-    background: rgba(var(--accent-rgb), 0.15); /* More noticeable background */
+    background: rgba(var(--accent-rgb), 0.15);
     margin: -5px -10px;
     padding: 10px 10px;
     border-radius: 8px;
-    border: 2px solid var(--accent-color); /* Added border for pop */
-    box-shadow: 0 2px 6px rgba(var(--accent-rgb), 0.1); /* Added subtle shadow */
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 2px 6px rgba(var(--accent-rgb), 0.1);
 }
 
 .hours-list .current-day:last-child {
-    border-bottom: 1px solid transparent; /* Override border */
+    border-bottom: 1px solid transparent;
 }
 
 .hours-list .current-day strong,
@@ -2379,7 +2379,7 @@ body.maintenance-active {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 15px;
-    color: var(--accent-color); /* Accent color for headings */
+    color: var(--accent-color);
     font-weight: 600;
 }
 
@@ -2391,33 +2391,34 @@ body.maintenance-active {
 }
 
 .special-hours-display li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
-    margin-bottom: 12px;  /* Slightly reduced margin */
+    margin-bottom: 12px;
     border: 1px solid var(--border-color);
-    font-size: 0.9em;  /* Slightly reduced size */
+    font-size: 0.9em;
 }
 
 .special-hours-display li strong {
-    display: block;
     font-weight: 600;
     margin-bottom: 5px;
 }
 
 .special-hours-display .special-hours-details {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    color: var(--secondary-text);
+    flex-direction: column;
 }
 
 .special-hours-display .dates {
     font-style: italic;
+    color: var(--secondary-text);
 }
 
 .special-hours-display .hours {
+    text-align: right;
     font-weight: 600;
 }
 
