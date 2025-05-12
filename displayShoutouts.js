@@ -919,7 +919,6 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                             <div class="special-hours-details">
                                 ${holiday.isClosed ?
                                     '<span class="hours">Closed</span>' :
-                                    // *** Use Luxon-powered formatter and add a dash between date and time ***
                                     `<span class="hours">${holiday.date} - ${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
                                 }
                             </div>
