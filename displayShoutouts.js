@@ -915,14 +915,14 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 if (holiday.date) {
                     holidayHoursHtml += `
                         <li>
-                            <div>
+                            <div class="special-hours-details">
                                 <strong>${holiday.label || 'Holiday'}</strong>
                                 <span class="dates">${holiday.date}</span>
                             </div>
                             <div class="hours">
-                                ${holiday.isClosed ?
-                                    '<span>Closed</span>' :
-                                    `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`
+                                ${holiday.isClosed 
+                                    ? '<span>Closed</span>' 
+                                    : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`
                                 }
                             </div>
                         </li>`;
