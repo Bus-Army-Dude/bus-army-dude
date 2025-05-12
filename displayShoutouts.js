@@ -903,7 +903,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         console.warn("Temporary hours display element not found.");
     }
 
-     // --- Display Holiday Hours ---
+    // --- Display Holiday Hours ---
     if (holidayHoursDisplay) {
         const upcomingHolidayHours = holidayHours
             .filter(h => h.date >= businessDateStr)
@@ -919,8 +919,8 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                             <div class="special-hours-details">
                                 ${holiday.isClosed ?
                                     '<span class="hours">Closed</span>' :
-                                    // *** Use Luxon-powered formatter ***
-                                    `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
+                                    // *** Use Luxon-powered formatter and add a dash between date and time ***
+                                    `<span class="hours">${holiday.date} - ${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
                                 }
                             </div>
                         </li>`;
