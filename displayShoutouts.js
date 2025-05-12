@@ -903,7 +903,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         console.warn("Temporary hours display element not found.");
     }
 
-    // --- Display Holiday Hours ---
+   // --- Display Holiday Hours ---
 if (holidayHoursDisplay) {
     const upcomingHolidayHours = holidayHours
         .filter(h => h.date >= businessDateStr)
