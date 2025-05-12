@@ -2270,7 +2270,7 @@ body.maintenance-active {
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    font-size: 1.35em;  /* Slightly reduced */
+    font-size: 1.35em; /* Slightly reduced */
     font-weight: 700;
     color: var(--text-color);
     text-align: center;
@@ -2279,7 +2279,7 @@ body.maintenance-active {
 /* --- Status Display (Public Page) --- */
 .business-status {
     margin-bottom: 20px;
-    font-size: 1.15em;  /* Slightly reduced */
+    font-size: 1.15em; /* Slightly reduced */
     font-weight: 500;
     text-align: center;
 }
@@ -2300,7 +2300,7 @@ body.maintenance-active {
 }
 
 .status-reason {
-    font-size: 0.85em;  /* Reduced size */
+    font-size: 0.85em; /* Reduced size */
     color: var(--secondary-text);
     font-weight: normal;
     margin-top: 5px;
@@ -2321,9 +2321,9 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;  /* Reduced padding */
+    padding: 8px 0; /* Reduced padding */
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.9em;  /* Reduced size */
+    font-size: 0.9em; /* Reduced size */
 }
 
 .hours-list li:last-child {
@@ -2331,9 +2331,9 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-     flex-basis: 120px; /* Consistent width */
-     flex-shrink: 0;
-     margin-right: 10px;
+    flex-basis: 120px; /* Consistent width */
+    flex-shrink: 0;
+    margin-right: 10px;
 }
 
 .hours-list li span {
@@ -2350,10 +2350,6 @@ body.maintenance-active {
     border-radius: 8px;
     border: 2px solid var(--accent-color); /* Added border for pop */
     box-shadow: 0 2px 6px rgba(var(--accent-rgb), 0.1); /* Added subtle shadow */
-}
-
-.hours-list .current-day:last-child {
-    border-bottom: 1px solid transparent; /* Override border */
 }
 
 .hours-list .current-day strong,
@@ -2394,9 +2390,9 @@ body.maintenance-active {
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
-    margin-bottom: 12px;  /* Slightly reduced margin */
+    margin-bottom: 12px; /* Slightly reduced margin */
     border: 1px solid var(--border-color);
-    font-size: 0.9em;  /* Slightly reduced size */
+    font-size: 0.9em; /* Slightly reduced size */
 }
 
 .special-hours-display li strong {
@@ -2448,7 +2444,6 @@ body.maintenance-active {
 .contact-info a:hover {
     text-decoration: underline;
 }
-
 
 /* ======================================== */
 /* == Admin Panel Specific Hours Styles == */
