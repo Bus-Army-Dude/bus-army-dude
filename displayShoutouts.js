@@ -904,40 +904,38 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     }
 
     // --- Display Holiday Hours ---
-    if (holidayHoursDisplay) {
-        const upcomingHolidayHours = holidayHours
-            .filter(h => h.date >= businessDateStr)
-            .sort((a, b) => (a.date > b.date ? 1 : -1));
+if (holidayHoursDisplay) {
+    const upcomingHolidayHours = holidayHours
+        .filter(h => h.date >= businessDateStr)
+        .sort((a, b) => (a.date > b.date ? 1 : -1));
 
-        if (upcomingHolidayHours.length > 0) {
-            let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
-            upcomingHolidayHours.forEach(holiday => {
-                if (holiday.date) {
-                    holidayHoursHtml += `
-                        <li>
-                            <strong>${holiday.label || holiday.date}:</strong>
-                            <div class="special-hours-details">
-                                ${holiday.isClosed ?
-                                    '<span class="hours">Closed</span>' :
-                                     // *** Use Luxon-powered formatter ***
-                                    `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
-                                }
-                            </div>
-                        </li>`;
-                }
-            });
-            holidayHoursHtml += '</ul>';
-            holidayHoursDisplay.innerHTML = holidayHoursHtml;
-             holidayHoursDisplay.style.display = '';
-        } else {
-            holidayHoursDisplay.innerHTML = '';
-             holidayHoursDisplay.style.display = 'none';
-        }
+    if (upcomingHolidayHours.length > 0) {
+        let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
+        upcomingHolidayHours.forEach(holiday => {
+            if (holiday.date) {
+                holidayHoursHtml += `
+                    <li>
+                        <strong>${holiday.label || 'Holiday'} (${holiday.date}):</strong>
+                        <div class="special-hours-details">
+                            ${holiday.isClosed ?
+                                '<span class="hours">Closed</span>' :
+                                // *** Use Luxon-powered formatter and add a dash between date and time ***
+                                `<span class="hours">${holiday.date} - ${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
+                            }
+                        </div>
+                    </li>`;
+            }
+        });
+        holidayHoursHtml += '</ul>';
+        holidayHoursDisplay.innerHTML = holidayHoursHtml;
+        holidayHoursDisplay.style.display = '';
     } else {
-        console.warn("Holiday hours display element not found.");
+        holidayHoursDisplay.innerHTML = '';
+        holidayHoursDisplay.style.display = 'none';
     }
+} else {
+    console.warn("Holiday hours display element not found.");
 }
-
 
 // ======================================================
 // ===== END: BUSINESS INFO CODE FOR displayShoutouts.js ====
