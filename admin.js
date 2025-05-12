@@ -1181,26 +1181,27 @@ function updateAdminPreview() {
     }
 
     if (currentFormData.holidayHours && currentFormData.holidayHours.length > 0) {
-        hoursHtml += '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-preview">';
-        currentFormData.holidayHours.forEach(holiday => {
-            if (holiday.date) {
-                 // Corrected innerHTML using proper template literals
-                 // Now displays times correctly by calling the fixed formatTimeForAdminPreview
-                hoursHtml += `
-                    <li>
-                        <strong>${holiday.label || holiday.date}:</strong>
-                        <div class="special-hours-details">
-                            ${holiday.isClosed ?
-                                '<span class="hours">Closed</span>' :
-                                `<span class="hours">${formatTimeForAdminPreview(holiday.open) || '?'} - ${formatTimeForAdminPreview(holiday.close) || '?'} ET</span>`
-                            }
-                        </div>
-                    </li>
-                `;
-            }
-        });
-        hoursHtml += '</ul>';
-    }
+    hoursHtml += '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-preview">';
+    currentFormData.holidayHours.forEach(holiday => {
+        if (holiday.date) {
+            // Corrected innerHTML using proper template literals
+            // Now displays times correctly by calling the fixed formatTimeForAdminPreview
+            hoursHtml += `
+                <li>
+                    <strong>${holiday.label || 'Holiday'}:</strong>
+                    <div class="special-hours-details">
+                        <span class="date">${holiday.date}</span>
+                        ${holiday.isClosed ?
+                            '<span class="hours">Closed</span>' :
+                            `<span class="hours">${formatTimeForAdminPreview(holiday.open) || '?'} - ${formatTimeForAdminPreview(holiday.close) || '?'} ET</span>`
+                        }
+                    </div>
+                </li>
+            `;
+        }
+    });
+    hoursHtml += '</ul>';
+}
 
     hoursHtml += '<p class="preview-timezone-note">Preview based on your browser time. Assumes ET input for hours.</p>';
     adminPreviewHours.innerHTML = hoursHtml;
