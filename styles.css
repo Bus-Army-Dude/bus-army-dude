@@ -2270,7 +2270,7 @@ body.maintenance-active {
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    font-size: 1.35em;  /* Slightly reduced */
+    font-size: 1.35em; /* Slightly reduced */
     font-weight: 700;
     color: var(--text-color);
     text-align: center;
@@ -2279,7 +2279,7 @@ body.maintenance-active {
 /* --- Status Display (Public Page) --- */
 .business-status {
     margin-bottom: 20px;
-    font-size: 1.15em;  /* Slightly reduced */
+    font-size: 1.15em; /* Slightly reduced */
     font-weight: 500;
     text-align: center;
 }
@@ -2300,7 +2300,7 @@ body.maintenance-active {
 }
 
 .status-reason {
-    font-size: 0.85em;  /* Reduced size */
+    font-size: 0.85em; /* Reduced size */
     color: var(--secondary-text);
     font-weight: normal;
     margin-top: 5px;
@@ -2321,9 +2321,9 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;  /* Reduced padding */
+    padding: 8px 0; /* Reduced padding */
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.9em;  /* Reduced size */
+    font-size: 0.9em; /* Reduced size */
 }
 
 .hours-list li:last-child {
@@ -2331,9 +2331,9 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-     flex-basis: 120px; /* Consistent width */
-     flex-shrink: 0;
-     margin-right: 10px;
+    flex-basis: 120px; /* Consistent width */
+    flex-shrink: 0;
+    margin-right: 10px;
 }
 
 .hours-list li span {
@@ -2391,12 +2391,15 @@ body.maintenance-active {
 }
 
 .special-hours-display li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
-    margin-bottom: 12px;  /* Slightly reduced margin */
+    margin-bottom: 12px; /* Slightly reduced margin */
     border: 1px solid var(--border-color);
-    font-size: 0.9em;  /* Slightly reduced size */
+    font-size: 0.9em; /* Slightly reduced size */
 }
 
 .special-hours-display li strong {
@@ -2415,10 +2418,13 @@ body.maintenance-active {
 
 .special-hours-display .dates {
     font-style: italic;
+    flex-basis: 30%; /* Dates on the right */
+    text-align: right;
 }
 
 .special-hours-display .hours {
     font-weight: 600;
+    flex-basis: 70%; /* Hours on the left */
 }
 
 /* --- Timezone Note --- */
