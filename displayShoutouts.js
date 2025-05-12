@@ -868,7 +868,14 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     businessHoursDisplay.innerHTML = displayHoursListHtml;
 
 
-  // --- Display Temporary Hours ---
+     // Helper function to format date as "Monday, May 26, 2025"
+    function formatDate(dateStr) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', options);
+    }
+    
+    // --- Display Temporary Hours ---
     if (temporaryHoursDisplay) {
         const relevantTemporaryHours = temporaryHours
             .filter(t => t.endDate >= businessDateStr)
@@ -880,14 +887,12 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 if (temp.startDate && temp.endDate) {
                     tempHoursHtml += `
                         <li>
-                            <div>
-                                <strong>${temp.label || 'Temporary Schedule'}</strong>
-                                <span class="dates">${temp.startDate} to ${temp.endDate}</span>
-                                ${temp.isClosed ? 
-                                    '<span class="hours">Closed</span>' : 
-                                    `<span class="hours">${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}</span>`
-                                }
-                            </div>
+                            <strong>${temp.label || 'Temporary Schedule'}</strong>
+                            ${temp.isClosed 
+                                ? '<span class="hours">Closed</span>' 
+                                : `<span class="hours">${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}</span>`
+                            }
+                            <span class="dates">${formatDate(temp.startDate)} to ${formatDate(temp.endDate)}</span>
                         </li>`;
                 }
             });
@@ -914,14 +919,12 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 if (holiday.date) {
                     holidayHoursHtml += `
                         <li>
-                            <div>
-                                <strong>${holiday.label || 'Holiday'}</strong>
-                                <span class="dates">${holiday.date}</span>
-                                ${holiday.isClosed ? 
-                                    '<span class="hours">Closed</span>' : 
-                                    `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
-                                }
-                            </div>
+                            <strong>${holiday.label || 'Holiday'}</strong>
+                            ${holiday.isClosed 
+                                ? '<span class="hours">Closed</span>' 
+                                : `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
+                            }
+                            <span class="dates">${formatDate(holiday.date)}</span>
                         </li>`;
                 }
             });
