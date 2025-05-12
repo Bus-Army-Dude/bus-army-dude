@@ -868,13 +868,13 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     businessHoursDisplay.innerHTML = displayHoursListHtml;
 
 
-   // Helper function to format date as "Monday, May 26, 2025"
-function formatDate(dateStr) {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', options);
-}
-
+  // Helper function to format date as "Monday, May 26, 2025"
+    function formatDate(dateStr) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', options);
+    }
+    
     // --- Display Temporary Hours ---
     if (temporaryHoursDisplay) {
         const relevantTemporaryHours = temporaryHours
@@ -887,7 +887,7 @@ function formatDate(dateStr) {
                 if (temp.startDate && temp.endDate) {
                     tempHoursHtml += `
                         <li>
-                            <div>
+                            <div class="hours-container">
                                 <strong>${temp.label || 'Temporary Schedule'}</strong>
                                 <span class="hours">${temp.isClosed 
                                     ? 'Closed' 
@@ -920,7 +920,7 @@ function formatDate(dateStr) {
                 if (holiday.date) {
                     holidayHoursHtml += `
                         <li>
-                            <div>
+                            <div class="hours-container">
                                 <strong>${holiday.label || 'Holiday'}</strong>
                                 <span class="hours">${holiday.isClosed 
                                     ? 'Closed' 
