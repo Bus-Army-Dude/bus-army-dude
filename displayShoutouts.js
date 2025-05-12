@@ -868,7 +868,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     businessHoursDisplay.innerHTML = displayHoursListHtml;
 
 
-   // --- Display Temporary Hours ---
+  // --- Display Temporary Hours ---
     if (temporaryHoursDisplay) {
         const relevantTemporaryHours = temporaryHours
             .filter(t => t.endDate >= businessDateStr)
@@ -880,14 +880,12 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 if (temp.startDate && temp.endDate) {
                     tempHoursHtml += `
                         <li>
-                            <div class="special-hours-details">
+                            <div>
                                 <strong>${temp.label || 'Temporary Schedule'}</strong>
                                 <span class="dates">${temp.startDate} to ${temp.endDate}</span>
-                            </div>
-                            <div class="hours">
-                                ${temp.isClosed
-                                    ? '<span>Closed</span>'
-                                    : `${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}`
+                                ${temp.isClosed ? 
+                                    '<span class="hours">Closed</span>' : 
+                                    `<span class="hours">${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}</span>`
                                 }
                             </div>
                         </li>`;
@@ -916,14 +914,12 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 if (holiday.date) {
                     holidayHoursHtml += `
                         <li>
-                            <div class="special-hours-details">
+                            <div>
                                 <strong>${holiday.label || 'Holiday'}</strong>
                                 <span class="dates">${holiday.date}</span>
-                            </div>
-                            <div class="hours">
-                                ${holiday.isClosed
-                                    ? '<span>Closed</span>'
-                                    : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`
+                                ${holiday.isClosed ? 
+                                    '<span class="hours">Closed</span>' : 
+                                    `<span class="hours">${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}</span>`
                                 }
                             </div>
                         </li>`;
