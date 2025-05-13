@@ -868,12 +868,38 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     businessHoursDisplay.innerHTML = displayHoursListHtml;
 
 
-  // Helper function to format date as "Monday, May 26, 2025"
-    function formatDate(dateStr) {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('en-US', options);
+  // Helper function to format date as "Monday, May 26, 2025" using Luxon
+function formatDate(dateStr) {
+    // Check if Luxon is available
+    if (typeof luxon === 'undefined' || !luxon.DateTime) {
+        console.error("Luxon library not loaded for formatDate!");
+        // Fallback to original problematic method if Luxon is missing
+        try {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const date = new Date(dateStr); // Fallback - may show incorrect day in some timezones
+            return date.toLocaleDateString('en-US', options);
+        } catch (e) {
+            return 'Invalid Date';
+        }
     }
+
+    const { DateTime } = luxon;
+
+    // Parse the date string (YYYY-MM-DD). By default, fromISO without a time
+    // is often treated as local time, but let's be explicit or just use it
+    // for formatting purposes without assuming a specific timezone here,
+    // as the goal is just to display the calendar date.
+    // A simple fromISO is usually sufficient for 'YYYY-MM-DD' display.
+    const date = DateTime.fromISO(dateStr);
+
+    if (!date.isValid) {
+        console.error("Invalid date string passed to Luxon formatDate:", dateStr);
+        return 'Invalid Date';
+    }
+
+    // Format the date in the desired long format
+    return date.toFormat('cccc, LLLL d, yyyy'); // Example: 'Tuesday, May 13, 2025'
+}
     
     // --- Display Temporary Hours ---
     if (temporaryHoursDisplay) {
