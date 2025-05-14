@@ -664,93 +664,76 @@ function formatDisplayTimeBI(timeString, visitorTimezone) {
     }
 }
 
-async function displayBusinessInfo() {
-    if (!contactEmailDisplay || !businessHoursDisplay || !businessStatusDisplay || !temporaryHoursDisplay || !holidayHoursDisplay) {
-        console.warn("One or more Business info display elements missing.");
+if (!firebaseAppInitialized || !db || !businessDocRef) {
+        console.error("Cannot display business info: Firebase not ready or businessDocRef missing.");
+        if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error (Config)';
+        if(businessHoursDisplay) businessHoursDisplay.innerHTML = '';
+        if(temporaryHoursDisplay) temporaryHoursDisplay.innerHTML = '';
+        if(holidayHoursDisplay) holidayHoursDisplay.innerHTML = '';
+        if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
         return;
     }
 
-    // Ensure Firebase is initialized (assuming these variables are globally available as per original script)
-    // if (!firebaseAppInitialized || !db || !businessDocRef) {
-    //     console.error("Cannot display business info: Firebase not ready or businessDocRef missing.");
-    //     // ... (error display logic) ...
-    //     return;
-    // }
-
     try {
-        // Replace with your actual Firebase data fetching (e.g., await getDoc(businessDocRef))
-        // const docSnap = await getDoc(businessDocRef);
-        // For testing, using placeholder data structure:
-        const placeholderData = {
-            contactEmail: "contact@example.com",
-            regularHours: {
-                monday: { open: "09:00", close: "17:00" },
-                tuesday: { open: "09:00", close: "17:00" },
-                wednesday: { open: "09:00", close: "17:00" }, // Will be "Open (Regular Hours (Open))" at 3:34 PM
-                thursday: { open: "09:00", close: "17:00" },
-                friday: { open: "09:00", close: "15:00" },
-                saturday: { isClosed: true },
-                sunday: { isClosed: true }
-            },
-            holidayHours: [
-                { date: "2025-05-26", label: "Memorial Day", isClosed: true },
-                { date: "2025-07-04", label: "Independence Day", open: "10:00", close: "14:00" }
-            ],
-            temporaryHours: [
-                // Example that would have caused issues before:
-                { startDate: "2025-05-14", endDate: "2025-05-14", label: "Group Meeting", open: "17:30", close: "18:30" },
-                { startDate: "2025-06-01", endDate: "2025-06-05", label: "Staff Training", isClosed: true }
-            ],
-            statusOverride: 'auto' // 'auto', 'open', 'closed', 'unavailable'
-        };
-        const docSnap = { exists: () => true, data: () => placeholderData }; // Mocking Firebase docSnap
-
-
+        const docSnap = await getDoc(businessDocRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
+            // Display Contact
             if (contactEmailDisplay) {
-                if (data.contactEmail) {
-                    contactEmailDisplay.innerHTML = `Contact: <a href="mailto:${data.contactEmail}">${data.contactEmail}</a>`;
-                } else {
-                    contactEmailDisplay.innerHTML = '';
-                }
+                 if (data.contactEmail) {
+                     contactEmailDisplay.innerHTML = `Contact: <a href="mailto:${data.contactEmail}">${data.contactEmail}</a>`;
+                 } else {
+                     contactEmailDisplay.innerHTML = '';
+                 }
             }
+            // Calculate and display status, regular hours, temp hours, holiday hours
             calculateAndDisplayStatusConvertedBI(data);
         } else {
             console.warn("Business details document not found.");
             if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: N/A';
-            // ... (other fallback displays)
+            if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Hours not available.</p>';
+            if(temporaryHoursDisplay) temporaryHoursDisplay.innerHTML = '';
+            if(holidayHoursDisplay) holidayHoursDisplay.innerHTML = '';
+            if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
         }
     } catch (error) {
         console.error("Error fetching business info:", error);
         if(businessStatusDisplay) businessStatusDisplay.textContent = 'Status: Error';
-        // ... (other error displays)
+        if(businessHoursDisplay) businessHoursDisplay.innerHTML = '<p>Error loading hours.</p>';
+        if(temporaryHoursDisplay) temporaryHoursDisplay.innerHTML = '';
+        if(holidayHoursDisplay) holidayHoursDisplay.innerHTML = '';
+        if(contactEmailDisplay) contactEmailDisplay.innerHTML = '';
     }
 }
 
+// Calculates and displays status and ALL hours lists
 function calculateAndDisplayStatusConvertedBI(businessData) {
+    const contactEmailDisplay = document.getElementById('contact-email-display'); // Re-get just in case
     const businessHoursDisplay = document.getElementById('business-hours-display');
     const businessStatusDisplay = document.getElementById('business-status-display');
     const temporaryHoursDisplay = document.getElementById('temporary-hours-display');
     const holidayHoursDisplay = document.getElementById('holiday-hours-display');
 
     if (!businessHoursDisplay || !businessStatusDisplay || !temporaryHoursDisplay || !holidayHoursDisplay) {
-        console.error("Missing one or more business display elements in calculateAndDisplayStatusConvertedBI.");
-        return;
+         console.error("Missing one or more business display elements in calculateAndDisplayStatusConvertedBI.");
+         return;
     }
 
     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
-    let currentStatus = 'Closed'; // Default
+    let currentStatus = 'Closed';
     let statusReason = 'Default';
     let visitorTimezone;
 
+    // --- Timezone Detection ---
     try {
         visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (!visitorTimezone) throw new Error("TZ detection failed.");
     } catch (e) {
         console.error("Could not detect visitor timezone:", e);
         businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Unavailable (TZ Error)</span>';
-        // ... (clear other displays)
+        businessHoursDisplay.innerHTML = '';
+        temporaryHoursDisplay.innerHTML = '';
+        holidayHoursDisplay.innerHTML = '';
         return;
     }
 
