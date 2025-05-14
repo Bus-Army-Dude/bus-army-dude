@@ -902,70 +902,101 @@ function formatDate(dateStr) {
 }
     
     // --- Display Temporary Hours ---
-    if (temporaryHoursDisplay) {
-        const relevantTemporaryHours = temporaryHours
-            .filter(t => t.endDate >= businessDateStr)
-            .sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+if (temporaryHoursDisplay) {
+    // Get current time in minutes for comparison in business timezone
+    const currentMinutesInBizTZ = currentHourInBizTZ * 60 + currentMinuteInBizTZ;
     
-        if (relevantTemporaryHours.length > 0) {
-            let tempHoursHtml = '<h4>Upcoming/Active Temporary Hours</h4><ul class="special-hours-display">';
-            relevantTemporaryHours.forEach(temp => {
-                if (temp.startDate && temp.endDate) {
-                    tempHoursHtml += `
-                        <li>
-                            <div class="hours-container">
-                                <strong>${temp.label || 'Temporary Schedule'}</strong>
-                                <span class="hours">${temp.isClosed 
-                                    ? 'Closed' 
-                                    : `${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}`}</span>
-                            </div>
-                            <span class="dates">${formatDate(temp.startDate)} to ${formatDate(temp.endDate)}</span>
-                        </li>`;
+    const relevantTemporaryHours = temporaryHours
+        .filter(t => {
+            // Filter out past dates entirely
+            if (t.endDate < businessDateStr) return false;
+            
+            // For today's ending temporary hours, check if the end time has passed
+            if (t.endDate === businessDateStr && !t.isClosed && t.close) {
+                const closeMinutes = timeStringToMinutes(t.close);
+                // Remove if end time has already passed today
+                if (closeMinutes !== null && currentMinutesInBizTZ >= closeMinutes) {
+                    return false;
                 }
-            });
-            tempHoursHtml += '</ul>';
-            temporaryHoursDisplay.innerHTML = tempHoursHtml;
-            temporaryHoursDisplay.style.display = '';
-        } else {
-            temporaryHoursDisplay.innerHTML = '';
-            temporaryHoursDisplay.style.display = 'none';
-        }
+            }
+            return true;
+        })
+        .sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+
+    if (relevantTemporaryHours.length > 0) {
+        let tempHoursHtml = '<h4>Upcoming/Active Temporary Hours</h4><ul class="special-hours-display">';
+        relevantTemporaryHours.forEach(temp => {
+            if (temp.startDate && temp.endDate) {
+                tempHoursHtml += `
+                    <li>
+                        <div class="hours-container">
+                            <strong>${temp.label || 'Temporary Schedule'}</strong>
+                            <span class="hours">${temp.isClosed 
+                                ? 'Closed' 
+                                : `${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}`}</span>
+                        </div>
+                        <span class="dates">${formatDate(temp.startDate)} to ${formatDate(temp.endDate)}</span>
+                    </li>`;
+            }
+        });
+        tempHoursHtml += '</ul>';
+        temporaryHoursDisplay.innerHTML = tempHoursHtml;
+        temporaryHoursDisplay.style.display = '';
     } else {
-        console.warn("Temporary hours display element not found.");
+        temporaryHoursDisplay.innerHTML = '';
+        temporaryHoursDisplay.style.display = 'none';
     }
+} else {
+    console.warn("Temporary hours display element not found.");
+}
     
     // --- Display Holiday Hours ---
-    if (holidayHoursDisplay) {
-        const upcomingHolidayHours = holidayHours
-            .filter(h => h.date >= businessDateStr)
-            .sort((a, b) => (a.date > b.date ? 1 : -1));
+if (holidayHoursDisplay) {
+    // Get current time in minutes for comparison in business timezone
+    const currentMinutesInBizTZ = currentHourInBizTZ * 60 + currentMinuteInBizTZ;
     
-        if (upcomingHolidayHours.length > 0) {
-            let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
-            upcomingHolidayHours.forEach(holiday => {
-                if (holiday.date) {
-                    holidayHoursHtml += `
-                        <li>
-                            <div class="hours-container">
-                                <strong>${holiday.label || 'Holiday'}</strong>
-                                <span class="hours">${holiday.isClosed 
-                                    ? 'Closed' 
-                                    : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`}</span>
-                            </div>
-                            <span class="dates">${formatDate(holiday.date)}</span>
-                        </li>`;
+    const upcomingHolidayHours = holidayHours
+        .filter(h => {
+            // Filter out past dates entirely
+            if (h.date < businessDateStr) return false;
+            
+            // For today's holiday, check if the end time has passed
+            if (h.date === businessDateStr && !h.isClosed && h.close) {
+                const closeMinutes = timeStringToMinutes(h.close);
+                // Remove if end time has already passed today
+                if (closeMinutes !== null && currentMinutesInBizTZ >= closeMinutes) {
+                    return false;
                 }
-            });
-            holidayHoursHtml += '</ul>';
-            holidayHoursDisplay.innerHTML = holidayHoursHtml;
-            holidayHoursDisplay.style.display = '';
-        } else {
-            holidayHoursDisplay.innerHTML = '';
-            holidayHoursDisplay.style.display = 'none';
-        }
+            }
+            return true;
+        })
+        .sort((a, b) => (a.date > b.date ? 1 : -1));
+
+    if (upcomingHolidayHours.length > 0) {
+        let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
+        upcomingHolidayHours.forEach(holiday => {
+            if (holiday.date) {
+                holidayHoursHtml += `
+                    <li>
+                        <div class="hours-container">
+                            <strong>${holiday.label || 'Holiday'}</strong>
+                            <span class="hours">${holiday.isClosed 
+                                ? 'Closed' 
+                                : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`}</span>
+                        </div>
+                        <span class="dates">${formatDate(holiday.date)}</span>
+                    </li>`;
+            }
+        });
+        holidayHoursHtml += '</ul>';
+        holidayHoursDisplay.innerHTML = holidayHoursHtml;
+        holidayHoursDisplay.style.display = '';
     } else {
-        console.warn("Holiday hours display element not found.");
+        holidayHoursDisplay.innerHTML = '';
+        holidayHoursDisplay.style.display = 'none';
     }
+} else {
+    console.warn("Holiday hours display element not found.");
 }
 
 // ======================================================
