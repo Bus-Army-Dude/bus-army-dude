@@ -1484,7 +1484,7 @@ body {
 .version-number::before { content: "🔢 Version:"; }
 .build-number::before { content: "🏗️ Build:"; }
 .os-info::before { content: "💻 Operating System:"; }
-.device-info::before { content: "📱 Device el:"; }
+.device-info::before { content: "📱 Device Model:"; }
 .update-time::before { content: "🕒 Current Date & Time:"; }
 
 /* Label Styling */
