@@ -48,41 +48,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize interaction controls
     enhancedInteractionControl.init();
 
-    // Time update function
-    function updateTime() {
-        const now = new Date();
-        const options = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true,
-            timeZoneName: 'long'
-        };
-
-        let timestamp;
-        try {
-            timestamp = now.toLocaleString('en-US', options);
-        } catch (e) {
-            // Fallback for environments that might not support timeZoneName: 'long' fully
-            const fallbackOptions = { ...options };
-            delete fallbackOptions.timeZoneName;
-            timestamp = now.toLocaleString('en-US', fallbackOptions) + " (Local Time)";
-        }
-
-
-        // Update time in the ".update-time" element within the Version Info Section
-        const versionTimeElement = document.querySelector('.version-info-section .update-time');
-        if (versionTimeElement) {
-             // For version info, maybe a simpler timestamp is better.
-            const simpleOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true};
-            try {
-                 versionTimeElement.textContent = ` ${now.toLocaleString('en-US', simpleOptions)}`;
-            } catch (e) {
-                versionTimeElement.textContent = ` ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+            // Time update function
+            function updateTime() {
+            const now = new Date();
+        
+            // Format date and time (without timezone)
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+        
+            let formattedDateTime = now.toLocaleString('en-US', options);
+            formattedDateTime = formattedDateTime.replace(',', '').replace(',', ' at');
+        
+            // Get abbreviated timezone like 'PDT', 'EST'
+            const timeZoneAbbr = now.toLocaleTimeString('en-us', { timeZoneName: 'short' }).split(' ').pop();
+        
+            // Combine full datetime with timezone abbrev
+            formattedDateTime += ' ' + timeZoneAbbr;
+        
+            // Update datetime section
+            const dateTimeSectionElement = document.querySelector('.datetime-section .current-datetime');
+            if (dateTimeSectionElement) {
+                dateTimeSectionElement.textContent = formattedDateTime;
+            }
+        
+            // For version info, keep it simpler (without 'at' and timezone abbrev)
+            const versionTimeElement = document.querySelector('.version-info-section .update-time');
+            if (versionTimeElement) {
+                const simpleOptions = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+                versionTimeElement.textContent = ` ${now.toLocaleString('en-US', simpleOptions)}`;
             }
         }
 
