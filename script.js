@@ -42,11 +42,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Time update function with timezone abbreviation
     function updateTime() {
-        const now = new Date();
+    const now = new Date();
 
-        // Format date and time (without timezone)
-        const options = {
-            weekday: 'long',
+    // Format weekday, month, day, year, and time with seconds + AM/PM
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    };
+
+    // Get full date/time string with weekday and time, e.g., "Thursday, May 15, 2025, 3:41:12 PM"
+    let formattedDateTime = now.toLocaleString('en-US', options);
+
+    // Replace the second comma with ' at' to get the "Thursday, May 15, 2025 at 3:41:12 PM" format
+    // This is a bit of a hack to inject 'at' before the time
+    formattedDateTime = formattedDateTime.replace(/, (\d{1,2}:\d{2}:\d{2} [AP]M)$/, ' at $1');
+
+    // Get abbreviated timezone, e.g., "PDT"
+    const timeZoneAbbr = now.toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ').pop();
+
+    // Add timezone abbreviation at the end
+    formattedDateTime += ' ' + timeZoneAbbr;
+
+    // Update the element text
+    const dateTimeSectionElement = document.querySelector('.datetime-section .current-datetime');
+    if (dateTimeSectionElement) {
+        dateTimeSectionElement.textContent = formattedDateTime;
+    }
+
+    // (Optional) version info time simpler
+    const versionTimeElement = document.querySelector('.version-info-section .update-time');
+    if (versionTimeElement) {
+        const simpleOptions = {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -55,38 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
             second: '2-digit',
             hour12: true
         };
-
-        let formattedDateTime = now.toLocaleString('en-US', options);
-        // Replace commas to format "Thursday, May 15, 2025 at 03:41:12 PM"
-        formattedDateTime = formattedDateTime.replace(',', '').replace(',', ' at');
-
-        // Get abbreviated timezone like 'PDT', 'EST'
-        const timeZoneAbbr = now.toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ').pop();
-
-        // Combine full datetime with timezone abbreviation
-        formattedDateTime += ' ' + timeZoneAbbr;
-
-        // Update datetime section
-        const dateTimeSectionElement = document.querySelector('.datetime-section .current-datetime');
-        if (dateTimeSectionElement) {
-            dateTimeSectionElement.textContent = formattedDateTime;
-        }
-
-        // For version info, keep it simpler (no 'at', no timezone abbrev)
-        const versionTimeElement = document.querySelector('.version-info-section .update-time');
-        if (versionTimeElement) {
-            const simpleOptions = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            };
-            versionTimeElement.textContent = ` ${now.toLocaleString('en-US', simpleOptions)}`;
-        }
+        versionTimeElement.textContent = ` ${now.toLocaleString('en-US', simpleOptions)}`;
     }
+}
 
     updateTime();
 
