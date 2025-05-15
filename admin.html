@@ -165,72 +165,6 @@
 
 </section>
 
-           <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
-                <h3 id="business-info-heading">Manage Business Information</h3>
-            
-                <form id="business-info-form">
-                    <div class="form-group">
-                        <label for="business-contact-email">Contact Email:</label>
-                        <input type="email" id="business-contact-email" name="contactEmail" 
-                               placeholder="Enter contact email address">
-                    </div>
-            
-                    <h4>Regular Business Hours</h4>
-                    <p><small><i>Enter all times based on US Eastern Time (ET / New York). 
-                       They will be automatically converted for visitors.</i></small></p>
-                    <div id="regular-hours-container" class="hours-grid"></div>
-            
-                    <h4>Holiday Hours / Specific Date Closures</h4>
-                    <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
-                    <div id="holiday-hours-list" class="special-hours-list"></div>
-                    <button type="button" id="add-holiday-button" class="button-secondary small-button">
-                        Add Holiday/Specific Date
-                    </button>
-            
-                    <h4>Temporary Hours (e.g., Events, Renovations)</h4>
-                    <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
-                    <div id="temporary-hours-list" class="special-hours-list"></div>
-                    <button type="button" id="add-temporary-button" class="button-secondary small-button">
-                        Add Temporary Hours Period
-                    </button>
-            
-                    <div class="form-group">
-                        <label for="business-status-override">Status Override:</label>
-                        <select id="business-status-override" name="statusOverride">
-                            <option value="auto">Automatic (Based on Hours/Time)</option>
-                            <option value="open">Force Open</option>
-                            <option value="closed">Force Closed</option>
-                            <option value="unavailable">Force Temporarily Unavailable</option>
-                        </select>
-                        <small>Overrides the automatic open/closed calculation.</small>
-                    </div>
-            
-                    <div class="form-actions">
-                        <button type="submit" id="save-business-info-button" class="button-primary">
-                            Save Business Info
-                        </button>
-                    </div>
-                </form>
-            
-                <div class="admin-preview-container">
-                    <h4>Live Preview (Simulated Visitor View)</h4>
-                    <p><small><i>This preview uses your current browser time and attempts to simulate 
-                       how a visitor in your timezone would see the hours and status based on the 
-                       unsaved values above. The actual display depends on each visitor's timezone. 
-                       Assumes ET input.</i></small></p>
-                    <div class="preview-content">
-                        <div id="admin-preview-status" class="preview-status">
-                            Status: Update form to preview...
-                        </div>
-                        <div id="admin-preview-hours" class="preview-hours"></div>
-                        <div id="admin-preview-contact" class="preview-contact"></div>
-                    </div>
-                </div>
-                
-                <div id="business-info-status-message" class="status-message" 
-                     role="status" aria-live="polite"></div>
-            </section>
-
              <section class="admin-section" id="president-management" aria-labelledby="president-heading">
                 <h3 id="president-heading">Manage Current President Info</h3>
 
@@ -276,245 +210,6 @@
                  <div id="president-status-message" class="status-message" role="status" aria-live="polite"></div>
             </section>
 
-            <section class="admin-section" id="tech-management" aria-labelledby="tech-heading">
-                <h3 id="tech-heading"><i class="fas fa-microchip"></i> Manage Tech Information</h3>
-            
-                <form id="add-tech-item-form" aria-labelledby="add-tech-heading">
-                    <h4 id="add-tech-heading">Add New Tech Item</h4>
-                    <div class="form-group">
-                        <label for="tech-name">Device Name:</label>
-                        <input type="text" id="tech-name" name="name" required placeholder="e.g., iPhone 16 Pro">
-                    </div>
-                    <div class="form-group">
-                        <label for="tech-model">Model:</label>
-                        <input type="text" id="tech-model" name="model" placeholder="Specific model info">
-                    </div>
-                     <div class="form-group">
-                        <label for="tech-icon-class">Font Awesome Icon Class:</label>
-                        <input type="text" id="tech-icon-class" name="iconClass" placeholder="e.g., fas fa-mobile-alt">
-                         <small>Find icons at Font Awesome (e.g., 'fas fa-mobile-alt', 'fas fa-desktop')</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="tech-material">Material:</label>
-                        <input type="text" id="tech-material" name="material" placeholder="e.g., Titanium, Aluminum">
-                    </div>
-                    <div class="form-group">
-                        <label for="tech-storage">Storage:</label>
-                        <input type="text" id="tech-storage" name="storage" placeholder="e.g., 128GB, 256GB SSD">
-                    </div>
-                     <div class="form-group">
-                        <label for="tech-battery-capacity">Battery Capacity (mAh):</label>
-                        <input type="text" id="tech-battery-capacity" name="batteryCapacity" placeholder="e.g., 3,582mAh">
-                     </div>
-                    <div class="form-group">
-                        <label for="tech-color">Color:</label>
-                        <input type="text" id="tech-color" name="color" placeholder="e.g., Natural Titanium">
-                    </div>
-                    <div class="form-group">
-                        <label for="tech-price">Price ($):</label>
-                        <input type="text" id="tech-price" name="price" placeholder="e.g., 1,067.49">
-                    </div>
-                    <div class="form-group">
-                        <label for="tech-date-released">Date Released:</label>
-                        <input type="text" id="tech-date-released" name="dateReleased" placeholder="e.g., September 20, 2024">
-                    </div>
-                     <div class="form-group">
-                        <label for="tech-date-bought">Date Bought:</label>
-                        <input type="text" id="tech-date-bought" name="dateBought" placeholder="e.g., November 08, 2024">
-                     </div>
-                    <div class="form-group">
-                        <label for="tech-os-version">OS Version:</label>
-                        <input type="text" id="tech-os-version" name="osVersion" placeholder="e.g., iOS 18.5 (22F5053f)">
-                    </div>
-                    <div class="form-group">
-                         <label for="tech-battery-health">Battery Health (%):</label>
-                         <input type="number" id="tech-battery-health" name="batteryHealth" min="0" max="100" placeholder="e.g., 99">
-                    </div>
-                     <div class="form-group">
-                        <label for="tech-battery-cycles">Battery Charge Cycles:</label>
-                        <input type="number" id="tech-battery-cycles" name="batteryCycles" min="0" placeholder="e.g., 244">
-                     </div>
-                    <div class="form-group">
-                        <label for="tech-order">Display Order:</label>
-                        <input type="number" id="tech-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
-                    </div>
-                
-                    <div class="form-group">
-                        <label>Preview:</label>
-                        <div id="add-tech-item-preview" class="tech-preview-area">
-                             <p><small>Preview will appear here as you type.</small></p>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                       <button type="submit" class="button-primary">Add Tech Item</button>
-                    </div>
-                </form>
-            
-                <h4 id="existing-tech-heading">
-                    Existing Tech Items <span id="tech-items-count" class="list-count"></span>
-                </h4>
-                 <div class="form-group">
-                    <label for="search-tech-items">Search Tech Items:</label>
-                    <input type="search" id="search-tech-items" placeholder="Search by name or model...">
-                </div>
-                <div id="tech-items-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tech-heading">
-                    <p>Loading tech items...</p>
-                </div>
-            </section>
-
-            <section class="admin-section" id="faq-management" aria-labelledby="faq-heading">
-    <h3 id="faq-heading"><i class="fas fa-question-circle"></i> Manage FAQs</h3>
-
-    <form id="add-faq-form" aria-labelledby="add-faq-heading">
-        <h4 id="add-faq-heading">Add New FAQ</h4>
-        <div class="form-group">
-            <label for="faq-question">Question:</label>
-            <input type="text" id="faq-question" name="question" required placeholder="Enter the question">
-        </div>
-        <div class="form-group">
-            <label for="faq-answer">Answer:</label>
-            <textarea id="faq-answer" name="answer" rows="5" required placeholder="Enter the answer text. You can use basic HTML like <p>, <ul>, <li>, <strong> etc."></textarea>
-        </div>
-        <div class="form-group">
-            <label for="faq-order">Display Order:</label>
-            <input type="number" id="faq-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
-        </div>
-        <div class="form-actions">
-           <button type="submit" class="button-primary">Add FAQ</button>
-        </div>
-    </form>
-
-    <h4 id="existing-faq-heading">
-        Existing FAQs <span id="faq-count" class="list-count"></span>
-    </h4>
-     <div class="form-group">
-        <label for="search-faq">Search FAQs:</label>
-        <input type="search" id="search-faq" placeholder="Search by question or answer...">
-    </div>
-    <div id="faq-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-faq-heading">
-        <p>Loading FAQs...</p> </div>
-</section>
-
-            <section class="admin-section" id="disabilities-management" aria-labelledby="disabilities-heading">
-                <h3 id="disabilities-heading">Manage Disabilities List</h3>
-
-                <form id="add-disability-form" aria-labelledby="add-disability-heading">
-                    <h5 id="add-disability-heading">Add New Disability Link</h5>
-                    <div class="form-group">
-                        <label for="disability-name">Disability Name (Displayed Text):</label>
-                        <input type="text" id="disability-name" name="name" required placeholder="e.g., Autism Spectrum Disorder (ASD)">
-                    </div>
-                    <div class="form-group">
-                        <label for="disability-url">Information URL:</label>
-                        <input type="url" id="disability-url" name="url" required placeholder="https://..." inputmode="url">
-                    </div>
-                    <div class="form-group">
-                        <label for="disability-order">Display Order:</label>
-                        <input type="number" id="disability-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
-                    </div>
-                    <div class="form-actions">
-                       <button type="submit" class="button-primary">Add Disability Link</button>
-                    </div>
-                </form>
-
-                <h5 id="existing-disabilities-heading">
-                    Existing Disability Links <span id="disabilities-count" class="list-count"></span>
-                </h5>
-                <div class="list-controls">
-                     <input type="search" id="search-disabilities" placeholder="Search Disability Links..." aria-label="Search Disability Links">
-                 </div>
-                <div id="disabilities-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-disabilities-heading">
-                    <p>Loading disability links...</p>
-                    </div>
-            </section>
-            <div id="edit-disability-modal" class="modal" style="display: none;"
-                 role="dialog" aria-modal="true" aria-labelledby="edit-disability-modal-heading">
-                <div class="modal-content">
-                    <button type="button" class="close-button" id="cancel-edit-disability-button" aria-label="Close dialog">&times;</button>
-                    <h2 id="edit-disability-modal-heading">Edit Disability Link</h2>
-
-                    <form id="edit-disability-form" data-doc-id="">
-                        <div class="form-group">
-                            <label for="edit-disability-name">Disability Name:</label>
-                            <input type="text" id="edit-disability-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-disability-url">Information URL:</label>
-                            <input type="url" id="edit-disability-url" name="url" required inputmode="url">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-disability-order">Display Order:</label>
-                            <input type="number" id="edit-disability-order" name="order" min="0" step="1" required>
-                        </div>
-                        <div class="form-actions">
-                          <button type="submit" class="button-primary">Save Disability Changes</button>
-                          <button type="button" id="cancel-edit-disability-button-secondary" class="secondary-button">Cancel</button>
-                        </div>
-                    </form>
-                    <div id="edit-disability-status-message" class="status-message" role="status" aria-live="polite"></div>
-                </div>
-            </div>
-
-            <section class="admin-section" id="useful-links-management" aria-labelledby="useful-links-heading">
-    <h3 id="useful-links-heading">Manage Useful Links</h3>
-
-    <form id="add-useful-link-form" aria-labelledby="add-link-heading">
-        <h5 id="add-link-heading">Add New Useful Link</h5>
-        <div class="form-group">
-            <label for="link-label">Link Label:</label>
-            <input type="text" id="link-label" name="label" required placeholder="e.g., Merch Store">
-        </div>
-        <div class="form-group">
-            <label for="link-url">Link URL:</label>
-            <input type="url" id="link-url" name="url" required placeholder="https://..." inputmode="url">
-        </div>
-        <div class="form-group">
-            <label for="link-order">Display Order:</label>
-            <input type="number" id="link-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
-        </div>
-        <div class="form-actions">
-           <button type="submit" class="button-primary">Add Link</button>
-        </div>
-    </form>
-
-    <h5 id="existing-links-heading">
-        Existing Useful Links <span id="useful-links-count" class="list-count"></span>
-    </h5>
-    <div class="list-controls">
-         <input type="search" id="search-useful-links" placeholder="Search Useful Links..." aria-label="Search Useful Links">
-     </div>    
-    <div id="useful-links-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-links-heading">
-        <p>Loading links...</p>
-        </div>
-
-    </section>
-
-            <div id="edit-useful-link-modal" class="modal" style="display: none;"
-     role="dialog" aria-modal="true" aria-labelledby="edit-link-modal-heading">
-
-    <div class="modal-content">
-        <button type="button" class="close-button" id="cancel-edit-link-button" aria-label="Close dialog">&times;</button>
-        <h2 id="edit-link-modal-heading">Edit Useful Link</h2>
-
-        <form id="edit-useful-link-form" data-doc-id=""> <div class="form-group">
-                <label for="edit-link-label">Link Label:</label>
-                <input type="text" id="edit-link-label" name="label" required>
-            </div>
-            <div class="form-group">
-                <label for="edit-link-url">Link URL:</label>
-                <input type="url" id="edit-link-url" name="url" required inputmode="url">
-            </div>
-            <div class="form-group">
-                <label for="edit-link-order">Display Order:</label>
-                <input type="number" id="edit-link-order" name="order" min="0" step="1" required>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="button-primary">Save Link Changes</button>
-              <button type="button" id="cancel-edit-link-button-secondary" class="secondary-button">Cancel</button> </div>
-        </form>
-         <div id="edit-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
-</div>
-
             <section class="admin-section" id="social-links-management" aria-labelledby="social-links-heading">
     <h3 id="social-links-heading">Manage Social Links</h3>
 
@@ -555,39 +250,6 @@
         </div>
 
     </section>
-
-    <div id="edit-social-link-modal" class="modal" style="display: none;"
-     role="dialog" aria-modal="true" aria-labelledby="edit-social-link-modal-heading">
-
-    <div class="modal-content">
-        <button type="button" class="close-button" id="cancel-edit-social-link-button" aria-label="Close dialog">&times;</button>
-        <h2 id="edit-social-link-modal-heading">Edit Social Link</h2>
-
-        <form id="edit-social-link-form" data-doc-id=""> <div class="form-group">
-                <label for="edit-social-link-label">Link Label:</label>
-                <input type="text" id="edit-social-link-label" name="label" required>
-            </div>
-             <div class="form-group">
-            <label for="edit-social-link-url">Link URL:</label>
-            <input type="url" id="edit-social-link-url" name="url" required inputmode="url">
-        </div>
-
-        <div class="form-group">
-             <label for="edit-social-link-icon-class">Font Awesome Icon Class (Optional):</label>
-             <input type="text" id="edit-social-link-icon-class" name="iconClass" placeholder="e.g., fa-brands fa-tiktok">
-             <small>Find classes at Font Awesome (e.g., 'fa-brands fa-tiktok', 'fa-brands fa-facebook'). Leave blank to auto-detect.</small>
-        </div>
-        <div class="form-group">
-            <label for="edit-social-link-order">Display Order:</label>
-            <input type="number" id="edit-social-link-order" name="order" min="0" step="1" required>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="button-primary">Save Changes</button>
-          <button type="button" id="cancel-edit-social-link-button-secondary" class="secondary-button">Cancel</button>
-        </div>
-    </form>
-         <div id="edit-social-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
-</div>
 
             <section class="admin-section" id="creator-shoutouts" aria-labelledby="shoutouts-heading">
     <h3 id="shoutouts-heading">Creator Shoutouts</h3>
@@ -755,7 +417,347 @@
         <div id="shoutouts-youtube-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-youtube-heading">
             <p>Loading YouTube shoutouts...</p>
         </div>
-        </div> </section>
+        </div> 
+    </section>
+
+            <section class="admin-section" id="useful-links-management" aria-labelledby="useful-links-heading">
+    <h3 id="useful-links-heading">Manage Useful Links</h3>
+
+    <form id="add-useful-link-form" aria-labelledby="add-link-heading">
+        <h5 id="add-link-heading">Add New Useful Link</h5>
+        <div class="form-group">
+            <label for="link-label">Link Label:</label>
+            <input type="text" id="link-label" name="label" required placeholder="e.g., Merch Store">
+        </div>
+        <div class="form-group">
+            <label for="link-url">Link URL:</label>
+            <input type="url" id="link-url" name="url" required placeholder="https://..." inputmode="url">
+        </div>
+        <div class="form-group">
+            <label for="link-order">Display Order:</label>
+            <input type="number" id="link-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
+        </div>
+        <div class="form-actions">
+           <button type="submit" class="button-primary">Add Link</button>
+        </div>
+    </form>
+
+    <h5 id="existing-links-heading">
+        Existing Useful Links <span id="useful-links-count" class="list-count"></span>
+    </h5>
+    <div class="list-controls">
+         <input type="search" id="search-useful-links" placeholder="Search Useful Links..." aria-label="Search Useful Links">
+     </div>    
+    <div id="useful-links-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-links-heading">
+        <p>Loading links...</p>
+        </div>
+
+    </section>
+
+            <section class="admin-section" id="business-info-management" aria-labelledby="business-info-heading">
+                <h3 id="business-info-heading">Manage Business Information</h3>
+            
+                <form id="business-info-form">
+                    <div class="form-group">
+                        <label for="business-contact-email">Contact Email:</label>
+                        <input type="email" id="business-contact-email" name="contactEmail" 
+                               placeholder="Enter contact email address">
+                    </div>
+            
+                    <h4>Regular Business Hours</h4>
+                    <p><small><i>Enter all times based on US Eastern Time (ET / New York). 
+                       They will be automatically converted for visitors.</i></small></p>
+                    <div id="regular-hours-container" class="hours-grid"></div>
+            
+                    <h4>Holiday Hours / Specific Date Closures</h4>
+                    <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
+                    <div id="holiday-hours-list" class="special-hours-list"></div>
+                    <button type="button" id="add-holiday-button" class="button-secondary small-button">
+                        Add Holiday/Specific Date
+                    </button>
+            
+                    <h4>Temporary Hours (e.g., Events, Renovations)</h4>
+                    <p><small><i>Enter times based on US Eastern Time (ET / New York).</i></small></p>
+                    <div id="temporary-hours-list" class="special-hours-list"></div>
+                    <button type="button" id="add-temporary-button" class="button-secondary small-button">
+                        Add Temporary Hours Period
+                    </button>
+            
+                    <div class="form-group">
+                        <label for="business-status-override">Status Override:</label>
+                        <select id="business-status-override" name="statusOverride">
+                            <option value="auto">Automatic (Based on Hours/Time)</option>
+                            <option value="open">Force Open</option>
+                            <option value="closed">Force Closed</option>
+                            <option value="unavailable">Force Temporarily Unavailable</option>
+                        </select>
+                        <small>Overrides the automatic open/closed calculation.</small>
+                    </div>
+            
+                    <div class="form-actions">
+                        <button type="submit" id="save-business-info-button" class="button-primary">
+                            Save Business Info
+                        </button>
+                    </div>
+                </form>
+            
+                <div class="admin-preview-container">
+                    <h4>Live Preview (Simulated Visitor View)</h4>
+                    <p><small><i>This preview uses your current browser time and attempts to simulate 
+                       how a visitor in your timezone would see the hours and status based on the 
+                       unsaved values above. The actual display depends on each visitor's timezone. 
+                       Assumes ET input.</i></small></p>
+                    <div class="preview-content">
+                        <div id="admin-preview-status" class="preview-status">
+                            Status: Update form to preview...
+                        </div>
+                        <div id="admin-preview-hours" class="preview-hours"></div>
+                        <div id="admin-preview-contact" class="preview-contact"></div>
+                    </div>
+                </div>
+                
+                <div id="business-info-status-message" class="status-message" 
+                     role="status" aria-live="polite"></div>
+            </section>
+
+            <section class="admin-section" id="faq-management" aria-labelledby="faq-heading">
+                <h3 id="faq-heading"><i class="fas fa-question-circle"></i> Manage FAQs</h3>
+            
+                <form id="add-faq-form" aria-labelledby="add-faq-heading">
+                    <h4 id="add-faq-heading">Add New FAQ</h4>
+                    <div class="form-group">
+                        <label for="faq-question">Question:</label>
+                        <input type="text" id="faq-question" name="question" required placeholder="Enter the question">
+                    </div>
+                    <div class="form-group">
+                        <label for="faq-answer">Answer:</label>
+                        <textarea id="faq-answer" name="answer" rows="5" required placeholder="Enter the answer text. You can use basic HTML like <p>, <ul>, <li>, <strong> etc."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="faq-order">Display Order:</label>
+                        <input type="number" id="faq-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
+                    </div>
+                    <div class="form-actions">
+                       <button type="submit" class="button-primary">Add FAQ</button>
+                    </div>
+                </form>
+            
+                <h4 id="existing-faq-heading">
+                    Existing FAQs <span id="faq-count" class="list-count"></span>
+                </h4>
+                 <div class="form-group">
+                    <label for="search-faq">Search FAQs:</label>
+                    <input type="search" id="search-faq" placeholder="Search by question or answer...">
+                </div>
+                <div id="faq-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-faq-heading">
+                    <p>Loading FAQs...</p> </div>
+            </section>
+
+            <section class="admin-section" id="tech-management" aria-labelledby="tech-heading">
+                <h3 id="tech-heading"><i class="fas fa-microchip"></i> Manage Tech Information</h3>
+            
+                <form id="add-tech-item-form" aria-labelledby="add-tech-heading">
+                    <h4 id="add-tech-heading">Add New Tech Item</h4>
+                    <div class="form-group">
+                        <label for="tech-name">Device Name:</label>
+                        <input type="text" id="tech-name" name="name" required placeholder="e.g., iPhone 16 Pro">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-model">Model:</label>
+                        <input type="text" id="tech-model" name="model" placeholder="Specific model info">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-icon-class">Font Awesome Icon Class:</label>
+                        <input type="text" id="tech-icon-class" name="iconClass" placeholder="e.g., fas fa-mobile-alt">
+                         <small>Find icons at Font Awesome (e.g., 'fas fa-mobile-alt', 'fas fa-desktop')</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-material">Material:</label>
+                        <input type="text" id="tech-material" name="material" placeholder="e.g., Titanium, Aluminum">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-storage">Storage:</label>
+                        <input type="text" id="tech-storage" name="storage" placeholder="e.g., 128GB, 256GB SSD">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-battery-capacity">Battery Capacity (mAh):</label>
+                        <input type="text" id="tech-battery-capacity" name="batteryCapacity" placeholder="e.g., 3,582mAh">
+                     </div>
+                    <div class="form-group">
+                        <label for="tech-color">Color:</label>
+                        <input type="text" id="tech-color" name="color" placeholder="e.g., Natural Titanium">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-price">Price ($):</label>
+                        <input type="text" id="tech-price" name="price" placeholder="e.g., 1,067.49">
+                    </div>
+                    <div class="form-group">
+                        <label for="tech-date-released">Date Released:</label>
+                        <input type="text" id="tech-date-released" name="dateReleased" placeholder="e.g., September 20, 2024">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-date-bought">Date Bought:</label>
+                        <input type="text" id="tech-date-bought" name="dateBought" placeholder="e.g., November 08, 2024">
+                     </div>
+                    <div class="form-group">
+                        <label for="tech-os-version">OS Version:</label>
+                        <input type="text" id="tech-os-version" name="osVersion" placeholder="e.g., iOS 18.5 (22F5053f)">
+                    </div>
+                    <div class="form-group">
+                         <label for="tech-battery-health">Battery Health (%):</label>
+                         <input type="number" id="tech-battery-health" name="batteryHealth" min="0" max="100" placeholder="e.g., 99">
+                    </div>
+                     <div class="form-group">
+                        <label for="tech-battery-cycles">Battery Charge Cycles:</label>
+                        <input type="number" id="tech-battery-cycles" name="batteryCycles" min="0" placeholder="e.g., 244">
+                     </div>
+                    <div class="form-group">
+                        <label for="tech-order">Display Order:</label>
+                        <input type="number" id="tech-order" name="order" min="0" step="1" required placeholder="Lower numbers show first">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Preview:</label>
+                        <div id="add-tech-item-preview" class="tech-preview-area">
+                             <p><small>Preview will appear here as you type.</small></p>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                       <button type="submit" class="button-primary">Add Tech Item</button>
+                    </div>
+                </form>
+            
+                <h4 id="existing-tech-heading">
+                    Existing Tech Items <span id="tech-items-count" class="list-count"></span>
+                </h4>
+                 <div class="form-group">
+                    <label for="search-tech-items">Search Tech Items:</label>
+                    <input type="search" id="search-tech-items" placeholder="Search by name or model...">
+                </div>
+                <div id="tech-items-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-tech-heading">
+                    <p>Loading tech items...</p>
+                </div>
+            </section>
+
+            <section class="admin-section" id="disabilities-management" aria-labelledby="disabilities-heading">
+                <h3 id="disabilities-heading">Manage Disabilities List</h3>
+
+                <form id="add-disability-form" aria-labelledby="add-disability-heading">
+                    <h5 id="add-disability-heading">Add New Disability Link</h5>
+                    <div class="form-group">
+                        <label for="disability-name">Disability Name (Displayed Text):</label>
+                        <input type="text" id="disability-name" name="name" required placeholder="e.g., Autism Spectrum Disorder (ASD)">
+                    </div>
+                    <div class="form-group">
+                        <label for="disability-url">Information URL:</label>
+                        <input type="url" id="disability-url" name="url" required placeholder="https://..." inputmode="url">
+                    </div>
+                    <div class="form-group">
+                        <label for="disability-order">Display Order:</label>
+                        <input type="number" id="disability-order" name="order" min="0" step="1" required placeholder="e.g., 1, 2, 3...">
+                    </div>
+                    <div class="form-actions">
+                       <button type="submit" class="button-primary">Add Disability Link</button>
+                    </div>
+                </form>
+
+                <h5 id="existing-disabilities-heading">
+                    Existing Disability Links <span id="disabilities-count" class="list-count"></span>
+                </h5>
+                <div class="list-controls">
+                     <input type="search" id="search-disabilities" placeholder="Search Disability Links..." aria-label="Search Disability Links">
+                 </div>
+                <div id="disabilities-list-admin" class="list-container-admin" role="list" aria-labelledby="existing-disabilities-heading">
+                    <p>Loading disability links...</p>
+                    </div>
+            </section>
+            <div id="edit-disability-modal" class="modal" style="display: none;"
+                 role="dialog" aria-modal="true" aria-labelledby="edit-disability-modal-heading">
+                <div class="modal-content">
+                    <button type="button" class="close-button" id="cancel-edit-disability-button" aria-label="Close dialog">&times;</button>
+                    <h2 id="edit-disability-modal-heading">Edit Disability Link</h2>
+
+                    <form id="edit-disability-form" data-doc-id="">
+                        <div class="form-group">
+                            <label for="edit-disability-name">Disability Name:</label>
+                            <input type="text" id="edit-disability-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-disability-url">Information URL:</label>
+                            <input type="url" id="edit-disability-url" name="url" required inputmode="url">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-disability-order">Display Order:</label>
+                            <input type="number" id="edit-disability-order" name="order" min="0" step="1" required>
+                        </div>
+                        <div class="form-actions">
+                          <button type="submit" class="button-primary">Save Disability Changes</button>
+                          <button type="button" id="cancel-edit-disability-button-secondary" class="secondary-button">Cancel</button>
+                        </div>
+                    </form>
+                    <div id="edit-disability-status-message" class="status-message" role="status" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div id="edit-useful-link-modal" class="modal" style="display: none;"
+     role="dialog" aria-modal="true" aria-labelledby="edit-link-modal-heading">
+
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-link-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-link-modal-heading">Edit Useful Link</h2>
+
+        <form id="edit-useful-link-form" data-doc-id=""> <div class="form-group">
+                <label for="edit-link-label">Link Label:</label>
+                <input type="text" id="edit-link-label" name="label" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-link-url">Link URL:</label>
+                <input type="url" id="edit-link-url" name="url" required inputmode="url">
+            </div>
+            <div class="form-group">
+                <label for="edit-link-order">Display Order:</label>
+                <input type="number" id="edit-link-order" name="order" min="0" step="1" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="button-primary">Save Link Changes</button>
+              <button type="button" id="cancel-edit-link-button-secondary" class="secondary-button">Cancel</button> </div>
+        </form>
+         <div id="edit-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
+</div>
+
+    <div id="edit-social-link-modal" class="modal" style="display: none;"
+     role="dialog" aria-modal="true" aria-labelledby="edit-social-link-modal-heading">
+
+    <div class="modal-content">
+        <button type="button" class="close-button" id="cancel-edit-social-link-button" aria-label="Close dialog">&times;</button>
+        <h2 id="edit-social-link-modal-heading">Edit Social Link</h2>
+
+        <form id="edit-social-link-form" data-doc-id=""> <div class="form-group">
+                <label for="edit-social-link-label">Link Label:</label>
+                <input type="text" id="edit-social-link-label" name="label" required>
+            </div>
+             <div class="form-group">
+            <label for="edit-social-link-url">Link URL:</label>
+            <input type="url" id="edit-social-link-url" name="url" required inputmode="url">
+        </div>
+
+        <div class="form-group">
+             <label for="edit-social-link-icon-class">Font Awesome Icon Class (Optional):</label>
+             <input type="text" id="edit-social-link-icon-class" name="iconClass" placeholder="e.g., fa-brands fa-tiktok">
+             <small>Find classes at Font Awesome (e.g., 'fa-brands fa-tiktok', 'fa-brands fa-facebook'). Leave blank to auto-detect.</small>
+        </div>
+        <div class="form-group">
+            <label for="edit-social-link-order">Display Order:</label>
+            <input type="number" id="edit-social-link-order" name="order" min="0" step="1" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="button-primary">Save Changes</button>
+          <button type="button" id="cancel-edit-social-link-button-secondary" class="secondary-button">Cancel</button>
+        </div>
+    </form>
+         <div id="edit-social-link-status-message" class="status-message" role="status" aria-live="polite"></div> </div>
+</div>
+
 </main>
 
 <div id="edit-shoutout-modal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading">
