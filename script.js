@@ -44,52 +44,52 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTime() {
     const now = new Date();
 
-    // Format weekday, month, day, year, and time with seconds + AM/PM
-    const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
-    };
+    // Get each part manually
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
 
-    // Get full date/time string with weekday and time, e.g., "Thursday, May 15, 2025, 3:41:12 PM"
-    let formattedDateTime = now.toLocaleString('en-US', options);
+    const weekday = weekdays[now.getDay()];
+    const month = months[now.getMonth()];
+    const day = now.getDate();
+    const year = now.getFullYear();
 
-    // Replace the second comma with ' at' to get the "Thursday, May 15, 2025 at 3:41:12 PM" format
-    // This is a bit of a hack to inject 'at' before the time
-    formattedDateTime = formattedDateTime.replace(/, (\d{1,2}:\d{2}:\d{2} [AP]M)$/, ' at $1');
+    // Format time parts (hh:mm:ss AM/PM)
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
 
-    // Get abbreviated timezone, e.g., "PDT"
-    const timeZoneAbbr = now.toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ').pop();
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 means 12 AM
 
-    // Add timezone abbreviation at the end
-    formattedDateTime += ' ' + timeZoneAbbr;
+    // Pad minutes and seconds with leading zeros
+    const minutesStr = minutes.toString().padStart(2, '0');
+    const secondsStr = seconds.toString().padStart(2, '0');
+    const hoursStr = hours.toString().padStart(2, '0');
 
-    // Update the element text
+    // Get abbreviated timezone
+    const timeZoneAbbr = now.toLocaleTimeString('en-us', { timeZoneName: 'short' }).split(' ').pop();
+
+    // Construct final string
+    const formattedDateTime = `${weekday}, ${month} ${day}, ${year} at ${hoursStr}:${minutesStr}:${secondsStr} ${ampm} ${timeZoneAbbr}`;
+
+    // Update datetime element
     const dateTimeSectionElement = document.querySelector('.datetime-section .current-datetime');
     if (dateTimeSectionElement) {
         dateTimeSectionElement.textContent = formattedDateTime;
     }
 
-    // (Optional) version info time simpler
+    // Update version info simpler time without weekday & timezone
     const versionTimeElement = document.querySelector('.version-info-section .update-time');
     if (versionTimeElement) {
-        const simpleOptions = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-        };
-        versionTimeElement.textContent = ` ${now.toLocaleString('en-US', simpleOptions)}`;
+        const simpleTime = `${month} ${day}, ${year} ${hoursStr}:${minutesStr}:${secondsStr} ${ampm}`;
+        versionTimeElement.textContent = ` ${simpleTime}`;
     }
 }
+
 
     updateTime();
 
