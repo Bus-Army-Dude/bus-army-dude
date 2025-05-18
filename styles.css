@@ -2319,7 +2319,7 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
+    padding: 8px 0; /* Assuming this is the base padding for items */
     border-bottom: 1px solid var(--border-color);
     font-size: 0.9em;
 }
@@ -2332,6 +2332,7 @@ body.maintenance-active {
     flex-basis: 120px;
     flex-shrink: 0;
     margin-right: 10px;
+    /* Default font-weight for day names in non-highlighted rows */
 }
 
 .hours-list li span {
@@ -2339,31 +2340,34 @@ body.maintenance-active {
     text-align: right;
 }
 
-/* --- Current Day Highlight (Refined) --- */
+/* --- Current Day Highlight (Dark Theme Optimized) --- */
 .hours-list .current-day {
-    font-weight: 700;
-    background: rgba(var(--accent-rgb), 0.12);
-    margin: -6px -12px;
-    padding: 11px 14px;
-    border-radius: 10px;
-    border: 1px solid var(--accent-color);
-    box-shadow: 0 2px 4px rgba(var(--accent-rgb), 0.08),
-                0 4px 8px rgba(var(--accent-rgb), 0.08);
+    background-color: var(--accent-color);    /* Use accent color for the background */
+    color: var(--primary-text-color, #FFFFFF); /* Contrasting text (e.g., white) */
+    
+    font-weight: 500; /* Base font-weight for the highlighted row */
+
+    /* Adjust margin and padding for the "pop-out" effect and internal spacing */
+    margin: -4px -12px; 
+    padding: 12px 12px; 
+    
+    border-radius: 8px; /* Consistent radius */
+    border: none;       /* No border for a cleaner highlight, relying on background */
+    
     position: relative;
     z-index: 1;
 }
 
-.hours-list .current-day:last-child {
-    border-bottom-color: transparent;
-}
+/* Removed .hours-list .current-day:last-child rule for border as .current-day now has no border */
 
 .hours-list .current-day strong {
-    color: var(--accent-color);
-    font-weight: 800; /* Day name is stronger */
+    /* Text color is inherited from .current-day (e.g., white) */
+    font-weight: 700; /* Make the day name noticeably bolder */
 }
 
 .hours-list .current-day span {
-    color: var(--accent-color);
+    /* Text color is inherited from .current-day (e.g., white) */
+    font-weight: 500; /* Match base weight of highlighted row or adjust as needed */
 }
 
 /* --- Special Hours Display (Temporary & Holiday) --- */
