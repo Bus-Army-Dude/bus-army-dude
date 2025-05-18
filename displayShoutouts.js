@@ -601,6 +601,7 @@ async function loadShoutoutPlatformData(platform, gridElement, timestampElement)
 // ========================================================
 
 // --- Element References ---
+
 const contactEmailDisplay = document.getElementById('contact-email-display');
 const businessHoursDisplay = document.getElementById('business-hours-display');
 const businessStatusDisplay = document.getElementById('business-status-display');
@@ -735,125 +736,204 @@ async function displayBusinessInfo() {
     }
 }
 
-// Calculates and displays status and ALL hours lists
+// REPLACE your existing calculateAndDisplayStatusConvertedBI function with THIS ENTIRE VERSION:
 function calculateAndDisplayStatusConvertedBI(businessData) {
-    const contactEmailDisplay = document.getElementById('contact-email-display'); // Re-get just in case
-    const businessHoursDisplay = document.getElementById('business-hours-display');
-    const businessStatusDisplay = document.getElementById('business-status-display');
-    const temporaryHoursDisplay = document.getElementById('temporary-hours-display');
-    const holidayHoursDisplay = document.getElementById('holiday-hours-display');
+    // --- Element References ---
+    // const contactEmailDisplay = document.getElementById('contact-email-display'); // Already defined globally in your script
+    // const businessHoursDisplay = document.getElementById('business-hours-display'); // Already defined globally
+    // const businessStatusDisplay = document.getElementById('business-status-display'); // Main container, already global
+    const temporaryHoursDisplay = document.getElementById('temporary-hours-display'); // Already global
+    const holidayHoursDisplay = document.getElementById('holiday-hours-display');   // Already global
 
-    if (!businessHoursDisplay || !businessStatusDisplay || !temporaryHoursDisplay || !holidayHoursDisplay) {
-         console.error("Missing one or more business display elements in calculateAndDisplayStatusConvertedBI.");
-         return;
+    // New specific SPAN elements for the main status - GET THEM HERE
+    const statusMainTextEl = document.querySelector('#business-status-display .status-main-text');
+    const statusCountdownTextEl = document.querySelector('#business-status-display .status-countdown-text');
+    const statusReasonEl = document.querySelector('#business-status-display .status-reason-text');
+
+    if (!businessHoursDisplay || !businessStatusDisplay || !temporaryHoursDisplay || !holidayHoursDisplay ||
+        !statusMainTextEl || !statusCountdownTextEl || !statusReasonEl) {
+        console.error("FATAL: One or more critical business display HTML elements are missing. Check IDs and class names in index.html.");
+        if (businessStatusDisplay) {
+            businessStatusDisplay.innerHTML = '<span class="status-unavailable" style="display:block; font-weight:bold;">Display Error</span><span style="font-size:0.8em; color:var(--secondary-text); display:block;">(UI elements missing)</span>';
+        }
+        return;
     }
 
+    const { DateTime, Duration } = luxon; // Luxon must be loaded
     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
-    let currentStatus = 'Closed';
-    let statusReason = 'Default';
-    let visitorTimezone;
 
-    // --- Timezone Detection ---
+    let currentStatus = 'Closed';
+    let statusReason = 'Scheduled Hours';
+    let activeHoursRule = null;
+    let ruleAppliedForStatus = false; // Changed from 'ruleApplied' to be specific
+
+    let visitorTimezone;
     try {
         visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        if (!visitorTimezone) throw new Error("TZ detection failed.");
-    } catch (e) {
-        console.error("Could not detect visitor timezone:", e);
-        businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Unavailable (TZ Error)</span>';
-        businessHoursDisplay.innerHTML = '';
-        temporaryHoursDisplay.innerHTML = '';
-        holidayHoursDisplay.innerHTML = '';
-        return;
-    }
-
-    // --- Calculate Current Time/Date in Business Timezone ---
-    const visitorNow = new Date();
-    let currentHourInBizTZ, currentMinuteInBizTZ, businessDateStr, businessDayName;
-
-    try {
-        const formatterTime = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, hour: 'numeric', minute: 'numeric', hourCycle: 'h23' });
-        const partsTime = formatterTime.formatToParts(visitorNow).reduce((acc, part) => { acc[part.type] = part.value; return acc; }, {});
-        currentHourInBizTZ = parseInt(partsTime.hour);
-        currentMinuteInBizTZ = parseInt(partsTime.minute);
-
-        const formatterDate = new Intl.DateTimeFormat('en-CA', { timeZone: assumedBusinessTimezone });
-        businessDateStr = formatterDate.format(visitorNow); // YYYY-MM-DD format
-
-        const formatterDay = new Intl.DateTimeFormat('en-US', { timeZone: assumedBusinessTimezone, weekday: 'long' });
-        businessDayName = formatterDay.format(visitorNow).toLowerCase();
-
-        if (isNaN(currentHourInBizTZ) || isNaN(currentMinuteInBizTZ) || !businessDateStr || !businessDayName) {
-            throw new Error("Failed to parse business time/date components");
+        if (!visitorTimezone || !DateTime.now().setZone(visitorTimezone).isValid) {
+             throw new Error("Visitor timezone detection failed or Luxon found it invalid.");
         }
     } catch (e) {
-        console.error("Error calculating business time/date:", e);
-        businessStatusDisplay.innerHTML = '<span class="status-unavailable">Status Error (Time Calc)</span>';
-        businessHoursDisplay.innerHTML = '';
-        temporaryHoursDisplay.innerHTML = '';
-        holidayHoursDisplay.innerHTML = '';
+        console.error("Could not detect or use visitor timezone:", e);
+        statusMainTextEl.textContent = 'Status Unavailable';
+        statusMainTextEl.className = 'status-main-text status-unavailable';
+        statusCountdownTextEl.textContent = '(Timezone Error)';
+        statusReasonEl.textContent = '';
         return;
     }
 
-    const currentMinutesInBizTZ = currentHourInBizTZ * 60 + currentMinuteInBizTZ;
-    let activeHoursRule = null;
-    let ruleApplied = false;
+    const nowInBizTZLuxon = DateTime.now().setZone(assumedBusinessTimezone);
+    if (!nowInBizTZLuxon.isValid) {
+        console.error("Luxon could not create a valid DateTime for business timezone:", assumedBusinessTimezone, "Reason:", nowInBizTZLuxon.invalidReason, nowInBizTZLuxon.invalidExplanation);
+        statusMainTextEl.textContent = 'Status Error';
+        statusMainTextEl.className = 'status-main-text status-unavailable';
+        statusCountdownTextEl.textContent = '(Internal Time Error)';
+        statusReasonEl.textContent = '';
+        return;
+    }
 
-    // --- Status Calculation Logic --- (Same v12/v13 logic from admin.js)
-     if (statusOverride !== 'auto') {
+    const currentHourInBizTZ = nowInBizTZLuxon.hour;
+    const currentMinuteInBizTZ = nowInBizTZLuxon.minute;
+    const businessDateStr = nowInBizTZLuxon.toISODate();
+    const businessDayName = nowInBizTZLuxon.toFormat('cccc').toLowerCase();
+    const currentMinutesInBizTZ = currentHourInBizTZ * 60 + currentMinuteInBizTZ;
+
+    // --- STATUS DETERMINATION LOGIC (Copied from your v10, slightly adapted for activeHoursRule properties) ---
+    if (statusOverride !== 'auto') {
         currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
         statusReason = 'Manual Override';
-        activeHoursRule = { reason: statusReason }; ruleApplied = true;
-    } else {
+        activeHoursRule = { type: 'override', reasonOriginal: statusReason, isClosed: (currentStatus !== 'Open' && currentStatus !== 'Temporarily Unavailable'), open: null, close: null };
+        ruleAppliedForStatus = true;
+    }
+
+    if (!ruleAppliedForStatus) {
         const todayHoliday = holidayHours.find(h => h.date === businessDateStr);
         if (todayHoliday) {
-            statusReason = `Holiday (${todayHoliday.label || todayHoliday.date})`;
-            activeHoursRule = { ...todayHoliday, reason: statusReason }; ruleApplied = true;
-            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) { currentStatus = 'Closed'; }
-            else { const openMins = timeStringToMinutes(todayHoliday.open); const closeMins = timeStringToMinutes(todayHoliday.close); currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed'; }
-            activeHoursRule.reason = statusReason + ` (${currentStatus})`;
-        } else {
-            const activeTemporary = temporaryHours.find(t => businessDateStr >= t.startDate && businessDateStr <= t.endDate);
-            if (activeTemporary) {
-                if (activeTemporary.isClosed) {
-                    currentStatus = 'Closed'; statusReason = `Temporary Hours (${activeTemporary.label || 'Active'}) - Closed All Day`;
-                    activeHoursRule = { ...activeTemporary, reason: statusReason }; ruleApplied = true;
-                } else if (activeTemporary.open && activeTemporary.close) {
-                    const openMins = timeStringToMinutes(activeTemporary.open); const closeMins = timeStringToMinutes(activeTemporary.close);
-                    if (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
-                        currentStatus = 'Temporarily Unavailable'; statusReason = `Temporary Hours (${activeTemporary.label || 'Active'})`;
-                        activeHoursRule = { ...activeTemporary, reason: statusReason }; ruleApplied = true;
-                    }
-                }
-            }
-            // Regular Hours Check (Only if no prior rule applied *for this specific time*)
-            if (!ruleApplied) {
-                statusReason = 'Regular Hours'; const todayRegularHours = regularHours[businessDayName];
-                if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
-                    const openMins = timeStringToMinutes(todayRegularHours.open); const closeMins = timeStringToMinutes(todayRegularHours.close);
-                    if (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) {
-                        currentStatus = 'Open'; activeHoursRule = { ...todayRegularHours, day: businessDayName, reason: statusReason + " (Open)" };
-                    } else { currentStatus = 'Closed'; activeHoursRule = { ...todayRegularHours, day: businessDayName, reason: statusReason + " (Outside Hours)" }; }
-                } else { currentStatus = 'Closed'; activeHoursRule = { ...(todayRegularHours || {}), day: businessDayName, isClosed: true, reason: statusReason + " (Closed Today)" }; }
+            statusReason = `Holiday (${todayHoliday.label || 'Event'})`;
+            activeHoursRule = { ...todayHoliday, type: 'holiday', reasonOriginal: statusReason };
+            ruleAppliedForStatus = true;
+            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) currentStatus = 'Closed';
+            else {
+                const openMins = timeStringToMinutes(todayHoliday.open); const closeMins = timeStringToMinutes(todayHoliday.close);
+                currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
             }
         }
     }
 
+    if (!ruleAppliedForStatus) {
+        const activeTemporary = temporaryHours.find(t => t.startDate && t.endDate && businessDateStr >= t.startDate && businessDateStr <= t.endDate);
+        if (activeTemporary) {
+            statusReason = `Temporary (${activeTemporary.label || 'Schedule'})`;
+            activeHoursRule = { ...activeTemporary, type: 'temporary', reasonOriginal: statusReason };
+            ruleAppliedForStatus = true;
+            if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) currentStatus = 'Closed';
+            else {
+                const openMins = timeStringToMinutes(activeTemporary.open); const closeMins = timeStringToMinutes(activeTemporary.close);
+                currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Temporarily Unavailable' : 'Closed';
+            }
+        }
+    }
 
-    // --- Display Calculated Status ---
-    let statusClass = currentStatus === 'Open' ? 'status-open' : (currentStatus === 'Temporarily Unavailable' ? 'status-unavailable' : 'status-closed');
-    businessStatusDisplay.innerHTML = `<span class="${statusClass}">${currentStatus}</span> <span class="status-reason">(${activeHoursRule?.reason || statusReason})</span>`;
+    if (!ruleAppliedForStatus) {
+        statusReason = 'Regular Hours';
+        const todayRegularHours = regularHours[businessDayName];
+        activeHoursRule = { ...(todayRegularHours || { isClosed: true, open: null, close: null }), type: 'regular', day: businessDayName, reasonOriginal: statusReason };
+        if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
+            const openMins = timeStringToMinutes(todayRegularHours.open); const closeMins = timeStringToMinutes(todayRegularHours.close);
+            currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
+        } else {
+            currentStatus = 'Closed';
+        }
+    }
 
-    // --- Format and Display Regular Hours List ---
+    if (activeHoursRule) { // Update the compound reason string
+        activeHoursRule.reason = `${activeHoursRule.reasonOriginal} - Currently ${currentStatus}`;
+    } else { // Fallback, should ideally always have an activeHoursRule by this point
+        activeHoursRule = { reason: `Scheduled - Currently ${currentStatus}`, type: 'default', isClosed: (currentStatus === 'Closed'), open:null, close:null };
+    }
+
+    // --- DISPLAY MAIN STATUS & CALCULATE/DISPLAY MAIN COUNTDOWN ---
+    let statusClass = 'status-closed';
+    if (currentStatus === 'Open') statusClass = 'status-open';
+    else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
+
+    statusMainTextEl.className = 'status-main-text'; // Reset classes
+    statusMainTextEl.classList.add(statusClass);
+    statusMainTextEl.textContent = currentStatus;
+    statusReasonEl.textContent = `(${activeHoursRule?.reason || statusReason})`;
+
+    let countdownMessage = "";
+    if (statusOverride === 'auto' && activeHoursRule && activeHoursRule.type !== 'override') {
+        let nextEventTimeLuxon = null;
+        let eventType = ""; 
+        let contextQualifier = ""; // For "temporarily", "for holiday"
+
+        if (activeHoursRule.type === 'temporary' && currentStatus !== 'Open') contextQualifier = "temporarily ";
+        if (activeHoursRule.type === 'holiday' && currentStatus !== 'Open') contextQualifier = "for holiday ";
+
+        const ruleOpenTimeStr = activeHoursRule.open;
+        const ruleCloseTimeStr = activeHoursRule.close;
+        const ruleIsAllDayClosed = activeHoursRule.isClosed;
+
+        if (currentStatus === 'Open' || currentStatus === 'Temporarily Unavailable') {
+            if (ruleCloseTimeStr) {
+                const [h, m] = ruleCloseTimeStr.split(':').map(Number);
+                if (!isNaN(h) && !isNaN(m)) {
+                    nextEventTimeLuxon = nowInBizTZLuxon.set({ hour: h, minute: m, second: 0, millisecond: 0 });
+                    eventType = "close";
+                    if (nextEventTimeLuxon < nowInBizTZLuxon) nextEventTimeLuxon = null;
+                }
+            }
+        } else if (currentStatus === 'Closed') {
+            if (!ruleIsAllDayClosed && ruleOpenTimeStr) {
+                const [h, m] = ruleOpenTimeStr.split(':').map(Number);
+                if (!isNaN(h) && !isNaN(m)) {
+                    let potentialOpenTime = nowInBizTZLuxon.set({ hour: h, minute: m, second: 0, millisecond: 0 });
+                    eventType = "open";
+                    if (potentialOpenTime < nowInBizTZLuxon) {
+                        if (activeHoursRule.type === 'regular') nextEventTimeLuxon = potentialOpenTime.plus({ days: 1 });
+                        else nextEventTimeLuxon = null; // Missed one-off event for today
+                    } else {
+                        nextEventTimeLuxon = potentialOpenTime;
+                    }
+                }
+            } else if (ruleIsAllDayClosed) {
+                countdownMessage = contextQualifier ? `${capitalizeFirstLetter(contextQualifier.trim())} Closed All Day` : "Closed All Day";
+            }
+        }
+
+        if (nextEventTimeLuxon && nextEventTimeLuxon >= nowInBizTZLuxon) {
+            const diff = nextEventTimeLuxon.diff(nowInBizTZLuxon, ['hours', 'minutes']);
+            const hours = Math.floor(diff.hours);
+            const minutes = Math.floor(diff.minutes % 60);
+
+            if (eventType === "close") {
+                if (hours > 0) countdownMessage = `Closes ${contextQualifier}in ${hours} hr ${minutes} min`;
+                else if (minutes >= 1) countdownMessage = `Closes ${contextQualifier}in ${minutes} min`;
+                else countdownMessage = `Closing ${contextQualifier}very soon`;
+            } else if (eventType === "open") {
+                if (hours > 0) countdownMessage = `Opens ${contextQualifier}in ${hours} hr ${minutes} min`;
+                else if (minutes >= 1) countdownMessage = `Opens ${contextQualifier}in ${minutes} min`;
+                else countdownMessage = `Opening ${contextQualifier}very soon`;
+            }
+        } else if (!countdownMessage && currentStatus === 'Closed' && statusOverride === 'auto') {
+            countdownMessage = "Check schedule for next opening";
+        }
+    } else if (statusOverride !== 'auto') { // Manual override is active
+        countdownMessage = "Status is manually set";
+    }
+    statusCountdownTextEl.textContent = countdownMessage;
+
+    // --- REGULAR HOURS DISPLAY (using your existing logic) ---
     const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    const visitorLocalDayName = visitorNow.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
-    let displayHoursListHtml = '<ul>'; // Declare with let
+    const visitorLocalDayName = DateTime.now().setZone(visitorTimezone).toFormat('cccc').toLowerCase();
+    let displayHoursListHtml = '<ul>';
     displayOrder.forEach(day => {
         const dayData = regularHours[day];
-        const isCurrentDayForVisitor = day === visitorLocalDayName;
-        const highlightClass = isCurrentDayForVisitor ? 'current-day' : '';
-        displayHoursListHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `;
+        const isCurrentDayForVisitorDisplay = day === visitorLocalDayName;
+        const highlightClass = isCurrentDayForVisitorDisplay ? 'current-day' : '';
+        displayHoursListHtml += `<li class="<span class="math-inline">\{highlightClass\}"\><strong\></span>{capitalizeFirstLetter(day)}:</strong> `;
         if (dayData && !dayData.isClosed && dayData.open && dayData.close) {
-            // *** Use Luxon-powered formatter ***
             const openLocalStr = formatDisplayTimeBI(dayData.open, visitorTimezone);
             const closeLocalStr = formatDisplayTimeBI(dayData.close, visitorTimezone);
             displayHoursListHtml += `<span>${openLocalStr} - ${closeLocalStr}</span>`;
@@ -863,111 +943,116 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         displayHoursListHtml += '</li>';
     });
     displayHoursListHtml += '</ul>';
-    // Updated Note: Reflects that times ARE converted
-    displayHoursListHtml += `<p class="hours-timezone-note">Hours displayed in your local time zone: ${visitorTimezone.replace('_', ' ')}</p>`;
+    displayHoursListHtml += `<p class="hours-timezone-note">Hours displayed in your local time zone: ${visitorTimezone.replace(/_/g, ' ')}</p>`;
     businessHoursDisplay.innerHTML = displayHoursListHtml;
 
-
-  // Helper function to format date as "Monday, May 26, 2025" using Luxon
-function formatDate(dateStr) {
-    // Check if Luxon is available
-    if (typeof luxon === 'undefined' || !luxon.DateTime) {
-        console.error("Luxon library not loaded for formatDate!");
-        // Fallback to original problematic method if Luxon is missing
-        try {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const date = new Date(dateStr); // Fallback - may show incorrect day in some timezones
-            return date.toLocaleDateString('en-US', options);
-        } catch (e) {
-            return 'Invalid Date';
-        }
-    }
-
-    const { DateTime } = luxon;
-
-    // Parse the date string (YYYY-MM-DD). By default, fromISO without a time
-    // is often treated as local time, but let's be explicit or just use it
-    // for formatting purposes without assuming a specific timezone here,
-    // as the goal is just to display the calendar date.
-    // A simple fromISO is usually sufficient for 'YYYY-MM-DD' display.
-    const date = DateTime.fromISO(dateStr);
-
-    if (!date.isValid) {
-        console.error("Invalid date string passed to Luxon formatDate:", dateStr);
-        return 'Invalid Date';
-    }
-
-    // Format the date in the desired long format
-    return date.toFormat('cccc, LLLL d, yyyy'); // Example: 'Tuesday, May 13, 2025'
-}
-    
-    // --- Display Temporary Hours ---
+    // --- TEMPORARY HOURS DISPLAY (with individual countdowns) ---
     if (temporaryHoursDisplay) {
-        const relevantTemporaryHours = temporaryHours
-            .filter(t => t.endDate >= businessDateStr)
-            .sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
-    
+        const relevantTemporaryHours = (temporaryHours || [])
+            .filter(t => t.startDate && t.endDate && DateTime.fromISO(t.endDate).setZone(assumedBusinessTimezone).endOf('day') >= nowInBizTZLuxon.startOf('day'))
+            .sort((a, b) => (DateTime.fromISO(a.startDate) > DateTime.fromISO(b.startDate) ? 1 : -1));
+
         if (relevantTemporaryHours.length > 0) {
+            temporaryHoursDisplay.className = 'special-hours-list'; // Ensure class if content exists
             let tempHoursHtml = '<h4>Upcoming/Active Temporary Hours</h4><ul class="special-hours-display">';
             relevantTemporaryHours.forEach(temp => {
-                if (temp.startDate && temp.endDate) {
-                    tempHoursHtml += `
-                        <li>
-                            <div class="hours-container">
-                                <strong>${temp.label || 'Temporary Schedule'}</strong>
-                                <span class="hours">${temp.isClosed 
-                                    ? 'Closed' 
-                                    : `${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}`}</span>
-                            </div>
-                            <span class="dates">${formatDate(temp.startDate)} to ${formatDate(temp.endDate)}</span>
-                        </li>`;
+                let tempCountdownStr = "";
+                const tempStartLuxonDay = DateTime.fromISO(temp.startDate).setZone(assumedBusinessTimezone).startOf('day');
+                const tempEndLuxonDay = DateTime.fromISO(temp.endDate).setZone(assumedBusinessTimezone).endOf('day');
+
+                if (nowInBizTZLuxon >= tempStartLuxonDay && nowInBizTZLuxon <= tempEndLuxonDay) { // Currently within this temp period's dates
+                    if (temp.isClosed) {
+                        tempCountdownStr = `Closed (Temporary)`;
+                    } else if (temp.open && temp.close) {
+                        const tempOpenMinutes = timeStringToMinutes(temp.open);
+                        const tempCloseMinutes = timeStringToMinutes(temp.close);
+                        if (tempOpenMinutes !== null && tempCloseMinutes !== null) {
+                            const tempOpenTimeToday = nowInBizTZLuxon.set({ hour: Math.floor(tempOpenMinutes / 60), minute: tempOpenMinutes % 60, second: 0, millisecond: 0 });
+                            const tempCloseTimeToday = nowInBizTZLuxon.set({ hour: Math.floor(tempCloseMinutes / 60), minute: tempCloseMinutes % 60, second: 0, millisecond: 0 });
+
+                            if (nowInBizTZLuxon >= tempOpenTimeToday && nowInBizTZLuxon < tempCloseTimeToday) {
+                                const diff = tempCloseTimeToday.diff(nowInBizTZLuxon, ['hours', 'minutes']);
+                                const h = Math.floor(diff.hours); const m = Math.floor(diff.minutes % 60);
+                                if (h > 0) tempCountdownStr = `Closes (temp.) in ${h} hr ${m} min`;
+                                else if (m >= 1) tempCountdownStr = `Closes (temp.) in ${m} min`; else tempCountdownStr = `Closing (temp.) very soon`;
+                            } else if (nowInBizTZLuxon < tempOpenTimeToday) {
+                                const diff = tempOpenTimeToday.diff(nowInBizTZLuxon, ['hours', 'minutes']);
+                                const h = Math.floor(diff.hours); const m = Math.floor(diff.minutes % 60);
+                                if (h > 0) tempCountdownStr = `Opens (temp.) in ${h} hr ${m} min`;
+                                else if (m >= 1) tempCountdownStr = `Opens (temp.) in ${m} min`; else tempCountdownStr = `Opening (temp.) very soon`;
+                            } else { tempCountdownStr = `Closed (temp. hours ended for today)`; }
+                        } else {  tempCountdownStr = "Temporary hours timing error"; }
+                    }
+                } else if (nowInBizTZLuxon < tempStartLuxonDay) { // Temp period is in the future
+                    const diffToStart = tempStartLuxonDay.diff(nowInBizTZLuxon, ['days', 'hours']);
+                    const d = Math.floor(diffToStart.days); const h = Math.floor(diffToStart.hours % 24);
+                    if (d > 1) tempCountdownStr = `Starts in ${d} days`;
+                    else if (d === 1) tempCountdownStr = `Starts tomorrow`;
+                    else if (h > 0) tempCountdownStr = `Starts in ${h} hr`;
+                    else tempCountdownStr = `Starts very soon`;
                 }
-            });
-            tempHoursHtml += '</ul>';
-            temporaryHoursDisplay.innerHTML = tempHoursHtml;
-            temporaryHoursDisplay.style.display = '';
-        } else {
-            temporaryHoursDisplay.innerHTML = '';
-            temporaryHoursDisplay.style.display = 'none';
-        }
-    } else {
-        console.warn("Temporary hours display element not found.");
-    }
+
+                tempHoursHtml += `
+                    <li>
+                        <div class="hours-container">
+                            <strong><span class="math-inline">\{temp\.label \|\| 'Temporary Schedule'\}</strong\>
+                                <span class="hours">{temp.isClosed ? 'Closed' : ${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}}</span>
+                            </div>
+                                <span class="dates">${formatDate(temp.startDate)} to formatDate(temp.endDate)</span><divclass="temp−status−countdown−text">{tempCountdownStr}</div>
+                            </li>`;
+                            });
+                        tempHoursHtml += '</ul>';
+                        temporaryHoursDisplay.innerHTML = tempHoursHtml;
+                temporaryHoursDisplay.style.display = '';
+                } else {
+                temporaryHoursDisplay.innerHTML = '';
+                temporaryHoursDisplay.style.display = 'none';
+                temporaryHoursDisplay.className = ''; // Remove class if empty
+                }
+                } else {
+                console.warn("Temporary hours display element not found.");
+                }
     
-    // --- Display Holiday Hours ---
+      // --- HOLIDAY HOURS DISPLAY (using your existing logic, can be enhanced with countdowns similarly) ---
     if (holidayHoursDisplay) {
-        const upcomingHolidayHours = holidayHours
-            .filter(h => h.date >= businessDateStr)
-            .sort((a, b) => (a.date > b.date ? 1 : -1));
-    
+        const upcomingHolidayHours = (holidayHours || [])
+            .filter(h => h.date && DateTime.fromISO(h.date).setZone(assumedBusinessTimezone).endOf('day') >= nowInBizTZLuxon.startOf('day'))
+            .sort((a, b) => (DateTime.fromISO(a.date) > DateTime.fromISO(b.date) ? 1 : -1));
+
         if (upcomingHolidayHours.length > 0) {
+            holidayHoursDisplay.className = 'special-hours-list'; // Ensure class
             let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
             upcomingHolidayHours.forEach(holiday => {
-                if (holiday.date) {
-                    holidayHoursHtml += `
-                        <li>
-                            <div class="hours-container">
-                                <strong>${holiday.label || 'Holiday'}</strong>
-                                <span class="hours">${holiday.isClosed 
-                                    ? 'Closed' 
-                                    : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`}</span>
-                            </div>
-                            <span class="dates">${formatDate(holiday.date)}</span>
-                        </li>`;
+                let holidayItemCountdownStr = ""; 
+                if (holiday.date === businessDateStr) { // If today IS this holiday
+                    // Use the main status countdown if it's already determined by this holiday
+                    if(activeHoursRule && activeHoursRule.type === 'holiday' && activeHoursRule.date === holiday.date) {
+                       holidayItemCountdownStr = statusCountdownTextEl.textContent || (currentStatus === "Open" ? "Currently Open" : "Currently Closed");
+                    } else { // If another rule (like manual override) is active, just state holiday status
+                        holidayItemCountdownStr = holiday.isClosed ? "Closed Today (Holiday)" : "Special Holiday Hours Today";
+                    }
                 }
-            });
-            holidayHoursHtml += '</ul>';
-            holidayHoursDisplay.innerHTML = holidayHoursHtml;
-            holidayHoursDisplay.style.display = '';
-        } else {
-            holidayHoursDisplay.innerHTML = '';
-            holidayHoursDisplay.style.display = 'none';
-        }
-    } else {
-        console.warn("Holiday hours display element not found.");
-    }
+                holidayHoursHtml += `
+                    <li>
+                        <div class="hours-container">
+                            <strong><span class="math-inline">\{holiday\.label \|\| 'Holiday'\}</strong\>
+<span class="hours">{holiday.isClosed ? 'Closed' : ${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}}</span>
+</div>
+<span class="dates">formatDate(holiday.date)</span><divclass="holiday−status−countdown−text">{holidayItemCountdownStr}</div>
+</li>`;
+});
+holidayHoursHtml += '</ul>';
+holidayHoursDisplay.innerHTML = holidayHoursHtml;
+holidayHoursDisplay.style.display = '';
+} else {
+holidayHoursDisplay.innerHTML = '';
+holidayHoursDisplay.style.display = 'none';
+holidayHoursDisplay.className = ''; // Remove class if empty
 }
-
+} else {
+console.warn("Holiday hours display element not found.");
+}
+    
 // ======================================================
 // ===== END: BUSINESS INFO CODE FOR displayShoutouts.js ====
 // ======================================================
@@ -1101,7 +1186,9 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
     }
 }
 
-// --- MASTER INITIALIZATION FUNCTION ---
+// In displayShoutouts.js
+
+// --- MASTER INITIALIZATION FUNCTION (Updated for Business Info Refresh) ---
 async function initializeHomepageContent() {
     console.log("Initializing homepage content...");
     const mainContentWrapper = document.getElementById('main-content-wrapper');
@@ -1115,8 +1202,12 @@ async function initializeHomepageContent() {
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
 
+    // Ensure Firebase and necessary Firestore document references are initialized
+    // (These should be defined globally in your script as per your existing displayShoutouts.js:
+    //  firebaseAppInitialized, db, profileDocRef, businessDocRef, presidentDocRef, etc.)
     if (!firebaseAppInitialized || !db || !profileDocRef) {
         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
+        // Optionally, display a user-facing error message on the page here
         return;
     }
 
@@ -1148,47 +1239,45 @@ async function initializeHomepageContent() {
 
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
+        // Optionally, display a user-facing error message
         return;
     }
 
     if (maintenanceEnabled) {
-    console.log("Maintenance mode ON. Activating overlay...");
-    
-    if (maintenanceOverlay) {
-        // Update overlay content
-        const titleElement = maintenanceOverlay.querySelector('h1');
-        const messageElement = maintenanceOverlay.querySelector('p');
-        
-        if (titleElement) titleElement.textContent = maintenanceTitle;
-        if (messageElement) messageElement.textContent = maintenanceMessage;
-
-        // Show overlay
-        maintenanceOverlay.style.display = 'flex';
-        maintenanceOverlay.classList.add('active');
-        document.body.classList.add('maintenance-active');
-
-        // Hide main content
-        if (mainContentWrapper) mainContentWrapper.style.display = 'none';
-    } else {
-        console.error("Maintenance overlay element not found!");
-    }
-    
-    return; // Stop further content loading
+        console.log("Maintenance mode ON. Activating overlay...");
+        if (maintenanceOverlay) {
+            const titleElement = maintenanceOverlay.querySelector('h1');
+            const messageElement = maintenanceOverlay.querySelector('p');
+            if (titleElement) titleElement.textContent = maintenanceTitle;
+            if (messageElement) messageElement.textContent = maintenanceMessage;
+            maintenanceOverlay.style.display = 'flex';
+            maintenanceOverlay.classList.add('active');
+            document.body.classList.add('maintenance-active');
+            if (mainContentWrapper) mainContentWrapper.style.display = 'none';
+        } else {
+            console.error("Maintenance overlay element not found!");
+        }
+        return; // Stop further content loading
     } else {
         // Maintenance mode OFF
         console.log("Maintenance mode OFF.");
         if (mainContentWrapper) mainContentWrapper.style.display = '';
         if (maintenanceOverlay) maintenanceOverlay.style.display = 'none';
         bodyElement.classList.remove('maintenance-active');
-        if (countdownSection) countdownSection.style.display = 'block';
+        if (countdownSection) countdownSection.style.display = 'block'; // Or use your logic for showing it
         const oldMaintenanceMessageElement = document.getElementById('maintenanceModeMessage');
         if (oldMaintenanceMessageElement) oldMaintenanceMessageElement.style.display = 'none';
         if (usefulLinksSection) {
-            usefulLinksSection.style.display = 'block';
+            usefulLinksSection.style.display = 'block'; // Or use your logic
         }
 
         // --- Proceed with loading normal content ---
-        startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
+        // Ensure startEventCountdown is defined and handles null targetDate gracefully
+        if (typeof startEventCountdown === 'function') {
+            startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
+        } else {
+            console.warn("startEventCountdown function is not defined.");
+        }
 
         // Handle TikTok Section Visibility
         let isTikTokVisible = false;
@@ -1203,58 +1292,85 @@ async function initializeHomepageContent() {
                 if (tiktokUnavailableMessage) {
                     tiktokUnavailableMessage.innerHTML = '<p>TikTok shoutouts are currently hidden by the site administrator.</p>';
                     tiktokUnavailableMessage.style.display = 'block';
-                } else {
-                    console.warn("TikTok unavailable message element not found.");
                 }
                 isTikTokVisible = false;
             } else {
                 console.log("Showing TikTok section.");
                 tiktokHeaderContainer.style.display = '';
                 tiktokGridContainer.style.display = '';
-                if (tiktokUnavailableMessage) {
-                    tiktokUnavailableMessage.style.display = 'none';
-                    tiktokUnavailableMessage.innerHTML = '';
-                }
+                if (tiktokUnavailableMessage) tiktokUnavailableMessage.style.display = 'none';
                 isTikTokVisible = true;
             }
         }
 
         console.log("Initiating loading of other content sections...");
 
-        // Define all promises
+        // Define all promises for initial content load
         const loadPromises = [
-            displayProfileData(siteSettings),
-            displayBusinessInfo(),
-            displayPresidentData(),
-            loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')),
-            loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')),
-            loadAndDisplayUsefulLinks(),
-            loadAndDisplaySocialLinks(),
-            loadAndDisplayDisabilities(),
-            loadAndDisplayTechItems(),
-            loadAndDisplayFaqs()
+            // displayProfileData should be defined and accept siteSettings
+            (typeof displayProfileData === 'function' ? displayProfileData(siteSettings) : Promise.resolve(console.warn("displayProfileData not defined"))),
+            // displayBusinessInfo will be handled below with interval
+            (typeof displayPresidentData === 'function' ? displayPresidentData() : Promise.resolve(console.warn("displayPresidentData not defined"))),
+            (typeof loadShoutoutPlatformData === 'function' ? loadShoutoutPlatformData('instagram', instagramGridContainer, document.getElementById('instagram-last-updated-timestamp')) : Promise.resolve(console.warn("loadShoutoutPlatformData not defined for Instagram"))),
+            (typeof loadShoutoutPlatformData === 'function' ? loadShoutoutPlatformData('youtube', youtubeGridContainer, document.getElementById('youtube-last-updated-timestamp')) : Promise.resolve(console.warn("loadShoutoutPlatformData not defined for YouTube"))),
+            (typeof loadAndDisplayUsefulLinks === 'function' ? loadAndDisplayUsefulLinks() : Promise.resolve(console.warn("loadAndDisplayUsefulLinks not defined"))),
+            (typeof loadAndDisplaySocialLinks === 'function' ? loadAndDisplaySocialLinks() : Promise.resolve(console.warn("loadAndDisplaySocialLinks not defined"))),
+            (typeof loadAndDisplayDisabilities === 'function' ? loadAndDisplayDisabilities() : Promise.resolve(console.warn("loadAndDisplayDisabilities not defined"))),
+            (typeof loadAndDisplayTechItems === 'function' ? loadAndDisplayTechItems() : Promise.resolve(console.warn("loadAndDisplayTechItems not defined"))),
+            (typeof loadAndDisplayFaqs === 'function' ? loadAndDisplayFaqs() : Promise.resolve(console.warn("loadAndDisplayFaqs not defined")))
         ];
 
         // Conditionally add TikTok loading promise
-        if (isTikTokVisible && tiktokGridContainer) {
+        if (isTikTokVisible && tiktokGridContainer && typeof loadShoutoutPlatformData === 'function') {
             const tsEl = document.getElementById('tiktok-last-updated-timestamp');
             if (tsEl) {
                 loadPromises.push(loadShoutoutPlatformData('tiktok', tiktokGridContainer, tsEl));
             } else {
                 console.warn("Could not load TikTok section - timestamp element missing.");
             }
+        } else if (isTikTokVisible) {
+             console.warn("loadShoutoutPlatformData not defined for TikTok, or tiktokGridContainer missing");
         }
 
-        // Await all promises
+        // **** INITIAL BUSINESS INFO LOAD + PERIODIC REFRESH SETUP ****
+        if (firebaseAppInitialized && typeof displayBusinessInfo === 'function') {
+            await displayBusinessInfo(); // Initial load of business info
+
+            if (window.businessInfoRefreshInterval) { // Clear any old interval
+                clearInterval(window.businessInfoRefreshInterval);
+            }
+            window.businessInfoRefreshInterval = setInterval(async () => {
+                if (document.hidden) return; // Don't update if tab is not visible
+                // console.log("Periodically refreshing business info..."); // For debugging
+                await displayBusinessInfo(); // Re-fetch data and update display
+            }, 60000); // Refresh every 60 seconds (1 minute)
+            console.log("Business info display and periodic refresh initiated.");
+        } else {
+            console.error("Business info cannot be loaded/refreshed: Firebase not init or displayBusinessInfo missing.");
+            const biContainer = document.getElementById('business-status-display'); // Ensure this ID exists
+            const statusMainTextEl = biContainer ? biContainer.querySelector('.status-main-text') : null;
+            if(statusMainTextEl) {
+                 statusMainTextEl.textContent = "Info Unavailable";
+                 statusMainTextEl.className = 'status-main-text status-unavailable';
+            } else if (biContainer) {
+                biContainer.innerHTML = "<span class='status-unavailable'>Business info could not be loaded.</span>";
+            }
+        }
+        // **** END BUSINESS INFO LOAD + REFRESH SETUP ****
+
+        // Await all other promises
         const results = await Promise.allSettled(loadPromises);
         results.forEach((result, index) => {
+            // You can log the name of the function or a descriptor for better debugging
+            // For example, by creating an array of objects like {name: "Profile", promise: displayProfileData()}
             if (result.status === 'rejected') {
-                console.error(`Error loading content section ${index}:`, result.reason);
+                console.error(`Error loading a content section (index ${index}):`, result.reason);
             }
         });
-        console.log("All dynamic content loading initiated/completed.");
+        console.log("All other dynamic content loading initiated/completed.");
     }
 }
 
 // --- Call the main initialization function when the DOM is ready ---
+// (Ensure this line is correct and only present once at the end of your script)
 document.addEventListener('DOMContentLoaded', initializeHomepageContent);
