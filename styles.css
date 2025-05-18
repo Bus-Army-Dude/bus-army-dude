@@ -2253,16 +2253,16 @@ body.maintenance-active {
 /* == Business Info Section Styles (Updated) == */
 /* ======================================== */
 
-/* --- Main Container (Public Page) --- */
+/* Main container for business info (assuming you have this from original CSS) */
 .business-info-section {
-    background: var(--content-bg);
+    background: var(--content-bg); /* Using your theme variables */
     padding: 25px;
     border-radius: 16px;
-    margin: 30px 0;
+    margin: 30px auto; /* Centered if container has max-width */
     box-shadow: 0 3px 12px var(--shadow-color);
+    max-width: 700px; /* Optional: constrain width */
 }
 
-/* Section Header */
 .business-info-section h2 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -2274,7 +2274,7 @@ body.maintenance-active {
     text-align: center;
 }
 
-/* --- Status Display (Public Page) --- */
+/* Status Display */
 .business-status {
     margin-bottom: 20px;
     font-size: 1.15em;
@@ -2282,29 +2282,34 @@ body.maintenance-active {
     text-align: center;
 }
 
-.status-open {
-    color: #34c759; /* Apple Green */
-    font-weight: 600;
+.status-main-text { /* For "Currently Open", "Currently Closed" */
+    display: block;
+    font-weight: 600; /* Bolder */
+    font-size: 1.1em; /* Slightly larger */
+    margin-bottom: 4px;
 }
 
-.status-closed {
-    color: #ff3b30; /* Apple Red */
-    font-weight: 600;
-}
+.status-main-text.status-open { color: #34c759; }
+.status-main-text.status-closed { color: #ff3b30; }
+.status-main-text.status-unavailable { color: #ff9500; }
 
-.status-unavailable {
-    color: #ff9500; /* Apple Orange */
-    font-weight: 600;
-}
-
-.status-reason {
-    font-size: 0.85em;
+.status-countdown-text { /* For "Closes in X min", "Opens in Y hours" */
+    display: block;
+    font-size: 0.9em;
     color: var(--secondary-text);
-    font-weight: normal;
     margin-top: 5px;
+    font-style: normal; /* Changed from italic for better readability perhaps */
 }
 
-/* --- Regular Hours List (Public Page) --- */
+.status-reason-text { /* For "(Regular Hours)", "(Manual Override)" */
+    display: block;
+    font-size: 0.8em;
+    color: var(--secondary-text);
+    margin-top: 3px;
+    font-style: italic;
+}
+
+/* Regular Hours List */
 .hours-list {
     margin: 20px 0;
 }
@@ -2319,9 +2324,9 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0; /* Assuming this is the base padding for items */
+    padding: 9px 0; /* Slightly increased padding */
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.9em;
+    font-size: 0.95em; /* Slightly increased size */
 }
 
 .hours-list li:last-child {
@@ -2329,62 +2334,52 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-    flex-basis: 120px;
+    flex-basis: 130px; /* Consistent width for day */
     flex-shrink: 0;
     margin-right: 10px;
-    /* Default font-weight for day names in non-highlighted rows */
+    font-weight: 500;
 }
 
-.hours-list li span {
-    color: var(--secondary-text);
+.hours-list li span { /* For the time string */
+    color: var(--text-color); /* Use primary text color for better visibility */
     text-align: right;
 }
 
-/* --- Current Day Highlight (Dark Theme Optimized) --- */
-.hours-list .current-day {
-    background-color: var(--accent-color);    /* Use accent color for the background */
-    color: var(--primary-text-color, #FFFFFF); /* Contrasting text (e.g., white) */
-    
-    font-weight: 500; /* Base font-weight for the highlighted row */
-
-    /* Adjust margin and padding for the "pop-out" effect and internal spacing */
-    margin: -4px -12px; 
-    padding: 12px 12px; 
-    
-    border-radius: 8px; /* Consistent radius */
-    border: none;       /* No border for a cleaner highlight, relying on background */
-    
-    position: relative;
-    z-index: 1;
+.hours-list li.current-day { /* Highlight for visitor's current day */
+    background: rgba(var(--accent-rgb), 0.1);
+    font-weight: 600;
+    margin: -5px -10px; /* Pop-out effect */
+    padding: 9px 10px;   /* Adjust padding to match pop-out */
+    border-radius: 8px;
+}
+.hours-list li.current-day strong,
+.hours-list li.current-day span {
+    color: var(--accent-color);
 }
 
-/* Removed .hours-list .current-day:last-child rule for border as .current-day now has no border */
-
-.hours-list .current-day strong {
-    /* Text color is inherited from .current-day (e.g., white) */
-    font-weight: 700; /* Make the day name noticeably bolder */
+.hours-timezone-note {
+    margin-top: 15px;
+    font-size: 0.8em;
+    color: var(--secondary-text);
+    font-style: italic;
+    text-align: center;
 }
 
-.hours-list .current-day span {
-    /* Text color is inherited from .current-day (e.g., white) */
-    font-weight: 500; /* Match base weight of highlighted row or adjust as needed */
-}
-
-/* --- Special Hours Display (Temporary & Holiday) --- */
+/* Special Hours Display (Temporary & Holiday) */
 #temporary-hours-display,
 #holiday-hours-display {
     margin-top: 25px;
-    padding-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid var(--border-color);
 }
-
-#temporary-hours-display:empty,
-#holiday-hours-display:empty {
-    display: none;
+/* JavaScript will add this class if there's content */
+.special-hours-list { 
+    /* This class might already exist, ensure it matches your needs */
 }
 
-#temporary-hours-display h4,
-#holiday-hours-display h4 {
+
+#temporary-hours-display:not(:empty) h4, /* Show h4 only if there's content */
+#holiday-hours-display:not(:empty) h4 {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 15px;
@@ -2392,63 +2387,62 @@ body.maintenance-active {
     font-weight: 600;
 }
 
-/* Special hours list style */
-.special-hours-display {
+
+.special-hours-display { /* This is the UL inside the divs above */
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .special-hours-display li {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: var(--bg-color);
+    background: rgba(var(--accent-rgb), 0.05); /* Subtle background for special items */
     padding: 12px 15px;
     border-radius: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     border: 1px solid var(--border-color);
     font-size: 0.9em;
 }
 
-.special-hours-display li strong {
-    display: block;
-    font-weight: 600;
+.special-hours-display li .hours-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 5px;
 }
 
-.special-hours-display .special-hours-details {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    color: var(--secondary-text);
-}
-
-.special-hours-display .dates {
-    font-style: italic;
-    flex-basis: 30%;
-    text-align: right;
-}
-
-.special-hours-display .hours {
+.special-hours-display li strong { /* Label like "Staff Training", "Christmas Day" */
     font-weight: 600;
-    flex-basis: 70%;
+    color: var(--text-color);
 }
 
-/* --- Timezone Note --- */
-.hours-timezone-note {
-    margin-top: 20px;
-    font-size: 0.85em;
+.special-hours-display li .hours { /* The "Open HH:MM - HH:MM" or "Closed" text */
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.special-hours-display li .dates { /* The date or date range */
+    display: block;
+    font-size: 0.9em;
     color: var(--secondary-text);
+    margin-bottom: 5px;
     font-style: italic;
-    text-align: center;
 }
 
-/* --- Contact Info --- */
+.special-hours-display li .temp-status-countdown-text,
+.special-hours-display li .holiday-status-countdown-text {
+    display: block;
+    font-size: 0.85em;
+    color: var(--accent-color); /* Make countdowns stand out a bit */
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(var(--accent-rgb), 0.3); /* Subtle separator */
+    text-align: left; /* Or adjust as needed */
+}
+
+/* Contact Info */
 .contact-info {
-    margin-top: 25px;
-    padding-top: 20px;
+    margin-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid var(--border-color);
     color: var(--secondary-text);
     font-size: 0.9em;
