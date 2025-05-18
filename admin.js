@@ -593,7 +593,7 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
             <div class="item-details">
                 <div class="name-line">
                     <strong>${nickname}</strong>
-                    ${verifiedIndicatorHTML} {/* This will now insert the <img> tag if verified */}
+                    ${verifiedIndicatorHTML} 
                 </div>
                 <span>(@${username})</span>
                 <small>Order: ${order} | ${countText}</small>
