@@ -713,13 +713,14 @@ async function displayBusinessInfo() {
     }
 }
 
-// THIS IS THE COMPLETE, CORRECTED FUNCTION WITH COUNTDOWNS
+// REPLACE your existing calculateAndDisplayStatusConvertedBI function with THIS ENTIRE VERSION:
 function calculateAndDisplayStatusConvertedBI(businessData) {
+    // Element References from your global scope or ensure they are correctly selected
+    const localContactEmailDisplay = document.getElementById('contact-email-display');
     const localBusinessHoursDisplay = document.getElementById('business-hours-display');
     const localBusinessStatusDisplay = document.getElementById('business-status-display');
     const localTemporaryHoursDisplay = document.getElementById('temporary-hours-display');
     const localHolidayHoursDisplay = document.getElementById('holiday-hours-display');
-    const localContactEmailDisplay = document.getElementById('contact-email-display'); 
 
     const statusMainTextEl = localBusinessStatusDisplay ? localBusinessStatusDisplay.querySelector('.status-main-text') : null;
     const statusCountdownTextEl = localBusinessStatusDisplay ? localBusinessStatusDisplay.querySelector('.status-countdown-text') : null;
@@ -727,16 +728,16 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
 
     if (!localBusinessHoursDisplay || !localBusinessStatusDisplay || !localTemporaryHoursDisplay || !localHolidayHoursDisplay ||
         !statusMainTextEl || !statusCountdownTextEl || !statusReasonEl) {
-        console.error("FATAL: One or more critical business display HTML elements are missing in calculateAndDisplayStatusConvertedBI.");
+        console.error("FATAL: One or more critical business display HTML elements are missing in calculateAndDisplayStatusConvertedBI. Check IDs and class names in index.html.");
         if (localBusinessStatusDisplay) {
             localBusinessStatusDisplay.innerHTML = '<span class="status-unavailable" style="display:block; font-weight:bold;">Display Error</span><span style="font-size:0.8em; color:var(--secondary-text); display:block;">(UI elements missing)</span>';
         }
         return;
     }
 
-    const { DateTime, Duration } = luxon; 
+    const { DateTime, Duration } = luxon;
     
-    if (typeof assumedBusinessTimezone === 'undefined') { // Check for the constant
+    if (typeof assumedBusinessTimezone === 'undefined') {
         console.error("CRITICAL: assumedBusinessTimezone is not defined globally in displayShoutouts.js!");
         statusMainTextEl.textContent = 'Config Error';
         statusMainTextEl.className = 'status-main-text status-unavailable';
@@ -783,6 +784,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     const businessDayName = nowInBizTZLuxon.toFormat('cccc').toLowerCase();
     const currentMinutesInBizTZ = currentHourInBizTZ * 60 + currentMinuteInBizTZ;
 
+    // --- STATUS DETERMINATION LOGIC ---
     if (statusOverride !== 'auto') {
         currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
         statusReason = 'Manual Override';
@@ -940,8 +942,9 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 let tempCountdownStr = "";
                 const tempStartLuxonDay = DateTime.fromISO(temp.startDate, { zone: assumedBusinessTimezone }).startOf('day');
                 const tempEndLuxonDay = DateTime.fromISO(temp.endDate, { zone: assumedBusinessTimezone }).endOf('day');
+                const startOfTodayInBiz = nowInBizTZLuxon.startOf('day'); // For calendar day comparisons
 
-                if (nowInBizTZLuxon >= tempStartLuxonDay && nowInBizTZLuxon <= tempEndLuxonDay) {
+                if (nowInBizTZLuxon >= tempStartLuxonDay && nowInBizTZLuxon <= tempEndLuxonDay) { // Currently within this temp period's dates
                     if (temp.isClosed) {
                         tempCountdownStr = `Closed (Temporary)`;
                     } else if (temp.open && temp.close) {
@@ -964,13 +967,24 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                             } else { tempCountdownStr = `Closed (temp. hours ended for today)`; }
                         } else {  tempCountdownStr = "Temporary hours timing error"; }
                     }
-                } else if (nowInBizTZLuxon < tempStartLuxonDay) {
-                    const diffToStart = tempStartLuxonDay.diff(nowInBizTZLuxon, ['days', 'hours']);
-                    const d = Math.floor(diffToStart.days); const h = Math.floor(diffToStart.hours % 24);
-                    if (d > 1) tempCountdownStr = `Starts in ${d} days`;
-                    else if (d === 1) tempCountdownStr = `Starts tomorrow`;
-                    else if (h > 0) tempCountdownStr = `Starts in ${h} hr`;
-                    else tempCountdownStr = `Starts very soon`;
+                } else if (nowInBizTZLuxon < tempStartLuxonDay) { // Temp period is in the future
+                    // Corrected logic for future temporary periods
+                    const diffInCalendarDays = Math.ceil(tempStartLuxonDay.diff(startOfTodayInBiz, 'days').days);
+
+                    if (diffInCalendarDays >= 2) {
+                        tempCountdownStr = `Starts in ${diffInCalendarDays} days`;
+                    } else if (diffInCalendarDays === 1) {
+                        tempCountdownStr = `Starts tomorrow`;
+                    } else if (diffInCalendarDays === 0) { // Starts later today
+                        const diffToStartEventHours = tempStartLuxonDay.diff(nowInBizTZLuxon, ['hours', 'minutes']);
+                        const hours = Math.floor(diffToStartEventHours.hours);
+                        const minutes = Math.floor(diffToStartEventHours.minutes % 60);
+                        if (hours > 0) tempCountdownStr = `Starts today in ${hours} hr ${minutes} min`;
+                        else if (minutes > 0) tempCountdownStr = `Starts today in ${minutes} min`;
+                        else tempCountdownStr = `Starts very soon`;
+                    } else { // Should not be reached if tempStartLuxonDay is in the future
+                        tempCountdownStr = `Upcoming`;
+                    }
                 }
                 
                 tempHoursHtml += `
@@ -1003,10 +1017,11 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
             upcomingHolidayHours.forEach(holiday => {
                 let holidayItemCountdownStr = ""; 
-                if (holiday.date === businessDateStr) {
+                if (holiday.date === businessDateStr) { // If today IS this holiday
                     if(activeHoursRule && activeHoursRule.type === 'holiday' && activeHoursRule.date === holiday.date) {
+                       // The main countdown already reflects this holiday's specific timing
                        holidayItemCountdownStr = statusCountdownTextEl.textContent || (currentStatus === "Open" ? "Currently Open" : "Currently Closed");
-                    } else { 
+                    } else { // Another rule (like manual override) is active, or it's a holiday not governing the *current* primary status
                         holidayItemCountdownStr = holiday.isClosed ? "Closed Today (Holiday)" : "Special Holiday Hours Today";
                     }
                 }
@@ -1030,7 +1045,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         }
     }
     
-    if (localContactEmailDisplay) {
+    if (localContactEmailDisplay) { // Use the locally scoped variable for safety
         if (businessData.contactEmail) {
             localContactEmailDisplay.innerHTML = `Contact: <a href="mailto:${businessData.contactEmail}">${businessData.contactEmail}</a>`;
         } else {
@@ -1042,9 +1057,9 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
 // In displayShoutouts.js
 // REPLACE your existing initializeHomepageContent function with THIS ENTIRE VERSION:
 
-// --- MASTER INITIALIZATION FUNCTION (Corrected for Business Info Refresh) ---
+// --- MASTER INITIALIZATION FUNCTION (Ensure it includes business info refresh) ---
 async function initializeHomepageContent() {
-    console.log("Initializing homepage content (v_with_biz_refresh_FIXED_SCOPE)...");
+    console.log("Initializing homepage content (v_with_biz_refresh_FIXED_SCOPE)..."); // Your version log
     const mainContentWrapper = document.getElementById('main-content-wrapper');
     const maintenanceOverlay = document.getElementById('maintenanceLoadingOverlay');
     const countdownSection = document.querySelector('.countdown-section');
@@ -1056,8 +1071,7 @@ async function initializeHomepageContent() {
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
 
-    // Ensure Firebase and necessary Firestore document references are initialized
-    if (!firebaseAppInitialized || !db || !profileDocRef) { // Make sure profileDocRef is globally defined
+    if (!firebaseAppInitialized || !db || !profileDocRef) {
         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
         return;
     }
@@ -1112,7 +1126,7 @@ async function initializeHomepageContent() {
         if (mainContentWrapper) mainContentWrapper.style.display = '';
         if (maintenanceOverlay) maintenanceOverlay.style.display = 'none';
         bodyElement.classList.remove('maintenance-active');
-
+        
         if (countdownTargetDate && typeof startEventCountdown === 'function') {
             if (countdownSection) countdownSection.style.display = 'block';
             startEventCountdown(countdownTargetDate, countdownTitle, countdownExpiredMessage);
@@ -1153,7 +1167,6 @@ async function initializeHomepageContent() {
         console.log("Initiating loading of content sections...");
 
         // ---- INITIAL BUSINESS INFO LOAD + PERIODIC REFRESH SETUP ----
-        // Ensure displayBusinessInfo and businessDocRef are available
         // businessDocRef should be globally defined after Firebase init
         if (firebaseAppInitialized && typeof displayBusinessInfo === 'function' && db && businessDocRef) {
             await displayBusinessInfo(); 
@@ -1203,11 +1216,9 @@ async function initializeHomepageContent() {
             console.warn("loadShoutoutPlatformData for TikTok not defined, or tiktokGridContainer missing");
         }
 
-        // Await all *other* content loading promises
         const results = await Promise.allSettled(loadPromises);
         results.forEach((result, index) => {
             if (result.status === 'rejected') {
-                // Consider logging which promise failed if you map them to names
                 console.error(`Error loading a content section (index ${index}):`, result.reason);
             }
         });
