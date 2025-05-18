@@ -1374,4 +1374,4 @@ async function initializeHomepageContent() {
 } // --- End of initializeHomepageContent function ---
 
 // --- Call the main initialization function when the DOM is ready ---
-document.addEventListener('DOMContentLoaded');
+document.addEventListener('DOMContentLoaded', initializeHomepageContent);
