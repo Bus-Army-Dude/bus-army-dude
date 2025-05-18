@@ -2255,12 +2255,18 @@ body.maintenance-active {
 
 /* Main container for business info (assuming you have this from original CSS) */
 .business-info-section {
-    background: var(--content-bg); /* Using your theme variables */
+    background: var(--content-bg);
     padding: 25px;
     border-radius: 16px;
-    margin: 30px auto; /* Centered if container has max-width */
+    margin: 30px 0; /* Adjust horizontal margin to 0 if it's meant to be full bleed within its parent. 
+                       If its parent (.container) handles centering, 'auto' might still be okay,
+                       but '0' is more explicit for full width behavior of the section itself. */
     box-shadow: 0 3px 12px var(--shadow-color);
-    max-width: 700px; /* Optional: constrain width */
+    /* REMOVE or COMMENT OUT max-width to allow it to be full-width: */
+    /* max-width: 700px; */ 
+    /* Alternatively, if you want it to explicitly be 100% of its parent: */
+    width: 100%; 
+    box-sizing: border-box; /* Good practice when using padding and width: 100% */
 }
 
 .business-info-section h2 {
