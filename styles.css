@@ -2341,22 +2341,29 @@ body.maintenance-active {
     text-align: right;
 }
 
-/* --- Current Day Highlight --- */
+/* --- Current Day Highlight (Refined) --- */
 .hours-list .current-day {
-    font-weight: 600;
-    background: rgba(var(--accent-rgb), 0.15); /* More noticeable background */
-    margin: -5px -10px;
-    padding: 10px 10px;
-    border-radius: 8px;
-    border: 2px solid var(--accent-color); /* Added border for pop */
-    box-shadow: 0 2px 6px rgba(var(--accent-rgb), 0.1); /* Added subtle shadow */
+    font-weight: 700;
+    background: rgba(var(--accent-rgb), 0.12);
+    margin: -6px -12px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 2px 4px rgba(var(--accent-rgb), 0.08),
+                0 4px 8px rgba(var(--accent-rgb), 0.08);
+    position: relative;
+    z-index: 1;
 }
 
 .hours-list .current-day:last-child {
-    border-bottom: 1px solid transparent; /* Override border */
+    border-bottom-color: transparent;
 }
 
-.hours-list .current-day strong,
+.hours-list .current-day strong {
+    color: var(--accent-color);
+    font-weight: 800; /* Making the day name stronger */
+}
+
 .hours-list .current-day span {
     color: var(--accent-color);
 }
