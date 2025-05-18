@@ -711,49 +711,42 @@ button.edit-button:hover /* More specific edit button if used elsewhere */
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* Ensure the text details take up the remaining space */
+/* Ensure you have these styles from the previous fix for the name-line layout: */
 .list-item-admin .item-details {
     flex-grow: 1;
     display: flex;
-    flex-direction: column; /* This will stack .name-line, username span, and small tag */
+    flex-direction: column;
+    justify-content: center;
     gap: 2px;
     overflow: hidden;
 }
 
-/* NEW: Styles for the line containing the name and verified badge */
 .list-item-admin .item-details .name-line {
-    display: flex; /* Aligns name and badge in a row */
-    align-items: center; /* Vertically aligns them */
-    gap: 4px; /* Adjust space between name and badge */
-    /* Ensure this line itself doesn't get unwanted block properties if any were generic */
-    display: flex !important; /* if necessary to override broader rules, but try without !important first */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Adjust gap between nickname and badge image */
 }
 
-/* MODIFIED: Adjustments for elements within .item-details */
-/* Remove display:block from strong if it's inside name-line. Its display will be handled by flex. */
 .list-item-admin .item-details .name-line > strong {
     font-weight: 500;
     color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline; /* Or remove 'display:block' if inherited from a more general rule */
+    display: inline;
 }
 
-/* MODIFIED: Adjust .verified-indicator to work within the flex name-line */
-.list-item-admin .item-details .name-line > .verified-indicator {
-    font-size: 0.8em;
-    /* margin-left: 4px; /* Replaced by gap on .name-line parent */
-    vertical-align: middle; /* Good for baseline alignment with text */
+/* New style for the image-based verified badge in the admin list */
+.list-item-admin .item-details .name-line > .verified-badge-admin-list {
+    width: 14px;  /* Adjust to match your desired size, similar to preview areas */
+    height: 14px; /* Adjust to match your desired size */
+    /* vertical-align: middle; /* Flex align-items:center on parent should handle this */
     flex-shrink: 0; /* Prevent badge from shrinking */
-    display: inline-block; /* Or remove 'display:block' if inherited */
+    object-fit: contain; /* Ensures the image scales nicely within the dimensions */
 }
 
-/* Keep other .item-details children (username, small text) as block to stack below the name-line */
-.list-item-admin .item-details > span { /* For @username, direct child of .item-details */
+/* Keep these styles for the username and small text to ensure they stack correctly */
+.list-item-admin .item-details > span {
     display: block;
     white-space: nowrap;
     overflow: hidden;
@@ -763,7 +756,7 @@ button.edit-button:hover /* More specific edit button if used elsewhere */
     margin-left: 0;
 }
 
-.list-item-admin .item-details > small { /* For Order | Count, direct child of .item-details */
+.list-item-admin .item-details > small {
     display: block;
     white-space: nowrap;
     overflow: hidden;
