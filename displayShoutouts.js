@@ -715,7 +715,6 @@ async function displayBusinessInfo() {
 
 // REPLACE your existing calculateAndDisplayStatusConvertedBI function with THIS ENTIRE VERSION:
 function calculateAndDisplayStatusConvertedBI(businessData) {
-    // Element References from your global scope or ensure they are correctly selected
     const localContactEmailDisplay = document.getElementById('contact-email-display');
     const localBusinessHoursDisplay = document.getElementById('business-hours-display');
     const localBusinessStatusDisplay = document.getElementById('business-status-display');
@@ -728,7 +727,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
 
     if (!localBusinessHoursDisplay || !localBusinessStatusDisplay || !localTemporaryHoursDisplay || !localHolidayHoursDisplay ||
         !statusMainTextEl || !statusCountdownTextEl || !statusReasonEl) {
-        console.error("FATAL: One or more critical business display HTML elements are missing in calculateAndDisplayStatusConvertedBI. Check IDs and class names in index.html.");
+        console.error("FATAL: One or more critical business display HTML elements are missing in calculateAndDisplayStatusConvertedBI.");
         if (localBusinessStatusDisplay) {
             localBusinessStatusDisplay.innerHTML = '<span class="status-unavailable" style="display:block; font-weight:bold;">Display Error</span><span style="font-size:0.8em; color:var(--secondary-text); display:block;">(UI elements missing)</span>';
         }
@@ -748,8 +747,8 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
 
     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
     
-    let currentStatus = 'Closed';
-    let statusReason = 'Scheduled Hours';
+    let currentStatus = 'Closed'; // Default
+    let statusReason = 'Scheduled Hours'; // Default category
     let activeHoursRule = null;
     let ruleAppliedForStatus = false;
 
@@ -784,7 +783,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     const businessDayName = nowInBizTZLuxon.toFormat('cccc').toLowerCase();
     const currentMinutesInBizTZ = currentHourInBizTZ * 60 + currentMinuteInBizTZ;
 
-    // --- STATUS DETERMINATION LOGIC ---
+    // --- STATUS DETERMINATION LOGIC (Order: Override > Holiday > Temporary > Regular) ---
     if (statusOverride !== 'auto') {
         currentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
         statusReason = 'Manual Override';
@@ -798,9 +797,11 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             statusReason = `Holiday (${todayHoliday.label || 'Event'})`;
             activeHoursRule = { ...todayHoliday, type: 'holiday', reasonOriginal: statusReason };
             ruleAppliedForStatus = true;
-            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) currentStatus = 'Closed';
-            else {
-                const openMins = timeStringToMinutes(todayHoliday.open); const closeMins = timeStringToMinutes(todayHoliday.close);
+            if (todayHoliday.isClosed || !todayHoliday.open || !todayHoliday.close) {
+                currentStatus = 'Closed';
+            } else {
+                const openMins = timeStringToMinutes(todayHoliday.open); 
+                const closeMins = timeStringToMinutes(todayHoliday.close);
                 currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
             }
         }
@@ -812,37 +813,44 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             statusReason = `Temporary (${activeTemporary.label || 'Schedule'})`;
             activeHoursRule = { ...activeTemporary, type: 'temporary', reasonOriginal: statusReason };
             ruleAppliedForStatus = true;
-            if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) currentStatus = 'Closed';
-            else {
-                const openMins = timeStringToMinutes(activeTemporary.open); const closeMins = timeStringToMinutes(activeTemporary.close);
+            if (activeTemporary.isClosed || !activeTemporary.open || !activeTemporary.close) {
+                currentStatus = 'Closed'; // Temporary rule makes it closed for the day or has no specific times
+            } else {
+                const openMins = timeStringToMinutes(activeTemporary.open); 
+                const closeMins = timeStringToMinutes(activeTemporary.close);
+                // If within specific temporary open hours, status is "Temporarily Unavailable"
+                // Otherwise, if a temporary rule is active for the day but we're outside its specific times, it's "Closed" (due to this temp rule)
                 currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Temporarily Unavailable' : 'Closed';
             }
         }
     }
 
-    if (!ruleAppliedForStatus) {
+    if (!ruleAppliedForStatus) { // No override, holiday, or active temporary rule for today
         statusReason = 'Regular Hours';
         const todayRegularHours = regularHours[businessDayName];
         activeHoursRule = { ...(todayRegularHours || { isClosed: true, open: null, close: null }), type: 'regular', day: businessDayName, reasonOriginal: statusReason };
         if (todayRegularHours && !todayRegularHours.isClosed && todayRegularHours.open && todayRegularHours.close) {
-            const openMins = timeStringToMinutes(todayRegularHours.open); const closeMins = timeStringToMinutes(todayRegularHours.close);
+            const openMins = timeStringToMinutes(todayRegularHours.open); 
+            const closeMins = timeStringToMinutes(todayRegularHours.close);
             currentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
         } else {
-            currentStatus = 'Closed';
+            currentStatus = 'Closed'; // Closed by regular schedule (either marked isClosed or no open/close times)
         }
     }
     
+    // Update the activeHoursRule.reason to include the determined currentStatus for display
     if (activeHoursRule) {
         activeHoursRule.reason = `${activeHoursRule.reasonOriginal} - Currently ${currentStatus}`;
-    } else {
-        activeHoursRule = { reason: `Scheduled - Currently ${currentStatus}`, type: 'default', isClosed: (currentStatus === 'Closed'), open:null, close:null };
+    } else { // Fallback, though activeHoursRule should always be set by this point
+        activeHoursRule = { reason: `${statusReason} - Currently ${currentStatus}`, type: 'default', isClosed: (currentStatus === 'Closed'), open:null, close:null };
     }
     
+    // --- DISPLAY MAIN STATUS & CALCULATE/DISPLAY MAIN COUNTDOWN ---
     let statusClass = 'status-closed';
     if (currentStatus === 'Open') statusClass = 'status-open';
     else if (currentStatus === 'Temporarily Unavailable') statusClass = 'status-unavailable';
 
-    statusMainTextEl.className = 'status-main-text'; 
+    statusMainTextEl.className = 'status-main-text'; // Reset classes
     statusMainTextEl.classList.add(statusClass);
     statusMainTextEl.textContent = currentStatus;
     statusReasonEl.textContent = `(${activeHoursRule?.reason || statusReason})`;
@@ -850,40 +858,50 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     let countdownMessage = "";
     if (statusOverride === 'auto' && activeHoursRule && activeHoursRule.type !== 'override') {
         let nextEventTimeLuxon = null;
-        let eventType = ""; 
-        let contextQualifier = "";
-
-        if (activeHoursRule.type === 'temporary' && currentStatus !== 'Open') contextQualifier = "temporarily ";
-        if (activeHoursRule.type === 'holiday' && currentStatus !== 'Open') contextQualifier = "for holiday ";
+        let eventType = ""; // "close" or "open"
+        let contextQualifier = ""; // For "temporarily", "for holiday"
 
         const ruleOpenTimeStr = activeHoursRule.open;
         const ruleCloseTimeStr = activeHoursRule.close;
         const ruleIsAllDayClosed = activeHoursRule.isClosed;
 
         if (currentStatus === 'Open' || currentStatus === 'Temporarily Unavailable') {
+            eventType = "close";
+            if (activeHoursRule.type === 'temporary') contextQualifier = "temporarily ";
+            if (activeHoursRule.type === 'holiday') contextQualifier = "for holiday "; // Though 'Open' on holiday is less common for this qualifier
+
             if (ruleCloseTimeStr) {
                 const [h, m] = ruleCloseTimeStr.split(':').map(Number);
                 if (!isNaN(h) && !isNaN(m)) {
                     nextEventTimeLuxon = nowInBizTZLuxon.set({ hour: h, minute: m, second: 0, millisecond: 0 });
-                    eventType = "close";
-                    if (nextEventTimeLuxon < nowInBizTZLuxon) nextEventTimeLuxon = null;
+                    if (nextEventTimeLuxon < nowInBizTZLuxon) nextEventTimeLuxon = null; // Event passed for this rule instance
                 }
             }
         } else if (currentStatus === 'Closed') {
+            eventType = "open";
+            if (activeHoursRule.type === 'temporary') contextQualifier = "temporarily ";
+            if (activeHoursRule.type === 'holiday') contextQualifier = "for holiday ";
+
             if (!ruleIsAllDayClosed && ruleOpenTimeStr) {
                 const [h, m] = ruleOpenTimeStr.split(':').map(Number);
                 if (!isNaN(h) && !isNaN(m)) {
                     let potentialOpenTime = nowInBizTZLuxon.set({ hour: h, minute: m, second: 0, millisecond: 0 });
-                    eventType = "open";
-                    if (potentialOpenTime < nowInBizTZLuxon) {
-                        if (activeHoursRule.type === 'regular') nextEventTimeLuxon = potentialOpenTime.plus({ days: 1 });
-                        else nextEventTimeLuxon = null;
+                    if (potentialOpenTime < nowInBizTZLuxon) { // Opening time for this rule passed today
+                        // If it's a recurring regular day, check next day.
+                        // For one-off holiday/temp, if opening time passed, it's done for this rule instance.
+                        if (activeHoursRule.type === 'regular') {
+                            nextEventTimeLuxon = potentialOpenTime.plus({ days: 1 });
+                        } else { // For specific holiday/temp rule, if open time passed today, this rule won't make it open "again" today.
+                            nextEventTimeLuxon = null;
+                        }
                     } else {
                         nextEventTimeLuxon = potentialOpenTime;
                     }
                 }
-            } else if (ruleIsAllDayClosed) {
+            } else if (ruleIsAllDayClosed) { // All-day closure by current rule
                 countdownMessage = contextQualifier ? `${capitalizeFirstLetter(contextQualifier.trim())} Closed All Day` : "Closed All Day";
+                // Finding the *absolute next* opening time after an all-day closure requires looking ahead,
+                // which is complex. For now, the "Closed All Day" message with qualifier is the primary countdown.
             }
         }
 
@@ -902,13 +920,17 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 else countdownMessage = `Opening ${contextQualifier}very soon`;
             }
         } else if (!countdownMessage && currentStatus === 'Closed' && statusOverride === 'auto') {
-            countdownMessage = "Check schedule for next opening";
+            // If closed and no specific next event from current rule, or ruleIsAllDayClosed handled above
+            if (!activeHoursRule.isClosed || (activeHoursRule.isClosed && activeHoursRule.type === 'regular')) { // if not an explicit all-day holiday/temp closure
+                countdownMessage = "Check schedule for next opening";
+            }
         }
     } else if (statusOverride !== 'auto') {
         countdownMessage = "Status is manually set";
     }
     statusCountdownTextEl.textContent = countdownMessage;
 
+    // --- REGULAR HOURS DISPLAY ---
     const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     const visitorLocalDayName = DateTime.now().setZone(visitorTimezone).toFormat('cccc').toLowerCase();
     let displayHoursListHtml = '<ul>';
@@ -930,6 +952,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     displayHoursListHtml += `<p class="hours-timezone-note">Hours displayed in your local time zone: ${visitorTimezone.replace(/_/g, ' ')}</p>`;
     if(localBusinessHoursDisplay) localBusinessHoursDisplay.innerHTML = displayHoursListHtml;
 
+    // --- TEMPORARY HOURS DISPLAY (with individual countdowns) ---
     if (localTemporaryHoursDisplay) {
         const relevantTemporaryHours = (temporaryHours || [])
             .filter(t => t.startDate && t.endDate && DateTime.fromISO(t.endDate, { zone: assumedBusinessTimezone }).endOf('day') >= nowInBizTZLuxon.startOf('day'))
@@ -942,9 +965,9 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 let tempCountdownStr = "";
                 const tempStartLuxonDay = DateTime.fromISO(temp.startDate, { zone: assumedBusinessTimezone }).startOf('day');
                 const tempEndLuxonDay = DateTime.fromISO(temp.endDate, { zone: assumedBusinessTimezone }).endOf('day');
-                const startOfTodayInBiz = nowInBizTZLuxon.startOf('day'); // For calendar day comparisons
+                const startOfTodayInBiz = nowInBizTZLuxon.startOf('day');
 
-                if (nowInBizTZLuxon >= tempStartLuxonDay && nowInBizTZLuxon <= tempEndLuxonDay) { // Currently within this temp period's dates
+                if (nowInBizTZLuxon >= tempStartLuxonDay && nowInBizTZLuxon <= tempEndLuxonDay) { // Active temp period date-wise
                     if (temp.isClosed) {
                         tempCountdownStr = `Closed (Temporary)`;
                     } else if (temp.open && temp.close) {
@@ -965,24 +988,37 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                                 if (h > 0) tempCountdownStr = `Opens (temp.) in ${h} hr ${m} min`;
                                 else if (m >= 1) tempCountdownStr = `Opens (temp.) in ${m} min`; else tempCountdownStr = `Opening (temp.) very soon`;
                             } else { tempCountdownStr = `Closed (temp. hours ended for today)`; }
-                        } else {  tempCountdownStr = "Temporary hours timing error"; }
+                        } else {  tempCountdownStr = "Invalid temporary hours timing"; }
+                    } else { // Temporary period, but no specific open/close times and not marked as isClosed:true - treat as unspecified.
+                        tempCountdownStr = "Temporary schedule active";
                     }
                 } else if (nowInBizTZLuxon < tempStartLuxonDay) { // Temp period is in the future
-                    // Corrected logic for future temporary periods
                     const diffInCalendarDays = Math.ceil(tempStartLuxonDay.diff(startOfTodayInBiz, 'days').days);
-
                     if (diffInCalendarDays >= 2) {
                         tempCountdownStr = `Starts in ${diffInCalendarDays} days`;
                     } else if (diffInCalendarDays === 1) {
                         tempCountdownStr = `Starts tomorrow`;
                     } else if (diffInCalendarDays === 0) { // Starts later today
                         const diffToStartEventHours = tempStartLuxonDay.diff(nowInBizTZLuxon, ['hours', 'minutes']);
-                        const hours = Math.floor(diffToStartEventHours.hours);
-                        const minutes = Math.floor(diffToStartEventHours.minutes % 60);
-                        if (hours > 0) tempCountdownStr = `Starts today in ${hours} hr ${minutes} min`;
-                        else if (minutes > 0) tempCountdownStr = `Starts today in ${minutes} min`;
-                        else tempCountdownStr = `Starts very soon`;
-                    } else { // Should not be reached if tempStartLuxonDay is in the future
+                        // Ensure we are comparing to the actual open time if available for "later today"
+                        let specificOpenTimeForToday = tempStartLuxonDay; // Defaults to start of day
+                        if (temp.open) {
+                             const tempOpenMinsToday = timeStringToMinutes(temp.open);
+                             if (tempOpenMinsToday !== null) {
+                                 specificOpenTimeForToday = nowInBizTZLuxon.set({ hour: Math.floor(tempOpenMinsToday / 60), minute: tempOpenMinsToday % 60, second: 0, millisecond: 0 });
+                             }
+                        }
+                        if (specificOpenTimeForToday > nowInBizTZLuxon) { // If specific open time is still in future
+                            const diffToActualOpen = specificOpenTimeForToday.diff(nowInBizTZLuxon, ['hours', 'minutes']);
+                            const hours = Math.floor(diffToActualOpen.hours);
+                            const minutes = Math.floor(diffToActualOpen.minutes % 60);
+                            if (hours > 0) tempCountdownStr = `Starts today in ${hours} hr ${minutes} min`;
+                            else if (minutes > 0) tempCountdownStr = `Starts today in ${minutes} min`;
+                            else tempCountdownStr = `Starts very soon`;
+                        } else { // If specific open time has passed but start of day hasn't, it's an edge case (should be handled by active block)
+                             tempCountdownStr = `Starts very soon`;
+                        }
+                    } else { 
                         tempCountdownStr = `Upcoming`;
                     }
                 }
@@ -1007,6 +1043,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         }
     }
 
+    // --- HOLIDAY HOURS DISPLAY ---
     if (localHolidayHoursDisplay) {
         const upcomingHolidayHours = (holidayHours || [])
             .filter(h => h.date && DateTime.fromISO(h.date, { zone: assumedBusinessTimezone }).endOf('day') >= nowInBizTZLuxon.startOf('day'))
@@ -1019,12 +1056,13 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 let holidayItemCountdownStr = ""; 
                 if (holiday.date === businessDateStr) { // If today IS this holiday
                     if(activeHoursRule && activeHoursRule.type === 'holiday' && activeHoursRule.date === holiday.date) {
-                       // The main countdown already reflects this holiday's specific timing
+                       // The main status countdown already reflects this holiday's specific timing
                        holidayItemCountdownStr = statusCountdownTextEl.textContent || (currentStatus === "Open" ? "Currently Open" : "Currently Closed");
-                    } else { // Another rule (like manual override) is active, or it's a holiday not governing the *current* primary status
+                    } else { 
                         holidayItemCountdownStr = holiday.isClosed ? "Closed Today (Holiday)" : "Special Holiday Hours Today";
                     }
                 }
+                // You could add logic here for future holidays to say "Holiday in X days" if desired.
                 holidayHoursHtml += `
                     <li>
                         <div class="hours-container">
@@ -1045,7 +1083,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         }
     }
     
-    if (localContactEmailDisplay) { // Use the locally scoped variable for safety
+    if (localContactEmailDisplay) {
         if (businessData.contactEmail) {
             localContactEmailDisplay.innerHTML = `Contact: <a href="mailto:${businessData.contactEmail}">${businessData.contactEmail}</a>`;
         } else {
