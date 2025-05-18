@@ -743,12 +743,12 @@ async function displayBusinessInfo() {
 
 // THIS IS THE COMPLETE, CORRECTED FUNCTION WITH COUNTDOWNS
 function calculateAndDisplayStatusConvertedBI(businessData) {
-    // Get element references again, or ensure they are correctly passed/scoped
+    // Element References (ensure these are valid based on your HTML)
+    const localContactEmailDisplay = document.getElementById('contact-email-display');
     const localBusinessHoursDisplay = document.getElementById('business-hours-display');
     const localBusinessStatusDisplay = document.getElementById('business-status-display');
     const localTemporaryHoursDisplay = document.getElementById('temporary-hours-display');
     const localHolidayHoursDisplay = document.getElementById('holiday-hours-display');
-    const localContactEmailDisplay = document.getElementById('contact-email-display'); // Added for completeness
 
     const statusMainTextEl = localBusinessStatusDisplay ? localBusinessStatusDisplay.querySelector('.status-main-text') : null;
     const statusCountdownTextEl = localBusinessStatusDisplay ? localBusinessStatusDisplay.querySelector('.status-countdown-text') : null;
@@ -757,15 +757,23 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     if (!localBusinessHoursDisplay || !localBusinessStatusDisplay || !localTemporaryHoursDisplay || !localHolidayHoursDisplay ||
         !statusMainTextEl || !statusCountdownTextEl || !statusReasonEl) {
         console.error("FATAL: One or more critical business display HTML elements are missing in calculateAndDisplayStatusConvertedBI. Check IDs and class names in index.html.");
-        if (localBusinessStatusDisplay) { // Try to show an error in the main status container if it exists
+        if (localBusinessStatusDisplay) {
             localBusinessStatusDisplay.innerHTML = '<span class="status-unavailable" style="display:block; font-weight:bold;">Display Error</span><span style="font-size:0.8em; color:var(--secondary-text); display:block;">(UI elements missing)</span>';
         }
         return;
     }
 
     const { DateTime, Duration } = luxon; // Luxon must be loaded globally
+    // AssumedBusinessTimezone must be defined globally in this script
+    if (typeof assumedBusinessTimezone === 'undefined') {
+        console.error("CRITICAL: assumedBusinessTimezone is not defined globally in displayShoutouts.js!");
+        statusMainTextEl.textContent = 'Config Error';
+        statusCountdownTextEl.textContent = '(Timezone const missing)';
+        return;
+    }
+
     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
-    
+
     let currentStatus = 'Closed';
     let statusReason = 'Scheduled Hours';
     let activeHoursRule = null;
@@ -849,13 +857,13 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             currentStatus = 'Closed';
         }
     }
-    
+
     if (activeHoursRule) {
         activeHoursRule.reason = `${activeHoursRule.reasonOriginal} - Currently ${currentStatus}`;
     } else {
         activeHoursRule = { reason: `Scheduled - Currently ${currentStatus}`, type: 'default', isClosed: (currentStatus === 'Closed'), open:null, close:null };
     }
-    
+
     // --- DISPLAY MAIN STATUS & CALCULATE/DISPLAY MAIN COUNTDOWN ---
     let statusClass = 'status-closed';
     if (currentStatus === 'Open') statusClass = 'status-open';
@@ -936,7 +944,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         const dayData = regularHours[day];
         const isCurrentDayForVisitorDisplay = day === visitorLocalDayName;
         const highlightClass = isCurrentDayForVisitorDisplay ? 'current-day' : '';
-        displayHoursListHtml += `<li class="${highlightClass}"><strong>${capitalizeFirstLetter(day)}:</strong> `;
+        displayHoursListHtml += `<li class="<span class="math-inline">\{highlightClass\}"\><strong\></span>{capitalizeFirstLetter(day)}:</strong> `;
         if (dayData && !dayData.isClosed && dayData.open && dayData.close) {
             const openLocalStr = formatDisplayTimeBI(dayData.open, visitorTimezone);
             const closeLocalStr = formatDisplayTimeBI(dayData.close, visitorTimezone);
@@ -995,28 +1003,27 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                     else if (h > 0) tempCountdownStr = `Starts in ${h} hr`;
                     else tempCountdownStr = `Starts very soon`;
                 }
-                
+
                 tempHoursHtml += `
                     <li>
                         <div class="hours-container">
-                            <strong>${temp.label || 'Temporary Schedule'}</strong>
-                            <span class="hours">${temp.isClosed ? 'Closed' : `${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}`}</span>
-                        </div>
-                        <span class="dates">${formatDate(temp.startDate)} to ${formatDate(temp.endDate)}</span>
-                        <div class="temp-status-countdown-text">${tempCountdownStr}</div>
-                    </li>`;
-            });
-            tempHoursHtml += '</ul>';
-            localTemporaryHoursDisplay.innerHTML = tempHoursHtml;
-            localTemporaryHoursDisplay.style.display = '';
-        } else {
-            localTemporaryHoursDisplay.innerHTML = '';
-            localTemporaryHoursDisplay.style.display = 'none';
-            localTemporaryHoursDisplay.className = '';
-        }
-    } else {
-         console.warn("Temporary hours display element (localTemporaryHoursDisplay) not found in calculateAndDisplayStatusConvertedBI.");
-    }
+                            <strong><span class="math-inline">\{temp\.label \|\| 'Temporary Schedule'\}</strong\>
+                            <span class="hours">{temp.isClosed ? 'Closed' : ${formatDisplayTimeBI(temp.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(temp.close, visitorTimezone) || '?'}}</span>
+</div>
+<span class="dates">${formatDate(temp.startDate)} to formatDate(temp.endDate)</span><divclass="temp−status−countdown−text">{tempCountdownStr}</div>
+</li>`;
+});
+tempHoursHtml += '</ul>';
+localTemporaryHoursDisplay.innerHTML = tempHoursHtml;
+localTemporaryHoursDisplay.style.display = '';
+} else {
+localTemporaryHoursDisplay.innerHTML = '';
+localTemporaryHoursDisplay.style.display = 'none';
+localTemporaryHoursDisplay.className = '';
+}
+} else {
+console.warn("Temporary hours display element (localTemporaryHoursDisplay) not found in calculateAndDisplayStatusConvertedBI.");
+}
 
     // --- HOLIDAY HOURS DISPLAY ---
     if (localHolidayHoursDisplay) {
@@ -1039,35 +1046,32 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 holidayHoursHtml += `
                     <li>
                         <div class="hours-container">
-                            <strong>${holiday.label || 'Holiday'}</strong>
-                            <span class="hours">${holiday.isClosed ? 'Closed' : `${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}`}</span>
-                        </div>
-                        <span class="dates">${formatDate(holiday.date)}</span>
-                        <div class="holiday-status-countdown-text">${holidayItemCountdownStr}</div>
-                    </li>`;
-            });
-            holidayHoursHtml += '</ul>';
-            localHolidayHoursDisplay.innerHTML = holidayHoursHtml;
-            localHolidayHoursDisplay.style.display = '';
-        } else {
-            localHolidayHoursDisplay.innerHTML = '';
-            localHolidayHoursDisplay.style.display = 'none';
-            localHolidayHoursDisplay.className = '';
-        }
-    } else {
-        console.warn("Holiday hours display element (localHolidayHoursDisplay) not found in calculateAndDisplayStatusConvertedBI.");
-    }
-    
-    // Contact Info Display
-    if (localContactEmailDisplay) { // Use the locally scoped variable
+                            <strong><span class="math-inline">\{holiday\.label \|\| 'Holiday'\}</strong\>
+<span class="hours">{holiday.isClosed ? 'Closed' : ${formatDisplayTimeBI(holiday.open, visitorTimezone) || '?'} - ${formatDisplayTimeBI(holiday.close, visitorTimezone) || '?'}}</span>
+</div>
+<span class="dates">formatDate(holiday.date)</span><divclass="holiday−status−countdown−text">{holidayItemCountdownStr}</div>
+</li>`;
+});
+holidayHoursHtml += '</ul>';
+localHolidayHoursDisplay.innerHTML = holidayHoursHtml;
+localHolidayHoursDisplay.style.display = '';
+} else {
+localHolidayHoursDisplay.innerHTML = '';
+localHolidayHoursDisplay.style.display = 'none';
+localHolidayHoursDisplay.className = '';
+}
+} else {
+console.warn("Holiday hours display element (localHolidayHoursDisplay) not found in calculateAndDisplayStatusConvertedBI.");
+}
+
+    if (localContactEmailDisplay) {
         if (businessData.contactEmail) {
-            localContactEmailDisplay.innerHTML = `Contact: <a href="mailto:${businessData.contactEmail}">${businessData.contactEmail}</a>`;
+            localContactEmailDisplay.innerHTML = `Contact: <a href="mailto:<span class="math-inline">\{businessData\.contactEmail\}"\></span>{businessData.contactEmail}</a>`;
         } else {
             localContactEmailDisplay.innerHTML = '';
         }
    }
-} // --- END OF NEW calculateAndDisplayStatusConvertedBI FUNCTION ---
-
+} // --- END OF calculateAndDisplayStatusConvertedBI ---
 
 // --- ***** Countdown Timer Logic (v7) ***** ---
 // ... (Keep your existing startEventCountdown function here) ...
@@ -1199,9 +1203,9 @@ function startEventCountdown(targetTimestamp, countdownTitle, expiredMessageOver
 // In displayShoutouts.js
 
 // In displayShoutouts.js
-// REPLACE your existing initializeHomepageContent function with THIS ENTIRE VERSION:
+// --- MASTER INITIALIZATION FUNCTION (Corrected for Business Info Refresh) ---
 async function initializeHomepageContent() {
-    console.log("Initializing homepage content (v_with_biz_refresh)...");
+    console.log("Initializing homepage content (v_with_biz_refresh_FIXED)...");
     const mainContentWrapper = document.getElementById('main-content-wrapper');
     const maintenanceOverlay = document.getElementById('maintenanceLoadingOverlay');
     const countdownSection = document.querySelector('.countdown-section');
@@ -1213,9 +1217,6 @@ async function initializeHomepageContent() {
     const instagramGridContainer = document.querySelector('.instagram-creator-grid');
     const youtubeGridContainer = document.querySelector('.youtube-creator-grid');
 
-    // Ensure Firebase and necessary Firestore document references are initialized
-    // (These should be defined globally in your script:
-    //  firebaseAppInitialized, db, profileDocRef, businessDocRef, presidentDocRef, etc.)
     if (!firebaseAppInitialized || !db || !profileDocRef) {
         console.error("Firebase not ready or profileDocRef missing. Site cannot load settings.");
         return;
@@ -1226,7 +1227,7 @@ async function initializeHomepageContent() {
     let maintenanceTitle = "Site Under Maintenance";
     let maintenanceMessage = "We are currently performing scheduled maintenance. Please check back later for updates.";
     let hideTikTokSection = false;
-    let countdownTargetDate = null; // Firestore Timestamp or null
+    let countdownTargetDate = null; 
     let countdownTitle = null;
     let countdownExpiredMessage = null;
 
@@ -1239,7 +1240,6 @@ async function initializeHomepageContent() {
             maintenanceTitle = siteSettings.maintenanceTitle || maintenanceTitle;
             maintenanceMessage = siteSettings.maintenanceMessage || maintenanceMessage;
             hideTikTokSection = siteSettings.hideTikTokSection || false;
-            // Ensure countdownTargetDate is correctly handled as Firestore Timestamp or null
             countdownTargetDate = siteSettings.countdownTargetDate instanceof Timestamp ? siteSettings.countdownTargetDate : null;
             countdownTitle = siteSettings.countdownTitle;
             countdownExpiredMessage = siteSettings.countdownExpiredMessage;
@@ -1247,7 +1247,6 @@ async function initializeHomepageContent() {
             console.warn("Site settings document ('site_config/mainProfile') not found. Using defaults.");
         }
         console.log("Settings fetched:", { maintenanceEnabled, hideTikTokSection, countdownSet: !!countdownTargetDate });
-
     } catch (error) {
         console.error("Critical Error fetching site settings:", error);
         return;
@@ -1311,12 +1310,12 @@ async function initializeHomepageContent() {
             }
         }
 
-        console.log("Initiating loading of other content sections...");
+        console.log("Initiating loading of content sections...");
 
         // ---- INITIAL BUSINESS INFO LOAD + PERIODIC REFRESH SETUP ----
-        // Make sure displayBusinessInfo is defined and firebaseAppInitialized, db, businessDocRef are available
+        // Ensure displayBusinessInfo and businessDocRef are available
         if (firebaseAppInitialized && typeof displayBusinessInfo === 'function' && db && businessDocRef) {
-            await displayBusinessInfo(); // Initial load of business info
+            await displayBusinessInfo(); 
 
             if (window.businessInfoRefreshInterval) { 
                 clearInterval(window.businessInfoRefreshInterval);
@@ -1325,15 +1324,15 @@ async function initializeHomepageContent() {
                 if (document.hidden) return; 
                 // console.log("Periodically refreshing business info..."); // For debugging
                 await displayBusinessInfo(); 
-            }, 60000); // Refresh every 60 seconds
+            }, 60000); 
             console.log("Business info display and periodic refresh initiated.");
         } else {
             console.error("Business info cannot be loaded/refreshed: Firebase not init, displayBusinessInfo missing, or businessDocRef missing.");
             const biContainer = document.getElementById('business-status-display');
-            const statusMainTextEl = biContainer ? biContainer.querySelector('.status-main-text') : null;
-            if(statusMainTextEl) {
-                 statusMainTextEl.textContent = "Info Unavailable";
-                 statusMainTextEl.className = 'status-main-text status-unavailable';
+            const statusMainTextElLocal = biContainer ? biContainer.querySelector('.status-main-text') : null;
+            if(statusMainTextElLocal) {
+                 statusMainTextElLocal.textContent = "Info Unavailable";
+                 statusMainTextElLocal.className = 'status-main-text status-unavailable';
             } else if (biContainer) {
                 biContainer.innerHTML = "<span class='status-unavailable'>Business info could not be loaded.</span>";
             }
@@ -1375,5 +1374,4 @@ async function initializeHomepageContent() {
 } // --- End of initializeHomepageContent function ---
 
 // --- Call the main initialization function when the DOM is ready ---
-// (Ensure this line is correct and only present once at the end of your script)
-document.addEventListener('DOMContentLoaded', initializeHomepageContent);
+document.addEventListener('DOMContentLoaded');
