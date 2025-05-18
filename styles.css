@@ -2249,8 +2249,6 @@ body.maintenance-active {
      .maintenance-content { padding-top: 20px; padding-bottom: 20px; }
 }
 
-/* Ensure these rules exist in your styles.css (or equivalent public stylesheet) */
-
 /* ======================================== */
 /* == Business Info Section Styles (Updated) == */
 /* ======================================== */
@@ -2270,7 +2268,7 @@ body.maintenance-active {
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    font-size: 1.35em; /* Slightly reduced */
+    font-size: 1.35em;
     font-weight: 700;
     color: var(--text-color);
     text-align: center;
@@ -2279,7 +2277,7 @@ body.maintenance-active {
 /* --- Status Display (Public Page) --- */
 .business-status {
     margin-bottom: 20px;
-    font-size: 1.15em; /* Slightly reduced */
+    font-size: 1.15em;
     font-weight: 500;
     text-align: center;
 }
@@ -2300,7 +2298,7 @@ body.maintenance-active {
 }
 
 .status-reason {
-    font-size: 0.85em; /* Reduced size */
+    font-size: 0.85em;
     color: var(--secondary-text);
     font-weight: normal;
     margin-top: 5px;
@@ -2321,9 +2319,9 @@ body.maintenance-active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0; /* Reduced padding */
+    padding: 8px 0;
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.9em; /* Reduced size */
+    font-size: 0.9em;
 }
 
 .hours-list li:last-child {
@@ -2331,7 +2329,7 @@ body.maintenance-active {
 }
 
 .hours-list li strong {
-    flex-basis: 120px; /* Consistent width */
+    flex-basis: 120px;
     flex-shrink: 0;
     margin-right: 10px;
 }
@@ -2361,7 +2359,7 @@ body.maintenance-active {
 
 .hours-list .current-day strong {
     color: var(--accent-color);
-    font-weight: 800; /* Making the day name stronger */
+    font-weight: 800; /* Day name is stronger */
 }
 
 .hours-list .current-day span {
@@ -2386,7 +2384,7 @@ body.maintenance-active {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 15px;
-    color: var(--accent-color); /* Accent color for headings */
+    color: var(--accent-color);
     font-weight: 600;
 }
 
@@ -2404,9 +2402,9 @@ body.maintenance-active {
     background: var(--bg-color);
     padding: 12px 15px;
     border-radius: 8px;
-    margin-bottom: 12px; /* Slightly reduced margin */
+    margin-bottom: 12px;
     border: 1px solid var(--border-color);
-    font-size: 0.9em; /* Slightly reduced size */
+    font-size: 0.9em;
 }
 
 .special-hours-display li strong {
@@ -2425,13 +2423,13 @@ body.maintenance-active {
 
 .special-hours-display .dates {
     font-style: italic;
-    flex-basis: 30%; /* Dates on the right */
+    flex-basis: 30%;
     text-align: right;
 }
 
 .special-hours-display .hours {
     font-weight: 600;
-    flex-basis: 70%; /* Hours on the left */
+    flex-basis: 70%;
 }
 
 /* --- Timezone Note --- */
@@ -2461,7 +2459,6 @@ body.maintenance-active {
 .contact-info a:hover {
     text-decoration: underline;
 }
-
 
 /* ======================================== */
 /* == Admin Panel Specific Hours Styles == */
