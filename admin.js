@@ -532,15 +532,13 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
     itemDiv.className = 'list-item-admin';
     itemDiv.setAttribute('data-id', docId);
 
-    // Extract details safely
     const nickname = itemData.nickname || 'N/A';
     const username = itemData.username || 'N/A';
     const order = itemData.order ?? 'N/A';
-    const isVerified = itemData.isVerified || false; // Get verified status
-    const profilePicUrl = itemData.profilePic || 'images/default-profile.jpg'; // Default image if none
-    let countText = ''; // Text for follower/subscriber count
+    const isVerified = itemData.isVerified || false;
+    const profilePicUrl = itemData.profilePic || 'images/default-profile.jpg'; // Assuming 'images/' folder
+    let countText = '';
 
-    // Determine count text based on platform
     if (platform === 'youtube') {
         const subscribers = itemData.subscribers || 'N/A';
         countText = `Subs: ${subscribers}`;
@@ -549,29 +547,55 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
         countText = `Followers: ${followers}`;
     }
 
-    // Construct direct link URL based on platform
-    let directLinkUrl = '#'; // Default placeholder
+    let directLinkUrl = '#';
     let safeUsername = username || '';
-
     if (platform === 'tiktok' && safeUsername) {
         directLinkUrl = `https://tiktok.com/@${encodeURIComponent(safeUsername)}`;
     } else if (platform === 'instagram' && safeUsername) {
         directLinkUrl = `https://instagram.com/${encodeURIComponent(safeUsername)}`;
     } else if (platform === 'youtube' && safeUsername) {
         let youtubeHandle = safeUsername.startsWith('@') ? safeUsername : `@${safeUsername}`;
-        directLinkUrl = `https://www.youtube.com/${encodeURIComponent(youtubeHandle)}`; // Standard YT URL
+        directLinkUrl = `https://www.youtube.com/${encodeURIComponent(youtubeHandle)}`;
     }
 
-    // Add verified indicator (e.g., a checkmark emoji) if true
-    const verifiedIndicator = isVerified ? '<span class="verified-indicator" title="Verified">✅</span>' : ''; // Simple emoji indicator
+    let verifiedIndicatorHTML = ''; // Initialize as empty
+    if (isVerified) {
+        let badgeSrc = '';
+        const altText = 'Verified Badge';
+        // Assuming your checkmark images are in the root or an accessible 'images' folder
+        // Adjust path if they are in an 'images' subfolder, e.g., 'images/check.png'
+        switch (platform) {
+            case 'tiktok':
+                badgeSrc = 'check.png'; // Or 'images/check.png' if in a subfolder
+                break;
+            case 'instagram':
+                badgeSrc = 'instagramcheck.png'; // Or 'images/instagramcheck.png'
+                break;
+            case 'youtube':
+                badgeSrc = 'youtubecheck.png'; // Or 'images/youtubecheck.png'
+                break;
+            default:
+                // Optional: Fallback if platform is somehow unknown
+                // verifiedIndicatorHTML = '<span class="verified-indicator" title="Verified">✓</span>';
+                break;
+        }
+        if (badgeSrc) {
+            verifiedIndicatorHTML = `<img src="${badgeSrc}" alt="${altText}" class="verified-badge-admin-list">`;
+        }
+    }
 
-    // Build inner HTML - Added profile picture container and image
+    // Build inner HTML - Uses the 'name-line' div from the previous fix
     itemDiv.innerHTML = `
         <div class="item-content">
-            <div class="admin-list-item-pfp-container">  <img src="${profilePicUrl}" alt="PFP for ${nickname}" class="admin-list-item-pfp" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
+            <div class="admin-list-item-pfp-container">
+                <img src="${profilePicUrl}" alt="PFP for ${nickname}" class="admin-list-item-pfp" onerror="this.onerror=null; this.src='images/default-profile.jpg';">
             </div>
             <div class="item-details">
-                <strong>${nickname}</strong> ${verifiedIndicator} <span>(@${username})</span>
+                <div class="name-line">
+                    <strong>${nickname}</strong>
+                    ${verifiedIndicatorHTML} {/* This will now insert the <img> tag if verified */}
+                </div>
+                <span>(@${username})</span>
                 <small>Order: ${order} | ${countText}</small>
             </div>
         </div>
@@ -583,14 +607,12 @@ function renderAdminListItem(container, docId, platform, itemData, deleteHandler
             <button type="button" class="delete-button small-button">Delete</button>
         </div>`;
 
-    // Add event listeners for Edit and Delete buttons
     const editButton = itemDiv.querySelector('.edit-button');
     if (editButton) editButton.addEventListener('click', () => editHandler(docId, platform));
 
     const deleteButton = itemDiv.querySelector('.delete-button');
     if (deleteButton) deleteButton.addEventListener('click', () => deleteHandler(docId, platform, itemDiv));
 
-    // Add the completed item to the list container
     container.appendChild(itemDiv);
 }
 
