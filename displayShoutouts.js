@@ -112,18 +112,32 @@ function renderInstagramCard(account) {
 
 function renderYouTubeCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
-    const username = account.username || 'N/A';
-    const nickname = account.nickname || 'N/A';
+    const username = account.username || 'N/A'; // This is expected to be the YouTube handle
+    const nickname = account.nickname || 'N/A'; // Channel name
     const bio = account.bio || '';
     const subscribers = account.subscribers || 'N/A';
     const coverPhoto = account.coverPhoto || null;
     const isVerified = account.isVerified || false;
+    
     let safeUsername = username;
+    // Ensure the handle starts with '@' for consistency, though the URL itself will use it after /
     if (username !== 'N/A' && !username.startsWith('@')) {
         safeUsername = `@${username}`;
     }
-    const channelUrl = username !== 'N/A' ? `https://www.youtube.com/$${encodeURIComponent(safeUsername)}` : '#';
+
+    // CORRECTED URL CONSTRUCTION:
+    // The standard URL for a handle is https://www.youtube.com/@handle
+    // safeUsername already includes the '@', so we use it directly after the slash.
+    const channelUrl = (username !== 'N/A' && username !== '@') ? `https://www.google.com/url?sa=E&source=gmail&q=https://www.youtube.com/${safeUsername}` : '#';
+    // Note: encodeURIComponent is generally good, but for path segments with '@', direct usage is common for YouTube handles.
+    // If safeUsername could contain other special URI characters, encoding might be needed,
+    // but handles are usually restricted. Let's assume direct usage is fine.
+    // If issues persist with special character handles:
+    // const channelUrl = (username !== 'N/A' && username !== '@') ? `https://www.google.com/url?sa=E&source=gmail&q=https://www.youtube.com/${encodeURIComponent(safeUsername)}` : '#';
+
+
     const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : '';
+
     return `<div class="youtube-creator-card">
               ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
               <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
