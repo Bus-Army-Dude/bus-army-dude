@@ -112,38 +112,39 @@ function renderInstagramCard(account) {
 
 function renderYouTubeCard(account) {
     const profilePic = account.profilePic || 'images/default-profile.jpg';
-    const username = account.username || 'N/A'; // This is expected to be the YouTube handle
-    const nickname = account.nickname || 'N/A'; // Channel name
+    const usernameFromDb = account.username || 'N/A'; // Username/handle from Firestore
+    const nickname = account.nickname || 'N/A';      // Channel name
     const bio = account.bio || '';
     const subscribers = account.subscribers || 'N/A';
     const coverPhoto = account.coverPhoto || null;
     const isVerified = account.isVerified || false;
-    
-    let safeUsername = username;
-    // Ensure the handle starts with '@' for consistency
-    if (username !== 'N/A' && username !== '@' && !username.startsWith('@')) {
-        safeUsername = `@${username}`;
-    } else if (username === '@') { // Handle case where only "@" might be entered
-        safeUsername = 'N/A'; 
+
+    let displayHandle = 'N/A';
+    let channelUrl = '#';
+
+    if (usernameFromDb !== 'N/A' && usernameFromDb.trim() !== '' && usernameFromDb.trim() !== '@') {
+        // Ensure the handle starts with '@' for display and URL construction
+        displayHandle = usernameFromDb.startsWith('@') ? usernameFromDb : `@${usernameFromDb}`;
+        channelUrl = `https://www.youtube.com/${displayHandle}`; // e.g., https://www.youtube.com/@MrBeast
+    } else {
+        displayHandle = ''; // Don't display "N/A" or just "@" as the handle text
     }
 
-    // Use the direct www.youtube.com/@handle format
-    const channelUrl = (safeUsername !== 'N/A') ? `https://www.google.com/url?sa=E&source=gmail&q=https://www.youtube.com/${safeUsername}` : '#';
-    // Example: if safeUsername is "@MrBeast", URL becomes https://www.youtube.com/@MrBeast
+    // Console log to verify the generated URL for EACH card
+    console.log(`[YouTube Card Render] DB Username: "<span class="math-inline">\{usernameFromDb\}", Display Handle\: "</span>{displayHandle}", Channel URL: "${channelUrl}"`);
 
     const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : '';
 
     return `<div class="youtube-creator-card">
               ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
-              <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
+              <img src="<span class="math-inline">\{profilePic\}" alt\="</span>{nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
               <div class="youtube-creator-info">
-                <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
-                <div class="username-container"><p class="youtube-creator-username">${safeUsername === 'N/A' ? '' : safeUsername}</p></div>
-                <p class="youtube-creator-bio">${bio}</p>
-                <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
-                <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
-              </div>
-            </div>`;
+                <div class="youtube-creator-header"><h3>${nickname} <span class="math-inline">\{verifiedBadge\}</h3\></div\>
+<div class="username-container"><p class="youtube-creator-username">{displayHandle}</p></div>
+<p class="youtube-creator-bio">bio</p><pclass="youtube−subscriber−count">{subscribers} Subscribers</p>
+<a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
+</div>
+</div>`;
 }
 
 function renderTechItemHomepage(itemData) {
