@@ -120,21 +120,16 @@ function renderYouTubeCard(account) {
     const isVerified = account.isVerified || false;
     
     let safeUsername = username;
-    // Ensure the handle starts with '@' for consistency, though the URL itself will use it after /
-    if (username !== 'N/A' && !username.startsWith('@')) {
+    // Ensure the handle starts with '@' for consistency
+    if (username !== 'N/A' && username !== '@' && !username.startsWith('@')) {
         safeUsername = `@${username}`;
+    } else if (username === '@') { // Handle case where only "@" might be entered
+        safeUsername = 'N/A'; 
     }
 
-    // CORRECTED URL CONSTRUCTION:
-    // The standard URL for a handle is https://www.youtube.com/@handle
-    // safeUsername already includes the '@', so we use it directly after the slash.
-    const channelUrl = (username !== 'N/A' && username !== '@') ? `https://www.google.com/url?sa=E&source=gmail&q=https://www.youtube.com/${safeUsername}` : '#';
-    // Note: encodeURIComponent is generally good, but for path segments with '@', direct usage is common for YouTube handles.
-    // If safeUsername could contain other special URI characters, encoding might be needed,
-    // but handles are usually restricted. Let's assume direct usage is fine.
-    // If issues persist with special character handles:
-    // const channelUrl = (username !== 'N/A' && username !== '@') ? `https://www.google.com/url?sa=E&source=gmail&q=https://www.youtube.com/${encodeURIComponent(safeUsername)}` : '#';
-
+    // Use the direct www.youtube.com/@handle format
+    const channelUrl = (safeUsername !== 'N/A') ? `https://www.google.com/url?sa=E&source=gmail&q=https://www.youtube.com/${safeUsername}` : '#';
+    // Example: if safeUsername is "@MrBeast", URL becomes https://www.youtube.com/@MrBeast
 
     const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : '';
 
@@ -143,7 +138,7 @@ function renderYouTubeCard(account) {
               <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
               <div class="youtube-creator-info">
                 <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
-                <div class="username-container"><p class="youtube-creator-username">${safeUsername}</p></div>
+                <div class="username-container"><p class="youtube-creator-username">${safeUsername === 'N/A' ? '' : safeUsername}</p></div>
                 <p class="youtube-creator-bio">${bio}</p>
                 <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
                 <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
