@@ -739,15 +739,13 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     if (!localBusinessHoursDisplay || !localBusinessStatusDisplay || !localTemporaryHoursDisplay || !localHolidayHoursDisplay ||
         !statusMainTextEl || !statusCountdownTextEl || !statusReasonEl) {
         console.error("FATAL: Critical business display HTML elements missing.");
-        if (localBusinessStatusDisplay) { /* ... error display ... */ }
+        if (localBusinessStatusDisplay) { /* ... error display if main container exists ... */ }
         return;
     }
 
     const { DateTime, Duration } = luxon;
     if (typeof assumedBusinessTimezone === 'undefined') {
-        console.error("CRITICAL: assumedBusinessTimezone is not defined globally in displayShoutouts.js!");
-        statusMainTextEl.textContent = 'Config Error'; statusMainTextEl.className = 'status-main-text status-unavailable';
-        statusCountdownTextEl.textContent = '(TZ const missing)'; statusReasonEl.textContent = ''; return;
+        console.error("CRITICAL: assumedBusinessTimezone is not defined!"); /* ... error display ... */ return;
     }
 
     const { regularHours = {}, holidayHours = [], temporaryHours = [], statusOverride = 'auto' } = businessData;
@@ -784,11 +782,13 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     finalActiveRule = baseRule;
     preliminaryReasonCategory = 'Regular Hours';
 
+    // 2. Check for Manual Override
     if (statusOverride !== 'auto') {
         finalCurrentStatus = statusOverride === 'open' ? 'Open' : (statusOverride === 'closed' ? 'Closed' : 'Temporarily Unavailable');
         preliminaryReasonCategory = 'Manual Override';
         finalActiveRule = { type: 'override', reasonOriginal: preliminaryReasonCategory, isClosed: (finalCurrentStatus !== 'Open' && finalCurrentStatus !== 'Temporarily Unavailable'), open: null, close: null };
     } else {
+        // 3. Check for Holiday
         const todayHoliday = holidayHours.find(h => h.date === businessDateStr);
         if (todayHoliday) {
             preliminaryReasonCategory = `Holiday (${todayHoliday.label || 'Event'})`;
@@ -799,6 +799,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                 finalCurrentStatus = (openMins !== null && closeMins !== null && currentMinutesInBizTZ >= openMins && currentMinutesInBizTZ < closeMins) ? 'Open' : 'Closed';
             }
         } else {
+            // 4. Check for *Currently Active* Temporary Hours
             const currentlyMidTemporaryPeriod = temporaryHours.find(t => {
                 if (t.startDate && t.endDate && businessDateStr >= t.startDate && businessDateStr <= t.endDate) {
                     if (t.isClosed === true) return true; 
@@ -830,103 +831,105 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
     statusMainTextEl.textContent = finalCurrentStatus;
     statusReasonEl.textContent = `(${finalActiveRule?.reason || 'Status Determined'})`;
 
-    // --- REFINED MAIN COUNTDOWN LOGIC ---
+    // --- REFINED MAIN COUNTDOWN LOGIC with 30-MINUTE WINDOWS ---
     let countdownMessage = "";
-    let nextEventTimeLuxon = null;
-    let eventTypeForCountdownMsg = ""; // "closing", "opening", "temp_starting", "temp_ending_opens", "temp_ending_closes"
-    let displayCountdown = true;
+    let nextEventTargetTime = null; // The actual Luxon DateTime of the event we're counting down to
+    let eventTypeForMsg = "";       // e.g., "closing", "opening", "temp_starts", "opens_after_temp"
+    const COUNTDOWN_WINDOW_MINUTES = 30;
 
     if (finalActiveRule.type === 'override') {
         countdownMessage = "Status is manually set";
-        displayCountdown = false;
     } else {
-        // Scenario 1: Currently Temporarily Unavailable & ending within 30 mins, AND will be OPEN afterwards
+        // Determine the NEXT significant event and its type
+        
+        // Scenario 1: Currently "Temporarily Unavailable" and ending soon, check if it opens after.
         if (finalCurrentStatus === 'Temporarily Unavailable' && finalActiveRule.type === 'temporary' && finalActiveRule.close) {
-            const tempCloseTimeToday = nowInBizTZLuxon.set({
+            const tempCloseDt = nowInBizTZLuxon.set({
                 hour: Math.floor(timeStringToMinutes(finalActiveRule.close) / 60),
                 minute: timeStringToMinutes(finalActiveRule.close) % 60,
                 second: 0, millisecond: 0
             });
-            if (tempCloseTimeToday > nowInBizTZLuxon) {
-                const durationToTempClose = tempCloseTimeToday.diff(nowInBizTZLuxon);
-                if (durationToTempClose.as('minutes') <= 30 && durationToTempClose.as('milliseconds') > 0) {
-                    // Check status immediately AFTER temporary period ends using regular hours
-                    let statusAfterTemp = 'Closed';
-                    const timeAfterTempMins = timeStringToMinutes(finalActiveRule.close);
+
+            if (tempCloseDt > nowInBizTZLuxon) {
+                const durationToTempClose = tempCloseDt.diff(nowInBizTZLuxon);
+                if (durationToTempClose.as('minutes') <= COUNTDOWN_WINDOW_MINUTES && durationToTempClose.as('milliseconds') > 0) {
+                    let statusAfterTemp = 'Closed'; // Default
+                    const timeAtTempCloseMins = timeStringToMinutes(finalActiveRule.close);
                     const regularForToday = regularHours[businessDayName];
                     if (regularForToday && !regularForToday.isClosed && regularForToday.open && regularForToday.close) {
                         const regularOpenMins = timeStringToMinutes(regularForToday.open);
                         const regularCloseMins = timeStringToMinutes(regularForToday.close);
-                        if (timeAfterTempMins !== null && regularOpenMins !== null && regularCloseMins !== null &&
-                            timeAfterTempMins >= regularOpenMins && timeAfterTempMins < regularCloseMins) {
+                        if (timeAtTempCloseMins !== null && regularOpenMins !== null && regularCloseMins !== null &&
+                            timeAtTempCloseMins >= regularOpenMins && timeAtTempCloseMins < regularCloseMins) {
                             statusAfterTemp = 'Open';
                         }
                     }
                     if (statusAfterTemp === 'Open') {
-                        nextEventTimeLuxon = tempCloseTimeToday;
-                        eventTypeForCountdownMsg = "opens_after_temp"; // Specific for "Opens in..."
+                        nextEventTargetTime = tempCloseDt;
+                        eventTypeForMsg = "opens_after_temp"; // Will become "Opens in..."
+                    } else { // Will be closed after temp, so just count to temp end
+                        nextEventTargetTime = tempCloseDt;
+                        eventTypeForMsg = "temp_ends"; // Will become "Temporary schedule ends in..."
                     }
-                    // If not opening after, it will fall to the default temporary close countdown later
                 }
             }
         }
 
-        // Scenario 2: Currently Open (Regular/Holiday) & Temporary schedule starts within 30 mins
-        if (!nextEventTimeLuxon && finalCurrentStatus === 'Open' && (finalActiveRule.type === 'regular' || finalActiveRule.type === 'holiday')) {
+        // Scenario 2: Currently "Open" (Regular/Holiday) and a Temporary schedule starts soon.
+        // This check happens only if Scenario 1 didn't set nextEventTargetTime.
+        if (!nextEventTargetTime && finalCurrentStatus === 'Open' && (finalActiveRule.type === 'regular' || finalActiveRule.type === 'holiday')) {
             const sortedUpcomingTemps = temporaryHours
-                .filter(t => t.startDate === businessDateStr && (t.open || t.isClosed === true) && timeStringToMinutes(t.open) !== null)
-                .map(t => ({ ...t, openMins: t.isClosed ? 0 : timeStringToMinutes(t.open) })) // Treat all-day temp closure as starting at 00:00 for this check
-                .filter(t => t.openMins > currentMinutesInBizTZ)
-                .sort((a, b) => a.openMins - b.openMins);
+                .filter(t => t.startDate === businessDateStr && (t.open || t.isClosed === true))
+                .map(t => ({ ...t, 
+                             openMinsField: t.isClosed ? 0 : timeStringToMinutes(t.open), // Treat all-day temp closure as starting at 00:00
+                             isUpcomingClosure: t.isClosed === true || (finalCurrentStatus === 'Open' && t.open && timeStringToMinutes(t.open) > currentMinutesInBizTZ) // Qualify if this temp event is a closure or a different opening
+                           }))
+                .filter(t => t.openMinsField !== null && t.openMinsField > currentMinutesInBizTZ)
+                .sort((a, b) => a.openMinsField - b.openMinsField);
 
             if (sortedUpcomingTemps.length > 0) {
                 const upcomingTemp = sortedUpcomingTemps[0];
                 const tempStartTimeToday = nowInBizTZLuxon.set({
-                    hour: Math.floor(upcomingTemp.openMins / 60),
-                    minute: upcomingTemp.openMins % 60,
+                    hour: Math.floor(upcomingTemp.openMinsField / 60),
+                    minute: upcomingTemp.openMinsField % 60,
                     second: 0, millisecond: 0
                 });
                 if (tempStartTimeToday > nowInBizTZLuxon) {
                     const durationToTempStart = tempStartTimeToday.diff(nowInBizTZLuxon);
-                    if (durationToTempStart.as('minutes') <= 30 && durationToTempStart.as('milliseconds') > 0) {
-                        nextEventTimeLuxon = tempStartTimeToday;
-                        eventTypeForCountdownMsg = "temp_starts";
+                    if (durationToTempStart.as('minutes') <= COUNTDOWN_WINDOW_MINUTES && durationToTempStart.as('milliseconds') > 0) {
+                        nextEventTargetTime = tempStartTimeToday;
+                        eventTypeForMsg = upcomingTemp.isClosed ? "temp_closes_soon" : "temp_starts_soon";
                     }
                 }
             }
         }
 
-        // Scenario 3: Default countdown based on current finalStatus (if not handled by above scenarios)
-        if (!nextEventTimeLuxon) {
+        // Scenario 3: Default countdown based on finalActiveRule (if no special temp interaction took precedence for countdown)
+        if (!nextEventTargetTime) {
             const ruleOpenTimeStr = finalActiveRule.open;
             const ruleCloseTimeStr = finalActiveRule.close;
             const ruleIsAllDayClosed = finalActiveRule.isClosed;
 
             if (finalCurrentStatus === 'Open' || finalCurrentStatus === 'Temporarily Unavailable') {
-                eventTypeForCountdownMsg = "closing"; // Default is "closing"
-                if (finalActiveRule.type === 'temporary') eventTypeForCountdownMsg = "closing_temp";
-                
+                eventTypeForMsg = finalActiveRule.type === 'temporary' ? "closing_temp" : "closing";
                 if (ruleCloseTimeStr) {
                     const [h, m] = ruleCloseTimeStr.split(':').map(Number);
                     if (!isNaN(h) && !isNaN(m)) {
-                        nextEventTimeLuxon = nowInBizTZLuxon.set({ hour: h, minute: m, second: 0, millisecond: 0 });
-                        if (nextEventTimeLuxon < nowInBizTZLuxon) nextEventTimeLuxon = null;
+                        nextEventTargetTime = nowInBizTZLuxon.set({ hour: h, minute: m, second: 0, millisecond: 0 });
+                        if (nextEventTargetTime < nowInBizTZLuxon) nextEventTargetTime = null;
                     }
                 }
             } else if (finalCurrentStatus === 'Closed') {
-                eventTypeForCountdownMsg = "opening"; // Default is "opening"
-                if (finalActiveRule.type === 'temporary') eventTypeForCountdownMsg = "opening_temp";
-                if (finalActiveRule.type === 'holiday') eventTypeForCountdownMsg = "opening_holiday";
-
+                eventTypeForMsg = finalActiveRule.type === 'temporary' ? "opening_temp" : (finalActiveRule.type === 'holiday' ? "opening_holiday" : "opening");
                 if (!ruleIsAllDayClosed && ruleOpenTimeStr) {
                     const [h, m] = ruleOpenTimeStr.split(':').map(Number);
                     if (!isNaN(h) && !isNaN(m)) {
                         let potentialOpenTime = nowInBizTZLuxon.set({ hour: h, minute: m, second: 0, millisecond: 0 });
                         if (potentialOpenTime < nowInBizTZLuxon) {
-                            if (finalActiveRule.type === 'regular') nextEventTimeLuxon = potentialOpenTime.plus({ days: 1 });
-                            else nextEventTimeLuxon = null;
+                            if (finalActiveRule.type === 'regular') nextEventTargetTime = potentialOpenTime.plus({ days: 1 });
+                            else nextEventTargetTime = null;
                         } else {
-                            nextEventTimeLuxon = potentialOpenTime;
+                            nextEventTargetTime = potentialOpenTime;
                         }
                     }
                 } else if (ruleIsAllDayClosed) {
@@ -934,47 +937,59 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                     if (finalActiveRule.type === 'temporary') qualifier = "Temporarily ";
                     else if (finalActiveRule.type === 'holiday') qualifier = "For Holiday ";
                     countdownMessage = `${qualifier}Closed All Day`;
-                    displayCountdown = false; 
+                    displayCountdown = false; // No numerical countdown if it's an all-day closure message
                 }
             }
         }
 
-        // Format the countdown message
-        if (displayCountdown && nextEventTimeLuxon && nextEventTimeLuxon >= nowInBizTZLuxon) {
-            const diff = nextEventTimeLuxon.diff(nowInBizTZLuxon, ['hours', 'minutes']);
-            const hours = Math.floor(diff.hours);
-            const minutes = Math.floor(diff.minutes % 60);
-            let prefix = "";
+        // Format the countdownMessage ONLY if within the 30-minute window (unless it's an all-day message)
+        if (displayCountdown && nextEventTargetTime && nextEventTargetTime >= nowInBizTZLuxon) {
+            const durationToEvent = nextEventTargetTime.diff(nowInBizTZLuxon);
+            const minutesToEvent = Math.floor(durationToEvent.as('minutes'));
 
-            switch (eventTypeForCountdownMsg) {
-                case "closing":             prefix = "Closes"; break;
-                case "opening":             prefix = "Opens"; break;
-                case "closing_temp":        prefix = "Closes temporarily"; break;
-                case "opening_temp":        prefix = "Opens temporarily"; break;
-                case "opening_holiday":     prefix = "Opens for holiday"; break;
-                case "temp_starts":         prefix = "Temporary schedule starts"; break;
-                case "opens_after_temp":    prefix = "Opens"; break; // Specifically "Opens"
-                default:                    prefix = "Event"; break;
-            }
+            if (minutesToEvent <= COUNTDOWN_WINDOW_MINUTES && durationToEvent.as('milliseconds') > 0) {
+                const hours = Math.floor(minutesToEvent / 60);
+                const minutes = minutesToEvent % 60;
+                let prefix = "";
 
-            if (hours > 0) countdownMessage = `${prefix} in ${hours} hr ${minutes} min`;
-            else if (minutes >= 1) countdownMessage = `${prefix} in ${minutes} min`;
-            else { // Less than a minute
-                let verb = prefix;
-                if (prefix.endsWith('s') && prefix !== "Opens") verb = prefix.slice(0, -1) + "ing"; // Closes -> Closing
-                else if (prefix === "Opens") verb = "Opening"; // Opens -> Opening
-                else if (prefix.includes("starts")) verb = prefix.replace("starts", "starting");
-                countdownMessage = `${verb} very soon`;
+                switch (eventTypeForMsg) {
+                    case "closing":             prefix = "Closes"; break;
+                    case "opening":             prefix = "Opens"; break;
+                    case "closing_temp":        prefix = "Closes temporarily"; break;
+                    case "opening_temp":        prefix = "Opens temporarily"; break;
+                    case "opening_holiday":     prefix = "Opens for holiday"; break;
+                    case "temp_starts_soon":    prefix = "Temporary schedule starts"; break;
+                    case "temp_closes_soon":    prefix = "Temporarily closes"; break;
+                    case "opens_after_temp":    prefix = "Opens"; break; 
+                    case "temp_ends":           prefix = "Temporary schedule ends"; break;
+                    default:                    prefix = "Event "; break;
+                }
+
+                if (hours > 0) countdownMessage = `${prefix} in ${hours} hr ${minutes} min`;
+                else if (minutes >= 1) countdownMessage = `${prefix} in ${minutes} min`;
+                else { // Less than a minute
+                    let verb = prefix.trim();
+                    if (verb === "Opens") verb = "Opening";
+                    else if (verb.endsWith('s')) verb = verb.slice(0, -1) + "ing"; // Closes -> Closing
+                    else if (verb.includes("starts")) verb = verb.replace("starts", "starting");
+                    else if (verb.includes("ends")) verb = verb.replace("ends", "ending");
+                    countdownMessage = `${capitalizeFirstLetter(verb)} very soon`;
+                }
+            } else if (minutesToEvent > COUNTDOWN_WINDOW_MINUTES) {
+                countdownMessage = ""; // Event is further than 30 mins, so no countdown message
             }
         } else if (displayCountdown && !countdownMessage && finalCurrentStatus === 'Closed' && finalActiveRule.type !== 'override') {
-            if (!finalActiveRule.isClosed || (finalActiveRule.isClosed && finalActiveRule.type === 'regular')) {
-                countdownMessage = "Check schedule for next opening";
+             if (!finalActiveRule.isClosed || (finalActiveRule.isClosed && finalActiveRule.type === 'regular')) {
+                // Only show "check schedule" if it wasn't an all-day holiday/temp closure that already set a message
+                if (!(finalActiveRule.isClosed && (finalActiveRule.type === 'holiday' || finalActiveRule.type === 'temporary'))) {
+                     countdownMessage = "Check schedule for next opening";
+                }
             }
         }
     }
     statusCountdownTextEl.textContent = countdownMessage;
 
-    // --- REGULAR HOURS DISPLAY (Identical to your last working version) ---
+    // --- REGULAR HOURS DISPLAY ---
     const displayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     const visitorLocalDayName = DateTime.now().setZone(visitorTimezone).toFormat('cccc').toLowerCase();
     let displayHoursListHtml = '<ul>';
@@ -1024,21 +1039,21 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
                             if (nowInBizTZLuxon < tempOpenTimeToday) {
                                 const durationToOpen = tempOpenTimeToday.diff(nowInBizTZLuxon);
                                 const minutesToOpen = Math.floor(durationToOpen.as('minutes'));
-                                if (minutesToOpen <= 30 && minutesToOpen > 0) {
+                                if (minutesToOpen <= COUNTDOWN_WINDOW_MINUTES && minutesToOpen > 0) {
                                     const h = Math.floor(minutesToOpen / 60); const m = minutesToOpen % 60;
                                     if (h > 0) tempCountdownStr = `Starts (temp.) in ${h} hr ${m} min`;
                                     else tempCountdownStr = `Starts (temp.) in ${m} min`;
-                                } else if (minutesToOpen > 30) {
+                                } else if (minutesToOpen > COUNTDOWN_WINDOW_MINUTES) {
                                     tempCountdownStr = `Today at ${formatDisplayTimeBI(temp.open, visitorTimezone)}`;
                                 } else { tempCountdownStr = `Starting (temp.) very soon`; }
                             } else if (nowInBizTZLuxon >= tempOpenTimeToday && nowInBizTZLuxon < tempCloseTimeToday) {
                                 const durationToClose = tempCloseTimeToday.diff(nowInBizTZLuxon);
                                 const minutesToClose = Math.floor(durationToClose.as('minutes'));
-                                if (minutesToClose <= 30 && minutesToClose > 0) {
+                                if (minutesToClose <= COUNTDOWN_WINDOW_MINUTES && minutesToClose > 0) {
                                     const h = Math.floor(minutesToClose / 60); const m = minutesToClose % 60;
                                     if (h > 0) tempCountdownStr = `Ends (temp.) in ${h} hr ${m} min`;
                                     else tempCountdownStr = `Ends (temp.) in ${m} min`;
-                                } else if (minutesToClose > 30) {
+                                } else if (minutesToClose > COUNTDOWN_WINDOW_MINUTES) {
                                     tempCountdownStr = `Active until ${formatDisplayTimeBI(temp.close, visitorTimezone)}`;
                                 } else { tempCountdownStr = `Ending (temp.) very soon`; }
                             } else { 
@@ -1075,7 +1090,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
         }
     }
 
-    // --- HOLIDAY HOURS DISPLAY --- (similar logic as temporary for list item countdowns if desired)
+    // --- HOLIDAY HOURS DISPLAY ---
     if (localHolidayHoursDisplay) {
         const upcomingHolidayHours = (holidayHours || [])
             .filter(h => h.date && DateTime.fromISO(h.date, { zone: assumedBusinessTimezone }).endOf('day') >= nowInBizTZLuxon.startOf('day'))
@@ -1086,7 +1101,7 @@ function calculateAndDisplayStatusConvertedBI(businessData) {
             let holidayHoursHtml = '<h4>Upcoming Holiday Hours</h4><ul class="special-hours-display">';
             upcomingHolidayHours.forEach(holiday => {
                 let holidayItemCountdownStr = ""; 
-                if (holiday.date === businessDateStr) { // If today IS this holiday
+                if (holiday.date === businessDateStr) {
                     if(finalActiveRule && finalActiveRule.type === 'holiday' && finalActiveRule.date === holiday.date) {
                        holidayItemCountdownStr = statusCountdownTextEl.textContent || (finalCurrentStatus === "Open" ? "Currently Open" : "Currently Closed");
                     } else { 
