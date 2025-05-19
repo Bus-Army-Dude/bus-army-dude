@@ -118,33 +118,34 @@ function renderYouTubeCard(account) {
     const subscribers = account.subscribers || 'N/A';
     const coverPhoto = account.coverPhoto || null;
     const isVerified = account.isVerified || false;
-
+    
     let displayHandle = 'N/A';
     let channelUrl = '#';
 
     if (usernameFromDb !== 'N/A' && usernameFromDb.trim() !== '' && usernameFromDb.trim() !== '@') {
-        // Ensure the handle starts with '@' for display and URL construction
         displayHandle = usernameFromDb.startsWith('@') ? usernameFromDb : `@${usernameFromDb}`;
-        channelUrl = `https://www.youtube.com/${displayHandle}`; // e.g., https://www.youtube.com/@MrBeast
+        channelUrl = `https://www.youtube.com/$${displayHandle}`; 
     } else {
-        displayHandle = ''; // Don't display "N/A" or just "@" as the handle text
+        displayHandle = ''; 
     }
 
-    // Console log to verify the generated URL for EACH card
-    console.log(`[YouTube Card Render] DB Username: "<span class="math-inline">\{usernameFromDb\}", Display Handle\: "</span>{displayHandle}", Channel URL: "${channelUrl}"`);
+    // This log is still useful for debugging the URL if the redirect issue persists later
+    // console.log(`[YouTube Card Render] DB Username: "${usernameFromDb}", Display Handle: "${displayHandle}", Channel URL: "${channelUrl}"`);
 
     const verifiedBadge = isVerified ? '<img src="youtubecheck.png" alt="Verified" class="youtube-verified-badge">' : '';
 
+    // Ensure this entire return statement is enclosed in BACKTICKS (`), not single or double quotes.
     return `<div class="youtube-creator-card">
               ${coverPhoto ? `<img src="${coverPhoto}" alt="${nickname} Cover Photo" class="youtube-cover-photo" onerror="this.style.display='none'">` : ''}
-              <img src="<span class="math-inline">\{profilePic\}" alt\="</span>{nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
+              <img src="${profilePic}" alt="${nickname}" class="youtube-creator-pic" onerror="this.src='images/default-profile.jpg'">
               <div class="youtube-creator-info">
-                <div class="youtube-creator-header"><h3>${nickname} <span class="math-inline">\{verifiedBadge\}</h3\></div\>
-<div class="username-container"><p class="youtube-creator-username">{displayHandle}</p></div>
-<p class="youtube-creator-bio">bio</p><pclass="youtube−subscriber−count">{subscribers} Subscribers</p>
-<a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
-</div>
-</div>`;
+                <div class="youtube-creator-header"><h3>${nickname} ${verifiedBadge}</h3></div>
+                <div class="username-container"><p class="youtube-creator-username">${displayHandle}</p></div>
+                <p class="youtube-creator-bio">${bio}</p>
+                <p class="youtube-subscriber-count">${subscribers} Subscribers</p>
+                <a href="${channelUrl}" target="_blank" rel="noopener noreferrer" class="youtube-visit-profile"> Visit Channel </a>
+              </div>
+            </div>`;
 }
 
 function renderTechItemHomepage(itemData) {
